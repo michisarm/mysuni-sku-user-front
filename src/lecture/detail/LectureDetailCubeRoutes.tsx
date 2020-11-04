@@ -4,6 +4,7 @@ import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
+import LectureSurveyPage from './ui/logic/LectureSurveyPage';
 
 export default function LectureDetailCubeRoutes() {
   return (
@@ -31,12 +32,12 @@ export default function LectureDetailCubeRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/survey"
-        component={LectureDetailContainer}
+        component={LectureSurveyPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/survey"
-        component={LectureDetailContainer}
+        component={LectureSurveyPage}
       />
       <Route
         exact

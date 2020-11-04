@@ -68,7 +68,7 @@ class LRSLectureService {
   }
 
   @action
-  async findPagingLrsLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+  async findPagingLrsLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean = false) {
     //
     // LRS 추천 학습정보 가져오기
     const response = await this.arrangeApi.findLrsLectures(lectureFilterRdo);

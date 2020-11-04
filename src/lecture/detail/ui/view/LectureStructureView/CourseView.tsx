@@ -5,10 +5,12 @@ import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
+  LectureStructureDiscussionItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
+import DiscussionView from './DiscussionView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -21,6 +23,7 @@ interface CourseViewProps {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  discussion?: LectureStructureDiscussionItem;
   path: string;
 }
 
@@ -69,6 +72,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   test,
   survey,
   report,
+  discussion,
   path,
 }) {
   const [opened, setOpened] = useState<boolean>(true);
@@ -140,6 +144,14 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             state={report.state}
             activated={report.activated}
             path={report.path}
+          />
+        )}
+        {discussion && (
+          <DiscussionView
+            name={discussion.name}
+            state={discussion.state}
+            activated={discussion.activated}
+            path={discussion.path}
           />
         )}
       </div>

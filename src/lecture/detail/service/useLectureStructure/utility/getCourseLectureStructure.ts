@@ -243,6 +243,9 @@ export async function getCourseLectureStructure(
   if (itemMap.report !== undefined) {
     lectureStructure.report = itemMap.report;
   }
+  if (itemMap.discussion !== undefined) {
+    lectureStructure.discussion = itemMap.discussion;
+  }
 
   const getItemMapFromLectureArray: Promise<void>[] = [];
   lectureStructure.courses.forEach(course => {
@@ -264,6 +267,9 @@ export async function getCourseLectureStructure(
         }
         if (courseItemMap.report !== undefined) {
           course.report = courseItemMap.report;
+        }
+        if (courseItemMap.discussion !== undefined) {
+          course.discussion = courseItemMap.discussion;
         }
       }
     };

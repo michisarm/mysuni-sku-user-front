@@ -39,7 +39,7 @@ class MyLearningSummaryContainer extends Component<Props> {
     //
     const { myLearningSummaryService } = this.props;
 
-    myLearningSummaryService!.findMyLearningSummary();
+    myLearningSummaryService!.findTotalMyLearningSummary();
   }
 
   getHourMinute(minuteTime: number) {
@@ -157,11 +157,11 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ContentHeader.ChartItem
             universityTime={
               myLearningSummary.suniLearningTime -
-                myLearningSummary.myCompanyInSuniLearningTime || 0
+              myLearningSummary.myCompanyInSuniLearningTime || 0
             }
             myCompanyTime={
               myLearningSummary.myCompanyLearningTime +
-                myLearningSummary.myCompanyInSuniLearningTime || 0
+              myLearningSummary.myCompanyInSuniLearningTime || 0
             }
           />
         </ItemWrapper>

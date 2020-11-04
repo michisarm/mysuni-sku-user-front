@@ -1,6 +1,6 @@
 
 import { IObservableArray, observable, action, runInAction, computed } from 'mobx';
-import { autobind, CachingFetch } from '@nara.platform/accent';
+import { autobind, CachingFetch, axiosApi as axios } from '@nara.platform/accent';
 
 import _ from 'lodash';
 import { IdNameList } from 'shared/model';
@@ -41,6 +41,11 @@ export default class CollegeService {
   @observable
   collegeForPanopto: CollegeModel = new CollegeModel();
 
+  @observable
+  mainCollege: CollegeModel = new CollegeModel();
+
+  @observable
+  mainColleges: CollegeModel[] = [];
 
   constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
@@ -237,6 +242,22 @@ export default class CollegeService {
         this.channel = new ChannelModel(channel);
       }
     });
+  }
+
+  @action
+  async findCollegesForCurrentCineroom() {
+    //
+    // const colleges = await this.collegeApi.findAllColleges();
+    const mainColleges = await this.collegeApi.findCollegesForCurrentCineroom();
+    return runInAction(() => this.mainColleges = mainColleges);
+  }
+
+  @action
+  async findMainCollege(collegeId: string) {
+    //
+    const mainCollege = await this.collegeApi.findCollege(collegeId);
+    if (mainCollege) return runInAction(() => this.mainCollege = new CollegeModel(mainCollege));
+    return null;
   }
 
 }

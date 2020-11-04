@@ -10,7 +10,7 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
         width: '100%',
         maxWidth: 950,
         height: 684,
-        backgroundColor: '#f8f8f8',
+        backgroundColor: '#a8a8a8',
       }}
     />
   );

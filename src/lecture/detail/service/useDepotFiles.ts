@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import depot from '@nara.drama/depot';
 import File from '../model/File';
 import { getFiles } from '../utility/depotFilesHelper';
 

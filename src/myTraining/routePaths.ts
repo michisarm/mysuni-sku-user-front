@@ -12,15 +12,26 @@ const routePaths = {
   learningRetry: () => routePaths.learningTab('Retry'),
 
   myPage: () => '/my-training/my-page',
-  myPageTab: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}/pages/1`,
+  // 시작 EarnedStampList -> EarnedBadgeList 로 변경 20200911
+  //myPageTab: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}/pages/1`,
+  myPageTab: (tab: string = 'EarnedBadgeList') => `/my-training/my-page/${tab}/pages/1`,
+  //  myPageEarnedBadgeList -> 추가 20200911
   myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
+  myPageEarnedBadgeList: () => routePaths.myPageTab('EarnedBadgeList'),
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
-  myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
+  //myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
+
+
+  approval: () => '/approval',
+  approvalTab: (tab: string = 'ApprovalList') => `/approval/${tab}/pages/1`,
+  myApprovalList: () => routePaths.approvalTab('ApprovalList'),
+  myApprovalAddPersonalLearning: () => routePaths.approvalTab('ApprovalAddPersonalLearning'),
+
 
   myPageLearning: () => '/my-training/learning',
   myPageLearningTab: (tab: string = 'Completed') => `/my-training/learning/${tab}/pages/1`,
   myPageLearningCompleted: () => routePaths.myPageLearningTab('Completed'),
-  
+
   community: () => '/my-training/community',
   communityTab: (tab: string = 'MyCommunity') => `/my-training/community/${tab}`,
   communityMyCommunity: () => routePaths.communityTab('MyCommunity'),

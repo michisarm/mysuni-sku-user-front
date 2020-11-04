@@ -44,7 +44,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
 
     // this.clearAll();
     //window.location.href='/suni-main/my-training/my-page/ApprovalList/pages/1';
-    this.props.history.push(routePaths.myPageApprovalList());
+    this.props.history.push(routePaths.myApprovalList());
 
   }
 

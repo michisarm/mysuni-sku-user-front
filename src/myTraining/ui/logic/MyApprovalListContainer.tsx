@@ -24,7 +24,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 }
 
 interface Stats {
-  lectureOptions: any []
+  lectureOptions: any[]
 }
 
 @inject(mobxHelper.injectFrom(

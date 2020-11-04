@@ -11,7 +11,7 @@ export default interface InMyLectureCdo {
   category: Category;
   name: string;
   description: string;
-  cubeType: CubeType;
+  cubeType?: CubeType;
   learningTime: number;
   stampCount: number;
   coursePlanId: string;

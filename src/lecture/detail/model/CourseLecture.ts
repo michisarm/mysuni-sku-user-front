@@ -8,4 +8,5 @@ export default interface CourseLecture {
   passedStudentCount: number;
   starCount: number;
   time: number;
+  courseLectureUsids?: any;
 }

@@ -13,15 +13,16 @@ function LectureStateContainer() {
   const [lectureState] = useLectureState();
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const [lectureClassroom] = useLectureClassroom(true);
+  /* eslint-disable */
   const hookAction = useCallback<() => void>(() => {
-    if (lectureState === undefined || lectureState.action === undefined) {
-      return () => {};
-    }
     if (lectureClassroom !== undefined) {
-      ClassroomModalViewRef.current?.show();
+      return ClassroomModalViewRef.current?.show();
     }
-    return lectureState.action;
+    if (lectureState !== undefined && lectureState.action !== undefined) {
+      return lectureState.action();
+    }
   }, [lectureState, lectureClassroom]);
+  /* eslint-enable */
   const onClassroomSelected = useCallback(
     (selected: ClassroomModel) => {
       if (

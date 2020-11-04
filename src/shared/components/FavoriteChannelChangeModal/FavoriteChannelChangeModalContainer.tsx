@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-
 import { Button, Modal } from 'semantic-ui-react';
 import { IdNameCount } from 'shared/model';
 import { StudySummaryModel } from 'profile/model';
@@ -62,6 +61,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       )
       .flat();
 
+    console.log('companyChannels :: ', companyChannels);
+
     const favoriteChannelsWithoutCompany = favoriteChannels.filter(channel =>
       !companyChannels.some(companyChannel => companyChannel.channelId === channel.channelId)
     );
@@ -75,7 +76,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   async onOpenModal() {
     //
     const { collegeService, collegeLectureCountService, favorites } = this.props;
-    const favoriteChannels = [ ...favorites ];
+    const favoriteChannels = [...favorites];
 
     this.setState({
       open: true,
@@ -118,36 +119,47 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       });
   }
 
-  onSearch(e: any, searchKey: string) {
-    //
-    const { actionLogService, collegeService } = this.props;
+  async onSearch(e: any, searchKey: string) {
+    const { collegeService, collegeLectureCountService } = this.props;
+    await collegeService!.findChannelByName(searchKey);
 
-    actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchKey });
+    if (searchKey) {
+      const { channelIds } = collegeService!;
+      const { collegeLectureCounts } = collegeLectureCountService!;
+      const colleges: CollegeLectureCountRdo[] = collegeLectureCounts;
 
-    collegeService!.findChannelByName(searchKey);
+      this.setState({ selectedCollegeIds: [] });
+      colleges
+        .filter(college => {
+          const searchedChannels = college.channelCounts.filter(channel => channelIds.includes(channel.id));
+          return searchedChannels.length > 0 ? college : null;
+        })
+        .map(college => college.collegeId)
+        .forEach(collegeId => this.onToggleCollege(collegeId));
+    }
   }
 
   onReset() {
     //
     const { collegeLectureCounts } = this.props.collegeLectureCountService!;
 
-    this.setState({ selectedCollegeIds: []});
+    this.setState({ selectedCollegeIds: [] });
     this.setDefaultFavorites([], collegeLectureCounts);
   }
 
-  onToggleCollege(college: CollegeLectureCountRdo) {
+  onToggleCollege(collegeId: string) {
     //
     let { selectedCollegeIds }: State = this.state;
 
-    this.onClickActionLog(college.name);
+    // this.onClickActionLog(college.name);
 
-    if (selectedCollegeIds.includes(college.collegeId)) {
-      selectedCollegeIds = selectedCollegeIds.filter(collegeId => collegeId !== college.collegeId);
+    if (selectedCollegeIds.includes(collegeId)) {
+      selectedCollegeIds = selectedCollegeIds.filter(selectedCollegeId => selectedCollegeId !== collegeId);
     }
     else {
-      selectedCollegeIds.push(college.collegeId);
+      selectedCollegeIds.push(collegeId);
     }
-    this.setState({ selectedCollegeIds: [...selectedCollegeIds]});
+    this.setState({ selectedCollegeIds: [...selectedCollegeIds] });
   }
 
   onToggleChannel(channel: IdNameCount | ChannelModel) {
@@ -162,7 +174,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     else {
       favoriteChannels.push(new ChannelModel(channel));
     }
-    this.setState({ favoriteChannels: [...favoriteChannels]});
+    this.setState({ favoriteChannels: [...favoriteChannels] });
   }
 
   onClickActionLog(text: string) {

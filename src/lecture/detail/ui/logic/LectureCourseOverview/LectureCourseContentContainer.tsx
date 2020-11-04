@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLectureComment } from '../../../service/useLectureComments';
 import { useLectureBadge } from '../../../service/useLectureCourseOverview/useLectureBadge';
 import { useLectureDescription } from '../../../service/useLectureCourseOverview/useLectureDescription';
 import { useLectureInstructor } from '../../../service/useLectureCourseOverview/useLectureInstructor';
@@ -14,6 +15,7 @@ function LectureCourseContentContainer() {
   const [lectureInstructor] = useLectureInstructor();
   const [lecturePrecourse] = useLecturePrecourse();
   const [lectureBadge] = useLectureBadge();
+  const [lectureComment] = useLectureComment();
   return (
     <LectureCourseContentView
       lectureDescription={lectureDescription}
@@ -22,6 +24,7 @@ function LectureCourseContentContainer() {
       lectureInstructor={lectureInstructor}
       lecturePrecourse={lecturePrecourse}
       lectureBadge={lectureBadge}
+      lectureComment={lectureComment}
     />
   );
 }

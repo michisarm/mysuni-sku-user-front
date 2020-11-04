@@ -13,7 +13,7 @@ import routePaths from '../../routePaths';
 import { InMyLectureService } from '../../stores';
 import MyLearningContentType from '../model/MyLearningContentType';
 import MyLearningContentTypeName from '../model/MyLearningContentTypeName';
-import MyLearningContentHeaderContainer from '../logic/MyLearningContentHeaderContainer';
+import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainer from '../logic/MyLearningListContainer';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 
@@ -49,7 +49,7 @@ class MyLearningPage extends Component<Props> {
   getNoties() {
     //
     const { myTrainingService, lectureService } = this.props;
-    
+
     myTrainingService.saveNewLearningPassedToStorage('Passed');
 
     myTrainingService!.findAllTabMyTraining();
@@ -60,10 +60,10 @@ class MyLearningPage extends Component<Props> {
   }
 
   publishViewEvent() {
-    const {actionEventService} = this.props;
+    const { actionEventService } = this.props;
     const menu = `LEARNING_VIEW`;
 
-    actionEventService.registerViewActionLog({menu});
+    actionEventService.registerViewActionLog({ menu });
   }
 
   getTabs() {
@@ -169,7 +169,7 @@ class MyLearningPage extends Component<Props> {
           { text: `${this.getContentTypeName()}` },
         ]}
       >
-        <MyLearningContentHeaderContainer />
+        <MyContentHeaderContainer contentType={MyLearningContentType.InProgress} />
 
         <Tab
           tabs={this.getTabs()}
