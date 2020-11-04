@@ -1,11 +1,11 @@
 /* eslint-disable consistent-return */
 import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
-import { getWatchLogItem } from './getWatchLogItemMapFromCube';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { setLectureWatchLogs } from '../../../store/LectureWatchLogsStore';
 import { PatronKey } from '../../../../../shared/model';
-import { findWatchLogList } from '../../../api/WatchlogApi';
+import { findWatchLogList } from '../../../api/mWatchlogApi';
+import { getWatchLogItem } from './getWatchLogItemMapFromCube';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams

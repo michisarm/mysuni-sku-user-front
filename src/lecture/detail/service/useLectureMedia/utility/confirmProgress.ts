@@ -2,8 +2,7 @@
 import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { registerWatchLog } from 'lecture/detail/api/WatchlogApi';
-import LectureWatchLog, {
+import  {
   State,
   StudentStateMap,
 } from 'lecture/detail/viewModel/LectureWatchLog';
@@ -14,7 +13,7 @@ import {
   progressByCardId,
 } from 'lecture/detail/api/lectureApi';
 import StudentCdo from 'lecture/detail/model/StudentCdo';
-import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
+import { setLectureConfirmProgress } from '../../../store/LectureConfirmProgressStore';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams

@@ -3,8 +3,8 @@ import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { PatronKey } from 'shared/model/PatronKey';
-import { setLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
-import { findSumViewSeconds } from '../../../api/WatchlogApi';
+import { setLectureWatchLogSumViewCount } from '../../../store/LectureWatchLogSumViewCountStore';
+import { findSumViewSeconds } from '../../../api/mWatchlogApi';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams

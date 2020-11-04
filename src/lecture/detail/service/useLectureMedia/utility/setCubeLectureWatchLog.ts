@@ -3,7 +3,7 @@ import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import LectureWatchLog from 'lecture/detail/viewModel/LectureWatchLog';
-import { registerWatchLog } from '../../../api/WatchlogApi';
+import { registerWatchLog } from '../../../api/mWatchlogApi';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
