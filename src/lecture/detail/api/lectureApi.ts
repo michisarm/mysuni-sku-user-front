@@ -15,6 +15,7 @@ import LectureStudentView from '../model/LectureStudentView';
 import Student from '../model/Student';
 import StudentCdo from '../model/StudentCdo';
 import StudentJoin from '../model/StudentJoin';
+import Test from '../model/Test';
 
 const BASE_URL = '/api/lecture';
 
@@ -109,4 +110,20 @@ export function progressByCardId(studentCdo: StudentCdo): Promise<Student> {
   return axiosApi
     .post<Student>(url, studentCdo)
     .then(response => response && response.data);
+}
+
+export function setCubeStudentExamId(
+  personalCubeId: string,
+  studentId: string
+): Promise<Test> {
+  const url = `${BASE_URL}/students/flow/setCubeStudentExamId/${personalCubeId}/${studentId}`;
+  return axiosApi.get<Test>(url).then(response => response && response.data);
+}
+
+export function setCourseStudentExamId(
+  coursePlanId: string,
+  studentId: string
+): Promise<Test> {
+  const url = `${BASE_URL}/students/flow/setCourseStudentExamId/${coursePlanId}/${studentId}`;
+  return axiosApi.get<Test>(url).then(response => response && response.data);
 }

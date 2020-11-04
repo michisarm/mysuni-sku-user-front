@@ -10,4 +10,5 @@ export default interface ExamQuestion {
   direction: string;
   answer: string;
   items: QuestionItem[];
+  questionImgSrc: string;
 }

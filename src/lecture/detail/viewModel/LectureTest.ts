@@ -57,6 +57,8 @@ export interface LectureTestStudentItem extends Item {
   studentId: string;
   serviceType: LectureType;
   learningState: LearningState;
+  examId?: string;
+  paperId?: string;
 }
 
 export interface LectureTest {

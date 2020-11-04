@@ -5,7 +5,11 @@
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
-import { findCoursePlanContents } from 'lecture/detail/api/lectureApi';
+import {
+  findCoursePlanContents,
+  setCourseStudentExamId,
+  studentInfoView,
+} from 'lecture/detail/api/lectureApi';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 
@@ -21,8 +25,13 @@ import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 function getCoursePlanComplexByParams(
   params: LectureParams
 ): Promise<CoursePlanComplex> {
-  const { coursePlanId, serviceId } = params;
-  return findCoursePlanContents(coursePlanId!, serviceId!);
+  const { coursePlanId, serviceId, contentId, lectureId } = params;
+  if (contentId !== undefined && contentId !== null) {
+    // Program의 Course(Course in Course)
+    return findCoursePlanContents(contentId!, lectureId!);
+  } else {
+    return findCoursePlanContents(coursePlanId!, serviceId!); // Course
+  }
 }
 
 async function getTestItem(examId: string) {
@@ -59,15 +68,44 @@ export async function getTestItemMapFromCourse(
   params: LectureParams
 ): Promise<LectureTestItem | undefined> {
   // void : return이 없는 경우 undefined
-
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
-  // TODO
-  // course는 Test가 복수개이기 때문에 examId를 course_plan_contents의 testId를 이용한 examination이 아니라 학습시작한 student의 student_score_json.examId의 examination를 사용해야한다.
-  // student에서 examId가져오는 api 필요(student에 examId가 없으면 api 내에서 랜덤으로 course의 examId를 넣어줘야 함)
-  const examId =
-    coursePlanComplex &&
-    coursePlanComplex.examination &&
-    coursePlanComplex.examination.id;
+
+  let courseLectureIds: string[] = [];
+  let lectureCardIds: string[] = [];
+  let serviceId = '';
+  if (coursePlanComplex.coursePlanContents.courseSet.type === 'Card') {
+    lectureCardIds = coursePlanComplex.courseLecture.lectureCardUsids;
+    serviceId = coursePlanComplex.courseLecture.usid;
+  } else if (
+    coursePlanComplex.coursePlanContents.courseSet.type === 'Program'
+  ) {
+    courseLectureIds = coursePlanComplex.programLecture.courseLectureUsids;
+    lectureCardIds = coursePlanComplex.programLecture.lectureCardUsids;
+    serviceId = coursePlanComplex.programLecture.usid;
+  }
+
+  const studentInfo = await studentInfoView({
+    courseLectureIds,
+    lectureCardIds,
+    preLectureCardIds: [],
+    serviceId,
+  });
+
+  let examId =
+    studentInfo &&
+    studentInfo.own &&
+    studentInfo.own.studentScore &&
+    studentInfo.own.studentScore.examId;
+
+  if (examId === undefined || examId === null || examId === '') {
+    // 랜덤 지정된 Test
+    await setCourseStudentExamId(
+      coursePlanComplex.coursePlan.coursePlanId!,
+      studentInfo.own.id
+    ).then(response => {
+      examId = response.testId;
+    });
+  }
 
   if (examId !== undefined) {
     const testItem = await getTestItem(examId);
@@ -76,5 +114,6 @@ export async function getTestItemMapFromCourse(
     }
     return testItem;
   }
+
   return undefined;
 }

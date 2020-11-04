@@ -7,6 +7,12 @@ import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
 import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
+import {
+  findIsJsonStudentByCube,
+  findStudent,
+  setCubeStudentExamId,
+} from 'lecture/detail/api/lectureApi';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -52,13 +58,28 @@ async function getTestItem(examId: string) {
 }
 
 export async function getTestItemMapFromCube(
-  cubeId: string
+  params: LectureParams
 ): Promise<LectureTestItem | undefined> {
   // void : return이 없는 경우 undefined
 
-  const personalCube = await getPersonalCubeByParams(cubeId);
-  const examId =
-    personalCube && personalCube.contents && personalCube.contents.examId;
+  const personalCube = await getPersonalCubeByParams(params.cubeId!);
+
+  const studentJoins = await findIsJsonStudentByCube(params.lectureCardId!);
+  let examId = '';
+  if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
+    const student = await findStudent(studentJoins[0].studentId);
+    examId = student && student.studentScore && student.studentScore.examId;
+
+    if (examId === undefined || examId === null || examId === '') {
+      // examId set
+      await setCubeStudentExamId(
+        params.cubeId!,
+        studentJoins[0].studentId
+      ).then(response => {
+        examId = response.testId;
+      });
+    }
+  }
 
   if (examId !== undefined) {
     const testItem = await getTestItem(examId);
