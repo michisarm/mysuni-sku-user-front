@@ -4,20 +4,21 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import { MemberViewModel } from '@nara.drama/approval';
 import { patronInfo } from '@nara.platform/dock';
-import {Breadcrumb, Button, Container, Form, Header, Segment} from 'semantic-ui-react';
+import { Breadcrumb, Button, Container, Form, Header, Segment } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import { AplState } from '../../model/AplState';
 import { AplType } from '../../model/AplType';
 import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
-import { AplService } from '../..';
 import AplCreateContainer from '../logic/AplCreateContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
+
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
@@ -372,25 +373,25 @@ class AplCreatePage extends React.Component<Props, States> {
     const invalidHour = Number(value) < 0;
     const invalidMin = Number(value) > 59 || Number(value) < 0;
     const invalidContent = value.length > 1000;
-    if(name === 'title' || name ==='typeName' || name === 'institute'){
+    if (name === 'title' || name === 'typeName' || name === 'institute') {
       if (invalid) {
         return;
       }
     }
 
-    if(name === 'requestHour'){
+    if (name === 'requestHour') {
       if (invalidHour) {
         return;
       }
     }
 
-    if(name === 'requestMinute'){
+    if (name === 'requestMinute') {
       if (invalidMin) {
         return;
       }
     }
 
-    if(name === 'content'){
+    if (name === 'content') {
       if (invalidContent) {
         return;
       }
@@ -428,7 +429,7 @@ class AplCreatePage extends React.Component<Props, States> {
     } = this.state;
 
     return (
-      <ContentLayout breadcrumb={[{ text: '개인학습' },{ text: 'Create' }]}>
+      <ContentLayout breadcrumb={[{ text: '개인학습' }, { text: 'Create' }]}>
         <div className="add-personal-learning">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">개인학습</div>

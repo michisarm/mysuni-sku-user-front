@@ -5,14 +5,15 @@ import { reactAutobind, reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
 import { patronInfo } from '@nara.platform/dock';
 import { Button, Container, Form, Breadcrumb, Header } from 'semantic-ui-react';
-import { AplService } from '../../index';
+import AplService from 'myTraining/present/logic/AplService';
 // import AplDetailView from '../view/AplDetailView';
 // import AplBasicInfoContainer from '../view/AplBasicInfoContainer';
 import { AplState } from '../../model/AplState';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import SharedService from '../../../shared/present/logic/SharedService';
-import {AplModel} from '../../model';
+import { AplModel } from '../../model';
+
 
 interface Props extends RouteComponentProps<{
   cineroomId: string;

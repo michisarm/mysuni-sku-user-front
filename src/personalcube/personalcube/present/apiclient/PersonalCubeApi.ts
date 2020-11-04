@@ -8,6 +8,7 @@ import { ExcelView } from '../../../../shared/model/ExcelView';
 import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
+import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
 
 export default class PersonalCubeApi {
   //
@@ -163,6 +164,17 @@ export default class PersonalCubeApi {
       .get<string>(this.depotURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
       .then(response => (response && response.data) || null);
   }
+
+  ////////////////////////////////////// 개편 //////////////////////////////////////
+  findLectureTimeSummary(email: string) {
+
+    return axios
+      .get<LectureTimeSummary>(`${this.flowURL}/instructor/lecture-time`, {
+        params: { email }
+      })
+      .then(response => response && new LectureTimeSummary(response.data) || null);
+  }
+  ////////////////////////////////////// 개편 //////////////////////////////////////
 }
 
 Object.defineProperty(PersonalCubeApi, 'instance', {
