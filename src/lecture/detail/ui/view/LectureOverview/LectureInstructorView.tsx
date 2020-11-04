@@ -26,7 +26,8 @@ const LectureInstructorView: React.FC<LectureInstructorViewProps> = function Lec
         </div>
       </div>
       <div className="scrolling course-profile">
-        {lectureInstructor.instructors &&
+        {lectureInstructor &&
+          lectureInstructor.instructors &&
           lectureInstructor.instructors.map(({ name, company, represent }) => (
             <div className="ui profile tool-tip">
               {represent === 1 && <Represent />}
