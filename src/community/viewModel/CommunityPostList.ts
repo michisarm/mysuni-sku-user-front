@@ -4,9 +4,9 @@ export interface CommunityPostList {
   empty: boolean;
   offset: number;
   limit: number;
-  orderType: string;
-  searchType: string;
-  searchText: string;
+  orderType?: string;
+  searchType?: string;
+  searchText?: string;
 }
 
 export interface CommunityPostItem {

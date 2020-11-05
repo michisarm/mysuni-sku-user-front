@@ -1,3 +1,5 @@
+import { findCommunityPost2, findCommunityPostList } from 'community/api/communityApi';
+import { CommunityPostList } from 'community/viewModel/CommunityPostList';
 /* eslint-disable consistent-return */
 // report
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
@@ -17,14 +19,15 @@ import {
 } from 'lecture/detail/viewModel/LectureTask';
 
 
-async function getTaskItem(
-  boardId: string,
+async function getPostItem(
+  communityId: string,
   offset: number,
   limit: number,
-  addflag?: boolean,
-  tabType?: string
+  sortType: string,
+  searchType: string,
+  searchText: string
 ) {
-  const lectureTask: LectureTask = {
+  const communityPost: CommunityPostList = {
     items: [],
     totalCount: 0,
     empty: false,
@@ -32,37 +35,37 @@ async function getTaskItem(
     limit: 0,
   };
   //TODO api 수정되면 바꿀 예정
-  if (boardId !== '') {
+  if (communityId !== '') {
     {
-      const findTaskData = await findTask(boardId, offset, limit, tabType!);
-      if (findTaskData) {
-        lectureTask.totalCount = findTaskData.totalCount;
-        lectureTask.offset = offset;
-        const old = getLectureTaskItem();
-        if (findTaskData.results.length !== 0) {
-          if (addflag && old) {
-            findTaskData.results.forEach(task => {
-              old.items.push({
-                id: task.id,
-                boardId: task.boardId,
-                readCount: task.readCount,
-                title: task.title,
-                writer: task.writer,
-                time: task.time,
-                child: false,
-                count: 0,
-                commentFeedbackId: task.commentFeedbackId,
-                childItems: [],
-                delete: task.deleted
+      //임시로 CT-9 -> communityId 들어가야함
+      const findPostData = await findCommunityPostList('CT-9');
+      if (findPostData) {
+        console.log('findPostData', findPostData)
+        communityPost.totalCount = findPostData.totalCount;
+        communityPost.offset = offset;
+        if (findPostData.results.length !== 0) {
+            findPostData.results.forEach(post => {
+          console.log('post', post)
+
+              communityPost.items.push({
+                id: post.postId,
+                boardId: '',
+                readCount: 0,
+                title: post.title,
+                contents: post.html,
+                writer: '작성자',
+                time: post.createdTime,
+                count: post.replyCount,
+                commentFeedbackId: post.commentFeedbackId,
+                delete: post.deleted
               });
             });
 
-            lectureTask.items = [...old.items];
-            setLectureTaskItem(old);
-          }
+            // communityPost.items = ''
+            // setLectureTaskItem(old);
           // 댓글 count api
         }
-        return lectureTask;
+        return communityPost;
       }
     }
   }
@@ -80,15 +83,16 @@ export async function getPostListMapFromCommunity(
 
     if (communityId !== undefined) {
       const addflag = !!getLectureTaskItem();
-      // const taskItem = await getTaskItem(
-      //   boardId,
-      //   offset,
-      //   limit,
-      //   addflag,
-      //   tabType
-      // );
-      // if (taskItem !== undefined) {
-      //   setLectureTaskItem({ ...taskItem });
-      // }
+      const postItems = await getPostItem(
+        communityId,
+        offset,
+        limit,
+        sortType,
+        searchType,
+        searchText,
+      );
+      if (postItems !== undefined) {
+        // setLectureTaskItem({ ...postItems });
+      }
     }
   }
