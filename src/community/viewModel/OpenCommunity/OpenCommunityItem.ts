@@ -1,4 +1,4 @@
-import CommunityItem from "./CommunityItem";
+import CommunityItem from "../MyCommunity/CommunityItem";
 
 type ApprovedState = 'None' | 'Wait' | 'Approved'
 
