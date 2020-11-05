@@ -17,3 +17,9 @@ export default interface Post {
   modifierId: string;
   modifiedTime: number;
 }
+
+export default interface PostArr {
+  empty: boolean;
+  results: Post[];
+  totalCount: number;
+}

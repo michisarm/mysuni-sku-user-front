@@ -89,20 +89,21 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
   );
   
   return (
-    <div className="su-list notice">
-        <a className="row header">
-          <span className="cell title">
-            <span className="inner">
-              <span className="ellipsis">제목</span>
-            </span>
+    <>
+      <a className="row header">
+        <span className="cell title">
+          <span className="inner">
+            <span className="ellipsis">제목</span>
           </span>
-          <span className="cell nick">등록자</span>
-          <span className="cell date">등록일</span>
-        </a>
+        </span>
+        <span className="cell nick">등록자</span>
+        <span className="cell date">등록일</span>
+      </a>
       {postItems.items.map((post, index) => {
+        console.log('post', post)
         return renderPostRow(post, onHandleClickRow);
       })}
-    </div>
+    </>
   );
 }
 
