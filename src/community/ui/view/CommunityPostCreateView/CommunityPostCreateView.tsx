@@ -1,8 +1,83 @@
-import React from 'react';
+import { FileBox, ValidationType } from '@nara.drama/depot';
+import { PatronType, reactConfirm } from '@nara.platform/accent';
+import { saveCommunityPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityPost';
+import { getCommunityPostCreateItem, setCommunityPostCreateItem } from 'community/store/CommunityPostCreateStore';
+import { CommunityPostCreateItem } from 'community/viewModel/CommunityPostCreate';
+import React, { useCallback } from 'react';
 import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
+import { depotHelper } from 'shared';
 import Editor from './Editor';
 
-function CommunityPostCreateView() {
+interface CommunityPostCreateViewProps {
+  postItem: CommunityPostCreateItem;
+  communityId: string;
+  menuId?: string;
+  postId?: string;
+}
+
+const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
+  postItem,
+  communityId,
+  menuId,
+  postId,
+}) {
+
+  const handlePinnedChange = useCallback(
+    (e: any, data: any) => {
+      const value = data.checked;
+      const postCreateItem = getCommunityPostCreateItem();
+      if (postCreateItem === undefined) {
+        return;
+      }
+      const nextPostCreateItem = { ...postCreateItem, pinned:value };
+      setCommunityPostCreateItem(nextPostCreateItem);
+  },[]);
+
+  const handleTitleChange = useCallback(
+    (e: any) => {
+    //
+    const value = e.target.value;
+    const postCreateItem = getCommunityPostCreateItem();
+    if (postCreateItem === undefined) {
+      return;
+    }
+    const nextPostCreateItem = { ...postCreateItem, title:value };
+    setCommunityPostCreateItem(nextPostCreateItem);
+  },[]);
+
+  const getFileBoxIdForReference = useCallback((depotId: string) => {
+    const postCreateItem = getCommunityPostCreateItem();
+    if (postCreateItem === undefined) {
+      return;
+    }
+    const nextPostCreateItem = { ...postCreateItem, fileBoxId:depotId };
+    setCommunityPostCreateItem(nextPostCreateItem);
+  }, []);
+
+  const handleVisibleChange = useCallback(
+    (e: any, data: any) => {
+      let value = false;
+      if (data.value) {
+        value = true;
+      }
+      
+      const postCreateItem = getCommunityPostCreateItem();
+      if (postCreateItem === undefined) {
+        return;
+      }
+      const nextPostCreateItem = { ...postCreateItem, visible:value };
+      setCommunityPostCreateItem(nextPostCreateItem);
+  },[]);
+
+  const handleSubmitClick = useCallback(() => {
+    reactConfirm({
+      title: '알림',
+      message:
+        '저장하시겠습니까?',
+      onOk: () => saveCommunityPost(communityId, menuId, postId),
+    });
+  },[communityId, menuId, postId]);
+
   return (
     <div className="form-contants">
       <Form>
@@ -12,8 +87,9 @@ function CommunityPostCreateView() {
             <Checkbox
               className="base"
               label="중요 등록"
-              name="radioGroup"
-              value="oldest"
+              name="communityPostCreatePinned"
+              checked={postItem.pinned}
+              onChange={handlePinnedChange}
             />
           </div>
           <div className="ui right-top-count input">
@@ -24,6 +100,8 @@ function CommunityPostCreateView() {
             <input
               type="text"
               placeholder="제목을 입력해 주세요. (최대 입력 글자 수 확인 필요)"
+              value={postItem.title}
+              onChange={handleTitleChange}
             />
             <Icon className="clear link" />
             <span className="validation">
@@ -35,15 +113,44 @@ function CommunityPostCreateView() {
         <Form.Field>
           <label>본문</label>
           <div className="ui editor-wrap">
-            <Editor contents=""/>
+            <Editor contents={postItem.contents}/>
           </div>
         </Form.Field>
 
         <Form.Field>
           <label>파일첨부</label>
-          <div className="report-attach">
-            {/*<AttachFileUpload />*/}
-          </div>
+            <div className="report-attach">
+              {/* <AttachFileUpload filesMap={filesMap}/> */}
+              <div className="lg-attach">
+                <div className="attach-inner">
+                  <FileBox
+                    id={postItem.fileBoxId || ''}
+                    vaultKey={{
+                      keyString: 'sku-depot',
+                      patronType: PatronType.Pavilion,
+                    }}
+                    patronKey={{
+                      keyString: 'sku-denizen',
+                      patronType: PatronType.Denizen,
+                    }}
+                    validations={[
+                      {
+                        type: ValidationType.Duplication,
+                        validator: depotHelper.duplicationValidator,
+                      },
+                    ]}
+                    onChange={getFileBoxIdForReference}
+                  />
+                  <div className="bottom">
+                    <span className="text1">
+                      <Icon className="info16" />
+                      <span className="blind">information</span>
+                      1개 이상의 첨부파일을 등록하실 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
         </Form.Field>
         <Form.Field>
           {/* 공개, 비공개 */}
@@ -51,18 +158,18 @@ function CommunityPostCreateView() {
             <Radio
               className="base"
               label="멤버 공개"
-              name="radioGroup"
-              value="value01"
-              //checked={this.state.value === "value01"}
-              //onChange={this.handleChange}
+              name="communityPostVisible"
+              value={1}
+              checked={postItem.visible}
+              onChange={handleVisibleChange}
             />
             <Radio
               className="base"
               label="비공개 (본인과 관리자만 게시물 확인)"
-              name="radioGroup"
-              value="value02"
-              //checked={this.state.value === "value02"}
-              //onChange={this.handleChange}
+              name="communityPostVisible"
+              value={0}
+              checked={!postItem.visible}
+              onChange={handleVisibleChange}
             />
           </div>
         </Form.Field>
@@ -70,7 +177,7 @@ function CommunityPostCreateView() {
       
       {/* Bottom */}
       <div className="survey-preview">
-        <button className="ui button fix bg">등록</button>
+        <button className="ui button fix bg" onClick={handleSubmitClick}>등록</button>
       </div>
     </div>
   );

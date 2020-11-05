@@ -1,8 +1,8 @@
 import React from 'react'
 import CommunityPostCreateContainer from '../logic/CommunityPostCreateContainer'
 
-function CreatePostPage() {
+function BasicPostEditPage() {
   return (<><CommunityPostCreateContainer /></>)
 }
 
-export default CreatePostPage
+export default BasicPostEditPage
