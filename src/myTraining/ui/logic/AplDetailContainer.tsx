@@ -1,140 +1,179 @@
-import React from 'react';
-import { Button, Form, Segment, Table } from 'semantic-ui-react';
+import React, { useState, useEffect, lazy } from 'react';
+import { useHistory } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { Form, Segment } from 'semantic-ui-react';
+import { mobxHelper } from '@nara.platform/accent';
+import AplService from 'myTraining/present/logic/AplService';
+import AplUdoModel from 'myTraining/model/AplUdoModel';
+import { AplModel } from 'myTraining/model';
+import { AplState } from 'myTraining/model/AplState';
+import { ConfirmWin } from 'shared';
+import approvalRoutePaths from 'myTraining/routePaths';
+import ApprovalButtons from '../view/button/ApprovalButtons';
+import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
+import ApprovalInfoView from '../view/ApprovalInfoView';
+import ApprovalRejectModal from '../view/modal/ApprovalRejectModal';
 
 interface Props {
-
+  model: AplModel;
+  aplService?: AplService;
 }
 
 function AplDetailContainer(props: Props) {
+  const { model, aplService } = props;
+  const history = useHistory();
 
-  return (
-    <Segment className="full">
-      <div className="apl-form-wrap create">
-        <Form>
-          <div className="section-tit">
-            <span className="text1">승인정보</span>
-          </div>
-          <div className="create-detail type-apl">
-            <dl>
-              <dt>생성자 및 등록일자</dt>
-              <dd>
-                <span>김써니</span>
-                <span className="1">2020.05.29 23:59</span>
-              </dd>
-            </dl>
-            <dl>
-              <dt>처리상태</dt>
-              <dd>
-                <span className="blue">승인</span>
-                <span className="1">2020.05.29 23:59</span>
-              </dd>
-            </dl>
-          </div>
-          <div className="section-tit">
-            <span className="text1">교육정보</span>
-          </div>
-          <Table>
-            <Table.Body>
-              <Table.Row>
-                <Table.Header>
-                  교육형태
-                </Table.Header>
-                <Table.Cell>
-                  <div>
-                    {'기타-직접입력 > On-Line Video 특강'}
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  Channel
-                </Table.Header>
-                <Table.Cell>
-                  <div>
-                    AI
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  <div>
-                    2020.05.29~2020.06.29
-                  </div>
-                </Table.Header>
-                <Table.Cell></Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  교육기간
-                </Table.Header>
-                <Table.Cell>
-                  <div>
+  /* states */
+  const [allowHour, setAllowHour] = useState<string>('');
+  const [allowMinute, setAllowMinute] = useState<string>('');
 
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  교육기관
-                </Table.Header>
-                <Table.Cell>
-                  <div>Youtube & Facebook</div>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  교육시간
-                </Table.Header>
-                <Table.Cell>
-                  <div className="time-wrap">
-                    <div className="time">
-                      <div></div>
-                    </div>
-                    <div className="time">
-                      <div></div>
-                    </div>
-                    <div className="info-text">
-                      <i className="info16 icon">
-                        <span className="blind">infomation</span>
-                      </i>
-                      학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해 교육시간은 변경될 수 있습니다.
-                    </div>
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  교육내용
-                </Table.Header>
-                <Table.Cell>
-                  <div>
-                    Youtube를 보면서 “AI와 Block chain과의 상관관계는 어떻게 되는가?”라는 주제로 학습을 하였습니다.
-                    Facebook에서도 비슷한 강의가 있어서 함께 들어봤는데 의외로 나쁘지 않았어요
-                    3시간 정도 들었는데 2시간만 교육시간으로 인정해주세요.
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Header>
-                  첨부파일
-                </Table.Header>
-                <Table.Cell>
-                  <div>
-                    <a href="#">Education UX/UI class_1.avi</a>
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-          <div className="buttons editor">
-            <Button>List</Button>
-            <Button>반려</Button>
-            <Button>승인</Button>
-          </div>
-        </Form>
-      </div>
-    </Segment>
-  );
+  const [openListModal, setOpenListModal] = useState<boolean>(false);
+  const [openRejectModal, setOpenRejectModal] = useState<boolean>(false);
+  const [openApprovalModal, setOpenApprovalModal] = useState<boolean>(false);
+
+  /* effects */
+  useEffect(() => {
+    const allowHourStr = String(model.allowHour);
+    const allowMinuteStr = String(model.allowMinute);
+
+    setAllowHour(allowHourStr);
+    setAllowMinute(allowMinuteStr);
+  }, [model]);
+
+  /* functions */
+  const routeToList = () => {
+    history.push(approvalRoutePaths.approvalPersonalLearning());
+  };
+
+  /* handlers */
+  const onChangeAllowHour = (e: any) => {
+    setAllowHour(e.target.value);
+  };
+
+  const onChangeAllowMinute = (e: any) => {
+    setAllowMinute(e.target.value);
+  };
+
+  const onClearAllowHour = () => {
+    setAllowHour('');
+  };
+
+  const onClearAllowMinute = () => {
+    setAllowMinute('');
+  };
+
+  const onClickList = () => {
+    if (model.state === AplState.Opened || model.state === AplState.Rejected) {
+      routeToList();
+      return;
+    }
+
+    setOpenListModal(true);
+  }
+
+  const cancelRouteToList = () => {
+    setOpenListModal(false);
+  }
+
+  const onClickReject = () => {
+    setOpenRejectModal(true);
+  };
+
+  const onCancelReject = () => {
+    setOpenRejectModal(false);
+  };
+
+  const onConfirmReject = (remark: string) => {
+    /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
+    const aplUdo = AplUdoModel.createForReject(model.id, remark);
+    aplService!.modifyAplWithApprovalState(aplUdo)
+
+    setOpenRejectModal(false);
+    routeToList();
+  };
+
+
+  const onClickApproval = () => {
+    setOpenApprovalModal(true);
+  };
+
+  const onCancelApproval = () => {
+    setOpenApprovalModal(false);
+  };
+
+  const onConfirmApproval = () => {
+    /* aplUdo 를 생성해 승인 로직을 처리해야 함. */
+    const allowHourNumber = Number.parseInt(allowHour);
+    const allowMinuteNumber = Number.parseInt(allowMinute);
+
+    const aplUdo = AplUdoModel.createForApproval(model.id, allowHourNumber, allowMinuteNumber)
+    aplService!.modifyAplWithApprovalState(aplUdo);
+
+    setOpenApprovalModal(false);
+    routeToList();
+  };
+
+  /* render */
+  return model &&
+    (
+      <Segment className="full">
+        <div className="apl-form-wrap create">
+          <Form>
+            <ApprovalInfoView
+              model={model}
+            />
+            <MyApprovalInfoTable
+              model={model}
+              allowHour={allowHour}
+              allowMinute={allowMinute}
+              onChangeAllowHour={onChangeAllowHour}
+              onChangeAllowMinute={onChangeAllowMinute}
+              onClearAllowHour={onClearAllowHour}
+              onClearAllowMinute={onClearAllowMinute}
+            />
+            <ApprovalButtons
+              approvalState={model.state}
+              onClickList={onClickList}
+              onClickReject={onClickReject}
+              onClickApproval={onClickApproval}
+            />
+          </Form>
+        </div>
+        {/* 리스트 이동 확인 모달 */}
+        <ConfirmWin
+          open={openListModal}
+          title=""
+          message={listMessage}
+          handleOk={routeToList}
+          handleClose={cancelRouteToList}
+          buttonNoName="No"
+          buttonYesName="Yes"
+        />
+        {/* 반려 확인 모달 */}
+        <ApprovalRejectModal
+          open={openRejectModal}
+          onCloseModal={onCancelReject}
+          onConfirmModal={onConfirmReject}
+        />
+        {/* 승인 확인 모달 */}
+        <ConfirmWin
+          open={openApprovalModal}
+          title=""
+          message={approvalMessage}
+          handleOk={onConfirmApproval}
+          handleClose={onCancelApproval}
+          buttonNoName="No"
+          buttonYesName="Yes"
+        />
+      </Segment>
+    );
 }
 
-export default AplDetailContainer;
+export default inject(mobxHelper.injectFrom(
+  'myTraining.aplService'
+))(observer(AplDetailContainer));
+
+const listMessage = `개인학습 List 화면으로 이동하시겠습니까?
+개인학습 List로 이동 시 입력된 정보는 저장되지 않습니다.`;
+
+const approvalMessage = '등록된 내용에 대해 승인 처리하시겠습니까?';

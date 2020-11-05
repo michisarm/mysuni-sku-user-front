@@ -13,6 +13,8 @@ import AplFlowApi from '../apiclient/AplFlowApi';
 import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplModel } from '../../model';
+import { AplRdoModel } from '../../model/AplRdoModel';
+import AplUdoModel from '../../model/AplUdoModel';
 
 
 @autobind
@@ -95,10 +97,10 @@ export default class AplService {
   }
 
   @action
-  async findApl(aplId?: string) {
+  async findApl(aplId: string) {
     //
     const apl = await this.aplApi.findApl(aplId);
-    runInAction(() => (this.apl = apl));
+    runInAction(() => this.apl = apl);
     return apl;
   }
 
@@ -286,7 +288,16 @@ export default class AplService {
     this.aplQuery = new AplQueryModel();
   }
 
+  ///////////////////////// 개편 /////////////////////////
+  modifyAplWithApprovalState(aplUdo: AplUdoModel) {
+    this.aplApi.modifyAplWithApprovalState(aplUdo);
+  }
 
+  findAllAplsForApproval(aplRdo: AplRdoModel) {
+
+  }
+
+  ///////////////////////// 개편 /////////////////////////
 }
 
 Object.defineProperty(AplService, 'instance', {

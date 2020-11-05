@@ -5,19 +5,20 @@ import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplCdoModel } from '../../model/AplCdoModel';
-import {AplModel} from '../../model';
+import { AplModel } from '../../model';
+import AplUdoModel from '../../model/AplUdoModel';
 
 export default class AplApi {
 
   serverUrl = '/api/mytraining/apl';
-  devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API ;
+  devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API === '' ?
+    this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API;
   /*
   URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_AP P_ENVIRONMENT === 'server' ?
     this.serverUrl : this.devUrl;
   */
 
-  URL='http://localhost:8233/apl';
+  URL = 'http://localhost:8233/apl';
 
   static instance: AplApi;
 
@@ -25,7 +26,7 @@ export default class AplApi {
   findAllAplsByQuery(aplRdo: AplRdoModel) {
     //
     return axios
-      .get<OffsetElementList<AplListViewModel>>(this.URL, {
+      .get<OffsetElementList<AplListViewModel>>(this.devUrl, {
         params: aplRdo,
       })
       .then(
@@ -37,19 +38,15 @@ export default class AplApi {
       );
   }
 
-  findApl(aplId: string | undefined) {
+  findApl(aplId: string) {
     //
     return axios
-      .get<AplModel>(this.URL + `/${aplId}`)
-      .then(
-        (response) =>
-          (response && response.data && new AplModel(response.data)) ||
-          new AplModel()
-      );
+      .get<AplModel>(`${this.devUrl}/${aplId}`)
+      .then(response => response && new AplModel(response.data) || new AplModel());
   }
 
   findAplCount(aplRdo: AplRdoModel) {
-    return axios.get(this.URL + '/summary/count', { params: aplRdo })
+    return axios.get(this.devUrl + '/summary/count', { params: aplRdo })
       .then(response =>
         response && response.data && new AplCountModel(response.data) || new AplCountModel());
   }
@@ -59,7 +56,7 @@ export default class AplApi {
     //
     return axios
       .get<OffsetElementList<AplListViewModel>>(
-        this.URL + `/tree/apl`,
+        this.devUrl + `/tree/apl`,
         { params: aplRdo }
       )
       .then(
@@ -77,7 +74,7 @@ export default class AplApi {
   ) {
     //
     return axios
-      .get<AplModel>(this.URL + `/${aplType}/${company}`)
+      .get<AplModel>(this.devUrl + `/${aplType}/${company}`)
       .then(
         (response) =>
           (response && response.data && new AplModel(response.data)) ||
@@ -89,14 +86,14 @@ export default class AplApi {
   aplCountAll() {
     //
     return axios
-      .get<AplCountModel>(this.URL + '/count')
+      .get<AplCountModel>(this.devUrl + '/count')
       .then((response) => (response && response.data) || null);
   }
 
   findAllAplsExcel(aplRdo: AplRdoModel) {
     //
     return axios
-      .get<AplListViewModel[]>(this.URL + `/excelWithJoinedValue`, {
+      .get<AplListViewModel[]>(this.devUrl + `/excelWithJoinedValue`, {
         params: aplRdo,
       })
       .then(
@@ -113,13 +110,13 @@ export default class AplApi {
   /* 2020 10 28 SAVE */
   saveApl(aplCdo: AplCdoModel) {
     return axios
-      .post<string>(this.URL, aplCdo)
+      .post<string>(this.devUrl, aplCdo)
       .then((response) => (response && response.data) || null);
   }
 
   modifyApl(aplId: number | undefined, isUse: boolean) {
     return axios
-      .put<string>(this.URL + `/${aplId}/${isUse}`)
+      .put<string>(this.devUrl + `/${aplId}/${isUse}`)
       .then((response) => (response && response.data) || null);
   }
 
@@ -131,11 +128,27 @@ export default class AplApi {
   ) {
     //
     return axios
-      .get<number>(this.URL + `/countSaveCheck`, {
+      .get<number>(this.devUrl + `/countSaveCheck`, {
         params: { company, aplType, startDate, endDate },
       })
       .then((response) => response.data);
   }
+
+  ///////////////////////// 개편 /////////////////////////
+  modifyAplWithApprovalState(aplUdo: AplUdoModel) {
+    return axios
+      .post(`${this.devUrl}/approvals`, aplUdo)
+      .then(response => response && response.data || null)
+      .catch(err => err && null);
+  }
+
+  findAllAplsForApproval(aplRdo: AplRdoModel) {
+    return axios
+      .get(`${this.devUrl}/approval-list`, { params: aplRdo })
+      .then(response => response && response.data || null)
+      .catch(err => err && null);
+  }
+  ///////////////////////// 개편 /////////////////////////
 }
 
 Object.defineProperty(AplApi, 'instance', {

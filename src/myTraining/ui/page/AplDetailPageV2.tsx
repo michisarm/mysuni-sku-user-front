@@ -1,9 +1,40 @@
-import React from 'react';
+
+import React, { useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
+import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import AplDetailContainer from '../logic/AplDetailContainer';
+import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
+import { useParams } from 'react-router-dom';
+import { mobxHelper } from '@nara.platform/accent';
 
-function AplDetailPageV2() {
 
+interface Props {
+  aplService?: AplService;
+}
+
+interface RouteParams {
+  aplId: string;
+}
+
+function AplDetailPageV2(props: Props) {
+  const { aplService } = props;
+  const { apl } = aplService!;
+  const { aplId } = useParams<RouteParams>();
+
+  /* effects */
+  useEffect(() => {
+    aplService!.findApl(aplId);
+    document.body.classList.add('white');
+
+    return () => {
+      aplService!.clearApl();
+      document.body.classList.remove('white');
+    };
+  }, []);
+
+
+  /* render */
   return (
     <ContentLayout
       breadcrumb={[
@@ -11,18 +42,12 @@ function AplDetailPageV2() {
         { text: '개인학습' }
       ]}
     >
-      <div className="ap-title border">
-        <div className="inner">
-          <div className="txt1">개인학습</div>
-          <div className="txt2">
-            구성원이 입력한 개인학습 정보에 대해 확인하실 수 있습니다.<br />
-            입력된 내용을 잘 확인해주세요.
-          </div>
-        </div>
-      </div>
-      <AplDetailContainer />
+      <MyApprovalContentHeader model={apl} />
+      <AplDetailContainer model={apl} />
     </ContentLayout>
   );
 }
 
-export default AplDetailPageV2;
+export default inject(mobxHelper.injectFrom(
+  'myTraining.aplService'
+))(observer(AplDetailPageV2));
