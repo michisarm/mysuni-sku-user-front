@@ -22,49 +22,57 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
   if (task.childItems) {
     childElement = task.childItems.map((child, index) => {
       return (
-        <a
-          target="_blank"
-          className="row reply"
-          key={index}
-          onClick={() => handleClickTaskRow({ id: child.id, type: 'child' })}
-        >
-          <span className="cell title">
-            <Icon className="reply16-b" />
-            <span className="blind">reply</span>
-            <span className="ellipsis">
+        <div className="depth2">
+          <a
+            target="_blank"
+            key={index}
+            onClick={() => handleClickTaskRow({ id: child.id, type: 'child' })}
+          >
+            <span className="title">
+              <Icon className="reply16-b"/>
               {child.title}[{child.count}]
             </span>
-          </span>
-          <span className="cell category">{child.writer}</span>
-          <span className="cell status">{child.readCount}</span>
-          <span className="cell date">
-            {task.time && moment(task.time).format('YYYY.MM.DD')}
-          </span>
-        </a>
+            <span className="writer">{child.writer}</span>
+            <span className="view">{child.readCount}</span>
+            <span className="date">
+              {task.time && moment(task.time).format('YYYY.MM.DD')}
+            </span>
+          </a>
+        </div>
       );
     });
   }
 
   return (
     <>
-      <a
-        target="_blank"
-        className="row"
-        onClick={() => handleClickTaskRow({ id: task.id, type: 'parent' })}
-      >
-        <span className="cell title">
-          <span className="inner">
-            <span className="ellipsis">
+      { task.delete === false && (
+        <div className="depth1">
+          <a
+            target="_blank"
+            onClick={() => handleClickTaskRow({ id: task.id, type: 'parent' })}
+          >
+            <span className="title">
               {task.title}[{task.count}]
             </span>
-          </span>
-        </span>
-        <span className="cell category">{task.writer}</span>
-        <span className="cell status">{task.readCount}</span>
-        <span className="cell date">
-          {task.time && moment(task.time).format('YYYY.MM.DD')}
-        </span>
-      </a>
+            <span className="writer">{task.writer}</span>
+            <span className="view">{task.readCount}</span>
+            <span className="date">
+              {task.time && moment(task.time).format('YYYY.MM.DD')}
+            </span>
+          </a>
+        </div>
+      )}
+      { task.delete === true && (
+        <div className="depth1">
+              <span className="del">
+                <Icon className="listdel24" />
+                <span className="blind">삭제됨</span>
+                <span>
+                  삭제된 글입니다.
+                </span>
+              </span>
+        </div>
+      )}
       {childElement}
     </>
   );
@@ -94,7 +102,7 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
         handelClickCreateTask={handelClickCreateTask}
       />
       <>
-        <div className="su-list qna">
+        <div className="community-list">
           {taskItem.items.map((task, index) => {
             return renderPostRow(task, onHandleClickTaskRow);
           })}

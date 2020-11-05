@@ -99,6 +99,7 @@ function LectureTaskContainer() {
   }, []);
 
   const handelClickCreateTask = useCallback(() => {
+    console.log('create');
     setCreate(true);
     setLectureTaskViewType('create');
   }, []);
@@ -117,17 +118,18 @@ function LectureTaskContainer() {
     getContentId();
   }, [create, edit]);
 
+  
   async function deletePost(id: string, type: string) {
     await deleteCubeLectureTaskPost(id, type);
   }
-
+  console.log('taskItem', taskItem)
   return (
     <>
       <div id="Posts" />
-      {viewType === 'list' && taskItem !== undefined && (
-        <>
+      {viewType === 'list' && (
+        <div className="contents">
           <LectureCubeSummaryContainer />
-          <ContentLayout className="support">
+          <ContentLayout className="community-cont">
             <LectureTaskView
               handelClickCreateTask={handelClickCreateTask}
               taskItem={taskItem}
@@ -141,7 +143,7 @@ function LectureTaskContainer() {
               lectureFile={lectureFile}
             />
           </ContentLayout>
-        </>
+        </div>
       )}
       {viewType !== 'list' && viewType !== 'create' && viewType !== 'edit' && (
         <>
