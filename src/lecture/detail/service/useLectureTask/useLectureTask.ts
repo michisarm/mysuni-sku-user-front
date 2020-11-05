@@ -44,6 +44,7 @@ export function useLectureTask(): [TaskValue] {
   const param = useLectureRouterParams();
 
   useEffect(() => {
+    console.log('params', params)
     if (param && param.contentId !== undefined) {
       setLectureTaskItem({
         items: [],

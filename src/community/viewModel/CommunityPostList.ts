@@ -1,18 +1,23 @@
-interface Item {
-  activated?: boolean;
-}
-export interface CommunityPostCreateItem extends Item {
-  title: string;
-  contents: string;
-  // 공지여부
-  // file
-  // 공개설정
+export interface CommunityPostList {
+  items: CommunityPostItem[];
+  totalCount: number;
+  empty: boolean;
+  offset: number;
+  limit: number;
+  orderType: string;
+  searchType: string;
+  searchText: string;
 }
 
-export interface CommunityPostCreate {
+export interface CommunityPostItem {
+  id: string;
+  boardId: string;
+  readCount: number;
   title: string;
   contents: string;
-  // 공지여부
-  // file
-  // 공개설정
+  writer: string;
+  time: number;
+  count: number;
+  commentFeedbackId?: string;
+  delete: boolean;
 }
