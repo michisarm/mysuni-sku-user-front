@@ -1,4 +1,5 @@
-import { findCommunityPost2, findCommunityPostList } from 'community/api/communityApi';
+import { findCommunityPostList } from 'community/api/communityApi';
+import { setCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import { CommunityPostList } from 'community/viewModel/CommunityPostList';
 /* eslint-disable consistent-return */
 // report
@@ -37,30 +38,33 @@ async function getPostItem(
   //TODO api 수정되면 바꿀 예정
   if (communityId !== '') {
     {
+      const postRdo = {
+        'communityId': 'CT-9',
+        'searchFilter': '',
+        'startDate': 1572966000000,
+        'endDate': 1604588399999,
+        'limit': 10,
+        'offset': 0
+      }
       //임시로 CT-9 -> communityId 들어가야함
-      const findPostData = await findCommunityPostList('CT-9');
+      const findPostData = await findCommunityPostList(postRdo);
+      console.log('findPostData', findPostData)
       if (findPostData) {
-        console.log('findPostData', findPostData)
         communityPost.totalCount = findPostData.totalCount;
         communityPost.offset = offset;
         if (findPostData.results.length !== 0) {
             findPostData.results.forEach(post => {
-          console.log('post', post)
-
               communityPost.items.push({
-                id: post.postId,
-                boardId: '',
-                readCount: 0,
+                postId: post.postId,
+                communityId: post.communityId,
                 title: post.title,
-                contents: post.html,
-                writer: '작성자',
-                time: post.createdTime,
-                count: post.replyCount,
+                html: post.html,
+                creatorId: post.creatorId,
+                createdTime: post.createdTime,
+                replyCount: post.replyCount,
                 commentFeedbackId: post.commentFeedbackId,
-                delete: post.deleted
               });
             });
-
             // communityPost.items = ''
             // setLectureTaskItem(old);
           // 댓글 count api
@@ -92,7 +96,7 @@ export async function getPostListMapFromCommunity(
         searchText,
       );
       if (postItems !== undefined) {
-        // setLectureTaskItem({ ...postItems });
+        setCommunityPostListItem({ ...postItems });
       }
     }
   }

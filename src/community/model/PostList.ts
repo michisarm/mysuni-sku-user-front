@@ -1,6 +1,6 @@
 import PostType from "./PostType";
 
-export default interface Post {
+interface Post {
   postId: string;
   communityId: string;
   menuId: string;
@@ -10,10 +10,19 @@ export default interface Post {
   html: string;
   likeCount: number;
   replyCount: number;
-  attachmentCount: number;
+  fileBoxId: string;
+  commentFeedbackId: string;
+  pinned: boolean;
+  readCount: number;
   visible: boolean;
   creatorId: string;
   createdTime: number;
   modifierId: string;
   modifiedTime: number;
+}
+
+export default interface PostList {
+  empty: boolean;
+  results: Post[];
+  totalCount: number;
 }

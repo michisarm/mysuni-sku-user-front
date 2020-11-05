@@ -35,43 +35,20 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
 
   return (
     <>
-      { post.delete === false && (
-        // <div className="row header">
-        //   <span className="row header">
-        //     <span className="cell title">
-        //       <span className="inner">
-        //         <span className="ellipsis">제목</span>
-        //       </span>
-        //     </span>
-        //     <span className="cell nick">등록자</span>
-        //     <span className="cell date">등록일</span>
-        //   </span>
-        // </div>
-          <a
-            target="_blank"
-            onClick={() => handleClickRow(post.id)}
-          >
-            <span className="title">
-              {post.title}[{post.count}]
-            </span>
-            <span className="writer">{post.writer}</span>
-            <span className="view">{post.readCount}</span>
-            <span className="date">
-              {post.time && moment(post.time).format('YYYY.MM.DD')}
-            </span>
-          </a>
-      )}
-      { post.delete === true && (
-        <div className="depth1">
-              <span className="del">
-                <Icon className="listdel24" />
-                <span className="blind">삭제됨</span>
-                <span>
-                  삭제된 글입니다.
-                </span>
-              </span>
-        </div>
-      )}
+
+      <a
+        target="_blank"
+        onClick={() => handleClickRow(post.postId)}
+      >
+        <span className="title">
+          {post.title}[{post.replyCount}]
+        </span>
+        <span className="writer">{post.creatorId}</span>
+        <span className="date">
+          {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
+        </span>
+      </a>
+
     </>
   );
 }

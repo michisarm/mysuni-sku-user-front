@@ -1,6 +1,6 @@
 import { onCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
 import { onCommunityPostListItem, setCommunityPostListItem } from "community/store/CommunityPostListStore";
-import { SortType } from "community/ui/logic/CommunityPostListContainer";
+import { SearchType, SortType } from "community/ui/logic/CommunityPostListContainer";
 import { CommunityPostList } from "community/viewModel/CommunityPostList";
 import { param } from "jquery";
 import LectureParams from "lecture/detail/viewModel/LectureParams";
@@ -16,7 +16,7 @@ interface Params {
   menuId: string;
 }
 
-export function useCommunityPostList(sortType:SortType): [PostListValue] {
+export function useCommunityPostList(sortType:SortType, searchType: SearchType): [PostListValue] {
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [postItems, setPostItems] = useState<PostListValue>();
@@ -31,8 +31,8 @@ export function useCommunityPostList(sortType:SortType): [PostListValue] {
     }, []);
 
     useEffect(()=>{
-
-    },[sortType])
+      console.log('searchType', searchType)
+    },[sortType, searchType])
 
     useEffect(() => {
       console.log('subscriberId', subscriberId)
@@ -75,7 +75,7 @@ export function useCommunityPostList(sortType:SortType): [PostListValue] {
         empty: false,
         offset: 0,
         limit: 10,
-        orderType: 'date',
+        sortType: '',
         searchType: '',
         searchText: '',
       });

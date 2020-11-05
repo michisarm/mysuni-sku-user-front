@@ -1,23 +1,23 @@
+import PostType from "community/model/PostType";
+
 export interface CommunityPostList {
   items: CommunityPostItem[];
   totalCount: number;
   empty: boolean;
   offset: number;
   limit: number;
-  orderType?: string;
+  sortType?: string;
   searchType?: string;
   searchText?: string;
 }
 
 export interface CommunityPostItem {
-  id: string;
-  boardId: string;
-  readCount: number;
+  postId: string;
+  communityId: string;
   title: string;
-  contents: string;
-  writer: string;
-  time: number;
-  count: number;
-  commentFeedbackId?: string;
-  delete: boolean;
+  html: string;
+  replyCount: number;
+  commentFeedbackId: string;
+  creatorId: string;
+  createdTime: number;
 }
