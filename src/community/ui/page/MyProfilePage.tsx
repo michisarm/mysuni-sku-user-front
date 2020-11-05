@@ -1,9 +1,8 @@
 import React from 'react'
-import CommunityPostCreateContainer from '../logic/CommunityMyProfileContainer'
+import CommunityMyProfileContainer from '../logic/CommunityMyProfileContainer'
 
 function MyProfilePage() {
-  // return (<>MyProfilePage</>)
-  return <CommunityPostCreateContainer/>
+  return <CommunityMyProfileContainer/>
   
 }
 

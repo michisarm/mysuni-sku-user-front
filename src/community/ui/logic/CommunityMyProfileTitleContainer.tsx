@@ -1,16 +1,17 @@
 import { useCommunityProfile } from 'community/service/useCommunityProfile/useCommunityProfile';
 import React from 'react';
 import CommunityProfileView from '../view/CommunityProfile/CommunityProfileView';
+import TitleArea from '../view/CommunityProfile/TitleArea';
 
-function CommunityMyProfileContainer() {
+function CommunityMyProfileTitleContainer() {
   const [ profileItem ] = useCommunityProfile();
   return (
     <>
       { profileItem !== undefined && (
-        <CommunityProfileView profileItem={profileItem}/>
+        <TitleArea profileItem={profileItem}/>
       )}
     </>
   );
 }
 
-export default CommunityMyProfileContainer;
+export default CommunityMyProfileTitleContainer;

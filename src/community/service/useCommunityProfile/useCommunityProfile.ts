@@ -1,6 +1,7 @@
 import { onCommunityProfile } from "community/store/CommunityProfileStore";
 import CommunityProfile from "community/viewModel/CommunityProfile";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getCommunityProfile } from "./utility/getCommunityProfile";
 
 type ProfileValue = CommunityProfile | undefined;
 
@@ -8,14 +9,10 @@ export function useCommunityProfile(): [ProfileValue] {
 
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
-    const [postCreateValue, setProfileValue] = useState<ProfileValue>();
+    const [profileValue, setProfileValue] = useState<ProfileValue>();
 
-    const getCommunityPostItem = useCallback((communityId: string, postId?: string) => {
-        // getCommunityProfile(communityId, postId);
-    }, []);
-
-    useEffect(() => {
-        // getCommunityPostItem(communityId,postId);
+    const getCommunityProfileItem = useCallback(() => {
+      getCommunityProfile();
     }, []);
 
     useEffect(() => {
@@ -33,5 +30,5 @@ export function useCommunityProfile(): [ProfileValue] {
       }, subscriberId);
     }, [subscriberId]);
   
-    return [postCreateValue];
+    return [profileValue];
 }

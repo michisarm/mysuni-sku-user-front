@@ -2,6 +2,7 @@ import { axiosApi } from '@nara.platform/accent';
 import Post from 'community/model/Post';
 import PostCdo from 'community/model/PostCdo';
 import PostUdo from 'community/model/PostUdo';
+import Profile from 'community/model/Profile';
 
 const BASE_URL = '/api/community';
 
@@ -15,13 +16,11 @@ export function registerCommunityProfile(
     .then(response => response && response.data);
 }
 
-export function findCommunityProfile(
-  communityId: string,
-  postId: string
-): Promise<Post> {
-  const url = `${BASE_URL}/profiles/${communityId}/posts/${postId}`;
+export function findCommunityMyProfile(
+): Promise<Profile> {
+  const url = `${BASE_URL}/profiles`;
   return axiosApi
-    .get<Post>(url)
+    .get<Profile>(url)
     .then(response => response && response.data);
 }
 
