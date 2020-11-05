@@ -7,6 +7,7 @@ import LectureParams from "lecture/detail/viewModel/LectureParams";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CommunityPostCreateItem } from '../../viewModel/CommunityPostCreate';
+import { getCommunityPostList } from "./utility/getCommunityPostList";
 
 type PostListValue = CommunityPostList | undefined;
 
@@ -15,7 +16,7 @@ interface Params {
   menuId: string;
 }
 
-export function useCommunityPostList(sorType:SortType): [PostListValue] {
+export function useCommunityPostList(sortType:SortType): [PostListValue] {
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [postItems, setPostItems] = useState<PostListValue>();
@@ -31,7 +32,7 @@ export function useCommunityPostList(sorType:SortType): [PostListValue] {
 
     useEffect(()=>{
 
-    },[sorType])
+    },[sortType])
 
     useEffect(() => {
       console.log('subscriberId', subscriberId)
@@ -79,6 +80,15 @@ export function useCommunityPostList(sorType:SortType): [PostListValue] {
         searchText: '',
       });
 
+      //리스트 조회 api 호출
+      getCommunityPostList(
+        communityId,
+        0,
+        10,
+        'TIME',
+        '',
+        ''
+      );
 
       console.log('communityId', communityId)
       console.log('menuId', menuId)
