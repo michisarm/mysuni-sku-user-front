@@ -16,6 +16,8 @@ import SurveyPostPage from './ui/page/SurveyPostPage';
 import MemberRoutes from './ui/page/MemberRoutes';
 import MyProfileRoutes from './ui/page/MyProfileRoutes';
 import ProfileRoutes from './ui/page/ProfileRoutes';
+import BasicPostEditPage from './ui/page/BasicPostEditPage';
+import DataPostEditPage from './ui/page/DataPostEditPage';
 
 class Routes extends React.Component {
   //
@@ -34,6 +36,8 @@ class Routes extends React.Component {
         <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
         <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
         <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId/edit" component={BasicPostEditPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId/edit" component={DataPostEditPage} />
         <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
         <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
         <Route path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/member" component={MemberRoutes} />
@@ -46,6 +50,8 @@ class Routes extends React.Component {
         <Route exact path="/community/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
         <Route exact path="/community/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
         <Route exact path="/community/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/post/:postId/edit" component={BasicPostEditPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/data/:postId/edit" component={DataPostEditPage} />
         <Route exact path="/community/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
         <Route exact path="/community/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
         <Route path="/community/college/:collegeId/:communityId/member" component={MemberRoutes} />
@@ -74,6 +80,13 @@ export default Routes;
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId
+
+// 커뮤니티 게시글 수정
+// community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId/edit
+// community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId/edit
+// community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId
+// community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId
+
 
 // 커뮤니티 멤버
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/member
