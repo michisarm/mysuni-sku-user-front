@@ -9,5 +9,5 @@ export default interface PostCdo {
   pinned: boolean;
   readCount?: number;
   visible: boolean;
-  menuId?: string;
+  menuId: string;
 }

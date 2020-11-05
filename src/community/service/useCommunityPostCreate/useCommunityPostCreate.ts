@@ -5,12 +5,12 @@ import { getCommunityPostCreate } from "./utility/getCommunityPostCreate";
 
 type PostCreateValue = CommunityPostCreateItem | undefined;
 
-export function useCommunityPostCreate(communityId:string, postId:string): [PostCreateValue] {
+export function useCommunityPostCreate(communityId:string, postId?:string): [PostCreateValue] {
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [postCreateValue, setPostCreateValue] = useState<PostCreateValue>();
 
-    const getCommunityPostItem = useCallback((communityId: string, postId: string) => {
+    const getCommunityPostItem = useCallback((communityId: string, postId?: string) => {
         getCommunityPostCreate(communityId, postId);
     }, []);
 

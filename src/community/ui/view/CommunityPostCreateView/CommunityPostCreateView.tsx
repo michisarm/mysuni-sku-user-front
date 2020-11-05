@@ -1,20 +1,24 @@
-import { reactConfirm } from '@nara.platform/accent';
+import { FileBox, ValidationType } from '@nara.drama/depot';
+import { PatronType, reactConfirm } from '@nara.platform/accent';
 import { saveCommunityPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityPost';
 import { getCommunityPostCreateItem, setCommunityPostCreateItem } from 'community/store/CommunityPostCreateStore';
 import { CommunityPostCreateItem } from 'community/viewModel/CommunityPostCreate';
 import React, { useCallback } from 'react';
 import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
+import { depotHelper } from 'shared';
 import Editor from './Editor';
 
 interface CommunityPostCreateViewProps {
   postItem: CommunityPostCreateItem;
   communityId: string;
-  postId: string;
+  menuId?: string;
+  postId?: string;
 }
 
 const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
   postItem,
   communityId,
+  menuId,
   postId,
 }) {
 
@@ -41,6 +45,15 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     setCommunityPostCreateItem(nextPostCreateItem);
   },[]);
 
+  const getFileBoxIdForReference = useCallback((depotId: string) => {
+    const postCreateItem = getCommunityPostCreateItem();
+    if (postCreateItem === undefined) {
+      return;
+    }
+    const nextPostCreateItem = { ...postCreateItem, fileBoxId:depotId };
+    setCommunityPostCreateItem(nextPostCreateItem);
+  }, []);
+
   const handleVisibleChange = useCallback(
     (e: any, data: any) => {
       let value = false;
@@ -61,9 +74,9 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       title: '알림',
       message:
         '저장하시겠습니까?',
-      onOk: () => saveCommunityPost(communityId, postId),
+      onOk: () => saveCommunityPost(communityId, menuId, postId),
     });
-  },[communityId, postId]);
+  },[communityId, menuId, postId]);
 
   return (
     <div className="form-contants">
@@ -106,9 +119,38 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
 
         <Form.Field>
           <label>파일첨부</label>
-          <div className="report-attach">
-            {/*<AttachFileUpload />*/}
-          </div>
+            <div className="report-attach">
+              {/* <AttachFileUpload filesMap={filesMap}/> */}
+              <div className="lg-attach">
+                <div className="attach-inner">
+                  <FileBox
+                    id={postItem.fileBoxId || ''}
+                    vaultKey={{
+                      keyString: 'sku-depot',
+                      patronType: PatronType.Pavilion,
+                    }}
+                    patronKey={{
+                      keyString: 'sku-denizen',
+                      patronType: PatronType.Denizen,
+                    }}
+                    validations={[
+                      {
+                        type: ValidationType.Duplication,
+                        validator: depotHelper.duplicationValidator,
+                      },
+                    ]}
+                    onChange={getFileBoxIdForReference}
+                  />
+                  <div className="bottom">
+                    <span className="text1">
+                      <Icon className="info16" />
+                      <span className="blind">information</span>
+                      1개 이상의 첨부파일을 등록하실 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
         </Form.Field>
         <Form.Field>
           {/* 공개, 비공개 */}

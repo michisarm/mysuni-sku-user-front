@@ -25,17 +25,15 @@ const Editor: React.FC<EditorProps> = function Editor({ contents }) {
   //AS-IS 활용함, 변경 해야하는지 확인
   function handleChange(html: any) {
     //
-    if (contents) {
-      if (html && html.length < 1000000000000000) {
-        const postCreateItem = getCommunityPostCreateItem();
-        if (postCreateItem === undefined) {
-          return;
-        }
-        const nextPostCreateItem = { ...postCreateItem, contents:html };
-        setCommunityPostCreateItem(nextPostCreateItem);
-      } else {
-        alert('html 작성 오류');
+    if (html && html.length < 1000000000000000) {
+      const postCreateItem = getCommunityPostCreateItem();
+      if (postCreateItem === undefined) {
+        return;
       }
+      const nextPostCreateItem = { ...postCreateItem, contents:html };
+      setCommunityPostCreateItem(nextPostCreateItem);
+    } else {
+      alert('html 작성 오류');
     }
   }
 

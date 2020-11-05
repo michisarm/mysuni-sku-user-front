@@ -2,19 +2,19 @@ interface Item {
   activated?: boolean;
 }
 export interface CommunityPostCreateItem extends Item {
-  postId: string;
+  postId?: string;
   pinned: boolean;
   title: string;
   contents: string;
   visible: boolean;
-  // file
+  fileBoxId?: string;
 }
 
 export interface CommunityPostCreate {
-  postId: string;
+  postId?: string;
   pinned: boolean;
   title: string;
   contents: string;
   visible: boolean;
-  // file
+  fileBoxId?: string;
 }

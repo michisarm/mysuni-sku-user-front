@@ -5,16 +5,17 @@ import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPo
 
 interface Params {
   communityId: string;
-  postId: string;
+  menuId?: string;
+  postId?: string;
 }
 
 function CommunityPostCreateContainer() {
-  const { communityId, postId } = useParams<Params>();
+  const { communityId, postId, menuId } = useParams<Params>();
   const [postCreateItem] = useCommunityPostCreate(communityId, postId);
   return (
     <>
     {postCreateItem !== undefined && (
-      <CommunityPostCreateView postItem={postCreateItem} communityId={communityId} postId={postId} />
+      <CommunityPostCreateView postItem={postCreateItem} communityId={communityId} menuId={menuId} postId={postId} />
     )}
     </>
   );

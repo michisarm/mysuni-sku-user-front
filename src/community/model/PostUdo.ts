@@ -1,6 +1,6 @@
 import PostType from "./PostType";
 
-export default interface PostCdo {
+export default interface PostUdo {
   type?: PostType;
   title: string;
   html: string;

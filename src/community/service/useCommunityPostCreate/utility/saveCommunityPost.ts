@@ -1,34 +1,35 @@
 import { modifyCommunityPost, registerCommunityPost } from "community/api/communityApi";
 import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
-import { getPostItemMapFromCommunity } from "./getPostItemMapFromCommunity";
 import PostCdo from "../../../model/PostCdo"
 import PostUdo from "../../../model/PostUdo"
 
 export async function saveCommunityPost(
     communityId: string,
+    menuId?: string,
     postId?: string
 ): Promise<void> { 
     const postCreateItem = getCommunityPostCreateItem();
     if (postCreateItem !== undefined) {
-        if (postId === undefined) {
+        if (postId === undefined && menuId !== undefined) {
 
             const postCdo:PostCdo = {
                 title: postCreateItem.title,
                 html: postCreateItem.contents,
-                fileBoxId: '',
-                pinned: false,
-                visible: true,
+                fileBoxId: postCreateItem.fileBoxId,
+                pinned: postCreateItem.pinned,
+                visible: postCreateItem.visible,
+                menuId,
             };
 
             registerCommunityPost(communityId, postCdo);
-        } else {
+        } else if (postId !== undefined) {
 
             const postUdo:PostUdo = {
                 title: postCreateItem.title,
                 html: postCreateItem.contents,
-                fileBoxId: '',
-                pinned: false,
-                visible: true,
+                fileBoxId: postCreateItem.fileBoxId,
+                pinned: postCreateItem.pinned,
+                visible: postCreateItem.visible,
             };
             modifyCommunityPost(communityId, postId, postUdo); 
         }
