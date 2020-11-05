@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 
 import { SkProfileService } from 'profile/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
-import { Image } from 'semantic-ui-react';
+import { Button,  Image, Popup } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 
@@ -35,18 +35,18 @@ class ProfileContainer extends Component<Props, State> {
 
     skProfileService!.findSkProfile();
 
-    document.addEventListener('mousedown', this.handleClickOutside);
+    // document.addEventListener('mousedown', this.handleClickOutside);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
+    // document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
-  handleClickOutside(e: MouseEvent) {
-    if (this.profileButtonRef && !this.profileButtonRef.current.contains(e.target)) {
-      setTimeout(()=>this.setState({balloonShowClass: ''}), 500);
-    }
-  }
+  // handleClickOutside(e: MouseEvent) {
+  //   if (this.profileButtonRef && !this.profileButtonRef.current.contains(e.target)) {
+  //     setTimeout(()=>this.setState({balloonShowClass: ''}), 500);
+  //   }
+  // }
 
   onTogglePop() {
     const {balloonShowClass} = this.state;
@@ -76,25 +76,42 @@ class ProfileContainer extends Component<Props, State> {
     const { balloonShowClass } = this.state;
     return (
       <div className="g-info">
-        <button className="ui user image label" onClick={this.onTogglePop} ref={this.profileButtonRef}>
-          <span className="name">{member.name}</span>
-          <span className="affiliation">{member.company} {member.department}</span>
-          <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
-        </button>
-        <div className={`balloon-pop ${balloonShowClass}`}>
-          <ul>
-            <li>
-              <a href="#" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>
-                <i aria-hidden="true" className="balloon mypage icon"/><span>My Page</span>
-              </a>
-            </li>
-            <li>
-              <button type="button" onClick={this.onLogout}>
-                <i aria-hidden="true" className="balloon logout icon"/><span>Logout</span>
-              </button>
-            </li>
-          </ul>
-        </div>
+        <Popup
+          className="balloon-pop"
+          trigger={
+              <Button className="ui user image label" onClick={this.onTogglePop} ref={this.profileButtonRef}>
+                  <span className="name">{member.name}</span>
+                  <span className="affiliation">{member.company} {member.department}</span>
+                  <Image src={skProfile.photoFilePath || profileImg} alt="profile"/>
+                  {/*<a className="lms-alarm lms-on"><span>알람</span></a>*/}
+              </Button>
+          }
+          position="bottom right"
+          on="click"
+        >
+          <Popup.Content>
+              <ul>
+                  <li>
+                      <a href="#" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>
+                          <i className="balloon mypage icon"/>
+                          <span>My Page</span>
+                      </a>
+                  </li>
+                  <li className="community-profile">
+                      <a href="#" onClick={() => this.props.history.push("/community/my-profile")}>
+                          <i className="balloon community-profile icon"/>
+                          <span>Community Profile</span>
+                      </a>
+                  </li>
+                  <li>
+                      <Button onClick={this.onLogout}>
+                          <i className="balloon logout icon" />
+                          <span>Logout</span>
+                      </Button>
+                  </li>
+              </ul>
+          </Popup.Content>
+        </Popup>        
       </div>
     );
   }

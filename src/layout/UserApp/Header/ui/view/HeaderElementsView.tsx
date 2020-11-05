@@ -36,6 +36,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
       <NavLink to={lecturePaths.recommend()} className="item" onClick={() => onClickMenu('Recommend')}>Recommend</NavLink>
       <NavLink to={personalCubePaths.create()} className="item" onClick={() => onClickMenu('Create')}>Create</NavLink>
       <NavLink to={certificationPaths.badge()} className="item" onClick={() => onClickMenu('Certification')}>Certification</NavLink>
+      <NavLink to="/community/main" className="item" onClick={() => onClickMenu('Community')}>Community</NavLink>
     </div>
   </div>
 );
