@@ -43,12 +43,6 @@ async function getTaskItem(
   if (boardId !== '') {
     {
       const findTaskData = await findTask(boardId, offset, limit, tabType!);
-      //리스트 api
-      // if(tabType === 'posts') {
-      //   findTaskData = await findTask(boardId, offset, limit);
-      // } else if(tabType === 'myPosts') {
-      //   findTaskData = await findTask(boardId, offset, limit);
-      // }
       if (findTaskData) {
         lectureTask.totalCount = findTaskData.totalCount;
         lectureTask.offset = offset;
@@ -67,6 +61,7 @@ async function getTaskItem(
                 count: 0,
                 commentFeedbackId: task.commentFeedbackId,
                 childItems: [],
+                delete: task.deleted
               });
             });
 
@@ -85,6 +80,7 @@ async function getTaskItem(
                 count: 0,
                 commentFeedbackId: task.commentFeedbackId,
                 childItems: [],
+                delete: task.deleted
               });
             });
             setLectureTaskItem(lectureTask);
@@ -156,8 +152,8 @@ async function getTaskItem(
               });
             });
           }
-          return lectureTask;
         }
+        return lectureTask;
       }
     }
   }
@@ -191,7 +187,6 @@ export async function getTaskItemMapFromCube(
           tabType
         );
         if (taskItem !== undefined) {
-          //
           setLectureTaskItem({ ...taskItem });
         }
       }
