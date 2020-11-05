@@ -14,9 +14,9 @@ class MainRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Route exact path="community/main" component={MyCommunityPage} />
-        <Route exact path="community/main/open-communities" component={OpenCommunityPage} />
-        <Route exact path="community/main/follow" component={FollowPage} />
+        <Route exact path="/community/main" component={MyCommunityPage} />
+        <Route exact path="/community/main/open-communities" component={OpenCommunityPage} />
+        <Route exact path="/community/main/follow" component={FollowPage} />
         <Route component={NotFoundPage} />
       </Switch>
     );

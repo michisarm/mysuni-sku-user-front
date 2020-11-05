@@ -14,9 +14,9 @@ class MemberRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/member" component={MemberPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/member/group" component={MemberGroupPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/member/approve" component={MemberApprovePage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/member" component={MemberPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/member/group" component={MemberGroupPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/member/approve" component={MemberApprovePage} />
         <Route component={NotFoundPage} />
       </Switch>
     );

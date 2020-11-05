@@ -15,10 +15,10 @@ class MyProfileRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Route exact path="community/my-profile" component={MyProfilePage} />
-        <Route exact path="community/my-profile/feed" component={MyProfileFeedPage} />
-        <Route exact path="community/my-profile/communities" component={MyProfileCommunitiesPage} />
-        <Route exact path="community/my-profile/bookmark" component={MyProfileBookmarkPage} />
+        <Route exact path="/community/my-profile" component={MyProfilePage} />
+        <Route exact path="/community/my-profile/feed" component={MyProfileFeedPage} />
+        <Route exact path="/community/my-profile/communities" component={MyProfileCommunitiesPage} />
+        <Route exact path="/community/my-profile/bookmark" component={MyProfileBookmarkPage} />
         <Route component={NotFoundPage} />
       </Switch>
     );

@@ -14,9 +14,9 @@ class ProfileRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Route exact path="community/profile/:profileId" component={ProfilePage} />
-        <Route exact path="community/profile/:profileId/feed" component={ProfileFeedPage} />
-        <Route exact path="community/profile/:profileId/communities" component={ProfileCommunitiesPage} />
+        <Route exact path="/community/profile/:profileId" component={ProfilePage} />
+        <Route exact path="/community/profile/:profileId/feed" component={ProfileFeedPage} />
+        <Route exact path="/community/profile/:profileId/communities" component={ProfileCommunitiesPage} />
         <Route component={NotFoundPage} />
       </Switch>
     );

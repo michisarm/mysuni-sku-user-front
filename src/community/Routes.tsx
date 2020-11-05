@@ -23,30 +23,32 @@ class Routes extends React.Component {
     //
     return (
       <Switch>
-        <Route path="community/main" component={MainRoutes} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId" component={CommunityHomePage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/all" component={AllPostsPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/notice" component={NoticePostsPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId" component={PostsPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
-        <Route exact path="community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
-        <Route path="community/cineroom/:cineroomId/college/:collegeId/:communityId/member" component={MemberRoutes} />
-        <Route path="community/my-profile" component={MyProfileRoutes} />
-        <Route path="community/profile/:profileId" component={ProfileRoutes} />
+        <Route path="/community/main" component={MainRoutes} />
+        <Route path="/community/my-profile" component={MyProfileRoutes} />
+        <Route path="/community/profile/:profileId" component={ProfileRoutes} />
 
-        <Route exact path="community/college/:collegeId/:communityId" component={CommunityHomePage} />
-        <Route exact path="community/college/:collegeId/:communityId/all" component={AllPostsPage} />
-        <Route exact path="community/college/:collegeId/:communityId/notice" component={NoticePostsPage} />
-        <Route exact path="community/college/:collegeId/:communityId/board/:menuId" component={PostsPage} />
-        <Route exact path="community/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
-        <Route exact path="community/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
-        <Route exact path="community/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
-        <Route exact path="community/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
-        <Route exact path="community/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
-        <Route path="community/college/:collegeId/:communityId/member" component={MemberRoutes} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId" component={CommunityHomePage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/all" component={AllPostsPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/notice" component={NoticePostsPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId" component={PostsPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
+        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
+        <Route path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/member" component={MemberRoutes} />
+
+
+        <Route exact path="/community/college/:collegeId/:communityId" component={CommunityHomePage} />
+        <Route exact path="/community/college/:collegeId/:communityId/all" component={AllPostsPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/notice" component={NoticePostsPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/board/:menuId" component={PostsPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
+        <Route exact path="/community/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
+        <Route path="/community/college/:collegeId/:communityId/member" component={MemberRoutes} />
 
         <Route component={NotFoundPage} />
       </Switch>
