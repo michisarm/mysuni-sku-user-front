@@ -33,10 +33,14 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       setCommunityPostCreateItem(nextPostCreateItem);
   },[]);
 
+  const titleLength = (postItem && postItem.title && postItem.title.length) || 0;
   const handleTitleChange = useCallback(
     (e: any) => {
     //
     const value = e.target.value;
+    if (value.length > 100) {
+      return;
+    }
     const postCreateItem = getCommunityPostCreateItem();
     if (postCreateItem === undefined) {
       return;
@@ -92,21 +96,19 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
               onChange={handlePinnedChange}
             />
           </div>
-          <div className="ui right-top-count input">
+          <div className={titleLength >= 100 ? 'ui right-top-count input error' : 'ui right-top-count input'}>
             <span className="count">
-              <span className="now">0</span>/
+              <span className="now">{titleLength}</span>/
               <span className="max">100</span>
             </span>
             <input
               type="text"
-              placeholder="제목을 입력해 주세요. (최대 입력 글자 수 확인 필요)"
+              placeholder="제목을 입력해 주세요."
               value={postItem.title}
               onChange={handleTitleChange}
             />
             <Icon className="clear link" />
-            <span className="validation">
-              You can enter up to 100 characters.
-            </span>
+            {/*<span className="validation">You can enter up to 100 characters.</span>*/}
           </div>
         </Form.Field>
 
