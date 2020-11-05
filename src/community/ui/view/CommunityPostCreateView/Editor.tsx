@@ -1,13 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import {
-  LectureReport,
-  StudentReport,
-} from 'lecture/detail/viewModel/LectureReport';
-import {
-  getLectureReport,
-  setLectureReport,
-} from 'lecture/detail/store/LectureReportStore';
+import { getCommunityPostCreateItem, setCommunityPostCreateItem } from 'community/store/CommunityPostCreateStore';
 
 interface EditorProps {
   contents: string;
@@ -34,10 +27,12 @@ const Editor: React.FC<EditorProps> = function Editor({ contents }) {
     //
     if (contents) {
       if (html && html.length < 1000000000000000) {
-        //const studentReport = getLectureReport()?.studentReport || {};
-        //studentReport.homeworkContent = html;
-        //lectureReport.studentReport = studentReport;
-        //setLectureReport(lectureReport);
+        const postCreateItem = getCommunityPostCreateItem();
+        if (postCreateItem === undefined) {
+          return;
+        }
+        const nextPostCreateItem = { ...postCreateItem, contents:html };
+        setCommunityPostCreateItem(nextPostCreateItem);
       } else {
         alert('html 작성 오류');
       }
@@ -64,10 +59,8 @@ const Editor: React.FC<EditorProps> = function Editor({ contents }) {
       theme="snow"
       modules={modules}
       formats={formats}
-      // value={lectureReport?.studentReport?.homeworkContent || ''}
-      //value={getLectureReport()?.studentReport?.homeworkContent || ''}
       value={contents}
-      //onChange={handleChange}
+      onChange={handleChange}
     />
   );
 };

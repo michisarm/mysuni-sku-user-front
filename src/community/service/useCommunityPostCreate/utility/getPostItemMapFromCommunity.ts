@@ -10,8 +10,10 @@ export async function getPostItemMapFromCommunity(
     const post:Post = await findCommunityPost(communityId, postId);
     const postCreateItem: CommunityPostCreateItem = {
         postId: post.postId,
+        pinned: post.pinned,
         title: post.title,
         contents: post.html,
+        visible: post.visible,
     }
     setCommunityPostCreateItem(postCreateItem);
 }

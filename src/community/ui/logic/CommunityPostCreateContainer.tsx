@@ -14,7 +14,7 @@ function CommunityPostCreateContainer() {
   return (
     <>
     {postCreateItem !== undefined && (
-      <CommunityPostCreateView postItem={postCreateItem} />
+      <CommunityPostCreateView postItem={postCreateItem} communityId={communityId} postId={postId} />
     )}
     </>
   );

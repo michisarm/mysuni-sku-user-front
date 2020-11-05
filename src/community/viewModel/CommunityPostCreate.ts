@@ -3,18 +3,18 @@ interface Item {
 }
 export interface CommunityPostCreateItem extends Item {
   postId: string;
+  pinned: boolean;
   title: string;
   contents: string;
-  // 공지여부
+  visible: boolean;
   // file
-  // 공개설정
 }
 
 export interface CommunityPostCreate {
   postId: string;
+  pinned: boolean;
   title: string;
   contents: string;
-  // 공지여부
+  visible: boolean;
   // file
-  // 공개설정
 }
