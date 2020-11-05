@@ -66,6 +66,7 @@ const Editor: React.FC<EditorProps> = function Editor({ contents }) {
       formats={formats}
       // value={lectureReport?.studentReport?.homeworkContent || ''}
       //value={getLectureReport()?.studentReport?.homeworkContent || ''}
+      value={contents}
       //onChange={handleChange}
     />
   );

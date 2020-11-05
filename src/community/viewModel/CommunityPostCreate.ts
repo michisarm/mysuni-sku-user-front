@@ -2,6 +2,7 @@ interface Item {
   activated?: boolean;
 }
 export interface CommunityPostCreateItem extends Item {
+  postId: string;
   title: string;
   contents: string;
   // 공지여부
@@ -10,6 +11,7 @@ export interface CommunityPostCreateItem extends Item {
 }
 
 export interface CommunityPostCreate {
+  postId: string;
   title: string;
   contents: string;
   // 공지여부

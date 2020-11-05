@@ -1,8 +1,15 @@
+import { CommunityPostCreateItem } from 'community/viewModel/CommunityPostCreate';
 import React from 'react';
 import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
 import Editor from './Editor';
 
-function CommunityPostCreateView() {
+interface CommunityPostCreateViewProps {
+  postItem: CommunityPostCreateItem;
+}
+
+const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
+  postItem,
+}) {
   return (
     <div className="form-contants">
       <Form>
@@ -24,6 +31,7 @@ function CommunityPostCreateView() {
             <input
               type="text"
               placeholder="제목을 입력해 주세요. (최대 입력 글자 수 확인 필요)"
+              value={postItem.title}
             />
             <Icon className="clear link" />
             <span className="validation">
@@ -35,7 +43,7 @@ function CommunityPostCreateView() {
         <Form.Field>
           <label>본문</label>
           <div className="ui editor-wrap">
-            <Editor contents=""/>
+            <Editor contents={postItem.contents}/>
           </div>
         </Form.Field>
 
