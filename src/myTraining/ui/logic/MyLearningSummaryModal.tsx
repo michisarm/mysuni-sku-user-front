@@ -145,7 +145,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b2">DT</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.dtCollegeTime : lectureTimeSummary.dtCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.dtCollegeTime : lectureTimeSummary.dtCollegeTime
             )}
           </span>
         </li>
@@ -153,7 +153,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b3">행복</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.happyCollegeTime : lectureTimeSummary.happyCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.happyCollegeTime : lectureTimeSummary.happyCollegeTime
             )}
           </span>
         </li>
@@ -161,7 +161,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b4">SV</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.svCollegeTime : lectureTimeSummary.svCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.svCollegeTime : lectureTimeSummary.svCollegeTime
             )}
           </span>
         </li>
@@ -169,7 +169,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b5">혁신디자인</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.designCollegeTime : lectureTimeSummary.designCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.designCollegeTime : lectureTimeSummary.designCollegeTime
             )}
           </span>
         </li>
@@ -177,7 +177,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b6">Global</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.globalCollegeTime : lectureTimeSummary.globalCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.globalCollegeTime : lectureTimeSummary.globalCollegeTime
             )}
           </span>
         </li>
@@ -185,7 +185,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b7">Leadership</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.leadershipCollegeTime : lectureTimeSummary.leadershipCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.leadershipCollegeTime : lectureTimeSummary.leadershipCollegeTime
             )}
           </span>
         </li>
@@ -193,7 +193,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b8">Management</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.managementCollegeTime : lectureTimeSummary.managementCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.managementCollegeTime : lectureTimeSummary.managementCollegeTime
             )}
           </span>
         </li>
@@ -201,7 +201,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b9">반도체</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.semiconductorCollegeTime : lectureTimeSummary.semiconductorCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.semiconductorCollegeTime : lectureTimeSummary.semiconductorCollegeTime
             )}
           </span>
         </li>
@@ -209,7 +209,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b13">에너지 솔루션</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.energySolutionCollegeTime : lectureTimeSummary.energySolutionCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.energySolutionCollegeTime : lectureTimeSummary.energySolutionCollegeTime
             )}
           </span>
         </li>
@@ -217,7 +217,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b10">SK아카데미</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.skAcademyCollegeTime : lectureTimeSummary.skAcademyCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.skAcademyCollegeTime : lectureTimeSummary.skAcademyCollegeTime
             )}
           </span>
         </li>
@@ -225,7 +225,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b11">SK경영</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.skManagementCollegeTime : lectureTimeSummary.skManagementCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.skManagementCollegeTime : lectureTimeSummary.skManagementCollegeTime
             )}
           </span>
         </li>
@@ -233,7 +233,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b12">Life Style</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.LectureTime ? totalMyLearningSummary.lifeStyleCollegeTime : lectureTimeSummary.lifeStyleCollegeTime
+              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.lifeStyleCollegeTime : lectureTimeSummary.lifeStyleCollegeTime
             )}
           </span>
         </li>

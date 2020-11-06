@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Form, Segment } from 'semantic-ui-react';
 import { mobxHelper } from '@nara.platform/accent';
+import depot from '@nara.drama/depot';
 import AplService from 'myTraining/present/logic/AplService';
 import AplUdoModel from 'myTraining/model/AplUdoModel';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
-import { ConfirmWin } from 'shared';
+import { AlertWin, ConfirmWin } from 'shared';
 import approvalRoutePaths from 'myTraining/routePaths';
 import ApprovalButtons from '../view/button/ApprovalButtons';
 import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
@@ -31,6 +32,12 @@ function AplDetailContainer(props: Props) {
   const [openListModal, setOpenListModal] = useState<boolean>(false);
   const [openRejectModal, setOpenRejectModal] = useState<boolean>(false);
   const [openApprovalModal, setOpenApprovalModal] = useState<boolean>(false);
+  const [openAlertModal, setOpenAlertModal] = useState<boolean>(false);
+
+  const [filesMap, setFilesMap] = useState(new Map<string, any>());
+
+  const allowHourRef = useRef<HTMLInputElement>(null);
+  const allowMinuteRef = useRef<HTMLInputElement>(null);
 
   /* effects */
   useEffect(() => {
@@ -40,27 +47,67 @@ function AplDetailContainer(props: Props) {
     setAllowHour(allowHourStr);
     setAllowMinute(allowMinuteStr);
 
-  }, [model]);
+    getFileIds();
+  }, []);
 
   /* functions */
   const routeToList = () => {
     history.push(approvalRoutePaths.approvalPersonalLearning());
   };
 
+
+  const getFileIds = () => {
+    const referenceFileBoxIds = model && model.fileIds;
+    if (referenceFileBoxIds) {
+      findFiles('reference', referenceFileBoxIds);
+    }
+  }
+
+  const findFiles = async (type: string, fileBoxId: string) => {
+    const files = await depot.getDepotFiles(fileBoxId);
+    const newMap = new Map(filesMap.set(type, files));
+
+    setFilesMap(newMap);
+  };
+
   /* handlers */
-  const onChangeAllowHour = useCallback((e: any) => {
-    setAllowHour(e.target.value);
+  const onCloseAlertModal = useCallback(() => {
+    setOpenAlertModal(false);
+
+    if (!allowHour) {
+      allowHourRef.current!.focus();
+      return;
+    }
+
+    if (!allowMinute) {
+      allowMinuteRef.current!.focus();
+    }
+  }, [allowHour, allowMinute, allowHourRef, allowMinuteRef]);
+
+  const onChangeTime = useCallback((hourOrMinute: string, e: any) => {
+    if (hourOrMinute === 'hour') {
+      const allowHour = Number(e.target.value);
+      /* input value 유효성 검사 */
+      if (allowHour >= 0 && allowHour <= 12) {
+        setAllowHour(String(allowHour));
+      }
+
+      return;
+    }
+    const allowMinute = Number(e.target.value);
+    /* input value 유효성 검사 */
+    if (allowMinute >= 0 && allowMinute <= 59) {
+      setAllowMinute(String(allowMinute));
+    }
+
   }, []);
 
-  const onChangeAllowMinute = useCallback((e: any) => {
-    setAllowMinute(e.target.value);
-  }, []);
+  const onClearTime = useCallback((hourOrMinute: string) => {
+    if (hourOrMinute === 'hour') {
+      setAllowHour('');
+      return;
+    }
 
-  const onClearAllowHour = useCallback(() => {
-    setAllowHour('');
-  }, []);
-
-  const onClearAllowMinute = useCallback(() => {
     setAllowMinute('');
   }, []);
 
@@ -96,8 +143,14 @@ function AplDetailContainer(props: Props) {
 
 
   const onClickApproval = useCallback(() => {
+    /* allowHour & allowMinute 가 공백일 때, 필수 입력 알람창을 띄워야 함. */
+    if (allowHour === '' || allowMinute === '') {
+      setOpenAlertModal(true);
+      return;
+    }
+
     setOpenApprovalModal(true);
-  }, []);
+  }, [allowHour, allowMinute]);
 
   const onCancelApproval = useCallback(() => {
     setOpenApprovalModal(false);
@@ -113,6 +166,7 @@ function AplDetailContainer(props: Props) {
 
     setOpenApprovalModal(false);
     routeToList();
+
   }, [allowHour, allowMinute, model]);
 
   /* render */
@@ -126,12 +180,13 @@ function AplDetailContainer(props: Props) {
             />
             <MyApprovalInfoTable
               model={model}
+              files={filesMap}
               allowHour={allowHour}
               allowMinute={allowMinute}
-              onChangeAllowHour={onChangeAllowHour}
-              onChangeAllowMinute={onChangeAllowMinute}
-              onClearAllowHour={onClearAllowHour}
-              onClearAllowMinute={onClearAllowMinute}
+              onChangeTime={onChangeTime}
+              onClearTime={onClearTime}
+              allowHourRef={allowHourRef}
+              allowMinuteRef={allowMinuteRef}
             />
             <ApprovalButtons
               approvalState={model.state}
@@ -175,6 +230,14 @@ function AplDetailContainer(props: Props) {
             buttonYesName="Yes"
           />
         )}
+        {openAlertModal && (
+          <AlertWin
+            open={openAlertModal}
+            handleClose={onCloseAlertModal}
+            title={alertTitle}
+            message={alertMessage}
+          />
+        )}
       </Segment>
     );
 }
@@ -187,3 +250,8 @@ const listMessage = `개인학습 List 화면으로 이동하시겠습니까?
 개인학습 List로 이동 시 입력된 정보는 저장되지 않습니다.`;
 
 const approvalMessage = '등록된 내용에 대해 승인 처리하시겠습니까?';
+
+const alertTitle = '필수 정보 입력 안내';
+
+const alertMessage = `교육시간은 필수 입력 항목입니다.
+해당 정보를 입력하신 후 승인 요청 해주세요.`;
