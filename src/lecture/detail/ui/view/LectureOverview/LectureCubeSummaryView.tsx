@@ -1,5 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -9,6 +9,8 @@ import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSu
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
+
+import DeleteIcon from '../../../../../style/media/delete-btn.png';
 
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
@@ -49,6 +51,13 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     default:
       break;
   }
+
+  const [bookMark, setBookMark] = useState(false);
+
+  const BookMark = () => {
+    console.log('click');
+    setBookMark(!bookMark);
+  }
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -67,7 +76,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
-              {lectureInstructor && lectureInstructor.instructors.length > 0 && (
+              {/* {lectureInstructor && lectureInstructor.instructors.length > 0 && (
                 <Label className="bold onlytext">
                   <span className="header-span-first">강사</span>
                   <span>
@@ -76,7 +85,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                       .join(', ')}
                   </span>
                 </Label>
-              )}
+              )} */}
+              <Label className="bold onlytext">
+                  <span className="header-span-first">정원정보</span>
+                  <span>000</span>
+              </Label>
               <Label className="bold onlytext">
                 <span className="header-span-first">이수</span>
                 <span>{lectureSummary.passedCount}</span>
@@ -132,8 +145,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         <div className="right-area">
           <div className="header-right-link">
             <a onClick={toggleCubeBookmark}>
-              <span>
-                <Icon className="listAdd" />
+              <span onClick={BookMark}>
+                <Icon className={!bookMark ? "listAdd" : "listDelete"} />
                 {lectureSummary.mytrainingId === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}

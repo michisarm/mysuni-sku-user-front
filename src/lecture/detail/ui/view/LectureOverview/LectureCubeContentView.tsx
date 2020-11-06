@@ -42,26 +42,28 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   }, []);
   return (
     <>
-      <div className="lms-inner-menu" id="lms-overview">
-        <a
-          onClick={overviewHashClick}
-          className={activatedTab === 'overview' ? 'lms-act' : ''}
-        >
-          Overview
-        </a>
-        <a
-          onClick={commentHashClick}
-          className={
-            activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
-          }
-        >
-          Comment
-          <span className="count">
-            {lectureComment !== undefined
-              ? `+${lectureComment.commentsCount}`
-              : ''}
-          </span>
-        </a>
+      <div className="lms-sticky-menu" id="lms-overview">
+        <div className="lms-fixed-inner">
+          <a
+            onClick={overviewHashClick}
+            className={activatedTab === 'overview' ? 'lms-act' : ''}
+          >
+            Overview
+          </a>
+          <a
+            onClick={commentHashClick}
+            className={
+              activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
+            }
+          >
+            Comment
+            <span className="count">
+              {lectureComment !== undefined
+                ? `+${lectureComment.commentsCount}`
+                : ''}
+            </span>
+          </a>
+        </div>
       </div>
       {activatedTab === 'overview' && (
         <>
