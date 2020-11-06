@@ -5,7 +5,8 @@ export default interface Profile {
 	company: IdName;
 	department: IdName;
 	email: string;
-	photo: string;
+	profileImg: string;
+	profileBgImg: string;
 	nickname: string;
 	introduce: string;
 	hobby: string;

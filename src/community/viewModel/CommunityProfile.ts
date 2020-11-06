@@ -8,7 +8,8 @@ interface Item {
 export default interface CommunityProfileItem extends Item {
   name: string;
   company: IdName;
-  photo: string;
+  profileImg: string;
+  profileBgImg: string;
   nickname: string;
   introduce: string;
   hobby: string;
@@ -17,7 +18,8 @@ export default interface CommunityProfileItem extends Item {
 export default interface CommunityProfile {
   name: string;
   company: IdName;
-  photo: string;
+  profileImg: string;
+  profileBgImg: string;
   nickname: string;
   introduce: string;
   hobby: string;

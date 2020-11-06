@@ -1,22 +1,20 @@
-import { onCommunityProfile } from "community/store/CommunityProfileStore";
+import { onCommunityProfileItem } from "community/store/CommunityProfileStore";
 import CommunityProfile from "community/viewModel/CommunityProfile";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getCommunityProfile } from "./utility/getCommunityProfile";
 
 type ProfileValue = CommunityProfile | undefined;
 
+
+let subscriberIdRef = 0;
+
 export function useCommunityProfile(): [ProfileValue] {
 
-    const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [profileValue, setProfileValue] = useState<ProfileValue>();
 
-    const getCommunityProfileItem = useCallback(() => {
-      getCommunityProfile();
-    }, []);
-
     useEffect(() => {
-      const next = `useCommunityProfile-${++subscriberIdRef.current}`;
+      const next = `useCommunityProfile-${++subscriberIdRef}`;
       setSubscriberId(next);
     }, []);
 
@@ -24,7 +22,7 @@ export function useCommunityProfile(): [ProfileValue] {
       if (subscriberId === undefined) {
         return;
       }
-      return onCommunityProfile(next => {
+      return onCommunityProfileItem(next => {
         setProfileValue(next);
         console.log('CommunityProfileItem', next);
       }, subscriberId);

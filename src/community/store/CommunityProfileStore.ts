@@ -2,13 +2,13 @@ import CommunityProfile from 'community/viewModel/CommunityProfile';
 import { createStore } from './Store';
 
 const [
-    setCommunityProfile, 
-    onCommunityProfile, 
-    getCommunityProfile
+    setCommunityProfileItem, 
+    onCommunityProfileItem, 
+    getCommunityProfileItem
 ] = createStore<CommunityProfile>();
 
 export {
-    setCommunityProfile,
-    onCommunityProfile,
-    getCommunityProfile,
+    setCommunityProfileItem,
+    onCommunityProfileItem,
+    getCommunityProfileItem,
 }
