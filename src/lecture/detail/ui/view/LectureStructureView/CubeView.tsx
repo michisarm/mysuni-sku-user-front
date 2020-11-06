@@ -8,6 +8,8 @@ function parseCuteType(cubeType: CubeType) {
   switch (cubeType) {
     case 'ClassRoomLecture':
       return 'Classroom';
+    case 'ELearning':
+      return 'E-Learning';
     default:
       break;
   }
@@ -43,7 +45,7 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>{cubeType}</li>
+          <li>{parseCuteType(cubeType)}</li>
           <li>{timeToHourMinuteFormat(learningTime)}</li>
         </ul>
       </span>

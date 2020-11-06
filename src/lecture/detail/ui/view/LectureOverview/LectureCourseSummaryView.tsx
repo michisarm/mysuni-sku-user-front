@@ -1,10 +1,11 @@
-import { reactAlert } from '@nara.platform/accent';
+import { IdName, reactAlert } from '@nara.platform/accent';
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
+import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
@@ -25,6 +26,43 @@ function copyUrl() {
   reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
 }
 
+function getColor(college: IdName) {
+  let color = CategoryColorType.Default;
+
+  switch (college.name) {
+    case 'AI':
+      color = CategoryColorType.AI;
+      break;
+    case 'DT':
+      color = CategoryColorType.DT;
+      break;
+    case 'Global':
+      color = CategoryColorType.Global;
+      break;
+    case 'Leadership':
+      color = CategoryColorType.Leadership;
+      break;
+    case 'Management':
+      color = CategoryColorType.Management;
+      break;
+    case 'SV':
+      color = CategoryColorType.SV;
+      break;
+    case '행복':
+      color = CategoryColorType.Happiness;
+      break;
+    case '반도체':
+      color = CategoryColorType.SemicondDesign;
+      break;
+    case '혁신디자인':
+      color = CategoryColorType.InnovationDesign;
+      break;
+    case '에너지솔루션':
+      color = CategoryColorType.EnergySolution;
+  }
+  return color;
+}
+
 const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = function LectureCourseSummaryView({
   lectureSummary,
   lectureReview,
@@ -38,7 +76,9 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
     <div className="course-info-header">
       <div className="contents-header">
         <div className="title-area">
-          <div className="ui mpurple label">
+          <div
+            className={`ui label ${getColor(lectureSummary.category.college)}`}
+          >
             {lectureSummary.category.college.name}
           </div>
           <div className="header">{lectureSummary.name}</div>

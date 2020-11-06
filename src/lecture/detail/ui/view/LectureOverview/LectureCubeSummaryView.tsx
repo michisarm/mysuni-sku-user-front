@@ -1,5 +1,5 @@
-import { reactAlert } from '@nara.platform/accent';
-import React, {useState} from 'react';
+import { IdName, reactAlert } from '@nara.platform/accent';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -11,6 +11,7 @@ import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 
 import DeleteIcon from '../../../../../style/media/delete-btn.png';
+import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
@@ -29,6 +30,43 @@ function copyUrl() {
   document.execCommand('copy');
   document.body.removeChild(textarea);
   reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+}
+
+function getColor(college: IdName) {
+  let color = CategoryColorType.Default;
+
+  switch (college.name) {
+    case 'AI':
+      color = CategoryColorType.AI;
+      break;
+    case 'DT':
+      color = CategoryColorType.DT;
+      break;
+    case 'Global':
+      color = CategoryColorType.Global;
+      break;
+    case 'Leadership':
+      color = CategoryColorType.Leadership;
+      break;
+    case 'Management':
+      color = CategoryColorType.Management;
+      break;
+    case 'SV':
+      color = CategoryColorType.SV;
+      break;
+    case '행복':
+      color = CategoryColorType.Happiness;
+      break;
+    case '반도체':
+      color = CategoryColorType.SemicondDesign;
+      break;
+    case '혁신디자인':
+      color = CategoryColorType.InnovationDesign;
+      break;
+    case '에너지솔루션':
+      color = CategoryColorType.EnergySolution;
+  }
+  return color;
 }
 
 const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function LectureCubeSummaryView({
@@ -57,12 +95,14 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   const BookMark = () => {
     console.log('click');
     setBookMark(!bookMark);
-  }
+  };
   return (
     <div className="course-info-header">
       <div className="contents-header">
         <div className="title-area">
-          <div className="ui mpurple label">
+          <div
+            className={`ui label ${getColor(lectureSummary.category.college)}`}
+          >
             {lectureSummary.category.college.name}
           </div>
           <div className="header">{lectureSummary.name}</div>
@@ -87,8 +127,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 </Label>
               )} */}
               <Label className="bold onlytext">
-                  <span className="header-span-first">정원정보</span>
-                  <span>000</span>
+                <span className="header-span-first">정원정보</span>
+                <span>000</span>
               </Label>
               <Label className="bold onlytext">
                 <span className="header-span-first">이수</span>
@@ -146,7 +186,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
           <div className="header-right-link">
             <a onClick={toggleCubeBookmark}>
               <span onClick={BookMark}>
-                <Icon className={!bookMark ? "listAdd" : "listDelete"} />
+                <Icon className={!bookMark ? 'listAdd' : 'listDelete'} />
                 {lectureSummary.mytrainingId === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}
