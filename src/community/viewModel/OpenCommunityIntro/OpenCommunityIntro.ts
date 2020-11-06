@@ -1,7 +1,7 @@
 import FieldItem from "./FieldItem";
 import OpenCommunityItem from "./OpenCommunityItem";
 
-export default interface OpenCommunity {
+export default interface OpenCommunityIntro {
   fields: FieldItem[];
   communities: OpenCommunityItem[];
 }

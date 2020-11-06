@@ -1,7 +1,7 @@
 import CommunityItem from "./CommunityItem";
 import PostItem from "./PostItem";
 
-export default interface MyCommunity {
+export default interface MyCommunityIntro {
   communities: CommunityItem[];
   posts: PostItem[];
 }
