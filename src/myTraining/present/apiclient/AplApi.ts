@@ -1,6 +1,5 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { AplRdoModel } from '../../model/AplRdoModel';
-import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';

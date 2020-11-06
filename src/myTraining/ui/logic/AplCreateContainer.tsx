@@ -17,9 +17,9 @@ import { MemberViewModel } from '@nara.drama/approval';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
-import { AplService } from '../..';
 import AplMessageList from '../../present/logic/AplService';
 import { AplState } from '../../model/AplState';
+import AplService from '../../present/logic/AplService';
 import SelectType from '../../model/SelectType';
 import { CollegeService } from '../../../college/stores';
 
@@ -99,12 +99,12 @@ class AplCreateContainer extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state =
-      {
-        //open :  false,
-        //titleWrite: '',
-        //typeNameWrite: '',
-        //instituteWrite: ''
-      };
+    {
+      //open :  false,
+      //titleWrite: '',
+      //typeNameWrite: '',
+      //instituteWrite: ''
+    };
   }
 
 
