@@ -56,6 +56,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
             }
           >
+            <i className="lms-comment-icon" />
             Comment
             <span className="count">
               {lectureComment !== undefined

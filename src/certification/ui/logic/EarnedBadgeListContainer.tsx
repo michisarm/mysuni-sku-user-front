@@ -13,17 +13,16 @@ import BadgeCountText from '../model/BadgeCountText';
 import LineHeaderContainer from './LineHeaderContainer';
 import BadgeRoutePaths from '../../routePaths';
 
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  badgeService?: BadgeService;
 
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  badgeService?: BadgeService,
-
-  profileMemberName?: string,
-  badgeCount?: number | undefined,
-  countMessage?: string,
+  profileMemberName?: string;
+  badgeCount?: number | undefined;
+  countMessage?: string;
 }
 
 // 페이징 처리없이 모두 표시한다.
-const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
+const EarnedBadgeListContainer: React.FC<Props> = Props => {
   //
   console.log('EarnedBadgeListContainer :: render :: ');
   const { badgeService, history } = Props;
@@ -31,11 +30,10 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
-
   useEffect(() => {
-    return (() => {
+    return () => {
       window.scrollTo(0, 0);
-    });
+    };
   }, []);
 
   useEffect(() => {
@@ -47,8 +45,12 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
 
   const findMyContent = async () => {
     //
-    const badgeOffsetList = await badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel
-      .earned(difficultyLevel, 'Issued'/*, page!.limit, page!.nextOffset*/));
+    const badgeOffsetList = await badgeService!.findPagingEarnedBadges(
+      BadgeFilterRdoModel.earned(
+        difficultyLevel,
+        'Issued' /*, page!.limit, page!.nextOffset*/
+      )
+    );
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
@@ -80,17 +82,23 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
                   />
-                  <div className="badge-name">{badge.name}</div>
+                  <div className="badge-name">
+                    <span>{badge.name}</span>
+                  </div>
                 </li>
               );
             })}
           </ul>
         </div>
-      ) :
-        (
-          <NoSuchContentPanel message={(
+      ) : (
+        <NoSuchContentPanel
+          message={
             <>
-              <div className="text">획득한 Badge가 없습니다.<br />등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.</div>
+              <div className="text">
+                획득한 Badge가 없습니다.
+                <br />
+                등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+              </div>
               <Button
                 icon
                 as="a"
@@ -101,14 +109,13 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
                 <Icon className="morelink" />
               </Button>
             </>
-          )}
-          />
-        )}
+          }
+        />
+      )}
     </>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-  'shared.pageService',
-))(withRouter(observer(EarnedBadgeListContainer)));
+export default inject(
+  mobxHelper.injectFrom('badge.badgeService', 'shared.pageService')
+)(withRouter(observer(EarnedBadgeListContainer)));

@@ -10,7 +10,7 @@ function Represent() {
   return <img src={REPRESENT_IMAGE} className="p-label" />;
 }
 
-const LectureInstructorView: React.FC<LectureInstructorViewProps> = function LectureInstructorView({
+const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps> = function LectureInstructorView({
   lectureInstructor,
 }) {
   return (
@@ -32,7 +32,7 @@ const LectureInstructorView: React.FC<LectureInstructorViewProps> = function Lec
             <div className="ui profile tool-tip">
               {represent === 1 && <Represent />}
               <div className="pic s80">
-                <img alt="프로필사진" className="ui image" />
+                {/* <img alt="프로필사진" className="ui image" /> */}
               </div>
               <i>
                 <span className="tip-name">{name}</span>

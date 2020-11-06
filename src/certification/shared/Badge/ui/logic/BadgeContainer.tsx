@@ -8,7 +8,8 @@ import {
   BadgeContentWrapper,
   //BadgeLevel,
   CertificationOrg,
-  College, StarScore,
+  College,
+  StarScore,
   Title,
 } from '../view/BadgeView';
 import BadgeModel from '../../../../ui/model/BadgeModel';
@@ -22,7 +23,7 @@ enum certiAdminCategoryIcon {
 
 enum CategoryImageURL {
   BDGCAT_AIDT = '/static/media/icon-ai.png',
-  BDGCAT_JOB = '/static/media/icon-common.png',
+  BDGCAT_JOB = '/static/media/icon-happy.png',
   BDGCAT_BIZ = '/static/media/icon-biz.png',
   BDGCAT_HAPPY = '/static/media/icon-happy.png',
   BDGCAT_BM = '/static/media/icon-bmdesign.png',
