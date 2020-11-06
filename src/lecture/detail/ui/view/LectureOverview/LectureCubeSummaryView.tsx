@@ -143,7 +143,12 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                     <span className="tip-name">
                       {lectureSummary.operator.company}
                     </span>
-                    <a className="tip-mail">{lectureSummary.operator.email}</a>
+                    <a
+                      className="tip-mail"
+                      href={`mailto:${lectureSummary.operator.email}`}
+                    >
+                      {lectureSummary.operator.email}
+                    </a>
                   </i>
                 </span>
               </Label>
