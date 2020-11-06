@@ -10,7 +10,10 @@ export default interface Post {
   html: string;
   likeCount: number;
   replyCount: number;
-  attachmentCount: number;
+  fileBoxId: string;
+  commentFeebackId: string;
+  pinned: boolean;
+  readCount: number;
   visible: boolean;
   creatorId: string;
   createdTime: number;

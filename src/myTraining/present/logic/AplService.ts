@@ -10,9 +10,13 @@ import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import AplFlowApi from '../apiclient/AplFlowApi';
-import {ExcelView} from '../../../shared/model/ExcelView';
+import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplModel } from '../../model';
+import AplUdoModel from '../../model/AplUdoModel';
+import { ApprovalViewType } from '../../ui/logic/MyApprovalListContainerV2';
+import { AplRdoModel, CountType } from '../../model/AplRdoModel';
+
 
 @autobind
 export default class AplService {
@@ -26,9 +30,7 @@ export default class AplService {
   apl: AplModel = new AplModel();
 
   @observable
-  apls: OffsetElementList<AplListViewModel> = new OffsetElementList<
-    AplListViewModel
-  >();
+  apls: OffsetElementList<AplListViewModel> = new OffsetElementList<AplListViewModel>();
 
   @observable
   aplsForExcel: AplListViewModel[] = [];
@@ -66,6 +68,9 @@ export default class AplService {
   @observable
   aplSearchInit: boolean = true;
 
+  aplRdo: AplRdoModel = new AplRdoModel();
+
+
   @computed get allowTime(): number {
     const totalAllowHour = this.apls.results
       .map(result => result.allowHour)
@@ -96,10 +101,10 @@ export default class AplService {
   }
 
   @action
-  async findApl(aplId?: string) {
+  async findApl(aplId: string) {
     //
     const apl = await this.aplApi.findApl(aplId);
-    runInAction(() => (this.apl = apl));
+    runInAction(() => this.apl = apl);
     return apl;
   }
 
@@ -253,13 +258,15 @@ export default class AplService {
   }
 
   @action
-  async findAllTabCount() {
-    const aplCount = await this.aplApi.findAplCount(
-      AplQueryModel.asAplRdo(this.aplQuery)
-    );
+  async findAllTabCount(countType: CountType) {
+    /* 
+      탭 카운트를 조회하는 API 가 하나이기 때문에
+      countType 을 기준으로 MyLearningPage, MyApprovalPage 의 카운트 조회 조건을 달리 함.
+    */
+    this.aplRdo.countType = countType;
+    const aplCount = await this.aplApi.findAplCount(this.aplRdo);
 
     runInAction(() => this.aplCount = aplCount);
-    return aplCount;
   }
 
   @action
@@ -287,7 +294,31 @@ export default class AplService {
     this.aplQuery = new AplQueryModel();
   }
 
+  ///////////////////////// 개편 /////////////////////////
+  modifyAplWithApprovalState(aplUdo: AplUdoModel) {
+    this.aplApi.modifyAplWithApprovalState(aplUdo);
+  }
 
+  async findAllAplsForApproval(viewType: ApprovalViewType) {
+    this.aplRdo.state = viewType as string;
+    this.aplRdo.countType = CountType.approvalId;
+    const offsetApl = await this.aplApi.findAllAplsForApproval(this.aplRdo);
+
+    if (offsetApl) {
+      const results = offsetApl.results.map(result => new AplListViewModel(result));
+      runInAction(() => {
+        this.apls = offsetApl;
+        this.apls.results = results;
+      });
+    }
+  }
+
+  @action
+  clearAplCount() {
+    this.aplCount = new AplCountModel();
+  }
+
+  ///////////////////////// 개편 /////////////////////////
 }
 
 Object.defineProperty(AplService, 'instance', {

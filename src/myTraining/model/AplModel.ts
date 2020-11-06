@@ -5,10 +5,12 @@ import { AplCdoModel } from './AplCdoModel';
 import { AplXlsxModel } from './AplXlsxModel';
 import EnumUtil, { AplStateView } from '../../shared/ui/logic/EnumUtil';
 import { AplState } from './AplState';
-import {IconBoxModel, NameValueList, NewQueryModel} from '../../shared/model';
+import { NameValueList, NewQueryModel } from '../../shared/model';
 import SkProfileService from '../../profile/present/logic/SkProfileService';
-import {AplType} from './AplType';
-import SelectOptions from "../ui/model/SelectOptions";
+import { AplType } from './AplType';
+import { AplStateName } from './AplStateName';
+
+
 
 class AplModel extends NewQueryModel {
   //
@@ -21,16 +23,17 @@ class AplModel extends NewQueryModel {
   channelId: string = '';
   channelName: string = '';
   startDate: number = 0;
-  endDate : number = 0;
+  endDate: number = 0;
   institute: string = '';
   requestHour: number = 0;
   requestMinute: number = 0;
   allowHour: number = 0;
   allowMinute: number = 0;
+  allowTime: number = 0;
   updateHour: number = 0;
   updateMinute: number = 0;
   content: string = '';
-  state: string = '';
+  state: AplState = AplState.Created;
   creationTime: number = 0;
   creatorId: string = '';
   creatorName: string = '';
@@ -62,11 +65,31 @@ class AplModel extends NewQueryModel {
     }
   }
 
-  @computed
-  get getTime() {
-    //
-    return moment(this.creationTime).format('YYYY.MM.DD HH:mm:ss');
+  @computed get displayCreationTime() {
+    return moment(this.creationTime).format('YYYY.MM.DD');
   }
+
+  @computed get displayUpdateTiime() {
+    return moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss');
+  }
+
+  @computed get displayStateName() {
+    const stateName = AplStateName[this.state];
+    return stateName;
+  }
+
+  @computed get displayTypeAndTypeName() {
+    return `${this.type} > ${this.typeName}`;
+  }
+
+  @computed get displayLearningTime() {
+    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(this.endDate).format('YYYY.MM.DD')}`;
+  }
+
+  @computed get displayAllowTime() {
+    return this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD') : '-';
+  }
+
 
   /*@computed
   get isNameShowAsYesNo() {
@@ -78,7 +101,7 @@ class AplModel extends NewQueryModel {
     if (!aplModel.title) return '교육명';
     if (!aplModel.type) return '교육형태';
     /*if (!aplModel.typeName) return '교육형태명';*/
-    if (aplModel.type===AplType.Etc&&!aplModel.typeName) return '교육형태명';
+    if (aplModel.type === AplType.Etc && !aplModel.typeName) return '교육형태명';
     if (!aplModel.collegeId) return 'College';
     if (!aplModel.channelId) return 'Channel';
     /*if (!aplModel.channelId) return 'Channel';*/
@@ -138,10 +161,10 @@ class AplModel extends NewQueryModel {
       channelId: aplModel.channelId,
       channelName: aplModel.channelName,
       startDate: aplModel && aplModel.period && aplModel.period.startDateLong,
-      endDate : aplModel && aplModel.period && aplModel.period.endDateLong,
+      endDate: aplModel && aplModel.period && aplModel.period.endDateLong,
       institute: aplModel.institute,
       requestHour: aplModel.requestHour,
-      requestMinute:aplModel.requestMinute,
+      requestMinute: aplModel.requestMinute,
       allowHour: aplModel.requestHour,
       allowMinute: aplModel.requestMinute,
       content: aplModel.content,
@@ -155,14 +178,14 @@ class AplModel extends NewQueryModel {
         SkProfileService.instance.skProfile.member.name ||
         patronInfo.getPatronName() ||
         '',
-      fileIds: aplModel.fileIds||'',
-      approvalYn: aplModel.approvalYn||false,
-      approvalId: aplModel.approvalId||'',
-      approvalName: aplModel.approvalName||'',
+      fileIds: aplModel.fileIds || '',
+      approvalYn: aplModel.approvalYn || false,
+      approvalId: aplModel.approvalId || '',
+      approvalName: aplModel.approvalName || '',
       updateTime: aplModel.updateTime,
-      causeOfReturn: aplModel.causeOfReturn||'',
-      approvalCompany: aplModel.approvalCompany||'',
-      approvalDepartment: aplModel.approvalDepartment||'',
+      causeOfReturn: aplModel.causeOfReturn || '',
+      approvalCompany: aplModel.approvalCompany || '',
+      approvalDepartment: aplModel.approvalDepartment || '',
     };
   }
 
@@ -176,8 +199,8 @@ class AplModel extends NewQueryModel {
       교육명: aplModel.title || '-',
       교육형태: aplModel.typeName || '-',
       Channel: aplModel.channelName || '-',
-      교육기간: moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss')+'~'+ moment(aplModel.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
-      교육시간: aplModel.requestHour +':'+ aplModel.requestMinute|| '-',
+      교육기간: moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss') + '~' + moment(aplModel.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
+      교육시간: aplModel.requestHour + ':' + aplModel.requestMinute || '-',
       상태:
         EnumUtil.getEnumValue(AplStateView, aplModel.state).get(
           aplModel.state
@@ -204,6 +227,7 @@ decorate(AplModel, {
   requestMinute: observable,
   allowHour: observable,
   allowMinute: observable,
+  allowTime: observable,
   updateHour: observable,
   updateMinute: observable,
   content: observable,

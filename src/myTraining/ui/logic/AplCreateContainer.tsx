@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
-import {Button, TextArea, Form, Modal, Table, Segment, Select, Icon, Image, Grid, Ref} from 'semantic-ui-react';
+import { Button, TextArea, Form, Modal, Table, Segment, Select, Icon, Image, Grid, Ref } from 'semantic-ui-react';
 import {
   DiskFileViewModel,
   EXTENSION_WHITELIST,
@@ -17,13 +17,13 @@ import { MemberViewModel } from '@nara.drama/approval';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
-import { AplService } from '../..';
 import AplMessageList from '../../present/logic/AplService';
 import { AplState } from '../../model/AplState';
+import AplService from '../../present/logic/AplService';
 import SelectType from '../../model/SelectType';
 import { CollegeService } from '../../../college/stores';
 
-import {depotHelper} from '../../../shared';
+import { depotHelper } from '../../../shared';
 import ManagerListModalContainer from '../../../approval/member/ui/logic/ManagerListModalContainer';
 import { ApprovalMemberModel } from '../../../approval/member/model/ApprovalMemberModel';
 import { SkProfileService } from '../../../profile/stores';
@@ -34,7 +34,8 @@ import { CompanyApproverModel } from '../../../approval/company/model/CompanyApp
 import { AplType } from '../../model/AplType';
 import { AplApprovalType } from '../../model/AplApprovalType';
 import { AplQueryModel } from '../../model/AplQueryModel';
-import {AplModel} from '../../model';
+import { AplModel } from '../../model';
+
 
 interface Props extends RouteComponentProps<{ cineroomId: string, studentId: string, cubeType: string, cubeState: string }> {
   skProfileService?: SkProfileService
@@ -44,7 +45,7 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   aplService?: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
   //onKeyUpAplPropsValid: (name: string, value: string) => void;
-  apl?:AplModel;
+  apl?: AplModel;
   //aplModelModel: aplModelModel
   //aplId?: number
   //state?: string
@@ -98,12 +99,12 @@ class AplCreateContainer extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state =
-      {
-        //open :  false,
-        //titleWrite: '',
-        //typeNameWrite: '',
-        //instituteWrite: ''
-      };
+    {
+      //open :  false,
+      //titleWrite: '',
+      //typeNameWrite: '',
+      //instituteWrite: ''
+    };
   }
 
 
@@ -227,13 +228,13 @@ class AplCreateContainer extends React.Component<Props, States> {
   onChangeAplQueryProps(name: string, value: string | {} | string[] | boolean | undefined | Moment) {
     //
     const { changeAplQueryProps } = this.props.aplService || ({} as AplService);
-    if ( changeAplQueryProps ) changeAplQueryProps(name, value);
+    if (changeAplQueryProps) changeAplQueryProps(name, value);
   }
 
   onChangeAplProps(name: string, value: string | {} | string[] | boolean | undefined | Moment) {
     //
     const { changeAplProps } = this.props.aplService || ({} as AplService);
-    if ( changeAplProps ) changeAplProps(name, value);
+    if (changeAplProps) changeAplProps(name, value);
   }
 
   setInputFocus() {
@@ -247,7 +248,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     }
     //this.focusInputRefs[focusControlName].current.focus();
 
-    if (['title','type','typeName','collegeId','channelId','institute','requestHour','requestMinute','content','approvalId'].includes(focusControlName)) {
+    if (['title', 'type', 'typeName', 'collegeId', 'channelId', 'institute', 'requestHour', 'requestMinute', 'content', 'approvalId'].includes(focusControlName)) {
       // input focus
       this.focusInputRefs[focusControlName].current.focus();
     } else if (['startDate', 'endDate'].includes(focusControlName)) {
@@ -416,7 +417,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                   }
                   ref={this.focusInputRefs.title}
                 />
-                <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('title')}/>
+                <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('title')} />
                 <span className="validation">
                   최대 100자까지 입력 가능합니다.{' '}
                 </span>
@@ -463,7 +464,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                         ref={this.focusInputRefs.typeName}
                       />
                       {/*<Icon aria-hidden="true" className="clear link" onClick={this.onClear('typeName')} />*/}
-                      <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('typeName')}/>
+                      <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('typeName')} />
                     </div>
                   </div>
                 ) : null}
@@ -604,7 +605,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                   }
                   ref={this.focusInputRefs.institute}
                 />
-                <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('institute')}/>
+                <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('institute')} />
                 <span className="validation">
                   최대 100자까지 입력 가능합니다.{' '}
                 </span>
@@ -631,7 +632,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                       ref={this.focusInputRefs.requestHour}
                     />
                     <label>시간</label>
-                    <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestHour')}/>
+                    <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestHour')} />
                   </div>
                 </div>
                 <div className="time">
@@ -651,7 +652,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                       ref={this.focusInputRefs.requestMinute}
                     />
                     <label>분</label>
-                    <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestMinute')}/>
+                    <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestMinute')} />
                   </div>
                 </div>
                 <div className="info-text">
@@ -696,15 +697,15 @@ class AplCreateContainer extends React.Component<Props, States> {
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
-                    vaultKey={{keyString: 'sku-depot', patronType: PatronType.Audience}}
-                    patronKey={{keyString: 'sku-denizen', patronType: PatronType.Audience}}
+                    vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Audience }}
+                    patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Audience }}
                     /*validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator },{ type: ValidationType.Extension, validator: depotHelper.extensionValidator }]}*/
-                    validations={[{type: ValidationType.Duplication, validator: depotHelper.duplicationValidator}]}
+                    validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                     onChange={this.getFileBoxIdForReference}
                     id={apl && apl.fileIds}
                   />
                   <div className="bottom">
-                    <span className="text1"><Icon className="info16"/>
+                    <span className="text1"><Icon className="info16" />
                       <span className="blind">information</span>
                       DOC,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.
                       {/*파일 확장자가 exe를 제외한 모든 첨부파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.*/}
@@ -721,7 +722,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <Grid.Column>
                   <Modal.Actions>
                     {approvalShow &&
-                    <Button className="post change-admin" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
+                      <Button className="post change-admin" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
                     <ManagerListModalContainer
                       ref={managerModal => this.managerModal = managerModal}
                       handleOk={this.onClickManagerListOk}

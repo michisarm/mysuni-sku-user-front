@@ -4,9 +4,6 @@ import 'semantic-ui-less/semantic.less';
 
 import '@nara.drama/approval/lib/snap.css';
 
-// import './style/css/main.19ba8933.chunk.css';
-// import './style/css/2.84fb28b1.chunk.css';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';

@@ -629,7 +629,7 @@ class MyTrainingService {
   }
 
   @action
-  deleteBySelectedIds() {
+  hideBySelectedIds() {
     this._myTrainingTableViews = this._myTrainingTableViews.filter(tableView => !this.selectedIds.includes(tableView.id));
     this._myTrainingTableViewCount -= this.selectedIds.length;
 
@@ -650,6 +650,14 @@ class MyTrainingService {
     if (direction === Direction.DESC) {
       this._myTrainingTableViews = this._myTrainingTableViews.sort((a, b) => b[propKey] - a[propKey]);
     }
+  }
+
+  @action
+  clearAllTabCount() {
+    this.inprogressCount = 0;
+    this.completedCount = 0;
+    this.enrolledCount = 0;
+    this.retryCount = 0;
   }
 }
 
