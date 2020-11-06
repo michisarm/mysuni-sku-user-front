@@ -6,22 +6,7 @@ import { CommunityPostList } from 'community/viewModel/CommunityPostList';
 // report
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
-import {
-  findPersonalCube,
-  findTask,
-} from 'lecture/detail/api/mPersonalCubeApi';
-import {
-  getLectureTaskItem,
-  // setLectureChildTaskItem,
-  setLectureTaskItem,
-} from 'lecture/detail/store/LectureTaskStore';
-import {
-  LectureTask,
-  // LectureTaskChild,
-} from 'lecture/detail/viewModel/LectureTask';
-
-
-async function getPostItem(
+export async function getPostItem(
   // startDate: string,
   // endDate: string,
   // title: string,
@@ -42,23 +27,24 @@ async function getPostItem(
     offset: 0,
     limit: 0,
   };
+
   //TODO api 수정되면 바꿀 예정
   if (param.communityId !== '') {
     {
       const postRdo = {
         'startDate': 1573052400000,
         'endDate': 1604674799999,
-        'title': '',
-        'html': '',
-        'creatorId': '',
+        'title': param.title,
+        'html': param.html,
+        'creatorId': param.creatorId,
         'offset': param.offset,
-        'limit': param.limit,
-        'searchFilter': '',
-        'menuId': '',
+        'limit': 40,
+        'searchFilter': param.searchFilter,
+        'menuId': param.menuId,
         'communityId': 'CT-9',
         'sort': param.sort
       }
-      //임시로 CT-9 -> communityId 들어가야함
+      //임시로 CT-1 -> communityId 들어가야함
       console.log('1111111111')
       const findPostData = await findCommunityPostList(postRdo);
       console.log('findPostData', findPostData)
@@ -83,6 +69,7 @@ async function getPostItem(
             // setLectureTaskItem(old);
           // 댓글 count api
         }
+        console.log('마지막 communityPost', communityPost)
         return communityPost;
       }
     }

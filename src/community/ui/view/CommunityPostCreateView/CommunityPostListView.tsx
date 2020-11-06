@@ -42,7 +42,12 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
         onClick={() => handleClickRow(post.postId)}
       >
         <span className="cell title">
-          {post.title}[{post.replyCount}]
+          {post.title}
+          {
+            post.replyCount !== null && (
+              <span>[{post.replyCount}]</span>
+            )
+          }
         </span>
         <span className="cell nick">{post.nick}</span>
         <span className="cell date">
@@ -58,7 +63,6 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
   postItems,
   handleClickRow
 }) {
-  console.log('postItems', postItems)
   const onHandleClickRow = useCallback(
     param => {
       handleClickRow(param);
@@ -78,7 +82,6 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
         <span className="cell date">등록일</span>
       </a>
       {postItems.items.map((post, index) => {
-        console.log('post', post)
         return renderPostRow(post, onHandleClickRow);
       })}
     </>

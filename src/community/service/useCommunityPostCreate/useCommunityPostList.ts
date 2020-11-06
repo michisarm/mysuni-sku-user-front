@@ -18,7 +18,7 @@ interface Params {
   menuId: string;
 }
 
-export function useCommunityPostList(sortType:SortType, searchType: SearchType, searchText: string): [PostListValue] {
+export function useCommunityPostList(): [PostListValue] {
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [postItems, setPostItems] = useState<PostListValue>();
@@ -33,7 +33,6 @@ export function useCommunityPostList(sortType:SortType, searchType: SearchType, 
     }, []);
 
     useEffect(()=>{
-      console.log('sortType이 바뀌었다', sortType)
 
       const test: PostRdo = {
         'startDate': 1573052400000,
@@ -46,16 +45,12 @@ export function useCommunityPostList(sortType:SortType, searchType: SearchType, 
         'searchFilter': '',
         'menuId': '',
         'communityId': 'CT-9',
-        'sort': sortType
+        'sort': 'createdTime'
       }
 
-      if(searchType === '제목') {
-        test.title = 'searchText'
-      }
-      console.log('test', test)
       getCommunityPostList(test);
 
-    },[sortType])
+    },[])
 
     useEffect(() => {
       console.log('subscriberId', subscriberId)

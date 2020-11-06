@@ -1,7 +1,8 @@
 import React from 'react'
+import CommunityPostDetailContainer from '../logic/CommunityPostDetailContainer'
 
 function BasicPostPage() {
-  return (<>BasicPostPage</>)
+  return (<CommunityPostDetailContainer />)
 }
 
 export default BasicPostPage

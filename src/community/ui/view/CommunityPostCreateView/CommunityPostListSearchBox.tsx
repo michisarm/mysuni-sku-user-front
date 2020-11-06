@@ -5,19 +5,20 @@ import { Button, Icon, Select } from 'semantic-ui-react';
 interface CommunityPostListViewProps{
   onChangeSearchType: (name: string, value: SearchType) => void;
   onChangeSearchText: (name: string) => void;
-  onOk: () => void;
+  onSearch: () => void;
   searchText: string;
+  searchType: string;
 }
 
 const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = function CommunityPostListSearchBox({
   onChangeSearchType,
   onChangeSearchText,
-  onOk,
+  onSearch,
   searchText,
+  searchType
 }) {
 
-  const searchOptions = [{'text': '전체', 'value': 'all'},{'text': '제목', 'value': 'title'}, {'text': '내용', 'value': 'content'}, {'text': '작성자', 'value': 'writer'}]
-  const test = 'all'
+  const searchOptions = [{'text': '전체', 'value': 'all'},{'text': '제목', 'value': 'title'}, {'text': '내용', 'value': 'html'}, {'text': '작성자', 'value': 'creatorId'}]
   // const onHandleClickRow = useCallback(
   //   // // param => {
   //   // //   handleClickRow(param);
@@ -25,25 +26,20 @@ const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = functio
   //   // []
   // );
   const handleSearchTextChange = (e: any) => {
-    console.log('e',e)
-    console.log(e.target.value)
     onChangeSearchText(e.target.value)
   }
 
   const handleSearchTypeChange = (e: any, value: SearchType) => {
-    console.log('e',e)
-    console.log('value', value)
     onChangeSearchType(e, value)
   }
   
   return (
     <>
-    <span>111{test}222</span>
       <div className="paging-search">
           <Select placeholder="분류를 선택해주세요"
             className="s160 small-border"
             options={searchOptions}
-            value={test}
+            value={searchType}
             onChange={(e: any, data: any) => handleSearchTypeChange('search', data.value)}
           />
         <div className="ui h38 search input">
@@ -53,7 +49,7 @@ const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = functio
             value={searchText}
             onChange={handleSearchTextChange}
           />
-          <Icon className="search link" onClick={() => onOk()} />
+          <Icon className="search link" onClick={() => onSearch()} />
         </div>
       </div>
     </>
