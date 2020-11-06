@@ -70,6 +70,9 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
     setLectureDiscussion({
       id: lectureStructure.discussion.id,
       name: lectureStructure.discussion.name,
+      time: lectureStructure.discussion.time,
+      creator: lectureStructure.discussion.creator,
+      creatorAudienceId: lectureStructure.discussion.creatorAudienceId
     });
   }
 
@@ -108,6 +111,9 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
       setLectureDiscussion({
         id: course.discussion.id,
         name: course.discussion.name,
+        time: course.discussion.time,
+        creator: course.discussion.creator,
+        creatorAudienceId: course.discussion.creatorAudienceId,
       });
     }
     if (course.cubes !== undefined) {

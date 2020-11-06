@@ -56,6 +56,9 @@ export interface LectureStructureReportItem extends Item {
 export interface LectureStructureDiscussionItem extends Item {
   id: string;
   name: string;
+  time: number;
+  creator: string;
+  creatorAudienceId: string;
   type: LectureStructureItemType;
 }
 

@@ -4,6 +4,16 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 
+function parseCuteType(cubeType: CubeType) {
+  switch (cubeType) {
+    case 'ClassRoomLecture':
+      return 'Classroom';
+    default:
+      break;
+  }
+  return cubeType;
+}
+
 interface CubeViewProps {
   name: string;
   state?: State;
