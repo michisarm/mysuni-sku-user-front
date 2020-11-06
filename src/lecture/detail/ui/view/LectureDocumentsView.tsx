@@ -5,10 +5,8 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
   fileBoxId,
 }) {
   return (
-    <div
+    <div className="video-container"
       style={{
-        width: '100%',
-        maxWidth: 950,
         height: 684,
         backgroundColor: '#a8a8a8',
       }}

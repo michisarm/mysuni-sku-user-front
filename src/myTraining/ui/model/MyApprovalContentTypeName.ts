@@ -1,6 +1,6 @@
 enum MyApprovalContentTypeName {
-  ApprovalList = '유료과정',
-  ApprovalAddPersonalLearning = '개인학습'
+  PaidCourse = '유료과정',
+  PersonalLearning = '개인학습'
 }
 
 export default MyApprovalContentTypeName;

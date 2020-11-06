@@ -125,12 +125,18 @@ function getLectureComment(
   } = coursePlanComplex;
   return {
     commentId: feedbackId,
-    reviewId: reviewSummary.id,
+    reviewId: reviewSummary !== null ? reviewSummary.id : '',
     commentsCount: count,
   };
 }
 
 function getLectureReview(coursePlanComplex: CoursePlanComplex): LectureReview {
+  if (coursePlanComplex.reviewSummary === null) {
+    return {
+      id: '',
+      average: 0,
+    };
+  }
   const {
     reviewSummary: { id, average },
   } = coursePlanComplex;
@@ -162,7 +168,10 @@ function makeInMyLectureCdo(
     learningTime: coursePlanComplex.coursePlan.learningTime,
     name: coursePlanComplex.coursePlan.name,
     requiredSubsidiaries: [],
-    reviewId: coursePlanComplex.reviewSummary.id,
+    reviewId:
+      coursePlanComplex.reviewSummary !== null
+        ? coursePlanComplex.reviewSummary.id
+        : '',
     serviceId: lectureId || serviceId!,
     servicePatronKeyString: coursePlanComplex.coursePlan.patronKey.keyString,
     serviceType: lectureType !== undefined ? 'Course' : serviceType!,

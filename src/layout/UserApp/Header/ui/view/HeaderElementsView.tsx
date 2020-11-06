@@ -32,11 +32,10 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
   <div className="g-menu">
     <div className="nav">
       <NavLink to={myTrainingPaths.learning()} className="item" onClick={() => onClickMenu('Learning')}>Learning</NavLink>
-      {/*<NavLink to={myTrainingPaths.community()} className="item" onClick={() => onClickMenu('Community')}>Community</NavLink>*/}
-      <NavLink to={lecturePaths.recommend()} className="item" onClick={() => onClickMenu('Recommend')}>Recommend</NavLink>
+      <NavLink to={lecturePaths.recommend()} className="item" onClick={() => onClickMenu('Recommend')}>Subscription</NavLink>
       <NavLink to={personalCubePaths.create()} className="item" onClick={() => onClickMenu('Create')}>Create</NavLink>
       <NavLink to={certificationPaths.badge()} className="item" onClick={() => onClickMenu('Certification')}>Certification</NavLink>
-      <NavLink to="/community/main" className="item" onClick={() => onClickMenu('Community')}>Community</NavLink>
+      <NavLink to={myTrainingPaths.community()} className="item" onClick={() => onClickMenu('Community')}>Community</NavLink>
     </div>
   </div>
 );

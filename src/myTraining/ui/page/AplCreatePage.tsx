@@ -4,20 +4,21 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import { MemberViewModel } from '@nara.drama/approval';
 import { patronInfo } from '@nara.platform/dock';
-import {Breadcrumb, Button, Container, Form, Header, Segment} from 'semantic-ui-react';
+import { Breadcrumb, Button, Container, Form, Header, Segment } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import { AplState } from '../../model/AplState';
 import { AplType } from '../../model/AplType';
 import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
-import { AplService } from '../..';
 import AplCreateContainer from '../logic/AplCreateContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
+
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
@@ -379,12 +380,14 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     if(name === 'requestHour'){
+      if (isNaN(Number(value))) value = '';
       if (invalidHour) {
         return;
       }
     }
 
     if(name === 'requestMinute'){
+      if (isNaN(Number(value))) value = '';
       if (invalidMin) {
         return;
       }
@@ -392,6 +395,29 @@ class AplCreatePage extends React.Component<Props, States> {
 
     if(name === 'content'){
       if (invalidContent) {
+        return;
+      }
+    }
+
+    if (aplService) aplService.changeAplProps(name, value);
+  }
+
+  onChangeAplPropsTimeValid(name: string, value: string | number) {
+    //
+    const { aplService } = this.props;
+    const invalidHour = Number(value) < 0;
+    const invalidMin = Number(value) > 59 || Number(value) < 0;
+
+    if(name === 'requestHour'){
+      if (isNaN(Number(value))) value = 0;
+      if (invalidHour) {
+        return;
+      }
+    }
+
+    if(name === 'requestMinute'){
+      if (value < 0) value = 0;
+      if (invalidMin) {
         return;
       }
     }
@@ -444,6 +470,7 @@ class AplCreatePage extends React.Component<Props, States> {
           //AplModel={apl}
           focusControlName={focusControlName}
           onChangeAplPropsValid={this.onChangeAplPropsValid}
+          onChangeAplPropsTimeValid={this.onChangeAplPropsTimeValid}
           onResetFocusControl={this.onResetFocusControl}
           //onGetFileBoxIdForApl={this.getFileBoxIdForApl}
           handleOk={this.handleOK}
