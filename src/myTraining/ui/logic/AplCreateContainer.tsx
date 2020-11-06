@@ -43,7 +43,6 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   departmentService?: DepartmentService
   aplService?: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
-  onChangeAplPropsTimeValid: (name: string, value: string) => void;
   //onKeyUpAplPropsValid: (name: string, value: string) => void;
   apl?:AplModel;
   //aplModelModel: aplModelModel
@@ -347,7 +346,7 @@ class AplCreateContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, onChangeAplPropsTimeValid, handleSave } = this.props;
+    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave } = this.props;
     const { apl } = aplService!;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
@@ -598,11 +597,11 @@ class AplCreateContainer extends React.Component<Props, States> {
                   >
                     <input
                       id="requestHour"
-                      type="number"
+                      type="text"
                       value={(apl && apl.requestHour) || ''}
                       min="0"
                       onChange={(e: any) =>
-                        onChangeAplPropsTimeValid('requestHour', e.target.value)
+                        onChangeAplPropsValid('requestHour', e.target.value)
                       }
                       ref={this.focusInputRefs.requestHour}
                     />
@@ -618,11 +617,11 @@ class AplCreateContainer extends React.Component<Props, States> {
                   >
                     <input
                       id="requestMinute"
-                      type="number"
+                      type="text"
                       value={(apl && apl.requestMinute) || ''}
                       min="0"
                       onChange={(e: any) =>
-                        onChangeAplPropsTimeValid('requestMinute', e.target.value)
+                        onChangeAplPropsValid('requestMinute', e.target.value)
                       }
                       ref={this.focusInputRefs.requestMinute}
                     />
