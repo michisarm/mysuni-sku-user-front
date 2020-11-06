@@ -1,8 +1,16 @@
 import React from 'react'
-import CommunityMyProfileContainer from '../logic/CommunityMyProfileContainer'
+import CommunityMyProfileMenuContainer from '../logic/CommunityMyProfileMenuContainer'
+import CommunityMyProfileContentsContainer from '../logic/CommunityMyProfileContentsContainer'
 
 function MyProfilePage() {
-  return <CommunityMyProfileContainer/>
+  return (
+    <>
+      <div>
+        <CommunityMyProfileMenuContainer/>
+        <CommunityMyProfileContentsContainer/>
+      </div>
+    </>
+  )
   
 }
 

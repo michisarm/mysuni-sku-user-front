@@ -1,14 +1,14 @@
 import React, {ChangeEvent, Component, createRef, useCallback, useRef} from 'react'
 import CommunityProfileItem from 'community/viewModel/CommunityProfile'
 import { getCommunityProfileItem, setCommunityProfileItem } from 'community/store/CommunityProfileStore'
-import ProfileEditView from './ProfileEditView ';
+import ContentsProfileEditView from './ContentsProfileEditView';
 import { upload } from 'community/api/FileApi';
 
-interface TitleProfileViewProps {
+interface ProfileTitleViewProps {
     profileItem: CommunityProfileItem;
 }
 
-const TitleProfileView: React.FC<TitleProfileViewProps> = function TitleProfileView({
+const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleView({
   profileItem
 }) {
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -116,7 +116,7 @@ const TitleProfileView: React.FC<TitleProfileViewProps> = function TitleProfileV
 
             <div className="profile_info">
                 <p className="name">{profileItem.nickname}</p>
-                {profileItem.editing && (<ProfileEditView keyId="introduce" value={profileItem.introduce}/>) || (
+                {profileItem.editing && (<ContentsProfileEditView keyId="introduce" value={profileItem.introduce}/>) || (
                     <>
                         <p>{profileItem.introduce}</p>
                         <ul>
@@ -140,4 +140,4 @@ const TitleProfileView: React.FC<TitleProfileViewProps> = function TitleProfileV
 }
 
 
-export default TitleProfileView
+export default ProfileTitleView

@@ -2,12 +2,12 @@ import React, { useCallback } from "react";
 import { setCommunityProfileItem, getCommunityProfileItem } from "community/store/CommunityProfileStore";
 
 
-interface ProfileEditViewProps {
+interface ContentsProfileEditViewProps {
   keyId: 'introduce'|'nickname'|'hobby';
   value: string;
 }
 
-const ProfileEditView: React.FC<ProfileEditViewProps> = function ProfileEditView({
+const ContentsProfileEditView: React.FC<ContentsProfileEditViewProps> = function ContentsProfileEditView({
   keyId,
   value,
 }) {
@@ -55,4 +55,4 @@ const ProfileEditView: React.FC<ProfileEditViewProps> = function ProfileEditView
   );
 }
 
-export default ProfileEditView;
+export default ContentsProfileEditView;

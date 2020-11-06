@@ -7,7 +7,7 @@ import MyProfilePage from './MyProfilePage';
 import MyProfileFeedPage from './MyProfileFeedPage';
 import MyProfileCommunitiesPage from './MyProfileCommunitiesPage';
 import MyProfileBookmarkPage from './MyProfileBookmarkPage';
-import TitleArea from '../view/CommunityProfile/TitleProfileView';
+import TitleArea from '../view/CommunityProfile/ProfileTitleView';
 import { useCommunityProfile } from 'community/service/useCommunityProfile/useCommunityProfile';
 import { getCommunityProfile } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
 import CommunityMyProfileTitleContainer from '../logic/CommunityMyProfileTitleContainer';
