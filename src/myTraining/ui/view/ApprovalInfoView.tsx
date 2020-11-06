@@ -1,6 +1,7 @@
+import React, { memo } from 'react';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
-import React from 'react';
+
 
 interface Props {
   model: AplModel;
@@ -41,4 +42,4 @@ function ApprovalInfoView(props: Props) {
   );
 }
 
-export default ApprovalInfoView;
+export default memo(ApprovalInfoView);

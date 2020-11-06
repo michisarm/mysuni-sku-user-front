@@ -220,8 +220,8 @@ function MyLearningListContainerV2(props: Props) {
   const getTotalCount = (contentType: MyContentType): number => {
     const { inMyLectureTableCount } = inMyLectureService!;
     const { myTrainingTableCount } = myTrainingService!;
-    const { aplCount } = aplService!;
     const { lectureTableCount } = lectureService!;
+    const { apls: { totalCount: aplTableCount } } = aplService!;
 
     switch (contentType) {
       case MyLearningContentType.InMyList:
@@ -229,7 +229,7 @@ function MyLearningListContainerV2(props: Props) {
       case MyLearningContentType.Required:
         return lectureTableCount;
       case MyLearningContentType.PersonalCompleted:
-      //return aplCount.all;
+        return aplTableCount;
       default:
         return myTrainingTableCount;
     }
@@ -341,7 +341,7 @@ function MyLearningListContainerV2(props: Props) {
         await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
         break;
       case MyLearningContentType.PersonalCompleted:
-        // await aplService!.findAllAplsWithPage(pageInfo.current);
+        await aplService!.findAllAplsWithPage(pageInfo.current);
         break;
       default:
         await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);

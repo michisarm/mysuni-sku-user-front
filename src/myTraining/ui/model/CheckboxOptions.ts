@@ -36,10 +36,10 @@ const CheckboxOptions = {
   ],
 
   approvalViewTypes: [
-    { key: 0, name: 'approval-viewType-radioGroup', label: '전체', value: 'All' },
-    { key: 1, name: 'approval-viewType-radioGroup', label: '승인대기', value: 'Waiting' },
-    { key: 2, name: 'approval-viewType-radioGroup', label: '승인', value: 'Approval' },
-    { key: 3, name: 'approval-viewType-radioGroup', label: '반려', value: 'Reject' }
+    { key: 0, name: 'approval-viewType-radioGroup', label: '전체', value: '' },
+    { key: 1, name: 'approval-viewType-radioGroup', label: '승인대기', value: 'OpenApproval' },
+    { key: 2, name: 'approval-viewType-radioGroup', label: '승인', value: 'Opened' },
+    { key: 3, name: 'approval-viewType-radioGroup', label: '반려', value: 'Rejected' }
   ]
 };
 

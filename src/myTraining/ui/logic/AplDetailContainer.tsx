@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Form, Segment } from 'semantic-ui-react';
@@ -13,6 +13,7 @@ import ApprovalButtons from '../view/button/ApprovalButtons';
 import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
 import ApprovalInfoView from '../view/ApprovalInfoView';
 import ApprovalRejectModal from '../view/modal/ApprovalRejectModal';
+
 
 interface Props {
   model: AplModel;
@@ -33,11 +34,12 @@ function AplDetailContainer(props: Props) {
 
   /* effects */
   useEffect(() => {
-    const allowHourStr = String(model.allowHour);
-    const allowMinuteStr = String(model.allowMinute);
+    const allowHourStr = String(model.requestHour);
+    const allowMinuteStr = String(model.requestMinute);
 
     setAllowHour(allowHourStr);
     setAllowMinute(allowMinuteStr);
+
   }, [model]);
 
   /* functions */
@@ -46,62 +48,62 @@ function AplDetailContainer(props: Props) {
   };
 
   /* handlers */
-  const onChangeAllowHour = (e: any) => {
+  const onChangeAllowHour = useCallback((e: any) => {
     setAllowHour(e.target.value);
-  };
+  }, []);
 
-  const onChangeAllowMinute = (e: any) => {
+  const onChangeAllowMinute = useCallback((e: any) => {
     setAllowMinute(e.target.value);
-  };
+  }, []);
 
-  const onClearAllowHour = () => {
+  const onClearAllowHour = useCallback(() => {
     setAllowHour('');
-  };
+  }, []);
 
-  const onClearAllowMinute = () => {
+  const onClearAllowMinute = useCallback(() => {
     setAllowMinute('');
-  };
+  }, []);
 
-  const onClickList = () => {
+  const onClickList = useCallback(() => {
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
       routeToList();
       return;
     }
 
     setOpenListModal(true);
-  }
+  }, [model])
 
-  const cancelRouteToList = () => {
+  const cancelRouteToList = useCallback(() => {
     setOpenListModal(false);
-  }
+  }, []);
 
-  const onClickReject = () => {
+  const onClickReject = useCallback(() => {
     setOpenRejectModal(true);
-  };
+  }, []);
 
-  const onCancelReject = () => {
+  const onCancelReject = useCallback(() => {
     setOpenRejectModal(false);
-  };
+  }, []);
 
-  const onConfirmReject = (remark: string) => {
+  const onConfirmReject = useCallback((remark: string) => {
     /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
     const aplUdo = AplUdoModel.createForReject(model.id, remark);
     aplService!.modifyAplWithApprovalState(aplUdo)
 
     setOpenRejectModal(false);
     routeToList();
-  };
+  }, [model]);
 
 
-  const onClickApproval = () => {
+  const onClickApproval = useCallback(() => {
     setOpenApprovalModal(true);
-  };
+  }, []);
 
-  const onCancelApproval = () => {
+  const onCancelApproval = useCallback(() => {
     setOpenApprovalModal(false);
-  };
+  }, []);
 
-  const onConfirmApproval = () => {
+  const onConfirmApproval = useCallback(() => {
     /* aplUdo 를 생성해 승인 로직을 처리해야 함. */
     const allowHourNumber = Number.parseInt(allowHour);
     const allowMinuteNumber = Number.parseInt(allowMinute);
@@ -111,7 +113,7 @@ function AplDetailContainer(props: Props) {
 
     setOpenApprovalModal(false);
     routeToList();
-  };
+  }, [allowHour, allowMinute, model]);
 
   /* render */
   return model &&
@@ -140,31 +142,39 @@ function AplDetailContainer(props: Props) {
           </Form>
         </div>
         {/* 리스트 이동 확인 모달 */}
-        <ConfirmWin
-          open={openListModal}
-          title=""
-          message={listMessage}
-          handleOk={routeToList}
-          handleClose={cancelRouteToList}
-          buttonNoName="No"
-          buttonYesName="Yes"
-        />
+        {openListModal && (
+          <ConfirmWin
+            open={openListModal}
+            title=""
+            message={listMessage}
+            handleOk={routeToList}
+            handleClose={cancelRouteToList}
+            buttonNoName="No"
+            buttonYesName="Yes"
+          />
+        )}
+
         {/* 반려 확인 모달 */}
-        <ApprovalRejectModal
-          open={openRejectModal}
-          onCloseModal={onCancelReject}
-          onConfirmModal={onConfirmReject}
-        />
+        {openRejectModal && (
+          <ApprovalRejectModal
+            open={openRejectModal}
+            onCloseModal={onCancelReject}
+            onConfirmModal={onConfirmReject}
+          />
+        )}
+
         {/* 승인 확인 모달 */}
-        <ConfirmWin
-          open={openApprovalModal}
-          title=""
-          message={approvalMessage}
-          handleOk={onConfirmApproval}
-          handleClose={onCancelApproval}
-          buttonNoName="No"
-          buttonYesName="Yes"
-        />
+        {openApprovalModal && (
+          <ConfirmWin
+            open={openApprovalModal}
+            title=""
+            message={approvalMessage}
+            handleOk={onConfirmApproval}
+            handleClose={onCancelApproval}
+            buttonNoName="No"
+            buttonYesName="Yes"
+          />
+        )}
       </Segment>
     );
 }

@@ -29,6 +29,7 @@ class AplModel extends NewQueryModel {
   requestMinute: number = 0;
   allowHour: number = 0;
   allowMinute: number = 0;
+  allowTime: number = 0;
   updateHour: number = 0;
   updateMinute: number = 0;
   content: string = '';
@@ -65,7 +66,7 @@ class AplModel extends NewQueryModel {
   }
 
   @computed get displayCreationTime() {
-    return moment(this.creationTime).format('YYYY.MM.DD HH:mm:ss');
+    return moment(this.creationTime).format('YYYY.MM.DD');
   }
 
   @computed get displayUpdateTiime() {
@@ -73,7 +74,8 @@ class AplModel extends NewQueryModel {
   }
 
   @computed get displayStateName() {
-    return AplStateName[this.state];
+    const stateName = AplStateName[this.state];
+    return stateName;
   }
 
   @computed get displayTypeAndTypeName() {
@@ -83,6 +85,11 @@ class AplModel extends NewQueryModel {
   @computed get displayLearningTime() {
     return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(this.endDate).format('YYYY.MM.DD')}`;
   }
+
+  @computed get displayAllowTime() {
+    return this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD') : '-';
+  }
+
 
   /*@computed
   get isNameShowAsYesNo() {
@@ -220,6 +227,7 @@ decorate(AplModel, {
   requestMinute: observable,
   allowHour: observable,
   allowMinute: observable,
+  allowTime: observable,
   updateHour: observable,
   updateMinute: observable,
   content: observable,

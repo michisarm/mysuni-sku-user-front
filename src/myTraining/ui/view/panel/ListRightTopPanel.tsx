@@ -84,7 +84,7 @@ function ListRightTopPanel(props: Props) {
             {!activeFilter && (
               <Icon className="filter2" aria-hidden="true" />
             )}
-            <span>Filter{filterCount && filterCount > 0 && `(${filterCount})`}</span>
+            <span>Filter{filterCount && filterCount > 0 && `(${filterCount})` || ''}</span>
           </Button>
         );
     }

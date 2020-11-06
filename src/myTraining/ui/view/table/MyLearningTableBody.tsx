@@ -18,7 +18,7 @@ import { MyLearningContentType, MyPageContentType } from '../../model';
 
 
 interface Props {
-  contentType: MyContentType;
+  contentType: MyContentType | MyApprovalContentType;
   totalCount: number;
   models: MyTableView[] | AplModel[];
   myTrainingService?: MyTrainingService;
@@ -32,6 +32,8 @@ function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
   const { selectedIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
+
+  console.log('models :: ', models);
 
   /* handlers */
   const onClickLearn = (model: MyTableView) => {
@@ -220,10 +222,10 @@ function MyLearningTableBody(props: Props) {
           {totalCount - index} {/* No */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#"><span className="ellipsis">{model.title}</span></a> {/* title */}
+          <a href="#" onClick={() => routeToDetail(model)}><span className="ellipsis">{model.title}</span></a> {/* title */}
         </Table.Cell>
         <Table.Cell>
-          {model.channelName} {/* Channel */}
+          <span className="ellipsis">{model.channelName}</span> {/* Channel */}
         </Table.Cell>
         <Table.Cell>
           {`${model.allowHour}h ${model.allowMinute}m`} {/* 교육시간 */}
@@ -235,7 +237,7 @@ function MyLearningTableBody(props: Props) {
           {model.approvalId} {/* 승인자 이메일 */}
         </Table.Cell>
         <Table.Cell>
-          {model.updateTime} {/* 승인일자 */}
+          {model.displayAllowTime} {/* 승인일자 */}
         </Table.Cell>
       </>
     );
@@ -255,22 +257,22 @@ function MyLearningTableBody(props: Props) {
           {model.channelName} {/* Channel */}
         </Table.Cell>
         <Table.Cell>
-          {`${model.allowHour}h ${model.allowMinute}m`} {/* 교육시간 */}
+          {`${model.allowHour}시 ${model.allowMinute}분`} {/* 교육시간 */}
         </Table.Cell>
         <Table.Cell>
-          {model.creationTime} {/* 등록일자 */}
+          {model.displayCreationTime} {/* 등록일자 */}
         </Table.Cell>
         <Table.Cell>
-          {model.creatorName} {/* 생성자 */}
+          <span className="ellipsis">{model.creatorName}</span> {/* 생성자 */}
         </Table.Cell>
         <Table.Cell>
-          {model.creatorId} {/* 생성자 E-mail */}
+          <span className="ellipsis">{model.creatorId}</span> {/* 생성자 E-mail */}
         </Table.Cell>
         <Table.Cell>
-          {model.state} {/* 상태 */}
+          {model.displayStateName} {/* 상태 */}
         </Table.Cell>
         <Table.Cell>
-          {model.updateTime} {/* 승인일자 */}
+          {model.displayAllowTime} {/* 승인일자 */}
         </Table.Cell>
       </>
     );
@@ -278,7 +280,7 @@ function MyLearningTableBody(props: Props) {
 
   return (
     <Table.Body>
-      {contentType === MyLearningContentType.PersonalCompleted ||
+      {(contentType === MyLearningContentType.PersonalCompleted || contentType === MyApprovalContentType.PersonalLearning) ||
         models &&
         models.length &&
         (models as MyTableView[]).map((model: MyTableView, index: number) => (

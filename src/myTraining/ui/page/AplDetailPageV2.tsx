@@ -33,7 +33,6 @@ function AplDetailPageV2(props: Props) {
     };
   }, []);
 
-
   /* render */
   return (
     <ContentLayout

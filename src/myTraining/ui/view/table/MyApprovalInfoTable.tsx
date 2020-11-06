@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 
@@ -21,7 +21,7 @@ function MyApprovalInfoTable(props: Props) {
     /* 승인 */
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
       return (
-        <div>{model.updateTime}</div>
+        <div>{model.displayAllowTime}</div>
       );
     }
 
@@ -125,7 +125,7 @@ function MyApprovalInfoTable(props: Props) {
   );
 }
 
-export default MyApprovalInfoTable;
+export default memo(MyApprovalInfoTable);
 
 /* globals */
 const getWriteStyle = (time: string) => {

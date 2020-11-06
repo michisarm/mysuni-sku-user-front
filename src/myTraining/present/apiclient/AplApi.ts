@@ -137,15 +137,15 @@ export default class AplApi {
   ///////////////////////// 개편 /////////////////////////
   modifyAplWithApprovalState(aplUdo: AplUdoModel) {
     return axios
-      .post(`${this.devUrl}/approvals`, aplUdo)
+      .put(`${this.devUrl}/approvals`, aplUdo)
       .then(response => response && response.data || null)
       .catch(err => err && null);
   }
 
   findAllAplsForApproval(aplRdo: AplRdoModel) {
     return axios
-      .get(`${this.devUrl}/approval-list`, { params: aplRdo })
-      .then(response => response && response.data || null)
+      .get<OffsetElementList<AplListViewModel>>(`${this.devUrl}/approval-list`, { params: aplRdo })
+      .then(response => response && new OffsetElementList<AplListViewModel>(response.data) || null)
       .catch(err => err && null);
   }
   ///////////////////////// 개편 /////////////////////////

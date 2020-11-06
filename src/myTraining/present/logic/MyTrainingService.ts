@@ -651,6 +651,14 @@ class MyTrainingService {
       this._myTrainingTableViews = this._myTrainingTableViews.sort((a, b) => b[propKey] - a[propKey]);
     }
   }
+
+  @action
+  clearAllTabCount() {
+    this.inprogressCount = 0;
+    this.completedCount = 0;
+    this.enrolledCount = 0;
+    this.retryCount = 0;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

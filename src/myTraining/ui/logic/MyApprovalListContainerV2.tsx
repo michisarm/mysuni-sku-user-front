@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { AplService } from 'myTraining/stores';
@@ -12,7 +12,7 @@ import { NoSuchContentPanelMessages } from '../model';
 import { NoSuchContentPanel } from 'shared';
 
 
-interface Props extends RouteComponentProps<RouteParams> {
+interface Props {
   contentType: MyApprovalContentType;
   aplService?: AplService;
 }
@@ -23,20 +23,20 @@ interface RouteParams {
 }
 
 function MyApprovalListContainerV2(props: Props) {
-  const { contentType, aplService, match, history } = props;
+  /* props */
+  const { contentType, aplService } = props;
   const { aplCount } = aplService!;
+
+  const history = useHistory();
+  const { pageNo } = useParams<RouteParams>();
 
   /* states */
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
-  const [viewType, setViewType] = useState<ApprovalViewType>('All');
+  const [viewType, setViewType] = useState<ApprovalViewType>('');
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   /* effects */
-  useEffect(() => {
-    /* fetch tab count */
-    fetchAllTabCount();
-  }, []);
 
   useEffect(() => {
     initPage();
@@ -60,7 +60,7 @@ function MyApprovalListContainerV2(props: Props) {
   };
 
   const getPageNo = (): number => {
-    const currentPageNo = match.params.pageNo;
+    const currentPageNo = pageNo;
     if (currentPageNo) {
       const nextPageNo = parseInt(currentPageNo) + 1;
       return nextPageNo;
@@ -77,13 +77,9 @@ function MyApprovalListContainerV2(props: Props) {
     aplService!.initQueryModel();
   };
 
-  const fetchAllTabCount = async () => {
-    await aplService!.findAllTabCount();
-  };
-
   const fetchModelsByViewType = async (viewType: ApprovalViewType) => {
     initStore();
-    await aplService!.findAllAplsByQuery();
+    await aplService!.findAllAplsForApproval(viewType);
     checkShowSeeMore();
   }
 
@@ -93,8 +89,8 @@ function MyApprovalListContainerV2(props: Props) {
   };
 
   const getTotalCount = (): number => {
-    const { aplCount } = aplService!;
-    return aplCount.all;
+    const { apls: offsetApl } = aplService!;
+    return offsetApl.totalCount;
   };
 
   const isModelExist = (): boolean => {
@@ -189,8 +185,8 @@ function MyApprovalListContainerV2(props: Props) {
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.aplService'
-))(withRouter(observer(MyApprovalListContainerV2)));
+))(observer(MyApprovalListContainerV2));
 
 /* globals */
-export type ApprovalViewType = 'All' | 'Waiting' | 'Approval' | 'Rejected';
+export type ApprovalViewType = '' | 'OpenApproval' | 'Opened' | 'Rejected';
 const PAGE_SIZE = 20;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import AplService from 'myTraining/present/logic/AplService';
 
@@ -14,9 +14,9 @@ function ApprovalRejectModal(props: Props) {
   const [remark, setRemark] = useState<string>('');
 
   /* handlers */
-  const onChangeRemark = (e: any) => {
+  const onChangeRemark = useCallback((e: any) => {
     setRemark(e.target.value);
-  }
+  }, []);
 
   /* render */
   return (
@@ -47,7 +47,7 @@ function ApprovalRejectModal(props: Props) {
   );
 }
 
-export default ApprovalRejectModal;
+export default memo(ApprovalRejectModal);
 
 /* globals */
 const remarkPlaceholder = `반려 사유를 입력해주세요. 

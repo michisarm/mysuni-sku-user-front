@@ -62,7 +62,7 @@ function ListLeftTopPanel(props: Props) {
       case MyApprovalContentType.PersonalLearning:
         return (
           <div className="list-number">
-            <span>전체 <b>{countModel!.totalCount}개</b> 등록</span>
+            <span>전체 <b>{countModel!.all}개</b> 등록</span>
             <span><b>{countModel!.opened}개</b> 승인</span>
             <span><b>{countModel!.openApproval}개</b> 승인 대기 중</span>
             <span><b>{countModel!.rejected}개</b> 반려</span>

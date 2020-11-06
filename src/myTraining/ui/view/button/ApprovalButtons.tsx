@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Button } from 'semantic-ui-react';
 import { AplState } from 'myTraining/model/AplState';
 
@@ -41,4 +41,4 @@ function ApprovalButtons(props: Props) {
   );
 }
 
-export default ApprovalButtons;
+export default memo(ApprovalButtons);
