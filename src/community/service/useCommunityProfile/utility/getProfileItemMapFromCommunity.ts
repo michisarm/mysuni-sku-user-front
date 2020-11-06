@@ -1,7 +1,7 @@
 import { findCommunityMyProfile } from "community/api/profileApi";
 import Profile from "community/model/Profile";
 import { setCommunityProfileItem } from "community/store/CommunityProfileStore";
-import CommunityProfileItem from "community/viewModel/CommunityProfile";
+import { CommunityProfileItem } from "community/viewModel/CommunityProfile";
 
 export async function getProfileItemMapFromCommunity(): Promise<void> {
     const profileItem: CommunityProfileItem = {

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Segment, } from "semantic-ui-react";
-import CommunityProfileItem from "community/viewModel/CommunityProfile";
+import {CommunityProfileItem} from "community/viewModel/CommunityProfile";
 import ContentsProfileEditView from "./ContentsProfileEditView";
 import { reactConfirm } from "@nara.platform/accent";
 import { saveCommunityProfile } from "community/service/useCommunityProfile/utility/saveCommunityProfile";

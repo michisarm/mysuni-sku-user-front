@@ -1,4 +1,4 @@
-import CommunityProfile from 'community/viewModel/CommunityProfile';
+import {CommunityProfile} from 'community/viewModel/CommunityProfile';
 import { createStore } from './Store';
 
 const [

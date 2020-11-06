@@ -5,7 +5,7 @@ interface Item {
   editing?: boolean;
 }
 
-export default interface CommunityProfileItem extends Item {
+export interface CommunityProfileItem extends Item {
   name: string;
   company: IdName;
   profileImg: string;
@@ -15,7 +15,7 @@ export default interface CommunityProfileItem extends Item {
   hobby: string;
 }
 
-export default interface CommunityProfile {
+export interface CommunityProfile {
   name: string;
   company: IdName;
   profileImg: string;
@@ -23,4 +23,19 @@ export default interface CommunityProfile {
   nickname: string;
   introduce: string;
   hobby: string;
+}
+
+export interface CommunityProfileMyCommunityItem {
+  type: string;
+  field: string;
+  name: string;
+  // 왕관
+  creatorName: string;
+  memberCount: number;
+  createdTime: number;
+}
+
+export interface CommunityProfileMyCommunity {
+  result: CommunityProfileMyCommunityItem[];
+  totalCount: number;
 }

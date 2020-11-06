@@ -1,15 +1,17 @@
 import React, {ChangeEvent, Component, createRef, useCallback, useRef} from 'react'
-import CommunityProfileItem from 'community/viewModel/CommunityProfile'
+import {CommunityProfileItem} from 'community/viewModel/CommunityProfile'
 import { getCommunityProfileItem, setCommunityProfileItem } from 'community/store/CommunityProfileStore'
 import ContentsProfileEditView from './ContentsProfileEditView';
 import { upload } from 'community/api/FileApi';
 
 interface ProfileTitleViewProps {
-    profileItem: CommunityProfileItem;
+  profileItem: CommunityProfileItem;
+  menuType: string;
 }
 
 const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleView({
-  profileItem
+  profileItem,
+  menuType
 }) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const onClickFileButton = useCallback(() => {
@@ -128,9 +130,11 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
                                 <span>Following</span>
                                 <em>296</em>
                             </li>
+                            {menuType==='myProfile' && (
                             <li>
                                 <button type="button" className="btn_profile_edit" onClick={handleEditClick}>프로필수정</button>
                             </li>
+                            )}
                         </ul>
                     </>
                 )}

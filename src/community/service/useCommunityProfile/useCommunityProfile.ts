@@ -1,5 +1,5 @@
 import { onCommunityProfileItem } from "community/store/CommunityProfileStore";
-import CommunityProfile from "community/viewModel/CommunityProfile";
+import {CommunityProfile} from "community/viewModel/CommunityProfile";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getCommunityProfile } from "./utility/getCommunityProfile";
 
