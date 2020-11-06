@@ -35,7 +35,7 @@ export function useLectureCubeType(cubeId?: string): [Value] {
       return;
     }
     findPersonalCube(cubeId).then(function(personalCube) {
-      if (personalCube !== undefined) {
+      if (personalCube !== undefined && personalCube !== null && (personalCube as unknown) !== "") {
         setLectureCubeType({
           type: personalCube.contents.type,
         });

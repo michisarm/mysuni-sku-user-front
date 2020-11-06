@@ -4,7 +4,7 @@
  * http://ma.mysuni.sk.com/api/mytraining/mytraining/mytrainings/byState/filterWithJoinedValue
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useLectuerCubeOverview } from '../../service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
@@ -17,6 +17,10 @@ import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummar
 function LectureCubeWebPagePage() {
   useLectuerCubeOverview();
   const [lectureWebpage] = useLectureWebpage();
+  useEffect(() => {
+    console.log('pageview', lectureWebpage);
+  },[]);
+
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />

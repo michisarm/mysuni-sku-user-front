@@ -2,10 +2,8 @@ import React from 'react';
 
 const LectureAudioView: React.FC = function LectureAudioView() {
   return (
-    <div
+    <div className="video-container"
       style={{
-        width: '100%',
-        maxWidth: 950,
         height: 184,
         backgroundColor: '#a8a8a8',
       }}
