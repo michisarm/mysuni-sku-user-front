@@ -6,6 +6,7 @@ import SkProfileService from '../../../../profile/present/logic/SkProfileService
 import { findSkProfileByAudienceId } from '../../api/profileApi';
 import { useLectureDiscussion } from '../../service/useLectureDiscussion';
 import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
+import defaultImage from '../../../../style/media/img-profile-80-px.png';
 
 function LectureDiscussionContainer() {
   const [lectureDiscussion] = useLectureDiscussion();
@@ -42,7 +43,9 @@ function LectureDiscussionContainer() {
               <div className="comment-area course-comment">
                 <div className="ui comments sub-debate">
                   <Comment>
-                    <Comment.Avatar src={lectureDiscussion.creatorImage} />
+                    <Comment.Avatar
+                      src={lectureDiscussion.creatorImage || defaultImage}
+                    />
                     <Comment.Content>
                       <Comment.Author as="a">
                         {lectureDiscussion.creator}
