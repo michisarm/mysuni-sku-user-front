@@ -1,24 +1,44 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 
 
+
 interface Props {
   model: AplModel;
+  files: Map<string, any>;
   allowHour: string;
   allowMinute: string;
-  onChangeAllowHour: (e: any) => void;
-  onChangeAllowMinute: (e: any) => void;
-  onClearAllowHour: () => void;
-  onClearAllowMinute: () => void;
+  onChangeTime: (hourOrMinute: string, e: any) => void;
+  onClearTime: (hourOrMinute: string) => void;
+  allowHourRef: any;
+  allowMinuteRef: any;
 }
 
 function MyApprovalInfoTable(props: Props) {
-  const { model, allowHour, allowMinute, onChangeAllowHour, onChangeAllowMinute, onClearAllowHour, onClearAllowMinute } = props;
+  const { model, files, allowHour, allowMinute, onChangeTime, onClearTime, allowHourRef, allowMinuteRef } = props;
+
+  /* handlers */
+  const changeAllowHour = useCallback((e: any) => {
+    onChangeTime('hour', e);
+  }, []);
+
+  const changeAllowMinute = useCallback((e: any) => {
+    onChangeTime('minute', e);
+  }, []);
+
+  const clearAllowHour = useCallback(() => {
+    onClearTime('hour');
+  }, [onClearTime]);
+
+  const clearAllowMinute = useCallback(() => {
+    onClearTime('minute');
+  }, [onClearTime]);
 
   /* render functions */
   const renderLearningTimeByApprovalState = (model: AplModel) => {
-    /* 승인 */
+    /* 승인 & 반려 */
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
       return (
         <div>{model.displayAllowTime}</div>
@@ -30,16 +50,16 @@ function MyApprovalInfoTable(props: Props) {
       <div className="time-wrap">
         <div className="time">
           <div className={`ui h48 input time ${getWriteStyle(allowHour)}`}>
-            <input type="text" value={allowHour} onChange={onChangeAllowHour} />
+            <input type="text" value={allowHour} onChange={changeAllowHour} ref={allowHourRef} />
             <label>시</label>
-            <i className="clear link icon" aria-hidden="true" onClick={onClearAllowHour} />
+            <i className="clear link icon" aria-hidden="true" onClick={clearAllowHour} />
           </div>
         </div>
         <div className="time">
           <div className={`ui h48 input time ${getWriteStyle(allowMinute)}`}>
-            <input type="text" value={allowMinute} onChange={onChangeAllowMinute} />
+            <input type="text" value={allowMinute} onChange={changeAllowMinute} ref={allowMinuteRef} />
             <label>분</label>
-            <i className="clear link icon" aria-hidden="true" onClick={onClearAllowMinute} />
+            <i className="clear link icon" aria-hidden="true" onClick={clearAllowMinute} />
           </div>
         </div>
         <div className="info-text">
@@ -103,7 +123,25 @@ function MyApprovalInfoTable(props: Props) {
         <tr>
           <th scope="row">첨부파일</th>
           <td>
-            <div><a href="#">Education UX/UI class_1.avi</a></div>
+            {(files &&
+              files.get('reference') &&
+              files
+                .get('reference')
+                .map((foundedFile: DepotFileViewModel, index: number) => (
+                  <div>
+                    <a href="#" className="link" key={index}>
+                      <span
+                        className="ellipsis"
+                        onClick={() =>
+                          depot.downloadDepotFile(foundedFile.id)
+                        }
+                      >
+                        {'    ' + foundedFile.name + '     '}
+                      </span>
+                    </a>
+                  </div>
+                ))) ||
+              null}
           </td>
         </tr>
         {model.state === AplState.Opened &&

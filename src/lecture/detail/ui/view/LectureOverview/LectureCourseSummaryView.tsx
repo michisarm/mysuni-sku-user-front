@@ -1,6 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -29,6 +29,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   lectureSummary,
   lectureReview,
 }) {
+  const [bookMark, setBookMark] = useState(false);
+  const BookMark = () => {
+    console.log('click');
+    setBookMark(!bookMark);
+  };
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -107,7 +112,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           <div className="header-right-link">
             <a onClick={toggleCourseBookmark}>
               <span>
-                <Icon className="listAdd" />
+                <Icon className={!bookMark ? 'listAdd' : 'listDelete'} />
                 {lectureSummary.mytrainingId === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}
