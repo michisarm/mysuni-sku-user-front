@@ -1,9 +1,11 @@
+import PostRdo from "community/model/PostRdo";
 import { onCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
 import { onCommunityPostListItem, setCommunityPostListItem } from "community/store/CommunityPostListStore";
 import { SearchType, SortType } from "community/ui/logic/CommunityPostListContainer";
 import { CommunityPostList } from "community/viewModel/CommunityPostList";
 import { param } from "jquery";
 import LectureParams from "lecture/detail/viewModel/LectureParams";
+import { SearchFilter } from "myTraining/model/SearchFilter";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CommunityPostCreateItem } from '../../viewModel/CommunityPostCreate';
@@ -16,7 +18,7 @@ interface Params {
   menuId: string;
 }
 
-export function useCommunityPostList(sortType:SortType, searchType: SearchType): [PostListValue] {
+export function useCommunityPostList(sortType:SortType, searchType: SearchType, searchText: string): [PostListValue] {
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [postItems, setPostItems] = useState<PostListValue>();
@@ -31,8 +33,29 @@ export function useCommunityPostList(sortType:SortType, searchType: SearchType):
     }, []);
 
     useEffect(()=>{
-      console.log('searchType', searchType)
-    },[sortType, searchType])
+      console.log('sortType이 바뀌었다', sortType)
+
+      const test: PostRdo = {
+        'startDate': 1573052400000,
+        'endDate': 1604674799999,
+        'title': '',
+        'html': '',
+        'creatorId': '',
+        'offset': 0,
+        'limit': 10,
+        'searchFilter': '',
+        'menuId': '',
+        'communityId': 'CT-9',
+        'sort': sortType
+      }
+
+      if(searchType === '제목') {
+        test.title = 'searchText'
+      }
+      console.log('test', test)
+      getCommunityPostList(test);
+
+    },[sortType])
 
     useEffect(() => {
       console.log('subscriberId', subscriberId)
@@ -81,14 +104,14 @@ export function useCommunityPostList(sortType:SortType, searchType: SearchType):
       });
 
       //리스트 조회 api 호출
-      getCommunityPostList(
-        communityId,
-        0,
-        10,
-        'TIME',
-        '',
-        ''
-      );
+      // getCommunityPostList(
+      //   communityId,
+      //   0,
+      //   10,
+      //   'TIME',
+      //   '',
+      //   ''
+      // );
 
       console.log('communityId', communityId)
       console.log('menuId', menuId)

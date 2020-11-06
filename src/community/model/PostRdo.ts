@@ -5,6 +5,7 @@ export default interface PostRdo {
   endDate: number;
   limit: number;
   offset: number;
+  sort: string;
 
   postId?: string;
   communityId?: string;
@@ -21,3 +22,27 @@ export default interface PostRdo {
   modifierId?: string;
   modifiedTime?: number;
 }
+
+// searchFilter: string;
+//   name: string;
+//   creatorName?: string;
+//   startDate: number;
+//   endDate: number;
+//   limit: number;
+//   offset: number;
+
+//   id?: string;
+//   communityId?: string;
+//   courseId?: string;
+//   createdTime?: number;
+//   creatorId?: string;
+//   deleted?: true;
+//   description?: string;
+//   field?: string;
+//   managerId?: string;
+//   managerName?: string;
+//   modifiedTime?: number;
+//   modifierId?: string;
+//   thumbnailId?: string;
+//   type?: string;
+//   visible?: string;

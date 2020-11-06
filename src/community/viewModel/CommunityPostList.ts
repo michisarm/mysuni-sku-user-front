@@ -20,4 +20,5 @@ export interface CommunityPostItem {
   commentFeedbackId: string;
   creatorId: string;
   createdTime: number;
+  nick: string;
 }

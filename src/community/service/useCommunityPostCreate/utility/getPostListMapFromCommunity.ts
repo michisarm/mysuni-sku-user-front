@@ -1,4 +1,5 @@
 import { findCommunityPostList } from 'community/api/communityApi';
+import PostRdo from 'community/model/PostRdo';
 import { setCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import { CommunityPostList } from 'community/viewModel/CommunityPostList';
 /* eslint-disable consistent-return */
@@ -21,12 +22,18 @@ import {
 
 
 async function getPostItem(
-  communityId: string,
-  offset: number,
-  limit: number,
-  sortType: string,
-  searchType: string,
-  searchText: string
+  // startDate: string,
+  // endDate: string,
+  // title: string,
+  // html: string,
+  // creatorId: string,
+  // offset: number,
+  // limit: number,
+  // searchFilter: string,
+  // menuId: string,
+  // communityId: string,
+  param: PostRdo
+
 ) {
   const communityPost: CommunityPostList = {
     items: [],
@@ -36,22 +43,28 @@ async function getPostItem(
     limit: 0,
   };
   //TODO api 수정되면 바꿀 예정
-  if (communityId !== '') {
+  if (param.communityId !== '') {
     {
       const postRdo = {
-        'communityId': 'CT-9',
+        'startDate': 1573052400000,
+        'endDate': 1604674799999,
+        'title': '',
+        'html': '',
+        'creatorId': '',
+        'offset': param.offset,
+        'limit': param.limit,
         'searchFilter': '',
-        'startDate': 1572966000000,
-        'endDate': 1604588399999,
-        'limit': 10,
-        'offset': 0
+        'menuId': '',
+        'communityId': 'CT-9',
+        'sort': param.sort
       }
       //임시로 CT-9 -> communityId 들어가야함
+      console.log('1111111111')
       const findPostData = await findCommunityPostList(postRdo);
       console.log('findPostData', findPostData)
       if (findPostData) {
         communityPost.totalCount = findPostData.totalCount;
-        communityPost.offset = offset;
+        communityPost.offset = param.offset;
         if (findPostData.results.length !== 0) {
             findPostData.results.forEach(post => {
               communityPost.items.push({
@@ -63,6 +76,7 @@ async function getPostItem(
                 createdTime: post.createdTime,
                 replyCount: post.replyCount,
                 commentFeedbackId: post.commentFeedbackId,
+                nick: '닉네임'
               });
             });
             // communityPost.items = ''
@@ -76,24 +90,32 @@ async function getPostItem(
 }
 
 export async function getPostListMapFromCommunity(
-  communityId: string,
-  offset: number,
-  limit: number,
-  sortType: string,
-  searchType: string,
-  searchText: string
+  // startDate: string,
+  // endDate: string,
+  // title: string,
+  // html: string,
+  // creatorId: string,
+  // offset: number,
+  // limit: number,
+  // searchFilter: string,
+  // menuId: string,
+  // communityId: string,
+  param: PostRdo
 ): Promise<void> {
   // void : return이 없는 경우 undefined
-
-    if (communityId !== undefined) {
-      const addflag = !!getLectureTaskItem();
+    if (param !== undefined) {
       const postItems = await getPostItem(
-        communityId,
-        offset,
-        limit,
-        sortType,
-        searchType,
-        searchText,
+        // startDate,
+        // endDate,
+        // title,
+        // html,
+        // creatorId,
+        // offset,
+        // limit,
+        // searchFilter,
+        // menuId,
+        // communityId,
+        param
       );
       if (postItems !== undefined) {
         setCommunityPostListItem({ ...postItems });

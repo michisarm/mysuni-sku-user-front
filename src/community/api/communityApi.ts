@@ -32,11 +32,14 @@ export function findCommunityPostList(
   postRdo: PostRdo
 ): Promise<PostList> {
   console.log('postRdo', postRdo)
-  const url = `${BASE_URL}/communities/${postRdo.communityId}/posts`;
+  const url = `${BASE_URL}/communities/${postRdo.communityId}/posts?startDate=${postRdo.startDate}&endDate=${postRdo.endDate}&title=${postRdo.title}&html=${postRdo.html}&creatorId=${postRdo.creatorId}&offset=${postRdo.offset}&limit=${postRdo.limit}&searchFilter=${postRdo.searchFilter}&menuId=${postRdo.menuId}&communityId=${postRdo.communityId}`;
   return axiosApi
-    .post<PostList>(url,postRdo)
+    .get<PostList>(url)
     // .get<PostList>(url)
-    .then(response => response && response.data);
+    .then(response => {
+      console.log('response', response)
+      return response && response.data
+    });
 }
 
 export function modifyCommunityPost(

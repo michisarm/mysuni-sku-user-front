@@ -6,22 +6,24 @@ import { useParams } from 'react-router-dom';
 import { Pagination, Select } from 'semantic-ui-react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
+import { SharedService } from '../../../shared/stores';
+import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
 
 interface Params {
   communityId: string;
   menuId: string;
 }
 
-export type SortType = 'TIME'|'TITLE';
-export type SearchType = '제목'|'내용'|'작성자';
+export type SortType = 'createdTime'|'replyCount';
+export type SearchType = '전체'|'제목'|'내용'|'작성자';
 
 
 function CommunityPostListContainer() {
-  const [sortType, setSortType] = useState<SortType>('TIME');
-  const [searchType, setSearchType] = useState<SearchType>('제목');
-  const [ postItems ] = useCommunityPostList(sortType, searchType);
-
-  const questionType = [{'text': '제목', 'value': 1}, {'text': '내용', 'value': 2}, {'text': '작성자', 'value': 3}]
+  const [sortType, setSortType] = useState<SortType>('createdTime');
+  const [searchType, setSearchType] = useState<SearchType>('전체');
+  const [searchText, setsearchText] = useState<string>('');
+  const [ postItems ] = useCommunityPostList(sortType, searchType, searchText);
+  // const { pageMap } = SharedService;
 
 
   console.log('postItems', postItems)
@@ -32,14 +34,39 @@ function CommunityPostListContainer() {
     console.log('handleClickRow')
   }
 
-  const onChangeSearchPost = (name: string, value: string | {}) => {
+  const onChangeSearchType = (name: string, value: SearchType) => {
     console.log('onChangePersonalCubeProps')
-    setSearchType('작성자')
+    console.log('name', name)
+    console.log('value', value)
+
+    setSearchType(value)
+  }
+
+  const onChangeSortType = (name: string, value: SortType) => {
+    console.log('onChangePersonalCubeProps')
+    console.log('name', name)
+    console.log('value', value)
+    setSortType(value)
+    //조회 api 호출
+  }
+
+  const onChangeSearchText = (value: string) => {
+    setsearchText(value)
+  }
+
+  const test = (test: number) => {
+    console.log(test)
+    console.log('test')
+  }
+
+  const onOk = () => {
+    //조회 api 호출
+    console.log('searchType', searchType)
+    console.log('searchText', searchText)
   }
 
   return (
     <>
-    <span>게시판</span>
     { postItems !== undefined && (
       <>
         <ContentLayout className="community">
@@ -47,7 +74,7 @@ function CommunityPostListContainer() {
             <div className="course-detail-center community-containter">
               <div className="community-home-contants">
                 <div className="table-board-title">
-                  <CommunityPostTopLineView totalCount={postItems.totalCount} handelClickCreateTask={handelClickCreatePost}/>
+                  <CommunityPostTopLineView sortType={sortType} totalCount={postItems.totalCount} onChangeSortType={(e, id) => onChangeSortType(e, id)} handelClickCreateTask={handelClickCreatePost}/>
                 </div>
                 <div className="mycommunity-list-wrap">
                   <div className="su-list notice">
@@ -55,22 +82,16 @@ function CommunityPostListContainer() {
                   </div>
                 </div>
                 <div className="paging margin-none">
-                {/* <Pagination
-                      activePage={pageMap.get('panopto') ? pageMap.get('panopto').page : 1}
-                      totalPages={pageMap.get('panopto') ? pageMap.get('panopto').totalPages : 1}
-                      onPageChange={(e, data) => this.findAllPanoptos(data.activePage as number)}
-                    /> */}
+                  <div className="lms-paging-holder">
+                    <Pagination
+                      activePage={ 1}
+                      totalPages={ 10}
+                      // onPageChange={(e, data) => this.findAllPanoptos(data.activePage as number)}
+                      onPageChange={(e, data) => test(2)}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Select placeholder="분류를 선택해주세요"
-                    className="s160 small-border"
-                    options={questionType}
-                    onChange={(e: any, data: any) => onChangeSearchPost('search', {
-                    id: data.value,
-                    name: e.target.innerText,
-                    })}
-                  />
-                </div>
+                <CommunityPostListSearchBox searchText={searchText} onChangeSearchType={onChangeSearchType} onChangeSearchText={onChangeSearchText} onOk={onOk}/>
               </div>
             </div>
           </div>

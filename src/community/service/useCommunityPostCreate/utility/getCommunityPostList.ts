@@ -1,12 +1,18 @@
+import PostRdo from "community/model/PostRdo";
 import { getPostListMapFromCommunity } from "./getPostListMapFromCommunity";
 
 export async function getCommunityPostList(
-  communityId: string,
-  offset: number,
-  limit: number,
-  sortType: string,
-  searchType: string,
-  searchText: string
+  // startDate: string,
+  // endDate: string,
+  // title: string,
+  // html: string,
+  // creatorId: string,
+  // offset: number,
+  // limit: number,
+  // searchFilter: string,
+  // menuId: string,
+  // communityId: string,
+  param: PostRdo
 ): Promise<void> {
-  await getPostListMapFromCommunity(communityId, offset, limit, sortType, searchType, searchText);
+  await getPostListMapFromCommunity(param);
 }

@@ -38,13 +38,14 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
 
       <a
         target="_blank"
+        className="row important new"
         onClick={() => handleClickRow(post.postId)}
       >
-        <span className="title">
+        <span className="cell title">
           {post.title}[{post.replyCount}]
         </span>
-        <span className="writer">{post.creatorId}</span>
-        <span className="date">
+        <span className="cell nick">{post.nick}</span>
+        <span className="cell date">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
         </span>
       </a>
