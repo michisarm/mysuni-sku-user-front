@@ -89,7 +89,7 @@ class AplModel extends NewQueryModel {
     if (!aplModel.requestMinute) return '교육시간(분)';
     if (!aplModel.content) return '교육내용';
     if (!aplModel.approvalId) return '승인자';
-    // if (aplModel.subsidiaries.length === 0) return '관계사 공개 범위 설정';
+    /*if (!aplModel.fileIds) return '첨부파일';*/
     return 'success';
   }
 

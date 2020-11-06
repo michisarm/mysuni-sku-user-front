@@ -6,7 +6,6 @@ import { Moment } from 'moment';
 import AplApi from '../apiclient/AplApi';
 import { AplQueryModel } from '../../model/AplQueryModel';
 import { AplState } from '../../model/AplState';
-import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import AplFlowApi from '../apiclient/AplFlowApi';
@@ -38,9 +37,6 @@ export default class AplService {
 
   @observable
   excelView: ExcelView = new ExcelView();
-
-  @observable
-  aplRequestCdo: AplRequestCdoModel = new AplRequestCdoModel();
 
   @observable
   aplCount: AplCountModel = new AplCountModel();
@@ -180,12 +176,6 @@ export default class AplService {
   clearAplQueryProps() {
     //
     this.aplQuery = new AplQueryModel();
-  }
-
-  @action
-  changeAplRequestProps(name: string, value: string) {
-    //
-    this.aplRequestCdo = _.set(this.aplRequestCdo, name, value);
   }
 
   @action

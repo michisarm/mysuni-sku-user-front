@@ -379,12 +379,14 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     if(name === 'requestHour'){
+      if (isNaN(Number(value))) value = '';
       if (invalidHour) {
         return;
       }
     }
 
     if(name === 'requestMinute'){
+      if (isNaN(Number(value))) value = '';
       if (invalidMin) {
         return;
       }
@@ -392,6 +394,29 @@ class AplCreatePage extends React.Component<Props, States> {
 
     if(name === 'content'){
       if (invalidContent) {
+        return;
+      }
+    }
+
+    if (aplService) aplService.changeAplProps(name, value);
+  }
+
+  onChangeAplPropsTimeValid(name: string, value: string | number) {
+    //
+    const { aplService } = this.props;
+    const invalidHour = Number(value) < 0;
+    const invalidMin = Number(value) > 59 || Number(value) < 0;
+
+    if(name === 'requestHour'){
+      if (isNaN(Number(value))) value = 0;
+      if (invalidHour) {
+        return;
+      }
+    }
+
+    if(name === 'requestMinute'){
+      if (value < 0) value = 0;
+      if (invalidMin) {
         return;
       }
     }
@@ -444,6 +469,7 @@ class AplCreatePage extends React.Component<Props, States> {
           //AplModel={apl}
           focusControlName={focusControlName}
           onChangeAplPropsValid={this.onChangeAplPropsValid}
+          onChangeAplPropsTimeValid={this.onChangeAplPropsTimeValid}
           onResetFocusControl={this.onResetFocusControl}
           //onGetFileBoxIdForApl={this.getFileBoxIdForApl}
           handleOk={this.handleOK}

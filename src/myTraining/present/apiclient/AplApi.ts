@@ -1,6 +1,5 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { AplRdoModel } from '../../model/AplRdoModel';
-import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
@@ -12,12 +11,9 @@ export default class AplApi {
   serverUrl = '/api/mytraining/apl';
   devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === '' ?
     this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API ;
-  /*
-  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_AP P_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl;
-  */
 
-  URL='http://localhost:8233/apl';
+  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+    this.serverUrl : this.devUrl;
 
   static instance: AplApi;
 
