@@ -1,11 +1,10 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 // react-ga & gtm import
-//import ReactGA from 'react-ga';
-//import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga';
+import TagManager from 'react-gtm-module';
 
 import moment from 'moment';
 import { ActionLogService } from 'shared/stores';
@@ -24,42 +23,38 @@ import ListStampCardView from '../view/ListStampCardView';
 import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
 import CommunityLectureContainer from '../../sub/Community/CommunityLectureContainer';
 
-
 export interface OnViewDetailData {
-  model: LectureModel | MyTrainingModel | InMyLectureModel,
+  model: LectureModel | MyTrainingModel | InMyLectureModel;
 }
 
 interface Props {
-  actionLogService?: ActionLogService,
-  model: LectureModel | MyTrainingModel | InMyLectureModel,
-  lectureView?: LectureViewModel,
-  rating?: number,
-  thumbnailImage?: string,
-  action?: Action | ActionType,
-  toggle?: boolean,
-  onAction?: () => void,
-  onViewDetail?: (e: any, data: OnViewDetailData) => void,
-  onToggle?: (openState: boolean) => void,
-  GA_NAME?: string,
+  actionLogService?: ActionLogService;
+  model: LectureModel | MyTrainingModel | InMyLectureModel;
+  lectureView?: LectureViewModel;
+  rating?: number;
+  thumbnailImage?: string;
+  action?: Action | ActionType;
+  toggle?: boolean;
+  onAction?: () => void;
+  onViewDetail?: (e: any, data: OnViewDetailData) => void;
+  onToggle?: (openState: boolean) => void;
+  GA_NAME?: string;
 }
 
 interface States {
-  hovered: boolean,
-  open: boolean,
+  hovered: boolean;
+  open: boolean;
 }
 
 interface ActionWith extends Action {
-  type: ActionType,
+  type: ActionType;
 }
-
 
 /**
  * 러닝카드 컴포넌트입니다.
  */
 // @inject(({ learning }) => ({ cardService: learning.cardService }))
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
+@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 @observer
 class LectureContainer extends Component<Props, States> {
@@ -83,8 +78,8 @@ class LectureContainer extends Component<Props, States> {
     thumbnailImage: null,
     action: null,
     toggle: false,
-    onAction: () => { },
-    onViewDetail: () => { },
+    onAction: () => {},
+    onViewDetail: () => {},
   };
 
   static defaultActions: ActionWith[] = [
@@ -92,7 +87,11 @@ class LectureContainer extends Component<Props, States> {
     { type: ActionType.Remove, iconName: 'remove2' },
     { type: ActionType.My, iconName: 'my' },
     { type: ActionType.Play, iconName: 'play2', text: 'Play' },
-    { type: ActionType.LearningStart, iconName: 'play2', text: 'LearningStart' },
+    {
+      type: ActionType.LearningStart,
+      iconName: 'play2',
+      text: 'LearningStart',
+    },
     { type: ActionType.Download, iconName: 'download2', text: 'Download' },
     { type: ActionType.Join, iconName: 'join', text: 'Join' },
   ];
@@ -103,7 +102,9 @@ class LectureContainer extends Component<Props, States> {
   };
 
   // react-ga tracking id
-  //componentDidMount() { ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`); }
+  componentDidMount() {
+    ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
+  }
 
   onHoverIn() {
     const { actionLogService, model } = this.props;
@@ -122,7 +123,7 @@ class LectureContainer extends Component<Props, States> {
   }
 
   onToggleCourse() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       open: !prevState.open,
     }));
   }
@@ -132,16 +133,16 @@ class LectureContainer extends Component<Props, States> {
     const { action } = this.props;
     let newAction: Action | undefined;
 
-    const act: ActionWith | undefined = LectureContainer.defaultActions
-      .find((defaultAction) => defaultAction.type === action);
+    const act: ActionWith | undefined = LectureContainer.defaultActions.find(
+      defaultAction => defaultAction.type === action
+    );
 
     if (act) {
       newAction = {
         iconName: act.iconName,
         text: act.text,
       };
-    }
-    else {
+    } else {
       newAction = action as Action;
     }
     return newAction;
@@ -153,22 +154,28 @@ class LectureContainer extends Component<Props, States> {
       model,
     };
 
-    // (하위컴포넌트)BoxCardView.tsx 에서 event값 이용해 GA_NAME 판별 후 GA Event에 카테고리 클릭 수 전송. 
+    // (하위컴포넌트)BoxCardView.tsx 에서 event값 이용해 GA_NAME 판별 후 GA Event에 카테고리 클릭 수 전송.
     if (GA_NAME === 'recommend_detail_btn') {
       // 추천과정
       Event('recommend_detail_btn', 'click_recommed_detail_btn', 'detail');
-    }
-    else if (GA_NAME === 'studying_detail_btn') {
+    } else if (GA_NAME === 'studying_detail_btn') {
       // 학습과정
-      Event('studying_detail_btn', 'click_studying_detail_btn', '_study_detail');
+      Event(
+        'studying_detail_btn',
+        'click_studying_detail_btn',
+        '_study_detail'
+      );
     }
 
-    actionLogService?.registerSeenActionLog({ lecture: model, subAction: '상세보기' });
+    actionLogService?.registerSeenActionLog({
+      lecture: model,
+      subAction: '상세보기',
+    });
 
     onViewDetail!(e, data);
 
     /* react-gtm */
-    //TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
+    TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
   }
 
   /* render functions */
@@ -189,13 +196,9 @@ class LectureContainer extends Component<Props, States> {
             rating 은 표시되나 date 는 표시되지 않음.
       ]
     */
-    const {
-      model, thumbnailImage,
-      onAction,
-    } = this.props;
+    const { model, thumbnailImage, onAction } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
-
 
     let state = model.state;
     let date;
@@ -204,8 +207,7 @@ class LectureContainer extends Component<Props, States> {
       state = '권장과정';
       rating = undefined;
       date = undefined;
-    }
-    else if (state) {
+    } else if (state) {
       rating = undefined;
       date = model.timeStrByState;
     }
@@ -230,7 +232,8 @@ class LectureContainer extends Component<Props, States> {
   renderListCard() {
     //
     const {
-      model, thumbnailImage,
+      model,
+      thumbnailImage,
       // onAction,
     } = this.props;
 
@@ -247,7 +250,8 @@ class LectureContainer extends Component<Props, States> {
   renderListStampCard() {
     //
     const {
-      model, thumbnailImage,
+      model,
+      thumbnailImage,
       // onAction,
     } = this.props;
 
@@ -263,10 +267,7 @@ class LectureContainer extends Component<Props, States> {
 
   renderLineCard() {
     //
-    const {
-      model, thumbnailImage,
-      onAction, GA_NAME
-    } = this.props;
+    const { model, thumbnailImage, onAction, GA_NAME } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
 
@@ -277,8 +278,7 @@ class LectureContainer extends Component<Props, States> {
       state = '권장과정';
       rating = undefined;
       date = undefined;
-    }
-    else if (state) {
+    } else if (state) {
       rating = undefined;
       date = model.timeStrByState;
     }
@@ -307,15 +307,12 @@ class LectureContainer extends Component<Props, States> {
 
   renderCourseCard() {
     //
-    const {
-      lectureView, thumbnailImage, toggle,
-      onAction,
-    } = this.props;
+    const { lectureView, thumbnailImage, toggle, onAction } = this.props;
     const { open } = this.state;
 
     return (
       <CourseLectureContainer
-        lectureView={lectureView || {} as any}
+        lectureView={lectureView || ({} as any)}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         toggle={toggle}
@@ -330,14 +327,18 @@ class LectureContainer extends Component<Props, States> {
   renderCommunityCard() {
     //
     const {
-      model, thumbnailImage, toggle,
-      onAction, onToggle, children,
+      model,
+      thumbnailImage,
+      toggle,
+      onAction,
+      onToggle,
+      children,
     } = this.props;
     const { open } = this.state;
 
     return (
       <CommunityLectureContainer
-        model={model || {} as any}
+        model={model || ({} as any)}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         toggle={toggle}
@@ -357,20 +358,15 @@ class LectureContainer extends Component<Props, States> {
 
     if (groupType === GroupType.Box) {
       return this.renderBoxCard();
-    }
-    else if (groupType === GroupType.List) {
+    } else if (groupType === GroupType.List) {
       return this.renderListCard();
-    }
-    else if (groupType === GroupType.ListStamp) {
+    } else if (groupType === GroupType.ListStamp) {
       return this.renderListStampCard();
-    }
-    else if (groupType === GroupType.Line) {
+    } else if (groupType === GroupType.Line) {
       return this.renderLineCard();
-    }
-    else if (groupType === GroupType.Course) {
+    } else if (groupType === GroupType.Course) {
       return this.renderCourseCard();
-    }
-    else if (groupType === GroupType.Community) {
+    } else if (groupType === GroupType.Community) {
       return this.renderCommunityCard();
     }
     return null;
@@ -381,5 +377,5 @@ export default LectureContainer;
 
 //react-GA Event
 export const Event = (category: string, action: string, label: string) => {
-  //ReactGA.event({ category, action });
+  ReactGA.event({ category, action });
 };

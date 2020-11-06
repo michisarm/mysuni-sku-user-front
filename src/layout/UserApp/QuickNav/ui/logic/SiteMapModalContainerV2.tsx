@@ -143,8 +143,8 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     {
       name: '승인관리',
       items: [
-        { name: '유료과정', path: myPageRoutePaths.myApprovalList() },
-        { name: '개인학습', path: myPageRoutePaths.myApprovalAddPersonalLearning() },
+        { name: '유료과정', path: myPageRoutePaths.approvalPaidCourse() },
+        { name: '개인학습', path: myPageRoutePaths.approvalPersonalLearning() },
       ],
     },
     {

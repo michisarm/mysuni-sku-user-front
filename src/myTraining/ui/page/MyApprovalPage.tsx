@@ -1,19 +1,23 @@
 
-import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import Tab, { TabItemModel } from 'shared/components/Tab';
-import { ApprovalCubeService } from 'myTraining/stores';
+import { ApprovalCubeService, AplService } from 'myTraining/stores';
 import routePaths from '../../routePaths';
+import { CountType } from 'myTraining/model/AplRdoModel';
 import MyApprovalContentType from '../model/MyApprovalContentType';
 import MyApprovalContentTypeName from '../model/MyApprovalContentTypeName';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
+import MyApprovalListContainerV2 from '../logic/MyApprovalListContainerV2';
 
-interface Props extends RouteComponentProps<RouteParams> {
+
+interface Props {
   approvalCubeService?: ApprovalCubeService;
+  aplService?: AplService;
 }
 
 interface RouteParams {
@@ -22,17 +26,33 @@ interface RouteParams {
 }
 
 function MyApprovalPage(props: Props) {
-  const { approvalCubeService, history, match } = props;
-  const { approvalCubeOffsetList: { totalCount } } = approvalCubeService!;
-  const currentTab = match.params.tab;
+  /* props */
+  const { approvalCubeService, aplService } = props;
+  const { approvalCubeOffsetList: { totalCount: paidCourseCount } } = approvalCubeService!;
+  const { aplCount: { all: personalLearningCount } } = aplService!;
+
+  const history = useHistory();
+  const { tab } = useParams<RouteParams>();
+
+  /* effects */
+  useEffect(() => {
+    aplService!.findAllTabCount(CountType.approvalId);
+
+    return () => aplService!.clearAplCount();
+  }, []);
 
   /* functions */
   const getTabs = (): TabItemModel[] => {
     return [
       {
-        name: MyApprovalContentType.ApprovalList,
-        item: getTabItem(MyApprovalContentType.ApprovalList, totalCount),
+        name: MyApprovalContentType.PaidCourse,
+        item: getTabItem(MyApprovalContentType.PaidCourse, paidCourseCount),
         render: () => <MyApprovalListContainer />
+      },
+      {
+        name: MyApprovalContentType.PersonalLearning,
+        item: getTabItem(MyApprovalContentType.PersonalLearning, personalLearningCount),
+        render: () => <MyApprovalListContainerV2 contentType={MyApprovalContentType.PersonalLearning} />
       }
     ];
   };
@@ -46,6 +66,7 @@ function MyApprovalPage(props: Props) {
     );
   };
 
+  /* handlers */
   const onChangeTab = (tab: TabItemModel): string => {
     history.push(routePaths.approvalTab(tab.name));
     return routePaths.approvalTab(tab.name);
@@ -57,13 +78,13 @@ function MyApprovalPage(props: Props) {
       className="MyApprovalPage"
       breadcrumb={[
         { text: '승인관리' },
-        { text: convertTabToContentTypeName(currentTab) }
+        { text: convertTabToContentTypeName(tab) }
       ]}
     >
       <MyApprovalContentHeader />
       <Tab
         tabs={getTabs()}
-        defaultActiveName={currentTab}
+        defaultActiveName={tab}
         onChangeTab={onChangeTab}
       />
 
@@ -72,8 +93,9 @@ function MyApprovalPage(props: Props) {
 }
 
 export default inject(mobxHelper.injectFrom(
-  'approvalCube.approvalCubeService'
-))(withRouter(observer(MyApprovalPage)));
+  'approvalCube.approvalCubeService',
+  'myTraining.aplService'
+))(observer(MyApprovalPage));
 
 /* globals */
 const convertTabToContentTypeName = (tab: string): MyApprovalContentTypeName => {

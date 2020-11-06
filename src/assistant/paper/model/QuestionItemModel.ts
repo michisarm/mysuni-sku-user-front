@@ -4,6 +4,7 @@ export class QuestionItemModel {
   //
   itemNo: string = '';
   itemText: string = '';
+  imgSrc: string = '';
 
   constructor(item?: QuestionItemModel) {
     if (item) {
@@ -16,4 +17,5 @@ export class QuestionItemModel {
 decorate(QuestionItemModel, {
   itemNo: observable,
   itemText: observable,
+  imgSrc: observable,
 });

@@ -4,12 +4,7 @@ import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { onLectureTestItem } from '../../store/LectureTestStore';
-import {
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-  LectureTestItem,
-} from '../../viewModel/LectureTest';
-import { useLectureRouterParams } from '../useLectureRouterParams';
+import { LectureTestItem } from '../../viewModel/LectureTest';
 import { getCourseLectureTest } from './utility/getCourseLectureTest';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTest } from './utility/getCubeLectureTest';
@@ -23,7 +18,7 @@ export function useLectureTest(): [TestValue] {
   const params = useParams<LectureParams>();
 
   const getCubeTestItem = useCallback((params: LectureParams) => {
-    getCubeLectureTest(params.cubeId!);
+    getCubeLectureTest(params);
   }, []);
 
   const getCourseTestItem = useCallback((params: LectureParams) => {

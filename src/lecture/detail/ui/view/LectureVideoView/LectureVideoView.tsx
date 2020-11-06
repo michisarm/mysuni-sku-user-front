@@ -34,10 +34,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     ],
   };
   return (
-    <div
+    <div className="video-container"
       style={{
-        width: '100%',
-        maxWidth: 950,
         height: 535,
         backgroundColor: '#a8a8a8',
       }}

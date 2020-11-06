@@ -152,16 +152,15 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 .g-info .balloon-pop {
   display: none;
   position: absolute;
+  top: 55px;
   right: -2px;
-  bottom: -5.4375rem;
-  width: 8.75rem;
-  height: 6.6875rem;
+  width: auto;
   background: url('./media/GNB_menu_logout.png') 0 0 no-repeat;
   background-size: 100% 100%;
   z-index: 100;
 }
 .g-info .balloon-pop ul {
-  padding: 1.625rem 1.25rem 0;
+  padding: 1.625rem 1.25rem;
 }
 .g-info .balloon-pop ul li {
   margin-bottom: 12px;
@@ -169,6 +168,7 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 .g-info .balloon-pop ul li a,
 .g-info .balloon-pop ul li button {
   display: block;
+  white-space: nowrap;
 }
 .g-info .balloon-pop ul li a span,
 .g-info .balloon-pop ul li button span {

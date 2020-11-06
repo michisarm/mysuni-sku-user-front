@@ -33,8 +33,8 @@ class MyTrainingTableViewModel {
   createDate: number = 0; // 등록일
   stampCount: number = 0; // 스탬프
 
-  passCount: number = 0;
-  rowCount: number = 0;
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   // for make observable object from json data.
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
@@ -69,7 +69,7 @@ class MyTrainingTableViewModel {
   }
 
   @computed get displayProgressRate(): string {
-    return this.isCardType() ? '-' : `${this.passCount}/${this.rowCount}`;
+    return this.isCardType() ? '-' : `${this.passedLearningCount}/${this.totalLearningCount}`;
   }
 
   /* functions */

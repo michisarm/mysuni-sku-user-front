@@ -12,6 +12,8 @@ const NoSuchContentPanelMessages = {
   EarnedBadgeList: `획득한 Badge가 없습니다.
   등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.`,
   EarnedStampList: '획득한 스탬프가 없습니다.',
+  PaidCourse: '등록된 정보가 없습니다.',
+  PersonalLearning: '승인 요청한 정보가 없습니다.',
   getMessageByConentType: (contentType: MyContentType): string => {
     return NoSuchContentPanelMessages[contentType];
   }

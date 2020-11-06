@@ -89,12 +89,18 @@ class ProfileContainer extends Component<Props, State> {
               </a>
             </li>
             <li>
+              <a href="#" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>
+                <i aria-hidden="true" className="balloon community-profile icon"/><span>Community Profile</span>
+              </a>
+            </li>
+            <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon"/><span>Logout</span>
               </button>
             </li>
           </ul>
         </div>
+        {/* <a className="lms-alarm lms-on"><span>알람</span></a> */}
       </div>
     );
   }

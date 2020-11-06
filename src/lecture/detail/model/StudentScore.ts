@@ -5,4 +5,6 @@ export default interface StudentScore {
   numberOfTrials: number;
   latestScore: number;
   gotEssay: boolean;
+  examId: string;
+  paperId: string;
 }

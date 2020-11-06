@@ -22,16 +22,21 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
-        <Radio
-          key={question.questionNo + '_' + item.itemNo}
-          className="base"
-          label={item.itemText}
-          name={`test_${question.questionNo}`}
-          value={item.itemNo}
-          checked={item.itemNo === answer}
-          onChange={setAnswerFromRadio}
-          readOnly={readOnly}
-        />
+        <div className="radio-survey-list">
+          <Radio
+            key={question.questionNo + '_' + item.itemNo}
+            className="base"
+            label={item.itemText}
+            name={`test_${question.questionNo}`}
+            value={item.itemNo}
+            checked={item.itemNo === answer}
+            onChange={setAnswerFromRadio}
+            readOnly={readOnly}
+          />
+          {item.imgSrc !== undefined && item.imgSrc !== '' && (
+            <img src={item.imgSrc} />
+          )}
+        </div>
       ))}
     </div>
   );

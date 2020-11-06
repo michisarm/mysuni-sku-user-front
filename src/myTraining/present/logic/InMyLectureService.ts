@@ -255,6 +255,11 @@ class InMyLectureService {
   }
 
   @action
+  clearAllTabCount() {
+    this._inMyListCount = 0;
+  }
+
+  @action
   sortTableViews(column: string, direction: Direction) {
 
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
