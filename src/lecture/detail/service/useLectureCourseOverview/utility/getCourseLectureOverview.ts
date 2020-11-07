@@ -60,6 +60,7 @@ async function getLectureSummary(
     operator,
     stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
     passedCount: coursePlanComplex.courseLecture.passedStudentCount,
+    studentCount: coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
   };

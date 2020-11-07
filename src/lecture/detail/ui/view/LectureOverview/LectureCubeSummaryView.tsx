@@ -12,11 +12,16 @@ import LectureStateContainer from '../../logic/LectureStateContainer';
 
 import DeleteIcon from '../../../../../style/media/delete-btn.png';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
+import LectureClassroom, {
+  Classroom,
+} from '../../../viewModel/LectureClassroom';
+import moment from 'moment';
 
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
   lectureInstructor?: LectureInstructor;
   lectureReview?: LectureReview;
+  lectureClassroom?: LectureClassroom;
 }
 
 // https://mysuni.sk.com/suni-main/expert/instructor/IS-00EO/Introduce
@@ -69,10 +74,83 @@ function getColor(college: IdName) {
   return color;
 }
 
+function getLearningPeriod(classrooms: Classroom[]): string | void {
+  if (classrooms.length > 0) {
+    let classroom = classrooms[0];
+    // 차수가 하나인 경우
+    if (classrooms.length > 1) {
+      // 오늘이 차수의 학습기간 내에 있는지 여부
+      const filteredClassrooms = classrooms.filter(classroom => {
+        const start = moment(classroom.learningStartDate)
+          .startOf('day')
+          .unix();
+        const end = moment(classroom.learningEndDate)
+          .endOf('day')
+          .unix();
+        const now = moment().unix();
+        if (start < now && now < end) {
+          return true;
+        }
+        return false;
+      });
+      if (filteredClassrooms.length > 0) {
+        classroom = filteredClassrooms[0];
+        // 오늘이 학습기간내인 차수가 여러개인 경우 시작일이 먼저인 것으로
+        if (filteredClassrooms.length > 1) {
+          const compare = (classroom1: Classroom, classroom2: Classroom) => {
+            if (
+              moment(classroom1.learningStartDate).unix() >
+              moment(classroom2.learningEndDate).unix()
+            ) {
+              return 1;
+            }
+            return -1;
+          };
+          classroom = filteredClassrooms.sort(compare)[0];
+        }
+      }
+      // 오늘이 학습기간내인 것이 없는 경우
+      else {
+        // 오늘 이후의 학습기간을 가진 차수 조회
+        const filteredClassrooms = classrooms.filter(classroom => {
+          const start = moment(classroom.learningStartDate)
+            .startOf('day')
+            .unix();
+          const now = moment().unix();
+          if (start > now) {
+            return true;
+          }
+          return false;
+        });
+        // 오늘 이후의 학습기간을 가진 차수가 여러개인 경우 제일 가까운 차수
+        if (filteredClassrooms.length > 0) {
+          classroom = filteredClassrooms[0];
+          if (filteredClassrooms.length > 1) {
+            const compare = (classroom1: Classroom, classroom2: Classroom) => {
+              if (
+                moment(classroom1.learningStartDate).unix() >
+                moment(classroom2.learningEndDate).unix()
+              ) {
+                return 1;
+              }
+              return -1;
+            };
+            classroom = filteredClassrooms.sort(compare)[0];
+          }
+        }
+      }
+    }
+    return `${moment(classroom.learningStartDate).format(
+      'YYYY.MM.DD'
+    )}~${moment(classroom.learningEndDate).format('YYYY.MM.DD')}`;
+  }
+}
+
 const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function LectureCubeSummaryView({
   lectureSummary,
   lectureInstructor,
   lectureReview,
+  lectureClassroom,
 }) {
   let difficultyLevelIcon = 'basic';
   switch (lectureSummary.difficultyLevel) {
@@ -112,29 +190,43 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className={difficultyLevelIcon} />
                 <span>{lectureSummary.difficultyLevel}</span>
               </Label>
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 && (
+                  <div className="ui label onlytext">
+                    <i aria-hidden="true" className="icon date" />
+                    <span>
+                      {getLearningPeriod(lectureClassroom.classrooms) || ''}
+                    </span>
+                  </div>
+                )}
               <Label className="bold onlytext">
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
-              {/* {lectureInstructor && lectureInstructor.instructors.length > 0 && (
-                <Label className="bold onlytext">
-                  <span className="header-span-first">강사</span>
-                  <span>
-                    {lectureInstructor.instructors
-                      .map(({ name }) => name)
-                      .join(', ')}
-                  </span>
-                </Label>
-              )} */}
-              <Label className="bold onlytext">
-                <span className="header-span-first">정원정보</span>
-                <span>000</span>
-              </Label>
-              <Label className="bold onlytext">
-                <span className="header-span-first">이수</span>
-                <span>{lectureSummary.passedCount}</span>
-                <span>명</span>
-              </Label>
+              {lectureSummary.cubeType !== 'Community' && (
+                <>
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">정원정보</span>
+                    <span>{lectureSummary.studentCount}</span>
+                    <span>명</span>
+                  </Label>
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">이수</span>
+                    <span>{lectureSummary.passedCount}</span>
+                    <span>명</span>
+                  </Label>
+                </>
+              )}
+              {lectureSummary.cubeType === 'Community' && (
+                <>
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">참여</span>
+                    <span>{lectureSummary.studentCount}</span>
+                    <span>명</span>
+                  </Label>
+                </>
+              )}
               <Label className="bold onlytext">
                 <span className="header-span-first">담당</span>
                 <span className="tool-tip">
