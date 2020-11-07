@@ -13,6 +13,7 @@ import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
 import LectureBadgeView from './LectureBadgeView';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCommentContainer from '../../logic/LectureCommentContainer';
+import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -22,6 +23,7 @@ interface LectureCourseContentViewProps {
   lecturePrecourse?: LecturePrecourse;
   lectureBadge?: LectureBadge;
   lectureComment?: LectureComment;
+  lectureRelations?: LectureRelations;
 }
 
 function hashLink(hash: string) {
@@ -39,6 +41,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lecturePrecourse,
   lectureBadge,
   lectureComment,
+  lectureRelations,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 

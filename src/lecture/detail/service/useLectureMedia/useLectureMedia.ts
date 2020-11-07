@@ -16,8 +16,8 @@ import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 type TranscriptsValue = LectureTranscript[] | undefined;
 type MediaValue = LectureMedia | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureMedia(): [TranscriptsValue, MediaValue] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [transcriptsValue, setTranscriptsValue] = useState<TranscriptsValue>();
   const [mediaValue, setMediaValue] = useState<MediaValue>();
@@ -43,7 +43,7 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
   }, [params]);
 
   useEffect(() => {
-    const next = `useLectureMedia-${++subscriberIdRef.current}`;
+    const next = `useLectureMedia-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

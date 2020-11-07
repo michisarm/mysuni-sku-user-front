@@ -135,8 +135,8 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
   });
 }
 
+let subscriberIdRef = 0;
 export function useLectureStructure(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
   const params = useParams<LectureParams>();
@@ -168,7 +168,7 @@ export function useLectureStructure(): [Value] {
   }, [params, pathname]);
 
   useEffect(() => {
-    const next = `useLectureStructure-${++subscriberIdRef.current}`;
+    const next = `useLectureStructure-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

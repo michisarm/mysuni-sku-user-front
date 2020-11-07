@@ -8,13 +8,13 @@ import { onLectureTaskViewType } from 'lecture/detail/store/LectureTaskStore';
 
 type Value = string | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureTaskViewType(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureTaskViewType-${++subscriberIdRef.current}`;
+    const next = `useLectureTaskViewType-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

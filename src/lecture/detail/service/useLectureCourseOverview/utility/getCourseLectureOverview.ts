@@ -1,4 +1,4 @@
-import { findCoursePlanContents } from '../../../api/lectureApi';
+import { findCoursePlanContents, findMenuArrange } from '../../../api/lectureApi';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import {
   setInMyLectureCdo,
@@ -7,6 +7,7 @@ import {
   setLectureDescription,
   setLectureInstructor,
   setLecturePrecourse,
+  setLectureRelations,
   setLectureReview,
   setLectureSubcategory,
   setLectureTags,
@@ -20,6 +21,7 @@ import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecours
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
+import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import InMyLectureCdo from '../../../model/InMyLectureCdo';
 import LectureParams from '../../../viewModel/LectureParams';
 import { CourseSetModel } from '../../../../../course/model';
@@ -146,6 +148,15 @@ function getLectureReview(coursePlanComplex: CoursePlanComplex): LectureReview {
   };
 }
 
+async function getLectureRelations(coursePlanComplex: CoursePlanComplex): Promise<LectureRelations | void> {
+  const { coursePlanContents: { relations } } = coursePlanComplex
+  if (Array.isArray(relations) && relations.length > 0) {
+    const serviceIds = relations.map(c => c.lectureCardId);
+    const lectures = await findMenuArrange(serviceIds);
+    return { lectures }
+  }
+}
+
 function makeInMyLectureCdo(
   params: LectureParams,
   coursePlanComplex: CoursePlanComplex
@@ -215,4 +226,10 @@ export async function getCourseLectureOverview(
   const lectureReview = getLectureReview(coursePlanComplex);
   setLectureReview(lectureReview);
   setInMyLectureCdo(makeInMyLectureCdo(params, coursePlanComplex));
+  const lectureRelations = await getLectureRelations(coursePlanComplex);
+  if (lectureRelations === undefined) {
+    setLectureRelations();
+  } else {
+    setLectureRelations(lectureRelations);
+  }
 }
