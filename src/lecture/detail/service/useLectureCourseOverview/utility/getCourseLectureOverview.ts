@@ -26,6 +26,7 @@ import InMyLectureCdo from '../../../model/InMyLectureCdo';
 import LectureParams from '../../../viewModel/LectureParams';
 import { CourseSetModel } from '../../../../../course/model';
 import { findInMyLecture } from '../../../api/mytrainingApi';
+import Instructor from '../../../model/Instructor';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -218,6 +219,15 @@ export async function getCourseLectureOverview(
   const lectureTags = getLectureTags(coursePlanComplex);
   setLectureTags(lectureTags);
   const lectureInstructor = getLectureInstructor(coursePlanComplex);
+  if (lectureInstructor.instructors.length > 0) {
+    const instructors: Instructor[] = [];
+    lectureInstructor.instructors.forEach(instructor => {
+      if (!instructors.some(c => c.usid === instructor.usid)) {
+        instructors.push(instructor);
+      }
+    })
+    lectureInstructor.instructors = instructors;
+  }
   setLectureInstructor(lectureInstructor);
   const lecturePrecourse = getLecturePrecourse(coursePlanComplex, path);
   setLecturePrecourse(lecturePrecourse);
