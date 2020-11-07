@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
+import './LectureDescriptionView.css';
 
 interface LectureDescriptionViewProps {
   htmlContent: string;

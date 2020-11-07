@@ -17,9 +17,9 @@ import { MemberViewModel } from '@nara.drama/approval';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
-import { AplService } from '../..';
 import AplMessageList from '../../present/logic/AplService';
 import { AplState } from '../../model/AplState';
+import AplService from '../../present/logic/AplService';
 import SelectType from '../../model/SelectType';
 import { CollegeService } from '../../../college/stores';
 
@@ -98,12 +98,12 @@ class AplCreateContainer extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state =
-      {
-        //open :  false,
-        //titleWrite: '',
-        //typeNameWrite: '',
-        //instituteWrite: ''
-      };
+    {
+      //open :  false,
+      //titleWrite: '',
+      //typeNameWrite: '',
+      //instituteWrite: ''
+    };
   }
 
 
@@ -224,12 +224,6 @@ class AplCreateContainer extends React.Component<Props, States> {
     );
   }
 
-  onChangeAplQueryProps(name: string, value: string | {} | string[] | boolean | undefined | Moment) {
-    //
-    const { changeAplQueryProps } = this.props.aplService || ({} as AplService);
-    if ( changeAplQueryProps ) changeAplQueryProps(name, value);
-  }
-
   onChangeAplProps(name: string, value: string | {} | string[] | boolean | undefined | Moment) {
     //
     const { changeAplProps } = this.props.aplService || ({} as AplService);
@@ -258,27 +252,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     if (onResetFocusControl) onResetFocusControl();
   }
 
-  //extensionValidator()
-  /*
-  validatedAll(file: File) {
-    //
-    if (!file || (file instanceof File && file.type === this.VALID_FILE_EXTENSION)) {
-      return;
-    }
-
-    if (file.type.match(this.VALID_FILE_EXTENSION)) {
-      reactAlert({ title: '알림', message: `${file.type} 형식은 업로드 할 수 없습니다.` });
-      return false;
-    }
-    return true;
-  }
-  */
-  //getFileBoxIdForReference(fileBoxId: string) {
   getFileBoxIdForReference(fileBoxId: string) {
     //
-
-    //console.log(FileBox.contextType);
-    //console.log(FileBox.contextType);
     this.onChangeAplProps('fileIds', fileBoxId);
   }
 
@@ -617,12 +592,12 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <div className="time">
                   <div className={
                     requestHourCount === 0 ? 'ui h48 input time'
-                      : (requestHourCount >= 100 ? 'ui h48 input time write error' : 'ui h48 input time write')
+                      : 'ui h48 input time write'
                   }
                   >
                     <input
                       id="requestHour"
-                      type="number"
+                      type="text"
                       value={(apl && apl.requestHour) || ''}
                       min="0"
                       onChange={(e: any) =>
@@ -637,12 +612,12 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <div className="time">
                   <div className={
                     requestMinuteCount === 0 ? 'ui h48 input time'
-                      : (requestMinuteCount >= 100 ? 'ui h48 input time write error' : 'ui h48 input time write')
+                      : 'ui h48 input time write'
                   }
                   >
                     <input
                       id="requestMinute"
-                      type="number"
+                      type="text"
                       value={(apl && apl.requestMinute) || ''}
                       min="0"
                       onChange={(e: any) =>
@@ -706,7 +681,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                   <div className="bottom">
                     <span className="text1"><Icon className="info16"/>
                       <span className="blind">information</span>
-                      DOC,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.
+                      DOC,PPT,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.
                       {/*파일 확장자가 exe를 제외한 모든 첨부파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.*/}
                     </span>
                   </div>

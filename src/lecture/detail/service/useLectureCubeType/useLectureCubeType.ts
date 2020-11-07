@@ -11,13 +11,13 @@ import LectureCubeType from '../../viewModel/LectureCubeType';
 
 type Value = LectureCubeType | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureCubeType(cubeId?: string): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureCubeType-${++subscriberIdRef.current}`;
+    const next = `useLectureCubeType-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 
@@ -34,8 +34,8 @@ export function useLectureCubeType(cubeId?: string): [Value] {
     if (cubeId === undefined) {
       return;
     }
-    findPersonalCube(cubeId).then(function(personalCube) {
-      if (personalCube !== undefined) {
+    findPersonalCube(cubeId).then(function (personalCube) {
+      if (personalCube !== undefined && personalCube !== null && (personalCube as unknown) !== "") {
         setLectureCubeType({
           type: personalCube.contents.type,
         });

@@ -13,14 +13,14 @@ import { getWebpageFromCube } from './utility/getWebpageFromCube';
 
 type Value = LectureWebpage | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureWebpage(): [Value] {
   const params = useLectureRouterParams();
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureWebpage-${++subscriberIdRef.current}`;
+    const next = `useLectureWebpage-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

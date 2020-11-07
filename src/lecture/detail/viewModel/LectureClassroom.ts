@@ -1,7 +1,7 @@
 import { ClassroomModel } from '../../../personalcube/classroom/model';
 import RemoteClassroom from '../model/RemoteClassroom';
 
-interface Classroom {
+export interface Classroom {
   id: string;
   round: number;
   applyingStartDate: string;

@@ -10,6 +10,7 @@ import {
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
+import { parseCubeType } from './CubeView';
 import DiscussionView from './DiscussionView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
@@ -56,8 +57,12 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>{cubeType}</li>
-          <li>{timeToHourMinuteFormat(learningTime)}</li>
+          <li>{parseCubeType(cubeType)}</li>
+          <li>
+            {cubeType === 'Community'
+              ? ''
+              : timeToHourMinuteFormat(learningTime)}
+          </li>
         </ul>
       </span>
     </Link>

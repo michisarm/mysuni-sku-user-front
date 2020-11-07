@@ -1,21 +1,24 @@
 import React, { useCallback } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { Checkbox, Table } from 'semantic-ui-react';
 import moment from 'moment';
-import routePaths from 'lecture/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import { MyTrainingService } from 'myTraining/stores';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
 import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
 import { AplModel } from 'myTraining/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { MyLearningContentType, MyPageContentType } from '../../model';
 
-interface Props extends RouteComponentProps {
-  contentType: MyContentType;
+
+interface Props {
+  contentType: MyContentType | MyApprovalContentType;
   totalCount: number;
   models: MyTableView[] | AplModel[];
   myTrainingService?: MyTrainingService;
@@ -26,10 +29,11 @@ interface Props extends RouteComponentProps {
   contentType 에 따라, 테이블 리스트 데이터가 변경됨.
 */
 function MyLearningTableBody(props: Props) {
-  const { contentType, models, totalCount, myTrainingService, history } = props;
+  const { contentType, models, totalCount, myTrainingService } = props;
   const { selectedIds, selectOne, clearOne } = myTrainingService!;
+  const history = useHistory();
 
-  console.log('MyLearningTableBody :: render :: ');
+  console.log('models :: ', models);
 
   /* handlers */
   const onClickLearn = (model: MyTableView) => {
@@ -40,13 +44,18 @@ function MyLearningTableBody(props: Props) {
 
     // Card
     if (model.isCardType()) {
-      history.push(routePaths.lectureCardOverview(cineroomId, collegeId, cubeId, serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(cineroomId, collegeId, cubeId, serviceId));
     }
     // Program 또는 Course
     else {
-      history.push(routePaths.courseOverview(cineroomId, collegeId, coursePlanId, serviceType, serviceId));
+      history.push(lectureRoutePaths.courseOverview(cineroomId, collegeId, coursePlanId, serviceType, serviceId));
     }
   };
+
+  const routeToDetail = (model: AplModel) => {
+    const { id } = model;
+    history.push(myTrainingRoutePaths.approvalPersonalLearningDetail(id));
+  }
 
   const onCheckOne = useCallback((e: any, data: any) => {
     // 이미 선택되어 있는 경우, 해제함.
@@ -205,6 +214,7 @@ function MyLearningTableBody(props: Props) {
     }
   };
 
+  /* MyLearningPage :: 개인학습 완료 */
   const renderPersonalCompleted = (model: AplModel, index: number) => {
     return (
       <>
@@ -212,10 +222,10 @@ function MyLearningTableBody(props: Props) {
           {totalCount - index} {/* No */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#"><span className="ellipsis">{model.title}</span></a> {/* title */}
+          <a href="#" onClick={() => routeToDetail(model)}><span className="ellipsis">{model.title}</span></a> {/* title */}
         </Table.Cell>
         <Table.Cell>
-          {model.channelName} {/* Channel */}
+          <span className="ellipsis">{model.channelName}</span> {/* Channel */}
         </Table.Cell>
         <Table.Cell>
           {`${model.allowHour}h ${model.allowMinute}m`} {/* 교육시간 */}
@@ -227,15 +237,50 @@ function MyLearningTableBody(props: Props) {
           {model.approvalId} {/* 승인자 이메일 */}
         </Table.Cell>
         <Table.Cell>
-          {model.updateTime} {/* 승인일자 */}
+          {model.displayAllowTime} {/* 승인일자 */}
         </Table.Cell>
       </>
     );
   };
 
+  /* MyApprovalPage :: 개인학습 */
+  const renderPersonalLearning = (model: AplModel, index: number) => {
+    return (
+      <>
+        <Table.Cell>
+          {totalCount - index} {/* No */}
+        </Table.Cell>
+        <Table.Cell className="title">
+          <a href="#" onClick={() => routeToDetail(model)}><span className="ellipsis">{model.title}</span></a> {/* title */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.channelName} {/* Channel */}
+        </Table.Cell>
+        <Table.Cell>
+          {`${model.allowHour}시 ${model.allowMinute}분`} {/* 교육시간 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.displayCreationTime} {/* 등록일자 */}
+        </Table.Cell>
+        <Table.Cell>
+          <span className="ellipsis">{model.creatorName}</span> {/* 생성자 */}
+        </Table.Cell>
+        <Table.Cell>
+          <span className="ellipsis">{model.creatorId}</span> {/* 생성자 E-mail */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.displayStateName} {/* 상태 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.displayAllowTime} {/* 승인일자 */}
+        </Table.Cell>
+      </>
+    );
+  }
+
   return (
     <Table.Body>
-      {contentType === MyLearningContentType.PersonalCompleted ||
+      {(contentType === MyLearningContentType.PersonalCompleted || contentType === MyApprovalContentType.PersonalLearning) ||
         models &&
         models.length &&
         (models as MyTableView[]).map((model: MyTableView, index: number) => (
@@ -268,6 +313,16 @@ function MyLearningTableBody(props: Props) {
           </Table.Row>
         ))
       }
+      {
+        contentType === MyApprovalContentType.PersonalLearning &&
+        models &&
+        models.length &&
+        (models as AplModel[]).map((model: AplModel, index: number) => (
+          <Table.Row key={`learning-body-${model.id}`}>
+            {renderPersonalLearning(model, index)}
+          </Table.Row>
+        ))
+      }
     </Table.Body>
   );
 
@@ -275,7 +330,7 @@ function MyLearningTableBody(props: Props) {
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService'
-))(withRouter(observer(MyLearningTableBody)));
+))(observer(MyLearningTableBody));
 
 /* globals */
 const formatDate = (time: number) => {

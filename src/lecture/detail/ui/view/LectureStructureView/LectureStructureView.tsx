@@ -12,7 +12,7 @@ const LectureStructureView: React.FC<LectureStructureViewProps> = function Lectu
   lectureStructure,
 }) {
   return (
-    <>
+    <div className="course-info-wrapper">
       {lectureStructure.type === 'Program' && (
         <ProgramLectureStructureView lectureStructure={lectureStructure} />
       )}
@@ -25,7 +25,8 @@ const LectureStructureView: React.FC<LectureStructureViewProps> = function Lectu
       {lectureStructure.type === 'Cube' && (
         <CubeLectureStructureView lectureStructure={lectureStructure} />
       )}
-    </>
+      <div className="lms-fixed-holder" />
+    </div>
   );
 };
 

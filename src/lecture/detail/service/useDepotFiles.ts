@@ -13,7 +13,7 @@ export function useDepotFiles(fileBoxIds: string[]): [Value] {
       return;
     }
     getFiles(fileBoxIds).then(next => setValue(next));
-  }, []);
+  }, [fileBoxIds]);
 
   return [value];
 }

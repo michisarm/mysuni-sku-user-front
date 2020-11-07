@@ -42,6 +42,12 @@ async function getLectureStructureCubeItemByPersonalCube(
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
   const { id, name } = personalCube;
+  if (personalCube === undefined) {
+    return;
+  }
+  if (personalCube.contents === undefined) {
+    return;
+  }
   const cubeType = personalCube.contents.type;
   const cubeIntroId = personalCube.cubeIntro.id;
   const cubeIntro = await findCubeIntro(cubeIntroId);

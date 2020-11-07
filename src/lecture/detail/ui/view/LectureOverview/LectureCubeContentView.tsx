@@ -24,6 +24,13 @@ interface LectureCubeContentViewProps {
   lectureClassroom?: LectureClassroom;
 }
 
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
+
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
   lectureDescription,
   lectureSubcategory,
@@ -35,35 +42,51 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
+    hashLink('lms-overview');
     setActivatedTab('overview');
+  }, []);
+  const classroomHashClick = useCallback(() => {
+    hashLink('lms-classroom');
+    setActivatedTab('classroom');
   }, []);
   const commentHashClick = useCallback(() => {
     setActivatedTab('comment');
   }, []);
   return (
     <>
-      <div className="lms-inner-menu" id="lms-overview">
-        <a
-          onClick={overviewHashClick}
-          className={activatedTab === 'overview' ? 'lms-act' : ''}
-        >
-          Overview
-        </a>
-        <a
-          onClick={commentHashClick}
-          className={
-            activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
-          }
-        >
-          Comment
-          <span className="count">
-            {lectureComment !== undefined
-              ? `+${lectureComment.commentsCount}`
-              : ''}
-          </span>
-        </a>
+      <div className="lms-sticky-menu" id="lms-overview">
+        <div className="lms-fixed-inner">
+          <a
+            onClick={overviewHashClick}
+            className={activatedTab === 'overview' ? 'lms-act' : ''}
+          >
+            Overview
+          </a>
+          {lectureClassroom && (
+            <a
+              onClick={classroomHashClick}
+              className={activatedTab === 'classroom' ? 'lms-act' : ''}
+            >
+              차수정보
+            </a>
+          )}
+          <a
+            onClick={commentHashClick}
+            className={
+              activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
+            }
+          >
+            <i className="lms-comment-icon" />
+            Comment
+            <span className="count">
+              {lectureComment !== undefined
+                ? `+${lectureComment.commentsCount}`
+                : ''}
+            </span>
+          </a>
+        </div>
       </div>
-      {activatedTab === 'overview' && (
+      {(activatedTab === 'overview' || activatedTab === 'classroom') && (
         <>
           {lectureDescription && (
             <LectureDescriptionView

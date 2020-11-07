@@ -44,7 +44,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
 
     // this.clearAll();
     //window.location.href='/suni-main/my-training/my-page/ApprovalList/pages/1';
-    this.props.history.push(routePaths.myApprovalList());
+    this.props.history.push(routePaths.approvalPaidCourse());
 
   }
 
@@ -55,7 +55,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     this.onChangeSelectedProposalStateProps([]);
   }
 
-  onChangeSelectedProposalStateProps(selectedList: string []) {
+  onChangeSelectedProposalStateProps(selectedList: string[]) {
     //
     const { approvalCubeService } = this.props;
     if (approvalCubeService) approvalCubeService.changeSelectedProposalStateProps(selectedList);
@@ -67,7 +67,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     if (approvalCubeService) approvalCubeService.changeStudentRequestProps(name, value);
   }
 
-  async onChangeSelectedStudentProps(selectedList: string []) {
+  async onChangeSelectedStudentProps(selectedList: string[]) {
     //
     const { approvalCubeService } = this.props;
     if (approvalCubeService) approvalCubeService.changeSelectedStudentProps(selectedList);
@@ -86,7 +86,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
 
     if (!studentId) return;
 
-    const newSelectedList: string [] = [ studentId ];
+    const newSelectedList: string[] = [studentId];
     this.onChangeSelectedStudentProps(newSelectedList);
 
     this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
@@ -123,7 +123,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
 
     if (!studentId) return;
 
-    const newSelectedList: string [] = [ studentId ];
+    const newSelectedList: string[] = [studentId];
     this.onChangeSelectedStudentProps(newSelectedList);
 
     if (!approvalCube.remark) {

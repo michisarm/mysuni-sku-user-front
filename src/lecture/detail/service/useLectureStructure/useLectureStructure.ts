@@ -70,6 +70,9 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
     setLectureDiscussion({
       id: lectureStructure.discussion.id,
       name: lectureStructure.discussion.name,
+      time: lectureStructure.discussion.time,
+      creator: lectureStructure.discussion.creator,
+      creatorAudienceId: lectureStructure.discussion.creatorAudienceId
     });
   }
 
@@ -108,6 +111,9 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
       setLectureDiscussion({
         id: course.discussion.id,
         name: course.discussion.name,
+        time: course.discussion.time,
+        creator: course.discussion.creator,
+        creatorAudienceId: course.discussion.creatorAudienceId,
       });
     }
     if (course.cubes !== undefined) {
@@ -129,8 +135,8 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
   });
 }
 
+let subscriberIdRef = 0;
 export function useLectureStructure(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
   const params = useParams<LectureParams>();
@@ -162,7 +168,7 @@ export function useLectureStructure(): [Value] {
   }, [params, pathname]);
 
   useEffect(() => {
-    const next = `useLectureStructure-${++subscriberIdRef.current}`;
+    const next = `useLectureStructure-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

@@ -17,6 +17,7 @@ import { confirmProgress } from './utility/confirmProgress';
 
 type WatchLogValues = LectureWatchLog[] | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureWatchLog(): [
   WatchLogValues,
   (params: LectureRouterParams) => void,
@@ -24,7 +25,6 @@ export function useLectureWatchLog(): [
   (params: LectureRouterParams) => void,
   (params: LectureRouterParams) => void
 ] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [watchLogValue, setWatchLogValue] = useState<WatchLogValues>();
 
@@ -59,7 +59,7 @@ export function useLectureWatchLog(): [
   }, [params]);
 
   useEffect(() => {
-    const next = `useLectureWatchLog-${++subscriberIdRef.current}`;
+    const next = `useLectureWatchLog-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 
