@@ -152,8 +152,8 @@ async function getLectureRelations(coursePlanComplex: CoursePlanComplex): Promis
   const { coursePlanContents: { relations } } = coursePlanComplex
   if (Array.isArray(relations) && relations.length > 0) {
     const serviceIds = relations.map(c => c.lectureCardId);
-    const lectures = await findMenuArrange(serviceIds);
-    return { lectures }
+    const arrange = await findMenuArrange(serviceIds);
+    if (arrange !== null && arrange !== undefined && Array.isArray(arrange.results)) { return { lectures: arrange.results } }
   }
 }
 

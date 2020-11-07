@@ -14,6 +14,7 @@ import LectureBadgeView from './LectureBadgeView';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
+import LectureRelationsView from './LectureRelationsView';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -133,6 +134,11 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             </div>
           </div>
           {lectureBadge && <LectureBadgeView lectureBadge={lectureBadge} />}
+          {lectureRelations &&
+            Array.isArray(lectureRelations.lectures) &&
+            lectureRelations.lectures.length > 0 && (
+              <LectureRelationsView lectureRelations={lectureRelations} />
+            )}
         </>
       )}
       {activatedTab === 'comment' && <LectureCommentContainer />}

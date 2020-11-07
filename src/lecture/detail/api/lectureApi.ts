@@ -132,7 +132,7 @@ export function setCourseStudentExamId(
 
 export function findMenuArrange(
   serviceIds: string[],
-): Promise<LectureModel[]> {
+): Promise<{ results: LectureModel[] }> {
   const url = `${BASE_URL}/lectures/flow/arranges/menus`;
-  return axiosApi.post<LectureModel[]>(url, { serviceIds, arrangeType: "" }).then(response => response && response.data);
+  return axiosApi.post<{ results: LectureModel[] }>(url, { serviceIds, arrangeType: "", limit: 100 }).then(response => response && response.data);
 }
