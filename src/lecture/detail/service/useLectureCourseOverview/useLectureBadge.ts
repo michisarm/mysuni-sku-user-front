@@ -10,14 +10,14 @@ import { findByLectureUsid } from '../../api/badgeApi';
 
 type Value = LectureBadge | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureBadge(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
   const params = useLectureRouterParams();
 
   useEffect(() => {
-    const next = `useLectureBadge-${++subscriberIdRef.current}`;
+    const next = `useLectureBadge-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

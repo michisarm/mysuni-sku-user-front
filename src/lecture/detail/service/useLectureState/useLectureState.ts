@@ -14,14 +14,14 @@ import { getStateFromCube } from './utility/getStateFromCube';
 
 type Value = LectureState | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureState(): [Value] {
   const params = useLectureRouterParams();
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureState-${++subscriberIdRef.current}`;
+    const next = `useLectureState-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
+import { parseCubeType } from './CubeView';
 
 interface ProgramCubeViewProps {
   name: string;
@@ -33,8 +34,12 @@ const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>{cubeType}</li>
-          <li>{timeToHourMinuteFormat(learningTime)}</li>
+          <li>{parseCubeType(cubeType)}</li>
+          <li>
+            {cubeType === 'Community'
+              ? ''
+              : timeToHourMinuteFormat(learningTime)}
+          </li>{' '}
         </ul>
       </span>
     </Link>

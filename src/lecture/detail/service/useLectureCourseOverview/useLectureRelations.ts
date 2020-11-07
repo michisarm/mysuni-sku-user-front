@@ -1,18 +1,18 @@
-import { onLectureSubcategory } from '../../store/LectureOverviewStore';
-import LectureSubcategory from '../../viewModel/LectureOverview/LectureSubcategory';
+import { onLectureRelations } from '../../store/LectureOverviewStore';
+import LectureRelations from '../../viewModel/LectureOverview/LectureRelations';
 /* eslint-disable consistent-return */
 
 import { useEffect, useRef, useState } from 'react';
 
-type Value = LectureSubcategory | undefined;
+type Value = LectureRelations | undefined;
 
 let subscriberIdRef = 0;
-export function useLectureSubcategory(): [Value] {
+export function useLectureRelations(): [Value] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureSubcategory-${++subscriberIdRef}`;
+    const next = `useLectureRelations-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 
@@ -20,7 +20,7 @@ export function useLectureSubcategory(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureSubcategory(next => {
+    return onLectureRelations(next => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);

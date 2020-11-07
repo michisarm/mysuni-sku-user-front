@@ -24,6 +24,13 @@ interface LectureCubeContentViewProps {
   lectureClassroom?: LectureClassroom;
 }
 
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
+
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
   lectureDescription,
   lectureSubcategory,
@@ -35,7 +42,12 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
+    hashLink('lms-overview');
     setActivatedTab('overview');
+  }, []);
+  const classroomHashClick = useCallback(() => {
+    hashLink('lms-classroom');
+    setActivatedTab('classroom');
   }, []);
   const commentHashClick = useCallback(() => {
     setActivatedTab('comment');
@@ -50,6 +62,14 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           >
             Overview
           </a>
+          {lectureClassroom && (
+            <a
+              onClick={classroomHashClick}
+              className={activatedTab === 'classroom' ? 'lms-act' : ''}
+            >
+              차수정보
+            </a>
+          )}
           <a
             onClick={commentHashClick}
             className={
@@ -66,7 +86,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           </a>
         </div>
       </div>
-      {activatedTab === 'overview' && (
+      {(activatedTab === 'overview' || activatedTab === 'classroom') && (
         <>
           {lectureDescription && (
             <LectureDescriptionView

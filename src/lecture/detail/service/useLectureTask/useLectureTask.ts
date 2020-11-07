@@ -30,8 +30,9 @@ import { getCubeLectureTask } from './utility/getCubeLectureTask';
 import { getCubeLectureTaskDetail } from './utility/getCubeLectureTaskDetail';
 
 type TaskValue = LectureTask | undefined;
+
+let subscriberIdRef = 0;
 export function useLectureTask(): [TaskValue] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [taskValue, setTaskValue] = useState<TaskValue>();
   const [limit, setLimit] = useState<number>(10);
@@ -59,7 +60,7 @@ export function useLectureTask(): [TaskValue] {
   }, [params]);
 
   useEffect(() => {
-    const next = `useLectureTask-${++subscriberIdRef.current}`;
+    const next = `useLectureTask-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

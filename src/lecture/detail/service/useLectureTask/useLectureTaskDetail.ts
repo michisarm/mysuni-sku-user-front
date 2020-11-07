@@ -26,13 +26,14 @@ import { getCubeLectureTask } from './utility/getCubeLectureTask';
 import { getCubeLectureTaskDetail } from './utility/getCubeLectureTaskDetail';
 
 type TaskDetailValue = LectureTaskDetail | undefined;
+
+let subscriberIdRef = 0;
 export function useLectureTaskDetail(): [TaskDetailValue] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [taskDetailValue, setTaskDetailValue] = useState<any>();
 
   useEffect(() => {
-    const next = `useLectureTaskDetail-${++subscriberIdRef.current}`;
+    const next = `useLectureTaskDetail-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

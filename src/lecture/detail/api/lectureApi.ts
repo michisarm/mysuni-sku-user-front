@@ -9,6 +9,8 @@
  */
 
 import { axiosApi } from '@nara.platform/accent';
+import { LectureModel } from '../../model';
+import { Lecture } from '../../shared';
 import CoursePlanComplex from '../model/CoursePlanComplex';
 import LectureCard from '../model/LectureCard';
 import LectureStudentView from '../model/LectureStudentView';
@@ -126,4 +128,11 @@ export function setCourseStudentExamId(
 ): Promise<Test> {
   const url = `${BASE_URL}/students/flow/setCourseStudentExamId/${coursePlanId}/${studentId}`;
   return axiosApi.get<Test>(url).then(response => response && response.data);
+}
+
+export function findMenuArrange(
+  serviceIds: string[],
+): Promise<{ results: LectureModel[] }> {
+  const url = `${BASE_URL}/lectures/flow/arranges/menus`;
+  return axiosApi.post<{ results: LectureModel[] }>(url, { serviceIds, arrangeType: "", limit: 100 }).then(response => response && response.data);
 }

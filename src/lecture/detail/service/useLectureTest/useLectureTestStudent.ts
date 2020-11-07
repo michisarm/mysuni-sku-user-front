@@ -11,8 +11,8 @@ import { getCubeLectureTestStudent } from './utility/getCubeLectureTest';
 
 type TestStudentValue = LectureTestStudentItem | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureTestStudent(): [TestStudentValue] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [testStudentValue, setTestStudentValue] = useState<TestStudentValue>();
   const params = useParams<LectureParams>();
@@ -35,7 +35,7 @@ export function useLectureTestStudent(): [TestStudentValue] {
   }, [params]);
 
   useEffect(() => {
-    const next = `useLectureTestStudent-${++subscriberIdRef.current}`;
+    const next = `useLectureTestStudent-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

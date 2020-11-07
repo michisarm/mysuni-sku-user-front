@@ -6,13 +6,13 @@ import LectureDiscussion from '../viewModel/LectureDiscussion';
 
 type Value = LectureDiscussion | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureDiscussion(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureDiscussion-${++subscriberIdRef.current}`;
+    const next = `useLectureDiscussion-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 
