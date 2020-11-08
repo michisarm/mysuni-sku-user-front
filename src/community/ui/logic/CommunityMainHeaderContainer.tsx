@@ -1,6 +1,7 @@
 import React from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
+import profileIcon from '../../../style/media/img-profile-80-px.png';
 
 function CommunityMainHeaderContainer() {
   const profile = useMyProfile();
@@ -10,7 +11,9 @@ function CommunityMainHeaderContainer() {
         <div className="cell">
           <div className="cell-inner">
             <div className="profile">
-              <div className="pic">{/* <img /> */}</div>
+              <div className="pic">
+                <img src={profileIcon} />
+              </div>
             </div>
             <div className="text-info">
               <div className="name">
