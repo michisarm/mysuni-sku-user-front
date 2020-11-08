@@ -26,23 +26,30 @@ export function requestFieldList() {
 
 function communityToItem(community: Community): OpenCommunityItem {
   const {
+    type,
     communityId,
     thumbnailId,
     name,
     managerName,
     description,
     memberCount,
+    fieldName,
+    approved,
+    lastPostTime,
   } = community;
   return {
+    type,
     communityId,
     image: thumbnailId,
     name,
     hasNewPost: false,
     manager: managerName,
     memberCount,
-    approvedState: 'None',
+    approvedState: approved === null ? 'None' : approved ? 'Approved' : 'Wait',
     contents: description,
-    fieldTitle: '',
+    fieldTitle: fieldName,
+    approved,
+    lastPostTime,
   };
 }
 
@@ -61,9 +68,17 @@ export function requestOpenCommunityList() {
         communitiesTotalCount: 0,
       });
     } else {
+      const next: OpenCommunityItem[] = [];
+      communities.results
+        .filter(c => c.approved !== true)
+        .forEach(community => {
+          if (!next.some(c => c.communityId === community.communityId)) {
+            next.push(communityToItem(community));
+          }
+        });
       setOpenCommunityIntro({
         ...myOpenCommunityIntro,
-        communities: communities.results.map(communityToItem),
+        communities: next,
         communitiesTotalCount: communities.totalCount,
       });
     }

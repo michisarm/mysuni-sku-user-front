@@ -104,9 +104,7 @@ class ProfileContainer extends Component<Props, State> {
             <li>
               <a
                 href="#"
-                onClick={() =>
-                  this.props.history.push(myTrainingRoutePaths.myPage())
-                }
+                onClick={() => this.props.history.push('/community/my-profile')}
               >
                 <i
                   aria-hidden="true"

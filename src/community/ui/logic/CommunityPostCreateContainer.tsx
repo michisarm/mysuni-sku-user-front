@@ -1,6 +1,7 @@
 import { useCommunityPostCreate } from 'community/service/useCommunityPostCreate/useCommunityPostCreate';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useCommunityHome } from '../../store/CommunityHomeStore';
 import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPostCreateView';
 
 interface Params {
@@ -11,12 +12,19 @@ interface Params {
 
 function CommunityPostCreateContainer() {
   const { communityId, postId, menuId } = useParams<Params>();
+  const communityHome = useCommunityHome();
   const [postCreateItem] = useCommunityPostCreate(communityId, postId);
   return (
     <>
-    {postCreateItem !== undefined && (
-      <CommunityPostCreateView postItem={postCreateItem} communityId={communityId} menuId={menuId} postId={postId} />
-    )}
+      {postCreateItem !== undefined && communityHome !== undefined && (
+        <CommunityPostCreateView
+          postItem={postCreateItem}
+          communityId={communityId}
+          menuId={menuId}
+          postId={postId}
+          menus={communityHome.menus}
+        />
+      )}
     </>
   );
 }

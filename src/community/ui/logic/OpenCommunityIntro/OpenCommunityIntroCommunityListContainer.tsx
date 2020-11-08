@@ -76,7 +76,7 @@ function OpenCommunityIntroCommunityListContainer() {
   return (
     <>
       <div className="open-tab-radio">
-        <Radio
+        {/* <Radio
           className="base"
           label="최신순"
           name="radioGroup"
@@ -101,7 +101,7 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가입대기"
           name="radioGroup"
           value="value04"
-        />
+        /> */}
       </div>
       <div className="course-detail-center community-containter padding-none">
         <div className="community-open-contants">
@@ -116,8 +116,8 @@ function OpenCommunityIntroCommunityListContainer() {
       </div>
       <div className="more-comments">
         <Button icon className="left moreview">
-          <Icon className="moreview" />
-          list more
+          {/* <Icon className="moreview" />
+          list more */}
         </Button>
       </div>
     </>

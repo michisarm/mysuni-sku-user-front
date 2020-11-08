@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function MyProfileFeedPage() {
-  return (<>MyProfileFeedPage</>)
+  return <div />;
 }
 
-export default MyProfileFeedPage
+export default MyProfileFeedPage;

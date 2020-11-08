@@ -147,7 +147,7 @@ function CommunityHomeTreeContainer() {
         <div className="commnuity-left-top">
           <div className="community-left-header">
             <span className="community-badge blue">
-              {communtyHome.community.field}
+              {communtyHome.community.fieldName}
             </span>
             <a className="community-share">
               <span>공유하기</span>
@@ -164,7 +164,7 @@ function CommunityHomeTreeContainer() {
                 멤버 <strong>{communtyHome.community.memberCount}</strong>
               </span>
             </div>
-            <button className="ui button fix line">가입하기</button>
+            {/* <button className="ui button fix line">가입하기</button> */}
           </div>
         </div>
         <div className="community-home-right-contents">

@@ -1,7 +1,15 @@
-import React from 'react'
+import React from 'react';
+import CommunityMyProfileMenuContainer from '../logic/CommunityMyProfileMenuContainer';
+import CommunityMyProfileContentsContainer from '../logic/CommunityMyProfileContentsContainer';
 
 function MyProfilePage() {
-  return (<>MyProfilePage</>)
+  return (
+    <>
+      <div>
+        <CommunityMyProfileContentsContainer />
+      </div>
+    </>
+  );
 }
 
-export default MyProfilePage
+export default MyProfilePage;
