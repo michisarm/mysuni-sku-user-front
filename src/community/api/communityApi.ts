@@ -2,7 +2,6 @@ import { axiosApi, OffsetElementList } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
 import PostList from 'community/model/PostList';
-import { CommunityPostItem } from 'community/viewModel/CommunityPostList';
 import PostCdo from 'community/model/PostCdo';
 import PostUdo from 'community/model/PostUdo';
 import Community from '../model/Community';
@@ -148,4 +147,11 @@ export function findAllMenus(
 ): Promise<CommunityMenu[] | undefined> {
   const url = `${BASE_URL}/${communityId}/menus`;
   return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
+}
+export function deleteCommunityPost(
+  communityId: string,
+  postId: string
+): Promise<Post> {
+  const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
+  return axiosApi.delete(url).then(response => response && response.data);
 }
