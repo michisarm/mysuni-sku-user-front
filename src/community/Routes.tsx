@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
@@ -18,6 +17,7 @@ import MyProfileRoutes from './ui/page/MyProfileRoutes';
 import ProfileRoutes from './ui/page/ProfileRoutes';
 import BasicPostEditPage from './ui/page/BasicPostEditPage';
 import DataPostEditPage from './ui/page/DataPostEditPage';
+import CommunityRoutes from './ui/page/CommunityRoutes';
 
 class Routes extends React.Component {
   //
@@ -29,32 +29,7 @@ class Routes extends React.Component {
         <Route path="/community/my-profile" component={MyProfileRoutes} />
         <Route path="/community/profile/:profileId" component={ProfileRoutes} />
 
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId" component={CommunityHomePage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/all" component={AllPostsPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/notice" component={NoticePostsPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId" component={PostsPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/post/:postId/edit" component={BasicPostEditPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/data/:postId/edit" component={DataPostEditPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
-        <Route exact path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
-        <Route path="/community/cineroom/:cineroomId/college/:collegeId/:communityId/member" component={MemberRoutes} />
-
-
-        <Route exact path="/community/college/:collegeId/:communityId" component={CommunityHomePage} />
-        <Route exact path="/community/college/:collegeId/:communityId/all" component={AllPostsPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/notice" component={NoticePostsPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/board/:menuId" component={PostsPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/board/:menuId/create" component={CreatePostPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/post/:postId" component={BasicPostPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/data/:postId" component={DataPostPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/post/:postId/edit" component={BasicPostEditPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/data/:postId/edit" component={DataPostEditPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/discussion/:postId" component={DiscussionPostPage} />
-        <Route exact path="/community/college/:collegeId/:communityId/poll/:postId" component={SurveyPostPage} />
-        <Route path="/community/college/:collegeId/:communityId/member" component={MemberRoutes} />
+        <Route path="/community/:communityId" component={CommunityRoutes} />
 
         <Route component={NotFoundPage} />
       </Switch>
@@ -87,7 +62,6 @@ export default Routes;
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/discussion/:postId
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/poll/:postId
 
-
 // 커뮤니티 멤버
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/member
 // community/cineroom/:cineroomId/college/:collegeId/:communityId/member/group
@@ -102,4 +76,3 @@ export default Routes;
 // community/profile/:profileId
 // community/profile/:profileId/feed
 // community/profile/:profileId/communities
-
