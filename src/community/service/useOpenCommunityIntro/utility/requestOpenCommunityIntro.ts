@@ -68,11 +68,17 @@ export function requestOpenCommunityList() {
         communitiesTotalCount: 0,
       });
     } else {
+      const next: OpenCommunityItem[] = [];
+      communities.results
+        .filter(c => c.approved !== true)
+        .forEach(community => {
+          if (!next.some(c => c.communityId === community.communityId)) {
+            next.push(communityToItem(community));
+          }
+        });
       setOpenCommunityIntro({
         ...myOpenCommunityIntro,
-        communities: communities.results
-          .filter(c => c.approved !== true)
-          .map(communityToItem),
+        communities: next,
         communitiesTotalCount: communities.totalCount,
       });
     }

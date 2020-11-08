@@ -53,9 +53,15 @@ export function requestMyCommunityList() {
         communitiesTotalCount: 0,
       });
     } else {
+      const next: CommunityItem[] = [];
+      communities.results.forEach(community => {
+        if (!next.some(c => c.communityId === community.communityId)) {
+          next.push(communityToItem(community));
+        }
+      });
       setMyCommunityIntro({
         ...myCommunityIntro,
-        communities: communities.results.map(communityToItem),
+        communities: next,
         communitiesTotalCount: communities.totalCount,
       });
     }

@@ -1,15 +1,21 @@
-import PostRdo from "community/model/PostRdo";
-import { onCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
-import { onCommunityPostListItem, setCommunityPostListItem } from "community/store/CommunityPostListStore";
-import { SearchType, SortType } from "community/ui/logic/CommunityPostListContainer";
-import { CommunityPostList } from "community/viewModel/CommunityPostList";
-import { param } from "jquery";
-import LectureParams from "lecture/detail/viewModel/LectureParams";
-import { SearchFilter } from "myTraining/model/SearchFilter";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import PostRdo from 'community/model/PostRdo';
+import { onCommunityPostCreateItem } from 'community/store/CommunityPostCreateStore';
+import {
+  onCommunityPostListItem,
+  setCommunityPostListItem,
+} from 'community/store/CommunityPostListStore';
+import {
+  SearchType,
+  SortType,
+} from 'community/ui/logic/CommunityPostListContainer';
+import { CommunityPostList } from 'community/viewModel/CommunityPostList';
+import { param } from 'jquery';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import { SearchFilter } from 'myTraining/model/SearchFilter';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { CommunityPostCreateItem } from '../../viewModel/CommunityPostCreate';
-import { getCommunityPostList } from "./utility/getCommunityPostList";
+import { getCommunityPostList } from './utility/getCommunityPostList';
 
 type PostListValue = CommunityPostList | undefined;
 
@@ -19,99 +25,77 @@ interface Params {
 }
 
 export function useCommunityPostList(): [PostListValue] {
-    const subscriberIdRef = useRef<number>(0);
-    const [subscriberId, setSubscriberId] = useState<string>();
-    const [postItems, setPostItems] = useState<PostListValue>();
+  const subscriberIdRef = useRef<number>(0);
+  const [subscriberId, setSubscriberId] = useState<string>();
+  const [postItems, setPostItems] = useState<PostListValue>();
 
-    const { communityId, menuId } = useParams<Params>()
+  const { communityId, menuId } = useParams<Params>();
 
-    // const params = useParams<PostParams>();
-    
-    useEffect(() => {
-      const next = `useCommunityPostList-${++subscriberIdRef.current}`;
-      setSubscriberId(next);
-    }, []);
+  // const params = useParams<PostParams>();
 
-    useEffect(()=>{
+  useEffect(() => {
+    const next = `useCommunityPostList-${++subscriberIdRef.current}`;
+    setSubscriberId(next);
+  }, []);
 
-      const test: PostRdo = {
-        'startDate': 1573052400000,
-        'endDate': 1604674799999,
-        'title': '',
-        'html': '',
-        'creatorId': '',
-        'offset': 0,
-        'limit': 10,
-        'searchFilter': '',
-        'menuId': '',
-        'communityId': 'CT-9',
-        'sort': 'createdTime'
+  useEffect(() => {
+    console.log('subscriberId', subscriberId);
+    if (subscriberId === undefined) {
+      return;
+    }
+    return onCommunityPostListItem(next => {
+      console.log('CommunityPostCreateItem');
+      if (next !== undefined) {
+        setPostItems(next);
       }
+      console.log('CommunityPostCreateItem', next);
+    }, subscriberId);
+  }, [subscriberId]);
 
-      getCommunityPostList(test);
-
-    },[])
-
-    useEffect(() => {
-      console.log('subscriberId', subscriberId)
-      if (subscriberId === undefined) {
-        return;
+  useEffect(() => {
+    console.log('subscriberId', subscriberId);
+    if (subscriberId === undefined) {
+      return;
+    }
+    return onCommunityPostListItem(next => {
+      console.log('CommunityPostCreateItem');
+      if (next !== undefined) {
+        setPostItems(next);
       }
-      return onCommunityPostListItem(next => {
-        console.log('CommunityPostCreateItem')
-        if( next !== undefined) {
-          setPostItems(next);
-        }
-        console.log('CommunityPostCreateItem', next);
-      }, subscriberId);
-    }, [subscriberId]);
+      console.log('CommunityPostCreateItem', next);
+    }, subscriberId);
+  }, [subscriberId]);
 
+  useEffect(() => {
+    console.log('communityId', communityId);
+    if (communityId === undefined) {
+      return;
+    }
 
-    useEffect(() => {
-      console.log('subscriberId', subscriberId)
-      if (subscriberId === undefined) {
-        return;
-      }
-      return onCommunityPostListItem(next => {
-        console.log('CommunityPostCreateItem')
-        if( next !== undefined) {
-          setPostItems(next);
-        }
-        console.log('CommunityPostCreateItem', next);
-      }, subscriberId);
-    }, [subscriberId]);
+    setCommunityPostListItem({
+      items: [],
+      totalCount: 0,
+      empty: false,
+      offset: 0,
+      limit: 10,
+      sortType: '',
+      searchType: '',
+      searchText: '',
+    });
 
-    useEffect(() => {
-      console.log('communityId', communityId)
-      if (communityId === undefined) {
-        return;
-      }
+    //리스트 조회 api 호출
+    // getCommunityPostList(
+    //   communityId,
+    //   0,
+    //   10,
+    //   'TIME',
+    //   '',
+    //   ''
+    // );
 
-      setCommunityPostListItem({
-        items: [],
-        totalCount: 0,
-        empty: false,
-        offset: 0,
-        limit: 10,
-        sortType: '',
-        searchType: '',
-        searchText: '',
-      });
+    console.log('communityId', communityId);
+    console.log('menuId', menuId);
+  }, [communityId, menuId]);
 
-      //리스트 조회 api 호출
-      // getCommunityPostList(
-      //   communityId,
-      //   0,
-      //   10,
-      //   'TIME',
-      //   '',
-      //   ''
-      // );
-
-      console.log('communityId', communityId)
-      console.log('menuId', menuId)
-
-    }, [communityId, menuId]);
-  
-    return [postItems];
+  return [postItems];
 }
