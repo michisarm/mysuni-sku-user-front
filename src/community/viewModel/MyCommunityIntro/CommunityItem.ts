@@ -3,6 +3,6 @@ export default interface CommunityItem {
   image: string;
   name: string;
   hasNewPost: boolean;
-  operator: string;
+  manager: string;
   memberCount: number;
 }

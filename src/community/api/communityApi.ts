@@ -1,9 +1,13 @@
-import { axiosApi } from '@nara.platform/accent';
+import { axiosApi, OffsetElementList } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
 import PostCdo from 'community/model/PostCdo';
 import PostUdo from 'community/model/PostUdo';
+import Community from '../model/Community';
+import CommunityHomeInfo from '../model/CommunityHome';
+import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
+import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
 
 const BASE_URL = '/api/community';
 
@@ -38,6 +42,33 @@ export function findCommunityPost(
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
+export function findPosts(
+  communityId: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/communities/${communityId}/posts?offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+export function findNoticePosts(
+  communityId: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/communities/${communityId}/posts/notice?offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+export function findPostsByMenuId(
+  menuId: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/communities/board/${menuId}/posts?offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
 export function modifyCommunityPost(
   communityId: string,
   postId: string,
@@ -52,4 +83,53 @@ export function modifyCommunityPost(
 export function findProfile(): Promise<Profile | undefined> {
   const url = `${BASE_URL}/profiles`;
   return axiosApi.get<Profile>(url).then(AxiosReturn);
+}
+
+export function findAllMyCommunities(): Promise<
+  OffsetElementList<Community> | undefined
+> {
+  const url = `${BASE_URL}/communities/my`;
+  return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
+}
+
+export function findAllOpenCommunities(
+  fieldId?: string
+): Promise<OffsetElementList<Community> | undefined> {
+  const url = `${BASE_URL}/communities/openCommunities?field=${
+    fieldId === undefined ? '' : fieldId
+  }`;
+  return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
+}
+
+export function findAllPostsFromMyCommunities(): Promise<
+  OffsetElementList<Post> | undefined
+> {
+  const url = `${BASE_URL}/communities/my`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+export function findAllFields(): Promise<FieldItem[] | undefined> {
+  const url = `${BASE_URL}/fields`;
+  return axiosApi.get<FieldItem[]>(url).then(AxiosReturn);
+}
+
+export function findCommunity(
+  communityId: string
+): Promise<Community | undefined> {
+  const url = `${BASE_URL}/communities/${communityId}`;
+  return axiosApi.get<Community>(url).then(AxiosReturn);
+}
+
+export function findHome(
+  communityId: string
+): Promise<CommunityHomeInfo | undefined> {
+  const url = `${BASE_URL}/${communityId}/home`;
+  return axiosApi.get<CommunityHomeInfo>(url).then(AxiosReturn);
+}
+
+export function findAllMenus(
+  communityId: string
+): Promise<CommunityMenu[] | undefined> {
+  const url = `${BASE_URL}/${communityId}/menus`;
+  return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
 }
