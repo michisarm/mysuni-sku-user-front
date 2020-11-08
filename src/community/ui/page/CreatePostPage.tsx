@@ -1,8 +1,8 @@
-import React from 'react'
-import CommunityPostCreateContainer from '../logic/CommunityPostCreateContainer'
+import React from 'react';
+import CommunityPostCreateContainer from '../logic/CommunityPostCreateContainer';
 
 function CreatePostPage() {
-  return (<><CommunityPostCreateContainer /></>)
+  return <CommunityPostCreateContainer />;
 }
 
-export default CreatePostPage
+export default CreatePostPage;

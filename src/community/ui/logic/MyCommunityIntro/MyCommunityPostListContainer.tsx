@@ -70,7 +70,7 @@ function MyCommunityPostListContainer() {
 
       <div className="more-comments">
         <Button icon className="left moreview">
-          <Icon className="moreview" /> list more
+          {/* <Icon className="moreview" /> list more */}
         </Button>
       </div>
     </div>

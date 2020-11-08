@@ -104,7 +104,7 @@ export function findProfile(): Promise<Profile | undefined> {
 export function findAllMyCommunities(): Promise<
   OffsetElementList<Community> | undefined
 > {
-  const url = `${BASE_URL}/communities/my`;
+  const url = `${BASE_URL}/communities/my?offset=0&limit=100`;
   return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
 }
 
@@ -113,14 +113,14 @@ export function findAllOpenCommunities(
 ): Promise<OffsetElementList<Community> | undefined> {
   const url = `${BASE_URL}/communities/openCommunities?field=${
     fieldId === undefined ? '' : fieldId
-  }`;
+  }&offset=0&limit=100`;
   return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
 }
 
 export function findAllPostsFromMyCommunities(): Promise<
   OffsetElementList<Post> | undefined
 > {
-  const url = `${BASE_URL}/communities/my`;
+  const url = `${BASE_URL}/posts/my?offset=0&limit=100`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 

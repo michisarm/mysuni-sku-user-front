@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { requestOpenCommunityList } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
@@ -19,7 +20,11 @@ const FieldItemView: React.FC<FieldItem &
       communities: [],
       communitiesTotalCount: 0,
     };
+    if (openCommunityIntro.fieldId === id) {
+      return;
+    }
     setOpenCommunityIntro({ ...openCommunityIntro, fieldId: id });
+    requestOpenCommunityList();
   }, [id]);
   return (
     <label htmlFor={`field-item-view-${id}`} className="check-type1">
@@ -43,7 +48,11 @@ function OpenCommunityIntroFieldListContainer() {
       communities: [],
       communitiesTotalCount: 0,
     };
+    if (openCommunityIntro.fieldId === undefined) {
+      return;
+    }
     setOpenCommunityIntro({ ...openCommunityIntro, fieldId: undefined });
+    requestOpenCommunityList();
   }, []);
 
   return (
