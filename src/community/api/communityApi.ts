@@ -1,6 +1,8 @@
 import { axiosApi, OffsetElementList } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
+import PostList from 'community/model/PostList';
+import { CommunityPostItem } from 'community/viewModel/CommunityPostList';
 import PostCdo from 'community/model/PostCdo';
 import PostUdo from 'community/model/PostUdo';
 import Community from '../model/Community';
@@ -8,6 +10,7 @@ import CommunityHomeInfo from '../model/CommunityHome';
 import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
+import PostRdo from 'community/model/PostRdo';
 
 const BASE_URL = '/api/community';
 
@@ -67,6 +70,19 @@ export function findPostsByMenuId(
 ): Promise<OffsetElementList<Post> | undefined> {
   const url = `${BASE_URL}/communities/board/${menuId}/posts?offset=${offset}&limit=${limit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+export function findCommunityPostList(postRdo: PostRdo): Promise<PostList> {
+  const url = `${BASE_URL}/communities/${postRdo.communityId}/posts?startDate=${postRdo.startDate}&endDate=${postRdo.endDate}&title=${postRdo.title}&html=${postRdo.html}&creatorId=${postRdo.creatorId}&offset=${postRdo.offset}&limit=${postRdo.limit}&searchFilter=${postRdo.searchFilter}&menuId=${postRdo.menuId}&communityId=${postRdo.communityId}&sort=${postRdo.sort}`;
+  return (
+    axiosApi
+      .get<PostList>(url)
+      // .get<PostList>(url)
+      .then(response => {
+        console.log('response', response);
+        return response && response.data;
+      })
+  );
 }
 
 export function modifyCommunityPost(
