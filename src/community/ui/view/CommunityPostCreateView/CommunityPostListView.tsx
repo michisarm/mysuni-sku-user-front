@@ -39,7 +39,7 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
       <a
         target="_blank"
         className="row important new"
-        onClick={() => handleClickRow(post.postId)}
+        onClick={() => handleClickRow(post)}
       >
         <span className="cell title">
           {post.title}

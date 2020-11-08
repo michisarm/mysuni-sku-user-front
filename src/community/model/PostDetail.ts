@@ -1,6 +1,7 @@
 import PostType from "./PostType";
 
-export default interface Post {
+export default interface PostDetail {
+  id: string
   postId: string;
   communityId: string;
   menuId: string;
