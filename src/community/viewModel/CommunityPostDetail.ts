@@ -18,14 +18,17 @@ export interface CommunityPostDetail {
   likeCount: number,
   replyCount: number,
   fileBoxId: string,
-  commentFeebackId: string,
+  commentFeedbackId: string,
   pinned: boolean,
   readCount: string,
   visible: boolean,
   creatorId: string,
   createdTime: number,
   modifierId: string,
-  modifiedTime: number
+  modifiedTime: number,
+  nickName: string,
+  introduce: string,
+  profileImg: string
 }
 
 export interface CommunityPostItem {

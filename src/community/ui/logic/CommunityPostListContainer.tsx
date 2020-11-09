@@ -7,20 +7,27 @@ import CommunityPostListSearchBox from '../view/CommunityPostCreateView/Communit
 import { getPostListMapFromCommunity } from '../../../community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
+import { useParams } from 'react-router-dom';
 
+interface CommunityPostListContainerProps {
+  handelOnSearch?: (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => void;
+}
 interface Params {
   communityId: string;
-  menuId: string;
+  postId: string;
 }
 
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
-function CommunityPostListContainer() {
+const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
+  handelOnSearch
+}) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
   const [postItems] = useCommunityPostList();
+  const { communityId } = useParams<Params>()
   const history = useHistory();
   // const { pageMap } = SharedService;
 
@@ -38,7 +45,8 @@ function CommunityPostListContainer() {
   const onChangeSortType = (name: string, value: SortType) => {
     setSortType(value);
     //조회 api 호출
-    onSearch();
+    // onSearch();
+    handelOnSearch!(value, false, searchType, searchText);
   };
 
   const onChangeSearchText = (value: string) => {
@@ -48,8 +56,6 @@ function CommunityPostListContainer() {
   const onSearch = () => {
     //조회 api 호출
     const param: PostRdo = {
-      startDate: 1573052400000,
-      endDate: 1604674799999,
       title: '',
       html: '',
       creatorId: '',
@@ -57,8 +63,9 @@ function CommunityPostListContainer() {
       limit: 10,
       searchFilter: '', //얘 안쓰는거 같은데
       menuId: '',
-      communityId: 'CT-1',
+      communityId,
       sort: sortType,
+      pinned: false
     };
     if (searchType === 'all') {
       param.title = '';
@@ -82,7 +89,7 @@ function CommunityPostListContainer() {
             <div className="ui segment full">
               <div className="course-info-header">
                 <div className="survey-header border-none mb30 pt0">
-                  <div className="survey-header-left">딥 러닝의 역사</div>
+                  <div className="survey-header-left">메뉴명</div>
                 </div>
               </div>
               <CommunityPostTopLineView
