@@ -20,4 +20,7 @@ export default interface Post {
   createdTime: number;
   modifierId: string;
   modifiedTime: number;
+  nickName?: string;
+  introduce?: string;
+  profileImg?: string
 }

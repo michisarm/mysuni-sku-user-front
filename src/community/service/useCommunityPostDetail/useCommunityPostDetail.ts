@@ -28,7 +28,6 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
       }
       return onCommunityPostDetailItem(next => {
         setPostDetailValue(next)
-      
       }, subscriberId);
     }, [subscriberId]);
   
