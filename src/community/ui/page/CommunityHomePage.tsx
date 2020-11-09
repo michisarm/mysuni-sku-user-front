@@ -8,6 +8,7 @@ import { useCommunityHome } from '../../store/CommunityHomeStore';
 import commentIcon from '../../../style/media/icon-community-comment.png';
 import fileIcon from '../../../style/media/icon-community-file-copy-2.png';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
+import defaultHeader from '../../../style/media/bg-ttl-sample-02.png';
 import Post from '../../model/Post';
 import moment from 'moment';
 
@@ -104,6 +105,9 @@ function CommunityHomePage() {
                   src={`/files/community/${communityHome.home.thumbnailId}`}
                 />
               )}
+              {communityHome.home.thumbnailId === undefined && (
+                <img src={defaultHeader} />
+              )}
               <div className="community-banner-inner">
                 <div className="community-banner-title">
                   {communityHome.community?.name}
@@ -111,6 +115,17 @@ function CommunityHomePage() {
                 <div className="community-banner-copy">
                   {communityHome.home.introduce}
                 </div>
+              </div>
+            </>
+          )}
+          {communityHome.home === undefined && (
+            <>
+              <img src={defaultHeader} />
+              <div className="community-banner-inner">
+                <div className="community-banner-title">
+                  {communityHome.community?.name}
+                </div>
+                <div className="community-banner-copy" />
               </div>
             </>
           )}

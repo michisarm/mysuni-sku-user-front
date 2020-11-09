@@ -86,17 +86,17 @@ function CommunityRoutes() {
               />
               <Route
                 exact
-                path="/community/:communityId/discussion/:postId"
+                path="/community/:communityId/discussion/:menuId"
                 component={DiscussionPostPage}
               />
               <Route
                 exact
-                path="/community/:communityId/poll/:postId"
+                path="/community/:communityId/poll/:menuId"
                 component={SurveyPostPage}
               />
               <Route
                 exact
-                path="/community/:communityId/content/:postId"
+                path="/community/:communityId/content/:menuId"
                 component={CommunityHtmlPage}
               />
               <Route

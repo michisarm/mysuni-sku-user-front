@@ -1,6 +1,6 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import {LearningState } from 'shared/model';
+import { LearningState } from 'shared/model';
 import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../../model/StudentCdoModel';
@@ -11,6 +11,7 @@ import StudentInfoModel from '../../../model/StudentInfoModel';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
 import StudentCubeModel from '../../../model/StudentCubeModel';
 import LectureStudentRdoModel from '../../../model/LectureStudentRdoModel';
+import StudentHideUdo from '../../../model/StudentHideUdo';
 
 
 @autobind
@@ -113,8 +114,7 @@ class StudentService {
   }
 
   @computed
-  get studentForVideo(): StudentModel
-  {
+  get studentForVideo(): StudentModel {
     return this._studentForVideo;
   }
 
@@ -124,14 +124,12 @@ class StudentService {
    *
    */
   @action
-  async getStudentForVideo(lectureCardId: string): Promise<StudentModel>
-  {
+  async getStudentForVideo(lectureCardId: string): Promise<StudentModel> {
     //
     let student: StudentModel = new StudentModel();
     const studentJoinsForVideo = await this.findIsJsonStudentForVideo(lectureCardId);
 
-    if (studentJoinsForVideo && studentJoinsForVideo.length)
-    {
+    if (studentJoinsForVideo && studentJoinsForVideo.length) {
       studentJoinsForVideo.sort(this.compare);
       const studentJoin = studentJoinsForVideo[0];
       // console.log(studentJoin);
@@ -145,7 +143,7 @@ class StudentService {
   @action
   async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[], preLectureCardIds: string[]) {
     //
-    const lectureStudentRdo = new LectureStudentRdoModel({serviceId, lectureCardIds, courseLectureIds, preLectureCardIds});
+    const lectureStudentRdo = new LectureStudentRdoModel({ serviceId, lectureCardIds, courseLectureIds, preLectureCardIds });
 
     this._studentInfo = null;
 
@@ -191,7 +189,7 @@ class StudentService {
     return this.studentApi.modifyStudentForExam(studentId, examId);
   }
 
-  modifyStudentForCoursework(studentId: string, fileBoxId: string ) {
+  modifyStudentForCoursework(studentId: string, fileBoxId: string) {
     return this.studentApi.modifyStudentForCoursework(studentId, fileBoxId);
   }
 
@@ -295,7 +293,16 @@ class StudentService {
   async findPreCourseStudentList(lectureCardIds: string[]) {
     return this.studentApi.findPreCourseStudentList(lectureCardIds);
   }
+
+  ////////////////////////////////////// 개편 //////////////////////////////////////
+  async hideWithSelectedServiceIds(selectedServiceIds: string[]) {
+    const studentHideUdo = StudentHideUdo.createWith(selectedServiceIds);
+    return this.studentApi.modifyStudentHide(studentHideUdo);
+  }
+  ////////////////////////////////////// 개편 //////////////////////////////////////
 }
+
+
 
 // StudentService.instance = new StudentService(StudentApi.instance);
 
