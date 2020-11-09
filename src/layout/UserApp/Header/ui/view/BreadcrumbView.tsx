@@ -160,9 +160,25 @@ class BreadcrumbView extends Component<Props, State> {
                 </Fragment>
               ))}
           </div>
+          {/* 임시 로그인창 표시 (삭제예정) */}
+          <div style={{position:'absolute', top: '0', left: '600px'}}>
+            <input
+              style={{
+                width: 200,
+                fontSize: 'small',
+              }}
+              value={this.state.id}
+              onChange={e => this.setState({ id: e.target.value })}
+            />
+            &nbsp;
+            <button style={{ fontSize: 'small' }} onClick={this.onLogin}>
+            로그인
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
 
           <div className="right">
-            {process.env.NODE_ENV === 'development' && (
+            {/* {process.env.NODE_ENV === 'development' && (
               <>
                 <input
                   style={{
@@ -178,7 +194,7 @@ class BreadcrumbView extends Component<Props, State> {
                 </button>
                 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
               </>
-            )}
+            )} */}
             <Link to={supportPath}>
               <i className="support12 icon" />
               <span>Support</span>
