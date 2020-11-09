@@ -89,21 +89,12 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
               <div className="apl-form-wrap support">
                 <Form>
                   <Form.Field>
-                    <label>주제</label>
+                    <label>작성 가이드</label>
                     <div className="ui editor-wrap">
                       {getLectureReport()?.reportFileBox?.reportQuestion}
                     </div>
                   </Form.Field>
-
                   <Form.Field>
-                    <label>작성</label>
-                    <div className="ui editor-wrap">
-                      <Editor lectureReport={lectureReport} />
-                    </div>
-                  </Form.Field>
-                  {/*TODO : 첨부파일이 없는 경우도 있는지 확인, 없는 경우의 처리 방법 문의  */}
-                  <Form.Field>
-                    <label>첨부파일</label>
                     {getLectureReport()?.reportFileBox?.fileBoxId && (
                       <>
                         <div className="download-file">
@@ -133,53 +124,61 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                         </div>
                       </>
                     )}
+                    <div className="ui editor-wrap">
+                      <Editor lectureReport={lectureReport} />
+                    </div>
+                  </Form.Field>
+                  <Form.Field>
+                    <label>첨부파일</label>
+                    <div className="report-attach">
+                      {/* <AttachFileUpload filesMap={filesMap}/> */}
+                      <div className="lg-attach">
+                        <div className="attach-inner">
+                          <FileBox
+                            id={
+                              getLectureReport()?.studentReport?.homeworkFileBoxId !==
+                                null &&
+                              getLectureReport()?.studentReport?.homeworkFileBoxId !==
+                                'null'
+                                ? getLectureReport()?.studentReport?.homeworkFileBoxId
+                                : ''
+                            }
+                            vaultKey={{
+                              keyString: 'sku-depot',
+                              patronType: PatronType.Pavilion,
+                            }}
+                            patronKey={{
+                              keyString: 'sku-denizen',
+                              patronType: PatronType.Denizen,
+                            }}
+                            validations={[
+                              {
+                                type: ValidationType.Duplication,
+                                validator: depotHelper.duplicationValidator,
+                              },
+                            ]}
+                            onChange={getFileBoxIdForReference}
+                          />
+                          <div className="bottom">
+                            <span className="text1">
+                              <Icon className="info16" />
+                              <span className="blind">information</span>
+                              작성된 Report를 Upload하시면 과정 담당자가 확인 후
+                              의견을 드릴 예정입니다.
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </Form.Field>
                 </Form>
               </div>
-
-              <div className="report-attach">
-                {/* <AttachFileUpload filesMap={filesMap}/> */}
-                <div className="lg-attach">
-                  <div className="attach-inner">
-                    <FileBox
-                      id={
-                        getLectureReport()?.studentReport?.homeworkFileBoxId !==
-                          null &&
-                        getLectureReport()?.studentReport?.homeworkFileBoxId !==
-                          'null'
-                          ? getLectureReport()?.studentReport?.homeworkFileBoxId
-                          : ''
-                      }
-                      vaultKey={{
-                        keyString: 'sku-depot',
-                        patronType: PatronType.Pavilion,
-                      }}
-                      patronKey={{
-                        keyString: 'sku-denizen',
-                        patronType: PatronType.Denizen,
-                      }}
-                      validations={[
-                        {
-                          type: ValidationType.Duplication,
-                          validator: depotHelper.duplicationValidator,
-                        },
-                      ]}
-                      onChange={getFileBoxIdForReference}
-                    />
-                    <div className="bottom">
-                      <span className="text1">
-                        <Icon className="info16" />
-                        <span className="blind">information</span>
-                        작성된 Report를 Upload하시면 과정 담당자가 확인 후
-                        의견을 드릴 예정입니다.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* form 태그를 div로 감싸기 */}
               {getLectureReport()?.studentReport?.homeworkOperatorComment && (
-                <Form>
-                  <Form.Field>
+              <div className="apl-form-wrap support">
+              <Form>
+              {/* margin-none 클래스 추가 */}  
+                  <Form.Field className="margin-none">
                     <label>담당자의견</label>
                     <div className="ui editor-wrap">
                       <div className="content-area">
@@ -245,7 +244,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                       </div>
                     </div>
                   )}
-                </Form>
+              </Form>
+              </div>
               )}
               <div className="survey-preview">
                 <button className="ui button fix bg" onClick={onSubmitClick}>
