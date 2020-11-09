@@ -16,7 +16,6 @@ interface Props {
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
-  onClickReplies: (id: string) => void;
 }
 
 @reactAutobind
@@ -35,15 +34,10 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       onClickList,
       onClickDelete,
       onClickModify,
-      onClickReplies,
     } = this.props;
 
     const handelClickModify = () => {
       onClickModify(postDetail.id);
-    };
-
-    const handelClickReplies = () => {
-      onClickReplies(postDetail.id);
     };
 
     const handelClickDelete = () => {

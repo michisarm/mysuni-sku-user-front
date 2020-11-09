@@ -30,7 +30,7 @@ interface Props {
 */
 function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
-  const { selectedIds, selectOne, clearOne } = myTrainingService!;
+  const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
 
   console.log('models :: ', models);
@@ -59,13 +59,13 @@ function MyLearningTableBody(props: Props) {
 
   const onCheckOne = useCallback((e: any, data: any) => {
     // 이미 선택되어 있는 경우, 해제함.
-    if (selectedIds.includes(data.value)) {
+    if (selectedServiceIds.includes(data.value)) {
       clearOne(data.value);
       return;
     }
 
     selectOne(data.value);
-  }, [selectedIds, clearOne, selectOne]);
+  }, [selectedServiceIds, clearOne, selectOne]);
 
 
   /* render functions */
@@ -288,8 +288,8 @@ function MyLearningTableBody(props: Props) {
             {contentType === MyLearningContentType.InProgress && (
               <Table.Cell>
                 <Checkbox
-                  value={model.id}
-                  checked={selectedIds.includes(model.id)}
+                  value={model.serviceId}
+                  checked={selectedServiceIds.includes(model.serviceId)}
                   onChange={onCheckOne}
                 />
               </Table.Cell>

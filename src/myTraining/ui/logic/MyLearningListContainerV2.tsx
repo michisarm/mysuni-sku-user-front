@@ -12,7 +12,7 @@ import { MyLearningTableTemplate, MyLearningTableHeader, MyLearningTableBody } f
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 import { MyTrainingService, InMyLectureService, AplService } from '../../stores';
-import { LectureService, SeeMoreButton } from '../../../lecture';
+import { LectureService, SeeMoreButton, StudentService } from '../../../lecture';
 import MyApprovalContentType from '../model/MyApprovalContentType';
 
 
@@ -23,6 +23,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   inMyLectureService?: InMyLectureService;
   aplService?: AplService;
   lectureService?: LectureService;
+  studentService?: StudentService;
 }
 
 interface RouteParams {
@@ -32,7 +33,7 @@ interface RouteParams {
 
 function MyLearningListContainerV2(props: Props) {
   console.log('MyLearningListContainer :: render ::');
-  const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, history, match } = props;
+  const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, history, match } = props;
   const { profileMemberName } = skProfileService!;
 
   /* states */
@@ -305,13 +306,17 @@ function MyLearningListContainerV2(props: Props) {
   }, []);
 
   const onConfirmModal = useCallback(async () => {
-    setOpenModal(false);
+    const { selectedServiceIds } = myTrainingService!;
     /* 
       선택된 ids 를 통해 delete 로직을 수행함. 
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
-    await myTrainingService!.hideBySelectedIds();
-    await myTrainingService!.findAllTableViews();
+    await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
+    myTrainingService!.clearAllSelectedServiceIds();
+    myTrainingService!.findAllTableViews();
+    myTrainingService!.findAllTabCount();
+
+    setOpenModal(false);
   }, []);
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
@@ -430,7 +435,8 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'myTraining.aplService',
-  'lecture.lectureService'
+  'lecture.lectureService',
+  'lecture.studentService'
 ))(withRouter(observer(MyLearningListContainerV2)));
 
 /* globals */

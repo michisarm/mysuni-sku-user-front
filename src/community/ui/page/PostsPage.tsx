@@ -1,8 +1,9 @@
+import { getPostListMapFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PostRdo from '../../model/PostRdo';
 import { getCommunityPostList } from '../../service/useCommunityPostCreate/utility/getCommunityPostList';
-import CommunityPostListContainer from '../logic/CommunityPostListContainer';
+import CommunityPostListContainer, { SearchType } from '../logic/CommunityPostListContainer';
 
 interface Params {
   communityId: string;
@@ -12,9 +13,7 @@ interface Params {
 function PostsPage() {
   const { communityId, menuId } = useParams<Params>();
   useEffect(() => {
-    const test: PostRdo = {
-      startDate: 1573052400000,
-      endDate: 1604674799999,
+    const params: PostRdo = {
       title: '',
       html: '',
       creatorId: '',
@@ -24,17 +23,40 @@ function PostsPage() {
       menuId,
       communityId,
       sort: 'createdTime',
+      pinned: false
     };
 
-    getCommunityPostList(test);
+    getCommunityPostList(params);
   }, [communityId, menuId]);
 
+  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
+    const param: PostRdo = {
+      title: '',
+      html: '',
+      creatorId: '',
+      offset: 0,
+      limit: 20,
+      searchFilter: '', //얘 안쓰는거 같은데
+      menuId: '',
+      communityId,
+      sort: sortType,
+      pinned,
+    };
+    if (searchType === 'all') {
+      param.title = '';
+    } else if (searchType === 'title') {
+      param.title = searchText;
+    } else if (searchType === 'html') {
+      param.html = searchText;
+    } else if (searchType === 'creatorId') {
+      param.creatorId = searchText;
+    }
+
+    getPostListMapFromCommunity(param);
+  }
+
   return (
-    <div className="course-detail-center community-containter">
-      <div className="community-home-contants">
-        <CommunityPostListContainer />
-      </div>
-    </div>
+    <CommunityPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
   );
 }
 
