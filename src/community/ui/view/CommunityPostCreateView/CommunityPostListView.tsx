@@ -35,7 +35,6 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
 
   return (
     <>
-
       <a
         target="_blank"
         className="row important new"
@@ -49,12 +48,22 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
             )
           }
         </span>
+        <span className="inner">
+          <img className="board-file" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAEKADAAQAAAABAAAAEAAAAAA0VXHyAAABmUlEQVQ4Ea2TPUgCYRjHO+/Ou1MvyxxCDpE66AMiSsGGCILmIsKtRpcIsggcIhqCtmhra6khaJSohhpqEmoL7GsIAjGzwMFJGvq9kYucJdTBw/Nx/9//eXmPa2n54yM3wyuKMmEYRhKtFQ6H78vl8kcz3JfG5XJtSpKUJx+Sb4gjXniaMgDaAHjWNK1HAIFAoJU+J8vy7K8GwGuI8wJWVXWI3C0g5rs+n2/7RwNEaeAXt9vdDxynfmfrpGmaHdRP1NMNDYCXEL0CDhLD1CVm88Fg0ATMUh8Aq44GCJIAb4Axtg9QFwFSlmUZ1JdEBlB3hHVd7xIAn2wcuJe6AJy2bVvD+Jz+BFBxhMWQrSkh+t6WA16NRqMq8CnzM2GE+Qr9jKOJ1+vdAtrhtm2AIqfoI2eIi0gkogMvizmLRhwNcJ5DcJ1IJGSM9qkLxHEoFPIALVCLi407wmLYxoPoDnhdHJ0TdYpMv8i8xAlGG8K1F2yIIb4lrgD3yFniEXispqnPUv3A7/e3VyqVKXEH1Wr1gZ8oQ1+q1/1b/wnSkkyT1H3SZgAAAABJRU5ErkJggg=="/>
+          <span className="ellipsis"></span>
+          <span className="rep-num">
+          {
+            post.replyCount !== null && (
+              <span>[{post.replyCount}]</span>
+            )
+          }
+          </span>
+        </span>
         <span className="cell nick">{post.nick}</span>
         <span className="cell date">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
         </span>
       </a>
-
     </>
   );
 }
