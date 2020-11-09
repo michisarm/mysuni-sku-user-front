@@ -11,7 +11,7 @@ class StudentApi {
   static instance: StudentApi;
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_STUDENT_API === undefined || process.env.REACT_APP_STUDENT_API === '' ?
+    process.env.REACT_APP_STUDENT_API === undefined || process.env.REACT_APP_STUDENT_API === '' ?
     '/api/lecture/students' : process.env.REACT_APP_STUDENT_API;
 
 
@@ -33,22 +33,22 @@ class StudentApi {
   }
 
   findStudentByRollBookId(rollBookId: string) {
-    return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId }})
+    return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId } })
       .then(response => response && response.data || null);
   }
 
   findStudentCount(rollBookId: string) {
-    return axiosApi.get<StudentCountRdoModel>(this.baseUrl + `/flow/count/byRollBookId`, { params: { rollBookId }})
+    return axiosApi.get<StudentCountRdoModel>(this.baseUrl + `/flow/count/byRollBookId`, { params: { rollBookId } })
       .then(response => response && response.data);
   }
 
   findIsJsonStudentByCube(lectureCardId: string) {
-    return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJsonByCube`, { params: { lectureCardId }})
+    return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJsonByCube`, { params: { lectureCardId } })
       .then(response => response && response.data || []);
   }
 
   findIsJsonStudent(lectureCardId: string) {
-    return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJson`, { params: { lectureCardId }})
+    return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJson`, { params: { lectureCardId } })
       .then(response => response && response.data || []);
   }
 
@@ -57,7 +57,7 @@ class StudentApi {
   }
 
   removeStudent(rollBookId: string) {
-    return axiosApi.delete(this.baseUrl + `/flow/byRollBookId`, { params: { rollBookId }});
+    return axiosApi.delete(this.baseUrl + `/flow/byRollBookId`, { params: { rollBookId } });
   }
 
   modifyLearningState(studentId: string, learningState: LearningState) {
@@ -82,6 +82,13 @@ class StudentApi {
       .then(response => response && response.data);
 
   }
+
+  ////////////////////////////////////// 개편 //////////////////////////////////////
+  mmodifyStudentHide() {
+
+  }
+  ////////////////////////////////////// 개편 //////////////////////////////////////
+
 }
 
 StudentApi.instance = new StudentApi();

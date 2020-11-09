@@ -16,12 +16,12 @@ import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentRepo
 
 type ReportValue = LectureReport | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureReport(): [
   ReportValue,
   (reportValue: ReportValue) => void,
   () => void
 ] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [reportValue, setReportValue] = useState<ReportValue>();
   const params = useParams<LectureParams>();
@@ -43,7 +43,7 @@ export function useLectureReport(): [
   }, [params]);
 
   useEffect(() => {
-    const next = `useLectureReport-${++subscriberIdRef.current}`;
+    const next = `useLectureReport-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

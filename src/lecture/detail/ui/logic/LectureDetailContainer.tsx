@@ -52,6 +52,7 @@ const LectureDetailContainer: React.FC = function LectureDetailContainer() {
                       관련과정
                     </a>
                     <a href="#lms-comment" className="lms-comment">
+                      <i className="lms-comment-icon" />
                       Comment<span className="count">+12</span>
                     </a>
                   </div>

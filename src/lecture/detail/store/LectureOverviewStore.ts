@@ -7,6 +7,7 @@ import LectureDescription from '../viewModel/LectureOverview/LectureDescription'
 import LectureFile from '../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../viewModel/LectureOverview/LectureInstructor';
 import LecturePrecourse from '../viewModel/LectureOverview/LecturePrecourse';
+import LectureRelations from '../viewModel/LectureOverview/LectureRelations';
 import LectureReview from '../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../viewModel/LectureOverview/LectureTags';
@@ -69,6 +70,10 @@ const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] = createStore<
   InMyLectureCdo
 >();
 
+const [setLectureRelations, onLectureRelations, getLectureRelations] = createStore<
+  LectureRelations
+>();
+
 export {
   setLectureCubeSummary,
   onLectureCubeSummary,
@@ -106,4 +111,5 @@ export {
   setInMyLectureCdo,
   onInMyLectureCdo,
   getInMyLectureCdo,
+  setLectureRelations, onLectureRelations, getLectureRelations
 };

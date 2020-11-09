@@ -39,13 +39,13 @@ export function toggleCubeBookmark() {
   }
 }
 
+let subscriberIdRef = 0;
 export function useLectureCubeSummary(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureCubeSummary-${++subscriberIdRef.current}`;
+    const next = `useLectureCubeSummary-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

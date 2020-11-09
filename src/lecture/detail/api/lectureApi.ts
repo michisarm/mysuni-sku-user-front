@@ -9,12 +9,15 @@
  */
 
 import { axiosApi } from '@nara.platform/accent';
+import { LectureModel } from '../../model';
+import { Lecture } from '../../shared';
 import CoursePlanComplex from '../model/CoursePlanComplex';
 import LectureCard from '../model/LectureCard';
 import LectureStudentView from '../model/LectureStudentView';
 import Student from '../model/Student';
 import StudentCdo from '../model/StudentCdo';
 import StudentJoin from '../model/StudentJoin';
+import Test from '../model/Test';
 
 const BASE_URL = '/api/lecture';
 
@@ -109,4 +112,27 @@ export function progressByCardId(studentCdo: StudentCdo): Promise<Student> {
   return axiosApi
     .post<Student>(url, studentCdo)
     .then(response => response && response.data);
+}
+
+export function setCubeStudentExamId(
+  personalCubeId: string,
+  studentId: string
+): Promise<Test> {
+  const url = `${BASE_URL}/students/flow/setCubeStudentExamId/${personalCubeId}/${studentId}`;
+  return axiosApi.get<Test>(url).then(response => response && response.data);
+}
+
+export function setCourseStudentExamId(
+  coursePlanId: string,
+  studentId: string
+): Promise<Test> {
+  const url = `${BASE_URL}/students/flow/setCourseStudentExamId/${coursePlanId}/${studentId}`;
+  return axiosApi.get<Test>(url).then(response => response && response.data);
+}
+
+export function findMenuArrange(
+  serviceIds: string[],
+): Promise<{ results: LectureModel[] }> {
+  const url = `${BASE_URL}/lectures/flow/arranges/menus`;
+  return axiosApi.post<{ results: LectureModel[] }>(url, { serviceIds, arrangeType: "", limit: 100 }).then(response => response && response.data);
 }

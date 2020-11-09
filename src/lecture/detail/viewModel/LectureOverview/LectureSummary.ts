@@ -7,5 +7,6 @@ export default interface LectureSummary {
   learningTime: string;
   operator: CourseOperator;
   passedCount: number;
+  studentCount: number;
   mytrainingId?: string;
 }

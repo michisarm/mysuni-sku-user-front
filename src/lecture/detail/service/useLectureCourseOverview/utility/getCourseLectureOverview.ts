@@ -1,4 +1,4 @@
-import { findCoursePlanContents } from '../../../api/lectureApi';
+import { findCoursePlanContents, findMenuArrange } from '../../../api/lectureApi';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import {
   setInMyLectureCdo,
@@ -7,6 +7,7 @@ import {
   setLectureDescription,
   setLectureInstructor,
   setLecturePrecourse,
+  setLectureRelations,
   setLectureReview,
   setLectureSubcategory,
   setLectureTags,
@@ -20,10 +21,12 @@ import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecours
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
+import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import InMyLectureCdo from '../../../model/InMyLectureCdo';
 import LectureParams from '../../../viewModel/LectureParams';
 import { CourseSetModel } from '../../../../../course/model';
 import { findInMyLecture } from '../../../api/mytrainingApi';
+import Instructor from '../../../model/Instructor';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -57,6 +60,7 @@ async function getLectureSummary(
     operator,
     stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
     passedCount: coursePlanComplex.courseLecture.passedStudentCount,
+    studentCount: coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
   };
@@ -125,12 +129,18 @@ function getLectureComment(
   } = coursePlanComplex;
   return {
     commentId: feedbackId,
-    reviewId: reviewSummary.id,
+    reviewId: reviewSummary !== null ? reviewSummary.id : '',
     commentsCount: count,
   };
 }
 
 function getLectureReview(coursePlanComplex: CoursePlanComplex): LectureReview {
+  if (coursePlanComplex.reviewSummary === null) {
+    return {
+      id: '',
+      average: 0,
+    };
+  }
   const {
     reviewSummary: { id, average },
   } = coursePlanComplex;
@@ -138,6 +148,15 @@ function getLectureReview(coursePlanComplex: CoursePlanComplex): LectureReview {
     id,
     average,
   };
+}
+
+async function getLectureRelations(coursePlanComplex: CoursePlanComplex): Promise<LectureRelations | void> {
+  const { coursePlanContents: { relations } } = coursePlanComplex
+  if (Array.isArray(relations) && relations.length > 0) {
+    const serviceIds = relations.map(c => c.lectureCardId);
+    const arrange = await findMenuArrange(serviceIds);
+    if (arrange !== null && arrange !== undefined && Array.isArray(arrange.results)) { return { lectures: arrange.results } }
+  }
 }
 
 function makeInMyLectureCdo(
@@ -162,7 +181,10 @@ function makeInMyLectureCdo(
     learningTime: coursePlanComplex.coursePlan.learningTime,
     name: coursePlanComplex.coursePlan.name,
     requiredSubsidiaries: [],
-    reviewId: coursePlanComplex.reviewSummary.id,
+    reviewId:
+      coursePlanComplex.reviewSummary !== null
+        ? coursePlanComplex.reviewSummary.id
+        : '',
     serviceId: lectureId || serviceId!,
     servicePatronKeyString: coursePlanComplex.coursePlan.patronKey.keyString,
     serviceType: lectureType !== undefined ? 'Course' : serviceType!,
@@ -198,6 +220,15 @@ export async function getCourseLectureOverview(
   const lectureTags = getLectureTags(coursePlanComplex);
   setLectureTags(lectureTags);
   const lectureInstructor = getLectureInstructor(coursePlanComplex);
+  if (lectureInstructor.instructors.length > 0) {
+    const instructors: Instructor[] = [];
+    lectureInstructor.instructors.forEach(instructor => {
+      if (!instructors.some(c => c.usid === instructor.usid)) {
+        instructors.push(instructor);
+      }
+    })
+    lectureInstructor.instructors = instructors;
+  }
   setLectureInstructor(lectureInstructor);
   const lecturePrecourse = getLecturePrecourse(coursePlanComplex, path);
   setLecturePrecourse(lecturePrecourse);
@@ -206,4 +237,10 @@ export async function getCourseLectureOverview(
   const lectureReview = getLectureReview(coursePlanComplex);
   setLectureReview(lectureReview);
   setInMyLectureCdo(makeInMyLectureCdo(params, coursePlanComplex));
+  const lectureRelations = await getLectureRelations(coursePlanComplex);
+  if (lectureRelations === undefined) {
+    setLectureRelations();
+  } else {
+    setLectureRelations(lectureRelations);
+  }
 }

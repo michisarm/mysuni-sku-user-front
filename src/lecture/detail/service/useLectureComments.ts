@@ -12,8 +12,8 @@ import LectureComment from '../viewModel/LectureComment/LectureComment';
 
 type Value = LectureComment | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureComment(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
@@ -31,7 +31,7 @@ export function useLectureComment(): [Value] {
   // }, []);
 
   useEffect(() => {
-    const next = `useLectureComment-${++subscriberIdRef.current}`;
+    const next = `useLectureComment-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

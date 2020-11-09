@@ -1,23 +1,20 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { AplRdoModel } from '../../model/AplRdoModel';
-import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplCdoModel } from '../../model/AplCdoModel';
-import {AplModel} from '../../model';
+import { AplModel } from '../../model';
+import AplUdoModel from '../../model/AplUdoModel';
 
 export default class AplApi {
 
   serverUrl = '/api/mytraining/apl';
   devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === '' ?
     this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API ;
-  /*
-  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_AP P_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl;
-  */
 
-  URL='http://localhost:8233/apl';
+  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+    this.serverUrl : this.devUrl;
 
   static instance: AplApi;
 
@@ -136,6 +133,22 @@ export default class AplApi {
       })
       .then((response) => response.data);
   }
+
+  ///////////////////////// 개편 /////////////////////////
+  modifyAplWithApprovalState(aplUdo: AplUdoModel) {
+    return axios
+      .put(`${this.devUrl}/approvals`, aplUdo)
+      .then(response => response && response.data || null)
+      .catch(err => err && null);
+  }
+
+  findAllAplsForApproval(aplRdo: AplRdoModel) {
+    return axios
+      .get<OffsetElementList<AplListViewModel>>(`${this.devUrl}/approval-list`, { params: aplRdo })
+      .then(response => response && new OffsetElementList<AplListViewModel>(response.data) || null)
+      .catch(err => err && null);
+  }
+  ///////////////////////// 개편 /////////////////////////
 }
 
 Object.defineProperty(AplApi, 'instance', {

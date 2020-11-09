@@ -7,11 +7,13 @@ import { ActionEventService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
 import { MyTrainingService, InMyLectureService, AplService } from 'myTraining/stores';
 import { LectureService } from 'lecture/stores';
+import { CountType } from 'myTraining/model/AplRdoModel';
 import { TabItemModel, ContentLayout } from 'shared';
 import TabContainer from 'shared/components/Tab';
 import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model';
+
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -39,6 +41,7 @@ function MyLearningPageV2(props: Props) {
     fetchAllTabCount();
     // 학습완료한 강좌에 대해 sessionStorage 저장하는 로직
     // myTrainingService!.saveNewLearningPassedToStorage('Passed');
+    return () => clearAllTabCount();
   }, []);
 
   /* functions */
@@ -60,8 +63,16 @@ function MyLearningPageV2(props: Props) {
     */
     myTrainingService!.findAllTabCount(); // 학습중, 학습예정, mySUNI 학습완료, 취수/미이수
     inMyLectureService!.findAllTabCount();  // 관심목록
-    aplService!.findAllTabCount();
     lectureService!.countRequiredLectures(); // 권장과정
+    aplService!.findAllTabCount(CountType.patronKeyString); // 개인학습 완료
+  };
+
+  const clearAllTabCount = () => {
+    myTrainingService!.clearAllTabCount();
+    inMyLectureService!.clearAllTabCount();
+    lectureService!.clearAllTabCount();
+    aplService!.clearAplCount();
+
   };
 
 
@@ -69,7 +80,7 @@ function MyLearningPageV2(props: Props) {
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
     const { inMyListCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
-    const { aplCount } = aplService!;
+    const { aplCount: { opened: personalCompletedCount } } = aplService!;
 
     return [
       {
@@ -100,7 +111,7 @@ function MyLearningPageV2(props: Props) {
       },
       {
         name: MyLearningContentType.PersonalCompleted,
-        item: getTabItem(MyLearningContentType.PersonalCompleted, aplCount.all),
+        item: getTabItem(MyLearningContentType.PersonalCompleted, personalCompletedCount),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />
       },
       {

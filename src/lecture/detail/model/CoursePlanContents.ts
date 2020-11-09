@@ -17,4 +17,5 @@ export default interface CoursePlanContents {
   totalCourseCount: number;
   instructor: Instructor[];
   tests: Test[];
+  relations: any[];
 }

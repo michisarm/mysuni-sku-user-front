@@ -39,13 +39,13 @@ export function toggleCourseBookmark() {
   }
 }
 
+let subscriberIdRef = 0;
 export function useLectureCourseSummary(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureCourseSummary-${++subscriberIdRef.current}`;
+    const next = `useLectureCourseSummary-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 
