@@ -402,7 +402,7 @@ class MyTrainingService {
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
   @observable
-  selectedIds: string[] = [];
+  selectedServiceIds: string[] = [];
 
   @computed get myTrainingTableViews() {
     //
@@ -609,32 +609,28 @@ class MyTrainingService {
   }
 
   @action
-  selectOne(id: string) {
-    this.selectedIds = [...this.selectedIds, id];
+  selectOne(serviceId: string) {
+    this.selectedServiceIds = [...this.selectedServiceIds, serviceId];
   }
 
   @action
-  clearOne(id: string) {
-    this.selectedIds = this.selectedIds.filter(selectedId => selectedId !== id);
+  clearOne(serviceId: string) {
+    this.selectedServiceIds = this.selectedServiceIds.filter(selectedServiceId => selectedServiceId !== serviceId);
   }
 
   @action
   selectAll() {
-    this.selectedIds = this._myTrainingTableViews.map(tableView => tableView.id);
+    this.selectedServiceIds = this._myTrainingTableViews.map(tableView => tableView.serviceId);
   }
 
   @action
   clearAll() {
-    this.selectedIds = [];
+    this.selectedServiceIds = [];
   }
 
   @action
-  hideBySelectedIds() {
-    this._myTrainingTableViews = this._myTrainingTableViews.filter(tableView => !this.selectedIds.includes(tableView.id));
-    this._myTrainingTableViewCount -= this.selectedIds.length;
-
-    // 삭제하기로 선택된 myTraining 들의 상태를 update 하기 위한 api.
-    this.myTrainingApi.updateBySelectedIds();
+  clearAllSelectedServiceIds() {
+    this.selectedServiceIds = [];
   }
 
   @action
