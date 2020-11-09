@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 import { ActionLogService } from 'shared/stores';
 import { BreadcrumbValue } from '../../../index';
+import {Icon, Button} from 'semantic-ui-react';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -141,7 +142,7 @@ class BreadcrumbView extends Component<Props, State> {
     return (
       <div className="breadcrumbs">
         <div className="cont-inner">
-          <div className="ui standard breadcrumb">
+          <div className="ui standard breadcrumb community-link">
             <Link
               to="/"
               className="section"
@@ -178,7 +179,6 @@ class BreadcrumbView extends Component<Props, State> {
                 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
               </>
             )}
-
             <Link to={supportPath}>
               <i className="support12 icon" />
               <span>Support</span>
@@ -188,6 +188,12 @@ class BreadcrumbView extends Component<Props, State> {
               <i aria-hidden="true" className="icon help-tel" />
               Help Desk : 02-6323-9002
             </div>
+          </div>
+          <div className="lms-right">
+            <Button icon className="btn-black">
+              커뮤니티로 이동
+              <Icon className="morelink"/>
+            </Button>
           </div>
         </div>
       </div>
