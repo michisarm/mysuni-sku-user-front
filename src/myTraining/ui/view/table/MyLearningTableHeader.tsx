@@ -5,12 +5,14 @@ import { mobxHelper } from '@nara.platform/accent';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { MyLearningContentType, TableHeaderColumn } from '../../model';
 
 
+
 interface Props {
-  contentType: MyContentType;
-  onClickSort: (column: string, direction: Direction) => void;
+  contentType: MyContentType | MyApprovalContentType;
+  onClickSort?: (column: string, direction: Direction) => void;
   myTrainingService?: MyTrainingService;
 }
 
@@ -77,7 +79,7 @@ function MyLearningTableHeader(props: Props) {
     setOrders([...nonClickedOrder, { column, direction: toggleDirection(clickedOrder.direction) }]);
 
     // 실제 테이블 리스트 데잍터 정렬을 위한 함수.
-    onClickSort(clickedOrder.column, clickedOrder.direction);
+    onClickSort!(clickedOrder.column, clickedOrder.direction);
   }, [orders, onClickSort]);
 
 

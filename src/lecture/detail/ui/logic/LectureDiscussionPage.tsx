@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import { useLectureRouterParams } from '../../service/useLectureRouterParams';
-import { getLectureSurvey } from '../../service/useLectureSurvey/utility/getLectureSurvey';
+import React from 'react';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureDiscussionContainer from './LectureDiscussionContainer';
 

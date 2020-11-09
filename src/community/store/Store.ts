@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 interface Unsubscribe {
   (): void;
 }
@@ -18,9 +20,15 @@ interface GetCurrent<T> {
   (): T | undefined;
 }
 
+interface UseStore<T> {
+  (): T | undefined;
+}
+
+let subscriberIdRef = 0;
+
 export function createStore<T>(
   initialStore?: T
-): [Publish<T>, Subscribe<T>, GetCurrent<T>] {
+): [Publish<T>, Subscribe<T>, GetCurrent<T>, UseStore<T>] {
   let store: T | undefined;
   if (initialStore !== undefined) {
     store = initialStore;
@@ -48,5 +56,26 @@ export function createStore<T>(
     return store;
   }
 
-  return [publish, subscribe, getCurrent];
+  function useStore(): T | undefined {
+    const [subscriberId, setSubscriberId] = useState<string>();
+    const [value, setValue] = useState<T | undefined>();
+
+    useEffect(() => {
+      const next = `useStore-${++subscriberIdRef}`;
+      setSubscriberId(next);
+    }, []);
+
+    useEffect(() => {
+      if (subscriberId === undefined) {
+        return;
+      }
+      return subscribe(next => {
+        setValue(next);
+      }, subscriberId);
+    }, [subscriberId]);
+
+    return value;
+  }
+
+  return [publish, subscribe, getCurrent, useStore];
 }

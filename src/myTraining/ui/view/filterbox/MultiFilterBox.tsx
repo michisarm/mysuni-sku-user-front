@@ -7,7 +7,7 @@ import { LectureService } from 'lecture';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import CheckedFilterView from './CheckedFilterView';
 import CheckboxOptions from '../../model/CheckboxOptions';
 
@@ -258,6 +258,12 @@ function MultiFilterBox(props: Props) {
           return false;
         }
         return true;
+      }
+      case MyPageContentType.EarnedStampList: {
+        if (filterConditionName && (filterConditionName === FilterConditionName.College || filterConditionName === FilterConditionName.Required)) {
+          return true;
+        }
+        return false;
       }
       default:
         return true;

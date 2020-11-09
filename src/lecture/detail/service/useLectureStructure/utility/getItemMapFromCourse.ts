@@ -30,7 +30,7 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-interface GetItemMapArg {}
+interface GetItemMapArg { }
 
 async function getTestItem(
   coursePlanComplex: CoursePlanComplex,
@@ -156,7 +156,7 @@ function getDisscussionItem(
     coursePlanComplex.coursePlanContents !== undefined &&
     coursePlanComplex.coursePlanContents !== null &&
     coursePlanComplex.coursePlanContents.courseSet.learningCardSet !==
-      undefined &&
+    undefined &&
     coursePlanComplex.coursePlanContents.courseSet.learningCardSet !== null &&
     coursePlanComplex.coursePlanContents.courseSet.learningCardSet
       .discussions !== undefined &&
@@ -173,6 +173,9 @@ function getDisscussionItem(
       name:
         coursePlanComplex.coursePlanContents.courseSet.learningCardSet
           .discussions[0].name,
+      time: coursePlanComplex.coursePlan.time,
+      creator: coursePlanComplex.coursePlan.creator.name,
+      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
       params,
       routerParams,
       path: `${toPath(params)}/discussion`,
@@ -187,9 +190,9 @@ function getDisscussionItem(
     coursePlanComplex.coursePlanContents.courseSet.programSet !== undefined &&
     coursePlanComplex.coursePlanContents.courseSet.programSet !== null &&
     coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-      undefined &&
+    undefined &&
     coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-      null &&
+    null &&
     coursePlanComplex.coursePlanContents.courseSet.programSet.discussions
       .length > 0
   ) {
@@ -201,6 +204,9 @@ function getDisscussionItem(
       name:
         coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
           .name,
+      time: coursePlanComplex.coursePlan.time,
+      creator: coursePlanComplex.coursePlan.creator.name,
+      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
       params,
       routerParams,
       path: `${toPath(params)}/discussion`,

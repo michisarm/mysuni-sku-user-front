@@ -6,13 +6,13 @@ import LectureSurvey from '../../viewModel/LectureSurvey';
 
 type Value = LectureSurvey | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureSurvey(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureSurvey-${++subscriberIdRef.current}`;
+    const next = `useLectureSurvey-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

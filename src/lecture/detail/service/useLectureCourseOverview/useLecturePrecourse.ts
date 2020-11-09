@@ -6,13 +6,13 @@ import { useEffect, useRef, useState } from 'react';
 
 type Value = LecturePrecourse | undefined;
 
+let subscriberIdRef = 0;
 export function useLecturePrecourse(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLecturePrecourse-${++subscriberIdRef.current}`;
+    const next = `useLecturePrecourse-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

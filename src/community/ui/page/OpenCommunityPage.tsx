@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import {
+  requestFieldList,
+  requestOpenCommunityList,
+} from '../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
+import OpenCommunityView from '../view/OpenCommunityView';
 
 function OpenCommunityPage() {
-  return (<>OpenCommunityPage</>)
+  useEffect(() => {
+    requestFieldList();
+    requestOpenCommunityList();
+  }, []);
+  return <OpenCommunityView />;
 }
 
-export default OpenCommunityPage
+export default OpenCommunityPage;

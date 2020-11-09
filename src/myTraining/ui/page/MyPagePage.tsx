@@ -93,7 +93,7 @@ class MyPagePage extends Component<Props, State> {
         ),
       },
       {
-        name: ApprovalContentType.ApprovalList,
+        name: ApprovalContentType.PaidCourse,
         item: (
           <>
             승인관리

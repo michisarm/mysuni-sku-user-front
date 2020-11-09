@@ -6,13 +6,13 @@ import LectureReview from '../../viewModel/LectureOverview/LectureReview';
 
 type Value = LectureReview | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureReview(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureReview-${++subscriberIdRef.current}`;
+    const next = `useLectureReview-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

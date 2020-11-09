@@ -7,6 +7,10 @@ export async function getTranscriptItem(
 ): Promise<LectureTranscript[]> {
   const lectureTranscripts: LectureTranscript[] = [];
 
+  if(transcript.forEach === undefined) {
+    return [];
+  }
+
   transcript.forEach(transcript => {
     const {
       deliveryId,

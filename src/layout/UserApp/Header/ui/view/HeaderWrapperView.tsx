@@ -18,7 +18,7 @@ class HeaderWrapperView extends Component<Props> {
     const { breadcrumbs, mainNotice, children } = this.props;
 
     return (
-      <section className="header">
+      <section className="header lms">
         {mainNotice}
         <div className="group">
           <div className="cont-inner">

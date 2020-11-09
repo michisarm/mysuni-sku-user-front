@@ -12,7 +12,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
   lectureClassroom,
 }) {
   return (
-    <div className="contents overview width100">
+    <div className="contents overview width100" id="lms-classroom">
       <div className="ov-paragraph">
         {/* 차수 */}
         <div className="series-wrap">

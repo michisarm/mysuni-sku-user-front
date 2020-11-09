@@ -34,6 +34,13 @@ const CheckboxOptions = {
     { key: 0, name: 'viewType-radioGroup', label: '코스만보기', value: 'Course' },
     { key: 1, name: 'viewType-radioGroup', label: '전체보기', value: 'All' },
   ],
+
+  approvalViewTypes: [
+    { key: 0, name: 'approval-viewType-radioGroup', label: '전체', value: '' },
+    { key: 1, name: 'approval-viewType-radioGroup', label: '승인대기', value: 'OpenApproval' },
+    { key: 2, name: 'approval-viewType-radioGroup', label: '승인', value: 'Opened' },
+    { key: 3, name: 'approval-viewType-radioGroup', label: '반려', value: 'Rejected' }
+  ]
 };
 
 export default CheckboxOptions;

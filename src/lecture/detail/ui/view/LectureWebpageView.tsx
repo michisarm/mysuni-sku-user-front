@@ -1,6 +1,8 @@
 import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
 
+import DefaultImg from '../../../../style/media/default-thumbnail.png';
+
 const LectureWebpageView: React.FC<LectureWebpage> = function LectureWebpageView({
   title,
   description,
@@ -9,7 +11,7 @@ const LectureWebpageView: React.FC<LectureWebpage> = function LectureWebpageView
 }) {
   return (
     <div className="lms-open-graph">
-      <img src={image} className="lms-open-image" />
+      <img src={image ? image : DefaultImg} className="lms-open-image" />
       <div className="lms-open-con">
         <div className="lms-open-title">{title}</div>
         <div className="lms-open-copy">{description}</div>

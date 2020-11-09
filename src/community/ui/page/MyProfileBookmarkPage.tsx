@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function MyProfileBookmarkPage() {
-  return (<>MyProfileBookmarkPage</>)
+  return <div />;
 }
 
-export default MyProfileBookmarkPage
+export default MyProfileBookmarkPage;
