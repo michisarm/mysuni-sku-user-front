@@ -5,7 +5,7 @@ export default interface PostCdo {
   title: string;
   html: string;
   fileBoxId?: string;
-  commentFeebackId?: string;
+  commentFeedbackId?: string;
   pinned: boolean;
   readCount?: number;
   visible: boolean;

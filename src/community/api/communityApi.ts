@@ -36,11 +36,28 @@ export function registerCommunityPost(
     .then(response => response && response.data);
 }
 
+export function registerCommunityCommentPost(
+  title: string,
+): Promise<string> {
+  const url = `/api/feedback/feedback/comment`;
+  return axiosApi
+    .post<string>(url, {"title": title, "audienceKey":"", "sourceEntity": {"id": "post", "name": "post"}})
+    .then(response => response && response.data);
+}
+
 export function findCommunityPost(
   communityId: string,
   postId: string
 ): Promise<Post> {
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
+export function findCommunityPostDetail(
+  communityId: string,
+  postId: string
+): Promise<Post> {
+  const url = `${BASE_URL}/communities/${communityId}/posts/user/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
@@ -72,13 +89,11 @@ export function findPostsByMenuId(
 }
 
 export function findCommunityPostList(postRdo: PostRdo): Promise<PostList> {
-  const url = `${BASE_URL}/communities/${postRdo.communityId}/posts?startDate=${postRdo.startDate}&endDate=${postRdo.endDate}&title=${postRdo.title}&html=${postRdo.html}&creatorId=${postRdo.creatorId}&offset=${postRdo.offset}&limit=${postRdo.limit}&searchFilter=${postRdo.searchFilter}&menuId=${postRdo.menuId}&communityId=${postRdo.communityId}&sort=${postRdo.sort}`;
+  const url = `${BASE_URL}/communities/${postRdo.communityId}/posts?title=${postRdo.title}&html=${postRdo.html}&creatorId=${postRdo.creatorId}&offset=${postRdo.offset}&limit=${postRdo.limit}&searchFilter=${postRdo.searchFilter}&menuId=${postRdo.menuId}&communityId=${postRdo.communityId}&sort=${postRdo.sort}&pinned=${postRdo.pinned}`;
   return (
     axiosApi
       .get<PostList>(url)
-      // .get<PostList>(url)
       .then(response => {
-        console.log('response', response);
         return response && response.data;
       })
   );
