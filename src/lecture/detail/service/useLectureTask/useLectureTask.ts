@@ -103,6 +103,9 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskViewType(next => {
+      if(next === 'edit') {
+        return
+      }
       setViewFlag(next!);
       getCubeLectureTaskDetail(next!);
       if (next === 'create' || 'reply') {

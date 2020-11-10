@@ -11,6 +11,7 @@ import TaskDetail from '../model/TaskDetail';
 import CommentCountRdo from '../model/CommentCountRdo';
 import TaskDetailBody from '../model/TaskDetailBody';
 import { ClassroomModel } from '../../../personalcube/classroom/model';
+import TaskCdo from '../model/TaskCdo';
 
 const BASE_URL = '/api/personalCube';
 const FEEDBACK_URL = '/api/feedback';
@@ -125,6 +126,21 @@ export function getTaskCreateId(lectureId: string): Promise<any> {
   });
 }
 
+export function createTaskPost(param: TaskCdo): Promise<any> {
+  const url = `${BASE_URL}/posts/flow`;
+  return axiosApi.post<any>(url, param).then(response => {
+    return response;
+  });
+}
+
+export function updateTaskPost(param: TaskCdo, postId: string): Promise<any> {
+  console.log('postId', postId)
+  const url = `${BASE_URL}/posts/flow/${postId}`;
+  return axiosApi.put<any>(url, param).then(response => {
+    return response;
+  });
+}
+
 export function deleteTaskPost(postId: string, postType: string): Promise<any> {
   const url = `${BASE_URL}/posts/${postId}`;
   const replyUrl = `${BASE_URL}/replies/${postId}`;
@@ -136,7 +152,6 @@ export function deleteTaskPost(postId: string, postType: string): Promise<any> {
 }
 
 export function findFileBox(depotIds: string) {
-  //
   return axiosApi
     .get<string>(
       '/api/depot/depotFile/multiple' +
@@ -144,6 +159,7 @@ export function findFileBox(depotIds: string) {
     )
     .then(response => (response && response.data) || null);
 }
+
 export function findClassrooms(cubeId: string) {
   const url = `${BASE_URL}/classroomgroups/flow/classroomview/${cubeId}`;
   return axiosApi

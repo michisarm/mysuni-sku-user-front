@@ -2,6 +2,8 @@ import { useLectureTask } from 'lecture/detail/service/useLectureTask/useLecture
 import React, { useCallback, useEffect, useState } from 'react';
 import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
+  getLectureTaskDetail,
+  setLectureTaskDetail,
   setLectureTaskOffset,
   setLectureTaskTab,
   setLectureTaskViewType,
@@ -23,11 +25,18 @@ import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOv
 import { useLectureFile } from 'lecture/detail/service/useLectureFile';
 import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { useLectureTaskViewType } from 'lecture/detail/service/useLectureTask/useLectureTaskViewType';
+import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
 import LectureTaskEditView from '../view/LectureTaskView/LectureTaskEditView';
+import { getLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
+import { reactConfirm } from '@nara.platform/accent';
+import { useLectureTaskEdit } from 'lecture/detail/service/useLectureTask/useLectureTaskEdit';
+import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility/updateLectureTask';
+import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
 
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
+  const [taskCreate] = useLectureTaskCreate();
   const params = useLectureRouterParams();
   const [lectureDescription] = useLectureDescription();
   const [lectureSubcategory] = useLectureSubcategory();
@@ -39,7 +48,6 @@ function LectureTaskContainer() {
   const [create, setCreate] = useState<boolean>();
   const [edit, setEdit] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
-
   useLectuerCubeOverview();
 
   const moreView = useCallback((offset: number) => {
@@ -99,10 +107,69 @@ function LectureTaskContainer() {
   }, []);
 
   const handelClickCreateTask = useCallback(() => {
-    console.log('create');
     setCreate(true);
     setLectureTaskViewType('create');
   }, []);
+
+  const onHandleChange = useCallback((value: string, name: string, viewType: string) => {
+    if (viewType === 'create') {
+      if (getLectureTaskCreateItem() === undefined) {
+        return;
+      }
+      const taskCreateItem = getLectureTaskCreateItem()
+      if (taskCreateItem === undefined) {
+        return;
+      }
+      const nextTaskCreateItem = { ...taskCreateItem, title: value };
+      setLectureTaskCreateItem(nextTaskCreateItem);
+    } else if(viewType === 'edit') {
+      if(getLectureTaskDetail() === undefined) {
+        return;
+      }
+      const taskEditItem = getLectureTaskDetail()
+      if(taskEditItem === undefined) {
+        return;
+      }
+      const nextTaskEditItem = { ...taskEditItem, title: value };
+      setLectureTaskDetail(nextTaskEditItem);
+    }
+  }, []);
+
+  const handleSubmitClick = useCallback((viewType, detailTaskId?) => {
+    reactConfirm({
+      title: '알림',
+      message: '저장하시겠습니까?',
+      onOk: () => {
+        if (viewType === 'create') {
+          const test = createLectureTask()
+          
+          // setLectureTaskCreateItem({
+          //   id: detailTaskId!,
+          //   fileBoxId: '',
+          //   title: '',
+          //   writer: {
+          //     employeeId: '',
+          //     email: '',
+          //     name: '',
+          //     companyCode: '',
+          //     companyName: '',
+          //   },
+          //   name: '',
+          //   contents: '',
+          //   time: 0,
+          //   readCount: 0,
+          //   commentFeedbackId: '',
+          // })
+
+          setLectureTaskViewType('list')
+        } else {
+          console.log('detailTaskId', detailTaskId)
+          updateLectureTask(detailTaskId)
+          // setLectureTaskViewType('list')
+        }
+      }
+    });
+  }, [])
 
   useEffect(() => {
     async function getContentId() {
@@ -122,7 +189,7 @@ function LectureTaskContainer() {
   async function deletePost(id: string, type: string) {
     await deleteCubeLectureTaskPost(id, type);
   }
-  console.log('taskItem', taskItem)
+
   return (
     <>
       <div id="Posts" />
@@ -158,24 +225,29 @@ function LectureTaskContainer() {
           />
         </>
       )}
+      {/* create, edit 작업해야됨 */}
       {viewType === 'create' && (
         <>
-          <LectureTaskCreateView
-            postId=""
-            boardId={boardId}
-            handleOnClickList={onHandleSave}
-            handleCloseClick={onClickList}
-          />
+          { taskCreate && (
+            <LectureTaskCreateView
+              viewType="create"
+              boardId={boardId}
+              handleSubmitClick={(viewType) => handleSubmitClick(viewType)}
+              taskDetail={taskCreate!}
+              changeProps={(value: string, name: string, viewType: string) => onHandleChange(value, name, viewType)}
+            />
+          )}
         </>
       )}
       {viewType === 'edit' && (
         <>
-          <LectureTaskEditView
-            postId={detailTaskId}
+          <LectureTaskCreateView
+            viewType="edit"
+            detailTaskId={detailTaskId}
             boardId={boardId}
-            detailType={detailType}
-            handleOnClickList={onHandleSave}
-            handleCloseClick={onClickList}
+            handleSubmitClick={(viewType) => handleSubmitClick(viewType, detailTaskId)}
+            taskDetail={taskDetail!}
+            changeProps={(value: string, name: string, viewType: string) => onHandleChange(value, name, viewType)}
           />
         </>
       )}
