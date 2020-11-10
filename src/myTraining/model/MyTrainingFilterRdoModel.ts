@@ -46,6 +46,10 @@ class MyTrainingFilterRdoModel {
     return new MyTrainingFilterRdoModel({ contentType } as MyTrainingFilterRdoModel);
   }
 
+  public static createForStorage(contentType: MyContentType, offset: Offset) {
+    return new MyTrainingFilterRdoModel({ contentType, offset } as MyTrainingFilterRdoModel);
+  }
+
   static createWithConditions(
     collegeIds: string[],
     cubeTypes: string[],

@@ -10,6 +10,7 @@ import { MyContentType, ViewType } from './MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from '../model';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { MyTrainingService } from '../../stores';
+import { MyTrainingTableViewModel } from 'myTraining/model';
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;
@@ -46,7 +47,7 @@ function LineHeaderContainerV2(props: Props) {
 
   /* handlers */
   const downloadExcel = useCallback(async (contentType: MyContentType) => {
-    const myTrainingTableViews = await getModelsForExcel(contentType);
+    const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(contentType);
     const lastIndex = myTrainingTableViews.length;
     // MyTrainingService 의 MyTrainingViewModel 을 조회해 엑셀로 변환
     let xlsxList: MyXlsxList = [];

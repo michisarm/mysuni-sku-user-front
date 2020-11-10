@@ -5,11 +5,13 @@ import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel'
 import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
+
 
 
 @autobind
@@ -39,6 +41,9 @@ class MyTrainingService {
 
   @observable
   myStampCount: number = 0;
+
+
+
 
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
@@ -401,6 +406,14 @@ class MyTrainingService {
   // store 에서 관리가 되나, 변동사항이 있더라도 리 랜더링하지 않음. observable하지 않음.
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
+  _inProgressTableViews: MyTrainingTableViewModel[] = [];
+
+  _inProgressTableCount: number = 0;
+
+  _completedTableViews: MyTrainingTableViewModel[] = [];
+
+  _completedTableCount: number = 0;
+
   @observable
   selectedServiceIds: string[] = [];
 
@@ -411,6 +424,22 @@ class MyTrainingService {
 
   @computed get myTrainingTableCount() {
     return this._myTrainingTableViewCount;
+  }
+
+  @computed get inProgressTableViews() {
+    return this._inProgressTableViews;
+  }
+
+  @computed get inProgressTableCount() {
+    return this._inProgressTableCount;
+  }
+
+  @computed get completedTableViews() {
+    return this._completedTableViews;
+  }
+
+  @computed get completedTableCount() {
+    return this._completedTableCount;
   }
 
   @action
@@ -460,11 +489,53 @@ class MyTrainingService {
   }
 
   @action
-  async findAllTableViews(filterRdo?: MyTrainingFilterRdoModel) {
+  async findAllTableViews() {
+    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
 
-    if (filterRdo) {
-      this._myTrainingFilterRdo = filterRdo;
+    /* 학습중 */
+    if (this._myTrainingFilterRdo.contentType === 'InProgress') {
+      if (this._myTrainingFilterRdo.viewType === 'Course') {
+        if (this._inProgressTableViews.length === 0) {
+          const inProgressJson = sessionStorage.getItem('inProgressTableViews');
+          if (inProgressJson) {
+            const inProgressStorage: any[] = JSON.parse(inProgressJson);
+            this._inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
+            this._inProgressTableCount = inProgressStorage.length;
+          }
+        }
+        const inProgressTableViews = this._inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        this._myTrainingTableViews = inProgressTableViews.slice(0, 20);
+        this._myTrainingTableViewCount = inProgressTableViews.length;
+        return false;
+      }
+
+      this._myTrainingTableViews = this._inProgressTableViews.slice(0, 20);
+      this._myTrainingTableViewCount = this.inProgressTableCount;
+      return false;
     }
+    /* 학습완료 */
+    if (this._myTrainingFilterRdo.contentType === 'Completed') {
+      if (this._myTrainingFilterRdo.viewType === 'Course') {
+        if (this._completedTableViews.length === 0) {
+          const completedJson = sessionStorage.getItem('completedTableViews');
+          if (completedJson) {
+            const completedStorage: any[] = JSON.parse(completedJson);
+            this._completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+            this._completedTableCount = completedStorage.length;
+          }
+        }
+
+        const completedTableViews = this._completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        this._myTrainingTableViews = completedTableViews.slice(0, 20);
+        this._myTrainingTableViewCount = completedTableViews.length;
+        return false;
+      }
+
+      this._myTrainingTableViews = this._completedTableViews.slice(0, 20);
+      this._myTrainingTableViewCount = this.completedTableCount;
+      return false;
+    }
+
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
@@ -482,6 +553,7 @@ class MyTrainingService {
 
   @action
   async findAllStampTableViews() {
+
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
     if (offsetTableViews &&
@@ -529,6 +601,39 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithPage(offset: Offset) {
+    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
+    if (this._myTrainingFilterRdo.getFilterCount() === 0) {
+      if (this._myTrainingFilterRdo.contentType === 'InProgress') {
+        const startIndex = offset.offset;
+        const endIndex = offset.offset + offset.limit;
+        let addedTableViews = [];
+        if (this._myTrainingFilterRdo.viewType === 'Course') {
+          const inProgressTableViews = this._inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          addedTableViews = inProgressTableViews.slice(startIndex, endIndex);
+        } else {
+          addedTableViews = this._inProgressTableViews.slice(startIndex, endIndex);
+        }
+        this._myTrainingTableViews = [...this._myTrainingTableViews, ...addedTableViews];
+
+        return;
+      }
+
+      if (this._myTrainingFilterRdo.contentType === 'Completed') {
+        const startIndex = offset.offset;
+        const endIndex = offset.offset + offset.limit;
+        let addedTableViews = [];
+        if (this._myTrainingFilterRdo.viewType === 'Course') {
+          const completedTableViews = this._completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          addedTableViews = completedTableViews.slice(startIndex, endIndex);
+        } else {
+          addedTableViews = this._completedTableViews.slice(startIndex, endIndex);
+        }
+
+        this._myTrainingTableViews = [...this.myTrainingTableViews, ...addedTableViews];
+        return;
+      }
+    }
+
     this._myTrainingFilterRdo.changeOffset(offset);
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
@@ -605,7 +710,38 @@ class MyTrainingService {
     const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
 
     return myTrainingV2sForExcel;
+  }
 
+  /* 메인 페이지 진입 시 session storage 에 전체 학습중 데이터를 저장하기 위한 service. */
+  async findAllInProgressTableViewsForStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForStorage(MyLearningContentType.InProgress, { offset: 0, limit: 9999 });
+
+    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
+    if (offsetInProgress) {
+      const inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
+      this._inProgressTableViews = inProgressTableViews;
+      this._inProgressTableCount = inProgressTableViews.length;
+
+      return inProgressTableViews;
+    }
+
+    return null;
+  }
+
+  /* 메인 페이지 진입 시 session storage 에 전체 학습완료 데이터를 저장하기 위한 service. */
+  async findAllCompletedTableViewsForStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForStorage(MyLearningContentType.Completed, { offset: 0, limit: 9999 });
+
+    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
+    if (offsetCompleted) {
+      const completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
+      this._completedTableViews = completedTableViews;
+      this._completedTableCount = completedTableViews.length;
+
+      return completedTableViews;
+    }
+
+    return null;
   }
 
   @action

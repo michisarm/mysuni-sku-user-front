@@ -112,7 +112,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayProgressRate}  {/* 진행률 */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.startDate)}{/* 학습시작일 */}
@@ -131,7 +131,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayDifficultyLevel} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {model.displayStampCount}{/* 스탬프 */}
@@ -151,7 +151,7 @@ function MyLearningTableBody(props: Props) {
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {model.stampCountForDisplay}{/* 스탬프 */}
@@ -171,7 +171,7 @@ function MyLearningTableBody(props: Props) {
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.endDate)}{/* 학습완료일 */}
