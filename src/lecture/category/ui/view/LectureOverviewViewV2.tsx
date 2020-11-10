@@ -69,6 +69,7 @@ interface State {
   multiple: boolean;
   categoryOpen: boolean;
   openLearnModal: boolean;
+  pgmTestReady: boolean;
 }
 
 @inject(
@@ -97,6 +98,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     multiple: false,
     categoryOpen: false,
     openLearnModal: false,
+    pgmTestReady: false,
   };
 
   panelRef = React.createRef<any>();
@@ -110,7 +112,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   componentDidMount() {
     //
     this.setMultiple();
-
+    this.chkPgmTest();
     this.findSkProfile();
   }
 
@@ -129,12 +131,46 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     ) {
       this.findCoursePlan();
     }
-    //
-    // if (prevProps.surveyCase?.id !== this.props.surveyCase?.id) {
-    //     //   this.props.onPageInit();
-    //     // }
 
-    // console.log('LectureOverviewView render completed');
+    if (prevProps.studentInfo !== this.props.studentInfo) {
+      this.chkPgmTest();
+    }
+  }
+
+  // Program 일 경우 하위 교육 모두 Passed 일때 Test 가능하게 20201030 by gon
+  chkPgmTest() {
+    // cube    : 교육최소단위                      cube-Test
+    // course  : cube 묶음                        cube-Test, course-Test
+    // program : cube or course in course 형태    cube-Test, course-Test, course-Test
+    // cube, course, program 모두 Test 까지 끝나야 학습완료임
+    // program 일때 cube in program, cube in course   학습완료 만 체크해서 Test 가능하게 되어 있었음.
+    //              course in program   학습완료 체크하는 로직 추가
+    // api:own -> store:student 로 바꿔서 리턴함
+    // student:{}
+    // lecture:{lectures:[student:{}]}
+    // course:{courses:[student:{}]}
+    const { studentInfo } = this.props;
+    if (studentInfo !== null) {
+      const { student, lecture, course } = studentInfo!;
+      let notPassCnt = 0;
+      if (student!.serviceType === 'Program') {
+        // cube complete check
+        lecture &&
+          lecture.lectures.map(lecture => {
+            if (lecture.learningState !== 'Passed') notPassCnt++;
+          });
+        // course complete check
+        course &&
+          course.courses.map(course => {
+            if (course.student.learningState !== 'Passed') notPassCnt++;
+          });
+      }
+      if (notPassCnt > 0) {
+        this.setState({ pgmTestReady: false });
+      } else {
+        this.setState({ pgmTestReady: true });
+      }
+    }
   }
 
   async findSkProfile() {
@@ -578,7 +614,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       return null;
     }
 
-    const { multiple, categoryOpen, openLearnModal } = this.state;
+    const { multiple, categoryOpen, openLearnModal, pgmTestReady } = this.state;
     const cubeType = viewObject.cubeType;
 
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
@@ -766,10 +802,13 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                     }
                     viewObject={viewObject}
                     passedState={viewObject.passedState}
-                    type={viewObject.examType}
+                    type={!pgmTestReady ? '1' : viewObject.examType}
                     name={viewObject.examName}
                     sort="box"
                   />
+                  {/* type={!pgmTestReady ? '1' : viewObject.examType} */}
+                  {/* Program 일 경우 하위 교육 모두 Passed 일때 Test 가능하게 20201030 by gon */}
+                  {/* Program 일 경우 아래 Course, Cube 가 전부 Passed 가 아닐 경우 TestNotReady */}
 
                   {/*<Lecture2.TRS*/}
                   {/*  // key={`course-trs-${lectureViewsIndex}`}*/}

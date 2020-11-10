@@ -30,7 +30,6 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
-
   useEffect(() => {
     getFileIds();
   }, [taskDetail]);

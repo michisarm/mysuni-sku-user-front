@@ -19,6 +19,7 @@ interface Post {
   createdTime: number;
   modifierId: string;
   modifiedTime: number;
+  nickName: string;
 }
 
 export default interface PostList {

@@ -1,8 +1,8 @@
 export default interface PostRdo {
   searchFilter: string;
   creatorName?: string;
-  startDate: number;
-  endDate: number;
+  startDate?: number;
+  endDate?: number;
   limit: number;
   offset: number;
   sort: string;
@@ -21,6 +21,7 @@ export default interface PostRdo {
   createdTime?: number;
   modifierId?: string;
   modifiedTime?: number;
+  pinned?: boolean;
 }
 
 // searchFilter: string;

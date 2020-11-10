@@ -1,21 +1,10 @@
-import PostRdo from 'community/model/PostRdo';
-import { onCommunityPostCreateItem } from 'community/store/CommunityPostCreateStore';
 import {
   onCommunityPostListItem,
   setCommunityPostListItem,
 } from 'community/store/CommunityPostListStore';
-import {
-  SearchType,
-  SortType,
-} from 'community/ui/logic/CommunityPostListContainer';
 import { CommunityPostList } from 'community/viewModel/CommunityPostList';
-import { param } from 'jquery';
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { SearchFilter } from 'myTraining/model/SearchFilter';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { CommunityPostCreateItem } from '../../viewModel/CommunityPostCreate';
-import { getCommunityPostList } from './utility/getCommunityPostList';
 
 type PostListValue = CommunityPostList | undefined;
 
@@ -39,35 +28,28 @@ export function useCommunityPostList(): [PostListValue] {
   }, []);
 
   useEffect(() => {
-    console.log('subscriberId', subscriberId);
     if (subscriberId === undefined) {
       return;
     }
     return onCommunityPostListItem(next => {
-      console.log('CommunityPostCreateItem');
       if (next !== undefined) {
         setPostItems(next);
       }
-      console.log('CommunityPostCreateItem', next);
     }, subscriberId);
   }, [subscriberId]);
 
   useEffect(() => {
-    console.log('subscriberId', subscriberId);
     if (subscriberId === undefined) {
       return;
     }
     return onCommunityPostListItem(next => {
-      console.log('CommunityPostCreateItem');
       if (next !== undefined) {
         setPostItems(next);
       }
-      console.log('CommunityPostCreateItem', next);
     }, subscriberId);
   }, [subscriberId]);
 
   useEffect(() => {
-    console.log('communityId', communityId);
     if (communityId === undefined) {
       return;
     }
@@ -83,18 +65,6 @@ export function useCommunityPostList(): [PostListValue] {
       searchText: '',
     });
 
-    //리스트 조회 api 호출
-    // getCommunityPostList(
-    //   communityId,
-    //   0,
-    //   10,
-    //   'TIME',
-    //   '',
-    //   ''
-    // );
-
-    console.log('communityId', communityId);
-    console.log('menuId', menuId);
   }, [communityId, menuId]);
 
   return [postItems];
