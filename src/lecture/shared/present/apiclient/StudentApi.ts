@@ -1,4 +1,5 @@
 import { axiosApi } from '@nara.platform/accent';
+import StudentHideUdo from 'lecture/model/StudentHideUdo';
 import { LearningState } from 'shared/model';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import StudentCountRdoModel from '../../../model/StudentCountRdoModel';
@@ -84,11 +85,10 @@ class StudentApi {
   }
 
   ////////////////////////////////////// 개편 //////////////////////////////////////
-  mmodifyStudentHide() {
-
+  modifyStudentHide(studentHideUdo: StudentHideUdo): void {
+    axiosApi.patch(`${this.baseUrl}/hide`, studentHideUdo)
   }
   ////////////////////////////////////// 개편 //////////////////////////////////////
-
 }
 
 StudentApi.instance = new StudentApi();
