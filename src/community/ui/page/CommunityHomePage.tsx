@@ -11,6 +11,7 @@ import profileIcon from '../../../style/media/img-profile-80-px.png';
 import defaultHeader from '../../../style/media/bg-ttl-sample-02.png';
 import Post from '../../model/Post';
 import moment from 'moment';
+import { patronInfo } from '@nara.platform/dock';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   title,

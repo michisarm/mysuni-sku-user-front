@@ -10,24 +10,29 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 
 interface CommunityPostListContainerProps {
-  handelOnSearch?: (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => void;
+  handelOnSearch?: (
+    sortType: string,
+    pinned: boolean,
+    searchType: SearchType,
+    searchText: string
+  ) => void;
 }
 interface Params {
   communityId: string;
-  postId: string;
+  menuId: string;
 }
 
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
 const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
-  handelOnSearch
+  handelOnSearch,
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
   const [postItems] = useCommunityPostList();
-  const { communityId } = useParams<Params>()
+  const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
   // const { pageMap } = SharedService;
 
@@ -65,7 +70,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       menuId: '',
       communityId,
       sort: sortType,
-      pinned: false
+      pinned: false,
     };
     if (searchType === 'all') {
       param.title = '';
@@ -137,6 +142,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       )}
     </>
   );
-}
+};
 
 export default CommunityPostListContainer;
