@@ -1,22 +1,48 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { axiosApi, setCustomDialog } from '@nara.platform/accent';
 
 import Dialog from './shared/components/Dialog';
 import StoreProvider from './StoreProvider';
 import Routes from './Routes';
+import { pdfjs } from 'react-pdf';
 
 
 initAxios();
 setCustomDialog(onCustomDialog);
+initPdfjs();
 
 
 function App() {
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://developers.panopto.com/scripts/embedapi.min.js";
+    script.async = true;
+
+    //FIXME 아래 방법으로 하는 것도 고려 필요.
+    //const firstScriptTag = document.getElementsByTagName('script')[0];
+    //if (firstScriptTag !== null) {
+      //firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
+    //}    
+  
+    document.body.appendChild(script);
+  
+    return () => {
+      document.body.removeChild(script);
+    }
+  }, []);
+
   return (
     <StoreProvider>
       <Routes />
     </StoreProvider>
   );
+}
+
+function initPdfjs() {
+  //pdfjs.GlobalWorkerOptions.workerSrc = process.env.PUBLIC_URL + '/assets/js/pdf.worker.min.js';
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 }
 
 function initAxios() {
