@@ -38,7 +38,6 @@ interface State {
 @inject(mobxHelper.injectFrom(
   'notie.notieService',
   'profile.skProfileService',
-  'approval.menuControlAuthService',
   'approval.menuControlAuthService'))
 @reactAutobind
 @observer
@@ -69,10 +68,10 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   menuControlAuth() {
-  //
-  const { skProfileService, menuControlAuthService } = this.props;
-  skProfileService!.findSkProfile()
-    .then((profile: SkProfileModel) => menuControlAuthService!.findMenuControlAuth(profile.member.companyCode))
+    //
+    const { skProfileService, menuControlAuthService } = this.props;
+    skProfileService!.findSkProfile()
+      .then((profile: SkProfileModel) => menuControlAuthService!.findMenuControlAuth(profile.member.companyCode))
   }
 
   deactive() {
