@@ -30,7 +30,7 @@ interface Props {
 */
 function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
-  const { selectedIds, selectOne, clearOne } = myTrainingService!;
+  const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
 
   /* handlers */
@@ -38,6 +38,14 @@ function MyLearningTableBody(props: Props) {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
     const { category: { college }, serviceId, coursePlanId, cubeId } = model;
     let { serviceType } = model;
+
+    switch(serviceType) {
+      case 'COURSE':
+        serviceType = 'Course';
+      case 'PROGRAM':
+        serviceType = 'Program';
+    }
+
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
 
@@ -65,13 +73,13 @@ function MyLearningTableBody(props: Props) {
 
   const onCheckOne = useCallback((e: any, data: any) => {
     // 이미 선택되어 있는 경우, 해제함.
-    if (selectedIds.includes(data.value)) {
+    if (selectedServiceIds.includes(data.value)) {
       clearOne(data.value);
       return;
     }
 
     selectOne(data.value);
-  }, [selectedIds, clearOne, selectOne]);
+  }, [selectedServiceIds, clearOne, selectOne]);
 
 
   /* render functions */
@@ -294,8 +302,8 @@ function MyLearningTableBody(props: Props) {
             {contentType === MyLearningContentType.InProgress && (
               <Table.Cell>
                 <Checkbox
-                  value={model.id}
-                  checked={selectedIds.includes(model.id)}
+                  value={model.serviceId}
+                  checked={selectedServiceIds.includes(model.serviceId)}
                   onChange={onCheckOne}
                 />
               </Table.Cell>
@@ -343,4 +351,4 @@ const formatDate = (time: number) => {
   return moment(Number(time)).format('YYYY.MM.DD');
 };
 
-export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel; 
+export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel;

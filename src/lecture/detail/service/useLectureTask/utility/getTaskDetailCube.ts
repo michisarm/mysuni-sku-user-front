@@ -38,6 +38,7 @@ async function getTaskItem(postParam: any) {
     time: 0,
     readCount: 0,
     commentFeedbackId: '',
+    notice: false
   };
   //
   if (postParam.id !== '') {

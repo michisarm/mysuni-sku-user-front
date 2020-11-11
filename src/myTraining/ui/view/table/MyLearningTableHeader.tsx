@@ -19,7 +19,7 @@ interface Props {
 function MyLearningTableHeader(props: Props) {
 
   const { contentType, onClickSort, myTrainingService } = props;
-  const { myTrainingTableViews, selectedIds, selectAll, clearAll } = myTrainingService!;
+  const { myTrainingTableViews, selectedServiceIds, selectAll, clearAll } = myTrainingService!;
 
   /* by 김동구
     contentType 에 따라 테이블 컬럼이 동적으로 변경됨.
@@ -44,13 +44,13 @@ function MyLearningTableHeader(props: Props) {
 
   const onCheckAll = useCallback((e: any, data: any) => {
     // 이미 전체 선택이 되어 있는 경우, 전체 해제
-    if (myTrainingTableViews.length === selectedIds.length) {
+    if (myTrainingTableViews.length === selectedServiceIds.length) {
       clearAll();
       return;
     }
     // 전체 선택
     selectAll();
-  }, [myTrainingTableViews, selectedIds]);
+  }, [myTrainingTableViews, selectedServiceIds]);
 
   /* functions */
   const getDireciton = (column: string) => {
@@ -92,7 +92,7 @@ function MyLearningTableHeader(props: Props) {
             (
               <Table.HeaderCell className="ck">
                 <Checkbox
-                  checked={selectedIds.length === myTrainingTableViews.length}
+                  checked={selectedServiceIds.length === myTrainingTableViews.length}
                   onChange={onCheckAll}
                 />
               </Table.HeaderCell>

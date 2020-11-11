@@ -49,7 +49,7 @@ function ListLeftTopPanel(props: Props) {
     /*
       contentType이 개인학습 완료일 경우, 아래와 같이 메세지 변경.
         1. countMessage => 승인완료
-        2. 총 => 전체 
+        2. 총 => 전체
     */
     switch (contentType) {
       case MyLearningContentType.PersonalCompleted:

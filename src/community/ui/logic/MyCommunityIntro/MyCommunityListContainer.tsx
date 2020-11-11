@@ -19,7 +19,7 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
 }) {
   return (
     <>
-      <div className="community-main-left-contents">
+      <a className="community-main-left-contents">
         <div className="thumbnail">
           <img src={image} />
         </div>
@@ -36,7 +36,7 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
             멤버<span>{memberCount}</span>
           </div>
         </div>
-      </div>
+      </a>
     </>
   );
 };
