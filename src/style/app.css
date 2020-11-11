@@ -896,3 +896,8 @@ body .badge_new .title .cell span {
 .ui.button.fix2.bg.blue {
   background: #5772c7 !important;
 }
+
+.content.community .ui.dropdown.selection .icon.dropdown:before {
+  width: 22px;
+  height: 22px;
+}
