@@ -13,7 +13,7 @@ interface Params {
 function CommunityPostCreateContainer() {
   const { communityId, postId, menuId } = useParams<Params>();
   const communityHome = useCommunityHome();
-  const [postCreateItem] = useCommunityPostCreate(communityId, postId);
+  const [postCreateItem] = useCommunityPostCreate(postId);
   return (
     <>
       {postCreateItem !== undefined && communityHome !== undefined && (

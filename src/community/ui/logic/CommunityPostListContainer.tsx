@@ -10,24 +10,29 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 
 interface CommunityPostListContainerProps {
-  handelOnSearch?: (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => void;
+  handelOnSearch?: (
+    sortType: string,
+    pinned: boolean,
+    searchType: SearchType,
+    searchText: string
+  ) => void;
 }
 interface Params {
   communityId: string;
-  postId: string;
+  menuId: string;
 }
 
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
 const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
-  handelOnSearch
+  handelOnSearch,
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
   const [postItems] = useCommunityPostList();
-  const { communityId } = useParams<Params>()
+  const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
   // const { pageMap } = SharedService;
 
@@ -65,7 +70,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       menuId: '',
       communityId,
       sort: sortType,
-      pinned: false
+      pinned: false,
     };
     if (searchType === 'all') {
       param.title = '';
@@ -85,33 +90,31 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     <>
       {postItems !== undefined && (
         <>
-          <ContentLayout className="community">
-            <div className="ui segment full">
-              <div className="course-info-header">
-                <div className="survey-header border-none mb30 pt0">
-                  <div className="survey-header-left">메뉴명</div>
-                </div>
-              </div>
-              <CommunityPostTopLineView
-                sortType={sortType}
-                totalCount={postItems.totalCount}
-                onChangeSortType={(e, id) => onChangeSortType(e, id)}
-                handelClickCreateTask={handelClickCreatePost}
+          <div className="course-info-header">
+            <div className="survey-header border-none mb30 pt0">
+              <div className="survey-header-left">메뉴명</div>
+            </div>
+          </div>
+          <CommunityPostTopLineView
+            sortType={sortType}
+            totalCount={postItems.totalCount}
+            onChangeSortType={(e, id) => onChangeSortType(e, id)}
+            handelClickCreateTask={handelClickCreatePost}
+          />
+          <div className="mycommunity-list-wrap">
+            <div className="su-list notice">
+              <CommunityPostListView
+                postItems={postItems}
+                handleClickRow={param => handleClickRow(param)}
               />
-              <div className="mycommunity-list-wrap">
-                <div className="su-list notice">
-                  <CommunityPostListView
-                    postItems={postItems}
-                    handleClickRow={param => handleClickRow(param)}
-                  />
-                </div>
-              </div>
+            </div>
+          </div>
 
-              <div className="paging margin-none">
-                <div className="lms-paging-holder">
-                  {/* <a className="lms-prev">이전10개</a> */}
-                  <a className="lms-num lms-on">1</a>
-                  {/* <a className="lms-num">2</a>
+          <div className="paging margin-none">
+            <div className="lms-paging-holder">
+              {/* <a className="lms-prev">이전10개</a> */}
+              <a className="lms-num lms-on">1</a>
+              {/* <a className="lms-num">2</a>
                 <a className="lms-num">3</a>
                 <a className="lms-num">4</a>
                 <a className="lms-num">5</a>
@@ -120,23 +123,21 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
                 <a className="lms-num">8</a>
                 <a className="lms-num">9</a>
                 <a className="lms-num">10</a> */}
-                  {/* <a className="lms-next">이후10개</a> */}
-                </div>
-              </div>
-
-              <CommunityPostListSearchBox
-                searchType={searchType}
-                searchText={searchText}
-                onChangeSearchType={onChangeSearchType}
-                onChangeSearchText={onChangeSearchText}
-                onSearch={onSearch}
-              />
+              {/* <a className="lms-next">이후10개</a> */}
             </div>
-          </ContentLayout>
+          </div>
+
+          <CommunityPostListSearchBox
+            searchType={searchType}
+            searchText={searchText}
+            onChangeSearchType={onChangeSearchType}
+            onChangeSearchText={onChangeSearchText}
+            onSearch={onSearch}
+          />
         </>
       )}
     </>
   );
-}
+};
 
 export default CommunityPostListContainer;
