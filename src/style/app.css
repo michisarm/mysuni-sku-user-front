@@ -574,7 +574,7 @@ body .badge_new .title .cell span {
     sans-serif;
 }
 
-.documents-viewer {
+/* .documents-viewer {
   position: relative;
   border: 5px solid #eee;
   border-radius: 7px;
@@ -626,7 +626,7 @@ body .badge_new .title .cell span {
 
 .documents-viewer .pagination button:enabled:hover, .pagination button:enabled:focus {
   background-color: #e6e6e6;
-}
+} */
 .apl-form-wrap2{
   padding:3.125rem 0 0
 }
@@ -895,4 +895,9 @@ body .badge_new .title .cell span {
 }
 .ui.button.fix2.bg.blue {
   background: #5772c7 !important;
+}
+
+.content.community .ui.dropdown.selection .icon.dropdown:before {
+  width: 22px;
+  height: 22px;
 }
