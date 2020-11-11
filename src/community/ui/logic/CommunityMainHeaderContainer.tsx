@@ -2,6 +2,7 @@ import React from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
+import { Link } from 'react-router-dom';
 
 function CommunityMainHeaderContainer() {
   const profile = useMyProfile();
@@ -18,10 +19,13 @@ function CommunityMainHeaderContainer() {
             <div className="text-info">
               <div className="name">
                 {profile?.nickname || profile?.name || ''}
-                <button className="ui button orange-arrow2">
+                <Link
+                  className="ui button orange-arrow2"
+                  to="/community/my-profile"
+                >
                   <i aria-hidden="true" className="icon post" />
                   프로필수정
-                </button>
+                </Link>
               </div>
             </div>
           </div>

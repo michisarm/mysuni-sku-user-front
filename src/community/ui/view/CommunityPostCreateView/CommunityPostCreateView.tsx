@@ -7,6 +7,7 @@ import {
 } from 'community/store/CommunityPostCreateStore';
 import { CommunityPostCreateItem } from 'community/viewModel/CommunityPostCreate';
 import React, { useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import CommunityMenu from '../../../model/CommunityMenu';
@@ -27,6 +28,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   postId,
   menus,
 }) {
+  const history = useHistory();
   const handlePinnedChange = useCallback((e: any, data: any) => {
     const value = data.checked;
     const postCreateItem = getCommunityPostCreateItem();
@@ -77,16 +79,15 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   }, []);
 
   const handleSubmitClick = useCallback(() => {
-    const menu = menus.find(c => c.menuId === menuId);
-    if (menu === undefined) {
-      return;
-    }
     reactConfirm({
       title: '알림',
       message: '저장하시겠습니까?',
-      onOk: () => saveCommunityPost(communityId, menu.id, postId),
+      onOk: async () => {
+        await saveCommunityPost(communityId, menuId, postId);
+        history.goBack();
+      },
     });
-  }, [communityId, menuId, postId, menus]);
+  }, [communityId, menuId, postId, history]);
 
   const menu = menus.find(c => c.menuId === menuId);
 

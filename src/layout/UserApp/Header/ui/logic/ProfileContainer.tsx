@@ -4,19 +4,22 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
 import { SkProfileService } from 'profile/stores';
+import { NotieService } from 'notie/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { Image } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import HeaderAlarmView from '../view/HeaderAlarmView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
+  notieService?: NotieService;
 }
 
 interface State {
   balloonShowClass: string;
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService','notie.notieService'))
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
@@ -29,9 +32,11 @@ class ProfileContainer extends Component<Props, State> {
   //
   componentDidMount() {
     //
-    const { skProfileService } = this.props;
+    const { skProfileService, notieService } = this.props;
 
     skProfileService!.findSkProfile();
+
+    notieService!.findAllMyNotieMentions();
 
     document.addEventListener('mousedown', this.handleClickOutside);
   }
@@ -69,10 +74,15 @@ class ProfileContainer extends Component<Props, State> {
     //window.location.href = 'https://proxy.gdisso.sk.com/nsso-authweb/logoff.do?ssosite=mysuni.sk.com&returnURL=https://mysuni.sk.com';
   }
 
+  routeToAlarmBackLink(backLink:string) {
+    this.props.history.push(backLink);
+  }
+
   render() {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
+    const { myNotieMentions } = NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
     return (
@@ -121,7 +131,11 @@ class ProfileContainer extends Component<Props, State> {
             </li>
           </ul>
         </div>
-        {/* <a className="lms-alarm lms-on"><span>알람</span></a> */}
+
+        <HeaderAlarmView
+          myNotieMentions={myNotieMentions}
+          routeToAlarmBackLink={this.routeToAlarmBackLink}
+        />
       </div>
     );
   }
