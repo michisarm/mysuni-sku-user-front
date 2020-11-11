@@ -1,10 +1,11 @@
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { PostForm } from '@sku/personalcube';
+import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
 import { getCubeLectureTaskDetail } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { getLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import React, { Fragment, useCallback, useEffect } from 'react';
-import { Form, Icon } from 'semantic-ui-react';
+import { Checkbox, Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import Editor from './LectureTaskCreateEditor';
@@ -12,7 +13,7 @@ import LectureTaskEditEditor from './LectureTaskEditEditor';
 
 interface LectureTaskCreateViewProps {
   boardId: string;
-  taskDetail: LectureTaskDetail;
+  taskEdit?: LectureTaskDetail;
   viewType?: string;
   detailTaskId?: string;
   // moreView: (offset: number) => void;
@@ -22,12 +23,19 @@ interface LectureTaskCreateViewProps {
 
 const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTeskView({
   boardId,
-  taskDetail,
+  // taskDetail,
   viewType,
   detailTaskId,
+  taskEdit,
   changeProps,
   handleSubmitClick,
 }) {
+  let [taskDetail] = useLectureTaskCreate();
+
+  //edit인경우
+  if (taskEdit !== undefined) {
+    taskDetail = taskEdit
+  }
   
   useEffect(() => {
     if (viewType === 'edit') {
@@ -54,13 +62,17 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
     if (value.length > 100) {
       return;
     }
-  
     changeProps(e.target.value, 'title', viewType!)
   }, []);
 
+  const handlePinnedChange = useCallback((e: any, data: any) => {
+    const value = data.checked;
+    changeProps(value, 'notice', viewType!)
+  }, [])
+
   return (
     <Fragment>
-        {boardId && (
+        {boardId && taskDetail &&(
           <>
             <div className="course-info-header">
               <div className="survey-header">
@@ -79,6 +91,17 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
             <div className="form-contants">
               <Form>
                 <Form.Field>
+                  <div className="board-write-checkbox">
+                    <div className="ui checkbox base">
+                      <Checkbox
+                        className="base"
+                        label="공지 등록"
+                        name="communityPostCreatePinned"
+                        checked={taskDetail.notice}
+                        onChange={handlePinnedChange}
+                      />
+                    </div>
+                  </div>
                   <div
                     className={
                       titleLength >= 100

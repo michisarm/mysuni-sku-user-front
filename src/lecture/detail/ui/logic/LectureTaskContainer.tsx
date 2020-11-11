@@ -36,7 +36,6 @@ import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
-  const [taskCreate] = useLectureTaskCreate();
   const params = useLectureRouterParams();
   const [lectureDescription] = useLectureDescription();
   const [lectureSubcategory] = useLectureSubcategory();
@@ -120,7 +119,7 @@ function LectureTaskContainer() {
       if (taskCreateItem === undefined) {
         return;
       }
-      const nextTaskCreateItem = { ...taskCreateItem, title: value };
+      const nextTaskCreateItem = { ...taskCreateItem, [name]: value };
       setLectureTaskCreateItem(nextTaskCreateItem);
     } else if(viewType === 'edit') {
       if(getLectureTaskDetail() === undefined) {
@@ -130,7 +129,7 @@ function LectureTaskContainer() {
       if(taskEditItem === undefined) {
         return;
       }
-      const nextTaskEditItem = { ...taskEditItem, title: value };
+      const nextTaskEditItem = { ...taskEditItem, name: value };
       setLectureTaskDetail(nextTaskEditItem);
     }
   }, []);
@@ -142,30 +141,30 @@ function LectureTaskContainer() {
       onOk: () => {
         if (viewType === 'create') {
           const test = createLectureTask()
-          
-          // setLectureTaskCreateItem({
-          //   id: detailTaskId!,
-          //   fileBoxId: '',
-          //   title: '',
-          //   writer: {
-          //     employeeId: '',
-          //     email: '',
-          //     name: '',
-          //     companyCode: '',
-          //     companyName: '',
-          //   },
-          //   name: '',
-          //   contents: '',
-          //   time: 0,
-          //   readCount: 0,
-          //   commentFeedbackId: '',
-          // })
+          setLectureTaskCreateItem({
+            id: detailTaskId!,
+            fileBoxId: '',
+            title: '',
+            writer: {
+              employeeId: '',
+              email: '',
+              name: '',
+              companyCode: '',
+              companyName: '',
+            },
+            name: '',
+            contents: '',
+            time: 0,
+            readCount: 0,
+            commentFeedbackId: '',
+            notice: false
+          })
 
           setLectureTaskViewType('list')
         } else {
           console.log('detailTaskId', detailTaskId)
           updateLectureTask(detailTaskId)
-          // setLectureTaskViewType('list')
+          setLectureTaskViewType('list')
         }
       }
     });
@@ -228,15 +227,12 @@ function LectureTaskContainer() {
       {/* create, edit 작업해야됨 */}
       {viewType === 'create' && (
         <>
-          { taskCreate && (
             <LectureTaskCreateView
               viewType="create"
               boardId={boardId}
               handleSubmitClick={(viewType) => handleSubmitClick(viewType)}
-              taskDetail={taskCreate!}
               changeProps={(value: string, name: string, viewType: string) => onHandleChange(value, name, viewType)}
             />
-          )}
         </>
       )}
       {viewType === 'edit' && (
@@ -246,7 +242,7 @@ function LectureTaskContainer() {
             detailTaskId={detailTaskId}
             boardId={boardId}
             handleSubmitClick={(viewType) => handleSubmitClick(viewType, detailTaskId)}
-            taskDetail={taskDetail!}
+            taskEdit={taskDetail!}
             changeProps={(value: string, name: string, viewType: string) => onHandleChange(value, name, viewType)}
           />
         </>

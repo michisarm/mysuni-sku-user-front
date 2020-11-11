@@ -58,6 +58,7 @@ export function useLectureTaskEdit(
         time: 0,
         readCount: 0,
         commentFeedbackId: '',
+        notice: false,
       })
       }
     }, subscriberId);
