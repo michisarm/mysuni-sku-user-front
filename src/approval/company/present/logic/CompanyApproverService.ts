@@ -35,6 +35,18 @@ export default class CompanyApproverService {
   }
 
   @action
+  async findCompanyAplApprover() {
+    //
+    const companyApprover = await this.companyApproverApi.findCompanyAplApprover();
+
+    runInAction(() => {
+      this.companyApprover = companyApprover;
+      this.originCompanyApprover = companyApprover;
+    });
+    return companyApprover;
+  }
+
+  @action
   changeCompanyApproverProps(approver: ApprovalMemberModel) {
     //
     const newCompanyApprover: CompanyApproverModel = new CompanyApproverModel();

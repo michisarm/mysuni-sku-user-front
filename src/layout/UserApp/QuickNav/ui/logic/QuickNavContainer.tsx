@@ -21,17 +21,25 @@ import {
   TopMenuItemView,
   BottomMenuItemView,
 } from '../view/QuickNavElementsView';
+import MenuControlAuthService from '../../../../../approval/company/present/logic/MenuControlAuthService';
+import SkProfileModel from '../../../../../profile/model/SkProfileModel';
+import {MenuControlAuth} from '../../../../../shared/model/MenuControlAuth';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
   notieService?: NotieService;
+  menuControlAuthService?: MenuControlAuthService;
 }
 
 interface State {
   active: boolean;
 }
 
-@inject(mobxHelper.injectFrom('notie.notieService', 'profile.skProfileService'))
+@inject(mobxHelper.injectFrom(
+  'notie.notieService',
+  'profile.skProfileService',
+  'approval.menuControlAuthService',
+  'approval.menuControlAuthService'))
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {
@@ -50,6 +58,7 @@ class QuickNavContainer extends Component<Props, State> {
     //
     window.addEventListener('click', this.deactive);
     this.props.notieService!.hasQuickLearningFeeds();
+    this.menuControlAuth();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -57,6 +66,13 @@ class QuickNavContainer extends Component<Props, State> {
     if (prevProps.location.key !== this.props.location.key) {
       this.deactive();
     }
+  }
+
+  menuControlAuth() {
+  //
+  const { skProfileService, menuControlAuthService } = this.props;
+  skProfileService!.findSkProfile()
+    .then((profile: SkProfileModel) => menuControlAuthService!.findMenuControlAuth(profile.member.companyCode))
   }
 
   deactive() {
@@ -150,10 +166,11 @@ class QuickNavContainer extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService } = this.props;
+    const { skProfileService, menuControlAuthService } = this.props;
     const { active } = this.state;
     const { studySummaryFavoriteChannels } = skProfileService!;
-
+    const { menuControlAuth } = menuControlAuthService!;
+    console.log('menuControlAuth ::: ', menuControlAuth);
     const favoriteChannels = studySummaryFavoriteChannels.map(
       channel =>
         new ChannelModel({ ...channel, channelId: channel.id, checked: true })
@@ -219,12 +236,26 @@ class QuickNavContainer extends Component<Props, State> {
               />
 
               {/*0907 개인학습 등록 메뉴 추가*/}
+              {(menuControlAuth.companyCode === ''
+              && menuControlAuth.authCode !== MenuControlAuth.Admin
+              && menuControlAuth.useYn !== MenuControlAuth.No)
+              &&(
+                <>
+                  <BottomMenuItemView
+                    iconName="apl"
+                    text="개인학습 등록"
+                    onClick={this.onClickApl}
+                  />
+                </>
+                )
+              }
+              {/*
               <BottomMenuItemView
                 iconName="apl"
                 text="개인학습 등록"
                 onClick={this.onClickApl}
               />
-
+              */}
               {this.hasAdminRole && (
                 <BottomMenuItemView
                   iconName="admin24"
