@@ -43,6 +43,7 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   queryModel?: AplQueryModel;
   handleOk: (member: MemberViewModel) => void
   handleSave: (mode: string) => void
+  handleCancel: (mode?: string) => void
 }
 
 interface States {
@@ -95,8 +96,7 @@ class AplCreateContainer extends React.Component<Props, States> {
   componentDidMount() {
     //const state = apl.state;
 
-    const { queryModel, aplService, collegeService } = this.props;
-    const { apl } = aplService!;
+    const { queryModel, collegeService } = this.props;
     this.findAllColleges();
     if (collegeService && queryModel && queryModel.collegeId) {
       //SelectBox 호출
@@ -276,7 +276,7 @@ class AplCreateContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave } = this.props;
+    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave, handleCancel } = this.props;
     const { apl } = aplService!;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
@@ -648,7 +648,11 @@ class AplCreateContainer extends React.Component<Props, States> {
               </Grid>
             </Form.Field>
             <div className="buttons">
-              <Button className="fix2 line">취소</Button>
+              <Button className="fix2 line"
+                onClick={() => handleCancel()}
+              >
+                취소
+              </Button>
               <Button className="fix2 bg"
                 onClick={() => handleSave('save')}
               >

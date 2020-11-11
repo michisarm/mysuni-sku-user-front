@@ -14,7 +14,6 @@ function CheckedFilterView(props: Props) {
   /* colleges 는 collegeId 에 매핑되는 collegeName 을 구하기 위함. 2020.10.08 by 김동구 */
   const { colleges, conditions, onClearAll, onClearOne } = props;
 
-  console.log('checkedFilterView :: render :: ');
   /* render functions */
   const renderCheckedConditions = () => {
     const buttons: React.ReactNode[] = [];
