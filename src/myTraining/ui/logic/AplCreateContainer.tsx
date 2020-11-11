@@ -479,13 +479,15 @@ class AplCreateContainer extends React.Component<Props, States> {
                     {/*<input type="text" />*/}
                   </div>
                 </div>
-                <div className="info-text">
-                  <Icon className="info16">
-                    <span className="blind">infomation</span>
-                  </Icon>
-                  일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
-                  주시기 바랍니다.
-                </div>
+                <span className="text1">
+                  <div className="info-text">
+                    <Icon className="info16">
+                      <span className="blind">infomation</span>
+                    </Icon>
+                    일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
+                    주시기 바랍니다.
+                  </div>
+                </span>
               </div>
             </Form.Field>
             <Form.Field>
@@ -559,13 +561,15 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestMinute')}/>
                   </div>
                 </div>
-                <div className="info-text">
-                  <Icon className="info16">
-                    <span className="blind">infomation</span>
-                  </Icon>
-                  학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
-                  교육시간은 변경될 수 있습니다.
-                </div>
+                <span className="text1">
+                  <div className="info-text">
+                    <Icon className="info16">
+                      <span className="blind">infomation</span>
+                    </Icon>
+                    학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
+                    교육시간은 변경될 수 있습니다.
+                  </div>
+                </span>
               </div>
             </Form.Field>
 

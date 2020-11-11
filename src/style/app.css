@@ -583,7 +583,7 @@ body .badge_new .title .cell span {
   display: inline-block;
   position: absolute;
   bottom: 10px;
-  left: 50%;  
+  left: 50%;
   background: white;
   opacity: 0;
   transform: translateX(-50%);
@@ -672,7 +672,8 @@ body .badge_new .title .cell span {
 }
 .apl-form-wrap2 .ui .form .field>label .necessary :before{
   background:#db1111
-}.apl-form-wrap2 .ui .form .field>label :before{
+}
+.apl-form-wrap2 .ui .form .field>label :before{
    content:"";display:inline-block;vertical-align:middle;margin-right:.875rem;position:relative;top:-.0625rem;width:.25rem;height:.25rem;background:#717988;border-radius:100%
 }
 .apl-form-wrap2 .ui .form .field .w525{

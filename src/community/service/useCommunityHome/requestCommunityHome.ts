@@ -1,5 +1,5 @@
 import { post } from 'jquery';
-import { findNoticePosts, findPosts } from '../../api/communityApi';
+import { findNoticePostViews } from '../../api/communityApi';
 import {
   getCommunityHome,
   setCommunityHome,
@@ -8,7 +8,7 @@ import {
 export function requestNotice(communityId: string) {
   const offset = 0;
   const limit = 3;
-  findNoticePosts(communityId, offset, limit).then(posts => {
+  findNoticePostViews(communityId, 'createTime', offset, limit).then(posts => {
     const communityHome = getCommunityHome() || {
       menus: [],
       recent: [],
@@ -25,7 +25,7 @@ export function requestNotice(communityId: string) {
 export function requestRecent(communityId: string) {
   const offset = 0;
   const limit = 4;
-  findPosts(communityId, offset, limit).then(posts => {
+  findNoticePostViews(communityId, 'createTime', offset, limit).then(posts => {
     const communityHome = getCommunityHome() || {
       menus: [],
       recent: [],

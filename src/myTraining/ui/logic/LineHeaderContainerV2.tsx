@@ -28,6 +28,7 @@ interface Props extends RouteComponentProps {
 function LineHeaderContainerV2(props: Props) {
   const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService } = props;
   const { viewType, onChangeViewType } = props;
+  const { inprogressCount, completedCount } = myTrainingService!;
 
   /* functions */
   const getModelsForExcel = async (contentType: MyContentType) => {
@@ -40,6 +41,17 @@ function LineHeaderContainerV2(props: Props) {
 
   const isFilterActive = (): boolean => {
     return (openFilter || filterCount > 0);
+  };
+
+  const isAllEmpty = (contentType: MyContentType): boolean => {
+    switch (contentType) {
+      case MyLearningContentType.InProgress:
+        return resultEmpty && inprogressCount === 0;
+      case MyLearningContentType.Completed:
+        return resultEmpty && completedCount === 0;
+      default:
+        return resultEmpty;
+    }
   };
 
   /* handlers */
@@ -72,7 +84,7 @@ function LineHeaderContainerV2(props: Props) {
   return (
     <>
       <div className="top-guide-title">
-        {!resultEmpty &&
+        {!isAllEmpty(contentType) &&
           (
             <ListTopPanelTemplate
               className="left-wrap"

@@ -61,7 +61,7 @@ export function requestOpenCommunityList() {
       fields: [],
       communitiesTotalCount: 0,
     };
-    if (communities === undefined) {
+    if (communities === undefined || communities.results === undefined) {
       setOpenCommunityIntro({
         ...myOpenCommunityIntro,
         communities: [],
