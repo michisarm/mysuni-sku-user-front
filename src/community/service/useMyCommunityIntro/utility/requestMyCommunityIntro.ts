@@ -1,7 +1,6 @@
 import moment from 'moment';
 import {
-  findAllMyCommunities,
-  findAllPostsFromMyCommunities,
+  findAllMyCommunities, findAllPostViewsFromMyCommunities,
 } from '../../../api/communityApi';
 import Community from '../../../model/Community';
 import Post from '../../../model/Post';
@@ -11,6 +10,28 @@ import {
 } from '../../../store/CommunityMainStore';
 import CommunityItem from '../../../viewModel/MyCommunityIntro/CommunityItem';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
+
+const ONE_DAY = 24 * 60 * 60 * 1000
+const ONE_HOUR = 60 * 60 * 1000
+const TWO_DAY = ONE_DAY * 2
+
+
+function getTimeString(createTime: number): string {
+  const timeStamp = Date.now() - createTime;
+  if (timeStamp < 0) {
+    return '';
+  }
+  if (timeStamp < ONE_HOUR) {
+    return `${Math.floor(timeStamp / 1000 / 60)}분 전`
+  }
+  if (timeStamp < ONE_DAY) {
+    return `${Math.floor(timeStamp / 1000 / 60 / 60)}시간 전`
+  }
+  if (timeStamp < TWO_DAY) {
+    return '1일 전'
+  }
+  return moment(createTime).format('YYYY.MM.DD')
+}
 
 function communityToItem(community: Community): CommunityItem {
   const {
@@ -30,7 +51,7 @@ function communityToItem(community: Community): CommunityItem {
     fieldTitle: fieldName,
     image: thumbnailId,
     name,
-    hasNewPost: false,
+    hasNewPost: Date.now() - ONE_DAY < (lastPostTime === null ? 0 : lastPostTime),
     manager: managerName,
     memberCount,
     approved,
@@ -69,20 +90,22 @@ export function requestMyCommunityList() {
 }
 
 function postToItem(post: Post): PostItem {
-  const { postId, communityId, menuId, title, html, createdTime } = post;
+  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg } = post;
   return {
+    communityId,
+    menuId,
     postId,
-    communityName: '',
-    profileImage: '',
-    profileId: '',
-    createTime: moment(createdTime).format('YYYY.MM.DD'),
+    communityName,
+    profileImage: profileImg || '',
+    profileId: nickName || creatorName || '',
+    createTime: getTimeString(createdTime),
     name: title,
     contents: html,
   };
 }
 
-export function requestMyCommunityPostList() {
-  findAllPostsFromMyCommunities().then(posts => {
+export function requestMyCommunityPostList(sort: string = 'createTime', offset: number = 0, limit: number = 10) {
+  findAllPostViewsFromMyCommunities(sort, offset, limit).then(posts => {
     const myCommunityIntro = getMyCommunityIntro() || {
       communities: [],
       posts: [],

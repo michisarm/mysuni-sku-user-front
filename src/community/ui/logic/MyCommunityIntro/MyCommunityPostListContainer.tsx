@@ -1,9 +1,25 @@
-import React from 'react';
+import { reactAlert } from '@nara.platform/accent';
+import moment from 'moment';
+import React, { useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { useMyCommunityIntro } from '../../../store/CommunityMainStore';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 
+function copyUrl(url: string) {
+  const textarea = document.createElement('textarea');
+  textarea.value = url;
+  document.body.appendChild(textarea);
+  textarea.select();
+  textarea.setSelectionRange(0, 9999);
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+}
+
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
+  communityId,
+  postId,
   communityName,
   profileImage,
   profileId,
@@ -11,6 +27,16 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   name,
   contents,
 }) {
+  const { pathname } = useLocation();
+  const shareUrl = useCallback(() => {
+    const hostLength = window.location.href.indexOf(pathname);
+    if (hostLength === -1) {
+      return;
+    }
+    const host = window.location.href.substring(0, hostLength);
+    const url = `${host}/community/${communityId}/post/${postId}`;
+    copyUrl(url);
+  }, [pathname, communityId, postId]);
   return (
     <div className="sub-info-box">
       <div className="comment-area community-main-card">
@@ -18,7 +44,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
         <Comment.Group className="base">
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
-            <Comment.Avatar src={profileImage} />
+            {profileImage !== undefined && profileImage !== '' && (
+              <Comment.Avatar src={profileImage} />
+            )}
             <Comment.Content>
               <Comment.Author as="a">{communityName}</Comment.Author>
               <Comment.Text>
@@ -34,7 +62,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                     <Icon className="bookmark2" />
                     <span className="blind">북마크</span>
                   </Button>
-                  <Button icon className="img-icon">
+                  <Button icon className="img-icon" onClick={shareUrl}>
                     <Icon className="share2" />
                     <span className="blind">공유</span>
                   </Button>
