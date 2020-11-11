@@ -235,7 +235,7 @@ class AplCreatePage extends React.Component<Props, States> {
       aplService!
         .saveApl(apl)
         .then(() => this.clearAll())
-        /*.then(() => this.routeToAplList())*/
+        .then(() => this.routeToAplList())
         .finally(() => {
           this.setState({ saveAplOn: false });
           this.setState({

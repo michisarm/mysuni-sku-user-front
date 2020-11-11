@@ -96,8 +96,7 @@ class AplCreateContainer extends React.Component<Props, States> {
   componentDidMount() {
     //const state = apl.state;
 
-    const { queryModel, aplService, collegeService } = this.props;
-    const { apl } = aplService!;
+    const { queryModel, collegeService } = this.props;
     this.findAllColleges();
     if (collegeService && queryModel && queryModel.collegeId) {
       //SelectBox 호출
