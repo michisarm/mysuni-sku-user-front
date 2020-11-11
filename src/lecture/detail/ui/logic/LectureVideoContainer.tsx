@@ -101,7 +101,11 @@ function LectureVideoContainer() {
   // }
   // //watchLog sample 코드 끝
 
-  return <LectureVideoView />;
+
+  const params = useLectureRouterParams();
+  console.log('params',params);
+
+  return <LectureVideoView params={params}/>;
 }
 
 export default LectureVideoContainer;
