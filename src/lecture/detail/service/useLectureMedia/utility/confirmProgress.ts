@@ -14,6 +14,8 @@ import {
 } from 'lecture/detail/api/lectureApi';
 import StudentCdo from 'lecture/detail/model/StudentCdo';
 import { setLectureConfirmProgress } from '../../../store/LectureConfirmProgressStore';
+import { patronInfo } from '@nara.platform/dock';
+import { PatronType } from '@nara.platform/accent';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
@@ -65,6 +67,10 @@ export async function confirmProgress(
       student = await findStudent(stateMap.studentId);
 
       const studentCdo: StudentCdo = {
+        denizenKey:{
+          keyString: patronInfo.getDenizenId() || '',
+          patronType: PatronType.Denizen
+        },
         rollBookId: student.rollBookId,
         name: student.name,
         email: student.email,

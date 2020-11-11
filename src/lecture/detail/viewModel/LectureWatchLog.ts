@@ -1,12 +1,12 @@
 import LearningState from '../model/LearningState';
 
 export default interface LectureWatchLog {
-  id: string;
+  id?: string;
   patronKeyString: string;
   lectureUsid: string;
   start: number;
   end: number;
-  createdTime: number;
+  createdTime?: number;
 }
 
 export interface StudentStateMap {

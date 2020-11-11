@@ -1,6 +1,8 @@
+import { DenizenKey } from '@nara.platform/accent';
 import ProposalState from './ProposalState';
 
 export default interface StudentCdo {
+  denizenKey?: DenizenKey ;
   rollBookId: string;
   name: string;
   email: string;
@@ -14,4 +16,7 @@ export default interface StudentCdo {
   enClosed?: boolean;
   classroomId: string;
   approvalProcess?: boolean;
+
+
+
 }
