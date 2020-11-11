@@ -25,11 +25,8 @@ import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOv
 import { useLectureFile } from 'lecture/detail/service/useLectureFile';
 import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { useLectureTaskViewType } from 'lecture/detail/service/useLectureTask/useLectureTaskViewType';
-import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
-import LectureTaskEditView from '../view/LectureTaskView/LectureTaskEditView';
 import { getLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
 import { reactConfirm } from '@nara.platform/accent';
-import { useLectureTaskEdit } from 'lecture/detail/service/useLectureTask/useLectureTaskEdit';
 import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility/updateLectureTask';
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
 

@@ -1,5 +1,4 @@
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { PostForm } from '@sku/personalcube';
 import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
 import { getCubeLectureTaskDetail } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { getLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
@@ -8,7 +7,6 @@ import React, { Fragment, useCallback, useEffect } from 'react';
 import { Checkbox, Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
-import Editor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
 
 interface LectureTaskCreateViewProps {
@@ -16,7 +14,6 @@ interface LectureTaskCreateViewProps {
   taskEdit?: LectureTaskDetail;
   viewType?: string;
   detailTaskId?: string;
-  // moreView: (offset: number) => void;
   handleSubmitClick: (viewType: string, detailTaskId?: string) => void;
   changeProps: (e: any, name: string, viewType: string) => void;
 }
