@@ -170,7 +170,7 @@ class QuickNavContainer extends Component<Props, State> {
     const { active } = this.state;
     const { studySummaryFavoriteChannels } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
-    console.log('menuControlAuth ::: ', menuControlAuth);
+
     const favoriteChannels = studySummaryFavoriteChannels.map(
       channel =>
         new ChannelModel({ ...channel, channelId: channel.id, checked: true })
