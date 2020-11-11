@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
-import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
+import PostDetailViewContentHeaderView from '../view/communityPostDetailView/PostDetailViewContentHeaderView';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
 import { Button, Icon } from 'semantic-ui-react';
@@ -9,9 +9,6 @@ import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
-import CommentContainer from './CommentContainer';
-import { useCommunityComment } from 'community/service/useCommunityComment/useCommunityComment';
-import { setCommunityCommentFeedbackId } from 'community/store/CommunityCommentStore';
 
 interface Params {
   communityId: string;
@@ -21,8 +18,6 @@ interface Params {
 function CommunityPostDetailContainer() {
   const { communityId, postId } = useParams<Params>()
   const [postDetail] = useCommunityPostDetail(communityId, postId);
-  // const [communityComment] = useCommunityComment(postDetail?.commentFeedbackId!)
-
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -30,11 +25,6 @@ function CommunityPostDetailContainer() {
   const history = useHistory();
 
   useEffect(() => {
-    if(postDetail !== undefined) {
-      console.log('postDetail.commentFeedbackId', postDetail.commentFeedbackId)
-      //TODO. 임시로 
-      setCommunityCommentFeedbackId('12345')
-    }
     getFileIds();
   }, [postDetail]);
 
@@ -160,7 +150,6 @@ function CommunityPostDetailContainer() {
             companyName=""
             departmentName=""
           />
-          <CommentContainer/>
           <div className="paging" style={{marginTop: '20px'}}>
             <div className="paging-list">
               <div className="paging-list-box" onClick={OnClickPrevious}>

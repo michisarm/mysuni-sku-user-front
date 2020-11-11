@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import { Button, Icon, Select } from 'semantic-ui-react';
 import { SortType } from 'community/ui/logic/CommunityPostListContainer';
-import CommunityPanelTopLineContainer from '../CommunityPostList/PostPanelTopLineContainer';
+import CommunityPanelTopLineContainer from '../communityPostList/PostPanelTopLineContainer';
 
 interface Props {
   totalCount: number;
