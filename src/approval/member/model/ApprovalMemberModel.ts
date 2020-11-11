@@ -23,6 +23,8 @@ export class ApprovalMemberModel {
   retired: boolean = false;
   photoFileUrl: string = '';
   myApprover: string = '';
+  //2020 11 10 add
+  aplApproverType: string = '';
 
   constructor(approvalMemberModel?: ApprovalMemberModel) {
     if (approvalMemberModel) {
@@ -108,4 +110,6 @@ decorate(ApprovalMemberModel, {
   retired: observable,
   photoFileUrl: observable,
   myApprover: observable,
+
+  aplApproverType: observable,
 });
