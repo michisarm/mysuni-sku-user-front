@@ -107,11 +107,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   return (
-    <div className="course-info-detail responsive-course">
-      <div className="course-detail-center">
-        <div className="main-wrap">
-          <div className="scrolling-area area2">
-            <div className="ui segment full">
+
               <div className="course-video">
                 <div id="panopto-embed-player"></div>
                 {getLectureTranscripts() &&
@@ -153,11 +149,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   </button>
                 )}
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   );
 };
 
