@@ -1,5 +1,6 @@
 
 import { observable, action, runInAction } from 'mobx';
+import MentionModel from 'notie/model/MentionModel';
 import NotieApi from '../apiclient/NotieApi';
 
 
@@ -23,6 +24,9 @@ class NotieService {
 
   @observable
   waitingCount: number = 0;
+
+  @observable
+  myNotieMentions: MentionModel[] = [];
 
   constructor(notieApi: NotieApi = NotieApi.instance) {
     this.notieApi = notieApi;
@@ -84,6 +88,14 @@ class NotieService {
           break;
       }
     });
+  }
+
+  @action
+  async findAllMyNotieMentions() {
+    const myNotieMentions = await this.notieApi.findAllMyNotieMentions();
+
+    runInAction(() => this.myNotieMentions = myNotieMentions);
+    return myNotieMentions;
   }
 }
 
