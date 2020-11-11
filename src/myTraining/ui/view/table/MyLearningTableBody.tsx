@@ -38,9 +38,12 @@ function MyLearningTableBody(props: Props) {
   /* handlers */
   const onClickLearn = (model: MyTableView) => {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
-    const { category: { college }, serviceId, serviceType, coursePlanId, cubeId } = model;
+    const { category: { college }, serviceId, coursePlanId, cubeId } = model;
+    let { serviceType } = model;
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
+
+    serviceType = serviceType === 'COURSE' ? 'Course' : serviceType;
 
     // Card
     if (model.isCardType()) {
