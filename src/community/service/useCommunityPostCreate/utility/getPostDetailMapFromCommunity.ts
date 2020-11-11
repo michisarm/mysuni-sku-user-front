@@ -1,11 +1,11 @@
-import { findCommunityPost, findCommunityPostDetail } from "community/api/communityApi";
+import { findPostView } from "community/api/communityApi";
 import Post from "community/model/Post";
 import { setCommunityPostDetailItem } from "community/store/CommunityPostDetailStore";
 import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
 import { deletePost } from "./deleteCommunityPost";
 
 export async function getPostDetailMapFromCommunity(
-    communityId: string, 
+    communityId: string,
     postId?: string
 ): Promise<void> {
     const postDetailItem: CommunityPostDetail = {
@@ -28,11 +28,11 @@ export async function getPostDetailMapFromCommunity(
         modifiedTime: 0,
         nickName: '',
         introduce: '',
-        profileImg:''
+        profileImg: ''
 
     }
     if (postId !== undefined) {
-        const post:Post = await findCommunityPostDetail(communityId, postId);
+        const post: Post = await findPostView(postId);
         if (post !== undefined && post !== null) {
             postDetailItem.id = post.id!;
             postDetailItem.postId = post.postId;
@@ -55,7 +55,6 @@ export async function getPostDetailMapFromCommunity(
 
 export function deleteCommunityPostDetail(communityId: string, postId: string) {
     const test = deletePost(communityId, postId);
-  
+
     return test;
-  }
-  
+}

@@ -45,7 +45,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   html,
   fileBoxId,
   createdTime,
-  creatorId,
+  creatorName,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -64,7 +64,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <div className="title-area read-header-left">
           <div className="text-list">
             <img src={profileIcon} />
-            <span>{creatorId}</span>
+            <span>{creatorName}</span>
           </div>
           <div className="text-list">
             <span>{createdDate}</span>

@@ -26,7 +26,16 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   return response.data;
 }
 
-export function registerCommunityPost(
+export function registerCommunityCommentPost(
+  title: string,
+): Promise<string> {
+  const url = `/api/feedback/feedback/comment`;
+  return axiosApi
+    .post<string>(url, { "title": title, "audienceKey": "", "sourceEntity": { "id": "post", "name": "post" } })
+    .then(response => response && response.data);
+}
+
+export function registerPost(
   communityId: string,
   postCdo: PostCdo
 ): Promise<Post> {
@@ -36,68 +45,52 @@ export function registerCommunityPost(
     .then(response => response && response.data);
 }
 
-export function registerCommunityCommentPost(
-  title: string,
-): Promise<string> {
-  const url = `/api/feedback/feedback/comment`;
+export function registerNoticePost(
+  communityId: string,
+  postCdo: PostCdo
+): Promise<Post> {
+  const url = `${BASE_URL}/communities/${communityId}/noticePosts`;
   return axiosApi
-    .post<string>(url, {"title": title, "audienceKey":"", "sourceEntity": {"id": "post", "name": "post"}})
+    .post<Post>(url, postCdo)
     .then(response => response && response.data);
 }
 
-export function findCommunityPost(
-  communityId: string,
-  postId: string
-): Promise<Post> {
-  const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
-}
-
-export function findCommunityPostDetail(
-  communityId: string,
-  postId: string
-): Promise<Post> {
-  const url = `${BASE_URL}/communities/${communityId}/posts/user/${postId}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
-}
-
-export function findPosts(
-  communityId: string,
-  offset: number,
-  limit: number
-): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/communities/${communityId}/posts?offset=${offset}&limit=${limit}`;
-  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
-}
-
-export function findNoticePosts(
-  communityId: string,
-  offset: number,
-  limit: number
-): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/communities/${communityId}/posts/notice?offset=${offset}&limit=${limit}`;
-  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
-}
-
-export function findPostsByMenuId(
+export function findPostViewsByMenuId(
   menuId: string,
+  sort: string,
   offset: number,
   limit: number
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/communities/board/${menuId}/posts?offset=${offset}&limit=${limit}`;
+  const url = `${BASE_URL}/postviews/menu/${menuId}?sort=${sort}&offset=${offset}&limit=${limit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
-export function findCommunityPostList(postRdo: PostRdo): Promise<PostList> {
-  const url = `${BASE_URL}/communities/${postRdo.communityId}/posts?title=${postRdo.title}&html=${postRdo.html}&creatorId=${postRdo.creatorId}&offset=${postRdo.offset}&limit=${postRdo.limit}&searchFilter=${postRdo.searchFilter}&menuId=${postRdo.menuId}&communityId=${postRdo.communityId}&sort=${postRdo.sort}&pinned=${postRdo.pinned}`;
-  return (
-    axiosApi
-      .get<PostList>(url)
-      .then(response => {
-        return response && response.data;
-      })
-  );
+export function findAllPostViewsFromMyCommunities(
+  sort: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
+
+export function findNoticePostViews(
+  communityId: string,
+  sort: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/notice/${communityId}?sort=${sort}&offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+export function findPostView(
+  postId: string
+): Promise<Post> {
+  const url = `${BASE_URL}/postviews/${postId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
 
 export function modifyCommunityPost(
   communityId: string,
@@ -125,17 +118,9 @@ export function findAllMyCommunities(): Promise<
 export function findAllOpenCommunities(
   fieldId?: string
 ): Promise<OffsetElementList<Community> | undefined> {
-  const url = `${BASE_URL}/communities/openCommunities?field=${
-    fieldId === undefined ? '' : fieldId
-  }&offset=0&limit=100`;
+  const url = `${BASE_URL}/communities/openCommunities?field=${fieldId === undefined ? '' : fieldId
+    }&offset=0&limit=100`;
   return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
-}
-
-export function findAllPostsFromMyCommunities(): Promise<
-  OffsetElementList<Post> | undefined
-> {
-  const url = `${BASE_URL}/posts/my?offset=0&limit=100`;
-  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
 export function findAllFields(): Promise<FieldItem[] | undefined> {
