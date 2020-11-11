@@ -10,13 +10,15 @@ import moment from 'moment';
 import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import { AplState } from '../../model/AplState';
+import { AplType } from '../../model/AplType';
+import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
 import AplCreateContainer from '../logic/AplCreateContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
-import routePaths from '../../routePaths';
+
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
@@ -188,12 +190,16 @@ class AplCreatePage extends React.Component<Props, States> {
 
   confirmList(message: string | any) {
     //
+    /*
+    reactAlert({ title: '저장 안내', message: message });
+    */
+
     this.setState({
-      alertMessage: message,
-      alertWinOpen: true,
-      alertTitle: '안내',
-      alertIcon: 'circle',
-      alertType: 'list',
+      alertMessage2: message,
+      alertWinOpen2: true,
+      alertTitle2: '안내',
+      alertIcon2: 'circle',
+      alertType2: 'list',
     });
   }
 
@@ -222,6 +228,25 @@ class AplCreatePage extends React.Component<Props, States> {
       focusYn: '',
     });
   }
+  /*
+  handleCloseCheckAlertWinFocus() {
+    //
+    //this.onChangeAplProps('state', AplState.Init);
+    this.setState({
+      alertWinOpen2: false,
+    });
+    const objStr = this.state.objStr;
+    this.setFocusControl(objStr);
+  }
+  */
+  /*
+  handleCloseConfirmWinArrange() {
+    //
+    this.setState({
+      confirmWinArrangeOpen: false,
+    });
+  }
+  */
 
   handleOKConfirmWinApl() {
     //
@@ -235,7 +260,7 @@ class AplCreatePage extends React.Component<Props, States> {
       aplService!
         .saveApl(apl)
         .then(() => this.clearAll())
-        .then(() => this.routeToAplList())
+        /*.then(() => this.routeToAplList())*/
         .finally(() => {
           this.setState({ saveAplOn: false });
           this.setState({
@@ -298,6 +323,7 @@ class AplCreatePage extends React.Component<Props, States> {
 
     if (aplObject === 'success') {
 
+      const title = 'APL';
       this.setState({
         objStr: '',
         focusYn: 'N',
@@ -307,11 +333,7 @@ class AplCreatePage extends React.Component<Props, States> {
         <>
           <p className="center">
             {' '}
-            입력된 내용으로 개인학습 정보를 승인 요청하시겠습니까?
-          </p>
-          <p className="center">
-            {' '}
-            승인 요청 후에는 개인학습 정보를 변경하실 수 없습니다.
+            입력된 내용으로 {title} 승인요청 하시겠습니까?
           </p>
         </>
       );
@@ -319,32 +341,12 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     this.onChangeAplProps('state', AplState.OpenApproval);
+    //this.handleOKConfirmWinApl();
   }
 
-  handleCancel(mode?: string) {
-    const aplMessageList = (
-      <>
-        <p className="center">
-          {' '}
-          개인학습 정보 등록을 취소하시겠습니까?
-        </p>
-        <p className="center">
-          {' '}
-          취소 시 입력했던 정보는 저장되지 않습니다.
-        </p>
-      </>
-    );
-    this.confirmList(aplMessageList);
-    this.setState({
-      objStr: '',
-      focusYn: 'N',
-    });
-  }
-
-  handleSaveOk(type: string) {
+  handleSaveOk() {
     //
-    if (type === 'save') this.handleOKConfirmWinApl();
-    if (type === 'list') this.routeToArrangeList();
+    this.handleOKConfirmWinApl();
   }
 
   handleAlertOk(type: string) {
@@ -378,6 +380,13 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     if(name === 'requestHour'){
+      /*
+      if(isNaN(Number(value))){
+        const newValue = value.replace(/[^0-9]/g, '');
+        if (aplService) aplService.changeAplProps(name, newValue);
+        return;
+      }
+      */
       if(this.timeValid(name, value)){
         return;
       }
@@ -425,10 +434,6 @@ class AplCreatePage extends React.Component<Props, States> {
     }
   }
 
-  //learning - 개인학습완료 이동
-  routeToArrangeList() {
-    this.props.history.push(routePaths.myPageLearningTab('PersonalCompleted'));
-  }
 
   render() {
     const { aplService, handleOk } = this.props;
@@ -468,7 +473,6 @@ class AplCreatePage extends React.Component<Props, States> {
           //onGetFileBoxIdForApl={this.getFileBoxIdForApl}
           handleOk={this.handleOK}
           handleSave={this.handleSave}
-          handleCancel={this.handleCancel}
         />
         <AlertWin
           message={alertMessage}

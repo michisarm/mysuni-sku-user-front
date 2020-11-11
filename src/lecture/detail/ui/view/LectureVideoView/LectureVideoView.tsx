@@ -51,7 +51,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const onPanoptoLoginShown = () => {
     console.log('------로그인이 안 되어 있어요....!!!!!!!!!');
     //로그인 페이지가 안 떠 있는 경우 바로 Clear 시켜서 반복 호출을 막아야 합니다.
-    // cleanUpPanoptoIframe();
+    cleanUpPanoptoIframe();
   };
 
   const cleanUpPanoptoIframe = () => {
@@ -82,10 +82,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
           serverName: "sku.ap.panopto.com",
           sessionId: currentPaonoptoSessionId,
-          // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
           videoParams: { // Optional parameters
             //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
-            // "interactivity": "Caption Language",
             "interactivity": "none",
             "showtitle": "false",
             "showBrand": "true",

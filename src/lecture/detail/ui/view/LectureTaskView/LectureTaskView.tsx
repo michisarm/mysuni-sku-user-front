@@ -64,27 +64,26 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTeskView
   return (
     <Fragment>
       <Segment className="full">
-          <div className="lms-sticky-menu">
-            <div className="lms-fixed-inner">
-              <a
-                onClick={postsHashClick}
-                className={tabType === 'Posts' ? 'lms-act' : ''}
-              >
-                Posts
-              </a>
-              <a
-                onClick={myPostsHashClick}
-                className={tabType === 'MyPosts' ? 'lms-act' : ''}
-              >
-                My Posts
-              </a>
-              <a
-                onClick={overViewHashClick}
-                className={tabType === 'Overview' ? 'lms-act' : ''}
-              >
-                Overview
-              </a>
-            </div>
+        <div className="support-list-wrap">
+          <div className="lms-inner-menu">
+            <a
+              onClick={postsHashClick}
+              className={tabType === 'Posts' ? 'lms-act' : ''}
+            >
+              Posts
+            </a>
+            <a
+              onClick={myPostsHashClick}
+              className={tabType === 'MyPosts' ? 'lms-act' : ''}
+            >
+              My Posts
+            </a>
+            <a
+              onClick={overViewHashClick}
+              className={tabType === 'Overview' ? 'lms-act' : ''}
+            >
+              Overview
+            </a>
           </div>
           {tabType === 'Posts' && taskItem && (
             <LectureTaskPostView
@@ -127,7 +126,7 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTeskView
               </div>
             </>
           )}
-   
+        </div>
       </Segment>
     </Fragment>
   );

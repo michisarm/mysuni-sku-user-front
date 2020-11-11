@@ -33,19 +33,12 @@ function MyLearningTableBody(props: Props) {
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
 
+  console.log('models :: ', models);
+
   /* handlers */
   const onClickLearn = (model: MyTableView) => {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
-    const { category: { college }, serviceId, coursePlanId, cubeId } = model;
-    let { serviceType } = model;
-
-    switch(serviceType) {
-      case 'COURSE':
-        serviceType = 'Course';
-      case 'PROGRAM':
-        serviceType = 'Program';
-    }
-
+    const { category: { college }, serviceId, serviceType, coursePlanId, cubeId } = model;
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
 
@@ -344,4 +337,4 @@ const formatDate = (time: number) => {
   return moment(Number(time)).format('YYYY.MM.DD');
 };
 
-export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel;
+export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel; 

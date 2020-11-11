@@ -32,6 +32,7 @@ interface RouteParams {
 }
 
 function MyLearningListContainerV2(props: Props) {
+  console.log('MyLearningListContainer :: render ::');
   const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, history, match } = props;
   const { profileMemberName } = skProfileService!;
 
@@ -306,8 +307,8 @@ function MyLearningListContainerV2(props: Props) {
 
   const onConfirmModal = useCallback(async () => {
     const { selectedServiceIds } = myTrainingService!;
-    /*
-      선택된 ids 를 통해 delete 로직을 수행함.
+    /* 
+      선택된 ids 를 통해 delete 로직을 수행함. 
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);

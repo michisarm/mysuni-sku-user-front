@@ -29,6 +29,8 @@ function LineHeaderContainerV2(props: Props) {
   const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService } = props;
   const { viewType, onChangeViewType } = props;
 
+  console.log('LineHeaderContainerV2 :: render ::');
+
   /* functions */
   const getModelsForExcel = async (contentType: MyContentType) => {
     if (contentType === MyPageContentType.EarnedStampList) {
