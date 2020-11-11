@@ -134,7 +134,6 @@ export function createTaskPost(param: TaskCdo): Promise<any> {
 }
 
 export function updateTaskPost(param: TaskCdo, postId: string): Promise<any> {
-  console.log('postId', postId)
   const url = `${BASE_URL}/posts/flow/${postId}`;
   return axiosApi.put<any>(url, param).then(response => {
     return response;

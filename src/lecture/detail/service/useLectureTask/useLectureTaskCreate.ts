@@ -18,24 +18,6 @@ export function useLectureTaskCreate(
   const { cubeId } = useParams<Params>();
 
   useEffect(() => {
-    console.log('@@@@@@@@@@@@@@@@@@@')
-    // setLectureTaskCreateItem({
-    //   id: '',
-    //   fileBoxId: '',
-    //   title: '',
-    //   writer: {
-    //     employeeId: '',
-    //     email: '',
-    //     name: '',
-    //     companyCode: '',
-    //     companyName: '',
-    //   },
-    //   name: '',
-    //   contents: '',
-    //   time: 0,
-    //   readCount: 0,
-    //   commentFeedbackId: '',
-    // })
     getCubeLectureTaskBoardId(cubeId)
   }, []);
 

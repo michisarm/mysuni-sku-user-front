@@ -17,11 +17,6 @@ export function useLectureTaskEdit(
   const [taskEditValue, setTaskEditValue] = useState<LectureTaskCreateValue>();
 
   useEffect(() => {
-    //처음 시작
-    
-  }, []);
-
-  useEffect(() => {
     const next = `useLectureTaskCreate-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);

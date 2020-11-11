@@ -159,7 +159,6 @@ function LectureTaskContainer() {
 
           setLectureTaskViewType('list')
         } else {
-          console.log('detailTaskId', detailTaskId)
           updateLectureTask(detailTaskId)
           setLectureTaskViewType('list')
         }
