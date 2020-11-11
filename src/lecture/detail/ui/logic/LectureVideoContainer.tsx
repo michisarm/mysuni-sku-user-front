@@ -67,39 +67,39 @@ function LectureVideoContainer() {
   // confirmProgress
 
   //watchLog sample 코드 시작
-  const [
-    watchLogValue,
-    getCubeWatchLogItem,
-    setWatchLog,
-    getWatchLogSumViewCount,
-    confirmProgress,
-  ] = useLectureWatchLog();
+  // const [
+  //   watchLogValue,
+  //   getCubeWatchLogItem,
+  //   setWatchLog,
+  //   getWatchLogSumViewCount,
+  //   confirmProgress,
+  // ] = useLectureWatchLog();
 
-  const params = useLectureRouterParams();
+  // const params = useLectureRouterParams();
 
-  if (params) {
-    const watchlog: WatchLog = {
-      id: '123',
-      patronKeyString: 'test',
-      start: 5,
-      end: 35,
-      lectureUsid: params?.lectureId,
-      createdTime: 123123,
-    };
+  // if (params) {
+  //   const watchlog: WatchLog = {
+  //     id: '123',
+  //     patronKeyString: 'test',
+  //     start: 5,
+  //     end: 35,
+  //     lectureUsid: params?.lectureId,
+  //     createdTime: 123123,
+  //   };
 
-    getCubeWatchLogItem(params);
-    getWatchLogSumViewCount(params);
-    setWatchLog(params, watchlog);
-    confirmProgress(params);
-    console.log('watchLogValue : ', watchLogValue);
-    console.log('getLectureWatchLogs : ', getLectureWatchLogs);
-    console.log(
-      'getLectureWatchLogSumViewCount : ',
-      getLectureWatchLogSumViewCount
-    );
-    console.log('getLectureConfirmProgress : ', getLectureConfirmProgress);
-  }
-  //watchLog sample 코드 끝
+  //   getCubeWatchLogItem(params);
+  //   getWatchLogSumViewCount(params);
+  //   setWatchLog(params, watchlog);
+  //   confirmProgress(params);
+  //   console.log('watchLogValue : ', watchLogValue);
+  //   console.log('getLectureWatchLogs : ', getLectureWatchLogs);
+  //   console.log(
+  //     'getLectureWatchLogSumViewCount : ',
+  //     getLectureWatchLogSumViewCount
+  //   );
+  //   console.log('getLectureConfirmProgress : ', getLectureConfirmProgress);
+  // }
+  // //watchLog sample 코드 끝
 
   return <LectureVideoView />;
 }

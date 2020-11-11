@@ -10,8 +10,6 @@ interface Props {
 function MyLearningDeleteModal(props: Props) {
   const { open, onClose, onConfirm } = props;
 
-  console.log('MyLearningDeleteModal :: render :: ');
-
   return (
     <Modal className="base w380" open={open}>
       <Modal.Header className="header">

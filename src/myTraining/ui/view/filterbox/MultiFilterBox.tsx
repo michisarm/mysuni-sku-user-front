@@ -40,14 +40,12 @@ export enum FilterConditionName {
 }
 
 /*
-  학습유형의 'Course' 항목은 학습유형(learningTypes) 에 속해 있으나, 실제 conditions 의 serviceType 에 값이 바인딩 됨. 
+  학습유형의 'Course' 항목은 학습유형(learningTypes) 에 속해 있으나, 실제 conditions 의 serviceType 에 값이 바인딩 됨.
   'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
 */
 function MultiFilterBox(props: Props) {
   const { contentType, viewType, openFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService, lectureService } = props;
   const { colleges } = collegeService!;
-
-  console.log('multifilterbox :: render :: ');
 
   /* states */
   const [conditions, setConditions] = useState<FilterCondition>({
@@ -61,7 +59,7 @@ function MultiFilterBox(props: Props) {
 
   /* effects */
   useEffect(() => {
-    /* 
+    /*
       1. filter 창이 열리는 순간, College 에 대한 정보를 불러옴. 2020.10.08 by 김동구
       2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
     */
@@ -114,7 +112,7 @@ function MultiFilterBox(props: Props) {
         1. 컬리지
         2. 학습유형
         3. 난이도
-        4. 교육기관  
+        4. 교육기관
     */
     switch (data.name) {
       case FilterConditionName.College:
