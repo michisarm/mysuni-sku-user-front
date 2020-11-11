@@ -20,5 +20,8 @@ export interface CommunityPostItem {
   commentFeedbackId: string;
   creatorId: string;
   createdTime: number;
-  nick: string;
+  nickName: string;
+  pinned: boolean;
+  fileBoxId: string;
+  newBadge: boolean;
 }

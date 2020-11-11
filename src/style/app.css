@@ -574,6 +574,59 @@ body .badge_new .title .cell span {
     sans-serif;
 }
 
+/* .documents-viewer {
+  position: relative;
+  border: 5px solid #eee;
+  border-radius: 7px;
+}
+.documents-viewer .pagination {
+  display: inline-block;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;  
+  background: white;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity ease-in-out 0.2s;
+  box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
+  border-radius: 4px;
+}
+.documents-viewer .pagination button {
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: 0;
+  font: inherit;
+  font-size: 0.8em;
+  border-radius: 4px;
+  cursor: default;
+}
+
+.documents-viewer .pagination button:enabled:hover {
+  cursor: pointer;
+}
+
+.documents-viewer .pagination button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.documents-viewer .pagination button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.documents-viewer:hover .pagination {
+  opacity: 100;
+}
+
+.documents-viewer .pagination span {
+  font: inherit;
+  font-size: 14px;
+  padding: 0 0.5em;
+}
+
+.documents-viewer .pagination button:enabled:hover, .pagination button:enabled:focus {
+  background-color: #e6e6e6;
+} */
 .apl-form-wrap2{
   padding:3.125rem 0 0
 }
@@ -650,8 +703,8 @@ body .badge_new .title .cell span {
 .apl-form-wrap2 .ui .form .round-wrap .h112 ul li label{
   width:14.375rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
 }
-.apl-form-wrap2 .ui .form .round-wrap .h112 ul li :first-of-type.
-,apl-form-wrap2 .ui .form .round-wrap .h112 ul li :nth-of-type(2),
+.apl-form-wrap2 .ui .form .round-wrap .h112 ul li :first-of-type,
+.apl-form-wrap2 .ui .form .round-wrap .h112 ul li :nth-of-type(2),
 .apl-form-wrap2 .ui .form .round-wrap .h112 ul li :nth-of-type(3),
 .apl-form-wrap2 .ui .form .round-wrap .h112 ul li :nth-of-type(4){
   margin:0
@@ -842,4 +895,9 @@ body .badge_new .title .cell span {
 }
 .ui.button.fix2.bg.blue {
   background: #5772c7 !important;
+}
+
+.content.community .ui.dropdown.selection .icon.dropdown:before {
+  width: 22px;
+  height: 22px;
 }

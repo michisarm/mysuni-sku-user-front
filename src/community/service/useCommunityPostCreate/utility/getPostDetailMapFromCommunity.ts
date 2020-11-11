@@ -1,4 +1,4 @@
-import { findCommunityPost } from "community/api/communityApi";
+import { findCommunityPost, findCommunityPostDetail } from "community/api/communityApi";
 import Post from "community/model/Post";
 import { setCommunityPostDetailItem } from "community/store/CommunityPostDetailStore";
 import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
@@ -18,17 +18,21 @@ export async function getPostDetailMapFromCommunity(
         likeCount: 0,
         replyCount: 0,
         fileBoxId: '',
-        commentFeebackId: '',
+        commentFeedbackId: '',
         pinned: false,
         readCount: '',
         visible: false,
         creatorId: '',
         createdTime: 0,
         modifierId: '',
-        modifiedTime: 0
+        modifiedTime: 0,
+        nickName: '',
+        introduce: '',
+        profileImg:''
+
     }
     if (postId !== undefined) {
-        const post:Post = await findCommunityPost(communityId, postId);
+        const post:Post = await findCommunityPostDetail(communityId, postId);
         if (post !== undefined && post !== null) {
             postDetailItem.id = post.id!;
             postDetailItem.postId = post.postId;
@@ -40,6 +44,10 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.createdTime = post.createdTime;
             postDetailItem.replyCount = post.replyCount;
             postDetailItem.likeCount = post.likeCount;
+            postDetailItem.nickName = post.nickName!;
+            postDetailItem.introduce = post.introduce!;
+            postDetailItem.profileImg = post.profileImg!;
+            postDetailItem.commentFeedbackId = post.commentFeebackId
         }
     }
     setCommunityPostDetailItem(postDetailItem);

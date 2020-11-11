@@ -4,21 +4,14 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import {Button, TextArea, Form, Modal, Table, Segment, Select, Icon, Image, Grid, Ref} from 'semantic-ui-react';
 import {
-  DiskFileViewModel,
-  EXTENSION_WHITELIST,
-  FileBox,
   FileBox2,
   fileUtil,
-  MyDrive,
   PatronType,
   ValidationType
 } from '@nara.drama/depot';
 import { MemberViewModel } from '@nara.drama/approval';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
-import classNames from 'classnames';
-import AplMessageList from '../../present/logic/AplService';
-import { AplState } from '../../model/AplState';
 import AplService from '../../present/logic/AplService';
 import SelectType from '../../model/SelectType';
 import { CollegeService } from '../../../college/stores';
@@ -43,25 +36,17 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   departmentService?: DepartmentService
   aplService?: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
-  //onKeyUpAplPropsValid: (name: string, value: string) => void;
   apl?:AplModel;
-  //aplModelModel: aplModelModel
-  //aplId?: number
-  //state?: string
   focusControlName?: string;
   onResetFocusControl?: () => void;
-  //onGetFileBoxIdForApl?: (fileBoxId: string) => void;
   collegeService?: CollegeService;
   queryModel?: AplQueryModel;
   handleOk: (member: MemberViewModel) => void
   handleSave: (mode: string) => void
+  handleCancel: (mode?: string) => void
 }
 
 interface States {
-  //open : boolean;
-  //titleWrite: string;
-  //typeNameWrite: string;
-  //instituteWrite: string;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -154,7 +139,7 @@ class AplCreateContainer extends React.Component<Props, States> {
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
       .then((companyApprover: CompanyApproverModel) => {
-        companyApproverService!.findCompanyApprover();
+        companyApproverService!.findCompanyAplApprover();
         this.onChangeAplProps('approvalId', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
         this.onChangeAplProps('approvalCompany', companyApprover.companyName);
@@ -291,62 +276,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     this.close();
   }
 
-  onClickSelectFile() {
-    //
-    if (this.fileInputRef.current) {
-      this.fileInputRef.current.click();
-    }
-  }
-
-  onChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
-    //
-    if (e.target.files) {
-      this.setIconFile(e.target.files[0]);
-    }
-  }
-
-
-  setIconFile(file: File) {
-    //
-    if (!file || (file instanceof File && !this.validatedAll(file))) {
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.onload = (e: any) => {
-      this.onChangeAplProps('fileIds', e.target.result);
-    };
-    fileReader.readAsDataURL(file);
-  }
-
-  validatedAll(file: File) {
-    //
-    const validations: any[] = [
-      { type: 'Extension', validValue: this.VALID_FILE_EXTENSION },
-      { type: ValidationType.MaxSize },
-    ];
-
-    const hasNonPass = validations.some(validation => {
-      if (typeof validation.validator === 'function') {
-        return !validation.validator(file);
-      }
-      else {
-        if (!validation.type || validation.validValue) {
-          return false;
-        }
-        return !fileUtil.validate(file, validation.type, validation.validValue);
-      }
-    });
-
-    return !hasNonPass;
-  }
-
-  onClearFileIds() {
-    //
-    this.onChangeAplProps('fileIds', '');
-  }
-
   render() {
-    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave } = this.props;
+    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave, handleCancel } = this.props;
     const { apl } = aplService!;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
@@ -361,7 +292,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     const requestHourCount = (apl && apl.requestHour && apl.requestHour.toString().length) || 0;
     const requestMinuteCount = (apl && apl.requestMinute && apl.requestMinute.toString().length) || 0;
     // 승인자 변경하기 활성, 리더가 아닌 경우에만 true
-    const approvalShow = originCompanyApprover.approverType !== AplApprovalType.Leader_Approve;
+    const approvalShow = originCompanyApprover.aplApproverType !== AplApprovalType.Leader_Approve;
 
     return (
       /*<div className="ui full segment">*/
@@ -718,7 +649,11 @@ class AplCreateContainer extends React.Component<Props, States> {
               </Grid>
             </Form.Field>
             <div className="buttons">
-              <Button className="fix2 line">취소</Button>
+              <Button className="fix2 line"
+                onClick={() => handleCancel()}
+              >
+                취소
+              </Button>
               <Button className="fix2 bg"
                 onClick={() => handleSave('save')}
               >
