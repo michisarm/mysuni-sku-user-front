@@ -28,6 +28,7 @@ export interface LectureTaskDetail {
   time: number;
   readCount: number;
   commentFeedbackId: string;
+  notice: boolean;
 }
 
 export interface CommentInfo {
