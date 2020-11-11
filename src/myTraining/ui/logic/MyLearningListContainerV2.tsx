@@ -31,7 +31,6 @@ interface RouteParams {
 }
 
 function MyLearningListContainerV2(props: Props) {
-  console.log('MyLearningListContainer :: render ::');
   const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, history, match } = props;
   const { profileMemberName } = skProfileService!;
 

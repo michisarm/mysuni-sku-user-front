@@ -47,8 +47,6 @@ function MultiFilterBox(props: Props) {
   const { contentType, viewType, openFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService, lectureService } = props;
   const { colleges } = collegeService!;
 
-  console.log('multifilterbox :: render :: ');
-
   /* states */
   const [conditions, setConditions] = useState<FilterCondition>({
     collegeIds: [],

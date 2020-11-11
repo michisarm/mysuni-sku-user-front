@@ -17,7 +17,6 @@ interface Props {
 function ListLeftTopPanel(props: Props) {
   const { contentType, totalCount, countModel, countMessage, onClickDelete, downloadExcel } = props;
 
-  console.log('ListLeftTopPanel :: render :: ');
   const renderButtons = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:

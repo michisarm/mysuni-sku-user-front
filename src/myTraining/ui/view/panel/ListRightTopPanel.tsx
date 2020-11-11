@@ -21,8 +21,6 @@ interface Props {
 function ListRightTopPanel(props: Props) {
   const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
 
-  console.log('ListRightTopPanel :: render :: ');
-
   /* render functions */
   const renderRadiobox = (contentType: MyContentType) => {
     switch (contentType) {
