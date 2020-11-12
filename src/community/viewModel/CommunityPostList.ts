@@ -18,7 +18,6 @@ export interface CommunityPostItem {
   html: string;
   replyCount: number;
   commentFeedbackId: string;
-  creatorId: string;
   createdTime: number;
   nickName: string;
   pinned: boolean;

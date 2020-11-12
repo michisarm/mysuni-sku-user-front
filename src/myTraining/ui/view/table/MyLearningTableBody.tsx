@@ -343,4 +343,4 @@ const formatDate = (time: number) => {
   return moment(Number(time)).format('YYYY.MM.DD');
 };
 
-export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel; 
+export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel;

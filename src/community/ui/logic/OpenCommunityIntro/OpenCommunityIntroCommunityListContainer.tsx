@@ -23,40 +23,35 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   image,
 }) {
   return (
-    <Link to={`/community/${communityId}`}>
-      <div className="community-open-card">
-        <div className="open-card-top">
-          <span className="label">{fieldTitle}</span>
-          <span className="wait">{approvedState}</span>
+    <Link to={`/community/${communityId}`} className="community-open-card">
+      <div className="open-card-top">
+        <span className="label">{fieldTitle}</span>
+        <span className="wait">{approvedState}</span>
+      </div>
+      <div className="open-card-content">
+        <p>{name}</p>
+        <div className="thumbnail">
+          <img src={image} style={{ height: 72, width: 72, borderRadius: 8 }} />
         </div>
-        <div className="open-card-content">
-          <p>{name}</p>
-          <div className="thumbnail">
-            <img
-              src={image}
-              style={{ height: 72, width: 72, borderRadius: 8 }}
-            />
-          </div>
-          <div className="community-main-left-list">
-            <div
-              className="community-main-left-h3"
-              dangerouslySetInnerHTML={{ __html: contents }}
-            />
-          </div>
+        <div className="community-main-left-list">
+          <div
+            className="community-main-left-h3"
+            dangerouslySetInnerHTML={{ __html: contents }}
+          />
         </div>
-        <div className="open-card-bottom">
-          <div className="title-area">
-            <div className="text-list">
-              <img src={managerIcon} />
-              <span>{manager}</span>
-            </div>
-          </div>
-          <div className="right-area">
-            <span>멤버</span>
-            <span>{memberCount}</span>
+      </div>
+      <div className="open-card-bottom">
+        <div className="title-area">
+          <div className="text-list">
+            <img src={managerIcon} />
+            <span>{manager}</span>
           </div>
         </div>
-      </div>{' '}
+        <div className="right-area">
+          <span>멤버</span>
+          <span>{memberCount}</span>
+        </div>
+      </div>
     </Link>
   );
 };

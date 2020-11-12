@@ -184,4 +184,4 @@ const getTextFromValue = (filterConditionName: FilterConditionName, value: strin
         .filter(learningTime => learningTime.value === value)
         .map(learningTime => learningTime.text);
   }
-}
+};

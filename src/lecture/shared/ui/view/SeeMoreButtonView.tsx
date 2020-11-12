@@ -13,7 +13,6 @@ interface Props {
 class SeeMoreButtonView extends PureComponent<Props> {
   //
   render() {
-    console.log('SeeMoreButton :: render :: ');
     //
     const { onClick } = this.props;
 
