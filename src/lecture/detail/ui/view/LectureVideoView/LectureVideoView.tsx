@@ -5,19 +5,60 @@ import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptSto
 import { getLectureMedia, onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import SkuVideoPlayer from 'lecture/detail/service/useLectureMedia/components/SkuPlayer/SkuVideoPlayer';
 import { patronInfo } from '@nara.platform/dock';
+import { TIMEOUT } from 'dns';
+import { useLectureWatchLog } from 'lecture/detail/service/useLectureMedia/useLectureWatchLog';
+import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
+import WatchLog from 'lecture/detail/model/Watchlog';
+import { getLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
+import { getLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
+import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
+import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
+import moment from 'moment';
 
 //샘플 페이지 : http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
 //             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
 //             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
 
-interface LectureVideoViewProps {}
+interface LectureVideoViewProps {params:LectureRouterParams | undefined}
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함. 
-const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({}) {  
+const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params}) {  
+
+  const [
+    watchLogValue,
+    getCubeWatchLogItem,
+    setWatchLog,
+    getWatchLogSumViewCount,
+    confirmProgress,
+  ] = useLectureWatchLog();
+
+  // const params = useLectureRouterParams();
+
+  // const [params, setParams] = useState<LectureRouterParams | undefined>(useLectureRouterParams());
+  const [watchlogState, setWatchlogState] = useState<WatchLog>();
+
+  // params, watchlog
+
+
+  useEffect(() => {
+    const watchlog: WatchLog = {
+      patronKeyString: patronInfo.getDenizenId()||'',
+      start: 0,
+      end: 0,
+      lectureUsid: params?.lectureId || '',
+    };
+    setWatchlogState(watchlog);
+  }, [params]);
+
+  
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
+    getCurrentTime : () => {},
+    getDuration : () => {},
   });
 
   const toHHMM = useCallback((idx: number) => {
@@ -54,6 +95,46 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // cleanUpPanoptoIframe();
   };
 
+  const onPanoptoStateUpdate = (state:any) => {
+    console.log('state',state);
+
+    if (state == 2){
+      setIsActive(false);
+    }else if (state == 1){
+      setIsActive(true);
+    }
+
+  };
+  
+  useEffect(() => {
+    console.log('isActive',isActive);
+    console.log('params',params);
+    console.log('watchlogState',watchlogState);
+
+    let interval:any = null;
+    if (isActive && params && watchlogState) {
+      interval = setInterval(() => {
+        const currentTime = embedApi.getCurrentTime() as unknown as number;
+        setWatchlogState({...watchlogState,start:currentTime,end:currentTime+10})
+        console.log('watchlogState', watchlogState);
+        setSeconds(seconds => seconds + 10);
+        setWatchLog(params, watchlogState);
+        console.log('interval log');
+
+        console.log(embedApi.getCurrentTime());
+        console.log(embedApi.getDuration());
+        console.log(moment.now());
+        confirmProgress(params);
+
+
+      }, 10000);
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
+
+
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
     if (playerEl)
@@ -65,8 +146,21 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (embedApi && index >= 0) {
       //TODO current state 를 찾아서 Play 이 
       embedApi.seekTo(index);
+      console.log('embedApi.getCurrentTime()', embedApi.getCurrentTime()); 
+      console.log('embedApi.getDuration()', embedApi.getDuration());      
+      console.log('embedApi',embedApi); 
     }
   };
+
+  useEffect(()=>{ 
+    if (params) {  
+      confirmProgress(params);
+      console.log('confirmProgress run');
+    }
+  }, [params]);
+
+  
+
 
   useEffect(()=>{    
     onLectureMedia(lectureMedia=>{
@@ -95,7 +189,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             "onIframeReady": onPanoptoIframeReady,
             "onLoginShown": onPanoptoLoginShown,
             //"onReady": onPanoptoVideoReady,
-            //"onStateChange": onPanoptoStateUpdate
+            "onStateChange": onPanoptoStateUpdate
+            // "onPlaybackRateChange" : console.log('onPlaybackRateChange')
           }
         });
         setEmbedApi(embedApi);
