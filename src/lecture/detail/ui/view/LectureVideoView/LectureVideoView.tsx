@@ -133,7 +133,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
     return () => clearInterval(interval);
   }, [isActive, seconds]);
-
+  
+  useEffect(()=>{ 
+    if (params) {  
+      confirmProgress(params);
+      console.log('confirmProgress run');
+    }
+  }, [params]);
 
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
@@ -151,15 +157,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       console.log('embedApi',embedApi); 
     }
   };
-
-  useEffect(()=>{ 
-    if (params) {  
-      confirmProgress(params);
-      console.log('confirmProgress run');
-    }
-  }, [params]);
-
-  
 
 
   useEffect(()=>{    
