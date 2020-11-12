@@ -109,12 +109,11 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
   }, [pdfUrl]);
 
   const indexClick = (idx: Number) => {
-    console.log('선택idx', idx);
     setCourseIdx(idx);
   };
 
   const downloadFile = () => {
-    depot.downloadDepotFile(files![0].id);
+    depot.downloadDepotFile(files![courseIdx].id);
   };
 
   return (
