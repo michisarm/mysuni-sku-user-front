@@ -13,20 +13,25 @@ import { patronInfo } from '@nara.platform/dock';
 
 //상단 Select 박스 선택시 호출
 //setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId); 
+interface LectureDocumentsViewProps {
+  fileBoxId : string
+  hookAction: () => void;
+}
 
+//FIXME SSO 로그인된 상태가 아니면 동작 안 함. 
+// const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {  
 
-const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocumentsView({
-  title,
-  description,
-  image,
-  url,
+const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function LectureDocumentsView({
   fileBoxId,
+  hookAction
 }) {
   const [files, setFiles] = useState<DepotFileViewModel[]>();
   const [pdfUrl, setPdfUrl] = useState<string>();
   const [pdf, setPdf] = useState<any>();
   const [file, setFile] = useState<any>();
   
+
+  console.log(hookAction);
   
   // console.log('localStorage', localStorage);
   // console.log('localStorage', localStorage.getItem('nara.token'));
@@ -157,7 +162,7 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
             <span className="num">{pageNumber}/{numPages}</span>
             <a className="pdf-next" onClick={next}>이후</a>
           </div>
-          <a className="pdf-down on"><i aria-hidden="true" className="icon down-white24" /></a>
+          <a className="pdf-down on"><i aria-hidden="true" className="icon down-white24" onClick={hookAction}/></a>
           <div className="pdf-down-drop">
             <a>전략_Intermediate_과정.ppt</a>
             <a>전략_Intermediate_과정.ppt</a>

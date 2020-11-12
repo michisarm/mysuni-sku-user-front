@@ -6,15 +6,15 @@ import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureDocumentsView from '../view/LectureDocumentsView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
+import LectureCubeDocumentsContainer from './LectureCubeDocumentsContainer';
 
 function LectureCubeDocumentsPage() {
   useLectuerCubeOverview();
-  useLectureMedia();
-  const [lectureWebpage] = useLectureWebpage();
+
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />
-      {lectureWebpage && <LectureDocumentsView {...lectureWebpage} />}
+      <LectureCubeDocumentsContainer />
       <LectureCubeContentContainer />
     </LectureDetailLayout>
   );

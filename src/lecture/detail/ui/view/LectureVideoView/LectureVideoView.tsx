@@ -14,15 +14,22 @@ import { getLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatc
 import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import moment from 'moment';
+import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
+import { Link } from 'react-router-dom';
+
+
 
 //샘플 페이지 : http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
 //             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
 //             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
 
-interface LectureVideoViewProps {params:LectureRouterParams | undefined}
+interface LectureVideoViewProps {
+  params:LectureRouterParams | undefined;
+  hookAction: () => void;
+}
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함. 
-const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params}) {  
+const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {  
 
   const [
     watchLogValue,
@@ -36,9 +43,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   // const [params, setParams] = useState<LectureRouterParams | undefined>(useLectureRouterParams());
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
+  const [nextContentsPath, setNextContentsPath] = useState<string>();
+  const [nextContentsName, setNextContentsName] = useState<string>();
+
+  
 
   // params, watchlog
-
+  // hookAction
+  useEffect(() => {
+    console.log('useEffect - hookAction : ', hookAction);
+    setAction(hookAction);
+  }, [hookAction]);
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -53,6 +68,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [action, setAction] = useState<() => void|undefined>();
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
@@ -95,23 +111,27 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // cleanUpPanoptoIframe();
   };
 
-  const onPanoptoStateUpdate = (state:any) => {
-    console.log('state',state);
-
+  const onPanoptoStateUpdate = useCallback((state:any) => {
+    console.log('getLectureConfirmProgress',getLectureConfirmProgress()?.learningState);
     if (state == 2){
       setIsActive(false);
     }else if (state == 1){
+      // console.log(action && action());
+      action && action();
       setIsActive(true);
+    }else if(state == 3 && params){
+      confirmProgress(params);
     }
+  }, [action]);
 
-  };
-  
   useEffect(() => {
     console.log('isActive',isActive);
     console.log('params',params);
     console.log('watchlogState',watchlogState);
 
     let interval:any = null;
+    let progressInterval:any = null;
+    
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
         const currentTime = embedApi.getCurrentTime() as unknown as number;
@@ -119,28 +139,44 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         console.log('watchlogState', watchlogState);
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
-        console.log('interval log');
-
-        console.log(embedApi.getCurrentTime());
-        console.log(embedApi.getDuration());
-        console.log(moment.now());
-        confirmProgress(params);
-
-
+        // confirmProgress(params);
       }, 10000);
+      //TODO : total runtime / 10 or 1분간격으로 진행률 체크 하도록 변경 필요함 - 현재는 1분간격 적용 
+      progressInterval = setInterval(() => {
+        confirmProgress(params);
+      }, 60000);      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
+      clearInterval(progressInterval);
     }
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearInterval(progressInterval);
+    }
   }, [isActive, seconds]);
   
   useEffect(()=>{ 
     if (params) {  
       confirmProgress(params);
-      console.log('confirmProgress run');
     }
   }, [params]);
 
+
+  useEffect(()=>{ 
+    
+    if(getLectureStructure() && getLectureStructure()?.cubes) {
+      const cubeIndex = getLectureStructure()?.cubes.findIndex(cube=> cube.cubeId == params?.contentId)||0;
+      const cubesLength = getLectureStructure()?.cubes.length;
+
+      const cubeNextIndex = cubeIndex+1;
+
+      if(getLectureConfirmProgress()?.learningState == 'Passed' && cubeNextIndex && cubesLength && (cubeNextIndex < cubesLength)){
+        setNextContentsPath(getLectureStructure()?.cubes[cubeIndex + 1].path);
+        setNextContentsName(getLectureStructure()?.cubes[cubeIndex + 1].name);
+      }
+    }
+  }, [getLectureStructure(),getLectureConfirmProgress()]);
+  
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
     if (playerEl)
@@ -152,12 +188,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (embedApi && index >= 0) {
       //TODO current state 를 찾아서 Play 이 
       embedApi.seekTo(index);
-      console.log('embedApi.getCurrentTime()', embedApi.getCurrentTime()); 
-      console.log('embedApi.getDuration()', embedApi.getDuration());      
-      console.log('embedApi',embedApi); 
     }
   };
-
 
   useEffect(()=>{    
     onLectureMedia(lectureMedia=>{
@@ -167,8 +199,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       else {
         let currentPaonoptoSessionId = lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
         let embedApi = new window.EmbedApi("panopto-embed-player", {
-          width: "750",
-          height: "422",
+          width: "100%",
+          height: "700",
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
           serverName: "sku.ap.panopto.com",
@@ -201,49 +233,65 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   return (
-
-              <div className="course-video">
+          <div className="course-video">
+            <div className="video-container">
                 <div id="panopto-embed-player"></div>
-                {getLectureTranscripts() &&
-                  getLectureMedia() &&
-                  (getLectureMedia()?.mediaType == 'InternalMedia' ||
-                    getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
-                  (getLectureTranscripts()?.length || 0) > 0 &&
-                  displayTranscript && (
-                    <>
-                      <button
-                        className="ui icon button right btn-blue"
-                        onClick={() => setDisplayTranscript(false)}
-                      >
-                        Close Transcript
-                        <i aria-hidden="true" className="icon icon morelink" />
+                {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
+                {nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (                
+                  <div className="video-overlay">           
+                    <div className="video-overlay-btn">
+                      <button>
+                        <img src="" />
                       </button>
-
-                      <div className="course-video-tanscript">
-                        <div className="course-video-scroll">
-                          {getLectureTranscripts()?.map(lectureTranscript => {
-                            return (
-                              <>
-                                <strong style={{cursor: 'pointer'}} onClick={()=>{seekByIndex(lectureTranscript.idx)}}>{toHHMM(lectureTranscript.idx)}</strong>
-                                <p>{lectureTranscript.text}</p>
-                              </>
-                            );
-                          })}
-                        </div>
+                    </div>
+                    <Link to={nextContentsPath||''}>
+                      <div className="video-overlay-text">
+                        <p>다음 학습 이어하기</p>
+                        <h3>{nextContentsName}</h3>
                       </div>
-                    </>
-                  )}
-                {getLectureTranscripts() && !displayTranscript && (
+                    </Link>
+                  </div>
+                )}
+              </div>            
+            {getLectureTranscripts() &&
+              getLectureMedia() &&
+              (getLectureMedia()?.mediaType == 'InternalMedia' ||
+                getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
+              (getLectureTranscripts()?.length || 0) > 0 &&
+              displayTranscript && (
+                <>
                   <button
                     className="ui icon button right btn-blue"
-                    onClick={() => setDisplayTranscript(true)}
+                    onClick={() => setDisplayTranscript(false)}
                   >
-                    View Transcript
+                    Close Transcript
                     <i aria-hidden="true" className="icon icon morelink" />
                   </button>
-                )}
-              </div>
 
+                  <div className="course-video-tanscript">
+                    <div className="course-video-scroll">
+                      {getLectureTranscripts()?.map(lectureTranscript => {
+                        return (
+                          <>
+                            <strong style={{cursor: 'pointer'}} onClick={()=>{seekByIndex(lectureTranscript.idx)}}>{toHHMM(lectureTranscript.idx)}</strong>
+                            <p>{lectureTranscript.text}</p>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+            {getLectureTranscripts() && !displayTranscript && (
+              <button
+                className="ui icon button right btn-blue"
+                onClick={() => setDisplayTranscript(true)}
+              >
+                View Transcript
+                <i aria-hidden="true" className="icon icon morelink" />
+              </button>
+            )}
+          </div>
   );
 };
 

@@ -30,7 +30,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   // const [params, setParams] = useState<LectureRouterParams | undefined>(useLectureRouterParams());
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
-
+  
   // params, watchlog
 
 
@@ -47,6 +47,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [action, setAction] = useState<() => void|undefined>();
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
@@ -56,11 +57,8 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   });
 
 
-  // hookAction
   useEffect(() => {
-
-    console.log('useEffect - hookAction : ', hookAction);
-
+    setAction(hookAction);
   }, [hookAction]);
 
 
@@ -68,11 +66,11 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     if (state == 2){
       setIsActive(false);
     }else if (state == 1){
-      console.log(hookAction());
-      hookAction();
+      // console.log('state : ' ,state);
+      action && action();
       setIsActive(true);
     }
-  }, [hookAction]);
+  }, [action]);
 
   // const onPanoptoStateUpdate = (state:any) => {
   //   console.log('state',state);
@@ -89,21 +87,27 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   
   useEffect(() => {
     let interval:any = null;
+    let progressInterval:any = null;
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
         const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({...watchlogState,start:currentTime,end:currentTime+10})
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
-        console.log('confirmProgress');
-        confirmProgress(params);
-
-
+        // console.log('confirmProgress');
+        // confirmProgress(params);
       }, 10000);
+      progressInterval = setInterval(() => {
+        confirmProgress(params);
+      }, 60000);      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
+      clearInterval(progressInterval);
     }
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearInterval(progressInterval);
+    }
   }, [isActive, seconds]);
   
   useEffect(()=>{ 
