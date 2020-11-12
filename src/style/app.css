@@ -627,6 +627,8 @@ body .badge_new .title .cell span {
 .documents-viewer .pagination button:enabled:hover, .pagination button:enabled:focus {
   background-color: #e6e6e6;
 } */
+/*
+
 .apl-form-wrap2 .ui.input.file input[type=text]{height:48px}
 .apl-form-wrap2.community{padding:3.125rem 0 0}
 .apl-form-wrap2.community .ui.form .buttons button.ui.button{margin:0 .4375rem 0 .5rem}
@@ -740,6 +742,8 @@ body .badge_new .title .cell span {
 .apl-form-wrap2.create .ui.form .field>.ui.base.radio.checkbox label{min-width:11.5rem;box-sizing:border-box;padding-right:.625rem}
 .apl-form-wrap2.create .ui.form .field>.ui.base.radio.checkbox+.ui.form{margin-top:1.25rem}
 .apl-form-wrap2 .ui.calendar .ui.input input[type=text]{border:1px solid #7f7f7f;width:100%}
+*/
+
 .ui.button.fix2 {
   width: 13.75rem;height: 3rem;border-radius: 0.25rem;padding: 0;margin: 0;font-size: 1rem;font-weight: 700;-webkit-box-sizing: border-box;box-sizing: border-box;
 }

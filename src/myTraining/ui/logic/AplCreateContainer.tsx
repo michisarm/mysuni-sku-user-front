@@ -34,7 +34,7 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   memberService?: MemberService
   companyApproverService?: CompanyApproverService
   departmentService?: DepartmentService
-  aplService?: AplService;
+  aplService: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
   apl?:AplModel;
   focusControlName?: string;
@@ -61,9 +61,6 @@ interface States {
 @reactAutobind
 class AplCreateContainer extends React.Component<Props, States> {
 
-  //VALID_FILE_EXTENSION = 'jpg|jpeg|png';
-  VALID_FILE_EXTENSION = 'exe';
-  private fileInputRef = React.createRef<HTMLInputElement>();
   managerModal: any = null;
 
   private focusInputRefs: any = {
@@ -113,7 +110,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     snapshot?: any
   ): void {
     const { aplService } = this.props;
-    const { apl } = aplService!;
+    const { apl } = aplService;
 
     if (prevProps.apl && prevProps.apl.id !== apl.id) {
       this.onChangeAplProps(
@@ -277,7 +274,7 @@ class AplCreateContainer extends React.Component<Props, States> {
 
   render() {
     const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave, handleCancel } = this.props;
-    const { apl } = aplService!;
+    const { apl } = aplService;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
     //교육명 글자수(100자 이내)
@@ -296,7 +293,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     return (
       /*<div className="ui full segment">*/
       <Segment className="full">
-        <div className="apl-form-wrap2">
+        <div className="apl-form-wrap">
           {/*<Form className="ui form">*/}
           <Form>
             <Form.Field>
@@ -479,15 +476,13 @@ class AplCreateContainer extends React.Component<Props, States> {
                     {/*<input type="text" />*/}
                   </div>
                 </div>
-                <span className="text1">
-                  <div className="info-text">
-                    <Icon className="info16">
-                      <span className="blind">infomation</span>
-                    </Icon>
-                    일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
-                    주시기 바랍니다.
-                  </div>
-                </span>
+                <div className="info-text">
+                  <Icon className="info16">
+                    <span className="blind">infomation</span>
+                  </Icon>
+                  일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
+                  주시기 바랍니다.
+                </div>
               </div>
             </Form.Field>
             <Form.Field>
@@ -561,15 +556,13 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestMinute')}/>
                   </div>
                 </div>
-                <span className="text1">
-                  <div className="info-text">
-                    <Icon className="info16">
-                      <span className="blind">infomation</span>
-                    </Icon>
-                    학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
-                    교육시간은 변경될 수 있습니다.
-                  </div>
-                </span>
+                <div className="info-text">
+                  <Icon className="info16">
+                    <span className="blind">infomation</span>
+                  </Icon>
+                  학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
+                  교육시간은 변경될 수 있습니다.
+                </div>
               </div>
             </Form.Field>
 
@@ -610,7 +603,6 @@ class AplCreateContainer extends React.Component<Props, States> {
                     /*validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator },{ type: ValidationType.Extension, validator: depotHelper.extensionValidator }]}*/
                     validations={[{type: ValidationType.Duplication, validator: depotHelper.duplicationValidator}]}
                     onChange={this.getFileBoxIdForReference}
-                    id={apl && apl.fileIds}
                   />
                   <div className="bottom">
                     <span className="text1"><Icon className="info16"/>
