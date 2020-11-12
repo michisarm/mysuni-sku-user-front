@@ -6,6 +6,15 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { patronInfo } from '@nara.platform/dock';
 
 // http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001c/cube/CUBE-2ls/lecture-card/LECTURE-CARD-29d
+
+// 파일 다운로드 
+//const downloadDepotFile = (depotFileId: string) => {}; 
+//depot.downloadDepotFile(depotFileId);
+
+//상단 Select 박스 선택시 호출
+//setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId); 
+
+
 const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocumentsView({
   title,
   description,
