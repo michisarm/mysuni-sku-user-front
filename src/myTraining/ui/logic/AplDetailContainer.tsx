@@ -52,7 +52,7 @@ function AplDetailContainer(props: Props) {
 
   /* functions */
   const routeToList = () => {
-    history.push(approvalRoutePaths.approvalPersonalLearning());
+    history.go(-2);
   };
 
 

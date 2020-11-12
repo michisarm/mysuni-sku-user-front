@@ -280,6 +280,11 @@ function MyLearningListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
+  const updateSessionStorage = async () => {
+    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  }
+
   /* handlers */
   const onChangeFilterCount = useCallback((count: number) => {
     if (filterCount && filterCount === count) {
@@ -313,6 +318,7 @@ function MyLearningListContainerV2(props: Props) {
     */
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
     myTrainingService!.clearAllSelectedServiceIds();
+    await updateSessionStorage();
     myTrainingService!.findAllTableViews();
     myTrainingService!.findAllTabCount();
 
