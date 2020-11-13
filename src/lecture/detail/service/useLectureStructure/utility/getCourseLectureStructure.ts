@@ -11,7 +11,9 @@ import {
   LectureStructure,
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
+import { getStateMapByParams } from './getCubeLectureStructure';
 import { getItemMapFromCourse } from './getItemMapFromCourse';
+import { getItemMapFromCube } from './getItemMapFromCube';
 import { getItemMapFromLecture } from './getItemMapFromLecture';
 
 function getCoursePlanComplexByParams(
@@ -93,6 +95,7 @@ function parseCoursePlanComplex(
         routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
         path: toPath(cubeParams),
         serviceId,
+        lectureView,
       });
       lectureCardIds.push(serviceId);
     }
@@ -102,7 +105,8 @@ function parseCoursePlanComplex(
     if (course !== undefined) {
       const cubes: LectureStructureCubeItem[] = lectureViews.map<
         LectureStructureCubeItem
-      >(({ id, name, cubeId, cubeType, learningTime, serviceId }) => {
+      >((lectureView) => {
+        const { id, name, cubeId, cubeType, learningTime, serviceId } = lectureView
         const cubeParams: LectureParams = {
           ...params,
           lectureType: 'cube',
@@ -118,6 +122,7 @@ function parseCoursePlanComplex(
           params: cubeParams,
           routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
           path: toPath(cubeParams),
+          lectureView
         };
       });
       course.cubes = cubes;
@@ -182,7 +187,8 @@ async function parseLectureStudentView(
       });
     }
   });
-  lectures.forEach(({ lectureUsid, learningState }) => {
+  lectures.forEach((student) => {
+    const { lectureUsid, learningState } = student;
     const cube = lectureStructure.cubes.find(
       ({ serviceId }) => serviceId === lectureUsid
     );
@@ -202,6 +208,7 @@ async function parseLectureStudentView(
       default:
         break;
     }
+    cube.student = student;
   });
 
   return lectureStudentView;
@@ -248,7 +255,9 @@ export async function getCourseLectureStructure(
   }
 
   const getItemMapFromLectureArray: Promise<void>[] = [];
+  let totalCubes = [...lectureStructure.cubes]
   lectureStructure.courses.forEach(course => {
+    totalCubes = [...totalCubes, ...(course.cubes || [])]
     const getItemMapFromLecturePromise = async () => {
       if (course.lectureView !== undefined) {
         const courseStudent = lectureStudentView.courses.find(
@@ -277,6 +286,38 @@ export async function getCourseLectureStructure(
   });
 
   await Promise.all(getItemMapFromLectureArray);
+
+  const getItemMapFromCubeLectureArray: Promise<void>[] = [];
+  totalCubes.forEach(cube => {
+    if (cube.lectureView !== undefined && (cube.lectureView.cubeIntro != null || cube.lectureView.examination !== null || cube.lectureView.surveyCase !== null)) {
+      const getItemMapFromCubePromise = async () => {
+        const cubeIntroId = cube.lectureView!.cubeIntro === null ? '' : cube.lectureView!.cubeIntro.id
+        const examId = cube.lectureView!.examination === null ? '' : cube.lectureView!.examination.id
+        const surveyId = cube.lectureView!.surveyCase === null ? '' : cube.lectureView!.surveyCase.surveyFormId
+        const surveyCaseId = cube.lectureView!.surveyCase === null ? '' : cube.lectureView!.surveyCase.id
+
+        const cubeItemMap = await getItemMapFromCube(
+          {
+            cubeIntroId, examId, surveyId, surveyCaseId
+          }, cube.params, cube.student
+        );
+        if (cubeItemMap.test !== undefined) {
+          cube.test = cubeItemMap.test;
+        }
+        if (cubeItemMap.survey !== undefined) {
+          cube.survey = cubeItemMap.survey;
+        }
+        if (cubeItemMap.report !== undefined) {
+          cube.report = cubeItemMap.report;
+        }
+      }
+      getItemMapFromCubeLectureArray.push(getItemMapFromCubePromise());
+    }
+  });
+
+  await Promise.all(getItemMapFromCubeLectureArray);
+
+
 
   return lectureStructure;
 }
