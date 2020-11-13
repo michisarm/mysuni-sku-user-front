@@ -79,6 +79,10 @@ export interface LectureStructureCubeItem extends Item {
   student?: Student;
 }
 
+export interface LectureStructureDurationableCubeItem extends LectureStructureCubeItem {
+  duration?: number;
+}
+
 export interface LectureStructureCourseItem extends Item {
   id: string;
   coursePlanId: string;
@@ -91,6 +95,7 @@ export interface LectureStructureCourseItem extends Item {
   report?: LectureStructureReportItem;
   discussion?: LectureStructureDiscussionItem;
   lectureView?: LectureView;
+  student?: Student;
 }
 
 export interface LectureStructure {

@@ -17,6 +17,7 @@
 }
  */
 
+import { duration } from 'moment';
 import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
@@ -27,6 +28,7 @@ import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructure,
   LectureStructureCubeItem,
+  LectureStructureDurationableCubeItem,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getItemMapFromCube } from './getItemMapFromCube';
@@ -41,7 +43,7 @@ async function getLectureStructureCubeItemByPersonalCube(
   params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
-  const { id, name } = personalCube;
+  const { id, name, contents: { type } } = personalCube;
   if (personalCube === undefined) {
     return;
   }
@@ -59,6 +61,22 @@ async function getLectureStructureCubeItemByPersonalCube(
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
+    if (type === 'Audio' || type === 'Video') {
+      const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
+        id,
+        name,
+        cubeId: cubeId!,
+        cubeType,
+        learningTime,
+        params,
+        routerParams,
+        path: toPath(params),
+        serviceId: lectureCardId,
+        can: true,
+        duration: 0,
+      };
+      return lectureStructureDurationableCubeItem;
+    }
     return {
       id,
       name,
@@ -128,6 +146,12 @@ export async function getCubeLectureStructure(
       cube.state = stateMap.state;
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
+      if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
+        (cube as LectureStructureDurationableCubeItem).duration = 0;
+        if (student !== undefined) {
+          (cube as LectureStructureDurationableCubeItem).duration = student.durationViewSeconds === null ? undefined : parseInt(student.durationViewSeconds);
+        }
+      }
       const cubeIntroId = personalCube.cubeIntro.id;
       const examId = personalCube.contents.examId;
       const surveyId = personalCube.contents.surveyId;

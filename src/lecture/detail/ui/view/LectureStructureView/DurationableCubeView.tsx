@@ -3,10 +3,23 @@ import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
-import { parseCubeType } from './CubeView';
 import StructureLink from './StructureLink';
 
-interface ProgramCubeViewProps {
+export function parseCubeType(cubeType: CubeType) {
+  switch (cubeType) {
+    case 'ClassRoomLecture':
+      return 'Classroom';
+    case 'ELearning':
+      return 'E-Learning';
+    case 'Community':
+      return 'Task';
+    default:
+      break;
+  }
+  return cubeType;
+}
+
+interface CubeViewProps {
   name: string;
   state?: State;
   activated?: boolean;
@@ -14,9 +27,10 @@ interface ProgramCubeViewProps {
   cubeType: CubeType;
   path: string;
   can: boolean;
+  duration?: number;
 }
 
-const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView({
+const DurationableCubeView: React.FC<CubeViewProps> = function DurationableCubeView({
   name,
   state = 'None',
   activated = false,
@@ -24,13 +38,15 @@ const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView
   cubeType,
   path,
   can,
+  duration = 0,
 }) {
+  const step = Math.ceil(duration / 10);
   return (
     <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
       <span
-        className={`label-state-cube ${state === 'Progress' ? 'l-step5' : ''} ${
-          state === 'Completed' ? 'complete' : ''
-        }`}
+        className={`label-state-cube ${
+          state === 'Progress' ? `l-step${step}` : ''
+        } ${state === 'Completed' ? 'complete' : ''}`}
       >
         <span>cube 완료상태</span>
       </span>
@@ -49,4 +65,4 @@ const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView
   );
 };
 
-export default ProgramCubeView;
+export default DurationableCubeView;
