@@ -136,7 +136,8 @@ class AplCreateContainer extends React.Component<Props, States> {
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
       .then((companyApprover: CompanyApproverModel) => {
         companyApproverService!.findCompanyAplApprover();
-        this.onChangeAplProps('approvalId', companyApprover.email);
+        this.onChangeAplProps('approvalId', companyApprover.id);
+        this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
         this.onChangeAplProps('approvalCompany', companyApprover.companyName);
         this.onChangeAplProps('approvalDepartment', companyApprover.departmentName);
@@ -247,7 +248,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     //
     //const { memberService } = this.props;
     //memberService!.changeApprovalManagerProps(approvalMember);
-    this.onChangeAplProps('approvalId', approvalMember.email);
+    this.onChangeAplProps('approvalId', approvalMember.id);
+    this.onChangeAplProps('approvalEmail', approvalMember.email);
     this.onChangeAplProps('approvalName', approvalMember.name);
     this.onChangeAplProps('approvalCompany', approvalMember.companyName);
     this.onChangeAplProps('approvalDepartment', approvalMember.departmentName);
