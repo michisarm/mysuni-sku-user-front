@@ -124,10 +124,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   
   const onPanoptoStateUpdate = useCallback((state:number) => {
     // console.log('getLectureConfirmProgress',getLectureConfirmProgress()?.learningState);
-    console.log('state',state);
     setPanoptoState(state);
-    console.log('params',params);
-    console.log('currentParams',currentParams);
     
     if (state == 2){
       setIsActive(false);
@@ -141,38 +138,28 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       console.log('state',state);
       confirmProgress(params);
       setIsActive(false);
-      setNextContentsView(true);
+      setNextContentsView(true);ㅊ
     }
   }, [action,isActive,params]);
 
   useEffect(() => {
-    console.log('isActive',isActive);
-    console.log('params',params);
-    console.log('watchlogState',watchlogState);
-    console.log('panoptoState',panoptoState);
-
     let interval:any = null;
     let progressInterval:any = null;
     
     const currentTime = embedApi.getCurrentTime() as unknown as number;
     const duration = embedApi.getDuration() as unknown as number;
-    console.log('currentTime',currentTime);
-    console.log('duration',duration);
 
     let confirmProgressTime = (duration / 10) * 1000;
 
-    console.log('confirmProgressTime'  , confirmProgressTime);
     //confirmProgressTime 
     if(!confirmProgressTime || confirmProgressTime > 60000){
       confirmProgressTime = 60000;
     }
-    console.log('confirmProgressTime'  , confirmProgressTime);
 
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({...watchlogState,start:currentTime,end:currentTime+10})
-        console.log('watchlogState', watchlogState);
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
 
@@ -223,7 +210,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const seekByIndex = (index: number) => {
-    console.log('transcript index: ' + index); 
     if (embedApi && index >= 0) {
       //TODO current state 를 찾아서 Play 이 
       embedApi.seekTo(index);
@@ -274,27 +260,23 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   return (
           <div className="course-video">
             <div className="video-container">
-            <span>00000{panoptoState}00000</span>
-            <span>11111{isActive}11111</span>
-            <span>22222{nextContentsPath}22222</span>
-            <span>33333{getLectureConfirmProgress()?.learningState}33333</span>
-                <div id="panopto-embed-player"></div>
-                {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-                {panoptoState == 0 && !isActive && nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (                
-                  <div className="video-overlay">           
-                    <div className="video-overlay-btn">
-                      <button onClick={() => nextContents(nextContentsPath)}>
-                        <img src={playerBtn} />
-                      </button>
-                    </div>
-                    {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
-                    {/* <Link to={nextContentsPath||''}> */}
-                      <div className="video-overlay-text">
-                        <p>다음 학습 이어하기</p>
-                        <h3>{nextContentsName}</h3>
-                      </div>
-                    {/* </Link> */}
+              <div id="panopto-embed-player"></div>
+              {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
+              {panoptoState == 0 && !isActive && nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (                
+                <div className="video-overlay">           
+                  <div className="video-overlay-btn">
+                    <button onClick={() => nextContents(nextContentsPath)}>
+                      <img src={playerBtn} />
+                    </button>
                   </div>
+                  {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
+                  {/* <Link to={nextContentsPath||''}> */}
+                    <div className="video-overlay-text">
+                      <p>다음 학습 이어하기</p>
+                      <h3>{nextContentsName}</h3>
+                    </div>
+                  {/* </Link> */}
+                </div>
                 )}
               </div>            
             {getLectureTranscripts() &&

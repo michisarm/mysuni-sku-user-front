@@ -170,7 +170,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         const currentPaonoptoSessionId = lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
         const embedApi = new window.EmbedApi("panopto-embed-audio-player", {
           width: "100%",
-          height: "422",
+          height: "100",
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
           serverName: "sku.ap.panopto.com",
@@ -216,7 +216,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   return (
     <div className="audio-container">
-      <div id="panopto-embed-audio-player" className="l-audio"/>
       {panoptoState == 0 && !isActive && nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (      
         <div className="video-overlay">
           <div className="video-overlay-btn">
@@ -229,7 +228,8 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
             <h3>{nextContentsName}</h3>
           </div>
         </div>
-        )}
+      )}
+      <div id="panopto-embed-audio-player" className="l-audio"/>
     </div>
   );
 };
