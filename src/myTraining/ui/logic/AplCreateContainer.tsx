@@ -622,7 +622,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <Grid.Column>
                   <Modal.Actions>
                     {approvalShow &&
-                    <Button className="post change-admin" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
+                    <Button className="post change-admin btn" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
                     <ManagerListModalContainer
                       ref={managerModal => this.managerModal = managerModal}
                       handleOk={this.onClickManagerListOk}
