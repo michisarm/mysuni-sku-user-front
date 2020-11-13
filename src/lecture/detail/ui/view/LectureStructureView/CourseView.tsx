@@ -82,6 +82,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                 learningTime={cube.learningTime}
                 cubeType={cube.cubeType}
                 path={cube.path}
+                can={cube.can}
               />
               {cube.test !== undefined && (
                 <TestView
@@ -89,6 +90,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   state={cube.test.state}
                   questionCount={cube.test.questionCount}
                   path={cube.test.path}
+                  can={cube.test.can}
                 />
               )}
               {cube.survey !== undefined && (
@@ -97,6 +99,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   state={cube.survey.state}
                   questionCount={cube.survey.questionCount}
                   path={cube.survey.path}
+                  can={cube.survey.can}
                 />
               )}
               {cube.report !== undefined && (
@@ -104,6 +107,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   name={cube.report.name}
                   state={cube.report.state}
                   path={cube.report.path}
+                  can={cube.report.can}
                 />
               )}
             </>
@@ -116,6 +120,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             activated={test.activated}
             questionCount={test.questionCount}
             path={test.path}
+            can={test.can}
           />
         )}
         {survey && (
@@ -125,6 +130,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             activated={survey.activated}
             questionCount={survey.questionCount}
             path={survey.path}
+            can={survey.can}
           />
         )}
         {report && (
@@ -133,6 +139,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             state={report.state}
             activated={report.activated}
             path={report.path}
+            can={report.can}
           />
         )}
         {discussion && (

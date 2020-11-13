@@ -27,6 +27,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           learningTime={lectureStructure.cube.learningTime}
           cubeType={lectureStructure.cube.cubeType}
           path={lectureStructure.cube.path}
+          can={lectureStructure.cube.can}
         />
       )}
       {lectureStructure.test !== undefined && (
@@ -35,6 +36,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           state={lectureStructure.test.state}
           questionCount={lectureStructure.test.questionCount}
           path={lectureStructure.test.path}
+          can={lectureStructure.test.can}
         />
       )}
       {lectureStructure.survey !== undefined && (
@@ -43,6 +45,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           state={lectureStructure.survey.state}
           questionCount={lectureStructure.survey.questionCount}
           path={lectureStructure.survey.path}
+          can={lectureStructure.survey.can}
         />
       )}
       {lectureStructure.report !== undefined && (
@@ -50,6 +53,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           name={lectureStructure.report.name}
           state={lectureStructure.report.state}
           path={lectureStructure.report.path}
+          can={lectureStructure.report.can}
         />
       )}
     </>

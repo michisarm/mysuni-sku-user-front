@@ -1,12 +1,22 @@
+import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
+import StructureLink from './StructureLink';
 
 interface ProgramTestViewProps {
   name: string;
   state?: State;
   activated?: boolean;
   path: string;
+  can: boolean;
+}
+
+function cannotAlert() {
+  reactAlert({
+    title: 'Test 안내',
+    message: '학습 완료 후 Test 참여 가능합니다.',
+  });
 }
 
 const ProgramTestView: React.FC<ProgramTestViewProps> = function ProgramTestView({
@@ -14,9 +24,15 @@ const ProgramTestView: React.FC<ProgramTestViewProps> = function ProgramTestView
   state = 'None',
   activated = false,
   path,
+  can,
 }) {
   return (
-    <Link to={path} className={`btn-single-cube ${activated ? 'act-on' : ''}`}>
+    <StructureLink
+      can={can}
+      to={path}
+      onCannotClick={cannotAlert}
+      className={`btn-single-cube ${activated ? 'act-on' : ''}`}
+    >
       <span className="label-type n-test">Test</span>
       <span className="copy">{name}</span>
       <span
@@ -26,7 +42,7 @@ const ProgramTestView: React.FC<ProgramTestViewProps> = function ProgramTestView
       >
         <span>진행상태</span>
       </span>
-    </Link>
+    </StructureLink>
   );
 };
 

@@ -54,6 +54,16 @@ export function studentInfoView(
     .then(response => response && response.data);
 }
 
+export function markComplete(
+  body: { rollBookId: string }
+): Promise<void> {
+  const url = `${BASE_URL}/students/flow/markComplete`;
+  return axiosApi
+    .put<void>(url, body)
+    .then(response => response && response.data);
+}
+
+
 export function findStudent(studentId: string): Promise<Student> {
   const url = `${BASE_URL}/students/${studentId}`;
   return axiosApi.get<Student>(url).then(response => response && response.data);

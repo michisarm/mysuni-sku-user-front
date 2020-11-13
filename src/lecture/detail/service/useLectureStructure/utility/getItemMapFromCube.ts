@@ -64,6 +64,7 @@ async function getTestItem(examId: string, params: LectureParams) {
       path: `${toPath(params)}/exam`,
       state,
       type: 'EXAM',
+      can: false,
     };
     return item;
   }
@@ -105,6 +106,7 @@ async function getSurveyItem(
         path: `${toPath(params)}/survey`,
         state,
         type: 'SURVEY',
+        can: false,
       };
       return item;
     }
@@ -135,6 +137,7 @@ async function getReportItem(
       path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
+      can: false,
     };
     return item;
   }

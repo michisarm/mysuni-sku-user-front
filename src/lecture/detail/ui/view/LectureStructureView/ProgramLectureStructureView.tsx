@@ -47,6 +47,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
               learningTime={cube.learningTime}
               cubeType={cube.cubeType}
               path={cube.path}
+              can={cube.can}
             />
           );
         })}
@@ -56,6 +57,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           state={lectureStructure.test.state}
           path={lectureStructure.test.path}
           activated={lectureStructure.test.activated}
+          can={lectureStructure.test.can}
         />
       )}
       {lectureStructure.survey !== undefined && (
@@ -64,6 +66,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           state={lectureStructure.survey.state}
           path={lectureStructure.survey.path}
           activated={lectureStructure.survey.activated}
+          can={lectureStructure.survey.can}
         />
       )}
       {lectureStructure.report !== undefined && (
@@ -72,6 +75,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           state={lectureStructure.report.state}
           path={lectureStructure.report.path}
           activated={lectureStructure.report.activated}
+          can={lectureStructure.report.can}
         />
       )}
       {lectureStructure.discussion !== undefined && (

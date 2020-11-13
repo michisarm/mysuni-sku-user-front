@@ -41,22 +41,25 @@ const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateV
     hideState,
     canAction,
     actionText,
-    action,
     stateText,
+    actionClassName,
+    stateClassName,
   } = lectureState;
 
   return (
     <>
       {!hideAction && (
         <button
-          className="ui button free bg p18"
+          className={`ui button free ${actionClassName} p18`}
           onClick={canAction ? hookAction : undefined}
         >
           {actionText}
         </button>
       )}
       {!hideState && (
-        <button className="ui button free line p18">{stateText}</button>
+        <button className={`ui button free ${stateClassName} p18`}>
+          {stateText}
+        </button>
       )}
     </>
   );
