@@ -11,17 +11,18 @@ import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterP
 import WatchLog from 'lecture/detail/model/Watchlog';
 import { getLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
 import { getLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
-import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
+import { setLectureConfirmProgress, getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import moment from 'moment';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { getPublicUrl } from 'shared/helper/envHelper';
 
+const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
-
-//샘플 페이지 : http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
-//             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
-//             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
+//샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
+//             http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
+//             http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
 
 interface LectureVideoViewProps {
   params:LectureRouterParams | undefined;
@@ -45,9 +46,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
-
+  const [nextContentsView, setNextContentsView] = useState<boolean>(false);
+  const [currentParams, setCurrentParams] = useState<LectureRouterParams | undefined>(params);
+  const [panoptoState, setPanoptoState] = useState<number>();
   
-
   // params, watchlog
   // hookAction
   useEffect(() => {
@@ -111,40 +113,75 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // cleanUpPanoptoIframe();
   };
 
-  const onPanoptoStateUpdate = useCallback((state:any) => {
-    console.log('getLectureConfirmProgress',getLectureConfirmProgress()?.learningState);
+  const history = useHistory();
+
+  const nextContents = useCallback((path:string) => {
+    setLectureConfirmProgress();
+    setPanoptoState(10);
+    history.push(path);  
+  }, []);
+
+  
+  const onPanoptoStateUpdate = useCallback((state:number) => {
+    // console.log('getLectureConfirmProgress',getLectureConfirmProgress()?.learningState);
+    console.log('state',state);
+    setPanoptoState(state);
+    console.log('params',params);
+    console.log('currentParams',currentParams);
+    
     if (state == 2){
       setIsActive(false);
+      setNextContentsView(false);
     }else if (state == 1){
       // console.log(action && action());
       action && action();
       setIsActive(true);
-    }else if(state == 3 && params){
+      setNextContentsView(false);
+    }else if(state == 0 && params){
+      console.log('state',state);
       confirmProgress(params);
+      setIsActive(false);
+      setNextContentsView(true);
     }
-  }, [action]);
+  }, [action,isActive,params]);
 
   useEffect(() => {
     console.log('isActive',isActive);
     console.log('params',params);
     console.log('watchlogState',watchlogState);
+    console.log('panoptoState',panoptoState);
 
     let interval:any = null;
     let progressInterval:any = null;
     
+    const currentTime = embedApi.getCurrentTime() as unknown as number;
+    const duration = embedApi.getDuration() as unknown as number;
+    console.log('currentTime',currentTime);
+    console.log('duration',duration);
+
+    let confirmProgressTime = (duration / 10) * 1000;
+
+    console.log('confirmProgressTime'  , confirmProgressTime);
+    //confirmProgressTime 
+    if(!confirmProgressTime || confirmProgressTime > 60000){
+      confirmProgressTime = 60000;
+    }
+    console.log('confirmProgressTime'  , confirmProgressTime);
+
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
-        const currentTime = embedApi.getCurrentTime() as unknown as number;
+        //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({...watchlogState,start:currentTime,end:currentTime+10})
         console.log('watchlogState', watchlogState);
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
+
         // confirmProgress(params);
       }, 10000);
       //TODO : total runtime / 10 or 1분간격으로 진행률 체크 하도록 변경 필요함 - 현재는 1분간격 적용 
       progressInterval = setInterval(() => {
         confirmProgress(params);
-      }, 60000);      
+      }, confirmProgressTime);      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
       clearInterval(progressInterval);
@@ -157,7 +194,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   
   useEffect(()=>{ 
     if (params) {  
+      console.log('params change confirmProgress');
       confirmProgress(params);
+      setCurrentParams(params);
     }
   }, [params]);
 
@@ -237,19 +276,20 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             <div className="video-container">
                 <div id="panopto-embed-player"></div>
                 {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-                {nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (                
+                {panoptoState == 0 && !isActive && nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (                
                   <div className="video-overlay">           
                     <div className="video-overlay-btn">
-                      <button>
-                        <img src="" />
+                      <button onClick={() => nextContents(nextContentsPath)}>
+                        <img src={playerBtn} />
                       </button>
                     </div>
-                    <Link to={nextContentsPath||''}>
+                    {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
+                    {/* <Link to={nextContentsPath||''}> */}
                       <div className="video-overlay-text">
                         <p>다음 학습 이어하기</p>
                         <h3>{nextContentsName}</h3>
                       </div>
-                    </Link>
+                    {/* </Link> */}
                   </div>
                 )}
               </div>            
