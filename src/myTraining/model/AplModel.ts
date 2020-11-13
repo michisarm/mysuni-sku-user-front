@@ -51,7 +51,6 @@ class AplModel extends NewQueryModel {
   patronKeyString: string = '';
   patronType: string = '';
   pavilionId: string = '';
-  approvalEmail: string = '';
   approvalCompany: string = '';
   approvalDepartment: string = '';
 
