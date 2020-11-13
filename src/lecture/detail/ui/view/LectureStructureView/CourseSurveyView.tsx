@@ -4,25 +4,27 @@ import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
-interface ReportViewProps {
+interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
+  questionCount: number;
   path: string;
   can: boolean;
 }
 
 function cannotAlert() {
   reactAlert({
-    title: 'Report 안내',
-    message: '학습 완료 후 Report 참여 가능합니다.',
+    title: 'Survey 안내',
+    message: '학습 완료 후 Survey 참여 가능합니다.',
   });
 }
 
-const ReportView: React.FC<ReportViewProps> = function ReportView({
+const CourseSurveyView: React.FC<SurveyViewProps> = function CourseSurveyView({
   name,
   state = 'None',
   activated = false,
+  questionCount,
   path,
   can,
 }) {
@@ -43,11 +45,12 @@ const ReportView: React.FC<ReportViewProps> = function ReportView({
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>Report</li>
+          <li>Survey</li>
+          <li>{`${questionCount}문항`}</li>
         </ul>
       </span>
     </StructureLink>
   );
 };
 
-export default ReportView;
+export default CourseSurveyView;

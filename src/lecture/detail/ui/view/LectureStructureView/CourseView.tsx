@@ -10,6 +10,9 @@ import {
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
+import CourseReportView from './CourseReportView';
+import CourseSurveyView from './CourseSurveyView';
+import CourseTestView from './CourseTestView';
 import CubeView, { parseCubeType } from './CubeView';
 import DiscussionView from './DiscussionView';
 import ReportView from './ReportView';
@@ -114,7 +117,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           );
         })}
         {test && (
-          <TestView
+          <CourseTestView
             name={test.name}
             state={test.state}
             activated={test.activated}
@@ -124,7 +127,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           />
         )}
         {survey && (
-          <SurveyView
+          <CourseSurveyView
             name={survey.name}
             state={survey.state}
             activated={survey.activated}
@@ -134,7 +137,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           />
         )}
         {report && (
-          <ReportView
+          <CourseReportView
             name={report.name}
             state={report.state}
             activated={report.activated}

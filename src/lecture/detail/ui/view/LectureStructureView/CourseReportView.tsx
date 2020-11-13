@@ -19,7 +19,7 @@ function cannotAlert() {
   });
 }
 
-const ReportView: React.FC<ReportViewProps> = function ReportView({
+const CourseReportView: React.FC<ReportViewProps> = function CourseReportView({
   name,
   state = 'None',
   activated = false,
@@ -31,7 +31,7 @@ const ReportView: React.FC<ReportViewProps> = function ReportView({
       can={can}
       to={path}
       onCannotClick={cannotAlert}
-      className={`btn-state-course l-depth ${activated ? 'act-on' : ''}`}
+      className={`btn-state-course ${activated ? 'act-on' : ''}`}
     >
       <span
         className={`label-state-cube ${
@@ -50,4 +50,4 @@ const ReportView: React.FC<ReportViewProps> = function ReportView({
   );
 };
 
-export default ReportView;
+export default CourseReportView;
