@@ -1,21 +1,16 @@
 /* eslint-disable consistent-return */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
 import {
   onLectureStructure,
-  setLectureStructure,
 } from '../../store/LectureStructureStore';
-import LectureParams from '../../viewModel/LectureParams';
 import { LectureStructure } from '../../viewModel/LectureStructure';
-import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
-import { getCubeLectureStructure } from './utility/getCubeLectureStructure';
 
 type Value = LectureStructure | undefined;
 
 // side effect call by ref
-function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
+export function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
   if (lectureStructure.cube !== undefined) {
     if (lectureStructure.cube.path === pathname) {
       lectureStructure.cube.activated = true;
@@ -70,6 +65,9 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
     setLectureDiscussion({
       id: lectureStructure.discussion.id,
       name: lectureStructure.discussion.name,
+      time: lectureStructure.discussion.time,
+      creator: lectureStructure.discussion.creator,
+      creatorAudienceId: lectureStructure.discussion.creatorAudienceId
     });
   }
 
@@ -108,6 +106,9 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
       setLectureDiscussion({
         id: course.discussion.id,
         name: course.discussion.name,
+        time: course.discussion.time,
+        creator: course.discussion.creator,
+        creatorAudienceId: course.discussion.creatorAudienceId,
       });
     }
     if (course.cubes !== undefined) {
@@ -129,40 +130,14 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
   });
 }
 
+let subscriberIdRef = 0;
 export function useLectureStructure(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
-  const params = useParams<LectureParams>();
-  const { pathname } = useLocation();
-  const getCubeItem = useCallback((params: LectureParams, pathname: string) => {
-    getCubeLectureStructure(params).then(lectureStructure => {
-      mergeActivated(lectureStructure, pathname);
-      setLectureStructure(lectureStructure);
-    });
-  }, []);
 
-  const getCourseItem = useCallback(
-    (params: LectureParams, pathname: string) => {
-      getCourseLectureStructure(params).then(lectureStructure => {
-        mergeActivated(lectureStructure, pathname);
-        setLectureStructure(lectureStructure);
-      });
-    },
-    []
-  );
 
   useEffect(() => {
-    const { lectureType, contentId, lectureId, ...structParams } = params;
-    if (params.cubeId !== undefined) {
-      getCubeItem(structParams, pathname);
-    } else {
-      getCourseItem(structParams, pathname);
-    }
-  }, [params, pathname]);
-
-  useEffect(() => {
-    const next = `useLectureStructure-${++subscriberIdRef.current}`;
+    const next = `useLectureStructure-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

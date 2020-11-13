@@ -62,6 +62,8 @@ async function getLectureSummary(
     learningTime,
     operator,
     passedCount: lectureCard.passedStudentCount,
+    studentCount: lectureCard.studentCount,
+    cubeType: personalCube.contents.type,
     mytrainingId: getEmpty(mylecture && mylecture.id),
   };
 }

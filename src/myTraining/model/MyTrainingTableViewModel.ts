@@ -33,8 +33,8 @@ class MyTrainingTableViewModel {
   createDate: number = 0; // 등록일
   stampCount: number = 0; // 스탬프
 
-  passCount: number = 0;
-  rowCount: number = 0;
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   // for make observable object from json data.
   constructor(myTrainingTableView?: MyTrainingTableViewModel) {
@@ -43,7 +43,7 @@ class MyTrainingTableViewModel {
     }
   }
 
-  @computed get formattedLearningTime(): string {
+  @computed get displayLearningTime(): string {
     return timeToHourMinutePaddingFormat(this.learningTime);
   }
 
@@ -69,13 +69,17 @@ class MyTrainingTableViewModel {
   }
 
   @computed get displayProgressRate(): string {
-    return this.isCardType() ? '-' : `${this.passCount}/${this.rowCount}`;
+    return this.isCardType() ? '-' : `${this.passedLearningCount}/${this.totalLearningCount}`;
   }
 
   /* functions */
   isCardType() {
     // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
     return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
+  }
+
+  isCollegeEmpty() {
+    return (this.category && this.category.college) ? false : true;
   }
 
 
@@ -92,12 +96,12 @@ class MyTrainingTableViewModel {
     */
     return {
       No: String(index),
-      College: this.category.college.name,
-      과정명: this.name,
-      학습유형: this.cubeType,
+      College: this.isCollegeEmpty() ? '-' : this.category.college.name,
+      과정명: this.name || '-',
+      학습유형: this.cubeType && this.cubeType || this.serviceType,
       Level: this.difficultyLevel || '-',
-      진행률: '-',
-      학습시간: this.learningTimeWithFormat,
+      진행률: this.isCardType() ? '-' : `${this.passedLearningCount}/${this.totalLearningCount}`,
+      학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       학습시작일: moment(Number(this.startDate)).format('YYYY.MM.DD')
     };
   }
@@ -114,11 +118,11 @@ class MyTrainingTableViewModel {
     */
     return {
       No: String(index),
-      College: this.category.college.name,
-      과정명: this.name,
-      학습유형: this.cubeType,
+      College: this.isCollegeEmpty() ? '-' : this.category.college.name,
+      과정명: this.name || '-',
+      학습유형: this.cubeType && this.cubeType || this.serviceType,
       Level: this.difficultyLevel || '-',
-      학습시간: this.learningTimeWithFormat,
+      학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD')
     };
   }
@@ -127,8 +131,8 @@ class MyTrainingTableViewModel {
 
     return {
       No: String(index),
-      College: this.category.college.name,
-      과정명: this.name,
+      College: this.isCollegeEmpty() ? '-' : this.category.college.name,
+      과정명: this.name || '-',
       스탬프: String(this.stampCount),
       획득일자: moment(Number(this.endDate)).format('YYYY.MM.DD'),
     };

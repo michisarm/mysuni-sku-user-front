@@ -7,11 +7,16 @@ import { ActionEventService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
 import { MyTrainingService, InMyLectureService, AplService } from 'myTraining/stores';
 import { LectureService } from 'lecture/stores';
+import { SkProfileService } from 'profile/stores';
+import { MenuControlAuthService } from 'approval/stores';
+import { SkProfileModel } from 'profile/model';
+import { CountType } from 'myTraining/model/AplRdoModel';
 import { TabItemModel, ContentLayout } from 'shared';
 import TabContainer from 'shared/components/Tab';
 import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model';
+
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -21,6 +26,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   inMyLectureService?: InMyLectureService;
   lectureService?: LectureService;
   aplService?: AplService;
+  skProfileService?: SkProfileService;
+  menuControlAuthService?: MenuControlAuthService;
 }
 
 interface RouteParams {
@@ -29,16 +36,20 @@ interface RouteParams {
 }
 
 function MyLearningPageV2(props: Props) {
-  const { actionEventService, notieService, myTrainingService, inMyLectureService, lectureService, aplService } = props;
+  const { actionEventService, notieService, myTrainingService, inMyLectureService, lectureService, aplService, skProfileService, menuControlAuthService } = props;
   const { history, match } = props;
+  const { skProfile } = skProfileService!;
+  const { menuControlAuth } = menuControlAuthService!;
   const currentTab = match.params.tab;
 
   /* effects */
   useEffect(() => {
     publishViewEvent();
     fetchAllTabCount();
+    getMenuAuth();
     // 학습완료한 강좌에 대해 sessionStorage 저장하는 로직
     // myTrainingService!.saveNewLearningPassedToStorage('Passed');
+    return () => clearAllTabCount();
   }, []);
 
   /* functions */
@@ -60,16 +71,70 @@ function MyLearningPageV2(props: Props) {
     */
     myTrainingService!.findAllTabCount(); // 학습중, 학습예정, mySUNI 학습완료, 취수/미이수
     inMyLectureService!.findAllTabCount();  // 관심목록
-    aplService!.findAllTabCount();
     lectureService!.countRequiredLectures(); // 권장과정
+    aplService!.findAllTabCount(CountType.patronKeyString); // 개인학습 완료
   };
 
+  const clearAllTabCount = () => {
+    myTrainingService!.clearAllTabCount();
+    inMyLectureService!.clearAllTabCount();
+    lectureService!.clearAllTabCount();
+    aplService!.clearAplCount();
+  };
+
+  const getMenuAuth = async () => {
+    if (!skProfile) {
+      const profile: SkProfileModel = await skProfileService!.findSkProfile();
+      menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
+    }
+  }
 
   const getTabs = (): TabItemModel[] => {
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
     const { inMyListCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
-    const { aplCount } = aplService!;
+    const { aplCount: { opened: personalCompletedCount } } = aplService!;
+
+    if (menuControlAuth.companyCode === '') {
+      return [
+        {
+          name: MyLearningContentType.InProgress,
+          item: getTabItem(MyLearningContentType.InProgress, inprogressCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+        },
+        {
+          name: MyLearningContentType.InMyList,
+          item: getTabItem(MyLearningContentType.InMyList, inMyListCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+        },
+        {
+          className: 'division',
+          name: MyLearningContentType.Required,
+          item: getTabItem(MyLearningContentType.Required, requiredLecturesCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+        },
+        {
+          name: MyLearningContentType.Enrolled,
+          item: getTabItem(MyLearningContentType.Enrolled, enrolledCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+        },
+        {
+          name: MyLearningContentType.Completed,
+          item: getTabItem(MyLearningContentType.Completed, completedCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+        },
+        {
+          name: MyLearningContentType.PersonalCompleted,
+          item: getTabItem(MyLearningContentType.PersonalCompleted, personalCompletedCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />
+        },
+        {
+          name: MyLearningContentType.Retry,
+          item: getTabItem(MyLearningContentType.Retry, retryCount),
+          render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+        },
+      ] as TabItemModel[];
+    }
 
     return [
       {
@@ -97,11 +162,6 @@ function MyLearningPageV2(props: Props) {
         name: MyLearningContentType.Completed,
         item: getTabItem(MyLearningContentType.Completed, completedCount),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
-      },
-      {
-        name: MyLearningContentType.PersonalCompleted,
-        item: getTabItem(MyLearningContentType.PersonalCompleted, aplCount.all),
-        render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />
       },
       {
         name: MyLearningContentType.Retry,
@@ -171,7 +231,9 @@ export default inject(mobxHelper.injectFrom(
   'lecture.lectureService',
   'myTraining.inMyLectureService',
   'myTraining.myTrainingService',
-  'myTraining.aplService'
+  'myTraining.aplService',
+  'profile.skProfileService',
+  'approval.menuControlAuthService'
 ))(withRouter(observer(MyLearningPageV2)));
 
 /* globals */

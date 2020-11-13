@@ -6,13 +6,13 @@ import { useEffect, useRef, useState } from 'react';
 
 type Value = LectureSubcategory | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureSubcategory(): [Value] {
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureSubcategory-${++subscriberIdRef.current}`;
+    const next = `useLectureSubcategory-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

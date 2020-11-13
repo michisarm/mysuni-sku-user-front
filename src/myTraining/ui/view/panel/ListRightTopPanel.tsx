@@ -4,29 +4,30 @@ import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { ApprovalViewType } from 'myTraining/ui/logic/MyApprovalListContainerV2';
 
 interface Props {
   contentType: MyContentType;
-  resultEmpty: boolean;
-  filterCount: number;
-  openFilter: boolean;
-  activeFilter: boolean;
-  onClickFilter: () => void;
-  checkedViewType: ViewType;
+  resultEmpty?: boolean;
+  allCount?: number;
+  filterCount?: number;
+  openFilter?: boolean;
+  activeFilter?: boolean;
+  onClickFilter?: () => void;
+  checkedViewType: ViewType | ApprovalViewType;
   onChangeViewType: (e: any, data: any) => void;
 }
 
 function ListRightTopPanel(props: Props) {
-  const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
-
-  console.log('ListRightTopPanel :: render :: ');
+  const { contentType, resultEmpty, allCount, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
 
   /* render functions */
   const renderRadiobox = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed:
-        return !resultEmpty && (
+        return !resultEmpty && allCount !== 0 && (
           <div className="view-all">
             {CheckboxOptions.viewTypes.map((viewType, index) => (
               <Fragment key={`view-type-${index}`}>
@@ -42,6 +43,23 @@ function ListRightTopPanel(props: Props) {
             ))}
           </div>
         );
+      case MyApprovalContentType.PersonalLearning:
+        return (
+          <div className="radio-wrap">
+            {CheckboxOptions.approvalViewTypes.map((approvalViewType, index) => (
+              <Fragment key={`approval-view-type-${index}`}>
+                <Checkbox
+                  className="base radio"
+                  name={approvalViewType.name}
+                  label={approvalViewType.label}
+                  value={approvalViewType.value}
+                  checked={approvalViewType.value === checkedViewType}
+                  onChange={onChangeViewType}
+                />
+              </Fragment>
+            ))}
+          </div>
+        )
       default:
         return null;
     }
@@ -53,6 +71,7 @@ function ListRightTopPanel(props: Props) {
 
     switch (contentType) {
       case MyLearningContentType.PersonalCompleted:
+      case MyApprovalContentType.PersonalLearning:
         return null;
       default:
         return (
@@ -64,7 +83,7 @@ function ListRightTopPanel(props: Props) {
             {!activeFilter && (
               <Icon className="filter2" aria-hidden="true" />
             )}
-            <span>Filter{filterCount > 0 && `(${filterCount})`}</span>
+            <span>Filter{filterCount && filterCount > 0 && `(${filterCount})` || ''}</span>
           </Button>
         );
     }

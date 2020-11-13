@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect, useRef, useCallback, lazy } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
+import { CollegeService } from 'college/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { MyLearningContentType, MyPageContentType, NoSuchContentPanelMessages } from '../model';
 import { MultiFilterBox } from '../view/filterbox';
@@ -12,7 +13,9 @@ import { MyLearningTableTemplate, MyLearningTableHeader, MyLearningTableBody } f
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 import { MyTrainingService, InMyLectureService, AplService } from '../../stores';
-import { LectureService, SeeMoreButton } from '../../../lecture';
+import { LectureService, SeeMoreButton, StudentService } from '../../../lecture';
+import MyApprovalContentType from '../model/MyApprovalContentType';
+import FilterCountViewModel from '../../model/FilterCountViewModel';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -22,6 +25,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   inMyLectureService?: InMyLectureService;
   aplService?: AplService;
   lectureService?: LectureService;
+  studentService?: StudentService;
+  collegeService?: CollegeService;
 }
 
 interface RouteParams {
@@ -30,9 +35,10 @@ interface RouteParams {
 }
 
 function MyLearningListContainerV2(props: Props) {
-  console.log('MyLearningListContainer :: render ::');
-  const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, history, match } = props;
+  const { contentType, history, match } = props;
+  const { skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, collegeService } = props;
   const { profileMemberName } = skProfileService!;
+  const { colleges } = collegeService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -43,6 +49,17 @@ function MyLearningListContainerV2(props: Props) {
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
+
+  useEffect(() => {
+    /* 
+      상위 컴포넌트에서 조회된 colleges 가 없는 경우 collegs 를 조회함. 
+      MultiFilterBox 에 props 로 전달하기 위함.
+    */
+    if (!colleges || !colleges.length) {
+      collegeService!.findAllColleges();
+    }
+
+  }, []);
 
   /* effects */
   useEffect(() => {
@@ -59,7 +76,45 @@ function MyLearningListContainerV2(props: Props) {
     return () => clearStore(contentType);
   }, [contentType]);
 
+  useEffect(() => {
+    /* 
+      contentType 및 viewType 이 변함에 따라 
+      필터 항목 별 카운트는 다시 조회되어야 함. 
+    */
+    fetchFilterCountViews(contentType);
+
+    return () => clearFilterCountViews(contentType);
+
+  }, [contentType, viewType]);
+
   /* functions */
+  const fetchFilterCountViews = (contentType: MyContentType): void => {
+    /* 필터 항목 별 카운트를 조회하기 위함. */
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.findAllFilterCountViews()
+        break;
+      case MyLearningContentType.Required:
+        lectureService!.findAllFilterCountViews();
+        break;
+      default:
+        myTrainingService!.findAllFilterCountViews();
+    }
+  }
+
+  const clearFilterCountViews = (contentType: MyContentType): void => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.clearAllFilterCountViews();
+        break;
+      case MyLearningContentType.Required:
+        lectureService!.clearAllFilterCountViews();
+        break;
+      default:
+        myTrainingService!.clearAllFilterCountViews();
+    }
+  }
+
   const fetchModelsByContentType = async (contentType: MyContentType) => {
     //
     //clearStore(contentType);
@@ -74,7 +129,7 @@ function MyLearningListContainerV2(props: Props) {
         checkShowSeeMore(contentType);
         return;
       }
-      /* 개인학습 완료 */
+      /* 개인학습 완료 & 승인관리 페이지 개인학습 */
       case MyLearningContentType.PersonalCompleted: {
         const offsetApl = await aplService!.findAllAplsByQuery();
         const isEmpty = offsetApl.results.length === 0 ? true : false;
@@ -219,8 +274,8 @@ function MyLearningListContainerV2(props: Props) {
   const getTotalCount = (contentType: MyContentType): number => {
     const { inMyLectureTableCount } = inMyLectureService!;
     const { myTrainingTableCount } = myTrainingService!;
-    const { aplCount } = aplService!;
     const { lectureTableCount } = lectureService!;
+    const { apls: { totalCount: aplTableCount } } = aplService!;
 
     switch (contentType) {
       case MyLearningContentType.InMyList:
@@ -228,10 +283,33 @@ function MyLearningListContainerV2(props: Props) {
       case MyLearningContentType.Required:
         return lectureTableCount;
       case MyLearningContentType.PersonalCompleted:
-        //return aplCount.all;
+        return aplTableCount;
       default:
         return myTrainingTableCount;
     }
+  };
+
+  const getFilterCountViews = (contentType: MyContentType): FilterCountViewModel[] => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureService!.filterCountViews;
+      case MyLearningContentType.Required:
+        return lectureService!.filterCountViews;
+      default:
+        return myTrainingService!.filterCountViews;
+    }
+  };
+
+  const getTotalFilterCountView = (contentType: MyContentType): FilterCountViewModel => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureService!.totalFilterCountView;
+      case MyLearningContentType.Required:
+        return lectureService!.totalFilterCountView;
+      default:
+        return myTrainingService!.totalFilterCountView;
+    }
+
   };
 
   const isModelExist = (contentType: MyContentType) => {
@@ -278,9 +356,15 @@ function MyLearningListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
+  const updateSessionStorage = async () => {
+    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  }
+
   /* handlers */
   const onChangeFilterCount = useCallback((count: number) => {
     if (filterCount && filterCount === count) {
+      initPage();
       fetchModelsByConditions(contentType, viewType);
     }
 
@@ -303,10 +387,19 @@ function MyLearningListContainerV2(props: Props) {
     setOpenModal(false);
   }, []);
 
-  const onConfirmModal = useCallback(() => {
+  const onConfirmModal = useCallback(async () => {
+    const { selectedServiceIds } = myTrainingService!;
+    /*
+      선택된 ids 를 통해 delete 로직을 수행함.
+      delete 로직을 수행 후 목록 조회가 다시 필요함.
+    */
+    await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
+    myTrainingService!.clearAllSelectedServiceIds();
+    await updateSessionStorage();
+    myTrainingService!.findAllTableViews();
+    myTrainingService!.findAllTabCount();
+
     setOpenModal(false);
-    //myTrainingView ids를 통해 delete 로직을 수행함.
-    myTrainingService!.deleteBySelectedIds();
   }, []);
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
@@ -336,7 +429,7 @@ function MyLearningListContainerV2(props: Props) {
         await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
         break;
       case MyLearningContentType.PersonalCompleted:
-       // await aplService!.findAllAplsWithPage(pageInfo.current);
+        await aplService!.findAllAplsWithPage(pageInfo.current);
         break;
       default:
         await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
@@ -379,6 +472,9 @@ function MyLearningListContainerV2(props: Props) {
               viewType={viewType}
               openFilter={openFilter}
               onChangeFilterCount={onChangeFilterCount}
+              colleges={colleges}
+              totalFilterCount={getTotalFilterCountView(contentType)}
+              filterCounts={getFilterCountViews(contentType)}
             />
             {!resultEmpty && (
               <>
@@ -425,7 +521,9 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'myTraining.aplService',
-  'lecture.lectureService'
+  'lecture.lectureService',
+  'lecture.studentService',
+  'college.collegeService'
 ))(withRouter(observer(MyLearningListContainerV2)));
 
 /* globals */
@@ -433,4 +531,5 @@ const PAGE_SIZE = 20;
 
 /* types */
 export type ViewType = 'Course' | 'All' | ''; // 코스만보기 | 전체보기
-export type MyContentType = MyLearningContentType | MyPageContentType;
+export type ApprovalViewType = 'All' | 'Waiting' | 'Approval' | 'Reject';
+export type MyContentType = MyLearningContentType | MyPageContentType | MyApprovalContentType;

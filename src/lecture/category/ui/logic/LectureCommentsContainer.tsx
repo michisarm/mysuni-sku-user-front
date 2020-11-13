@@ -19,6 +19,7 @@ interface State {}
 class LectureCommentsContainer extends Component<Props, State> {
   //
   render() {
+    console.log('@@@@@@@@@@@@@@@LectureCommentsContainer@@@@@@@@@@@@');
     //
     const {
       reviewFeedbackId,

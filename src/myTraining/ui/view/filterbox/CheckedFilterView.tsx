@@ -1,7 +1,9 @@
 import React, { Fragment, memo } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
+import moment from 'moment';
 import { CollegeModel } from 'college/model';
 import { FilterCondition, FilterConditionName } from './MultiFilterBox';
+import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 
 interface Props {
   colleges: CollegeModel[];
@@ -14,7 +16,6 @@ function CheckedFilterView(props: Props) {
   /* colleges 는 collegeId 에 매핑되는 collegeName 을 구하기 위함. 2020.10.08 by 김동구 */
   const { colleges, conditions, onClearAll, onClearOne } = props;
 
-  console.log('checkedFilterView :: render :: ');
   /* render functions */
   const renderCheckedConditions = () => {
     const buttons: React.ReactNode[] = [];
@@ -50,6 +51,19 @@ function CheckedFilterView(props: Props) {
               {learningType}
             </Button>
           </Fragment >
+        ))
+      );
+    }
+
+    if (conditions.learningTimes &&
+      conditions.learningTimes.length) {
+      buttons.push(
+        conditions.learningTimes.map((learningTime, index) => (
+          <Fragment key={`checked-learningTime-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningTime, learningTime)}>
+              {getTextFromValue(FilterConditionName.LearningTime, learningTime)}
+            </Button>
+          </Fragment>
         ))
       );
     }
@@ -90,6 +104,40 @@ function CheckedFilterView(props: Props) {
       );
     }
 
+    if (conditions.certifications &&
+      conditions.certifications.length) {
+      buttons.push(
+        conditions.certifications.map((certification, index) => (
+          <Fragment key={`checked-certification-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.Certification, certification)}>
+              {getTextFromValue(FilterConditionName.Certification, certification)}
+            </Button>
+          </Fragment>
+        ))
+      );
+    }
+
+    if (conditions.startDate && conditions.endDate) {
+      buttons.push(
+        <Fragment key="checked-learningSchedule-0">
+          <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningSchedule, 'learningSchedule')}>
+            {`${moment(conditions.startDate).format('YYYY.MM.DD')}~${moment(conditions.endDate).format('YYYY.MM.DD')}`}
+          </Button>
+        </Fragment>
+      );
+    }
+
+    if (conditions.applying === 'true') {
+      console.log('passed~!');
+      buttons.push(
+        <Fragment key="checked-applying-0">
+          <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningSchedule, conditions.applying)}>
+            수강신청 가능 학습만 보기
+          </Button>
+        </Fragment>
+      );
+    }
+
     return buttons;
   };
 
@@ -123,4 +171,17 @@ const getCollegeNames = (colleges: CollegeModel[], collegeIds: string[]): string
     const college = colleges.filter(college => college.collegeId === collegeId)[0];
     return college.name;
   });
+};
+
+const getTextFromValue = (filterConditionName: FilterConditionName, value: string) => {
+  switch (filterConditionName) {
+    case FilterConditionName.Certification:
+      return CheckboxOptions.certifications
+        .filter(certification => certification.value === value)
+        .map(certification => certification.text);
+    case FilterConditionName.LearningTime:
+      return CheckboxOptions.learningTimes
+        .filter(learningTime => learningTime.value === value)
+        .map(learningTime => learningTime.text);
+  }
 };

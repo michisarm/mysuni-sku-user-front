@@ -111,7 +111,7 @@ async function getReportItem(
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   const coursePlan = await findCoursePlan(lectureView.coursePlanId);
-  if (coursePlan.reportFileBox.reportName !== '') {
+  if (coursePlan.reportFileBox !== null && coursePlan.reportFileBox.reportName !== '') {
     let state: State = 'None';
     if (student !== undefined) {
       if (
@@ -149,7 +149,7 @@ async function getDisscussionItem(
     coursePlanComplex !== null &&
     (coursePlanComplex as unknown) !== '' &&
     coursePlanComplex.coursePlanContents.courseSet.learningCardSet !==
-      undefined &&
+    undefined &&
     coursePlanComplex.coursePlanContents.courseSet.learningCardSet !== null &&
     coursePlanComplex.coursePlanContents.courseSet.learningCardSet
       .discussions !== undefined &&
@@ -166,6 +166,9 @@ async function getDisscussionItem(
       name:
         coursePlanComplex.coursePlanContents.courseSet.learningCardSet
           .discussions[0].name,
+      time: coursePlanComplex.coursePlan.time,
+      creator: coursePlanComplex.coursePlan.creator.name,
+      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
       params,
       routerParams,
       path: `${toPath(params)}/discussion`,
@@ -182,9 +185,9 @@ async function getDisscussionItem(
     coursePlanComplex.coursePlanContents.courseSet.programSet !== undefined &&
     coursePlanComplex.coursePlanContents.courseSet.programSet !== null &&
     coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-      undefined &&
+    undefined &&
     coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-      null &&
+    null &&
     coursePlanComplex.coursePlanContents.courseSet.programSet.discussions
       .length > 0
   ) {
@@ -196,6 +199,9 @@ async function getDisscussionItem(
       name:
         coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
           .name,
+      time: coursePlanComplex.coursePlan.time,
+      creator: coursePlanComplex.coursePlan.creator.name,
+      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
       params,
       routerParams,
       path: `${toPath(params)}/discussion`,

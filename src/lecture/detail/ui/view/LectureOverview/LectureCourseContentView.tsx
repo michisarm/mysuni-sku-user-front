@@ -13,6 +13,8 @@ import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
 import LectureBadgeView from './LectureBadgeView';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCommentContainer from '../../logic/LectureCommentContainer';
+import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
+import LectureRelationsView from './LectureRelationsView';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -22,6 +24,7 @@ interface LectureCourseContentViewProps {
   lecturePrecourse?: LecturePrecourse;
   lectureBadge?: LectureBadge;
   lectureComment?: LectureComment;
+  lectureRelations?: LectureRelations;
 }
 
 function hashLink(hash: string) {
@@ -39,6 +42,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lecturePrecourse,
   lectureBadge,
   lectureComment,
+  lectureRelations,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
@@ -67,45 +71,47 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
       {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
-
-      <div className="lms-inner-menu" id="lms-overview">
-        <a
-          onClick={overviewHashClick}
-          className={activatedTab === 'overview' ? 'lms-act' : ''}
-        >
-          Overview
-        </a>
-        <a
-          onClick={instructorHashClick}
-          className={activatedTab === 'instructor' ? 'lms-act' : ''}
-        >
-          강사정보
-        </a>
-        <a
-          onClick={badgeHashClick}
-          className={activatedTab === 'badge' ? 'lms-act' : ''}
-        >
-          관련 Badge
-        </a>
-        <a
-          onClick={relatedHashClick}
-          className={activatedTab === 'related' ? 'lms-act' : ''}
-        >
-          관련과정
-        </a>
-        <a
-          onClick={commentHashClick}
-          className={
-            activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
-          }
-        >
-          Comment
-          <span className="count">
-            {lectureComment !== undefined && lectureComment.commentsCount > 0
-              ? `+${lectureComment.commentsCount}`
-              : ''}
-          </span>
-        </a>
+      <div className="lms-sticky-menu" id="lms-overview">
+        <div className="lms-fixed-inner" id="lms-overview">
+          <a
+            onClick={overviewHashClick}
+            className={activatedTab === 'overview' ? 'lms-act' : ''}
+          >
+            Overview
+          </a>
+          <a
+            onClick={instructorHashClick}
+            className={activatedTab === 'instructor' ? 'lms-act' : ''}
+          >
+            강사정보
+          </a>
+          <a
+            onClick={badgeHashClick}
+            className={activatedTab === 'badge' ? 'lms-act' : ''}
+          >
+            관련 Badge
+          </a>
+          <a
+            onClick={relatedHashClick}
+            className={activatedTab === 'related' ? 'lms-act' : ''}
+          >
+            관련과정
+          </a>
+          <a
+            onClick={commentHashClick}
+            className={
+              activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
+            }
+          >
+            <i className="lms-comment-icon" />
+            Comment
+            <span className="count">
+              {lectureComment !== undefined && lectureComment.commentsCount > 0
+                ? `+${lectureComment.commentsCount}`
+                : ''}
+            </span>
+          </a>
+        </div>
       </div>
       {activatedTab !== 'comment' && (
         <>
@@ -128,6 +134,11 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             </div>
           </div>
           {lectureBadge && <LectureBadgeView lectureBadge={lectureBadge} />}
+          {lectureRelations &&
+            Array.isArray(lectureRelations.lectures) &&
+            lectureRelations.lectures.length > 0 && (
+              <LectureRelationsView lectureRelations={lectureRelations} />
+            )}
         </>
       )}
       {activatedTab === 'comment' && <LectureCommentContainer />}

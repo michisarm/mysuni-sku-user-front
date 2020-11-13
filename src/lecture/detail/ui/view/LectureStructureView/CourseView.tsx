@@ -10,6 +10,7 @@ import {
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
+import CubeView, { parseCubeType } from './CubeView';
 import DiscussionView from './DiscussionView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
@@ -26,43 +27,6 @@ interface CourseViewProps {
   discussion?: LectureStructureDiscussionItem;
   path: string;
 }
-
-interface CubeViewProps {
-  name: string;
-  state?: State;
-  activated?: boolean;
-  learningTime: number;
-  cubeType: CubeType;
-  path: string;
-}
-
-const CubeView: React.FC<CubeViewProps> = function CubeView({
-  name,
-  state = 'None',
-  activated = false,
-  learningTime,
-  cubeType,
-  path,
-}) {
-  return (
-    <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
-      <span
-        className={`label-state-cube ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
-      >
-        <span>cube 완료상태</span>
-      </span>
-      <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
-          <li>{cubeType}</li>
-          <li>{timeToHourMinuteFormat(learningTime)}</li>
-        </ul>
-      </span>
-    </Link>
-  );
-};
 
 const CourseView: React.FC<CourseViewProps> = function CourseView({
   name,
@@ -109,15 +73,40 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
       >
         {cubes.map(cube => {
           return (
-            <CubeView
-              key={cube.id}
-              name={cube.name}
-              state={cube.state}
-              activated={cube.activated}
-              learningTime={cube.learningTime}
-              cubeType={cube.cubeType}
-              path={cube.path}
-            />
+            <>
+              <CubeView
+                key={cube.id}
+                name={cube.name}
+                state={cube.state}
+                activated={cube.activated}
+                learningTime={cube.learningTime}
+                cubeType={cube.cubeType}
+                path={cube.path}
+              />
+              {cube.test !== undefined && (
+                <TestView
+                  name={cube.test.name}
+                  state={cube.test.state}
+                  questionCount={cube.test.questionCount}
+                  path={cube.test.path}
+                />
+              )}
+              {cube.survey !== undefined && (
+                <SurveyView
+                  name={cube.survey.name}
+                  state={cube.survey.state}
+                  questionCount={cube.survey.questionCount}
+                  path={cube.survey.path}
+                />
+              )}
+              {cube.report !== undefined && (
+                <ReportView
+                  name={cube.report.name}
+                  state={cube.report.state}
+                  path={cube.report.path}
+                />
+              )}
+            </>
           );
         })}
         {test && (

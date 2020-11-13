@@ -42,6 +42,12 @@ async function getLectureStructureCubeItemByPersonalCube(
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
   const { id, name } = personalCube;
+  if (personalCube === undefined) {
+    return;
+  }
+  if (personalCube.contents === undefined) {
+    return;
+  }
   const cubeType = personalCube.contents.type;
   const cubeIntroId = personalCube.cubeIntro.id;
   const cubeIntro = await findCubeIntro(cubeIntroId);
@@ -67,16 +73,20 @@ async function getLectureStructureCubeItemByPersonalCube(
   }
 }
 
-async function getStateMapByParams(
+export async function getStateMapByParams(
   params: LectureParams
 ): Promise<StudentStateMap | void> {
   const { lectureCardId } = params;
   if (lectureCardId !== undefined) {
     const studentJoins = await findIsJsonStudentByCube(lectureCardId);
-    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
-      const learningState = studentJoins[0].learningState;
+    if (!Array.isArray(studentJoins)) {
+      return;
+    }
+    const sortedStudentJoins = studentJoins.sort((a, b) => b.updateTime - a.updateTime);
+    if (sortedStudentJoins.length > 0 && sortedStudentJoins[0].studentId !== null) {
+      const learningState = sortedStudentJoins[0].learningState;
       let state: State = 'None';
-      if (studentJoins[0].proposalState === 'Approved') {
+      if (sortedStudentJoins[0].proposalState === 'Approved') {
         switch (learningState) {
           case 'Progress':
           case 'TestPassed':
@@ -92,7 +102,7 @@ async function getStateMapByParams(
             break;
         }
       }
-      return { state, learningState, studentId: studentJoins[0].studentId };
+      return { state, learningState, studentId: sortedStudentJoins[0].studentId };
     }
   }
 }

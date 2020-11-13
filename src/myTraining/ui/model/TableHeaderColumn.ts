@@ -1,4 +1,5 @@
 import { MyContentType } from '../logic/MyLearningListContainerV2';
+import MyApprovalContentType from './MyApprovalContentType';
 import MyLearningContentType from './MyLearningContentType';
 import MyPageContentType from './MyPageContentType';
 
@@ -89,6 +90,17 @@ const TableHeaderColumn = {
     { key: 3, text: '스탬프', icon: true },
     { key: 4, text: '획득일자', icon: true }
   ],
+  PersonalLearning: [
+    { key: 0, text: 'No' },
+    { key: 1, text: '교육명' },
+    { key: 2, text: 'Channel' },
+    { key: 3, text: '교육시간' },
+    { key: 4, text: '등록일자' },
+    { key: 5, text: '생성자' },
+    { key: 6, text: '생성자 E-mail' },
+    { key: 7, text: '상태' },
+    { key: 8, text: '승인일자' }
+  ],
   getColumnsByContentType: (contentType: MyContentType): { key: number; text: string; icon?: boolean }[] => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
@@ -107,6 +119,8 @@ const TableHeaderColumn = {
         return TableHeaderColumn.Retry;
       case MyPageContentType.EarnedStampList:
         return TableHeaderColumn.EarnedStampCount;
+      case MyApprovalContentType.PersonalLearning:
+        return TableHeaderColumn.PersonalLearning;
       default:
         return [{ key: 0, text: '' }];
     }

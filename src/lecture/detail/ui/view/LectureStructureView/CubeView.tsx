@@ -4,6 +4,20 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 
+export function parseCubeType(cubeType: CubeType) {
+  switch (cubeType) {
+    case 'ClassRoomLecture':
+      return 'Classroom';
+    case 'ELearning':
+      return 'E-Learning';
+    case 'Community':
+      return 'Task';
+    default:
+      break;
+  }
+  return cubeType;
+}
+
 interface CubeViewProps {
   name: string;
   state?: State;
@@ -33,8 +47,12 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>{cubeType}</li>
-          <li>{timeToHourMinuteFormat(learningTime)}</li>
+          <li>{parseCubeType(cubeType)}</li>
+          <li>
+            {cubeType === 'Community'
+              ? ''
+              : timeToHourMinuteFormat(learningTime)}
+          </li>{' '}
         </ul>
       </span>
     </Link>

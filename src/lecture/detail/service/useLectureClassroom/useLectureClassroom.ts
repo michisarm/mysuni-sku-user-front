@@ -8,14 +8,14 @@ import { getClassroomFromCube } from './utility/getClassroomFromCube';
 
 type Value = LectureClassroom | undefined;
 
+let subscriberIdRef = 0;
 export function useLectureClassroom(notRequest?: boolean): [Value] {
   const params = useLectureRouterParams();
-  const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureClassroom-${++subscriberIdRef.current}`;
+    const next = `useLectureClassroom-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

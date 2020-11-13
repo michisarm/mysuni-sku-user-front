@@ -4,25 +4,23 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import { MemberViewModel } from '@nara.drama/approval';
 import { patronInfo } from '@nara.platform/dock';
-import {Breadcrumb, Button, Container, Form, Header, Segment} from 'semantic-ui-react';
+import { Breadcrumb, Button, Container, Form, Header, Segment } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import AplService from 'myTraining/present/logic/AplService';
 import { ContentLayout } from 'shared';
 import { AplState } from '../../model/AplState';
-import { AplType } from '../../model/AplType';
-import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
-import { AplService } from '../..';
 import AplCreateContainer from '../logic/AplCreateContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import AlertWin2 from '../../../shared/ui/logic/AlertWin2';
 import { AplModel } from '../../model';
+import routePaths from '../../routePaths';
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
-  aplService?: AplService;
-  aplId?: string;
+  aplService: AplService;
   apl?: AplModel;
   sharedService?: SharedService;
   handleOk?: (member: MemberViewModel) => void
@@ -90,22 +88,10 @@ class AplCreatePage extends React.Component<Props, States> {
     //
     document.body.classList.remove('white');
   }
-  /*
-  clearAll() {
-    //
-    const { aplService  } = this.props;
-    if ( aplService ) {
-      aplService.clearApl();
-      aplService.clearMenuArrange();
-      aplService.clearMenuArranges();
-    }
-  }
-  */
 
   // 화면 처음 진입 시
   init() {
-    // 승인자 조회 ADD
-
+    this.clearAll();
   }
 
   routeToAplList() {
@@ -113,7 +99,7 @@ class AplCreatePage extends React.Component<Props, States> {
     //APL 등록 화면으로 이동하시겠습니까?
     //APL 등록 화면으로 이동 시 입력된 정보는 저장되지 않습니다.
 
-    const { aplService, sharedService, aplId } = this.props;
+    const { aplService, sharedService } = this.props;
     const { aplType } = this.props.match.params;
     const { aplQuery, apl } = this.props.aplService || ({} as AplService);
     let aplTypeUpper = '';
@@ -189,16 +175,12 @@ class AplCreatePage extends React.Component<Props, States> {
 
   confirmList(message: string | any) {
     //
-    /*
-    reactAlert({ title: '저장 안내', message: message });
-    */
-
     this.setState({
-      alertMessage2: message,
-      alertWinOpen2: true,
-      alertTitle2: '안내',
-      alertIcon2: 'circle',
-      alertType2: 'list',
+      alertMessage: message,
+      alertWinOpen: true,
+      alertTitle: '안내',
+      alertIcon: 'circle',
+      alertType: 'list',
     });
   }
 
@@ -227,25 +209,6 @@ class AplCreatePage extends React.Component<Props, States> {
       focusYn: '',
     });
   }
-  /*
-  handleCloseCheckAlertWinFocus() {
-    //
-    //this.onChangeAplProps('state', AplState.Init);
-    this.setState({
-      alertWinOpen2: false,
-    });
-    const objStr = this.state.objStr;
-    this.setFocusControl(objStr);
-  }
-  */
-  /*
-  handleCloseConfirmWinArrange() {
-    //
-    this.setState({
-      confirmWinArrangeOpen: false,
-    });
-  }
-  */
 
   handleOKConfirmWinApl() {
     //
@@ -259,7 +222,7 @@ class AplCreatePage extends React.Component<Props, States> {
       aplService!
         .saveApl(apl)
         .then(() => this.clearAll())
-        /*.then(() => this.routeToAplList())*/
+        .then(() => this.routeToAplList())
         .finally(() => {
           this.setState({ saveAplOn: false });
           this.setState({
@@ -322,7 +285,6 @@ class AplCreatePage extends React.Component<Props, States> {
 
     if (aplObject === 'success') {
 
-      const title = 'APL';
       this.setState({
         objStr: '',
         focusYn: 'N',
@@ -332,7 +294,11 @@ class AplCreatePage extends React.Component<Props, States> {
         <>
           <p className="center">
             {' '}
-            입력된 내용으로 {title} 승인요청 하시겠습니까?
+            입력된 내용으로 개인학습 정보를 승인 요청하시겠습니까?
+          </p>
+          <p className="center">
+            {' '}
+            승인 요청 후에는 개인학습 정보를 변경하실 수 없습니다.
           </p>
         </>
       );
@@ -340,12 +306,32 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     this.onChangeAplProps('state', AplState.OpenApproval);
-    //this.handleOKConfirmWinApl();
   }
 
-  handleSaveOk() {
+  handleCancel(mode?: string) {
+    const aplMessageList = (
+      <>
+        <p className="center">
+          {' '}
+          개인학습 정보 등록을 취소하시겠습니까?
+        </p>
+        <p className="center">
+          {' '}
+          취소 시 입력했던 정보는 저장되지 않습니다.
+        </p>
+      </>
+    );
+    this.confirmList(aplMessageList);
+    this.setState({
+      objStr: '',
+      focusYn: 'N',
+    });
+  }
+
+  handleSaveOk(type: string) {
     //
-    this.handleOKConfirmWinApl();
+    if (type === 'save') this.handleOKConfirmWinApl();
+    if (type === 'list') this.routeToArrangeList();
   }
 
   handleAlertOk(type: string) {
@@ -379,12 +365,18 @@ class AplCreatePage extends React.Component<Props, States> {
     }
 
     if(name === 'requestHour'){
+      if(this.timeValid(name, value)){
+        return;
+      }
       if (invalidHour) {
         return;
       }
     }
 
     if(name === 'requestMinute'){
+      if(this.timeValid(name, value)){
+        return;
+      }
       if (invalidMin) {
         return;
       }
@@ -399,6 +391,17 @@ class AplCreatePage extends React.Component<Props, States> {
     if (aplService) aplService.changeAplProps(name, value);
   }
 
+  timeValid( name: string, value: string ) {
+    //
+    const { aplService } = this.props;
+    if(isNaN(Number(value))){
+      const newValue = value.replace(/[^0-9]/g, '');
+      if (aplService)aplService.changeAplProps(name, newValue);
+      return true;
+    }
+    return false;
+  }
+
   handleOK(member: MemberViewModel) {
     //
     const { handleOk } = this.props;
@@ -409,6 +412,10 @@ class AplCreatePage extends React.Component<Props, States> {
     }
   }
 
+  //learning - 개인학습완료 이동
+  routeToArrangeList() {
+    this.props.history.push(routePaths.myPageLearningTab('PersonalCompleted'));
+  }
 
   render() {
     const { aplService, handleOk } = this.props;
@@ -439,15 +446,16 @@ class AplCreatePage extends React.Component<Props, States> {
           </div>
         </div>
         <AplCreateContainer
-          //aplId={aplId}
           //onChangeAplProps={this.onChangeAplProps}
           //AplModel={apl}
           focusControlName={focusControlName}
           onChangeAplPropsValid={this.onChangeAplPropsValid}
           onResetFocusControl={this.onResetFocusControl}
           //onGetFileBoxIdForApl={this.getFileBoxIdForApl}
+          aplService={aplService}
           handleOk={this.handleOK}
           handleSave={this.handleSave}
+          handleCancel={this.handleCancel}
         />
         <AlertWin
           message={alertMessage}

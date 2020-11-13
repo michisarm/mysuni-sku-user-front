@@ -10,7 +10,8 @@ export async function getWebpageFromCube(params: LectureRouterParams) {
   const url = officeWeb.webPageUrl;
   if (
     officeWeb.webUrlInfo === null ||
-    (officeWeb.webUrlInfo as unknown) === ''
+    (officeWeb.webUrlInfo as unknown) === '' ||
+    (officeWeb.webUrlInfo as unknown) === undefined
   ) {
     const webpage: LectureWebpage = {
       title: url,
