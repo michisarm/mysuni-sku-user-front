@@ -287,8 +287,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     const contentCount = (apl && apl.content && apl.content.length) || 0;
     const requestHourCount = (apl && apl.requestHour && apl.requestHour.toString().length) || 0;
     const requestMinuteCount = (apl && apl.requestMinute && apl.requestMinute.toString().length) || 0;
-    // 승인자 변경하기 활성, 리더가 아닌 경우에만 true
-    const approvalShow = originCompanyApprover.aplApproverType !== AplApprovalType.Leader_Approve;
+    // 승인자 변경하기 활성, 비활성처리
+    const approvalShow = originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
 
     return (
       /*<div className="ui full segment">*/
@@ -632,12 +632,14 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <b>{apl && apl.approvalName || approvalMember.name || ''}</b>
                       <span className="ml40">{apl && apl.approvalCompany || approvalMember.companyName || ''}</span>
                       <span className="line">{apl && apl.approvalDepartment || approvalMember.departmentName || ''}</span>
+                      {approvalShow && (
                       <div className="info-text">
                         <Icon className="info16">
                           <span className="blind">infomation</span>
                         </Icon>
                         본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
                       </div>
+                      )}
                     </span>
                   </Modal.Actions>
                 </Grid.Column>
