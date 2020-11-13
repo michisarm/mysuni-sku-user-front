@@ -36,9 +36,9 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
       className={`btn-state-course l-depth ${activated ? 'act-on' : ''}`}
     >
       <span
-        className={`label-state-cube ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
+        className={`label-state-cube ${state === 'Progress' ? 'l-step5' : ''} ${
+          state === 'Completed' ? 'complete' : ''
+        }`}
       >
         <span>cube 완료상태</span>
       </span>

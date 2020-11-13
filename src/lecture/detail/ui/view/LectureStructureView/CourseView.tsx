@@ -6,6 +6,7 @@ import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
+  LectureStructureDurationableCubeItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -15,6 +16,7 @@ import CourseSurveyView from './CourseSurveyView';
 import CourseTestView from './CourseTestView';
 import CubeView, { parseCubeType } from './CubeView';
 import DiscussionView from './DiscussionView';
+import DurationableCubeView from './DurationableCubeView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -77,16 +79,37 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         {cubes.map(cube => {
           return (
             <>
-              <CubeView
-                key={cube.id}
-                name={cube.name}
-                state={cube.state}
-                activated={cube.activated}
-                learningTime={cube.learningTime}
-                cubeType={cube.cubeType}
-                path={cube.path}
-                can={cube.can}
-              />
+              {cube !== undefined &&
+                (cube as LectureStructureDurationableCubeItem).duration ===
+                  undefined && (
+                  <CubeView
+                    key={cube.id}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.activated}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                  />
+                )}
+              {cube !== undefined &&
+                (cube as LectureStructureDurationableCubeItem).duration !==
+                  undefined && (
+                  <DurationableCubeView
+                    key={cube.id}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.activated}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                    duration={
+                      (cube as LectureStructureDurationableCubeItem).duration
+                    }
+                  />
+                )}
               {cube.test !== undefined && (
                 <TestView
                   name={cube.test.name}

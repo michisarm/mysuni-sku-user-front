@@ -1,3 +1,4 @@
+import { Lecture } from '../../../../shared';
 import {
   findCoursePlanContents,
   studentInfoView,
@@ -10,6 +11,7 @@ import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
   LectureStructureCubeItem,
+  LectureStructureDurationableCubeItem,
 } from '../../../viewModel/LectureStructure';
 import { getStateMapByParams } from './getCubeLectureStructure';
 import { getItemMapFromCourse } from './getItemMapFromCourse';
@@ -161,16 +163,18 @@ async function parseLectureStudentView(
 
   const { courses, lectures } = lectureStudentView;
 
-  courses.forEach(({ lectures, courseLectureId }) => {
+  courses.forEach(({ lectures, courseLectureId, student: courseStudent }) => {
     const course = lectureStructure.courses.find(
       ({ serviceId }) => serviceId === courseLectureId
     );
     if (course !== undefined && course.cubes !== undefined) {
+      course.student = courseStudent;
       course.state = 'Completed';
       course.cubes.forEach(cube => {
         const lecture = lectures.find(
-          ({ lectureUsid }) => lectureUsid === cube.serviceId
+          ({ lectureUsid }) => lectureUsid === cube.lectureView?.serviceId
         );
+        cube.student = lecture
         if (lecture === undefined) {
           course.state = 'Progress';
           return;
@@ -293,13 +297,13 @@ export async function getCourseLectureStructure(
   }
 
   const getItemMapFromLectureArray: Promise<void>[] = [];
-  let totalCubes = [...lectureStructure.cubes]
+  let totalCubes = [...(lectureStructure.course?.cubes || []), ...lectureStructure.cubes]
   lectureStructure.courses.forEach(course => {
     totalCubes = [...totalCubes, ...(course.cubes || [])]
     const getItemMapFromLecturePromise = async () => {
       if (course.lectureView !== undefined) {
         const courseStudent = lectureStudentView.courses.find(
-          ({ courseLectureId }) => (courseLectureId = course.serviceId)
+          ({ courseLectureId }) => (courseLectureId === course.serviceId)
         );
         const courseItemMap = await getItemMapFromLecture(
           course.lectureView,
@@ -350,6 +354,13 @@ export async function getCourseLectureStructure(
         }
       }
       getItemMapFromCubeLectureArray.push(getItemMapFromCubePromise());
+    }
+    if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
+      (cube as LectureStructureDurationableCubeItem).duration = 0;
+      if (cube.student !== undefined) {
+        (cube as LectureStructureDurationableCubeItem).duration = cube.student.durationViewSeconds === null ? undefined : parseInt(cube.student.durationViewSeconds);
+      }
+
     }
   });
 
