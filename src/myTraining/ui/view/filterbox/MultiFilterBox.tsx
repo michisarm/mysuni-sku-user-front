@@ -307,30 +307,43 @@ function MultiFilterBox(props: Props) {
   }
 
   /* render functions */
-  const displayRow = (contentType: MyContentType, viewType: ViewType, filterConditionName?: FilterConditionName) => {
+  const displayRow = (contentType: MyContentType, viewType: ViewType, filterConditionName: FilterConditionName) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
+        /* viewType = 코스만 보기 */
         if (viewType === 'Course') {
-          if (filterConditionName && filterConditionName === FilterConditionName.Required) {
-            return true;
+          switch (filterConditionName) {
+            case FilterConditionName.Required:
+            case FilterConditionName.LearningTime:
+            case FilterConditionName.Certification:
+            case FilterConditionName.LearningSchedule:
+              return true;
+            default:
+              return false;
           }
-          return false;
         }
+        /* viewType = 전체보기 */
         return true;
       }
       case MyLearningContentType.Required: {
+        /* viewType = 코스만보기 & 전체보기 */
         if (filterConditionName && filterConditionName === FilterConditionName.Required) {
           return false;
         }
         return true;
       }
       case MyPageContentType.EarnedStampList: {
-        if (filterConditionName && (filterConditionName === FilterConditionName.College || filterConditionName === FilterConditionName.Required)) {
-          return true;
+        switch (filterConditionName) {
+          case FilterConditionName.Required:
+          case FilterConditionName.LearningTime:
+          case FilterConditionName.LearningSchedule:
+            return true;
+          default:
+            return false;
         }
-        return false;
       }
+      /* 관심목록 & 학습예정 & 취소/미이수인 경우 필터 항목 모두를 보여준다. */
       default:
         return true;
     }
@@ -372,7 +385,7 @@ function MultiFilterBox(props: Props) {
                     ))}
                 </td>
               </tr>
-              {displayRow(contentType, viewType) && (
+              {displayRow(contentType, viewType, FilterConditionName.LearningType) && (
                 <tr>
                   {/* 학습유형 */}
                   <th>{FilterConditionName.LearningType}</th>
@@ -400,7 +413,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType) && (
+              {displayRow(contentType, viewType, FilterConditionName.DifficultyLevel) && (
                 <tr>
                   {/* 난이도 */}
                   <th>{FilterConditionName.DifficultyLevel}</th>
@@ -428,7 +441,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType) && (
+              {displayRow(contentType, viewType, FilterConditionName.LearningTime) && (
                 <tr>
                   {/* 학습시간 */}
                   <th>{FilterConditionName.LearningTime}</th>
@@ -456,7 +469,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType) && (
+              {displayRow(contentType, viewType, FilterConditionName.Organizer) && (
                 <tr>
                   {/* 교육기관 */}
                   <th>{FilterConditionName.Organizer}</th>
@@ -504,7 +517,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType) && (
+              {displayRow(contentType, viewType, FilterConditionName.Certification) && (
                 <tr>
                   {/* 교육기관 */}
                   <th>{FilterConditionName.Certification}</th>
@@ -532,7 +545,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType) && (
+              {displayRow(contentType, viewType, FilterConditionName.LearningSchedule) && (
                 <tr>
                   {/* 교육기관 */}
                   <th>{FilterConditionName.LearningSchedule}</th>
