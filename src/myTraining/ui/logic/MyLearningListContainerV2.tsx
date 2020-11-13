@@ -58,7 +58,7 @@ function MyLearningListContainerV2(props: Props) {
     if (!colleges || !colleges.length) {
       collegeService!.findAllColleges();
     }
-
+    fetchAllModelsForStorage();
   }, []);
 
   /* effects */
@@ -88,9 +88,26 @@ function MyLearningListContainerV2(props: Props) {
   }, [contentType, viewType]);
 
   /* functions */
+  const fetchAllModelsForStorage = async () => {
+    console.log('hello');
+    /* 메인페이지 에서 스토리지 작업을 못했을 경우, 스토리지 작업을 추가로 해줌. */
+    if (sessionStorage.getItem('inProgressTableViews') === null || sessionStorage.getItem('inProgressTableViews') === 'null') {
+      const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+      sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+    }
+
+    if (sessionStorage.getItem('completedTableViews') === null || sessionStorage.getItem('completedTableViews') === 'null') {
+      const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+      sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+    }
+  }
+
+
   const fetchFilterCountViews = (contentType: MyContentType): void => {
     /* 필터 항목 별 카운트를 조회하기 위함. */
     switch (contentType) {
+      case MyLearningContentType.PersonalCompleted:
+        break;
       case MyLearningContentType.InMyList:
         inMyLectureService!.findAllFilterCountViews()
         break;
@@ -396,7 +413,7 @@ function MyLearningListContainerV2(props: Props) {
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
     myTrainingService!.clearAllSelectedServiceIds();
     await updateSessionStorage();
-    myTrainingService!.findAllTableViews();
+    await myTrainingService!.findAllTableViews();
     myTrainingService!.findAllTabCount();
 
     setOpenModal(false);
