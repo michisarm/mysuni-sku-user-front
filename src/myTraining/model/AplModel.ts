@@ -51,6 +51,7 @@ class AplModel extends NewQueryModel {
   patronKeyString: string = '';
   patronType: string = '';
   pavilionId: string = '';
+  approvalEmail: string = '';
   approvalCompany: string = '';
   approvalDepartment: string = '';
 
@@ -189,6 +190,7 @@ class AplModel extends NewQueryModel {
       approvalName: aplModel.approvalName || '',
       updateTime: aplModel.updateTime,
       causeOfReturn: aplModel.causeOfReturn || '',
+      approvalEmail: aplModel.approvalEmail || '',
       approvalCompany: aplModel.approvalCompany || '',
       approvalDepartment: aplModel.approvalDepartment || '',
     };
@@ -249,6 +251,7 @@ decorate(AplModel, {
   updateName: observable,
   updateTime: observable,
   causeOfReturn: observable,
+  approvalEmail: observable,
   approvalCompany: observable,
   approvalDepartment: observable,
 });
