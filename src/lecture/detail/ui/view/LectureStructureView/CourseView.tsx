@@ -10,6 +10,9 @@ import {
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
+import CourseReportView from './CourseReportView';
+import CourseSurveyView from './CourseSurveyView';
+import CourseTestView from './CourseTestView';
 import CubeView, { parseCubeType } from './CubeView';
 import DiscussionView from './DiscussionView';
 import ReportView from './ReportView';
@@ -82,6 +85,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                 learningTime={cube.learningTime}
                 cubeType={cube.cubeType}
                 path={cube.path}
+                can={cube.can}
               />
               {cube.test !== undefined && (
                 <TestView
@@ -89,6 +93,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   state={cube.test.state}
                   questionCount={cube.test.questionCount}
                   path={cube.test.path}
+                  can={cube.test.can}
                 />
               )}
               {cube.survey !== undefined && (
@@ -97,6 +102,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   state={cube.survey.state}
                   questionCount={cube.survey.questionCount}
                   path={cube.survey.path}
+                  can={cube.survey.can}
                 />
               )}
               {cube.report !== undefined && (
@@ -104,35 +110,39 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   name={cube.report.name}
                   state={cube.report.state}
                   path={cube.report.path}
+                  can={cube.report.can}
                 />
               )}
             </>
           );
         })}
         {test && (
-          <TestView
+          <CourseTestView
             name={test.name}
             state={test.state}
             activated={test.activated}
             questionCount={test.questionCount}
             path={test.path}
+            can={test.can}
           />
         )}
         {survey && (
-          <SurveyView
+          <CourseSurveyView
             name={survey.name}
             state={survey.state}
             activated={survey.activated}
             questionCount={survey.questionCount}
             path={survey.path}
+            can={survey.can}
           />
         )}
         {report && (
-          <ReportView
+          <CourseReportView
             name={report.name}
             state={report.state}
             activated={report.activated}
             path={report.path}
+            can={report.can}
           />
         )}
         {discussion && (

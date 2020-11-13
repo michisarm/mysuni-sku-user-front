@@ -1,6 +1,8 @@
+import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
+import StructureLink from './StructureLink';
 
 interface TestViewProps {
   name: string;
@@ -8,6 +10,14 @@ interface TestViewProps {
   activated?: boolean;
   questionCount: number;
   path: string;
+  can: boolean;
+}
+
+function cannotAlert() {
+  reactAlert({
+    title: 'Test 안내',
+    message: '학습 완료 후 Test 참여 가능합니다.',
+  });
 }
 
 const TestView: React.FC<TestViewProps> = function TestView({
@@ -16,9 +26,15 @@ const TestView: React.FC<TestViewProps> = function TestView({
   activated = false,
   questionCount,
   path,
+  can,
 }) {
   return (
-    <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
+    <StructureLink
+      can={can}
+      to={path}
+      onCannotClick={cannotAlert}
+      className={`btn-state-course l-depth ${activated ? 'act-on' : ''}`}
+    >
       <span
         className={`label-state-cube ${
           state === 'Progress' ? 'proceeding' : ''
@@ -33,7 +49,7 @@ const TestView: React.FC<TestViewProps> = function TestView({
           <li>{`${questionCount}문항`}</li>
         </ul>
       </span>
-    </Link>
+    </StructureLink>
   );
 };
 

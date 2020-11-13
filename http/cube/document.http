@@ -1,0 +1,16 @@
+### Download
+POST http://localhost:3000/api/lecture/students/flow
+
+{"denizenKey":{"keyString":"r47a-r@ne1-m2-c2","patronType":"Audience"},"rollBookId":"77ca199d-6f8b-40f2-a78c-dc8872830cac","name":"강용**","email":"SKCC.SKCC08@sk.com","company":"SK주식회사 C&C","department":"공용계정조직","proposalState":"Approved","programLectureUsid":"","courseLectureUsid":"","enClosed":false,"classroomId":"","approvalProcess":false,"leaderEmails":[],"url":""}
+### Download After 1
+POST http://localhost:3000/api/action-log-collector/events/study
+
+{"context":{"logType":"STUDY","email":"SKCC.SKCC08@sk.com","path":"http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001v/cube/CUBE-2l8/lecture-card/LECTURE-CARD-28u/old","menu":"DownloadClose","poc":"web"},"action":"DocumentDownload","serviceType":"CARD","college":"CLG0001v","cubeId":"CUBE-2l8","lectureCardId":"LECTURE-CARD-28u","coursePlanId":"","cubeName":"Documents","courseName":""}
+### Download After 2
+POST http://localhost:3000/api/mytraining/mytraining/mytrainings/byState/filterWithJoinedValue
+
+
+### 학습완료 (RTS 없음)
+PUT http://localhost:3000/api/lecture/students/flow/markComplete
+
+{"rollBookId":"e66f1e49-b810-4663-8f6d-3bb7896f098e"}

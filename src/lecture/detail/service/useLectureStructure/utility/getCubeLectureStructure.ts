@@ -69,6 +69,7 @@ async function getLectureStructureCubeItemByPersonalCube(
       routerParams,
       path: toPath(params),
       serviceId: lectureCardId,
+      can: true
     };
   }
 }
@@ -136,14 +137,21 @@ export async function getCubeLectureStructure(
         params,
         student
       );
-      if (itemMap.test !== undefined) {
-        lectureStructure.test = itemMap.test;
+      let stateCan = cube.state === 'Completed'
+      if (itemMap.report !== undefined) {
+        lectureStructure.report = itemMap.report;
+        lectureStructure.report.can = stateCan;
+        stateCan = lectureStructure.report.state === 'Completed'
       }
       if (itemMap.survey !== undefined) {
         lectureStructure.survey = itemMap.survey;
+        lectureStructure.survey.can = stateCan;
+        stateCan = lectureStructure.survey.state === 'Completed'
       }
-      if (itemMap.report !== undefined) {
-        lectureStructure.report = itemMap.report;
+      if (itemMap.test !== undefined) {
+        lectureStructure.test = itemMap.test;
+        lectureStructure.test.can = stateCan;
+        stateCan = lectureStructure.test.state === 'Completed'
       }
     }
 

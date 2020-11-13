@@ -20,6 +20,7 @@ interface Item {
   routerParams: LectureRouterParams;
   path: string;
   state?: State;
+  can: boolean;
 }
 
 export interface StudentStateMap {

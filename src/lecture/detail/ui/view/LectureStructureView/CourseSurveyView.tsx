@@ -4,25 +4,27 @@ import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
-interface ProgramReportViewProps {
+interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
+  questionCount: number;
   path: string;
   can: boolean;
 }
 
 function cannotAlert() {
   reactAlert({
-    title: 'Report 안내',
-    message: '학습 완료 후 Report 참여 가능합니다.',
+    title: 'Survey 안내',
+    message: '학습 완료 후 Survey 참여 가능합니다.',
   });
 }
 
-const ProgramReportView: React.FC<ProgramReportViewProps> = function ProgramReportView({
+const CourseSurveyView: React.FC<SurveyViewProps> = function CourseSurveyView({
   name,
   state = 'None',
   activated = false,
+  questionCount,
   path,
   can,
 }) {
@@ -31,19 +33,24 @@ const ProgramReportView: React.FC<ProgramReportViewProps> = function ProgramRepo
       can={can}
       to={path}
       onCannotClick={cannotAlert}
-      className={`btn-single-cube ${activated ? 'act-on' : ''}`}
+      className={`btn-state-course ${activated ? 'act-on' : ''}`}
     >
-      <span className="label-type n-report">Report</span>
-      <span className="copy">{name}</span>
       <span
-        className={`label-state-learning ${
+        className={`label-state-cube ${
           state === 'Progress' ? 'proceeding' : ''
         } ${state === 'Completed' ? 'complete' : ''}`}
       >
-        <span>진행상태</span>
+        <span>cube 완료상태</span>
+      </span>
+      <span className="copy-holder">
+        <span className="copy-title">{name}</span>
+        <ul className="type-info">
+          <li>Survey</li>
+          <li>{`${questionCount}문항`}</li>
+        </ul>
       </span>
     </StructureLink>
   );
 };
 
-export default ProgramReportView;
+export default CourseSurveyView;

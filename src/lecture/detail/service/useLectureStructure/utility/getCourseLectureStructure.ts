@@ -43,6 +43,7 @@ function parseCoursePlanComplex(
       routerParams: parseLectureParams(params, toPath(params)),
       path: toPath(params),
       serviceId: params.serviceId!,
+      can: true,
     },
   };
   const courseLectureIds: string[] = [];
@@ -75,6 +76,7 @@ function parseCoursePlanComplex(
         path: toPath(courseParams),
         serviceId,
         lectureView,
+        can: true,
       });
       courseLectureIds.push(serviceId);
     }
@@ -96,6 +98,7 @@ function parseCoursePlanComplex(
         path: toPath(cubeParams),
         serviceId,
         lectureView,
+        can: true,
       });
       lectureCardIds.push(serviceId);
     }
@@ -122,7 +125,8 @@ function parseCoursePlanComplex(
           params: cubeParams,
           routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
           path: toPath(cubeParams),
-          lectureView
+          lectureView,
+          can: true,
         };
       });
       course.cubes = cubes;
@@ -212,7 +216,41 @@ async function parseLectureStudentView(
   });
 
   return lectureStudentView;
+
+
 }
+// Side Effect - Call by Ref
+function parseCan(lectureStructure: LectureStructure) {
+  let can = true;
+  lectureStructure.courses.forEach(course => {
+    can = can && (course.state === 'Completed')
+    if (course.cubes !== undefined) {
+      let cubeCan = can;
+      course.cubes.forEach(cube => {
+        cubeCan = cubeCan && (cube.state === 'Completed') && (cube.test === undefined || cube.test.state === 'Completed')
+          && (cube.report === undefined || cube.report.state === 'Completed')
+          && (cube.survey === undefined || cube.survey.state === 'Completed')
+        cube.can = cubeCan;
+      })
+    }
+
+    if (course.report !== undefined) {
+      course.report.can = can;
+      can = course.report.state === 'Completed'
+    }
+    if (course.survey !== undefined) {
+      course.survey.can = can;
+      can = course.survey.state === 'Completed'
+    }
+    if (course.test !== undefined) {
+      course.test.can = can;
+      can = course.test.state === 'Completed'
+    }
+    course.can = can;
+  })
+  return can;
+}
+
 
 export async function getCourseLectureStructure(
   params: LectureParams
@@ -317,7 +355,19 @@ export async function getCourseLectureStructure(
 
   await Promise.all(getItemMapFromCubeLectureArray);
 
-
+  let can = parseCan(lectureStructure);
+  if (lectureStructure.report !== undefined) {
+    lectureStructure.report.can = can;
+    can = lectureStructure.report.state === 'Completed'
+  }
+  if (lectureStructure.survey !== undefined) {
+    lectureStructure.survey.can = can;
+    can = lectureStructure.survey.state === 'Completed'
+  }
+  if (lectureStructure.test !== undefined) {
+    lectureStructure.test.can = can;
+    can = lectureStructure.test.state === 'Completed'
+  }
 
   return lectureStructure;
 }

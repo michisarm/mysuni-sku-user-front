@@ -42,6 +42,7 @@ function parseCoursePlanComplex(
       routerParams: parseLectureParams(params, toPath(params)),
       path: toPath(params),
       serviceId: params.serviceId!,
+      can:false,
     },
   };
   const courseLectureIds: string[] = [];
@@ -74,6 +75,7 @@ function parseCoursePlanComplex(
         path: toPath(courseParams),
         serviceId,
         lectureView,
+        can:false,
       });
       courseLectureIds.push(serviceId);
     }
@@ -94,6 +96,7 @@ function parseCoursePlanComplex(
         routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
         path: toPath(cubeParams),
         serviceId,
+        can:false,
       });
       lectureCardIds.push(serviceId);
     }
@@ -119,6 +122,7 @@ function parseCoursePlanComplex(
           params: cubeParams,
           routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
           path: toPath(cubeParams),
+          can:false,
         };
       });
       course.cubes = cubes;
