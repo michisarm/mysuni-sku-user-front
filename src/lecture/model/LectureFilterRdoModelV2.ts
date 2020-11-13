@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
@@ -28,8 +29,13 @@ class LectureFilterRdoModelV2 {
   collegeIds: string[] = []; // 컬리지
   cubeTypes: string[] = []; // 교육유형
   difficultyLevels: string[] = []; // 난이도
+  learningTimes: string[] = [];
   organizers: string[] = []; // 교육기관
   required: string = ''; // 핵인싸 ('선택안함' 또한 false 로 간주함.)
+  certifications: string[] = [];
+  startDate: string = '';
+  endDate: string = '';
+  applying: boolean = false;
 
   // 기본생성자는 offset 및 denizenKey만 초기화 함.
   constructor(lectureFilterRdo?: LectureFilterRdoModelV2) {
@@ -50,17 +56,27 @@ class LectureFilterRdoModelV2 {
     collegeIds: string[],
     cubeTypes: string[],
     difficultyLevels: string[],
+    learningTimes: string[],
     organizers: string[],
     required: string,
-    serviceType: string
+    certifications: string[],
+    serviceType: string,
+    startDate: string,
+    endDate: string,
+    applying: boolean
   ) {
     return new LectureFilterRdoModelV2({
       collegeIds,
       cubeTypes,
       difficultyLevels,
+      learningTimes,
       organizers,
       required,
-      serviceType
+      certifications,
+      serviceType,
+      startDate,
+      endDate,
+      applying
     } as LectureFilterRdoModelV2);
   }
 
@@ -80,8 +96,13 @@ class LectureFilterRdoModelV2 {
     this.setCubeTypeAndServiceType(conditions);
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
+    this.learningTimes = conditions.learningTimes;
     this.organizers = conditions.organizers;
     this.required = conditions.required === 'none' ? '' : conditions.required;
+    this.certifications = conditions.certifications;
+    this.startDate = conditions.startDate ? moment(conditions.startDate).format('YYYYMMDD') : '';
+    this.endDate = conditions.endDate ? moment(conditions.endDate).format('YYYYMMDD') : '';
+    this.applying = conditions.applying === 'true' ? true : false;
   }
 
   changeOffset(offset: Offset) {
@@ -109,8 +130,16 @@ class LectureFilterRdoModelV2 {
   getFilterCount() {
     const requiredCount = this.required && 1 || 0;
     const serviceTypeCount = this.serviceType && 1 || 0;
+    const learningScheduleCount = this.startDate && this.endDate && 1 || 0;
+    const applyingCount = this.applying && 1 || 0;
 
-    return this.collegeIds.length + this.cubeTypes.length + this.difficultyLevels.length + this.organizers.length + requiredCount + serviceTypeCount;
+    return this.collegeIds.length +
+      this.cubeTypes.length +
+      this.difficultyLevels.length +
+      this.learningTimes.length +
+      this.organizers.length +
+      this.certifications.length +
+      requiredCount + serviceTypeCount + learningScheduleCount + applyingCount;
   }
 }
 
