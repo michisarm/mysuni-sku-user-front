@@ -35,7 +35,7 @@ class LectureTableViewModel {
     }
   }
 
-  @computed get formattedLearningTime() {
+  @computed get displayLearningTime() {
     return timeToHourMinutePaddingFormat(this.learningTime);
   }
 

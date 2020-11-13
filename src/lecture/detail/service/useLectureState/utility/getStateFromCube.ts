@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 
+import moment from 'moment';
 import { SkProfileService } from '../../../../../profile/stores';
 import {
   deleteStudentByRollBookId,
@@ -15,6 +16,7 @@ import StudentCdo from '../../../model/StudentCdo';
 import StudentJoin from '../../../model/StudentJoin';
 import { setLectureState } from '../../../store/LectureStateStore';
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
+import { Classroom } from '../../../viewModel/LectureClassroom';
 import LectureParams from '../../../viewModel/LectureParams';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
@@ -170,12 +172,14 @@ async function mClassroomSubmit(
   getStateFromCube(params);
 }
 
-function cancel(params: LectureRouterParams, student: Student) {
+async function cancel(params: LectureRouterParams, student: Student) {
   const { rollBookId } = student;
-  return deleteStudentByRollBookId(rollBookId);
+  await deleteStudentByRollBookId(rollBookId);
+  getStateFromCube(params);
+
 }
 
-function changeRound() {}
+function changeRound() { }
 
 async function approve(
   params: LectureRouterParams,
@@ -299,7 +303,7 @@ function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
           canAction: true,
           action: () => cancel(params, student),
           actionText: CANCEL,
-          stateText: WAIT,
+          stateText: SUBMITED,
         };
     }
   }

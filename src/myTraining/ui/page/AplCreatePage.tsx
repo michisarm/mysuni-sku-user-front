@@ -20,8 +20,7 @@ import routePaths from '../../routePaths';
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
-  aplService?: AplService;
-  aplId?: string;
+  aplService: AplService;
   apl?: AplModel;
   sharedService?: SharedService;
   handleOk?: (member: MemberViewModel) => void
@@ -89,22 +88,10 @@ class AplCreatePage extends React.Component<Props, States> {
     //
     document.body.classList.remove('white');
   }
-  /*
-  clearAll() {
-    //
-    const { aplService  } = this.props;
-    if ( aplService ) {
-      aplService.clearApl();
-      aplService.clearMenuArrange();
-      aplService.clearMenuArranges();
-    }
-  }
-  */
 
   // 화면 처음 진입 시
   init() {
-    // 승인자 조회 ADD
-
+    this.clearAll();
   }
 
   routeToAplList() {
@@ -112,7 +99,7 @@ class AplCreatePage extends React.Component<Props, States> {
     //APL 등록 화면으로 이동하시겠습니까?
     //APL 등록 화면으로 이동 시 입력된 정보는 저장되지 않습니다.
 
-    const { aplService, sharedService, aplId } = this.props;
+    const { aplService, sharedService } = this.props;
     const { aplType } = this.props.match.params;
     const { aplQuery, apl } = this.props.aplService || ({} as AplService);
     let aplTypeUpper = '';
@@ -459,13 +446,13 @@ class AplCreatePage extends React.Component<Props, States> {
           </div>
         </div>
         <AplCreateContainer
-          //aplId={aplId}
           //onChangeAplProps={this.onChangeAplProps}
           //AplModel={apl}
           focusControlName={focusControlName}
           onChangeAplPropsValid={this.onChangeAplPropsValid}
           onResetFocusControl={this.onResetFocusControl}
           //onGetFileBoxIdForApl={this.getFileBoxIdForApl}
+          aplService={aplService}
           handleOk={this.handleOK}
           handleSave={this.handleSave}
           handleCancel={this.handleCancel}

@@ -68,6 +68,12 @@ class InMyLectureApi {
       .catch(error => error && null);
   }
 
+  findAllFilterCountViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
+    return axiosApi.post(`${this.baseUrl}/table/filter/count`, inMyLectureFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
   ////////////////////////////// 개편 //////////////////////////////
 }
 
