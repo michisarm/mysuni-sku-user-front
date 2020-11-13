@@ -11,6 +11,7 @@ import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
+import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 
 
 
@@ -406,6 +407,12 @@ class MyTrainingService {
   // store 에서 관리가 되나, 변동사항이 있더라도 리 랜더링하지 않음. observable하지 않음.
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
+  @observable
+  private _filterCountViews: FilterCountViewModel[] = [];
+
+  @observable
+  private _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel;
+
   private inProgressTableViews: MyTrainingTableViewModel[] = [];
 
   private inProgressTableCount: number = 0;
@@ -424,6 +431,14 @@ class MyTrainingService {
 
   @computed get myTrainingTableCount() {
     return this._myTrainingTableViewCount;
+  }
+
+  @computed get filterCountViews() {
+    return this._filterCountViews;
+  }
+
+  @computed get totalFilterCountView() {
+    return this._totalFilterCountView;
   }
 
   @action
@@ -729,6 +744,27 @@ class MyTrainingService {
     }
 
     return null;
+  }
+
+  @action
+  async findAllFilterCountViews() {
+    const response = await this.myTrainingApi.findAllFilterCountViews(this._myTrainingFilterRdo);
+
+    if (response) {
+      const filterCountViews = response.map((filterCountView: any) => new FilterCountViewModel(filterCountView));
+      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(filterCountViews);
+
+      runInAction(() => {
+        this._filterCountViews = filterCountViews;
+        this._totalFilterCountView = totalFilterCountView;
+      });
+    }
+  }
+
+  @action
+  clearAllFilterCountViews() {
+    this._filterCountViews = [];
+    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action

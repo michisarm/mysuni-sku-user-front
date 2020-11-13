@@ -2,14 +2,14 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import { observer, inject } from 'mobx-react';
-import moment from 'moment';
 import { mobxHelper } from '@nara.platform/accent';
-import { CollegeService } from 'college/stores';
 import { LectureService } from 'lecture';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
+import { CollegeModel } from 'college/model';
 import CheckedFilterView from './CheckedFilterView';
 import CheckboxOptions from '../../model/CheckboxOptions';
 
@@ -19,7 +19,9 @@ interface Props {
   viewType: ViewType;
   openFilter: boolean;
   onChangeFilterCount: (count: number) => void;
-  collegeService?: CollegeService;
+  colleges: CollegeModel[];
+  totalFilterCount: FilterCountViewModel;
+  filterCounts: FilterCountViewModel[];
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
   lectureService?: LectureService;
@@ -55,8 +57,8 @@ export enum FilterConditionName {
   'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
 */
 function MultiFilterBox(props: Props) {
-  const { contentType, viewType, openFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService, lectureService } = props;
-  const { colleges } = collegeService!;
+  const { contentType, viewType, openFilter, onChangeFilterCount, colleges, myTrainingService, inMyLectureService, lectureService } = props;
+  const { totalFilterCount: totalFilterCountView, filterCounts: filterCountViews } = props;
 
   /* states */
   const [conditions, setConditions] = useState<FilterCondition>({
@@ -79,9 +81,7 @@ function MultiFilterBox(props: Props) {
       1. filter 창이 열리는 순간, College 에 대한 정보를 불러옴. 2020.10.08 by 김동구
       2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
     */
-    if (openFilter) {
-      collegeService!.findAllColleges();
-    }
+
     if (!openFilter) {
       changeFilterRdo(contentType);
       const filterCount = getFilterCount(contentType);
@@ -90,7 +90,6 @@ function MultiFilterBox(props: Props) {
   }, [openFilter]);
 
 
-  /* functions */
   const changeFilterRdo = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InMyList:
@@ -353,7 +352,7 @@ function MultiFilterBox(props: Props) {
                   <Checkbox
                     className="base"
                     name={FilterConditionName.College}
-                    label={SELECT_ALL}
+                    label={`${SELECT_ALL} (${totalFilterCountView.college})`}
                     checked={conditions.collegeIds.length === colleges.length}
                     onChange={onCheckAll}
                   />
@@ -364,7 +363,7 @@ function MultiFilterBox(props: Props) {
                         <Checkbox
                           className="base"
                           name={FilterConditionName.College}
-                          label={college.name}
+                          label={`${college.name} (${getCollegeCount(filterCountViews, college.name)})`}
                           value={college.collegeId}
                           checked={conditions.collegeIds.includes(college.collegeId)}
                           onChange={onCheckOne}
@@ -382,7 +381,7 @@ function MultiFilterBox(props: Props) {
                     <Checkbox
                       className="base"
                       name={FilterConditionName.LearningType}
-                      label={SELECT_ALL}
+                      label={`${SELECT_ALL} (${totalFilterCountView.totalCount})`}
                       checked={(conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType.length !== 0)}
                       onChange={onCheckAll}
                     />
@@ -391,7 +390,7 @@ function MultiFilterBox(props: Props) {
                         <Checkbox
                           className="base"
                           name={FilterConditionName.LearningType}
-                          label={learningType.text}
+                          label={`${learningType.text} (${totalFilterCountView.getCountFromLearningType(learningType.text)})`}
                           value={learningType.value}
                           checked={conditions.learningTypes.includes(learningType.value) || conditions.serviceType === learningType.value}
                           onChange={onCheckOne}
@@ -591,7 +590,6 @@ function MultiFilterBox(props: Props) {
 }
 
 export default inject(mobxHelper.injectFrom(
-  'college.collegeService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'lecture.lectureService'
@@ -613,3 +611,8 @@ const InitialConditions = {
   applying: ''
 };
 
+
+const getCollegeCount = (filterCountViews: FilterCountViewModel[], collegeName: string): number => {
+  const filterCountView = filterCountViews.find(filterCountview => filterCountview.collegeName === collegeName);
+  return filterCountView ? filterCountView.college : 0;
+}

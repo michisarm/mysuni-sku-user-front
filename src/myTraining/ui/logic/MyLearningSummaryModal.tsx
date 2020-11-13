@@ -6,7 +6,11 @@ import { Modal, Button, Icon } from 'semantic-ui-react';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { AplService } from 'myTraining/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { SkProfileService } from 'profile/stores';
+import { MenuControlAuthService } from 'approval/stores';
+import { SkProfileModel } from 'profile/model';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
+
 
 
 interface Props {
@@ -15,6 +19,8 @@ interface Props {
   myLearningSummaryService?: MyLearningSummaryService;
   aplService?: AplService;
   personalCubeService?: PersonalCubeService;
+  skProfileService?: SkProfileService;
+  menuControlAuthService?: MenuControlAuthService;
 }
 
 interface State {
@@ -31,7 +37,9 @@ enum ModalTabType {
 @inject(mobxHelper.injectFrom(
   'myTraining.myLearningSummaryService',
   'myTraining.aplService',
-  'personalCube.personalCubeService'
+  'personalCube.personalCubeService',
+  'profile.skProfileService',
+  'approval.menuControlAuthService'
 ))
 @observer
 @reactAutobind
@@ -47,8 +55,9 @@ class MyLearningSummaryModal extends Component<Props> {
 
   //  모달이 open 되었을 때만 학습시간을 조회함. 2020.10.28 by 김동구
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
-    const { myLearningSummaryService, aplService, personalCubeService } = this.props;
+    const { myLearningSummaryService, aplService, personalCubeService, } = this.props;
     const { totalMyLearningSummary } = myLearningSummaryService!;
+
     const { open } = this.state;
     const { open: prevOpen } = prevState;
 
@@ -64,6 +73,19 @@ class MyLearningSummaryModal extends Component<Props> {
       if (totalMyLearningSummary.year === 0) {
         myLearningSummaryService!.findTotalMyLearningSummary();
       }
+    }
+
+    this.getMenuAuth();
+  }
+
+  /* funcitons */
+  async getMenuAuth() {
+    const { skProfileService, menuControlAuthService } = this.props;
+    const { skProfile } = skProfileService!;
+
+    if (!skProfile) {
+      const profile: SkProfileModel = await skProfileService!.findSkProfile();
+      menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
     }
   }
 
@@ -101,9 +123,10 @@ class MyLearningSummaryModal extends Component<Props> {
 
   /* render functions */
   renderLearningTimeByTab() {
-    const { myLearningSummaryService, aplService, personalCubeService } = this.props;
+    const { myLearningSummaryService, aplService, personalCubeService, menuControlAuthService } = this.props;
     const { totalMyLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = personalCubeService!;
+    const { menuControlAuth } = menuControlAuthService!;
     const { checkedTab } = this.state;
 
     /* MyCompany  */
@@ -118,14 +141,17 @@ class MyLearningSummaryModal extends Component<Props> {
               )}
             </span>
           </li>
-          <li>
-            <span className="name">개인 학습시간</span>
-            <span className="time">
-              {timeToHourMinutePaddingFormat(
-                aplService!.allowTime
-              )}
-            </span>
-          </li>
+          {/* company code 가 존재할 시, 보여주지 말라! */}
+          {menuControlAuth.companyCode === '' && (
+            <li>
+              <span className="name">개인 학습시간</span>
+              <span className="time">
+                {timeToHourMinutePaddingFormat(
+                  aplService!.allowTime
+                )}
+              </span>
+            </li>
+          )}
         </ul>
       );
     }
@@ -244,9 +270,14 @@ class MyLearningSummaryModal extends Component<Props> {
   /* render */
   render() {
     const { open, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, aplService, personalCubeService } = this.props;
+    const { trigger, myLearningSummaryService, aplService, personalCubeService, menuControlAuthService } = this.props;
     const { totalMyLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = personalCubeService!;
+    const { menuControlAuth: { companyCode } } = menuControlAuthService!;
+
+    /* companyCode 가 존재할 때는 개인학습 시간을 포함하지 않음. */
+    const myCompanyTotalTime = companyCode === '' ? totalMyLearningSummary.myCompanyLearningTime + totalMyLearningSummary.myCompanyInSuniLearningTime + aplService!.allowTime
+      : totalMyLearningSummary.myCompanyLearningTime + totalMyLearningSummary.myCompanyInSuniLearningTime;
 
     // totalLearningTime 을 display 하는 영역은 확인되지 않음. 
     // 확인될 경우, 주석을 풀고 total 변수 를 해당 영역에 display 하면 됨. 2020.10.28 by 김동구
@@ -258,7 +289,7 @@ class MyLearningSummaryModal extends Component<Props> {
 
     /* 
       let total: any = null;
-
+ 
       if (hour < 1 && minute < 1) {
         total = (
           <div className="total">
@@ -371,9 +402,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             <label>
                               <strong>
                                 My Company ({timeToHourMinutePaddingFormat(
-                                totalMyLearningSummary.myCompanyLearningTime +
-                                totalMyLearningSummary.myCompanyInSuniLearningTime +
-                                aplService!.allowTime)})
+                                myCompanyTotalTime)})
                               </strong>
                               <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span>
                             </label>

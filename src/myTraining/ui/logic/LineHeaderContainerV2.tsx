@@ -29,7 +29,6 @@ interface Props extends RouteComponentProps {
 function LineHeaderContainerV2(props: Props) {
   const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService } = props;
   const { viewType, onChangeViewType } = props;
-  const { inprogressCount, completedCount } = myTrainingService!;
 
   /* functions */
   const getModelsForExcel = async (contentType: MyContentType) => {
@@ -44,14 +43,14 @@ function LineHeaderContainerV2(props: Props) {
     return (openFilter || filterCount > 0);
   };
 
-  const isAllEmpty = (contentType: MyContentType): boolean => {
+
+  const getAllCount = (contentType: MyContentType) => {
+    const { inprogressCount, completedCount } = myTrainingService!;
     switch (contentType) {
       case MyLearningContentType.InProgress:
-        return resultEmpty && inprogressCount === 0;
+        return inprogressCount;
       case MyLearningContentType.Completed:
-        return resultEmpty && completedCount === 0;
-      default:
-        return resultEmpty;
+        return completedCount;
     }
   };
 
@@ -85,7 +84,7 @@ function LineHeaderContainerV2(props: Props) {
   return (
     <>
       <div className="top-guide-title">
-        {!isAllEmpty(contentType) &&
+        {!resultEmpty &&
           (
             <ListTopPanelTemplate
               className="left-wrap"
@@ -109,6 +108,7 @@ function LineHeaderContainerV2(props: Props) {
           <ListRightTopPanel
             contentType={contentType}
             resultEmpty={resultEmpty}
+            allCount={getAllCount(contentType)}
             filterCount={filterCount}
             openFilter={openFilter}
             activeFilter={isFilterActive()}
@@ -128,7 +128,6 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.aplService',
   'lecture.lectureService'
 ))(withRouter(observer(LineHeaderContainerV2)));
-
 
 /* globals */
 const writeExcelFile = (xlsxList: MyXlsxList, filename: MyXlsxFilename) => {
