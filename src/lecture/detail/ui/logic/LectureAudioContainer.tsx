@@ -3,18 +3,17 @@ import { getLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore'
 import { getLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
 import React, { useCallback } from 'react';
 import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
-import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
+import LectureAudioView from '../view/LectureAudioView';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import WatchLog from 'lecture/detail/model/Watchlog';
 import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useLectureState } from 'lecture/detail/service/useLectureState/useLectureState';
 import { useLectureClassroom } from 'lecture/detail/service/useLectureClassroom/useLectureClassroom';
 
-function LectureVideoContainer() {
+function LectureAudioContainer() {
   useLectureMedia();
 
   const params = useLectureRouterParams();
-  console.log('params',params);
 
   const [lectureState] = useLectureState();
   // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
@@ -30,9 +29,9 @@ function LectureVideoContainer() {
     }
   }, [lectureState, lectureClassroom]);
   /* eslint-enable */
- 
+  
 
-  return <LectureVideoView params={params} hookAction={hookAction}/>;
+  return <LectureAudioView params={params} hookAction={hookAction}/>;
 }
 
-export default LectureVideoContainer;
+export default LectureAudioContainer;

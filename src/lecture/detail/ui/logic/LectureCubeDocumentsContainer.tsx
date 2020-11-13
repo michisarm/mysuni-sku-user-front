@@ -9,12 +9,11 @@ import WatchLog from 'lecture/detail/model/Watchlog';
 import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useLectureState } from 'lecture/detail/service/useLectureState/useLectureState';
 import { useLectureClassroom } from 'lecture/detail/service/useLectureClassroom/useLectureClassroom';
+import { useLectureWebpage } from 'lecture/detail/service/useLectureWebpage/useLectureWebpage';
+import LectureDocumentsView from '../view/LectureDocumentsView';
 
-function LectureVideoContainer() {
-  useLectureMedia();
-
-  const params = useLectureRouterParams();
-  console.log('params',params);
+function LectureCubeDocumentsContainer() {
+  const [lectureWebpage] = useLectureWebpage();
 
   const [lectureState] = useLectureState();
   // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
@@ -31,8 +30,11 @@ function LectureVideoContainer() {
   }, [lectureState, lectureClassroom]);
   /* eslint-enable */
  
-
-  return <LectureVideoView params={params} hookAction={hookAction}/>;
+  return (
+      <>
+        {(lectureWebpage && <LectureDocumentsView fileBoxId = {lectureWebpage.fileBoxId} hookAction={hookAction}  />)}
+      </>
+    )
 }
 
-export default LectureVideoContainer;
+export default LectureCubeDocumentsContainer;
