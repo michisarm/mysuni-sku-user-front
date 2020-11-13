@@ -744,6 +744,11 @@ body .badge_new .title .cell span {
 .apl-form-wrap2 .ui.calendar .ui.input input[type=text]{border:1px solid #7f7f7f;width:100%}
 */
 
+.apl-form-wrap .post.change-admin.btn{
+  width: 6.9375rem;
+  margin-right: 3.125rem;
+}
+
 .ui.button.fix2 {
   width: 13.75rem;height: 3rem;border-radius: 0.25rem;padding: 0;margin: 0;font-size: 1rem;font-weight: 700;-webkit-box-sizing: border-box;box-sizing: border-box;
 }
