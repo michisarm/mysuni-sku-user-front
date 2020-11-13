@@ -376,7 +376,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               <label className="necessary">College / Channel</label>
               <Ref innerRef={this.focusInputRefs.collegeId}>
                 <Select
-                  className="w302"
+                  className="w302 mr15px"
                   /*control={Select}*/
                   placeholder="Select"
                   options={collegeSelect}
