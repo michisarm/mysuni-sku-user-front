@@ -83,7 +83,7 @@ export function joinCommunity(studentCdo: StudentCdo): Promise<string> {
 }
 
 export function deleteStudentByRollBookId(roolbookId: string) {
-  const url = `${BASE_URL}/students/flow/byRollBookId?roolbookId=${roolbookId}`;
+  const url = `${BASE_URL}/students/flow/byRollBookId?rollBookId=${roolbookId}`;
   return axiosApi.delete(url);
 }
 
