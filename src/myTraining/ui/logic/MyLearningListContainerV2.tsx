@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
+import { CollegeService } from 'college/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { MyLearningContentType, MyPageContentType, NoSuchContentPanelMessages } from '../model';
 import { MultiFilterBox } from '../view/filterbox';
@@ -14,6 +15,7 @@ import { Direction } from '../view/table/MyLearningTableHeader';
 import { MyTrainingService, InMyLectureService, AplService } from '../../stores';
 import { LectureService, SeeMoreButton, StudentService } from '../../../lecture';
 import MyApprovalContentType from '../model/MyApprovalContentType';
+import FilterCountViewModel from '../../model/FilterCountViewModel';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -24,6 +26,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   aplService?: AplService;
   lectureService?: LectureService;
   studentService?: StudentService;
+  collegeService?: CollegeService;
 }
 
 interface RouteParams {
@@ -32,9 +35,10 @@ interface RouteParams {
 }
 
 function MyLearningListContainerV2(props: Props) {
-  console.log('MyLearningListContainer :: render ::');
-  const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, history, match } = props;
+  const { contentType, history, match } = props;
+  const { skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, collegeService } = props;
   const { profileMemberName } = skProfileService!;
+  const { colleges } = collegeService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -45,6 +49,17 @@ function MyLearningListContainerV2(props: Props) {
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
+
+  useEffect(() => {
+    /* 
+      상위 컴포넌트에서 조회된 colleges 가 없는 경우 collegs 를 조회함. 
+      MultiFilterBox 에 props 로 전달하기 위함.
+    */
+    if (!colleges || !colleges.length) {
+      collegeService!.findAllColleges();
+    }
+
+  }, []);
 
   /* effects */
   useEffect(() => {
@@ -61,7 +76,45 @@ function MyLearningListContainerV2(props: Props) {
     return () => clearStore(contentType);
   }, [contentType]);
 
+  useEffect(() => {
+    /* 
+      contentType 및 viewType 이 변함에 따라 
+      필터 항목 별 카운트는 다시 조회되어야 함. 
+    */
+    fetchFilterCountViews(contentType);
+
+    return () => clearFilterCountViews(contentType);
+
+  }, [contentType, viewType]);
+
   /* functions */
+  const fetchFilterCountViews = (contentType: MyContentType): void => {
+    /* 필터 항목 별 카운트를 조회하기 위함. */
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.findAllFilterCountViews()
+        break;
+      case MyLearningContentType.Required:
+        lectureService!.findAllFilterCountViews();
+        break;
+      default:
+        myTrainingService!.findAllFilterCountViews();
+    }
+  }
+
+  const clearFilterCountViews = (contentType: MyContentType): void => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.clearAllFilterCountViews();
+        break;
+      case MyLearningContentType.Required:
+        lectureService!.clearAllFilterCountViews();
+        break;
+      default:
+        myTrainingService!.clearAllFilterCountViews();
+    }
+  }
+
   const fetchModelsByContentType = async (contentType: MyContentType) => {
     //
     //clearStore(contentType);
@@ -236,6 +289,29 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
+  const getFilterCountViews = (contentType: MyContentType): FilterCountViewModel[] => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureService!.filterCountViews;
+      case MyLearningContentType.Required:
+        return lectureService!.filterCountViews;
+      default:
+        return myTrainingService!.filterCountViews;
+    }
+  };
+
+  const getTotalFilterCountView = (contentType: MyContentType): FilterCountViewModel => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureService!.totalFilterCountView;
+      case MyLearningContentType.Required:
+        return lectureService!.totalFilterCountView;
+      default:
+        return myTrainingService!.totalFilterCountView;
+    }
+
+  };
+
   const isModelExist = (contentType: MyContentType) => {
     const { myTrainingTableViews } = myTrainingService!;
     const { inMyLectureTableViews } = inMyLectureService!;
@@ -280,9 +356,15 @@ function MyLearningListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
+  const updateSessionStorage = async () => {
+    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  }
+
   /* handlers */
   const onChangeFilterCount = useCallback((count: number) => {
     if (filterCount && filterCount === count) {
+      initPage();
       fetchModelsByConditions(contentType, viewType);
     }
 
@@ -307,12 +389,13 @@ function MyLearningListContainerV2(props: Props) {
 
   const onConfirmModal = useCallback(async () => {
     const { selectedServiceIds } = myTrainingService!;
-    /* 
-      선택된 ids 를 통해 delete 로직을 수행함. 
+    /*
+      선택된 ids 를 통해 delete 로직을 수행함.
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
     myTrainingService!.clearAllSelectedServiceIds();
+    await updateSessionStorage();
     myTrainingService!.findAllTableViews();
     myTrainingService!.findAllTabCount();
 
@@ -389,6 +472,9 @@ function MyLearningListContainerV2(props: Props) {
               viewType={viewType}
               openFilter={openFilter}
               onChangeFilterCount={onChangeFilterCount}
+              colleges={colleges}
+              totalFilterCount={getTotalFilterCountView(contentType)}
+              filterCounts={getFilterCountViews(contentType)}
             />
             {!resultEmpty && (
               <>
@@ -436,7 +522,8 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.inMyLectureService',
   'myTraining.aplService',
   'lecture.lectureService',
-  'lecture.studentService'
+  'lecture.studentService',
+  'college.collegeService'
 ))(withRouter(observer(MyLearningListContainerV2)));
 
 /* globals */

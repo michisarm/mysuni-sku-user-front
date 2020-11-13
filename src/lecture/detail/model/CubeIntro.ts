@@ -5,6 +5,7 @@ import Operation from './Operation';
 import ReportFileBox from './ReportFileBox';
 
 export default interface CubeIntro {
+  id: string;
   learningTime: number;
   difficultyLevel: DifficultyLevel;
   description: Description;

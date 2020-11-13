@@ -10,6 +10,7 @@ import { ApprovalViewType } from 'myTraining/ui/logic/MyApprovalListContainerV2'
 interface Props {
   contentType: MyContentType;
   resultEmpty?: boolean;
+  allCount?: number;
   filterCount?: number;
   openFilter?: boolean;
   activeFilter?: boolean;
@@ -19,16 +20,14 @@ interface Props {
 }
 
 function ListRightTopPanel(props: Props) {
-  const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
-
-  console.log('ListRightTopPanel :: render :: ');
+  const { contentType, resultEmpty, allCount, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
 
   /* render functions */
   const renderRadiobox = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed:
-        return !resultEmpty && (
+        return !resultEmpty && allCount !== 0 && (
           <div className="view-all">
             {CheckboxOptions.viewTypes.map((viewType, index) => (
               <Fragment key={`view-type-${index}`}>

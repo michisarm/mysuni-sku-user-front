@@ -11,6 +11,7 @@ import profileIcon from '../../../style/media/img-profile-80-px.png';
 import defaultHeader from '../../../style/media/bg-ttl-sample-02.png';
 import Post from '../../model/Post';
 import moment from 'moment';
+import { patronInfo } from '@nara.platform/dock';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   title,
@@ -44,7 +45,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   html,
   fileBoxId,
   createdTime,
-  creatorId,
+  creatorName,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -63,7 +64,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <div className="title-area read-header-left">
           <div className="text-list">
             <img src={profileIcon} />
-            <span>{creatorId}</span>
+            <span>{creatorName}</span>
           </div>
           <div className="text-list">
             <span>{createdDate}</span>

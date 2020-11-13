@@ -9,7 +9,6 @@ import AplUdoModel from 'myTraining/model/AplUdoModel';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 import { AlertWin, ConfirmWin } from 'shared';
-import approvalRoutePaths from 'myTraining/routePaths';
 import ApprovalButtons from '../view/button/ApprovalButtons';
 import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
 import ApprovalInfoView from '../view/ApprovalInfoView';
@@ -47,19 +46,23 @@ function AplDetailContainer(props: Props) {
     setAllowHour(allowHourStr);
     setAllowMinute(allowMinuteStr);
 
-    getFileIds();
   }, []);
+
+  useEffect(() => {
+    getFileIds();
+  }, [model]);
 
   /* functions */
   const routeToList = () => {
-    history.push(approvalRoutePaths.approvalPersonalLearning());
+    history.go(-2);
   };
 
 
-  const getFileIds = () => {
+  const getFileIds = async () => {
     const referenceFileBoxIds = model && model.fileIds;
+
     if (referenceFileBoxIds) {
-      findFiles('reference', referenceFileBoxIds);
+      await findFiles('reference', referenceFileBoxIds);
     }
   }
 

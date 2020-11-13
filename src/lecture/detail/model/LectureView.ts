@@ -1,5 +1,6 @@
 import { DatePeriod } from '@nara.platform/accent';
 import Category from './Category';
+import CubeIntro from './CubeIntro';
 import CubeType from './CubeType';
 import Examination from './Examination';
 import IconBox from './IconBox';
@@ -12,6 +13,7 @@ export default interface LectureView {
   serviceType: string;
   serviceId: string;
   cubeId: string;
+  cubeIntro: CubeIntro;
   coursePlanId: string;
   name: string;
   cubeType: CubeType;

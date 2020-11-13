@@ -4,21 +4,14 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import {Button, TextArea, Form, Modal, Table, Segment, Select, Icon, Image, Grid, Ref} from 'semantic-ui-react';
 import {
-  DiskFileViewModel,
-  EXTENSION_WHITELIST,
-  FileBox,
   FileBox2,
   fileUtil,
-  MyDrive,
   PatronType,
   ValidationType
 } from '@nara.drama/depot';
 import { MemberViewModel } from '@nara.drama/approval';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
-import classNames from 'classnames';
-import AplMessageList from '../../present/logic/AplService';
-import { AplState } from '../../model/AplState';
 import AplService from '../../present/logic/AplService';
 import SelectType from '../../model/SelectType';
 import { CollegeService } from '../../../college/stores';
@@ -41,27 +34,19 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   memberService?: MemberService
   companyApproverService?: CompanyApproverService
   departmentService?: DepartmentService
-  aplService?: AplService;
+  aplService: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
-  //onKeyUpAplPropsValid: (name: string, value: string) => void;
   apl?:AplModel;
-  //aplModelModel: aplModelModel
-  //aplId?: number
-  //state?: string
   focusControlName?: string;
   onResetFocusControl?: () => void;
-  //onGetFileBoxIdForApl?: (fileBoxId: string) => void;
   collegeService?: CollegeService;
   queryModel?: AplQueryModel;
   handleOk: (member: MemberViewModel) => void
   handleSave: (mode: string) => void
+  handleCancel: (mode?: string) => void
 }
 
 interface States {
-  //open : boolean;
-  //titleWrite: string;
-  //typeNameWrite: string;
-  //instituteWrite: string;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -76,9 +61,6 @@ interface States {
 @reactAutobind
 class AplCreateContainer extends React.Component<Props, States> {
 
-  //VALID_FILE_EXTENSION = 'jpg|jpeg|png';
-  VALID_FILE_EXTENSION = 'exe';
-  private fileInputRef = React.createRef<HTMLInputElement>();
   managerModal: any = null;
 
   private focusInputRefs: any = {
@@ -111,8 +93,7 @@ class AplCreateContainer extends React.Component<Props, States> {
   componentDidMount() {
     //const state = apl.state;
 
-    const { queryModel, aplService, collegeService } = this.props;
-    const { apl } = aplService!;
+    const { queryModel, collegeService } = this.props;
     this.findAllColleges();
     if (collegeService && queryModel && queryModel.collegeId) {
       //SelectBox 호출
@@ -129,7 +110,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     snapshot?: any
   ): void {
     const { aplService } = this.props;
-    const { apl } = aplService!;
+    const { apl } = aplService;
 
     if (prevProps.apl && prevProps.apl.id !== apl.id) {
       this.onChangeAplProps(
@@ -154,8 +135,9 @@ class AplCreateContainer extends React.Component<Props, States> {
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
       .then((companyApprover: CompanyApproverModel) => {
-        companyApproverService!.findCompanyApprover();
-        this.onChangeAplProps('approvalId', companyApprover.email);
+        companyApproverService!.findCompanyAplApprover();
+        this.onChangeAplProps('approvalId', companyApprover.id);
+        this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
         this.onChangeAplProps('approvalCompany', companyApprover.companyName);
         this.onChangeAplProps('approvalDepartment', companyApprover.departmentName);
@@ -266,7 +248,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     //
     //const { memberService } = this.props;
     //memberService!.changeApprovalManagerProps(approvalMember);
-    this.onChangeAplProps('approvalId', approvalMember.email);
+    this.onChangeAplProps('approvalId', approvalMember.id);
+    this.onChangeAplProps('approvalEmail', approvalMember.email);
     this.onChangeAplProps('approvalName', approvalMember.name);
     this.onChangeAplProps('approvalCompany', approvalMember.companyName);
     this.onChangeAplProps('approvalDepartment', approvalMember.departmentName);
@@ -291,63 +274,9 @@ class AplCreateContainer extends React.Component<Props, States> {
     this.close();
   }
 
-  onClickSelectFile() {
-    //
-    if (this.fileInputRef.current) {
-      this.fileInputRef.current.click();
-    }
-  }
-
-  onChangeFile(e: React.ChangeEvent<HTMLInputElement>) {
-    //
-    if (e.target.files) {
-      this.setIconFile(e.target.files[0]);
-    }
-  }
-
-
-  setIconFile(file: File) {
-    //
-    if (!file || (file instanceof File && !this.validatedAll(file))) {
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.onload = (e: any) => {
-      this.onChangeAplProps('fileIds', e.target.result);
-    };
-    fileReader.readAsDataURL(file);
-  }
-
-  validatedAll(file: File) {
-    //
-    const validations: any[] = [
-      { type: 'Extension', validValue: this.VALID_FILE_EXTENSION },
-      { type: ValidationType.MaxSize },
-    ];
-
-    const hasNonPass = validations.some(validation => {
-      if (typeof validation.validator === 'function') {
-        return !validation.validator(file);
-      }
-      else {
-        if (!validation.type || validation.validValue) {
-          return false;
-        }
-        return !fileUtil.validate(file, validation.type, validation.validValue);
-      }
-    });
-
-    return !hasNonPass;
-  }
-
-  onClearFileIds() {
-    //
-    this.onChangeAplProps('fileIds', '');
-  }
-
   render() {
-    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave } = this.props;
-    const { apl } = aplService!;
+    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave, handleCancel } = this.props;
+    const { apl } = aplService;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
     //교육명 글자수(100자 이내)
@@ -360,13 +289,13 @@ class AplCreateContainer extends React.Component<Props, States> {
     const contentCount = (apl && apl.content && apl.content.length) || 0;
     const requestHourCount = (apl && apl.requestHour && apl.requestHour.toString().length) || 0;
     const requestMinuteCount = (apl && apl.requestMinute && apl.requestMinute.toString().length) || 0;
-    // 승인자 변경하기 활성, 리더가 아닌 경우에만 true
-    const approvalShow = originCompanyApprover.approverType !== AplApprovalType.Leader_Approve;
+    // 승인자 변경하기 활성, 비활성처리
+    const approvalShow = originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
 
     return (
       /*<div className="ui full segment">*/
       <Segment className="full">
-        <div className="apl-form-wrap2">
+        <div className="apl-form-wrap">
           {/*<Form className="ui form">*/}
           <Form>
             <Form.Field>
@@ -449,7 +378,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               <label className="necessary">College / Channel</label>
               <Ref innerRef={this.focusInputRefs.collegeId}>
                 <Select
-                  className="w302"
+                  className="w302 mr15px"
                   /*control={Select}*/
                   placeholder="Select"
                   options={collegeSelect}
@@ -676,7 +605,6 @@ class AplCreateContainer extends React.Component<Props, States> {
                     /*validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator },{ type: ValidationType.Extension, validator: depotHelper.extensionValidator }]}*/
                     validations={[{type: ValidationType.Duplication, validator: depotHelper.duplicationValidator}]}
                     onChange={this.getFileBoxIdForReference}
-                    id={apl && apl.fileIds}
                   />
                   <div className="bottom">
                     <span className="text1"><Icon className="info16"/>
@@ -696,7 +624,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <Grid.Column>
                   <Modal.Actions>
                     {approvalShow &&
-                    <Button className="post change-admin" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
+                    <Button className="post change-admin btn" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
                     <ManagerListModalContainer
                       ref={managerModal => this.managerModal = managerModal}
                       handleOk={this.onClickManagerListOk}
@@ -706,19 +634,25 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <b>{apl && apl.approvalName || approvalMember.name || ''}</b>
                       <span className="ml40">{apl && apl.approvalCompany || approvalMember.companyName || ''}</span>
                       <span className="line">{apl && apl.approvalDepartment || approvalMember.departmentName || ''}</span>
+                      {approvalShow && (
                       <div className="info-text">
                         <Icon className="info16">
                           <span className="blind">infomation</span>
                         </Icon>
                         본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
                       </div>
+                      )}
                     </span>
                   </Modal.Actions>
                 </Grid.Column>
               </Grid>
             </Form.Field>
             <div className="buttons">
-              <Button className="fix2 line">취소</Button>
+              <Button className="fix2 line"
+                onClick={() => handleCancel()}
+              >
+                취소
+              </Button>
               <Button className="fix2 bg"
                 onClick={() => handleSave('save')}
               >

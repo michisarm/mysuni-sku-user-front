@@ -7,21 +7,20 @@ type PostCreateValue = CommunityPostCreateItem | undefined;
 
 let subscriberIdRef = 0;
 export function useCommunityPostCreate(
-  communityId: string,
   postId?: string
 ): [PostCreateValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [postCreateValue, setPostCreateValue] = useState<PostCreateValue>();
 
   const getCommunityPostItem = useCallback(
-    (communityId: string, postId?: string) => {
-      getCommunityPostCreate(communityId, postId);
+    (postId?: string) => {
+      getCommunityPostCreate(postId);
     },
     []
   );
 
   useEffect(() => {
-    getCommunityPostItem(communityId, postId);
+    getCommunityPostItem(postId);
   }, []);
 
   useEffect(() => {
