@@ -23,7 +23,7 @@ const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 //샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
 //             http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
 //             http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
-
+// http://ma.mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-f6/Course/C-LECTURE-8j/cube/CUBE-2ni/LECTURE-CARD-9zu
 interface LectureVideoViewProps {
   params:LectureRouterParams | undefined;
   hookAction: () => void;
@@ -274,6 +274,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   return (
           <div className="course-video">
             <div className="video-container">
+            <span>00000{panoptoState}00000</span>
+            <span>11111{isActive}11111</span>
+            <span>22222{nextContentsPath}22222</span>
+            <span>33333{getLectureConfirmProgress()?.learningState}33333</span>
                 <div id="panopto-embed-player"></div>
                 {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
                 {panoptoState == 0 && !isActive && nextContentsPath && getLectureConfirmProgress()?.learningState == 'Passed' && (                
