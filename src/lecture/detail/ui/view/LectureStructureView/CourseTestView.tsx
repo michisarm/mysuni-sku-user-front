@@ -33,7 +33,7 @@ const CourseTestView: React.FC<TestViewProps> = function CourseTestView({
       can={can}
       to={path}
       onCannotClick={cannotAlert}
-      className={`btn-state-course l-depth ${activated ? 'act-on' : ''}`}
+      className={`btn-state-course ${activated ? 'act-on' : ''}`}
     >
       <span
         className={`label-state-cube ${

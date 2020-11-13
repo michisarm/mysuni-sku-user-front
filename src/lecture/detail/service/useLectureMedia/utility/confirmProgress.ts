@@ -62,6 +62,7 @@ export async function confirmProgress(
 
   if (personalCube !== undefined) {
     const stateMap = await getStateMapByParams(params);
+    console.log('stateMap',stateMap);
     let student: Student;
     if (stateMap !== undefined) {
       student = await findStudent(stateMap.studentId);
