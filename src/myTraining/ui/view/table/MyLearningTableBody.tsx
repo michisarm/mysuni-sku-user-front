@@ -38,16 +38,15 @@ function MyLearningTableBody(props: Props) {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
     const { category: { college }, serviceId, coursePlanId, cubeId } = model;
     let { serviceType } = model;
+    const { id: collegeId } = college;
+    const cineroomId = patronInfo.getCineroomId() || '';
 
-    switch(serviceType) {
+    switch (serviceType) {
       case 'COURSE':
         serviceType = 'Course';
       case 'PROGRAM':
         serviceType = 'Program';
     }
-
-    const { id: collegeId } = college;
-    const cineroomId = patronInfo.getCineroomId() || '';
 
     // Card
     if (model.isCardType()) {
@@ -119,7 +118,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayProgressRate}  {/* 진행률 */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.startDate)}{/* 학습시작일 */}
@@ -138,7 +137,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayDifficultyLevel} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {model.displayStampCount}{/* 스탬프 */}
@@ -158,7 +157,7 @@ function MyLearningTableBody(props: Props) {
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {model.stampCountForDisplay}{/* 스탬프 */}
@@ -178,7 +177,7 @@ function MyLearningTableBody(props: Props) {
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.endDate)}{/* 학습완료일 */}
