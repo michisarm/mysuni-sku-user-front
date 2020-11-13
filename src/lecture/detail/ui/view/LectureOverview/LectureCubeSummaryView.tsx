@@ -204,13 +204,24 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
-              {lectureSummary.cubeType !== 'Community' && (
+              
+              {/* 큐브가 classroom일 경우와 elearning일 경우에만 정원정보를 노출한다. */}
+              {(lectureSummary.cubeType === 'ClassRoomLecture' || lectureSummary.cubeType === 'ELearning')  && (
                 <>
                   <Label className="bold onlytext">
                     <span className="header-span-first">정원정보</span>
                     <span>{lectureSummary.studentCount}</span>
                     <span>명</span>
                   </Label>
+                </>
+              )}
+              {lectureSummary.cubeType !== 'Community' && (
+                <>
+                  {/* <Label className="bold onlytext">
+                    <span className="header-span-first">정원정보</span>
+                    <span>{lectureSummary.studentCount}</span>
+                    <span>명</span>
+                  </Label> */}
                   <Label className="bold onlytext">
                     <span className="header-span-first">이수</span>
                     <span>{lectureSummary.passedCount}</span>
