@@ -93,7 +93,7 @@ function MyLearningPageV2(props: Props) {
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
     const { inMyListCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
-    const { aplCount: { opened: personalCompletedCount } } = aplService!;
+    const { aplCount: { all: personalCompletedCount } } = aplService!;
 
     if (menuControlAuth.companyCode === '') {
       return [

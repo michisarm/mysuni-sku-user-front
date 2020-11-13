@@ -41,6 +41,7 @@ class AplModel extends NewQueryModel {
   approvalYn: boolean | undefined;
   approvalId: string = '';
   approvalName: string = '';
+  approvalEmail: string = '';
   approvalTime: number = 0;
   updateId: string = '';
   updateName: string = '';
@@ -69,8 +70,12 @@ class AplModel extends NewQueryModel {
     return moment(this.creationTime).format('YYYY.MM.DD');
   }
 
-  @computed get displayUpdateTiime() {
-    return moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss');
+  @computed get displayUpdateTime() {
+    return this.updateTime ? moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+  }
+
+  @computed get displayUpdateDate() {
+    return this.updateTime ? moment(this.updateTime).format('YYYY.MM.DD') : '-';
   }
 
   @computed get displayStateName() {

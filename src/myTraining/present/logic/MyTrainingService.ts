@@ -498,8 +498,10 @@ class MyTrainingService {
           const inProgressJson = sessionStorage.getItem('inProgressTableViews');
           if (inProgressJson) {
             const inProgressStorage: any[] = JSON.parse(inProgressJson);
-            this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
-            this.inProgressTableCount = inProgressStorage.length;
+            if (inProgressStorage) {
+              this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
+              this.inProgressTableCount = inProgressStorage.length;
+            }
           }
         }
         const inProgressTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
@@ -519,8 +521,10 @@ class MyTrainingService {
           const completedJson = sessionStorage.getItem('completedTableViews');
           if (completedJson) {
             const completedStorage: any[] = JSON.parse(completedJson);
-            this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
-            this.completedTableCount = completedStorage.length;
+            if (completedStorage) {
+              this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+              this.completedTableCount = completedStorage.length;
+            }
           }
         }
 
