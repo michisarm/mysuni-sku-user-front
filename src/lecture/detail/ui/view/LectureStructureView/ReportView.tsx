@@ -31,7 +31,7 @@ const ReportView: React.FC<ReportViewProps> = function ReportView({
       can={can}
       to={path}
       onCannotClick={cannotAlert}
-      className={`btn-state-course ${activated ? 'act-on' : ''}`}
+      className={`btn-state-course n-depth ${activated ? 'act-on' : ''}`}
     >
       <span
         className={`label-state-cube ${
