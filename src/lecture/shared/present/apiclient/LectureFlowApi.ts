@@ -57,6 +57,12 @@ class LectureFlowApi {
       .catch(err => err && null);
   }
 
+  findAllFilterCountViews(lectureFilterRdoV2: LectureFilterRdoModelV2) {
+    return axiosApi.post(`${this.baseUrl}/required/filter/count`, lectureFilterRdoV2)
+      .then(response => response && response.data || null)
+      .catch(err => err && null);
+  }
+
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
 }
 

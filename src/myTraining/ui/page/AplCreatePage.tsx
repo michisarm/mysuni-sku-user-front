@@ -19,7 +19,7 @@ import { AplModel } from '../../model';
 import routePaths from '../../routePaths';
 
 interface Props
-  extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
+  extends RouteComponentProps<{ cineroomId: string; }> {
   aplService: AplService;
   apl?: AplModel;
   sharedService?: SharedService;
@@ -100,12 +100,6 @@ class AplCreatePage extends React.Component<Props, States> {
     //APL 등록 화면으로 이동 시 입력된 정보는 저장되지 않습니다.
 
     const { aplService, sharedService } = this.props;
-    const { aplType } = this.props.match.params;
-    const { aplQuery, apl } = this.props.aplService || ({} as AplService);
-    let aplTypeUpper = '';
-    if (aplType !== null && aplType !== '') {
-      aplTypeUpper = aplType.toUpperCase();
-    }
     if (sharedService && aplService) {
       Promise.resolve()
         .then(() => aplService.clearApl())

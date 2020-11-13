@@ -37,6 +37,22 @@ class UserMainPageV2 extends Component<Props> {
 
   componentDidMount() {
     this.publishViewEvent();
+    this.fetchAllModelsForStorage();
+  }
+
+  /* 메인 페이지 진입 시, 전체 학습중, 학습완료 데이터를 session storage 에 저장하기 위한 로직. */
+  async fetchAllModelsForStorage() {
+    const { myTrainingService } = this.props;
+
+    if (sessionStorage.getItem('inProgressTableViews') === null) {
+      const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+      sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+    }
+
+    if (sessionStorage.getItem('completedTableViews') === null) {
+      const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+      sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+    }
   }
 
   publishViewEvent() {

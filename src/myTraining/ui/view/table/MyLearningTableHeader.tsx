@@ -17,7 +17,7 @@ interface Props {
 }
 
 function MyLearningTableHeader(props: Props) {
-  console.log('myLearningTableHeader :: render :: ');
+
   const { contentType, onClickSort, myTrainingService } = props;
   const { myTrainingTableViews, selectedServiceIds, selectAll, clearAll } = myTrainingService!;
 
