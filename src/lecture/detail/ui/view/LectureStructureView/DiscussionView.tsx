@@ -27,7 +27,7 @@ const DiscussionView: React.FC<DiscussionViewProps> = function DiscussionView({
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>Discussion</li>
+          <li>토론하기</li>
         </ul>
       </span>
     </Link>
