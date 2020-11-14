@@ -147,6 +147,7 @@ export async function getCubeLectureStructure(
       cube.state = stateMap.state;
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
+      cube.student = student;
       if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
         (cube as LectureStructureDurationableCubeItem).duration = 0;
         if (student !== undefined) {

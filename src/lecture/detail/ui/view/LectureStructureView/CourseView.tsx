@@ -81,8 +81,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
               const cube = item as LectureStructureCubeItem;
               return (
                 <>
-                  {(cube as LectureStructureDurationableCubeItem).duration ===
-                    undefined && (
+                  {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
                     <CubeView
                       key={cube.id}
                       name={cube.name}
@@ -94,8 +93,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       can={cube.can}
                     />
                   )}
-                  {(cube as LectureStructureDurationableCubeItem).duration !==
-                    undefined && (
+                  {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
                     <DurationableCubeView
                       key={cube.id}
                       name={cube.name}
@@ -157,37 +155,33 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           cubes.map(cube => {
             return (
               <>
-                {cube !== undefined &&
-                  (cube as LectureStructureDurationableCubeItem).duration ===
-                    undefined && (
-                    <CubeView
-                      key={cube.id}
-                      name={cube.name}
-                      state={cube.state}
-                      activated={cube.activated}
-                      learningTime={cube.learningTime}
-                      cubeType={cube.cubeType}
-                      path={cube.path}
-                      can={cube.can}
-                    />
-                  )}
-                {cube !== undefined &&
-                  (cube as LectureStructureDurationableCubeItem).duration !==
-                    undefined && (
-                    <DurationableCubeView
-                      key={cube.id}
-                      name={cube.name}
-                      state={cube.state}
-                      activated={cube.activated}
-                      learningTime={cube.learningTime}
-                      cubeType={cube.cubeType}
-                      path={cube.path}
-                      can={cube.can}
-                      duration={
-                        (cube as LectureStructureDurationableCubeItem).duration
-                      }
-                    />
-                  )}
+                {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+                  <CubeView
+                    key={cube.id}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.activated}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                  />
+                )}
+                {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+                  <DurationableCubeView
+                    key={cube.id}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.activated}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                    duration={
+                      (cube as LectureStructureDurationableCubeItem).duration
+                    }
+                  />
+                )}
                 {cube.test !== undefined && (
                   <TestView
                     name={cube.test.name}

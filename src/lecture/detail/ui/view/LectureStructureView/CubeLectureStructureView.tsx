@@ -21,8 +21,8 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
   return (
     <>
       {lectureStructure.cube !== undefined &&
-        (lectureStructure.cube as LectureStructureDurationableCubeItem)
-          .duration === undefined && (
+        lectureStructure.cube.cubeType !== 'Audio' &&
+          lectureStructure.cube.cubeType !== 'Video' && (
           <CubeView
             key={lectureStructure.cube.id}
             name={lectureStructure.cube.name}
@@ -35,8 +35,8 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           />
         )}
       {lectureStructure.cube !== undefined &&
-        (lectureStructure.cube as LectureStructureDurationableCubeItem)
-          .duration !== undefined && (
+        (lectureStructure.cube.cubeType === 'Audio' ||
+          lectureStructure.cube.cubeType === 'Video') && (
           <DurationableCubeView
             key={lectureStructure.cube.id}
             name={lectureStructure.cube.name}
