@@ -7,6 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { Field } from 'lecture/shared/ui/view/LectureElementsView';
 import { conforms, forEach } from 'lodash';
 import { object } from '@storybook/addon-knobs';
+import DefaultImg from '../../../../style/media/default-thumbnail.png';
 
 // http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001c/cube/CUBE-2ls/lecture-card/LECTURE-CARD-29d
 
@@ -15,20 +16,29 @@ import { object } from '@storybook/addon-knobs';
 //depot.downloadDepotFile(depotFileId);
 
 //상단 Select 박스 선택시 호출
-//setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId); 
+//setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId);
 interface LectureDocumentsViewProps {
-  fileBoxId : string
+  fileBoxId: string;
   hookAction: () => void;
+  url?: string;
+  title?: string;
+  description?: string;
+  image?: string;
 }
 
-//FIXME SSO 로그인된 상태가 아니면 동작 안 함. 
-// const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {  
+//FIXME SSO 로그인된 상태가 아니면 동작 안 함.
+// const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {
 
 const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function LectureDocumentsView({
   fileBoxId,
-  hookAction
+  url,
+  title,
+  description,
+  image,
+  hookAction,
 }) {
   const API_URL: string = '/api/depot/depotFile/flow/download/';
+  console.log('url', url, 'title', title);
 
   const [files, setFiles] = useState<DepotFileViewModel[]>();
   const [pdfUrl, setPdfUrl] = useState<string[]>([]);
@@ -270,6 +280,22 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           </div>
         </div>
       </div>
+
+      {url !== '' && url !== undefined && (
+        <div className="lms-open-graph">
+          <img src={image ? image : DefaultImg} className="lms-open-image" />
+
+          <div className="lms-open-con">
+            <div className="lms-open-title">{title}</div>
+
+            <div className="lms-open-copy">{description}</div>
+
+            <a href={url} className="lms-open-link" type="_blank">
+              {url}
+            </a>
+          </div>
+        </div>
+      )}
     </>
   );
 };
