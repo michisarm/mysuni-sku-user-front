@@ -304,31 +304,32 @@ async function parseLectureStudentView(
 function parseCan(lectureStructure: LectureStructure) {
   let can = true;
   lectureStructure.courses.forEach(course => {
-    can = can && course.state === 'Completed';
-    if (course.cubes !== undefined) {
-      let cubeCan = can;
-      course.cubes.forEach(cube => {
-        cubeCan =
-          cubeCan &&
-          cube.state === 'Completed' &&
-          (cube.test === undefined || cube.test.state === 'Completed') &&
-          (cube.report === undefined || cube.report.state === 'Completed') &&
-          (cube.survey === undefined || cube.survey.state === 'Completed');
-        cube.can = cubeCan;
-      });
-    }
+    can = can && (course.state === 'Progress' || course.state === 'Completed');
+    // Cube 순차 학습 요건
+    // if (course.cubes !== undefined) {
+    //   let cubeCan = can;
+    //   course.cubes.forEach(cube => {
+    //     cubeCan =
+    //       cubeCan &&
+    //       cube.state === 'Completed' &&
+    //       (cube.test === undefined || cube.test.state === 'Completed') &&
+    //       (cube.report === undefined || cube.report.state === 'Completed') &&
+    //       (cube.survey === undefined || cube.survey.state === 'Completed');
+    //     cube.can = cubeCan;
+    //   });
+    // }
 
     if (course.report !== undefined) {
       course.report.can = can;
-      can = course.report.state === 'Completed';
+      // can = course.report.state === 'Completed';
     }
     if (course.survey !== undefined) {
       course.survey.can = can;
-      can = course.survey.state === 'Completed';
+      // can = course.survey.state === 'Completed';
     }
     if (course.test !== undefined) {
       course.test.can = can;
-      can = course.test.state === 'Completed';
+      // can = course.test.state === 'Completed';
     }
     course.can = can;
   });
@@ -433,6 +434,8 @@ export async function getCourseLectureStructure(
             ? ''
             : cube.lectureView!.surveyCase.id;
 
+        const stateCan =
+          cube.state === 'Progress' || cube.state === 'Completed';
         const cubeItemMap = await getItemMapFromCube(
           {
             cubeIntroId,
@@ -445,12 +448,15 @@ export async function getCourseLectureStructure(
         );
         if (cubeItemMap.test !== undefined) {
           cube.test = cubeItemMap.test;
+          cube.test.can = stateCan;
         }
         if (cubeItemMap.survey !== undefined) {
           cube.survey = cubeItemMap.survey;
+          cube.survey.can = stateCan;
         }
         if (cubeItemMap.report !== undefined) {
           cube.report = cubeItemMap.report;
+          cube.report.can = stateCan;
         }
       };
       getItemMapFromCubeLectureArray.push(getItemMapFromCubePromise());
@@ -468,19 +474,19 @@ export async function getCourseLectureStructure(
 
   await Promise.all(getItemMapFromCubeLectureArray);
 
-  let can = parseCan(lectureStructure);
+  const can = parseCan(lectureStructure);
   if (lectureStructure.course !== undefined) {
     if (lectureStructure.course.report !== undefined) {
       lectureStructure.course.report.can = can;
-      can = lectureStructure.course.report.state === 'Completed';
+      // can = lectureStructure.course.report.state === 'Completed';
     }
     if (lectureStructure.course.survey !== undefined) {
       lectureStructure.course.survey.can = can;
-      can = lectureStructure.course.survey.state === 'Completed';
+      // can = lectureStructure.course.survey.state === 'Completed';
     }
     if (lectureStructure.course.test !== undefined) {
       lectureStructure.course.test.can = can;
-      can = lectureStructure.course.test.state === 'Completed';
+      // can = lectureStructure.course.test.state === 'Completed';
     }
   }
 

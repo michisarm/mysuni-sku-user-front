@@ -1,7 +1,4 @@
 /* eslint-disable consistent-return */
-// report
-// http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
-
 import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../../api/assistantApi';
 import {
@@ -15,22 +12,10 @@ import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
   ItemMap,
-  LectureStructureDiscussionItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
-
-// exam
-// http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
-// http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
-// http://localhost:3000/api/assistant/v1/answersheets?examId=CUBE-2jc&examineeId=r47a@ne1-m2
-
-// survey
-// http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
-// http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
-
-interface GetItemMapArg {}
 
 async function getTestItem(
   coursePlanComplex: CoursePlanComplex,
