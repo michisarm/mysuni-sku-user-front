@@ -47,6 +47,7 @@ async function getLectureStructureCubeItemByPersonalCube(
     contentId: cubeId!,
     lectureId: lectureCardId!,
     pathname: toPath(params),
+    lectureParams: { collegeId: '' },
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;

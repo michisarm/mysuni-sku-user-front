@@ -15,6 +15,7 @@ import Student from '../../../model/Student';
 import StudentCdo from '../../../model/StudentCdo';
 import StudentJoin from '../../../model/StudentJoin';
 import { setLectureState } from '../../../store/LectureStateStore';
+import { requestLectureStructure } from '../../../ui/logic/LectureStructureContainer';
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
@@ -140,7 +141,8 @@ async function submit(
     };
   }
   await registerStudent(nextStudentCdo);
-  getStateFromCube(params);
+  await getStateFromCube(params);
+  requestLectureStructure(params.lectureParams, params.pathname);
 }
 
 async function mClassroomSubmit(
@@ -171,17 +173,18 @@ async function mClassroomSubmit(
     approvalProcess: false,
   };
   await registerStudent(nextStudentCdo);
-  getStateFromCube(params);
+  await getStateFromCube(params);
+  requestLectureStructure(params.lectureParams, params.pathname);
 }
 
 async function cancel(params: LectureRouterParams, student: Student) {
   const { rollBookId } = student;
   await deleteStudentByRollBookId(rollBookId);
-  getStateFromCube(params);
-
+  await getStateFromCube(params);
+  requestLectureStructure(params.lectureParams, params.pathname);
 }
 
-function changeRound() { }
+function changeRound() {}
 
 async function approve(
   params: LectureRouterParams,
@@ -235,7 +238,8 @@ async function approve(
     };
   }
   await registerStudent(nextStudentCdo);
-  getStateFromCube(params);
+  await getStateFromCube(params);
+  requestLectureStructure(params.lectureParams, params.pathname);
 }
 
 async function join(
@@ -291,12 +295,14 @@ async function join(
   }
 
   await joinCommunity(nextStudentCdo);
-  getStateFromCube(params);
+  await getStateFromCube(params);
+  requestLectureStructure(params.lectureParams, params.pathname);
 }
 
 async function complete(params: LectureRouterParams, rollBookId: string) {
-  await markComplete({ rollBookId })
-  getStateFromCube(params);
+  await markComplete({ rollBookId });
+  await getStateFromCube(params);
+  requestLectureStructure(params.lectureParams, params.pathname);
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
@@ -316,8 +322,19 @@ function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
   }
 }
 
-async function getStateWhenApproved(option: ChangeStateOption): Promise<LectureState | void> {
-  const { lectureState, cubeType, student, hasTest, hasSurvey, cubeIntroId, studentJoin: { rollBookId }, params } = option;
+async function getStateWhenApproved(
+  option: ChangeStateOption
+): Promise<LectureState | void> {
+  const {
+    lectureState,
+    cubeType,
+    student,
+    hasTest,
+    hasSurvey,
+    cubeIntroId,
+    studentJoin: { rollBookId },
+    params,
+  } = option;
 
   if (student !== undefined) {
     let stateText = PROGRESS;
@@ -335,7 +352,7 @@ async function getStateWhenApproved(option: ChangeStateOption): Promise<LectureS
       case 'Experiential':
       case 'Documents':
         if (stateText === PROGRESS) {
-          const { reportFileBox } = await findCubeIntro(cubeIntroId)
+          const { reportFileBox } = await findCubeIntro(cubeIntroId);
           if (reportFileBox === null || reportFileBox.reportName === '') {
             if (!hasTest) {
               return {
@@ -344,7 +361,7 @@ async function getStateWhenApproved(option: ChangeStateOption): Promise<LectureS
                 canAction: true,
                 actionText: COMPLETE,
                 stateText,
-              }
+              };
             }
           }
         }
@@ -465,13 +482,14 @@ export async function getStateFromCube(params: LectureRouterParams) {
   const { contentId, lectureId, pathname } = params;
   const {
     contents: { type, examId, surveyId },
-    cubeIntro: { id: cubeIntroId }
+    cubeIntro: { id: cubeIntroId },
   } = await findPersonalCube(contentId);
-  const hasTest = examId !== undefined && examId !== null && examId !== ""
-  const hasSurvey = surveyId !== undefined && surveyId !== null && surveyId !== ""
+  const hasTest = examId !== undefined && examId !== null && examId !== '';
+  const hasSurvey =
+    surveyId !== undefined && surveyId !== null && surveyId !== '';
   const studentJoins = await findIsJsonStudentByCube(lectureId);
-  let actionClassName = 'bg'
-  let stateClassName = 'line'
+  let actionClassName = 'bg';
+  let stateClassName = 'line';
   if (studentJoins.length > 0) {
     const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
       (r, c) => {
@@ -499,11 +517,11 @@ export async function getStateFromCube(params: LectureRouterParams) {
           case 'TestWaiting':
           case 'HomeworkWaiting':
             state = 'Progress';
-            actionClassName = 'bg2'
+            actionClassName = 'bg2';
             break;
           case 'Passed':
             state = 'Completed';
-            stateClassName = 'complete'
+            stateClassName = 'complete';
             break;
 
           default:
@@ -532,7 +550,11 @@ export async function getStateFromCube(params: LectureRouterParams) {
       }
 
       const lectureState = {
-        state, learningState, proposalState, type, actionClassName,
+        state,
+        learningState,
+        proposalState,
+        type,
+        actionClassName,
         stateClassName,
       };
       updateCubeItemState(contentId, state, learningState);

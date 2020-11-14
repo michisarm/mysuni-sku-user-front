@@ -43,7 +43,11 @@ async function getLectureStructureCubeItemByPersonalCube(
   params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
-  const { id, name, contents: { type } } = personalCube;
+  const {
+    id,
+    name,
+    contents: { type },
+  } = personalCube;
   if (personalCube === undefined) {
     return;
   }
@@ -58,6 +62,7 @@ async function getLectureStructureCubeItemByPersonalCube(
     contentId: cubeId!,
     lectureId: lectureCardId!,
     pathname: toPath(params),
+    lectureParams: params,
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
@@ -87,7 +92,7 @@ async function getLectureStructureCubeItemByPersonalCube(
       routerParams,
       path: toPath(params),
       serviceId: lectureCardId,
-      can: true
+      can: true,
     };
   }
 }
@@ -101,8 +106,13 @@ export async function getStateMapByParams(
     if (!Array.isArray(studentJoins)) {
       return;
     }
-    const sortedStudentJoins = studentJoins.sort((a, b) => b.updateTime - a.updateTime);
-    if (sortedStudentJoins.length > 0 && sortedStudentJoins[0].studentId !== null) {
+    const sortedStudentJoins = studentJoins.sort(
+      (a, b) => b.updateTime - a.updateTime
+    );
+    if (
+      sortedStudentJoins.length > 0 &&
+      sortedStudentJoins[0].studentId !== null
+    ) {
       const learningState = sortedStudentJoins[0].learningState;
       let state: State = 'None';
       if (sortedStudentJoins[0].proposalState === 'Approved') {
@@ -121,7 +131,11 @@ export async function getStateMapByParams(
             break;
         }
       }
-      return { state, learningState, studentId: sortedStudentJoins[0].studentId };
+      return {
+        state,
+        learningState,
+        studentId: sortedStudentJoins[0].studentId,
+      };
     }
   }
 }
@@ -149,7 +163,10 @@ export async function getCubeLectureStructure(
       if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
         (cube as LectureStructureDurationableCubeItem).duration = 0;
         if (student !== undefined) {
-          (cube as LectureStructureDurationableCubeItem).duration = student.durationViewSeconds === null ? undefined : parseInt(student.durationViewSeconds);
+          (cube as LectureStructureDurationableCubeItem).duration =
+            student.durationViewSeconds === null
+              ? undefined
+              : parseInt(student.durationViewSeconds);
         }
       }
       const cubeIntroId = personalCube.cubeIntro.id;
@@ -161,21 +178,21 @@ export async function getCubeLectureStructure(
         params,
         student
       );
-      let stateCan = cube.state === 'Completed'
+      let stateCan = cube.state === 'Completed';
       if (itemMap.report !== undefined) {
         lectureStructure.report = itemMap.report;
         lectureStructure.report.can = stateCan;
-        stateCan = lectureStructure.report.state === 'Completed'
+        stateCan = lectureStructure.report.state === 'Completed';
       }
       if (itemMap.survey !== undefined) {
         lectureStructure.survey = itemMap.survey;
         lectureStructure.survey.can = stateCan;
-        stateCan = lectureStructure.survey.state === 'Completed'
+        stateCan = lectureStructure.survey.state === 'Completed';
       }
       if (itemMap.test !== undefined) {
         lectureStructure.test = itemMap.test;
         lectureStructure.test.can = stateCan;
-        stateCan = lectureStructure.test.state === 'Completed'
+        stateCan = lectureStructure.test.state === 'Completed';
       }
     }
 
