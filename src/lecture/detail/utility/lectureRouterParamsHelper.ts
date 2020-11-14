@@ -2,30 +2,33 @@ import LectureParams from '../viewModel/LectureParams';
 import LectureRouterParams from '../viewModel/LectureRouterParams';
 
 export function parseLectureParams(
-  params: LectureParams,
+  lectureParams: LectureParams,
   pathname: string
 ): LectureRouterParams {
-  if (params.lectureType !== undefined) {
+  if (lectureParams.lectureType !== undefined) {
     return {
-      contentType: params.lectureType,
-      contentId: params.contentId!,
-      lectureId: params.lectureId!,
+      contentType: lectureParams.lectureType,
+      contentId: lectureParams.contentId!,
+      lectureId: lectureParams.lectureId!,
       pathname,
+      lectureParams,
     };
   }
-  if (params.cubeId !== undefined) {
+  if (lectureParams.cubeId !== undefined) {
     return {
       contentType: 'cube',
-      contentId: params.cubeId!,
-      lectureId: params.lectureCardId!,
+      contentId: lectureParams.cubeId!,
+      lectureId: lectureParams.lectureCardId!,
       pathname,
+      lectureParams,
     };
   }
 
   return {
     contentType: 'coures',
-    contentId: params.coursePlanId!,
-    lectureId: params.serviceId!,
+    contentId: lectureParams.coursePlanId!,
+    lectureId: lectureParams.serviceId!,
     pathname,
+    lectureParams,
   };
 }

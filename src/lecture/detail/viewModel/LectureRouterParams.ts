@@ -1,3 +1,5 @@
+import LectureParams from './LectureParams';
+
 export type ContentType = 'cube' | 'coures';
 
 export default interface LectureRouterParams {
@@ -5,4 +7,5 @@ export default interface LectureRouterParams {
   contentId: string;
   lectureId: string;
   pathname: string;
+  lectureParams: LectureParams;
 }
