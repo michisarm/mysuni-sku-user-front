@@ -67,6 +67,7 @@ async function getTestItem(
       path: `${toPath(params)}/exam`,
       state,
       type: 'EXAM',
+      can: false,
     };
     return item;
   }
@@ -108,6 +109,7 @@ async function getSurveyItem(
       path: `${toPath(params)}/survey`,
       state,
       type: 'SURVEY',
+      can: false,
     };
     return item;
   }
@@ -139,6 +141,7 @@ async function getReportItem(
       path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
+      can: false,
     };
     return item;
   }
@@ -181,6 +184,7 @@ function getDisscussionItem(
       path: `${toPath(params)}/discussion`,
       state,
       type: 'DISCUSSION',
+      can: true,
     };
     return item;
   }
@@ -212,6 +216,7 @@ function getDisscussionItem(
       path: `${toPath(params)}/discussion`,
       state,
       type: 'DISCUSSION',
+      can: true,
     };
     return item;
   }

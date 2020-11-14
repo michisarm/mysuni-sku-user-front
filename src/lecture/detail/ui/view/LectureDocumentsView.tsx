@@ -15,14 +15,18 @@ import { object } from '@storybook/addon-knobs';
 //depot.downloadDepotFile(depotFileId);
 
 //상단 Select 박스 선택시 호출
-//setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId);
+//setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId); 
+interface LectureDocumentsViewProps {
+  fileBoxId : string
+  hookAction: () => void;
+}
 
-const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocumentsView({
-  title,
-  description,
-  image,
-  url,
+//FIXME SSO 로그인된 상태가 아니면 동작 안 함. 
+// const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {  
+
+const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function LectureDocumentsView({
   fileBoxId,
+  hookAction
 }) {
   const API_URL: string = '/api/depot/depotFile/flow/download/';
 

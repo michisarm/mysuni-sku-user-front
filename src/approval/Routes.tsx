@@ -20,7 +20,7 @@ class ApprovalRoutes extends React.Component {
         <Route exact path="/approval/:tab" component={MyApprovalPage} />
         <Route exact path="/approval/:tab/pages/:pageNo" component={MyApprovalPage} />
         <Route exact path="/approval/ApprovalList/detail/:studentId" component={ApprovalSharedDetailContainer} />
-        <Route exact path="/approval/PersonalLearning/:aplId" component={AplDetailPageV2} />
+        <Route exact path="/approval/PersonalLearning/:page/:aplId" component={AplDetailPageV2} />
         {/*<Route exact path="/my-training/learning/add-personal-learning-create" component={CreateAplContainer} />*/}
         <Route component={NotFoundPage} />
       </Switch>

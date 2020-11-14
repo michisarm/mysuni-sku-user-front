@@ -2,6 +2,7 @@ import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 import LectureView from '../model/LectureView';
+import Student from '../model/Student';
 import LectureParams from './LectureParams';
 import LectureRouterParams from './LectureRouterParams';
 import { State } from './LectureState';
@@ -19,6 +20,7 @@ interface Item {
   routerParams: LectureRouterParams;
   path: string;
   state?: State;
+  can: boolean;
 }
 
 export interface StudentStateMap {
@@ -73,6 +75,12 @@ export interface LectureStructureCubeItem extends Item {
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
   serviceId?: string;
+  lectureView?: LectureView;
+  student?: Student;
+}
+
+export interface LectureStructureDurationableCubeItem extends LectureStructureCubeItem {
+  duration?: number;
 }
 
 export interface LectureStructureCourseItem extends Item {
@@ -87,6 +95,7 @@ export interface LectureStructureCourseItem extends Item {
   report?: LectureStructureReportItem;
   discussion?: LectureStructureDiscussionItem;
   lectureView?: LectureView;
+  student?: Student;
 }
 
 export interface LectureStructure {

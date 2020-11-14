@@ -6,16 +6,16 @@ import {
   findIsJsonStudentByCube,
   findStudent,
   joinCommunity,
+  markComplete,
   registerStudent,
 } from '../../../api/lectureApi';
-import { findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import CubeType from '../../../model/CubeType';
 import Student from '../../../model/Student';
 import StudentCdo from '../../../model/StudentCdo';
 import StudentJoin from '../../../model/StudentJoin';
 import { setLectureState } from '../../../store/LectureStateStore';
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
-import LectureParams from '../../../viewModel/LectureParams';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
 
@@ -63,15 +63,15 @@ import LectureState, { State } from '../../../viewModel/LectureState';
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
 const CANCEL = '취소하기';
-const CHANGE_ROUND = '차수변경';
-const DOWNLOAD = '다운로드';
+// const CHANGE_ROUND = '차수변경';
+// const DOWNLOAD = '다운로드';
 const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
 const JOINED = '가입완료';
 const SUBMITED = '승인대기';
 const REJECTED = '반려됨';
 const WAIT = '학습예정';
-const JOIN = '가입하기';
+const JOIN = '작성하기';
 
 interface ChangeStateOption {
   params: LectureRouterParams;
@@ -81,6 +81,10 @@ interface ChangeStateOption {
   cubeType: CubeType;
   lectureState: LectureState;
   pathname?: string;
+  hasTest: boolean;
+  hasReport: boolean;
+  hasSurvey: boolean;
+  cubeIntroId: string;
 }
 
 async function submit(
@@ -170,12 +174,14 @@ async function mClassroomSubmit(
   getStateFromCube(params);
 }
 
-function cancel(params: LectureRouterParams, student: Student) {
+async function cancel(params: LectureRouterParams, student: Student) {
   const { rollBookId } = student;
-  return deleteStudentByRollBookId(rollBookId);
+  await deleteStudentByRollBookId(rollBookId);
+  getStateFromCube(params);
+
 }
 
-function changeRound() {}
+function changeRound() { }
 
 async function approve(
   params: LectureRouterParams,
@@ -288,6 +294,11 @@ async function join(
   getStateFromCube(params);
 }
 
+async function complete(params: LectureRouterParams, rollBookId: string) {
+  await markComplete({ rollBookId })
+  getStateFromCube(params);
+}
+
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
   const { params, lectureState, cubeType, student } = option;
   if (student !== undefined) {
@@ -299,14 +310,14 @@ function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
           canAction: true,
           action: () => cancel(params, student),
           actionText: CANCEL,
-          stateText: WAIT,
+          stateText: SUBMITED,
         };
     }
   }
 }
 
-function getStateWhenApproved(option: ChangeStateOption): LectureState | void {
-  const { lectureState, cubeType, student } = option;
+async function getStateWhenApproved(option: ChangeStateOption): Promise<LectureState | void> {
+  const { lectureState, cubeType, student, hasTest, hasSurvey, cubeIntroId, studentJoin: { rollBookId }, params } = option;
 
   if (student !== undefined) {
     let stateText = PROGRESS;
@@ -322,12 +333,27 @@ function getStateWhenApproved(option: ChangeStateOption): LectureState | void {
     switch (cubeType) {
       case 'WebPage':
       case 'Experiential':
+      case 'Documents':
+        if (stateText === PROGRESS) {
+          const { reportFileBox } = await findCubeIntro(cubeIntroId)
+          if (reportFileBox === null || reportFileBox.reportName === '') {
+            if (!hasTest) {
+              return {
+                ...lectureState,
+                action: () => complete(params, rollBookId),
+                canAction: true,
+                actionText: COMPLETE,
+                stateText,
+              }
+            }
+          }
+        }
       case 'Video':
       case 'Audio':
       case 'WebPage':
-      case 'Documents':
         return {
           ...lectureState,
+          hideAction: true,
           canAction: false,
           actionText: APPROVE,
           stateText,
@@ -438,9 +464,14 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
 export async function getStateFromCube(params: LectureRouterParams) {
   const { contentId, lectureId, pathname } = params;
   const {
-    contents: { type },
+    contents: { type, examId, surveyId },
+    cubeIntro: { id: cubeIntroId }
   } = await findPersonalCube(contentId);
+  const hasTest = examId !== undefined && examId !== null && examId !== ""
+  const hasSurvey = surveyId !== undefined && surveyId !== null && surveyId !== ""
   const studentJoins = await findIsJsonStudentByCube(lectureId);
+  let actionClassName = 'bg'
+  let stateClassName = 'line'
   if (studentJoins.length > 0) {
     const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
       (r, c) => {
@@ -468,9 +499,11 @@ export async function getStateFromCube(params: LectureRouterParams) {
           case 'TestWaiting':
           case 'HomeworkWaiting':
             state = 'Progress';
+            actionClassName = 'bg2'
             break;
           case 'Passed':
             state = 'Completed';
+            stateClassName = 'complete'
             break;
 
           default:
@@ -498,17 +531,24 @@ export async function getStateFromCube(params: LectureRouterParams) {
           break;
       }
 
-      const lectureState = { state, learningState, proposalState, type };
+      const lectureState = {
+        state, learningState, proposalState, type, actionClassName,
+        stateClassName,
+      };
       updateCubeItemState(contentId, state, learningState);
       switch (proposalState) {
         case 'Approved':
           {
-            const next = getStateWhenApproved({
+            const next = await getStateWhenApproved({
               params,
               lectureState,
               student,
               studentJoin,
               cubeType: type,
+              hasTest,
+              hasSurvey,
+              cubeIntroId,
+              hasReport: false,
             });
             if (next === undefined) {
               setLectureState();
@@ -525,6 +565,10 @@ export async function getStateFromCube(params: LectureRouterParams) {
               student,
               studentJoin,
               cubeType: type,
+              hasTest,
+              hasSurvey,
+              cubeIntroId,
+              hasReport: false,
             });
             if (next === undefined) {
               setLectureState();
@@ -541,6 +585,10 @@ export async function getStateFromCube(params: LectureRouterParams) {
               student,
               studentJoin,
               cubeType: type,
+              hasTest,
+              hasSurvey,
+              cubeIntroId,
+              hasReport: false,
             });
             if (next === undefined) {
               setLectureState();
@@ -559,6 +607,10 @@ export async function getStateFromCube(params: LectureRouterParams) {
               studentJoin,
               cubeType: type,
               pathname,
+              hasTest,
+              hasSurvey,
+              cubeIntroId,
+              hasReport: false,
             });
             if (next === undefined) {
               setLectureState();

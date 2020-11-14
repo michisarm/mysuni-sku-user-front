@@ -34,7 +34,7 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   memberService?: MemberService
   companyApproverService?: CompanyApproverService
   departmentService?: DepartmentService
-  aplService?: AplService;
+  aplService: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
   apl?:AplModel;
   focusControlName?: string;
@@ -61,9 +61,6 @@ interface States {
 @reactAutobind
 class AplCreateContainer extends React.Component<Props, States> {
 
-  //VALID_FILE_EXTENSION = 'jpg|jpeg|png';
-  VALID_FILE_EXTENSION = 'exe';
-  private fileInputRef = React.createRef<HTMLInputElement>();
   managerModal: any = null;
 
   private focusInputRefs: any = {
@@ -113,7 +110,7 @@ class AplCreateContainer extends React.Component<Props, States> {
     snapshot?: any
   ): void {
     const { aplService } = this.props;
-    const { apl } = aplService!;
+    const { apl } = aplService;
 
     if (prevProps.apl && prevProps.apl.id !== apl.id) {
       this.onChangeAplProps(
@@ -139,7 +136,8 @@ class AplCreateContainer extends React.Component<Props, States> {
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
       .then((companyApprover: CompanyApproverModel) => {
         companyApproverService!.findCompanyAplApprover();
-        this.onChangeAplProps('approvalId', companyApprover.email);
+        this.onChangeAplProps('approvalId', companyApprover.id);
+        this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
         this.onChangeAplProps('approvalCompany', companyApprover.companyName);
         this.onChangeAplProps('approvalDepartment', companyApprover.departmentName);
@@ -250,7 +248,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     //
     //const { memberService } = this.props;
     //memberService!.changeApprovalManagerProps(approvalMember);
-    this.onChangeAplProps('approvalId', approvalMember.email);
+    this.onChangeAplProps('approvalId', approvalMember.id);
+    this.onChangeAplProps('approvalEmail', approvalMember.email);
     this.onChangeAplProps('approvalName', approvalMember.name);
     this.onChangeAplProps('approvalCompany', approvalMember.companyName);
     this.onChangeAplProps('approvalDepartment', approvalMember.departmentName);
@@ -277,7 +276,7 @@ class AplCreateContainer extends React.Component<Props, States> {
 
   render() {
     const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave, handleCancel } = this.props;
-    const { apl } = aplService!;
+    const { apl } = aplService;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
     //교육명 글자수(100자 이내)
@@ -290,13 +289,13 @@ class AplCreateContainer extends React.Component<Props, States> {
     const contentCount = (apl && apl.content && apl.content.length) || 0;
     const requestHourCount = (apl && apl.requestHour && apl.requestHour.toString().length) || 0;
     const requestMinuteCount = (apl && apl.requestMinute && apl.requestMinute.toString().length) || 0;
-    // 승인자 변경하기 활성, 리더가 아닌 경우에만 true
-    const approvalShow = originCompanyApprover.aplApproverType !== AplApprovalType.Leader_Approve;
+    // 승인자 변경하기 활성, 비활성처리
+    const approvalShow = originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
 
     return (
       /*<div className="ui full segment">*/
       <Segment className="full">
-        <div className="apl-form-wrap2">
+        <div className="apl-form-wrap">
           {/*<Form className="ui form">*/}
           <Form>
             <Form.Field>
@@ -379,7 +378,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               <label className="necessary">College / Channel</label>
               <Ref innerRef={this.focusInputRefs.collegeId}>
                 <Select
-                  className="w302"
+                  className="w302 mr15px"
                   /*control={Select}*/
                   placeholder="Select"
                   options={collegeSelect}
@@ -479,15 +478,13 @@ class AplCreateContainer extends React.Component<Props, States> {
                     {/*<input type="text" />*/}
                   </div>
                 </div>
-                <span className="text1">
-                  <div className="info-text">
-                    <Icon className="info16">
-                      <span className="blind">infomation</span>
-                    </Icon>
-                    일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
-                    주시기 바랍니다.
-                  </div>
-                </span>
+                <div className="info-text">
+                  <Icon className="info16">
+                    <span className="blind">infomation</span>
+                  </Icon>
+                  일일 강좌 등록 시 시작일과 종료일의 날짜를 동일하게 설정해
+                  주시기 바랍니다.
+                </div>
               </div>
             </Form.Field>
             <Form.Field>
@@ -561,15 +558,13 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestMinute')}/>
                   </div>
                 </div>
-                <span className="text1">
-                  <div className="info-text">
-                    <Icon className="info16">
-                      <span className="blind">infomation</span>
-                    </Icon>
-                    학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
-                    교육시간은 변경될 수 있습니다.
-                  </div>
-                </span>
+                <div className="info-text">
+                  <Icon className="info16">
+                    <span className="blind">infomation</span>
+                  </Icon>
+                  학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
+                  교육시간은 변경될 수 있습니다.
+                </div>
               </div>
             </Form.Field>
 
@@ -610,7 +605,6 @@ class AplCreateContainer extends React.Component<Props, States> {
                     /*validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator },{ type: ValidationType.Extension, validator: depotHelper.extensionValidator }]}*/
                     validations={[{type: ValidationType.Duplication, validator: depotHelper.duplicationValidator}]}
                     onChange={this.getFileBoxIdForReference}
-                    id={apl && apl.fileIds}
                   />
                   <div className="bottom">
                     <span className="text1"><Icon className="info16"/>
@@ -630,7 +624,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                 <Grid.Column>
                   <Modal.Actions>
                     {approvalShow &&
-                    <Button className="post change-admin" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
+                    <Button className="post change-admin btn" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
                     <ManagerListModalContainer
                       ref={managerModal => this.managerModal = managerModal}
                       handleOk={this.onClickManagerListOk}
@@ -640,12 +634,14 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <b>{apl && apl.approvalName || approvalMember.name || ''}</b>
                       <span className="ml40">{apl && apl.approvalCompany || approvalMember.companyName || ''}</span>
                       <span className="line">{apl && apl.approvalDepartment || approvalMember.departmentName || ''}</span>
+                      {approvalShow && (
                       <div className="info-text">
                         <Icon className="info16">
                           <span className="blind">infomation</span>
                         </Icon>
                         본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
                       </div>
+                      )}
                     </span>
                   </Modal.Actions>
                 </Grid.Column>

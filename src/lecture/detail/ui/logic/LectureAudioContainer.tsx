@@ -14,7 +14,6 @@ function LectureAudioContainer() {
   useLectureMedia();
 
   const params = useLectureRouterParams();
-  console.log('params',params);
 
   const [lectureState] = useLectureState();
   // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
@@ -30,8 +29,7 @@ function LectureAudioContainer() {
     }
   }, [lectureState, lectureClassroom]);
   /* eslint-enable */
-  console.log('lectureState',lectureState);
-  console.log('hookAction',hookAction);
+  
 
   return <LectureAudioView params={params} hookAction={hookAction}/>;
 }

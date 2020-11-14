@@ -29,7 +29,6 @@ interface Props extends RouteComponentProps {
 
 function MyContentHeaderContainer(props: Props) {
 
-  console.log('MyContentHeaderContainer :: render :: ');
   const { contentType, skProfileService, myLearningSummaryService, history } = props;
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;

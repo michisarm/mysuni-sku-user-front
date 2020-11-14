@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import { AplState } from 'myTraining/model/AplState';
 
@@ -9,14 +10,26 @@ interface Props {
   onClickApproval: () => void;
 }
 
+interface RouteParams {
+  page: string;
+}
+
 function ApprovalButtons(props: Props) {
   const { approvalState, onClickList, onClickReject, onClickApproval } = props;
+  const { page } = useParams<RouteParams>();
 
   /* render functions */
   const renderByApprovalState = (approvalState: AplState) => {
     switch (approvalState) {
       case AplState.Created:
       case AplState.OpenApproval:
+        if (page === 'learning') {
+          return (
+            <div className="buttons editor">
+              <Button className="fix line" onClick={onClickList}>List</Button>
+            </div>
+          );
+        }
         return (
           <div className="buttons editor">
             <Button className="fix line" onClick={onClickList}>List</Button>

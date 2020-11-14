@@ -17,6 +17,7 @@
 }
  */
 
+import { duration } from 'moment';
 import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
@@ -27,6 +28,7 @@ import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructure,
   LectureStructureCubeItem,
+  LectureStructureDurationableCubeItem,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getItemMapFromCube } from './getItemMapFromCube';
@@ -41,7 +43,7 @@ async function getLectureStructureCubeItemByPersonalCube(
   params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
-  const { id, name } = personalCube;
+  const { id, name, contents: { type } } = personalCube;
   if (personalCube === undefined) {
     return;
   }
@@ -59,6 +61,22 @@ async function getLectureStructureCubeItemByPersonalCube(
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
+    if (type === 'Audio' || type === 'Video') {
+      const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
+        id,
+        name,
+        cubeId: cubeId!,
+        cubeType,
+        learningTime,
+        params,
+        routerParams,
+        path: toPath(params),
+        serviceId: lectureCardId,
+        can: true,
+        duration: 0,
+      };
+      return lectureStructureDurationableCubeItem;
+    }
     return {
       id,
       name,
@@ -69,20 +87,25 @@ async function getLectureStructureCubeItemByPersonalCube(
       routerParams,
       path: toPath(params),
       serviceId: lectureCardId,
+      can: true
     };
   }
 }
 
-async function getStateMapByParams(
+export async function getStateMapByParams(
   params: LectureParams
 ): Promise<StudentStateMap | void> {
   const { lectureCardId } = params;
   if (lectureCardId !== undefined) {
     const studentJoins = await findIsJsonStudentByCube(lectureCardId);
-    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
-      const learningState = studentJoins[0].learningState;
+    if (!Array.isArray(studentJoins)) {
+      return;
+    }
+    const sortedStudentJoins = studentJoins.sort((a, b) => b.updateTime - a.updateTime);
+    if (sortedStudentJoins.length > 0 && sortedStudentJoins[0].studentId !== null) {
+      const learningState = sortedStudentJoins[0].learningState;
       let state: State = 'None';
-      if (studentJoins[0].proposalState === 'Approved') {
+      if (sortedStudentJoins[0].proposalState === 'Approved') {
         switch (learningState) {
           case 'Progress':
           case 'TestPassed':
@@ -98,7 +121,7 @@ async function getStateMapByParams(
             break;
         }
       }
-      return { state, learningState, studentId: studentJoins[0].studentId };
+      return { state, learningState, studentId: sortedStudentJoins[0].studentId };
     }
   }
 }
@@ -123,6 +146,12 @@ export async function getCubeLectureStructure(
       cube.state = stateMap.state;
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
+      if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
+        (cube as LectureStructureDurationableCubeItem).duration = 0;
+        if (student !== undefined) {
+          (cube as LectureStructureDurationableCubeItem).duration = student.durationViewSeconds === null ? undefined : parseInt(student.durationViewSeconds);
+        }
+      }
       const cubeIntroId = personalCube.cubeIntro.id;
       const examId = personalCube.contents.examId;
       const surveyId = personalCube.contents.surveyId;
@@ -132,14 +161,21 @@ export async function getCubeLectureStructure(
         params,
         student
       );
-      if (itemMap.test !== undefined) {
-        lectureStructure.test = itemMap.test;
+      let stateCan = cube.state === 'Completed'
+      if (itemMap.report !== undefined) {
+        lectureStructure.report = itemMap.report;
+        lectureStructure.report.can = stateCan;
+        stateCan = lectureStructure.report.state === 'Completed'
       }
       if (itemMap.survey !== undefined) {
         lectureStructure.survey = itemMap.survey;
+        lectureStructure.survey.can = stateCan;
+        stateCan = lectureStructure.survey.state === 'Completed'
       }
-      if (itemMap.report !== undefined) {
-        lectureStructure.report = itemMap.report;
+      if (itemMap.test !== undefined) {
+        lectureStructure.test = itemMap.test;
+        lectureStructure.test.can = stateCan;
+        stateCan = lectureStructure.test.state === 'Completed'
       }
     }
 
