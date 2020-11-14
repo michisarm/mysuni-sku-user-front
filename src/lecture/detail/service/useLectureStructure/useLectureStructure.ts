@@ -1,8 +1,12 @@
 /* eslint-disable consistent-return */
 
 import { useEffect, useState } from 'react';
+import { Course } from '../../../shared/Lecture/Lecture.stories';
 import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
-import { onLectureStructure } from '../../store/LectureStructureStore';
+import {
+  onLectureStructure,
+  setLectureStructure,
+} from '../../store/LectureStructureStore';
 import { LectureStructure } from '../../viewModel/LectureStructure';
 
 type Value = LectureStructure | undefined;
@@ -14,107 +18,174 @@ export function mergeActivated(
 ) {
   if (lectureStructure.cube !== undefined) {
     if (lectureStructure.cube.path === pathname) {
-      lectureStructure.cube.activated = true;
+      lectureStructure.cube = { ...lectureStructure.cube, activated: true };
     }
     if (
       lectureStructure.cube.test !== undefined &&
       lectureStructure.cube.test.path === pathname
     ) {
       lectureStructure.cube.test.activated = true;
+      lectureStructure.cube.test = {
+        ...lectureStructure.cube.test,
+        activated: true,
+      };
     }
     if (
       lectureStructure.cube.survey !== undefined &&
       lectureStructure.cube.survey.path === pathname
     ) {
       lectureStructure.cube.survey.activated = true;
+      lectureStructure.cube.survey = {
+        ...lectureStructure.cube.survey,
+        activated: true,
+      };
     }
     if (
       lectureStructure.cube.report !== undefined &&
       lectureStructure.cube.report.path === pathname
     ) {
       lectureStructure.cube.report.activated = true;
+      lectureStructure.cube.report = {
+        ...lectureStructure.cube.report,
+        activated: true,
+      };
     }
   }
   if (lectureStructure.course !== undefined) {
     if (lectureStructure.course.path === pathname) {
       lectureStructure.course.activated = true;
+      lectureStructure.course = { ...lectureStructure.course, activated: true };
     }
     if (
       lectureStructure.course.test !== undefined &&
       lectureStructure.course.test.path === pathname
     ) {
       lectureStructure.course.test.activated = true;
+      lectureStructure.course.test = {
+        ...lectureStructure.course.test,
+        activated: true,
+      };
     }
     if (
       lectureStructure.course.survey !== undefined &&
       lectureStructure.course.survey.path === pathname
     ) {
       lectureStructure.course.survey.activated = true;
+      lectureStructure.course.survey = {
+        ...lectureStructure.course.survey,
+        activated: true,
+      };
     }
     if (
       lectureStructure.course.report !== undefined &&
       lectureStructure.course.report.path === pathname
     ) {
       lectureStructure.course.report.activated = true;
+      lectureStructure.course.report = {
+        ...lectureStructure.course.report,
+        activated: true,
+      };
     }
   }
 
-  lectureStructure.cubes.forEach(cube => {
-    if (cube.path === pathname) {
-      cube.activated = true;
+  lectureStructure.cubes = lectureStructure.cubes.map(cube => {
+    if (pathname.includes(cube.path)) {
+      if (cube.path === pathname) {
+        return { ...cube, activated: true };
+      }
+      if (cube.test !== undefined && cube.test.path === pathname) {
+        return { ...cube, test: { ...cube.test, activated: true } };
+      }
+      if (cube.survey !== undefined && cube.survey.path === pathname) {
+        return { ...cube, survey: { ...cube.survey, activated: true } };
+      }
+      if (cube.report !== undefined && cube.report.path === pathname) {
+        return { ...cube, report: { ...cube.report, activated: true } };
+      }
+      return cube;
     }
-    if (cube.test !== undefined && cube.test.path === pathname) {
-      cube.test.activated = true;
-    }
-    if (cube.survey !== undefined && cube.survey.path === pathname) {
-      cube.survey.activated = true;
-    }
-    if (cube.report !== undefined && cube.report.path === pathname) {
-      cube.report.activated = true;
-    }
+    return cube;
   });
-  lectureStructure.courses.forEach(course => {
-    if (course.path === pathname) {
-      course.activated = true;
+
+  lectureStructure.courses = lectureStructure.courses.map(course => {
+    if (pathname.includes(course.path)) {
+      if (course.path === pathname) {
+        return { ...course, activated: true };
+      }
+      if (course.test !== undefined && course.test.path === pathname) {
+        return { ...course, test: { ...course.test, activated: true } };
+      }
+      if (course.survey !== undefined && course.survey.path === pathname) {
+        return { ...course, survey: { ...course.survey, activated: true } };
+      }
+      if (course.report !== undefined && course.report.path === pathname) {
+        return { ...course, report: { ...course.report, activated: true } };
+      }
+      if (course.cubes !== undefined) {
+        return {
+          ...course,
+          cubes: course.cubes = lectureStructure.cubes.map(cube => {
+            if (pathname.includes(cube.path)) {
+              if (cube.path === pathname) {
+                return { ...cube, activated: true };
+              }
+              if (cube.test !== undefined && cube.test.path === pathname) {
+                return { ...cube, test: { ...cube.test, activated: true } };
+              }
+              if (cube.survey !== undefined && cube.survey.path === pathname) {
+                return { ...cube, survey: { ...cube.survey, activated: true } };
+              }
+              if (cube.report !== undefined && cube.report.path === pathname) {
+                return { ...cube, report: { ...cube.report, activated: true } };
+              }
+              return cube;
+            }
+            return cube;
+          }),
+        };
+      }
+      if (course.discussions !== undefined) {
+        return {
+          ...course,
+          discussions: course.discussions.map(discussion => {
+            if (discussion.path === pathname) {
+              setLectureDiscussion({
+                id: discussion.id,
+                name: discussion.name,
+                time: discussion.time,
+                creator: discussion.creator,
+                creatorAudienceId: discussion.creatorAudienceId,
+              });
+              return { ...discussion, activated: true };
+            }
+            return discussion;
+          }),
+        };
+      }
+      return course;
     }
-    if (course.test !== undefined && course.test.path === pathname) {
-      course.test.activated = true;
-    }
-    if (course.survey !== undefined && course.survey.path === pathname) {
-      course.survey.activated = true;
-    }
-    if (course.report !== undefined && course.report.path === pathname) {
-      course.report.activated = true;
-    }
-    if (course.cubes !== undefined) {
-      course.cubes.forEach(cube => {
-        if (cube.path === pathname) {
-          cube.activated = true;
-        }
-        if (cube.test !== undefined && cube.test.path === pathname) {
-          cube.test.activated = true;
-        }
-        if (cube.survey !== undefined && cube.survey.path === pathname) {
-          cube.survey.activated = true;
-        }
-        if (cube.report !== undefined && cube.report.path === pathname) {
-          cube.report.activated = true;
-        }
-      });
-    }
+    return course;
   });
-  lectureStructure.discussions.forEach(discussion => {
-    if (discussion.path === pathname) {
-      discussion.activated = true;
-    }
-    setLectureDiscussion({
-      id: discussion.id,
-      name: discussion.name,
-      time: discussion.time,
-      creator: discussion.creator,
-      creatorAudienceId: discussion.creatorAudienceId,
-    });
-  });
+
+  if (lectureStructure.discussions.length > 0) {
+    lectureStructure.discussions = lectureStructure.discussions.map(
+      discussion => {
+        if (discussion.path === pathname) {
+          setLectureDiscussion({
+            id: discussion.id,
+            name: discussion.name,
+            time: discussion.time,
+            creator: discussion.creator,
+            creatorAudienceId: discussion.creatorAudienceId,
+          });
+          return { ...discussion, activated: true };
+        }
+        return discussion;
+      }
+    );
+  }
+
+  setLectureStructure({ ...lectureStructure });
 }
 
 let subscriberIdRef = 0;
