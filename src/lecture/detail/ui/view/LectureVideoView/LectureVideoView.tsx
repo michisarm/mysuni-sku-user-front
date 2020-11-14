@@ -6,7 +6,6 @@ import {
   getLectureMedia,
   onLectureMedia,
 } from 'lecture/detail/store/LectureMediaStore';
-import SkuVideoPlayer from 'lecture/detail/service/useLectureMedia/components/SkuPlayer/SkuVideoPlayer';
 import { patronInfo } from '@nara.platform/dock';
 import { TIMEOUT } from 'dns';
 import { useLectureWatchLog } from 'lecture/detail/service/useLectureMedia/useLectureWatchLog';
@@ -25,6 +24,9 @@ import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
+import { setLectureState, getLectureState } from 'lecture/detail/store/LectureStateStore';
+
+
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -34,13 +36,13 @@ const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 interface LectureVideoViewProps {
   params: LectureRouterParams | undefined;
-  hookAction: () => void;
+  checkStudent:(params: LectureRouterParams) => void;
 }
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
 const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({
   params,
-  hookAction,
+  checkStudent
 }) {
   const [
     watchLogValue,
@@ -62,13 +64,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   >(params);
   const [panoptoState, setPanoptoState] = useState<number>();
 
-  // params, watchlog
-  // hookAction
-  useEffect(() => {
-    console.log('useEffect - hookAction : ', hookAction);
-    setAction(hookAction);
-  }, [hookAction]);
-
   useEffect(() => {
     const watchlog: WatchLog = {
       patronKeyString: patronInfo.getDenizenId() || '',
@@ -81,7 +76,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [action, setAction] = useState<() => void | undefined>();
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
@@ -104,12 +98,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   const [displayTranscript, setDisplayTranscript] = useState<boolean>(true);
-  const captionInfos = {
-    infos: [
-      { lang: 'ko', url: 'test.srt', isDefault: false },
-      { lang: 'en', url: 'test_en.srt', isDefault: true },
-    ],
-  };
 
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
@@ -133,29 +121,41 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   const onPanoptoStateUpdate = useCallback(
-    (state: number) => {
-      // console.log('getLectureConfirmProgress',getLectureConfirmProgress()?.learningState);
-      console.log('state', state);
+    async (state: number) => {
       setPanoptoState(state);
-      console.log('params', params);
-      console.log('currentParams', currentParams);
-
       if (state == 2) {
         setIsActive(false);
         setNextContentsView(false);
       } else if (state == 1) {
-        // console.log(action && action());
-        action && action();
         setIsActive(true);
         setNextContentsView(false);
-      } else if (state == 0 && params) {
-        console.log('state', state);
-        confirmProgress(params);
+      } else if (state == 0) {
         setIsActive(false);
         setNextContentsView(true);
       }
     },
-    [action, isActive, params]
+    [isActive, params]
+  );
+
+  const registCheckStudent = useCallback(
+    async (params : LectureRouterParams | undefined) => {
+      if(params){
+        await checkStudent(params);
+        // useLectureState();
+      }    
+    },
+    [params]
+  );
+
+  const mediaEndEvent = useCallback(
+    async (params : LectureRouterParams | undefined) => {
+      if(params){
+        await confirmProgress(params);
+        requestLectureStructure(lectureParams, pathname);
+        console.log("ddd");
+      }    
+    },
+    [params]
   );
 
   const lectureParams = useParams<LectureParams>();
@@ -167,6 +167,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     console.log('watchlogState', watchlogState);
     console.log('panoptoState', panoptoState);
 
+    //동영상 종료
+    if(panoptoState == 0 || panoptoState == 2){
+      mediaEndEvent(params);
+    }
+    //동영상 시작시 student 정보 확인 및 등록
+    if(panoptoState == 1){
+      registCheckStudent(params);
+    }
+    
+
     let interval: any = null;
     let progressInterval: any = null;
 
@@ -177,12 +187,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
     let confirmProgressTime = (duration / 10) * 1000;
 
-    console.log('confirmProgressTime', confirmProgressTime);
     //confirmProgressTime
     if (!confirmProgressTime || confirmProgressTime > 60000) {
       confirmProgressTime = 60000;
     }
-    console.log('confirmProgressTime', confirmProgressTime);
 
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
@@ -195,7 +203,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         console.log('watchlogState', watchlogState);
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
-
         // confirmProgress(params);
       }, 10000);
       //TODO : total runtime / 10 or 1분간격으로 진행률 체크 하도록 변경 필요함 - 현재는 1분간격 적용
@@ -215,13 +222,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   useEffect(() => {
     if (params) {
-      console.log('params change confirmProgress');
       confirmProgress(params);
       setCurrentParams(params);
     }
   }, [params]);
 
   useEffect(() => {
+    console.log('getLectureStructure()', getLectureStructure());
     if (getLectureStructure() && getLectureStructure()?.cubes) {
       const cubeIndex =
         getLectureStructure()?.cubes.findIndex(

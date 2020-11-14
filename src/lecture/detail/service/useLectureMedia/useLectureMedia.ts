@@ -12,12 +12,13 @@ import { getCubeLectureMedia } from './utility/getCubeLectureMedia';
 import { useLectureRouterParams } from '../useLectureRouterParams';
 import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
+import { checkStudent } from './utility/checkStudent';
 
 type TranscriptsValue = LectureTranscript[] | undefined;
 type MediaValue = LectureMedia | undefined;
 
 let subscriberIdRef = 0;
-export function useLectureMedia(): [TranscriptsValue, MediaValue] {
+export function useLectureMedia(): [TranscriptsValue, MediaValue, (params: LectureRouterParams) => void] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [transcriptsValue, setTranscriptsValue] = useState<TranscriptsValue>();
   const [mediaValue, setMediaValue] = useState<MediaValue>();
@@ -28,18 +29,12 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
     getCubeLectureMedia(params);
   }, []);
 
-  // const getCourseReportItem = useCallback((params: LectureRouterParams) => {
-  //   getCourseLectureTranscript(params);
-  // }, []);
+  const registerStudent = useCallback((params: LectureRouterParams) => {
+    checkStudent(params);
+  }, []);
 
   useEffect(() => {
-    console.log('params : ', params);
-    // if (params.cubeId !== undefined) {
-
     params && getCubeMediaItem(params);
-    // } else {
-    // getCourseReportItem(params);
-    // }
   }, [params]);
 
   useEffect(() => {
@@ -67,5 +62,5 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
     }, subscriberId);
   }, [subscriberId]);
 
-  return [transcriptsValue, mediaValue];
+  return [transcriptsValue, mediaValue, registerStudent];
 }

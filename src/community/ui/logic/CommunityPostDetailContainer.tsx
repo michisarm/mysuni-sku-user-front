@@ -8,7 +8,8 @@ import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
-import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
+import PostDetailViewContentHeaderView from '../view/communityPostDetailView/PostDetailViewContentHeaderView';
+// import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 
 interface Params {
   communityId: string;
