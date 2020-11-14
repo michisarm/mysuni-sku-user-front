@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { reactConfirm } from '@nara.platform/accent';
+import { reactConfirm, reactAlert } from '@nara.platform/accent';
 import { Form, Icon, Button, List } from 'semantic-ui-react';
 import Reportheader from './ReportHeader';
 import Editor from './Editor';
@@ -34,6 +34,12 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   setCubeLectureReport,
 }) {
   const onSubmitClick = useCallback(() => {
+    const homeworkFileBoxId = getLectureReport()?.studentReport?.homeworkFileBoxId;
+    if (homeworkFileBoxId === '' || homeworkFileBoxId === null || homeworkFileBoxId === undefined) {
+      reactAlert({ title: '알림', message: '첨부파일을 업로드해주세요.' });
+      return;
+    }
+
     reactConfirm({
       title: '알림',
       message:
