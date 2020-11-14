@@ -8,6 +8,14 @@ import { Field } from 'lecture/shared/ui/view/LectureElementsView';
 import { conforms, forEach } from 'lodash';
 import { object } from '@storybook/addon-knobs';
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
+import { getPublicUrl } from 'shared/helper/envHelper';
+import { useHistory } from 'react-router-dom';
+import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
+import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
+import LearningState from 'lecture/detail/model/LearningState';
+
+
+const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 // http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001c/cube/CUBE-2ls/lecture-card/LECTURE-CARD-29d
 
@@ -24,6 +32,8 @@ interface LectureDocumentsViewProps {
   title?: string;
   description?: string;
   image?: string;
+  learningState: LearningState|undefined;
+  params: LectureRouterParams | undefined;
 }
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
@@ -36,6 +46,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   description,
   image,
   hookAction,
+  learningState,
+  params
 }) {
   const API_URL: string = '/api/depot/depotFile/flow/download/';
   console.log('url', url, 'title', title);
@@ -50,6 +62,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [courseIdx, setCourseIdx] = useState<number>(0);
   const [fileCheck, setFileCheck] = useState<string>('');
   const [fileDiv, setFileDiv] = useState<any>();
+
+  
 
   const nameList: string[] = [''];
 
@@ -95,6 +109,10 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [numPages, setNumPages] = useState(0); // 총 페이지
   const [pageNumber, setPageNumber] = useState(1); // 현재 페이지
   const [bar, setBar] = useState<number>(4.7);
+  const [nextContentsPath, setNextContentsPath] = useState<string>();
+  const [nextContentsName, setNextContentsName] = useState<string>();
+  const [nextContentsView, setNextContentsView] = useState<boolean>(false);
+
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
@@ -168,7 +186,34 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const downloadFile = () => {
     depot.downloadDepotFile(files![courseIdx].id);
+    hookAction();
   };
+
+  const history = useHistory();
+
+  const nextContents = useCallback((path: string) => {
+    // setLectureConfirmProgress();
+    // setPanoptoState(10);
+    history.push(path);
+  }, []);
+
+  useEffect(() => {
+    if (getLectureStructure() && getLectureStructure()?.cubes) {
+      const cubeIndex = getLectureStructure()?.cubes.findIndex(cube => cube.cubeId == params?.contentId) || 0;
+      const cubesLength = getLectureStructure()?.cubes.length;
+
+      const cubeNextIndex = cubeIndex + 1;
+
+      if (
+        cubeNextIndex &&
+        cubesLength &&
+        cubeNextIndex < cubesLength
+      ) {
+        setNextContentsPath(getLectureStructure()?.cubes[cubeIndex + 1].path);
+        setNextContentsName(getLectureStructure()?.cubes[cubeIndex + 1].name);
+      }
+    }
+  }, [getLectureStructure()]);
 
   return (
     <>
@@ -236,17 +281,20 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 height={800}
               />
             </Document>
+          
+          {nextContentsPath &&  (            
             <div className="video-overlay">
               <div className="video-overlay-btn">
-                <button>
-                  <img src="" />
+                <button onClick={() => nextContents(nextContentsPath)}>
+                  <img src={playerBtn} />
                 </button>
               </div>
               <div className="video-overlay-text">
                 <p>다음 학습 이어하기</p>
-                <h3>[반도체 클라쓰] Keyword로 알아보는 반도체의 품격</h3>
+                <h3>{nextContentsName}</h3>
               </div>
             </div>
+          )}
           </>
         )}
 

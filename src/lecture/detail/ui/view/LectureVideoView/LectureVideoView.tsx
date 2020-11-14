@@ -59,9 +59,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
-  const [currentParams, setCurrentParams] = useState<
-    LectureRouterParams | undefined
-  >(params);
   const [panoptoState, setPanoptoState] = useState<number>();
 
   useEffect(() => {
