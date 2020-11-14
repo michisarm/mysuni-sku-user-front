@@ -223,7 +223,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     if (params) {
       confirmProgress(params);
-      setCurrentParams(params);
     }
   }, [params]);
 

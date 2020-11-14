@@ -11,6 +11,7 @@ import { useLectureState } from 'lecture/detail/service/useLectureState/useLectu
 import { useLectureClassroom } from 'lecture/detail/service/useLectureClassroom/useLectureClassroom';
 
 function LectureVideoContainer() {
+  useLectureMedia();
   const [,,checkStudent] = useLectureMedia();
   const params = useLectureRouterParams();
   

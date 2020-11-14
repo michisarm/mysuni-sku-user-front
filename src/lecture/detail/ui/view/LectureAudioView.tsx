@@ -21,13 +21,13 @@ import { useHistory } from 'react-router-dom';
 
 interface LectureAudioViewProps {
   params: LectureRouterParams | undefined;
-  hookAction: () => void;
+  checkStudent:(params: LectureRouterParams) => void;
 }
 
 // http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001v/cube/CUBE-2ld/lecture-card/LECTURE-CARD-28y
 const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioView({
   params,
-  hookAction,
+  checkStudent,
 }) {
   const [
     watchLogValue,
@@ -48,9 +48,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
-  // params, watchlog
-
-  // params, watchlog
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -64,7 +61,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [action, setAction] = useState<() => void | undefined>();
+
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
@@ -73,9 +70,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     getDuration: () => {},
   });
 
-  useEffect(() => {
-    setAction(hookAction);
-  }, [hookAction]);
+
 
   const history = useHistory();
 
@@ -93,38 +88,62 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       setIsActive(false);
       setNextContentsView(false)
     }else if (state == 1){
-      // console.log('state : ' ,state);
-      action && action();
       setIsActive(true);
       setNextContentsView(false)
     }else if(state == 0 && params){
-      confirmProgress(params);
       setIsActive(false);
       setNextContentsView(true);
     }
-  }, [action,isActive,params]);
+  }, [isActive,params]);
 
-  // const onPanoptoStateUpdate = (state:any) => {
-  //   console.log('state',state);
+  const registCheckStudent = useCallback(
+    async (params : LectureRouterParams | undefined) => {
+      if(params){
+        await checkStudent(params);
+        // useLectureState();
+      }    
+    },
+    [params]
+  );
 
-  //   if (state == 2){
-  //     setIsActive(false);
-  //   }else if (state == 1){
-  //     console.log(hookAction());
-  //     hookAction();
-  //     setIsActive(true);
-  //   }
-
-  // };
+  const mediaEndEvent = useCallback(
+    async (params : LectureRouterParams | undefined) => {
+      if(params){
+        await confirmProgress(params);
+        requestLectureStructure(lectureParams, pathname);
+      }    
+    },
+    [params]
+  );
   const lectureParams = useParams<LectureParams>();
   const { pathname } = useLocation();
 
   useEffect(() => {
+    //동영상 종료
+    if(panoptoState == 0 || panoptoState == 2){
+      mediaEndEvent(params);
+    }
+    //동영상 시작시 student 정보 확인 및 등록
+    if(panoptoState == 1){
+      registCheckStudent(params);
+    }
+
     let interval: any = null;
     let progressInterval: any = null;
+    const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    const duration = (embedApi.getDuration() as unknown) as number;
+    console.log('currentTime', currentTime);
+    console.log('duration', duration);
+
+    let confirmProgressTime = (duration / 10) * 1000;
+
+    //confirmProgressTime
+    if (!confirmProgressTime || confirmProgressTime > 60000) {
+      confirmProgressTime = 60000;
+    }
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
-        const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+        // const currentTime = (embedApi.getCurrentTime() as unknown) as number;
         setWatchlogState({
           ...watchlogState,
           start: currentTime,
@@ -136,7 +155,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       progressInterval = setInterval(async () => {
         await confirmProgress(params);
         requestLectureStructure(lectureParams, pathname);
-      }, 60000);
+      }, confirmProgressTime);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
       clearInterval(progressInterval);
@@ -159,6 +178,28 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       playerEl.innerHTML = '';
     }
   };
+  useEffect(() => {
+    console.log('getLectureStructure()', getLectureStructure());
+    if (getLectureStructure() && getLectureStructure()?.cubes) {
+      const cubeIndex =
+        getLectureStructure()?.cubes.findIndex(
+          cube => cube.cubeId == params?.contentId
+        ) || 0;
+      const cubesLength = getLectureStructure()?.cubes.length;
+
+      const cubeNextIndex = cubeIndex + 1;
+
+      if (
+        getLectureConfirmProgress()?.learningState == 'Passed' &&
+        cubeNextIndex &&
+        cubesLength &&
+        cubeNextIndex < cubesLength
+      ) {
+        setNextContentsPath(getLectureStructure()?.cubes[cubeIndex + 1].path);
+        setNextContentsName(getLectureStructure()?.cubes[cubeIndex + 1].name);
+      }
+    }
+  }, [getLectureStructure(), getLectureConfirmProgress()]);
 
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
@@ -184,8 +225,10 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       else {
         const currentPaonoptoSessionId = lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
         const embedApi = new window.EmbedApi("panopto-embed-audio-player", {
-          width: "100%",
-          height: "100",
+          // width: "100%",
+          // height: "100",
+          width: '1200',
+          height: '100',          
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
           serverName: 'sku.ap.panopto.com',
@@ -213,21 +256,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       cleanUpPanoptoIframe();
     };
   }, []);
-
-  useEffect(()=>{ 
-    
-    if(getLectureStructure() && getLectureStructure()?.cubes) {
-      const cubeIndex = getLectureStructure()?.cubes.findIndex(cube=> cube.cubeId == params?.contentId)||0;
-      const cubesLength = getLectureStructure()?.cubes.length;
-
-      const cubeNextIndex = cubeIndex+1;
-
-      if(getLectureConfirmProgress()?.learningState == 'Passed' && cubeNextIndex && cubesLength && (cubeNextIndex < cubesLength)){
-        setNextContentsPath(getLectureStructure()?.cubes[cubeIndex + 1].path);
-        setNextContentsName(getLectureStructure()?.cubes[cubeIndex + 1].name);
-      }
-    }
-  }, [getLectureStructure(),getLectureConfirmProgress()]);
 
   return (
     <div className="audio-container">
