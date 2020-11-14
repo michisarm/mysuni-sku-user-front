@@ -33,7 +33,7 @@ const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 //샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
 //             http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
 //             http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
-
+// http://ma.mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-f6/Course/C-LECTURE-8j/cube/CUBE-2ni/LECTURE-CARD-9zu
 interface LectureVideoViewProps {
   params: LectureRouterParams | undefined;
   checkStudent:(params: LectureRouterParams) => void;
@@ -256,7 +256,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const seekByIndex = (index: number) => {
-    console.log('transcript index: ' + index);
     if (embedApi && index >= 0) {
       //TODO current state 를 찾아서 Play 이
       embedApi.seekTo(index);

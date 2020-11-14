@@ -9,7 +9,6 @@ import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCre
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/communityPostDetailView/PostDetailViewContentHeaderView';
-// import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 
 interface Params {
   communityId: string;

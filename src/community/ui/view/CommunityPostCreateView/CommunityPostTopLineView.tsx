@@ -5,7 +5,6 @@ import { Button, Icon, Select } from 'semantic-ui-react';
 import { SortType } from 'community/ui/logic/CommunityPostListContainer';
 import { Link, useParams } from 'react-router-dom';
 import CommunityPanelTopLineContainer from '../communityPostList/PostPanelTopLineContainer';
-// import CommunityPanelTopLineContainer from '../CommunityPostList/PostPanelTopLineContainer';
 
 interface Props {
   totalCount: number;
