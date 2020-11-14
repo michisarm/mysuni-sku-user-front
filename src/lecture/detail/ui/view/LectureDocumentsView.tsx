@@ -78,35 +78,38 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
     }
   }, [fileBoxId]);
 
-  const [numPages, setNumPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [bar, setBar] = useState<number>(0);
+  const [numPages, setNumPages] = useState(0); // 총 페이지
+  const [pageNumber, setPageNumber] = useState(1); // 현재 페이지
+  const [bar, setBar] = useState<number>(4.7);
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
   };
 
   const prev = () => {
-    const value = (pageNumber / numPages) * 100;
-    console.log(value);
-    if (pageNumber >= 1) {
+    const value = (100 / numPages) * pageNumber;
+    console.log('Pre value', value);
+
+    if (pageNumber > 1) {
       if (pageNumber === 1) {
-        setBar(() => 0);
+        setBar(4.7);
+        setPageNumber(1);
       } else {
-        setBar(() => value);
+        setBar(value);
       }
       setPageNumber(pageNumber - 1);
     }
   };
 
   const next = () => {
-    const value = (100 / numPages) * pageNumber;
-    console.log(value);
+    const value = (100 / numPages) * pageNumber + 1;
+    console.log('Next value', value);
+
     if (pageNumber < numPages) {
-      if (pageNumber >= numPages) {
-        setBar(() => 100);
+      if (pageNumber >= numPages - 1) {
+        setBar(100);
       } else {
-        setBar(() => value);
+        setBar(value);
       }
       setPageNumber(pageNumber + 1);
     }
@@ -152,21 +155,6 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
   const downloadFile = () => {
     depot.downloadDepotFile(files![courseIdx].id);
   };
-
-  // const check = nameListArr[courseIdx].slice(
-  //   nameListArr[courseIdx].indexOf('.'),
-  //   nameListArr[courseIdx]
-  // );
-
-  // const filePDF: string[] = [''];
-  // for (let i = 0; i < 1; ++i) {
-  //   filePDF[i] = nameList[courseIdx];
-  //   console.log('filePDF', filePDF[i]);
-  // }
-
-  // console.log('match', nameList[courseIdx].match(/.pdf/g));
-  console.log('courName', nameList[courseIdx].match(/.pdf/g));
-  console.log('pdfURL', pdfUrl);
 
   return (
     <>
@@ -248,7 +236,13 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
           </>
         )}
 
-        <div className="pdf-control">
+        <div
+          className={
+            !nameList[courseIdx].match(/.pdf/g)
+              ? 'pdf-control disable'
+              : 'pdf-control'
+          }
+        >
           <div className="pagination">
             <a className="pdf-prev" onClick={prev}>
               이전
@@ -256,6 +250,7 @@ const LectureDocumentsView: React.FC<LectureWebpage> = function LectureDocuments
             <span className="num">
               {pageNumber}/{numPages}
             </span>
+
             <a className="pdf-next" onClick={next}>
               이후
             </a>
