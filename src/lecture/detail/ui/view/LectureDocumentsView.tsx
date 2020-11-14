@@ -102,12 +102,10 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const prev = () => {
     const value = (100 / numPages) * pageNumber;
-    console.log('Pre value', value);
 
     if (pageNumber > 1) {
       if (pageNumber === 1) {
         setBar(4.7);
-        setPageNumber(1);
       } else {
         setBar(value);
       }
@@ -117,7 +115,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const next = () => {
     const value = (100 / numPages) * pageNumber + 1;
-    console.log('Next value', value);
 
     if (pageNumber < numPages) {
       if (pageNumber >= numPages - 1) {
@@ -147,11 +144,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
         },
       });
-      // if (courseName[courseIdx].name.match('.pdf')) {
-      //   console.log('true!!', courseName[courseIdx].name);
-      // }
     }, 500);
-  }, [courseIdx]);
+  }, []);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
@@ -159,11 +153,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     setFileCheck(courseName[idx]);
 
     setFileDiv(nameList[courseIdx]);
-
-    // files?.map(item => {
-    //   if(nameList[courseIdx] === )
-    //   console.log('item', item.name);
-    // });
   };
 
   const downloadFile = () => {
@@ -233,7 +222,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 pageNumber={pageNumber}
                 renderAnnotationLayer={false}
                 width={1200}
-                height={800}
               />
             </Document>
             <div className="video-overlay">
@@ -281,7 +269,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         </div>
       </div>
 
-      {url !== '' && url !== undefined && (
+      {/* {url !== '' && url !== undefined && (
         <div className="lms-open-graph">
           <img src={image ? image : DefaultImg} className="lms-open-image" />
 
@@ -295,7 +283,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
             </a>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
