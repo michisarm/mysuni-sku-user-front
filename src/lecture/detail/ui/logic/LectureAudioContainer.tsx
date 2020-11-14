@@ -13,25 +13,10 @@ import { useLectureClassroom } from 'lecture/detail/service/useLectureClassroom/
 function LectureAudioContainer() {
   useLectureMedia();
 
+  const [,,checkStudent] = useLectureMedia();
   const params = useLectureRouterParams();
-
-  const [lectureState] = useLectureState();
-  // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
-  const [lectureClassroom] = useLectureClassroom(true);
-  /* eslint-disable */
-  const hookAction = useCallback<() => void>(() => {
-    // if (lectureClassroom !== undefined) {
-    //   return ClassroomModalViewRef.current?.show();
-    // }
-    
-    if (lectureState !== undefined && lectureState.action !== undefined) {
-      return lectureState.action();
-    }
-  }, [lectureState, lectureClassroom]);
-  /* eslint-enable */
   
-
-  return <LectureAudioView params={params} hookAction={hookAction}/>;
+  return <LectureAudioView params={params} checkStudent={checkStudent}/>;
 }
 
 export default LectureAudioContainer;

@@ -16,6 +16,7 @@ function LectureCubeDocumentsContainer() {
   const [lectureWebpage] = useLectureWebpage();
 
   const [lectureState] = useLectureState();
+  
   // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const [lectureClassroom] = useLectureClassroom(true);
   /* eslint-disable */
@@ -29,10 +30,12 @@ function LectureCubeDocumentsContainer() {
     }
   }, [lectureState, lectureClassroom]);
   /* eslint-enable */
+  const params = useLectureRouterParams();
+
  
   return (
       <>
-        {(lectureWebpage && <LectureDocumentsView fileBoxId = {lectureWebpage.fileBoxId} hookAction={hookAction}  />)}
+        {(lectureWebpage && <LectureDocumentsView fileBoxId = {lectureWebpage.fileBoxId} hookAction={hookAction} learningState={lectureState?.learningState} params={params} />)}
       </>
     )
 }
