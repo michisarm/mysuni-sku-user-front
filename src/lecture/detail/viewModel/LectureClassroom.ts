@@ -10,6 +10,7 @@ export interface Classroom {
   learningEndDate: string;
   location: string;
   operator: string;
+  capacity: number;
 }
 
 export default interface LectureClassroom {

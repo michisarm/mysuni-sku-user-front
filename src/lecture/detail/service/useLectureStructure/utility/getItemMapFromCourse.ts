@@ -1,7 +1,4 @@
 /* eslint-disable consistent-return */
-// report
-// http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
-
 import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../../api/assistantApi';
 import {
@@ -15,22 +12,10 @@ import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
   ItemMap,
-  LectureStructureDiscussionItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
-
-// exam
-// http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
-// http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
-// http://localhost:3000/api/assistant/v1/answersheets?examId=CUBE-2jc&examineeId=r47a@ne1-m2
-
-// survey
-// http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
-// http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
-
-interface GetItemMapArg { }
 
 async function getTestItem(
   coursePlanComplex: CoursePlanComplex,
@@ -68,6 +53,7 @@ async function getTestItem(
       state,
       type: 'EXAM',
       can: false,
+      order: 0,
     };
     return item;
   }
@@ -110,6 +96,7 @@ async function getSurveyItem(
       state,
       type: 'SURVEY',
       can: false,
+      order: 0,
     };
     return item;
   }
@@ -142,81 +129,7 @@ async function getReportItem(
       state,
       type: 'REPORT',
       can: false,
-    };
-    return item;
-  }
-}
-
-function getDisscussionItem(
-  coursePlanComplex: CoursePlanComplex,
-  params: LectureParams
-): LectureStructureDiscussionItem | void {
-  const routerParams = parseLectureParams(
-    params,
-    `${toPath(params)}/discussion`
-  );
-  if (
-    coursePlanComplex.coursePlanContents !== undefined &&
-    coursePlanComplex.coursePlanContents !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet !==
-    undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-      .discussions !== undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-      .discussions !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet.discussions
-      .length > 0
-  ) {
-    const state: State = 'None';
-    const item: LectureStructureDiscussionItem = {
-      id:
-        coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-          .discussions[0].id,
-      name:
-        coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-          .discussions[0].name,
-      time: coursePlanComplex.coursePlan.time,
-      creator: coursePlanComplex.coursePlan.creator.name,
-      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
-      params,
-      routerParams,
-      path: `${toPath(params)}/discussion`,
-      state,
-      type: 'DISCUSSION',
-      can: true,
-    };
-    return item;
-  }
-  if (
-    coursePlanComplex.coursePlanContents !== undefined &&
-    coursePlanComplex.coursePlanContents !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet !== undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-    undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-    null &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions
-      .length > 0
-  ) {
-    const state: State = 'None';
-    const item: LectureStructureDiscussionItem = {
-      id:
-        coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
-          .id,
-      name:
-        coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
-          .name,
-      time: coursePlanComplex.coursePlan.time,
-      creator: coursePlanComplex.coursePlan.creator.name,
-      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
-      params,
-      routerParams,
-      path: `${toPath(params)}/discussion`,
-      state,
-      type: 'DISCUSSION',
-      can: true,
+      order: 0,
     };
     return item;
   }
@@ -239,10 +152,6 @@ export async function getItemMapFromCourse(
   const reportItem = await getReportItem(coursePlanComplex, params, student);
   if (reportItem !== undefined) {
     itemMap.report = reportItem;
-  }
-  const discussionItem = getDisscussionItem(coursePlanComplex, params);
-  if (discussionItem !== undefined) {
-    itemMap.discussion = discussionItem;
   }
   return itemMap;
 }

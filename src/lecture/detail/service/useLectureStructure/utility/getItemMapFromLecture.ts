@@ -62,6 +62,7 @@ async function getTestItem(lectureView: LectureView, params: LectureParams) {
       state,
       type: 'EXAM',
       can: false,
+      order: 0,
     };
     return item;
   }
@@ -101,6 +102,7 @@ async function getSurveyItem(lectureView: LectureView, params: LectureParams) {
       state,
       type: 'SURVEY',
       can: false,
+      order: 0,
     };
     return item;
   }
@@ -113,7 +115,10 @@ async function getReportItem(
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   const coursePlan = await findCoursePlan(lectureView.coursePlanId);
-  if (coursePlan.reportFileBox !== null && coursePlan.reportFileBox.reportName !== '') {
+  if (
+    coursePlan.reportFileBox !== null &&
+    coursePlan.reportFileBox.reportName !== ''
+  ) {
     let state: State = 'None';
     if (student !== undefined) {
       if (
@@ -131,87 +136,7 @@ async function getReportItem(
       state,
       type: 'REPORT',
       can: false,
-    };
-    return item;
-  }
-}
-
-async function getDisscussionItem(
-  lectureView: LectureView,
-  params: LectureParams
-): Promise<LectureStructureDiscussionItem | void> {
-  const routerParams = parseLectureParams(
-    params,
-    `${toPath(params)}/discussion`
-  );
-  const coursePlanComplex = await findCoursePlanContents(
-    lectureView.coursePlanId,
-    lectureView.serviceId
-  );
-  if (
-    coursePlanComplex !== null &&
-    (coursePlanComplex as unknown) !== '' &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet !==
-    undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-      .discussions !== undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-      .discussions !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.learningCardSet.discussions
-      .length > 0
-  ) {
-    const state: State = 'None';
-    const item: LectureStructureDiscussionItem = {
-      id:
-        coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-          .discussions[0].id,
-      name:
-        coursePlanComplex.coursePlanContents.courseSet.learningCardSet
-          .discussions[0].name,
-      time: coursePlanComplex.coursePlan.time,
-      creator: coursePlanComplex.coursePlan.creator.name,
-      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
-      params,
-      routerParams,
-      path: `${toPath(params)}/discussion`,
-      state,
-      type: 'DISCUSSION',
-      can: true,
-    };
-    return item;
-  }
-  if (
-    coursePlanComplex !== null &&
-    (coursePlanComplex as unknown) !== '' &&
-    coursePlanComplex.coursePlanContents !== undefined &&
-    coursePlanComplex.coursePlanContents !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet !== undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet !== null &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-    undefined &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
-    null &&
-    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions
-      .length > 0
-  ) {
-    const state: State = 'None';
-    const item: LectureStructureDiscussionItem = {
-      id:
-        coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
-          .id,
-      name:
-        coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
-          .name,
-      time: coursePlanComplex.coursePlan.time,
-      creator: coursePlanComplex.coursePlan.creator.name,
-      creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
-      params,
-      routerParams,
-      path: `${toPath(params)}/discussion`,
-      state,
-      type: 'DISCUSSION',
-      can: true,
+      order: 0,
     };
     return item;
   }
@@ -234,10 +159,6 @@ export async function getItemMapFromLecture(
   const reportItem = await getReportItem(lectureView, params, student);
   if (reportItem !== undefined) {
     itemMap.report = reportItem;
-  }
-  const discussionItem = await getDisscussionItem(lectureView, params);
-  if (discussionItem !== undefined) {
-    itemMap.discussion = discussionItem;
   }
   return itemMap;
 }

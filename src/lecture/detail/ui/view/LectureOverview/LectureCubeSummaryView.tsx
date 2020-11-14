@@ -1,5 +1,5 @@
 import { IdName, reactAlert } from '@nara.platform/accent';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -10,7 +10,6 @@ import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstruc
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 
-import DeleteIcon from '../../../../../style/media/delete-btn.png';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import LectureClassroom, {
   Classroom,
@@ -146,6 +145,13 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
   }
 }
 
+function getCapacity(classrooms: Classroom[]): number {
+  if (classrooms.length > 0) {
+    return classrooms[classrooms.length - 1].capacity;
+  }
+  return 0;
+}
+
 const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function LectureCubeSummaryView({
   lectureSummary,
   lectureInstructor,
@@ -168,12 +174,6 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
       break;
   }
 
-  const [bookMark, setBookMark] = useState(false);
-
-  const BookMark = () => {
-    console.log('click');
-    setBookMark(!bookMark);
-  };
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -204,19 +204,23 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
-              {lectureSummary.cubeType !== 'Community' && (
-                <>
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 &&
+                (lectureSummary.cubeType === 'ClassRoomLecture' ||
+                  lectureSummary.cubeType === 'ELearning') && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">정원정보</span>
-                    <span>{lectureSummary.studentCount}</span>
+                    <span>{getCapacity(lectureClassroom.classrooms)}</span>
                     <span>명</span>
                   </Label>
-                  <Label className="bold onlytext">
-                    <span className="header-span-first">이수</span>
-                    <span>{lectureSummary.passedCount}</span>
-                    <span>명</span>
-                  </Label>
-                </>
+                )}
+              {lectureSummary.cubeType !== 'Community' && (
+                <Label className="bold onlytext">
+                  <span className="header-span-first">이수</span>
+                  <span>{lectureSummary.passedCount}</span>
+                  <span>명</span>
+                </Label>
               )}
               {lectureSummary.cubeType === 'Community' && (
                 <>
@@ -282,8 +286,14 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         <div className="right-area">
           <div className="header-right-link">
             <a onClick={toggleCubeBookmark}>
-              <span onClick={BookMark}>
-                <Icon className={!bookMark ? 'listAdd' : 'listDelete'} />
+              <span>
+                <Icon
+                  className={
+                    lectureSummary.mytrainingId === undefined
+                      ? 'listAdd'
+                      : 'listDelete'
+                  }
+                />
                 {lectureSummary.mytrainingId === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}

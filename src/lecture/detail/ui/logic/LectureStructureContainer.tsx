@@ -13,13 +13,11 @@ import LectureStructureView from '../view/LectureStructureView/LectureStructureV
 const getCubeItem = (params: LectureParams, pathname: string) => {
   getCubeLectureStructure(params).then(lectureStructure => {
     mergeActivated(lectureStructure, pathname);
-    setLectureStructure(lectureStructure);
   });
 };
 const getCourseItem = (params: LectureParams, pathname: string) => {
   getCourseLectureStructure(params).then(lectureStructure => {
     mergeActivated(lectureStructure, pathname);
-    setLectureStructure(lectureStructure);
   });
 };
 

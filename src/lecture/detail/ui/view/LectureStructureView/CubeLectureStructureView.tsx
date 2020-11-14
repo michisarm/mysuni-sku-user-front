@@ -21,8 +21,8 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
   return (
     <>
       {lectureStructure.cube !== undefined &&
-        (lectureStructure.cube as LectureStructureDurationableCubeItem)
-          .duration === undefined && (
+        lectureStructure.cube.cubeType !== 'Audio' &&
+          lectureStructure.cube.cubeType !== 'Video' && (
           <CubeView
             key={lectureStructure.cube.id}
             name={lectureStructure.cube.name}
@@ -35,8 +35,8 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           />
         )}
       {lectureStructure.cube !== undefined &&
-        (lectureStructure.cube as LectureStructureDurationableCubeItem)
-          .duration !== undefined && (
+        (lectureStructure.cube.cubeType === 'Audio' ||
+          lectureStructure.cube.cubeType === 'Video') && (
           <DurationableCubeView
             key={lectureStructure.cube.id}
             name={lectureStructure.cube.name}
@@ -52,30 +52,30 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
             }
           />
         )}
-      {lectureStructure.test !== undefined && (
+      {lectureStructure.cube?.test !== undefined && (
         <TestView
-          name={lectureStructure.test.name}
-          state={lectureStructure.test.state}
-          questionCount={lectureStructure.test.questionCount}
-          path={lectureStructure.test.path}
-          can={lectureStructure.test.can}
+          name={lectureStructure.cube.test.name}
+          state={lectureStructure.cube.test.state}
+          questionCount={lectureStructure.cube.test.questionCount}
+          path={lectureStructure.cube.test.path}
+          can={lectureStructure.cube.test.can}
         />
       )}
-      {lectureStructure.survey !== undefined && (
+      {lectureStructure.cube?.survey !== undefined && (
         <SurveyView
-          name={lectureStructure.survey.name}
-          state={lectureStructure.survey.state}
-          questionCount={lectureStructure.survey.questionCount}
-          path={lectureStructure.survey.path}
-          can={lectureStructure.survey.can}
+          name={lectureStructure.cube.survey.name}
+          state={lectureStructure.cube.survey.state}
+          questionCount={lectureStructure.cube.survey.questionCount}
+          path={lectureStructure.cube.survey.path}
+          can={lectureStructure.cube.survey.can}
         />
       )}
-      {lectureStructure.report !== undefined && (
+      {lectureStructure.cube?.report !== undefined && (
         <ReportView
-          name={lectureStructure.report.name}
-          state={lectureStructure.report.state}
-          path={lectureStructure.report.path}
-          can={lectureStructure.report.can}
+          name={lectureStructure.cube.report.name}
+          state={lectureStructure.cube.report.state}
+          path={lectureStructure.cube.report.path}
+          can={lectureStructure.cube.report.can}
         />
       )}
     </>

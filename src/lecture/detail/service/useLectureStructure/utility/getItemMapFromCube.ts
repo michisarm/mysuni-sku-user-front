@@ -65,6 +65,7 @@ async function getTestItem(examId: string, params: LectureParams) {
       state,
       type: 'EXAM',
       can: false,
+      order: 0,
     };
     return item;
   }
@@ -107,6 +108,7 @@ async function getSurveyItem(
         state,
         type: 'SURVEY',
         can: false,
+        order: 0,
       };
       return item;
     }
@@ -138,6 +140,7 @@ async function getReportItem(
       state,
       type: 'REPORT',
       can: false,
+      order: 0,
     };
     return item;
   }

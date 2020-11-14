@@ -1,7 +1,13 @@
 import { LectureStructure } from '../viewModel/LectureStructure';
 import { createStore } from './Store';
 
-const initialStore: LectureStructure = { courses: [], cubes: [], type: 'Cube' };
+const initialStore: LectureStructure = {
+  courses: [],
+  cubes: [],
+  discussions: [],
+  items: [],
+  type: 'Cube',
+};
 const [
   setLectureStructure,
   onLectureStructure,

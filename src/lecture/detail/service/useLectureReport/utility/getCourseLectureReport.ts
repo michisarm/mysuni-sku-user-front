@@ -33,6 +33,8 @@ function parseCoursePlanComplex(
   const lectureStructure: LectureStructure = {
     courses: [],
     cubes: [],
+    discussions: [],
+    items: [],
     type: serviceType!,
     course: {
       coursePlanId: coursePlanComplex.coursePlan.coursePlanId,
@@ -42,7 +44,9 @@ function parseCoursePlanComplex(
       routerParams: parseLectureParams(params, toPath(params)),
       path: toPath(params),
       serviceId: params.serviceId!,
-      can:false,
+      can: false,
+      order: 0,
+      type: 'REPORT',
     },
   };
   const courseLectureIds: string[] = [];
@@ -75,7 +79,9 @@ function parseCoursePlanComplex(
         path: toPath(courseParams),
         serviceId,
         lectureView,
-        can:false,
+        can: false,
+        order: 0,
+        type: 'COURSE',
       });
       courseLectureIds.push(serviceId);
     }
@@ -96,7 +102,9 @@ function parseCoursePlanComplex(
         routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
         path: toPath(cubeParams),
         serviceId,
-        can:false,
+        can: false,
+        order: 0,
+        type: 'CUBE',
       });
       lectureCardIds.push(serviceId);
     }
@@ -122,7 +130,9 @@ function parseCoursePlanComplex(
           params: cubeParams,
           routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
           path: toPath(cubeParams),
-          can:false,
+          can: false,
+          order: 0,
+          type: 'CUBE',
         };
       });
       course.cubes = cubes;

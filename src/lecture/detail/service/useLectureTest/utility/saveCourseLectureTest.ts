@@ -28,12 +28,12 @@ import {
   getLectureTestItem,
   getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import { getTestStudentItemMapFromCourse } from './getTestStudentItemMapFromCourse';
 
 export async function saveCourseTestAnswerSheet(
-  params: LectureParams,
+  params: LectureRouterParams,
   answerSheetId: string,
   pFinished: boolean,
   pSubmitted: boolean
