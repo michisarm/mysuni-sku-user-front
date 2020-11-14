@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
-import {
-  onLectureStructure,
-} from '../../store/LectureStructureStore';
+import { onLectureStructure } from '../../store/LectureStructureStore';
 import { LectureStructure } from '../../viewModel/LectureStructure';
 
 type Value = LectureStructure | undefined;
 
 // side effect call by ref
-export function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
+export function mergeActivated(
+  lectureStructure: LectureStructure,
+  pathname: string
+) {
   if (lectureStructure.cube !== undefined) {
     if (lectureStructure.cube.path === pathname) {
       lectureStructure.cube.activated = true;
@@ -38,37 +39,24 @@ export function mergeActivated(lectureStructure: LectureStructure, pathname: str
     if (lectureStructure.course.path === pathname) {
       lectureStructure.course.activated = true;
     }
-  }
-  if (
-    lectureStructure.test !== undefined &&
-    lectureStructure.test.path === pathname
-  ) {
-    lectureStructure.test.activated = true;
-  }
-  if (
-    lectureStructure.survey !== undefined &&
-    lectureStructure.survey.path === pathname
-  ) {
-    lectureStructure.survey.activated = true;
-  }
-  if (
-    lectureStructure.report !== undefined &&
-    lectureStructure.report.path === pathname
-  ) {
-    lectureStructure.report.activated = true;
-  }
-  if (
-    lectureStructure.discussion !== undefined &&
-    lectureStructure.discussion.path === pathname
-  ) {
-    lectureStructure.discussion.activated = true;
-    setLectureDiscussion({
-      id: lectureStructure.discussion.id,
-      name: lectureStructure.discussion.name,
-      time: lectureStructure.discussion.time,
-      creator: lectureStructure.discussion.creator,
-      creatorAudienceId: lectureStructure.discussion.creatorAudienceId
-    });
+    if (
+      lectureStructure.course.test !== undefined &&
+      lectureStructure.course.test.path === pathname
+    ) {
+      lectureStructure.course.test.activated = true;
+    }
+    if (
+      lectureStructure.course.survey !== undefined &&
+      lectureStructure.course.survey.path === pathname
+    ) {
+      lectureStructure.course.survey.activated = true;
+    }
+    if (
+      lectureStructure.course.report !== undefined &&
+      lectureStructure.course.report.path === pathname
+    ) {
+      lectureStructure.course.report.activated = true;
+    }
   }
 
   lectureStructure.cubes.forEach(cube => {
@@ -98,19 +86,6 @@ export function mergeActivated(lectureStructure: LectureStructure, pathname: str
     if (course.report !== undefined && course.report.path === pathname) {
       course.report.activated = true;
     }
-    if (
-      course.discussion !== undefined &&
-      course.discussion.path === pathname
-    ) {
-      course.discussion.activated = true;
-      setLectureDiscussion({
-        id: course.discussion.id,
-        name: course.discussion.name,
-        time: course.discussion.time,
-        creator: course.discussion.creator,
-        creatorAudienceId: course.discussion.creatorAudienceId,
-      });
-    }
     if (course.cubes !== undefined) {
       course.cubes.forEach(cube => {
         if (cube.path === pathname) {
@@ -128,13 +103,24 @@ export function mergeActivated(lectureStructure: LectureStructure, pathname: str
       });
     }
   });
+  lectureStructure.discussions.forEach(discussion => {
+    if (discussion.path === pathname) {
+      discussion.activated = true;
+    }
+    setLectureDiscussion({
+      id: discussion.id,
+      name: discussion.name,
+      time: discussion.time,
+      creator: discussion.creator,
+      creatorAudienceId: discussion.creatorAudienceId,
+    });
+  });
 }
 
 let subscriberIdRef = 0;
 export function useLectureStructure(): [Value] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
-
 
   useEffect(() => {
     const next = `useLectureStructure-${++subscriberIdRef}`;

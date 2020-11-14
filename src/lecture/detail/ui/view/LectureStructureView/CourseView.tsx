@@ -1,12 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
-import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
   LectureStructureDurationableCubeItem,
+  LectureStructureItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -14,7 +13,7 @@ import {
 import CourseReportView from './CourseReportView';
 import CourseSurveyView from './CourseSurveyView';
 import CourseTestView from './CourseTestView';
-import CubeView, { parseCubeType } from './CubeView';
+import CubeView from './CubeView';
 import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ReportView from './ReportView';
@@ -26,10 +25,10 @@ interface CourseViewProps {
   state?: State;
   activated?: boolean;
   cubes?: LectureStructureCubeItem[];
+  items?: LectureStructureItem[];
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
-  discussion?: LectureStructureDiscussionItem;
   path: string;
 }
 
@@ -37,11 +36,11 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   name,
   state = 'None',
   activated = false,
-  cubes = [],
+  cubes,
+  items,
   test,
   survey,
   report,
-  discussion,
   path,
 }) {
   const [opened, setOpened] = useState<boolean>(true);
@@ -62,7 +61,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
         >
-          총<strong>{cubes.length}개</strong> 강의 구성
+          총<strong>{(items || cubes || []).length}개</strong> 강의 구성
         </button>
         <span
           className={`label-state-learning ${
@@ -76,69 +75,148 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         className="state-course-holder"
         style={opened ? {} : { display: 'none' }}
       >
-        {cubes.map(cube => {
-          return (
-            <>
-              {cube !== undefined &&
-                (cube as LectureStructureDurationableCubeItem).duration ===
-                  undefined && (
-                  <CubeView
-                    key={cube.id}
-                    name={cube.name}
-                    state={cube.state}
-                    activated={cube.activated}
-                    learningTime={cube.learningTime}
-                    cubeType={cube.cubeType}
-                    path={cube.path}
-                    can={cube.can}
+        {items !== undefined &&
+          items.map(item => {
+            if (item.type === 'CUBE') {
+              const cube = item as LectureStructureCubeItem;
+              return (
+                <>
+                  {(cube as LectureStructureDurationableCubeItem).duration ===
+                    undefined && (
+                    <CubeView
+                      key={cube.id}
+                      name={cube.name}
+                      state={cube.state}
+                      activated={cube.activated}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                    />
+                  )}
+                  {(cube as LectureStructureDurationableCubeItem).duration !==
+                    undefined && (
+                    <DurationableCubeView
+                      key={cube.id}
+                      name={cube.name}
+                      state={cube.state}
+                      activated={cube.activated}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                      duration={
+                        (cube as LectureStructureDurationableCubeItem).duration
+                      }
+                    />
+                  )}
+                  {cube.test !== undefined && (
+                    <TestView
+                      name={cube.test.name}
+                      state={cube.test.state}
+                      questionCount={cube.test.questionCount}
+                      path={cube.test.path}
+                      can={cube.test.can}
+                    />
+                  )}
+                  {cube.survey !== undefined && (
+                    <SurveyView
+                      name={cube.survey.name}
+                      state={cube.survey.state}
+                      questionCount={cube.survey.questionCount}
+                      path={cube.survey.path}
+                      can={cube.survey.can}
+                    />
+                  )}
+                  {cube.report !== undefined && (
+                    <ReportView
+                      name={cube.report.name}
+                      state={cube.report.state}
+                      path={cube.report.path}
+                      can={cube.report.can}
+                    />
+                  )}
+                </>
+              );
+            }
+            if (item.type === 'DISCUSSION') {
+              const discussion = item as LectureStructureDiscussionItem;
+              return (
+                <DiscussionView
+                  key={discussion.id}
+                  name={discussion.name}
+                  state={discussion.state}
+                  path={discussion.path}
+                  activated={discussion.activated}
+                />
+              );
+            }
+          })}
+        {items === undefined &&
+          cubes !== undefined &&
+          cubes.map(cube => {
+            return (
+              <>
+                {cube !== undefined &&
+                  (cube as LectureStructureDurationableCubeItem).duration ===
+                    undefined && (
+                    <CubeView
+                      key={cube.id}
+                      name={cube.name}
+                      state={cube.state}
+                      activated={cube.activated}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                    />
+                  )}
+                {cube !== undefined &&
+                  (cube as LectureStructureDurationableCubeItem).duration !==
+                    undefined && (
+                    <DurationableCubeView
+                      key={cube.id}
+                      name={cube.name}
+                      state={cube.state}
+                      activated={cube.activated}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                      duration={
+                        (cube as LectureStructureDurationableCubeItem).duration
+                      }
+                    />
+                  )}
+                {cube.test !== undefined && (
+                  <TestView
+                    name={cube.test.name}
+                    state={cube.test.state}
+                    questionCount={cube.test.questionCount}
+                    path={cube.test.path}
+                    can={cube.test.can}
                   />
                 )}
-              {cube !== undefined &&
-                (cube as LectureStructureDurationableCubeItem).duration !==
-                  undefined && (
-                  <DurationableCubeView
-                    key={cube.id}
-                    name={cube.name}
-                    state={cube.state}
-                    activated={cube.activated}
-                    learningTime={cube.learningTime}
-                    cubeType={cube.cubeType}
-                    path={cube.path}
-                    can={cube.can}
-                    duration={
-                      (cube as LectureStructureDurationableCubeItem).duration
-                    }
+                {cube.survey !== undefined && (
+                  <SurveyView
+                    name={cube.survey.name}
+                    state={cube.survey.state}
+                    questionCount={cube.survey.questionCount}
+                    path={cube.survey.path}
+                    can={cube.survey.can}
                   />
                 )}
-              {cube.test !== undefined && (
-                <TestView
-                  name={cube.test.name}
-                  state={cube.test.state}
-                  questionCount={cube.test.questionCount}
-                  path={cube.test.path}
-                  can={cube.test.can}
-                />
-              )}
-              {cube.survey !== undefined && (
-                <SurveyView
-                  name={cube.survey.name}
-                  state={cube.survey.state}
-                  questionCount={cube.survey.questionCount}
-                  path={cube.survey.path}
-                  can={cube.survey.can}
-                />
-              )}
-              {cube.report !== undefined && (
-                <ReportView
-                  name={cube.report.name}
-                  state={cube.report.state}
-                  path={cube.report.path}
-                  can={cube.report.can}
-                />
-              )}
-            </>
-          );
-        })}
+                {cube.report !== undefined && (
+                  <ReportView
+                    name={cube.report.name}
+                    state={cube.report.state}
+                    path={cube.report.path}
+                    can={cube.report.can}
+                  />
+                )}
+              </>
+            );
+          })}
         {test && (
           <CourseTestView
             name={test.name}
@@ -166,14 +244,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             activated={report.activated}
             path={report.path}
             can={report.can}
-          />
-        )}
-        {discussion && (
-          <DiscussionView
-            name={discussion.name}
-            state={discussion.state}
-            activated={discussion.activated}
-            path={discussion.path}
           />
         )}
       </div>

@@ -9,18 +9,23 @@ import { State } from './LectureState';
 import { LectureType } from './LectureType';
 
 export type LectureStructureItemType =
+  | 'PROGRAM'
+  | 'CUBE'
+  | 'COURSE'
+  | 'DISCUSSION'
   | 'REPORT'
   | 'EXAM'
-  | 'SURVEY'
-  | 'DISCUSSION';
+  | 'SURVEY';
 
-interface Item {
+export interface LectureStructureItem {
   activated?: boolean;
   params: LectureParams;
   routerParams: LectureRouterParams;
   path: string;
   state?: State;
   can: boolean;
+  order: number;
+  type: LectureStructureItemType;
 }
 
 export interface StudentStateMap {
@@ -33,44 +38,32 @@ export interface ItemMap {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
-  discussion?: LectureStructureDiscussionItem;
 }
 
-export interface LectureStructureTestItem extends Item {
+export interface LectureStructureTestItem extends LectureStructureItem {
   id: string;
   name: string;
   questionCount: number;
-  type: LectureStructureItemType;
 }
 
-export interface LectureStructureSurveyItem extends Item {
+export interface LectureStructureSurveyItem extends LectureStructureItem {
   id: string;
   name: string;
   questionCount: number;
-  type: LectureStructureItemType;
 }
 
-export interface LectureStructureReportItem extends Item {
+export interface LectureStructureReportItem extends LectureStructureItem {
   name: string;
-  type: LectureStructureItemType;
 }
 
-export interface LectureStructureDiscussionItem extends Item {
-  id: string;
-  name: string;
-  time: number;
-  creator: string;
-  creatorAudienceId: string;
-  type: LectureStructureItemType;
-}
-
-export interface LectureStructureCubeItem extends Item {
+export interface LectureStructureCubeItem extends LectureStructureItem {
   id: string;
   name: string;
   cubeId: string;
   cubeType: CubeType;
   learningTime: number;
   learningState?: LearningState;
+  learningCardId?: string;
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
@@ -79,11 +72,20 @@ export interface LectureStructureCubeItem extends Item {
   student?: Student;
 }
 
-export interface LectureStructureDurationableCubeItem extends LectureStructureCubeItem {
+export interface LectureStructureDurationableCubeItem
+  extends LectureStructureCubeItem {
   duration?: number;
 }
 
-export interface LectureStructureCourseItem extends Item {
+export interface LectureStructureDiscussionItem extends LectureStructureItem {
+  id: string;
+  name: string;
+  time: number;
+  creator: string;
+  creatorAudienceId: string;
+}
+
+export interface LectureStructureCourseItem extends LectureStructureItem {
   id: string;
   coursePlanId: string;
   cubes?: LectureStructureCubeItem[];
@@ -93,7 +95,7 @@ export interface LectureStructureCourseItem extends Item {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
-  discussion?: LectureStructureDiscussionItem;
+  discussions?: LectureStructureDiscussionItem[];
   lectureView?: LectureView;
   student?: Student;
 }
@@ -103,9 +105,7 @@ export interface LectureStructure {
   cubes: LectureStructureCubeItem[];
   course?: LectureStructureCourseItem;
   cube?: LectureStructureCubeItem;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  discussion?: LectureStructureDiscussionItem;
+  discussions: LectureStructureDiscussionItem[];
   type: LectureType;
+  items: LectureStructureItem[];
 }
