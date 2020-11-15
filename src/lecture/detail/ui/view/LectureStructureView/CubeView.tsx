@@ -51,11 +51,7 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
         <span className="copy-title">{name}</span>
         <ul className="type-info">
           <li>{parseCubeType(cubeType)}</li>
-          <li>
-            {cubeType === 'Community'
-              ? ''
-              : timeToHourMinuteFormat(learningTime)}
-          </li>{' '}
+          <li>{timeToHourMinuteFormat(learningTime)}</li>
         </ul>
       </span>
     </Link>
