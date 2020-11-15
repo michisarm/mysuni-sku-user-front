@@ -15,7 +15,7 @@ interface ProgramTestViewProps {
 function cannotAlert() {
   reactAlert({
     title: 'Test 안내',
-    message: '학습 완료 후 Test 참여 가능합니다.',
+    message: '학습 진행 후 Test 참여 가능합니다.',
   });
 }
 
