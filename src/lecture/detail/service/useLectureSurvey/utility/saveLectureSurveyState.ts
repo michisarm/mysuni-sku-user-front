@@ -163,8 +163,8 @@ export async function saveLectureSurveyState() {
   }
   await coreSaveLectureSurveyState();
   reactAlert({
-    title: 'Survey 저장',
-    message: '저장 되었습니다.',
+    title: '알림',
+    message: 'Survey 설문 이 저장 되었습니다.',
   });
 }
 
@@ -181,8 +181,8 @@ export async function submitLectureSurveyState() {
   }
   await coreSubmitLectureSurveyState();
   reactAlert({
-    title: 'Survey 제출',
-    message: '참여 완료되었습니다.',
+    title: '알림',
+    message: 'Survey 설문 참여가 완료 되었습니다.',
   });
 }
 
