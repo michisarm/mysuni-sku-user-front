@@ -92,7 +92,7 @@ async function getSurveyItem(lectureView: LectureView, params: LectureParams) {
       title = titles.langStringMap[titles.defaultLanguage];
     }
     const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCase.id);
-    if (answerSheet !== null) {
+    if (answerSheet !== undefined) {
       const { progress } = answerSheet;
       if (progress === 'Complete') {
         state = 'Completed';

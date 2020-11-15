@@ -266,7 +266,7 @@ async function getCubeLectureSurveyState(
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-  if (answerSheet !== null && answerSheet.id !== undefined) {
+  if (answerSheet !== undefined && answerSheet.id !== undefined) {
     const {
       round,
       progress,
@@ -357,7 +357,7 @@ export async function getCourseLectureSurveyState(
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-  if (answerSheet !== null && answerSheet.id !== undefined) {
+  if (answerSheet !== undefined && answerSheet.id !== undefined) {
     const {
       id: answerSheetId,
       round,

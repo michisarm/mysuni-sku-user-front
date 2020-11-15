@@ -98,7 +98,7 @@ async function getSurveyItem(
         title = titles.langStringMap[titles.defaultLanguage];
       }
       const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-      if (answerSheet !== null) {
+      if (answerSheet !== undefined) {
         const { progress } = answerSheet;
         if (progress === 'Complete') {
           state = 'Completed';
