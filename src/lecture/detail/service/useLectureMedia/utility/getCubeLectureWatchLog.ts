@@ -18,7 +18,6 @@ export async function getCubeLectureWatchLog(
   params: LectureRouterParams
 ): Promise<void> {
   const personalCube = await getPersonalCubeByParams(params);
-  console.log('personalCube', personalCube);
   if (personalCube !== undefined) {
     const watchLogList = await findWatchLogList(
       new PatronKey().keyString,
