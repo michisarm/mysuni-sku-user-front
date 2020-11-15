@@ -1,12 +1,16 @@
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ApplyReferenceModal } from '../../../../approval';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../personalcube/classroom/model';
+import FileDownloadPop from '../../../../personalcube/shared/OverviewField/sub/FileDownloadPop';
 import ClassroomModalView from '../../../category/ui/view/ClassroomModalView';
+import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureClassroom } from '../../service/useLectureClassroom/useLectureClassroom';
+import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
+import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import { Classroom } from '../../viewModel/LectureClassroom';
 import LectureStateView from '../view/LectureStateView';
 
@@ -36,10 +40,18 @@ function LectureStateContainer() {
     selectedClassroom,
     setSelectedClassroom,
   ] = useState<ClassroomModel | null>(null);
+  const params = useLectureRouterParams();
+  const [fileDonwloadPopShow, setFileDonwloadPopShow] = useState<boolean>(
+    false
+  );
   const [lectureState] = useLectureState();
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const applyReferenceModalRef = useRef<any>(null);
   const [lectureClassroom] = useLectureClassroom(true);
+  const closeFileDonwloadPop = useCallback(() => {
+    setFileDonwloadPopShow(false);
+  }, []);
+  const [lectureWebpage] = useLectureWebpage();
   /* eslint-disable */
   const hookAction = useCallback<() => void>(() => {
     if (lectureState?.classroomSubmit !== undefined) {
@@ -51,6 +63,9 @@ function LectureStateContainer() {
         return;
       }
       return ClassroomModalViewRef.current?.show();
+    }
+    if (lectureState?.type === 'Documents') {
+      setFileDonwloadPopShow(true);
     }
     if (lectureState !== undefined && lectureState.action !== undefined) {
       return lectureState.action();
@@ -84,6 +99,19 @@ function LectureStateContainer() {
     },
     [lectureState, selectedClassroom]
   );
+  useEffect(() => {
+    if (lectureState === undefined) {
+      return;
+    }
+    if (params === undefined) {
+      return;
+    }
+    if (lectureState.type === 'Documents') {
+      const { contentId, lectureId } = params;
+      getCubeLectureOverview(contentId, lectureId);
+    }
+  }, [lectureState, params]);
+
   return (
     <>
       {lectureState && (
@@ -107,6 +135,16 @@ function LectureStateContainer() {
             selectedClassRoom={selectedClassroom}
             handleOk={onApply}
           />
+        </>
+      )}
+      {lectureState?.type === 'Documents' && lectureWebpage !== undefined && (
+        <>
+          {fileDonwloadPopShow && (
+            <FileDownloadPop
+              fileBoxIds={[lectureWebpage.fileBoxId]}
+              onClose={closeFileDonwloadPop}
+            />
+          )}
         </>
       )}
     </>

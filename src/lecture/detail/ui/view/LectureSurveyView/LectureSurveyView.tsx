@@ -130,14 +130,23 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         }
         return null;
       })}
-      <div className="survey-preview">
-        <button className="ui button fix line" onClick={saveLectureSurveyState}>
-          저장
-        </button>
-        <button className="ui button fix bg" onClick={submitLectureSurveyState}>
-          제출
-        </button>
-      </div>
+      {lectureSurveyState === undefined ||
+        (lectureSurveyState.state !== 'Completed' && (
+          <div className="survey-preview">
+            <button
+              className="ui button fix line"
+              onClick={saveLectureSurveyState}
+            >
+              저장
+            </button>
+            <button
+              className="ui button fix bg"
+              onClick={submitLectureSurveyState}
+            >
+              제출
+            </button>
+          </div>
+        ))}
     </>
   );
 };

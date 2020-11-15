@@ -42,7 +42,7 @@ const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> = function
         <Table.Body>
           {rows &&
             rows.map(({ title, no: rowNumber }) => (
-              <Table.Row>
+              <Table.Row key={rowNumber}>
                 <Table.Cell>{title}</Table.Cell>
                 {columns &&
                   columns.map(({ no: columnSelectedNumber }) => (
