@@ -135,7 +135,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                     </div>
                   </Form.Field>
                   <Form.Field>
-                    <label>첨부파일</label>
+                    <label className="necessary">첨부파일</label>
                     <div className="report-attach">
                       {/* <AttachFileUpload filesMap={filesMap}/> */}
                       <div className="lg-attach">
@@ -254,9 +254,12 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 </div>
               )}
               <div className="survey-preview">
-                <button className="ui button fix bg" onClick={onSubmitClick}>
-                  제출
-                </button>
+                {getLectureReport()?.state !== 'Completed' && (
+                  <button className="ui button fix bg" onClick={onSubmitClick}>
+                    제출
+                  </button>
+                )
+                }
               </div>
             </div>
           </div>
