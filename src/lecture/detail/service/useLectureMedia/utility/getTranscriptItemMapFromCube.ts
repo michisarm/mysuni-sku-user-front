@@ -17,6 +17,8 @@ export async function getTranscriptItem(
       locale,
       idx,
       text,
+      startTime,
+      endTime,
       creatorId,
       createdTime,
       modifierId,
@@ -27,6 +29,8 @@ export async function getTranscriptItem(
       locale,
       idx,
       text,
+      startTime,
+      endTime,
     };
 
     lectureTranscripts.push(lectureTranscript);
