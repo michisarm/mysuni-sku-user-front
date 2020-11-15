@@ -16,6 +16,7 @@ import StudentCdo from 'lecture/detail/model/StudentCdo';
 import { setLectureConfirmProgress } from '../../../store/LectureConfirmProgressStore';
 import { patronInfo } from '@nara.platform/dock';
 import { PatronType } from '@nara.platform/accent';
+import { getStateFromCube } from '../../useLectureState/utility/getStateFromCube';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
@@ -86,6 +87,8 @@ export async function confirmProgress(
       };
 
       setLectureConfirmProgress(await progressByCardId(studentCdo));
+      getStateFromCube(params);
+
     }
   }
 }

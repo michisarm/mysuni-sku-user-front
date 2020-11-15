@@ -48,7 +48,6 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue, (params: Lectu
     }
     return onLectureTranscripts(next => {
       setTranscriptsValue(next);
-      console.log('LectureTranscriptsItem', next);
     }, subscriberId);
   }, [subscriberId]);
 
@@ -58,7 +57,6 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue, (params: Lectu
     }
     return onLectureMedia(next => {
       setMediaValue(next);
-      console.log('LectureMediaItem', next);
     }, subscriberId);
   }, [subscriberId]);
 

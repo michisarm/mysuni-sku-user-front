@@ -149,7 +149,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       if(params){
         await confirmProgress(params);
         requestLectureStructure(lectureParams, pathname);
-        console.log("ddd");
       }    
     },
     [params]
