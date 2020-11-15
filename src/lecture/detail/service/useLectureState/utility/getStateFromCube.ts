@@ -367,7 +367,7 @@ async function getStateWhenApproved(
                 ...lectureState,
                 action: () => complete(params, rollBookId),
                 canAction: true,
-                actionText: APPROVE,
+                actionText: COMPLETE,
                 stateText,
               };
             }
@@ -444,7 +444,7 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
           canAction: true,
           action: () => cancel(params, student),
           actionText: CANCEL,
-          stateText: SUBMITED,
+          stateText: REJECTED,
         };
     }
   }
