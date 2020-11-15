@@ -6,6 +6,7 @@ import {
 import SkProfileService from 'profile/present/logic/SkProfileService';
 import StudentCdo from 'lecture/detail/model/StudentCdo';
 import { getStateFromCube } from '../../useLectureState/utility/getStateFromCube';
+import { confirmProgress } from './confirmProgress';
 
 export async function checkStudent(
   params: LectureRouterParams
@@ -36,7 +37,8 @@ export async function checkStudent(
       };
 
       await registerStudent(nextStudentCdo);
-      getStateFromCube(params);
+      await confirmProgress(params);
+      // getStateFromCube(params);
     }
   }
 }
