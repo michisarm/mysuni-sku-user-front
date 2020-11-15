@@ -2,7 +2,8 @@ import MediaContents from '../model/MediaContents';
 import { MediaType } from '../model/MediaType';
 import LectureParams from './LectureParams';
 import LectureRouterParams from './LectureRouterParams';
-import { State } from './LectureState';
+
+export type State = 'None' | 'Progress' | 'Completed';
 
 export interface LectureMedia {
   id: string;

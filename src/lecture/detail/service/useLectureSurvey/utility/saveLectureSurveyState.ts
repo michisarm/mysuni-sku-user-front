@@ -1,3 +1,4 @@
+import { reactAlert } from '@nara.platform/accent';
 import {
   openAnswerSheet,
   saveAnswerSheet,
@@ -151,7 +152,6 @@ async function coreSubmitLectureSurveyState() {
 
 export async function saveLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  console.log('lectureSurveyState', lectureSurveyState);
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -162,11 +162,14 @@ export async function saveLectureSurveyState() {
     await openLectureSurveyState();
   }
   await coreSaveLectureSurveyState();
+  reactAlert({
+    title: '알림',
+    message: 'Survey 설문 이 저장 되었습니다.',
+  });
 }
 
 export async function submitLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  console.log('lectureSurveyState', lectureSurveyState);
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -177,6 +180,10 @@ export async function submitLectureSurveyState() {
     await openLectureSurveyState();
   }
   await coreSubmitLectureSurveyState();
+  reactAlert({
+    title: '알림',
+    message: 'Survey 설문 참여가 완료 되었습니다.',
+  });
 }
 
 export function selectSentenceAnswer(

@@ -1,17 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
-import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
+  LectureStructureDurationableCubeItem,
+  LectureStructureItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
-import { parseCubeType } from './CubeView';
+import CourseReportView from './CourseReportView';
+import CourseSurveyView from './CourseSurveyView';
+import CourseTestView from './CourseTestView';
+import CubeView from './CubeView';
 import DiscussionView from './DiscussionView';
+import DurationableCubeView from './DurationableCubeView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -21,63 +25,22 @@ interface CourseViewProps {
   state?: State;
   activated?: boolean;
   cubes?: LectureStructureCubeItem[];
+  items?: LectureStructureItem[];
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
-  discussion?: LectureStructureDiscussionItem;
   path: string;
 }
-
-interface CubeViewProps {
-  name: string;
-  state?: State;
-  activated?: boolean;
-  learningTime: number;
-  cubeType: CubeType;
-  path: string;
-}
-
-const CubeView: React.FC<CubeViewProps> = function CubeView({
-  name,
-  state = 'None',
-  activated = false,
-  learningTime,
-  cubeType,
-  path,
-}) {
-  return (
-    <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
-      <span
-        className={`label-state-cube ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
-      >
-        <span>cube 완료상태</span>
-      </span>
-      <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
-          <li>{parseCubeType(cubeType)}</li>
-          <li>
-            {cubeType === 'Community'
-              ? ''
-              : timeToHourMinuteFormat(learningTime)}
-          </li>
-        </ul>
-      </span>
-    </Link>
-  );
-};
 
 const CourseView: React.FC<CourseViewProps> = function CourseView({
   name,
   state = 'None',
   activated = false,
-  cubes = [],
+  cubes,
+  items,
   test,
   survey,
   report,
-  discussion,
   path,
 }) {
   const [opened, setOpened] = useState<boolean>(true);
@@ -98,7 +61,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
         >
-          총<strong>{cubes.length}개</strong> 강의 구성
+          총<strong>{(items || cubes || []).length}개</strong> 강의 구성
         </button>
         <span
           className={`label-state-learning ${
@@ -112,51 +75,169 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
         className="state-course-holder"
         style={opened ? {} : { display: 'none' }}
       >
-        {cubes.map(cube => {
-          return (
-            <CubeView
-              key={cube.id}
-              name={cube.name}
-              state={cube.state}
-              activated={cube.activated}
-              learningTime={cube.learningTime}
-              cubeType={cube.cubeType}
-              path={cube.path}
-            />
-          );
-        })}
+        {items !== undefined &&
+          items.map(item => {
+            if (item.type === 'CUBE') {
+              const cube = item as LectureStructureCubeItem;
+              return (
+                <>
+                  {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+                    <CubeView
+                      key={cube.id}
+                      name={cube.name}
+                      state={cube.state}
+                      activated={cube.activated}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                    />
+                  )}
+                  {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+                    <DurationableCubeView
+                      key={cube.id}
+                      name={cube.name}
+                      state={cube.state}
+                      activated={cube.activated}
+                      learningTime={cube.learningTime}
+                      cubeType={cube.cubeType}
+                      path={cube.path}
+                      can={cube.can}
+                      duration={
+                        (cube as LectureStructureDurationableCubeItem).duration
+                      }
+                    />
+                  )}
+                  {cube.test !== undefined && (
+                    <TestView
+                      name={cube.test.name}
+                      state={cube.test.state}
+                      questionCount={cube.test.questionCount}
+                      path={cube.test.path}
+                      can={cube.test.can}
+                    />
+                  )}
+                  {cube.survey !== undefined && (
+                    <SurveyView
+                      name={cube.survey.name}
+                      state={cube.survey.state}
+                      questionCount={cube.survey.questionCount}
+                      path={cube.survey.path}
+                      can={cube.survey.can}
+                    />
+                  )}
+                  {cube.report !== undefined && (
+                    <ReportView
+                      name={cube.report.name}
+                      state={cube.report.state}
+                      path={cube.report.path}
+                      can={cube.report.can}
+                    />
+                  )}
+                </>
+              );
+            }
+            if (item.type === 'DISCUSSION') {
+              const discussion = item as LectureStructureDiscussionItem;
+              return (
+                <DiscussionView
+                  key={discussion.id}
+                  name={discussion.name}
+                  state={discussion.state}
+                  path={discussion.path}
+                  activated={discussion.activated}
+                />
+              );
+            }
+          })}
+        {items === undefined &&
+          cubes !== undefined &&
+          cubes.map(cube => {
+            return (
+              <>
+                {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+                  <CubeView
+                    key={cube.id}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.activated}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                  />
+                )}
+                {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+                  <DurationableCubeView
+                    key={cube.id}
+                    name={cube.name}
+                    state={cube.state}
+                    activated={cube.activated}
+                    learningTime={cube.learningTime}
+                    cubeType={cube.cubeType}
+                    path={cube.path}
+                    can={cube.can}
+                    duration={
+                      (cube as LectureStructureDurationableCubeItem).duration
+                    }
+                  />
+                )}
+                {cube.test !== undefined && (
+                  <TestView
+                    name={cube.test.name}
+                    state={cube.test.state}
+                    questionCount={cube.test.questionCount}
+                    path={cube.test.path}
+                    can={cube.test.can}
+                  />
+                )}
+                {cube.survey !== undefined && (
+                  <SurveyView
+                    name={cube.survey.name}
+                    state={cube.survey.state}
+                    questionCount={cube.survey.questionCount}
+                    path={cube.survey.path}
+                    can={cube.survey.can}
+                  />
+                )}
+                {cube.report !== undefined && (
+                  <ReportView
+                    name={cube.report.name}
+                    state={cube.report.state}
+                    path={cube.report.path}
+                    can={cube.report.can}
+                  />
+                )}
+              </>
+            );
+          })}
         {test && (
-          <TestView
+          <CourseTestView
             name={test.name}
             state={test.state}
             activated={test.activated}
             questionCount={test.questionCount}
             path={test.path}
+            can={test.can}
           />
         )}
         {survey && (
-          <SurveyView
+          <CourseSurveyView
             name={survey.name}
             state={survey.state}
             activated={survey.activated}
             questionCount={survey.questionCount}
             path={survey.path}
+            can={survey.can}
           />
         )}
         {report && (
-          <ReportView
+          <CourseReportView
             name={report.name}
             state={report.state}
             activated={report.activated}
             path={report.path}
-          />
-        )}
-        {discussion && (
-          <DiscussionView
-            name={discussion.name}
-            state={discussion.state}
-            activated={discussion.activated}
-            path={discussion.path}
+            can={report.can}
           />
         )}
       </div>

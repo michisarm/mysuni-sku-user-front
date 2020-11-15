@@ -13,6 +13,7 @@ import {
   setCubeStudentExamId,
 } from 'lecture/detail/api/lectureApi';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -58,13 +59,13 @@ async function getTestItem(examId: string) {
 }
 
 export async function getTestItemMapFromCube(
-  params: LectureParams
+  params: LectureRouterParams
 ): Promise<LectureTestItem | undefined> {
   // void : return이 없는 경우 undefined
 
-  const personalCube = await getPersonalCubeByParams(params.cubeId!);
+  const personalCube = await getPersonalCubeByParams(params.contentId);
 
-  const studentJoins = await findIsJsonStudentByCube(params.lectureCardId!);
+  const studentJoins = await findIsJsonStudentByCube(params.lectureId);
   let examId = '';
   if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
     const student = await findStudent(studentJoins[0].studentId);
@@ -73,7 +74,7 @@ export async function getTestItemMapFromCube(
     if (examId === undefined || examId === null || examId === '') {
       // examId set
       await setCubeStudentExamId(
-        params.cubeId!,
+        params.contentId,
         studentJoins[0].studentId
       ).then(response => {
         examId = response.testId;

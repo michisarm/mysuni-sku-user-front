@@ -1,0 +1,13 @@
+### Test Submit
+POST http://localhost:3000/api/assistant/v1/answersheets
+
+{"id":"","examId":"CUBE-2l8","examineeId":"r47a@ne1-m2","examineeEmail":"","examineeName":"","questionCount":0,"finished":true,"submitted":true,"answers":[{"questionNo":"1","answer":"1"},{"questionNo":"2","answer":"2"},{"questionNo":"3","answer":"단답"},{"questionNo":"4","answer":"서술"}],"submitAnswers":[{"questionNo":"1","answer":"1"},{"questionNo":"2","answer":"2"},{"questionNo":"3","answer":"단답"},{"questionNo":"4","answer":"서술"}]}
+### Test Submit After 1
+PUT http://localhost:3000/api/assistant/v1/answersheets/CUBE-2l8-r47a@ne1-m2
+
+{"id":"CUBE-2l8-r47a@ne1-m2","examId":"CUBE-2l8","examineeId":"r47a@ne1-m2","examineeEmail":"","examineeName":"","questionCount":0,"finished":true,"submitted":true,"answers":[{"questionNo":"1","answer":"1"},{"questionNo":"2","answer":"2"},{"questionNo":"3","answer":"단답"},{"questionNo":"4","answer":"서술"}],"submitAnswers":[{"questionNo":"1","answer":"1"},{"questionNo":"2","answer":"2"},{"questionNo":"3","answer":"단답"},{"questionNo":"4","answer":"서술"}]}
+
+### Test Submit After 2
+PUT http://localhost:3000/api/lecture/students/flow/examProcess/f03aec6d-bb14-45a3-82e9-08e416351e5c/CUBE-2l8
+
+

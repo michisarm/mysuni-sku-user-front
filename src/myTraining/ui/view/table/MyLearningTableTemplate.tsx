@@ -15,6 +15,18 @@ function MyLearningTableTemplate(props: Props) {
   return (
     <div className={getWrapperStyle(contentType)}>
       <Table className={getTableStyle(contentType)}>
+        {contentType === MyLearningContentType.PersonalCompleted && (
+          <colgroup>
+            <col width="10%" />
+            <col width="25%" />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="5%" />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="10%" />
+          </colgroup>
+        )}
         {children}
       </Table>
     </div>

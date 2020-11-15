@@ -1,5 +1,5 @@
 import { IdName, reactAlert } from '@nara.platform/accent';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -10,7 +10,6 @@ import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstruc
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 
-import DeleteIcon from '../../../../../style/media/delete-btn.png';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import LectureClassroom, {
   Classroom,
@@ -74,13 +73,13 @@ function getColor(college: IdName) {
   return color;
 }
 
-function getLearningPeriod(classrooms: Classroom[]): string | void {
+function getClassroom(classrooms: Classroom[]): Classroom | undefined {
   if (classrooms.length > 0) {
     let classroom = classrooms[0];
     // 차수가 하나인 경우
     if (classrooms.length > 1) {
       // 오늘이 차수의 학습기간 내에 있는지 여부
-      const filteredClassrooms = classrooms.filter(classroom => {
+      let filteredClassrooms = classrooms.filter(classroom => {
         const start = moment(classroom.learningStartDate)
           .startOf('day')
           .unix();
@@ -102,9 +101,9 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
               moment(classroom1.learningStartDate).unix() >
               moment(classroom2.learningEndDate).unix()
             ) {
-              return 1;
+              return -1;
             }
-            return -1;
+            return 1;
           };
           classroom = filteredClassrooms.sort(compare)[0];
         }
@@ -112,7 +111,7 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
       // 오늘이 학습기간내인 것이 없는 경우
       else {
         // 오늘 이후의 학습기간을 가진 차수 조회
-        const filteredClassrooms = classrooms.filter(classroom => {
+        filteredClassrooms = classrooms.filter(classroom => {
           const start = moment(classroom.learningStartDate)
             .startOf('day')
             .unix();
@@ -131,18 +130,32 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
                 moment(classroom1.learningStartDate).unix() >
                 moment(classroom2.learningEndDate).unix()
               ) {
-                return 1;
+                return -1;
               }
-              return -1;
+              return 1;
             };
             classroom = filteredClassrooms.sort(compare)[0];
           }
         }
       }
     }
+    return classroom;
+  }
+}
+
+function getLearningPeriod(classrooms: Classroom[]): string | undefined {
+  const classroom = getClassroom(classrooms);
+  if (classroom !== undefined) {
     return `${moment(classroom.learningStartDate).format(
       'YYYY.MM.DD'
     )}~${moment(classroom.learningEndDate).format('YYYY.MM.DD')}`;
+  }
+}
+
+function getCapacity(classrooms: Classroom[]): string | undefined {
+  const classroom = getClassroom(classrooms);
+  if (classroom !== undefined) {
+    return `${classroom.capacity}`;
   }
 }
 
@@ -167,13 +180,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     default:
       break;
   }
+  const instrutor = lectureInstructor?.instructors.find(c => c.represent === 1);
 
-  const [bookMark, setBookMark] = useState(false);
-
-  const BookMark = () => {
-    console.log('click');
-    setBookMark(!bookMark);
-  };
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -204,15 +212,33 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
+<<<<<<< HEAD
               
               {/* 큐브가 classroom일 경우와 elearning일 경우에만 정원정보를 노출한다. */}
               {(lectureSummary.cubeType === 'ClassRoomLecture' || lectureSummary.cubeType === 'ELearning')  && (
                 <>
+=======
+              {lectureSummary.cubeType !== 'ClassRoomLecture' &&
+                lectureSummary.cubeType !== 'ELearning' &&
+                instrutor !== undefined && (
+>>>>>>> adv
                   <Label className="bold onlytext">
-                    <span className="header-span-first">정원정보</span>
-                    <span>{lectureSummary.studentCount}</span>
-                    <span>명</span>
+                    <span className="header-span-first">강사</span>
+                    <span className="tool-tip">
+                      {instrutor.name}
+                      <i>
+                        <Link
+                          to={`/expert/instructor/${instrutor.usid}/Introduce`}
+                          className="tip-mail"
+                          style={{ whiteSpace: 'nowrap', display: 'block' }}
+                        >
+                          {instrutor.name}
+                        </Link>
+                        <span className="tip-id">{instrutor.company}</span>
+                      </i>
+                    </span>
                   </Label>
+<<<<<<< HEAD
                 </>
               )}
               {lectureSummary.cubeType !== 'Community' && (
@@ -222,12 +248,27 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                     <span>{lectureSummary.studentCount}</span>
                     <span>명</span>
                   </Label> */}
+=======
+                )}
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 &&
+                (lectureSummary.cubeType === 'ClassRoomLecture' ||
+                  lectureSummary.cubeType === 'ELearning') &&
+                getCapacity(lectureClassroom.classrooms) !== undefined && (
+>>>>>>> adv
                   <Label className="bold onlytext">
-                    <span className="header-span-first">이수</span>
-                    <span>{lectureSummary.passedCount}</span>
+                    <span className="header-span-first">정원정보</span>
+                    <span>{getCapacity(lectureClassroom.classrooms)}</span>
                     <span>명</span>
                   </Label>
-                </>
+                )}
+              {lectureSummary.cubeType !== 'Community' && (
+                <Label className="bold onlytext">
+                  <span className="header-span-first">이수</span>
+                  <span>{lectureSummary.passedCount}</span>
+                  <span>명</span>
+                </Label>
               )}
               {lectureSummary.cubeType === 'Community' && (
                 <>
@@ -293,8 +334,14 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         <div className="right-area">
           <div className="header-right-link">
             <a onClick={toggleCubeBookmark}>
-              <span onClick={BookMark}>
-                <Icon className={!bookMark ? 'listAdd' : 'listDelete'} />
+              <span>
+                <Icon
+                  className={
+                    lectureSummary.mytrainingId === undefined
+                      ? 'listAdd'
+                      : 'listDelete'
+                  }
+                />
                 {lectureSummary.mytrainingId === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}

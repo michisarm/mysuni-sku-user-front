@@ -54,6 +54,16 @@ export function studentInfoView(
     .then(response => response && response.data);
 }
 
+export function markComplete(
+  body: { rollBookId: string }
+): Promise<void> {
+  const url = `${BASE_URL}/students/flow/markComplete`;
+  return axiosApi
+    .put<void>(url, body)
+    .then(response => response && response.data);
+}
+
+
 export function findStudent(studentId: string): Promise<Student> {
   const url = `${BASE_URL}/students/${studentId}`;
   return axiosApi.get<Student>(url).then(response => response && response.data);
@@ -83,7 +93,7 @@ export function joinCommunity(studentCdo: StudentCdo): Promise<string> {
 }
 
 export function deleteStudentByRollBookId(roolbookId: string) {
-  const url = `${BASE_URL}/students/flow/byRollBookId?roolbookId=${roolbookId}`;
+  const url = `${BASE_URL}/students/flow/byRollBookId?rollBookId=${roolbookId}`;
   return axiosApi.delete(url);
 }
 
@@ -94,7 +104,7 @@ export function modifyStudent(
 ): Promise<void> {
   const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}`;
   return axiosApi
-    .put<void>(url, homework)
+    .put<void>(url, { 'homeworkContent': homework })
     .then(response => response && response.data);
 }
 

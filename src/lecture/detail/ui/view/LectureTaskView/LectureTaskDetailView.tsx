@@ -117,7 +117,6 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
           </div>
           <CommentList
             feedbackId={taskDetail.commentFeedbackId}
-            hideCamera
             name={taskDetail.writer.name}
             email={taskDetail.writer.email}
             companyName={taskDetail.writer.companyName}

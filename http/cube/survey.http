@@ -1,0 +1,16 @@
+### Survey Open
+POST http://localhost:3000/api/survey/response/open/1f1f9057-7426-4a2a-9d1e-41a4c17352cc/rounds/1
+
+{"id":"","entityVersion":0,"patronKey":{},"respondent":{"usid":"","email":"","title":"","company":""},"suggestionSheet":{"proposals":[]},"evaluationSheet":{"id":"","entityVersion":0,"patronKey":{},"questionCount":0,"answers":[],"answerSheetId":""},"managementNumber":"","progress":"Open","completeTime":0,"surveyCaseId":"1f1f9057-7426-4a2a-9d1e-41a4c17352cc","round":1,"serviceId":"LECTURE-CARD-28u","serviceType":"CUBE-2l8"}
+### Survey Submit 1
+PUT http://localhost:3000/api/survey/answerSheets/7bc75c71-db19-4f3c-8f87-d1163bdc3b35
+
+{"nameValues":[{"name":"respondent","value":"{\"usid\":\"\",\"email\":\"\",\"title\":\"\",\"company\":\"\"}"},{"name":"suggestionSheet","value":"{\"proposals\":[]}"}]}
+### Survey Submit 2
+PUT http://localhost:3000/api/survey/answerSheets/7bc75c71-db19-4f3c-8f87-d1163bdc3b35/evaluationSheet
+
+{"nameValues":[{"name":"questionCount","value":0},{"name":"answers","value":"[]"}]}
+### Survey Submit After 2
+PUT http://localhost:3000/api/survey/response/complete/7bc75c71-db19-4f3c-8f87-d1163bdc3b35/rounds/1
+
+{"id":"7bc75c71-db19-4f3c-8f87-d1163bdc3b35","entityVersion":0,"patronKey":{},"respondent":{"usid":"","email":"","title":"","company":""},"suggestionSheet":{"proposals":[]},"evaluationSheet":{"id":"","entityVersion":0,"patronKey":{},"questionCount":0,"answers":[],"answerSheetId":""},"managementNumber":"","progress":"Open","completeTime":0,"surveyCaseId":"1f1f9057-7426-4a2a-9d1e-41a4c17352cc","round":1,"serviceId":"LECTURE-CARD-28u","serviceType":"CUBE-2l8"}

@@ -71,7 +71,8 @@ const TableHeaderColumn = {
     { key: 3, text: '교육시간' },
     { key: 4, text: '승인자' },
     { key: 5, text: '승인자 E-mail' },
-    { key: 6, text: '승인일자' },
+    { key: 6, text: '승인상태' },
+    { key: 7, text: '승인일자' },
   ],
   Retry: [
     { key: 0, text: 'No' },

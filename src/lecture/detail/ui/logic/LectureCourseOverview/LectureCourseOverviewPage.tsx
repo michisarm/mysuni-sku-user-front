@@ -1,20 +1,17 @@
 import React from 'react';
 import { useLectureCourseOverview } from '../../../service/useLectureCourseOverview/useLectureCourseOverview';
+import { useLectureStructure } from '../../../service/useLectureStructure/useLectureStructure';
 import LectureDetailLayout from '../../view/LectureDetailLayout';
+import LectureCubeNavigatorView from '../../view/LectureOverview/LectureCubeNavigatorView';
 import LectureCourseContentContainer from './LectureCourseContentContainer';
 import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 
-/**
- * TODO
- * 강사정보 이미지
- * 뱃지
- * 관련과정
- */
-
 function LectureCourseOverviewPage() {
   useLectureCourseOverview();
+  const [lectureStructure] = useLectureStructure();
   return (
     <LectureDetailLayout>
+      {lectureStructure !== undefined && <LectureCubeNavigatorView lectureStructure={lectureStructure}/>}
       <LectureCourseSummaryContainer />
       <LectureCourseContentContainer />
     </LectureDetailLayout>
