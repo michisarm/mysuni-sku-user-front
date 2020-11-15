@@ -443,10 +443,21 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
   } = option;
   switch (cubeType) {
     case 'WebPage':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: APPROVE,
+        action: () => {
+          if (document.getElementById('webpage-link') !== null) {
+            document.getElementById('webpage-link')?.click();
+          }
+          approve(params, rollBookId, student);
+        },
+        hideState: true,
+      };
     case 'Experiential':
     case 'Video':
     case 'Audio':
-    case 'WebPage':
     case 'Documents':
       return {
         ...lectureState,
