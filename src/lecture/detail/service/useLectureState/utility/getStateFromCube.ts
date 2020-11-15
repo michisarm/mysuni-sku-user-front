@@ -358,22 +358,6 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
-      case 'WebPage':
-      case 'Experiential':
-        if (stateText === PROGRESS) {
-          const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '') {
-            if (!hasTest) {
-              return {
-                ...lectureState,
-                action: () => complete(params, rollBookId),
-                canAction: true,
-                actionText: COMPLETE,
-                stateText,
-              };
-            }
-          }
-        }
       case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
@@ -399,6 +383,22 @@ async function getStateWhenApproved(
             action: () => {},
             stateText,
           };
+        }
+      case 'WebPage':
+      case 'Experiential':
+        if (stateText === PROGRESS) {
+          const { reportFileBox } = await findCubeIntro(cubeIntroId);
+          if (reportFileBox === null || reportFileBox.reportName === '') {
+            if (!hasTest) {
+              return {
+                ...lectureState,
+                action: () => complete(params, rollBookId),
+                canAction: true,
+                actionText: COMPLETE,
+                stateText,
+              };
+            }
+          }
         }
       case 'Video':
       case 'Audio':
