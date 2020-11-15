@@ -19,7 +19,8 @@ import {
 
 async function getTestItem(
   coursePlanComplex: CoursePlanComplex,
-  params: LectureParams
+  params: LectureParams,
+  student?: Student
 ) {
   const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
   // TODO
@@ -36,10 +37,14 @@ async function getTestItem(
         denizenId
       );
       if (findAnswerSheetData.result !== null) {
-        if (findAnswerSheetData.result.submitted === true) {
+        state = 'Progress';
+        if (
+          student !== undefined &&
+          (student.learningState === 'Passed' ||
+            student.learningState === 'TestPassed')
+        ) {
           state = 'Completed';
         }
-        state = 'Progress';
       }
     }
 
@@ -141,7 +146,7 @@ export async function getItemMapFromCourse(
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
-  const testItem = await getTestItem(coursePlanComplex, params);
+  const testItem = await getTestItem(coursePlanComplex, params, student);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }

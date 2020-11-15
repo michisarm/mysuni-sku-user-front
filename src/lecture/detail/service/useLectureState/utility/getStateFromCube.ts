@@ -367,7 +367,6 @@ async function getStateWhenApproved(
         }
       case 'Video':
       case 'Audio':
-      case 'WebPage':
         return {
           ...lectureState,
           hideAction: true,

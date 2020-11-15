@@ -37,7 +37,11 @@ interface GetItemMapArg {
   surveyCaseId: string;
 }
 
-async function getTestItem(examId: string, params: LectureParams) {
+async function getTestItem(
+  examId: string,
+  params: LectureParams,
+  student?: Student
+) {
   const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
 
   if (examId !== '') {
@@ -48,10 +52,14 @@ async function getTestItem(examId: string, params: LectureParams) {
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
       if (findAnswerSheetData.result !== null) {
-        if (findAnswerSheetData.result.submitted === true) {
+        state = 'Progress';
+        if (
+          student !== undefined &&
+          (student.learningState === 'Passed' ||
+            student.learningState === 'TestPassed')
+        ) {
           state = 'Completed';
         }
-        state = 'Progress';
       }
     }
 
@@ -153,7 +161,7 @@ export async function getItemMapFromCube(
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
   const { cubeIntroId, examId, surveyId, surveyCaseId } = arg;
-  const testItem = await getTestItem(examId, params);
+  const testItem = await getTestItem(examId, params, student);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }
