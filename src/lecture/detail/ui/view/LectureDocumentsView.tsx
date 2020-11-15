@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import LearningState from 'lecture/detail/model/LearningState';
+import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
@@ -50,7 +51,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   params
 }) {
   const API_URL: string = '/api/depot/depotFile/flow/download/';
-  console.log('url', url, 'title', title);
 
   const [files, setFiles] = useState<DepotFileViewModel[]>();
   const [pdfUrl, setPdfUrl] = useState<string[]>([]);
@@ -76,7 +76,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         if (Array.isArray(filesArr)) {
           setFiles(filesArr);
           setCourseName(filesArr);
-          console.log('n개 filesArr', filesArr);
           if (filesArr) {
             for (let i = 0; i < filesArr.length; ++i) {
               pdfUrl[i] = `${API_URL}${filesArr[i].id}`;
@@ -89,7 +88,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           setFiles([filesArr]);
           setCourseName(filesArr);
           setPdfUrl(['/api/depot/depotFile/flow/download/' + filesArr.id]);
-          console.log('1개 filesArr', filesArr);
         }
       }
     });
@@ -180,19 +178,18 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const history = useHistory();
 
-  const nextContents = useCallback((path: string) => {
-    // setLectureConfirmProgress();
-    // setPanoptoState(10);
-    history.push(path);
+  const nextContents = useCallback(() => {
+    setLectureConfirmProgress();
+    // history.push(path);
   }, []);
 
   useEffect(() => {
+    //TODO. 경로 수정 예정
     if (getLectureStructure() && getLectureStructure()?.cubes) {
       const cubeIndex = getLectureStructure()?.cubes.findIndex(cube => cube.cubeId == params?.contentId) || 0;
       const cubesLength = getLectureStructure()?.cubes.length;
 
       const cubeNextIndex = cubeIndex + 1;
-
       if (
         cubeNextIndex &&
         cubesLength &&
@@ -270,12 +267,12 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
               />
             </Document>
           
-          {nextContentsPath &&  (            
+          {pageNumber === numPages && learningState === 'Passed' && (            
             <div className="video-overlay">
               <div className="video-overlay-btn">
-                <button onClick={() => nextContents(nextContentsPath)}>
+              <button onClick={() => nextContents()}>
                   <img src={playerBtn} />
-                </button>
+              </button>
               </div>
               <div className="video-overlay-text">
                 <p>다음 학습 이어하기</p>
