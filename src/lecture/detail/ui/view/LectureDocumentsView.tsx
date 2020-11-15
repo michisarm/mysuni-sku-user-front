@@ -96,7 +96,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   for (let i = 0; i < courseName.length; ++i) {
     nameList[i] = courseName[i].name;
-    // console.log('nameList', nameList[i]);
   }
 
   useEffect(() => {
@@ -143,15 +142,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   };
 
   useEffect(() => {
-    onLectureMedia(lectureMedia => {
-      // console.log('-----file contents...');
-      // console.log(lectureMedia);
-    }, 'LectureDocumentsView');
-  });
-
-  //TODO : 여러 파일 업로드 가능하여 해당 목록 처리에 대한 퍼블리싱 이후 목록 처리 예정, PDF 변환 후 원본/PDF 다운로드 제공
-  //TODO : TOKEN pram 처리 필요함
-  useEffect(() => {
     setTimeout(() => {
       setFile({
         url: pdfUrl[courseIdx],
@@ -184,17 +174,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   }, []);
 
   useEffect(() => {
-    console.log('getLectureStructure()', getLectureStructure());
-    console.log('getLectureStructure() 처리 ---- params' , params);
-    // | 'PROGRAM'
-    // | 'CUBE'
-    // | 'COURSE'
 
     const lectureStructure =  getLectureStructure();
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
-        console.log('course start');
   
         lectureStructure.items.map(item => {
           if (item.type === 'CUBE') {
@@ -210,12 +194,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextCube && nextCube.path);
-                console.log('nextCube.name', nextCube && nextCube.name);
                 if (learningState == 'Passed' && nextCube
                 ) {
-                  console.log('nextCube.path', nextCube.path);
-                  console.log('nextCube.name', nextCube.name);
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -224,32 +204,23 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextDiscussion && nextDiscussion.path);
-                console.log('nextCube.name', nextDiscussion && nextDiscussion.name);
                 if (learningState == 'Passed' && nextDiscussion
                 ) {
                   
-                  console.log('nextDiscussion.path', nextDiscussion.path);
-                  console.log('nextDiscussion.name', nextDiscussion.name);
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
               }
             }
-            console.log('cube -- ');
           }
           return null;
         })
-        console.log('course end');
       }
       else if (lectureStructure.course?.type=="PROGRAM") {
-
-        console.log('PROGRAM start');
 
         lectureStructure.items.map(item => {
           if (item.type === 'COURSE') {
             const course = item as LectureStructureCourseItem;
-            console.log('course -- ' , course);
             if (course.cubes) {
               const currentCube =
                 course.cubes.find(
@@ -257,19 +228,13 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 );
 
               if(currentCube){
-                console.log('currentCube' ,currentCube);
                 const nextCubeOrder = currentCube.order +1; 
                 
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextCube && nextCube.path);
-                console.log('nextCube.name', nextCube && nextCube.name);
                 if (learningState == 'Passed' && nextCube
                 ) {
-
-                  console.log('nextCube.path', nextCube.path);
-                  console.log('nextCube.name', nextCube.name);
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -279,14 +244,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                   discussion => discussion.order == nextCubeOrder
                 );
 
-                console.log('nextDiscussion.path', nextDiscussion && nextDiscussion.path);
-                console.log('nextDiscussion.name', nextDiscussion && nextDiscussion.name);
-
                 if (learningState == 'Passed' && nextDiscussion
                 ) {
-                  
-                  console.log('nextDiscussion.path', nextDiscussion.path);
-                  console.log('nextDiscussion.name', nextDiscussion.name);
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -306,13 +265,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextCube && nextCube.path);
-                console.log('nextCube.name', nextCube && nextCube.name);
                 if (learningState == 'Passed' && nextCube
                 ) {
-
-                  console.log('nextCube.path', nextCube.path);
-                  console.log('nextCube.name', nextCube.name);
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -321,23 +275,16 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                console.log('nextDiscussion.path', nextDiscussion && nextDiscussion.path);
-                console.log('nextDiscussion.name', nextDiscussion && nextDiscussion.name);
                 if (learningState == 'Passed' && nextDiscussion
                 ) {
-                  
-                  console.log('nextDiscussion.path', nextDiscussion.path);
-                  console.log('nextDiscussion.name', nextDiscussion.name);
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
               }
             }
-            console.log('cube -- ');
           }
           return null;
         })
-        console.log('PROGRAM end');
       }
     }
   }, [getLectureStructure()]);

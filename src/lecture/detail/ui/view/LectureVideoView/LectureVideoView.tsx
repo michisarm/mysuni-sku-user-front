@@ -159,11 +159,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log('isActive', isActive);
-    console.log('params', params);
-    console.log('watchlogState', watchlogState);
-    console.log('panoptoState', panoptoState);
-
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
       mediaEndEvent(params);
@@ -179,9 +174,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
-    console.log('currentTime', currentTime);
-    console.log('duration', duration);
-
+    
     let confirmProgressTime = (duration / 10) * 1000;
 
     //confirmProgressTime
@@ -197,7 +190,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           start: currentTime,
           end: currentTime + 10,
         });
-        console.log('watchlogState', watchlogState);
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
         // confirmProgress(params);
@@ -224,18 +216,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
   useEffect(() => {
-    console.log('getLectureStructure()', getLectureStructure());
-    console.log('getLectureStructure() 처리 ---- params' , params);
-    // | 'PROGRAM'
-    // | 'CUBE'
-    // | 'COURSE'
-
+   
     const lectureStructure =  getLectureStructure();
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
-        console.log('course start');
-  
+    
         lectureStructure.items.map(item => {
           if (item.type === 'CUBE') {
             if (lectureStructure.cubes) {
@@ -250,12 +236,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextCube && nextCube.path);
-                console.log('nextCube.name', nextCube && nextCube.name);
+               
                 if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
                 ) {
-                  console.log('nextCube.path', nextCube.path);
-                  console.log('nextCube.name', nextCube.name);
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -264,32 +247,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextDiscussion && nextDiscussion.path);
-                console.log('nextCube.name', nextDiscussion && nextDiscussion.name);
+              
                 if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
                 ) {
                   
-                  console.log('nextDiscussion.path', nextDiscussion.path);
-                  console.log('nextDiscussion.name', nextDiscussion.name);
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
               }
             }
-            console.log('cube -- ');
           }
           return null;
         })
-        console.log('course end');
       }
       else if (lectureStructure.course?.type=="PROGRAM") {
-
-        console.log('PROGRAM start');
+ 
 
         lectureStructure.items.map(item => {
           if (item.type === 'COURSE') {
             const course = item as LectureStructureCourseItem;
-            console.log('course -- ' , course);
             if (course.cubes) {
               const currentCube =
                 course.cubes.find(
@@ -297,19 +273,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 );
 
               if(currentCube){
-                console.log('currentCube' ,currentCube);
                 const nextCubeOrder = currentCube.order +1; 
                 
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextCube && nextCube.path);
-                console.log('nextCube.name', nextCube && nextCube.name);
                 if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
                 ) {
 
-                  console.log('nextCube.path', nextCube.path);
-                  console.log('nextCube.name', nextCube.name);
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -318,15 +289,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextDiscussion = course.discussions?.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-
-                console.log('nextDiscussion.path', nextDiscussion && nextDiscussion.path);
-                console.log('nextDiscussion.name', nextDiscussion && nextDiscussion.name);
-
+ 
                 if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
                 ) {
-                  
-                  console.log('nextDiscussion.path', nextDiscussion.path);
-                  console.log('nextDiscussion.name', nextDiscussion.name);
+               
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -346,13 +312,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                console.log('nextCube.path', nextCube && nextCube.path);
-                console.log('nextCube.name', nextCube && nextCube.name);
+               
                 if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
                 ) {
 
-                  console.log('nextCube.path', nextCube.path);
-                  console.log('nextCube.name', nextCube.name);
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -361,23 +324,18 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                console.log('nextDiscussion.path', nextDiscussion && nextDiscussion.path);
-                console.log('nextDiscussion.name', nextDiscussion && nextDiscussion.name);
                 if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
                 ) {
                   
-                  console.log('nextDiscussion.path', nextDiscussion.path);
-                  console.log('nextDiscussion.name', nextDiscussion.name);
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
               }
             }
-            console.log('cube -- ');
           }
           return null;
         })
-        console.log('PROGRAM end');
+        
       }
     }
   }, [getLectureStructure(), getLectureConfirmProgress()]);

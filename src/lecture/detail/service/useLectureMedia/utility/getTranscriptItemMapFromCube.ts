@@ -36,7 +36,6 @@ export async function getTranscriptItem(
     lectureTranscripts.push(lectureTranscript);
   });
 
-  console.log('lectureTranscripts', lectureTranscripts);
 
   return lectureTranscripts;
 }

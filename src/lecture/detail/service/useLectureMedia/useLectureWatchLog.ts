@@ -53,8 +53,6 @@ export function useLectureWatchLog(): [
   }, []);
 
   useEffect(() => {
-    console.log('params : ', params);
-
     params && getCubeWatchLogItem(params);
   }, [params]);
 
@@ -69,7 +67,6 @@ export function useLectureWatchLog(): [
     }
     return onLectureWatchLogs(next => {
       setWatchLogValue(next);
-      console.log('LectureWatchLogItem', next);
     }, subscriberId);
   }, [subscriberId]);
 

@@ -17,7 +17,6 @@ export async function setCubeLectureWatchLog(
   lectureWatchLog: LectureWatchLog
 ): Promise<void> {
   const personalCube = await getPersonalCubeByParams(params);
-  console.log('personalCube', personalCube);
   if (personalCube !== undefined) {
     await registerWatchLog(lectureWatchLog);
   }
