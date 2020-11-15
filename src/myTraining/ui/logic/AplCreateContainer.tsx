@@ -601,7 +601,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               </div>
             </Form.Field>
             <Form.Field>
-              <label>첨부파일</label>
+            <label className="necessary">첨부파일</label>
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
