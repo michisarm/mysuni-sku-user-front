@@ -212,16 +212,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
-<<<<<<< HEAD
-              
-              {/* 큐브가 classroom일 경우와 elearning일 경우에만 정원정보를 노출한다. */}
-              {(lectureSummary.cubeType === 'ClassRoomLecture' || lectureSummary.cubeType === 'ELearning')  && (
-                <>
-=======
               {lectureSummary.cubeType !== 'ClassRoomLecture' &&
                 lectureSummary.cubeType !== 'ELearning' &&
                 instrutor !== undefined && (
->>>>>>> adv
                   <Label className="bold onlytext">
                     <span className="header-span-first">강사</span>
                     <span className="tool-tip">
@@ -238,17 +231,6 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                       </i>
                     </span>
                   </Label>
-<<<<<<< HEAD
-                </>
-              )}
-              {lectureSummary.cubeType !== 'Community' && (
-                <>
-                  {/* <Label className="bold onlytext">
-                    <span className="header-span-first">정원정보</span>
-                    <span>{lectureSummary.studentCount}</span>
-                    <span>명</span>
-                  </Label> */}
-=======
                 )}
               {lectureClassroom &&
                 Array.isArray(lectureClassroom.classrooms) &&
@@ -256,7 +238,6 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 (lectureSummary.cubeType === 'ClassRoomLecture' ||
                   lectureSummary.cubeType === 'ELearning') &&
                 getCapacity(lectureClassroom.classrooms) !== undefined && (
->>>>>>> adv
                   <Label className="bold onlytext">
                     <span className="header-span-first">정원정보</span>
                     <span>{getCapacity(lectureClassroom.classrooms)}</span>
