@@ -367,7 +367,7 @@ async function getStateWhenApproved(
                 ...lectureState,
                 action: () => complete(params, rollBookId),
                 canAction: true,
-                actionText: APPROVE,
+                actionText: COMPLETE,
                 stateText,
               };
             }
