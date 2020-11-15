@@ -32,7 +32,11 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-async function getTestItem(lectureView: LectureView, params: LectureParams) {
+async function getTestItem(
+  lectureView: LectureView,
+  params: LectureParams,
+  student?: Student
+) {
   const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
   const { examination } = lectureView;
   if (examination !== null) {
@@ -45,10 +49,14 @@ async function getTestItem(lectureView: LectureView, params: LectureParams) {
         denizenId
       );
       if (findAnswerSheetData.result !== null) {
-        if (findAnswerSheetData.result.submitted === true) {
+        state = 'Progress';
+        if (
+          student !== undefined &&
+          (student.learningState === 'Passed' ||
+            student.learningState === 'TestPassed')
+        ) {
           state = 'Completed';
         }
-        state = 'Progress';
       }
     }
 
@@ -148,7 +156,7 @@ export async function getItemMapFromLecture(
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
-  const testItem = await getTestItem(lectureView, params);
+  const testItem = await getTestItem(lectureView, params, student);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }
