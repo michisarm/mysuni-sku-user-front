@@ -73,13 +73,13 @@ function getColor(college: IdName) {
   return color;
 }
 
-function getLearningPeriod(classrooms: Classroom[]): string | void {
+function getClassroom(classrooms: Classroom[]): Classroom | undefined {
   if (classrooms.length > 0) {
     let classroom = classrooms[0];
     // 차수가 하나인 경우
     if (classrooms.length > 1) {
       // 오늘이 차수의 학습기간 내에 있는지 여부
-      const filteredClassrooms = classrooms.filter(classroom => {
+      let filteredClassrooms = classrooms.filter(classroom => {
         const start = moment(classroom.learningStartDate)
           .startOf('day')
           .unix();
@@ -101,9 +101,9 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
               moment(classroom1.learningStartDate).unix() >
               moment(classroom2.learningEndDate).unix()
             ) {
-              return 1;
+              return -1;
             }
-            return -1;
+            return 1;
           };
           classroom = filteredClassrooms.sort(compare)[0];
         }
@@ -111,7 +111,7 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
       // 오늘이 학습기간내인 것이 없는 경우
       else {
         // 오늘 이후의 학습기간을 가진 차수 조회
-        const filteredClassrooms = classrooms.filter(classroom => {
+        filteredClassrooms = classrooms.filter(classroom => {
           const start = moment(classroom.learningStartDate)
             .startOf('day')
             .unix();
@@ -130,26 +130,33 @@ function getLearningPeriod(classrooms: Classroom[]): string | void {
                 moment(classroom1.learningStartDate).unix() >
                 moment(classroom2.learningEndDate).unix()
               ) {
-                return 1;
+                return -1;
               }
-              return -1;
+              return 1;
             };
             classroom = filteredClassrooms.sort(compare)[0];
           }
         }
       }
     }
+    return classroom;
+  }
+}
+
+function getLearningPeriod(classrooms: Classroom[]): string | undefined {
+  const classroom = getClassroom(classrooms);
+  if (classroom !== undefined) {
     return `${moment(classroom.learningStartDate).format(
       'YYYY.MM.DD'
     )}~${moment(classroom.learningEndDate).format('YYYY.MM.DD')}`;
   }
 }
 
-function getCapacity(classrooms: Classroom[]): number {
-  if (classrooms.length > 0) {
-    return classrooms[classrooms.length - 1].capacity;
+function getCapacity(classrooms: Classroom[]): string | undefined {
+  const classroom = getClassroom(classrooms);
+  if (classroom !== undefined) {
+    return `${classroom.capacity}`;
   }
-  return 0;
 }
 
 const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function LectureCubeSummaryView({
@@ -173,6 +180,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     default:
       break;
   }
+  const instrutor = lectureInstructor?.instructors.find(c => c.represent === 1);
 
   return (
     <div className="course-info-header">
@@ -204,11 +212,32 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
+              {lectureSummary.cubeType !== 'ClassRoomLecture' &&
+                lectureSummary.cubeType !== 'ELearning' &&
+                instrutor !== undefined && (
+                  <Label className="bold onlytext">
+                    <span className="header-span-first">강사</span>
+                    <span className="tool-tip">
+                      {instrutor.name}
+                      <i>
+                        <Link
+                          to={`/expert/instructor/${instrutor.usid}/Introduce`}
+                          className="tip-mail"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          {instrutor.name}
+                        </Link>
+                        <span className="tip-id">{instrutor.company}</span>
+                      </i>
+                    </span>
+                  </Label>
+                )}
               {lectureClassroom &&
                 Array.isArray(lectureClassroom.classrooms) &&
                 lectureClassroom.classrooms.length > 0 &&
                 (lectureSummary.cubeType === 'ClassRoomLecture' ||
-                  lectureSummary.cubeType === 'ELearning') && (
+                  lectureSummary.cubeType === 'ELearning') &&
+                getCapacity(lectureClassroom.classrooms) !== undefined && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">정원정보</span>
                     <span>{getCapacity(lectureClassroom.classrooms)}</span>
