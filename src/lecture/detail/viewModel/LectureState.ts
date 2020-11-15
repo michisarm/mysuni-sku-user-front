@@ -1,3 +1,5 @@
+import { ApprovalMemberModel } from '../../../approval/member/model/ApprovalMemberModel';
+import { ClassroomModel } from '../../../personalcube/classroom/model';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 import ProposalState from '../model/ProposalState';
@@ -17,5 +19,8 @@ export default interface LectureState {
   stateText?: string;
   actionClassName: string;
   stateClassName: string;
-  classroomSubmit?: (round: number, classroomId: string) => void;
+  classroomSubmit?: (
+    classroom: ClassroomModel,
+    member: ApprovalMemberModel
+  ) => void;
 }

@@ -11,6 +11,7 @@ export interface Classroom {
   location: string;
   operator: string;
   capacity: number;
+  freeOfCharge: { approvalProcess: boolean };
 }
 
 export default interface LectureClassroom {
