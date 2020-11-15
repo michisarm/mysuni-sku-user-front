@@ -444,7 +444,7 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
           canAction: true,
           action: () => cancel(params, student),
           actionText: CANCEL,
-          stateText: SUBMITED,
+          stateText: REJECTED,
         };
     }
   }
