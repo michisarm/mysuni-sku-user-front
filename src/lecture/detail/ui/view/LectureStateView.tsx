@@ -57,7 +57,7 @@ const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateV
         </button>
       )}
       {!hideState && (
-        <button className={`ui button free ${stateClassName} p18`}>
+        <button className={`ui button free ${stateClassName} p18`} style={{cursor:'default'}}>
           {stateText}
         </button>
       )}
