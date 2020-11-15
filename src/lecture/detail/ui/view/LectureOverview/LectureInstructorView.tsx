@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Icon, Label, List } from 'semantic-ui-react';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 
@@ -28,8 +29,8 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
       <div className="scrolling course-profile">
         {lectureInstructor &&
           lectureInstructor.instructors &&
-          lectureInstructor.instructors.map(({ name, company, represent }) => (
-            <div className="ui profile tool-tip">
+          lectureInstructor.instructors.map(({ name, company, represent, usid }) => (
+            <Link className="ui profile tool-tip" to={`/expert/instructor/${usid}/Introduce`}> 
               {represent === 1 && <Represent />}
               <div className="pic s80">
                 {/* <img alt="프로필사진" className="ui image" /> */}
@@ -38,7 +39,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
                 <span className="tip-name">{name}</span>
                 <a className="tip-id">{company}</a>
               </i>
-            </div>
+            </Link>
           ))}
       </div>
     </>

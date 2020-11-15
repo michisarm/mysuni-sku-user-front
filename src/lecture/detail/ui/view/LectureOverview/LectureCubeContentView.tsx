@@ -77,7 +77,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             }
           >
             <i className="lms-comment-icon" />
-            Comment
+            Comments
             <span className="count">
               {lectureComment !== undefined
                 ? `+${lectureComment.commentsCount}`
