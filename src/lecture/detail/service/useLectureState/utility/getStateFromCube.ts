@@ -149,12 +149,12 @@ async function submit(
 }
 
 async function mClassroomSubmit(
-  student: Student,
   params: LectureRouterParams,
   rollBookId: string,
   classroom: ClassroomModel,
   member: ApprovalMemberModel,
-  pathname?: string
+  pathname?: string,
+  student?: Student
 ) {
   // classroomModal.show
   const { skProfile } = SkProfileService.instance;
@@ -176,8 +176,8 @@ async function mClassroomSubmit(
     approvalProcess: classroom.freeOfCharge.approvalProcess,
   };
   if (
-    student.proposalState === 'Canceled' ||
-    student.proposalState === 'Rejected'
+    student?.proposalState === 'Canceled' ||
+    student?.proposalState === 'Rejected'
   ) {
     nextStudentCdo.proposalState = student.proposalState;
   }
@@ -367,7 +367,7 @@ async function getStateWhenApproved(
                 ...lectureState,
                 action: () => complete(params, rollBookId),
                 canAction: true,
-                actionText: DOWNLOAD,
+                actionText: APPROVE,
                 stateText,
               };
             }
@@ -433,13 +433,7 @@ async function getStateWhenApproved(
 }
 
 function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
-  const {
-    params,
-    lectureState,
-    cubeType,
-    student,
-    studentJoin: { rollBookId },
-  } = option;
+  const { params, lectureState, cubeType, student, studentJoin } = option;
 
   if (student !== undefined) {
     switch (cubeType) {
@@ -448,9 +442,9 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
         return {
           ...lectureState,
           canAction: true,
-          action: () => submit(params, rollBookId, student),
-          actionText: SUBMIT,
-          stateText: REJECTED,
+          action: () => cancel(params, student),
+          actionText: CANCEL,
+          stateText: SUBMITED,
         };
     }
   }
@@ -506,16 +500,16 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         action: () => submit(params, rollBookId, student),
         hideState: true,
         classroomSubmit: (classroom, member) => {
-          if (studentJoins !== undefined && student !== undefined) {
+          if (studentJoins !== undefined) {
             const rollbook = studentJoins.find(c => c.round == classroom.round);
             if (rollbook !== undefined) {
               mClassroomSubmit(
-                student,
                 params,
                 rollbook.rollBookId,
                 classroom,
                 member,
-                params.pathname
+                params.pathname,
+                student
               );
             }
           }
