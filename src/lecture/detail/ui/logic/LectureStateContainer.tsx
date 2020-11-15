@@ -1,6 +1,8 @@
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { ApplyReferenceModal } from '../../../../approval';
+import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../personalcube/classroom/model';
 import ClassroomModalView from '../../../category/ui/view/ClassroomModalView';
 import { useLectureClassroom } from '../../service/useLectureClassroom/useLectureClassroom';
@@ -30,8 +32,13 @@ function canApplyng(classrooms: Classroom[]): boolean {
 }
 
 function LectureStateContainer() {
+  const [
+    selectedClassroom,
+    setSelectedClassroom,
+  ] = useState<ClassroomModel | null>(null);
   const [lectureState] = useLectureState();
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
+  const applyReferenceModalRef = useRef<any>(null);
   const [lectureClassroom] = useLectureClassroom(true);
   /* eslint-disable */
   const hookAction = useCallback<() => void>(() => {
@@ -57,33 +64,50 @@ function LectureStateContainer() {
         lectureState.classroomSubmit !== undefined &&
         selected !== undefined
       ) {
-        lectureState.classroomSubmit(selected.round, selected.id);
+        setSelectedClassroom(selected);
+        applyReferenceModalRef.current.onOpenModal();
+        // lectureState.classroomSubmit(selected.round, selected);
       }
     },
     [lectureState]
+  );
+  const onApply = useCallback(
+    (member: ApprovalMemberModel) => {
+      if (
+        lectureState !== undefined &&
+        lectureState.classroomSubmit !== undefined &&
+        member !== undefined &&
+        selectedClassroom !== null
+      ) {
+        lectureState.classroomSubmit(selectedClassroom, member);
+      }
+    },
+    [lectureState, selectedClassroom]
   );
   return (
     <>
       {lectureState && (
         <LectureStateView lectureState={lectureState} hookAction={hookAction} />
       )}
-      {lectureState?.type === 'ClassRoomLecture' && (
-        <ClassroomModalView
-          ref={ClassroomModalViewRef}
-          classrooms={
-            lectureClassroom === undefined ? [] : lectureClassroom.remote
-          }
-          onOk={onClassroomSelected}
-        />
-      )}
-      {lectureState?.type === 'ELearning' && (
-        <ClassroomModalView
-          ref={ClassroomModalViewRef}
-          classrooms={
-            lectureClassroom === undefined ? [] : lectureClassroom.remote
-          }
-          onOk={onClassroomSelected}
-        />
+      {(lectureState?.type === 'ClassRoomLecture' ||
+        lectureState?.type === 'ELearning') && (
+        <>
+          <ClassroomModalView
+            ref={ClassroomModalViewRef}
+            classrooms={
+              lectureClassroom === undefined ? [] : lectureClassroom.remote
+            }
+            onOk={onClassroomSelected}
+          />
+          <ApplyReferenceModal
+            ref={applyReferenceModalRef}
+            classrooms={
+              lectureClassroom === undefined ? [] : lectureClassroom.remote
+            }
+            selectedClassRoom={selectedClassroom}
+            handleOk={onApply}
+          />
+        </>
       )}
     </>
   );

@@ -1,5 +1,8 @@
 /* eslint-disable consistent-return */
 
+import { reactAlert } from '@nara.platform/accent';
+import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
+import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
 import {
   deleteStudentByRollBookId,
@@ -17,6 +20,7 @@ import StudentJoin from '../../../model/StudentJoin';
 import { setLectureState } from '../../../store/LectureStateStore';
 import { requestLectureStructure } from '../../../ui/logic/LectureStructureContainer';
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
+import { Classroom } from '../../../viewModel/LectureClassroom';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
 
@@ -146,35 +150,44 @@ async function submit(
 }
 
 async function mClassroomSubmit(
+  student: Student,
   params: LectureRouterParams,
   rollBookId: string,
-  classroomId: string,
+  classroom: ClassroomModel,
+  member: ApprovalMemberModel,
   pathname?: string
 ) {
   // classroomModal.show
-  const {
-    skProfile: { member },
-  } = SkProfileService.instance;
+  const { skProfile } = SkProfileService.instance;
   // classroomModal.show
   const nextStudentCdo: StudentCdo = {
     rollBookId,
-    name: member.name,
-    email: member.email,
-    company: member.company,
-    department: member.department,
+    name: skProfile.member.name,
+    email: skProfile.member.email,
+    company: skProfile.member.company,
+    department: skProfile.member.department,
     proposalState: 'Submitted',
     programLectureUsid: '',
     courseLectureUsid: '',
-    leaderEmails: [],
+    leaderEmails: [member.email],
     url: pathname
       ? `https://int.mysuni.sk.com/login?contentUrl=${pathname}`
       : '',
-    classroomId,
-    approvalProcess: false,
+    classroomId: classroom.id,
+    approvalProcess: classroom.freeOfCharge.approvalProcess,
   };
+  if (
+    student.proposalState === 'Canceled' ||
+    student.proposalState === 'Rejected'
+  ) {
+    nextStudentCdo.proposalState = student.proposalState;
+  }
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+  const messageStr =
+    '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+  reactAlert({ title: '알림', message: messageStr });
 }
 
 async function cancel(params: LectureRouterParams, student: Student) {
@@ -183,8 +196,6 @@ async function cancel(params: LectureRouterParams, student: Student) {
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 }
-
-function changeRound() {}
 
 async function approve(
   params: LectureRouterParams,
@@ -452,14 +463,16 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         actionText: SUBMIT,
         action: () => submit(params, rollBookId, student),
         hideState: true,
-        classroomSubmit: (round, classroomId) => {
-          if (studentJoins !== undefined) {
-            const rollbook = studentJoins.find(c => c.round == round);
+        classroomSubmit: (classroom, member) => {
+          if (studentJoins !== undefined && student !== undefined) {
+            const rollbook = studentJoins.find(c => c.round == classroom.round);
             if (rollbook !== undefined) {
               mClassroomSubmit(
+                student,
                 params,
                 rollbook.rollBookId,
-                classroomId,
+                classroom,
+                member,
                 params.pathname
               );
             }
