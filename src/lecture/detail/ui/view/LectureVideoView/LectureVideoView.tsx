@@ -483,10 +483,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                       <strong
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          seekByIndex(lectureTranscript.idx);
+                          // seekByIndex(lectureTranscript.idx);
+                          seekByIndex(parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 * 60 + 
+                          parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 +
+                          parseInt(lectureTranscript.startTime.substr(4,2),10));
                         }}
                       >
-                        {toHHMM(lectureTranscript.idx)}
+                        {lectureTranscript.startTime.substr(0,2).concat(":").
+                        concat(lectureTranscript.startTime.substr(2,2)).concat(":").
+                        concat(lectureTranscript.startTime.substr(4,2))}
                       </strong>
                       <p>{lectureTranscript.text}</p>
                     </>
