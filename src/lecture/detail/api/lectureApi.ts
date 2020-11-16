@@ -104,7 +104,7 @@ export function modifyStudent(
 ): Promise<void> {
   const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}`;
   return axiosApi
-    .put<void>(url, homework)
+    .put<void>(url, { 'homeworkContent': homework })
     .then(response => response && response.data);
 }
 

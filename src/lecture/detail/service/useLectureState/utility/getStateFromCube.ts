@@ -1,5 +1,8 @@
 /* eslint-disable consistent-return */
 
+import { reactAlert } from '@nara.platform/accent';
+import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
+import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
 import {
   deleteStudentByRollBookId,
@@ -65,7 +68,7 @@ const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
 const CANCEL = '취소하기';
 // const CHANGE_ROUND = '차수변경';
-// const DOWNLOAD = '다운로드';
+const DOWNLOAD = '다운로드';
 const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
 const JOINED = '가입완료';
@@ -148,33 +151,42 @@ async function submit(
 async function mClassroomSubmit(
   params: LectureRouterParams,
   rollBookId: string,
-  classroomId: string,
-  pathname?: string
+  classroom: ClassroomModel,
+  member: ApprovalMemberModel,
+  pathname?: string,
+  student?: Student
 ) {
   // classroomModal.show
-  const {
-    skProfile: { member },
-  } = SkProfileService.instance;
+  const { skProfile } = SkProfileService.instance;
   // classroomModal.show
   const nextStudentCdo: StudentCdo = {
     rollBookId,
-    name: member.name,
-    email: member.email,
-    company: member.company,
-    department: member.department,
+    name: skProfile.member.name,
+    email: skProfile.member.email,
+    company: skProfile.member.company,
+    department: skProfile.member.department,
     proposalState: 'Submitted',
     programLectureUsid: '',
     courseLectureUsid: '',
-    leaderEmails: [],
+    leaderEmails: [member.email],
     url: pathname
       ? `https://int.mysuni.sk.com/login?contentUrl=${pathname}`
       : '',
-    classroomId,
-    approvalProcess: false,
+    classroomId: classroom.id,
+    approvalProcess: classroom.freeOfCharge.approvalProcess,
   };
+  if (
+    student?.proposalState === 'Canceled' ||
+    student?.proposalState === 'Rejected'
+  ) {
+    nextStudentCdo.proposalState = student.proposalState;
+  }
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+  const messageStr =
+    '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+  reactAlert({ title: '알림', message: messageStr });
 }
 
 async function cancel(params: LectureRouterParams, student: Student) {
@@ -183,8 +195,6 @@ async function cancel(params: LectureRouterParams, student: Student) {
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 }
-
-function changeRound() {}
 
 async function approve(
   params: LectureRouterParams,
@@ -348,9 +358,34 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
+      case 'Documents':
+        if (stateText === PROGRESS) {
+          const { reportFileBox } = await findCubeIntro(cubeIntroId);
+          if (reportFileBox === null || reportFileBox.reportName === '') {
+            if (!hasTest) {
+              return {
+                ...lectureState,
+                action: () => complete(params, rollBookId),
+                canAction: true,
+                actionText: COMPLETE,
+                stateText,
+              };
+            }
+          }
+        }
+        if (stateText === COMPLETE) {
+          return {
+            ...lectureState,
+            actionClassName: 'bg2',
+            hideAction: false,
+            canAction: true,
+            actionText: DOWNLOAD,
+            action: () => {},
+            stateText,
+          };
+        }
       case 'WebPage':
       case 'Experiential':
-      case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
           if (reportFileBox === null || reportFileBox.reportName === '') {
@@ -398,13 +433,7 @@ async function getStateWhenApproved(
 }
 
 function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
-  const {
-    params,
-    lectureState,
-    cubeType,
-    student,
-    studentJoin: { rollBookId },
-  } = option;
+  const { params, lectureState, cubeType, student, studentJoin } = option;
 
   if (student !== undefined) {
     switch (cubeType) {
@@ -413,8 +442,8 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
         return {
           ...lectureState,
           canAction: true,
-          action: () => submit(params, rollBookId, student),
-          actionText: SUBMIT,
+          action: () => cancel(params, student),
+          actionText: CANCEL,
           stateText: REJECTED,
         };
     }
@@ -432,11 +461,29 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
   } = option;
   switch (cubeType) {
     case 'WebPage':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: APPROVE,
+        action: () => {
+          if (document.getElementById('webpage-link') !== null) {
+            document.getElementById('webpage-link')?.click();
+          }
+          approve(params, rollBookId, student);
+        },
+        hideState: true,
+      };
+    case 'Documents':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: DOWNLOAD,
+        action: () => approve(params, rollBookId, student),
+        hideState: true,
+      };
     case 'Experiential':
     case 'Video':
     case 'Audio':
-    case 'WebPage':
-    case 'Documents':
       return {
         ...lectureState,
         canAction: true,
@@ -452,15 +499,17 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         actionText: SUBMIT,
         action: () => submit(params, rollBookId, student),
         hideState: true,
-        classroomSubmit: (round, classroomId) => {
+        classroomSubmit: (classroom, member) => {
           if (studentJoins !== undefined) {
-            const rollbook = studentJoins.find(c => c.round == round);
+            const rollbook = studentJoins.find(c => c.round == classroom.round);
             if (rollbook !== undefined) {
               mClassroomSubmit(
                 params,
                 rollbook.rollBookId,
-                classroomId,
-                params.pathname
+                classroom,
+                member,
+                params.pathname,
+                student
               );
             }
           }

@@ -1,10 +1,16 @@
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ApplyReferenceModal } from '../../../../approval';
+import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../personalcube/classroom/model';
+import FileDownloadPop from '../../../../personalcube/shared/OverviewField/sub/FileDownloadPop';
 import ClassroomModalView from '../../../category/ui/view/ClassroomModalView';
+import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureClassroom } from '../../service/useLectureClassroom/useLectureClassroom';
+import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
+import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import { Classroom } from '../../viewModel/LectureClassroom';
 import LectureStateView from '../view/LectureStateView';
 
@@ -30,9 +36,22 @@ function canApplyng(classrooms: Classroom[]): boolean {
 }
 
 function LectureStateContainer() {
+  const [
+    selectedClassroom,
+    setSelectedClassroom,
+  ] = useState<ClassroomModel | null>(null);
+  const params = useLectureRouterParams();
+  const [fileDonwloadPopShow, setFileDonwloadPopShow] = useState<boolean>(
+    false
+  );
   const [lectureState] = useLectureState();
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
+  const applyReferenceModalRef = useRef<any>(null);
   const [lectureClassroom] = useLectureClassroom(true);
+  const closeFileDonwloadPop = useCallback(() => {
+    setFileDonwloadPopShow(false);
+  }, []);
+  const [lectureWebpage] = useLectureWebpage();
   /* eslint-disable */
   const hookAction = useCallback<() => void>(() => {
     if (lectureState?.classroomSubmit !== undefined) {
@@ -44,6 +63,9 @@ function LectureStateContainer() {
         return;
       }
       return ClassroomModalViewRef.current?.show();
+    }
+    if (lectureState?.type === 'Documents') {
+      setFileDonwloadPopShow(true);
     }
     if (lectureState !== undefined && lectureState.action !== undefined) {
       return lectureState.action();
@@ -57,33 +79,73 @@ function LectureStateContainer() {
         lectureState.classroomSubmit !== undefined &&
         selected !== undefined
       ) {
-        lectureState.classroomSubmit(selected.round, selected.id);
+        setSelectedClassroom(selected);
+        applyReferenceModalRef.current.onOpenModal();
+        // lectureState.classroomSubmit(selected.round, selected);
       }
     },
     [lectureState]
   );
+  const onApply = useCallback(
+    (member: ApprovalMemberModel) => {
+      if (
+        lectureState !== undefined &&
+        lectureState.classroomSubmit !== undefined &&
+        member !== undefined &&
+        selectedClassroom !== null
+      ) {
+        lectureState.classroomSubmit(selectedClassroom, member);
+      }
+    },
+    [lectureState, selectedClassroom]
+  );
+  useEffect(() => {
+    if (lectureState === undefined) {
+      return;
+    }
+    if (params === undefined) {
+      return;
+    }
+    if (lectureState.type === 'Documents') {
+      const { contentId, lectureId } = params;
+      getCubeLectureOverview(contentId, lectureId);
+    }
+  }, [lectureState, params]);
+
   return (
     <>
       {lectureState && (
         <LectureStateView lectureState={lectureState} hookAction={hookAction} />
       )}
-      {lectureState?.type === 'ClassRoomLecture' && (
-        <ClassroomModalView
-          ref={ClassroomModalViewRef}
-          classrooms={
-            lectureClassroom === undefined ? [] : lectureClassroom.remote
-          }
-          onOk={onClassroomSelected}
-        />
+      {(lectureState?.type === 'ClassRoomLecture' ||
+        lectureState?.type === 'ELearning') && (
+        <>
+          <ClassroomModalView
+            ref={ClassroomModalViewRef}
+            classrooms={
+              lectureClassroom === undefined ? [] : lectureClassroom.remote
+            }
+            onOk={onClassroomSelected}
+          />
+          <ApplyReferenceModal
+            ref={applyReferenceModalRef}
+            classrooms={
+              lectureClassroom === undefined ? [] : lectureClassroom.remote
+            }
+            selectedClassRoom={selectedClassroom}
+            handleOk={onApply}
+          />
+        </>
       )}
-      {lectureState?.type === 'ELearning' && (
-        <ClassroomModalView
-          ref={ClassroomModalViewRef}
-          classrooms={
-            lectureClassroom === undefined ? [] : lectureClassroom.remote
-          }
-          onOk={onClassroomSelected}
-        />
+      {lectureState?.type === 'Documents' && lectureWebpage !== undefined && (
+        <>
+          {fileDonwloadPopShow && (
+            <FileDownloadPop
+              fileBoxIds={[lectureWebpage.fileBoxId]}
+              onClose={closeFileDonwloadPop}
+            />
+          )}
+        </>
       )}
     </>
   );
