@@ -16,7 +16,10 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
   }, []);
 
   return (
-    <section className={`content lms ${structureVisible ? 'v-wide' : ''}`}>
+    <section
+      className={`content lms ${structureVisible ? 'v-wide' : ''}`}
+      id="lms-content"
+    >
       <div className="course-info-list">
         <div className="course-header-list">
           <a className="btn-view-change">

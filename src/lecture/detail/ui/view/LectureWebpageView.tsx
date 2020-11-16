@@ -15,7 +15,12 @@ const LectureWebpageView: React.FC<LectureWebpage> = function LectureWebpageView
       <div className="lms-open-con">
         <div className="lms-open-title">{title}</div>
         <div className="lms-open-copy">{description}</div>
-        <a href={url} className="lms-open-link" target="_blank">
+        <a
+          href={url}
+          className="lms-open-link"
+          target="_blank"
+          id="webpage-link"
+        >
           {url}
         </a>
       </div>

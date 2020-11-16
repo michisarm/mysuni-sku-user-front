@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { Fragment, useCallback } from 'react';
 import { Checkbox, CheckboxProps, Radio } from 'semantic-ui-react';
 import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
@@ -31,9 +31,8 @@ const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function Lectu
         {!canMultipleAnswer &&
           choices &&
           choices.map(choice => (
-            <>
+            <Fragment key={choice.no}>
               <Radio
-                key={choice.no}
                 className="base"
                 label={choice.title}
                 value={choice.no}
@@ -46,14 +45,13 @@ const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function Lectu
                 readOnly={false}
               />
               {choice.image && <img src={choice.image} />}
-            </>
+            </Fragment>
           ))}
         {canMultipleAnswer &&
           choices &&
           choices.map(choice => (
-            <>
+            <Fragment key={choice.no}>
               <Checkbox
-                key={choice.no}
                 className="base"
                 label={choice.title}
                 value={choice.no}
@@ -66,7 +64,7 @@ const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function Lectu
                 readOnly={false}
               />
               {choice.image && <img src={choice.image} />}
-            </>
+            </Fragment>
           ))}
       </div>
     </LectureSurveyChoiceLayout>

@@ -15,6 +15,7 @@ export async function getClassroomFromCube(params: LectureRouterParams) {
           enrolling: { applyingPeriod, learningPeriod },
           operation: { location, operator },
           capacity,
+          freeOfCharge,
         }) => ({
           id,
           round,
@@ -25,6 +26,7 @@ export async function getClassroomFromCube(params: LectureRouterParams) {
           location,
           operator: operator.name,
           capacity,
+          freeOfCharge: { approvalProcess: freeOfCharge.approvalProcess },
         })
       ),
       remote: classrooms.map(classroom => new ClassroomModel(classroom)),

@@ -16,7 +16,7 @@ interface SurveyViewProps {
 function cannotAlert() {
   reactAlert({
     title: 'Survey 안내',
-    message: '학습 완료 후 Survey 참여 가능합니다.',
+    message: '학습 진행 후 Survey 참여 가능합니다.',
   });
 }
 
