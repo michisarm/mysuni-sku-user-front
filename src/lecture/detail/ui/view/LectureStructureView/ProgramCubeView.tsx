@@ -26,7 +26,11 @@ const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView
   can,
 }) {
   return (
-    <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
+    <Link
+      to={path}
+      className={`btn-state-course ${activated ? 'act-on' : ''}`}
+      onClick={() => window.scrollTo({ top: 0 })}
+    >
       <span
         className={`label-state-cube ${state === 'Progress' ? 'l-step5' : ''} ${
           state === 'Completed' ? 'complete' : ''

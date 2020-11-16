@@ -148,7 +148,7 @@ function getLearningPeriod(classrooms: Classroom[]): string | undefined {
   if (classroom !== undefined) {
     return `${moment(classroom.learningStartDate).format(
       'YYYY.MM.DD'
-    )}~${moment(classroom.learningEndDate).format('YYYY.MM.DD')}`;
+    )} ~ ${moment(classroom.learningEndDate).format('YYYY.MM.DD')}`;
   }
 }
 
