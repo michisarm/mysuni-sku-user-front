@@ -185,6 +185,29 @@ export function mergeActivated(
     );
   }
 
+  lectureStructure.items = lectureStructure.items.map(item => {
+    if (item.type === 'COURSE') {
+      const next = lectureStructure.courses.find(c => c.path === item.path);
+      if (next !== undefined) {
+        return next;
+      }
+    }
+    if (item.type === 'CUBE') {
+      const next = lectureStructure.cubes.find(c => c.path === item.path);
+      if (next !== undefined) {
+        return next;
+      }
+    }
+    if (item.type === 'DISCUSSION') {
+      const next = lectureStructure.discussions.find(c => c.path === item.path);
+      if (next !== undefined) {
+        return next;
+      }
+    }
+    return item;
+  });
+
+
   setLectureStructure({ ...lectureStructure });
 }
 
