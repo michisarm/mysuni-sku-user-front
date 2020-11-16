@@ -12,7 +12,7 @@ export async function getClassroomFromCube(params: LectureRouterParams) {
         ({
           id,
           round,
-          enrolling: { applyingPeriod, learningPeriod },
+          enrolling: { applyingPeriod, learningPeriod, cancellablePeriod },
           operation: { location, operator },
           capacity,
           freeOfCharge,
@@ -23,6 +23,8 @@ export async function getClassroomFromCube(params: LectureRouterParams) {
           applyingEndDate: applyingPeriod.endDate,
           learningStartDate: learningPeriod.startDate,
           learningEndDate: learningPeriod.endDate,
+          cancellableStartDate: cancellablePeriod.startDate,
+          cancellableEndDate: cancellablePeriod.endDate,
           location,
           operator: operator.name,
           capacity,

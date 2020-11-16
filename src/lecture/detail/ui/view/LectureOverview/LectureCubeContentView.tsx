@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -12,8 +12,8 @@ import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
-
-// http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
+import LectureClassroomInfoView from './LectureClassroomInfoView';
+import './LectureCubeContentView.css';
 
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
@@ -39,6 +39,26 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureComment,
   lectureClassroom,
 }) {
+  const [fixed, setFixed] = useState<boolean>(false);
+  useEffect(() => {
+    const options = {};
+    const observer = new IntersectionObserver(intersectionCallback, options);
+    function intersectionCallback(entries: IntersectionObserverEntry[]) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setFixed(false);
+        } else {
+          setFixed(true);
+        }
+      });
+    }
+    const lmsOverviewTop = document.getElementById('lms-overview-top');
+    if (lmsOverviewTop !== null) {
+      observer.observe(lmsOverviewTop);
+    }
+    return () => observer.disconnect();
+  }, []);
+
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
@@ -52,9 +72,21 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const commentHashClick = useCallback(() => {
     setActivatedTab('comment');
   }, []);
+
+  useEffect(() => {
+    if (activatedTab === 'comment') {
+      setTimeout(() => {
+        window.scrollTo({ top: 0 });
+      }, 0);
+    }
+  }, [activatedTab]);
   return (
     <>
-      <div className="lms-sticky-menu" id="lms-overview">
+      <div id="lms-overview-top" />
+      <div
+        className={`lms-sticky-menu ${fixed ? 'lms-fixed' : ''}`}
+        id="lms-overview"
+      >
         <div className="lms-fixed-inner">
           <a
             onClick={overviewHashClick}
@@ -102,6 +134,9 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               <LectureCubeInfoView lectureDescription={lectureDescription} />
             )}
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+            {lectureClassroom && (
+              <LectureClassroomInfoView lectureClassroom={lectureClassroom} />
+            )}
           </div>
           {lectureClassroom && (
             <LectureClassroomView lectureClassroom={lectureClassroom} />
