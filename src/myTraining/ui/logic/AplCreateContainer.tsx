@@ -342,6 +342,8 @@ class AplCreateContainer extends React.Component<Props, States> {
                           (option: any) => option.value === data.value
                         );
                         this.onChangeAplProps('typeName', data.options[selectedIndex].text);
+                      } else{
+                        this.onChangeAplProps('typeName', '');
                       }
                     }
                     }
