@@ -62,6 +62,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
         onClick={() => onClickMenu('Community')}
       >
         Community
+        
       </NavLink> */}
     </div>
   </div>
@@ -108,3 +109,4 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
     </div>
   </div>
 );
+
