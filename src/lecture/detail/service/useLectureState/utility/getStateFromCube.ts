@@ -431,6 +431,8 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
+      case 'Video':
+        break;
       case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
@@ -473,8 +475,6 @@ async function getStateWhenApproved(
             }
           }
         }
-      case 'Video':
-        break;
       case 'Audio':
         return {
           ...lectureState,

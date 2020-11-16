@@ -41,25 +41,26 @@ function LectureStructureContainer() {
     requestLectureStructure(params, pathname);
   }, [params, pathname]);
 
-  useEffect(() => {
-    const options = {};
-    const lmsContent = document.getElementById('lms-content');
-    const observer = new IntersectionObserver(intersectionCallback, options);
-    function intersectionCallback(entries: IntersectionObserverEntry[]) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          lmsContent?.classList.remove('lms-lnb-fixed');
-        } else {
-          lmsContent?.classList.add('lms-lnb-fixed');
-        }
-      });
-    }
-    const lmsHeader = document.getElementById('lms-header');
-    if (lmsHeader !== null) {
-      observer.observe(lmsHeader);
-    }
-    return () => observer.disconnect();
-  }, []);
+  //관련 기능 제거
+  //   useEffect(() => {
+  //   const options = {};
+  //   const lmsContent = document.getElementById('lms-content');
+  //   const observer = new IntersectionObserver(intersectionCallback, options);
+  //   function intersectionCallback(entries: IntersectionObserverEntry[]) {
+  //     entries.forEach(entry => {
+  //       if (entry.isIntersecting) {
+  //         lmsContent?.classList.remove('lms-lnb-fixed');
+  //       } else {
+  //         lmsContent?.classList.add('lms-lnb-fixed');
+  //       }
+  //     });
+  //   }
+  //   const lmsHeader = document.getElementById('lms-header');
+  //   if (lmsHeader !== null) {
+  //     observer.observe(lmsHeader);
+  //   }
+  //   return () => observer.disconnect();
+  // }, []);
 
   const [lectureStructure] = useLectureStructure();
   return (
