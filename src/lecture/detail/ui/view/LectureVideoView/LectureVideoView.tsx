@@ -25,6 +25,7 @@ import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 import { setLectureState, getLectureState } from 'lecture/detail/store/LectureStateStore';
+import { LectureStructureCourseItem, LectureStructureCubeItem, LectureStructureDiscussionItem } from 'lecture/detail/viewModel/LectureStructure';
 
 
 
@@ -149,7 +150,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       if(params){
         await confirmProgress(params);
         requestLectureStructure(lectureParams, pathname);
-        console.log("ddd");
       }    
     },
     [params]
@@ -159,11 +159,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log('isActive', isActive);
-    console.log('params', params);
-    console.log('watchlogState', watchlogState);
-    console.log('panoptoState', panoptoState);
-
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
       mediaEndEvent(params);
@@ -179,9 +174,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
-    console.log('currentTime', currentTime);
-    console.log('duration', duration);
-
+    
     let confirmProgressTime = (duration / 10) * 1000;
 
     //confirmProgressTime
@@ -197,7 +190,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           start: currentTime,
           end: currentTime + 10,
         });
-        console.log('watchlogState', watchlogState);
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
         // confirmProgress(params);
@@ -224,24 +216,126 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
   useEffect(() => {
-    console.log('getLectureStructure()', getLectureStructure());
-    if (getLectureStructure() && getLectureStructure()?.cubes) {
-      const cubeIndex =
-        getLectureStructure()?.cubes.findIndex(
-          cube => cube.cubeId == params?.contentId
-        ) || 0;
-      const cubesLength = getLectureStructure()?.cubes.length;
+   
+    const lectureStructure =  getLectureStructure();
+    if(lectureStructure){
+      if(lectureStructure.course?.type=="COURSE") {
+        //일반 코스 로직
+    
+        lectureStructure.items.map(item => {
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube =
+              lectureStructure.cubes.find(
+                  cube => cube.cubeId == params?.contentId
+                );
 
-      const cubeNextIndex = cubeIndex + 1;
+              if(currentCube){
+                const nextCubeOrder = currentCube.order +1; 
+                
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+               
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
+                ) {
+                  setNextContentsPath(nextCube.path);
+                  setNextContentsName(nextCube.name);
+                }
 
-      if (
-        getLectureConfirmProgress()?.learningState == 'Passed' &&
-        cubeNextIndex &&
-        cubesLength &&
-        cubeNextIndex < cubesLength
-      ) {
-        setNextContentsPath(getLectureStructure()?.cubes[cubeIndex + 1].path);
-        setNextContentsName(getLectureStructure()?.cubes[cubeIndex + 1].name);
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+              
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
+                ) {
+                  
+                  setNextContentsPath(nextDiscussion.path);
+                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        })
+      }
+      else if (lectureStructure.course?.type=="PROGRAM") {
+ 
+
+        lectureStructure.items.map(item => {
+          if (item.type === 'COURSE') {
+            const course = item as LectureStructureCourseItem;
+            if (course.cubes) {
+              const currentCube =
+                course.cubes.find(
+                  cube => cube.cubeId == params?.contentId
+                );
+
+              if(currentCube){
+                const nextCubeOrder = currentCube.order +1; 
+                
+                const nextCube = course.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
+                ) {
+
+                  setNextContentsPath(nextCube.path);
+                  setNextContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = course.discussions?.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+ 
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
+                ) {
+               
+                  setNextContentsPath(nextDiscussion.path);
+                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube =
+              lectureStructure.cubes.find(
+                  cube => cube.cubeId == params?.contentId
+                );
+
+              if(currentCube){
+                const nextCubeOrder = currentCube.order +1; 
+                
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+               
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
+                ) {
+
+                  setNextContentsPath(nextCube.path);
+                  setNextContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
+                ) {
+                  
+                  setNextContentsPath(nextDiscussion.path);
+                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        })
+        
       }
     }
   }, [getLectureStructure(), getLectureConfirmProgress()]);
@@ -347,10 +441,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                       <strong
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          seekByIndex(lectureTranscript.idx);
+                          // seekByIndex(lectureTranscript.idx);
+                          seekByIndex(parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 * 60 + 
+                          parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 +
+                          parseInt(lectureTranscript.startTime.substr(4,2),10));
                         }}
                       >
-                        {toHHMM(lectureTranscript.idx)}
+                        {lectureTranscript.startTime.substr(0,2).concat(":").
+                        concat(lectureTranscript.startTime.substr(2,2)).concat(":").
+                        concat(lectureTranscript.startTime.substr(4,2))}
                       </strong>
                       <p>{lectureTranscript.text}</p>
                     </>

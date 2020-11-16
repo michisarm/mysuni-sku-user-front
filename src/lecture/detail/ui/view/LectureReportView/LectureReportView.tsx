@@ -82,11 +82,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   }, []);
 
   return (
-    <div className="course-info-detail responsive-course">
-      <div className="course-detail-center">
-        <div className="main-wrap">
-          <div className="scrolling-area area2 ">
-            <div className="ui segment full">
+    <>
+
               {/* Header */}
               <div className="course-info-header">
                 <Reportheader />
@@ -135,7 +132,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                     </div>
                   </Form.Field>
                   <Form.Field>
-                    <label>첨부파일</label>
+                    <label className="necessary">첨부파일</label>
                     <div className="report-attach">
                       {/* <AttachFileUpload filesMap={filesMap}/> */}
                       <div className="lg-attach">
@@ -144,7 +141,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                             id={
                               getLectureReport()?.studentReport?.homeworkFileBoxId !==
                                 null &&
-                              getLectureReport()?.studentReport?.homeworkFileBoxId !==
+                                getLectureReport()?.studentReport?.homeworkFileBoxId !==
                                 'null'
                                 ? getLectureReport()?.studentReport?.homeworkFileBoxId
                                 : ''
@@ -181,88 +178,88 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
               </div>
               {/* form 태그를 div로 감싸기 */}
               {getLectureReport()?.studentReport?.homeworkOperatorComment && (
-              <div className="apl-form-wrap support">
-              <Form>
-              {/* margin-none 클래스 추가 */}  
-                  <Form.Field className="margin-none">
-                    <label>담당자의견</label>
-                    <div className="ui editor-wrap">
-                      <div className="content-area">
-                        <div className="content-inner ql-snow">
-                          <div
-                            className="ql-editor"
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                getLectureReport()?.studentReport
-                                  ?.homeworkOperatorComment || '',
-                            }}
-                          />
+                <div className="apl-form-wrap support">
+                  <Form>
+                    {/* margin-none 클래스 추가 */}
+                    <Form.Field className="margin-none">
+                      <label>담당자의견</label>
+                      <div className="ui editor-wrap">
+                        <div className="content-area">
+                          <div className="content-inner ql-snow">
+                            <div
+                              className="ql-editor"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  getLectureReport()?.studentReport
+                                    ?.homeworkOperatorComment || '',
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Form.Field>
-                  {filesMap && (
-                    <div className="badge-detail">
-                      <div className="ov-paragraph download-area">
-                        <List bulleted>
-                          <List.Item>
-                            <div className="detail">
-                              <div className="file-down-wrap">
-                                {filesMap.get('reference') &&
-                                  filesMap
-                                    .get('reference')
-                                    .map(
-                                      (
-                                        foundedFile: DepotFileViewModel,
-                                        index: number
-                                      ) => (
-                                        <div className="down">
-                                          <a
-                                            key={index}
-                                            onClick={() =>
-                                              depot.downloadDepotFile(
-                                                foundedFile.id
-                                              )
-                                            }
-                                          >
-                                            <span>{foundedFile.name}</span>
-                                          </a>
-                                        </div>
-                                      )
-                                    )}
-                                <div className="all-down">
-                                  <a
-                                    onClick={() =>
-                                      depot.downloadDepot(
-                                        getLectureReport()?.studentReport
-                                          ?.homeworkOperatorFileBoxId || ''
-                                      )
-                                    }
-                                  >
-                                    <Icon className="icon-down-type4" />
-                                    <span>전체 다운로드</span>
-                                  </a>
+                    </Form.Field>
+                    {filesMap && (
+                      <div className="badge-detail">
+                        <div className="ov-paragraph download-area">
+                          <List bulleted>
+                            <List.Item>
+                              <div className="detail">
+                                <div className="file-down-wrap">
+                                  {filesMap.get('reference') &&
+                                    filesMap
+                                      .get('reference')
+                                      .map(
+                                        (
+                                          foundedFile: DepotFileViewModel,
+                                          index: number
+                                        ) => (
+                                            <div className="down">
+                                              <a
+                                                key={index}
+                                                onClick={() =>
+                                                  depot.downloadDepotFile(
+                                                    foundedFile.id
+                                                  )
+                                                }
+                                              >
+                                                <span>{foundedFile.name}</span>
+                                              </a>
+                                            </div>
+                                          )
+                                      )}
+                                  <div className="all-down">
+                                    <a
+                                      onClick={() =>
+                                        depot.downloadDepot(
+                                          getLectureReport()?.studentReport
+                                            ?.homeworkOperatorFileBoxId || ''
+                                        )
+                                      }
+                                    >
+                                      <Icon className="icon-down-type4" />
+                                      <span>전체 다운로드</span>
+                                    </a>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </List.Item>
-                        </List>
+                            </List.Item>
+                          </List>
+                        </div>
                       </div>
-                    </div>
-                  )}
-              </Form>
-              </div>
+                    )}
+                  </Form>
+                </div>
               )}
               <div className="survey-preview">
-                <button className="ui button fix bg" onClick={onSubmitClick}>
-                  제출
-                </button>
+                {(getLectureReport()?.state === 'None') && (
+                  <button className="ui button fix bg" onClick={onSubmitClick}>
+                    제출
+                  </button>
+                )
+                }
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        
+    </>
   );
 };
 

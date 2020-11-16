@@ -22,7 +22,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
-        <div className="radio-survey-list">
+        <>
           <Radio
             key={question.questionNo + '_' + item.itemNo}
             className="base"
@@ -36,7 +36,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           {item.imgSrc !== undefined && item.imgSrc !== '' && (
             <img src={item.imgSrc} />
           )}
-        </div>
+        </>
       ))}
     </div>
   );

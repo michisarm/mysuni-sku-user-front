@@ -17,6 +17,7 @@ import { getPublicUrl } from 'shared/helper/envHelper';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 import { getLectureConfirmProgress, setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useHistory } from 'react-router-dom';
+import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 
 
 interface LectureAudioViewProps {
@@ -132,8 +133,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     let progressInterval: any = null;
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
-    console.log('currentTime', currentTime);
-    console.log('duration', duration);
 
     let confirmProgressTime = (duration / 10) * 1000;
 
@@ -178,25 +177,119 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       playerEl.innerHTML = '';
     }
   };
+
+
   useEffect(() => {
-    console.log('getLectureStructure()', getLectureStructure());
-    if (getLectureStructure() && getLectureStructure()?.cubes) {
-      const cubeIndex =
-        getLectureStructure()?.cubes.findIndex(
-          cube => cube.cubeId == params?.contentId
-        ) || 0;
-      const cubesLength = getLectureStructure()?.cubes.length;
+    const lectureStructure =  getLectureStructure();
+    if(lectureStructure){
+      if(lectureStructure.course?.type=="COURSE") {
+        //일반 코스 로직
+  
+        lectureStructure.items.map(item => {
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube =
+              lectureStructure.cubes.find(
+                  cube => cube.cubeId == params?.contentId
+                );
 
-      const cubeNextIndex = cubeIndex + 1;
+              if(currentCube){
+                const nextCubeOrder = currentCube.order +1; 
+                
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
+                ) {
+                  setNextContentsPath(nextCube.path);
+                  setNextContentsName(nextCube.name);
+                }
 
-      if (
-        getLectureConfirmProgress()?.learningState == 'Passed' &&
-        cubeNextIndex &&
-        cubesLength &&
-        cubeNextIndex < cubesLength
-      ) {
-        setNextContentsPath(getLectureStructure()?.cubes[cubeIndex + 1].path);
-        setNextContentsName(getLectureStructure()?.cubes[cubeIndex + 1].name);
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
+                ) {
+                  setNextContentsPath(nextDiscussion.path);
+                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        })
+      }
+      else if (lectureStructure.course?.type=="PROGRAM") {
+
+
+        lectureStructure.items.map(item => {
+          if (item.type === 'COURSE') {
+            const course = item as LectureStructureCourseItem;
+            if (course.cubes) {
+              const currentCube =
+                course.cubes.find(
+                  cube => cube.cubeId == params?.contentId
+                );
+
+              if(currentCube){
+                const nextCubeOrder = currentCube.order +1; 
+                
+                const nextCube = course.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
+                ) {
+                  setNextContentsPath(nextCube.path);
+                  setNextContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = course.discussions?.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
+                ) {
+                  setNextContentsPath(nextDiscussion.path);
+                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube =
+              lectureStructure.cubes.find(
+                  cube => cube.cubeId == params?.contentId
+                );
+
+              if(currentCube){
+                const nextCubeOrder = currentCube.order +1; 
+                
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
+                ) {
+                  setNextContentsPath(nextCube.path);
+                  setNextContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
+                ) {
+                  setNextContentsPath(nextDiscussion.path);
+                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        })
       }
     }
   }, [getLectureStructure(), getLectureConfirmProgress()]);
