@@ -47,7 +47,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
     question.questionType === 'ShortAnswer' ||
     question.questionType === 'Essay'
   ) {
-    questionClassName += ' survey-text ';
+    questionClassName += ' survey-radio-img ';
   }
   if (
     question.questionType === 'SingleChoice' ||
