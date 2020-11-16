@@ -16,7 +16,11 @@ const ProgramDiscussionView: React.FC<ProgramDiscussionViewProps> = function Pro
   path,
 }) {
   return (
-    <Link to={path} className={`btn-single-cube ${activated ? 'act-on' : ''}`}>
+    <Link
+      to={path}
+      className={`btn-single-cube ${activated ? 'act-on' : ''}`}
+      onClick={() => window.scrollTo({ top: 0 })}
+    >
       <span className="label-type n-discuss">토론하기</span>
       <span className="copy">{name}</span>
       <span
