@@ -40,24 +40,24 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureClassroom,
 }) {
   const [fixed, setFixed] = useState<boolean>(false);
-  useEffect(() => {
-    const options = {};
-    const observer = new IntersectionObserver(intersectionCallback, options);
-    function intersectionCallback(entries: IntersectionObserverEntry[]) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setFixed(false);
-        } else {
-          setFixed(true);
-        }
-      });
-    }
-    const lmsOverviewTop = document.getElementById('lms-overview-top');
-    if (lmsOverviewTop !== null) {
-      observer.observe(lmsOverviewTop);
-    }
-    return () => observer.disconnect();
-  }, []);
+  // useEffect(() => {
+  //   const options = {};
+  //   const observer = new IntersectionObserver(intersectionCallback, options);
+  //   function intersectionCallback(entries: IntersectionObserverEntry[]) {
+  //     entries.forEach(entry => {
+  //       if (entry.isIntersecting) {
+  //         setFixed(false);
+  //       } else {
+  //         setFixed(true);
+  //       }
+  //     });
+  //   }
+  //   const lmsOverviewTop = document.getElementById('lms-overview-top');
+  //   if (lmsOverviewTop !== null) {
+  //     observer.observe(lmsOverviewTop);
+  //   }
+  //   return () => observer.disconnect();
+  // }, []);
 
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
