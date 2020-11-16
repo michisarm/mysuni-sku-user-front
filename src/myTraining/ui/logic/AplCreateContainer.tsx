@@ -342,6 +342,8 @@ class AplCreateContainer extends React.Component<Props, States> {
                           (option: any) => option.value === data.value
                         );
                         this.onChangeAplProps('typeName', data.options[selectedIndex].text);
+                      } else{
+                        this.onChangeAplProps('typeName', '');
                       }
                     }
                     }
@@ -596,7 +598,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               </div>
             </Form.Field>
             <Form.Field>
-            <label className="necessary">첨부파일</label>
+            <label>첨부파일</label>
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
