@@ -12,4 +12,6 @@ export default interface ContentsProvider {
   areaType: AreaType;
   isUse: boolean;
   time: number;
+  expiryDate: string;
+  url: string;
 }
