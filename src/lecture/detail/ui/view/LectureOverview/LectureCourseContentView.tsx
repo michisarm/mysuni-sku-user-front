@@ -15,6 +15,7 @@ import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import LectureRelationsView from './LectureRelationsView';
+import './LectureCubeContentView.css';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -44,8 +45,26 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureComment,
   lectureRelations,
 }) {
+  const [fixed, setFixed] = useState<boolean>(false);
+  useEffect(() => {
+    const options = {};
+    const observer = new IntersectionObserver(intersectionCallback, options);
+    function intersectionCallback(entries: IntersectionObserverEntry[]) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setFixed(false);
+        } else {
+          setFixed(true);
+        }
+      });
+    }
+    const lmsOverviewTop = document.getElementById('lms-overview-top');
+    if (lmsOverviewTop !== null) {
+      observer.observe(lmsOverviewTop);
+    }
+    return () => observer.disconnect();
+  }, []);
   const [activatedTab, setActivatedTab] = useState<string>('overview');
-
 
   const overviewHashClick = useCallback(() => {
     hashLink('lms-overview');
@@ -67,30 +86,17 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
     setActivatedTab('comment');
   }, []);
 
-  const [nowScroll, setNowScroll] = useState<number>(0);
-  const [scrollValue, setScrollValue] = useState<number>(0);
-
-  // 현재 스크롤값 감시
-  useEffect(() => {
-    const onScroll = () => setNowScroll(window.scrollY);
-    window.addEventListener("scroll", onScroll);
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const scrollRef = useCallback((node) => {
-    if (node !== null) {
-      setScrollValue(node.getBoundingClientRect().x);
-    }
-  }, []);
-
   return (
     <>
       {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
-      <div className={nowScroll >= scrollValue ? "lms-sticky-menu lms-fixed" : "lms-sticky-menu"} id="lms-overview">
-        <div className="lms-fixed-inner" id="lms-overview" ref={scrollRef}>
+      <div id="lms-overview-top" />
+      <div
+        className={`lms-sticky-menu ${fixed ? 'lms-fixed' : ''}`}
+        id="lms-overview"
+      >
+        <div className="lms-fixed-inner" id="lms-overview">
           <a
             onClick={overviewHashClick}
             className={activatedTab === 'overview' ? 'lms-act' : ''}

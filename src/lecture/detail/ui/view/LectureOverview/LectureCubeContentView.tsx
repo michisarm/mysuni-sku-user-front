@@ -14,7 +14,6 @@ import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
 import LectureClassroomInfoView from './LectureClassroomInfoView';
 import './LectureCubeContentView.css';
-// http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
@@ -73,6 +72,14 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const commentHashClick = useCallback(() => {
     setActivatedTab('comment');
   }, []);
+
+  useEffect(() => {
+    if (activatedTab === 'comment') {
+      setTimeout(() => {
+        window.scrollTo({ top: 0 });
+      }, 0);
+    }
+  }, [activatedTab]);
   return (
     <>
       <div id="lms-overview-top" />
