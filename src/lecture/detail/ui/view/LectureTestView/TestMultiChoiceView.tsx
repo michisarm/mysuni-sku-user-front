@@ -38,7 +38,7 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
-        <div className="radio-survey-list">
+        <>
           <Checkbox
             key={question.questionNo + '_' + item.itemNo}
             className="base"
@@ -52,7 +52,7 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
           {item.imgSrc !== undefined && item.imgSrc !== '' && (
             <img src={item.imgSrc} />
           )}
-        </div>
+        </>
       ))}
     </div>
   );

@@ -9,6 +9,7 @@ enum CubeType {
   Documents = 'Documents',
   Experiential = 'Experiential',
   Community = 'Community',
+  Task = 'Task',
   None = 'None',
 }
 

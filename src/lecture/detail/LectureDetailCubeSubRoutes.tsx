@@ -29,7 +29,9 @@ function LectureDetailCubeSubRoutes() {
       {cubeType !== undefined && cubeType.type === 'ELearning' && (
         <LectureCubeElearningPage />
       )}
-      {cubeType !== undefined && cubeType.type === 'Community' && (
+      {cubeType !== undefined 
+      && (cubeType.type === 'Task' 
+      ||  cubeType.type === 'Community') && (  //TODO : Community 데이터 정리 후 제거 예정
         <LectureCubeTaskPage />
       )}
       {cubeType !== undefined && cubeType.type === 'Documents' && (

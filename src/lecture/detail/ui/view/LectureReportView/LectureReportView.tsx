@@ -25,7 +25,7 @@ import {
 interface LectureReportViewProps {
   lectureReport: LectureReport;
   setLectureReport: (reportValue: LectureReport) => void;
-  setCubeLectureReport: () => void;
+  setCubeLectureReport: () => any;
 }
 
 const LectureReportView: React.FC<LectureReportViewProps> = function LectureReportView({
@@ -41,10 +41,19 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     }
 
     reactConfirm({
-      title: '알림',
-      message:
-        '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
-      onOk: () => setCubeLectureReport(),
+      title: '제출 안내',
+      message: '제출 하시겠습니까?',
+      warning: true,
+      onOk: () => {
+        setCubeLectureReport().then((param: any) => {
+          console.log('param', param)
+          reactAlert({
+            title: '알림',
+            message:
+              '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+          });
+        });
+      },
     });
   }, []);
 
@@ -83,10 +92,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
 
   return (
     <>
-      <div className="course-detail-center">
-        <div className="main-wrap">
-          <div className="scrolling-area area2 ">
-            <div className="ui segment full">
+
               {/* Header */}
               <div className="course-info-header">
                 <Reportheader />
@@ -254,17 +260,14 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 </div>
               )}
               <div className="survey-preview">
-                {getLectureReport()?.state !== 'Completed' && (
+                {(getLectureReport()?.state !== 'Completed') &&  (getLectureReport()?.state !== 'Progress') && (
                   <button className="ui button fix bg" onClick={onSubmitClick}>
                     제출
                   </button>
                 )
                 }
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        
     </>
   );
 };

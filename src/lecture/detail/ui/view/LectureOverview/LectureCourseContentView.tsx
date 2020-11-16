@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -46,6 +46,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
+
   const overviewHashClick = useCallback(() => {
     hashLink('lms-overview');
     setActivatedTab('overview');
@@ -66,13 +67,30 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
     setActivatedTab('comment');
   }, []);
 
+  const [nowScroll, setNowScroll] = useState<number>(0);
+  const [scrollValue, setScrollValue] = useState<number>(0);
+
+  // 현재 스크롤값 감시
+  useEffect(() => {
+    const onScroll = () => setNowScroll(window.scrollY);
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollRef = useCallback((node) => {
+    if (node !== null) {
+      setScrollValue(node.getBoundingClientRect().x);
+    }
+  }, []);
+
   return (
     <>
       {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
-      <div className="lms-sticky-menu" id="lms-overview">
-        <div className="lms-fixed-inner" id="lms-overview">
+      <div className={nowScroll >= scrollValue ? "lms-sticky-menu lms-fixed" : "lms-sticky-menu"} id="lms-overview">
+        <div className="lms-fixed-inner" id="lms-overview" ref={scrollRef}>
           <a
             onClick={overviewHashClick}
             className={activatedTab === 'overview' ? 'lms-act' : ''}
