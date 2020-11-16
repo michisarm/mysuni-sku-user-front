@@ -121,29 +121,6 @@ export function mergeActivated(
       if (course.report !== undefined && course.report.path === pathname) {
         return { ...course, report: { ...course.report, activated: true } };
       }
-      if (course.cubes !== undefined) {
-        return {
-          ...course,
-          cubes: course.cubes = lectureStructure.cubes.map(cube => {
-            if (pathname.includes(cube.path)) {
-              if (cube.path === pathname) {
-                return { ...cube, activated: true };
-              }
-              if (cube.test !== undefined && cube.test.path === pathname) {
-                return { ...cube, test: { ...cube.test, activated: true } };
-              }
-              if (cube.survey !== undefined && cube.survey.path === pathname) {
-                return { ...cube, survey: { ...cube.survey, activated: true } };
-              }
-              if (cube.report !== undefined && cube.report.path === pathname) {
-                return { ...cube, report: { ...cube.report, activated: true } };
-              }
-              return cube;
-            }
-            return cube;
-          }),
-        };
-      }
       if (course.discussions !== undefined) {
         return {
           ...course,
@@ -162,7 +139,29 @@ export function mergeActivated(
           }),
         };
       }
-      return course;
+    }
+    if (course.cubes !== undefined) {
+      return {
+        ...course,
+        cubes: course.cubes.map(cube => {
+          if (pathname.includes(cube.path)) {
+            if (cube.path === pathname) {
+              return { ...cube, activated: true };
+            }
+            if (cube.test !== undefined && cube.test.path === pathname) {
+              return { ...cube, test: { ...cube.test, activated: true } };
+            }
+            if (cube.survey !== undefined && cube.survey.path === pathname) {
+              return { ...cube, survey: { ...cube.survey, activated: true } };
+            }
+            if (cube.report !== undefined && cube.report.path === pathname) {
+              return { ...cube, report: { ...cube.report, activated: true } };
+            }
+            return cube;
+          }
+          return cube;
+        }),
+      };
     }
     return course;
   });
