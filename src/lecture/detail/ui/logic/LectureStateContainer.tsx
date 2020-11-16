@@ -79,9 +79,15 @@ function LectureStateContainer() {
         lectureState.classroomSubmit !== undefined &&
         selected !== undefined
       ) {
-        setSelectedClassroom(selected);
-        applyReferenceModalRef.current.onOpenModal();
-        // lectureState.classroomSubmit(selected.round, selected);
+        if (
+          selected.enrolling.enrollingAvailable &&
+          selected.freeOfCharge.approvalProcess
+        ) {
+          setSelectedClassroom(selected);
+          applyReferenceModalRef.current.onOpenModal();
+        } else {
+          lectureState.classroomSubmit(selected);
+        }
       }
     },
     [lectureState]
