@@ -4,11 +4,10 @@ import { Link, LinkProps } from 'react-router-dom';
 
 interface Props {
   can: boolean;
-  onCannotClick: ()=>void;
+  onCannotClick: () => void;
 }
 
-
-const StructureLink: React.FC<LinkProps & Props > = function StructureLink(
+const StructureLink: React.FC<LinkProps & Props> = function StructureLink(
   props
 ) {
   const { can, children, className, onCannotClick, ...restProps } = props;
@@ -19,7 +18,11 @@ const StructureLink: React.FC<LinkProps & Props > = function StructureLink(
       </Link>
     );
   } else {
-    return <button onClick={onCannotClick} className={className}>{children}</button>;
+    return (
+      <a onClick={onCannotClick} className={className}>
+        {children}
+      </a>
+    );
   }
 };
 
