@@ -36,13 +36,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         <a className="btn-wide" onClick={openStructure}>
           <span>펼치기</span>
         </a>
-        <div className="course-detail-center">
-          <div className="main-wrap">
-            <div className="scrolling-area area2 ">
-              <div className="ui segment full">{children}</div>
-            </div>
-          </div>
-        </div>
+        {children}
       </div>
     </section>
   );
