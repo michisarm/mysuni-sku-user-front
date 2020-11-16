@@ -224,6 +224,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                           to={`/expert/instructor/${instrutor.usid}/Introduce`}
                           className="tip-mail"
                           style={{ whiteSpace: 'nowrap', display: 'block' }}
+                          target="_blank"
                         >
                           {instrutor.name}
                         </Link>

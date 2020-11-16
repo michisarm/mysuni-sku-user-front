@@ -9,6 +9,8 @@ import {
   getLectureSurveyState,
   setLectureSurveyState,
 } from '../../../store/LectureSurveyStore';
+import { requestLectureStructure } from '../../../ui/logic/LectureStructureContainer';
+import LectureParams from '../../../viewModel/LectureParams';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
 
@@ -150,7 +152,10 @@ async function coreSubmitLectureSurveyState() {
   setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
 }
 
-export async function saveLectureSurveyState() {
+export async function saveLectureSurveyState(
+  lectureParams: LectureParams,
+  pathname: string
+) {
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;
@@ -162,13 +167,18 @@ export async function saveLectureSurveyState() {
     await openLectureSurveyState();
   }
   await coreSaveLectureSurveyState();
+  requestLectureStructure(lectureParams, pathname);
+
   reactAlert({
     title: '알림',
     message: 'Survey 설문 이 저장 되었습니다.',
   });
 }
 
-export async function submitLectureSurveyState() {
+export async function submitLectureSurveyState(
+  lectureParams: LectureParams,
+  pathname: string
+) {
   const lectureSurveyState = getLectureSurveyState();
   if (lectureSurveyState === undefined) {
     return;
@@ -180,6 +190,8 @@ export async function submitLectureSurveyState() {
     await openLectureSurveyState();
   }
   await coreSubmitLectureSurveyState();
+  requestLectureStructure(lectureParams, pathname);
+
   reactAlert({
     title: '알림',
     message: 'Survey 설문 참여가 완료 되었습니다.',

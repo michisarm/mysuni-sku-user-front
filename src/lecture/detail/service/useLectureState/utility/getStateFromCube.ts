@@ -20,7 +20,6 @@ import StudentJoin from '../../../model/StudentJoin';
 import { setLectureState } from '../../../store/LectureStateStore';
 import { requestLectureStructure } from '../../../ui/logic/LectureStructureContainer';
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
-import { Classroom } from '../../../viewModel/LectureClassroom';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
 
@@ -69,7 +68,7 @@ const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
 const CANCEL = '취소하기';
 // const CHANGE_ROUND = '차수변경';
-// const DOWNLOAD = '다운로드';
+const DOWNLOAD = '다운로드';
 const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
 const JOINED = '가입완료';
@@ -150,12 +149,12 @@ async function submit(
 }
 
 async function mClassroomSubmit(
-  student: Student,
   params: LectureRouterParams,
   rollBookId: string,
   classroom: ClassroomModel,
   member: ApprovalMemberModel,
-  pathname?: string
+  pathname?: string,
+  student?: Student
 ) {
   // classroomModal.show
   const { skProfile } = SkProfileService.instance;
@@ -177,8 +176,8 @@ async function mClassroomSubmit(
     approvalProcess: classroom.freeOfCharge.approvalProcess,
   };
   if (
-    student.proposalState === 'Canceled' ||
-    student.proposalState === 'Rejected'
+    student?.proposalState === 'Canceled' ||
+    student?.proposalState === 'Rejected'
   ) {
     nextStudentCdo.proposalState = student.proposalState;
   }
@@ -359,9 +358,34 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
+      case 'Documents':
+        if (stateText === PROGRESS) {
+          const { reportFileBox } = await findCubeIntro(cubeIntroId);
+          if (reportFileBox === null || reportFileBox.reportName === '') {
+            if (!hasTest) {
+              return {
+                ...lectureState,
+                action: () => complete(params, rollBookId),
+                canAction: true,
+                actionText: COMPLETE,
+                stateText,
+              };
+            }
+          }
+        }
+        if (stateText === COMPLETE) {
+          return {
+            ...lectureState,
+            actionClassName: 'bg2',
+            hideAction: false,
+            canAction: true,
+            actionText: DOWNLOAD,
+            action: () => {},
+            stateText,
+          };
+        }
       case 'WebPage':
       case 'Experiential':
-      case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
           if (reportFileBox === null || reportFileBox.reportName === '') {
@@ -409,13 +433,7 @@ async function getStateWhenApproved(
 }
 
 function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
-  const {
-    params,
-    lectureState,
-    cubeType,
-    student,
-    studentJoin: { rollBookId },
-  } = option;
+  const { params, lectureState, cubeType, student, studentJoin } = option;
 
   if (student !== undefined) {
     switch (cubeType) {
@@ -424,8 +442,8 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
         return {
           ...lectureState,
           canAction: true,
-          action: () => submit(params, rollBookId, student),
-          actionText: SUBMIT,
+          action: () => cancel(params, student),
+          actionText: CANCEL,
           stateText: REJECTED,
         };
     }
@@ -443,11 +461,29 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
   } = option;
   switch (cubeType) {
     case 'WebPage':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: APPROVE,
+        action: () => {
+          if (document.getElementById('webpage-link') !== null) {
+            document.getElementById('webpage-link')?.click();
+          }
+          approve(params, rollBookId, student);
+        },
+        hideState: true,
+      };
+    case 'Documents':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: DOWNLOAD,
+        action: () => approve(params, rollBookId, student),
+        hideState: true,
+      };
     case 'Experiential':
     case 'Video':
     case 'Audio':
-    case 'WebPage':
-    case 'Documents':
       return {
         ...lectureState,
         canAction: true,
@@ -464,16 +500,16 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         action: () => submit(params, rollBookId, student),
         hideState: true,
         classroomSubmit: (classroom, member) => {
-          if (studentJoins !== undefined && student !== undefined) {
+          if (studentJoins !== undefined) {
             const rollbook = studentJoins.find(c => c.round == classroom.round);
             if (rollbook !== undefined) {
               mClassroomSubmit(
-                student,
                 params,
                 rollbook.rollBookId,
                 classroom,
                 member,
-                params.pathname
+                params.pathname,
+                student
               );
             }
           }

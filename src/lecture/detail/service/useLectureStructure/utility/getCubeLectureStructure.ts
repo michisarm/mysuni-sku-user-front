@@ -157,35 +157,35 @@ export async function getCubeLectureStructure(
               : parseInt(student.durationViewSeconds);
         }
       }
-      const cubeIntroId = personalCube.cubeIntro.id;
-      const examId = personalCube.contents.examId;
-      const surveyId = personalCube.contents.surveyId;
-      const surveyCaseId = personalCube.contents.surveyCaseId;
-      const itemMap = await getItemMapFromCube(
-        { cubeIntroId, examId, surveyId, surveyCaseId },
-        params,
-        student
-      );
-      const stateCan = cube.state === 'Progress' || cube.state === 'Completed';
-      let order = 0;
-      if (itemMap.report !== undefined) {
-        cube.report = itemMap.report;
-        cube.report.can = stateCan;
-        cube.report.order = ++order;
-        // stateCan = cube.report.state === 'Completed';
-      }
-      if (itemMap.survey !== undefined) {
-        cube.survey = itemMap.survey;
-        cube.survey.can = stateCan;
-        cube.survey.order = ++order;
-        // stateCan = cube.survey.state === 'Completed';
-      }
-      if (itemMap.test !== undefined) {
-        cube.test = itemMap.test;
-        cube.test.can = stateCan;
-        // stateCan = cube.test.state === 'Completed';
-        cube.test.order = ++order;
-      }
+    }
+    const cubeIntroId = personalCube.cubeIntro.id;
+    const examId = personalCube.contents.examId;
+    const surveyId = personalCube.contents.surveyId;
+    const surveyCaseId = personalCube.contents.surveyCaseId;
+    const itemMap = await getItemMapFromCube(
+      { cubeIntroId, examId, surveyId, surveyCaseId },
+      params,
+      cube.student
+    );
+    const stateCan = cube.state === 'Progress' || cube.state === 'Completed';
+    let order = 0;
+    if (itemMap.report !== undefined) {
+      cube.report = itemMap.report;
+      cube.report.can = stateCan;
+      cube.report.order = ++order;
+      // stateCan = cube.report.state === 'Completed';
+    }
+    if (itemMap.survey !== undefined) {
+      cube.survey = itemMap.survey;
+      cube.survey.can = stateCan;
+      cube.survey.order = ++order;
+      // stateCan = cube.survey.state === 'Completed';
+    }
+    if (itemMap.test !== undefined) {
+      cube.test = itemMap.test;
+      cube.test.can = stateCan;
+      // stateCan = cube.test.state === 'Completed';
+      cube.test.order = ++order;
     }
 
     lectureStructure.cube = cube;

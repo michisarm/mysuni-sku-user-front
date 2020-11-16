@@ -1,14 +1,11 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-
 interface Props {
-  breadcrumbs: React.ReactNode,
-  children: React.ReactNode,
-  mainNotice: React.ReactNode
+  breadcrumbs: React.ReactNode;
+  children: React.ReactNode;
+  mainNotice: React.ReactNode;
 }
-
 
 @reactAutobind
 class HeaderWrapperView extends Component<Props> {
@@ -18,12 +15,10 @@ class HeaderWrapperView extends Component<Props> {
     const { breadcrumbs, mainNotice, children } = this.props;
 
     return (
-      <section className="header lms">
+      <section className="header lms" id="lms-header">
         {mainNotice}
         <div className="group">
-          <div className="cont-inner">
-            {children}
-          </div>
+          <div className="cont-inner">{children}</div>
         </div>
 
         {breadcrumbs}
