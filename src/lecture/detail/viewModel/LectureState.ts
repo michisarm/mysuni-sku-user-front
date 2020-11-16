@@ -22,6 +22,6 @@ export default interface LectureState {
   stateClassName: string;
   classroomSubmit?: (
     classroom: ClassroomModel,
-    member: ApprovalMemberModel
+    member?: ApprovalMemberModel
   ) => void;
 }
