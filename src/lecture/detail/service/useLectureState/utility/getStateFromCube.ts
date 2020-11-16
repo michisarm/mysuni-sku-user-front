@@ -551,6 +551,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
           }
           approve(params, rollBookId, student);
         },
+        coreAction: () => approve(params, rollBookId, student),
         hideState: true,
       };
     case 'Documents':
