@@ -292,7 +292,7 @@ function MyLearningListContainerV2(props: Props) {
     const { inMyLectureTableCount } = inMyLectureService!;
     const { myTrainingTableCount } = myTrainingService!;
     const { lectureTableCount } = lectureService!;
-    const { apls: { totalCount: aplTableCount } } = aplService!;
+    const { aplCount: { opened: aplOpenedTableCount } } = aplService!; /* 승인 완료된 카운트만 */
 
     switch (contentType) {
       case MyLearningContentType.InMyList:
@@ -300,7 +300,7 @@ function MyLearningListContainerV2(props: Props) {
       case MyLearningContentType.Required:
         return lectureTableCount;
       case MyLearningContentType.PersonalCompleted:
-        return aplTableCount;
+        return aplOpenedTableCount;
       default:
         return myTrainingTableCount;
     }

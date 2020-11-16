@@ -6,6 +6,7 @@ import { MyLearningSummaryModal } from 'myTraining';
 
 interface Props {
   minute?: number,
+  year?: number
 }
 
 
@@ -18,7 +19,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
 
   render() {
     //
-    const { minute } = this.props;
+    const { minute, year } = this.props;
     let hour = 0;
     let onlyMinute = minute;
 
@@ -70,6 +71,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
                 {total}
               </Button>
             )}
+            year={year}
           />
         }
       </div>

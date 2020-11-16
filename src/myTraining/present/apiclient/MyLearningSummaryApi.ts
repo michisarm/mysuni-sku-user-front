@@ -10,11 +10,20 @@ class MyLearningSummaryApi {
   // baseUrl = '/api/mytraining/summaries';
 
   serverUrl = '/api/mytraining/summaries';
+  flowURL = '/api/mytraining/summaries/flow';
+
   devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API === '' ?
     this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API;
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
     this.serverUrl : this.devUrl;
+
+  /* flow */
+  flowDevURL = process.env.REACT_APP_MY_LEARNING_SUMMARY_FLOW_API === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_FLOW_API === '' ?
+    this.flowURL : process.env.REACT_APP_MY_LEARNING_SUMMARY_FLOW_API;
+
+  flowBaseURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+    this.flowURL : this.flowDevURL;
 
   findMyLearningSummary() {
     //
@@ -30,12 +39,12 @@ class MyLearningSummaryApi {
 
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
   findTotalMyLearningSummary() {
-    return axiosApi.get<MyLearningSummaryModel>(`${this.baseUrl}/v2`)
+    return axiosApi.get<MyLearningSummaryModel>(`${this.flowBaseURL}`)
       .then(response => response && response.data);
   }
 
   findMyLearningSummaryByYear(year: number) {
-    return axiosApi.get<MyLearningSummaryModel>(`${this.baseUrl}/${year}/v2`)
+    return axiosApi.get<MyLearningSummaryModel>(`${this.flowBaseURL}/${year}`)
       .then(response => response && response.data);
   }
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////

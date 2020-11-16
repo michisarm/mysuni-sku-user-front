@@ -28,12 +28,7 @@ interface Props extends RouteComponentProps {
 }
 
 function MyContentHeaderContainer(props: Props) {
-  const {
-    contentType,
-    skProfileService,
-    myLearningSummaryService,
-    history,
-  } = props;
+  const { contentType, skProfileService, myLearningSummaryService, history } = props;
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
 
@@ -86,8 +81,15 @@ function MyContentHeaderContainer(props: Props) {
         {(myLearningSummary.totalLearningTime !== 0 && (
           <ContentHeader.LearningTimeItem
             minute={myLearningSummary.totalLearningTime}
+            year={selectedYear}
           />
         )) || <ContentHeader.WaitingItem onClick={routeToRecommend} />}
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderBadgeView
+          badgeCount={myLearningSummary.achieveBadgeCount}
+          onClickItem={onClickMyBadge}
+        />
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderStampView
@@ -99,12 +101,6 @@ function MyContentHeaderContainer(props: Props) {
           ]}
           onChangeYear={onChangeYear}
           onClickItem={onClickMyStamp}
-        />
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderBadgeView
-          badgeCount={myLearningSummary.achieveBadgeCount}
-          onClickItem={onClickMyBadge}
         />
       </ContentHeader.Cell>
     </ContentHeader>
