@@ -58,7 +58,7 @@ export function useLectureReport(): [
   }, [subscriberId]);
 
   const setCubeLectureReport = useCallback(() => {
-    setCubeLectureStudentReport(params);
+    return setCubeLectureStudentReport(params);
   }, []);
 
   return [reportValue, setReportValue, setCubeLectureReport];
