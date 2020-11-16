@@ -101,3 +101,4 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
     </div>
   </div>
 );
+
