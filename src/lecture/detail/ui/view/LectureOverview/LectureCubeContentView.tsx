@@ -12,6 +12,7 @@ import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
+import LectureClassroomInfoView from './LectureClassroomInfoView';
 
 // http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
@@ -102,6 +103,9 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               <LectureCubeInfoView lectureDescription={lectureDescription} />
             )}
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+            {lectureClassroom && (
+              <LectureClassroomInfoView lectureClassroom={lectureClassroom} />
+            )}
           </div>
           {lectureClassroom && (
             <LectureClassroomView lectureClassroom={lectureClassroom} />
