@@ -155,7 +155,7 @@ async function mClassroomSubmit(
   params: LectureRouterParams,
   rollBookId: string,
   classroom: ClassroomModel,
-  member: ApprovalMemberModel,
+  member?: ApprovalMemberModel,
   pathname?: string,
   student?: Student
 ) {
@@ -171,7 +171,7 @@ async function mClassroomSubmit(
     proposalState: 'Submitted',
     programLectureUsid: '',
     courseLectureUsid: '',
-    leaderEmails: [member.email],
+    leaderEmails: member === undefined ? [] : [member.email],
     url: pathname
       ? `https://int.mysuni.sk.com/login?contentUrl=${pathname}`
       : '',
@@ -431,6 +431,8 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
+      case 'Video':
+        break;
       case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
@@ -473,8 +475,6 @@ async function getStateWhenApproved(
             }
           }
         }
-      case 'Video':
-        break;
       case 'Audio':
         return {
           ...lectureState,
