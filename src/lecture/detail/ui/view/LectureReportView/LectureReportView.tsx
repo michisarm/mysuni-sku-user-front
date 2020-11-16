@@ -251,7 +251,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 </div>
               )}
               <div className="survey-preview">
-                {getLectureReport()?.state !== 'Completed' && (
+                {(getLectureReport()?.state === 'None') && (
                   <button className="ui button fix bg" onClick={onSubmitClick}>
                     제출
                   </button>
