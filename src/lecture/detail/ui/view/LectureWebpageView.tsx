@@ -3,11 +3,17 @@ import LectureWebpage from '../../viewModel/LectureWebpage';
 
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
 
-const LectureWebpageView: React.FC<LectureWebpage> = function LectureWebpageView({
+interface Props {
+  action?: () => void;
+}
+
+const LectureWebpageView: React.FC<LectureWebpage &
+  Props> = function LectureWebpageView({
   title,
   description,
   image,
   url,
+  action,
 }) {
   return (
     <div className="lms-open-graph">
@@ -20,6 +26,7 @@ const LectureWebpageView: React.FC<LectureWebpage> = function LectureWebpageView
           className="lms-open-link"
           target="_blank"
           id="webpage-link"
+          onClick={action}
         >
           {url}
         </a>
