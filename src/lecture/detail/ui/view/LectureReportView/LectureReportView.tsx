@@ -83,10 +83,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
 
   return (
     <>
-      <div className="course-detail-center">
-        <div className="main-wrap">
-          <div className="scrolling-area area2 ">
-            <div className="ui segment full">
+
               {/* Header */}
               <div className="course-info-header">
                 <Reportheader />
@@ -254,17 +251,14 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 </div>
               )}
               <div className="survey-preview">
-                {getLectureReport()?.state !== 'Completed' && (
+                {(getLectureReport()?.state === 'None') && (
                   <button className="ui button fix bg" onClick={onSubmitClick}>
                     제출
                   </button>
                 )
                 }
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        
     </>
   );
 };
