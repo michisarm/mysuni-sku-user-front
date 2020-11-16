@@ -8,6 +8,8 @@ export interface Classroom {
   applyingEndDate: string;
   learningStartDate: string;
   learningEndDate: string;
+  cancellableStartDate: string;
+  cancellableEndDate: string;
   location: string;
   operator: string;
   capacity: number;
