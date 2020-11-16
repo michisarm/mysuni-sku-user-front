@@ -9,6 +9,7 @@ import { autobind, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
+import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
@@ -25,6 +26,7 @@ import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
+
 
 
 
@@ -545,6 +547,20 @@ class LectureService {
 
   _lectureFilterRdoV2: LectureFilterRdoModelV2 = new LectureFilterRdoModelV2();
 
+  @observable
+  _filterCountViews: FilterCountViewModel[] = [];
+
+  @observable
+  _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel()
+
+  @computed get filterCountViews() {
+    return this._filterCountViews;
+  }
+
+  @computed get totalFilterCountView() {
+    return this._totalFilterCountView;
+  }
+
   @computed get lectureTableViews() {
     return this._lectureTableViews;
   }
@@ -619,6 +635,27 @@ class LectureService {
         this._lectureTableViews = [...this._lectureTableViews, ...addedTableViews];
       });
     }
+  }
+
+  @action
+  async findAllFilterCountViews() {
+    const response = await this.lectureFlowApi.findAllFilterCountViews(this._lectureFilterRdoV2);
+
+    if (response) {
+      const filterCountViews = response.map((filterCountView: any) => new FilterCountViewModel(filterCountView));
+      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(filterCountViews);
+
+      runInAction(() => {
+        this._filterCountViews = filterCountViews;
+        this._totalFilterCountView = totalFilterCountView;
+      });
+    }
+  }
+
+  @action
+  clearAllFilterCountViews() {
+    this._filterCountViews = [];
+    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action

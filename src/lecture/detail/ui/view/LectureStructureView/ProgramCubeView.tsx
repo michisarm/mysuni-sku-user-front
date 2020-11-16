@@ -4,6 +4,7 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
 import { parseCubeType } from './CubeView';
+import StructureLink from './StructureLink';
 
 interface ProgramCubeViewProps {
   name: string;
@@ -12,6 +13,7 @@ interface ProgramCubeViewProps {
   learningTime: number;
   cubeType: CubeType;
   path: string;
+  can: boolean;
 }
 
 const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView({
@@ -21,13 +23,14 @@ const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView
   learningTime,
   cubeType,
   path,
+  can,
 }) {
   return (
     <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
       <span
-        className={`label-state-cube ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
+        className={`label-state-cube ${state === 'Progress' ? 'l-step5' : ''} ${
+          state === 'Completed' ? 'complete' : ''
+        }`}
       >
         <span>cube 완료상태</span>
       </span>

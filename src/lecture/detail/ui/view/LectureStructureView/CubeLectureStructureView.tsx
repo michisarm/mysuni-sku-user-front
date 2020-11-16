@@ -2,9 +2,11 @@ import React from 'react';
 import LectureParams from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
+  LectureStructureDurationableCubeItem,
   LectureStructureItemType,
 } from '../../../viewModel/LectureStructure';
 import CubeView from './CubeView';
+import DurationableCubeView from './DurationableCubeView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -18,38 +20,62 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
 }) {
   return (
     <>
-      {lectureStructure.cube !== undefined && (
-        <CubeView
-          key={lectureStructure.cube.id}
-          name={lectureStructure.cube.name}
-          state={lectureStructure.cube.state}
-          activated={lectureStructure.cube.activated}
-          learningTime={lectureStructure.cube.learningTime}
-          cubeType={lectureStructure.cube.cubeType}
-          path={lectureStructure.cube.path}
-        />
-      )}
-      {lectureStructure.test !== undefined && (
+      {lectureStructure.cube !== undefined &&
+        lectureStructure.cube.cubeType !== 'Audio' &&
+          lectureStructure.cube.cubeType !== 'Video' && (
+          <CubeView
+            key={lectureStructure.cube.id}
+            name={lectureStructure.cube.name}
+            state={lectureStructure.cube.state}
+            activated={lectureStructure.cube.activated}
+            learningTime={lectureStructure.cube.learningTime}
+            cubeType={lectureStructure.cube.cubeType}
+            path={lectureStructure.cube.path}
+            can={lectureStructure.cube.can}
+          />
+        )}
+      {lectureStructure.cube !== undefined &&
+        (lectureStructure.cube.cubeType === 'Audio' ||
+          lectureStructure.cube.cubeType === 'Video') && (
+          <DurationableCubeView
+            key={lectureStructure.cube.id}
+            name={lectureStructure.cube.name}
+            state={lectureStructure.cube.state}
+            activated={lectureStructure.cube.activated}
+            learningTime={lectureStructure.cube.learningTime}
+            cubeType={lectureStructure.cube.cubeType}
+            path={lectureStructure.cube.path}
+            can={lectureStructure.cube.can}
+            duration={
+              (lectureStructure.cube as LectureStructureDurationableCubeItem)
+                .duration
+            }
+          />
+        )}
+      {lectureStructure.cube?.test !== undefined && (
         <TestView
-          name={lectureStructure.test.name}
-          state={lectureStructure.test.state}
-          questionCount={lectureStructure.test.questionCount}
-          path={lectureStructure.test.path}
+          name={lectureStructure.cube.test.name}
+          state={lectureStructure.cube.test.state}
+          questionCount={lectureStructure.cube.test.questionCount}
+          path={lectureStructure.cube.test.path}
+          can={lectureStructure.cube.test.can}
         />
       )}
-      {lectureStructure.survey !== undefined && (
+      {lectureStructure.cube?.survey !== undefined && (
         <SurveyView
-          name={lectureStructure.survey.name}
-          state={lectureStructure.survey.state}
-          questionCount={lectureStructure.survey.questionCount}
-          path={lectureStructure.survey.path}
+          name={lectureStructure.cube.survey.name}
+          state={lectureStructure.cube.survey.state}
+          questionCount={lectureStructure.cube.survey.questionCount}
+          path={lectureStructure.cube.survey.path}
+          can={lectureStructure.cube.survey.can}
         />
       )}
-      {lectureStructure.report !== undefined && (
+      {lectureStructure.cube?.report !== undefined && (
         <ReportView
-          name={lectureStructure.report.name}
-          state={lectureStructure.report.state}
-          path={lectureStructure.report.path}
+          name={lectureStructure.cube.report.name}
+          state={lectureStructure.cube.report.state}
+          path={lectureStructure.cube.report.path}
+          can={lectureStructure.cube.report.can}
         />
       )}
     </>

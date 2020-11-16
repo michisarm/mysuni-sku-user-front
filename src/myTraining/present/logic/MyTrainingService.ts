@@ -5,11 +5,14 @@ import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel'
 import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
+import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
+
 
 
 @autobind
@@ -39,6 +42,9 @@ class MyTrainingService {
 
   @observable
   myStampCount: number = 0;
+
+
+
 
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
@@ -402,6 +408,20 @@ class MyTrainingService {
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
   @observable
+  private _filterCountViews: FilterCountViewModel[] = [];
+
+  @observable
+  private _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel;
+
+  private inProgressTableViews: MyTrainingTableViewModel[] = [];
+
+  private inProgressTableCount: number = 0;
+
+  private completedTableViews: MyTrainingTableViewModel[] = [];
+
+  private completedTableCount: number = 0;
+
+  @observable
   selectedServiceIds: string[] = [];
 
   @computed get myTrainingTableViews() {
@@ -411,6 +431,14 @@ class MyTrainingService {
 
   @computed get myTrainingTableCount() {
     return this._myTrainingTableViewCount;
+  }
+
+  @computed get filterCountViews() {
+    return this._filterCountViews;
+  }
+
+  @computed get totalFilterCountView() {
+    return this._totalFilterCountView;
   }
 
   @action
@@ -460,11 +488,57 @@ class MyTrainingService {
   }
 
   @action
-  async findAllTableViews(filterRdo?: MyTrainingFilterRdoModel) {
+  async findAllTableViews() {
+    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
 
-    if (filterRdo) {
-      this._myTrainingFilterRdo = filterRdo;
+    /* 학습중 */
+    if (this._myTrainingFilterRdo.contentType === 'InProgress') {
+      if (this._myTrainingFilterRdo.viewType === 'Course') {
+        if (this.inProgressTableViews.length === 0) {
+          const inProgressJson = sessionStorage.getItem('inProgressTableViews');
+          if (inProgressJson) {
+            const inProgressStorage: any[] = JSON.parse(inProgressJson);
+            if (inProgressStorage) {
+              this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
+              this.inProgressTableCount = inProgressStorage.length;
+            }
+          }
+        }
+        const inProgressTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        this._myTrainingTableViews = inProgressTableViews.slice(0, 20);
+        this._myTrainingTableViewCount = inProgressTableViews.length;
+        return false;
+      }
+
+      this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
+      this._myTrainingTableViewCount = this.inProgressTableCount;
+      return false;
     }
+    /* 학습완료 */
+    if (this._myTrainingFilterRdo.contentType === 'Completed') {
+      if (this._myTrainingFilterRdo.viewType === 'Course') {
+        if (this.completedTableViews.length === 0) {
+          const completedJson = sessionStorage.getItem('completedTableViews');
+          if (completedJson) {
+            const completedStorage: any[] = JSON.parse(completedJson);
+            if (completedStorage) {
+              this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+              this.completedTableCount = completedStorage.length;
+            }
+          }
+        }
+
+        const completedTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        this._myTrainingTableViews = completedTableViews.slice(0, 20);
+        this._myTrainingTableViewCount = completedTableViews.length;
+        return false;
+      }
+
+      this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
+      this._myTrainingTableViewCount = this.completedTableCount;
+      return false;
+    }
+
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
@@ -482,6 +556,7 @@ class MyTrainingService {
 
   @action
   async findAllStampTableViews() {
+
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
     if (offsetTableViews &&
@@ -529,6 +604,14 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithPage(offset: Offset) {
+    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
+    if (this._myTrainingFilterRdo.getFilterCount() === 0) {
+      /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
+      const addedTableViews = this.getAddedTableViewsFromStorage(offset);
+      this._myTrainingTableViews = [...this.myTrainingTableViews, ...addedTableViews];
+      return;
+    }
+
     this._myTrainingFilterRdo.changeOffset(offset);
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
@@ -542,6 +625,34 @@ class MyTrainingService {
         this._myTrainingTableViews = [...this._myTrainingTableViews, ...addedTableViews];
       });
     }
+  }
+
+  /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
+  private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
+    const { contentType, viewType } = this._myTrainingFilterRdo;
+
+    const startIndex = offset.offset;
+    const endIndex = offset.offset + offset.limit;
+
+    if (contentType === MyLearningContentType.InProgress) {
+      if (viewType === 'Course') {
+        const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        return courseTableViews.slice(startIndex, endIndex);
+      }
+
+      return this.inProgressTableViews.slice(startIndex, endIndex);
+    }
+
+    if (contentType === MyLearningContentType.Completed) {
+      if (viewType === 'Course') {
+        const courseTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        return courseTableViews.slice(startIndex, endIndex);
+      }
+
+      return this.completedTableViews.slice(startIndex, endIndex);
+    }
+
+    return [];
   }
 
   @action
@@ -605,7 +716,59 @@ class MyTrainingService {
     const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
 
     return myTrainingV2sForExcel;
+  }
 
+  /* 메인 페이지 진입 시 session storage 에 전체 학습중 데이터를 저장하기 위한 service. */
+  async findAllInProgressTableViewsForStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForStorage(MyLearningContentType.InProgress, { offset: 0, limit: 9999 });
+
+    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
+    if (offsetInProgress) {
+      const inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
+      this.inProgressTableViews = inProgressTableViews;
+      this.inProgressTableCount = inProgressTableViews.length;
+
+      return inProgressTableViews;
+    }
+
+    return null;
+  }
+
+  /* 메인 페이지 진입 시 session storage 에 전체 학습완료 데이터를 저장하기 위한 service. */
+  async findAllCompletedTableViewsForStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForStorage(MyLearningContentType.Completed, { offset: 0, limit: 9999 });
+
+    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
+    if (offsetCompleted) {
+      const completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
+      this.completedTableViews = completedTableViews;
+      this.completedTableCount = completedTableViews.length;
+
+      return completedTableViews;
+    }
+
+    return null;
+  }
+
+  @action
+  async findAllFilterCountViews() {
+    const response = await this.myTrainingApi.findAllFilterCountViews(this._myTrainingFilterRdo);
+
+    if (response) {
+      const filterCountViews = response.map((filterCountView: any) => new FilterCountViewModel(filterCountView));
+      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(filterCountViews);
+
+      runInAction(() => {
+        this._filterCountViews = filterCountViews;
+        this._totalFilterCountView = totalFilterCountView;
+      });
+    }
+  }
+
+  @action
+  clearAllFilterCountViews() {
+    this._filterCountViews = [];
+    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action

@@ -6,12 +6,12 @@ import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore'
 import React, { useCallback } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
-  params: LectureParams;
+  params: LectureRouterParams;
 }
 
 const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView({
@@ -38,7 +38,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       answerItemId = answerItem.id;
     }
 
-    if (params.cubeId !== undefined) {
+    if (params.contentType === 'cube') {
       saveTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
@@ -63,7 +63,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               submitAnswers: answerItem.answers,
             };
             setLectureTestAnswerItem(nextAnswerItem);
-            if (params.cubeId !== undefined) {
+            if (params.contentType === 'cube') {
               saveTestAnswerSheet(params, answerItemId, true, true);
             } else {
               saveCourseTestAnswerSheet(params, answerItemId, true, true);

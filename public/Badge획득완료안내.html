@@ -3,11 +3,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body> 
-    <p><a th:href="${certificationUrl}" target="_blank"><img th:src="${badgeImagePath}" /></a></p>
-    <p style="width:160px;height: 40px;margin: 30px 355px;border-radius: 4px;background-color: #4b9e9b;">
-       <a style="display: inline-block;width: 120px;height: 20px;padding: 10px 20px;text-align: center;font-size: 14px;font-weight: bold;margin: 0 auto;    color: #ffffff;">
-            인쇄하기
-       </a>
-    </p>
+    <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+        <tr>
+            <td><img th:src="${badgeImagePath}" /></td>
+        </tr>
+        <tr>
+            <td><a th:href="${certificationUrl}" target="_blank"><img src="http://int.mysuni.sk.com/files/certification/static/print.png" /></a></td>
+        </tr>
+        <tr>
+            <td style='padding:35px;font-family:"맑은 고딕";font-size:12px;color: red;'>※ 이미지가 안나오실 경우, 인터넷 옵션 > 도구 > 고급탭 에서 배경색 및 이미지 인쇄 부분을 체크해주세요.</td>
+        </tr>
+    </table>
 </body> 
 </html>

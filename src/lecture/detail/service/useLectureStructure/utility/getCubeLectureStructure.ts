@@ -1,22 +1,4 @@
 /* eslint-disable consistent-return */
-
-/**
- * 
- export interface LectureStructureCubeItem extends Item {
-  id: string;
-  name: string;
-  cubeId: string;
-  cubeType: CubeType;
-  learningTime: number;
-  url: LectureStructureCubeItemUrl;
-  learningState?: LearningState;
-  state?: State;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-}
- */
-
 import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
@@ -27,6 +9,7 @@ import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructure,
   LectureStructureCubeItem,
+  LectureStructureDurationableCubeItem,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getItemMapFromCube } from './getItemMapFromCube';
@@ -41,7 +24,11 @@ async function getLectureStructureCubeItemByPersonalCube(
   params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
-  const { id, name } = personalCube;
+  const {
+    id,
+    name,
+    contents: { type },
+  } = personalCube;
   if (personalCube === undefined) {
     return;
   }
@@ -56,9 +43,28 @@ async function getLectureStructureCubeItemByPersonalCube(
     contentId: cubeId!,
     lectureId: lectureCardId!,
     pathname: toPath(params),
+    lectureParams: params,
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
+    if (type === 'Audio' || type === 'Video') {
+      const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
+        id,
+        name,
+        cubeId: cubeId!,
+        cubeType,
+        learningTime,
+        params,
+        routerParams,
+        path: toPath(params),
+        serviceId: lectureCardId,
+        can: true,
+        duration: 0,
+        order: 0,
+        type: 'CUBE',
+      };
+      return lectureStructureDurationableCubeItem;
+    }
     return {
       id,
       name,
@@ -69,20 +75,32 @@ async function getLectureStructureCubeItemByPersonalCube(
       routerParams,
       path: toPath(params),
       serviceId: lectureCardId,
+      can: true,
+      order: 0,
+      type: 'CUBE',
     };
   }
 }
 
-async function getStateMapByParams(
+export async function getStateMapByParams(
   params: LectureParams
 ): Promise<StudentStateMap | void> {
   const { lectureCardId } = params;
   if (lectureCardId !== undefined) {
     const studentJoins = await findIsJsonStudentByCube(lectureCardId);
-    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
-      const learningState = studentJoins[0].learningState;
+    if (!Array.isArray(studentJoins)) {
+      return;
+    }
+    const sortedStudentJoins = studentJoins.sort(
+      (a, b) => b.updateTime - a.updateTime
+    );
+    if (
+      sortedStudentJoins.length > 0 &&
+      sortedStudentJoins[0].studentId !== null
+    ) {
+      const learningState = sortedStudentJoins[0].learningState;
       let state: State = 'None';
-      if (studentJoins[0].proposalState === 'Approved') {
+      if (sortedStudentJoins[0].proposalState === 'Approved') {
         switch (learningState) {
           case 'Progress':
           case 'TestPassed':
@@ -98,7 +116,11 @@ async function getStateMapByParams(
             break;
         }
       }
-      return { state, learningState, studentId: studentJoins[0].studentId };
+      return {
+        state,
+        learningState,
+        studentId: sortedStudentJoins[0].studentId,
+      };
     }
   }
 }
@@ -109,7 +131,9 @@ export async function getCubeLectureStructure(
   const lectureStructure: LectureStructure = {
     courses: [],
     cubes: [],
+    discussions: [],
     type: 'Cube',
+    items: [],
   };
   const personalCube = await getPersonalCubeByParams(params);
   const cube = await getLectureStructureCubeItemByPersonalCube(
@@ -123,6 +147,16 @@ export async function getCubeLectureStructure(
       cube.state = stateMap.state;
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
+      cube.student = student;
+      if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
+        (cube as LectureStructureDurationableCubeItem).duration = 0;
+        if (student !== undefined) {
+          (cube as LectureStructureDurationableCubeItem).duration =
+            student.durationViewSeconds === null
+              ? undefined
+              : parseInt(student.durationViewSeconds);
+        }
+      }
       const cubeIntroId = personalCube.cubeIntro.id;
       const examId = personalCube.contents.examId;
       const surveyId = personalCube.contents.surveyId;
@@ -132,14 +166,25 @@ export async function getCubeLectureStructure(
         params,
         student
       );
-      if (itemMap.test !== undefined) {
-        lectureStructure.test = itemMap.test;
+      const stateCan = cube.state === 'Progress' || cube.state === 'Completed';
+      let order = 0;
+      if (itemMap.report !== undefined) {
+        cube.report = itemMap.report;
+        cube.report.can = stateCan;
+        cube.report.order = ++order;
+        // stateCan = cube.report.state === 'Completed';
       }
       if (itemMap.survey !== undefined) {
-        lectureStructure.survey = itemMap.survey;
+        cube.survey = itemMap.survey;
+        cube.survey.can = stateCan;
+        cube.survey.order = ++order;
+        // stateCan = cube.survey.state === 'Completed';
       }
-      if (itemMap.report !== undefined) {
-        lectureStructure.report = itemMap.report;
+      if (itemMap.test !== undefined) {
+        cube.test = itemMap.test;
+        cube.test.can = stateCan;
+        // stateCan = cube.test.state === 'Completed';
+        cube.test.order = ++order;
       }
     }
 

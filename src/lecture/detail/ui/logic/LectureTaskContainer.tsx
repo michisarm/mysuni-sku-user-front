@@ -11,7 +11,6 @@ import {
 import { ContentLayout } from 'shared';
 import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
-import { useLectuerCubeOverview } from 'lecture/detail/service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
 import {
@@ -25,7 +24,10 @@ import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOv
 import { useLectureFile } from 'lecture/detail/service/useLectureFile';
 import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { useLectureTaskViewType } from 'lecture/detail/service/useLectureTask/useLectureTaskViewType';
-import { getLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
+import {
+  getLectureTaskCreateItem,
+  setLectureTaskCreateItem,
+} from 'lecture/detail/store/LectureTaskCreateStore';
 import { reactConfirm } from '@nara.platform/accent';
 import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility/updateLectureTask';
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
@@ -44,7 +46,6 @@ function LectureTaskContainer() {
   const [create, setCreate] = useState<boolean>();
   const [edit, setEdit] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
-  useLectuerCubeOverview();
 
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
@@ -107,29 +108,32 @@ function LectureTaskContainer() {
     setLectureTaskViewType('create');
   }, []);
 
-  const onHandleChange = useCallback((value: string, name: string, viewType: string) => {
-    if (viewType === 'create') {
-      if (getLectureTaskCreateItem() === undefined) {
-        return;
+  const onHandleChange = useCallback(
+    (value: string, name: string, viewType: string) => {
+      if (viewType === 'create') {
+        if (getLectureTaskCreateItem() === undefined) {
+          return;
+        }
+        const taskCreateItem = getLectureTaskCreateItem();
+        if (taskCreateItem === undefined) {
+          return;
+        }
+        const nextTaskCreateItem = { ...taskCreateItem, [name]: value };
+        setLectureTaskCreateItem(nextTaskCreateItem);
+      } else if (viewType === 'edit') {
+        if (getLectureTaskDetail() === undefined) {
+          return;
+        }
+        const taskEditItem = getLectureTaskDetail();
+        if (taskEditItem === undefined) {
+          return;
+        }
+        const nextTaskEditItem = { ...taskEditItem, name: value };
+        setLectureTaskDetail(nextTaskEditItem);
       }
-      const taskCreateItem = getLectureTaskCreateItem()
-      if (taskCreateItem === undefined) {
-        return;
-      }
-      const nextTaskCreateItem = { ...taskCreateItem, [name]: value };
-      setLectureTaskCreateItem(nextTaskCreateItem);
-    } else if(viewType === 'edit') {
-      if(getLectureTaskDetail() === undefined) {
-        return;
-      }
-      const taskEditItem = getLectureTaskDetail()
-      if(taskEditItem === undefined) {
-        return;
-      }
-      const nextTaskEditItem = { ...taskEditItem, name: value };
-      setLectureTaskDetail(nextTaskEditItem);
-    }
-  }, []);
+    },
+    []
+  );
 
   const handleSubmitClick = useCallback((viewType, detailTaskId?) => {
     reactConfirm({
@@ -137,7 +141,7 @@ function LectureTaskContainer() {
       message: '저장하시겠습니까?',
       onOk: () => {
         if (viewType === 'create') {
-          const test = createLectureTask()
+          const test = createLectureTask();
           setLectureTaskCreateItem({
             id: detailTaskId!,
             fileBoxId: '',
@@ -154,17 +158,17 @@ function LectureTaskContainer() {
             time: 0,
             readCount: 0,
             commentFeedbackId: '',
-            notice: false
-          })
+            notice: false,
+          });
 
-          setLectureTaskViewType('list')
+          setLectureTaskViewType('list');
         } else {
-          updateLectureTask(detailTaskId)
-          setLectureTaskViewType('list')
+          updateLectureTask(detailTaskId);
+          setLectureTaskViewType('list');
         }
-      }
+      },
     });
-  }, [])
+  }, []);
 
   useEffect(() => {
     async function getContentId() {
@@ -180,7 +184,6 @@ function LectureTaskContainer() {
     getContentId();
   }, [create, edit]);
 
-  
   async function deletePost(id: string, type: string) {
     await deleteCubeLectureTaskPost(id, type);
   }
@@ -223,12 +226,14 @@ function LectureTaskContainer() {
       {/* create, edit 작업해야됨 */}
       {viewType === 'create' && (
         <>
-            <LectureTaskCreateView
-              viewType="create"
-              boardId={boardId}
-              handleSubmitClick={(viewType) => handleSubmitClick(viewType)}
-              changeProps={(value: string, name: string, viewType: string) => onHandleChange(value, name, viewType)}
-            />
+          <LectureTaskCreateView
+            viewType="create"
+            boardId={boardId}
+            handleSubmitClick={viewType => handleSubmitClick(viewType)}
+            changeProps={(value: string, name: string, viewType: string) =>
+              onHandleChange(value, name, viewType)
+            }
+          />
         </>
       )}
       {viewType === 'edit' && (
@@ -237,9 +242,13 @@ function LectureTaskContainer() {
             viewType="edit"
             detailTaskId={detailTaskId}
             boardId={boardId}
-            handleSubmitClick={(viewType) => handleSubmitClick(viewType, detailTaskId)}
+            handleSubmitClick={viewType =>
+              handleSubmitClick(viewType, detailTaskId)
+            }
             taskEdit={taskDetail!}
-            changeProps={(value: string, name: string, viewType: string) => onHandleChange(value, name, viewType)}
+            changeProps={(value: string, name: string, viewType: string) =>
+              onHandleChange(value, name, viewType)
+            }
           />
         </>
       )}

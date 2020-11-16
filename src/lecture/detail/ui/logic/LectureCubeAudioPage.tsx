@@ -5,20 +5,19 @@
  */
 
 import React from 'react';
-import { useLectuerCubeOverview } from '../../service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
-import LectureAudioView from '../view/LectureAudioView';
 import LectureDetailLayout from '../view/LectureDetailLayout';
+import LectureAudioContainer from './LectureAudioContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 
-function LectureCubeAudioPage() { 
-  useLectuerCubeOverview();
+function LectureCubeAudioPage() {
   useLectureMedia();
+
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />
-      <LectureAudioView />
+      <LectureAudioContainer />
       <LectureCubeContentContainer />
     </LectureDetailLayout>
   );

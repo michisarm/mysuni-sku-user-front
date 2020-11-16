@@ -104,7 +104,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             }
           >
             <i className="lms-comment-icon" />
-            Comment
+            Comments
             <span className="count">
               {lectureComment !== undefined && lectureComment.commentsCount > 0
                 ? `+${lectureComment.commentsCount}`

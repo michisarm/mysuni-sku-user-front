@@ -29,6 +29,7 @@ export class AplCdoModel {
   approvalName: string = '';
   updateTime: number = 0;
   causeOfReturn: string = '';
+  approvalEmail: string = '';
   approvalCompany: string = '';
   approvalDepartment: string = '';
 }

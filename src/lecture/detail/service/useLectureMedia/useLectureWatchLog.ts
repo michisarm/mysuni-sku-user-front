@@ -23,7 +23,7 @@ export function useLectureWatchLog(): [
   (params: LectureRouterParams) => void,
   (params: LectureRouterParams, watchLog: WatchLog) => void,
   (params: LectureRouterParams) => void,
-  (params: LectureRouterParams) => void
+  (params: LectureRouterParams) => Promise<void>
 ] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [watchLogValue, setWatchLogValue] = useState<WatchLogValues>();
@@ -45,7 +45,7 @@ export function useLectureWatchLog(): [
   );
 
   const LectureConfirmProgress = useCallback((params: LectureRouterParams) => {
-    confirmProgress(params);
+    return confirmProgress(params);
   }, []);
 
   const getWatchLogSumViewCount = useCallback((params: LectureRouterParams) => {
