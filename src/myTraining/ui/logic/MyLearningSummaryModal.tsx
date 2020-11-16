@@ -12,7 +12,6 @@ import { SkProfileModel } from 'profile/model';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 
-
 interface Props {
   trigger: React.ReactNode;
   year?: number;
@@ -55,23 +54,20 @@ class MyLearningSummaryModal extends Component<Props> {
 
   //  모달이 open 되었을 때만 학습시간을 조회함. 2020.10.28 by 김동구
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
-    const { myLearningSummaryService, aplService, personalCubeService, } = this.props;
-    const { totalMyLearningSummary } = myLearningSummaryService!;
+    const { myLearningSummaryService, year } = this.props;
+    const { myLearningSummary } = myLearningSummaryService!;
 
     const { open } = this.state;
     const { open: prevOpen } = prevState;
 
     if (prevOpen !== open && open) {
-      aplService!.findAllAplsByQuery();
-      personalCubeService!.findLectureTimeSummary();
-
       /* 
         totalMyLearningSummary 는 MainPage 진입 시 조회가 되어 store 에 저장되므로
         MainPage 를 통해서가 아닌 MyPage 로 바로 진입한 경우, ( 새로고침 )
         totalMyLearningSummary 는 조회되지 않으며, 확인 후 다시 조회를 해야함. 2020.10.28 by 김동구
       */
-      if (totalMyLearningSummary.year === 0) {
-        myLearningSummaryService!.findTotalMyLearningSummary();
+      if (myLearningSummary.year === 0 && year) {
+        myLearningSummaryService!.findMyLearningSummaryByYear(year);
       }
     }
 
@@ -123,9 +119,8 @@ class MyLearningSummaryModal extends Component<Props> {
 
   /* render functions */
   renderLearningTimeByTab() {
-    const { myLearningSummaryService, aplService, personalCubeService, menuControlAuthService } = this.props;
-    const { totalMyLearningSummary } = myLearningSummaryService!;
-    const { lectureTimeSummary } = personalCubeService!;
+    const { myLearningSummaryService, menuControlAuthService, year } = this.props;
+    const { myLearningSummary } = myLearningSummaryService!;
     const { menuControlAuth } = menuControlAuthService!;
     const { checkedTab } = this.state;
 
@@ -137,7 +132,7 @@ class MyLearningSummaryModal extends Component<Props> {
             <span className="name">관계사 학습시간</span>
             <span className="time">
               {timeToHourMinutePaddingFormat(
-                totalMyLearningSummary.myCompanyLearningTime + totalMyLearningSummary.myCompanyInSuniLearningTime
+                myLearningSummary.totalMyCompanyLearningTime
               )}
             </span>
           </li>
@@ -147,7 +142,7 @@ class MyLearningSummaryModal extends Component<Props> {
               <span className="name">개인 학습시간</span>
               <span className="time">
                 {timeToHourMinutePaddingFormat(
-                  aplService!.allowTime
+                  myLearningSummary.aplAllowTime
                 )}
               </span>
             </li>
@@ -163,7 +158,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b1">AI</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.aiCollegeTime : lectureTimeSummary.aiCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.aiCollegeTime : myLearningSummary.lectureTimeSummary.aiCollegeTime
             )}
           </span>
         </li>
@@ -171,7 +166,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b2">DT</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.dtCollegeTime : lectureTimeSummary.dtCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.dtCollegeTime : myLearningSummary.lectureTimeSummary.dtCollegeTime
             )}
           </span>
         </li>
@@ -179,7 +174,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b3">행복</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.happyCollegeTime : lectureTimeSummary.happyCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.happyCollegeTime : myLearningSummary.lectureTimeSummary.happyCollegeTime
             )}
           </span>
         </li>
@@ -187,7 +182,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b4">SV</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.svCollegeTime : lectureTimeSummary.svCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.svCollegeTime : myLearningSummary.lectureTimeSummary.svCollegeTime
             )}
           </span>
         </li>
@@ -195,7 +190,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b5">혁신디자인</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.designCollegeTime : lectureTimeSummary.designCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.designCollegeTime : myLearningSummary.lectureTimeSummary.designCollegeTime
             )}
           </span>
         </li>
@@ -203,7 +198,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b6">Global</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.globalCollegeTime : lectureTimeSummary.globalCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.globalCollegeTime : myLearningSummary.lectureTimeSummary.globalCollegeTime
             )}
           </span>
         </li>
@@ -211,7 +206,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b7">Leadership</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.leadershipCollegeTime : lectureTimeSummary.leadershipCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.leadershipCollegeTime : myLearningSummary.lectureTimeSummary.leadershipCollegeTime
             )}
           </span>
         </li>
@@ -219,7 +214,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b8">Management</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.managementCollegeTime : lectureTimeSummary.managementCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.managementCollegeTime : myLearningSummary.lectureTimeSummary.managementCollegeTime
             )}
           </span>
         </li>
@@ -227,7 +222,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b9">반도체</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.semiconductorCollegeTime : lectureTimeSummary.semiconductorCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.semiconductorCollegeTime : myLearningSummary.lectureTimeSummary.semiconductorCollegeTime
             )}
           </span>
         </li>
@@ -235,7 +230,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b13">에너지 솔루션</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.energySolutionCollegeTime : lectureTimeSummary.energySolutionCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.energySolutionCollegeTime : myLearningSummary.lectureTimeSummary.energySolutionCollegeTime
             )}
           </span>
         </li>
@@ -243,7 +238,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b10">SK아카데미</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.skAcademyCollegeTime : lectureTimeSummary.skAcademyCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.skAcademyCollegeTime : myLearningSummary.lectureTimeSummary.skAcademyCollegeTime
             )}
           </span>
         </li>
@@ -251,7 +246,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b11">SK경영</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.skManagementCollegeTime : lectureTimeSummary.skManagementCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.skManagementCollegeTime : myLearningSummary.lectureTimeSummary.skManagementCollegeTime
             )}
           </span>
         </li>
@@ -259,7 +254,7 @@ class MyLearningSummaryModal extends Component<Props> {
           <span className="name b12">Life Style</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? totalMyLearningSummary.lifeStyleCollegeTime : lectureTimeSummary.lifeStyleCollegeTime
+              checkedTab === ModalTabType.mySUNI ? myLearningSummary.lifeStyleCollegeTime : myLearningSummary.lectureTimeSummary.lifeStyleCollegeTime
             )}
           </span>
         </li>
@@ -270,14 +265,13 @@ class MyLearningSummaryModal extends Component<Props> {
   /* render */
   render() {
     const { open, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, aplService, personalCubeService, menuControlAuthService } = this.props;
-    const { totalMyLearningSummary } = myLearningSummaryService!;
-    const { lectureTimeSummary } = personalCubeService!;
+    const { trigger, myLearningSummaryService, menuControlAuthService } = this.props;
+    const { myLearningSummary } = myLearningSummaryService!;
     const { menuControlAuth: { companyCode } } = menuControlAuthService!;
 
     /* companyCode 가 존재할 때는 개인학습 시간을 포함하지 않음. */
-    const myCompanyTotalTime = companyCode === '' ? totalMyLearningSummary.myCompanyLearningTime + totalMyLearningSummary.myCompanyInSuniLearningTime + aplService!.allowTime
-      : totalMyLearningSummary.myCompanyLearningTime + totalMyLearningSummary.myCompanyInSuniLearningTime;
+    const totalMyCompanyAplAllowTime = companyCode === '' ?
+      myLearningSummary.totalMyCompanyLearningTime + myLearningSummary.aplAllowTime : myLearningSummary.totalMyCompanyLearningTime;
 
     // totalLearningTime 을 display 하는 영역은 확인되지 않음. 
     // 확인될 경우, 주석을 풀고 total 변수 를 해당 영역에 display 하면 됨. 2020.10.28 by 김동구
@@ -381,8 +375,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             <label>
                               <strong>
                                 mySUNI ({timeToHourMinutePaddingFormat(
-                                totalMyLearningSummary.suniLearningTime -
-                                totalMyLearningSummary.myCompanyInSuniLearningTime)})
+                                myLearningSummary.totalSuniLearningTime)})
                               </strong>
                               <span>mySUNI College에서 학습한 시간</span>
                             </label>
@@ -402,7 +395,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             <label>
                               <strong>
                                 My Company ({timeToHourMinutePaddingFormat(
-                                myCompanyTotalTime)})
+                                totalMyCompanyAplAllowTime)})
                               </strong>
                               <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span>
                             </label>
@@ -421,7 +414,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             />
                             <label>
                               <strong>
-                                강의시간 ({timeToHourMinutePaddingFormat(lectureTimeSummary.totalLectureTime)})
+                                강의시간 ({timeToHourMinutePaddingFormat(myLearningSummary.lectureTimeSummary && myLearningSummary.lectureTimeSummary.totalCollegeTime)})
                               </strong>
                               <span>mySUNI College와 각사에서 <br />강의를 통해 인정받은 시간</span>
                             </label>

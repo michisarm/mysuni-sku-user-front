@@ -100,7 +100,6 @@ class MyTrainingTableViewModel {
       과정명: this.name || '-',
       학습유형: this.cubeType && this.cubeType || this.serviceType,
       Level: this.difficultyLevel || '-',
-      진행률: this.isCardType() ? '-' : `${this.passedLearningCount}/${this.totalLearningCount}`,
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       학습시작일: moment(Number(this.startDate)).format('YYYY.MM.DD')
     };

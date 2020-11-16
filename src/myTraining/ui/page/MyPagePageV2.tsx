@@ -27,11 +27,9 @@ function MyPagePageV2(props: Props) {
   const { totalMyLearningSummary: { achieveBadgeCount, acheiveStampCount } } = myLearningSummaryService!;
   const currentTab = match.params.tab;
 
-  /* 
-    새로고침 시 store 의 데이터가 사라진 경우, 
-    데이터를 다시 조회하도록 함. 
-  */
+
   useEffect(() => {
+    /* 탭의 뱃지 & 스탬프 카운트 호출. */
     if (acheiveStampCount === 0 && achieveBadgeCount === 0) {
       myLearningSummaryService!.findTotalMyLearningSummary();
     }

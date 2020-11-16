@@ -701,10 +701,9 @@ class MyTrainingService {
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdoForExcel);
-    const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
+    const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] = await this.myTrainingApi.findAllTableViewsForExcel(filterRdoForExcel);
 
-    return myTrainingV2sForExcel;
+    return myTrainingTableViewsForExcel;
   }
 
   async findAllStampTableViewsForExcel() {

@@ -14,7 +14,7 @@ import { MyContentType } from './MyLearningListContainerV2';
 import FavoriteChannelContainer from './FavoriteChannelContainer';
 import ContentHeaderStampView from '../view/ContentHeaderStampView';
 import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
-import { MyLearningContentType, MyPageContentType } from '../model';
+import { MyPageContentType } from '../model';
 
 /*
   1. contentType ( 어떤 페이지에서 해당 컴포넌트가 사용되고 있는지 확인하고 조건을 분기하기 위함. 2020.10.28 by 김동구 )
@@ -28,12 +28,7 @@ interface Props extends RouteComponentProps {
 }
 
 function MyContentHeaderContainer(props: Props) {
-  const {
-    contentType,
-    skProfileService,
-    myLearningSummaryService,
-    history,
-  } = props;
+  const { contentType, skProfileService, myLearningSummaryService, history } = props;
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
 
@@ -69,8 +64,9 @@ function MyContentHeaderContainer(props: Props) {
 
   /* render */
   return (
-    <ContentHeader
-      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
+    < ContentHeader
+      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />
+      }
     >
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
@@ -83,11 +79,18 @@ function MyContentHeaderContainer(props: Props) {
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(myLearningSummary.totalLearningTime !== 0 && (
+        {(myLearningSummary.totalSuniMyCompanyLectureTime !== 0 && (
           <ContentHeader.LearningTimeItem
-            minute={myLearningSummary.totalLearningTime}
+            minute={myLearningSummary.totalSuniMyCompanyLectureTime}
+            year={selectedYear}
           />
         )) || <ContentHeader.WaitingItem onClick={routeToRecommend} />}
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderBadgeView
+          badgeCount={myLearningSummary.achieveBadgeCount}
+          onClickItem={onClickMyBadge}
+        />
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderStampView
@@ -101,13 +104,7 @@ function MyContentHeaderContainer(props: Props) {
           onClickItem={onClickMyStamp}
         />
       </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderBadgeView
-          badgeCount={myLearningSummary.achieveBadgeCount}
-          onClickItem={onClickMyBadge}
-        />
-      </ContentHeader.Cell>
-    </ContentHeader>
+    </ContentHeader >
   );
 }
 
