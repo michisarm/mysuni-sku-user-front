@@ -16,7 +16,6 @@ export async function getMediaItem(media: Media): Promise<LectureMedia> {
 
   const lectureMedia: LectureMedia = { id, mediaContents, mediaType, name };
 
-  console.log('lectureMedia', lectureMedia);
 
   return lectureMedia;
 }

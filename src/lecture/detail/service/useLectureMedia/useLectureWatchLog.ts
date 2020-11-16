@@ -23,7 +23,7 @@ export function useLectureWatchLog(): [
   (params: LectureRouterParams) => void,
   (params: LectureRouterParams, watchLog: WatchLog) => void,
   (params: LectureRouterParams) => void,
-  (params: LectureRouterParams) => void
+  (params: LectureRouterParams) => Promise<void>
 ] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [watchLogValue, setWatchLogValue] = useState<WatchLogValues>();
@@ -45,7 +45,7 @@ export function useLectureWatchLog(): [
   );
 
   const LectureConfirmProgress = useCallback((params: LectureRouterParams) => {
-    confirmProgress(params);
+    return confirmProgress(params);
   }, []);
 
   const getWatchLogSumViewCount = useCallback((params: LectureRouterParams) => {
@@ -53,8 +53,6 @@ export function useLectureWatchLog(): [
   }, []);
 
   useEffect(() => {
-    console.log('params : ', params);
-
     params && getCubeWatchLogItem(params);
   }, [params]);
 
@@ -69,7 +67,6 @@ export function useLectureWatchLog(): [
     }
     return onLectureWatchLogs(next => {
       setWatchLogValue(next);
-      console.log('LectureWatchLogItem', next);
     }, subscriberId);
   }, [subscriberId]);
 

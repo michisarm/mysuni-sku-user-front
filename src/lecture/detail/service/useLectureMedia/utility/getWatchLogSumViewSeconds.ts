@@ -17,7 +17,6 @@ export async function getWatchLogSumViewSeconds(
   params: LectureRouterParams
 ): Promise<void> {
   const personalCube = await getPersonalCubeByParams(params);
-  console.log('personalCube', personalCube);
   if (personalCube !== undefined) {
     // const viewCount = await findSumViewSeconds(new PatronKey().keyString, params.lectureId);
     setLectureWatchLogSumViewCount(

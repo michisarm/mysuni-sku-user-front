@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Form, Segment } from 'semantic-ui-react';
 import { mobxHelper } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import AplService from 'myTraining/present/logic/AplService';
 import AplUdoModel from 'myTraining/model/AplUdoModel';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
 import { AlertWin, ConfirmWin } from 'shared';
-import approvalRoutePaths from 'myTraining/routePaths';
 import ApprovalButtons from '../view/button/ApprovalButtons';
 import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
 import ApprovalInfoView from '../view/ApprovalInfoView';
 import ApprovalRejectModal from '../view/modal/ApprovalRejectModal';
+import { MyLearningContentType } from '../model';
 
 
 interface Props {
@@ -21,9 +22,14 @@ interface Props {
   aplService?: AplService;
 }
 
+interface RouteParams {
+  page: string;
+}
+
 function AplDetailContainer(props: Props) {
   const { model, aplService } = props;
   const history = useHistory();
+  const { page } = useParams<RouteParams>();
 
   /* states */
   const [allowHour, setAllowHour] = useState<string>('');
@@ -47,19 +53,29 @@ function AplDetailContainer(props: Props) {
     setAllowHour(allowHourStr);
     setAllowMinute(allowMinuteStr);
 
-    getFileIds();
   }, []);
+
+  useEffect(() => {
+    getFileIds();
+  }, [model]);
 
   /* functions */
   const routeToList = () => {
-    history.push(approvalRoutePaths.approvalPersonalLearning());
+    if (page === 'learning') {
+      history.push(myTrainingRoutePaths.learningTab(MyLearningContentType.PersonalCompleted));
+    }
+
+    if (page === 'approval') {
+      history.push(myTrainingRoutePaths.approvalPersonalLearning());
+    }
   };
 
 
-  const getFileIds = () => {
+  const getFileIds = async () => {
     const referenceFileBoxIds = model && model.fileIds;
+
     if (referenceFileBoxIds) {
-      findFiles('reference', referenceFileBoxIds);
+      await findFiles('reference', referenceFileBoxIds);
     }
   }
 
@@ -112,13 +128,18 @@ function AplDetailContainer(props: Props) {
   }, []);
 
   const onClickList = useCallback(() => {
+    if (page === 'learning') {
+      routeToList();
+      return;
+    }
+
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
       routeToList();
       return;
     }
 
     setOpenListModal(true);
-  }, [model])
+  }, [model, page])
 
   const cancelRouteToList = useCallback(() => {
     setOpenListModal(false);
@@ -134,7 +155,7 @@ function AplDetailContainer(props: Props) {
 
   const onConfirmReject = useCallback((remark: string) => {
     /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
-    const aplUdo = AplUdoModel.createForReject(model.id, remark);
+    const aplUdo = AplUdoModel.createForReject(model, remark);
     aplService!.modifyAplWithApprovalState(aplUdo)
 
     setOpenRejectModal(false);
@@ -161,7 +182,7 @@ function AplDetailContainer(props: Props) {
     const allowHourNumber = Number.parseInt(allowHour);
     const allowMinuteNumber = Number.parseInt(allowMinute);
 
-    const aplUdo = AplUdoModel.createForApproval(model.id, allowHourNumber, allowMinuteNumber)
+    const aplUdo = AplUdoModel.createForApproval(model, allowHourNumber, allowMinuteNumber)
     aplService!.modifyAplWithApprovalState(aplUdo);
 
     setOpenApprovalModal(false);

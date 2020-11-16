@@ -18,16 +18,16 @@ const DiscussionView: React.FC<DiscussionViewProps> = function DiscussionView({
   return (
     <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
       <span
-        className={`label-state-cube ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
+        className={`label-state-cube ${state === 'Progress' ? 'l-step5' : ''} ${
+          state === 'Completed' ? 'complete' : ''
+        }`}
       >
         <span>cube 완료상태</span>
       </span>
       <span className="copy-holder">
         <span className="copy-title">{name}</span>
         <ul className="type-info">
-          <li>Discussion</li>
+          <li>토론하기</li>
         </ul>
       </span>
     </Link>

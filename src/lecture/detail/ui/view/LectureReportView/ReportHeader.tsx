@@ -12,13 +12,18 @@ const ReportHeader: React.FC<ReportHeaderProps> = function ReportHeader({}) {
         {getLectureReport()?.reportFileBox?.reportName}
       </div>
       <div className="survey-header-right">
-        <Button className="ui button free submit p18">
-          {getLectureReport()?.state == 'Completed'
+        { getLectureReport()?.state !== 'None' && (
+          <Button className="ui button free submit p18">
+          {
+            getLectureReport()?.state == 'Completed'
             ? '이수'
             : getLectureReport()?.state == 'Progress'
             ? '검수중'
-            : '과제 제출'}
-        </Button>
+            : '과제 제출'
+            }
+          </Button>
+          )
+        }
       </div>
     </div>
   );

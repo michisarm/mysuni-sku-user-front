@@ -71,3 +71,32 @@ Content-Type: application/json;charset=UTF-8
 
 {"serviceIds":["C-LECTURE-84","C-LECTURE-83","C-LECTURE-82","C-LECTURE-81","C-LECTURE-87","C-LECTURE-86","C-LECTURE-85"],"arrangeType":"","limit":100}
 
+
+
+###
+GET http://10.178.66.114/api/lecture/lectures?college=&channel=CHN0005m&limit=8&offset=0&orderBy=TIME&channelLimit=0&channelOffset=0
+audienceId: r2y8-r@ne1-m2-c2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IjA1NTI2In0sImxvZ2luSWQiOiJTS0NDLjA1NTI2QHNrLmNvbSIsInVzZXJfbmFtZSI6IlNLQ0MuMDU1MjZAc2suY29tIiwiZGlzcGxheU5hbWUiOiLrsJXshLEqKiIsInNjb3BlIjpbImNsaWVudCJdLCJ3b3Jrc3BhY2VzIjp7InN0YXRpb25Xb3Jrc3BhY2VzIjpudWxsLCJzcXVhcmVXb3Jrc3BhY2VzIjpudWxsLCJwYXZpbGlvbldvcmtzcGFjZXMiOm51bGwsImNpbmVyb29tV29ya3NwYWNlcyI6W3siaWQiOiJuZTEtbTItYzE3IiwibmFtZSI6IlNLKOyjvClDJkMiLCJ0ZW5hbnRJZCI6InIyeTgtckBuZTEtbTItYzE3Iiwicm9sZXMiOlsiVXNlciJdfSx7ImlkIjoibmUxLW0yLWMyIiwibmFtZSI6IlNLIFVuaXZlcnNpdHkiLCJ0ZW5hbnRJZCI6InIyeTgtckBuZTEtbTItYzIiLCJyb2xlcyI6WyJVc2VyIiwiQ29sbGVnZU1hbmFnZXIiLCJTdXBlck1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jMyIsIm5hbWUiOiJTS-ydtOuFuOuyoOydtOyFmCIsInRlbmFudElkIjoicjJ5OC1yQG5lMS1tMi1jMyIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfSx7ImlkIjoibmUxLW0yLWM0IiwibmFtZSI6IlNL7YWU66CI7L2kIiwidGVuYW50SWQiOiJyMnk4LXJAbmUxLW0yLWM0Iiwicm9sZXMiOlsiVXNlciJdfSx7ImlkIjoibmUxLW0yLWM1NiIsIm5hbWUiOiLsnbTrhbjrsqDsnbTshZgg6rO17Ya1IiwidGVuYW50SWQiOiJyMnk4LXJAbmUxLW0yLWM1NiIsInJvbGVzIjpbIlVzZXIiXX1dLCJzdHVkaW9Xb3Jrc3BhY2UiOm51bGx9LCJleHAiOjE2MDU1NzIzNjEsImF1dGhvcml0aWVzIjpbIlVzZXIiXSwianRpIjoiYzRmZWYzNWEtNGYxOC00ZGFiLWJhYjAtYjc1OWZlN2M3YjIwIiwiY2xpZW50X2lkIjoibmFyYSJ9.6BOVijDKGBGLGJga07SBPf-oJkMK_khz_Dflq1CpEOk
+
+
+
+### 클래스룸 신청
+POST http://ma.mysuni.sk.com/api/lecture/students/flow
+audienceId: r47a-r@ne1-m2-c2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IlNLQ0MwOCJ9LCJsb2dpbklkIjoiU0tDQy5TS0NDMDhAc2suY29tIiwidXNlcl9uYW1lIjoiU0tDQy5TS0NDMDhAc2suY29tIiwiZGlzcGxheU5hbWUiOiLqsJXsmqkqKiIsInNjb3BlIjpbImNsaWVudCJdLCJ3b3Jrc3BhY2VzIjp7InN0YXRpb25Xb3Jrc3BhY2VzIjpudWxsLCJzcXVhcmVXb3Jrc3BhY2VzIjpudWxsLCJwYXZpbGlvbldvcmtzcGFjZXMiOm51bGwsImNpbmVyb29tV29ya3NwYWNlcyI6W3siaWQiOiJuZTEtbTItYzIiLCJuYW1lIjoiU0sgVW5pdmVyc2l0eSIsInRlbmFudElkIjoicjQ3YS1yQG5lMS1tMi1jMiIsInJvbGVzIjpbIlVzZXIiXX0seyJpZCI6Im5lMS1tMi1jMTciLCJuYW1lIjoiU0so7KO8KUMmQyIsInRlbmFudElkIjoicjQ3YS1yQG5lMS1tMi1jMTciLCJyb2xlcyI6WyJVc2VyIl19XSwic3R1ZGlvV29ya3NwYWNlIjpudWxsfSwiZXhwIjoxNjA1OTQyNjUwLCJhdXRob3JpdGllcyI6WyJVc2VyIl0sImp0aSI6ImIwZTA5NTc4LTFmNWQtNDUxMy1iYzU4LWM1MDBiMjcxYmQzZCIsImNsaWVudF9pZCI6Im5hcmEifQ.aNtg9hYaCwi0Km6LbnajGxLuJIO-iULSRGNteTk1zDM
+Content-Type: application/json;charset=UTF-8
+
+{
+    "rollBookId":"9cba8653-11a8-473b-96aa-6fdf28d13890",
+    "name":"강용**",
+    "email":"SKCC.SKCC08@sk.com",
+    "company":"SK주식회사 C&C",
+    "department":"공용계정조직",
+    "proposalState":"Canceled",
+    "programLectureUsid":"",
+    "courseLectureUsid":"",
+    "classroomId":"ffb390b7-3c8c-4c11-bcdc-7000fbd9a780",
+    "approvalProcess":true,
+    "leaderEmails":["SKCC.05526@sk.com"],
+    "url":"https://int.mysuni.sk.com/login?contentUrl=/lecture/cineroom/ne1-m2-c2/college/CLG0001u/cube/CUBE-2p4/lecture-card/LECTURE-CARD-a19/old"
+}

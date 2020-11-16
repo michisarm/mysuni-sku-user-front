@@ -91,7 +91,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               {lectureSummary.stampCount !== undefined && (
                 <Label className="bold onlytext">
                   <Icon className="award" />
-                  <span>2개</span>
+              <span>{lectureSummary.stampCount}</span>
                 </Label>
               )}
               <Label className="bold onlytext">

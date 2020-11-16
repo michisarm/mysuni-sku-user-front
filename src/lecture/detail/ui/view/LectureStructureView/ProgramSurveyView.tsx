@@ -1,12 +1,22 @@
+import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
+import StructureLink from './StructureLink';
 
 interface ProgramSurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
   path: string;
+  can: boolean;
+}
+
+function cannotAlert() {
+  reactAlert({
+    title: 'Survey 안내',
+    message: '학습 진행 후 Survey 참여 가능합니다.',
+  });
 }
 
 const ProgramSurveyView: React.FC<ProgramSurveyViewProps> = function ProgramSurveyView({
@@ -14,9 +24,15 @@ const ProgramSurveyView: React.FC<ProgramSurveyViewProps> = function ProgramSurv
   state = 'None',
   activated = false,
   path,
+  can,
 }) {
   return (
-    <Link to={path} className={`btn-single-cube ${activated ? 'act-on' : ''}`}>
+    <StructureLink
+      can={can}
+      to={path}
+      onCannotClick={cannotAlert}
+      className={`btn-single-cube ${activated ? 'act-on' : ''}`}
+    >
       <span className="label-type n-survey">Survey</span>
       <span className="copy">{name}</span>
       <span
@@ -26,7 +42,7 @@ const ProgramSurveyView: React.FC<ProgramSurveyViewProps> = function ProgramSurv
       >
         <span>진행상태</span>
       </span>
-    </Link>
+    </StructureLink>
   );
 };
 

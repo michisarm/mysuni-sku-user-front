@@ -41,6 +41,7 @@ class AplModel extends NewQueryModel {
   approvalYn: boolean | undefined;
   approvalId: string = '';
   approvalName: string = '';
+  approvalEmail: string = '';
   approvalTime: number = 0;
   updateId: string = '';
   updateName: string = '';
@@ -69,8 +70,12 @@ class AplModel extends NewQueryModel {
     return moment(this.creationTime).format('YYYY.MM.DD');
   }
 
-  @computed get displayUpdateTiime() {
-    return moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss');
+  @computed get displayUpdateTime() {
+    return this.updateTime ? moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+  }
+
+  @computed get displayUpdateDate() {
+    return this.updateTime ? moment(this.updateTime).format('YYYY.MM.DD') : '-';
   }
 
   @computed get displayStateName() {
@@ -112,7 +117,7 @@ class AplModel extends NewQueryModel {
     if (!aplModel.requestMinute) return '교육시간(분)';
     if (!aplModel.content) return '교육내용';
     if (!aplModel.approvalId) return '승인자';
-    /*if (!aplModel.fileIds) return '첨부파일';*/
+    if (!aplModel.fileIds) return '첨부파일';
     return 'success';
   }
 
@@ -184,6 +189,7 @@ class AplModel extends NewQueryModel {
       approvalName: aplModel.approvalName || '',
       updateTime: aplModel.updateTime,
       causeOfReturn: aplModel.causeOfReturn || '',
+      approvalEmail: aplModel.approvalEmail || '',
       approvalCompany: aplModel.approvalCompany || '',
       approvalDepartment: aplModel.approvalDepartment || '',
     };
@@ -244,6 +250,7 @@ decorate(AplModel, {
   updateName: observable,
   updateTime: observable,
   causeOfReturn: observable,
+  approvalEmail: observable,
   approvalCompany: observable,
   approvalDepartment: observable,
 });

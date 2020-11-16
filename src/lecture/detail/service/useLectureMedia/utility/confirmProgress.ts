@@ -14,6 +14,9 @@ import {
 } from 'lecture/detail/api/lectureApi';
 import StudentCdo from 'lecture/detail/model/StudentCdo';
 import { setLectureConfirmProgress } from '../../../store/LectureConfirmProgressStore';
+import { patronInfo } from '@nara.platform/dock';
+import { PatronType } from '@nara.platform/accent';
+import { getStateFromCube } from '../../useLectureState/utility/getStateFromCube';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
@@ -56,7 +59,6 @@ export async function confirmProgress(
   params: LectureRouterParams
 ): Promise<void> {
   const personalCube = await getPersonalCubeByParams(params);
-  console.log('personalCube', personalCube);
 
   if (personalCube !== undefined) {
     const stateMap = await getStateMapByParams(params);
@@ -65,6 +67,10 @@ export async function confirmProgress(
       student = await findStudent(stateMap.studentId);
 
       const studentCdo: StudentCdo = {
+        denizenKey:{
+          keyString: patronInfo.getDenizenId() || '',
+          patronType: PatronType.Denizen
+        },
         rollBookId: student.rollBookId,
         name: student.name,
         email: student.email,
@@ -79,6 +85,8 @@ export async function confirmProgress(
       };
 
       setLectureConfirmProgress(await progressByCardId(studentCdo));
+      getStateFromCube(params);
+
     }
   }
 }

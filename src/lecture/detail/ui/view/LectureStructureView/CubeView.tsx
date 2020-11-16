@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
+import StructureLink from './StructureLink';
 
 export function parseCubeType(cubeType: CubeType) {
   switch (cubeType) {
@@ -25,6 +26,7 @@ interface CubeViewProps {
   learningTime: number;
   cubeType: CubeType;
   path: string;
+  can: boolean;
 }
 
 const CubeView: React.FC<CubeViewProps> = function CubeView({
@@ -34,13 +36,14 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
   learningTime,
   cubeType,
   path,
+  can,
 }) {
   return (
     <Link to={path} className={`btn-state-course ${activated ? 'act-on' : ''}`}>
       <span
-        className={`label-state-cube ${
-          state === 'Progress' ? 'proceeding' : ''
-        } ${state === 'Completed' ? 'complete' : ''}`}
+        className={`label-state-cube ${state === 'Progress' ? 'l-step5' : ''} ${
+          state === 'Completed' ? 'complete' : ''
+        }`}
       >
         <span>cube 완료상태</span>
       </span>
@@ -48,11 +51,7 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
         <span className="copy-title">{name}</span>
         <ul className="type-info">
           <li>{parseCubeType(cubeType)}</li>
-          <li>
-            {cubeType === 'Community'
-              ? ''
-              : timeToHourMinuteFormat(learningTime)}
-          </li>{' '}
+          <li>{timeToHourMinuteFormat(learningTime)}</li>
         </ul>
       </span>
     </Link>

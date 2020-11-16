@@ -16,25 +16,25 @@
   report?: LectureStructureReportItem;
 }
  */
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import { getTestItemMapFromCourse } from './getTestItemMapFromCourse';
 import { getTestStudentItemMapFromCourse } from './getTestStudentItemMapFromCourse';
 
 export async function getCourseLectureTest(
-  params: LectureParams
+  params: LectureRouterParams
 ): Promise<void> {
   await getTestItemMapFromCourse(params);
 }
 
 export async function getCourseLectureTestStudent(
-  params: LectureParams
+  params: LectureRouterParams
 ): Promise<void> {
   await getTestStudentItemMapFromCourse(params);
 }
 
 export async function getCourseLectureTestAnswer(
-  params: LectureParams
+  params: LectureRouterParams
 ): Promise<void> {
   const testItem = await getTestItemMapFromCourse(params); // 다른 방법은?
   if (testItem) {

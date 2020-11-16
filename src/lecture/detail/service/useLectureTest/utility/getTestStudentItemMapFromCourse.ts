@@ -11,6 +11,7 @@ import {
 } from 'lecture/detail/api/lectureApi';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -22,19 +23,14 @@ import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 function getCoursePlanComplexByParams(
-  params: LectureParams
+  params: LectureRouterParams
 ): Promise<CoursePlanComplex> {
-  const { coursePlanId, serviceId, contentId, lectureId } = params;
-  if (contentId !== undefined && contentId !== null) {
-    // Program의 Course(Course in Course)
-    return findCoursePlanContents(contentId!, lectureId!);
-  } else {
-    return findCoursePlanContents(coursePlanId!, serviceId!); // Course
-  }
+  const { contentId, lectureId } = params;
+  return findCoursePlanContents(contentId!, lectureId!);
 }
 
 export async function getTestStudentItemMapFromCourse(
-  params: LectureParams
+  params: LectureRouterParams
 ): Promise<void> {
   // void : return이 없는 경우 undefined
   const coursePlanComplex = await getCoursePlanComplexByParams(params);

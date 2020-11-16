@@ -28,9 +28,12 @@ interface Props extends RouteComponentProps {
 }
 
 function MyContentHeaderContainer(props: Props) {
-
-  console.log('MyContentHeaderContainer :: render :: ');
-  const { contentType, skProfileService, myLearningSummaryService, history } = props;
+  const {
+    contentType,
+    skProfileService,
+    myLearningSummaryService,
+    history,
+  } = props;
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
 
@@ -67,7 +70,7 @@ function MyContentHeaderContainer(props: Props) {
   /* render */
   return (
     <ContentHeader
-      bottom={isFromMyPage(contentType) && (<FavoriteChannelContainer />)}
+      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
     >
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
@@ -80,18 +83,23 @@ function MyContentHeaderContainer(props: Props) {
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {myLearningSummary.totalLearningTime !== 0 &&
-          (
-            <ContentHeader.LearningTimeItem
-              minute={myLearningSummary.totalLearningTime}
-            />
-          ) ||
-          (
-            <ContentHeader.WaitingItem
-              onClick={routeToRecommend}
-            />
-          )
-        }
+        {(myLearningSummary.totalLearningTime !== 0 && (
+          <ContentHeader.LearningTimeItem
+            minute={myLearningSummary.totalLearningTime}
+          />
+        )) || <ContentHeader.WaitingItem onClick={routeToRecommend} />}
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderStampView
+          stampCount={myLearningSummary.acheiveStampCount}
+          selectedYear={selectedYear}
+          yearOptions={[
+            { key: 0, text: '2021', value: 2021 },
+            { key: 1, text: '2020', value: 2020 },
+          ]}
+          onChangeYear={onChangeYear}
+          onClickItem={onClickMyStamp}
+        />
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderBadgeView
@@ -99,23 +107,16 @@ function MyContentHeaderContainer(props: Props) {
           onClickItem={onClickMyBadge}
         />
       </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderStampView
-          stampCount={myLearningSummary.acheiveStampCount}
-          selectedYear={selectedYear}
-          yearOptions={[{ key: 0, text: '2021', value: 2021 }, { key: 1, text: '2020', value: 2020 }]}
-          onChangeYear={onChangeYear}
-          onClickItem={onClickMyStamp}
-        />
-      </ContentHeader.Cell>
     </ContentHeader>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'myTraining.myLearningSummaryService'
-))(withRouter(observer(MyContentHeaderContainer)));
+export default inject(
+  mobxHelper.injectFrom(
+    'profile.skProfileService',
+    'myTraining.myLearningSummaryService'
+  )
+)(withRouter(observer(MyContentHeaderContainer)));
 
 /* globals */
 const CURRENT_YEAR = moment().year();

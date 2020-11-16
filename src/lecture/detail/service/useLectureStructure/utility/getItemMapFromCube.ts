@@ -37,7 +37,11 @@ interface GetItemMapArg {
   surveyCaseId: string;
 }
 
-async function getTestItem(examId: string, params: LectureParams) {
+async function getTestItem(
+  examId: string,
+  params: LectureParams,
+  student?: Student
+) {
   const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
 
   if (examId !== '') {
@@ -48,10 +52,14 @@ async function getTestItem(examId: string, params: LectureParams) {
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
       if (findAnswerSheetData.result !== null) {
-        if (findAnswerSheetData.result.submitted === true) {
+        state = 'Progress';
+        if (
+          student !== undefined &&
+          (student.learningState === 'Passed' ||
+            student.learningState === 'TestPassed')
+        ) {
           state = 'Completed';
         }
-        state = 'Progress';
       }
     }
 
@@ -64,6 +72,8 @@ async function getTestItem(examId: string, params: LectureParams) {
       path: `${toPath(params)}/exam`,
       state,
       type: 'EXAM',
+      can: false,
+      order: 0,
     };
     return item;
   }
@@ -88,7 +98,7 @@ async function getSurveyItem(
         title = titles.langStringMap[titles.defaultLanguage];
       }
       const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-      if (answerSheet !== null) {
+      if (answerSheet !== undefined) {
         const { progress } = answerSheet;
         if (progress === 'Complete') {
           state = 'Completed';
@@ -105,6 +115,8 @@ async function getSurveyItem(
         path: `${toPath(params)}/survey`,
         state,
         type: 'SURVEY',
+        can: false,
+        order: 0,
       };
       return item;
     }
@@ -135,6 +147,8 @@ async function getReportItem(
       path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
+      can: false,
+      order: 0,
     };
     return item;
   }
@@ -147,7 +161,7 @@ export async function getItemMapFromCube(
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
   const { cubeIntroId, examId, surveyId, surveyCaseId } = arg;
-  const testItem = await getTestItem(examId, params);
+  const testItem = await getTestItem(examId, params, student);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }

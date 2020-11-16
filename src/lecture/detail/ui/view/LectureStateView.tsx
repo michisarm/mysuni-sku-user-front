@@ -15,23 +15,6 @@ interface LectureStateViewInnerState {
   subStateText: string;
 }
 
-function parseProps({
-  lectureState,
-}: {
-  lectureState: LectureState;
-}): LectureStateViewInnerState | void {
-  let canAction: boolean = true;
-  if (
-    (lectureState.type === 'WebPage' ||
-      lectureState.type === 'ClassRoomLecture') &&
-    lectureState.proposalState !== 'Approved'
-  ) {
-    canAction = false;
-  }
-
-  // let actionText = '학습하기';
-}
-
 const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateView({
   lectureState,
   hookAction,
@@ -41,22 +24,28 @@ const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateV
     hideState,
     canAction,
     actionText,
-    action,
     stateText,
+    actionClassName,
+    stateClassName,
   } = lectureState;
 
   return (
     <>
       {!hideAction && (
         <button
-          className="ui button free bg p18"
+          className={`ui button free ${actionClassName} p18`}
           onClick={canAction ? hookAction : undefined}
         >
           {actionText}
         </button>
       )}
       {!hideState && (
-        <button className="ui button free line p18">{stateText}</button>
+        <button
+          className={`ui button free ${stateClassName} p18`}
+          style={{ cursor: 'default' }}
+        >
+          {stateText}
+        </button>
       )}
     </>
   );

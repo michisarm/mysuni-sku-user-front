@@ -10,6 +10,7 @@ import { MyContentType, ViewType } from './MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from '../model';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { MyTrainingService } from '../../stores';
+import { MyTrainingTableViewModel } from 'myTraining/model';
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;
@@ -42,9 +43,20 @@ function LineHeaderContainerV2(props: Props) {
     return (openFilter || filterCount > 0);
   };
 
+
+  const getAllCount = (contentType: MyContentType) => {
+    const { inprogressCount, completedCount } = myTrainingService!;
+    switch (contentType) {
+      case MyLearningContentType.InProgress:
+        return inprogressCount;
+      case MyLearningContentType.Completed:
+        return completedCount;
+    }
+  };
+
   /* handlers */
   const downloadExcel = useCallback(async (contentType: MyContentType) => {
-    const myTrainingTableViews = await getModelsForExcel(contentType);
+    const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(contentType);
     const lastIndex = myTrainingTableViews.length;
     // MyTrainingService 의 MyTrainingViewModel 을 조회해 엑셀로 변환
     let xlsxList: MyXlsxList = [];
@@ -96,6 +108,7 @@ function LineHeaderContainerV2(props: Props) {
           <ListRightTopPanel
             contentType={contentType}
             resultEmpty={resultEmpty}
+            allCount={getAllCount(contentType)}
             filterCount={filterCount}
             openFilter={openFilter}
             activeFilter={isFilterActive()}
@@ -115,7 +128,6 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.aplService',
   'lecture.lectureService'
 ))(withRouter(observer(LineHeaderContainerV2)));
-
 
 /* globals */
 const writeExcelFile = (xlsxList: MyXlsxList, filename: MyXlsxFilename) => {

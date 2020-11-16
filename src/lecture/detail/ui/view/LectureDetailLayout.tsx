@@ -16,7 +16,10 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
   }, []);
 
   return (
-    <section className={`content lms ${structureVisible ? 'v-wide' : ''}`}>
+    <section
+      className={`content lms ${structureVisible ? 'v-wide' : ''}`}
+      id="lms-content"
+    >
       <div className="course-info-list">
         <div className="course-header-list">
           <a className="btn-view-change">
@@ -30,10 +33,10 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         <LectureStructureContainer />
       </div>
       <div className="course-info-detail responsive-course">
+        <a className="btn-wide" onClick={openStructure}>
+          <span>펼치기</span>
+        </a>
         <div className="course-detail-center">
-          <a className="btn-wide" onClick={openStructure}>
-            <span>펼치기</span>
-          </a>
           <div className="main-wrap">
             <div className="scrolling-area area2 ">
               <div className="ui segment full">{children}</div>

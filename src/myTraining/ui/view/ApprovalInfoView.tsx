@@ -29,7 +29,7 @@ function ApprovalInfoView(props: Props) {
               <dt>처리상태</dt>
               <dd>
                 <span className="blue">{model.displayStateName}</span>
-                <span className="l">{model.displayUpdateTiime}</span>
+                <span className="l">{model.displayUpdateTime}</span>
               </dd>
             </dl>
           )

@@ -27,11 +27,13 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeV
           <div className="scrolling lms-badge-list">
             <ul className="belt">
               {lectureBadge.badges.map(badge => (
-                <BadgeContainer
-                  badge={badge}
-                  badgeSize="Small"
-                  badgeStyle="List"
-                />
+                <li>
+                  <BadgeContainer
+                    badge={badge}
+                    badgeSize="Small"
+                    badgeStyle="List"
+                  />
+                </li>
               ))}
             </ul>
           </div>

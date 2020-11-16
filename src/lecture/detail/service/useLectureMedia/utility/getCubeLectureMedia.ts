@@ -76,7 +76,6 @@ export async function getCubeLectureMedia(
   params: LectureRouterParams
 ): Promise<void> {
   const personalCube = await getPersonalCubeByParams(params);
-  console.log('personalCube', personalCube);
   if (personalCube !== undefined) {
     // const stateMap = await getStateMapByParams(params);
     // let student: Student;
@@ -90,7 +89,6 @@ export async function getCubeLectureMedia(
       //TODO :   contentType: ContentType;contentId: string; lectureId: string; 를 이용하여 deliveryId 조회
       // deliveryId => panoptoSessionId 로 수정 필요함
       const mediaId = personalCube.contents.contents.id;
-      console.log('mediaId', mediaId);
       const media = await findMedia(mediaId);
       //TODO : 0번 배열 조회가 항상 맞는지 확인 필요함
       const panoptoSessionId =
@@ -104,7 +102,6 @@ export async function getCubeLectureMedia(
       setLectureMedia(await getMediaItem(media));
     }
 
-    console.log(getLectureTranscripts);
     // }
   }
 }

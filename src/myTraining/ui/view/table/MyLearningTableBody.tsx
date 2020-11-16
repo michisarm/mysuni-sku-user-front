@@ -14,6 +14,7 @@ import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
 import { AplModel } from 'myTraining/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { AplStateName } from 'myTraining/model/AplStateName';
 import { MyLearningContentType, MyPageContentType } from '../../model';
 
 
@@ -38,8 +39,10 @@ function MyLearningTableBody(props: Props) {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
     const { category: { college }, serviceId, coursePlanId, cubeId } = model;
     let { serviceType } = model;
+    const { id: collegeId } = college;
+    const cineroomId = patronInfo.getCineroomId() || '';
 
-    switch(serviceType) {
+    switch (serviceType) {
       case 'COURSE':
         serviceType = 'Course';
       case 'PROGRAM':
@@ -66,9 +69,8 @@ function MyLearningTableBody(props: Props) {
     }
   };
 
-  const routeToDetail = (model: AplModel) => {
-    const { id } = model;
-    history.push(myTrainingRoutePaths.approvalPersonalLearningDetail(id));
+  const routeToDetail = (id: string, page: string) => {
+    history.push(myTrainingRoutePaths.approvalPersonalLearningDetail(page, id));
   }
 
   const onCheckOne = useCallback((e: any, data: any) => {
@@ -126,7 +128,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayProgressRate}  {/* 진행률 */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.startDate)}{/* 학습시작일 */}
@@ -145,7 +147,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayDifficultyLevel} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {model.displayStampCount}{/* 스탬프 */}
@@ -165,7 +167,7 @@ function MyLearningTableBody(props: Props) {
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {model.stampCountForDisplay}{/* 스탬프 */}
@@ -185,7 +187,7 @@ function MyLearningTableBody(props: Props) {
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.formattedLearningTime}{/* 학습시간 */}
+              {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.endDate)}{/* 학습완료일 */}
@@ -236,7 +238,7 @@ function MyLearningTableBody(props: Props) {
           {totalCount - index} {/* No */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#" onClick={() => routeToDetail(model)}><span className="ellipsis">{model.title}</span></a> {/* title */}
+          <a href="#" onClick={() => routeToDetail(model.id, 'learning')}><span className="ellipsis">{model.title}</span></a> {/* title */}
         </Table.Cell>
         <Table.Cell>
           <span className="ellipsis">{model.channelName}</span> {/* Channel */}
@@ -248,10 +250,13 @@ function MyLearningTableBody(props: Props) {
           {model.approvalName} {/* 승인자 */}
         </Table.Cell>
         <Table.Cell>
-          {model.approvalId} {/* 승인자 이메일 */}
+          {model.approvalEmail} {/* 승인자 이메일 */}
         </Table.Cell>
         <Table.Cell>
-          {model.displayAllowTime} {/* 승인일자 */}
+          {AplStateName[model.state]} {/* 승인상태 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.updateTime ? moment(model.updateTime).format('YYYY.MM.DD') : '-'} {/* 승인일자 */}
         </Table.Cell>
       </>
     );
@@ -265,7 +270,7 @@ function MyLearningTableBody(props: Props) {
           {totalCount - index} {/* No */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#" onClick={() => routeToDetail(model)}><span className="ellipsis">{model.title}</span></a> {/* title */}
+          <a href="#" onClick={() => routeToDetail(model.id, 'approval')}><span className="ellipsis">{model.title}</span></a> {/* title */}
         </Table.Cell>
         <Table.Cell>
           {model.channelName} {/* Channel */}

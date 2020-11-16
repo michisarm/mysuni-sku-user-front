@@ -4,6 +4,7 @@ import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { onLectureTestAnswerItem } from '../../store/LectureTestStore';
+import LectureRouterParams from '../../viewModel/LectureRouterParams';
 import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
@@ -20,19 +21,22 @@ let subscriberIdRef = 0;
 export function useLectureTestAnswer(): [AnswerValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [answerValue, setAnswerValue] = useState<AnswerValue>();
-  const params = useParams<LectureParams>();
+  const params = useLectureRouterParams();
 
-  const getCubeTestAnswerItem = useCallback((params: LectureParams) => {
+  const getCubeTestAnswerItem = useCallback((params: LectureRouterParams) => {
     getCubeLectureTestAnswer(params);
   }, []);
 
-  const getCourseTestAnswerItem = useCallback((params: LectureParams) => {
+  const getCourseTestAnswerItem = useCallback((params: LectureRouterParams) => {
     getCourseLectureTestAnswer(params);
   }, []);
 
   useEffect(() => {
-    const { lectureType, contentId, lectureId, ...structParams } = params;
-    if (params.cubeId !== undefined) {
+    if (params === undefined) {
+      return;
+    }
+    const { contentType } = params;
+    if (contentType === 'cube') {
       getCubeTestAnswerItem(params);
     } else {
       getCourseTestAnswerItem(params);
