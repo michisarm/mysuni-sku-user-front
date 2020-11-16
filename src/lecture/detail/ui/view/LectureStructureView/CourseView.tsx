@@ -54,7 +54,11 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   return (
     <>
       <div className={`accordion-state-holder ${activated ? 'act-on' : ''}`}>
-        <Link to={path} className="btn-over-view enable">
+        <Link
+          to={path}
+          className="btn-over-view enable"
+          onClick={() => window.scrollTo({ top: 0 })}
+        >
           {name}
         </Link>
         <button
