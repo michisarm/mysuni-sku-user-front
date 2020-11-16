@@ -9,6 +9,7 @@ enum CubeIconType {
   Documents = 'documents',
   Experiential = 'experiential',
   Community = 'community',
+  Task = 'community',
   None = 'course',
   Program = 'course',
   Course = 'course',

@@ -6,6 +6,7 @@ type CubeType =
   | 'Documents'
   | 'Experiential'
   | 'WebPage'
-  | 'Community';
+  | 'Community'
+  | 'Task';
 
 export default CubeType;

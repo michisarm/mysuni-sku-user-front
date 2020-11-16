@@ -34,7 +34,7 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue, (params: Lectu
   }, []);
 
   useEffect(() => {
-    params && getCubeMediaItem(params);
+    // params && getCubeMediaItem(params);
   }, [params]);
 
   useEffect(() => {

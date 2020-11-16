@@ -1,4 +1,5 @@
-import { decorate, observable } from 'mobx';
+import { decorate, observable, computed } from 'mobx';
+import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
 import { DramaEntityObservableModel } from 'shared/model';
 
 class MyLearningSummaryModel extends DramaEntityObservableModel {
@@ -26,6 +27,22 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   skAcademyCollegeTime: number = 0;
   lifeStyleCollegeTime: number = 0;
   myCompanyInSuniLearningTime: number = 0;
+
+  aplAllowTime: number = 0; /* 개인 학습시간 */
+  lectureTimeSummary: LectureTimeSummary = new LectureTimeSummary(); /* 강의시간 */
+
+  @computed get totalSuniLearningTime() {
+    return this.suniLearningTime - this.myCompanyInSuniLearningTime;
+  }
+
+  @computed get totalMyCompanyLearningTime() {
+    return this.myCompanyLearningTime + this.myCompanyInSuniLearningTime;
+  }
+
+  @computed get totalSuniMyCompanyLectureTime() {
+    return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime + this.lectureTimeSummary.totalCollegeTime
+  }
+
 
   constructor(summary?: MyLearningSummaryModel) {
     super();
@@ -57,6 +74,8 @@ decorate(MyLearningSummaryModel, {
   skAcademyCollegeTime: observable,
   lifeStyleCollegeTime: observable,
   myCompanyInSuniLearningTime: observable,
+  aplAllowTime: observable,
+  lectureTimeSummary: observable
 });
 
 export default MyLearningSummaryModel;

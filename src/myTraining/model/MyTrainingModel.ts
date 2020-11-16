@@ -79,7 +79,6 @@ class MyTrainingModel extends DramaEntityObservableModel {
       과정명: this.name,
       학습유형: this.cubeType,
       Level: this.level,
-      진행률: '',
       학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
       학습시작일: moment(this.startDate).format('YYYY.MM.DD')
     };
@@ -105,7 +104,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   static getServiceType(myTraining: MyTrainingModel) {
 
     //
-    const serviceType =  myTraining.serviceType as string;
+    const serviceType = myTraining.serviceType as string;
 
     if (serviceType === 'PROGRAM') {
       return LectureServiceType.Program;

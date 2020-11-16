@@ -2,7 +2,7 @@ import { decorate, observable } from "mobx";
 
 class LectureTimeSummary {
   //
-  totalLectureTime: number = 0;
+  totalCollegeTime: number = 0;
   aiCollegeTime: number = 0;
   dtCollegeTime: number = 0;
   happyCollegeTime: number = 0;
@@ -16,7 +16,6 @@ class LectureTimeSummary {
   skManagementCollegeTime: number = 0;
   skAcademyCollegeTime: number = 0;
   lifeStyleCollegeTime: number = 0;
-  myCompanyInSuniLearningTime: number = 0;
 
   constructor(lectureTimeSummary?: LectureTimeSummary) {
     if (lectureTimeSummary) {
@@ -28,7 +27,7 @@ class LectureTimeSummary {
 export default LectureTimeSummary;
 
 decorate(LectureTimeSummary, {
-  totalLectureTime: observable,
+  totalCollegeTime: observable,
   aiCollegeTime: observable,
   dtCollegeTime: observable,
   happyCollegeTime: observable,
@@ -41,6 +40,5 @@ decorate(LectureTimeSummary, {
   semiconductorCollegeTime: observable,
   skManagementCollegeTime: observable,
   skAcademyCollegeTime: observable,
-  lifeStyleCollegeTime: observable,
-  myCompanyInSuniLearningTime: observable
+  lifeStyleCollegeTime: observable
 });

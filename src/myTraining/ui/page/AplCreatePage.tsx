@@ -39,7 +39,6 @@ interface States {
   alertType2: string;
   alertMessage2: string;
 
-  //confirmWinArrangeOpen: boolean;
   //isSaveAndApprove: boolean;
 
   saveAplOn: boolean;
@@ -60,13 +59,11 @@ class AplCreatePage extends React.Component<Props, States> {
     this.state = {
       tags: '',
       alertWinOpen: false,
-      //confirmWinArrangeOpen: false,
       alertMessage: '',
       alertIcon: '',
       alertTitle: '',
       alertType: '',
       alertWinOpen2: false,
-      //confirmWinArrangeOpen: false,
       alertMessage2: '',
       alertIcon2: '',
       alertTitle2: '',
@@ -92,24 +89,6 @@ class AplCreatePage extends React.Component<Props, States> {
   // 화면 처음 진입 시
   init() {
     this.clearAll();
-  }
-
-  routeToAplList() {
-    //
-    //APL 등록 화면으로 이동하시겠습니까?
-    //APL 등록 화면으로 이동 시 입력된 정보는 저장되지 않습니다.
-
-    const { aplService, sharedService } = this.props;
-    if (sharedService && aplService) {
-      Promise.resolve()
-        .then(() => aplService.clearApl())
-        .then(() => {
-          this.props.history.push(`/my-training/learning/InProgress/pages/1`);
-        })
-        .then(() => {
-          sharedService.setCount('arrange', aplService.apls.totalCount || 0);
-        });
-    }
   }
 
   onChangeAplProps(name: string, value: string | number | {} | [] | undefined) {
@@ -325,7 +304,7 @@ class AplCreatePage extends React.Component<Props, States> {
   handleSaveOk(type: string) {
     //
     if (type === 'save') this.handleOKConfirmWinApl();
-    if (type === 'list') this.routeToArrangeList();
+    if (type === 'list') this.routeToAplList();
   }
 
   handleAlertOk(type: string) {
@@ -407,8 +386,19 @@ class AplCreatePage extends React.Component<Props, States> {
   }
 
   //learning - 개인학습완료 이동
-  routeToArrangeList() {
-    this.props.history.push(routePaths.myPageLearningTab('PersonalCompleted'));
+  routeToAplList() {
+    //
+    //취소시
+    //APL 등록 화면으로 이동하시겠습니까?
+    //APL 등록 화면으로 이동 시 입력된 정보는 저장되지 않습니다.
+    const { aplService, sharedService } = this.props;
+    if (sharedService && aplService) {
+      Promise.resolve()
+        .then(() => this.clearAll())
+        .then(() => {
+          this.props.history.push(routePaths.myPageLearningTab('PersonalCompleted'));
+        });
+    }
   }
 
   render() {

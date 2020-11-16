@@ -7,6 +7,7 @@
 import React, { useEffect } from 'react';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
+import { useLectureState } from '../../service/useLectureState/useLectureState';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureWebpageView from '../view/LectureWebpageView';
@@ -24,11 +25,17 @@ function LectureCubeWebPagePage() {
   }, [params]);
 
   const [lectureWebpage] = useLectureWebpage();
+  const [lectureState] = useLectureState();
 
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />
-      {lectureWebpage && <LectureWebpageView {...lectureWebpage} />}
+      {lectureWebpage && (
+        <LectureWebpageView
+          {...lectureWebpage}
+          action={lectureState?.coreAction}
+        />
+      )}
       <LectureCubeContentContainer />
     </LectureDetailLayout>
   );
