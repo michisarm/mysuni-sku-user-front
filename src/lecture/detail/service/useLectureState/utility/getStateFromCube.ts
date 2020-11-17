@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 
 import { reactAlert } from '@nara.platform/accent';
+import moment from 'moment';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
@@ -12,8 +13,9 @@ import {
   markComplete,
   registerStudent,
 } from '../../../api/lectureApi';
-import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { findCubeIntro, findMedia, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import CubeType from '../../../model/CubeType';
+import { MediaType } from '../../../model/MediaType';
 import Student from '../../../model/Student';
 import StudentCdo from '../../../model/StudentCdo';
 import StudentJoin from '../../../model/StudentJoin';
@@ -89,6 +91,7 @@ interface ChangeStateOption {
   hasReport: boolean;
   hasSurvey: boolean;
   cubeIntroId: string;
+  contentsId?: string;
 }
 
 async function submit(
@@ -152,7 +155,7 @@ async function mClassroomSubmit(
   params: LectureRouterParams,
   rollBookId: string,
   classroom: ClassroomModel,
-  member: ApprovalMemberModel,
+  member?: ApprovalMemberModel,
   pathname?: string,
   student?: Student
 ) {
@@ -168,7 +171,7 @@ async function mClassroomSubmit(
     proposalState: 'Submitted',
     programLectureUsid: '',
     courseLectureUsid: '',
-    leaderEmails: [member.email],
+    leaderEmails: member === undefined ? [] : [member.email],
     url: pathname
       ? `https://int.mysuni.sk.com/login?contentUrl=${pathname}`
       : '',
@@ -194,6 +197,75 @@ async function cancel(params: LectureRouterParams, student: Student) {
   await deleteStudentByRollBookId(rollBookId);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+}
+
+async function videoApprove(params: LectureRouterParams,
+  rollBookId: string,
+  contentsId?: string,
+  student?: Student) {
+  if (contentsId === undefined) {
+    return;
+  }
+  const { mediaType, mediaContents } = await findMedia(contentsId)
+  if (mediaType === MediaType.ContentsProviderMedia) {
+    const { contentsProvider: { expiryDate, url } } = mediaContents;
+    if (moment(expiryDate).endOf('day').valueOf() < Date.now()) {
+      reactAlert({
+        title: '안내',
+        message: '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.'
+      })
+      return;
+    }
+    const link = document.createElement('a')
+    link.setAttribute('href', url);
+    link.setAttribute('target', '_blank');
+    link.click();
+  }
+  return approve(params, rollBookId, student)
+}
+
+async function getVideoApprovedState(lectureState: LectureState, stateText: string, contentsId?: string): Promise<LectureState> {
+
+  if (contentsId !== undefined) {
+    const { mediaType, mediaContents } = await findMedia(contentsId)
+    if (mediaType === MediaType.ContentsProviderMedia) {
+      const { contentsProvider: { expiryDate, url } } = mediaContents;
+      return {
+        ...lectureState,
+        hideAction: false,
+        canAction: true,
+        actionText: APPROVE,
+        action: () => cpVideoOpen(expiryDate, url),
+        stateText,
+      };
+    }
+
+  }
+
+  return {
+    ...lectureState,
+    hideAction: true,
+    canAction: false,
+    actionText: APPROVE,
+    stateText,
+  };
+
+}
+
+async function cpVideoOpen(
+  expiryDate: string, url: string) {
+  if (moment(expiryDate).endOf('day').valueOf() < Date.now()) {
+    reactAlert({
+      title: '안내',
+      message: '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.'
+    })
+    return;
+  }
+  const link = document.createElement('a')
+  link.setAttribute('href', url);
+  link.setAttribute('target', '_blank');
+  link.click();
+
 }
 
 async function approve(
@@ -342,6 +414,7 @@ async function getStateWhenApproved(
     hasTest,
     hasSurvey,
     cubeIntroId,
+    contentsId,
     studentJoin: { rollBookId },
     params,
   } = option;
@@ -358,10 +431,12 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
+      case 'Video':
+        break;
       case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '') {
+          if (reportFileBox === null || reportFileBox.reportName === '' || reportFileBox.reportName === null) {
             if (!hasTest) {
               return {
                 ...lectureState,
@@ -380,7 +455,7 @@ async function getStateWhenApproved(
             hideAction: false,
             canAction: true,
             actionText: DOWNLOAD,
-            action: () => {},
+            action: () => { },
             stateText,
           };
         }
@@ -388,7 +463,7 @@ async function getStateWhenApproved(
       case 'Experiential':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '') {
+          if (reportFileBox === null || reportFileBox.reportName === '' || reportFileBox.reportName === null) {
             if (!hasTest) {
               return {
                 ...lectureState,
@@ -400,7 +475,6 @@ async function getStateWhenApproved(
             }
           }
         }
-      case 'Video':
       case 'Audio':
         return {
           ...lectureState,
@@ -428,6 +502,10 @@ async function getStateWhenApproved(
           hideAction: true,
           stateText: JOINED,
         };
+    }
+    if (cubeType === 'Video') {
+      const mLectureState = await getVideoApprovedState(lectureState, stateText, contentsId);
+      return mLectureState;
     }
   }
 }
@@ -458,9 +536,11 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
     student,
     studentJoins,
     studentJoin: { rollBookId },
+    contentsId,
   } = option;
   switch (cubeType) {
     case 'WebPage':
+    case 'Experiential':
       return {
         ...lectureState,
         canAction: true,
@@ -471,6 +551,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
           }
           approve(params, rollBookId, student);
         },
+        coreAction: () => approve(params, rollBookId, student),
         hideState: true,
       };
     case 'Documents':
@@ -481,8 +562,14 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         action: () => approve(params, rollBookId, student),
         hideState: true,
       };
-    case 'Experiential':
     case 'Video':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: APPROVE,
+        action: () => videoApprove(params, rollBookId, contentsId, student),
+        hideState: true,
+      };
     case 'Audio':
       return {
         ...lectureState,
@@ -529,7 +616,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
 export async function getStateFromCube(params: LectureRouterParams) {
   const { contentId, lectureId, pathname } = params;
   const {
-    contents: { type, examId, surveyId },
+    contents: { type, examId, surveyId, contents: { id: contentsId } },
     cubeIntro: { id: cubeIntroId },
   } = await findPersonalCube(contentId);
   const hasTest = examId !== undefined && examId !== null && examId !== '';
@@ -618,6 +705,7 @@ export async function getStateFromCube(params: LectureRouterParams) {
               hasTest,
               hasSurvey,
               cubeIntroId,
+              contentsId,
               hasReport: false,
             });
             if (next === undefined) {
@@ -680,6 +768,7 @@ export async function getStateFromCube(params: LectureRouterParams) {
               hasTest,
               hasSurvey,
               cubeIntroId,
+              contentsId,
               hasReport: false,
             });
             if (next === undefined) {

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -15,6 +15,7 @@ import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import LectureRelationsView from './LectureRelationsView';
+import './LectureCubeContentView.css';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -44,6 +45,25 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureComment,
   lectureRelations,
 }) {
+  const [fixed, setFixed] = useState<boolean>(false);
+  // useEffect(() => {
+  //   const options = {};
+  //   const observer = new IntersectionObserver(intersectionCallback, options);
+  //   function intersectionCallback(entries: IntersectionObserverEntry[]) {
+  //     entries.forEach(entry => {
+  //       if (entry.isIntersecting) {
+  //         setFixed(false);
+  //       } else {
+  //         setFixed(true);
+  //       }
+  //     });
+  //   }
+  //   const lmsOverviewTop = document.getElementById('lms-overview-top');
+  //   if (lmsOverviewTop !== null) {
+  //     observer.observe(lmsOverviewTop);
+  //   }
+  //   return () => observer.disconnect();
+  // }, []);
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
@@ -71,7 +91,11 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
       {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
-      <div className="lms-sticky-menu" id="lms-overview">
+      <div id="lms-overview-top" />
+      <div
+        className={`lms-sticky-menu ${fixed ? 'lms-fixed' : ''}`}
+        id="lms-overview"
+      >
         <div className="lms-fixed-inner" id="lms-overview">
           <a
             onClick={overviewHashClick}

@@ -13,6 +13,7 @@ export enum GroupType {
   ListStamp = 'ListStamp',
   Community = 'Community',
   PreCourse = 'PreCourse',
+  Task = 'Task',
 }
 
 interface Props {

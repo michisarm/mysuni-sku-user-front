@@ -16,11 +16,12 @@ export default interface LectureState {
   canAction?: boolean;
   actionText?: string;
   action?: () => void;
+  coreAction?: () => void;
   stateText?: string;
   actionClassName: string;
   stateClassName: string;
   classroomSubmit?: (
     classroom: ClassroomModel,
-    member: ApprovalMemberModel
+    member?: ApprovalMemberModel
   ) => void;
 }
