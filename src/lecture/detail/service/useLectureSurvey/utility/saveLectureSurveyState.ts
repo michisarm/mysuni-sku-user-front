@@ -6,6 +6,7 @@ import {
 } from '../../../api/surveyApi';
 import AnswerSheetCdo from '../../../model/AnswerSheetCdo';
 import {
+  getLectureSurvey,
   getLectureSurveyState,
   setLectureSurveyState,
 } from '../../../store/LectureSurveyStore';
@@ -70,7 +71,8 @@ async function openLectureSurveyState() {
 
 async function coreSaveLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  if (lectureSurveyState === undefined) {
+  const lectureSurvey = getLectureSurvey();
+  if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
   const {
@@ -112,7 +114,8 @@ async function coreSaveLectureSurveyState() {
 
 async function coreSubmitLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
-  if (lectureSurveyState === undefined) {
+  const lectureSurvey = getLectureSurvey();
+  if (lectureSurveyState === undefined || lectureSurvey === undefined) {
     return;
   }
   const {
@@ -148,8 +151,21 @@ async function coreSubmitLectureSurveyState() {
       }),
     },
   };
+  const requiredMissAnswers = lectureSurvey.surveyItems.filter(c => c.isRequired)
+    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber))
+  if (requiredMissAnswers.length > 0) {
+    reactAlert({
+      title: '알림',
+      message: '필수 항목을 입력하세요.',
+    });
+    return;
+  }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
   setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
+  reactAlert({
+    title: '알림',
+    message: 'Survey 설문 참여가 완료 되었습니다.',
+  });
 }
 
 export async function saveLectureSurveyState(
@@ -192,10 +208,6 @@ export async function submitLectureSurveyState(
   await coreSubmitLectureSurveyState();
   requestLectureStructure(lectureParams, pathname);
 
-  reactAlert({
-    title: '알림',
-    message: 'Survey 설문 참여가 완료 되었습니다.',
-  });
 }
 
 export function selectSentenceAnswer(
@@ -300,7 +312,7 @@ export function selectChoiceAnswer(
       if (c.questionNumber === questionNumber) {
         if (canMultipleAnswer) {
           if (c.itemNumbers !== undefined && c.itemNumbers.includes(next)) {
-            return { ...c, itemNumbers: c.itemNumbers.filter(d => d === next) };
+            return { ...c, itemNumbers: c.itemNumbers.filter(d => d !== next) };
           } else {
             return { ...c, itemNumbers: [...(c.itemNumbers || []), next] };
           }
