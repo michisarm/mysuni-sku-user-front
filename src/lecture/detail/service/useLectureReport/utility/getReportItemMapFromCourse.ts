@@ -18,7 +18,7 @@ export async function getReportItem(
   const lectureReport: LectureReport = {};
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
-  if (coursePlan.reportFileBox.reportName !== '') {
+  if (coursePlan.reportFileBox.reportName !== '' && coursePlan.reportFileBox.reportName !== null) {
     let state: State = 'None';
 
     reportFileBox.fileBoxId = coursePlan.reportFileBox.fileBoxId;
