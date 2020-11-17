@@ -1,14 +1,13 @@
 
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Icon, Label, Dropdown } from 'semantic-ui-react';
+import { Icon, Label } from 'semantic-ui-react';
 
 
 interface Props {
   stampCount: number;
-  selectedYear: number;
-  yearOptions: any[];
-  onChangeYear: (e: any, data: any) => void;
+  // selectedYear: number;
+  // onChangeYear: (e: any, data: any) => void;
   onClickItem?: () => void;
 }
 
@@ -17,7 +16,7 @@ class ContentHeaderStampView extends PureComponent<Props> {
   //
   render() {
     //
-    const { stampCount, selectedYear, yearOptions, onChangeYear, onClickItem } = this.props;
+    const { stampCount, onClickItem } = this.props;
 
     return (
       <div className="cell-inner">
@@ -31,14 +30,6 @@ class ContentHeaderStampView extends PureComponent<Props> {
               </span>
             </a>
           </Label>
-          <div className="year">
-            <Dropdown
-              className="inline tight"
-              value={selectedYear}
-              options={yearOptions}
-              onChange={onChangeYear}
-            />
-          </div>
         </div>
       </div>
     );

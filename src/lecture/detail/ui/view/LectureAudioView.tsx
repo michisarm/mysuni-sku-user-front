@@ -46,7 +46,10 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [panoptoState, setPanoptoState] = useState<number>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
-
+  const [progressInterval, setProgressInterval] = useState<any>();
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [startTime, setStartTime] = useState(0);
   const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 
@@ -69,6 +72,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
   });
 
 
@@ -81,21 +85,22 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     history.push(path);  
   }, []);
 
-
-  const onPanoptoStateUpdate = useCallback((state:any) => {
-    setPanoptoState(state);
-
-    if (state == 2){
+  const onPanoptoStateUpdate = useCallback(
+    async (state: number) => {
+      console.log('PanoptoState : ' , state);
+      setPanoptoState(state);
       setIsActive(false);
-      setNextContentsView(false)
-    }else if (state == 1){
-      setIsActive(true);
-      setNextContentsView(false)
-    }else if(state == 0 && params){
-      setIsActive(false);
-      setNextContentsView(true);
-    }
-  }, [isActive,params]);
+      if (state == 2) {
+        setNextContentsView(false);
+      } else if (state == 1) {
+        setIsActive(true);
+        setNextContentsView(false);
+      } else if (state == 0) {
+        setNextContentsView(true);
+      }
+    },
+    [params]
+  );
 
   const registCheckStudent = useCallback(
     async (params : LectureRouterParams | undefined) => {
@@ -107,7 +112,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     [params]
   );
 
-  const mediaEndEvent = useCallback(
+  const mediaCheckEvent = useCallback(
     async (params : LectureRouterParams | undefined) => {
       if(params){
         await confirmProgress(params);
@@ -116,60 +121,119 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     },
     [params]
   );
+
   const lectureParams = useParams<LectureParams>();
   const { pathname } = useLocation();
 
   useEffect(() => {
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
-      mediaEndEvent(params);
+      mediaCheckEvent(params);
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
     }
 
+    console.log('panoptoState : ' , panoptoState);
+    console.log('isActive : ' , isActive);
+    console.log('nextContentsPath : ' , nextContentsPath);
+    console.log('getLectureConfirmProgress()?.learningState : ' , getLectureConfirmProgress()?.learningState);
+    
+  }, [panoptoState]);
+
+  useEffect(() => {
+    setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
+    setDuration((embedApi.getDuration() as unknown) as number);
+  }, [isActive, seconds, lectureParams, pathname, params]);
+    
+  useEffect(() => {
+
+
+    
+    console.log('embedApi.currentPosition() : ' , embedApi.currentPosition());
+
     let interval: any = null;
-    let progressInterval: any = null;
+    
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
+    
+    if(!startTime){
+      setStartTime(currentTime);
+    }
 
+    if (isActive && params && watchlogState) {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        setWatchlogState({
+          ...watchlogState,
+          start: startTime < 10? 0 : startTime - 10,
+          // end: currentTime + 10,
+          end: (embedApi.getCurrentTime() as unknown) as number,
+        });
+        setSeconds(seconds => seconds + 10);
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+
+      }, 10000);
+
+      
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
+
+  useEffect(() => {
     let confirmProgressTime = (duration / 10) * 1000;
-
     //confirmProgressTime
     if (!confirmProgressTime || confirmProgressTime > 60000) {
       confirmProgressTime = 60000;
     }
-    if (isActive && params && watchlogState) {
-      interval = setInterval(() => {
-        // const currentTime = (embedApi.getCurrentTime() as unknown) as number;
-        setWatchlogState({
-          ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
-        });
-        setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);
-      }, 10000);
-      progressInterval = setInterval(async () => {
-        await confirmProgress(params);
-        requestLectureStructure(lectureParams, pathname);
-      }, confirmProgressTime);
+
+    if (isActive && params) {
+      clearTimeout(progressInterval);
+      setProgressInterval(setTimeout(function tick() {
+        mediaCheckEvent(params);
+        //console.log('tick');
+        clearTimeout(progressInterval);
+        setProgressInterval(setTimeout(tick, confirmProgressTime));
+      }, confirmProgressTime));
+
     } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-      clearInterval(progressInterval);
+      clearTimeout(progressInterval);
     }
     return () => {
-      clearInterval(interval);
-      clearInterval(progressInterval);
+      clearTimeout(progressInterval);
     };
-  }, [isActive, seconds, lectureParams, pathname]);
+  }, [isActive]);
+  // }, [isActive, seconds, lectureParams, pathname, params]);
+
 
   useEffect(() => {
     if (params) {
-      confirmProgress(params);
+      console.log('params loding effect params - ', params);
+      // mediaCheckEvent(params);
     }
   }, [params]);
+
+
+  useEffect(() => {
+    return () => {
+      console.log('component End');
+      // console.log('progressInterval : ' , progressInterval);
+      mediaCheckEvent(params);
+      clearTimeout(progressInterval);
+      setPanoptoState(10);
+      setNextContentsPath('');
+      setNextContentsName('');
+      setIsActive(false);
+      console.log('progressInterval', progressInterval);   
+    };
+  }, []);
 
   const cleanUpPanoptoIframe = () => {
     const playerEl = document.getElementById('panopto-embed-audio-player'); //audio player 라는 것이 따로 없습니다.
@@ -180,6 +244,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
 
   useEffect(() => {
+    setPanoptoState(10);
     const lectureStructure =  getLectureStructure();
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
@@ -221,7 +286,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         })
       }
       else if (lectureStructure.course?.type=="PROGRAM") {
-
 
         lectureStructure.items.map(item => {
           if (item.type === 'COURSE') {
@@ -331,7 +395,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
             //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
             interactivity: 'none',
             showtitle: 'false',
-            showBrand: 'true',
+            showBrand: 'false',
             offerviewer: 'false',
           },
           events: {
