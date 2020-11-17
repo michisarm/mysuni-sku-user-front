@@ -13,7 +13,7 @@ import { useLectureStructure } from 'lecture/detail/service/useLectureStructure/
 
 function LectureVideoContainer() {
   useLectureMedia();
-  useLectureStructure();
+
   const [,,checkStudent] = useLectureMedia();
   const params = useLectureRouterParams();
   
