@@ -85,21 +85,22 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     history.push(path);  
   }, []);
 
-
-  const onPanoptoStateUpdate = useCallback((state:any) => {
-    setPanoptoState(state);
-    console.log('PanoptoState : ' , state);
-    if (state == 2){
+  const onPanoptoStateUpdate = useCallback(
+    async (state: number) => {
+      console.log('PanoptoState : ' , state);
+      setPanoptoState(state);
       setIsActive(false);
-      setNextContentsView(false)
-    }else if (state == 1){
-      setIsActive(true);
-      setNextContentsView(false)
-    }else if(state == 0 && params){
-      setIsActive(false);
-      setNextContentsView(true);
-    }
-  }, [isActive,params]);
+      if (state == 2) {
+        setNextContentsView(false);
+      } else if (state == 1) {
+        setIsActive(true);
+        setNextContentsView(false);
+      } else if (state == 0) {
+        setNextContentsView(true);
+      }
+    },
+    [params]
+  );
 
   const registCheckStudent = useCallback(
     async (params : LectureRouterParams | undefined) => {
@@ -133,6 +134,12 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     if(panoptoState == 1){
       registCheckStudent(params);
     }
+
+    console.log('panoptoState : ' , panoptoState);
+    console.log('isActive : ' , isActive);
+    console.log('nextContentsPath : ' , nextContentsPath);
+    console.log('getLectureConfirmProgress()?.learningState : ' , getLectureConfirmProgress()?.learningState);
+    
   }, [panoptoState]);
 
   useEffect(() => {
@@ -161,7 +168,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({
           ...watchlogState,
-          start: startTime,
+          start: startTime < 10? 0 : startTime - 10,
           // end: currentTime + 10,
           end: (embedApi.getCurrentTime() as unknown) as number,
         });
@@ -279,7 +286,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         })
       }
       else if (lectureStructure.course?.type=="PROGRAM") {
-
 
         lectureStructure.items.map(item => {
           if (item.type === 'COURSE') {
