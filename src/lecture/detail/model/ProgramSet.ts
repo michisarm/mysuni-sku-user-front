@@ -4,5 +4,5 @@ export default interface ProgramSet {
   cards: IdNameSequence[];
   courses: IdNameSequence[];
   prerequisitePrograms: IdNameSequence[];
-  discussions: IdNameSequence[];
+  discussions: IdNameSequence[] | null;
 }
