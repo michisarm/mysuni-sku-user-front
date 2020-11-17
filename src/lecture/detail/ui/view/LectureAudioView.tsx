@@ -49,7 +49,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const [progressInterval, setProgressInterval] = useState<any>();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-
+  const [startTime, setStartTime] = useState(0);
   const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 
@@ -72,6 +72,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
   });
 
 
@@ -84,21 +85,22 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     history.push(path);  
   }, []);
 
-
-  const onPanoptoStateUpdate = useCallback((state:any) => {
-    setPanoptoState(state);
-
-    if (state == 2){
+  const onPanoptoStateUpdate = useCallback(
+    async (state: number) => {
+      console.log('PanoptoState : ' , state);
+      setPanoptoState(state);
       setIsActive(false);
-      setNextContentsView(false)
-    }else if (state == 1){
-      setIsActive(true);
-      setNextContentsView(false)
-    }else if(state == 0 && params){
-      setIsActive(false);
-      setNextContentsView(true);
-    }
-  }, [isActive,params]);
+      if (state == 2) {
+        setNextContentsView(false);
+      } else if (state == 1) {
+        setIsActive(true);
+        setNextContentsView(false);
+      } else if (state == 0) {
+        setNextContentsView(true);
+      }
+    },
+    [params]
+  );
 
   const registCheckStudent = useCallback(
     async (params : LectureRouterParams | undefined) => {
@@ -132,31 +134,48 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     if(panoptoState == 1){
       registCheckStudent(params);
     }
+
+    console.log('panoptoState : ' , panoptoState);
+    console.log('isActive : ' , isActive);
+    console.log('nextContentsPath : ' , nextContentsPath);
+    console.log('getLectureConfirmProgress()?.learningState : ' , getLectureConfirmProgress()?.learningState);
+    
   }, [panoptoState]);
 
   useEffect(() => {
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
-
-
+    
   useEffect(() => {
+
+
+    
+    console.log('embedApi.currentPosition() : ' , embedApi.currentPosition());
 
     let interval: any = null;
     
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
     
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+
     if (isActive && params && watchlogState) {
+      clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({
           ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
+          start: startTime < 10? 0 : startTime - 10,
+          // end: currentTime + 10,
+          end: (embedApi.getCurrentTime() as unknown) as number,
         });
         setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);     
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+
       }, 10000);
 
       
@@ -166,7 +185,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
 
   useEffect(() => {
     let confirmProgressTime = (duration / 10) * 1000;
@@ -267,7 +286,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         })
       }
       else if (lectureStructure.course?.type=="PROGRAM") {
-
 
         lectureStructure.items.map(item => {
           if (item.type === 'COURSE') {

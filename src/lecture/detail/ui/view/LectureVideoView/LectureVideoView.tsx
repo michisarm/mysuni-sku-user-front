@@ -78,12 +78,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [startTime, setStartTime] = useState(0);
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
   });
 
   const toHHMM = useCallback((idx: number) => {
@@ -118,18 +120,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
-    setPanoptoState(10);
+    setNextContentsView(false);
     history.push(path);
   }, []);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
-      console.log('state : ' , state);
+      console.log('PanoptoState : ' , state);
       setPanoptoState(state);
       setIsActive(false);
-      if (state == 2) {
-        setNextContentsView(false);
-      } else if (state == 1) {
+      if (state == 1) {
         setIsActive(true);
         setNextContentsView(false);
       } else if (state == 0) {
@@ -164,20 +164,37 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
 
   useEffect(() => {
+    setNextContentsView(false);
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
       mediaCheckEvent(params);
+      if(Math.floor((embedApi.getCurrentTime() as unknown) as number) == Math.floor((embedApi.getDuration() as unknown) as number)){
+        setNextContentsView(true);
+      }      
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
     }
+
+    console.log('panoptoState : ' , panoptoState);
+    console.log('isActive : ' , isActive);
+    console.log('nextContentsPath : ' , nextContentsPath);
+    console.log('getLectureConfirmProgress()?.learningState : ' , getLectureConfirmProgress()?.learningState);
+    console.log('current Time : ' , (embedApi.getCurrentTime() as unknown) as number);
+    console.log('duration Time : ' , (embedApi.getDuration() as unknown) as number);
+
   }, [panoptoState]);
 
   useEffect(() => {
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
+
+  // useEffect(() => {
+  //   setEndTime((embedApi.getCurrentTime() as unknown) as number);
+  // }, [embedApi.getCurrentTime()]);
+  
 
 
   useEffect(() => {
@@ -186,17 +203,27 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
-    
+    console.log('embedApi : ', embedApi);
+    // console.log('embedApi.currentPosition() : ' , embedApi.currentPosition());
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+
     if (isActive && params && watchlogState) {
+      clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({
           ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
+          start: startTime < 10? 0 : startTime - 10,
+          // start: startTime,
+          // end: currentTime + 10,
+          end: (embedApi.getCurrentTime() as unknown) as number,
         });
         setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);     
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+
       }, 10000);
 
       
@@ -206,7 +233,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
 
   useEffect(() => {
     let confirmProgressTime = (duration / 10) * 1000;
@@ -252,14 +279,31 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setNextContentsPath('');
       setNextContentsName('');
       setIsActive(false);
+      setNextContentsView(false);
       console.log('progressInterval', progressInterval);
     };
   }, []);
 
 
+  const getLecture = useCallback((idx: number) => {
+    const time = idx;
+    const hours = Math.floor(time / 60);
+    const minutes = Math.floor(time - hours * 60);
+
+    let sHours = '';
+    let sMinutes = '';
+    sHours = String(hours.toString()).padStart(2, '0');
+    sMinutes = String(minutes.toString()).padStart(2, '0');
+
+    return sHours + ':' + sMinutes;
+  }, []);
+
+
   useEffect(() => {
-    setPanoptoState(10);
+    console.log('next Contents ----');
     const lectureStructure =  getLectureStructure();
+
+    console.log(lectureStructure);
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
@@ -380,7 +424,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         
       }
     }
-  }, [getLectureStructure(), getLectureConfirmProgress()]);
+  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
 
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
@@ -406,6 +450,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           height: '700',
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
+          // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
           serverName: 'sku.ap.panopto.com',
           sessionId: currentPaonoptoSessionId,
           // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
@@ -438,9 +483,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   return (
     <div className="course-video">
       <div className="video-container">
-        <div id="panopto-embed-player"></div>
+        <div id="panopto-embed-player" onClick={() => console.log('dasdasd')}></div>
         {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-        {panoptoState == 0 &&
+        {nextContentsView &&
           !isActive &&
           nextContentsPath &&
           getLectureConfirmProgress()?.learningState == 'Passed' && (
