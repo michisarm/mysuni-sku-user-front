@@ -26,6 +26,7 @@ export interface LectureStructureItem {
   can: boolean;
   order: number;
   type: LectureStructureItemType;
+  canSubmit?: boolean;
 }
 
 export interface StudentStateMap {
