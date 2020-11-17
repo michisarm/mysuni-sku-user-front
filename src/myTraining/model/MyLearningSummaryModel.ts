@@ -12,6 +12,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   acheiveStampCount: number = 0;
   achieveBadgeCount: number = 0;
 
+  /* college 별 학습시간 */
   aiCollegeTime: number = 0;
   dtCollegeTime: number = 0;
   happyCollegeTime: number = 0;
@@ -28,21 +29,36 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   lifeStyleCollegeTime: number = 0;
   myCompanyInSuniLearningTime: number = 0;
 
-  aplAllowTime: number = 0; /* 개인 학습시간 */
-  lectureTimeSummary: LectureTimeSummary = new LectureTimeSummary(); /* 강의시간 */
+  /* 개인 학습(인정)시간 */
+  aplAllowTime: number = 0;
+  /* 강의시간 */
+  lectureTimeSummary: LectureTimeSummary = new LectureTimeSummary();
 
-  @computed get totalSuniLearningTime() {
+  /* mySUNI 학습시간 */
+  @computed get displayMySUNILearningTime(): number {
     return this.suniLearningTime - this.myCompanyInSuniLearningTime;
   }
 
-  @computed get totalMyCompanyLearningTime() {
+  /* 관계사 학습시간 */
+  @computed get displayMyCompanyLearningTime(): number {
     return this.myCompanyLearningTime + this.myCompanyInSuniLearningTime;
   }
 
-  @computed get totalSuniMyCompanyLectureTime() {
-    return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime + this.lectureTimeSummary.totalCollegeTime
-  }
+  /* 총 학습시간 */
+  @computed get displayTotalLearningTime(): number {
+    /*
+      1. mySUNI 학습시간
+      2. 관계사 학습시간
+      3. 개인 학습시간
+      4. 강의시간
+    */
+    if (this.lectureTimeSummary) {
+      /* lectureTimeSummary 는 object 이므로 null 처리를 꼭 해주도록 한다. */
+      return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime + this.lectureTimeSummary.totalCollegeTime;
+    }
 
+    return 0;
+  }
 
   constructor(summary?: MyLearningSummaryModel) {
     super();

@@ -54,7 +54,11 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   return (
     <>
       <div className={`accordion-state-holder ${activated ? 'act-on' : ''}`}>
-        <Link to={path} className="btn-over-view enable">
+        <Link
+          to={path}
+          className="btn-over-view enable"
+          onClick={() => window.scrollTo({ top: 0 })}
+        >
           {name}
         </Link>
         <button
@@ -110,6 +114,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   )}
                   {cube.test !== undefined && (
                     <TestView
+                      activated={cube.test.activated}
                       name={cube.test.name}
                       state={cube.test.state}
                       questionCount={cube.test.questionCount}
@@ -120,6 +125,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   {cube.survey !== undefined && (
                     <SurveyView
                       name={cube.survey.name}
+                      activated={cube.survey.activated}
                       state={cube.survey.state}
                       questionCount={cube.survey.questionCount}
                       path={cube.survey.path}
@@ -128,6 +134,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   )}
                   {cube.report !== undefined && (
                     <ReportView
+                      activated={cube.report.activated}
                       name={cube.report.name}
                       state={cube.report.state}
                       path={cube.report.path}

@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
-import moment from 'moment';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import moment from 'moment';
 
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
@@ -48,12 +48,11 @@ class MyLearningSummaryContainer extends Component<Props> {
   init() {
     //
     const { myLearningSummaryService, skProfileService } = this.props;
-
-    const year: number = moment().year();
+    /* 메인 페이지에는 해당 년도의 LearningSummary 를 display 함. */
+    const year = moment().year();
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     skProfileService!.findStudySummary();
     // badgeService!.getCountOfBadges();
-
   }
 
   getHourMinute(minuteTime: number) {
@@ -116,7 +115,8 @@ class MyLearningSummaryContainer extends Component<Props> {
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
-    const { hour, minute } = this.getHourMinute(myLearningSummary.totalSuniMyCompanyLectureTime);
+    /* 총 학습시간 */
+    const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     let total: any = null;
 
     if (hour < 1 && minute < 1) {

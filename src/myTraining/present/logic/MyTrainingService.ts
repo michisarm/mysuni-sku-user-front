@@ -493,50 +493,61 @@ class MyTrainingService {
 
     /* 학습중 */
     if (this._myTrainingFilterRdo.contentType === 'InProgress') {
-      if (this._myTrainingFilterRdo.viewType === 'Course') {
-        if (this.inProgressTableViews.length === 0) {
-          const inProgressJson = sessionStorage.getItem('inProgressTableViews');
-          if (inProgressJson) {
-            const inProgressStorage: any[] = JSON.parse(inProgressJson);
-            if (inProgressStorage) {
-              this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
-              this.inProgressTableCount = inProgressStorage.length;
-            }
+      /* if (!this.inProgressTableViews.length) {
+        const inProgressJson = sessionStorage.getItem('inProgressTableViews');
+        if (inProgressJson) {
+          const inProgressStorage: any[] = JSON.parse(inProgressJson);
+          if (inProgressStorage && inProgressStorage.length) {
+            this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
+            this.inProgressTableCount = inProgressStorage.length;
           }
         }
-        const inProgressTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-        this._myTrainingTableViews = inProgressTableViews.slice(0, 20);
-        this._myTrainingTableViewCount = inProgressTableViews.length;
+      } */
+
+      if (this.inProgressTableViews.length) {
+        /* 코스만보기 */
+        if (this._myTrainingFilterRdo.viewType === 'Course') {
+          const inProgressTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          this._myTrainingTableViews = inProgressTableViews.slice(0, 20);
+          this._myTrainingTableViewCount = inProgressTableViews.length;
+          return false;
+        }
+
+        /* 전체보기 */
+        this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
+        this._myTrainingTableViewCount = this.inProgressTableCount;
         return false;
       }
-
-      this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
-      this._myTrainingTableViewCount = this.inProgressTableCount;
-      return false;
     }
+
     /* 학습완료 */
     if (this._myTrainingFilterRdo.contentType === 'Completed') {
-      if (this._myTrainingFilterRdo.viewType === 'Course') {
-        if (this.completedTableViews.length === 0) {
-          const completedJson = sessionStorage.getItem('completedTableViews');
-          if (completedJson) {
-            const completedStorage: any[] = JSON.parse(completedJson);
-            if (completedStorage) {
-              this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
-              this.completedTableCount = completedStorage.length;
-            }
+
+      /* if (!this.completedTableViews.length) {
+        const completedJson = sessionStorage.getItem('completedTableViews');
+        if (completedJson) {
+          const completedStorage: any[] = JSON.parse(completedJson);
+          if (completedStorage && completedStorage.length) {
+            this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+            this.completedTableCount = completedStorage.length;
           }
         }
+      } */
 
-        const completedTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-        this._myTrainingTableViews = completedTableViews.slice(0, 20);
-        this._myTrainingTableViewCount = completedTableViews.length;
+      if (this.completedTableViews.length) {
+        /* 코스만보기 */
+        if (this._myTrainingFilterRdo.viewType === 'Course') {
+          const completedTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          this._myTrainingTableViews = completedTableViews.slice(0, 20);
+          this._myTrainingTableViewCount = completedTableViews.length;
+          return false;
+        }
+
+        /* 전체보기 */
+        this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
+        this._myTrainingTableViewCount = this.completedTableCount;
         return false;
       }
-
-      this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
-      this._myTrainingTableViewCount = this.completedTableCount;
-      return false;
     }
 
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.

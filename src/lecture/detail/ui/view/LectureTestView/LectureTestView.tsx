@@ -97,13 +97,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                           (testStudentItem.learningState !== 'Failed' &&
                             testStudentItem.learningState !== 'Missed' &&
                             testStudentItem.learningState !== 'TestWaiting' &&
-                            testStudentItem.learningState !== 'Passed' &&
-                            testStudentItem.learningState !==
-                            'TestPassed' && (
-                              <button className="ui button free submit p18">
-                                Test
-                              </button>
-                            ))}
+                            testStudentItem.learningState !== 'Passed' )}
                         {testStudentItem &&
                           testStudentItem.learningState &&
                           (testStudentItem.learningState === 'Failed' ||

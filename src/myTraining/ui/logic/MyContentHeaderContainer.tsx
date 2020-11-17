@@ -14,7 +14,7 @@ import { MyContentType } from './MyLearningListContainerV2';
 import FavoriteChannelContainer from './FavoriteChannelContainer';
 import ContentHeaderStampView from '../view/ContentHeaderStampView';
 import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
-import { MyPageContentType } from '../model';
+import { MyLearningContentType, MyPageContentType } from '../model';
 
 /*
   1. contentType ( 어떤 페이지에서 해당 컴포넌트가 사용되고 있는지 확인하고 조건을 분기하기 위함. 2020.10.28 by 김동구 )
@@ -64,9 +64,8 @@ function MyContentHeaderContainer(props: Props) {
 
   /* render */
   return (
-    < ContentHeader
-      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />
-      }
+    <ContentHeader
+      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
     >
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
@@ -79,12 +78,16 @@ function MyContentHeaderContainer(props: Props) {
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(myLearningSummary.totalSuniMyCompanyLectureTime !== 0 && (
-          <ContentHeader.LearningTimeItem
-            minute={myLearningSummary.totalSuniMyCompanyLectureTime}
-            year={selectedYear}
-          />
-        )) || <ContentHeader.WaitingItem onClick={routeToRecommend} />}
+        {myLearningSummary.displayTotalLearningTime !== 0 &&
+          (
+            <ContentHeader.LearningTimeItem
+              minute={myLearningSummary.displayTotalLearningTime}
+              year={selectedYear}
+            />
+          ) ||
+          (
+            <ContentHeader.WaitingItem onClick={routeToRecommend} />
+          )}
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderBadgeView
@@ -104,7 +107,7 @@ function MyContentHeaderContainer(props: Props) {
           onClickItem={onClickMyStamp}
         />
       </ContentHeader.Cell>
-    </ContentHeader >
+    </ContentHeader>
   );
 }
 

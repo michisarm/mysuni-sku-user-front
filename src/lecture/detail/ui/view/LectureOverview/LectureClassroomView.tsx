@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-closing-tag-location */
+import moment from 'moment';
 import React, { useRef } from 'react';
 import { Button, Icon, Label, Table } from 'semantic-ui-react';
 import TableModal from '../../../../../personalcube/shared/OverviewField/sub/TableModal';
@@ -6,6 +8,10 @@ import LectureClassroom from '../../../viewModel/LectureClassroom';
 
 interface LectureClassroomViewProps {
   lectureClassroom: LectureClassroom;
+}
+
+function formatDate(dateString: string) {
+  return `${moment(dateString).format('YYYY.MM.DD')}`;
 }
 
 const LectureClassroomView: React.FC<LectureClassroomViewProps> = function LectureClassroomView({
@@ -62,10 +68,14 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                       <span>{location}</span>
                     </Table.Cell>
                     <Table.Cell className="center">
-                      {`${applyingStartDate} ~ ${applyingEndDate}`}
+                      {`${formatDate(applyingStartDate)} ~ ${formatDate(
+                        applyingEndDate
+                      )}`}
                     </Table.Cell>
                     <Table.Cell className="center">
-                      {`${learningStartDate} ~ ${learningEndDate}`}
+                      {`${formatDate(learningStartDate)} ~ ${formatDate(
+                        learningEndDate
+                      )}`}
                     </Table.Cell>
                   </Table.Row>
                 )

@@ -13,7 +13,11 @@ const StructureLink: React.FC<LinkProps & Props> = function StructureLink(
   const { can, children, className, onCannotClick, ...restProps } = props;
   if (can) {
     return (
-      <Link className={className} {...restProps}>
+      <Link
+        className={className}
+        {...restProps}
+        onClick={() => window.scrollTo({ top: 0 })}
+      >
         {children}
       </Link>
     );

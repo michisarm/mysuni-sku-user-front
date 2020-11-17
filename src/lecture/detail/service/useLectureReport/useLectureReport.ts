@@ -25,14 +25,18 @@ export function useLectureReport(): [
   const [subscriberId, setSubscriberId] = useState<string>();
   const [reportValue, setReportValue] = useState<ReportValue>();
   const params = useParams<LectureParams>();
-
+  
   const getCubeReportItem = useCallback((params: LectureParams) => {
     getCubeLectureReport(params);
   }, []);
 
-  const getCourseReportItem = useCallback((params: LectureParams) => {
+  const getCourseReportItem = useCallback((params: any) => {
+    if (params === undefined) {
+      return;
+    }
     getCourseLectureReport(params);
-  }, []);
+  }, [params]);
+
 
   useEffect(() => {
     if (params.cubeId !== undefined) {

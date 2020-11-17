@@ -125,7 +125,8 @@ async function getReportItem(
   const coursePlan = await findCoursePlan(lectureView.coursePlanId);
   if (
     coursePlan.reportFileBox !== null &&
-    coursePlan.reportFileBox.reportName !== ''
+    coursePlan.reportFileBox.reportName !== '' &&
+    coursePlan.reportFileBox.reportName !== null
   ) {
     let state: State = 'None';
     if (student !== undefined) {
@@ -134,6 +135,9 @@ async function getReportItem(
         student.homeworkFileBoxId !== null
       ) {
         state = 'Progress';
+      }
+      if (student.learningState === 'Passed') {
+        state = 'Completed'
       }
     }
     const item: LectureStructureReportItem = {
