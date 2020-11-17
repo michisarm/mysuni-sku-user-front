@@ -342,7 +342,7 @@ export default inject(mobxHelper.injectFrom(
 
 /* globals */
 const formatDate = (time: number) => {
-  return moment(Number(time)).format('YYYY.MM.DD');
+  return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
 };
 
 export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel;
