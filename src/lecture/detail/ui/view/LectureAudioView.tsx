@@ -49,7 +49,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const [progressInterval, setProgressInterval] = useState<any>();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-
+  const [startTime, setStartTime] = useState(0);
   const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 
@@ -72,6 +72,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
   });
 
 
@@ -87,7 +88,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   const onPanoptoStateUpdate = useCallback((state:any) => {
     setPanoptoState(state);
-
+    console.log('PanoptoState : ' , state);
     if (state == 2){
       setIsActive(false);
       setNextContentsView(false)
@@ -138,25 +139,36 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
-
-
+    
   useEffect(() => {
+
+
+    
+    console.log('embedApi.currentPosition() : ' , embedApi.currentPosition());
 
     let interval: any = null;
     
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
     
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+
     if (isActive && params && watchlogState) {
+      clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({
           ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
+          start: startTime,
+          // end: currentTime + 10,
+          end: (embedApi.getCurrentTime() as unknown) as number,
         });
         setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);     
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+
       }, 10000);
 
       
@@ -166,7 +178,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
 
   useEffect(() => {
     let confirmProgressTime = (duration / 10) * 1000;

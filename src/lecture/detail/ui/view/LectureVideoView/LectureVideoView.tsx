@@ -78,12 +78,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [startTime, setStartTime] = useState(0);
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
   });
 
   const toHHMM = useCallback((idx: number) => {
@@ -124,7 +126,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
-      console.log('state : ' , state);
+      console.log('PanoptoState : ' , state);
       setPanoptoState(state);
       setIsActive(false);
       if (state == 2) {
@@ -179,6 +181,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
 
+  // useEffect(() => {
+  //   setEndTime((embedApi.getCurrentTime() as unknown) as number);
+  // }, [embedApi.getCurrentTime()]);
+  
+
 
   useEffect(() => {
 
@@ -186,17 +193,26 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
-    
+    console.log('embedApi : ', embedApi);
+    // console.log('embedApi.currentPosition() : ' , embedApi.currentPosition());
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+
     if (isActive && params && watchlogState) {
+      clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         setWatchlogState({
           ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
+          start: startTime,
+          // end: currentTime + 10,
+          end: (embedApi.getCurrentTime() as unknown) as number,
         });
         setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);     
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+
       }, 10000);
 
       
@@ -206,7 +222,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
 
   useEffect(() => {
     let confirmProgressTime = (duration / 10) * 1000;
