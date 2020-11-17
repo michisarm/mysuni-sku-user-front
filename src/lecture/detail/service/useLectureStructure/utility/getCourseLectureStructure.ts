@@ -369,13 +369,15 @@ export async function getCourseLectureStructure(
     );
     lectureStructure.course.student = student;
     lectureStructure.course.state = 'None';
-    switch (student.learningState) {
-      case 'Passed':
-        lectureStructure.course.state = 'Completed';
-        break;
-      default:
-        lectureStructure.course.state = 'Progress';
-        break;
+    if (student !== null) {
+      switch (student.learningState) {
+        case 'Passed':
+          lectureStructure.course.state = 'Completed';
+          break;
+        default:
+          lectureStructure.course.state = 'Progress';
+          break;
+      }
     }
 
     if (itemMap.test !== undefined) {
