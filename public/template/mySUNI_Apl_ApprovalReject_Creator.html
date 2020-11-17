@@ -46,7 +46,7 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td><span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:1.58;letter-spacing:-0.4px;color:#222;'>my<span style='color: red'>SUNI</span> 개인 교육 반려 안내</span></td>
+                      <td><span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:1.58;letter-spacing:-0.4px;color:#222;'>my<span style='color: red'>SUNI</span> 개인 교육 <span th:text='{$isApprover}'/> 안내 </span></td>
                       <td></td>
                     </tr>
                     <tr>
@@ -67,10 +67,8 @@
                     <tr>
                       <td></td>
                       <td>
-                        <span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;line-height:1.43;letter-spacing:-0.2px;color:#222;'>
-                          <span th:text='${name}'/>님께서 신청하신 <span th:text='${title}'/>과정이 다음과 같은 사유로 아쉽게 승인되지 않았습니다.<br/>
-                          추가 문의사항은 아래 담당자에게 연락바랍니다.
-                        </span>
+                        <br style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;line-height:1.43;letter-spacing:-0.2px;color:#222;'>
+                          <span th:text='${name}'/>님이 신청한 개인학습 과정이 <span th:text='{$isApprover}'/>되었습니다. </br><span th:text='{addText}'/></span>
                       </td>
                       <td></td>
                     </tr>
@@ -91,56 +89,18 @@
                           <tbody>
                           <tr>
                             <td width='30' height='30'></td>
-                            <td width='163'></td>
+                            <td width='50'></td>
                             <td width='397'></td>
                             <td width='30'></td>
                           </tr>
                           <tr>
                             <td></td>
-                            <td valign='top'><span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>과정명</span>
+                            <td valign='top'><span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>
+                              과정명  :  </span>
                             </td>
                             <td valign='top'>
                               <div style='width:397px;font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>
                                 <span th:text='${title}'/>
-                                <!--<a th:href='${url}' target='_blank' style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:16px;font-weight:bold;letter-spacing:-0.4px;color:#ff664d;'
-                                >
-                                  바로가기
-                                </a>
-                                <img src='http://int.mysuni.sk.com/profile/email-img/icon-mail-16-px.png' alt='' border='0'>-->
-                              </div>
-                            </td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td height='20'></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td valign='top'><span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>사유</span>
-                            </td>
-                            <td valign='top'>
-                              <div style='width:397px;font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>
-                                <span th:text='${reason}'/>
-                              </div>
-                            </td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td height='20'></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td valign='top' width='163'><span style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>my<span style='color: red'>SUNI</span> 담당자</span>
-                            </td>
-                            <td>
-                              <div style='width:397px;font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>
-                                <span th:text='${operatorName}'/> <img src='http://int.mysuni.sk.com/profile/email-img/devider.png' alt='' border='0'> <span th:text='${operatorEmail}'/>
                               </div>
                             </td>
                             <td></td>

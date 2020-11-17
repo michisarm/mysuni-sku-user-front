@@ -11,14 +11,13 @@ import {
 
 export async function getReportItem(
   coursePlanId: string,
-  studentId: string,
   student?: Student
 ): Promise<LectureReport> {
   const coursePlan = await findCoursePlan(coursePlanId);
   const lectureReport: LectureReport = {};
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
-  if (coursePlan.reportFileBox.reportName !== '') {
+  if (coursePlan.reportFileBox.reportName !== '' && coursePlan.reportFileBox.reportName !== null) {
     let state: State = 'None';
 
     reportFileBox.fileBoxId = coursePlan.reportFileBox.fileBoxId;
@@ -26,7 +25,7 @@ export async function getReportItem(
     reportFileBox.reportName = coursePlan.reportFileBox.reportName;
     reportFileBox.reportQuestion = coursePlan.reportFileBox.reportQuestion;
 
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       if (
         student.homeworkContent !== null ||
         student.homeworkFileBoxId !== null
@@ -43,7 +42,7 @@ export async function getReportItem(
         studentReport.homeworkOperatorFileBoxId =
           student.homeworkOperatorFileBoxId;
       }
-      studentReport.id = studentId;
+      studentReport.id = student.id;
     }
     lectureReport.reportFileBox = reportFileBox;
     lectureReport.studentReport = studentReport;

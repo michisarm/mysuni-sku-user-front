@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import moment from 'moment';
 
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
@@ -47,10 +48,11 @@ class MyLearningSummaryContainer extends Component<Props> {
   init() {
     //
     const { myLearningSummaryService, skProfileService } = this.props;
-    myLearningSummaryService!.findTotalMyLearningSummary();
+    /* 메인 페이지에는 해당 년도의 LearningSummary 를 display 함. */
+    const year = moment().year();
+    myLearningSummaryService!.findMyLearningSummaryByYear(year);
     skProfileService!.findStudySummary();
     // badgeService!.getCountOfBadges();
-
   }
 
   getHourMinute(minuteTime: number) {
@@ -109,11 +111,12 @@ class MyLearningSummaryContainer extends Component<Props> {
     const { myLearningSummaryService, skProfileService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
-    const { totalMyLearningSummary } = myLearningSummaryService!;
+    const { myLearningSummary } = myLearningSummaryService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
-    const { hour, minute } = this.getHourMinute(totalMyLearningSummary.totalLearningTime);
+    /* 총 학습시간 */
+    const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     let total: any = null;
 
     if (hour < 1 && minute < 1) {
@@ -186,7 +189,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           >
             <HeaderItemView
               label="완료된 학습"
-              count={totalMyLearningSummary.completeLectureCount}
+              count={myLearningSummary.completeLectureCount}
               onClick={this.onClickComplete}
             />
           </ItemWrapper>
@@ -194,7 +197,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Stamp')}>
             <HeaderItemView
               label="My Stamp"
-              count={totalMyLearningSummary.acheiveStampCount}
+              count={myLearningSummary.acheiveStampCount}
               onClick={this.onClickStamp}
             />
           </ItemWrapper>
@@ -203,7 +206,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Badge')}>
             <HeaderItemView
               label="My Badge"
-              count={totalMyLearningSummary.achieveBadgeCount}
+              count={myLearningSummary.achieveBadgeCount}
               onClick={this.onClickBadge}
             />
           </ItemWrapper>

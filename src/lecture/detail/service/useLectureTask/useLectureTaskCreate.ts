@@ -2,24 +2,27 @@ import { getLectureTaskCreateBoardId, onLectureTaskCreateBoardId, onLectureTaskC
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useLectureRouterParams } from '../useLectureRouterParams';
 import { getCubeLectureTaskBoardId } from './utility/getCubeLectureTaskCreate';
 
 type LectureTaskCreateValue = LectureTaskDetail | undefined;
-
-interface Params {
-  cubeId: string;
-}
 
 let subscriberIdRef = 0;
 export function useLectureTaskCreate(
 ): [LectureTaskCreateValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [taskCreateValue, setTaskCreateValue] = useState<LectureTaskCreateValue>();
-  const { cubeId } = useParams<Params>();
 
+  const params = useLectureRouterParams();
+  
   useEffect(() => {
-    getCubeLectureTaskBoardId(cubeId)
-  }, []);
+    if (params === undefined) {
+      return;
+    }
+    const { contentId } = params;
+
+    getCubeLectureTaskBoardId(contentId)
+  }, [params]);
 
   useEffect(() => {
     const next = `useLectureTaskCreate-${++subscriberIdRef}`;

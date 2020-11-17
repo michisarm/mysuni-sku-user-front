@@ -130,7 +130,7 @@ async function getReportItem(
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   const cubeIntro = await findCubeIntro(cubeIntroId);
-  if (cubeIntro.reportFileBox.reportName !== '') {
+  if (cubeIntro.reportFileBox.reportName !== '' && cubeIntro.reportFileBox.reportName !== null) {
     let state: State = 'None';
     if (student !== undefined) {
       if (
@@ -138,6 +138,9 @@ async function getReportItem(
         student.homeworkFileBoxId !== null
       ) {
         state = 'Progress';
+      }
+      if (student.learningState === 'Passed') {
+        state = 'Completed'
       }
     }
     const item: LectureStructureReportItem = {

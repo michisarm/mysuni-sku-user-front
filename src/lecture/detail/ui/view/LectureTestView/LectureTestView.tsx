@@ -222,6 +222,14 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                           className="ui button fix bg"
                           onClick={submitAnswerSheet}
                         >
+                          {testStudentItem &&
+                          testStudentItem.learningState &&
+                          (testStudentItem.learningState === 'Failed' ||
+                            testStudentItem.learningState === 'Missed') && (
+                            <button className="ui button fix bg">
+                              재응시
+                            </button>
+                          )}
                           제출
                         </button>
                       </p>

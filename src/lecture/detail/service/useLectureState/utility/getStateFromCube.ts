@@ -436,7 +436,7 @@ async function getStateWhenApproved(
       case 'Documents':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '') {
+          if (reportFileBox === null || reportFileBox.reportName === '' || reportFileBox.reportName === null) {
             if (!hasTest) {
               return {
                 ...lectureState,
@@ -463,7 +463,7 @@ async function getStateWhenApproved(
       case 'Experiential':
         if (stateText === PROGRESS) {
           const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '') {
+          if (reportFileBox === null || reportFileBox.reportName === '' || reportFileBox.reportName === null) {
             if (!hasTest) {
               return {
                 ...lectureState,

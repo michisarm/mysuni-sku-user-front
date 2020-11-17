@@ -347,6 +347,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
               // file="/api/depot/depotFile/flow/download/37-2"
               file={file}
               onLoadSuccess={onDocumentLoadSuccess}
+              error={<div style={{position:'relative', height: '200px', verticalAlign:'middle'}}><div style={{position: 'absolute', top: '50%', left: '40%',  fontWeight: 'bold'}}>PDF 파일을 읽어 올 수 없습니다.</div></div>}
             >
               <Page
                 pageNumber={pageNumber}

@@ -51,35 +51,13 @@ class MyLearningSummaryModal extends Component<Props> {
   };
 
   /* effects */
-
-  //  모달이 open 되었을 때만 학습시간을 조회함. 2020.10.28 by 김동구
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
-    const { myLearningSummaryService, year } = this.props;
-    const { myLearningSummary, totalMyLearningSummary } = myLearningSummaryService!;
-
-    const { open } = this.state;
-    const { open: prevOpen } = prevState;
-
-    if (prevOpen !== open && open) {
-      /* 
-        totalMyLearningSummary 는 MainPage 진입 시 조회가 되어 store 에 저장되므로
-        MainPage 를 통해서가 아닌 MyPage 로 바로 진입한 경우, ( 새로고침 )
-        totalMyLearningSummary 는 조회되지 않으며, 확인 후 다시 조회를 해야함. 2020.10.28 by 김동구
-      */
-      if (myLearningSummary.year === 0 && year) {
-        myLearningSummaryService!.findMyLearningSummaryByYear(year);
-      }
-
-      if (totalMyLearningSummary.year === 0) {
-        myLearningSummaryService!.findTotalMyLearningSummary();
-      }
-    }
-
+  componentDidMount() {
     this.getMenuAuth();
   }
 
   /* funcitons */
   async getMenuAuth() {
+    /* 개인 학습시간 을 display 할지 를 결정함. */
     const { skProfileService, menuControlAuthService } = this.props;
     const { skProfile } = skProfileService!;
 
@@ -123,12 +101,11 @@ class MyLearningSummaryModal extends Component<Props> {
 
   /* render functions */
   renderLearningTimeByTab() {
-    const { myLearningSummaryService, menuControlAuthService, year } = this.props;
-    const { myLearningSummary, totalMyLearningSummary } = myLearningSummaryService!;
+    const { myLearningSummaryService, menuControlAuthService } = this.props;
+    const { myLearningSummary } = myLearningSummaryService!;
+    const { lectureTimeSummary } = myLearningSummary;
     const { menuControlAuth } = menuControlAuthService!;
     const { checkedTab } = this.state;
-
-    const learningSummary = year ? myLearningSummary : totalMyLearningSummary;
 
     /* MyCompany  */
     if (checkedTab === ModalTabType.MyCompany) {
@@ -138,7 +115,7 @@ class MyLearningSummaryModal extends Component<Props> {
             <span className="name">관계사 학습시간</span>
             <span className="time">
               {timeToHourMinutePaddingFormat(
-                learningSummary.totalMyCompanyLearningTime
+                myLearningSummary.displayMyCompanyLearningTime
               )}
             </span>
           </li>
@@ -148,7 +125,7 @@ class MyLearningSummaryModal extends Component<Props> {
               <span className="name">개인 학습시간</span>
               <span className="time">
                 {timeToHourMinutePaddingFormat(
-                  learningSummary.aplAllowTime
+                  myLearningSummary.aplAllowTime
                 )}
               </span>
             </li>
@@ -157,129 +134,189 @@ class MyLearningSummaryModal extends Component<Props> {
       );
     }
 
-    /* mySUNI & 강의시간 */
-    return (
+    if (checkedTab === ModalTabType.mySUNI) {
+      return (
+        <ul className="bullet-list2">
+          <li>
+            <span className="name b1">AI</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.aiCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b2">DT</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.dtCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b3">행복</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.happyCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b4">SV</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.svCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b5">혁신디자인</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.designCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b6">Global</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.globalCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b7">Leadership</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.leadershipCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b8">Management</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.managementCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b9">반도체</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.semiconductorCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b13">에너지 솔루션</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.energySolutionCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b10">SK아카데미</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.skAcademyCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b11">SK경영</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.skManagementCollegeTime)}
+            </span>
+          </li>
+          <li>
+            <span className="name b12">Life Style</span>
+            <span className="time">
+              {timeToHourMinutePaddingFormat(myLearningSummary.lifeStyleCollegeTime)}
+            </span>
+          </li>
+        </ul>
+      );
+    }
+
+    return lectureTimeSummary && (
       <ul className="bullet-list2">
         <li>
           <span className="name b1">AI</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.aiCollegeTime : learningSummary.lectureTimeSummary.aiCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.aiCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b2">DT</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.dtCollegeTime : learningSummary.lectureTimeSummary.dtCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.dtCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b3">행복</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.happyCollegeTime : learningSummary.lectureTimeSummary.happyCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.happyCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b4">SV</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.svCollegeTime : learningSummary.lectureTimeSummary.svCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.svCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b5">혁신디자인</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.designCollegeTime : learningSummary.lectureTimeSummary.designCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.designCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b6">Global</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.globalCollegeTime : learningSummary.lectureTimeSummary.globalCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.globalCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b7">Leadership</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.leadershipCollegeTime : learningSummary.lectureTimeSummary.leadershipCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.leadershipCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b8">Management</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.managementCollegeTime : learningSummary.lectureTimeSummary.managementCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.managementCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b9">반도체</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.semiconductorCollegeTime : learningSummary.lectureTimeSummary.semiconductorCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.semiconductorCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b13">에너지 솔루션</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.energySolutionCollegeTime : learningSummary.lectureTimeSummary.energySolutionCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.energySolutionCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b10">SK아카데미</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.skAcademyCollegeTime : learningSummary.lectureTimeSummary.skAcademyCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.skAcademyCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b11">SK경영</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.skManagementCollegeTime : learningSummary.lectureTimeSummary.skManagementCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.skManagementCollegeTime)}
           </span>
         </li>
         <li>
           <span className="name b12">Life Style</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(
-              checkedTab === ModalTabType.mySUNI ? learningSummary.lifeStyleCollegeTime : learningSummary.lectureTimeSummary.lifeStyleCollegeTime
-            )}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary.lifeStyleCollegeTime)}
           </span>
         </li>
       </ul>
     );
+
+    /* mySUNI & 강의시간 */
+
   }
 
   /* render */
   render() {
     const { open, checkedTab } = this.state;
     const { trigger, myLearningSummaryService, menuControlAuthService } = this.props;
-    const { myLearningSummary, totalMyLearningSummary } = myLearningSummaryService!;
+    const { myLearningSummary } = myLearningSummaryService!;
+    const { lectureTimeSummary } = myLearningSummary;
     const { menuControlAuth: { companyCode } } = menuControlAuthService!;
 
-    const learningSummary = this.props.year ? myLearningSummary : totalMyLearningSummary;
-
     /* companyCode 가 존재할 때는 개인학습 시간을 포함하지 않음. */
-    const totalMyCompanyAplAllowTime = companyCode === '' ?
-      learningSummary.totalMyCompanyLearningTime + learningSummary.aplAllowTime : learningSummary.totalMyCompanyLearningTime;
+    const totalMyCompanyLearningTime = companyCode === '' ?
+      myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime : myLearningSummary.displayMyCompanyLearningTime;
 
     // totalLearningTime 을 display 하는 영역은 확인되지 않음. 
     // 확인될 경우, 주석을 풀고 total 변수 를 해당 영역에 display 하면 됨. 2020.10.28 by 김동구
@@ -328,6 +365,7 @@ class MyLearningSummaryModal extends Component<Props> {
     let today = moment(new Date()).format('YYYY.MM.DD');
     let year: number = new Date().getFullYear();
 
+    /* 전달받은 년도가 있으며 전달받은 년도가 현재 년도와 다를 경우, 전달받은 년도를 display 함.  */
     if (this.props.year && year !== this.props.year) {
       year = this.props.year;
       today = `${this.props.year}.12.31`;
@@ -383,7 +421,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             <label>
                               <strong>
                                 mySUNI ({timeToHourMinutePaddingFormat(
-                                learningSummary.totalSuniLearningTime)})
+                                myLearningSummary.displayMySUNILearningTime)})
                               </strong>
                               <span>mySUNI College에서 학습한 시간</span>
                             </label>
@@ -403,7 +441,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             <label>
                               <strong>
                                 My Company ({timeToHourMinutePaddingFormat(
-                                totalMyCompanyAplAllowTime)})
+                                totalMyCompanyLearningTime)})
                               </strong>
                               <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span>
                             </label>
@@ -422,7 +460,7 @@ class MyLearningSummaryModal extends Component<Props> {
                             />
                             <label>
                               <strong>
-                                강의시간 ({timeToHourMinutePaddingFormat(learningSummary.lectureTimeSummary && learningSummary.lectureTimeSummary.totalCollegeTime)})
+                                강의시간 ({timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.totalCollegeTime)})
                               </strong>
                               <span>mySUNI College와 각사에서 <br />강의를 통해 인정받은 시간</span>
                             </label>
