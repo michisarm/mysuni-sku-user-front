@@ -9,7 +9,7 @@ import { MyStampXlsxModel } from 'myTraining/model/MyStampXlsxModel';
 import { MyContentType, ViewType } from './MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from '../model';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { MyTrainingService } from '../../stores';
+import { AplService, MyTrainingService } from '../../stores';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 
 interface Props extends RouteComponentProps {
@@ -24,10 +24,12 @@ interface Props extends RouteComponentProps {
   onClickDelete: () => void;
   //
   myTrainingService?: MyTrainingService;
+  aplService?: AplService;
 }
 
 function LineHeaderContainerV2(props: Props) {
-  const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService } = props;
+  const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService, aplService } = props;
+  const { aplCount } = aplService!;
   const { viewType, onChangeViewType } = props;
 
   /* functions */
@@ -124,9 +126,7 @@ function LineHeaderContainerV2(props: Props) {
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService',
-  'myTraining.inMyLectureService',
-  'myTraining.aplService',
-  'lecture.lectureService'
+  'myTraining.aplService'
 ))(withRouter(observer(LineHeaderContainerV2)));
 
 /* globals */
