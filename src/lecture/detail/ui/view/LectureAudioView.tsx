@@ -225,6 +225,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
 
   useEffect(() => {
+    setPanoptoState(10);
     const lectureStructure =  getLectureStructure();
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {

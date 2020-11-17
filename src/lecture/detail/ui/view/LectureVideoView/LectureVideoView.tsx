@@ -258,7 +258,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
 
   useEffect(() => {
-   
+    setPanoptoState(10);
     const lectureStructure =  getLectureStructure();
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
