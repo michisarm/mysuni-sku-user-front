@@ -42,27 +42,27 @@ class AppLayoutContainer extends Component<Props> {
     if (!obj.pisAgreement.signed) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    } else if (
-      obj.pisAgreement.signed &&
-      compareDate(obj.pisAgreement.date)
-    ) {
+    } else if (obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
     } else if (!obj.studySummaryConfigured) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-    } else if (obj.member && (
-      (!obj.member.currentJobGroup ||
-      !obj.member.currentJobGroup.currentJobGroup ||
-      obj.member.currentJobGroup.currentJobGroup.id === ''))){
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.currentjobRe();
-    } else if (obj.member && (
-      (!obj.member.favoriteJobGroup ||
-      !obj.member.favoriteJobGroup.favoriteJobGroup ||
-      obj.member.favoriteJobGroup.favoriteJobGroup.id === ''))){
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.favoriteJobRe();
+      // skprofile.member_json.currentJobGroup
+      // skprofile.member_json.favoriteJobGroup
+      // 위 두개를 interface 하면서 날려버리네.. 직업군 거의 다 받은상태여서 아래로직 우선 막고 page 안넘어가게 함. and DB복원
+      // } else if (obj.member && (
+      //   (!obj.member.currentJobGroup ||
+      //   !obj.member.currentJobGroup.currentJobGroup ||
+      //   obj.member.currentJobGroup.currentJobGroup.id === ''))){
+      //   window.location.href =
+      //     process.env.PUBLIC_URL + profileRoutePaths.currentjobRe();
+      // } else if (obj.member && (
+      //   (!obj.member.favoriteJobGroup ||
+      //   !obj.member.favoriteJobGroup.favoriteJobGroup ||
+      //   obj.member.favoriteJobGroup.favoriteJobGroup.id === ''))){
+      //   window.location.href =
+      //     process.env.PUBLIC_URL + profileRoutePaths.favoriteJobRe();
     }
   }
 
