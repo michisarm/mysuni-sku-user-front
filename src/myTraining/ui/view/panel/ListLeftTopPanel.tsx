@@ -55,7 +55,7 @@ function ListLeftTopPanel(props: Props) {
       case MyLearningContentType.PersonalCompleted:
         return (
           <div className="list-number">
-            전체 <strong>{totalCount || 0}개</strong> 승인 완료
+            전체 <strong>{totalCount || 0}개</strong>의 개인학습
           </div>
         );
       case MyApprovalContentType.PersonalLearning:
