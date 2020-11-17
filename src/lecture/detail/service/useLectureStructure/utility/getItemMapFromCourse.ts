@@ -115,7 +115,8 @@ async function getReportItem(
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   if (
     coursePlanComplex.coursePlan.reportFileBox !== null &&
-    coursePlanComplex.coursePlan.reportFileBox.reportName !== ''
+    coursePlanComplex.coursePlan.reportFileBox.reportName !== '' &&
+    coursePlanComplex.coursePlan.reportFileBox.reportName !== null
   ) {
     let state: State = 'None';
     if (student !== undefined && student !== null) {
@@ -124,6 +125,9 @@ async function getReportItem(
         student.homeworkFileBoxId !== null
       ) {
         state = 'Progress';
+      }
+      if (student.learningState === 'Passed') {
+        state = 'Completed'
       }
     }
     const item: LectureStructureReportItem = {

@@ -97,13 +97,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                           (testStudentItem.learningState !== 'Failed' &&
                             testStudentItem.learningState !== 'Missed' &&
                             testStudentItem.learningState !== 'TestWaiting' &&
-                            testStudentItem.learningState !== 'Passed' &&
-                            testStudentItem.learningState !==
-                            'TestPassed' && (
-                              <button className="ui button free submit p18">
-                                Test
-                              </button>
-                            ))}
+                            testStudentItem.learningState !== 'Passed' )}
                         {testStudentItem &&
                           testStudentItem.learningState &&
                           (testStudentItem.learningState === 'Failed' ||
@@ -228,6 +222,14 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                           className="ui button fix bg"
                           onClick={submitAnswerSheet}
                         >
+                          {testStudentItem &&
+                          testStudentItem.learningState &&
+                          (testStudentItem.learningState === 'Failed' ||
+                            testStudentItem.learningState === 'Missed') && (
+                            <button className="ui button fix bg">
+                              재응시
+                            </button>
+                          )}
                           제출
                         </button>
                       </p>

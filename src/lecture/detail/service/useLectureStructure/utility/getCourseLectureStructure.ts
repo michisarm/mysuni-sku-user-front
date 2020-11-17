@@ -188,7 +188,7 @@ function parseCoursePlanComplex(
     serviceType === 'Program'
       ? coursePlanComplex.coursePlanContents.courseSet.programSet
       : coursePlanComplex.coursePlanContents.courseSet.learningCardSet;
-  lectureStructure.discussions = programSets.discussions.map(idNameSequence =>
+  lectureStructure.discussions = (programSets.discussions || []).map(idNameSequence =>
     parseDiscussion(coursePlanComplex, params, idNameSequence)
   );
   const idNameSequences = [

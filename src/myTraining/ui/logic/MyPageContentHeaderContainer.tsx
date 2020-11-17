@@ -136,9 +136,9 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
         <ContentHeader.Cell>
           <ContentHeaderStampView
             stampCount={myLearningSummary.acheiveStampCount}
-            selectedYear={selectedYear}
-            yearOptions={yearOptions}
-            onChangeYear={this.onChangeYear}
+            // selectedYear={selectedYear} 2020.11.17 드롭다운 위치 변경으로 인한 주석
+            // yearOptions={yearOptions} 2020.11.17 드롭다운 위치 변경으로 인한 주석
+            // onChangeYear={this.onChangeYear} 2020.11.17 드롭다운 위치 변경으로 인한 주석
             onClickItem={this.onClickMyStamp}
           />
         </ContentHeader.Cell>
