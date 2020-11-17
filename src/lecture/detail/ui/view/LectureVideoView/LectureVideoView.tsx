@@ -74,6 +74,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [progressInterval, setProgressInterval] = useState<any>();
+
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
@@ -120,19 +124,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
+      console.log('state : ' , state);
       setPanoptoState(state);
+      setIsActive(false);
       if (state == 2) {
-        setIsActive(false);
         setNextContentsView(false);
       } else if (state == 1) {
         setIsActive(true);
         setNextContentsView(false);
       } else if (state == 0) {
-        setIsActive(false);
         setNextContentsView(true);
       }
     },
-    [isActive, params]
+    [params]
   );
 
   const registCheckStudent = useCallback(
@@ -145,7 +149,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     [params]
   );
 
-  const mediaEndEvent = useCallback(
+  const mediaCheckEvent = useCallback(
     async (params : LectureRouterParams | undefined) => {
       if(params){
         await confirmProgress(params);
@@ -158,30 +162,31 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const lectureParams = useParams<LectureParams>();
   const { pathname } = useLocation();
 
+
   useEffect(() => {
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
-      mediaEndEvent(params);
+      mediaCheckEvent(params);
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
     }
-    
+  }, [panoptoState]);
+
+  useEffect(() => {
+    setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
+    setDuration((embedApi.getDuration() as unknown) as number);
+  }, [isActive, seconds, lectureParams, pathname, params]);
+
+
+  useEffect(() => {
 
     let interval: any = null;
-    let progressInterval: any = null;
-
+    
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
     
-    let confirmProgressTime = (duration / 10) * 1000;
-
-    //confirmProgressTime
-    if (!confirmProgressTime || confirmProgressTime > 60000) {
-      confirmProgressTime = 60000;
-    }
-
     if (isActive && params && watchlogState) {
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
@@ -191,32 +196,69 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           end: currentTime + 10,
         });
         setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);
-        // confirmProgress(params);
+        setWatchLog(params, watchlogState);     
       }, 10000);
-      //TODO : total runtime / 10 or 1분간격으로 진행률 체크 하도록 변경 필요함 - 현재는 1분간격 적용
-      progressInterval = setInterval(async () => {
-        await confirmProgress(params);
-        requestLectureStructure(lectureParams, pathname);
-      }, confirmProgressTime);
+
+      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
-      clearInterval(progressInterval);
     }
     return () => {
       clearInterval(interval);
-      clearInterval(progressInterval);
     };
-  }, [isActive, seconds, lectureParams, pathname]);
+  }, [isActive, seconds, lectureParams, pathname, params]);
+
+  useEffect(() => {
+    let confirmProgressTime = (duration / 10) * 1000;
+    //confirmProgressTime
+    if (!confirmProgressTime || confirmProgressTime > 60000) {
+      confirmProgressTime = 60000;
+    }
+
+    if (isActive && params) {
+      clearTimeout(progressInterval);
+      setProgressInterval(setTimeout(function tick() {
+        mediaCheckEvent(params);
+        //console.log('tick');
+        clearTimeout(progressInterval);
+        setProgressInterval(setTimeout(tick, confirmProgressTime));
+      }, confirmProgressTime));
+
+    } else if (!isActive && seconds !== 0) {
+      clearTimeout(progressInterval);
+    }
+    return () => {
+      clearTimeout(progressInterval);
+    };
+  }, [isActive]);
+  // }, [isActive, seconds, lectureParams, pathname, params]);
+
 
   useEffect(() => {
     if (params) {
-      confirmProgress(params);
+      console.log('params loding effect params - ', params);
+      // mediaCheckEvent(params);
     }
   }, [params]);
 
+
   useEffect(() => {
-   
+    return () => {
+      console.log('component End');
+      // console.log('progressInterval : ' , progressInterval);
+      mediaCheckEvent(params);
+      clearTimeout(progressInterval);
+      setPanoptoState(10);
+      setNextContentsPath('');
+      setNextContentsName('');
+      setIsActive(false);
+      console.log('progressInterval', progressInterval);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    setPanoptoState(10);
     const lectureStructure =  getLectureStructure();
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
@@ -373,7 +415,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             // "interactivity": "Caption Language",
             interactivity: 'none',
             showtitle: 'false',
-            showBrand: 'true',
+            showBrand: 'false',
             offerviewer: 'false',
           },
           events: {
