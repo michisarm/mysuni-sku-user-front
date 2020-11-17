@@ -126,6 +126,9 @@ async function getReportItem(
       ) {
         state = 'Progress';
       }
+      if (student.learningState === 'Passed') {
+        state = 'Completed'
+      }
     }
     const item: LectureStructureReportItem = {
       name: coursePlanComplex.coursePlan.reportFileBox.reportName,

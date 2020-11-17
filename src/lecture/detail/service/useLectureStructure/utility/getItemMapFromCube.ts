@@ -139,6 +139,9 @@ async function getReportItem(
       ) {
         state = 'Progress';
       }
+      if (student.learningState === 'Passed') {
+        state = 'Completed'
+      }
     }
     const item: LectureStructureReportItem = {
       name: cubeIntro.reportFileBox.reportName,

@@ -246,12 +246,9 @@ export async function getCourseLectureReport(
 
   const student = lectureStudentView.own;
 
-  console.log('student', student);
-
   setLectureReport(
     await getReportItem(
       coursePlanComplex.coursePlan.coursePlanId,
-      student.id,
       student
     )
   );
