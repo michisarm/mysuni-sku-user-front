@@ -102,17 +102,11 @@ export async function getStateMapByParams(
       let state: State = 'None';
       if (sortedStudentJoins[0].proposalState === 'Approved') {
         switch (learningState) {
-          case 'Progress':
-          case 'TestPassed':
-          case 'TestWaiting':
-          case 'HomeworkWaiting':
-            state = 'Progress';
-            break;
           case 'Passed':
             state = 'Completed';
             break;
-
           default:
+            state = 'Progress';
             break;
         }
       }
@@ -145,6 +139,7 @@ export async function getCubeLectureStructure(
     let student: Student;
     if (stateMap !== undefined) {
       cube.state = stateMap.state;
+      cube.canSubmit = cube.state !== 'None'
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
       cube.student = student;

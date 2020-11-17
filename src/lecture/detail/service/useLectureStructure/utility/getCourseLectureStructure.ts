@@ -248,7 +248,16 @@ async function parseLectureStudentView(
     );
     if (course !== undefined && course.cubes !== undefined) {
       course.student = courseStudent;
-      course.state = 'Completed';
+      course.state = 'None';
+      switch (courseStudent.learningState) {
+        case 'Passed':
+          course.state = 'Completed';
+          break;
+        default:
+          course.state = 'Progress';
+          break;
+      }
+
       course.cubes.forEach(cube => {
         const lecture = lectures.find(
           ({ lectureUsid }) => lectureUsid === cube.lectureView?.serviceId
@@ -262,13 +271,8 @@ async function parseLectureStudentView(
           case 'Passed':
             cube.state = 'Completed';
             break;
-          case 'Progress':
-          case 'TestPassed':
-          case 'TestWaiting':
-          case 'HomeworkWaiting':
-            cube.state = 'Progress';
           default:
-            course.state = 'Progress';
+            cube.state = 'Progress';
             break;
         }
       });
@@ -283,16 +287,13 @@ async function parseLectureStudentView(
       return;
     }
     cube.learningState = learningState;
+    cube.canSubmit = true;
     switch (learningState) {
       case 'Passed':
         cube.state = 'Completed';
         break;
-      case 'Progress':
-      case 'TestPassed':
-      case 'TestWaiting':
-      case 'HomeworkWaiting':
-        cube.state = 'Progress';
       default:
+        cube.state = 'Progress';
         break;
     }
     cube.student = student;
@@ -301,10 +302,13 @@ async function parseLectureStudentView(
   return lectureStudentView;
 }
 // Side Effect - Call by Ref
-function parseCan(lectureStructure: LectureStructure) {
-  let can = true;
+function parseCoursesCan(lectureStructure: LectureStructure) {
   lectureStructure.courses.forEach(course => {
-    can = can && (course.state === 'Progress' || course.state === 'Completed');
+    const can = (course.state === 'Progress' || course.state === 'Completed');
+    if (course.cubes !== undefined && course.cubes.length > 0) {
+      const canSubmit = course.cubes.reduce((r, c) => r && c.state === 'Completed', true)
+      course.canSubmit = canSubmit;
+    }
     // Cube 순차 학습 요건
     // if (course.cubes !== undefined) {
     //   let cubeCan = can;
@@ -320,20 +324,19 @@ function parseCan(lectureStructure: LectureStructure) {
     // }
 
     if (course.report !== undefined) {
-      course.report.can = can;
+      course.report = { ...course.report, can }
       // can = course.report.state === 'Completed';
     }
     if (course.survey !== undefined) {
-      course.survey.can = can;
+      course.survey = { ...course.survey, can }
       // can = course.survey.state === 'Completed';
     }
     if (course.test !== undefined) {
-      course.test.can = can;
+      course.test = { ...course.test, can }
       // can = course.test.state === 'Completed';
     }
     course.can = can;
   });
-  return can;
 }
 
 export async function getCourseLectureStructure(
@@ -364,6 +367,17 @@ export async function getCourseLectureStructure(
       params,
       student
     );
+    lectureStructure.course.student = student;
+    lectureStructure.course.state = 'None';
+    switch (student.learningState) {
+      case 'Passed':
+        lectureStructure.course.state = 'Completed';
+        break;
+      default:
+        lectureStructure.course.state = 'Progress';
+        break;
+    }
+
     if (itemMap.test !== undefined) {
       lectureStructure.course.test = itemMap.test;
     }
@@ -474,18 +488,21 @@ export async function getCourseLectureStructure(
 
   await Promise.all(getItemMapFromCubeLectureArray);
 
-  const can = parseCan(lectureStructure);
+  parseCoursesCan(lectureStructure);
   if (lectureStructure.course !== undefined) {
+    const can = (lectureStructure.course.state === 'Progress' || lectureStructure.course.state === 'Completed');
+    const canSubmit = lectureStructure.cubes.reduce((r, c) => r && c.state === 'Completed', true) && lectureStructure.courses.reduce((r, c) => r && c.state === 'Completed', true)
+    lectureStructure.course.canSubmit = canSubmit;
     if (lectureStructure.course.report !== undefined) {
-      lectureStructure.course.report.can = can;
+      lectureStructure.course.report = { ...lectureStructure.course.report, can }
       // can = lectureStructure.course.report.state === 'Completed';
     }
     if (lectureStructure.course.survey !== undefined) {
-      lectureStructure.course.survey.can = can;
+      lectureStructure.course.survey = { ...lectureStructure.course.survey, can }
       // can = lectureStructure.course.survey.state === 'Completed';
     }
     if (lectureStructure.course.test !== undefined) {
-      lectureStructure.course.test.can = can;
+      lectureStructure.course.test = { ...lectureStructure.course.test, can }
       // can = lectureStructure.course.test.state === 'Completed';
     }
   }

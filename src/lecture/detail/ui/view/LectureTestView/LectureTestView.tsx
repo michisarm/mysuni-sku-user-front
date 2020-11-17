@@ -1,4 +1,4 @@
-import { reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
@@ -8,6 +8,7 @@ import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -53,6 +54,15 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     if (answerItem!.answers.some(element => element.answer === '')) {
       alert('빈 답안을 작성해주세요!');
     } else {
+      const lectureStructureItem = getActiveStructureItem();
+      if (lectureStructureItem?.canSubmit !== true) {
+        reactAlert({
+          title: '알림',
+          message: '학습 완료 후 Test 제출이 가능합니다.',
+        });
+        return;
+      }
+
       reactConfirm({
         title: '알림',
         message: 'Test를 최종 제출 하시겠습니까?',
