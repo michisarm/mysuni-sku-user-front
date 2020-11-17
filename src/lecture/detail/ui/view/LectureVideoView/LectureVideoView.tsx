@@ -86,6 +86,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     getCurrentTime: () => {},
     getDuration: () => {},
     currentPosition: () => {},
+    getPlaybackRate: () => {},
   });
 
   const toHHMM = useCallback((idx: number) => {
@@ -191,11 +192,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
 
-  // useEffect(() => {
-  //   setEndTime((embedApi.getCurrentTime() as unknown) as number);
-  // }, [embedApi.getCurrentTime()]);
-  
-
 
   useEffect(() => {
 
@@ -213,12 +209,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+        const end = (embedApi.getCurrentTime() as unknown) as number;
+        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
         setWatchlogState({
           ...watchlogState,
-          start: startTime < 10? 0 : startTime - 10,
-          // start: startTime,
-          // end: currentTime + 10,
-          end: (embedApi.getCurrentTime() as unknown) as number,
+          start: start < 0? 0 : start,
+          end: end,
         });
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
@@ -226,7 +226,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
       }, 10000);
 
-      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
@@ -269,6 +268,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
 
+  //unmount 처리
   useEffect(() => {
     return () => {
       console.log('component End');
@@ -283,21 +283,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       console.log('progressInterval', progressInterval);
     };
   }, []);
-
-
-  const getLecture = useCallback((idx: number) => {
-    const time = idx;
-    const hours = Math.floor(time / 60);
-    const minutes = Math.floor(time - hours * 60);
-
-    let sHours = '';
-    let sMinutes = '';
-    sHours = String(hours.toString()).padStart(2, '0');
-    sMinutes = String(minutes.toString()).padStart(2, '0');
-
-    return sHours + ':' + sMinutes;
-  }, []);
-
 
   useEffect(() => {
     console.log('next Contents ----');

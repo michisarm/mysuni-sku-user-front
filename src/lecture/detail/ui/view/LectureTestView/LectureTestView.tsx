@@ -52,7 +52,10 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
 
     if (answerItem!.answers.some(element => element.answer === '')) {
-      alert('빈 답안을 작성해주세요!');
+      reactAlert({
+        title: '알림',
+        message: '빈 항목을 입력하세요.',
+      });
     } else {
       const lectureStructureItem = getActiveStructureItem();
       if (lectureStructureItem?.canSubmit !== true) {
