@@ -45,6 +45,7 @@ function MyLearningPageV2(props: Props) {
   /* effects */
   useEffect(() => {
     publishViewEvent();
+    fetchAllModelsForStorage();
     fetchAllTabCount();
     getMenuAuth();
     // 학습완료한 강좌에 대해 sessionStorage 저장하는 로직
@@ -58,6 +59,22 @@ function MyLearningPageV2(props: Props) {
     actionEventService!.registerViewActionLog({ menu });
   };
 
+  const fetchAllModelsForStorage = async () => {
+    /* 메인페이지 에서 스토리지 작업을 못하고 지나갔을 경우, 추가로 작업을 해줌. */
+    if (sessionStorage.getItem('inProgressTableViews') === null) {
+      const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+      if (inProgressTableViews && inProgressTableViews.length) {
+        sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+      }
+    }
+
+    if (sessionStorage.getItem('completedTableViews') === null) {
+      const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+      if (completedTableViews && completedTableViews.length) {
+        sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+      }
+    }
+  }
 
   const fetchAllTabCount = () => {
     /*

@@ -25,8 +25,7 @@ interface Props {
   myTrainingService?: MyTrainingService;
 }
 
-/* by 김동구
-
+/* 
   contentType 에 따라, 테이블 리스트 데이터가 변경됨.
 */
 function MyLearningTableBody(props: Props) {
@@ -200,7 +199,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayStampCount}{/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
-              {formatDate(model.endDate)}{/* 취소/미이수일 */}
+              {formatDate(model.time)}{/* 취소/미이수일 */}
             </Table.Cell>
           </>
         );
@@ -343,7 +342,7 @@ export default inject(mobxHelper.injectFrom(
 
 /* globals */
 const formatDate = (time: number) => {
-  return moment(Number(time)).format('YYYY.MM.DD');
+  return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
 };
 
 export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel;

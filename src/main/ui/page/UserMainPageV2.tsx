@@ -46,12 +46,16 @@ class UserMainPageV2 extends Component<Props> {
 
     if (sessionStorage.getItem('inProgressTableViews') === null) {
       const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-      sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+      if (inProgressTableViews && inProgressTableViews.length) {
+        sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+      }
     }
 
     if (sessionStorage.getItem('completedTableViews') === null) {
       const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
-      sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+      if (completedTableViews && completedTableViews.length) {
+        sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+      }
     }
   }
 

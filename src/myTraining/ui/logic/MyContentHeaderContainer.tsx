@@ -78,12 +78,16 @@ function MyContentHeaderContainer(props: Props) {
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {(myLearningSummary.totalLearningTime !== 0 && (
-          <ContentHeader.LearningTimeItem
-            minute={myLearningSummary.totalLearningTime}
-            year={selectedYear}
-          />
-        )) || <ContentHeader.WaitingItem onClick={routeToRecommend} />}
+        {myLearningSummary.displayTotalLearningTime !== 0 &&
+          (
+            <ContentHeader.LearningTimeItem
+              minute={myLearningSummary.displayTotalLearningTime}
+              year={selectedYear}
+            />
+          ) ||
+          (
+            <ContentHeader.WaitingItem onClick={routeToRecommend} />
+          )}
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderBadgeView
