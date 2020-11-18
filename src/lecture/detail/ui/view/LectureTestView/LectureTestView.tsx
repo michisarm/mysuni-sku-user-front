@@ -12,6 +12,7 @@ import {
   getActiveStructureItem,
   getActiveStructureItemAll,
 } from '../../../service/useLectureStructure/useLectureStructure';
+import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -72,7 +73,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       reactConfirm({
         title: '알림',
         message: 'Test를 최종 제출 하시겠습니까?',
-        onOk: () => {
+        onOk: async () => {
           if (answerItem) {
             const nextAnswerItem = {
               ...answerItem,
@@ -80,10 +81,11 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             };
             setLectureTestAnswerItem(nextAnswerItem);
             if (params.contentType === 'cube') {
-              saveTestAnswerSheet(params, answerItemId, true, true);
+              await saveTestAnswerSheet(params, answerItemId, true, true);
             } else {
-              saveCourseTestAnswerSheet(params, answerItemId, true, true);
+              await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
+            requestLectureStructure(params.lectureParams, params.pathname);
           }
         },
       });
