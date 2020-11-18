@@ -47,6 +47,7 @@ function LectureStructureContainer() {
 
   useEffect(() => {
     requestLectureStructure(params, pathname);
+    return () => setLectureStructure();
   }, [params, pathname]);
 
   //   useEffect(() => {
