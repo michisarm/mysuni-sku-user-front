@@ -8,7 +8,10 @@ import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
-import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import {
+  getActiveStructureItem,
+  getActiveStructureItemAll,
+} from '../../../service/useLectureStructure/useLectureStructure';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;

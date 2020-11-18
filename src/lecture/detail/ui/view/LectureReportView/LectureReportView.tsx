@@ -17,7 +17,10 @@ import {
 } from 'lecture/detail/store/LectureReportStore';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
-import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import {
+  getActiveStructureItem,
+  getActiveStructureItemAll,
+} from '../../../service/useLectureStructure/useLectureStructure';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report

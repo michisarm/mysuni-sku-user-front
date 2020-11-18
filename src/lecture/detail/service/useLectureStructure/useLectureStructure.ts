@@ -206,7 +206,6 @@ export function mergeActivated(
     return item;
   });
 
-
   setLectureStructure({ ...lectureStructure });
 }
 
@@ -218,13 +217,13 @@ export function getActiveStructureItem() {
         return lectureStructure.course;
       }
       if (lectureStructure.course.test?.activated) {
-        return lectureStructure.course
+        return lectureStructure.course;
       }
       if (lectureStructure.course.survey?.activated) {
-        return lectureStructure.course
+        return lectureStructure.course;
       }
       if (lectureStructure.course.report?.activated) {
-        return lectureStructure.course
+        return lectureStructure.course;
       }
     }
     if (lectureStructure.cube !== undefined) {
@@ -232,13 +231,13 @@ export function getActiveStructureItem() {
         return lectureStructure.cube;
       }
       if (lectureStructure.cube.test?.activated) {
-        return lectureStructure.cube
+        return lectureStructure.cube;
       }
       if (lectureStructure.cube.survey?.activated) {
-        return lectureStructure.cube
+        return lectureStructure.cube;
       }
       if (lectureStructure.cube.report?.activated) {
-        return lectureStructure.cube
+        return lectureStructure.cube;
       }
     }
     for (let i = 0; i < lectureStructure.courses.length; i++) {
@@ -248,16 +247,34 @@ export function getActiveStructureItem() {
           return course;
         }
         if (course.test?.activated) {
-          return course
+          return course;
         }
         if (course.survey?.activated) {
-          return course
+          return course;
         }
         if (course.report?.activated) {
-          return course
+          return course;
         }
       }
-
+      if (course.cubes !== undefined && course.cubes.length > 0) {
+        for (let j = 0; j < course.cubes.length; j++) {
+          const cube = course.cubes[j];
+          if (cube !== undefined) {
+            if (cube.activated) {
+              return cube;
+            }
+            if (cube.test?.activated) {
+              return cube;
+            }
+            if (cube.survey?.activated) {
+              return cube;
+            }
+            if (cube.report?.activated) {
+              return cube;
+            }
+          }
+        }
+      }
     }
     for (let i = 0; i < lectureStructure.cubes.length; i++) {
       const cube = lectureStructure.cubes[i];
@@ -266,13 +283,13 @@ export function getActiveStructureItem() {
           return cube;
         }
         if (cube.test?.activated) {
-          return cube
+          return cube;
         }
         if (cube.survey?.activated) {
-          return cube
+          return cube;
         }
         if (cube.report?.activated) {
-          return cube
+          return cube;
         }
       }
     }
@@ -295,13 +312,13 @@ export function getActiveStructureItemAll() {
         return lectureStructure.course;
       }
       if (lectureStructure.course.test?.activated) {
-        return lectureStructure.course.test
+        return lectureStructure.course.test;
       }
       if (lectureStructure.course.survey?.activated) {
-        return lectureStructure.course.survey
+        return lectureStructure.course.survey;
       }
       if (lectureStructure.course.report?.activated) {
-        return lectureStructure.course.report
+        return lectureStructure.course.report;
       }
     }
     if (lectureStructure.cube !== undefined) {
@@ -309,13 +326,13 @@ export function getActiveStructureItemAll() {
         return lectureStructure.cube;
       }
       if (lectureStructure.cube.test?.activated) {
-        return lectureStructure.cube.test
+        return lectureStructure.cube.test;
       }
       if (lectureStructure.cube.survey?.activated) {
-        return lectureStructure.cube.survey
+        return lectureStructure.cube.survey;
       }
       if (lectureStructure.cube.report?.activated) {
-        return lectureStructure.cube.report
+        return lectureStructure.cube.report;
       }
     }
     lectureStructure.courses.forEach(course => {
@@ -324,39 +341,39 @@ export function getActiveStructureItemAll() {
           return course;
         }
         if (course.test?.activated) {
-          return course.test
+          return course.test;
         }
         if (course.survey?.activated) {
-          return course.survey
+          return course.survey;
         }
         if (course.report?.activated) {
-          return course.report
+          return course.report;
         }
       }
-    })
+    });
     lectureStructure.cubes.forEach(cube => {
       if (cube !== undefined) {
         if (cube.activated) {
           return cube;
         }
         if (cube.test?.activated) {
-          return cube.test
+          return cube.test;
         }
         if (cube.survey?.activated) {
-          return cube.survey
+          return cube.survey;
         }
         if (cube.report?.activated) {
-          return cube.report
+          return cube.report;
         }
       }
-    })
+    });
     lectureStructure.discussions.forEach(discussion => {
       if (discussion !== undefined) {
         if (discussion.activated) {
           return discussion;
         }
       }
-    })
+    });
   }
 }
 
