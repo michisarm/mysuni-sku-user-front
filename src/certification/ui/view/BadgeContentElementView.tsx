@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ReactGA from 'react-ga';
 import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { dateTimeHelper } from 'shared';
@@ -22,12 +23,30 @@ interface BadgeTitleProps {
   name: string;
 }
 
-export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => (
-  <div className="title-area">
-    <div className="college">{college}</div>
-    <div className="title">{name}</div>
-  </div>
-);
+let count = 0;
+export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => {
+
+  ++count;
+  if (count === 3) {
+    // console.log('name',name);
+    ReactGA.pageview(window.location.pathname + window.location.search, [], `${name}`);
+  }
+  // console.log('count', count);
+
+  useEffect(() => {
+    return () => {
+      count = 0;
+      // console.log('unmount', count);
+    };
+  }, []);
+
+  return (
+    <div className="title-area">
+      <div className="college">{college}</div>
+      <div className="title">{name}</div>
+    </div>
+  );
+};
 
 interface BadgeInfoProps {
   certiAdminCategoryName: string;
@@ -108,18 +127,18 @@ interface LinkedBadgeProps {
 export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({
   children,
 }) => (
-  <div className="relation-badge-area">
-    <Segment className="full">
-      <h3 className="title-style">
-        <Label className="onlytext bold size24">
-          <Icon className="series" />
-          <span>연관 Badge</span>
-        </Label>
-      </h3>
-      {children}
-    </Segment>
-  </div>
-);
+    <div className="relation-badge-area">
+      <Segment className="full">
+        <h3 className="title-style">
+          <Label className="onlytext bold size24">
+            <Icon className="series" />
+            <span>연관 Badge</span>
+          </Label>
+        </h3>
+        {children}
+      </Segment>
+    </div>
+  );
 
 interface BadgeStatusProps {
   // badgeState 에 IssueState 타입 추가. 2020.09.28 by 김동구
@@ -149,29 +168,29 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
         badgeState === ChallengeState.Challenging ||
         badgeState === ChallengeState.ReadyForRequest ||
         badgeState === ChallengeState.Requested) && (
-        <>
-          <Button className="fix bg" onClick={onClickButton}>
-            {ChallengeStateName[ChallengeState[badgeState]]}
-          </Button>
-          {badgeState === ChallengeState.Challenging && (
-            <>
-              <span className="ing">
-                <span>진행중</span>
-                <span className="num">
-                  <b>{learningCompleted}</b>/{learningTotalCount}
+          <>
+            <Button className="fix bg" onClick={onClickButton}>
+              {ChallengeStateName[ChallengeState[badgeState]]}
+            </Button>
+            {badgeState === ChallengeState.Challenging && (
+              <>
+                <span className="ing">
+                  <span>진행중</span>
+                  <span className="num">
+                    <b>{learningCompleted}</b>/{learningTotalCount}
+                  </span>
                 </span>
+              </>
+            )}
+            {badgeState === ChallengeState.Requested ? (
+              <span className="txt">
+                {issueStateTimeFormat} {description}
               </span>
-            </>
-          )}
-          {badgeState === ChallengeState.Requested ? (
-            <span className="txt">
-              {issueStateTimeFormat} {description}
-            </span>
-          ) : (
-            <span className="txt">{description}</span>
-          )}
-        </>
-      )}
+            ) : (
+                <span className="txt">{description}</span>
+              )}
+          </>
+        )}
 
       {/*발급요청 완료, 획득 완료*/}
       {badgeState === ChallengeState.Issued && (

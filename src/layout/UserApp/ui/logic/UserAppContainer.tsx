@@ -1,5 +1,5 @@
-
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
@@ -25,8 +25,16 @@ class UserAppContainer extends Component<Props, State> {
   };
 
   componentDidMount(): void {
-    //
+    // set patronID
+    ReactGA.set({ userId: patronInfo.getPatronId() });
+    // refresh page tracking
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     this.setLocalAuth();
+
+    this.props.history.listen(location => {
+      ReactGA.pageview(location.pathname + location.search);
+    });
   }
 
   setLocalAuth() {
