@@ -14,8 +14,10 @@ import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
 import { AplModel } from 'myTraining/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { AplState } from 'myTraining/model/AplState';
 import { AplStateName } from 'myTraining/model/AplStateName';
 import { MyLearningContentType, MyPageContentType } from '../../model';
+
 
 
 interface Props {
@@ -33,6 +35,54 @@ function MyLearningTableBody(props: Props) {
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
 
+  /* functions */
+  /* 
+    아래의 두 함수는 나중에 AplModel 의 매서드로 변경하기.
+    1. getApprovalTime()
+    2. getLearningTime()
+
+  */
+  const getApprovalTime = (model: AplModel): string => {
+    /* 승인 상태에 따라 승인시간을 다르게 보여줌. */
+    if (model.state === AplState.Opened) {
+      if (model.updateTime) {
+        return moment(model.updateTime).format('YYYY.MM.DD');
+      } else {
+        return model.allowTime ? moment(model.allowTime).format('YYYY.MM.DD') : '-';
+      }
+    }
+
+    if (model.state === AplState.Rejected) {
+      return model.allowTime ? moment(model.allowTime).format('YYYY.MM.DD') : '-';
+    }
+
+    return '-';
+  }
+
+  const getAllowTime = (model: AplModel): string => {
+    /* 승인상태에 따라 학습시간을 다르게 보여줌. */
+    switch (model.state) {
+      /* 승인 */
+      case AplState.Opened:
+        if (model.updateHour || model.updateMinute) {
+          return `${model.updateHour}시 ${model.updateMinute}분`;
+        }
+        return (model.allowHour || model.allowMinute) ? `${model.allowHour}시 ${model.allowMinute}분` : '-';
+      /* 반려 */
+      case AplState.Rejected:
+        return (model.allowHour || model.allowMinute) ? `${model.allowHour}시 ${model.allowMinute}분` : '-';
+      /* 승인대기 */
+      case AplState.OpenApproval:
+        return (model.requestHour || model.requestMinute) ? `${model.requestHour}시 ${model.requestMinute}분` : '-';
+    }
+
+    return '-';
+  }
+
+  const routeToDetail = (id: string, page: string) => {
+    history.push(myTrainingRoutePaths.approvalPersonalLearningDetail(page, id));
+  }
+
   /* handlers */
   const onClickLearn = (model: MyTableView) => {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
@@ -43,6 +93,7 @@ function MyLearningTableBody(props: Props) {
 
     serviceType = serviceType === 'COURSE' ? 'Course' : 'Program';
 
+
     // Card
     if (model.isCardType()) {
       history.push(lectureRoutePaths.lectureCardOverview(cineroomId, collegeId, cubeId, serviceId));
@@ -52,10 +103,6 @@ function MyLearningTableBody(props: Props) {
       history.push(lectureRoutePaths.courseOverview(cineroomId, collegeId, coursePlanId, serviceType, serviceId));
     }
   };
-
-  const routeToDetail = (id: string, page: string) => {
-    history.push(myTrainingRoutePaths.approvalPersonalLearningDetail(page, id));
-  }
 
   const onCheckOne = useCallback((e: any, data: any) => {
     // 이미 선택되어 있는 경우, 해제함.
@@ -228,7 +275,7 @@ function MyLearningTableBody(props: Props) {
           <span className="ellipsis">{model.channelName}</span> {/* Channel */}
         </Table.Cell>
         <Table.Cell>
-          {`${model.allowHour}h ${model.allowMinute}m`} {/* 교육시간 */}
+          {getAllowTime(model)} {/* 교육시간 */}
         </Table.Cell>
         <Table.Cell>
           {model.approvalName} {/* 승인자 */}
@@ -240,7 +287,7 @@ function MyLearningTableBody(props: Props) {
           {AplStateName[model.state]} {/* 승인상태 */}
         </Table.Cell>
         <Table.Cell>
-          {model.updateTime ? moment(model.updateTime).format('YYYY.MM.DD') : '-'} {/* 승인일자 */}
+          {getApprovalTime(model)} {/* 승인일자 */}
         </Table.Cell>
       </>
     );
@@ -260,7 +307,7 @@ function MyLearningTableBody(props: Props) {
           {model.channelName} {/* Channel */}
         </Table.Cell>
         <Table.Cell>
-          {`${model.allowHour}시 ${model.allowMinute}분`} {/* 교육시간 */}
+          {getAllowTime(model)} {/* 교육시간 */}
         </Table.Cell>
         <Table.Cell>
           {model.displayCreationTime} {/* 등록일자 */}
@@ -275,7 +322,7 @@ function MyLearningTableBody(props: Props) {
           {model.displayStateName} {/* 상태 */}
         </Table.Cell>
         <Table.Cell>
-          {model.displayAllowTime} {/* 승인일자 */}
+          {getApprovalTime(model)} {/* 승인일자 */}
         </Table.Cell>
       </>
     );
