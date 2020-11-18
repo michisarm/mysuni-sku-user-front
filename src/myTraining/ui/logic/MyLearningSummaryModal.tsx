@@ -402,7 +402,7 @@ class MyLearningSummaryModal extends Component<Props> {
                   <div className="cell v-middle">
                     <span className="text01">{checkedTab !== ModalTabType.MyCompany ? 'College 별 학습 시간' : 'My Company 학습 시간'}</span>
                     <span className="text02">(단위 : 시간)</span>
-                  </div>Y
+                  </div>
                 </div>
                 <div className="row">
                   <div className="cell vtop">
