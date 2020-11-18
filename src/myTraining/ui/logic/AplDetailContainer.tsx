@@ -53,7 +53,7 @@ function AplDetailContainer(props: Props) {
     setAllowHour(allowHourStr);
     setAllowMinute(allowMinuteStr);
 
-  }, []);
+  }, [model]);
 
   useEffect(() => {
     getFileIds();

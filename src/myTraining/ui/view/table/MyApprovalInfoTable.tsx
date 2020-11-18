@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
@@ -17,14 +16,9 @@ interface Props {
   allowMinuteRef: any;
 }
 
-interface RouteParams {
-  page: string;
-}
 
 function MyApprovalInfoTable(props: Props) {
   const { model, files, allowHour, allowMinute, onChangeTime, onClearTime, allowHourRef, allowMinuteRef } = props;
-  const { page } = useParams<RouteParams>();
-
   /* handlers */
   const changeAllowHour = useCallback((e: any) => {
     onChangeTime('hour', e);
@@ -43,14 +37,8 @@ function MyApprovalInfoTable(props: Props) {
   }, [onClearTime]);
 
   /* render functions */
-  const renderLearningTimeByApprovalState = (model: AplModel) => {
-
-    if (page === 'learning') {
-      return (
-        <div>{model.displayAllowTime}</div>
-      )
-    }
-    /* 승인 & 반려 */
+  const getAllowTimeByState = (model: AplModel) => {
+    /* 승인 또는 반려 */
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
       return (
         <div>{model.displayAllowTime}</div>
@@ -99,13 +87,13 @@ function MyApprovalInfoTable(props: Props) {
         <tr>
           <th scope="row">교육형태</th>
           <td>
-            <div>{model.displayTypeAndTypeName}</div>
+            <div>{model.displayTypeName}</div>
           </td>
         </tr>
         <tr>
           <th scope="row">Channel</th>
           <td>
-            <div>{model.channelName ? model.channelName : '-'}</div>
+            <div>{model.displayCollegeChannelName}</div>
           </td>
         </tr>
         <tr>
@@ -123,7 +111,7 @@ function MyApprovalInfoTable(props: Props) {
         <tr>
           <th scope="row">교육시간</th>
           <td>
-            {renderLearningTimeByApprovalState(model)}
+            {getAllowTimeByState(model)}
           </td>
         </tr>
         <tr>
