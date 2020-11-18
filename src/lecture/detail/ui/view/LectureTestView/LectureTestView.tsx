@@ -2,7 +2,10 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
-import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
+import {
+  getLectureTestStudentItem,
+  setLectureTestAnswerItem,
+} from 'lecture/detail/store/LectureTestStore';
 import React, { useCallback } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
@@ -85,7 +88,36 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             } else {
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
+
             requestLectureStructure(params.lectureParams, params.pathname);
+            const lectureTestStudentItem = getLectureTestStudentItem();
+            switch (lectureTestStudentItem?.learningState) {
+              case 'Waiting':
+              case 'TestWaiting':
+                reactAlert({
+                  title: '알림',
+                  message:
+                    '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+                });
+                break;
+              case 'Failed':
+                reactAlert({
+                  title: '알림',
+                  message:
+                    '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.',
+                });
+                break;
+              case 'Passed':
+              case 'TestPassed':
+                reactAlert({
+                  title: '알림',
+                  message:
+                    '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.',
+                });
+
+              default:
+                break;
+            }
           }
         },
       });
