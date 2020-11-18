@@ -40,7 +40,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
         className="item"
         onClick={() => onClickMenu('Recommend')}
       >
-        Subscription
+        Recommend
       </NavLink>
       <NavLink
         to={personalCubePaths.create()}
