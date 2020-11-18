@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
 // import {SearchFilter} from '../../../../../components';
 
-const TitleArea:React.FC = () => {
+const ContentsHeader:React.FC = () => {
   //
   const [isOnFilter, setIsOnFilter] = useState<boolean>(false);
 
@@ -46,4 +46,4 @@ const TitleArea:React.FC = () => {
 }
 
 
-export default TitleArea
+export default ContentsHeader;

@@ -2,18 +2,16 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
-import SearchAllFilterDisable from './index';
+import SearchComponent from './index';
 
-class Routes extends React.PureComponent {
+const Routes: React.FC = () => {
   //
-  render() {
-    //
-    return(
-      <Switch>
-        <Route exact path="/search" component={SearchAllFilterDisable} />
-      </Switch>
-    );
-  }
-}
+  return (
+    <Switch>
+      <Route exact path="/search" component={SearchComponent} />
+      {/* 계속 추가.. */}
+    </Switch>
+  );
+};
 
 export default Routes;

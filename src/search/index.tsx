@@ -1,15 +1,13 @@
-import React from 'react'
-
+import React from 'react';
 import './style.css';
-import {
-    TitleArea,
-    // ContentsArea,
-} from './components'
 
-const SearchAllFilterDisable: React.FC = ({location}:any) => (
+// internal Components
+import HeaderArea from './HeaderArea';
+
+const SearchComponent: React.FC = () => (
   <section className="content">
-    <TitleArea/>
+    <HeaderArea />
   </section>
 );
 
-export default SearchAllFilterDisable
+export default SearchComponent;
