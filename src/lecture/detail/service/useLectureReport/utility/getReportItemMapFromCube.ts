@@ -18,7 +18,7 @@ export async function getReportItem(
   const lectureReport: LectureReport = { reportId: cubeIntroId };
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
-  if (cubeIntro.reportFileBox.reportName !== '' && cubeIntro.reportFileBox.reportName !== null) {
+  if (cubeIntro !== undefined && cubeIntro.reportFileBox.reportName !== '' && cubeIntro.reportFileBox.reportName !== null) {
     let state: State = 'None';
 
     reportFileBox.fileBoxId = cubeIntro.reportFileBox.fileBoxId;

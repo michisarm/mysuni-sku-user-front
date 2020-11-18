@@ -16,9 +16,13 @@ import LectureStructureView from '../view/LectureStructureView/LectureStructureV
 
 const getCubeItem = (params: LectureParams, pathname: string) => {
   getCubeLectureStructure(params).then(lectureStructure => {
-    mergeActivated(lectureStructure, pathname);
-    const activeStructureItem = getActiveStructureItemAll();
-    setCurentLectureStructureItem(activeStructureItem);
+    if (lectureStructure !== undefined) {
+      mergeActivated(lectureStructure, pathname);
+      const activeStructureItem = getActiveStructureItemAll();
+      setCurentLectureStructureItem(activeStructureItem);
+    } else {
+      setCurentLectureStructureItem();
+    }
   });
 };
 const getCourseItem = (params: LectureParams, pathname: string) => {
@@ -47,6 +51,7 @@ function LectureStructureContainer() {
 
   useEffect(() => {
     requestLectureStructure(params, pathname);
+    return () => setLectureStructure();
   }, [params, pathname]);
 
   //   useEffect(() => {

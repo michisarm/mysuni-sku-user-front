@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'semantic-ui-less/semantic.less';
@@ -17,5 +18,7 @@ import './style/css/2.c8476132.chunk.css';
 import './style/css/main.5a70a80b.chunk.css';
 
 initializeBody();
+
+ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
 
 ReactDOM.render(<App />, document.getElementById('root'));

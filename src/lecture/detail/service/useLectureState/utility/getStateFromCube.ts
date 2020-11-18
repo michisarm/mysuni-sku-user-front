@@ -2,6 +2,7 @@
 
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
+import { options } from 'numeral';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
@@ -221,10 +222,25 @@ async function videoApprove(params: LectureRouterParams,
     link.setAttribute('target', '_blank');
     link.click();
   }
+  if (mediaType === MediaType.LinkMedia) {
+    const { linkMediaUrl } = mediaContents;
+    const link = document.createElement('a')
+    link.setAttribute('href', linkMediaUrl);
+    link.setAttribute('target', '_blank');
+    link.click();
+  }
   return approve(params, rollBookId, student)
 }
 
-async function getVideoApprovedState(lectureState: LectureState, stateText: string, contentsId?: string): Promise<LectureState> {
+async function getVideoApprovedState(option: ChangeStateOption, stateText: string): Promise<LectureState> {
+  const {
+    lectureState,
+    hasTest,
+    contentsId,
+    cubeIntroId,
+    studentJoin: { rollBookId },
+    params,
+  } = option;
 
   if (contentsId !== undefined) {
     const { mediaType, mediaContents } = await findMedia(contentsId)
@@ -239,7 +255,51 @@ async function getVideoApprovedState(lectureState: LectureState, stateText: stri
         stateText,
       };
     }
+    if (mediaType === MediaType.LinkMedia) {
+      const { linkMediaUrl } = mediaContents;
+      if (stateText === PROGRESS) {
+        const cubeIntro = await findCubeIntro(cubeIntroId);
+        if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+          if (!hasTest) {
+            return {
+              ...lectureState,
+              hideAction: false,
+              canAction: true,
+              actionText: COMPLETE,
+              action: () => {
+                linkVideoOpen(linkMediaUrl)
+                complete(params, rollBookId)
+              },
+              actionClassName: 'bg2',
+              stateText,
+            };
+          }
+        }
+        return {
+          ...lectureState,
+          hideAction: false,
+          canAction: true,
+          actionText: APPROVE,
+          action: () => linkVideoOpen(linkMediaUrl),
+          actionClassName: 'bg',
+          stateText,
+        };
+      }
+      if (stateText === COMPLETE) {
+        return {
+          ...lectureState,
+          hideAction: false,
+          canAction: true,
+          actionText: COMPLETE,
+          action: () => {
+            linkVideoOpen(linkMediaUrl)
+          },
+          actionClassName: 'bg2',
+          stateText,
+        };
 
+      }
+    }
   }
 
   return {
@@ -265,8 +325,15 @@ async function cpVideoOpen(
   link.setAttribute('href', url);
   link.setAttribute('target', '_blank');
   link.click();
-
 }
+
+async function linkVideoOpen(url: string) {
+  const link = document.createElement('a')
+  link.setAttribute('href', url);
+  link.setAttribute('target', '_blank');
+  link.click();
+}
+
 
 async function approve(
   params: LectureRouterParams,
@@ -435,8 +502,8 @@ async function getStateWhenApproved(
         break;
       case 'Documents':
         if (stateText === PROGRESS) {
-          const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '' || reportFileBox.reportName === null) {
+          const cubeIntro = await findCubeIntro(cubeIntroId);
+          if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
             if (!hasTest) {
               return {
                 ...lectureState,
@@ -462,8 +529,8 @@ async function getStateWhenApproved(
       case 'WebPage':
       case 'Experiential':
         if (stateText === PROGRESS) {
-          const { reportFileBox } = await findCubeIntro(cubeIntroId);
-          if (reportFileBox === null || reportFileBox.reportName === '' || reportFileBox.reportName === null) {
+          const cubeIntro = await findCubeIntro(cubeIntroId);
+          if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
             if (!hasTest) {
               return {
                 ...lectureState,
@@ -504,7 +571,7 @@ async function getStateWhenApproved(
         };
     }
     if (cubeType === 'Video') {
-      const mLectureState = await getVideoApprovedState(lectureState, stateText, contentsId);
+      const mLectureState = await getVideoApprovedState(option, stateText);
       return mLectureState;
     }
   }
