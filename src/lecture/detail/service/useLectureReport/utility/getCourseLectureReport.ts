@@ -18,8 +18,9 @@ import LectureStudentView from 'lecture/detail/model/LectureStudentView';
 function getCoursePlanComplexByParams(
   params: LectureParams
 ): Promise<CoursePlanComplex> {
-  const { coursePlanId, serviceId } = params;
-  return findCoursePlanContents(coursePlanId!, serviceId!);
+  const { coursePlanId, serviceId, contentId, lectureId } = params;
+
+  return findCoursePlanContents(contentId || coursePlanId || '', lectureId || serviceId || '');
 }
 
 function parseCoursePlanComplex(

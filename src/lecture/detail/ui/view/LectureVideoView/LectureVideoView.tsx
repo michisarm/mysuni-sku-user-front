@@ -86,6 +86,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     getCurrentTime: () => {},
     getDuration: () => {},
     currentPosition: () => {},
+    getPlaybackRate: () => {},
   });
 
   const toHHMM = useCallback((idx: number) => {
@@ -191,11 +192,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
 
-  // useEffect(() => {
-  //   setEndTime((embedApi.getCurrentTime() as unknown) as number);
-  // }, [embedApi.getCurrentTime()]);
-  
-
 
   useEffect(() => {
 
@@ -213,12 +209,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+        const end = (embedApi.getCurrentTime() as unknown) as number;
+        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
         setWatchlogState({
           ...watchlogState,
-          start: startTime < 10? 0 : startTime - 10,
-          // start: startTime,
-          // end: currentTime + 10,
-          end: (embedApi.getCurrentTime() as unknown) as number,
+          start: start < 0? 0 : start,
+          end: end,
         });
         setSeconds(seconds => seconds + 10);
         setWatchLog(params, watchlogState);
@@ -226,7 +226,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
       }, 10000);
 
-      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
@@ -269,6 +268,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
 
+  //unmount 처리
   useEffect(() => {
     return () => {
       console.log('component End');
@@ -283,21 +283,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       console.log('progressInterval', progressInterval);
     };
   }, []);
-
-
-  const getLecture = useCallback((idx: number) => {
-    const time = idx;
-    const hours = Math.floor(time / 60);
-    const minutes = Math.floor(time - hours * 60);
-
-    let sHours = '';
-    let sMinutes = '';
-    sHours = String(hours.toString()).padStart(2, '0');
-    sMinutes = String(minutes.toString()).padStart(2, '0');
-
-    return sHours + ':' + sMinutes;
-  }, []);
-
 
   useEffect(() => {
     console.log('next Contents ----');
@@ -480,10 +465,29 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, []);
 
+  // IE 조건처리 주석
+  
+  // const [detected, setDetected] = useState(false);
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent;
+  //   if(userAgent.includes('rv:11.0')){
+  //     setDetected(true)
+  //     console.log(userAgent.includes('rv:11.0'))
+  //   }
+  // })
+  
   return (
     <div className="course-video">
       <div className="video-container">
-        <div id="panopto-embed-player" onClick={() => console.log('dasdasd')}></div>
+        {/* {
+          detected && detected ?
+          // IE 11 Render
+          <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
+          :
+          // 나머지 브라우저
+          <div id="panopto-embed-player"></div>
+        }  */}
+        <div id="panopto-embed-player"></div>
         {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
         {nextContentsView &&
           !isActive &&
