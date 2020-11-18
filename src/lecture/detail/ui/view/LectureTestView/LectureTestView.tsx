@@ -141,6 +141,14 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   <span>총점</span>
                   <span>{testItem.totalPoint}점</span>
                 </div>
+                {testStudentItem && 
+                  testStudentItem.studentScore && 
+                    testStudentItem.studentScore.numberOfTrials > 0 && (
+                <div className="test-text-box">
+                  <span>내점수</span>
+                  <span>{testStudentItem.studentScore.latestScore}점</span>
+                </div>
+                )}
               </div>
             </div>
           </div>
