@@ -7,8 +7,6 @@ import { onLectureReport } from '../../store/LectureReportStore';
 import {
   LectureReport,
 } from '../../viewModel/LectureReport';
-import { getCubeLectureReport } from './utility/getCubeLectureReport';
-import { getCourseLectureReport } from './utility/getCourseLectureReport';
 import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';
 
 type ReportValue = LectureReport | undefined;
