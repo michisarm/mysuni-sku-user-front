@@ -78,12 +78,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [startTime, setStartTime] = useState(0);
 
   const [embedApi, setEmbedApi] = useState({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
+    getPlaybackRate: () => {},
   });
 
   const toHHMM = useCallback((idx: number) => {
@@ -118,18 +121,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
-    setPanoptoState(10);
+    setNextContentsView(false);
     history.push(path);
   }, []);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
-      console.log('state : ' , state);
+      console.log('PanoptoState : ' , state);
       setPanoptoState(state);
       setIsActive(false);
-      if (state == 2) {
-        setNextContentsView(false);
-      } else if (state == 1) {
+      if (state == 1) {
         setIsActive(true);
         setNextContentsView(false);
       } else if (state == 0) {
@@ -164,14 +165,26 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
 
   useEffect(() => {
+    setNextContentsView(false);
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
       mediaCheckEvent(params);
+      if(Math.floor((embedApi.getCurrentTime() as unknown) as number) == Math.floor((embedApi.getDuration() as unknown) as number)){
+        setNextContentsView(true);
+      }      
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
     }
+
+    console.log('panoptoState : ' , panoptoState);
+    console.log('isActive : ' , isActive);
+    console.log('nextContentsPath : ' , nextContentsPath);
+    console.log('getLectureConfirmProgress()?.learningState : ' , getLectureConfirmProgress()?.learningState);
+    console.log('current Time : ' , (embedApi.getCurrentTime() as unknown) as number);
+    console.log('duration Time : ' , (embedApi.getDuration() as unknown) as number);
+
   }, [panoptoState]);
 
   useEffect(() => {
@@ -186,27 +199,40 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
     const duration = (embedApi.getDuration() as unknown) as number;
-    
+    console.log('embedApi : ', embedApi);
+    // console.log('embedApi.currentPosition() : ' , embedApi.currentPosition());
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+
     if (isActive && params && watchlogState) {
+      clearInterval(interval);
       interval = setInterval(() => {
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+        const end = (embedApi.getCurrentTime() as unknown) as number;
+        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
         setWatchlogState({
           ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
+          start: start < 0? 0 : start,
+          end: end,
         });
         setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);     
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+
       }, 10000);
 
-      
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
 
   useEffect(() => {
     let confirmProgressTime = (duration / 10) * 1000;
@@ -242,6 +268,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
 
+  //unmount 처리
   useEffect(() => {
     return () => {
       console.log('component End');
@@ -252,14 +279,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setNextContentsPath('');
       setNextContentsName('');
       setIsActive(false);
+      setNextContentsView(false);
       console.log('progressInterval', progressInterval);
     };
   }, []);
 
-
   useEffect(() => {
-    setPanoptoState(10);
+    console.log('next Contents ----');
     const lectureStructure =  getLectureStructure();
+
+    console.log(lectureStructure);
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
@@ -380,7 +409,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         
       }
     }
-  }, [getLectureStructure(), getLectureConfirmProgress()]);
+  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
 
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
@@ -406,6 +435,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           height: '700',
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
+          // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
           serverName: 'sku.ap.panopto.com',
           sessionId: currentPaonoptoSessionId,
           // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
@@ -435,12 +465,31 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, []);
 
+  // IE 조건처리 주석
+  
+  // const [detected, setDetected] = useState(false);
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent;
+  //   if(userAgent.includes('rv:11.0')){
+  //     setDetected(true)
+  //     console.log(userAgent.includes('rv:11.0'))
+  //   }
+  // })
+  
   return (
     <div className="course-video">
       <div className="video-container">
+        {/* {
+          detected && detected ?
+          // IE 11 Render
+          <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
+          :
+          // 나머지 브라우저
+          <div id="panopto-embed-player"></div>
+        }  */}
         <div id="panopto-embed-player"></div>
         {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-        {panoptoState == 0 &&
+        {nextContentsView &&
           !isActive &&
           nextContentsPath &&
           getLectureConfirmProgress()?.learningState == 'Passed' && (

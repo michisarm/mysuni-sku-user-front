@@ -9,9 +9,11 @@ import WatchLog from 'lecture/detail/model/Watchlog';
 import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useLectureState } from 'lecture/detail/service/useLectureState/useLectureState';
 import { useLectureClassroom } from 'lecture/detail/service/useLectureClassroom/useLectureClassroom';
+import { useLectureStructure } from 'lecture/detail/service/useLectureStructure/useLectureStructure';
 
 function LectureVideoContainer() {
   useLectureMedia();
+
   const [,,checkStudent] = useLectureMedia();
   const params = useLectureRouterParams();
   

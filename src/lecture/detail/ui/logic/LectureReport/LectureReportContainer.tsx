@@ -3,11 +3,23 @@ import { useLectureReport } from '../../../service/useLectureReport/useLectureRe
 import LectureReportView from '../../view/LectureReportView/LectureReportView';
 
 function LectureReportContainer() {
-  const lectureReport = useLectureReport()[0]!;
-  const setLectureReport = useLectureReport()[1]!;
-  const setCubeLectureReport = useLectureReport()[2]!;
+  const [
+    lectureReport,
+    setLectureReport,
+    setCubeLectureReport,
+  ] = useLectureReport();
 
-  return <LectureReportView lectureReport={lectureReport} setLectureReport={setLectureReport} setCubeLectureReport={setCubeLectureReport}/>;
+  return (
+    <>
+      {lectureReport && (
+        <LectureReportView
+          lectureReport={lectureReport}
+          setLectureReport={setLectureReport}
+          setCubeLectureReport={setCubeLectureReport}
+        />
+      )}
+    </>
+  );
 }
 
 export default LectureReportContainer;
