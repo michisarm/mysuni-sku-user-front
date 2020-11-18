@@ -12,9 +12,24 @@ import CommentCountRdo from '../model/CommentCountRdo';
 import TaskDetailBody from '../model/TaskDetailBody';
 import { ClassroomModel } from '../../../personalcube/classroom/model';
 import TaskCdo from '../model/TaskCdo';
+import { AxiosResponse } from 'axios';
 
 const BASE_URL = '/api/personalCube';
 const FEEDBACK_URL = '/api/feedback';
+
+function AxiosReturn<T>(response: AxiosResponse<T>) {
+  if (
+    response === null ||
+    response === undefined ||
+    response.data === null ||
+    response.data === null ||
+    (response.data as unknown) === ''
+  ) {
+    return undefined;
+  }
+  return response.data;
+}
+
 
 export function findPersonalCube(
   personalCubeId: string
@@ -25,11 +40,11 @@ export function findPersonalCube(
     .then(response => response && response.data);
 }
 
-export function findCubeIntro(cubeIntroId: string): Promise<CubeIntro> {
+export function findCubeIntro(cubeIntroId: string): Promise<CubeIntro | undefined> {
   const url = `${BASE_URL}/cubeintros/${cubeIntroId}`;
   return axiosApi
     .get<CubeIntro>(url)
-    .then(response => response && response.data);
+    .then(AxiosReturn);
 }
 
 export function findAllTranscript(deliveryId: string, locale: string) {
@@ -154,7 +169,7 @@ export function findFileBox(depotIds: string) {
   return axiosApi
     .get<string>(
       '/api/depot/depotFile/multiple' +
-        `?depotIds=%255B%2522${depotIds}%2522%255D`
+      `?depotIds=%255B%2522${depotIds}%2522%255D`
     )
     .then(response => (response && response.data) || null);
 }

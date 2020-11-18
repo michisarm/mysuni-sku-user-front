@@ -75,6 +75,7 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
 
 export interface LectureStructureDurationableCubeItem
   extends LectureStructureCubeItem {
+  cubeContentsId: string,
   duration?: number;
 }
 

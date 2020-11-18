@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
-import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { findCubeIntro, findMedia, findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { MediaType } from '../../../model/MediaType';
 import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
@@ -24,10 +25,13 @@ async function getLectureStructureCubeItemByPersonalCube(
   params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
+  if (cubeId === undefined) {
+    return;
+  }
   const {
     id,
     name,
-    contents: { type },
+    contents: { type, contents: { id: cubeContentsId } },
   } = personalCube;
   if (personalCube === undefined) {
     return;
@@ -47,9 +51,30 @@ async function getLectureStructureCubeItemByPersonalCube(
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
-    if (type === 'Audio' || type === 'Video') {
+    if (type === 'Video') {
+
       const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
         id,
+        cubeContentsId,
+        name,
+        cubeId,
+        cubeType,
+        learningTime,
+        params,
+        routerParams,
+        path: toPath(params),
+        serviceId: lectureCardId,
+        can: true,
+        duration: 0,
+        order: 0,
+        type: 'CUBE',
+      };
+      return lectureStructureDurationableCubeItem;
+    }
+    if (type === 'Audio') {
+      const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
+        id,
+        cubeContentsId,
         name,
         cubeId: cubeId!,
         cubeType,
@@ -121,7 +146,7 @@ export async function getStateMapByParams(
 
 export async function getCubeLectureStructure(
   params: LectureParams
-): Promise<LectureStructure> {
+): Promise<LectureStructure | undefined> {
   const lectureStructure: LectureStructure = {
     courses: [],
     cubes: [],
@@ -143,7 +168,7 @@ export async function getCubeLectureStructure(
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
       cube.student = student;
-      if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
+      if (cube.cubeType === 'Audio') {
         (cube as LectureStructureDurationableCubeItem).duration = 0;
         if (student !== undefined) {
           (cube as LectureStructureDurationableCubeItem).duration =
@@ -152,12 +177,28 @@ export async function getCubeLectureStructure(
               : parseInt(student.durationViewSeconds);
         }
       }
+      if (cube.cubeType === 'Video') {
+        const { mediaType } = await findMedia((cube as LectureStructureDurationableCubeItem).cubeContentsId)
+        if (mediaType === MediaType.ContentsProviderMedia || mediaType === MediaType.LinkMedia) {
+          (cube as LectureStructureDurationableCubeItem).duration = 50;
+        } else {
+          (cube as LectureStructureDurationableCubeItem).duration = 0;
+          if (student !== undefined && student.durationViewSeconds !== null) {
+            (cube as LectureStructureDurationableCubeItem).duration =
+              parseInt(student.durationViewSeconds);
+          }
+        }
+      }
+
     }
     const cubeIntroId = personalCube.cubeIntro.id;
     const examId = personalCube.contents.examId;
     const surveyId = personalCube.contents.surveyId;
     const surveyCaseId = personalCube.contents.surveyCaseId;
     const cubeIntro = await findCubeIntro(cubeIntroId);
+    if (cubeIntro === undefined) {
+      return
+    }
     const itemMap = await getItemMapFromCube(
       { cubeIntro, examId, surveyId, surveyCaseId },
       params,
