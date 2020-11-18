@@ -459,7 +459,7 @@ export async function getCourseLectureStructure(
           cube.state === 'Progress' || cube.state === 'Completed';
         const cubeItemMap = await getItemMapFromCube(
           {
-            cubeIntroId,
+            cubeIntro: cube.lectureView!.cubeIntro,
             examId,
             surveyId,
             surveyCaseId,
