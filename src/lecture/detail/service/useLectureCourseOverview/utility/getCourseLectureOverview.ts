@@ -50,6 +50,7 @@ async function getLectureSummary(
     lectureId || serviceId!,
     lectureType !== undefined ? 'Course' : serviceType!
   );
+  const { difficultyLevel } = coursePlanComplex.coursePlanContents;
   return {
     name: coursePlanComplex.coursePlan.name,
     category: {
@@ -63,6 +64,7 @@ async function getLectureSummary(
     studentCount: coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
+    difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel
   };
 }
 

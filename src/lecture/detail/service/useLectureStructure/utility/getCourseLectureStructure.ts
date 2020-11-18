@@ -335,6 +335,11 @@ function parseCoursesCan(lectureStructure: LectureStructure) {
       course.test = { ...course.test, can }
       // can = course.test.state === 'Completed';
     }
+    if (course.cubes !== undefined && course.cubes.length > 0) {
+      course.cubes.forEach(cube => {
+        cube.canSubmit = (cube.state === 'Progress' || cube.state === 'Completed')
+      })
+    }
     course.can = can;
   });
 }
