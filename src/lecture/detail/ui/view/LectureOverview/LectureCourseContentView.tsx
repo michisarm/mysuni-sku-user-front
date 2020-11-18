@@ -86,6 +86,18 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
     setActivatedTab('comment');
   }, []);
 
+  // 스티키 적용 시 필요한 코드
+  // useEffect(() => {
+  //   if (activatedTab === 'comment') {
+  //     setTimeout(() => {
+  //       const element = document.getElementById('lms-overview');
+  //       if (element !== null) {
+  //         element.scrollIntoView();
+  //       }
+  //     }, 0);
+  //   }
+  // }, [activatedTab]);
+
   return (
     <>
       {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
