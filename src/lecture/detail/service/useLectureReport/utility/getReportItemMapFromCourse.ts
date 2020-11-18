@@ -14,7 +14,7 @@ export async function getReportItem(
   student?: Student
 ): Promise<LectureReport> {
   const coursePlan = await findCoursePlan(coursePlanId);
-  const lectureReport: LectureReport = {};
+  const lectureReport: LectureReport = { reportId: coursePlanId };
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
   if (coursePlan.reportFileBox.reportName !== '' && coursePlan.reportFileBox.reportName !== null) {

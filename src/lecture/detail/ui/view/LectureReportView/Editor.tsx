@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import {
-  LectureReport,
-  StudentReport,
-} from 'lecture/detail/viewModel/LectureReport';
 import {
   getLectureReport,
   setLectureReport,
 } from 'lecture/detail/store/LectureReportStore';
+import { useLectureReport } from '../../../service/useLectureReport/useLectureReport';
 
 interface EditorProps {
-  lectureReport: LectureReport;
+  reportId: string;
 }
 
-const Editor: React.FC<EditorProps> = function Editor({ lectureReport }) {
+const Editor: React.FC<EditorProps> = function Editor({ reportId }) {
+  const editorRef = useRef<ReactQuill>(null);
+  // const [value, setValue] = useState<string>();
+  useEffect(() => {
+    const lectureReport = getLectureReport();
+    if (editorRef.current !== null) {
+      const innerEditor = editorRef.current.getEditor();
+      innerEditor.setText('');
+      if (
+        lectureReport?.studentReport?.homeworkContent !== undefined &&
+        lectureReport?.studentReport?.homeworkContent !== null
+      ) {
+        innerEditor.clipboard.dangerouslyPasteHTML(
+          lectureReport?.studentReport?.homeworkContent
+        );
+      }
+    }
+    // setValue(lectureReport?.studentReport?.homeworkContent || '');
+  }, [reportId]);
+
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -31,17 +47,31 @@ const Editor: React.FC<EditorProps> = function Editor({ lectureReport }) {
 
   //AS-IS 활용함, 변경 해야하는지 확인
   function handleChange(html: any) {
-    //
+    const lectureReport = getLectureReport();
     if (lectureReport) {
       if (html && html.length < 1000000000000000) {
-        const studentReport = getLectureReport()?.studentReport || {};
-        studentReport.homeworkContent = html;
-        lectureReport.studentReport = studentReport;
-        setLectureReport(lectureReport);
+        let next = getLectureReport();
+        if (next === undefined) {
+          return;
+        }
+        if (next.studentReport?.homeworkContent === html) {
+          return;
+        }
+        const nextReport =
+          next.studentReport === undefined
+            ? { homeworkContent: html }
+            : next.studentReport;
+        next = {
+          ...next,
+          studentReport: { ...nextReport, homeworkContent: html },
+        };
+        setLectureReport(next);
+        // setValue(html);
       } else {
         alert('html 작성 오류');
       }
     }
+    // setValue(html);
   }
 
   const formats = [
@@ -58,14 +88,12 @@ const Editor: React.FC<EditorProps> = function Editor({ lectureReport }) {
     'image',
     'video',
   ];
-  console.log('getLectureReport()', getLectureReport());
   return (
     <ReactQuill
+      ref={editorRef}
       theme="snow"
       modules={modules}
       formats={formats}
-      // value={lectureReport?.studentReport?.homeworkContent || ''}
-      value={getLectureReport()?.studentReport?.homeworkContent || ''}
       onChange={handleChange}
     />
   );
