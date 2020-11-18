@@ -17,10 +17,9 @@ import {
 } from 'lecture/detail/store/LectureReportStore';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
-import {
-  getActiveStructureItem,
-  getActiveStructureItemAll,
-} from '../../../service/useLectureStructure/useLectureStructure';
+import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import { getCourseLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCourseLectureReport';
+import { getCubeLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCubeLectureReport';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report
@@ -69,6 +68,12 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         setCubeLectureReport().then(() => {
           if (params !== undefined) {
             requestLectureStructure(params.lectureParams, params.pathname);
+            //새로고침
+            if( params.contentType === 'coures') {
+              getCourseLectureReport(params)
+            } else {
+              getCubeLectureReport(params);
+            }
           }
           reactAlert({
             title: '알림',
@@ -279,7 +284,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       )}
       <div className="survey-preview">
         {lectureReport?.state !== 'Completed' &&
-          lectureReport?.state !== 'Progress' && (
+          // lectureReport?.state !== 'Progress' &&
+           (
             <button className="ui button fix bg" onClick={onSubmitClick}>
               제출
             </button>

@@ -67,11 +67,22 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   lectureSummary,
   lectureReview,
 }) {
-  const [bookMark, setBookMark] = useState(false);
-  const BookMark = () => {
-    console.log('click');
-    setBookMark(!bookMark);
-  };
+  let difficultyLevelIcon = 'basic';
+  switch (lectureSummary.difficultyLevel) {
+    case 'Intermediate':
+      difficultyLevelIcon = 'inter';
+      break;
+    case 'Advanced':
+      difficultyLevelIcon = 'advanced';
+      break;
+    case 'Expert':
+      difficultyLevelIcon = 'export';
+      break;
+
+    default:
+      break;
+  }
+
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -85,13 +96,17 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           <div className="header-deatil">
             <div className="item">
               <Label className="bold onlytext">
+                <Icon className={difficultyLevelIcon} />
+                <span>{lectureSummary.difficultyLevel}</span>
+              </Label>
+              <Label className="bold onlytext">
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
               </Label>
               {lectureSummary.stampCount !== undefined && (
                 <Label className="bold onlytext">
                   <Icon className="award" />
-              <span>{lectureSummary.stampCount}</span>
+                  <span>{lectureSummary.stampCount}</span>
                 </Label>
               )}
               <Label className="bold onlytext">
@@ -146,7 +161,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 />
                 <span>
                   {lectureReview !== undefined
-                    ? `${lectureReview.average}`
+                    ? `${Math.round(lectureReview.average * 10) / 10}`
                     : ''}
                 </span>
               </div>
@@ -157,7 +172,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           <div className="header-right-link">
             <a onClick={toggleCourseBookmark}>
               <span>
-                <Icon className={!bookMark ? 'listAdd' : 'listDelete'} />
+                <Icon
+                  className={
+                    lectureSummary.mytrainingId === undefined
+                      ? 'listAdd'
+                      : 'listDelete'
+                  }
+                />
                 {lectureSummary.mytrainingId === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}

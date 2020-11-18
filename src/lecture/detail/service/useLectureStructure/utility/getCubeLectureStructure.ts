@@ -157,8 +157,9 @@ export async function getCubeLectureStructure(
     const examId = personalCube.contents.examId;
     const surveyId = personalCube.contents.surveyId;
     const surveyCaseId = personalCube.contents.surveyCaseId;
+    const cubeIntro = await findCubeIntro(cubeIntroId);
     const itemMap = await getItemMapFromCube(
-      { cubeIntroId, examId, surveyId, surveyCaseId },
+      { cubeIntro, examId, surveyId, surveyCaseId },
       params,
       cube.student
     );

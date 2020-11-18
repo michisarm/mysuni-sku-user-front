@@ -1,6 +1,7 @@
 import Answer from '../model/Answer';
 import ExamQuestion from '../model/ExamQuestion';
 import LearningState from '../model/LearningState';
+import StudentScore from '../model/StudentScore';
 import { State } from './LectureState';
 import { LectureType } from './LectureType';
 
@@ -57,6 +58,7 @@ export interface LectureTestStudentItem extends Item {
   studentId: string;
   serviceType: LectureType;
   learningState: LearningState;
+  studentScore: StudentScore;
   examId?: string;
   paperId?: string;
 }

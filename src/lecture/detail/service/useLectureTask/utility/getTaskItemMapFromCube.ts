@@ -168,6 +168,7 @@ export async function getTaskItemMapFromCube(
 ): Promise<void> {
   // void : return이 없는 경우 undefined
   if (cubeId) {
+    const addflag = !!getLectureTaskItem();
     const personalCube = await getPersonalCubeByParams(cubeId);
     const examId =
       personalCube && personalCube.contents && personalCube.contents.examId;
@@ -178,7 +179,6 @@ export async function getTaskItemMapFromCube(
       personalCube.contents.contents.id;
     if (lectureCardId !== undefined) {
       if (boardId !== undefined) {
-        const addflag = !!getLectureTaskItem();
         const taskItem = await getTaskItem(
           boardId,
           offset,
