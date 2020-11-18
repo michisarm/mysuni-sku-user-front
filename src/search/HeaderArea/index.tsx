@@ -6,21 +6,8 @@ import classNames from 'classnames';
 import ContentsHeader from './ContentsHeader';
 import ContentsTab from './ContentsTab';
 
-const HeaderArea: React.FC = () => {
+const HeaderArea: React.FC = ({ location }: any) => {
   //
-  const [isOnFilter, setIsOnFilter] = useState<boolean>(false);
-
-  const [searchValue, setSearchValue] = useState<string>('');
-
-  // onClickFilter = () =>  this.setState((prevState) => ({isOnFilter: !prevState.isOnFilter}));
-
-  useLayoutEffect(() => {
-    const queryId: string = window.location.search.slice(
-      window.location.search.indexOf('=') + 1,
-      window.location.search.length
-    );
-    setSearchValue(queryId);
-  }, []);
 
   return (
     <>
