@@ -3,10 +3,14 @@ import './style.css';
 
 // internal Components
 import HeaderArea from './HeaderArea';
+import NoDataPage from './SectionArea/NoDataPage';
+import AllView from './SectionArea/AllView';
 
 const SearchComponent: React.FC = () => (
   <section className="content">
     <HeaderArea />
+    <AllView/>
+    {/* <NoDataPage/> */}
   </section>
 );
 
