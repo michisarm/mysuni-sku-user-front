@@ -1,14 +1,9 @@
 /* eslint-disable consistent-return */
-
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import { onLectureTranscripts } from '../../store/LectureTranscriptStore';
 import { LectureTranscript } from '../../viewModel/LectureTranscript';
 import { LectureMedia } from '../../viewModel/LectureMedia';
 import { getCubeLectureMedia } from './utility/getCubeLectureMedia';
-// import { getCourseLectureTranscript } from './utility/getCourseLectureTranscript';
-// import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';
 import { useLectureRouterParams } from '../useLectureRouterParams';
 import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';

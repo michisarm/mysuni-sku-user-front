@@ -412,36 +412,38 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
-      if (typeof lectureMedia === 'undefined') {
-      } else {
-        let currentPaonoptoSessionId =
+      if (lectureMedia && 
+        (lectureMedia.mediaType == "InternalMedia" ||
+        lectureMedia.mediaType == "InternalMediaUpload")) {
+          console.log('lectureMedia.mediaContents.internalMedias[0].panoptoSessionId', lectureMedia.mediaContents.internalMedias[0].panoptoSessionId);
+          let currentPaonoptoSessionId =
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
-        let embedApi = new window.EmbedApi('panopto-embed-player', {
-          width: '100%',
-          height: '700',
-          //This is the URL of your Panopto site
-          //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
-          // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
-          serverName: 'sku.ap.panopto.com',
-          sessionId: currentPaonoptoSessionId,
-          // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
-          videoParams: {
-            // Optional parameters
-            //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
-            // "interactivity": "Caption Language",
-            interactivity: 'none',
-            showtitle: 'false',
-            showBrand: 'false',
-            offerviewer: 'false',
-          },
-          events: {
-            onIframeReady: onPanoptoIframeReady,
-            onLoginShown: onPanoptoLoginShown,
-            //"onReady": onPanoptoVideoReady,
-            onStateChange: onPanoptoStateUpdate,
-          },
-        });
-        setEmbedApi(embedApi);
+          let embedApi = new window.EmbedApi('panopto-embed-player', {
+            width: '100%',
+            height: '700',
+            //This is the URL of your Panopto site
+            //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
+            // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
+            serverName: 'sku.ap.panopto.com',
+            sessionId: currentPaonoptoSessionId,
+            // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
+            videoParams: {
+              // Optional parameters
+              //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
+              // "interactivity": "Caption Language",
+              interactivity: 'none',
+              showtitle: 'false',
+              showBrand: 'false',
+              offerviewer: 'false',
+            },
+            events: {
+              onIframeReady: onPanoptoIframeReady,
+              onLoginShown: onPanoptoLoginShown,
+              //"onReady": onPanoptoVideoReady,
+              onStateChange: onPanoptoStateUpdate,
+            },
+          });
+          setEmbedApi(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -464,41 +466,56 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   return (
     <div className="course-video">
       <div className="video-container">
-        {/* {
-          detected && detected ?
-          // IE 11 Render
-          <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
-          :
-          // 나머지 브라우저
-          <div id="panopto-embed-player"></div>
-        }  */}
+    {/* Link Media, CP는 학습하기 버튼 클릭시 팝업으로 처리 하기로 함   -- contents 노출 필요시 주석 해제    
+    {getLectureMedia() &&
+      (getLectureMedia()?.mediaType == 'LinkMedia') && (
+              <video controls width="100%" height="700">
+                <source
+                  src={getLectureMedia()?.mediaContents.linkMediaUrl}
+                ></source>
+              </video>
+      )}  
+
+    {getLectureMedia() &&
+      (getLectureMedia()?.mediaType ==
+          'ContentsProviderMedia') && (
+              <video controls width="100%" height="700">
+                <source
+                  src={getLectureMedia()?.mediaContents.contentsProvider.url}
+                ></source>
+              </video>
+      )}         */}
+      {/* {
+        detected && detected ?
+        // IE 11 Render
+        <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
+        :
+        // 나머지 브라우저
         <div id="panopto-embed-player"></div>
-        {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-        {nextContentsView &&
-          !isActive &&
-          nextContentsPath &&
-          getLectureConfirmProgress()?.learningState == 'Passed' && (
-            <div className="video-overlay">
-              <div className="video-overlay-btn">
-                <button onClick={() => nextContents(nextContentsPath)}>
-                  <img src={playerBtn} />
-                </button>
-              </div>
-              {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
-              {/* <Link to={nextContentsPath||''}> */}
-              <div className="video-overlay-text">
-                <p>다음 학습 이어하기</p>
-                <h3>{nextContentsName}</h3>
-              </div>
-              {/* </Link> */}
+      }  */}
+      <div id="panopto-embed-player"></div>
+      {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
+      {nextContentsView &&
+        !isActive &&
+        nextContentsPath &&
+        getLectureConfirmProgress()?.learningState == 'Passed' && (
+          <div className="video-overlay">
+            <div className="video-overlay-btn">
+              <button onClick={() => nextContents(nextContentsPath)}>
+                <img src={playerBtn} />
+              </button>
             </div>
-          )}
-      </div>
-      {getLectureTranscripts() &&
-        getLectureMedia() &&
-        (getLectureMedia()?.mediaType == 'InternalMedia' ||
-          getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
-        (getLectureTranscripts()?.length || 0) > 0 &&
+            {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
+            {/* <Link to={nextContentsPath||''}> */}
+            <div className="video-overlay-text">
+              <p>다음 학습 이어하기</p>
+              <h3>{nextContentsName}</h3>
+            </div>
+            {/* </Link> */}
+          </div>
+        )}
+
+      {getLectureTranscripts() && 
         displayTranscript && (
           <>
             <button
@@ -544,6 +561,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           <i aria-hidden="true" className="icon icon morelink" />
         </button>
       )}
+      </div>
     </div>
   );
 };

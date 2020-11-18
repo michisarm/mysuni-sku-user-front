@@ -32,6 +32,7 @@ export async function getTestStudentItemMapFromCube(
       studentId: studentJoins[0].studentId,
       serviceType: student.serviceType,
       learningState,
+      studentScore: student.studentScore
     };
     setLectureTestStudentItem(studentInfo);
   }

@@ -8,7 +8,10 @@ import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
-import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import {
+  getActiveStructureItem,
+  getActiveStructureItemAll,
+} from '../../../service/useLectureStructure/useLectureStructure';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -138,6 +141,14 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   <span>총점</span>
                   <span>{testItem.totalPoint}점</span>
                 </div>
+                {testStudentItem && 
+                  testStudentItem.studentScore && 
+                    testStudentItem.studentScore.numberOfTrials > 0 && (
+                <div className="test-text-box">
+                  <span>내점수</span>
+                  <span>{testStudentItem.studentScore.latestScore}점</span>
+                </div>
+                )}
               </div>
             </div>
           </div>

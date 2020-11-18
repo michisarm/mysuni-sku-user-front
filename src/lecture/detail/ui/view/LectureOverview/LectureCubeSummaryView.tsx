@@ -306,7 +306,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 />
                 <span>
                   {lectureReview !== undefined
-                    ? `${lectureReview.average}`
+                    ? `${Math.round(lectureReview.average * 10) / 10}`
                     : ''}
                 </span>
               </div>
