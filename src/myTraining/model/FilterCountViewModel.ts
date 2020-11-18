@@ -10,7 +10,7 @@ class FilterCountViewModel {
   course: number = 0;
   video: number = 0;
   audio: number = 0;
-  eLearning: number = 0;
+  elearning: number = 0;
   classroomLecture: number = 0;
   community: number = 0;
   webPage: number = 0;
@@ -24,7 +24,7 @@ class FilterCountViewModel {
       this.course = filterCountView.course ? filterCountView.course : 0;
       this.video = filterCountView.video ? filterCountView.video : 0;
       this.audio = filterCountView.audio ? filterCountView.audio : 0;
-      this.eLearning = filterCountView.eLearning ? filterCountView.eLearning : 0;
+      this.elearning = filterCountView.elearning ? filterCountView.elearning : 0;
       this.classroomLecture = filterCountView.classroomLecture ? filterCountView.classroomLecture : 0;
       this.community = filterCountView.community ? filterCountView.community : 0;
       this.webPage = filterCountView.webPage ? filterCountView.webPage : 0;
@@ -42,7 +42,7 @@ class FilterCountViewModel {
       case 'Audio':
         return this.audio;
       case 'e-Learning':
-        return this.eLearning;
+        return this.elearning;
       case 'Classroom':
         return this.classroomLecture;
       case 'Community':
@@ -65,7 +65,7 @@ class FilterCountViewModel {
       totalFilterCountView.course += filterCountView.course;
       totalFilterCountView.video += filterCountView.video;
       totalFilterCountView.audio += filterCountView.audio;
-      totalFilterCountView.eLearning += filterCountView.eLearning;
+      totalFilterCountView.elearning += filterCountView.elearning;
       totalFilterCountView.classroomLecture += filterCountView.classroomLecture;
       totalFilterCountView.community += filterCountView.community;
       totalFilterCountView.webPage += filterCountView.webPage;
@@ -74,7 +74,7 @@ class FilterCountViewModel {
 
     totalFilterCountView.totalCount =
       totalFilterCountView.course + totalFilterCountView.video + totalFilterCountView.audio +
-      totalFilterCountView.eLearning + totalFilterCountView.classroomLecture + totalFilterCountView.community +
+      totalFilterCountView.elearning + totalFilterCountView.classroomLecture + totalFilterCountView.community +
       totalFilterCountView.webPage + totalFilterCountView.documents;
 
     return totalFilterCountView;
@@ -90,7 +90,7 @@ decorate(FilterCountViewModel, {
   course: observable,
   video: observable,
   audio: observable,
-  eLearning: observable,
+  elearning: observable,
   classroomLecture: observable,
   community: observable,
   webPage: observable,
