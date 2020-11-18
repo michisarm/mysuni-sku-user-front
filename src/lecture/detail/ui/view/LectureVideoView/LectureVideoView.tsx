@@ -80,7 +80,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
 
-  const [embedApi, setEmbedApi] = useState({
+  const [embedApi, setEmbedApi] = useState<any|undefined>({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
@@ -88,19 +88,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     currentPosition: () => {},
     getPlaybackRate: () => {},
   });
-
-  const toHHMM = useCallback((idx: number) => {
-    const time = idx;
-    const hours = Math.floor(time / 60);
-    const minutes = Math.floor(time - hours * 60);
-
-    let sHours = '';
-    let sMinutes = '';
-    sHours = String(hours.toString()).padStart(2, '0');
-    sMinutes = String(minutes.toString()).padStart(2, '0');
-
-    return sHours + ':' + sMinutes;
-  }, []);
 
   const [displayTranscript, setDisplayTranscript] = useState<boolean>(true);
 
@@ -133,8 +120,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         setIsActive(true);
         setNextContentsView(false);
       } else if (state == 0) {
-        setNextContentsView(true);
-      }
+        // setNextContentsView(true);
+      } 
     },
     [params]
   );
@@ -159,6 +146,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     [params]
   );
 
+  useEffect(() => {
+    if(params){
+      setNextContentsView(false);
+    }
+  }, [params]);
+
   const lectureParams = useParams<LectureParams>();
   const { pathname } = useLocation();
 
@@ -170,11 +163,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       mediaCheckEvent(params);
       if(Math.floor((embedApi.getCurrentTime() as unknown) as number) == Math.floor((embedApi.getDuration() as unknown) as number)){
         setNextContentsView(true);
-      }      
+      }
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
+      mediaCheckEvent(params);
     }
 
   }, [panoptoState]);
@@ -260,6 +254,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [progressInterval]);
 
   useEffect(() => {
+    setNextContentsView(false);
     return () => {
       mediaCheckEvent(params);
       setPanoptoState(10);
@@ -268,6 +263,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setIsActive(false);
       setNextContentsView(false);
       setProgressInterval('');
+      setEmbedApi('');
+      setLectureConfirmProgress();
+      
     };
   }, []);
 
@@ -294,8 +292,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   cube => cube.order == nextCubeOrder
                 );
                
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -305,9 +302,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   discussion => discussion.order == nextCubeOrder
                 );
               
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -335,9 +330,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
-
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -347,9 +340,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   discussion => discussion.order == nextCubeOrder
                 );
  
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-               
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -370,9 +361,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   cube => cube.order == nextCubeOrder
                 );
                
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
-
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -381,9 +370,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -415,7 +402,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       if (lectureMedia && 
         (lectureMedia.mediaType == "InternalMedia" ||
         lectureMedia.mediaType == "InternalMediaUpload")) {
-          console.log('lectureMedia.mediaContents.internalMedias[0].panoptoSessionId', lectureMedia.mediaContents.internalMedias[0].panoptoSessionId);
           let currentPaonoptoSessionId =
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
           let embedApi = new window.EmbedApi('panopto-embed-player', {
@@ -466,56 +452,41 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   return (
     <div className="course-video">
       <div className="video-container">
-    {/* Link Media, CP는 학습하기 버튼 클릭시 팝업으로 처리 하기로 함   -- contents 노출 필요시 주석 해제    
-    {getLectureMedia() &&
-      (getLectureMedia()?.mediaType == 'LinkMedia') && (
-              <video controls width="100%" height="700">
-                <source
-                  src={getLectureMedia()?.mediaContents.linkMediaUrl}
-                ></source>
-              </video>
-      )}  
-
-    {getLectureMedia() &&
-      (getLectureMedia()?.mediaType ==
-          'ContentsProviderMedia') && (
-              <video controls width="100%" height="700">
-                <source
-                  src={getLectureMedia()?.mediaContents.contentsProvider.url}
-                ></source>
-              </video>
-      )}         */}
-      {/* {
-        detected && detected ?
-        // IE 11 Render
-        <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
-        :
-        // 나머지 브라우저
+        {/* {
+          detected && detected ?
+          // IE 11 Render
+          <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
+          :
+          // 나머지 브라우저
+          <div id="panopto-embed-player"></div>
+        }  */}
         <div id="panopto-embed-player"></div>
-      }  */}
-      <div id="panopto-embed-player"></div>
-      {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-      {nextContentsView &&
-        !isActive &&
-        nextContentsPath &&
-        getLectureConfirmProgress()?.learningState == 'Passed' && (
-          <div className="video-overlay">
-            <div className="video-overlay-btn">
-              <button onClick={() => nextContents(nextContentsPath)}>
-                <img src={playerBtn} />
-              </button>
+        {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
+        {nextContentsView &&
+          !isActive &&
+          nextContentsPath &&
+          getLectureConfirmProgress()?.learningState == 'Passed' && (
+            <div id="video-overlay" className="video-overlay">
+              <div className="video-overlay-btn">
+                <button onClick={() => nextContents(nextContentsPath)}>
+                  <img src={playerBtn} />
+                </button>
+              </div>
+              {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
+              {/* <Link to={nextContentsPath||''}> */}
+              <div className="video-overlay-text">
+                <p>다음 학습 이어하기</p>
+                <h3>{nextContentsName}</h3>
+              </div>
+              {/* </Link> */}
             </div>
-            {/* <Link to={nextContentsPath||''} onClick={() => clearState()}> */}
-            {/* <Link to={nextContentsPath||''}> */}
-            <div className="video-overlay-text">
-              <p>다음 학습 이어하기</p>
-              <h3>{nextContentsName}</h3>
-            </div>
-            {/* </Link> */}
-          </div>
-        )}
-
-      {getLectureTranscripts() && 
+          )}
+      </div>
+      {getLectureTranscripts() &&
+        getLectureMedia() &&
+        (getLectureMedia()?.mediaType == 'InternalMedia' ||
+          getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
+        (getLectureTranscripts()?.length || 0) > 0 &&
         displayTranscript && (
           <>
             <button
@@ -561,7 +532,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           <i aria-hidden="true" className="icon icon morelink" />
         </button>
       )}
-      </div>
     </div>
   );
 };
