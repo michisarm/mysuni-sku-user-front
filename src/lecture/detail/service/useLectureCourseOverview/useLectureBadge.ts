@@ -34,9 +34,13 @@ export function useLectureBadge(): [Value] {
     if (params === undefined) {
       return;
     }
-    findByLectureUsid(params.lectureId).then(badges =>
-      setLectureBadge({ badges })
-    );
+    findByLectureUsid(params.lectureId).then(badges => {
+      if(badges === undefined){
+        setLectureBadge()
+      } else {
+        setLectureBadge({ badges })
+      }
+    });
   }, [params]);
 
   return [value];
