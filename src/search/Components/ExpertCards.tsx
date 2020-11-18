@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Card } from 'semantic-ui-react'
+import { Icon, Card } from 'semantic-ui-react';
 
-const ExpertCard: React.FC = () => {
+const ExpertCards: React.FC = () => {
   return (
     <Card>
       <div className="card-inner">
@@ -21,7 +21,7 @@ const ExpertCard: React.FC = () => {
         </a>
         {/* .channel */}
         <div className="channel">
-          <Icon className="completed16"/>
+          <Icon className="completed16" />
           <span className="blind">completed</span>
           <span>AI / Data Architect</span>
         </div>
@@ -31,4 +31,4 @@ const ExpertCard: React.FC = () => {
   );
 };
 
-export default ExpertCard;
+export default ExpertCards;

@@ -24,7 +24,6 @@ const ContentsTab: React.FC = () => {
   const handleItemClick = (e: any, { name }: any) => {
     setActiveItem(name);
   };
-  console.log('asdf', activeItem);
 
   return (
     <div ref={contextRef}>
