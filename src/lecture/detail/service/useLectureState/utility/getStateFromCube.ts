@@ -647,19 +647,13 @@ export async function getStateFromCube(params: LectureRouterParams) {
       let state: State = 'None';
       if (proposalState === 'Approved') {
         switch (learningState) {
-          case 'Progress':
-          case 'TestPassed':
-          case 'TestWaiting':
-          case 'HomeworkWaiting':
-            state = 'Progress';
-            actionClassName = 'bg2';
-            break;
           case 'Passed':
             state = 'Completed';
             stateClassName = 'complete';
             break;
-
           default:
+            state = 'Progress';
+            actionClassName = 'bg2';
             break;
         }
       }

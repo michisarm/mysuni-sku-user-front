@@ -17,6 +17,7 @@ import {
 } from 'lecture/detail/store/LectureReportStore';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
+import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report
@@ -37,6 +38,15 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
 }) {
   const params = useLectureRouterParams();
   const onSubmitClick = useCallback(() => {
+    const lectureStructureItem = getActiveStructureItem();
+    if (lectureStructureItem?.canSubmit !== true) {
+      reactAlert({
+        title: '알림',
+        message: '학습 완료 후 Report 제출이 가능합니다.',
+      });
+      return;
+    }
+
     const homeworkFileBoxId = getLectureReport()?.studentReport
       ?.homeworkFileBoxId;
     if (
