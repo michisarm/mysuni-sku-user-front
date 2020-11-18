@@ -17,13 +17,14 @@ import { Link } from 'react-router-dom';
 // import ExpertCard from "../ExpertCard";
 
 const ContentsTab: React.FC = () => {
-  const contextRef = useRef<any>();
+  const contextRef = useRef<HTMLDivElement>(null);
 
   const [activeItem, setActiveItem] = useState<string>('');
 
   const handleItemClick = (e: any, { name }: any) => {
     setActiveItem(name);
   };
+  console.log('asdf', activeItem);
 
   return (
     <div ref={contextRef}>
@@ -34,7 +35,7 @@ const ContentsTab: React.FC = () => {
               name="All"
               active={activeItem === 'All'}
               onClick={handleItemClick}
-              as={Link}
+              // as={Link}
               to=""
             >
               전체보기 <span className="count" />
@@ -43,7 +44,7 @@ const ContentsTab: React.FC = () => {
               name="LearningCard"
               active={activeItem === 'LearningCard'}
               onClick={handleItemClick}
-              as={Link}
+              // as={Link}
               to=""
             >
               학습카드 <span className="count" />
@@ -52,7 +53,7 @@ const ContentsTab: React.FC = () => {
               name="Export"
               active={activeItem === 'Export'}
               onClick={handleItemClick}
-              as={Link}
+              // as={Link}
               to=""
             >
               강사 <span className="count" />

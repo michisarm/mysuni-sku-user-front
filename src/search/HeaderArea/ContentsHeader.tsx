@@ -2,15 +2,16 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Segment, Radio, Button } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
-// import {SearchFilter} from '../../../../../components';
+import SearchFilter from '../Components/SearchFilter';
 
 const ContentsHeader: React.FC = () => {
   //
   const [isOnFilter, setIsOnFilter] = useState<boolean>(false);
-
   const [searchValue, setSearchValue] = useState<string>('');
 
-  // onClickFilter = () =>  this.setState((prevState) => ({isOnFilter: !prevState.isOnFilter}));
+  const onClickFilter = () => {
+    setIsOnFilter(!isOnFilter);
+  };
 
   // Get quertID
   useLayoutEffect(() => {
@@ -39,12 +40,15 @@ const ContentsHeader: React.FC = () => {
               <Radio className="base" label="상세 검색" name="search01" />
               <Radio className="base" label="Tag 검색" name="search01" />
             </div>
-            {/* <Button className={classNames('btn-filter-blue', isOnFilter ? 'on' : '')} onClick={this.onClickFilter}>
-                  <span>Filter(05)</span>
-                </Button> */}
+            <Button
+              className={classNames('btn-filter-blue', isOnFilter ? 'on' : '')}
+              onClick={onClickFilter}
+            >
+              <span>Filter(00)</span>
+            </Button>
           </div>
           {/*Filter*/}
-          {/* <SearchFilter isOnFilter={isOnFilter}/> */}
+          <SearchFilter isOnFilter={isOnFilter} />
         </Segment>
       </div>
     </>
