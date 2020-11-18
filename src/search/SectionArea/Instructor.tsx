@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import { Icon, Card, Segment,Button } from 'semantic-ui-react'
-import ExpertCard from '../components/ExpertCard';
+import ExpertCard from '../Components/ExpertCard';
 
 const Instructor: React.FC = () => {
   const [insetApi, getInsertApi] = useState<boolean>(true)

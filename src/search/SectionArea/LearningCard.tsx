@@ -1,8 +1,9 @@
 import React from 'react';
+import BoxCard from '../Components/BoxCard';
 
 const LearningCard: React.FC = () => {
   return (
-    <h1>Learning</h1>
+    <BoxCard/>
   );
 };
 
