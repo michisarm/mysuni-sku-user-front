@@ -115,24 +115,30 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           >
             Overview
           </a>
-          <a
-            onClick={instructorHashClick}
-            className={activatedTab === 'instructor' ? 'lms-act' : ''}
-          >
-            강사정보
-          </a>
-          <a
-            onClick={badgeHashClick}
-            className={activatedTab === 'badge' ? 'lms-act' : ''}
-          >
-            관련 Badge
-          </a>
-          <a
-            onClick={relatedHashClick}
-            className={activatedTab === 'related' ? 'lms-act' : ''}
-          >
-            관련과정
-          </a>
+          {lectureInstructor && lectureInstructor.instructors.length > 0 && (
+            <a
+              onClick={instructorHashClick}
+              className={activatedTab === 'instructor' ? 'lms-act' : ''}
+            >
+              강사정보
+            </a>
+          )}
+          {lectureBadge && lectureBadge.badges.length > 0 && (
+            <a
+              onClick={badgeHashClick}
+              className={activatedTab === 'badge' ? 'lms-act' : ''}
+            >
+              관련 Badge
+            </a>
+          )}
+          {lectureRelations && lectureRelations.lectures.length > 0 && (
+            <a
+              onClick={relatedHashClick}
+              className={activatedTab === 'related' ? 'lms-act' : ''}
+            >
+              관련과정
+            </a>
+          )}
           <a
             onClick={commentHashClick}
             className={
