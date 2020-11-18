@@ -201,7 +201,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {model.stampCountForDisplay}{/* 스탬프 */}
+              {model.displayStampCount}{/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.startDate)}{/* 학습시작일 */}
