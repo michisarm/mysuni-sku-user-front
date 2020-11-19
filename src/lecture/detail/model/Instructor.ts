@@ -5,6 +5,7 @@ export default interface Instructor {
   email: string;
   usid: string;
   employeeId: string;
+  photoId: string;
   company: string;
   instructorLearningTime: number;
   lectureTime: number;
