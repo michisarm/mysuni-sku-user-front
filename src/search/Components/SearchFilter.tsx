@@ -1,9 +1,11 @@
+/* eslint-disable dot-notation */
 import React, { ReactNode, useState, useEffect, Fragment } from 'react';
 import { Button, Checkbox, Icon, Radio } from 'semantic-ui-react';
 import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CheckBoxOptions from '../model/CheckBoxOption';
+import { findColleageGroup } from '../api/searchApi';
 
 interface Props {
   isOnFilter: boolean;
@@ -50,7 +52,16 @@ export enum FilterConditionName {
   LearningSchedule = '교육일정',
 }
 
+interface Options {
+  key: string;
+  text: string;
+  value: string;
+}
+
 const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
+  const [all_college_name_condition, set_all_college_name_condition] = useState<
+    Options[]
+  >([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [cpOpened, setCpOpened] = useState(false);
@@ -66,7 +77,20 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     if (searchValue === '') {
       return;
     }
-    console.log('');
+    findColleageGroup(searchValue).then(searchResult => {
+      if (searchResult === undefined) {
+        set_all_college_name_condition([]);
+      } else {
+        set_all_college_name_condition(
+          searchResult.result.rows.map(({ fields }) => ({
+            key: fields['all_college_name'],
+            value: fields['all_college_name'],
+            text: `${fields['all_college_name']}()`,
+          }))
+        );
+      }
+    });
+    console.log(searchValue);
   }, [searchValue]);
 
   const [conditions, setConditions] = useState<FilterCondition>({
@@ -84,8 +108,8 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   });
 
   useEffect(() => {
-    console.log(conditions)
-  },[conditions])
+    console.log(conditions);
+  }, [conditions]);
 
   const onCheckOne = (e: any, data: any) => {
     switch (data.name) {
@@ -103,7 +127,9 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         /* 선택 */
         setConditions({
           ...conditions,
-          all_college_name_query: conditions.all_college_name_query.concat(data.value),
+          all_college_name_query: conditions.all_college_name_query.concat(
+            data.value
+          ),
         });
         break;
       case FilterConditionName.LearningType:
@@ -147,7 +173,9 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         }
         setConditions({
           ...conditions,
-          difficulty_level_json_query: conditions.difficulty_level_json_query.concat(data.value),
+          difficulty_level_json_query: conditions.difficulty_level_json_query.concat(
+            data.value
+          ),
         });
         break;
       case FilterConditionName.LearningTime:
@@ -162,7 +190,9 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         }
         setConditions({
           ...conditions,
-          learning_time_query: conditions.learning_time_query.concat(data.value),
+          learning_time_query: conditions.learning_time_query.concat(
+            data.value
+          ),
         });
         break;
       case FilterConditionName.Organizer:
@@ -219,19 +249,17 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.College}</th>
             <td>
-              <Checkbox
-                className="base"
-                label={`${SELECT_ALL}`} 
-
-              />
+              <Checkbox className="base" label={`${SELECT_ALL}`} />
               {CheckBoxOptions.college.map((college, index) => (
                 <Fragment key={`checkbox-college-${index}`}>
-                  <Checkbox 
+                  <Checkbox
                     className="base"
                     name={FilterConditionName.College}
                     label={college.text}
                     value={college.value}
-                    checked={conditions.all_college_name_query.includes(college.value)}
+                    checked={conditions.all_college_name_query.includes(
+                      college.value
+                    )}
                     onChange={onCheckOne}
                   />
                 </Fragment>
@@ -242,38 +270,46 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
             <th>{FilterConditionName.DifficultyLevel}</th>
             <td>
               <Checkbox className="base" label={`${SELECT_ALL}`} />
-              {CheckBoxOptions.difficulty_level_json_query.map((levels, index) => (
-                <Fragment key={`checkbox-difficulty_level_json_query-${index}`}>
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.DifficultyLevel}
-                    label={levels.text}
-                    value={levels.value}
-                    checked={conditions.difficulty_level_json_query.includes(levels.value)}
-                    onChange={onCheckOne}
-                  />
-                </Fragment>
-              ))}
+              {CheckBoxOptions.difficulty_level_json_query.map(
+                (levels, index) => (
+                  <Fragment
+                    key={`checkbox-difficulty_level_json_query-${index}`}
+                  >
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.DifficultyLevel}
+                      label={levels.text}
+                      value={levels.value}
+                      checked={conditions.difficulty_level_json_query.includes(
+                        levels.value
+                      )}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                )
+              )}
             </td>
           </tr>
           <tr>
             <th>{FilterConditionName.LearningTime}</th>
             <td>
               <Checkbox className="base" label={`${SELECT_ALL}`} />
-              {CheckBoxOptions.learning_time_query.map((learningTime, index) => (
-                <Fragment key={`checkbox-learningTime-${index}`}>
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.LearningTime}
-                    label={learningTime.text}
-                    value={learningTime.value}
-                    checked={conditions.learning_time_query.includes(
-                      learningTime.value
-                    )}
-                    onChange={onCheckOne}
-                  />
-                </Fragment>
-              ))}
+              {CheckBoxOptions.learning_time_query.map(
+                (learningTime, index) => (
+                  <Fragment key={`checkbox-learningTime-${index}`}>
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.LearningTime}
+                      label={learningTime.text}
+                      value={learningTime.value}
+                      checked={conditions.learning_time_query.includes(
+                        learningTime.value
+                      )}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                )
+              )}
             </td>
           </tr>
           <tr>
@@ -298,7 +334,9 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                     name={FilterConditionName.Organizer}
                     label={organizer.text}
                     value={organizer.value}
-                    checked={conditions.organizer_query.includes(organizer.value)}
+                    checked={conditions.organizer_query.includes(
+                      organizer.value
+                    )}
                     onChange={onCheckOne}
                   />
                 </Fragment>
