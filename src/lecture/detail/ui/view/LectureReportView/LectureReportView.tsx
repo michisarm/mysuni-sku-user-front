@@ -49,19 +49,23 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       return;
     }
 
-    /*
-    첨부파일 필수 제거
     const homeworkFileBoxId = getLectureReport()?.studentReport
       ?.homeworkFileBoxId;
+    const homeworkContent = getLectureReport()?.studentReport
+      ?.homeworkContent;
+
     if (
-      homeworkFileBoxId === '' ||
+      (homeworkFileBoxId === '' ||
       homeworkFileBoxId === null ||
-      homeworkFileBoxId === undefined
+      homeworkFileBoxId === undefined) &&
+      (homeworkContent === '' ||
+      homeworkContent === null ||
+      homeworkContent === undefined)
+
     ) {
-      reactAlert({ title: '알림', message: '첨부파일을 업로드해주세요.' });
+      reactAlert({ title: '알림', message: '내용 또는 첨부파일을 업로드해주세요.' });
       return;
     }
-    */
 
     reactConfirm({
       title: '제출 안내',
