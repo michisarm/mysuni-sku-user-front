@@ -2,7 +2,6 @@
 
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
-import { options } from 'numeral';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
@@ -14,7 +13,7 @@ import {
   markComplete,
   registerStudent,
 } from '../../../api/lectureApi';
-import { findCubeIntro, findMedia, findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { findCubeIntro, findMedia, findOfficeWeb, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import CubeType from '../../../model/CubeType';
 import { MediaType } from '../../../model/MediaType';
 import Student from '../../../model/Student';
@@ -25,52 +24,11 @@ import { requestLectureStructure } from '../../../ui/logic/LectureStructureConta
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
-
-/** Actions */
-
-/**
- *
- * delete http://localhost:3000/api/lecture/students/flow/byRollBookId?rollBookId=de139827-a67a-4ce2-ba90-091c326a4fa2
- * 무료과정 ? 유료과정 ? 등록 ?
- */
-
-/**
- * 
- *registerStudentApprove(studentCdo: StudentCdoModel) {
-    // 차수선택 시 id, freeOfCharge 값 전달
-
-    const { id, freeOfCharge } = this.state.selectedClassRoom;
-    if (id) {
-      // 차수 선택 시 ID 값
-      studentCdo.classroomId = id;
-      // 차수 선택시 무료(true) 유료(false) 여부
-      studentCdo.approvalProcess = freeOfCharge.approvalProcess;
-    }
-
-    const { studentService, lectureCardId, init } = this.props;
-
-    studentService!.registerStudent(studentCdo).then(() => {
-      studentService!.findStudentByRollBookId(studentCdo.rollBookId);
-      studentService!.findIsJsonStudentByCube(lectureCardId);
-      studentService!.findStudentCount(studentCdo.rollBookId);
-      if (init) init();
-    });
-
-    // 알림 메시지
-    const messageStr =
-      '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
-    reactAlert({ title: '알림', message: messageStr });
-  }
- */
-
-/**
- * Student 가 없을 때 처리 확인
- */
+import depot from '@nara.drama/depot';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
 const CANCEL = '취소하기';
-// const CHANGE_ROUND = '차수변경';
 const DOWNLOAD = '다운로드';
 const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
@@ -100,11 +58,9 @@ async function submit(
   rollBookId: string,
   student?: Student
 ) {
-  // classroomModal.show
   const {
     skProfile: { member },
   } = SkProfileService.instance;
-  // classroomModal.show
   let nextStudentCdo: StudentCdo = {
     rollBookId,
     name: member.name,
@@ -160,9 +116,7 @@ async function mClassroomSubmit(
   pathname?: string,
   student?: Student
 ) {
-  // classroomModal.show
   const { skProfile } = SkProfileService.instance;
-  // classroomModal.show
   const nextStudentCdo: StudentCdo = {
     rollBookId,
     name: skProfile.member.name,
@@ -311,6 +265,91 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
   };
 
 }
+
+async function getDocumentsApprovedState(option: ChangeStateOption, stateText: string): Promise<LectureState> {
+  const {
+    lectureState,
+    cubeType,
+    student,
+    hasTest,
+    hasSurvey,
+    cubeIntroId,
+    contentsId,
+    studentJoin: { rollBookId },
+    params,
+  } = option;
+
+  if (contentsId !== undefined) {
+    const cubeIntro = await findCubeIntro(cubeIntroId);
+    const { fileBoxId } = await findOfficeWeb(contentsId);
+    const depotFilesList = await depot.getDepotFilesList([fileBoxId])
+    // PDF 만 있는 경우,
+    if (Array.isArray(depotFilesList) && Array.isArray(depotFilesList[0]) && depotFilesList[0].every(c =>
+      c.name && c.name.toLowerCase && c.name.toLowerCase().endsWith('.pdf')
+    )) {
+      if (stateText === PROGRESS) {
+        if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+          if (!hasTest) {
+            return {
+              ...lectureState,
+              action: () => complete(params, rollBookId),
+              hideAction: true,
+              canAction: false,
+              actionText: COMPLETE,
+              stateText,
+            };
+          }
+        }
+      }
+    }
+  }
+
+  if (stateText === PROGRESS) {
+    const cubeIntro = await findCubeIntro(cubeIntroId);
+    if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
+      if (!hasTest) {
+        return {
+          ...lectureState,
+          action: () => complete(params, rollBookId),
+          canAction: true,
+          actionText: COMPLETE,
+          stateText,
+        };
+      }
+    } else {
+      return {
+        ...lectureState,
+        actionClassName: 'bg',
+        hideAction: false,
+        canAction: true,
+        actionText: DOWNLOAD,
+        action: () => { },
+        stateText,
+      };
+    }
+  }
+  if (stateText === COMPLETE) {
+    return {
+      ...lectureState,
+      actionClassName: 'bg2',
+      hideAction: true,
+      canAction: true,
+      actionText: DOWNLOAD,
+      action: () => { },
+      stateText,
+    };
+  }
+
+  return {
+    ...lectureState,
+    hideAction: true,
+    canAction: false,
+    actionText: APPROVE,
+    stateText,
+  };
+
+}
+
 
 async function cpVideoOpen(
   expiryDate: string, url: string) {
@@ -501,31 +540,7 @@ async function getStateWhenApproved(
       case 'Video':
         break;
       case 'Documents':
-        if (stateText === PROGRESS) {
-          const cubeIntro = await findCubeIntro(cubeIntroId);
-          if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
-            if (!hasTest) {
-              return {
-                ...lectureState,
-                action: () => complete(params, rollBookId),
-                canAction: true,
-                actionText: COMPLETE,
-                stateText,
-              };
-            }
-          }
-        }
-        if (stateText === COMPLETE) {
-          return {
-            ...lectureState,
-            actionClassName: 'bg2',
-            hideAction: false,
-            canAction: true,
-            actionText: DOWNLOAD,
-            action: () => { },
-            stateText,
-          };
-        }
+        break;
       case 'WebPage':
       case 'Experiential':
         if (stateText === PROGRESS) {
@@ -572,6 +587,10 @@ async function getStateWhenApproved(
     }
     if (cubeType === 'Video') {
       const mLectureState = await getVideoApprovedState(option, stateText);
+      return mLectureState;
+    }
+    if (cubeType === 'Documents') {
+      const mLectureState = await getDocumentsApprovedState(option, stateText);
       return mLectureState;
     }
   }
@@ -725,24 +744,10 @@ export async function getStateFromCube(params: LectureRouterParams) {
         }
       }
 
-      switch (type) {
-        case 'ELearning':
-        case 'ClassRoomLecture':
-          switch (proposalState) {
-            case 'Approved':
-              break;
-            case 'Canceled':
-              break;
-            case 'Rejected':
-              break;
-
-            default:
-              break;
-          }
-          break;
-
-        default:
-          break;
+      if (type === 'Documents' && proposalState !== 'Approved') {
+        await approve(params, studentJoin.rollBookId)
+        getStateFromCube(params)
+        return;
       }
 
       const lectureState = {
