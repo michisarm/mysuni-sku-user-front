@@ -15,7 +15,7 @@ import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import LearningState from 'lecture/detail/model/LearningState';
 import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
-
+import { useLectureState } from '../../service/useLectureState/useLectureState';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -34,9 +34,16 @@ interface LectureDocumentsViewProps {
   title?: string;
   description?: string;
   image?: string;
-  learningState: LearningState|undefined;
+  learningState: LearningState | undefined;
   params: LectureRouterParams | undefined;
 }
+
+// 차후 진행 내역
+// 파일 형식 pdf = 페이지 끝까지 확인 
+// 파일 형식 !pdf = 다운로드
+
+
+
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
 // const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {
@@ -49,22 +56,19 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   image,
   hookAction,
   learningState,
-  params
+  params,
 }) {
   const API_URL: string = '/api/depot/depotFile/flow/download/';
 
   const [files, setFiles] = useState<DepotFileViewModel[]>();
   const [pdfUrl, setPdfUrl] = useState<string[]>([]);
-  const [pdf, setPdf] = useState<any>();
   const [file, setFile] = useState<any>();
 
   const [openToggle, setOpenToggle] = useState<boolean>(false);
   const [courseName, setCourseName] = useState<any>([]);
   const [courseIdx, setCourseIdx] = useState<number>(0);
-  const [fileCheck, setFileCheck] = useState<string>('');
-  const [fileDiv, setFileDiv] = useState<any>();
 
-  
+  // const [lectureState] = useLectureState();
 
   const nameList: string[] = [''];
 
@@ -72,18 +76,16 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const getFiles = useCallback(() => {
     depot.getDepotFiles(fileBoxId).then(filesArr => {
+      setPdfUrl([]);
       // id 여러개 일때
       if (filesArr) {
         if (Array.isArray(filesArr)) {
           setFiles(filesArr);
           setCourseName(filesArr);
-          if (filesArr) {
-            for (let i = 0; i < filesArr.length; ++i) {
-              pdfUrl[i] = `${API_URL}${filesArr[i].id}`;
-            }
+          for (let i = 0; i < filesArr.length; ++i) {
+            setPdfUrl(oldArray => [...oldArray, '/api/depot/depotFile/flow/download/' + filesArr[i].id]);
           }
         }
-
         // id 1개 일때
         else {
           setFiles([filesArr]);
@@ -92,11 +94,20 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         }
       }
     });
-  }, [fileBoxId]);
+  }, [fileBoxId, pdfUrl, params]);
 
   for (let i = 0; i < courseName.length; ++i) {
     nameList[i] = courseName[i].name;
   }
+
+
+  useEffect(() => {
+    return ()=>{
+      setPdfUrl([]);
+      setFiles([]);
+      setFile('');
+    }
+  }, []);
 
   useEffect(() => {
     if (fileBoxId && fileBoxId.length) {
@@ -110,6 +121,20 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
 
+  // useEffect(() => {
+  //   if (lectureState === undefined || lectureState.action === undefined) {
+  //     return;
+  //   }
+  //   if (files === undefined) {
+  //     return;
+  //   }
+  //   if (numPages === pageNumber) {
+  //     if (files.length === 1) {
+  //       lectureState.action();
+  //     }
+  //   }
+  //   console.log('LectureDocumentsView', numPages, pageNumber);
+  // }, [numPages, pageNumber, lectureState, files]);
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
@@ -142,7 +167,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
       setFile({
         url: pdfUrl[courseIdx],
         httpHeaders: {
@@ -150,15 +175,14 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
         },
       });
-    }, 500);
-  }, []);
+    // }, 500);
+  }, [pdfUrl,courseIdx,params]);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
     setOpenToggle(!openToggle);
-    setFileCheck(courseName[idx]);
-
-    setFileDiv(nameList[courseIdx]);
+    // setFileCheck(courseName[idx]);
+    // setFileDiv(nameList[courseIdx]);
   };
 
   const downloadFile = () => {
@@ -168,34 +192,30 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const history = useHistory();
 
-
   const nextContents = useCallback((path: string) => {
     history.push(path);
   }, []);
 
   useEffect(() => {
-
-    const lectureStructure =  getLectureStructure();
-    if(lectureStructure){
-      if(lectureStructure.course?.type=="COURSE") {
+    const lectureStructure = getLectureStructure();
+    if (lectureStructure) {
+      if (lectureStructure.course?.type == 'COURSE') {
         //일반 코스 로직
-  
+
         lectureStructure.items.map(item => {
           if (item.type === 'CUBE') {
             if (lectureStructure.cubes) {
-              const currentCube =
-              lectureStructure.cubes.find(
-                  cube => cube.cubeId == params?.contentId
-                );
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
 
-              if(currentCube){
-                const nextCubeOrder = currentCube.order +1; 
-                
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order + 1;
+
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextCube
-                ) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -204,9 +224,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -214,27 +232,23 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
             }
           }
           return null;
-        })
-      }
-      else if (lectureStructure.course?.type=="PROGRAM") {
-
+        });
+      } else if (lectureStructure.course?.type == 'PROGRAM') {
         lectureStructure.items.map(item => {
           if (item.type === 'COURSE') {
             const course = item as LectureStructureCourseItem;
             if (course.cubes) {
-              const currentCube =
-                course.cubes.find(
-                  cube => cube.cubeId == params?.contentId
-                );
+              const currentCube = course.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
 
-              if(currentCube){
-                const nextCubeOrder = currentCube.order +1; 
-                
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order + 1;
+
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextCube
-                ) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -244,8 +258,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                   discussion => discussion.order == nextCubeOrder
                 );
 
-                if (learningState == 'Passed' && nextDiscussion
-                ) {
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -254,19 +267,17 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           }
           if (item.type === 'CUBE') {
             if (lectureStructure.cubes) {
-              const currentCube =
-              lectureStructure.cubes.find(
-                  cube => cube.cubeId == params?.contentId
-                );
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
 
-              if(currentCube){
-                const nextCubeOrder = currentCube.order +1; 
-                
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order + 1;
+
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextCube
-                ) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -275,8 +286,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextDiscussion
-                ) {
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -284,7 +294,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
             }
           }
           return null;
-        })
+        });
       }
     }
   }, [getLectureStructure()]);
@@ -347,7 +357,26 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
               // file="/api/depot/depotFile/flow/download/37-2"
               file={file}
               onLoadSuccess={onDocumentLoadSuccess}
-              error={<div style={{position:'relative', height: '200px', verticalAlign:'middle'}}><div style={{position: 'absolute', top: '50%', left: '40%',  fontWeight: 'bold'}}>PDF 파일을 읽어 올 수 없습니다.</div></div>}
+              error={
+                <div
+                  style={{
+                    position: 'relative',
+                    height: '200px',
+                    verticalAlign: 'middle',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '40%',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    PDF 파일을 읽어 올 수 없습니다.
+                  </div>
+                </div>
+              }
             >
               <Page
                 pageNumber={pageNumber}
@@ -355,22 +384,22 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 width={1200}
               />
             </Document>
-          
-          {pageNumber === numPages && 
-           learningState === 'Passed' && 
-           nextContentsPath && (            
-            <div className="video-overlay">
-              <div className="video-overlay-btn">
-              <button onClick={() => nextContents(nextContentsPath)}>
-                  <img src={playerBtn} />
-              </button>
-              </div>
-              <div className="video-overlay-text">
-                <p>다음 학습 이어하기</p>
-                <h3>{nextContentsName}</h3>
-              </div>
-            </div>
-          )}
+
+            {pageNumber === numPages &&
+              learningState === 'Passed' &&
+              nextContentsPath && (
+                <div className="video-overlay">
+                  <div className="video-overlay-btn">
+                    <button onClick={() => nextContents(nextContentsPath)}>
+                      <img src={playerBtn} />
+                    </button>
+                  </div>
+                  <div className="video-overlay-text">
+                    <p>다음 학습 이어하기</p>
+                    <h3>{nextContentsName}</h3>
+                  </div>
+                </div>
+              )}
           </>
         )}
 
