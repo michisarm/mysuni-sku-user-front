@@ -513,6 +513,16 @@ async function getStateWhenApproved(
                 stateText,
               };
             }
+          } else {
+            return {
+              ...lectureState,
+              actionClassName: 'bg',
+              hideAction: false,
+              canAction: true,
+              actionText: DOWNLOAD,
+              action: () => { },
+              stateText,
+            };
           }
         }
         if (stateText === COMPLETE) {
@@ -725,24 +735,10 @@ export async function getStateFromCube(params: LectureRouterParams) {
         }
       }
 
-      switch (type) {
-        case 'ELearning':
-        case 'ClassRoomLecture':
-          switch (proposalState) {
-            case 'Approved':
-              break;
-            case 'Canceled':
-              break;
-            case 'Rejected':
-              break;
-
-            default:
-              break;
-          }
-          break;
-
-        default:
-          break;
+      if (type === 'Documents' && proposalState !== 'Approved') {
+        await approve(params, studentJoin.rollBookId)
+        getStateFromCube(params)
+        return;
       }
 
       const lectureState = {
