@@ -27,7 +27,7 @@ const InitialConditions = {
 
 export type FilterCondition = {
   all_college_name_query: string[]; // 컬리지
-  learningTypes: string[]; // 학습유형
+  learningTypes: string[]; // 학습유형 
   difficulty_level_json_query: string[]; // 난이도
   learning_time_query: string[]; // 교육기간
   organizer_query: string[]; // 교육기관
