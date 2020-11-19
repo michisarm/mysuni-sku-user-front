@@ -16,6 +16,7 @@ import TabContainer from 'shared/components/Tab';
 import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model';
+import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 
 
 
@@ -112,7 +113,9 @@ function MyLearningPageV2(props: Props) {
     const { requiredLecturesCount } = lectureService!;
     const { aplCount: { all: personalCompletedCount } } = aplService!;
 
-    if (menuControlAuth.companyCode === '') {
+    if (menuControlAuth.companyCode === ''
+        || ( menuControlAuth.authCode === MenuControlAuth.User
+        && menuControlAuth.useYn === MenuControlAuth.Yes)) {
       return [
         {
           name: MyLearningContentType.InProgress,
