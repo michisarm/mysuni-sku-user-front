@@ -347,7 +347,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.College}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.College} checked={conditions.all_college_name_query.length === CheckBoxOptions.all_college_name_query.length} onChange={onCheckAll} label={`${SELECT_ALL}`} />
               {CheckBoxOptions.all_college_name_query.map((college, index) => (
                 <Fragment key={`checkbox-college-${index}`}>
                   <Checkbox
@@ -367,7 +367,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.DifficultyLevel}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" checked={conditions.difficulty_level_json_query.length === CheckBoxOptions.difficulty_level_json_query.length} name={FilterConditionName.DifficultyLevel} label={`${SELECT_ALL}`} onChange={onCheckAll} />
               {CheckBoxOptions.difficulty_level_json_query.map(
                 (levels, index) => (
                   <Fragment
@@ -391,7 +391,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.LearningTime}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.LearningTime} checked={conditions.learning_time_query.length === CheckBoxOptions.learning_time_query.length} label={`${SELECT_ALL}`} onChange={onCheckAll}/>
               {CheckBoxOptions.learning_time_query.map(
                 (learningTime, index) => (
                   <Fragment key={`checkbox-learningTime-${index}`}>
@@ -424,7 +424,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
               {/*<button type="button" className="btn_filter_extend">펼치기</button>*/}
             </th>
             <td>
-              <Checkbox className="base" name={FilterConditionName.Organizer} label={`${SELECT_ALL}`} onChange={onCheckAll} />
+              <Checkbox className="base" name={FilterConditionName.Organizer} label={`${SELECT_ALL}`} checked={conditions.organizer_query.length === CheckBoxOptions.organizer_query.length} onChange={onCheckAll} />
               {CheckBoxOptions.organizer_query.map((organizer, index) => (
                 <Fragment key={`checkbox-organizer-${index}`}>
                   <Checkbox
@@ -460,7 +460,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.LearningType}</th>
             <td>
-              <Checkbox className="base" name={FilterConditionName.LearningType} label={`${SELECT_ALL}`} onChange={onCheckAll} />
+              <Checkbox className="base" name={FilterConditionName.LearningType} checked={(conditions.learningTypes.length === CheckBoxOptions.learningTypes.length - 1 && conditions.serviceType.length !== 0)} label={`${SELECT_ALL}`} onChange={onCheckAll} />
               {CheckBoxOptions.learningTypes.map((learningType, index) => (
                 <Fragment key={`checkbox-learningType-${index}`}>
                   <Checkbox
@@ -497,7 +497,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.Certification}</th>
             <td>
-              <Checkbox className="base" name={FilterConditionName.Certification} label={`${SELECT_ALL}`} onChange={onCheckAll}/>
+              <Checkbox className="base" name={FilterConditionName.Certification} checked={conditions.certifications.length === CheckBoxOptions.certifications.length} label={`${SELECT_ALL}`} onChange={onCheckAll}/>
               {CheckBoxOptions.certifications.map((certification, index) => (
                 <Fragment key={`checkbox-certification-${index}`}>
                   <Checkbox

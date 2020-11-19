@@ -10,7 +10,6 @@ const BoxCard:React.FC = () => {
   const handleHovered = (hover:boolean) => {
     setHovered(hover)
   }
-  console.table(CardListDummy)
   
   return (
     <Card.Group className="box-cards">
