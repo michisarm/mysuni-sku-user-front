@@ -49,6 +49,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       return;
     }
 
+    /*
+    첨부파일 필수 제거
     const homeworkFileBoxId = getLectureReport()?.studentReport
       ?.homeworkFileBoxId;
     if (
@@ -59,6 +61,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       reactAlert({ title: '알림', message: '첨부파일을 업로드해주세요.' });
       return;
     }
+    */
 
     reactConfirm({
       title: '제출 안내',
