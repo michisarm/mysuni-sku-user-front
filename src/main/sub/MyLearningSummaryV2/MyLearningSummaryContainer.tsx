@@ -12,7 +12,8 @@ import { Icon, Image } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 // import { BadgeService } from 'certification/stores';
-import { MyLearningSummaryService } from 'myTraining/stores';
+import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
+import { BadgeService } from 'lecture/stores';
 import { MyLearningSummaryModal } from 'myTraining';
 import { FavoriteChannelChangeModal } from 'shared';
 import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearning } from './MyLearningSummaryElementsView';
@@ -23,9 +24,11 @@ import supportRoutePaths from '../../../board/routePaths';
 
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  skProfileService?: SkProfileService,
-  myLearningSummaryService?: MyLearningSummaryService,
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  myLearningSummaryService?: MyLearningSummaryService;
+  myTrainingService?: MyTrainingService;
+  badgeService?: BadgeService;
 
   // badgeService?: BadgeService
 }
@@ -34,6 +37,8 @@ interface Props extends RouteComponentProps {
   'shared.actionLogService',
   'profile.skProfileService',
   'myTraining.myLearningSummaryService',
+  'myTraining.myTrainingService',
+  'badge.badgeService'
   // 'badge.badgeService'
 ))
 @observer
@@ -47,12 +52,20 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   init() {
     //
-    const { myLearningSummaryService, skProfileService } = this.props;
+    const { skProfileService } = this.props;
+    skProfileService!.findStudySummary();
+    this.fetchLearningSummary();
+  }
+
+  fetchLearningSummary() {
+    const { myLearningSummaryService, myTrainingService, badgeService } = this.props;
+
     /* 메인 페이지에는 해당 년도의 LearningSummary 를 display 함. */
     const year = moment().year();
+
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
-    skProfileService!.findStudySummary();
-    // badgeService!.getCountOfBadges();
+    myTrainingService!.countMyTrainingsWithStamp();
+    badgeService!.getCountOfBadges();
   }
 
   getHourMinute(minuteTime: number) {
@@ -108,10 +121,12 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   render() {
     //
-    const { myLearningSummaryService, skProfileService } = this.props;
+    const { myLearningSummaryService, skProfileService, myTrainingService, badgeService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
+    const { myStampCount } = myTrainingService!;
+    const { earnedCount: myBadgeCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
@@ -197,7 +212,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Stamp')}>
             <HeaderItemView
               label="My Stamp"
-              count={myLearningSummary.acheiveStampCount}
+              count={myStampCount}
               onClick={this.onClickStamp}
             />
           </ItemWrapper>
@@ -206,7 +221,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Badge')}>
             <HeaderItemView
               label="My Badge"
-              count={myLearningSummary.achieveBadgeCount}
+              count={myBadgeCount}
               onClick={this.onClickBadge}
             />
           </ItemWrapper>
