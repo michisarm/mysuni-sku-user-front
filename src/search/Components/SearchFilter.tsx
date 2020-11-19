@@ -247,8 +247,7 @@ function toggle_all_learning_time_query() {
       learning_time_query: [],
     });
     const nextTags = tags.filter(
-      tag =>
-        !CheckBoxOptions.learning_time_query.some(c => c.value === tag.text)
+      tag => !CheckBoxOptions.learning_time_query.some(c => c.text === tag.text)
     );
     setTags(nextTags);
   } else {
@@ -260,8 +259,9 @@ function toggle_all_learning_time_query() {
     });
     const nextTags = [...tags];
     CheckBoxOptions.learning_time_query.forEach(c => {
-      if (!tags.some(tag => c.value === tag.text)) {
-        const text = c.value;
+      if (!tags.some(tag => c.text === tag.text)) {
+        const text = c.text;
+        const value = c.value;
         const removeMe = () => {
           const mTags = getTags();
           if (mTags === undefined) {
@@ -275,7 +275,7 @@ function toggle_all_learning_time_query() {
           setFilterCondition({
             ...mFilterCondition,
             learning_time_query: mFilterCondition.learning_time_query.filter(
-              e => e !== text
+              e => e !== value
             ),
           });
         };
@@ -510,7 +510,7 @@ function toggle_difficulty_level_json_query(value: string) {
   }
 }
 
-function toggle_learning_time_query(value: string) {
+function toggle_learning_time_query(text: string, value: string) {
   const filterCondition = getFilterCondition();
   const queryOptions = getQueryOptions();
   const tags = getTags();
@@ -530,7 +530,7 @@ function toggle_learning_time_query(value: string) {
         c => c !== value
       ),
     });
-    const nextTags = tags.filter(tag => tag.text !== value);
+    const nextTags = tags.filter(tag => tag.text !== text);
     setTags(nextTags);
   } else {
     setFilterCondition({
@@ -543,7 +543,7 @@ function toggle_learning_time_query(value: string) {
       if (mTags === undefined) {
         return;
       }
-      setTags(mTags.filter(d => d.text !== value));
+      setTags(mTags.filter(d => d.text !== text));
       const mFilterCondition = getFilterCondition();
       if (mFilterCondition === undefined) {
         return;
@@ -555,7 +555,7 @@ function toggle_learning_time_query(value: string) {
         ),
       });
     };
-    nextTags.push({ key: value, text: value, removeMe });
+    nextTags.push({ key: text, text, removeMe });
     setTags(nextTags);
   }
 }
@@ -843,7 +843,10 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                         learningTime.value
                       )}
                       onChange={() =>
-                        toggle_learning_time_query(learningTime.value)
+                        toggle_learning_time_query(
+                          learningTime.text,
+                          learningTime.value
+                        )
                       }
                     />
                   </Fragment>
