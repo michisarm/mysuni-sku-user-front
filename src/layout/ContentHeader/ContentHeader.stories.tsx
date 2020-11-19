@@ -87,7 +87,7 @@ export const WaitingItem = () =>
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
         <ContentHeader.WaitingItem
-          onClick={action('clickWaitingItem')}
+          onClickRecommend={action('clickWaitingItem')}
         />
       </ContentHeader.Cell>
     </ContentHeader>

@@ -14,11 +14,11 @@ import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
 //2020-11-05
-import './style/css/2.c8476132.chunk.css';
-import './style/css/main.5a70a80b.chunk.css';
+import './style/css/2.a338c87e.chunk.css';
+import './style/css/main.2fe4413e.chunk.css';
 
 initializeBody();
 
-ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
+// ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
 
 ReactDOM.render(<App />, document.getElementById('root'));

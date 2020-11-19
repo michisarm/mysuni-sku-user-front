@@ -33,8 +33,10 @@ function MyPagePageV2(props: Props) {
 
   useEffect(() => {
     /* 탭의 뱃지 & 스탬프 카운트 호출. */
-    myTrainingService!.countMyTrainingsWithStamp();
-    badgeService!.getCountOfBadges();
+    if (myStampCount === 0 && myBadgeCount === 0) {
+      myTrainingService!.countMyTrainingsWithStamp();
+      badgeService!.getCountOfBadges();
+    }
   }, []);
 
   const getTabs = (): TabItemModel[] => {

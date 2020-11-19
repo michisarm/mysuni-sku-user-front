@@ -53,6 +53,23 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
   const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
+  const myInput: any = useRef();
+  const [dimensions, setDimensions] = React.useState({ 
+    height: window.innerHeight,
+    width: window.innerWidth
+  })
+
+  const updateDimesions = () => {
+    if(document.getElementsByTagName('iframe')[0] === undefined) {
+      return
+    }
+    document.getElementsByTagName('iframe')[0].width = myInput.current.clientWidth+'px'
+  };
+
+  useEffect(() => {
+    updateDimesions();
+    window.addEventListener("resize", updateDimesions);
+  }, []);
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -377,7 +394,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         const currentPaonoptoSessionId =
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
         const embedApi = new window.EmbedApi('panopto-embed-audio-player', {
-          width: '1200',
+          width: myInput.current.clientWidth,
           height: '100',
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
@@ -408,7 +425,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   }, []);
 
   return (
-    <div className="audio-container">
+    <div className="audio-container" ref={myInput}>
       {panoptoState == 0 &&
         !isActive &&
         nextContentsPath &&

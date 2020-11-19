@@ -39,6 +39,7 @@ function MyLearningListContainerV2(props: Props) {
   const { skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, collegeService } = props;
   const { profileMemberName } = skProfileService!;
   const { colleges } = collegeService!;
+  const { inprogressCount } = myTrainingService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -50,6 +51,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
+  /* effects */
   useEffect(() => {
     /* 상위 컴포넌트에서 조회되는 colleges 가 없을 경우, MultiFilterBox 에 전달하기 위해 다시 조회함.*/
     if (!colleges || !colleges.length) {
@@ -57,15 +59,10 @@ function MyLearningListContainerV2(props: Props) {
     }
   }, []);
 
-  /* effects */
   useEffect(() => {
     initPage();
-    if (filterCount === 0) {
-      fetchModelsByContentType(contentType);
-    } else {
-      fetchModelsByConditions(contentType, viewType);
-    }
-  }, [contentType, viewType, filterCount]);
+    fetchModelsByContentType(contentType);
+  }, [contentType, viewType]);
 
   useEffect(() => {
     /* just for clean up */
@@ -80,7 +77,6 @@ function MyLearningListContainerV2(props: Props) {
     fetchFilterCountViews(contentType);
 
     return () => clearFilterCountViews(contentType);
-
   }, [contentType, viewType]);
 
   /* functions */
@@ -308,7 +304,6 @@ function MyLearningListContainerV2(props: Props) {
       default:
         return myTrainingService!.totalFilterCountView;
     }
-
   };
 
   const isModelExist = (contentType: MyContentType) => {
@@ -355,20 +350,32 @@ function MyLearningListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
+  /* 학습중 관련 storage 작업 */
   const updateSessionStorage = async () => {
+    /* 학습중 storage udpate */
     const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    sessionStorage.removeItem('inProgressTableViews');
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
   }
 
   /* handlers */
   const onChangeFilterCount = useCallback((count: number) => {
-    if (filterCount && filterCount === count) {
+    /* if (filterCount && filterCount === count) {
       initPage();
       fetchModelsByConditions(contentType, viewType);
     }
-
+    */
     setFilterCount(count);
-  }, [filterCount, contentType, viewType]);
+  }, []);
+
+  const getModelsByConditions = (count: number) => {
+    if (count > 0) {
+      initPage();
+      fetchModelsByConditions(contentType, viewType);
+    } else {
+      fetchModelsByContentType(contentType);
+    }
+  }
 
   const onClickFilter = useCallback(() => {
     setOpenFilter(prev => !prev);
@@ -393,10 +400,11 @@ function MyLearningListContainerV2(props: Props) {
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
-    myTrainingService!.clearAllSelectedServiceIds();
     await updateSessionStorage();
-    myTrainingService!.findAllTableViews();
-    myTrainingService!.findAllTabCount();
+    await myTrainingService!.findAllTabCount();
+    await myTrainingService!.findAllTableViews();
+
+    myTrainingService!.clearAllSelectedServiceIds();
 
     setOpenModal(false);
   }, []);
@@ -451,30 +459,36 @@ function MyLearningListContainerV2(props: Props) {
   /* render */
   return (
     <>
+      {(!resultEmpty || filterCount > 0) && (
+        <>
+          <LineHeaderContainerV2
+            contentType={contentType}
+            viewType={viewType}
+            onChangeViewType={onChangeViewType}
+            resultEmpty={resultEmpty}
+            totalCount={getTotalCount(contentType)}
+            filterCount={filterCount}
+            openFilter={openFilter}
+            onClickFilter={onClickFilter}
+            onClickDelete={onClickDelete}
+          />
+          <MultiFilterBox
+            contentType={contentType}
+            viewType={viewType}
+            openFilter={openFilter}
+            onClickFilter={onClickFilter}
+            onChangeFilterCount={onChangeFilterCount}
+            getModels={getModelsByConditions}
+            colleges={colleges}
+            totalFilterCount={getTotalFilterCountView(contentType)}
+            filterCounts={getFilterCountViews(contentType)}
+          />
+        </>
+      )}
       {
         isModelExist(contentType) &&
         (
           <>
-            <LineHeaderContainerV2
-              contentType={contentType}
-              viewType={viewType}
-              onChangeViewType={onChangeViewType}
-              resultEmpty={resultEmpty}
-              totalCount={getTotalCount(contentType)}
-              filterCount={filterCount}
-              openFilter={openFilter}
-              onClickFilter={onClickFilter}
-              onClickDelete={onClickDelete}
-            />
-            <MultiFilterBox
-              contentType={contentType}
-              viewType={viewType}
-              openFilter={openFilter}
-              onChangeFilterCount={onChangeFilterCount}
-              colleges={colleges}
-              totalFilterCount={getTotalFilterCountView(contentType)}
-              filterCounts={getFilterCountViews(contentType)}
-            />
             {!resultEmpty && (
               <>
                 <MyLearningTableTemplate

@@ -219,84 +219,84 @@ class MyLearningSummaryModal extends Component<Props> {
       );
     }
 
-    return lectureTimeSummary && (
+    return (
       <ul className="bullet-list2">
         <li>
           <span className="name b1">AI</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.aiCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.aiCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b2">DT</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.dtCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.dtCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b3">행복</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.happyCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.happyCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b4">SV</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.svCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.svCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b5">혁신디자인</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.designCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.designCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b6">Global</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.globalCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.globalCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b7">Leadership</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.leadershipCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.leadershipCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b8">Management</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.managementCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.managementCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b9">반도체</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.semiconductorCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.semiconductorCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b13">에너지 솔루션</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.energySolutionCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.energySolutionCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b10">SK아카데미</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.skAcademyCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.skAcademyCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b11">SK경영</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.skManagementCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.skManagementCollegeTime || 0)}
           </span>
         </li>
         <li>
           <span className="name b12">Life Style</span>
           <span className="time">
-            {timeToHourMinutePaddingFormat(lectureTimeSummary.lifeStyleCollegeTime)}
+            {timeToHourMinutePaddingFormat(lectureTimeSummary && lectureTimeSummary.lifeStyleCollegeTime || 0)}
           </span>
         </li>
       </ul>
