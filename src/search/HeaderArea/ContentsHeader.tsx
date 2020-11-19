@@ -19,7 +19,7 @@ const ContentsHeader: React.FC = () => {
       window.location.search.indexOf('=') + 1,
       window.location.search.length
     );
-    setSearchValue(queryId);
+    setSearchValue(decodeURI(queryId));
   }, []);
 
   return (

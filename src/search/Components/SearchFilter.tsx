@@ -12,30 +12,30 @@ interface Props {
 
 const SELECT_ALL = 'Select All';
 const InitialConditions = {
-  collegeIds: [],
+  all_college_name_query: [],
   learningTypes: [],
-  difficultyLevels: [],
-  learningTimes: [],
-  organizers: [],
+  difficulty_level_json_query: [],
+  learning_time_query: [],
+  organizer_query: [],
   required: '',
   serviceType: '',
   certifications: [],
-  startDate: null,
-  endDate: null,
+  learning_start_date_str: null,
+  learning_end_date_str: null,
   applying: '',
 };
 
 export type FilterCondition = {
-  collegeIds: string[]; // 컬리지
+  all_college_name_query: string[]; // 컬리지
   learningTypes: string[]; // 학습유형
-  difficultyLevels: string[]; // 난이도
-  learningTimes: string[]; // 교육기간
-  organizers: string[]; // 교육기관
+  difficulty_level_json_query: string[]; // 난이도
+  learning_time_query: string[]; // 교육기간
+  organizer_query: string[]; // 교육기관
   required: string; // 권장과정
   serviceType: string; // 학습유형에 포함되어 있는 'Course'
   certifications: string[]; // 뱃지 & 스탬프 유무
-  startDate: Date | null; // 교육일정 startDate
-  endDate: Date | null; // 교육일정 endDate
+  learning_start_date_str: Date | null; // 교육일정 startDate
+  learning_end_date_str: Date | null; // 교육일정 endDate
   applying: string; // 수강신청 가능 학습
 };
 
@@ -70,16 +70,16 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   }, [searchValue]);
 
   const [conditions, setConditions] = useState<FilterCondition>({
-    collegeIds: [],
+    all_college_name_query: [],
     learningTypes: [],
-    difficultyLevels: [],
-    learningTimes: [],
-    organizers: [],
+    difficulty_level_json_query: [],
+    learning_time_query: [],
+    organizer_query: [],
     required: '',
     serviceType: '',
     certifications: [],
-    startDate: null,
-    endDate: null,
+    learning_start_date_str: null,
+    learning_end_date_str: null,
     applying: '',
   });
 
@@ -90,11 +90,11 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   const onCheckOne = (e: any, data: any) => {
     switch (data.name) {
       case FilterConditionName.College:
-        if (conditions.collegeIds.includes(data.value)) {
+        if (conditions.all_college_name_query.includes(data.value)) {
           /* 선택 해제 */
           setConditions({
             ...conditions,
-            collegeIds: conditions.collegeIds.filter(
+            all_college_name_query: conditions.all_college_name_query.filter(
               collegeId => collegeId !== data.value
             ),
           });
@@ -103,7 +103,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         /* 선택 */
         setConditions({
           ...conditions,
-          collegeIds: conditions.collegeIds.concat(data.value),
+          all_college_name_query: conditions.all_college_name_query.concat(data.value),
         });
         break;
       case FilterConditionName.LearningType:
@@ -136,10 +136,10 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         });
         break;
       case FilterConditionName.DifficultyLevel:
-        if (conditions.difficultyLevels.includes(data.value)) {
+        if (conditions.difficulty_level_json_query.includes(data.value)) {
           setConditions({
             ...conditions,
-            difficultyLevels: conditions.difficultyLevels.filter(
+            difficulty_level_json_query: conditions.difficulty_level_json_query.filter(
               difficultyLevel => difficultyLevel !== data.value
             ),
           });
@@ -147,14 +147,14 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         }
         setConditions({
           ...conditions,
-          difficultyLevels: conditions.difficultyLevels.concat(data.value),
+          difficulty_level_json_query: conditions.difficulty_level_json_query.concat(data.value),
         });
         break;
       case FilterConditionName.LearningTime:
-        if (conditions.learningTimes.includes(data.value)) {
+        if (conditions.learning_time_query.includes(data.value)) {
           setConditions({
             ...conditions,
-            learningTimes: conditions.learningTimes.filter(
+            learning_time_query: conditions.learning_time_query.filter(
               learningTIme => learningTIme !== data.value
             ),
           });
@@ -162,14 +162,14 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         }
         setConditions({
           ...conditions,
-          learningTimes: conditions.learningTimes.concat(data.value),
+          learning_time_query: conditions.learning_time_query.concat(data.value),
         });
         break;
       case FilterConditionName.Organizer:
-        if (conditions.organizers.includes(data.value)) {
+        if (conditions.organizer_query.includes(data.value)) {
           setConditions({
             ...conditions,
-            organizers: conditions.organizers.filter(
+            organizer_query: conditions.organizer_query.filter(
               organizer => organizer !== data.value
             ),
           });
@@ -177,7 +177,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         }
         setConditions({
           ...conditions,
-          organizers: conditions.organizers.concat(data.value),
+          organizer_query: conditions.organizer_query.concat(data.value),
         });
         break;
       case FilterConditionName.Required:
@@ -231,7 +231,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                     name={FilterConditionName.College}
                     label={college.text}
                     value={college.value}
-                    checked={conditions.collegeIds.includes(college.value)}
+                    checked={conditions.all_college_name_query.includes(college.value)}
                     onChange={onCheckOne}
                   />
                 </Fragment>
@@ -242,14 +242,14 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
             <th>{FilterConditionName.DifficultyLevel}</th>
             <td>
               <Checkbox className="base" label={`${SELECT_ALL}`} />
-              {CheckBoxOptions.difficultyLevels.map((levels, index) => (
-                <Fragment key={`checkbox-difficultyLevels-${index}`}>
+              {CheckBoxOptions.difficulty_level_json_query.map((levels, index) => (
+                <Fragment key={`checkbox-difficulty_level_json_query-${index}`}>
                   <Checkbox
                     className="base"
                     name={FilterConditionName.DifficultyLevel}
                     label={levels.text}
                     value={levels.value}
-                    checked={conditions.difficultyLevels.includes(levels.value)}
+                    checked={conditions.difficulty_level_json_query.includes(levels.value)}
                     onChange={onCheckOne}
                   />
                 </Fragment>
@@ -260,14 +260,14 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
             <th>{FilterConditionName.LearningTime}</th>
             <td>
               <Checkbox className="base" label={`${SELECT_ALL}`} />
-              {CheckBoxOptions.learningTimes.map((learningTime, index) => (
+              {CheckBoxOptions.learning_time_query.map((learningTime, index) => (
                 <Fragment key={`checkbox-learningTime-${index}`}>
                   <Checkbox
                     className="base"
                     name={FilterConditionName.LearningTime}
                     label={learningTime.text}
                     value={learningTime.value}
-                    checked={conditions.learningTimes.includes(
+                    checked={conditions.learning_time_query.includes(
                       learningTime.value
                     )}
                     onChange={onCheckOne}
@@ -291,14 +291,14 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
             </th>
             <td>
               <Checkbox className="base" label={`${SELECT_ALL}`} />
-              {CheckBoxOptions.organizers.map((organizer, index) => (
+              {CheckBoxOptions.organizer_query.map((organizer, index) => (
                 <Fragment key={`checkbox-organizer-${index}`}>
                   <Checkbox
                     className="base"
                     name={FilterConditionName.Organizer}
                     label={organizer.text}
                     value={organizer.value}
-                    checked={conditions.organizers.includes(organizer.value)}
+                    checked={conditions.organizer_query.includes(organizer.value)}
                     onChange={onCheckOne}
                   />
                 </Fragment>
