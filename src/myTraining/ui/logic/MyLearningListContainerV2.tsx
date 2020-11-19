@@ -395,7 +395,7 @@ function MyLearningListContainerV2(props: Props) {
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
     myTrainingService!.clearAllSelectedServiceIds();
     await updateSessionStorage();
-    myTrainingService!.findAllTableViews();
+    await myTrainingService!.findAllTableViews();
     myTrainingService!.findAllTabCount();
 
     setOpenModal(false);
