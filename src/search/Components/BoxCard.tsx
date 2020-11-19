@@ -74,8 +74,7 @@ const ItemList = [
       header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 웅앵)",
       textArea: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three"
     }
-  }
-  ,
+  },
   {
     ribbon: "핵인싸과정",
     label: "Global",
@@ -89,26 +88,12 @@ const ItemList = [
       header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 웅앵)",
       textArea: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three"
     }
-  },
-  {
-    ribbon: "핵인싸과정",
-    label: "Global",
-    header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 어쩌구저쩌구저쩌구어어쩌구)",
-    course: "Course",
-    time: "1h 30m",
-    complete: "이수 3,300명",
-    rating: 3,
-    hovered: {
-      label: "Global",
-      header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 웅앵)",
-      textArea: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three"
-    }
   }
 ]
 
 const BoxCard:React.FC = () => {
   const [hovered, setHovered] = useState<boolean>(false);
-  
+
   const handleHovered = (hover:boolean) => {
     setHovered(hover)
   }
@@ -118,7 +103,7 @@ const BoxCard:React.FC = () => {
       {
         ItemList && ItemList.map((item, index) => {
         return (
-        <Card key={index} className={`card-h  ${hovered ? "on" : ""}`} onMouseEnter={() => handleHovered(true)} onMouseLeave={() => handleHovered(false)} >
+        <Card key={index} className="card-h" onMouseEnter={() => handleHovered(true)} onMouseLeave={() => handleHovered(false)} >
           {/*tag*/}
           <div className="card-ribbon-wrap">
             <Label className="ribbon2">{/* Required */}{item.ribbon}</Label>
