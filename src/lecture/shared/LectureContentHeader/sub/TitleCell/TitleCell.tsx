@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import ReactGA from 'react-ga';
 
 import moment from 'moment';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
@@ -22,6 +23,13 @@ interface Props {
 @reactAutobind
 class TitleCell extends Component<Props> {
   //
+  componentDidMount() {
+    setTimeout(() => {
+      // console.log('DidMount', this.props.title);
+      ReactGA.pageview(window.location.pathname + window.location.search, [], `${this.props.title}`);
+    }, 2000);
+  }
+
   render() {
     //
     const { label, category, title, type, typeName, creationTime, children, learningPeriod } = this.props;
@@ -29,7 +37,7 @@ class TitleCell extends Component<Props> {
 
     return (
       <div className="title-area">
-        { label ?
+        {label ?
           <Label color={label.color}>{label.text}</Label>
           :
           category && category.college.name && (
@@ -43,11 +51,11 @@ class TitleCell extends Component<Props> {
             <Label className="bold onlytext">
               <Icon className={CubeIconType[type]} /><span>{cubeTypeName}</span>
             </Label>
-            { category && category.channel.name && <span className="channel">{category.channel.name}</span>}
+            {category && category.channel.name && <span className="channel">{category.channel.name}</span>}
           </div>
           <div className="item">
             <Label className="onlytext">
-              { creationTime ?
+              {creationTime ?
                 <>
                   <Icon className="date" />
                   <span>등록일 : {moment(creationTime).format('YYYY.MM.DD')}</span>
