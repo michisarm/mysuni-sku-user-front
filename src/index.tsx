@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'semantic-ui-less/semantic.less';
@@ -13,9 +14,11 @@ import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
 //2020-11-05
-import './style/css/2.1c5db5b6.chunk.css';
-import './style/css/main.c75eb35d.chunk.css';
+import './style/css/2.a338c87e.chunk.css';
+import './style/css/main.ea44b9a0.chunk.css';
 
 initializeBody();
+
+// ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
 
 ReactDOM.render(<App />, document.getElementById('root'));

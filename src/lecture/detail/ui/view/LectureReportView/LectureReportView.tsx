@@ -17,6 +17,9 @@ import {
 } from 'lecture/detail/store/LectureReportStore';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
+import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import { getCourseLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCourseLectureReport';
+import { getCubeLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCubeLectureReport';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report
@@ -37,6 +40,17 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
 }) {
   const params = useLectureRouterParams();
   const onSubmitClick = useCallback(() => {
+    const lectureStructureItem = getActiveStructureItem();
+    if (lectureStructureItem?.canSubmit !== true) {
+      reactAlert({
+        title: '알림',
+        message: '학습 완료 후 Report 제출이 가능합니다.',
+      });
+      return;
+    }
+
+    /*
+    첨부파일 필수 제거
     const homeworkFileBoxId = getLectureReport()?.studentReport
       ?.homeworkFileBoxId;
     if (
@@ -47,6 +61,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       reactAlert({ title: '알림', message: '첨부파일을 업로드해주세요.' });
       return;
     }
+    */
 
     reactConfirm({
       title: '제출 안내',
@@ -56,6 +71,12 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         setCubeLectureReport().then(() => {
           if (params !== undefined) {
             requestLectureStructure(params.lectureParams, params.pathname);
+            //새로고침
+            if( params.contentType === 'coures') {
+              getCourseLectureReport(params)
+            } else {
+              getCubeLectureReport(params);
+            }
           }
           reactAlert({
             title: '알림',
@@ -112,11 +133,11 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
           <Form.Field>
             <label>작성 가이드</label>
             <div className="ui editor-wrap">
-              {getLectureReport()?.reportFileBox?.reportQuestion}
+              {lectureReport?.reportFileBox?.reportQuestion}
             </div>
           </Form.Field>
           <Form.Field>
-            {getLectureReport()?.reportFileBox?.fileBoxId && (
+            {lectureReport?.reportFileBox?.fileBoxId && (
               <>
                 <div className="download-file">
                   <div className="btn-wrap">
@@ -125,7 +146,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                       className="left icon-big-line2"
                       onClick={() =>
                         depot.downloadDepot(
-                          getLectureReport()?.reportFileBox?.fileBoxId || ''
+                          lectureReport?.reportFileBox?.fileBoxId || ''
                         )
                       }
                     >
@@ -145,7 +166,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
               </>
             )}
             <div className="ui editor-wrap">
-              <Editor lectureReport={lectureReport} />
+              <Editor reportId={lectureReport?.reportId} />
             </div>
           </Form.Field>
           <Form.Field>
@@ -156,11 +177,10 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 <div className="attach-inner">
                   <FileBox
                     id={
-                      getLectureReport()?.studentReport?.homeworkFileBoxId !==
+                      lectureReport?.studentReport?.homeworkFileBoxId !==
                         null &&
-                      getLectureReport()?.studentReport?.homeworkFileBoxId !==
-                        'null'
-                        ? getLectureReport()?.studentReport?.homeworkFileBoxId
+                      lectureReport?.studentReport?.homeworkFileBoxId !== 'null'
+                        ? lectureReport?.studentReport?.homeworkFileBoxId
                         : ''
                     }
                     vaultKey={{
@@ -194,7 +214,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         </Form>
       </div>
       {/* form 태그를 div로 감싸기 */}
-      {getLectureReport()?.studentReport?.homeworkOperatorComment && (
+      {lectureReport?.studentReport?.homeworkOperatorComment && (
         <div className="apl-form-wrap support">
           <Form>
             {/* margin-none 클래스 추가 */}
@@ -207,7 +227,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                       className="ql-editor"
                       dangerouslySetInnerHTML={{
                         __html:
-                          getLectureReport()?.studentReport
+                          lectureReport?.studentReport
                             ?.homeworkOperatorComment || '',
                       }}
                     />
@@ -246,7 +266,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                             <a
                               onClick={() =>
                                 depot.downloadDepot(
-                                  getLectureReport()?.studentReport
+                                  lectureReport?.studentReport
                                     ?.homeworkOperatorFileBoxId || ''
                                 )
                               }
@@ -266,8 +286,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         </div>
       )}
       <div className="survey-preview">
-        {getLectureReport()?.state !== 'Completed' &&
-          getLectureReport()?.state !== 'Progress' && (
+        {lectureReport?.state !== 'Completed' &&
+          // lectureReport?.state !== 'Progress' &&
+           (
             <button className="ui button fix bg" onClick={onSubmitClick}>
               제출
             </button>

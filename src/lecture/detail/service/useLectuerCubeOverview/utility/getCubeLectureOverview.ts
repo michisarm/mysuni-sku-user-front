@@ -177,6 +177,9 @@ export async function getCubeLectureOverview(
 ) {
   const personalCube = await findCube(personalCubeId);
   const cubeIntro = await findIntro(personalCube.cubeIntro.id);
+  if (cubeIntro === undefined) {
+    return
+  }
   const lectureCard = await findLectureCard(lectureCardId);
   const lectureSummary = await getLectureSummary(
     personalCube,

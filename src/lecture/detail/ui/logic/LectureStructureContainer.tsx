@@ -1,23 +1,35 @@
 import React, { useCallback, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import {
+  getActiveStructureItemAll,
   mergeActivated,
   useLectureStructure,
 } from '../../service/useLectureStructure/useLectureStructure';
 import { getCourseLectureStructure } from '../../service/useLectureStructure/utility/getCourseLectureStructure';
 import { getCubeLectureStructure } from '../../service/useLectureStructure/utility/getCubeLectureStructure';
-import { setLectureStructure } from '../../store/LectureStructureStore';
+import {
+  setCurentLectureStructureItem,
+  setLectureStructure,
+} from '../../store/LectureStructureStore';
 import LectureParams from '../../viewModel/LectureParams';
 import LectureStructureView from '../view/LectureStructureView/LectureStructureView';
 
 const getCubeItem = (params: LectureParams, pathname: string) => {
   getCubeLectureStructure(params).then(lectureStructure => {
-    mergeActivated(lectureStructure, pathname);
+    if (lectureStructure !== undefined) {
+      mergeActivated(lectureStructure, pathname);
+      const activeStructureItem = getActiveStructureItemAll();
+      setCurentLectureStructureItem(activeStructureItem);
+    } else {
+      setCurentLectureStructureItem();
+    }
   });
 };
 const getCourseItem = (params: LectureParams, pathname: string) => {
   getCourseLectureStructure(params).then(lectureStructure => {
     mergeActivated(lectureStructure, pathname);
+    const activeStructureItem = getActiveStructureItemAll();
+    setCurentLectureStructureItem(activeStructureItem);
   });
 };
 
@@ -39,6 +51,7 @@ function LectureStructureContainer() {
 
   useEffect(() => {
     requestLectureStructure(params, pathname);
+    return () => setLectureStructure();
   }, [params, pathname]);
 
   //   useEffect(() => {

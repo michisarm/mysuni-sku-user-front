@@ -69,7 +69,7 @@ export async function saveTestAnswerSheet(
       );
     }
     await getTestStudentItemMapFromCube(params); // student 재호출
-    getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(async newAnswerSheetId => {
       answerSheetBody.id = newAnswerSheetId;

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
@@ -14,13 +13,12 @@ import PopularLearning from './MainComponents/POPLearning';
 import RecommendLearning from './MainComponents/LRSLearning';
 import { InMyLectureService } from '../../../myTraining/stores';
 
-
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService,
+  skProfileService?: SkProfileService;
   inMyLectureService?: InMyLectureService;
 }
 
-const MyLearningContentContainer: React.FC<Props> = (Props) => {
+const MyLearningContentContainer: React.FC<Props> = Props => {
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
   const { member } = skProfile;
@@ -40,9 +38,9 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
   return (
     <>
-      <InProgressLearning 
+      <InProgressLearning
         profileMemberName={member.name}
-        GA_NAME="studying_detail_btn" 
+        GA_NAME="studying_detail_btn"
       />
 
       {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
@@ -61,7 +59,9 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'myTraining.inMyLectureService',
-))(withRouter(MyLearningContentContainer));
+export default inject(
+  mobxHelper.injectFrom(
+    'profile.skProfileService',
+    'myTraining.inMyLectureService'
+  )
+)(withRouter(MyLearningContentContainer));

@@ -3,7 +3,8 @@ import React, { useEffect, useCallback } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
-import { MyLearningSummaryService } from 'myTraining/stores';
+import { MyTrainingService } from 'myTraining/stores';
+import { BadgeService } from 'lecture/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ContentLayout, TabItemModel } from 'shared';
 import Tab from 'shared/components/Tab';
@@ -14,7 +15,8 @@ import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
-  myLearningSummaryService?: MyLearningSummaryService;
+  myTrainingService?: MyTrainingService;
+  badgeService?: BadgeService;
 }
 
 interface RouteParams {
@@ -23,15 +25,17 @@ interface RouteParams {
 }
 
 function MyPagePageV2(props: Props) {
-  const { myLearningSummaryService, history, match } = props;
-  const { totalMyLearningSummary: { achieveBadgeCount, acheiveStampCount } } = myLearningSummaryService!;
+  const { myTrainingService, badgeService, history, match } = props;
+  const { myStampCount } = myTrainingService!;
+  const { earnedCount: myBadgeCount } = badgeService!;
   const currentTab = match.params.tab;
 
 
   useEffect(() => {
     /* 탭의 뱃지 & 스탬프 카운트 호출. */
-    if (acheiveStampCount === 0 && achieveBadgeCount === 0) {
-      myLearningSummaryService!.findTotalMyLearningSummary();
+    if (myStampCount === 0 && myBadgeCount === 0) {
+      myTrainingService!.countMyTrainingsWithStamp();
+      badgeService!.getCountOfBadges();
     }
   }, []);
 
@@ -39,12 +43,12 @@ function MyPagePageV2(props: Props) {
     return [
       {
         name: MyPageContentType.EarnedBadgeList,
-        item: getTabItem(MyPageContentType.EarnedBadgeList, achieveBadgeCount),
+        item: getTabItem(MyPageContentType.EarnedBadgeList, myBadgeCount),
         render: () => <EarnedBadgeListContainer />
       },
       {
         name: MyPageContentType.EarnedStampList,
-        item: getTabItem(MyPageContentType.EarnedStampList, acheiveStampCount),
+        item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />
       }
     ] as TabItemModel[];
@@ -89,7 +93,8 @@ function MyPagePageV2(props: Props) {
 }
 
 export default inject(mobxHelper.injectFrom(
-  'myTraining.myLearningSummaryService'
+  'myTraining.myTrainingService',
+  'badge.badgeService'
 ))(withRouter(observer(MyPagePageV2)));
 
 /* globals */

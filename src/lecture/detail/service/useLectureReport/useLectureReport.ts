@@ -1,17 +1,12 @@
 /* eslint-disable consistent-return */
 
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { onLectureReport } from '../../store/LectureReportStore';
 import {
   LectureReport,
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-  LectureReportCubeItemParams,
 } from '../../viewModel/LectureReport';
-import { getCubeLectureReport } from './utility/getCubeLectureReport';
-import { getCourseLectureReport } from './utility/getCourseLectureReport';
 import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';
 
 type ReportValue = LectureReport | undefined;
@@ -25,26 +20,8 @@ export function useLectureReport(): [
   const [subscriberId, setSubscriberId] = useState<string>();
   const [reportValue, setReportValue] = useState<ReportValue>();
   const params = useParams<LectureParams>();
-  
-  const getCubeReportItem = useCallback((params: LectureParams) => {
-    getCubeLectureReport(params);
-  }, []);
-
-  const getCourseReportItem = useCallback((params: any) => {
-    if (params === undefined) {
-      return;
-    }
-    getCourseLectureReport(params);
-  }, [params]);
 
 
-  useEffect(() => {
-    if (params.cubeId !== undefined) {
-      getCubeReportItem(params);
-    } else {
-      getCourseReportItem(params);
-    }
-  }, [params]);
 
   useEffect(() => {
     const next = `useLectureReport-${++subscriberIdRef}`;
@@ -57,13 +34,12 @@ export function useLectureReport(): [
     }
     return onLectureReport(next => {
       setReportValue(next);
-      console.log('LectureReportItem', next);
     }, subscriberId);
   }, [subscriberId]);
 
   const setCubeLectureReport = useCallback(() => {
     return setCubeLectureStudentReport(params);
-  }, []);
+  }, [params]);
 
   return [reportValue, setReportValue, setCubeLectureReport];
 }

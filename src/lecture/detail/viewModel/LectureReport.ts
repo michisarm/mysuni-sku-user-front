@@ -65,6 +65,7 @@ export interface ReportFileBox {
 }
 
 export interface LectureReport {
+  reportId: string;
   studentReport?: StudentReport;
   reportFileBox?: ReportFileBox;
   state?: State;

@@ -92,7 +92,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           )}
           {myLearningSummary.totalLearningTime === 0 && (
             <ContentHeader.WaitingItem
-              onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
+              onClickRecommend={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
             />
           )}
         </ContentHeader.Cell>

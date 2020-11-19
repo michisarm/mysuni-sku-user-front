@@ -1,9 +1,9 @@
 /* eslint-disable consistent-return */
 
 import { useEffect, useState } from 'react';
-import { Course } from '../../../shared/Lecture/Lecture.stories';
 import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
 import {
+  getLectureStructure,
   onLectureStructure,
   setLectureStructure,
 } from '../../store/LectureStructureStore';
@@ -206,8 +206,175 @@ export function mergeActivated(
     return item;
   });
 
-
   setLectureStructure({ ...lectureStructure });
+}
+
+export function getActiveStructureItem() {
+  const lectureStructure = getLectureStructure();
+  if (lectureStructure !== undefined) {
+    if (lectureStructure.course !== undefined) {
+      if (lectureStructure.course.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.test?.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.survey?.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.report?.activated) {
+        return lectureStructure.course;
+      }
+    }
+    if (lectureStructure.cube !== undefined) {
+      if (lectureStructure.cube.activated) {
+        return lectureStructure.cube;
+      }
+      if (lectureStructure.cube.test?.activated) {
+        return lectureStructure.cube;
+      }
+      if (lectureStructure.cube.survey?.activated) {
+        return lectureStructure.cube;
+      }
+      if (lectureStructure.cube.report?.activated) {
+        return lectureStructure.cube;
+      }
+    }
+    for (let i = 0; i < lectureStructure.courses.length; i++) {
+      const course = lectureStructure.courses[i];
+      if (course !== undefined) {
+        if (course.activated) {
+          return course;
+        }
+        if (course.test?.activated) {
+          return course;
+        }
+        if (course.survey?.activated) {
+          return course;
+        }
+        if (course.report?.activated) {
+          return course;
+        }
+      }
+      if (course.cubes !== undefined && course.cubes.length > 0) {
+        for (let j = 0; j < course.cubes.length; j++) {
+          const cube = course.cubes[j];
+          if (cube !== undefined) {
+            if (cube.activated) {
+              return cube;
+            }
+            if (cube.test?.activated) {
+              return cube;
+            }
+            if (cube.survey?.activated) {
+              return cube;
+            }
+            if (cube.report?.activated) {
+              return cube;
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < lectureStructure.cubes.length; i++) {
+      const cube = lectureStructure.cubes[i];
+      if (cube !== undefined) {
+        if (cube.activated) {
+          return cube;
+        }
+        if (cube.test?.activated) {
+          return cube;
+        }
+        if (cube.survey?.activated) {
+          return cube;
+        }
+        if (cube.report?.activated) {
+          return cube;
+        }
+      }
+    }
+    for (let i = 0; i < lectureStructure.discussions.length; i++) {
+      const discussion = lectureStructure.discussions[i];
+      if (discussion !== undefined) {
+        if (discussion.activated) {
+          return lectureStructure.course;
+        }
+      }
+    }
+  }
+}
+
+export function getActiveStructureItemAll() {
+  const lectureStructure = getLectureStructure();
+  if (lectureStructure !== undefined) {
+    if (lectureStructure.course !== undefined) {
+      if (lectureStructure.course.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.test?.activated) {
+        return lectureStructure.course.test;
+      }
+      if (lectureStructure.course.survey?.activated) {
+        return lectureStructure.course.survey;
+      }
+      if (lectureStructure.course.report?.activated) {
+        return lectureStructure.course.report;
+      }
+    }
+    if (lectureStructure.cube !== undefined) {
+      if (lectureStructure.cube.activated) {
+        return lectureStructure.cube;
+      }
+      if (lectureStructure.cube.test?.activated) {
+        return lectureStructure.cube.test;
+      }
+      if (lectureStructure.cube.survey?.activated) {
+        return lectureStructure.cube.survey;
+      }
+      if (lectureStructure.cube.report?.activated) {
+        return lectureStructure.cube.report;
+      }
+    }
+    lectureStructure.courses.forEach(course => {
+      if (course !== undefined) {
+        if (course.activated) {
+          return course;
+        }
+        if (course.test?.activated) {
+          return course.test;
+        }
+        if (course.survey?.activated) {
+          return course.survey;
+        }
+        if (course.report?.activated) {
+          return course.report;
+        }
+      }
+    });
+    lectureStructure.cubes.forEach(cube => {
+      if (cube !== undefined) {
+        if (cube.activated) {
+          return cube;
+        }
+        if (cube.test?.activated) {
+          return cube.test;
+        }
+        if (cube.survey?.activated) {
+          return cube.survey;
+        }
+        if (cube.report?.activated) {
+          return cube.report;
+        }
+      }
+    });
+    lectureStructure.discussions.forEach(discussion => {
+      if (discussion !== undefined) {
+        if (discussion.activated) {
+          return discussion;
+        }
+      }
+    });
+  }
 }
 
 let subscriberIdRef = 0;

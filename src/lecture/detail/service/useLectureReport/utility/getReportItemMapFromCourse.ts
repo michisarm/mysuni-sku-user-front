@@ -12,9 +12,12 @@ import {
 export async function getReportItem(
   coursePlanId: string,
   student?: Student
-): Promise<LectureReport> {
+): Promise<LectureReport | undefined> {
   const coursePlan = await findCoursePlan(coursePlanId);
-  const lectureReport: LectureReport = {};
+  if (coursePlan === undefined) {
+    return;
+  }
+  const lectureReport: LectureReport = { reportId: coursePlanId };
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
   if (coursePlan.reportFileBox.reportName !== '' && coursePlan.reportFileBox.reportName !== null) {

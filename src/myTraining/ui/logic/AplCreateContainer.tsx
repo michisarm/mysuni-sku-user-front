@@ -5,7 +5,6 @@ import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import {Button, TextArea, Form, Modal, Table, Segment, Select, Icon, Image, Grid, Ref} from 'semantic-ui-react';
 import {
   FileBox2,
-  fileUtil,
   PatronType,
   ValidationType
 } from '@nara.drama/depot';
@@ -27,7 +26,9 @@ import { CompanyApproverModel } from '../../../approval/company/model/CompanyApp
 import { AplType } from '../../model/AplType';
 import { AplApprovalType } from '../../model/AplApprovalType';
 import { AplQueryModel } from '../../model/AplQueryModel';
-import {AplModel} from '../../model';
+import { AplModel } from '../../model';
+import { CollegeLectureCountRdo } from '../../../lecture/model';
+import { CollegeLectureCountService } from '../../../lecture/stores';
 
 interface Props extends RouteComponentProps<{ cineroomId: string, studentId: string, cubeType: string, cubeState: string }> {
   skProfileService?: SkProfileService
@@ -44,9 +45,11 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   handleOk: (member: MemberViewModel) => void
   handleSave: (mode: string) => void
   handleCancel: (mode?: string) => void
+  collegeLectureCountService?: CollegeLectureCountService,
 }
 
 interface States {
+  collegeSelect: any;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -56,7 +59,8 @@ interface States {
   , 'approval.memberService'
   , 'approval.companyApproverService'
   , 'approval.departmentService'
-  , 'profile.skProfileService'))
+  , 'profile.skProfileService'
+  , 'lecture.collegeLectureCountService',))
 @observer
 @reactAutobind
 class AplCreateContainer extends React.Component<Props, States> {
@@ -85,6 +89,7 @@ class AplCreateContainer extends React.Component<Props, States> {
       //titleWrite: '',
       //typeNameWrite: '',
       //instituteWrite: ''
+      collegeSelect:[],
     };
   }
 
@@ -134,8 +139,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     skProfileService!.findSkProfile()
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
+      .then(() => companyApproverService!.findCompanyAplApprover())
       .then((companyApprover: CompanyApproverModel) => {
-        companyApproverService!.findCompanyAplApprover();
         this.onChangeAplProps('approvalId', companyApprover.id);
         this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
@@ -144,27 +149,47 @@ class AplCreateContainer extends React.Component<Props, States> {
       });
   }
 
-  findAllColleges() {
+
+  async findAllColleges() {
     //
-    const { collegeService } = this.props;
-    if (collegeService) collegeService.findCollegesForCurrentCineroom();
+    const { collegeLectureCountService } = this.props;
+    //const { collegeService } = this.props;
+    //if (collegeService) collegeService.findCollegesForCurrentCineroom();
+    if(window.navigator.onLine){
+      const category = sessionStorage.getItem('category');
+      if (category !== null && collegeLectureCountService!.collegeLectureCounts.length > 0) {
+        const collegeLectureCounts = JSON.parse(category);
+        if (collegeLectureCounts.length > 0) {
+          this.setCollege(collegeLectureCounts);
+        }
+      }
+      else {
+        const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+        if (collegeLectureCounts.length > 0) {
+          this.setCollege(collegeLectureCounts);
+        }
+      }
+    }
   }
 
-  setCollege() {
+  setCollege(colleges: CollegeLectureCountRdo[]) {
     //
-    const { mainColleges } = this.props.collegeService || ({} as CollegeService);
+    //const { mainColleges } = this.props.collegeService || ({} as CollegeService);
     const collegeSelect: any = [];
-    if (mainColleges) {
+    if (colleges) {
       collegeSelect.push({ key: 'Select', text: 'Select', value: 'Select' });
-      mainColleges.map((college, index) => {
-        collegeSelect.push({
-          key: index + 1,
-          text: college.name,
-          value: college.collegeId,
-        });
+      colleges.map((college, index) => {
+        if (college.collegeType === 'Company'){
+          collegeSelect.push({
+            key: index + 1,
+            text: college.name,
+            value: college.collegeId,
+          });
+        }
       });
     }
-    return collegeSelect;
+    this.setState({collegeSelect});
+    //return collegeSelect;
   }
 
   selectCollege(name: string, collegeId: string) {
@@ -281,7 +306,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     const { companyApprover, originCompanyApprover } = companyApproverService!;
     //교육명 글자수(100자 이내)
     //sconst titleCount = (apl && apl.title && apl.title.length) || 0;
-    const collegeSelect = this.setCollege();
+    //const collegeSelect = this.setCollege();
+    const collegeSelect = this.state.collegeSelect;
     const channelSelect = apl && apl.collegeId && this.setChannel();
     const titleCount = (apl && apl.title && apl.title.length) || 0;
     const typeNameCount = (apl && apl.typeName && apl.typeName.length) || 0;
@@ -529,7 +555,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <input
                       id="requestHour"
                       type="text"
-                      value={(apl && apl.requestHour) || ''}
+                      value={parseInt(String(apl && apl.requestHour), 10) || ''}
                       min="0"
                       onChange={(e: any) =>
                         onChangeAplPropsValid('requestHour', e.target.value)
@@ -549,7 +575,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <input
                       id="requestMinute"
                       type="text"
-                      value={(apl && apl.requestMinute) || ''}
+                      value={parseInt(String(apl && apl.requestMinute), 10) || ''}
                       min="0"
                       onChange={(e: any) =>
                         onChangeAplPropsValid('requestMinute', e.target.value)
@@ -564,8 +590,15 @@ class AplCreateContainer extends React.Component<Props, States> {
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  학습시간으로 인정되는 교육시간을 입력해주세요. / 승인자에 의해
-                  교육시간은 변경될 수 있습니다.
+                  학습시간으로 인정되는 교육시간을 입력해주세요.<br />
+                  <Icon className="info16">
+                    <span className="blind">infomation</span>
+                  </Icon>
+                  교육시간은 100시간 이상, 1분 이내는 등록할 수 없습니다.<br />
+                  <Icon className="info16">
+                    <span className="blind">infomation</span>
+                  </Icon>
+                  승인자에 의해 교육시간은 변경될 수 있습니다.
                 </div>
               </div>
             </Form.Field>
@@ -633,9 +666,9 @@ class AplCreateContainer extends React.Component<Props, States> {
                       multiSelect={false}
                     />
                     <span className="text1">
-                      <b>{apl && apl.approvalName || approvalMember.name || ''}</b>
-                      <span className="ml40">{apl && apl.approvalCompany || approvalMember.companyName || ''}</span>
-                      <span className="line">{apl && apl.approvalDepartment || approvalMember.departmentName || ''}</span>
+                      <b>{apl && apl.approvalName|| ''}</b>
+                      <span className="ml40">{apl && apl.approvalCompany || ''}</span>
+                      <span className="line">{apl && apl.approvalDepartment || ''}</span>
                       {approvalShow && (
                       <div className="info-text">
                         <Icon className="info16">

@@ -18,7 +18,9 @@ interface Props {
   contentType: MyContentType;
   viewType: ViewType;
   openFilter: boolean;
+  onClickFilter: () => void;
   onChangeFilterCount: (count: number) => void;
+  getModels: (count: number) => void
   colleges: CollegeModel[];
   totalFilterCount: FilterCountViewModel;
   filterCounts: FilterCountViewModel[];
@@ -43,7 +45,7 @@ export type FilterCondition = {
 
 export enum FilterConditionName {
   College = '컬리지',
-  LearningType = '학습유형',
+  LearningType = '교육유형',
   DifficultyLevel = '난이도',
   LearningTime = '학습시간',
   Organizer = '교육기관',
@@ -57,7 +59,7 @@ export enum FilterConditionName {
   'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
 */
 function MultiFilterBox(props: Props) {
-  const { contentType, viewType, openFilter, onChangeFilterCount, colleges, myTrainingService, inMyLectureService, lectureService } = props;
+  const { contentType, viewType, openFilter, onClickFilter, onChangeFilterCount, getModels, colleges, myTrainingService, inMyLectureService, lectureService } = props;
   const { totalFilterCount: totalFilterCountView, filterCounts: filterCountViews } = props;
 
   /* states */
@@ -75,12 +77,29 @@ function MultiFilterBox(props: Props) {
     applying: ''
   });
 
+  const [showResult, setShowResult] = useState<boolean>(false);
+
   /* effects */
   useEffect(() => {
     /*
       1. filter 창이 열리는 순간, College 에 대한 정보를 불러옴. 2020.10.08 by 김동구
       2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
     */
+    if (showResult) {
+      changeFilterRdo(contentType);
+      const filterCount = getFilterCount(contentType);
+      getModels(filterCount);
+
+      /* 
+        1. openFilter => false 
+        2. showResult => false
+      */
+      onClickFilter();
+      setShowResult(false);
+    }
+  }, [showResult]);
+
+  useEffect(() => {
 
     if (!openFilter) {
       changeFilterRdo(contentType);
@@ -88,6 +107,11 @@ function MultiFilterBox(props: Props) {
       onChangeFilterCount(filterCount);
     }
   }, [openFilter]);
+
+  useEffect(() => {
+    onChangeFilterCount(0);
+    setConditions(InitialConditions);
+  }, [viewType, contentType]);
 
 
   const changeFilterRdo = (contentType: MyContentType) => {
@@ -120,6 +144,11 @@ function MultiFilterBox(props: Props) {
   };
 
   /* handlers */
+  const onClickShowResult = () => {
+    setShowResult(true);
+  }
+
+
   const onCheckAll = (e: any, data: any) => {
     /*
       전체 선택이 가능한 항목들에 대해서만 FilterConditionName 을 기준으로 영역을 나눔.
@@ -289,7 +318,6 @@ function MultiFilterBox(props: Props) {
     }
   };
 
-
   const onChangeStartDate = (value: Date) => {
     setConditions({ ...conditions, startDate: value });
   };
@@ -354,37 +382,16 @@ function MultiFilterBox(props: Props) {
     <div className={(openFilter && 'filter-table on') || 'filter-table'}>
       {openFilter && (
         <>
-          <div className="title">Filter</div>
+          <div className="title">
+            Filter
+            <a className="result-button" onClick={onClickShowResult}>
+              <img src={result_button_img} alt="btn" className="result-btn-img" />
+              <span className="result-text">결과보기</span>
+            </a>
+          </div>
           <table className="">
             <tbody>
-              <tr>
-                {/* 컬리지 */}
-                <th>{FilterConditionName.College}</th>
-                <td>
-                  {/* select All 체크박스 */}
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.College}
-                    label={`${SELECT_ALL} (${totalFilterCountView.college})`}
-                    checked={conditions.collegeIds.length === colleges.length}
-                    onChange={onCheckAll}
-                  />
-                  {colleges &&
-                    colleges.length &&
-                    colleges.map((college, index) => (
-                      <Fragment key={`checkbox-college-${index}`}>
-                        <Checkbox
-                          className="base"
-                          name={FilterConditionName.College}
-                          label={`${college.name} (${getCollegeCount(filterCountViews, college.name)})`}
-                          value={college.collegeId}
-                          checked={conditions.collegeIds.includes(college.collegeId)}
-                          onChange={onCheckOne}
-                        />
-                      </Fragment>
-                    ))}
-                </td>
-              </tr>
+
               {displayRow(contentType, viewType, FilterConditionName.LearningType) && (
                 <tr>
                   {/* 학습유형 */}
@@ -413,6 +420,34 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
+              <tr>
+                {/* 컬리지 */}
+                <th>{FilterConditionName.College}</th>
+                <td>
+                  {/* select All 체크박스 */}
+                  <Checkbox
+                    className="base"
+                    name={FilterConditionName.College}
+                    label={`${SELECT_ALL} (${totalFilterCountView.college})`}
+                    checked={conditions.collegeIds.length === colleges.length}
+                    onChange={onCheckAll}
+                  />
+                  {colleges &&
+                    colleges.length &&
+                    colleges.map((college, index) => (
+                      <Fragment key={`checkbox-college-${index}`}>
+                        <Checkbox
+                          className="base"
+                          name={FilterConditionName.College}
+                          label={`${college.name} (${getCollegeCount(filterCountViews, college.name)})`}
+                          value={college.collegeId}
+                          checked={conditions.collegeIds.includes(college.collegeId)}
+                          onChange={onCheckOne}
+                        />
+                      </Fragment>
+                    ))}
+                </td>
+              </tr>
               {displayRow(contentType, viewType, FilterConditionName.DifficultyLevel) && (
                 <tr>
                   {/* 난이도 */}
@@ -596,6 +631,10 @@ function MultiFilterBox(props: Props) {
             onClearAll={onClearAll}
             onClearOne={onClearOne}
           />
+          <div className="moreAll">
+            <span className="arrow-more">{'->'}</span>
+            <a className="more-text" onClick={onClickShowResult}>결과보기</a>
+          </div>
         </>
       )}
     </div>
@@ -629,3 +668,5 @@ const getCollegeCount = (filterCountViews: FilterCountViewModel[], collegeName: 
   const filterCountView = filterCountViews.find(filterCountview => filterCountview.collegeName === collegeName);
   return filterCountView ? filterCountView.college : 0;
 }
+
+const result_button_img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAHKADAAQAAAABAAAAHAAAAABkvfSiAAAAfklEQVRIDWNgGAWjITAaAqMhQEkI/P//nxGIJwFxMSXmEK0XaJEDEP8DYhCoJFojJQqBFqUDMczSekrMIlov0MJEIP4LxCDQRrRGbAohZpBMdsPMYoIxhjQN9D/1gpRQSAAto1+iAVpG32wBtJC+GZ9QcI/Kj4bAaAgMjhAAAJe1pAEnjQWCAAAAAElFTkSuQmCC';

@@ -196,6 +196,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     questionCount={cube.test.questionCount}
                     path={cube.test.path}
                     can={cube.test.can}
+                    activated={cube.test.activated}
                   />
                 )}
                 {cube.survey !== undefined && (
@@ -205,6 +206,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     questionCount={cube.survey.questionCount}
                     path={cube.survey.path}
                     can={cube.survey.can}
+                    activated={cube.survey.activated}
                   />
                 )}
                 {cube.report !== undefined && (
@@ -213,6 +215,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     state={cube.report.state}
                     path={cube.report.path}
                     can={cube.report.can}
+                    activated={cube.report.activated}
                   />
                 )}
               </>

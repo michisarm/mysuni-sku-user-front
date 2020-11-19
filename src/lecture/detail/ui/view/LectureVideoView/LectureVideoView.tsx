@@ -72,32 +72,24 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setWatchlogState(watchlog);
   }, [params]);
 
-  const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [progressInterval, setProgressInterval] = useState<any>();
+  
+  const [watchInterval, setWatchInterval] = useState<any>();
+  const [checkInterval, setCheckInterval] = useState<any>();
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [startTime, setStartTime] = useState(0);
 
-  const [embedApi, setEmbedApi] = useState({
+  const [embedApi, setEmbedApi] = useState<any|undefined>({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
+    currentPosition: () => {},
+    getPlaybackRate: () => {},
   });
-
-  const toHHMM = useCallback((idx: number) => {
-    const time = idx;
-    const hours = Math.floor(time / 60);
-    const minutes = Math.floor(time - hours * 60);
-
-    let sHours = '';
-    let sMinutes = '';
-    sHours = String(hours.toString()).padStart(2, '0');
-    sMinutes = String(minutes.toString()).padStart(2, '0');
-
-    return sHours + ':' + sMinutes;
-  }, []);
 
   const [displayTranscript, setDisplayTranscript] = useState<boolean>(true);
 
@@ -118,23 +110,39 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
-    setPanoptoState(10);
+    setNextContentsView(false);
     history.push(path);
   }, []);
 
+  const sendWatchLog = useCallback(() => {
+    if (params && watchlogState) {
+      const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+      // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+      const end = (embedApi.getCurrentTime() as unknown) as number;
+      const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
+      setWatchlogState({
+        ...watchlogState,
+        start: start < 0? 0 : start,
+        end: end,
+      });
+
+      //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
+      setWatchLog(params, watchlogState);
+    }
+  }, [params, embedApi, startTime, watchlogState]);
+
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
-      console.log('state : ' , state);
       setPanoptoState(state);
       setIsActive(false);
-      if (state == 2) {
-        setNextContentsView(false);
-      } else if (state == 1) {
+      if (state == 1) {
         setIsActive(true);
         setNextContentsView(false);
       } else if (state == 0) {
-        setNextContentsView(true);
-      }
+        // setNextContentsView(true);
+      } 
     },
     [params]
   );
@@ -159,107 +167,135 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     [params]
   );
 
+  useEffect(() => {
+    if(params){
+      setNextContentsView(false);
+    }
+  }, [params]);
+
   const lectureParams = useParams<LectureParams>();
   const { pathname } = useLocation();
 
 
   useEffect(() => {
+    setNextContentsView(false);
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
       mediaCheckEvent(params);
+      if(Math.floor((embedApi.getCurrentTime() as unknown) as number) == Math.floor((embedApi.getDuration() as unknown) as number)){
+        setNextContentsView(true);
+      }
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
+      mediaCheckEvent(params);
     }
+
   }, [panoptoState]);
 
   useEffect(() => {
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, lectureParams, pathname, params]);
 
 
   useEffect(() => {
-
     let interval: any = null;
-    
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
-    const duration = (embedApi.getDuration() as unknown) as number;
-    
+
+    if(!startTime){
+      setStartTime(currentTime);
+    }
     if (isActive && params && watchlogState) {
+      // clearInterval(interval);
       interval = setInterval(() => {
+      // setWatchInterval(setInterval(() => {        
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+        const end = (embedApi.getCurrentTime() as unknown) as number;
+        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
         setWatchlogState({
           ...watchlogState,
-          start: currentTime,
-          end: currentTime + 10,
+          start: start < 0? 0 : start,
+          end: end,
         });
-        setSeconds(seconds => seconds + 10);
-        setWatchLog(params, watchlogState);     
-      }, 10000);
 
-      
-    } else if (!isActive && seconds !== 0) {
+        //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+      // }, 10000));
+    }, 10000);
+    } else if (!isActive) {
+      // sendWatchLog();
       clearInterval(interval);
     }
     return () => {
+      console.log('clearInterval return run');
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime, watchlogState]);
+
 
   useEffect(() => {
+    let checkInterval: any = null;
+    const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 10) * 1000;
-    //confirmProgressTime
+    
     if (!confirmProgressTime || confirmProgressTime > 60000) {
       confirmProgressTime = 60000;
     }
 
     if (isActive && params) {
-      clearTimeout(progressInterval);
-      setProgressInterval(setTimeout(function tick() {
-        mediaCheckEvent(params);
-        //console.log('tick');
-        clearTimeout(progressInterval);
-        setProgressInterval(setTimeout(tick, confirmProgressTime));
-      }, confirmProgressTime));
+      // setCheckInterval(setInterval(() => {
+        checkInterval = setInterval(() => {
+          mediaCheckEvent(params);
+          // }, 20000));
+        }, 20000);
 
-    } else if (!isActive && seconds !== 0) {
-      clearTimeout(progressInterval);
+    } else if (!isActive) {
+      clearInterval(checkInterval);
     }
     return () => {
-      clearTimeout(progressInterval);
+      console.log('clearCheckInterval return run');
+      clearInterval(checkInterval);
+      
     };
-  }, [isActive]);
-  // }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [checkInterval, isActive]);
+
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('page out clear Interval ');
+  //     clearInterval(watchInterval);
+  //     clearInterval(checkInterval);
+  //   };
+  // }, [checkInterval, watchInterval]);
 
 
   useEffect(() => {
-    if (params) {
-      console.log('params loding effect params - ', params);
-      // mediaCheckEvent(params);
-    }
-  }, [params]);
-
-
-  useEffect(() => {
+    setNextContentsView(false);
     return () => {
-      console.log('component End');
-      // console.log('progressInterval : ' , progressInterval);
       mediaCheckEvent(params);
-      clearTimeout(progressInterval);
       setPanoptoState(10);
       setNextContentsPath('');
       setNextContentsName('');
       setIsActive(false);
-      console.log('progressInterval', progressInterval);
+      setNextContentsView(false);
+      setProgressInterval('');
+      setEmbedApi('');
+      setLectureConfirmProgress();
+      
     };
   }, []);
 
-
   useEffect(() => {
-    setPanoptoState(10);
+    // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure =  getLectureStructure();
+
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
@@ -279,8 +315,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   cube => cube.order == nextCubeOrder
                 );
                
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -290,9 +325,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   discussion => discussion.order == nextCubeOrder
                 );
               
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -320,9 +353,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
-
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -332,9 +363,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   discussion => discussion.order == nextCubeOrder
                 );
  
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-               
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -355,9 +384,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   cube => cube.order == nextCubeOrder
                 );
                
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
-
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -366,9 +393,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -380,7 +405,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         
       }
     }
-  }, [getLectureStructure(), getLectureConfirmProgress()]);
+  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
 
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
@@ -397,36 +422,37 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
-      if (typeof lectureMedia === 'undefined') {
-      } else {
-        let currentPaonoptoSessionId =
+      if (lectureMedia && 
+        (lectureMedia.mediaType == "InternalMedia" ||
+        lectureMedia.mediaType == "InternalMediaUpload")) {
+          let currentPaonoptoSessionId =
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
-        let embedApi = new window.EmbedApi('panopto-embed-player', {
-          width: '100%',
-          height: '700',
-          //This is the URL of your Panopto site
-          //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
-          serverName: 'sku.ap.panopto.com',
-          sessionId: currentPaonoptoSessionId,
-          // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
-          videoParams: {
-            // Optional parameters
-            //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
-            // "interactivity": "Caption Language",
-            interactivity: 'none',
-            showtitle: 'false',
-            showBrand: 'false',
-            offerviewer: 'false',
-          },
-          events: {
-            onIframeReady: onPanoptoIframeReady,
-            onLoginShown: onPanoptoLoginShown,
-            //"onReady": onPanoptoVideoReady,
-            onStateChange: onPanoptoStateUpdate,
-            // "onPlaybackRateChange" : console.log('onPlaybackRateChange')
-          },
-        });
-        setEmbedApi(embedApi);
+          let embedApi = new window.EmbedApi('panopto-embed-player', {
+            width: '100%',
+            height: '700',
+            //This is the URL of your Panopto site
+            //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
+            // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
+            serverName: 'sku.ap.panopto.com',
+            sessionId: currentPaonoptoSessionId,
+            // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
+            videoParams: {
+              // Optional parameters
+              //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
+              // "interactivity": "Caption Language",
+              interactivity: 'none',
+              showtitle: 'false',
+              showBrand: 'false',
+              offerviewer: 'false',
+            },
+            events: {
+              onIframeReady: onPanoptoIframeReady,
+              onLoginShown: onPanoptoLoginShown,
+              //"onReady": onPanoptoVideoReady,
+              onStateChange: onPanoptoStateUpdate,
+            },
+          });
+          setEmbedApi(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -435,16 +461,35 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, []);
 
+  // IE 조건처리 주석
+  
+  // const [detected, setDetected] = useState(false);
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent;
+  //   if(userAgent.includes('rv:11.0')){
+  //     setDetected(true)
+  //     console.log(userAgent.includes('rv:11.0'))
+  //   }
+  // })
+  
   return (
     <div className="course-video">
       <div className="video-container">
+        {/* {
+          detected && detected ?
+          // IE 11 Render
+          <iframe style={{width:"100%", height:"700px"}} src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=%2fPanopto%2fPages%2fEmbed.aspx%3fid%3dc9304a0b-69a5-4511-8261-ac63007bebda%26remoteEmbed%3dtrue%26remoteHost%3dhttp%253A%252F%252Funiversity.sk.com%26interactivity%3dnone%26showtitle%3dfalse%26showBrand%3dtrue%26offerviewer%3dfalse&continue=true"></iframe>
+          :
+          // 나머지 브라우저
+          <div id="panopto-embed-player"></div>
+        }  */}
         <div id="panopto-embed-player"></div>
         {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-        {panoptoState == 0 &&
+        {nextContentsView &&
           !isActive &&
           nextContentsPath &&
           getLectureConfirmProgress()?.learningState == 'Passed' && (
-            <div className="video-overlay">
+            <div id="video-overlay" className="video-overlay">
               <div className="video-overlay-btn">
                 <button onClick={() => nextContents(nextContentsPath)}>
                   <img src={playerBtn} />

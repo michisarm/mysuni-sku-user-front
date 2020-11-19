@@ -10,8 +10,6 @@ import SkProfileService from '../../profile/present/logic/SkProfileService';
 import { AplType } from './AplType';
 import { AplStateName } from './AplStateName';
 
-
-
 class AplModel extends NewQueryModel {
   //
   id: string = '';
@@ -66,35 +64,77 @@ class AplModel extends NewQueryModel {
     }
   }
 
+  /* 등록일자 */
   @computed get displayCreationTime() {
-    return moment(this.creationTime).format('YYYY.MM.DD');
+    return this.creationTime ? moment(this.creationTime).format('YYYY.MM.DD') : '-';
   }
 
-  @computed get displayUpdateTime() {
-    return this.updateTime ? moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+
+  @computed get displayCreationDateTime() {
+    return this.creationTime ? moment(this.creationTime).format('YYYY.MM.DD HH:mm:ss') : '-';
   }
 
-  @computed get displayUpdateDate() {
-    return this.updateTime ? moment(this.updateTime).format('YYYY.MM.DD') : '-';
+  /* 교육시간(교육인정시간) */
+  @computed get displayAllowTime() {
+    let allowLearningTime = '-';
+
+    if (this.state === AplState.Opened) {
+      if (this.updateHour || this.updateMinute) {
+        allowLearningTime = `${this.updateHour}시 ${this.updateMinute}분`;
+      } else {
+        allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+      }
+    }
+
+    if (this.state === AplState.Rejected) {
+      allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+    }
+
+    return allowLearningTime;
   }
 
+  /* 교육기간 ex) 2020.10.12~2020.11.12 */
+  @computed get displayLearningTime() {
+    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(this.endDate).format('YYYY.MM.DD')}`;
+  }
+
+  /* 처리일자 :: 승인일자 */
+  @computed get displayApprovalDateTime() {
+    let approvalDateTime = '-';
+
+    if (this.state === AplState.Opened) {
+      if (this.updateTime) {
+        approvalDateTime = moment(this.updateTime).format('YYYY.MM.DD HH:mm:ss');
+      } else {
+        approvalDateTime = this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+      }
+    }
+
+    if (this.state === AplState.Rejected) {
+      approvalDateTime = this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD HH:mm:ss') : '-';
+    }
+
+    return approvalDateTime;
+  }
+
+  /* 승인상태 */
   @computed get displayStateName() {
     const stateName = AplStateName[this.state];
     return stateName;
   }
 
-  @computed get displayTypeAndTypeName() {
-    return `${this.type} > ${this.typeName}`;
+  @computed get displayTypeName() {
+    /* 교육형태가 Etc 인 경우 :: 기타-직접입력 > On-Line Video 특강 */
+    if (this.type === 'Etc') {
+      return `기타-직접입력 > ${this.typeName}`;
+    }
+
+    return this.typeName;
   }
 
-  @computed get displayLearningTime() {
-    return `${moment(this.startDate).format('YYYY.MM.DD')}~${moment(this.endDate).format('YYYY.MM.DD')}`;
+  @computed get displayCollegeChannelName() {
+    return `${this.collegeName} | ${this.channelName}`;
   }
-
-  @computed get displayAllowTime() {
-    return this.allowTime ? moment(this.allowTime).format('YYYY.MM.DD') : '-';
-  }
-
 
   /*@computed
   get isNameShowAsYesNo() {

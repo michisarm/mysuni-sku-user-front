@@ -27,6 +27,7 @@ import LectureParams from '../../../viewModel/LectureParams';
 import { CourseSetModel } from '../../../../../course/model';
 import { findInMyLecture } from '../../../api/mytrainingApi';
 import Instructor from '../../../model/Instructor';
+import CoursePlanContents from '../../../model/CoursePlanContents';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -50,6 +51,7 @@ async function getLectureSummary(
     lectureId || serviceId!,
     lectureType !== undefined ? 'Course' : serviceType!
   );
+  const { difficultyLevel } = coursePlanComplex.coursePlanContents;
   return {
     name: coursePlanComplex.coursePlan.name,
     category: {
@@ -63,6 +65,7 @@ async function getLectureSummary(
     studentCount: coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
+    difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel
   };
 }
 
@@ -196,17 +199,12 @@ function findCoursePlanComplex(coursePlanId: string, serviceId: string) {
   return findCoursePlanContents(coursePlanId, serviceId);
 }
 
-export async function getCourseLectureOverview(
+export async function getCourseLectureOverviewFromCoursePlanComplex(
   params: LectureParams,
-  coursePlanId: string,
-  serviceId: string,
+  coursePlanComplex: CoursePlanComplex,
   collegeId: string,
   cineroomId?: string
 ) {
-  const coursePlanComplex = await findCoursePlanComplex(
-    coursePlanId,
-    serviceId
-  );
   let path = `/lecture/college/${collegeId}`;
   if (cineroomId !== undefined) {
     path = `/lecture/cineroom/${cineroomId}/college/${collegeId}`;
@@ -243,4 +241,18 @@ export async function getCourseLectureOverview(
   } else {
     setLectureRelations(lectureRelations);
   }
+}
+
+export async function getCourseLectureOverview(
+  params: LectureParams,
+  coursePlanId: string,
+  serviceId: string,
+  collegeId: string,
+  cineroomId?: string
+) {
+  const coursePlanComplex = await findCoursePlanComplex(
+    coursePlanId,
+    serviceId
+  );
+  getCourseLectureOverviewFromCoursePlanComplex(params, coursePlanComplex, collegeId, cineroomId)
 }
