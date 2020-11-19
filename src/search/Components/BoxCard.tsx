@@ -3,6 +3,7 @@ import { Label, Icon, Rating, Card, Button } from 'semantic-ui-react';
 import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title, } from 'lecture/shared/ui/view/LectureElementsView';
 import { useState } from 'react';
 
+// DUMMY
 const ItemList = [
   {
     ribbon: "핵인싸과정",
@@ -46,7 +47,36 @@ const ItemList = [
       textArea: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three"
     }
   },
-   {
+  {
+    ribbon: "핵인싸과정",
+    label: "Global",
+    header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 어쩌구저쩌구저쩌구어어쩌구)",
+    course: "Course",
+    time: "1h 30m",
+    complete: "이수 3,300명",
+    rating: 5,
+    hovered: {
+      label: "Global",
+      header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 웅앵)",
+      textArea: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three"
+    }
+  },
+  {
+    ribbon: "핵인싸과정",
+    label: "Global",
+    header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 어쩌구저쩌구저쩌구어어쩌구)",
+    course: "Course",
+    time: "1h 30m",
+    complete: "이수 3,300명",
+    rating: 5,
+    hovered: {
+      label: "Global",
+      header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 웅앵)",
+      textArea: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three"
+    }
+  }
+  ,
+  {
     ribbon: "핵인싸과정",
     label: "Global",
     header: "Mobile App UI/UX GUI Design Tutorials (모바일 앱 UX UI GUI 어쩌구저쩌구저쩌구어어쩌구)",

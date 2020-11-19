@@ -22,7 +22,7 @@ const COMPONENT: any = {
 };
 
 const ContentsTab: React.FC = () => {
-  const [activeItem, setActiveItem] = useState<string>('');
+  const [activeItem, setActiveItem] = useState<string>('All');
 
   const handleItemClick = (e: any, { name }: any) => {
     setActiveItem(name);
