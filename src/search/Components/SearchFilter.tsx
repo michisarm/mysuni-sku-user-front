@@ -1154,15 +1154,17 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                 </button>
                 <span>전체해제</span>
               </th>
-              {tags.map(tag => (
-                <td key={tag.key}>
-                  <Button
+              <td>
+                {tags.map((tag,index) => (
+                  <Button 
+                    key={index}
                     className="del"
                     content={tag.text}
                     onClick={tag.removeMe}
                   />
-                </td>
-              ))}
+                ))}
+              </td>
+             
             </tr>
           </tbody>
         </table>
