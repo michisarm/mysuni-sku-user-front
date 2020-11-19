@@ -1,15 +1,57 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState,useEffect, Fragment } from 'react';
 import { Button, Checkbox, Icon, Radio } from 'semantic-ui-react';
 import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import ResultBtn from '../../resources/images/all/icon-result-arrow.png';
+import CheckBoxOptions from '../model/CheckBoxOption';
+
 
 interface Props {
   isOnFilter: boolean;
 }
 
+const SELECT_ALL = 'Select All';
+const InitialConditions = {
+  collegeIds: [],
+  learningTypes: [],
+  difficultyLevels: [],
+  learningTimes: [],
+  organizers: [],
+  required: '',
+  serviceType: '',
+  certifications: [],
+  startDate: null,
+  endDate: null,
+  applying: ''
+};
+
+export type FilterCondition = {
+  collegeIds: string[];                 // 컬리지
+  learningTypes: string[];              // 학습유형
+  difficultyLevels: string[];           // 난이도
+  learningTimes: string[];              // 교육기간
+  organizers: string[];                 // 교육기관
+  required: string;                     // 권장과정
+  serviceType: string;                  // 학습유형에 포함되어 있는 'Course'
+  certifications: string[];             // 뱃지 & 스탬프 유무
+  startDate: Date | null;               // 교육일정 startDate
+  endDate: Date | null;                 // 교육일정 endDate
+  applying: string;                     // 수강신청 가능 학습
+}
+
+export enum FilterConditionName {
+  College = '컬리지',
+  LearningType = '교육유형',
+  DifficultyLevel = '난이도',
+  LearningTime = '학습시간',
+  Organizer = '교육기관',
+  Required = '핵인싸',
+  Certification = 'Certification',
+  LearningSchedule = '교육일정'
+}
+
 const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
+
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [cpOpened, setCpOpened] = useState(false);
@@ -19,6 +61,90 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
   };
   const handleChangeEnd = (date: any) => {
     setEndDate(date);
+  };
+
+  const [conditions, setConditions] = useState<FilterCondition>({
+    collegeIds: [],
+    learningTypes: [],
+    difficultyLevels: [],
+    learningTimes: [],
+    organizers: [],
+    required: '',
+    serviceType: '',
+    certifications: [],
+    startDate: null,
+    endDate: null,
+    applying: ''
+  });
+
+  const onCheckOne = (e: any, data: any) => {
+    switch (data.name) {
+      case FilterConditionName.College:
+        if (conditions.collegeIds.includes(data.value)) {
+          /* 선택 해제 */
+          setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== data.value) });
+          break;
+        }
+        /* 선택 */
+        setConditions({ ...conditions, collegeIds: conditions.collegeIds.concat(data.value) });
+        break;
+      case FilterConditionName.LearningType:
+        /* 'Course' 를 제외한 모든 학습 유형에 대한 선택 해제 */
+        if (conditions.learningTypes.includes(data.value)) {
+          setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== data.value) });
+          break;
+        }
+
+        /* 'Course' 선택 해제 */
+        if (conditions.serviceType === 'Course' && data.value === 'Course') {
+          setConditions({ ...conditions, serviceType: '' });
+          break;
+        }
+        /* 학습유형 중 'Course' 를 선택할 시, learningTypes 가 아닌 serviceType 에 값이 바인딩됨. */
+        if (data.value === 'Course') {
+          setConditions({ ...conditions, serviceType: data.value });
+          break;
+        }
+
+        /* 'Course' 를 제외한 모든 학습 유형에 대한 선택 */
+        setConditions({ ...conditions, learningTypes: conditions.learningTypes.concat(data.value) });
+        break;
+      case FilterConditionName.DifficultyLevel:
+        if (conditions.difficultyLevels.includes(data.value)) {
+          setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.filter(difficultyLevel => difficultyLevel !== data.value) });
+          break;
+        }
+        setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.concat(data.value) });
+        break;
+      case FilterConditionName.LearningTime:
+        if (conditions.learningTimes.includes(data.value)) {
+          setConditions({ ...conditions, learningTimes: conditions.learningTimes.filter(learningTIme => learningTIme !== data.value) });
+          break;
+        }
+        setConditions({ ...conditions, learningTimes: conditions.learningTimes.concat(data.value) });
+        break;
+      case FilterConditionName.Organizer:
+        if (conditions.organizers.includes(data.value)) {
+          setConditions({ ...conditions, organizers: conditions.organizers.filter(organizer => organizer !== data.value) });
+          break;
+        }
+        setConditions({ ...conditions, organizers: conditions.organizers.concat(data.value) });
+        break;
+      case FilterConditionName.Required:
+        setConditions({ ...conditions, required: data.value });
+        break;
+      case FilterConditionName.Certification:
+        if (conditions.certifications.includes(data.value)) {
+          setConditions({ ...conditions, certifications: conditions.certifications.filter(certification => certification !== data.value) });
+          break;
+        }
+        setConditions({ ...conditions, certifications: conditions.certifications.concat(data.value) });
+        break;
+    }
+  };
+
+  const onClearAll = () => {
+    setConditions(InitialConditions);
   };
 
   return (
@@ -33,7 +159,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
       <table>
         <tbody>
           <tr>
-            <th>컬리지</th>
+            <th>{FilterConditionName.College}</th>
             <td>
               <Checkbox className="base" label="SelectAll" />
               <Checkbox className="base" label="Al(13)" checked={true} />
@@ -52,33 +178,53 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
             </td>
           </tr>
           <tr>
-            <th>난이도</th>
+            <th>{FilterConditionName.DifficultyLevel}</th>
             <td>
-              <Checkbox className="base" label="SelectAll" />
-              <Checkbox className="base" label="Basic" />
-              <Checkbox className="base" label="Intermediate" checked={true} />
-              <Checkbox className="base" label="Advanced" />
-              <Checkbox className="base" label="Expert" />
+              <Checkbox
+                className="base"
+                label={`${SELECT_ALL}`} 
+
+              />
+              {CheckBoxOptions.difficultyLevels.map((levels, index) => (
+                <Fragment key={`checkbox-difficultyLevels-${index}`}>
+                  <Checkbox 
+                    className="base"
+                    name={FilterConditionName.DifficultyLevel}
+                    label={levels.text}
+                    value={levels.value}
+                    checked={conditions.difficultyLevels.includes(levels.value)}
+                    onChange={onCheckOne}
+                  />
+                </Fragment>
+              ))}
             </td>
           </tr>
           <tr>
-            <th>학습시간</th>
+            <th>{FilterConditionName.LearningTime}</th>
             <td>
-              <Checkbox className="base" label="SelectAll" />
-              <Checkbox className="base" label="30분 미만" checked={true} />
               <Checkbox
                 className="base"
-                label="30분 이상~1시간 미만"
-                checked={true}
+                label={`${SELECT_ALL}`} 
               />
-              <Checkbox className="base" label="1시간 이상~4시간 미만" />
-              <Checkbox className="base" label="4시간 이상~12시간 미만" />
-              <Checkbox className="base" label="12시간 이상" />
+              {
+                CheckBoxOptions.learningTimes.map((learningTime, index) => (
+                  <Fragment key={`checkbox-learningTime-${index}`}>
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.LearningTime}
+                      label={learningTime.text}
+                      value={learningTime.value}
+                      checked={conditions.learningTimes.includes(learningTime.value)}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                ))
+              }
             </td>
           </tr>
           <tr>
             <th>
-              교육기관
+              {FilterConditionName.Organizer}
               {/*확장버튼 추가*/}
               <button
                 type="button"
@@ -90,12 +236,24 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
               {/*<button type="button" className="btn_filter_extend">펼치기</button>*/}
             </th>
             <td>
-              <Checkbox className="base" label="SelectAll" />
-              <Checkbox className="base" label="mySUNI" checked={true} />
-              <Checkbox className="base" label="Course" checked={true} />
-              <Checkbox className="base" label="Linkedin" />
-              <Checkbox className="base" label="POSTEC" />
-
+              <Checkbox
+                className="base"
+                label={`${SELECT_ALL}`}
+              />
+              {
+                CheckBoxOptions.organizers.map((organizer, index) => (
+                  <Fragment key={`checkbox-organizer-${index}`}>
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.Organizer}
+                      label={organizer.text}
+                      value={organizer.value}
+                      checked={conditions.organizers.includes(organizer.value)}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                ))
+              }
               {/*확장 item area : 기본노출을 제외한 item들을 div로 한번 더 감싸줌.
                             확장시 'on' class 추가.*/}
               {cpOpened && (
@@ -115,42 +273,71 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
             </td>
           </tr>
           <tr>
-            <th>교육유형</th>
+            <th>{FilterConditionName.LearningType}</th>
             <td>
-              <Checkbox className="base" label="SelectAll" />
-              <Checkbox className="base" label="Course(13)" checked={true} />
-              <Checkbox className="base" label="Video(13)" checked={true} />
-              <Checkbox className="base" label="Audio(13)" />
-              <Checkbox className="base" label="e-Learning(13)" />
-              <Checkbox className="base" label="Classroom(13)" />
-              <Checkbox className="base" label="Community(13)" />
-              <Checkbox className="base" label="Web Page(13)" />
-              <Checkbox className="base" label="Documents(13)" />
-            </td>
-          </tr>
-          <tr>
-            <th>핵인싸 과정</th>
-            <td>
-              <Radio
+              <Checkbox
                 className="base"
-                label="Select All"
-                name="radio01"
-                checked={true}
+                label={`${SELECT_ALL}`}
               />
-              <Radio className="base" label="포함" name="radio01" />
-              <Radio className="base" label="비포함" name="radio01" />
+              {
+                CheckBoxOptions.learningTypes.map((learningType,index) => (
+                  <Fragment key={`checkbox-learningType-${index}`}>
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.LearningType}
+                      label={learningType.text}
+                      value={learningType.value}
+                      checked={conditions.learningTypes.includes(learningType.value)}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                ))
+              }
             </td>
           </tr>
           <tr>
-            <th>Certification</th>
+            <th>{FilterConditionName.Required}</th>
             <td>
-              <Checkbox className="base" label="SelectAll" />
-              <Checkbox className="base" label="Stamp" checked={true} />
-              <Checkbox className="base" label="Badge" />
+              {
+                CheckBoxOptions.requireds.map((required, index) => (
+                  <Fragment key={`radiobox-required-${index}`}>
+                    <Checkbox
+                      className="base radio"
+                      name={FilterConditionName.Required}
+                      label={required.text}
+                      value={required.value}
+                      checked={conditions.required === required.value}
+                      onChange={onCheckOne}
+                    />
+                  </Fragment>
+                ))
+              }
             </td>
           </tr>
           <tr>
-            <th>교육일정</th>
+            <th>{FilterConditionName.Certification}</th>
+            <td>
+              <Checkbox
+                className="base"
+                label={`${SELECT_ALL}`}
+              />
+              {
+                CheckBoxOptions.certifications.map((certification, index) => (
+                <Fragment key={`checkbox-certification-${index}`}>
+                  <Checkbox
+                    className="base"
+                    name={FilterConditionName.Certification}
+                    label={certification.text}
+                    value={certification.value}
+                    checked={conditions.certifications.includes(certification.value)}
+                    onChange={onCheckOne}
+                  />
+                </Fragment>
+              ))}
+            </td>
+          </tr>
+          <tr>
+            <th>{FilterConditionName.LearningSchedule}</th>
             <td>
               <div className="calendar-cell">
                 <div className="ui h40 calendar" id="rangeStart">
@@ -187,7 +374,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
               <Checkbox
                 className="base"
                 label="수강신청 가능 학습만 보기"
-                checked={true}
+                value="true"
               />
             </td>
           </tr>
@@ -206,16 +393,6 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter }) => {
               </th>
               <td>
                 <Button className="del" content="Course" />
-                <Button className="del" content="Video" />
-                <Button className="del" content="AI" />
-                <Button className="del" content="Intermediate" />
-                <Button className="del" content="30분 미만" />
-                <Button className="del" content="30분 이상~1시간 미만" />
-                <Button className="del" content="mySUNI" />
-                <Button className="del" content="Coursera" />
-                <Button className="del" content="핵인싸" />
-                <Button className="del" content="Stamp" />
-                <Button className="del" content="수강신청 가능 학습만 보기" />
               </td>
             </tr>
           </tbody>
