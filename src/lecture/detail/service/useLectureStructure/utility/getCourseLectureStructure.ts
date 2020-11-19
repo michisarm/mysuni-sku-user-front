@@ -373,6 +373,7 @@ export async function getCourseLectureStructure(
       student
     );
     lectureStructure.course.student = student;
+    lectureStructure.course.coursePlanComplex = coursePlanComplex;
     lectureStructure.course.state = 'None';
     if (student !== null) {
       switch (student.learningState) {
@@ -438,10 +439,6 @@ export async function getCourseLectureStructure(
         cube.lectureView.surveyCase !== null)
     ) {
       const getItemMapFromCubePromise = async () => {
-        const cubeIntroId =
-          cube.lectureView!.cubeIntro === null
-            ? ''
-            : cube.lectureView!.cubeIntro.id;
         const examId =
           cube.lectureView!.examination === null
             ? ''
@@ -459,7 +456,7 @@ export async function getCourseLectureStructure(
           cube.state === 'Progress' || cube.state === 'Completed';
         const cubeItemMap = await getItemMapFromCube(
           {
-            cubeIntroId,
+            cubeIntro: cube.lectureView!.cubeIntro,
             examId,
             surveyId,
             surveyCaseId,

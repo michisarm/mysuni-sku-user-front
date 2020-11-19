@@ -12,9 +12,9 @@ export function findAnswerSheet(
   examId: string,
   examineeId: string
 ): Promise<FindAnswerSheetData> {
-  const url = `${BASE_URL}/answersheets?examId=${examId}&examineeId=${examineeId}`;
+  const url = `${BASE_URL}/answersheets?examId=${examId}&examineeId=${examineeId}&t=${Date.now()}`;
   return axiosApi
-    .get<FindAnswerSheetData>(url)
+    .get<FindAnswerSheetData>(url, { headers: { 'Pragma': 'no-cache' } })
     .then(response => response && response.data);
 }
 

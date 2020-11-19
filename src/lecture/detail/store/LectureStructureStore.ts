@@ -1,4 +1,7 @@
-import { LectureStructure } from '../viewModel/LectureStructure';
+import {
+  LectureStructure,
+  LectureStructureItem,
+} from '../viewModel/LectureStructure';
 import { createStore } from './Store';
 
 const initialStore: LectureStructure = {
@@ -14,4 +17,17 @@ const [
   getLectureStructure,
 ] = createStore<LectureStructure>(initialStore);
 
-export { setLectureStructure, onLectureStructure, getLectureStructure };
+const [
+  setCurentLectureStructureItem,
+  onCurentLectureStructureItem,
+  getCurentLectureStructureItem,
+] = createStore<LectureStructureItem>();
+
+export {
+  setLectureStructure,
+  onLectureStructure,
+  getLectureStructure,
+  setCurentLectureStructureItem,
+  onCurentLectureStructureItem,
+  getCurentLectureStructureItem,
+};

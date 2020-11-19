@@ -22,7 +22,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
     <>
       {lectureStructure.cube !== undefined &&
         lectureStructure.cube.cubeType !== 'Audio' &&
-          lectureStructure.cube.cubeType !== 'Video' && (
+        lectureStructure.cube.cubeType !== 'Video' && (
           <CubeView
             key={lectureStructure.cube.id}
             name={lectureStructure.cube.name}
@@ -59,6 +59,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           questionCount={lectureStructure.cube.test.questionCount}
           path={lectureStructure.cube.test.path}
           can={lectureStructure.cube.test.can}
+          activated={lectureStructure.cube.test.activated}
         />
       )}
       {lectureStructure.cube?.survey !== undefined && (
@@ -68,6 +69,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           questionCount={lectureStructure.cube.survey.questionCount}
           path={lectureStructure.cube.survey.path}
           can={lectureStructure.cube.survey.can}
+          activated={lectureStructure.cube.survey.activated}
         />
       )}
       {lectureStructure.cube?.report !== undefined && (
@@ -76,6 +78,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           state={lectureStructure.cube.report.state}
           path={lectureStructure.cube.report.path}
           can={lectureStructure.cube.report.can}
+          activated={lectureStructure.cube.report.activated}
         />
       )}
     </>
