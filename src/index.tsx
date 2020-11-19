@@ -19,6 +19,6 @@ import './style/css/main.5a70a80b.chunk.css';
 
 initializeBody();
 
-ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
+// ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
 
 ReactDOM.render(<App />, document.getElementById('root'));
