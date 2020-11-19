@@ -64,7 +64,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [fileCheck, setFileCheck] = useState<string>('');
   const [fileDiv, setFileDiv] = useState<any>();
 
-  const [lectureState] = useLectureState();
+  // const [lectureState] = useLectureState();
 
   const nameList: string[] = [''];
 
@@ -110,20 +110,20 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
 
-  useEffect(() => {
-    if (lectureState === undefined || lectureState.action === undefined) {
-      return;
-    }
-    if (files === undefined) {
-      return;
-    }
-    if (numPages === pageNumber) {
-      if (files.length === 1) {
-        lectureState.action();
-      }
-    }
-    console.log('LectureDocumentsView', numPages, pageNumber);
-  }, [numPages, pageNumber, lectureState, files]);
+  // useEffect(() => {
+  //   if (lectureState === undefined || lectureState.action === undefined) {
+  //     return;
+  //   }
+  //   if (files === undefined) {
+  //     return;
+  //   }
+  //   if (numPages === pageNumber) {
+  //     if (files.length === 1) {
+  //       lectureState.action();
+  //     }
+  //   }
+  //   console.log('LectureDocumentsView', numPages, pageNumber);
+  // }, [numPages, pageNumber, lectureState, files]);
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
