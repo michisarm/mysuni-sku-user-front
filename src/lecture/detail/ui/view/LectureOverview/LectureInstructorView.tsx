@@ -29,11 +29,16 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
       <div className="scrolling course-profile">
         {lectureInstructor &&
           lectureInstructor.instructors &&
-          lectureInstructor.instructors.map(({ name, company, represent, usid }) => (
+          lectureInstructor.instructors.map(({ name, company, represent, usid, employeeId, photoId }) => (
             <Link className="ui profile tool-tip" to={`/expert/instructor/${usid}/Introduce`}> 
               {represent === 1 && <Represent />}
               <div className="pic s80">
-                {/* <img alt="프로필사진" className="ui image" /> */}
+                {employeeId && employeeId != '' &&
+                  <img alt="프로필사진" className="ui image" src={`https://mysuni.sk.com/profile/photo/skcc/${employeeId}.jpg`} />
+                }
+                {photoId && photoId != '' &&
+                  <img alt="프로필사진" className="ui image" src={photoId} />
+                }                        
               </div>
               <i>
                 <span className="tip-name">{name}</span>

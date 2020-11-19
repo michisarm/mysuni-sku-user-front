@@ -139,8 +139,8 @@ class AplCreateContainer extends React.Component<Props, States> {
     skProfileService!.findSkProfile()
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
+      .then(() => companyApproverService!.findCompanyAplApprover())
       .then((companyApprover: CompanyApproverModel) => {
-        companyApproverService!.findCompanyAplApprover();
         this.onChangeAplProps('approvalId', companyApprover.id);
         this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
@@ -666,9 +666,9 @@ class AplCreateContainer extends React.Component<Props, States> {
                       multiSelect={false}
                     />
                     <span className="text1">
-                      <b>{apl && apl.approvalName || approvalMember.name || ''}</b>
-                      <span className="ml40">{apl && apl.approvalCompany || approvalMember.companyName || ''}</span>
-                      <span className="line">{apl && apl.approvalDepartment || approvalMember.departmentName || ''}</span>
+                      <b>{apl && apl.approvalName|| ''}</b>
+                      <span className="ml40">{apl && apl.approvalCompany || ''}</span>
+                      <span className="line">{apl && apl.approvalDepartment || ''}</span>
                       {approvalShow && (
                       <div className="info-text">
                         <Icon className="info16">
