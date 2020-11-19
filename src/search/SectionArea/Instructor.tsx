@@ -1,6 +1,6 @@
-import React, { useState }  from 'react';
-import { Icon, Card, Segment,Button } from 'semantic-ui-react'
-import ExpertCard from '../Components/ExpertCard';
+import React, { useState } from 'react';
+import { Icon, Card, Segment, Button } from 'semantic-ui-react';
+import ExpertCards from '../Components/ExpertCards';
 
 const Instructor: React.FC = () => {
   const [insertApi, getInsertApi] = useState<boolean>(true)
@@ -29,8 +29,21 @@ const Instructor: React.FC = () => {
             <Icon className="no-contents80"/><span className="blind">콘텐츠 없음</span>
             <div className="text">검색된 Expert가 없습니다.</div>
           </div>
-        )
-      }
+          <Card.Group className="expert-cards">
+            {/* API Render */}
+            <ExpertCards />
+            <ExpertCards />
+            <ExpertCards />
+            <ExpertCards />
+          </Card.Group>
+        </>
+      ) : (
+        <div className="no-cont-wrap">
+          <Icon className="no-contents80" />
+          <span className="blind">콘텐츠 없음</span>
+          <div className="text">검색된 Expert가 없습니다.</div>
+        </div>
+      )}
     </div>
   );
 };
