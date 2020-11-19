@@ -88,19 +88,29 @@ export function findCPGroup(
     .then(AxiosReturn);
 }
 
-interface QueryOptions {
+export interface QueryOptions {
   all_college_name_query: string[]
   difficulty_level_json_query: string[]
   learning_time_query: number[]
   organizer_query: string[]
   cube_type_query: string[]
-  reqCom_id_query: boolean
+  reqCom_id_query?: boolean
   badge_query?: boolean
   stamp_query?: boolean
   learning_start_date_str?: string;
   learning_end_date_str?: string
   apply_start_date_str?: string
   apply_end_date_str?: string
+}
+
+export function getEmptyQueryOptions(): QueryOptions {
+  return {
+    all_college_name_query: [],
+    difficulty_level_json_query: [],
+    learning_time_query: [],
+    organizer_query: [],
+    cube_type_query: [],
+  }
 }
 
 function makeSubQuery(column: string, keywords: string[]) {

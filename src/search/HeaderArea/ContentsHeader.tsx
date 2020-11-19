@@ -6,7 +6,7 @@ import SearchFilter from '../Components/SearchFilter';
 
 const ContentsHeader: React.FC = () => {
   //
-  const [isOnFilter, setIsOnFilter] = useState<boolean>(false);
+  const [isOnFilter, setIsOnFilter] = useState<boolean>(true);
   const [searchValue, setSearchValue] = useState<string>('');
 
   const onClickFilter = () => {
