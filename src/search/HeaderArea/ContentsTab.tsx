@@ -17,15 +17,9 @@ import LearningCard from '../SectionArea/LearningCard';
 
 const COMPONENT: any = {
   All: <AllView />,
-  LearningCard: <Instructor />,
-  Export: <LearningCard />,
+  LearningCard: <LearningCard />,
+  Export: <Instructor />,
 };
-
-// const COMPONENT: any = {
-//   0: <AllView />,
-//   1: <Instructor />,
-//   2: <LearningCard />,
-// };
 
 const ContentsTab: React.FC = () => {
   const [activeItem, setActiveItem] = useState<string>('');
@@ -43,8 +37,6 @@ const ContentsTab: React.FC = () => {
               name="All"
               active={activeItem === 'All'}
               onClick={handleItemClick}
-              // as={Link}
-              // to="/search/all"
             >
               전체보기 <span className="count" />
             </Menu.Item>
@@ -52,8 +44,6 @@ const ContentsTab: React.FC = () => {
               name="LearningCard"
               active={activeItem === 'LearningCard'}
               onClick={handleItemClick}
-              // as={Link}
-              // to="/search/learning-card"
             >
               학습카드 <span className="count" />
             </Menu.Item>
@@ -61,8 +51,6 @@ const ContentsTab: React.FC = () => {
               name="Export"
               active={activeItem === 'Export'}
               onClick={handleItemClick}
-              // as={Link}
-              // to="/search/instructor"
             >
               강사 <span className="count" />
             </Menu.Item>
@@ -70,15 +58,7 @@ const ContentsTab: React.FC = () => {
         </div>
       </Sticky>
 
-      <div
-        style={{
-          padding: '100px',
-          width: '1400px',
-          margin: '0 auto',
-        }}
-      >
-        {COMPONENT[activeItem]}
-      </div>
+      <div>{COMPONENT[activeItem]}</div>
     </div>
   );
 };
