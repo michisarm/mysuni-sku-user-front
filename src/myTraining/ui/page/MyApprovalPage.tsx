@@ -16,6 +16,7 @@ import MyApprovalContentTypeName from '../model/MyApprovalContentTypeName';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
 import MyApprovalListContainerV2 from '../logic/MyApprovalListContainerV2';
+import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 
 
 interface Props {
@@ -59,7 +60,9 @@ function MyApprovalPage(props: Props) {
 
   const getTabs = (): TabItemModel[] => {
     /* menuControlAuth 의 companyCode 가 없을 경우에만 개인학습 탭을 보여준다. */
-    if (menuControlAuth.companyCode === '') {
+    if (menuControlAuth.companyCode === ''
+      || ( menuControlAuth.authCode === MenuControlAuth.User
+      && menuControlAuth.useYn === MenuControlAuth.Yes)) {
       return [
         {
           name: MyApprovalContentType.PaidCourse,

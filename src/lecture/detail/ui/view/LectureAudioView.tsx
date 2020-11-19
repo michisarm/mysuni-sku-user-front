@@ -90,6 +90,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     getCurrentTime: () => {},
     getDuration: () => {},
     currentPosition: () => {},
+    getPlaybackRate: () => {},
   });
 
   const history = useHistory();
@@ -170,91 +171,93 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   useEffect(() => {
     let interval: any = null;
-
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
-    const duration = (embedApi.getDuration() as unknown) as number;
 
-    if (!startTime) {
+    if(!startTime){
       setStartTime(currentTime);
     }
-
     if (isActive && params && watchlogState) {
-      clearInterval(interval);
+      // clearInterval(interval);
       interval = setInterval(() => {
+      // setWatchInterval(setInterval(() => {        
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+        const end = (embedApi.getCurrentTime() as unknown) as number;
+        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+        /* eslint-disable */
         setWatchlogState({
           ...watchlogState,
-          start: startTime < 10 ? 0 : startTime - 10,
-          // end: currentTime + 10,
-          end: (embedApi.getCurrentTime() as unknown) as number,
+          start: start < 0? 0 : start,
+          end: end,
         });
-        setSeconds(seconds => seconds + 10);
+        /* eslint-enable */
+
+        //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
         setWatchLog(params, watchlogState);
         setStartTime((embedApi.getCurrentTime() as unknown) as number);
-      }, 10000);
-    } else if (!isActive && seconds !== 0) {
+      // }, 10000));
+    }, 10000);
+    } else if (!isActive) {
+      // sendWatchLog();
       clearInterval(interval);
     }
     return () => {
+      console.log('clearInterval return run');
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime, watchlogState]);
+
 
   useEffect(() => {
+    let checkInterval: any = null;
+    const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 10) * 1000;
-    //confirmProgressTime
+    
     if (!confirmProgressTime || confirmProgressTime > 60000) {
       confirmProgressTime = 60000;
     }
 
     if (isActive && params) {
-      clearTimeout(progressInterval);
-      setProgressInterval(
-        setTimeout(function tick() {
+      // setCheckInterval(setInterval(() => {
+        checkInterval = setInterval(() => {
           mediaCheckEvent(params);
-          //console.log('tick');
-          clearTimeout(progressInterval);
-          setProgressInterval(setTimeout(tick, confirmProgressTime));
-        }, confirmProgressTime)
-      );
-    } else if (!isActive && seconds !== 0) {
-      clearTimeout(progressInterval);
+          // }, 20000));
+        }, 20000);
+
+    } else if (!isActive) {
+      clearInterval(checkInterval);
     }
     return () => {
-      clearTimeout(progressInterval);
+      console.log('clearCheckInterval return run');
+      clearInterval(checkInterval);
+      
     };
   }, [isActive]);
-  // }, [isActive, seconds, lectureParams, pathname, params]);
 
-  useEffect(() => {
-    if (params) {
-      console.log('params loding effect params - ', params);
-      // mediaCheckEvent(params);
-    }
-  }, [params]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('page out clear Interval ');
+  //     clearInterval(watchInterval);
+  //     clearInterval(checkInterval);
+  //   };
+  // }, [checkInterval, watchInterval]);
 
   useEffect(() => {
     setNextContentsView(false);
     return () => {
-      console.log('component End');
-      // console.log('progressInterval : ' , progressInterval);
       mediaCheckEvent(params);
-      clearTimeout(progressInterval);
       setPanoptoState(10);
       setNextContentsPath('');
       setNextContentsName('');
       setIsActive(false);
-      console.log('progressInterval', progressInterval);
       setNextContentsView(false);
+      setProgressInterval('');
+      setLectureConfirmProgress();
     };
   }, []);
-
-  const cleanUpPanoptoIframe = () => {
-    const playerEl = document.getElementById('panopto-embed-audio-player'); //audio player 라는 것이 따로 없습니다.
-    if (playerEl) {
-      playerEl.innerHTML = '';
-    }
-  };
 
   useEffect(() => {
     // TODO : getNextorderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
@@ -423,6 +426,11 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       cleanUpPanoptoIframe();
     };
   }, []);
+
+  const cleanUpPanoptoIframe = () => {
+    const playerEl = document.getElementById('panopto-embed-audio-player');
+    if (playerEl) playerEl.innerHTML = '';
+  };
 
   return (
     <div className="audio-container" ref={myInput}>
