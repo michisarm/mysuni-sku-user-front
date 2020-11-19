@@ -83,6 +83,10 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     applying: '',
   });
 
+  useEffect(() => {
+    console.log(conditions)
+  },[conditions])
+
   const onCheckOne = (e: any, data: any) => {
     switch (data.name) {
       case FilterConditionName.College:
@@ -215,20 +219,23 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.College}</th>
             <td>
-              <Checkbox className="base" label="SelectAll" />
-              <Checkbox className="base" label="Al(13)" checked={true} />
-              <Checkbox className="base" label="DT(13)" />
-              <Checkbox className="base" label="행복(13)" />
-              <Checkbox className="base" label="SV(13)" />
-              <Checkbox className="base" label="혁신디자인(13)" />
-              <Checkbox className="base" label="Global(13)" />
-              <Checkbox className="base" label="Leadership(13)" />
-              <Checkbox className="base" label="Management(13)" />
-              <Checkbox className="base" label="반도체(13)" />
-              <Checkbox className="base" label="에너지솔루션(13)" />
-              <Checkbox className="base" label="SK경영(13)" />
-              <Checkbox className="base" label="SK아카데미(13)" />
-              <Checkbox className="base" label="Life Style(13)" />
+              <Checkbox
+                className="base"
+                label={`${SELECT_ALL}`} 
+
+              />
+              {CheckBoxOptions.college.map((college, index) => (
+                <Fragment key={`checkbox-college-${index}`}>
+                  <Checkbox 
+                    className="base"
+                    name={FilterConditionName.College}
+                    label={college.text}
+                    value={college.value}
+                    checked={conditions.collegeIds.includes(college.value)}
+                    onChange={onCheckOne}
+                  />
+                </Fragment>
+              ))}
             </td>
           </tr>
           <tr>
