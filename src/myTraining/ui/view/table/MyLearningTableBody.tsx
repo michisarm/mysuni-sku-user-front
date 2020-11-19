@@ -94,15 +94,15 @@ function MyLearningTableBody(props: Props) {
     serviceType = serviceType === 'COURSE' ? 'Course' : 'Program';
 
 
-    const { id: collegeId } = college;
-    const cineroomId = patronInfo.getCineroomId() || '';
+    // const { id: collegeId } = college;
+    // const cineroomId = patronInfo.getCineroomId() || '';
 
-    switch (serviceType) {
-      case 'COURSE':
-        serviceType = 'Course';
-      case 'PROGRAM':
-        serviceType = 'Program';
-    }
+    // switch (serviceType) {
+    //   case 'COURSE':
+    //     serviceType = 'Course';
+    //   case 'PROGRAM':
+    //     serviceType = 'Program';
+    // }
 
     // Card
     if (model.isCardType()) {
