@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CheckBoxOptions from '../model/CheckBoxOption';
+// import CheckedFilterView from './CheckedFilterView';
 
 interface Props {
   isOnFilter: boolean;
@@ -62,6 +63,11 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     setEndDate(date);
   };
 
+  const getCollegeId = (collegeName: string) => {
+    const college = CheckBoxOptions.all_college_name_query.filter(college => college.value === collegeName)[0];
+    return college.value;
+  };
+
   useEffect(() => {
     if (searchValue === '') {
       return;
@@ -82,10 +88,6 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     learning_end_date_str: null,
     applying: '',
   });
-
-  useEffect(() => {
-    console.log(conditions)
-  },[conditions])
 
   const onCheckOne = (e: any, data: any) => {
     switch (data.name) {
@@ -155,7 +157,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           setConditions({
             ...conditions,
             learning_time_query: conditions.learning_time_query.filter(
-              learningTIme => learningTIme !== data.value
+              learningTime => learningTime !== data.value
             ),
           });
           break;
@@ -216,12 +218,12 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     switch (data.name) {
       case FilterConditionName.College:
         /* 전체 해제 */
-        if (conditions.all_college_name_query.length === CheckBoxOptions.college.length) {
+        if (conditions.all_college_name_query.length === CheckBoxOptions.all_college_name_query.length) {
           setConditions({ ...conditions, all_college_name_query: [] });
           break;
         }
         /* 전체 선택 */
-        setConditions({ ...conditions, all_college_name_query: [...CheckBoxOptions.college.map(college => college.value)] });
+        setConditions({ ...conditions, all_college_name_query: [...CheckBoxOptions.all_college_name_query.map(college => college.value)] });
         break;
       case FilterConditionName.LearningType:
         if (conditions.learningTypes.length === CheckBoxOptions.learningTypes.length - 1 && conditions.serviceType) {
@@ -265,6 +267,43 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     }
   };
 
+  const onClearOne = (type: string, condition: string) => {
+    switch (type) {
+      case FilterConditionName.College:
+        setConditions({ ...conditions, all_college_name_query: conditions.all_college_name_query.filter(collegeId => collegeId !== getCollegeId(condition)) });
+        break;
+      case FilterConditionName.LearningType:
+        setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== condition) });
+        if (condition === 'Course') {
+          setConditions({ ...conditions, serviceType: '' });
+        }
+        break;
+      case FilterConditionName.DifficultyLevel:
+        setConditions({ ...conditions, difficulty_level_json_query: conditions.difficulty_level_json_query.filter(difficultyLevel => difficultyLevel !== condition) });
+        break;
+      case FilterConditionName.Organizer:
+        setConditions({ ...conditions, organizer_query: conditions.organizer_query.filter(organizer => organizer !== condition) });
+        break;
+      case FilterConditionName.Required:
+        setConditions({ ...conditions, required: '' });
+        break;
+      case FilterConditionName.LearningTime:
+        setConditions({ ...conditions, learning_time_query: conditions.learning_time_query.filter(learningTime => learningTime !== condition) });
+        break;
+      case FilterConditionName.Certification:
+        setConditions({ ...conditions, certifications: conditions.certifications.filter(certification => certification !== condition) });
+        break;
+      case FilterConditionName.LearningSchedule:
+        if (condition === 'true') {
+          setConditions({ ...conditions, applying: '' });
+          break;
+        } else {
+          setConditions({ ...conditions, learning_start_date_str: null, learning_end_date_str: null });
+          break;
+        }
+    }
+  };
+
   return (
     <div className={classNames('filter-table', isOnFilter ? 'on' : '')}>
       <div className="title">
@@ -285,7 +324,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                 label={`${SELECT_ALL}`} 
                 onChange={onCheckAll}
               />
-              {CheckBoxOptions.college.map((college, index) => (
+              {CheckBoxOptions.all_college_name_query.map((college, index) => (
                 <Fragment key={`checkbox-college-${index}`}>
                   <Checkbox 
                     className="base"
@@ -501,10 +540,16 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           </tbody>
         </table>
       </div>
+      {/* <CheckedFilterView
+        colleges={CheckBoxOptions.college}
+        conditions={conditions}
+        onClearAll={onClearAll}
+        onClearOne={onClearOne}
+      />
       <div className="moreAll">
-        <span className="arrow-more">→</span>
-        <a className="more-text">결과보기</a>
-      </div>
+        <span className="arrow-more">{'->'}</span>
+        <a className="more-text" onClick={onClickShowResult}>결과보기</a>
+      </div> */}
     </div>
   );
 };
