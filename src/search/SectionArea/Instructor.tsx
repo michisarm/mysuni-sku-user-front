@@ -18,10 +18,10 @@ const Instructor: React.FC = () => {
             </div>
             <Card.Group className="expert-cards">
               {/* API Render */}
-              <ExpertCard/>
-              <ExpertCard/>
-              <ExpertCard/>
-              <ExpertCard/>
+              <ExpertCards/>
+              <ExpertCards/>
+              <ExpertCards/>
+              <ExpertCards/>
             </Card.Group>
           </>
         ) : (
