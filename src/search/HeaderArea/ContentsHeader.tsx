@@ -48,11 +48,17 @@ const ContentsHeader: React.FC = () => {
             </Button>
           </div>
           {/*Filter*/}
-          <SearchFilter isOnFilter={isOnFilter} />
+          <SearchFilter />
         </Segment>
       </div>
     </>
   );
 };
-
+  // contentType={contentType}
+  // viewType={viewType}
+  // openFilter={openFilter}
+  // onChangeFilterCount={onChangeFilterCount}
+  // colleges={colleges}
+  // totalFilterCount={getTotalFilterCountView(contentType)}
+  // filterCounts={getFilterCountViews(contentType)}
 export default ContentsHeader;

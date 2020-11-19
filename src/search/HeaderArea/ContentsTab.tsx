@@ -26,8 +26,8 @@ const ContentsTab: React.FC = () => {
               name="All"
               active={activeItem === 'All'}
               onClick={handleItemClick}
-            // as={Link}
-            // to="/search/all"
+              // as={Link}
+              // to="/search/all"
             >
               전체보기 <span className="count" />
             </Menu.Item>
@@ -35,8 +35,8 @@ const ContentsTab: React.FC = () => {
               name="LearningCard"
               active={activeItem === 'LearningCard'}
               onClick={handleItemClick}
-            // as={Link}
-            // to="/search/learning-card"
+              // as={Link}
+              // to="/search/learning-card"
             >
               학습카드 <span className="count" />
             </Menu.Item>
@@ -44,8 +44,8 @@ const ContentsTab: React.FC = () => {
               name="Export"
               active={activeItem === 'Export'}
               onClick={handleItemClick}
-            // as={Link}
-            // to="/search/instructor"
+              // as={Link}
+              // to="/search/instructor"
             >
               강사 <span className="count" />
             </Menu.Item>
