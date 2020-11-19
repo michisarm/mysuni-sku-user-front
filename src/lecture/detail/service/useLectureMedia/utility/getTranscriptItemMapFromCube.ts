@@ -12,6 +12,7 @@ export async function getTranscriptItem(
   }
 
   transcript.forEach(transcript => {
+    console.log('transcript', transcript)
     const {
       deliveryId,
       locale,
@@ -23,7 +24,11 @@ export async function getTranscriptItem(
       createdTime,
       modifierId,
       modifiedTime,
+      // intervalTime
     } = transcript;
+
+    const intervalTime = startTime+''+endTime
+    console.log('intervalTime', intervalTime)
 
     const lectureTranscript: LectureTranscript = {
       locale,
@@ -31,6 +36,7 @@ export async function getTranscriptItem(
       text,
       startTime,
       endTime,
+      // intervalTime: ''
     };
 
     lectureTranscripts.push(lectureTranscript);

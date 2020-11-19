@@ -127,6 +127,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
+      console.log('1111')
       setPanoptoState(state);
       setIsActive(false);
       if (state == 1) {
@@ -165,6 +166,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   useEffect(() => {
     setNextContentsView(false);
+    console.log('panoptoState', panoptoState)
     //동영상 종료
     if(panoptoState == 0 || panoptoState == 2){
       mediaCheckEvent(params);
@@ -177,9 +179,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       registCheckStudent(params);
     }
 
+    console.log('1111', embedApi.getCurrentTime())
+
   }, [panoptoState]);
 
   useEffect(() => {
+    console.log('222222')
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
   }, [isActive, seconds, lectureParams, pathname, params]);
@@ -198,6 +203,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (isActive && params && watchlogState) {
       clearInterval(interval);
       interval = setInterval(() => {
+        console.log('setInterval')
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
@@ -215,7 +221,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
         setWatchLog(params, watchlogState);
         setStartTime((embedApi.getCurrentTime() as unknown) as number);
-
+        //시간 10 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+        console.log('embedApi.getCurrentTime()', embedApi.getCurrentTime())
       }, 10000);
 
     } else if (!isActive && seconds !== 0) {
@@ -409,6 +416,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+  const scrollMove = () => {
+    console.log('scrollMove')
+    console.log(document.getElementById('tanscript-scroll'))
+    const test = document.getElementById('tanscript-scroll')
+    test!.scrollTo(10,10);
+  }
+
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
@@ -508,10 +522,18 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
               Close Transcript
               <i aria-hidden="true" className="icon icon morelink" />
             </button>
+            <button
+              className="ui icon button right btn-blue"
+              onClick={scrollMove}
+            >
+              scrollMove
+              <i aria-hidden="true" className="icon icon morelink" />
+            </button>
 
-            <div className="course-video-tanscript">
+            <div className="course-video-tanscript" id="tanscript-scroll">
               <div className="course-video-scroll">
                 {getLectureTranscripts()?.map(lectureTranscript => {
+                  console.log('lectureTranscript', lectureTranscript)
                   return (
                     <>
                       <strong

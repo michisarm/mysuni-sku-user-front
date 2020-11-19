@@ -96,7 +96,8 @@ export async function getCubeLectureMedia(
 
       //스크립트 api 조회: http://localhost:8090/api/personalCube/transcripts/0b24e458-bd52-408d-a18c-abd50023dde9/ko
       const transcript = await findAllTranscript(panoptoSessionId, 'ko');
-
+      console.log('transcript', transcript)
+      // transcript.push({})
       //조회 결과 viewmodel setting
       setLectureTranscripts(await getTranscriptItem(transcript));
       setLectureMedia(await getMediaItem(media));
