@@ -258,9 +258,8 @@ class MyLearningSummaryContainer extends Component<Props> {
             favorites={favoriteChannels}
             onConfirmCallback={this.onConfirmFavorite}
           />
-          {(menuControlAuth.companyCode === ''
-            && menuControlAuth.authCode !== MenuControlAuth.Admin
-            && menuControlAuth.useYn !== MenuControlAuth.No)
+          {( menuControlAuth.authCode === MenuControlAuth.User
+            && menuControlAuth.useYn === MenuControlAuth.Yes)
           &&(
           <div onClick={this.onClickCreateApl} >
             <a href="#"><Icon className="add24"/><span>개인학습</span></a>
