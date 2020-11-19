@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Icon, Label, List } from 'semantic-ui-react';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 
@@ -23,9 +24,14 @@ const LectureTagsView: React.FC<LectureTagsViewProps> = function LectureTagsView
           </div>
           <div className="detail">
             {lectureTags.tags.map((tag, key) => (
-              <span className="ui label tag" key={key}>
+              <Link
+                className="ui label tag"
+                key={key}
+                to={`/search?query=${tag}`}
+                target="_blank"
+              >
                 {tag}
-              </span>
+              </Link>
             ))}
           </div>
         </List.Item>
