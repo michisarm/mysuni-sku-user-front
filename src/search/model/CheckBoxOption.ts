@@ -1,5 +1,19 @@
 const CheckboxOptions = {
-
+  college: [
+    { key: 0, text: 'Al', value: 'Al' },
+    { key: 1, text: 'DT', value: 'DT' },
+    { key: 2, text: '행복', value: '행복' },
+    { key: 3, text: 'SV', value: 'SV' },
+    { key: 4, text: '혁신디자인', value: '혁신디자인' },
+    { key: 5, text: 'Global', value: 'Global' },
+    { key: 6, text: 'Management', value: 'Management' },
+    { key: 7, text: '반도체', value: '반도체' },
+    { key: 8, text: '에너지솔루션', value: '에너지솔루션' },
+    { key: 9, text: 'SK경영', value: 'SK경영' },
+    { key: 10, text: 'SK아카데미', value: 'SK아카데미' },
+    { key: 11, text: 'Life Style', value: 'LifeStyle' },
+  ],
+  
   difficultyLevels: [
     { key: 0, text: 'Basic', value: 'Basic' },
     { key: 1, text: 'Intermediate', value: 'Intermediate' },
