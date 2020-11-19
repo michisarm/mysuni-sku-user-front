@@ -10,6 +10,7 @@ import { SkProfileService } from 'profile/stores';
 import { MenuControlAuthService } from 'approval/stores';
 import { SkProfileModel } from 'profile/model';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
+import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 
 
 interface Props {
@@ -119,8 +120,10 @@ class MyLearningSummaryModal extends Component<Props> {
               )}
             </span>
           </li>
-          {/* company code 가 존재할 시, 보여주지 말라! */}
-          {menuControlAuth.companyCode === '' && (
+          {/* user 이고 useYn이 Y인 경우만 */}
+          { (menuControlAuth.companyCode === ''
+            || ( menuControlAuth.authCode === MenuControlAuth.User
+              && menuControlAuth.useYn === MenuControlAuth.Yes)) && (
             <li>
               <span className="name">개인 학습시간</span>
               <span className="time">
@@ -318,17 +321,17 @@ class MyLearningSummaryModal extends Component<Props> {
     const totalMyCompanyLearningTime = companyCode === '' ?
       myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime : myLearningSummary.displayMyCompanyLearningTime;
 
-    // totalLearningTime 을 display 하는 영역은 확인되지 않음. 
+    // totalLearningTime 을 display 하는 영역은 확인되지 않음.
     // 확인될 경우, 주석을 풀고 total 변수 를 해당 영역에 display 하면 됨. 2020.10.28 by 김동구
-    /* 
+    /*
       const { hour, minute } = timeToHourMinute(
         totalMyLearningSummary.totalLearningTime
-      ); 
+      );
     */
 
-    /* 
+    /*
       let total: any = null;
- 
+
       if (hour < 1 && minute < 1) {
         total = (
           <div className="total">
@@ -359,7 +362,7 @@ class MyLearningSummaryModal extends Component<Props> {
             <span className="u">m</span>
           </div>
         );
-      } 
+      }
     */
 
     let today = moment(new Date()).format('YYYY.MM.DD');
