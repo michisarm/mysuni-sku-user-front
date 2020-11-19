@@ -123,6 +123,9 @@ async function getReportItem(
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   const coursePlan = await findCoursePlan(lectureView.coursePlanId);
+  if (coursePlan === undefined) {
+    return;
+  }
   if (
     coursePlan.reportFileBox !== null &&
     coursePlan.reportFileBox.reportName !== '' &&

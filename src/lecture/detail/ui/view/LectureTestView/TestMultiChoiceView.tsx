@@ -26,10 +26,12 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
       } else {
         newAnswers = answers.concat([value]);
       }
-      newAnswers.map(ans => {
-        if (newAnswer) newAnswer += `,${ans}`;
-        else newAnswer = ans;
-      });
+      newAnswers
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .map(ans => {
+          if (newAnswer) newAnswer += `,${ans}`;
+          else newAnswer = ans;
+        });
       setAnswer(question.questionNo, newAnswer);
     },
     [answer] // answer 변경시 useCallback 내부의 answer 데이터도 변경

@@ -43,7 +43,7 @@ export type FilterCondition = {
 
 export enum FilterConditionName {
   College = '컬리지',
-  LearningType = '학습유형',
+  LearningType = '교육유형',
   DifficultyLevel = '난이도',
   LearningTime = '학습시간',
   Organizer = '교육기관',
@@ -357,34 +357,7 @@ function MultiFilterBox(props: Props) {
           <div className="title">Filter</div>
           <table className="">
             <tbody>
-              <tr>
-                {/* 컬리지 */}
-                <th>{FilterConditionName.College}</th>
-                <td>
-                  {/* select All 체크박스 */}
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.College}
-                    label={`${SELECT_ALL} (${totalFilterCountView.college})`}
-                    checked={conditions.collegeIds.length === colleges.length}
-                    onChange={onCheckAll}
-                  />
-                  {colleges &&
-                    colleges.length &&
-                    colleges.map((college, index) => (
-                      <Fragment key={`checkbox-college-${index}`}>
-                        <Checkbox
-                          className="base"
-                          name={FilterConditionName.College}
-                          label={`${college.name} (${getCollegeCount(filterCountViews, college.name)})`}
-                          value={college.collegeId}
-                          checked={conditions.collegeIds.includes(college.collegeId)}
-                          onChange={onCheckOne}
-                        />
-                      </Fragment>
-                    ))}
-                </td>
-              </tr>
+
               {displayRow(contentType, viewType, FilterConditionName.LearningType) && (
                 <tr>
                   {/* 학습유형 */}
@@ -413,6 +386,34 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
+              <tr>
+                {/* 컬리지 */}
+                <th>{FilterConditionName.College}</th>
+                <td>
+                  {/* select All 체크박스 */}
+                  <Checkbox
+                    className="base"
+                    name={FilterConditionName.College}
+                    label={`${SELECT_ALL} (${totalFilterCountView.college})`}
+                    checked={conditions.collegeIds.length === colleges.length}
+                    onChange={onCheckAll}
+                  />
+                  {colleges &&
+                    colleges.length &&
+                    colleges.map((college, index) => (
+                      <Fragment key={`checkbox-college-${index}`}>
+                        <Checkbox
+                          className="base"
+                          name={FilterConditionName.College}
+                          label={`${college.name} (${getCollegeCount(filterCountViews, college.name)})`}
+                          value={college.collegeId}
+                          checked={conditions.collegeIds.includes(college.collegeId)}
+                          onChange={onCheckOne}
+                        />
+                      </Fragment>
+                    ))}
+                </td>
+              </tr>
               {displayRow(contentType, viewType, FilterConditionName.DifficultyLevel) && (
                 <tr>
                   {/* 난이도 */}

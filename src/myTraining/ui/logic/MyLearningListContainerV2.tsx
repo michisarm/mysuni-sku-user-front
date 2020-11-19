@@ -39,6 +39,7 @@ function MyLearningListContainerV2(props: Props) {
   const { skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, studentService, collegeService } = props;
   const { profileMemberName } = skProfileService!;
   const { colleges } = collegeService!;
+  const { inprogressCount } = myTrainingService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -50,6 +51,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
+  /* effects */
   useEffect(() => {
     /* 상위 컴포넌트에서 조회되는 colleges 가 없을 경우, MultiFilterBox 에 전달하기 위해 다시 조회함.*/
     if (!colleges || !colleges.length) {
@@ -57,7 +59,15 @@ function MyLearningListContainerV2(props: Props) {
     }
   }, []);
 
-  /* effects */
+  useEffect(() => {
+    /* 
+      학습중 탭 카운트가 변경이 되었다는 것은 session storage 가 업데이트 되었다는 것을 의미함.
+      session storage 가 업데이트 되었다면 다시 학습중 목록을 조회함.
+      inprogressCount 가 아닌 다른 기준점을 생각해보자.
+    */
+    myTrainingService!.findAllTableViews();
+  }, [inprogressCount]);
+
   useEffect(() => {
     initPage();
     if (filterCount === 0) {
@@ -80,7 +90,6 @@ function MyLearningListContainerV2(props: Props) {
     fetchFilterCountViews(contentType);
 
     return () => clearFilterCountViews(contentType);
-
   }, [contentType, viewType]);
 
   /* functions */
@@ -308,7 +317,6 @@ function MyLearningListContainerV2(props: Props) {
       default:
         return myTrainingService!.totalFilterCountView;
     }
-
   };
 
   const isModelExist = (contentType: MyContentType) => {
@@ -395,7 +403,6 @@ function MyLearningListContainerV2(props: Props) {
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
     myTrainingService!.clearAllSelectedServiceIds();
     await updateSessionStorage();
-    myTrainingService!.findAllTableViews();
     myTrainingService!.findAllTabCount();
 
     setOpenModal(false);

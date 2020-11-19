@@ -80,7 +80,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
 
-  const [embedApi, setEmbedApi] = useState({
+  const [embedApi, setEmbedApi] = useState<any|undefined>({
     pauseVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
@@ -88,19 +88,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     currentPosition: () => {},
     getPlaybackRate: () => {},
   });
-
-  const toHHMM = useCallback((idx: number) => {
-    const time = idx;
-    const hours = Math.floor(time / 60);
-    const minutes = Math.floor(time - hours * 60);
-
-    let sHours = '';
-    let sMinutes = '';
-    sHours = String(hours.toString()).padStart(2, '0');
-    sMinutes = String(minutes.toString()).padStart(2, '0');
-
-    return sHours + ':' + sMinutes;
-  }, []);
 
   const [displayTranscript, setDisplayTranscript] = useState<boolean>(true);
 
@@ -133,8 +120,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         setIsActive(true);
         setNextContentsView(false);
       } else if (state == 0) {
-        setNextContentsView(true);
-      }
+        // setNextContentsView(true);
+      } 
     },
     [params]
   );
@@ -159,6 +146,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     [params]
   );
 
+  useEffect(() => {
+    if(params){
+      setNextContentsView(false);
+    }
+  }, [params]);
+
   const lectureParams = useParams<LectureParams>();
   const { pathname } = useLocation();
 
@@ -170,11 +163,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       mediaCheckEvent(params);
       if(Math.floor((embedApi.getCurrentTime() as unknown) as number) == Math.floor((embedApi.getDuration() as unknown) as number)){
         setNextContentsView(true);
-      }      
+      }
     }
     //동영상 시작시 student 정보 확인 및 등록
     if(panoptoState == 1){
       registCheckStudent(params);
+      mediaCheckEvent(params);
     }
 
   }, [panoptoState]);
@@ -260,6 +254,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [progressInterval]);
 
   useEffect(() => {
+    setNextContentsView(false);
     return () => {
       mediaCheckEvent(params);
       setPanoptoState(10);
@@ -268,6 +263,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setIsActive(false);
       setNextContentsView(false);
       setProgressInterval('');
+      setEmbedApi('');
+      setLectureConfirmProgress();
+      
     };
   }, []);
 
@@ -294,8 +292,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   cube => cube.order == nextCubeOrder
                 );
                
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -305,9 +302,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   discussion => discussion.order == nextCubeOrder
                 );
               
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -335,9 +330,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
-
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -347,9 +340,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   discussion => discussion.order == nextCubeOrder
                 );
  
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-               
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -370,9 +361,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   cube => cube.order == nextCubeOrder
                 );
                
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextCube
-                ) {
-
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -381,9 +370,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (getLectureConfirmProgress()?.learningState == 'Passed' && nextDiscussion
-                ) {
-                  
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -412,36 +399,37 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
-      if (typeof lectureMedia === 'undefined') {
-      } else {
-        let currentPaonoptoSessionId =
+      if (lectureMedia && 
+        (lectureMedia.mediaType == "InternalMedia" ||
+        lectureMedia.mediaType == "InternalMediaUpload")) {
+          let currentPaonoptoSessionId =
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
-        let embedApi = new window.EmbedApi('panopto-embed-player', {
-          width: '100%',
-          height: '700',
-          //This is the URL of your Panopto site
-          //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
-          // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
-          serverName: 'sku.ap.panopto.com',
-          sessionId: currentPaonoptoSessionId,
-          // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
-          videoParams: {
-            // Optional parameters
-            //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
-            // "interactivity": "Caption Language",
-            interactivity: 'none',
-            showtitle: 'false',
-            showBrand: 'false',
-            offerviewer: 'false',
-          },
-          events: {
-            onIframeReady: onPanoptoIframeReady,
-            onLoginShown: onPanoptoLoginShown,
-            //"onReady": onPanoptoVideoReady,
-            onStateChange: onPanoptoStateUpdate,
-          },
-        });
-        setEmbedApi(embedApi);
+          let embedApi = new window.EmbedApi('panopto-embed-player', {
+            width: '100%',
+            height: '700',
+            //This is the URL of your Panopto site
+            //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
+            // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
+            serverName: 'sku.ap.panopto.com',
+            sessionId: currentPaonoptoSessionId,
+            // sessionId : "6421c40f-46b6-498a-b715-ac28004cf29e",   //테스트 용 sessionId
+            videoParams: {
+              // Optional parameters
+              //interactivity parameter controls whether the user will see table of contents, discussions, notes, and in-video search
+              // "interactivity": "Caption Language",
+              interactivity: 'none',
+              showtitle: 'false',
+              showBrand: 'false',
+              offerviewer: 'false',
+            },
+            events: {
+              onIframeReady: onPanoptoIframeReady,
+              onLoginShown: onPanoptoLoginShown,
+              //"onReady": onPanoptoVideoReady,
+              onStateChange: onPanoptoStateUpdate,
+            },
+          });
+          setEmbedApi(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -478,7 +466,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           !isActive &&
           nextContentsPath &&
           getLectureConfirmProgress()?.learningState == 'Passed' && (
-            <div className="video-overlay">
+            <div id="video-overlay" className="video-overlay">
               <div className="video-overlay-btn">
                 <button onClick={() => nextContents(nextContentsPath)}>
                   <img src={playerBtn} />

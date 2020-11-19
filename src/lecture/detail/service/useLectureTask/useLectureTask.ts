@@ -127,7 +127,7 @@ export function useLectureTask(): [TaskValue] {
         setLectureTaskViewType('Overview');
         return;
       }
-
+      
       setLectureTaskItem();
       setLectureTaskOffset(0);
 

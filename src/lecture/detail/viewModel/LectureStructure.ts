@@ -1,4 +1,4 @@
-import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
+import CoursePlanComplex from '../model/CoursePlanComplex';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 import LectureView from '../model/LectureView';
@@ -75,6 +75,7 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
 
 export interface LectureStructureDurationableCubeItem
   extends LectureStructureCubeItem {
+  cubeContentsId: string,
   duration?: number;
 }
 
@@ -99,6 +100,7 @@ export interface LectureStructureCourseItem extends LectureStructureItem {
   discussions?: LectureStructureDiscussionItem[];
   lectureView?: LectureView;
   student?: Student;
+  coursePlanComplex?: CoursePlanComplex;
 }
 
 export interface LectureStructure {

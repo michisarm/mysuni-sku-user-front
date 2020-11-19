@@ -2,13 +2,20 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
-import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
+import {
+  getLectureTestStudentItem,
+  setLectureTestAnswerItem,
+} from 'lecture/detail/store/LectureTestStore';
 import React, { useCallback } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
-import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import {
+  getActiveStructureItem,
+  getActiveStructureItemAll,
+} from '../../../service/useLectureStructure/useLectureStructure';
+import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -69,7 +76,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       reactConfirm({
         title: '알림',
         message: 'Test를 최종 제출 하시겠습니까?',
-        onOk: () => {
+        onOk: async () => {
           if (answerItem) {
             const nextAnswerItem = {
               ...answerItem,
@@ -77,9 +84,39 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             };
             setLectureTestAnswerItem(nextAnswerItem);
             if (params.contentType === 'cube') {
-              saveTestAnswerSheet(params, answerItemId, true, true);
+              await saveTestAnswerSheet(params, answerItemId, true, true);
             } else {
-              saveCourseTestAnswerSheet(params, answerItemId, true, true);
+              await saveCourseTestAnswerSheet(params, answerItemId, true, true);
+            }
+
+            requestLectureStructure(params.lectureParams, params.pathname);
+            const lectureTestStudentItem = getLectureTestStudentItem();
+            switch (lectureTestStudentItem?.learningState) {
+              case 'Waiting':
+              case 'TestWaiting':
+                reactAlert({
+                  title: '알림',
+                  message:
+                    '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+                });
+                break;
+              case 'Failed':
+                reactAlert({
+                  title: '알림',
+                  message:
+                    '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.',
+                });
+                break;
+              case 'Passed':
+              case 'TestPassed':
+                reactAlert({
+                  title: '알림',
+                  message:
+                    '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.',
+                });
+
+              default:
+                break;
             }
           }
         },
@@ -97,7 +134,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         <>
           <div className="course-info-header">
             <div className="survey-header">
-              <div className="survey-header-left">{testItem.name}</div>
+              <div className="survey-header-left" />
               <div className="survey-header-right">
                 {!testStudentItem ||
                   !testStudentItem.learningState ||
@@ -138,6 +175,14 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   <span>총점</span>
                   <span>{testItem.totalPoint}점</span>
                 </div>
+                {testStudentItem &&
+                  testStudentItem.studentScore &&
+                  testStudentItem.studentScore.numberOfTrials > 0 && (
+                    <div className="test-text-box">
+                      <span>내점수</span>
+                      <span>{testStudentItem.studentScore.latestScore}점</span>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

@@ -5,11 +5,11 @@
 import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../../api/assistantApi';
 import { findExamination } from '../../../api/examApi';
-import { findCubeIntro } from '../../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
 } from '../../../api/surveyApi';
+import CubeIntro from '../../../model/CubeIntro';
 import Student from '../../../model/Student';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
@@ -31,7 +31,7 @@ import {
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 interface GetItemMapArg {
-  cubeIntroId: string;
+  cubeIntro: CubeIntro;
   examId: string;
   surveyId: string;
   surveyCaseId: string;
@@ -124,12 +124,11 @@ async function getSurveyItem(
 }
 
 async function getReportItem(
-  cubeIntroId: string,
+  cubeIntro: CubeIntro,
   params: LectureParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
-  const cubeIntro = await findCubeIntro(cubeIntroId);
   if (cubeIntro.reportFileBox.reportName !== '' && cubeIntro.reportFileBox.reportName !== null) {
     let state: State = 'None';
     if (student !== undefined) {
@@ -163,7 +162,7 @@ export async function getItemMapFromCube(
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
-  const { cubeIntroId, examId, surveyId, surveyCaseId } = arg;
+  const { cubeIntro, examId, surveyId, surveyCaseId } = arg;
   const testItem = await getTestItem(examId, params, student);
   if (testItem !== undefined) {
     itemMap.test = testItem;
@@ -172,7 +171,7 @@ export async function getItemMapFromCube(
   if (surveyItem !== undefined) {
     itemMap.survey = surveyItem;
   }
-  const reportItem = await getReportItem(cubeIntroId, params, student);
+  const reportItem = await getReportItem(cubeIntro, params, student);
   if (reportItem !== undefined) {
     itemMap.report = reportItem;
   }

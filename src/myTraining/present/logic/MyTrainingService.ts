@@ -493,7 +493,7 @@ class MyTrainingService {
 
     /* 학습중 */
     if (this._myTrainingFilterRdo.contentType === 'InProgress') {
-      /* if (!this.inProgressTableViews.length) {
+      if (!this.inProgressTableViews.length) {
         const inProgressJson = sessionStorage.getItem('inProgressTableViews');
         if (inProgressJson) {
           const inProgressStorage: any[] = JSON.parse(inProgressJson);
@@ -502,7 +502,7 @@ class MyTrainingService {
             this.inProgressTableCount = inProgressStorage.length;
           }
         }
-      } */
+      }
 
       if (this.inProgressTableViews.length) {
         /* 코스만보기 */
@@ -523,7 +523,7 @@ class MyTrainingService {
     /* 학습완료 */
     if (this._myTrainingFilterRdo.contentType === 'Completed') {
 
-      /* if (!this.completedTableViews.length) {
+      if (!this.completedTableViews.length) {
         const completedJson = sessionStorage.getItem('completedTableViews');
         if (completedJson) {
           const completedStorage: any[] = JSON.parse(completedJson);
@@ -532,7 +532,7 @@ class MyTrainingService {
             this.completedTableCount = completedStorage.length;
           }
         }
-      } */
+      }
 
       if (this.completedTableViews.length) {
         /* 코스만보기 */
@@ -619,8 +619,10 @@ class MyTrainingService {
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
       /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-      this._myTrainingTableViews = [...this.myTrainingTableViews, ...addedTableViews];
-      return;
+      if (addedTableViews && addedTableViews.length) {
+        this._myTrainingTableViews = [...this.myTrainingTableViews, ...addedTableViews];
+        return;
+      }
     }
 
     this._myTrainingFilterRdo.changeOffset(offset);
@@ -733,7 +735,9 @@ class MyTrainingService {
     const filterRdo = MyTrainingFilterRdoModel.createForStorage(MyLearningContentType.InProgress, { offset: 0, limit: 9999 });
 
     const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
-    if (offsetInProgress) {
+    if (offsetInProgress &&
+      offsetInProgress.results &&
+      offsetInProgress.results.length) {
       const inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
       this.inProgressTableViews = inProgressTableViews;
       this.inProgressTableCount = inProgressTableViews.length;
@@ -749,7 +753,9 @@ class MyTrainingService {
     const filterRdo = MyTrainingFilterRdoModel.createForStorage(MyLearningContentType.Completed, { offset: 0, limit: 9999 });
 
     const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
-    if (offsetCompleted) {
+    if (offsetCompleted &&
+      offsetCompleted.results &&
+      offsetCompleted.results.length) {
       const completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
       this.completedTableViews = completedTableViews;
       this.completedTableCount = completedTableViews.length;
