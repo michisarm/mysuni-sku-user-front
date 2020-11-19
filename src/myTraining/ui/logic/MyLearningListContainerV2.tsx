@@ -350,7 +350,9 @@ function MyLearningListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
+  /* 학습중 관련 storage 작업 */
   const updateSessionStorage = async () => {
+    /* 학습중 storage udpate */
     const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
     sessionStorage.removeItem('inProgressTableViews');
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
