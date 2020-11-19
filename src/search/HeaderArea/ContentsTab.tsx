@@ -6,12 +6,23 @@ import {
   Button,
   Icon,
   Card,
-  Image
+  Image,
 } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+
+// internal components
+import AllView from '../SectionArea/AllView';
+import Instructor from '../SectionArea/Instructor';
+import LearningCard from '../SectionArea/LearningCard';
+
+const COMPONENT: any = {
+  All: <AllView />,
+  LearningCard: <LearningCard />,
+  Export: <Instructor />,
+};
 
 const ContentsTab: React.FC = () => {
-  const [activeItem, setActiveItem] = useState<string>('');
+  const [activeItem, setActiveItem] = useState<string>('All');
 
   const handleItemClick = (e: any, { name }: any) => {
     setActiveItem(name);
@@ -52,6 +63,8 @@ const ContentsTab: React.FC = () => {
           </Menu>
         </div>
       </Sticky>
+
+      <div>{COMPONENT[activeItem]}</div>
     </div>
   );
 };

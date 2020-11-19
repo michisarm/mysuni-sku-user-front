@@ -48,7 +48,7 @@ const ContentsHeader: React.FC = () => {
             </Button>
           </div>
           {/*Filter*/}
-          <SearchFilter />
+          {/* <SearchFilter /> */}
         </Segment>
       </div>
     </>
