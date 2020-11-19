@@ -21,12 +21,16 @@ import { ChannelModel } from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
+import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
+import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
+import SkProfileModel from "../../../profile/model/SkProfileModel";
 
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
-  skProfileService?: SkProfileService;
-  myLearningSummaryService?: MyLearningSummaryService;
+  actionLogService?: ActionLogService,
+  skProfileService?: SkProfileService,
+  myLearningSummaryService?: MyLearningSummaryService,
+  menuControlAuthService?: MenuControlAuthService;
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
 
@@ -38,7 +42,8 @@ interface Props extends RouteComponentProps {
   'profile.skProfileService',
   'myTraining.myLearningSummaryService',
   'myTraining.myTrainingService',
-  'badge.badgeService'
+  'badge.badgeService',
+  'approval.menuControlAuthService',
   // 'badge.badgeService'
 ))
 @observer
@@ -55,6 +60,7 @@ class MyLearningSummaryContainer extends Component<Props> {
     const { skProfileService } = this.props;
     skProfileService!.findStudySummary();
     this.fetchLearningSummary();
+    this.menuControlAuth();
   }
 
   fetchLearningSummary() {
@@ -66,6 +72,13 @@ class MyLearningSummaryContainer extends Component<Props> {
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     myTrainingService!.countMyTrainingsWithStamp();
     badgeService!.getCountOfBadges();
+  }
+
+  menuControlAuth() {
+    //
+    const { skProfileService, menuControlAuthService } = this.props;
+    skProfileService!.findSkProfile()
+      .then((profile: SkProfileModel) => menuControlAuthService!.findMenuControlAuth(profile.member.companyCode))
   }
 
   getHourMinute(minuteTime: number) {
@@ -119,9 +132,14 @@ class MyLearningSummaryContainer extends Component<Props> {
     history.push(supportRoutePaths.supportQnANewPost());
   }
 
+  onClickCreateApl() {
+    // 개인학습 등록 바로 가기
+    this.props.history.push('/my-training/apl/create');
+  }
+
   render() {
     //
-    const { myLearningSummaryService, skProfileService, myTrainingService, badgeService } = this.props;
+    const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
@@ -133,6 +151,8 @@ class MyLearningSummaryContainer extends Component<Props> {
     /* 총 학습시간 */
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     let total: any = null;
+
+    const { menuControlAuth } = menuControlAuthService!;
 
     if (hour < 1 && minute < 1) {
       total = (
@@ -238,6 +258,15 @@ class MyLearningSummaryContainer extends Component<Props> {
             favorites={favoriteChannels}
             onConfirmCallback={this.onConfirmFavorite}
           />
+          {(menuControlAuth.companyCode === ''
+            && menuControlAuth.authCode !== MenuControlAuth.Admin
+            && menuControlAuth.useYn !== MenuControlAuth.No)
+          &&(
+          <div onClick={this.onClickCreateApl} >
+            <a href="#"><Icon className="add24"/><span>개인학습</span></a>
+          </div>
+          )
+          }
         </AdditionalToolsMyLearning>
       </>
     );
