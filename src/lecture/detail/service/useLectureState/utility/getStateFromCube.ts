@@ -279,30 +279,30 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
     params,
   } = option;
 
-  if (contentsId !== undefined) {
-    const cubeIntro = await findCubeIntro(cubeIntroId);
-    const { fileBoxId } = await findOfficeWeb(contentsId);
-    const depotFilesList = await depot.getDepotFilesList([fileBoxId])
-    // PDF 만 있는 경우,
-    if (Array.isArray(depotFilesList) && Array.isArray(depotFilesList[0]) && depotFilesList[0].every(c =>
-      c.name && c.name.toLowerCase && c.name.toLowerCase().endsWith('.pdf')
-    )) {
-      if (stateText === PROGRESS) {
-        if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
-          if (!hasTest) {
-            return {
-              ...lectureState,
-              action: () => complete(params, rollBookId),
-              hideAction: true,
-              canAction: false,
-              actionText: COMPLETE,
-              stateText,
-            };
-          }
-        }
-      }
-    }
-  }
+  // if (contentsId !== undefined) {
+  //   const cubeIntro = await findCubeIntro(cubeIntroId);
+  //   const { fileBoxId } = await findOfficeWeb(contentsId);
+  //   const depotFilesList = await depot.getDepotFilesList([fileBoxId])
+  //   // PDF 만 있는 경우,
+  //   if (Array.isArray(depotFilesList) && Array.isArray(depotFilesList[0]) && depotFilesList[0].every(c =>
+  //     c.name && c.name.toLowerCase && c.name.toLowerCase().endsWith('.pdf')
+  //   )) {
+  //     if (stateText === PROGRESS) {
+  //       if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+  //         if (!hasTest) {
+  //           return {
+  //             ...lectureState,
+  //             action: () => complete(params, rollBookId),
+  //             hideAction: true,
+  //             canAction: false,
+  //             actionText: COMPLETE,
+  //             stateText,
+  //           };
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   if (stateText === PROGRESS) {
     const cubeIntro = await findCubeIntro(cubeIntroId);
