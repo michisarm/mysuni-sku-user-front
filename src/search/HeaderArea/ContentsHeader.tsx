@@ -6,7 +6,7 @@ import SearchFilter from '../Components/SearchFilter';
 
 const ContentsHeader: React.FC = () => {
   //
-  const [isOnFilter, setIsOnFilter] = useState<boolean>(true);
+  const [isOnFilter, setIsOnFilter] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
 
   const onClickFilter = () => {
@@ -30,7 +30,7 @@ const ContentsHeader: React.FC = () => {
             <span>{`${searchValue}`}</span>에 대한 검색 결과 입니다.
           </div>
           <div className="right-area">
-            <div className="sort">
+            {/* <div className="sort">
               <Radio
                 className="base"
                 label="과정명으로 검색"
@@ -39,12 +39,12 @@ const ContentsHeader: React.FC = () => {
               />
               <Radio className="base" label="상세 검색" name="search01" />
               <Radio className="base" label="Tag 검색" name="search01" />
-            </div>
+            </div> */}
             <Button
               className={classNames('btn-filter-blue', isOnFilter ? 'on' : '')}
               onClick={onClickFilter}
             >
-              <span>Filter(00)</span>
+              <span>Filter</span>
             </Button>
           </div>
           {/*Filter*/}

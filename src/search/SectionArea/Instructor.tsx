@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { Icon, Card, Segment, Button } from 'semantic-ui-react';
 import ExpertCards from '../Components/ExpertCards';
-import CommentsSort  from 'search/Components/CommentsSort';
+import CommentsSort from 'search/Components/CommentsSort';
+import { useExpert } from '../Components/SearchFilter';
 
 const Instructor: React.FC = () => {
   const [insertApi, getInsertApi] = useState<boolean>(true);
+  const expert = useExpert();
 
   return (
     <Segment className="full">
       <div className="sort-reult">
-        <CommentsSort/>
+        {/* <CommentsSort /> */}
         <div className="section">
-          <div className="text01">강사({insertApi ? '28' : '0'})</div>
-          {
-            insertApi && insertApi ? (
+          <div className="text01">강사({expert ? expert.length : 0})</div>
+          {expert && expert.length > 0 ? (
             <>
-              <div className="fn-button">
+              {/* <div className="fn-button">
                 <Button icon className="right btn-blue">
                   View all <Icon className="morelink" />
                 </Button>
-              </div>
+              </div> */}
               <Card.Group className="expert-cards">
                 {/* API Render */}
                 <ExpertCards />

@@ -6,13 +6,16 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CheckBoxOptions from '../model/CheckBoxOption';
 import {
+  findCard,
   findColleageGroup,
   findCPGroup,
   findCubeTypeGroup,
+  findExpert,
   getEmptyQueryOptions,
   QueryOptions,
 } from '../api/searchApi';
 import { createStore } from '../../community/store/Store';
+import moment from 'moment';
 
 interface Props {
   isOnFilter: boolean;
@@ -73,37 +76,41 @@ interface Tag {
   removeMe: () => void;
 }
 
-const [
+export const [
   setFilterCondition,
   onFilterCondition,
   getFilterCondition,
   useFilterCondition,
 ] = createStore<FilterCondition>(InitialConditions);
-const [
+export const [
   setQueryOptions,
   onQueryOptions,
   getQueryOptions,
   useQueryOptions,
 ] = createStore<QueryOptions>(getEmptyQueryOptions());
-const [setTags, onTags, getTags, useTags] = createStore<Tag[]>([]);
-const [
+export const [setTags, onTags, getTags, useTags] = createStore<Tag[]>([]);
+export const [
   setCollegeOptions,
   onCollegeOptions,
   getCollegeOptions,
   useCollegeOptions,
 ] = createStore<Options[]>([]);
-const [
+export const [
   setOrganizerOptions,
   onOrganizerOptions,
   getOrganizerOptions,
   useOrganizerOptions,
 ] = createStore<Options[]>([]);
-const [
+export const [
   setCubeTypeOptions,
   onCubeTypeOptions,
   getCubeTypeOptions,
   useCubeTypeOptions,
 ] = createStore<Options[]>([]);
+
+export const [setCard, onCard, getCard, useCard] = createStore<any[]>();
+
+export const [setExpert, onExpert, getExpert, useExpert] = createStore<any[]>();
 
 function toggle_all_all_college_name_query() {
   const filterCondition = getFilterCondition();
@@ -656,6 +663,23 @@ function toggle_cube_type_query(value: string) {
   }
 }
 
+function search(searchValue: string) {
+  findCard(searchValue).then(response => {
+    if (response && response.result && response.result.rows) {
+      setCard(response.result.rows);
+    } else {
+      setCard();
+    }
+  });
+  findExpert(searchValue).then(response => {
+    if (response && response.result && response.result.rows) {
+      setExpert(response.result.rows);
+    } else {
+      setExpert();
+    }
+  });
+}
+
 const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   useEffect(() => {
     if (searchValue === '') {
@@ -700,6 +724,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         );
       }
     });
+    search(searchValue);
     return () => {
       setFilterCondition({ ...InitialConditions });
       setQueryOptions(getEmptyQueryOptions());
@@ -707,11 +732,14 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
       setCollegeOptions([]);
       setOrganizerOptions([]);
       setCubeTypeOptions([]);
+      setCard();
+      setExpert();
     };
   }, [searchValue]);
 
   const onClearAll = useCallback(() => {
     setFilterCondition(InitialConditions);
+    setTags([]);
   }, []);
 
   const filterCondition = useFilterCondition();
@@ -720,7 +748,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   const collegeOptions = useCollegeOptions();
   const organizerOptions = useOrganizerOptions();
   const cubeTypeOptions = useCubeTypeOptions();
-  const [cpOpened, setCpOpened] = useState<boolean>(true);
+  const [cpOpened, setCpOpened] = useState<boolean>(false);
   if (
     filterCondition === undefined ||
     queryOptions === undefined ||
@@ -737,20 +765,25 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   }
 
   const all_all_college_name_condition =
+    filterCondition.all_college_name_query.length !== 0 &&
     filterCondition.all_college_name_query.length === collegeOptions.length;
 
   const all_difficulty_level_condition =
+    filterCondition.difficulty_level_json_query.length !== 0 &&
     filterCondition.difficulty_level_json_query.length ===
-    CheckBoxOptions.difficulty_level_json_query.length;
+      CheckBoxOptions.difficulty_level_json_query.length;
 
   const all_learning_time_condition =
+    filterCondition.learning_time_query.length !== 0 &&
     filterCondition.learning_time_query.length ===
-    CheckBoxOptions.learning_time_query.length;
+      CheckBoxOptions.learning_time_query.length;
 
   const all_organizer_condition =
+    filterCondition.organizer_query.length !== 0 &&
     filterCondition.organizer_query.length === organizerOptions.length;
 
   const all_cube_type_condition =
+    filterCondition.cube_type_query.length !== 0 &&
     filterCondition.cube_type_query.length === cubeTypeOptions.length;
 
   return (
@@ -962,12 +995,50 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                       hasRequired: true,
                       notRequired: true,
                     });
+                    setTags([
+                      ...getTags()!.filter(
+                        c =>
+                          c.text !== '핵인사 포함' && c.text !== '핵인사 비포함'
+                      ),
+                      {
+                        key: '핵인사 포함',
+                        text: '핵인사 포함',
+                        removeMe: () => {
+                          setTags(
+                            getTags()!.filter(d => d.text !== '핵인사 포함')
+                          );
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            hasRequired: false,
+                          });
+                        },
+                      },
+                      {
+                        key: '핵인사 비포함',
+                        text: '핵인사 비포함',
+                        removeMe: () => {
+                          setTags(
+                            getTags()!.filter(d => d.text !== '핵인사 비포함')
+                          );
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            notRequired: false,
+                          });
+                        },
+                      },
+                    ]);
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
                       hasRequired: false,
                       notRequired: false,
                     });
+                    setTags([
+                      ...getTags()!.filter(
+                        c =>
+                          c.text !== '핵인사 포함' && c.text !== '핵인사 비포함'
+                      ),
+                    ]);
                   }
                 }}
               />
@@ -981,10 +1052,34 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  setFilterCondition({
-                    ...mFilterCondition,
-                    hasRequired: !mFilterCondition.hasRequired,
-                  });
+                  if (mFilterCondition.hasRequired) {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      hasRequired: false,
+                    });
+                    setTags(getTags()!.filter(c => c.text !== '핵인사 포함'));
+                  } else {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      hasRequired: true,
+                    });
+                    setTags([
+                      ...getTags()!,
+                      {
+                        key: '핵인사 포함',
+                        text: '핵인사 포함',
+                        removeMe: () => {
+                          setTags(
+                            getTags()!.filter(d => d.text !== '핵인사 포함')
+                          );
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            hasRequired: false,
+                          });
+                        },
+                      },
+                    ]);
+                  }
                 }}
               />
               <Checkbox
@@ -997,10 +1092,34 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  setFilterCondition({
-                    ...mFilterCondition,
-                    notRequired: !mFilterCondition.notRequired,
-                  });
+                  if (mFilterCondition.notRequired) {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      notRequired: false,
+                    });
+                    setTags(getTags()!.filter(c => c.text !== '핵인사 비포함'));
+                  } else {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      notRequired: true,
+                    });
+                    setTags([
+                      ...getTags()!,
+                      {
+                        key: '핵인사 비포함',
+                        text: '핵인사 비포함',
+                        removeMe: () => {
+                          setTags(
+                            getTags()!.filter(d => d.text !== '핵인사 비포함')
+                          );
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            notRequired: false,
+                          });
+                        },
+                      },
+                    ]);
+                  }
                 }}
               />
             </td>
@@ -1027,12 +1146,44 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                       stamp: true,
                       badge: true,
                     });
+                    setTags([
+                      ...getTags()!.filter(
+                        c => c.text !== 'Stamp' && c.text !== 'Badge'
+                      ),
+                      {
+                        key: 'Stamp',
+                        text: 'Stamp',
+                        removeMe: () => {
+                          setTags(getTags()!.filter(d => d.text !== 'Stamp'));
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            stamp: false,
+                          });
+                        },
+                      },
+                      {
+                        key: 'Badge',
+                        text: 'Badge',
+                        removeMe: () => {
+                          setTags(getTags()!.filter(d => d.text !== 'Badge'));
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            badge: false,
+                          });
+                        },
+                      },
+                    ]);
                   } else {
                     setFilterCondition({
                       ...mFilterCondition,
                       stamp: false,
                       badge: false,
                     });
+                    setTags([
+                      ...getTags()!.filter(
+                        c => c.text !== 'Stamp' && c.text !== 'Badge'
+                      ),
+                    ]);
                   }
                 }}
               />
@@ -1046,10 +1197,32 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  setFilterCondition({
-                    ...mFilterCondition,
-                    stamp: !mFilterCondition.stamp,
-                  });
+                  if (mFilterCondition.stamp) {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      stamp: false,
+                    });
+                    setTags(getTags()!.filter(c => c.text !== 'Stamp'));
+                  } else {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      stamp: true,
+                    });
+                    setTags([
+                      ...getTags()!,
+                      {
+                        key: 'Stamp',
+                        text: 'Stamp',
+                        removeMe: () => {
+                          setTags(getTags()!.filter(d => d.text !== 'Stamp'));
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            stamp: false,
+                          });
+                        },
+                      },
+                    ]);
+                  }
                 }}
               />
               <Checkbox
@@ -1062,10 +1235,32 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  setFilterCondition({
-                    ...mFilterCondition,
-                    badge: !mFilterCondition.badge,
-                  });
+                  if (mFilterCondition.badge) {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      badge: false,
+                    });
+                    setTags(getTags()!.filter(c => c.text !== 'Badge'));
+                  } else {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      badge: true,
+                    });
+                    setTags([
+                      ...getTags()!,
+                      {
+                        key: 'Badge',
+                        text: 'Badge',
+                        removeMe: () => {
+                          setTags(getTags()!.filter(d => d.text !== 'Badge'));
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            badge: false,
+                          });
+                        },
+                      },
+                    ]);
+                  }
                 }}
               />
             </td>
@@ -1081,16 +1276,86 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                       selected={filterCondition.learning_start_date_str}
                       onChange={learning_start_date_str => {
                         const mFilterCondition = getFilterCondition();
-                        if (mFilterCondition === undefined) {
+                        const mtags = getTags();
+                        if (
+                          mFilterCondition === undefined ||
+                          mtags === undefined
+                        ) {
                           return;
                         }
                         setFilterCondition({
                           ...mFilterCondition,
                           learning_start_date_str,
                         });
+
+                        const nextTags = mtags.filter(
+                          c =>
+                            c.key !== 'learning_start_date_str' &&
+                            c.key !== 'learning_end_date_str' &&
+                            c.key !== 'learning_date_str'
+                        );
+
+                        //tag
+                        if (mFilterCondition.learning_end_date_str !== null) {
+                          const text = `${moment(
+                            learning_start_date_str
+                          ).format('YYYY.MM.DD')}~${moment(
+                            mFilterCondition.learning_end_date_str
+                          ).format('YYYY.MM.DD')}`;
+                          const key = 'learning_date_str';
+
+                          const removeMe = () => {
+                            const mmtags = getTags();
+                            if (mmtags === undefined) {
+                              return;
+                            }
+
+                            setTags(
+                              mmtags.filter(
+                                c =>
+                                  c.key !== 'learning_start_date_str' &&
+                                  c.key !== 'learning_end_date_str' &&
+                                  c.key !== 'learning_date_str'
+                              )
+                            );
+                            setFilterCondition({
+                              ...getFilterCondition()!,
+                              learning_start_date_str: null,
+                              learning_end_date_str: null,
+                            });
+                          };
+                          setTags([...nextTags, { key, text, removeMe }]);
+                          return;
+                        }
+                        const text = moment(learning_start_date_str).format(
+                          'YYYY.MM.DD'
+                        );
+                        const removeMe = () => {
+                          const mmtags = getTags();
+                          if (mmtags === undefined) {
+                            return;
+                          }
+                          setTags(
+                            mmtags.filter(
+                              c =>
+                                c.key !== 'learning_start_date_str' &&
+                                c.key !== 'learning_end_date_str' &&
+                                c.key !== 'learning_date_str'
+                            )
+                          );
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            learning_start_date_str: null,
+                            learning_end_date_str: null,
+                          });
+                        };
+                        setTags([
+                          ...nextTags,
+                          { key: 'learning_start_date_str', text, removeMe },
+                        ]);
                       }}
                       selectsStart
-                      dateFormat="YYYY.MM.DD"
+                      dateFormat="yyyy.MM.dd"
                     />
                     <Icon className="calendar24">
                       <span className="blind">date</span>
@@ -1105,17 +1370,87 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                       selected={filterCondition.learning_end_date_str}
                       onChange={learning_end_date_str => {
                         const mFilterCondition = getFilterCondition();
-                        if (mFilterCondition === undefined) {
+                        const mtags = getTags();
+                        if (
+                          mFilterCondition === undefined ||
+                          mtags === undefined
+                        ) {
                           return;
                         }
                         setFilterCondition({
                           ...mFilterCondition,
                           learning_end_date_str,
                         });
+
+                        const nextTags = mtags.filter(
+                          c =>
+                            c.key !== 'learning_start_date_str' &&
+                            c.key !== 'learning_end_date_str' &&
+                            c.key !== 'learning_date_str'
+                        );
+
+                        //tag
+                        if (mFilterCondition.learning_start_date_str !== null) {
+                          const text = `${moment(
+                            mFilterCondition.learning_start_date_str
+                          ).format('YYYY.MM.DD')}~${moment(
+                            learning_end_date_str
+                          ).format('YYYY.MM.DD')}`;
+                          const key = 'learning_date_str';
+
+                          const removeMe = () => {
+                            const mmtags = getTags();
+                            if (mmtags === undefined) {
+                              return;
+                            }
+
+                            setTags(
+                              mmtags.filter(
+                                c =>
+                                  c.key !== 'learning_start_date_str' &&
+                                  c.key !== 'learning_end_date_str' &&
+                                  c.key !== 'learning_date_str'
+                              )
+                            );
+                            setFilterCondition({
+                              ...getFilterCondition()!,
+                              learning_start_date_str: null,
+                              learning_end_date_str: null,
+                            });
+                          };
+                          setTags([...nextTags, { key, text, removeMe }]);
+                          return;
+                        }
+                        const text = moment(learning_end_date_str).format(
+                          'YYYY.MM.DD'
+                        );
+                        const removeMe = () => {
+                          const mmtags = getTags();
+                          if (mmtags === undefined) {
+                            return;
+                          }
+                          setTags(
+                            mmtags.filter(
+                              c =>
+                                c.key !== 'learning_start_date_str' &&
+                                c.key !== 'learning_end_date_str' &&
+                                c.key !== 'learning_date_str'
+                            )
+                          );
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            learning_start_date_str: null,
+                            learning_end_date_str: null,
+                          });
+                        };
+                        setTags([
+                          ...nextTags,
+                          { key: 'learning_start_date_str', text, removeMe },
+                        ]);
                       }}
                       selectsEnd
                       minDate={filterCondition.learning_start_date_str}
-                      dateFormat="YYYY.MM.DD"
+                      dateFormat="yyyy.MM.dd"
                     />
                     <Icon className="calendar24">
                       <span className="blind">date</span>
@@ -1133,10 +1468,33 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                   if (mFilterCondition === undefined) {
                     return;
                   }
-                  setFilterCondition({
-                    ...mFilterCondition,
-                    applying: !filterCondition.applying,
-                  });
+                  const text = '수강신청 가능 학습만 보기';
+                  if (mFilterCondition.applying) {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      applying: false,
+                    });
+                    setTags(getTags()!.filter(c => c.text !== text));
+                  } else {
+                    setFilterCondition({
+                      ...mFilterCondition,
+                      applying: true,
+                    });
+                    setTags([
+                      ...getTags()!,
+                      {
+                        key: text,
+                        text,
+                        removeMe: () => {
+                          setFilterCondition({
+                            ...getFilterCondition()!,
+                            applying: false,
+                          });
+                          setTags(getTags()!.filter(c => c.text !== text));
+                        },
+                      },
+                    ]);
+                  }
                 }}
               />
             </td>
@@ -1155,8 +1513,8 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                 <span>전체해제</span>
               </th>
               <td>
-                {tags.map((tag,index) => (
-                  <Button 
+                {tags.map((tag, index) => (
+                  <Button
                     key={index}
                     className="del"
                     content={tag.text}
@@ -1164,14 +1522,20 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
                   />
                 ))}
               </td>
-             
             </tr>
           </tbody>
         </table>
       </div>
       <div className="moreAll">
         <span className="arrow-more">→</span>
-        <a className="more-text">결과보기</a>
+        <a
+          className="more-text"
+          onClick={() => {
+            search(searchValue);
+          }}
+        >
+          결과보기
+        </a>
       </div>
     </div>
   );

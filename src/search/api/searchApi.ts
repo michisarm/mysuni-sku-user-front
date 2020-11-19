@@ -1,5 +1,9 @@
 import { axiosApi } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
+import moment from 'moment';
+import { SkProfileService } from '../../profile/stores';
+import { getCollegeOptions, getCubeTypeOptions, getFilterCondition, getOrganizerOptions } from '../Components/SearchFilter';
+import CheckboxOptions from '../model/CheckBoxOption'
 
 const BASE_URL = 'https://mysuni.sk.com/search/api/search';
 
@@ -87,6 +91,23 @@ export function findCPGroup(
     .get<SearchResult<CPGroup>>(url)
     .then(AxiosReturn);
 }
+
+export function findCard(text_idx: string) {
+  const queryOptions = parseFilterCondition();
+  const companyCode = SkProfileService.instance.profileMemberCompanyCode;
+  const query = makeQuery(text_idx, companyCode, queryOptions);
+  const url = `${BASE_URL}?select=*&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')${query}`
+  return axiosApi.get<any>(url).then(AxiosReturn)
+}
+
+export function findExpert(text_idx: string) {
+  const queryOptions = parseFilterCondition();
+  const companyCode = SkProfileService.instance.profileMemberCompanyCode;
+  const query = makeQuery(text_idx, companyCode, queryOptions);
+  const url = `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96${query}`
+  return axiosApi.get<any>(url).then(AxiosReturn)
+}
+
 
 export interface QueryOptions {
   all_college_name_query: string[]
@@ -191,7 +212,61 @@ function makeLearingDateQuery({ learning_start_date_str, learning_end_date_str }
   }
 }
 
-function makeQuery(text_idx: string, companyCode: string, options: QueryOptions) {
+function makeApplingQuery({ apply_start_date_str, apply_end_date_str }: { apply_start_date_str: string, apply_end_date_str: string }) {
+  return `(apply_start_date_str+<=+'${apply_start_date_str}'+AND+apply_end_date_str+>=+'${apply_end_date_str}')`
+}
+
+
+export function parseFilterCondition(): QueryOptions {
+  const queryOptions = getEmptyQueryOptions();
+  const collegeOptions = getCollegeOptions()!;
+  const organizerOptions = getOrganizerOptions()!;
+  const cubeTypeOptions = getCubeTypeOptions()!;
+  const filterCondition = getFilterCondition()!;
+
+  if (filterCondition.all_college_name_query.length > 0 && filterCondition.all_college_name_query.length !== collegeOptions.length) {
+    queryOptions.all_college_name_query = [...filterCondition.all_college_name_query]
+  }
+  if (filterCondition.difficulty_level_json_query.length > 0 && filterCondition.difficulty_level_json_query.length !== CheckboxOptions.difficulty_level_json_query.length) {
+    queryOptions.difficulty_level_json_query = [...filterCondition.difficulty_level_json_query]
+  }
+  if (filterCondition.learning_time_query.length > 0 && filterCondition.learning_time_query.length !== CheckboxOptions.learning_time_query.length) {
+    queryOptions.learning_time_query = filterCondition.learning_time_query.map(c => parseInt(c))
+  }
+  if (filterCondition.organizer_query.length > 0 && filterCondition.organizer_query.length !== organizerOptions.length) {
+    queryOptions.organizer_query = [...filterCondition.organizer_query]
+  }
+  if (filterCondition.cube_type_query.length > 0 && filterCondition.cube_type_query.length !== cubeTypeOptions.length) {
+    queryOptions.cube_type_query = [...filterCondition.cube_type_query]
+  }
+  if (filterCondition.hasRequired) {
+    queryOptions.reqCom_id_query = true;
+  }
+  if (filterCondition.notRequired) {
+    queryOptions.reqCom_id_query = false;
+  }
+  if (filterCondition.stamp) {
+    queryOptions.stamp_query = true;
+  }
+  if (filterCondition.badge) {
+    queryOptions.badge_query = true;
+  }
+  if (filterCondition.learning_start_date_str !== null) {
+    queryOptions.learning_start_date_str = moment(filterCondition.learning_start_date_str).format('YYYYMMDD')
+  }
+  if (filterCondition.learning_end_date_str !== null) {
+    queryOptions.learning_end_date_str = moment(filterCondition.learning_end_date_str).format('YYYYMMDD')
+  }
+  if (filterCondition.applying) {
+    queryOptions.apply_start_date_str = moment(new Date()).format('YYYYMMDD');
+    queryOptions.apply_end_date_str = moment(new Date()).format('YYYYMMDD');
+  }
+
+
+  return queryOptions;
+}
+
+export function makeQuery(text_idx: string, companyCode: string, options: QueryOptions) {
   const conditions: string[] = [];
   const { all_college_name_query, difficulty_level_json_query, learning_time_query, organizer_query
     , cube_type_query, reqCom_id_query, badge_query, stamp_query,
@@ -226,4 +301,13 @@ function makeQuery(text_idx: string, companyCode: string, options: QueryOptions)
   if (learning_start_date_str !== undefined || learning_end_date_str !== undefined) {
     conditions.push(makeLearingDateQuery({ learning_start_date_str, learning_end_date_str }))
   }
+  if (apply_start_date_str !== undefined && apply_end_date_str !== undefined) {
+    conditions.push(makeApplingQuery({ apply_start_date_str, apply_end_date_str }))
+  }
+  if (conditions.length > 0) {
+    return `+AND+${conditions.join('+AND+')}`
+  }
+  return ``
 }
+
+//where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')

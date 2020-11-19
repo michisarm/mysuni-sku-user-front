@@ -73,3 +73,21 @@ GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_i
 
 https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx%3D%27%ED%96%89%EB%B3%B5%27+allword+and+(subSidiaries_id+%3D+%27SKCC%27+or+subSidiaries_id+%3D%27ALL%27)+order+by+$MATCHFIELD(card_name,+description)+desc,+$relevance+desc,+create_time+desc&offset=0&limit=96&default-hilite=off&custom=SKUNIV@course%2Ball%7CM%7C28$text$nomal%7C1%7C%EC%A0%95%ED%99%95%EB%8F%84%5E%ED%96%89%EB%B3%B5%23%23pre
 https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx%3D%27%ED%96%89%EB%B3%B5%27+allword+and+(subSidiaries_id+%3D+%27SKCC%27+or+subSidiaries_id+%3D%27ALL%27)+AND+(apply_start_date_str+%3C%3D+%2720201116%27+AND+apply_end_date_str+%3E%3D+%2720201116%27)+order+by+$MATCHFIELD(card_name,+description)+desc,+$relevance+desc,+create_time+desc&offset=0&limit=96&default-hilite=off&custom=SKUNIV@course%2Ball%7CM%7C28$text$nomal%7C1%7C%EC%A0%95%ED%99%95%EB%8F%84%5E%ED%96%89%EB%B3%B5%23%23pre
+
+
+
+###
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx=%27%ED%96%89%EB%B3%B5%27+allword+and+(subSidiaries_id+=+%27SKBT%27+or+subSidiaries_id+=%27ALL%27)
+
+
+https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=text_idx%3D%27%ED%96%89%EB%B3%B5%27+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96&default-hilite=off&custom=SKUNIV@course%2Ball%7CM%7C28$text$nomal%7C1%7C%EC%A0%95%ED%99%95%EB%8F%84%5E%ED%96%89%EB%B3%B5%23%23pre
+###
+GET https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=text_idx=%27%EC%B5%9C%EC%9D%B8%EC%B2%A0%27+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96
+GET https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=text_idx=%ED%96%89%EB%B3%B5+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96
+###
+GET https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=text_idx=%EC%B5%9C%EC%9D%B8%EC%B2%A0+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96
+
+
+
+###
+GET https://mysuni.sk.com/search/api/search?select=*&from=expert.expert&where=text_idx='%ED%96%89%EB%B3%B5'+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96
