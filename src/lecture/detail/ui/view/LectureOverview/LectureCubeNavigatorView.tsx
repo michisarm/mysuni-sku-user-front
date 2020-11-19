@@ -54,9 +54,17 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
         <div className="course-info-banner">
           안녕하세요.<span>{name}</span>님, 학습 중인 강의가 있습니다.
           <h3>{progressingCube.name}</h3>
-          <button className="ui button fix bg following">
+          <span
+            className="ui button fix bg following"
+            style={{
+              display: 'inline-flex',
+              justifyContent: 'center',
+              justifyItems: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Link to={progressingCube.path}>학습이어하기</Link>
-          </button>
+          </span>
           <a onClick={close}>
             <i aria-hidden="true" className="icon banner-close" />
           </a>
