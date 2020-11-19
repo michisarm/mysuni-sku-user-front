@@ -88,7 +88,7 @@ function LineHeaderContainerV2(props: Props) {
   return (
     <>
       <div className="top-guide-title">
-        {totalCount > 0 &&
+        {(!resultEmpty && totalCount > 0) &&
           (
             <ListTopPanelTemplate
               className="left-wrap"

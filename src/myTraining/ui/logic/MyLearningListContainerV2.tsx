@@ -60,22 +60,9 @@ function MyLearningListContainerV2(props: Props) {
   }, []);
 
   useEffect(() => {
-    /* 
-      학습중 탭 카운트가 변경이 되었다는 것은 session storage 가 업데이트 되었다는 것을 의미함.
-      session storage 가 업데이트 되었다면 다시 학습중 목록을 조회함.
-      inprogressCount 가 아닌 다른 기준점을 생각해보자.
-    */
-    myTrainingService!.findAllTableViews();
-  }, [inprogressCount]);
-
-  useEffect(() => {
     initPage();
-    if (filterCount === 0) {
-      fetchModelsByContentType(contentType);
-    } else {
-      fetchModelsByConditions(contentType, viewType);
-    }
-  }, [contentType, viewType, filterCount]);
+    fetchModelsByContentType(contentType);
+  }, [contentType, viewType]);
 
   useEffect(() => {
     /* just for clean up */
@@ -365,18 +352,28 @@ function MyLearningListContainerV2(props: Props) {
 
   const updateSessionStorage = async () => {
     const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    sessionStorage.removeItem('inProgressTableViews');
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
   }
 
   /* handlers */
   const onChangeFilterCount = useCallback((count: number) => {
-    if (filterCount && filterCount === count) {
+    /* if (filterCount && filterCount === count) {
       initPage();
       fetchModelsByConditions(contentType, viewType);
     }
-
+    */
     setFilterCount(count);
-  }, [filterCount, contentType, viewType]);
+  }, []);
+
+  const getModelsByConditions = (count: number) => {
+    if (count > 0) {
+      initPage();
+      fetchModelsByConditions(contentType, viewType);
+    } else {
+      fetchModelsByContentType(contentType);
+    }
+  }
 
   const onClickFilter = useCallback(() => {
     setOpenFilter(prev => !prev);
@@ -401,9 +398,11 @@ function MyLearningListContainerV2(props: Props) {
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
-    myTrainingService!.clearAllSelectedServiceIds();
     await updateSessionStorage();
-    myTrainingService!.findAllTabCount();
+    await myTrainingService!.findAllTabCount();
+    await myTrainingService!.findAllTableViews();
+
+    myTrainingService!.clearAllSelectedServiceIds();
 
     setOpenModal(false);
   }, []);
@@ -458,7 +457,7 @@ function MyLearningListContainerV2(props: Props) {
   /* render */
   return (
     <>
-      {!resultEmpty && (
+      {(!resultEmpty || filterCount > 0) && (
         <>
           <LineHeaderContainerV2
             contentType={contentType}
@@ -475,7 +474,9 @@ function MyLearningListContainerV2(props: Props) {
             contentType={contentType}
             viewType={viewType}
             openFilter={openFilter}
+            onClickFilter={onClickFilter}
             onChangeFilterCount={onChangeFilterCount}
+            getModels={getModelsByConditions}
             colleges={colleges}
             totalFilterCount={getTotalFilterCountView(contentType)}
             filterCounts={getFilterCountViews(contentType)}
