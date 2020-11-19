@@ -36,6 +36,8 @@ class MyTrainingFilterRdoModel {
   startDate: string = '';
   endDate: string = '';
   applying: boolean = false;
+  column: string = '';
+  direction: string = '';
 
   // 기본생성자는 offset 및 denizenKey만 초기화 함.
   constructor(myTrainingFilterRdo?: MyTrainingFilterRdoModel) {
@@ -69,6 +71,7 @@ class MyTrainingFilterRdoModel {
     endDate: string,
     applying: boolean
   ) {
+
     return new MyTrainingFilterRdoModel({
       collegeIds,
       cubeTypes,
@@ -96,6 +99,11 @@ class MyTrainingFilterRdoModel {
     this.viewType = viewType;
   }
 
+  changeColumnDirection(column: string, direction: string) {
+    this.column = column;
+    this.direction = direction;
+  }
+
   changeConditions(conditions: FilterCondition) {
     this.setCubeTypeAndServiceType(conditions);
     this.collegeIds = conditions.collegeIds;
@@ -107,6 +115,13 @@ class MyTrainingFilterRdoModel {
     this.endDate = conditions.endDate ? moment(conditions.endDate).format('YYYYMMDD') : '';
     this.required = conditions.required === 'none' ? '' : conditions.required;
     this.applying = conditions.applying === 'true' ? true : false;
+
+    /* 수강가능 신청만 보기만! 클릭했을 경우, startDate & endDate 를 오늘로 설정. */
+    if (this.applying && !this.startDate && !this.endDate) {
+      const nowDate = moment(new Date()).format('YYYYMMDD');
+      this.startDate = nowDate;
+      this.endDate = nowDate;
+    }
   }
 
   changeOffset(offset: Offset) {

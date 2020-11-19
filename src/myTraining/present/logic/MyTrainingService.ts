@@ -44,8 +44,6 @@ class MyTrainingService {
   myStampCount: number = 0;
 
 
-
-
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
   }
@@ -421,6 +419,10 @@ class MyTrainingService {
 
   private completedTableCount: number = 0;
 
+  private column: string = '';
+
+  private direction: string = '';
+
   @observable
   selectedServiceIds: string[] = [];
 
@@ -713,6 +715,7 @@ class MyTrainingService {
 
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
+    filterRdoForExcel.changeColumnDirection(this.column, this.direction);
 
     const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] = await this.myTrainingApi.findAllTableViewsForExcel(filterRdoForExcel);
 
@@ -723,6 +726,7 @@ class MyTrainingService {
     const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(this._myTrainingFilterRdo);
 
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
+    filterRdoForExcel.changeColumnDirection(this.column, this.direction);
 
     const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(filterRdoForExcel);
     const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
@@ -817,6 +821,9 @@ class MyTrainingService {
 
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
     const propKey = convertToKey(column);
+
+    this.column = propKey;
+    this.direction = direction;
 
     if (direction === Direction.ASC) {
       this._myTrainingTableViews = this._myTrainingTableViews.sort((a, b) => a[propKey] - b[propKey]);

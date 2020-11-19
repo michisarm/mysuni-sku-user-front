@@ -4,7 +4,7 @@ import AplModel from "./AplModel";
 class AplUdoModel {
   private readonly id: string;
   private readonly title: string;
-  private readonly creaetorId: string;
+  private readonly creatorId: string;
   private readonly creatorName: string;
   private readonly approvalName: string;
   private readonly approvalEmail: string;
@@ -15,14 +15,14 @@ class AplUdoModel {
 
   private constructor(
     id: string, title: string,
-    creaetorId: string, creaetorName: string,
+    creatorId: string, creaetorName: string,
     approvalName: string, approvalEmail: string,
     approvalYn: boolean, allowHour: number,
     allowMinute: number, causeOfReturn: string) {
     //
     this.id = id;
     this.title = title;
-    this.creaetorId = creaetorId;
+    this.creatorId = creatorId;
     this.creatorName = creaetorName;
     this.approvalName = approvalName;
     this.approvalEmail = approvalEmail;
