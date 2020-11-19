@@ -72,9 +72,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setWatchlogState(watchlog);
   }, [params]);
 
-  const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [progressInterval, setProgressInterval] = useState<any>();
+  
+  const [watchInterval, setWatchInterval] = useState<any>();
+  const [checkInterval, setCheckInterval] = useState<any>();
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -111,6 +113,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setNextContentsView(false);
     history.push(path);
   }, []);
+
+  const sendWatchLog = useCallback(() => {
+    if (params && watchlogState) {
+      const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+      // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+      const end = (embedApi.getCurrentTime() as unknown) as number;
+      const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
+      setWatchlogState({
+        ...watchlogState,
+        start: start < 0? 0 : start,
+        end: end,
+      });
+
+      //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
+      setWatchLog(params, watchlogState);
+    }
+  }, [params, embedApi, startTime, watchlogState]);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
@@ -176,22 +197,20 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, lectureParams, pathname, params]);
 
 
   useEffect(() => {
-
     let interval: any = null;
-    
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
-    const duration = (embedApi.getDuration() as unknown) as number;
+
     if(!startTime){
       setStartTime(currentTime);
     }
-
     if (isActive && params && watchlogState) {
-      clearInterval(interval);
+      // clearInterval(interval);
       interval = setInterval(() => {
+      // setWatchInterval(setInterval(() => {        
         //const currentTime = embedApi.getCurrentTime() as unknown as number;
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
@@ -204,54 +223,58 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           start: start < 0? 0 : start,
           end: end,
         });
-        setSeconds(seconds => seconds + 10);
 
         //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
         setWatchLog(params, watchlogState);
         setStartTime((embedApi.getCurrentTime() as unknown) as number);
-
-      }, 10000);
-
-    } else if (!isActive && seconds !== 0) {
+      // }, 10000));
+    }, 10000);
+    } else if (!isActive) {
+      // sendWatchLog();
       clearInterval(interval);
     }
     return () => {
+      console.log('clearInterval return run');
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime, watchlogState]);
+
 
   useEffect(() => {
-    clearTimeout(progressInterval);
+    let checkInterval: any = null;
+    const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 10) * 1000;
-    //confirmProgressTime
+    
     if (!confirmProgressTime || confirmProgressTime > 60000) {
       confirmProgressTime = 60000;
     }
 
     if (isActive && params) {
-      clearTimeout(progressInterval);
-      setProgressInterval(setTimeout(function tick() {
-        mediaCheckEvent(params);
-        clearTimeout(progressInterval);
-        setProgressInterval('');
-        // setProgressInterval(setTimeout(tick, confirmProgressTime));
-      }, confirmProgressTime));
+      // setCheckInterval(setInterval(() => {
+        checkInterval = setInterval(() => {
+          mediaCheckEvent(params);
+          // }, 20000));
+        }, 20000);
 
-    } else if (!isActive && seconds !== 0) {
-      clearTimeout(progressInterval);
+    } else if (!isActive) {
+      clearInterval(checkInterval);
     }
     return () => {
-      clearTimeout(progressInterval);
+      console.log('clearCheckInterval return run');
+      clearInterval(checkInterval);
+      
     };
-  }, [isActive, params]);
-  // }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [checkInterval, isActive]);
 
-  //unmount(clean up) 처리
-  useEffect(() => {
-    return () => {
-                  clearTimeout(progressInterval);
-                }
-  }, [progressInterval]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('page out clear Interval ');
+  //     clearInterval(watchInterval);
+  //     clearInterval(checkInterval);
+  //   };
+  // }, [checkInterval, watchInterval]);
+
 
   useEffect(() => {
     setNextContentsView(false);
@@ -270,7 +293,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   useEffect(() => {
-    // TODO : getNextorderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
+    // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure =  getLectureStructure();
 
     if(lectureStructure){

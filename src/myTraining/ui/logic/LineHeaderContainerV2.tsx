@@ -46,15 +46,17 @@ function LineHeaderContainerV2(props: Props) {
   };
 
 
-  const getAllCount = (contentType: MyContentType) => {
-    const { inprogressCount, completedCount } = myTrainingService!;
-    switch (contentType) {
-      case MyLearningContentType.InProgress:
-        return inprogressCount;
-      case MyLearningContentType.Completed:
-        return completedCount;
-    }
-  };
+  /*  const getAllCount = (contentType: MyContentType) => {
+     const { inprogressCount, completedCount } = myTrainingService!;
+     switch (contentType) {
+       case MyLearningContentType.InProgress:
+         return inprogressCount;
+       case MyLearningContentType.Completed:
+         return completedCount;
+       default:
+         return 0;
+     }
+   }; */
 
   /* handlers */
   const downloadExcel = useCallback(async (contentType: MyContentType) => {
@@ -86,7 +88,7 @@ function LineHeaderContainerV2(props: Props) {
   return (
     <>
       <div className="top-guide-title">
-        {!resultEmpty &&
+        {(!resultEmpty && totalCount > 0) &&
           (
             <ListTopPanelTemplate
               className="left-wrap"
@@ -110,7 +112,6 @@ function LineHeaderContainerV2(props: Props) {
           <ListRightTopPanel
             contentType={contentType}
             resultEmpty={resultEmpty}
-            allCount={getAllCount(contentType)}
             filterCount={filterCount}
             openFilter={openFilter}
             activeFilter={isFilterActive()}

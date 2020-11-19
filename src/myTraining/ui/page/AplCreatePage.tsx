@@ -328,7 +328,7 @@ class AplCreatePage extends React.Component<Props, States> {
     //const invalid = value.length > 30;
     //const invalid = Number(this.byteCheck(value)) > 30;
     const invalid = value.length > 100;
-    const invalidHour = Number(value) < 0;
+    const invalidHour = Number(value) >= 100 || Number(value) < 0;
     const invalidMin = Number(value) > 59 || Number(value) < 0;
     const invalidContent = value.length > 1000;
     if(name === 'title' || name ==='typeName' || name === 'institute'){

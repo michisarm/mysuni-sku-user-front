@@ -57,7 +57,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
       return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime + this.lectureTimeSummary.totalCollegeTime;
     }
 
-    return 0;
+    return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime;
   }
 
   constructor(summary?: MyLearningSummaryModel) {

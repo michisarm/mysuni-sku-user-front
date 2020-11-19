@@ -74,18 +74,22 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           <span>{question.questionNo}</span>
           {(question.questionImgSrc && (
             <p>
-              {question.direction} ({question.allocatedPoint}점)
+              <span className="copy">
+                {question.direction} ({question.allocatedPoint}점)
+              </span>
             </p>
           )) || (
             <>
-              {question.direction} ({question.allocatedPoint}점)
+              <span className="copy">
+                {question.direction} ({question.allocatedPoint}점)
+              </span>
             </>
           )}
-          {question.questionImgSrc !== undefined &&
-            question.questionImgSrc !== '' && (
-              <img src={question.questionImgSrc} />
-            )}
         </p>
+        {question.questionImgSrc !== undefined &&
+          question.questionImgSrc !== '' && (
+            <img src={question.questionImgSrc} />
+          )}
         {question.questionType === 'SingleChoice' && (
           <TestSingleChoiceView
             question={question}

@@ -66,7 +66,7 @@ export function markComplete(
 
 export function findStudent(studentId: string): Promise<Student> {
   const url = `${BASE_URL}/students/${studentId}`;
-  return axiosApi.get<Student>(url).then(response => response && response.data);
+  return axiosApi.get<Student>(url, { headers: { 'Pragma': 'no-cache' } }).then(response => response && response.data);
 }
 
 export function findIsJsonStudentByCube(
@@ -74,7 +74,7 @@ export function findIsJsonStudentByCube(
 ): Promise<StudentJoin[]> {
   const url = `${BASE_URL}/students/flow/isJsonByCube?lectureCardId=${lectureCardId}`;
   return axiosApi
-    .get<StudentJoin[]>(url)
+    .get<StudentJoin[]>(url, { headers: { 'Pragma': 'no-cache' } })
     .then(response => response && response.data);
 }
 
