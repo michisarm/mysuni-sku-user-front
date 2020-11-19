@@ -38,6 +38,13 @@ interface LectureDocumentsViewProps {
   params: LectureRouterParams | undefined;
 }
 
+// 차후 진행 내역
+// 파일 형식 pdf = 페이지 끝까지 확인 
+// 파일 형식 !pdf = 다운로드
+
+
+
+
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
 // const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {
 
@@ -55,14 +62,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const [files, setFiles] = useState<DepotFileViewModel[]>();
   const [pdfUrl, setPdfUrl] = useState<string[]>([]);
-  const [pdf, setPdf] = useState<any>();
   const [file, setFile] = useState<any>();
 
   const [openToggle, setOpenToggle] = useState<boolean>(false);
   const [courseName, setCourseName] = useState<any>([]);
   const [courseIdx, setCourseIdx] = useState<number>(0);
-  const [fileCheck, setFileCheck] = useState<string>('');
-  const [fileDiv, setFileDiv] = useState<any>();
 
   const [lectureState] = useLectureState();
 
@@ -72,18 +76,16 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const getFiles = useCallback(() => {
     depot.getDepotFiles(fileBoxId).then(filesArr => {
+      setPdfUrl([]);
       // id 여러개 일때
       if (filesArr) {
         if (Array.isArray(filesArr)) {
           setFiles(filesArr);
           setCourseName(filesArr);
-          if (filesArr) {
-            for (let i = 0; i < filesArr.length; ++i) {
-              pdfUrl[i] = `${API_URL}${filesArr[i].id}`;
-            }
+          for (let i = 0; i < filesArr.length; ++i) {
+            setPdfUrl(oldArray => [...oldArray, '/api/depot/depotFile/flow/download/' + filesArr[i].id]);
           }
         }
-
         // id 1개 일때
         else {
           setFiles([filesArr]);
@@ -92,11 +94,20 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         }
       }
     });
-  }, [fileBoxId]);
+  }, [fileBoxId, pdfUrl, params]);
 
   for (let i = 0; i < courseName.length; ++i) {
     nameList[i] = courseName[i].name;
   }
+
+
+  useEffect(() => {
+    return ()=>{
+      setPdfUrl([]);
+      setFiles([]);
+      setFile('');
+    }
+  }, []);
 
   useEffect(() => {
     if (fileBoxId && fileBoxId.length) {
@@ -122,7 +133,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         lectureState.action();
       }
     }
-    console.log('LectureDocumentsView', numPages, pageNumber);
   }, [numPages, pageNumber, lectureState, files]);
 
   const onDocumentLoadSuccess = (pdf: any) => {
@@ -156,7 +166,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
       setFile({
         url: pdfUrl[courseIdx],
         httpHeaders: {
@@ -164,15 +174,14 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
         },
       });
-    }, 500);
-  }, []);
+    // }, 500);
+  }, [pdfUrl,courseIdx,params]);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
     setOpenToggle(!openToggle);
-    setFileCheck(courseName[idx]);
-
-    setFileDiv(nameList[courseIdx]);
+    // setFileCheck(courseName[idx]);
+    // setFileDiv(nameList[courseIdx]);
   };
 
   const downloadFile = () => {
@@ -205,7 +214,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextCube) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -214,7 +223,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextDiscussion) {
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -238,7 +247,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextCube = course.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextCube) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -248,7 +257,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                   discussion => discussion.order == nextCubeOrder
                 );
 
-                if (learningState == 'Passed' && nextDiscussion) {
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
@@ -267,7 +276,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextCube = lectureStructure.cubes.find(
                   cube => cube.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextCube) {
+                if (nextCube) {
                   setNextContentsPath(nextCube.path);
                   setNextContentsName(nextCube.name);
                 }
@@ -276,7 +285,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 const nextDiscussion = lectureStructure.discussions.find(
                   discussion => discussion.order == nextCubeOrder
                 );
-                if (learningState == 'Passed' && nextDiscussion) {
+                if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
