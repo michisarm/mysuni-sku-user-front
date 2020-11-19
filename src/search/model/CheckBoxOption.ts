@@ -1,5 +1,5 @@
 const CheckboxOptions = {
-  college: [
+  all_college_name_query: [
     { key: 0, text: 'Al', value: 'Al' },
     { key: 1, text: 'DT', value: 'DT' },
     { key: 2, text: '행복', value: '행복' },
@@ -25,6 +25,7 @@ const CheckboxOptions = {
     { key: 0, text: 'mySUNI', value: 'mySUNI' },
     { key: 1, text: 'Coursera', value: 'Coursera' },
     { key: 2, text: 'Linkedin', value: 'Linkedin' },
+    { key: 3, text: 'POSTEC', value: 'POSTEC' },
   ],
 
   learningTypes: [
