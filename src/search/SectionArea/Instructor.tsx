@@ -3,13 +3,13 @@ import { Icon, Card, Segment,Button } from 'semantic-ui-react'
 import ExpertCard from '../Components/ExpertCard';
 
 const Instructor: React.FC = () => {
-  const [insetApi, getInsertApi] = useState<boolean>(true)
+  const [insertApi, getInsertApi] = useState<boolean>(true)
   
   return (
     <div className="section">
-      <div className="text01">강사({insetApi ? "28" : "0"})</div>
+      <div className="text01">강사({insertApi ? "28" : "0"})</div>
       {
-        insetApi && insetApi ? (
+        insertApi && insertApi ? (
           <>
             <div className="fn-button">
               <Button icon className="right btn-blue">
