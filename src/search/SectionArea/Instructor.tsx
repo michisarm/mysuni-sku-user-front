@@ -6,7 +6,7 @@ const Instructor: React.FC = () => {
   const [insetApi, getInsertApi] = useState<boolean>(true);
 
   return (
-    <div className="section">
+    <div className="section" style={{ marginTop: '70px' }}>
       <div className="text01">강사({insetApi ? '28' : '0'})</div>
       {insetApi && insetApi ? (
         <>

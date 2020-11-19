@@ -9,8 +9,7 @@ import AllView from './SectionArea/AllView';
 const SearchComponent: React.FC = () => (
   <section className="content">
     <HeaderArea />
-    <AllView/>
-    {/* <NoDataPage/> */}
+    <AllView />
   </section>
 );
 

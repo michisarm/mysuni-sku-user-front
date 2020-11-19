@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import ContentsHeader from './ContentsHeader';
 import ContentsTab from './ContentsTab';
 
-const HeaderArea: React.FC = ({ location }: any) => {
+const HeaderArea: React.FC = () => {
   //
 
   return (
