@@ -58,13 +58,13 @@ class HeaderContainer extends Component<Props, State> {
     const { actionLogService } = this.props;
     const { searchValue } = this.state;
 
-    alert("점검중 입니다.");
+    // alert("점검중 입니다.")
     // 개발 시 주석 제거
-    // if (searchValue) {
-    //   actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchValue, isEmpty: true });
+    if (searchValue) {
+      actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchValue, isEmpty: true });
 
-    //   window.location.href = encodeURI(`/search?query=${searchValue}`);
-    // }
+      window.location.href = encodeURI(`/search?query=${searchValue}`);
+    }
   }
 
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
