@@ -458,30 +458,34 @@ function MyLearningListContainerV2(props: Props) {
   /* render */
   return (
     <>
+      {!resultEmpty && (
+        <>
+          <LineHeaderContainerV2
+            contentType={contentType}
+            viewType={viewType}
+            onChangeViewType={onChangeViewType}
+            resultEmpty={resultEmpty}
+            totalCount={getTotalCount(contentType)}
+            filterCount={filterCount}
+            openFilter={openFilter}
+            onClickFilter={onClickFilter}
+            onClickDelete={onClickDelete}
+          />
+          <MultiFilterBox
+            contentType={contentType}
+            viewType={viewType}
+            openFilter={openFilter}
+            onChangeFilterCount={onChangeFilterCount}
+            colleges={colleges}
+            totalFilterCount={getTotalFilterCountView(contentType)}
+            filterCounts={getFilterCountViews(contentType)}
+          />
+        </>
+      )}
       {
         isModelExist(contentType) &&
         (
           <>
-            <LineHeaderContainerV2
-              contentType={contentType}
-              viewType={viewType}
-              onChangeViewType={onChangeViewType}
-              resultEmpty={resultEmpty}
-              totalCount={getTotalCount(contentType)}
-              filterCount={filterCount}
-              openFilter={openFilter}
-              onClickFilter={onClickFilter}
-              onClickDelete={onClickDelete}
-            />
-            <MultiFilterBox
-              contentType={contentType}
-              viewType={viewType}
-              openFilter={openFilter}
-              onChangeFilterCount={onChangeFilterCount}
-              colleges={colleges}
-              totalFilterCount={getTotalFilterCountView(contentType)}
-              filterCounts={getFilterCountViews(contentType)}
-            />
             {!resultEmpty && (
               <>
                 <MyLearningTableTemplate
