@@ -8,7 +8,8 @@ const Instructor: React.FC = () => {
   return (
     <div className="section">
       <div className="text01">강사({insertApi ? '28' : '0'})</div>
-      {insertApi && insertApi ? (
+      {
+        insertApi && insertApi ? (
         <>
           <div className="fn-button">
             <Button icon className="right btn-blue">
@@ -21,10 +22,12 @@ const Instructor: React.FC = () => {
           </Card.Group>
         </>
       ) : (
-        <div className="no-cont-wrap">
-          <Icon className="no-contents80" />
-          <span className="blind">콘텐츠 없음</span>
-          <div className="text">검색된 Expert가 없습니다.</div>
+        <div className="section">
+          <div className="no-cont-wrap">
+            <Icon className="no-contents80" />
+            <span className="blind">콘텐츠 없음</span>
+            <div className="text">검색된 Expert가 없습니다.</div>
+          </div>
         </div>
       )}
     </div>
