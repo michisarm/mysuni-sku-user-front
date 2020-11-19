@@ -172,6 +172,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   useEffect(() => {
     let interval: any = null;
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    const duration = (embedApi.getDuration() as unknown) as number;
 
     if(!startTime){
       setStartTime(currentTime);
@@ -198,6 +199,9 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         setWatchLog(params, watchlogState);
         setStartTime((embedApi.getCurrentTime() as unknown) as number);
       // }, 10000));
+      if((duration - ((embedApi.getCurrentTime() as unknown) as number)) < 20){
+        setNextContentsView(true);
+      }      
     }, 10000);
     } else if (!isActive) {
       // sendWatchLog();
@@ -262,7 +266,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   useEffect(() => {
     // TODO : getNextorderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure =  getLectureStructure();
-
+    setNextContentsPath('');
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
@@ -434,8 +438,8 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   return (
     <div className="audio-container" ref={myInput}>
-      {panoptoState == 0 &&
-        !isActive &&
+      {nextContentsView &&
+        // !isActive &&
         nextContentsPath &&
         getLectureConfirmProgress()?.learningState == 'Passed' && (
           <div className="video-overlay">
