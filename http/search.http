@@ -1,0 +1,75 @@
+### 교육유형
+GET https://mysuni.sk.com/search/api/search?select=cube_type,+count(*)&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off
+
+### 컬리지
+GET https://mysuni.sk.com/search/api/search?select=all_college_name,+count(*)&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off
+
+### 난이도
+GET https://mysuni.sk.com/search/api/search?select=difficulty_level_json,+count(*)&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+difficulty_level_json+order+by+count(*)+desc&limit=100&default-hilite=off
+
+### 30분 미만
+GET https://mysuni.sk.com/search/api/search?select=learning_time&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(learning_time%20<%2030)+&limit=100&default-hilite=off
+
+### 30 ~ 1시간
+GET https://mysuni.sk.com/search/api/search?select=learning_time&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(learning_time%20>=%2030%20and%20learning_time%20<%2060)+&limit=100&default-hilite=off
+
+### 30분 + 30 ~ 1시간
+GET https://mysuni.sk.com/search/api/search?select=learning_time&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(learning_time%20<%2030+or+(learning_time%20>=%2030%20and%20learning_time%20<%2060))+&limit=100&default-hilite=off
+
+### 교육기관
+GET https://mysuni.sk.com/search/api/search?select=organizer,+count(*)&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off
+
+### 핵인싸과정
+GET https://mysuni.sk.com/search/api/search?select=reqCom_id&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(reqCom_id+IN+%7B'SKCC'%7D)&limit=100&default-hilite=off
+
+### Certification
+GET https://mysuni.sk.com/search/api/search?select=badge_count,+count(*)&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+badge_count+order+by+count(*)+desc&limit=100&default-hilite=off
+
+
+### 검색
+
+
+### 교육유형
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(cube_type+=+'Course')&limit=100&default-hilite=off
+
+### 컬리지
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(all_college_name+=+'행복')&limit=100&default-hilite=off
+
+### 난이도
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(difficulty_level_json+=+'Expert')&limit=100&default-hilite=off
+
+### 30분 미만
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(learning_time%20<%2030)+&limit=100&default-hilite=off
+
+### 30 ~ 1시간
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(learning_time%20>=%2030%20and%20learning_time%20<%2060)+&limit=100&default-hilite=off
+
+### 30분 + 30 ~ 1시간
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(learning_time%20<%2030+or+(learning_time%20>=%2030%20and%20learning_time%20<%2060))+&limit=100&default-hilite=off
+
+### 교육기관
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(organizer+=+'mySUNI')+&limit=100&default-hilite=off
+
+### 핵인싸과정 (유)
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(reqCom_id+IN+%7B'SKCC'%7D)&limit=100&default-hilite=off
+
+### 핵인싸과정 (무)
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+not+(reqCom_id+IN+%7B'SKCC'%7D)&limit=100&default-hilite=off
+
+
+### Badge
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(badge_count+=+'1')&limit=100&default-hilite=off
+
+### Stamp
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='이해'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+and+(stamp_count+=+'1')&limit=100&default-hilite=off
+
+
+### Date
+GET https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx='행복'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+='ALL')+AND+((learning_start_date_str+>=+'20201109'+AND+learning_start_date_str+<=+'20201117')+OR+(learning_end_date_str+>=+'20201109'+AND+learning_end_date_str+<=+'20201117'))+AND+(apply_start_date_str+<=+'20201116'+AND+apply_end_date_str+>=+'20201116')+order+by+$MATCHFIELD(card_name,+description)+desc,+$relevance+desc,+create_time+desc&offset=0&limit=96&default-hilite=off&custom=SKUNIV@course%2Ball|M|28$text$nomal|1|%EC%A0%95%ED%99%95%EB%8F%84^%ED%96%89%EB%B3%B5%23%23pre
+
+### 수강 가능 (apply_start_date_str+%3C%3D+%2720201116%27+AND+apply_end_date_str+%3E%3D+%2720201116%27)
+
+
+
+https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx%3D%27%ED%96%89%EB%B3%B5%27+allword+and+(subSidiaries_id+%3D+%27SKCC%27+or+subSidiaries_id+%3D%27ALL%27)+order+by+$MATCHFIELD(card_name,+description)+desc,+$relevance+desc,+create_time+desc&offset=0&limit=96&default-hilite=off&custom=SKUNIV@course%2Ball%7CM%7C28$text$nomal%7C1%7C%EC%A0%95%ED%99%95%EB%8F%84%5E%ED%96%89%EB%B3%B5%23%23pre
+https://mysuni.sk.com/search/api/search?select=*&from=card.card&where=text_idx%3D%27%ED%96%89%EB%B3%B5%27+allword+and+(subSidiaries_id+%3D+%27SKCC%27+or+subSidiaries_id+%3D%27ALL%27)+AND+(apply_start_date_str+%3C%3D+%2720201116%27+AND+apply_end_date_str+%3E%3D+%2720201116%27)+order+by+$MATCHFIELD(card_name,+description)+desc,+$relevance+desc,+create_time+desc&offset=0&limit=96&default-hilite=off&custom=SKUNIV@course%2Ball%7CM%7C28$text$nomal%7C1%7C%EC%A0%95%ED%99%95%EB%8F%84%5E%ED%96%89%EB%B3%B5%23%23pre

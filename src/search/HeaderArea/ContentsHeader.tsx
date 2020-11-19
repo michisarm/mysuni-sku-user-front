@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Segment, Radio, Button } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
@@ -48,7 +48,7 @@ const ContentsHeader: React.FC = () => {
             </Button>
           </div>
           {/*Filter*/}
-          <SearchFilter isOnFilter={isOnFilter} />
+          <SearchFilter isOnFilter={isOnFilter} searchValue={searchValue} />
         </Segment>
       </div>
     </>
