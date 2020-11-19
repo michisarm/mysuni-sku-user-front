@@ -13,15 +13,15 @@ const CheckboxOptions = {
     { key: 10, text: 'SK아카데미', value: 'SK아카데미' },
     { key: 11, text: 'Life Style', value: 'LifeStyle' },
   ],
-  
-  difficultyLevels: [
+
+  difficulty_level_json_query: [
     { key: 0, text: 'Basic', value: 'Basic' },
     { key: 1, text: 'Intermediate', value: 'Intermediate' },
     { key: 2, text: 'Advanced', value: 'Advanced' },
     { key: 3, text: 'Expert', value: 'Expert' }
   ],
 
-  organizers: [
+  organizer_query: [
     { key: 0, text: 'mySUNI', value: 'mySUNI' },
     { key: 1, text: 'Coursera', value: 'Coursera' },
     { key: 2, text: 'Linkedin', value: 'Linkedin' },
@@ -38,7 +38,7 @@ const CheckboxOptions = {
     { key: 7, text: 'Documents', value: 'Documents' },
   ],
 
-  learningTimes: [
+  learning_time_query: [
     { key: 0, text: '30분 미만', value: 'type1', },
     { key: 1, text: '30분 이상~1시간 미만', value: 'type2', },
     { key: 2, text: '1시간 이상~4시간 미만', value: 'type3', },
