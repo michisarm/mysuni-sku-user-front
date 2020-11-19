@@ -348,7 +348,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
             <th>{FilterConditionName.College}</th>
             <td>
               <Checkbox className="base" label={`${SELECT_ALL}`} />
-              {CheckBoxOptions.college.map((college, index) => (
+              {CheckBoxOptions.all_college_name_query.map((college, index) => (
                 <Fragment key={`checkbox-college-${index}`}>
                   <Checkbox
                     className="base"
