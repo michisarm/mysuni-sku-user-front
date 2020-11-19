@@ -205,6 +205,66 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     setConditions(InitialConditions);
   };
 
+  const onCheckAll = (e: any, data: any) => {
+    /*
+      전체 선택이 가능한 항목들에 대해서만 FilterConditionName 을 기준으로 영역을 나눔.
+        1. 컬리지
+        2. 학습유형
+        3. 난이도
+        4. 교육기관
+    */
+    switch (data.name) {
+      case FilterConditionName.College:
+        /* 전체 해제 */
+        if (conditions.all_college_name_query.length === CheckBoxOptions.college.length) {
+          setConditions({ ...conditions, all_college_name_query: [] });
+          break;
+        }
+        /* 전체 선택 */
+        setConditions({ ...conditions, all_college_name_query: [...CheckBoxOptions.college.map(college => college.value)] });
+        break;
+      case FilterConditionName.LearningType:
+        if (conditions.learningTypes.length === CheckBoxOptions.learningTypes.length - 1 && conditions.serviceType) {
+          setConditions({ ...conditions, learningTypes: [], serviceType: '' });
+          break;
+        }
+        setConditions({
+          ...conditions,
+          learningTypes: [...CheckBoxOptions.learningTypes.map(learningType => learningType.value).filter(value => value !== 'Course')],
+          serviceType: 'Course'
+        });
+        break;
+      case FilterConditionName.DifficultyLevel:
+        if (conditions.difficulty_level_json_query.length === CheckBoxOptions.difficulty_level_json_query.length) {
+          setConditions({ ...conditions, difficulty_level_json_query: [] });
+          break;
+        }
+        setConditions({ ...conditions, difficulty_level_json_query: [...CheckBoxOptions.difficulty_level_json_query.map(difficultyLevel => difficultyLevel.value)] });
+        break;
+      case FilterConditionName.Organizer:
+        if (conditions.organizer_query.length === CheckBoxOptions.organizer_query.length) {
+          setConditions({ ...conditions, organizer_query: [] });
+          break;
+        }
+        setConditions({ ...conditions, organizer_query: [...CheckBoxOptions.organizer_query.map(organizer => organizer.value)] });
+        break;
+      case FilterConditionName.LearningTime:
+        if (conditions.learning_time_query.length === CheckBoxOptions.learning_time_query.length) {
+          setConditions({ ...conditions, learning_time_query: [] });
+          break;
+        }
+        setConditions({ ...conditions, learning_time_query: [...CheckBoxOptions.learning_time_query.map(learningTime => learningTime.value)] });
+        break;
+      case FilterConditionName.Certification:
+        if (conditions.certifications.length === CheckBoxOptions.certifications.length) {
+          setConditions({ ...conditions, certifications: [] });
+          break;
+        }
+        setConditions({ ...conditions, certifications: [...CheckBoxOptions.certifications.map(certification => certification.value)] });
+        break;
+    }
+  };
+
   return (
     <div className={classNames('filter-table', isOnFilter ? 'on' : '')}>
       <div className="title">
@@ -221,8 +281,9 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
             <td>
               <Checkbox
                 className="base"
+                name={FilterConditionName.College}
                 label={`${SELECT_ALL}`} 
-
+                onChange={onCheckAll}
               />
               {CheckBoxOptions.college.map((college, index) => (
                 <Fragment key={`checkbox-college-${index}`}>
@@ -241,7 +302,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.DifficultyLevel}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.DifficultyLevel} label={`${SELECT_ALL}`} onChange={onCheckAll} />
               {CheckBoxOptions.difficulty_level_json_query.map((levels, index) => (
                 <Fragment key={`checkbox-difficulty_level_json_query-${index}`}>
                   <Checkbox
@@ -259,7 +320,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.LearningTime}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.LearningTime} label={`${SELECT_ALL}`} onChange={onCheckAll} />
               {CheckBoxOptions.learning_time_query.map((learningTime, index) => (
                 <Fragment key={`checkbox-learningTime-${index}`}>
                   <Checkbox
@@ -290,7 +351,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
               {/*<button type="button" className="btn_filter_extend">펼치기</button>*/}
             </th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.Organizer} label={`${SELECT_ALL}`} onChange={onCheckAll} />
               {CheckBoxOptions.organizer_query.map((organizer, index) => (
                 <Fragment key={`checkbox-organizer-${index}`}>
                   <Checkbox
@@ -324,7 +385,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.LearningType}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.LearningType} label={`${SELECT_ALL}`} onChange={onCheckAll} />
               {CheckBoxOptions.learningTypes.map((learningType, index) => (
                 <Fragment key={`checkbox-learningType-${index}`}>
                   <Checkbox
@@ -361,7 +422,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
           <tr>
             <th>{FilterConditionName.Certification}</th>
             <td>
-              <Checkbox className="base" label={`${SELECT_ALL}`} />
+              <Checkbox className="base" name={FilterConditionName.Certification} label={`${SELECT_ALL}`} onChange={onCheckAll}/>
               {CheckBoxOptions.certifications.map((certification, index) => (
                 <Fragment key={`checkbox-certification-${index}`}>
                   <Checkbox
