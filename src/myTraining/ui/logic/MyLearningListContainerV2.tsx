@@ -354,8 +354,6 @@ function MyLearningListContainerV2(props: Props) {
   const updateSessionStorage = async () => {
     /* 학습중 storage udpate */
     const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-    sessionStorage.removeItem('inProgressTableViews');
-    sessionStorage.removeItem('InProgressLearningList');
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
   }
 
