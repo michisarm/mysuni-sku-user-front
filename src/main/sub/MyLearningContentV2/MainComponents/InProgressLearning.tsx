@@ -267,7 +267,7 @@ const InProgressLearning: React.FC<Props> = Props => {
                   <span className="border">
                     <span className="ellipsis">{profileMemberName}</span> 님에게
                   추천하는 학습 과정 보기
-                </span>
+                  </span>
                   <Icon className="morelink" />
                 </Button>
               </>
