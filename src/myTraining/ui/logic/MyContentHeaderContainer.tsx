@@ -107,12 +107,16 @@ function MyContentHeaderContainer(props: Props) {
             />
           )}
         {/* DropDown 포지션 변경으로 인한 부모컨테이너 변경 */}
+        {/* DropDown options 프롭스는 퍼블리싱 테스트를 위해 임의의 데이터로 다시 변경. */}
         <div className="year">
           <Dropdown
             className="inline tight"
             value={selectedYear}
             onChange={onChangeYear}
-            options={getYearOptions()}
+            options={[
+              { key: 0, text: '2021', value: 2021 },
+              { key: 1, text: '2020', value: 2020 },
+            ]}
           />
         </div>
       </ContentHeader.Cell>
