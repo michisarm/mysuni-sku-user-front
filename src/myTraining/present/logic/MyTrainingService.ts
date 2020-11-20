@@ -198,8 +198,9 @@ class MyTrainingService {
     //
 
     /* 메인페이지에서 호출 시. */
-    const rdo = fromMain ? MyTrainingRdoModel.newWithState(state, limit, offset, channelIds) :
-      MyTrainingRdoModel.newWithStateFromMain(state, limit, offset, channelIds, 'main');
+    const rdo = fromMain ? MyTrainingRdoModel.newWithStateFromMain(state, limit, offset, channelIds, 'main') :
+      MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
+
 
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
     if (fromMain) {
