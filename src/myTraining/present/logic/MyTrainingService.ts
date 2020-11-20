@@ -218,7 +218,7 @@ class MyTrainingService {
     //
     const offsetList = lectures;
 
-    runInAction(() => (this._myTrainings = offsetList.results));
+    runInAction(() => (this._myTrainings = offsetList.results.map(result => new MyTrainingModel(result))));
     return offsetList;
   }
 
@@ -650,7 +650,6 @@ class MyTrainingService {
       if (viewType === 'Course') {
         const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
 
-        console.log('courseTableViews :: ', courseTableViews);
         return courseTableViews.slice(startIndex, endIndex);
       }
 
@@ -661,7 +660,6 @@ class MyTrainingService {
       if (viewType === 'Course') {
         const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
 
-        console.log('courseTableViews :: ', courseTableViews);
         return courseTableViews.slice(startIndex, endIndex);
       }
 
