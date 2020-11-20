@@ -648,7 +648,7 @@ class MyTrainingService {
 
     if (contentType === MyLearningContentType.InProgress) {
       if (viewType === 'Course') {
-        const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.isCourseOrProgram());
         return courseTableViews.slice(startIndex, endIndex);
       }
 
@@ -657,7 +657,7 @@ class MyTrainingService {
 
     if (contentType === MyLearningContentType.Completed) {
       if (viewType === 'Course') {
-        const courseTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        const courseTableViews = this.completedTableViews.filter(tableView => tableView.isCourseOrProgram());
         return courseTableViews.slice(startIndex, endIndex);
       }
 
@@ -737,16 +737,15 @@ class MyTrainingService {
     if (offsetInProgress &&
       offsetInProgress.results &&
       offsetInProgress.results.length) {
-      const inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
-      this.inProgressTableViews = inProgressTableViews;
-      this.inProgressTableCount = inProgressTableViews.length;
+      this.inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
+      this.inProgressTableCount = offsetInProgress.totalCount;
 
-      console.log('findAllInProgressTableViewsForStorage() :: inProgressTableViews :: ', inProgressTableViews);
-      const courseTableViews = inProgressTableViews.filter(tableView => !tableView.isCardType());
+      console.log('findAllInProgressTableViewsForStorage() :: inProgressTableViews :: ', this.inProgressTableViews);
+      const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(tableView => !tableView.isCardType());
       console.log('findAllInProgressTableViewsForStorage() :: inProgressTableViews ==> Course ', courseTableViews);
       console.log('findAllInProgressTableViewsForStorage() :: inProgressTableViews ==> Course length ::', courseTableViews.length);
 
-      return inProgressTableViews;
+      return this.inProgressTableViews;
     }
 
     return null;
@@ -760,11 +759,15 @@ class MyTrainingService {
     if (offsetCompleted &&
       offsetCompleted.results &&
       offsetCompleted.results.length) {
-      const completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
-      this.completedTableViews = completedTableViews;
-      this.completedTableCount = completedTableViews.length;
+      this.completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
+      this.completedTableCount = offsetCompleted.totalCount;
 
-      return completedTableViews;
+      console.log('findAllCompletedTableViewsForStorage() :: completedTableViews :: ', this.completedTableViews);
+      const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(tableView => !tableView.isCardType());
+      console.log('findAllCompletedTableViewsForStorage() :: competedTableViews ==> Course ', courseTableViews);
+      console.log('findAllCompletedTableViewsForStorage() :: completedTableViews ==> Course length ::', courseTableViews.length);
+
+      return this.completedTableViews;
     }
 
     return null;
