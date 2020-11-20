@@ -5,6 +5,7 @@ import moment from 'moment';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
+import  MyTrainingService  from '../../../../../myTraining/present/logic/MyTrainingService';
 import {
   deleteStudentByRollBookId,
   findIsJsonStudentByCube,
@@ -61,6 +62,7 @@ async function submit(
   const {
     skProfile: { member },
   } = SkProfileService.instance;
+
   let nextStudentCdo: StudentCdo = {
     rollBookId,
     name: member.name,
@@ -382,6 +384,7 @@ async function approve(
   const {
     skProfile: { member },
   } = SkProfileService.instance;
+  const myTrainingService = MyTrainingService.instance;
   // classroomModal.show
   let nextStudentCdo: StudentCdo = {
     rollBookId,
@@ -428,6 +431,10 @@ async function approve(
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+
+  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+    sessionStorage.removeItem('completedTableViews');
+    sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
 }
 
 async function join(
@@ -488,9 +495,14 @@ async function join(
 }
 
 async function complete(params: LectureRouterParams, rollBookId: string) {
+  const myTrainingService = MyTrainingService.instance;
   await markComplete({ rollBookId });
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    sessionStorage.removeItem('inProgressTableViews');
+    sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
