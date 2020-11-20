@@ -61,6 +61,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsName, setNextContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>();
+  const [transciptHighlight, setTransciptHighlight] = useState<string>();
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -72,9 +73,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setWatchlogState(watchlog);
   }, [params]);
 
-  const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [progressInterval, setProgressInterval] = useState<any>();
+  
+  const [watchInterval, setWatchInterval] = useState<any>();
+  const [checkInterval, setCheckInterval] = useState<any>();
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -111,6 +114,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setNextContentsView(false);
     history.push(path);
   }, []);
+
+  const sendWatchLog = useCallback(() => {
+    if (params && watchlogState) {
+      const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+      // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+      const end = (embedApi.getCurrentTime() as unknown) as number;
+      const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
+      setWatchlogState({
+        ...watchlogState,
+        start: start < 0? 0 : start,
+        end: end,
+      });
+
+      //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
+      setWatchLog(params, watchlogState);
+    }
+  }, [params, embedApi, startTime, watchlogState]);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
@@ -170,13 +192,56 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       registCheckStudent(params);
       mediaCheckEvent(params);
     }
-
   }, [panoptoState]);
 
   useEffect(() => {
     setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
     setDuration((embedApi.getDuration() as unknown) as number);
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [isActive, lectureParams, pathname, params]);
+
+
+  useEffect(() => {
+    let interval: any = null;
+    const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    const duration = (embedApi.getDuration() as unknown) as number;
+
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+    if (isActive && params && watchlogState) {
+      // clearInterval(interval);
+      interval = setInterval(() => {
+      // setWatchInterval(setInterval(() => {        
+        //const currentTime = embedApi.getCurrentTime() as unknown as number;
+        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+
+        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
+        const end = (embedApi.getCurrentTime() as unknown) as number;
+        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+
+        setWatchlogState({
+          ...watchlogState,
+          start: start < 0? 0 : start,
+          end: end,
+        });
+
+        //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
+        setWatchLog(params, watchlogState);
+        setStartTime((embedApi.getCurrentTime() as unknown) as number);
+        if((duration - ((embedApi.getCurrentTime() as unknown) as number)) < 20){
+          setNextContentsView(true);
+        }
+      // }, 10000));
+    }, 10000);
+    } else if (!isActive) {
+      // sendWatchLog();
+      clearInterval(interval);
+    }
+    return () => {
+      console.log('clearInterval return run');
+      clearInterval(interval);
+    };
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime, watchlogState]);
 
 
   useEffect(() => {
@@ -192,66 +257,72 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (isActive && params && watchlogState) {
       clearInterval(interval);
       interval = setInterval(() => {
-        //const currentTime = embedApi.getCurrentTime() as unknown as number;
-        const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
+        //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+        let array: any= []
+        getLectureTranscripts()?.map((lectureTranscript, key)=> {
+          array.push({
+            startTime: Number(lectureTranscript.startTime),
+            endTime: Number(lectureTranscript.endTime),
+            idx: lectureTranscript.idx,
+          })
+        })
+        array.map((item: any, key: number) => {
+          if(item.startTime < embedApi.getCurrentTime()) {
+            if(embedApi.getCurrentTime() < item.endTime) {
+              const currentScript = document.getElementById('transcript'+item.idx)
+              const element = document.getElementById('tttt');
+              setTransciptHighlight('transcript'+item.idx)
+              if (currentScript !== null ) {
+                scrollMove('transcript'+item.idx)
+              }
+            }
+          }
+        })
 
-        // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
-        const end = (embedApi.getCurrentTime() as unknown) as number;
-        const start = startTime > end || (end - startTime) > 21? end - (10 * playbackRate) : startTime;
+      }, 2000);
 
-        setWatchlogState({
-          ...watchlogState,
-          start: start < 0? 0 : start,
-          end: end,
-        });
-        setSeconds(seconds => seconds + 10);
-
-        //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
-        setWatchLog(params, watchlogState);
-        setStartTime((embedApi.getCurrentTime() as unknown) as number);
-
-      }, 10000);
-
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
     }
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, seconds, lectureParams, pathname, params, embedApi, startTime]);
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime]);
 
   useEffect(() => {
     clearTimeout(progressInterval);
+    let checkInterval: any = null;
+    const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 10) * 1000;
-    //confirmProgressTime
+    
     if (!confirmProgressTime || confirmProgressTime > 60000) {
       confirmProgressTime = 60000;
     }
 
     if (isActive && params) {
-      clearTimeout(progressInterval);
-      setProgressInterval(setTimeout(function tick() {
-        mediaCheckEvent(params);
-        clearTimeout(progressInterval);
-        setProgressInterval('');
-        // setProgressInterval(setTimeout(tick, confirmProgressTime));
-      }, confirmProgressTime));
+      // setCheckInterval(setInterval(() => {
+        checkInterval = setInterval(() => {
+          mediaCheckEvent(params);
+          // }, 20000));
+        }, 20000);
 
-    } else if (!isActive && seconds !== 0) {
-      clearTimeout(progressInterval);
+    } else if (!isActive) {
+      clearInterval(checkInterval);
     }
     return () => {
-      clearTimeout(progressInterval);
+      console.log('clearCheckInterval return run');
+      clearInterval(checkInterval);
+      
     };
-  }, [isActive, params]);
-  // }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [checkInterval, isActive]);
 
-  //unmount(clean up) 처리
-  useEffect(() => {
-    return () => {
-                  clearTimeout(progressInterval);
-                }
-  }, [progressInterval]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('page out clear Interval ');
+  //     clearInterval(watchInterval);
+  //     clearInterval(checkInterval);
+  //   };
+  // }, [checkInterval, watchInterval]);
+
 
   useEffect(() => {
     setNextContentsView(false);
@@ -270,9 +341,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   useEffect(() => {
-    // TODO : getNextorderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
+    // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure =  getLectureStructure();
-
+    setNextContentsPath('');
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
@@ -396,6 +467,23 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+  const scrollMove = (id: any) => {
+    const target = document.getElementById(id)
+    const parent = document.getElementById('tanscript-scroll')
+    //스크롤 높이 더해주면 된다
+    const scrollHeight = document.getElementById('tanscript-scroll')?.scrollTop;
+    const distanceBetweenParentAndChild = target!.getBoundingClientRect().top - parent!.getBoundingClientRect().top + scrollHeight!
+    document.getElementById('tanscript-scroll')!.scrollTo(0, distanceBetweenParentAndChild);
+  }
+
+ const highlight = (id: string) => {
+  if(transciptHighlight === id) {
+    return 'l-current'
+  } else {
+    return ''
+  }
+ }
+
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
@@ -463,7 +551,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         <div id="panopto-embed-player"></div>
         {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
         {nextContentsView &&
-          !isActive &&
+          // !isActive &&
           nextContentsPath &&
           getLectureConfirmProgress()?.learningState == 'Passed' && (
             <div id="video-overlay" className="video-overlay">
@@ -496,14 +584,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
               Close Transcript
               <i aria-hidden="true" className="icon icon morelink" />
             </button>
-
-            <div className="course-video-tanscript">
+            <div className="course-video-tanscript" id="tanscript-scroll">
               <div className="course-video-scroll">
                 {getLectureTranscripts()?.map(lectureTranscript => {
                   return (
                     <>
                       <strong
+                        id={'transcript'+lectureTranscript.idx}
                         style={{ cursor: 'pointer' }}
+                        className={highlight('transcript'+lectureTranscript.idx)}
                         onClick={() => {
                           // seekByIndex(lectureTranscript.idx);
                           seekByIndex(parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 * 60 + 

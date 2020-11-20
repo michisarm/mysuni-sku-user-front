@@ -235,9 +235,8 @@ class QuickNavContainer extends Component<Props, State> {
               />
 
               {/*0907 개인학습 등록 메뉴 추가*/}
-              {(menuControlAuth.companyCode === ''
-              && menuControlAuth.authCode !== MenuControlAuth.Admin
-              && menuControlAuth.useYn !== MenuControlAuth.No)
+              {(menuControlAuth.companyCode === '' || ( menuControlAuth.authCode === MenuControlAuth.User
+                && menuControlAuth.useYn === MenuControlAuth.Yes))
               &&(
                 <>
                   <BottomMenuItemView

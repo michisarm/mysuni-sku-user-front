@@ -17,7 +17,7 @@ function LectureCubeDocumentsPage() {
     getCubeLectureOverview(contentId, lectureId);
   }, [params]);
 
-  useLectureMedia();
+  // useLectureMedia();
 
   return (
     <LectureDetailLayout>
