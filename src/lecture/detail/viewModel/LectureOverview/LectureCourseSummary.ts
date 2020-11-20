@@ -4,7 +4,7 @@ import LectureSummary from './LectureSummary';
 
 export default interface LectureCourseSummary extends LectureSummary {
   stampCount: number;
-  iconBox: IconBox;
+  iconBox?: IconBox;
   mytrainingId?: string;
   difficultyLevel: DifficultyLevel;
 }

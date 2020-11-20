@@ -33,7 +33,7 @@ import {
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 function isEmpty(text: string) {
-  return text !== null && text !== ""
+  return text === null || text === ""
 }
 
 async function getTestItem(
