@@ -9,4 +9,5 @@ export default interface Transcript {
   createdTime: number;
   modifierId: string;
   modifiedTime: number;
+  intervalTime: string;
 }

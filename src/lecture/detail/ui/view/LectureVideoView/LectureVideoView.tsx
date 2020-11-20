@@ -61,6 +61,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsName, setNextContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>();
+  const [transciptHighlight, setTransciptHighlight] = useState<string>();
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -191,7 +192,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       registCheckStudent(params);
       mediaCheckEvent(params);
     }
-
   }, [panoptoState]);
 
   useEffect(() => {
@@ -241,6 +241,50 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
 
   useEffect(() => {
+
+    let interval: any = null;
+    
+    const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    const duration = (embedApi.getDuration() as unknown) as number;
+    if(!startTime){
+      setStartTime(currentTime);
+    }
+
+    if (isActive && params && watchlogState) {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+        let array: any= []
+        getLectureTranscripts()?.map((lectureTranscript, key)=> {
+          array.push({
+            startTime: Number(lectureTranscript.startTime),
+            endTime: Number(lectureTranscript.endTime),
+            idx: lectureTranscript.idx,
+          })
+        })
+        array.map((item: any, key: number) => {
+          if(item.startTime < embedApi.getCurrentTime()) {
+            if(embedApi.getCurrentTime() < item.endTime) {
+              const currentScript = document.getElementById('transcript'+item.idx)
+              const element = document.getElementById('tttt');
+              setTransciptHighlight('transcript'+item.idx)
+              if (currentScript !== null ) {
+                scrollMove('transcript'+item.idx)
+              }
+            }
+          }
+        })
+
+      }, 2000);
+
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime]);
+
+  useEffect(() => {
+    clearTimeout(progressInterval);
     let checkInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 10) * 1000;
@@ -419,6 +463,23 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+  const scrollMove = (id: any) => {
+    const target = document.getElementById(id)
+    const parent = document.getElementById('tanscript-scroll')
+    //스크롤 높이 더해주면 된다
+    const scrollHeight = document.getElementById('tanscript-scroll')?.scrollTop;
+    const distanceBetweenParentAndChild = target!.getBoundingClientRect().top - parent!.getBoundingClientRect().top + scrollHeight!
+    document.getElementById('tanscript-scroll')!.scrollTo(0, distanceBetweenParentAndChild);
+  }
+
+ const highlight = (id: string) => {
+  if(transciptHighlight === id) {
+    return 'l-current'
+  } else {
+    return ''
+  }
+ }
+
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
@@ -519,14 +580,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
               Close Transcript
               <i aria-hidden="true" className="icon icon morelink" />
             </button>
-
-            <div className="course-video-tanscript">
+            <div className="course-video-tanscript" id="tanscript-scroll">
               <div className="course-video-scroll">
                 {getLectureTranscripts()?.map(lectureTranscript => {
                   return (
                     <>
                       <strong
+                        id={'transcript'+lectureTranscript.idx}
                         style={{ cursor: 'pointer' }}
+                        className={highlight('transcript'+lectureTranscript.idx)}
                         onClick={() => {
                           // seekByIndex(lectureTranscript.idx);
                           seekByIndex(parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 * 60 + 
