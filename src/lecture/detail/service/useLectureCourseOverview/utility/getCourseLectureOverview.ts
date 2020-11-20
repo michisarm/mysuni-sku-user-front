@@ -46,7 +46,8 @@ async function getLectureSummary(
     coursePlanComplex.coursePlan.learningTime
   );
   const operator = coursePlanComplex.coursePlan.courseOperator;
-  const iconBox = coursePlanComplex.coursePlan.iconBox;
+
+  const iconBox = coursePlanComplex.coursePlan.iconBox === null ? undefined : coursePlanComplex.coursePlan.iconBox;
   const mylecture = await findInMyLecture(
     lectureId || serviceId!,
     lectureType !== undefined ? 'Course' : serviceType!
@@ -172,7 +173,7 @@ function makeInMyLectureCdo(
       ? coursePlanComplex.courseLecture
       : coursePlanComplex.programLecture;
   return {
-    baseUrl: coursePlanComplex.coursePlan.iconBox.baseUrl,
+    baseUrl: coursePlanComplex.coursePlan.iconBox === null ? "" : coursePlanComplex.coursePlan.iconBox.baseUrl,
     category: coursePlanComplex.coursePlan.category,
     courseLectureUsids: lecture.courseLectureUsids,
     lectureCardUsids: lecture.lectureCardUsids,
