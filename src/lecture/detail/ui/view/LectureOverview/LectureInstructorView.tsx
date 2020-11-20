@@ -47,12 +47,12 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
             <Link className="ui profile tool-tip" to={`/expert/instructor/${usid}/Introduce`}> 
               {represent === 1 && <Represent />}
               <div className="pic s80">
-                {/*employeeId && employeeId != '' &&
+                {employeeId && employeeId != '' &&
                   <img alt="프로필사진" className="ui image" src={`https://mysuni.sk.com/profile/photo/skcc/${employeeId}.jpg`} />
-          */}
-                {photos && photos.map((photo) => 
+                }
+                {/*photos && photos.map((photo) => 
                   <img alt="프로필사진" className="ui image" src={photo} />
-                )}                     
+                )*/}
               </div>
               <i>
                 <span className="tip-name">{name}</span>
