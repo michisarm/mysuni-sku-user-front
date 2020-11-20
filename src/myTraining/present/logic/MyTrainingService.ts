@@ -496,7 +496,7 @@ class MyTrainingService {
       if (!this.inProgressTableViews.length) {
         const inProgressJson = sessionStorage.getItem('inProgressTableViews');
         if (inProgressJson) {
-          const inProgressStorage: any[] = JSON.parse(inProgressJson);
+          const inProgressStorage: any[] = JSON.parse(JSON.stringify(inProgressJson));
           if (inProgressStorage && inProgressStorage.length) {
             this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
             this.inProgressTableCount = inProgressStorage.length;
@@ -526,7 +526,7 @@ class MyTrainingService {
       if (!this.completedTableViews.length) {
         const completedJson = sessionStorage.getItem('completedTableViews');
         if (completedJson) {
-          const completedStorage: any[] = JSON.parse(completedJson);
+          const completedStorage: any[] = JSON.parse(JSON.stringify(completedJson));
           if (completedStorage && completedStorage.length) {
             this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
             this.completedTableCount = completedStorage.length;
