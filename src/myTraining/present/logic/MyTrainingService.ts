@@ -209,7 +209,7 @@ class MyTrainingService {
       window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
     }
 
-    runInAction(() => (this._myTrainings = offsetList.results));
+    runInAction(() => (this._myTrainings = offsetList.results.map(result => new MyTrainingModel(result))));
     return offsetList;
   }
 

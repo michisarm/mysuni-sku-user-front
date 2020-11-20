@@ -351,9 +351,12 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const updateInProgressStorage = async () => {
-    /* 학습중 storage udpate */
+    /* 러닝페이지 학습중 스토리지 업데이트 */
     const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+
+    /* 메인페이지 학습중 스토리지 업데이트 */
+    await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
   }
 
   /* handlers */
