@@ -88,6 +88,9 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             <div className="text ql-editor">
               <div
                 className="text description ql-editor"
+                style={{
+                  overflow: 'scroll',
+                }}
                 dangerouslySetInnerHTML={{
                   __html: taskDetail.contents,
                 }}
