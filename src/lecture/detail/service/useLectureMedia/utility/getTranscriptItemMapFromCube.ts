@@ -27,16 +27,12 @@ export async function getTranscriptItem(
       // intervalTime
     } = transcript;
 
-    const intervalTime = startTime+''+endTime
-    console.log('intervalTime', intervalTime)
-
     const lectureTranscript: LectureTranscript = {
       locale,
       idx : 'transcript'+key,
       text,
       startTime,
       endTime,
-      // intervalTime: ''
     };
 
     lectureTranscripts.push(lectureTranscript);
