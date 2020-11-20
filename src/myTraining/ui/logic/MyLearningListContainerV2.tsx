@@ -354,8 +354,6 @@ function MyLearningListContainerV2(props: Props) {
   const updateSessionStorage = async () => {
     /* 학습중 storage udpate */
     const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-    sessionStorage.removeItem('inProgressTableViews');
-    sessionStorage.removeItem('InProgressLearningList');
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
   }
 
@@ -400,13 +398,13 @@ function MyLearningListContainerV2(props: Props) {
       선택된 ids 를 통해 delete 로직을 수행함.
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
-    await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
-    await updateSessionStorage();
-    await myTrainingService!.findAllTabCount();
-    await myTrainingService!.findAllTableViews();
-
-    myTrainingService!.clearAllSelectedServiceIds();
-
+    const result = await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
+    if (result) {
+      await updateSessionStorage();
+      await myTrainingService!.findAllTabCount();
+      await myTrainingService!.findAllTableViews();
+      myTrainingService!.clearAllSelectedServiceIds();
+    }
     setOpenModal(false);
   }, []);
 

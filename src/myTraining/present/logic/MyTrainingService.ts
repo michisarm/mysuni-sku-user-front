@@ -490,15 +490,14 @@ class MyTrainingService {
   @action
   async findAllTableViews() {
     /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
-
     /* 학습중 */
     if (this._myTrainingFilterRdo.contentType === 'InProgress') {
       if (!this.inProgressTableViews.length) {
         const inProgressJson = sessionStorage.getItem('inProgressTableViews');
         if (inProgressJson) {
-          const inProgressStorage: any[] = JSON.parse(JSON.stringify(inProgressJson));
+          const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(JSON.stringify(inProgressJson));
           if (inProgressStorage && inProgressStorage.length) {
-            this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
+            this.inProgressTableViews = inProgressStorage.map((inProgress: MyTrainingTableViewModel) => new MyTrainingTableViewModel(inProgress));
             this.inProgressTableCount = inProgressStorage.length;
           }
         }
@@ -507,7 +506,7 @@ class MyTrainingService {
       if (this.inProgressTableViews.length) {
         /* 코스만보기 */
         if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          const courseTableViews = this.inProgressTableViews.filter(tableView => !tableView.isCardType());
           this._myTrainingTableViews = courseTableViews.slice(0, 20);
           this._myTrainingTableViewCount = courseTableViews.length;
           return false;
@@ -649,7 +648,7 @@ class MyTrainingService {
 
     if (contentType === MyLearningContentType.InProgress) {
       if (viewType === 'Course') {
-        const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.isCourseOrProgram());
         return courseTableViews.slice(startIndex, endIndex);
       }
 
@@ -658,7 +657,7 @@ class MyTrainingService {
 
     if (contentType === MyLearningContentType.Completed) {
       if (viewType === 'Course') {
-        const courseTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+        const courseTableViews = this.completedTableViews.filter(tableView => tableView.isCourseOrProgram());
         return courseTableViews.slice(startIndex, endIndex);
       }
 
@@ -738,11 +737,10 @@ class MyTrainingService {
     if (offsetInProgress &&
       offsetInProgress.results &&
       offsetInProgress.results.length) {
-      const inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
-      this.inProgressTableViews = inProgressTableViews;
-      this.inProgressTableCount = inProgressTableViews.length;
+      this.inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
+      this.inProgressTableCount = offsetInProgress.totalCount;
 
-      return inProgressTableViews;
+      return this.inProgressTableViews;
     }
 
     return null;
@@ -756,11 +754,10 @@ class MyTrainingService {
     if (offsetCompleted &&
       offsetCompleted.results &&
       offsetCompleted.results.length) {
-      const completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
-      this.completedTableViews = completedTableViews;
-      this.completedTableCount = completedTableViews.length;
+      this.completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
+      this.completedTableCount = offsetCompleted.totalCount;
 
-      return completedTableViews;
+      return this.completedTableViews;
     }
 
     return null;
