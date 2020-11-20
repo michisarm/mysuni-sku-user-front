@@ -1,5 +1,6 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ScrollToTop from './ScrollToTop';
 
 import { UserApp, AppLayout } from './shared';
 
@@ -24,44 +25,45 @@ class Routes extends PureComponent {
     //
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <UserApp>
-          <Suspense fallback="">
-            <Switch>
-              <Route path="/profile" component={ProfileRoutes} />
-              <Route path="/preview" component={PreviewRoutes} />
-              <Route
-                path="/"
-                render={() => (
-                  <AppLayout>
-                    <Switch>
-                      <Route
-                        path="/certification"
-                        component={CertificationRoutes}
-                      />
-                      <Route
-                        path="/personalcube"
-                        component={PersonalCubeRoutes}
-                      />
-                      <Route path="/lecture" component={LectureRoutes} />
-                      <Route path="/my-training" component={MyTrainingRoutes} />
-                      {/* <Route
-                        path="/my-training2"
-                      // component={MyTrainingRoutes2}
-                      /> */}
-                      <Route path="/approval" component={ApprovalRoutes} />
-                      <Route path="/board" component={BoardRoutes} />
-                      <Route path="/expert" component={ExpertRoutes} />
-                      <Route path="/community" component={CommunityRoutes} />
-                      <Route path="/search" component={SearchRoutes} />
+        <ScrollToTop />
+          <UserApp>
+            <Suspense fallback="">
+              <Switch>
+                <Route path="/profile" component={ProfileRoutes} />
+                <Route path="/preview" component={PreviewRoutes} />
+                <Route
+                  path="/"
+                  render={() => (
+                    <AppLayout>
+                      <Switch>
+                        <Route
+                          path="/certification"
+                          component={CertificationRoutes}
+                        />
+                        <Route
+                          path="/personalcube"
+                          component={PersonalCubeRoutes}
+                        />
+                        <Route path="/lecture" component={LectureRoutes} />
+                        <Route path="/my-training" component={MyTrainingRoutes} />
+                        {/* <Route
+                          path="/my-training2"
+                        // component={MyTrainingRoutes2}
+                        /> */}
+                        <Route path="/approval" component={ApprovalRoutes} />
+                        <Route path="/board" component={BoardRoutes} />
+                        <Route path="/expert" component={ExpertRoutes} />
+                        <Route path="/community" component={CommunityRoutes} />
+                        <Route path="/search" component={SearchRoutes} />
 
-                      <Route path="/" component={MainRoutes} />
-                    </Switch>
-                  </AppLayout>
-                )}
-              />
-            </Switch>
-          </Suspense>
-        </UserApp>
+                        <Route path="/" component={MainRoutes} />
+                      </Switch>
+                    </AppLayout>
+                  )}
+                />
+              </Switch>
+            </Suspense>
+          </UserApp>
       </BrowserRouter>
     );
   }
