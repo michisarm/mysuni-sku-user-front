@@ -432,8 +432,9 @@ async function approve(
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
-  sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
+  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
 }
 
 async function join(
@@ -499,8 +500,9 @@ async function complete(params: LectureRouterParams, rollBookId: string) {
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
+  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+  sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
