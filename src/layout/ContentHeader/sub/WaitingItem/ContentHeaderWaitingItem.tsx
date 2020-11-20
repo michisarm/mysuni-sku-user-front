@@ -31,14 +31,9 @@ class ContentHeaderWaitingItem extends PureComponent<Props> {
               <Label className="onlytext">
                 <Icon className="total-time" /><span>총 학습시간</span>
               </Label>
-              <span className="value2">
+              <span className="value2" onClick={onClickRecommend}>
                 <span className="wating">학습대기중</span>
               </span>
-              <div onClick={onClickRecommend}>
-                <span>추천학습</span>
-                <br />
-                <span>과정보기</span>
-              </div>
             </Button>
           )}
           year={year}

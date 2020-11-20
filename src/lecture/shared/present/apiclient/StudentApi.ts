@@ -85,8 +85,10 @@ class StudentApi {
   }
 
   ////////////////////////////////////// 개편 //////////////////////////////////////
-  modifyStudentHide(studentHideUdo: StudentHideUdo): void {
-    axiosApi.patch(`${this.baseUrl}/hide`, studentHideUdo)
+  modifyStudentHide(studentHideUdo: StudentHideUdo) {
+    return axiosApi.patch(`${this.baseUrl}/hide`, studentHideUdo)
+      .then(response => response && response.data || false)
+      .catch(err => false);
   }
   ////////////////////////////////////// 개편 //////////////////////////////////////
 }
