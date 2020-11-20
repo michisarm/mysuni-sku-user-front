@@ -493,60 +493,54 @@ class MyTrainingService {
 
     /* 학습중 */
     if (this._myTrainingFilterRdo.contentType === 'InProgress') {
-      if (!this.inProgressTableViews.length) {
-        const inProgressJson = sessionStorage.getItem('inProgressTableViews');
-        if (inProgressJson) {
-          const inProgressStorage: any[] = JSON.parse(JSON.stringify(inProgressJson));
-          if (inProgressStorage && inProgressStorage.length) {
-            this.inProgressTableViews = inProgressStorage.map(inProgress => new MyTrainingTableViewModel(inProgress));
-            this.inProgressTableCount = inProgressStorage.length;
-          }
-        }
-      }
+      const inProgressJson = sessionStorage.getItem('inProgressTableViews');
+      if (inProgressJson) {
+        const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(inProgressJson);
+        if (inProgressStorage && inProgressStorage.length > 0) {
+          const inProgressTableViews = inProgressStorage.map((inProgress: MyTrainingTableViewModel) => new MyTrainingTableViewModel(inProgress));
+          if (this._myTrainingFilterRdo.viewType === 'Course') {
+            /* 코스만보기 */
+            const courseTableViews = inProgressTableViews.filter(tableView => !tableView.isCardType());
 
-      if (this.inProgressTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
+            console.log('courseTableViews :: ', courseTableViews);
+            console.log('courseTableViews length :: ', courseTableViews.length);
+
+            this._myTrainingTableViews = courseTableViews.slice(0, 20);
+            this._myTrainingTableViewCount = courseTableViews.length;
+            return false;
+          }
+
+          /* 전체보기 */
+          this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
+          this._myTrainingTableViewCount = this.inProgressTableCount;
           return false;
         }
-
-        /* 전체보기 */
-        this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
-        this._myTrainingTableViewCount = this.inProgressTableCount;
-        return false;
       }
     }
 
     /* 학습완료 */
     if (this._myTrainingFilterRdo.contentType === 'Completed') {
+      const completedJson = sessionStorage.getItem('completedTableViews');
+      if (completedJson) {
+        const completedStorage: MyTrainingTableViewModel[] = JSON.parse(completedJson);
+        if (completedStorage && completedStorage.length > 0) {
+          const completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+          if (this._myTrainingFilterRdo.viewType === 'Course') {
+            /* 코스만보기 */
+            const courseTableViews = completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
 
-      if (!this.completedTableViews.length) {
-        const completedJson = sessionStorage.getItem('completedTableViews');
-        if (completedJson) {
-          const completedStorage: any[] = JSON.parse(JSON.stringify(completedJson));
-          if (completedStorage && completedStorage.length) {
-            this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
-            this.completedTableCount = completedStorage.length;
+            console.log('completed courseTableViews :: ', courseTableViews);
+            console.log('completed courseTableViews length :: ', courseTableViews.length);
+            this._myTrainingTableViews = courseTableViews.slice(0, 20);
+            this._myTrainingTableViewCount = courseTableViews.length;
+            return false;
           }
-        }
-      }
 
-      if (this.completedTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
+          /* 전체보기 */
+          this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
+          this._myTrainingTableViewCount = this.completedTableCount;
           return false;
         }
-
-        /* 전체보기 */
-        this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
-        this._myTrainingTableViewCount = this.completedTableCount;
-        return false;
       }
     }
 
@@ -739,8 +733,6 @@ class MyTrainingService {
       offsetInProgress.results &&
       offsetInProgress.results.length) {
       const inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
-      this.inProgressTableViews = inProgressTableViews;
-      this.inProgressTableCount = inProgressTableViews.length;
 
       return inProgressTableViews;
     }
