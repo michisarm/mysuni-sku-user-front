@@ -66,9 +66,7 @@ const InProgressLearning: React.FC<Props> = Props => {
     console.log('savedInProgresslearningList :: ', savedInProgressLearningList);
     /* 스토리지에 데이터가 있는 경우 & 데이터가 8개 이상인 경우 스토리지 데이터를 myTrainings 로 사용. 2020.11.20 김동구 */
     if (savedInProgressLearningList && savedInProgressLearningList.length > 0) {
-      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(
-        JSON.stringify(savedInProgressLearningList)
-      );
+      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
 
       console.log('inProgressMain :: ', inProgressMain);
       console.log('inProgressMain totalCount :: ', inProgressMain.totalCount);
@@ -194,10 +192,10 @@ const InProgressLearning: React.FC<Props> = Props => {
     }
   };
 
-  /* 
+  /*
     const onClickActionLog = (text: string) => {
       actionLogService?.registerClickActionLog({ subAction: text });
-    }; 
+    };
   */
 
   const routeToRecommend = () => {
