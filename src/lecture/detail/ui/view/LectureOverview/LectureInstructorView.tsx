@@ -9,6 +9,7 @@ interface LectureInstructorViewProps {
   lectureInstructor: LectureInstructor;
 }
 
+
 function Represent() {
   return <img src={REPRESENT_IMAGE} className="p-label" />;
 }
@@ -43,16 +44,16 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
       <div className="scrolling course-profile">
         {lectureInstructor &&
           lectureInstructor.instructors &&
-          lectureInstructor.instructors.map(({ name, company, represent, usid, employeeId, photoId }) => (
+          lectureInstructor.instructors.map(({ name, company, represent, usid, employeeId, photoId }, index) => (
             <Link className="ui profile tool-tip" to={`/expert/instructor/${usid}/Introduce`}> 
               {represent === 1 && <Represent />}
               <div className="pic s80">
                 {/*employeeId && employeeId != '' &&
                   <img alt="프로필사진" className="ui image" src={`https://mysuni.sk.com/profile/photo/skcc/${employeeId}.jpg`} />
           */}
-                {photos && photos.map((photo) => 
-                  <img alt="프로필사진" className="ui image" src={photo} />
-                )}                     
+                {photos && photos[index] &&
+                  <img alt="프로필사진" className="ui image" src={photos[index]} />
+                }
               </div>
               <i>
                 <span className="tip-name">{name}</span>

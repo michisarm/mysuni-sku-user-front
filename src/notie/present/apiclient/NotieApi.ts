@@ -25,7 +25,7 @@ class NotieApi {
   }
 
   findAllMyNotieMentions() {
-    return axiosApi.get<[MentionModel]>(this.baseUrl + `/metions?offset=0&limit=100`)
+    return axiosApi.get<[MentionModel]>(this.baseUrl + `/mentions?offset=0&limit=100`)
       .then(response => response.data);
   }
 

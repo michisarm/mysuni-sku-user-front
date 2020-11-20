@@ -36,7 +36,7 @@ class ProfileContainer extends Component<Props, State> {
 
     skProfileService!.findSkProfile();
 
-    notieService!.findAllMyNotieMentions();
+    //notieService!.findAllMyNotieMentions();
 
     document.addEventListener('mousedown', this.handleClickOutside);
   }
