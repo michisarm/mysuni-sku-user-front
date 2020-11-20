@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
@@ -10,29 +9,24 @@ import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
 import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
-import {
-  LogoView, MenuView, SearchBarView,
-} from '../view/HeaderElementsView';
+import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
 
-
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
+  actionLogService?: ActionLogService;
 }
 
 interface State {
-  searchValue: string,
-  focused: boolean,
+  searchValue: string;
+  focused: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
+@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 class HeaderContainer extends Component<Props, State> {
   //
-  static contextType  = Context;
+  static contextType = Context;
 
   supportPath = boardRoutePaths.supportNotice();
 
@@ -40,7 +34,6 @@ class HeaderContainer extends Component<Props, State> {
     searchValue: '',
     focused: false,
   };
-
 
   componentDidUpdate(prevProps: Props) {
     //
@@ -61,9 +54,15 @@ class HeaderContainer extends Component<Props, State> {
     // alert("점검중 입니다.")
     // 개발 시 주석 제거
     if (searchValue) {
-      actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchValue, isEmpty: true });
+      actionLogService?.registerClickActionLog({
+        subAction: 'search',
+        subContext: searchValue,
+        isEmpty: true,
+      });
 
-      window.location.href = encodeURI(`/search?query=${searchValue}`);
+      const { history } = this.props;
+      history.push(`/search?query=${searchValue}`);
+      // window.location.href = encodeURI(`/search?query=${searchValue}`);
     }
   }
 
@@ -97,16 +96,14 @@ class HeaderContainer extends Component<Props, State> {
 
     return (
       <HeaderWrapperView
-        breadcrumbs={(
+        breadcrumbs={
           <BreadcrumbView
             values={breadcrumb.values}
             supportPath={this.supportPath}
           />
-        )}
+        }
         // Notice
-        mainNotice={(
-          <MainNotice/>
-        )}
+        mainNotice={<MainNotice />}
       >
         <>
           <LogoView onClickMenu={this.onClickMenu} />
