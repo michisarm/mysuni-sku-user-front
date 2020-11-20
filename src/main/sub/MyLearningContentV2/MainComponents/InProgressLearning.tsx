@@ -60,21 +60,25 @@ const InProgressLearning: React.FC<Props> = Props => {
   const findMyContent = async () => {
     myTrainingService!.clear();
 
-    // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedInProgressLearningList =
       window.navigator.onLine &&
       window.sessionStorage.getItem('InProgressLearningList');
+    console.log('savedInProgresslearningList :: ', savedInProgressLearningList);
+    /* 스토리지에 데이터가 있는 경우 & 데이터가 8개 이상인 경우 스토리지 데이터를 myTrainings 로 사용. 2020.11.20 김동구 */
     if (savedInProgressLearningList && savedInProgressLearningList.length > 0) {
       const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(
         JSON.stringify(savedInProgressLearningList)
       );
+
+      console.log('inProgressMain :: ', inProgressMain);
+      console.log('inProgressMain totalCount :: ', inProgressMain.totalCount);
       if (inProgressMain.totalCount > PAGE_SIZE - 1) {
         myTrainingService!.setMyTrainingsWithState(inProgressMain);
         return;
       }
     }
 
-    // 서버로부터 가져오기
+    /* 스토리지에 데이터가 없는 경우 & 데이터가 8개 이상이 아닌 경우 API 호출. */
     myTrainingService!.findAllMyTrainingsWithState(
       CONTENT_TYPE,
       PAGE_SIZE,
