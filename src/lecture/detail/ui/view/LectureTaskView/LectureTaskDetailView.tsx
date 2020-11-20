@@ -83,20 +83,14 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             onClickReplies={onClickReplies}
             onClickDelete={OnClickDelete}
           />
-
           <div className="class-guide-txt fn-parents ql-snow">
-            <div className="text ql-editor">
-              <div
-                className="text description ql-editor"
-                style={{
-                  overflow: 'scroll',
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: taskDetail.contents,
-                }}
-                ref={textContainerRef}
-              />
-            </div>
+            <div
+              className="text ql-editor"
+              dangerouslySetInnerHTML={{
+                __html: taskDetail.contents,
+              }}
+              ref={textContainerRef}
+            />
           </div>
           <div className="ov-paragraph download-area task-read-down">
             <div className="detail">

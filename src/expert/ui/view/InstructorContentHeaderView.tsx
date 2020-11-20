@@ -53,7 +53,7 @@ class InstructorContentHeaderView extends React.Component<Props> {
                   <span className="value1">
                     <span>{instructor.category.college.name}</span>
                     <span>{instructor.category.channel.name}</span>
-                    <a href="#">{memberSummary.email}</a>
+                    {/* <a href="#">{memberSummary.email}</a> */}
                   </span>
                 </div>
               )}
