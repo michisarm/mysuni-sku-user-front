@@ -1,6 +1,6 @@
 export interface LectureTranscript {
   locale: string;
-  idx: number;
+  idx: number | string;
   text: string;
   startTime: string;
   endTime: string;
