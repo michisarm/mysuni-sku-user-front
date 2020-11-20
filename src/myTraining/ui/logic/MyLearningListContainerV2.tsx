@@ -401,14 +401,9 @@ function MyLearningListContainerV2(props: Props) {
       delete 로직을 수행 후 목록 조회가 다시 필요함.
     */
     await studentService!.hideWithSelectedServiceIds(selectedServiceIds);
-    await updateSessionStorage().then(() => {
-      myTrainingService!.findAllTabCount();
-
-      setTimeout(() => {
-        myTrainingService!.findAllTableViews();
-      }, 1000);
-    });
-
+    await updateSessionStorage();
+    await myTrainingService!.findAllTabCount();
+    await myTrainingService!.findAllTableViews();
     myTrainingService!.clearAllSelectedServiceIds();
 
     setOpenModal(false);
