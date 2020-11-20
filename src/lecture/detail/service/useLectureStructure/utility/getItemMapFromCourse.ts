@@ -18,7 +18,7 @@ import {
 } from '../../../viewModel/LectureStructure';
 
 function isEmpty(text: string) {
-  return text !== null && text !== ""
+  return text === null || text === ""
 }
 
 async function getTestItem(

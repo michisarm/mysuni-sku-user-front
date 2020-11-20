@@ -15,7 +15,7 @@ export default interface CoursePlan {
   name: string;
   contentsId: string;
   courseOperator: CourseOperator;
-  iconBox: IconBox;
+  iconBox: IconBox | null;
   courseOpen: CourseOpen;
   reportFileBox: ReportFileBox;
   stamp: Stamp;
