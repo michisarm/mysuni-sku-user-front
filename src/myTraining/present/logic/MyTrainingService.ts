@@ -196,12 +196,11 @@ class MyTrainingService {
     fromMain: boolean = false
   ) {
     //
-    const rdo = MyTrainingRdoModel.newWithState(
-      state,
-      limit,
-      offset,
-      channelIds
-    );
+
+    /* 메인페이지에서 호출 시. */
+    const rdo = fromMain ? MyTrainingRdoModel.newWithState(state, limit, offset, channelIds) :
+      MyTrainingRdoModel.newWithStateFromMain(state, limit, offset, channelIds, 'main');
+
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
     if (fromMain) {
       //window.sessionStorage.removeItem('InProgressLearningList');
@@ -507,9 +506,9 @@ class MyTrainingService {
       if (this.inProgressTableViews.length) {
         /* 코스만보기 */
         if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const inProgressTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = inProgressTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = inProgressTableViews.length;
+          const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          this._myTrainingTableViews = courseTableViews.slice(0, 20);
+          this._myTrainingTableViewCount = courseTableViews.length;
           return false;
         }
 
@@ -537,9 +536,9 @@ class MyTrainingService {
       if (this.completedTableViews.length) {
         /* 코스만보기 */
         if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const completedTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = completedTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = completedTableViews.length;
+          const courseTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
+          this._myTrainingTableViews = courseTableViews.slice(0, 20);
+          this._myTrainingTableViewCount = courseTableViews.length;
           return false;
         }
 
