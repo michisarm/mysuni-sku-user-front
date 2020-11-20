@@ -5,7 +5,7 @@ import moment from 'moment';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
-import  MyTrainingService  from '../../../../../myTraining/present/logic/MyTrainingService';
+import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import {
   deleteStudentByRollBookId,
   findIsJsonStudentByCube,
@@ -433,8 +433,7 @@ async function approve(
   requestLectureStructure(params.lectureParams, params.pathname);
 
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
-    sessionStorage.removeItem('completedTableViews');
-    sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
+  sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
 }
 
 async function join(
@@ -501,8 +500,7 @@ async function complete(params: LectureRouterParams, rollBookId: string) {
   requestLectureStructure(params.lectureParams, params.pathname);
 
   const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-    sessionStorage.removeItem('inProgressTableViews');
-    sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
