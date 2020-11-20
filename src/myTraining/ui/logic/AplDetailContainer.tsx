@@ -153,10 +153,10 @@ function AplDetailContainer(props: Props) {
     setOpenRejectModal(false);
   }, []);
 
-  const onConfirmReject = useCallback((remark: string) => {
+  const onConfirmReject = useCallback(async (remark: string) => {
     /* 반려사유를 전달 받아 aplUdo 를 생성해 반려 로직을 처리해야 함. */
     const aplUdo = AplUdoModel.createForReject(model, remark);
-    aplService!.modifyAplWithApprovalState(aplUdo)
+    await aplService!.modifyAplWithApprovalState(aplUdo)
 
     setOpenRejectModal(false);
     routeToList();
@@ -177,13 +177,13 @@ function AplDetailContainer(props: Props) {
     setOpenApprovalModal(false);
   }, []);
 
-  const onConfirmApproval = useCallback(() => {
+  const onConfirmApproval = useCallback(async () => {
     /* aplUdo 를 생성해 승인 로직을 처리해야 함. */
     const allowHourNumber = Number.parseInt(allowHour);
     const allowMinuteNumber = Number.parseInt(allowMinute);
 
     const aplUdo = AplUdoModel.createForApproval(model, allowHourNumber, allowMinuteNumber)
-    aplService!.modifyAplWithApprovalState(aplUdo);
+    await aplService!.modifyAplWithApprovalState(aplUdo);
 
     setOpenApprovalModal(false);
     routeToList();

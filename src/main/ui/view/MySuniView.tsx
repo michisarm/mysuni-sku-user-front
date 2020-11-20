@@ -170,7 +170,7 @@ class MySuniView extends Component {
                 </a>
               </li>
               <li>
-                <a href="http://hrd.creativetv.co.kr/" target="_blank">
+                <a href="https://creativetv.co.kr/user/Main.do" target="_blank">
                   <Image src={`${this.PUBLIC_URL}/images/all/hyundai.png`} alt="" />
                 </a>
               </li>

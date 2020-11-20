@@ -285,8 +285,8 @@ export default class AplService {
   }
 
   ///////////////////////// 개편 /////////////////////////
-  modifyAplWithApprovalState(aplUdo: AplUdoModel) {
-    this.aplApi.modifyAplWithApprovalState(aplUdo);
+  async modifyAplWithApprovalState(aplUdo: AplUdoModel) {
+    await this.aplApi.modifyAplWithApprovalState(aplUdo);
   }
 
   async findAllAplsForApproval(viewType: ApprovalViewType) {
