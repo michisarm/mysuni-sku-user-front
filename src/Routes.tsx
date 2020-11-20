@@ -16,6 +16,7 @@ const CommunityRoutes = lazy(() => import('./community/Routes'));
 
 const CertificationRoutes = lazy(() => import('./certification/Routes'));
 const PreviewRoutes = lazy(() => import('./preview/Routes'));
+const SearchRoutes = lazy(() => import('./search/Routes'));
 
 class Routes extends PureComponent {
   //
@@ -51,6 +52,8 @@ class Routes extends PureComponent {
                       <Route path="/board" component={BoardRoutes} />
                       <Route path="/expert" component={ExpertRoutes} />
                       <Route path="/community" component={CommunityRoutes} />
+                      <Route path="/search" component={SearchRoutes} />
+
                       <Route path="/" component={MainRoutes} />
                     </Switch>
                   </AppLayout>

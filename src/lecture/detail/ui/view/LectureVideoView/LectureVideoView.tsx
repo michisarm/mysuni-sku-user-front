@@ -203,6 +203,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     let interval: any = null;
     const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    const duration = (embedApi.getDuration() as unknown) as number;
 
     if(!startTime){
       setStartTime(currentTime);
@@ -227,6 +228,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
         setWatchLog(params, watchlogState);
         setStartTime((embedApi.getCurrentTime() as unknown) as number);
+        if((duration - ((embedApi.getCurrentTime() as unknown) as number)) < 20){
+          setNextContentsView(true);
+        }
       // }, 10000));
     }, 10000);
     } else if (!isActive) {
@@ -339,7 +343,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure =  getLectureStructure();
-
+    setNextContentsPath('');
     if(lectureStructure){
       if(lectureStructure.course?.type=="COURSE") {
         //일반 코스 로직
@@ -547,7 +551,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         <div id="panopto-embed-player"></div>
         {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
         {nextContentsView &&
-          !isActive &&
+          // !isActive &&
           nextContentsPath &&
           getLectureConfirmProgress()?.learningState == 'Passed' && (
             <div id="video-overlay" className="video-overlay">
