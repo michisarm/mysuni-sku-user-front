@@ -11,7 +11,7 @@ export interface Classroom {
   cancellableStartDate: string;
   cancellableEndDate: string;
   location: string;
-  operator: string;
+  instructor: string;
   capacity: number;
   freeOfCharge: { approvalProcess: boolean };
 }

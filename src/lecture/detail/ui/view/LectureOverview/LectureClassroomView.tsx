@@ -52,7 +52,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
               {lectureClassroom.classrooms.map(
                 ({
                   round,
-                  operator,
+                  instructor,
                   location,
                   applyingStartDate,
                   applyingEndDate,
@@ -62,7 +62,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                   <Table.Row>
                     <Table.Cell className="num">{round}</Table.Cell>
                     <Table.Cell className="teacher">
-                      <span>{operator}</span>
+                      <span>{instructor}</span>
                     </Table.Cell>
                     <Table.Cell className="location">
                       <span>{location}</span>
