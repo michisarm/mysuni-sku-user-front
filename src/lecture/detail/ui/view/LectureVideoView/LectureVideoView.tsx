@@ -645,7 +645,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         (getLectureMedia()?.mediaType == 'InternalMedia' ||
           getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
         (getLectureTranscripts()?.length || 0) > 0 &&
-        displayTranscript && (
+        displayTranscript && false && (
           <>
             <button
               className="ui icon button right btn-blue"
@@ -682,7 +682,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </>
         )}
-      {getLectureTranscripts()?.length !== 0 && !displayTranscript && (
+      {getLectureTranscripts()?.length !== 0 && !displayTranscript && false && (
         <button
           className="ui icon button right btn-blue"
           onClick={() => setDisplayTranscript(true)}
