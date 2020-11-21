@@ -12,7 +12,6 @@ export async function getTranscriptItem(
   }
 
   transcript.forEach((transcript, key) => {
-    console.log('transcript', transcript)
     const {
       deliveryId,
       locale,

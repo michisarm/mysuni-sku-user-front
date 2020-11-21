@@ -446,9 +446,11 @@ async function approve(
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
-  sessionStorage.removeItem('completedTableViews');
-  sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
+  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  /* 메인 페이지 학습중 스토리지  업데이트를 위한 로직 추가. InProgressLearning.tsx 파일에서 참조 가능합니다! */
+  await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
 }
 
 async function join(
@@ -514,9 +516,9 @@ async function complete(params: LectureRouterParams, rollBookId: string) {
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-  sessionStorage.removeItem('inProgressTableViews');
-  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
+  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+  sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
