@@ -112,10 +112,7 @@ function MyContentHeaderContainer(props: Props) {
             className="inline tight"
             value={selectedYear}
             onChange={onChangeYear}
-            options={[
-              { key: 0, text: '2021', value: 2021 },
-              { key: 1, text: '2020', value: 2020 },
-            ]}
+            options={getYearOptions()}
           />
         </div>
       </ContentHeader.Cell>

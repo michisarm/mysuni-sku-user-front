@@ -78,6 +78,10 @@ class MyTrainingTableViewModel {
     return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
   }
 
+  isCourseOrProgram(): boolean {
+    return this.serviceType === (LectureServiceType.Course.toUpperCase() || LectureServiceType.Program.toUpperCase()) ? true : false;
+  }
+
   isCollegeEmpty() {
     return (this.category && this.category.college) ? false : true;
   }

@@ -141,27 +141,28 @@ function LectureTaskContainer() {
       message: '저장하시겠습니까?',
       onOk: () => {
         if (viewType === 'create') {
-          const test = createLectureTask();
-          setLectureTaskCreateItem({
-            id: detailTaskId!,
-            fileBoxId: '',
-            title: '',
-            writer: {
-              employeeId: '',
-              email: '',
+          const test = createLectureTask().then(() => {
+            setLectureTaskCreateItem({
+              id: detailTaskId!,
+              fileBoxId: '',
+              title: '',
+              writer: {
+                employeeId: '',
+                email: '',
+                name: '',
+                companyCode: '',
+                companyName: '',
+              },
               name: '',
-              companyCode: '',
-              companyName: '',
-            },
-            name: '',
-            contents: '',
-            time: 0,
-            readCount: 0,
-            commentFeedbackId: '',
-            notice: false,
-          });
-
-          setLectureTaskViewType('list');
+              contents: '',
+              time: 0,
+              readCount: 0,
+              commentFeedbackId: '',
+              notice: false,
+            });
+  
+            setLectureTaskViewType('list');
+          })
         } else {
           updateLectureTask(detailTaskId);
           setLectureTaskViewType('list');
@@ -223,7 +224,6 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {/* create, edit 작업해야됨 */}
       {viewType === 'create' && (
         <>
           <LectureTaskCreateView

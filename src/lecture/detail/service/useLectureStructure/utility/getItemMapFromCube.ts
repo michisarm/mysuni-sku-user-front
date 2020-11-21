@@ -30,6 +30,10 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
+function isEmpty(text: string) {
+  return text === null || text === ""
+}
+
 interface GetItemMapArg {
   cubeIntro: CubeIntro;
   examId: string;
@@ -129,7 +133,12 @@ async function getReportItem(
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
-  if (cubeIntro.reportFileBox.reportName !== '' && cubeIntro.reportFileBox.reportName !== null) {
+  if (
+    cubeIntro.reportFileBox !== null &&
+    (!isEmpty(cubeIntro.reportFileBox.reportName) ||
+      !isEmpty(cubeIntro.reportFileBox.reportQuestion) ||
+      !isEmpty(cubeIntro.reportFileBox.fileBoxId))
+  ) {
     let state: State = 'None';
     if (student !== undefined) {
       if (

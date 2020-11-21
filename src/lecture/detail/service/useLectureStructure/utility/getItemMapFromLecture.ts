@@ -32,6 +32,10 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
+function isEmpty(text: string) {
+  return text === null || text === ""
+}
+
 async function getTestItem(
   lectureView: LectureView,
   params: LectureParams,
@@ -128,8 +132,9 @@ async function getReportItem(
   }
   if (
     coursePlan.reportFileBox !== null &&
-    coursePlan.reportFileBox.reportName !== '' &&
-    coursePlan.reportFileBox.reportName !== null
+    (!isEmpty(coursePlan.reportFileBox.reportName) ||
+      !isEmpty(coursePlan.reportFileBox.reportQuestion) ||
+      !isEmpty(coursePlan.reportFileBox.fileBoxId))
   ) {
     let state: State = 'None';
     if (student !== undefined) {

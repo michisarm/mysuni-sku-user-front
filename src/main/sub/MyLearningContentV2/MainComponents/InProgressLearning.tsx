@@ -64,7 +64,7 @@ const InProgressLearning: React.FC<Props> = Props => {
     const savedInProgressLearningList =
       window.navigator.onLine &&
       window.sessionStorage.getItem('InProgressLearningList');
-    if (savedInProgressLearningList) {
+    if (savedInProgressLearningList && savedInProgressLearningList.length > 0) {
       const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(
         JSON.stringify(savedInProgressLearningList)
       );
@@ -254,26 +254,26 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-        <NoSuchContentPanel
-          message={
-            <>
-              <div className="text">진행중인 학습 과정이 없습니다.</div>
-              <Button
-                icon
-                as="a"
-                className="right btn-blue2"
-                onClick={routeToRecommend}
-              >
-                <span className="border">
-                  <span className="ellipsis">{profileMemberName}</span> 님에게
+          <NoSuchContentPanel
+            message={
+              <>
+                <div className="text">진행중인 학습 과정이 없습니다.</div>
+                <Button
+                  icon
+                  as="a"
+                  className="right btn-blue2"
+                  onClick={routeToRecommend}
+                >
+                  <span className="border">
+                    <span className="ellipsis">{profileMemberName}</span> 님에게
                   추천하는 학습 과정 보기
-                </span>
-                <Icon className="morelink" />
-              </Button>
-            </>
-          }
-        />
-      )}
+                  </span>
+                  <Icon className="morelink" />
+                </Button>
+              </>
+            }
+          />
+        )}
     </ContentWrapper>
   );
 };

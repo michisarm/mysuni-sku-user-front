@@ -30,7 +30,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
       <div className="course-box">
         <div className="bar">
           <div className="tit">
-            <a href="#" className="ellipsis">
+            <span className="ellipsis">
               {isRequired && (
                 <span className="course-span-box red-box">필수</span>
               )}
@@ -39,7 +39,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
               )}
 
               <span className="under">{name}</span>
-            </a>
+            </span>
           </div>
           <div className="right-area">
             <Link to={to} className="right btn-blue">

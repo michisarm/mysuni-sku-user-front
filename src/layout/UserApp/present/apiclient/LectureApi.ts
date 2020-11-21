@@ -26,6 +26,16 @@ class LectureApi {
       );
   }
 
+  findPhotoUrls(usids: string[]) {
+    const queryParams = `${usids.map(id => `usids=${id}`).join('&')}`
+
+    return axiosApi.get<Array<string>>(`/api/expert/v1/instructors/usids?${queryParams}`)
+      .then(response =>
+        response && Array.isArray(response.data)
+          && response.data || []
+      );
+  }
+
 }
 
 LectureApi.instance = new LectureApi();
