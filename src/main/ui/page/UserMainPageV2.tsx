@@ -6,6 +6,8 @@ import { ActionEventService } from 'shared/stores';
 import MyLearningSummary from '../../sub/MyLearningSummaryV2';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
+import Tutorial from '../../../tutorial';
+import { useParams } from 'react-router-dom';
 // 현업 요청으로 팝업제거 20201007
 // import TutorialModalView from '../../sub/MainModals/TutorialModalViewV2';
 
@@ -47,14 +49,20 @@ class UserMainPageV2 extends Component<Props> {
     if (sessionStorage.getItem('inProgressTableViews') === null) {
       const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
       if (inProgressTableViews && inProgressTableViews.length) {
-        sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+        sessionStorage.setItem(
+          'inProgressTableViews',
+          JSON.stringify(inProgressTableViews)
+        );
       }
     }
 
     if (sessionStorage.getItem('completedTableViews') === null) {
       const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
       if (completedTableViews && completedTableViews.length) {
-        sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+        sessionStorage.setItem(
+          'completedTableViews',
+          JSON.stringify(completedTableViews)
+        );
       }
     }
   }
@@ -67,6 +75,7 @@ class UserMainPageV2 extends Component<Props> {
   }
 
   render() {
+    const {} = this.props;
     //
     return (
       <ContentLayout className="main">
@@ -77,6 +86,7 @@ class UserMainPageV2 extends Component<Props> {
           {/* 튜토리얼 팝업 */}
           {/* 현업 요청으로 팝업제거 20201007*/}
           {/* <TutorialModalView/> */}
+          <Tutorial />
         </div>
       </ContentLayout>
     );
