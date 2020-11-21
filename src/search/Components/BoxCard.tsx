@@ -2,9 +2,46 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Label, Icon, Rating, Card, Button } from 'semantic-ui-react';
 import { SkProfileService } from '../../profile/stores';
+import CategoryColorType from '../../shared/model/CategoryColorType';
 
 import { useCard } from './SearchFilter';
-// DUMMY
+
+function getColor(college_name: string) {
+  let color = CategoryColorType.Default;
+
+  switch (college_name) {
+    case 'AI':
+      color = CategoryColorType.AI;
+      break;
+    case 'DT':
+      color = CategoryColorType.DT;
+      break;
+    case 'Global':
+      color = CategoryColorType.Global;
+      break;
+    case 'Leadership':
+      color = CategoryColorType.Leadership;
+      break;
+    case 'Management':
+      color = CategoryColorType.Management;
+      break;
+    case 'SV':
+      color = CategoryColorType.SV;
+      break;
+    case '행복':
+      color = CategoryColorType.Happiness;
+      break;
+    case '반도체':
+      color = CategoryColorType.SemicondDesign;
+      break;
+    case '혁신디자인':
+      color = CategoryColorType.InnovationDesign;
+      break;
+    case '에너지솔루션':
+      color = CategoryColorType.EnergySolution;
+  }
+  return color;
+}
 
 function Box({ item, index }: { item: any; index: number }) {
   const [hovered, setHovered] = useState<boolean>(false);
@@ -51,7 +88,9 @@ function Box({ item, index }: { item: any; index: number }) {
         <div className="thumbnail" />
 
         <div className="title-area">
-          <Label color="green">{item.fields.college_name}</Label>
+          <div className={`ui label ${getColor(item.fields.college_name)}`}>
+            {item.fields.college_name}
+          </div>
           <div className="header">{item.fields.card_name}</div>
         </div>
         <div className="icon-area">
