@@ -178,6 +178,12 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     }
   };
 
+    useEffect(() => {
+    return ()=>{
+      setPageNumber(1);
+    }    
+  }, [fileBoxId, pdfUrl, params]);
+
   useEffect(() => {
     // setTimeout(() => {
       setFile({
