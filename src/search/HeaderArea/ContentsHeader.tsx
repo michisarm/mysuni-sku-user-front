@@ -3,6 +3,7 @@ import { Segment, Radio, Button } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
 import SearchFilter from '../Components/SearchFilter';
+import { useParams } from 'react-router-dom';
 
 const ContentsHeader: React.FC = () => {
   //
@@ -13,14 +14,16 @@ const ContentsHeader: React.FC = () => {
     setIsOnFilter(!isOnFilter);
   };
 
-  // Get quertID
-  useLayoutEffect(() => {
+  const param = useParams();
+
+  // Get queryID
+  useEffect(() => {
     const queryId: string = window.location.search.slice(
       window.location.search.indexOf('=') + 1,
       window.location.search.length
     );
     setSearchValue(decodeURI(queryId));
-  }, []);
+  }, [param]);
 
   return (
     <>
