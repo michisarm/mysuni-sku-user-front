@@ -172,7 +172,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {formatDate(model.startDate)}{/* 학습시작일 */}
+              {formatDate(model.time)}{/* 최근학습일 */}
             </Table.Cell>
           </>
         );

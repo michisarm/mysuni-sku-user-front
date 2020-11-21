@@ -13,7 +13,6 @@ import CubeTypeNameType from './CubeTypeNameType';
 
 
 class MyTrainingTableViewModel {
-
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
@@ -29,8 +28,9 @@ class MyTrainingTableViewModel {
   learningState?: LearningState; // 학습 상태
   learningTime: number = 0; // 학습시간
   startDate: number = 0; // 학습시작일
-  endDate: number = 0; // 학습완료일 (취소/미이수일)
+  endDate: number = 0; // 학습완료일 
   createDate: number = 0; // 등록일
+  time: number = 0; // 최근학습일 || 취소 미이수일
   stampCount: number = 0; // 스탬프
 
   passedLearningCount: number = 0;
@@ -152,6 +152,7 @@ decorate(MyTrainingTableViewModel, {
   learningState: observable,
   learningTime: observable,
   startDate: observable,
+  time: observable,
   endDate: observable,
   createDate: observable,
   stampCount: observable,
