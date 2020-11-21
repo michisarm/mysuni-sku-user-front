@@ -1,12 +1,6 @@
 /*eslint-disable*/
 
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  reactAlert,
-  getCookie,
-  setCookie,
-  deleteCookie,
-} from '@nara.platform/accent';
 import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
 import {
   getLectureMedia,
@@ -98,7 +92,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     getPlaybackRate: () => {},
   });
 
-  const [displayTranscript, setDisplayTranscript] = useState<boolean>(true);
+  const [displayTranscript, setDisplayTranscript] = useState<boolean>(false);
 
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
@@ -114,60 +108,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const history = useHistory();
-
-// 멀티 시청 제한
-  // 학습하기 - 학습 모달창 팝업
-  function onDoLearn(params : LectureRouterParams | undefined
-  ): void {
-
-    // 20200717 video 멀티 시청불가~! = return true
-    // if (handleMultiVideo(lectureView)) {
-    if (handleMultiVideo(params)) {
-      reactAlert({
-        title: '알림',
-        message:
-          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
-      });
-    }
-  }
-
-
-  function handleMultiVideo(params : LectureRouterParams | undefined) {
-    function nvl(str: any, dvalue: any) {
-      if (typeof str === 'undefined' || str === null || str === '') {
-        str = dvalue;
-      }
-      return str;
-    }
-    const lectureCardId = params?.lectureId;
-    const liveLectureCardId = getCookie('liveLectureCardId');
-    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
-    let rtnLive = false;
-    const after2Min = new Date();
-    after2Min.setMinutes(after2Min.getMinutes() + 2);
-    const nowTime = new Date().getTime();
-
-    console.log('1.lectureCardId', lectureCardId);
-    console.log('1.liveLectureCardId', liveLectureCardId);
-    if (
-      nvl(liveLectureCardId, 0) === 0 ||
-      liveLectureCardId === lectureCardId ||
-      (liveLectureCardId !== lectureCardId && term < nowTime)
-    ) {
-      deleteCookie('liveLectureCardId');
-      deleteCookie('liveLectureCardIdTime');
-      setCookie('liveLectureCardId', lectureCardId);
-      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-      console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
-      console.log(
-        '2.local.liveLectureCardIdTime',
-        getCookie('liveLectureCardIdTime')
-      );
-    } else {
-      rtnLive = true;
-    }
-    return rtnLive;
-  }
 
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
@@ -231,18 +171,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     if(params){
       setNextContentsView(false);
-      //중복 동영상 체크
-      onDoLearn(params);
     }
-    return () => {
-      const liveLectureCardId = getCookie('liveLectureCardId');
-      console.log('3.lectureCardId', params?.lectureId);
-      console.log('3.liveLectureCardId', liveLectureCardId);
-      if (params?.lectureId === liveLectureCardId) {
-        deleteCookie('liveLectureCardId');
-        deleteCookie('liveLectureCardIdTime');
-      }
-    };    
   }, [params]);
 
   const lectureParams = useParams<LectureParams>();
@@ -319,44 +248,45 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
     let interval: any = null;
     
-    const currentTime = (embedApi.getCurrentTime() as unknown) as number;
-    const duration = (embedApi.getDuration() as unknown) as number;
-    if(!startTime){
-      setStartTime(currentTime);
-    }
-
     if (isActive && params && watchlogState) {
       clearInterval(interval);
       interval = setInterval(() => {
+        const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+                          
+        if(!startTime){
+          setStartTime(currentTime);
+        }
+        
         //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
         let array: any= []
         getLectureTranscripts()?.map((lectureTranscript, key)=> {
           array.push({
-            startTime: Number(lectureTranscript.startTime),
-            endTime: Number(lectureTranscript.endTime),
+            startTime: parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 * 60 + 
+            parseInt(lectureTranscript.startTime.substr(2,2),10) * 60 +
+            parseInt(lectureTranscript.startTime.substr(4,2),10),
+            endTime: parseInt(lectureTranscript.endTime.substr(0,2),10) * 60 * 60 + 
+            parseInt(lectureTranscript.endTime.substr(2,2),10) * 60 +
+            parseInt(lectureTranscript.endTime.substr(4,2),10),
             idx: lectureTranscript.idx,
           })
         })
         array.map((item: any, key: number) => {
-          if(item.startTime < embedApi.getCurrentTime()) {
-            if(embedApi.getCurrentTime() < item.endTime) {
-              const currentScript = document.getElementById('transcript'+item.idx)
-              const element = document.getElementById('tttt');
-              setTransciptHighlight('transcript'+item.idx)
+          if(item.startTime < currentTime) {
+            if(currentTime < item.endTime) {
+              const currentScript = document.getElementById(item.idx)
+              setTransciptHighlight(item.idx)
               if (currentScript !== null ) {
-                scrollMove('transcript'+item.idx)
+                scrollMove(item.idx)
               }
             }
           }
         })
-
       }, 2000);
-
     }
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, lectureParams, pathname, params, embedApi, startTime]);
+  }, [isActive, lectureParams, pathname, params, embedApi, startTime, watchlogState]);
 
   useEffect(() => {
     clearTimeout(progressInterval);
@@ -407,6 +337,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setProgressInterval('');
       setEmbedApi('');
       setLectureConfirmProgress();
+      
     };
   }, []);
 
@@ -606,7 +537,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   //     console.log(userAgent.includes('rv:11.0'))
   //   }
   // })
-  
+
   return (
     <div className="course-video">
       <div className="video-container">
@@ -660,13 +591,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   return (
                     <>
                       <strong
-                        id={'transcript'+lectureTranscript.idx}
+                        id={lectureTranscript.idx+''}
                         style={{ cursor: 'pointer' }}
-                        className={highlight('transcript'+lectureTranscript.idx)}
+                        className={highlight(lectureTranscript.idx+'')}
                         onClick={() => {
                           // seekByIndex(lectureTranscript.idx);
                           seekByIndex(parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 * 60 + 
-                          parseInt(lectureTranscript.startTime.substr(0,2),10) * 60 +
+                          parseInt(lectureTranscript.startTime.substr(2,2),10) * 60 +
                           parseInt(lectureTranscript.startTime.substr(4,2),10));
                         }}
                       >
@@ -682,7 +613,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </>
         )}
-      {getLectureTranscripts() && !displayTranscript && (
+      {getLectureTranscripts()?.length !== 0 && !displayTranscript && (
         <button
           className="ui icon button right btn-blue"
           onClick={() => setDisplayTranscript(true)}
@@ -696,3 +627,4 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 };
 
 export default LectureVideoView;
+
