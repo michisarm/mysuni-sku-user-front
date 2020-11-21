@@ -40,7 +40,7 @@ interface LectureDocumentsViewProps {
 }
 
 // 차후 진행 내역
-// 파일 형식 pdf = 페이지 끝까지 확인 
+// 파일 형식 pdf = 페이지 끝까지 확인
 // 파일 형식 !pdf = 다운로드
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
@@ -69,20 +69,19 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const [lectureState] = useLectureState();
 
-  useEffect(() => {
-    if (lectureState === null) {
-      return
-    }
-    if(learningState !== 'Passed') {
-      reactAlert({
-        title: '',
-        message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.
-        <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
-      });
-    }
-    
-  }, [lectureState]);
+  // useEffect(() => {
+  //   if (lectureState === null) {
+  //     return
+  //   }
+  //   if(learningState !== 'Passed') {
+  //     reactAlert({
+  //       title: '',
+  //       message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.
+  //       <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
+  //     });
+  //   }
 
+  // }, [lectureState]);
 
   const headerWidth: any = useRef();
 
@@ -99,7 +98,10 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           setFiles(filesArr);
           setCourseName(filesArr);
           for (let i = 0; i < filesArr.length; ++i) {
-            setPdfUrl(oldArray => [...oldArray, '/api/depot/depotFile/flow/download/' + filesArr[i].id]);
+            setPdfUrl(oldArray => [
+              ...oldArray,
+              '/api/depot/depotFile/flow/download/' + filesArr[i].id,
+            ]);
           }
         }
         // id 1개 일때
@@ -117,23 +119,23 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   }
 
   const updateHeaderWidth = () => {
-    if(headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
-      setPageWidth(headerWidth.current?.clientWidth!)
+    if (headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
+      setPageWidth(headerWidth.current?.clientWidth!);
     }
   };
-  
+
   useEffect(() => {
-    return ()=>{
+    return () => {
       setPdfUrl([]);
       setFiles([]);
       setFile('');
-    }
+    };
   }, []);
 
   useEffect(() => {
     updateHeaderWidth();
-    window.addEventListener("resize", updateHeaderWidth);
-  }, [])
+    window.addEventListener('resize', updateHeaderWidth);
+  }, []);
 
   useEffect(() => {
     if (fileBoxId && fileBoxId.length) {
@@ -146,7 +148,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [bar, setBar] = useState<number>(4.7);
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
-
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
@@ -178,23 +179,23 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     }
   };
 
-    useEffect(() => {
-    return ()=>{
+  useEffect(() => {
+    return () => {
       setPageNumber(1);
-    }    
+    };
   }, [fileBoxId, pdfUrl, params]);
 
   useEffect(() => {
     // setTimeout(() => {
-      setFile({
-        url: pdfUrl[courseIdx],
-        httpHeaders: {
-          audienceId: patronInfo.getPatronId(),
-          Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
-        },
-      });
+    setFile({
+      url: pdfUrl[courseIdx],
+      httpHeaders: {
+        audienceId: patronInfo.getPatronId(),
+        Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
+      },
+    });
     // }, 500);
-  }, [pdfUrl,courseIdx,params]);
+  }, [pdfUrl, courseIdx, params]);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
@@ -472,4 +473,3 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 };
 
 export default LectureDocumentsView;
-
