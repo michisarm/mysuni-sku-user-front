@@ -68,6 +68,15 @@ class MyLearningSummaryModal extends Component<Props> {
     }
   }
 
+  showApl(): boolean {
+    const { menuControlAuthService } = this.props;
+    const { menuControlAuth } = menuControlAuthService!;
+
+    return (menuControlAuth.companyCode === '' || (
+      menuControlAuth.authCode === MenuControlAuth.User &&
+      menuControlAuth.useYn === MenuControlAuth.Yes)) ? true : false;
+  }
+
   /* handlers */
   onOpenModal() {
     this.setState({
@@ -102,10 +111,9 @@ class MyLearningSummaryModal extends Component<Props> {
 
   /* render functions */
   renderLearningTimeByTab() {
-    const { myLearningSummaryService, menuControlAuthService } = this.props;
+    const { myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = myLearningSummary;
-    const { menuControlAuth } = menuControlAuthService!;
     const { checkedTab } = this.state;
 
     /* MyCompany  */
@@ -121,9 +129,7 @@ class MyLearningSummaryModal extends Component<Props> {
             </span>
           </li>
           {/* user 이고 useYn이 Y인 경우만 */}
-          { (menuControlAuth.companyCode === ''
-            || ( menuControlAuth.authCode === MenuControlAuth.User
-              && menuControlAuth.useYn === MenuControlAuth.Yes)) && (
+          {this.showApl() && (
             <li>
               <span className="name">개인 학습시간</span>
               <span className="time">
@@ -312,58 +318,17 @@ class MyLearningSummaryModal extends Component<Props> {
   /* render */
   render() {
     const { open, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } = this.props;
+    const { trigger, myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = myLearningSummary;
-    const { menuControlAuth: { companyCode } } = menuControlAuthService!;
 
     /* companyCode 가 존재할 때는 개인학습 시간을 포함하지 않음. */
-    const totalMyCompanyLearningTime = companyCode === '' ?
-      myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime : myLearningSummary.displayMyCompanyLearningTime;
+    const totalMyCompanyLearningTime = this.showApl() &&
+      myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime ||
+      myLearningSummary.displayMyCompanyLearningTime;
 
-    // totalLearningTime 을 display 하는 영역은 확인되지 않음.
-    // 확인될 경우, 주석을 풀고 total 변수 를 해당 영역에 display 하면 됨. 2020.10.28 by 김동구
-    /*
-      const { hour, minute } = timeToHourMinute(
-        totalMyLearningSummary.totalLearningTime
-      );
-    */
-
-    /*
-      let total: any = null;
-
-      if (hour < 1 && minute < 1) {
-        total = (
-          <div className="total">
-            <span>00</span>
-            <span className="u">h</span> <span>00</span>
-            <span className="u">m</span>
-          </div>
-        );
-      } else if (hour < 1) {
-        total = (
-          <div className="total">
-            <span>{minute}</span>
-            <span className="u">m</span>
-          </div>
-        );
-      } else if (minute < 1) {
-        total = (
-          <div className="total">
-            <span>{hour}</span>
-            <span className="u">h</span>
-          </div>
-        );
-      } else {
-        total = (
-          <div className="total">
-            <span>{hour}</span>
-            <span className="u">h</span> <span>{minute}</span>
-            <span className="u">m</span>
-          </div>
-        );
-      }
-    */
+    const myCompanyTabText = this.showApl() &&
+      <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span> || <span>각 사에서 학습한 시간</span>;
 
     let today = moment(new Date()).format('YYYY.MM.DD');
     let year: number = new Date().getFullYear();
@@ -446,7 +411,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 My Company ({timeToHourMinutePaddingFormat(
                                 totalMyCompanyLearningTime)})
                               </strong>
-                              <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span>
+                              {myCompanyTabText}
                             </label>
                             <span className="buri" />
                           </div>
@@ -516,3 +481,49 @@ export default MyLearningSummaryModal;
     360
   );
 } */
+
+
+    // totalLearningTime 을 display 하는 영역은 확인되지 않음.
+    // 확인될 경우, 주석을 풀고 total 변수 를 해당 영역에 display 하면 됨. 2020.10.28 by 김동구
+/*
+  const { hour, minute } = timeToHourMinute(
+    totalMyLearningSummary.totalLearningTime
+  );
+*/
+
+/*
+  let total: any = null;
+
+  if (hour < 1 && minute < 1) {
+    total = (
+      <div className="total">
+        <span>00</span>
+        <span className="u">h</span> <span>00</span>
+        <span className="u">m</span>
+      </div>
+    );
+  } else if (hour < 1) {
+    total = (
+      <div className="total">
+        <span>{minute}</span>
+        <span className="u">m</span>
+      </div>
+    );
+  } else if (minute < 1) {
+    total = (
+      <div className="total">
+        <span>{hour}</span>
+        <span className="u">h</span>
+      </div>
+    );
+  } else {
+    total = (
+      <div className="total">
+        <span>{hour}</span>
+        <span className="u">h</span> <span>{minute}</span>
+        <span className="u">m</span>
+      </div>
+    );
+  }
+*/
+

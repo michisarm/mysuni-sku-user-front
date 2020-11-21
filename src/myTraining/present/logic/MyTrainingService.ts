@@ -851,6 +851,8 @@ export const convertToKey = (column: string): any => {
       return 'learningTime';
     case '학습시작일':
       return 'startDate';
+    case '최근학습일':
+      return 'time';
     case '학습완료일':
     case '획득일자':
       return 'endDate';
