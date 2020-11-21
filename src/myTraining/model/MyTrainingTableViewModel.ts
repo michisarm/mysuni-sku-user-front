@@ -11,7 +11,6 @@ import { MyStampXlsxModel } from './MyStampXlsxModel';
 import CubeTypeNameType from './CubeTypeNameType';
 
 
-
 class MyTrainingTableViewModel {
   [key: string]: any;
   id: string = '';
@@ -105,7 +104,7 @@ class MyTrainingTableViewModel {
       학습유형: this.cubeType && this.cubeType || this.serviceType,
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      학습시작일: moment(Number(this.startDate)).format('YYYY.MM.DD')
+      최근학습일: moment(this.time).format('YYYY.MM.DD')
     };
   }
 
