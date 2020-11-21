@@ -205,7 +205,6 @@ export function mergeActivated(
     }
     return item;
   });
-
   setLectureStructure({ ...lectureStructure });
 }
 
@@ -303,6 +302,107 @@ export function getActiveStructureItem() {
     }
   }
 }
+
+export function getActiveCourseStructureItem() {
+  const lectureStructure = getLectureStructure();
+  if (lectureStructure !== undefined) {
+    if (lectureStructure.course !== undefined) {
+      if (lectureStructure.course.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.test?.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.survey?.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.report?.activated) {
+        return lectureStructure.course;
+      }
+      if (lectureStructure.course.cubes !== undefined && lectureStructure.course.cubes.length > 0) {
+        for (let k = 0; k < lectureStructure.course.cubes.length; k++) {
+          const lectureCube = lectureStructure.course.cubes[k];
+          if (lectureCube !== undefined) {
+            if (lectureCube.activated) {
+              return lectureStructure.course;
+            }
+            if (lectureCube.test?.activated) {
+              return lectureStructure.course;
+            }
+            if (lectureCube.survey?.activated) {
+              return lectureStructure.course;
+            }
+            if (lectureCube.report?.activated) {
+              return lectureStructure.course;
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < lectureStructure.courses.length; i++) {
+      const course = lectureStructure.courses[i];
+      if (course !== undefined) {
+        if (course.activated) {
+          return course;
+        }
+        if (course.test?.activated) {
+          return course;
+        }
+        if (course.survey?.activated) {
+          return course;
+        }
+        if (course.report?.activated) {
+          return course;
+        }
+      }
+      if (course.cubes !== undefined && course.cubes.length > 0) {
+        for (let j = 0; j < course.cubes.length; j++) {
+          const courseCube = course.cubes[j];
+          if (courseCube !== undefined) {
+            if (courseCube.activated) {
+              return course;
+            }
+            if (courseCube.test?.activated) {
+              return course;
+            }
+            if (courseCube.survey?.activated) {
+              return course;
+            }
+            if (courseCube.report?.activated) {
+              return course;
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < lectureStructure.cubes.length; i++) {
+      const cube = lectureStructure.cubes[i];
+      if (cube !== undefined) {
+        if (cube.activated) {
+          return lectureStructure.course;
+        }
+        if (cube.test?.activated) {
+          return lectureStructure.course;
+        }
+        if (cube.survey?.activated) {
+          return lectureStructure.course;
+        }
+        if (cube.report?.activated) {
+          return lectureStructure.course;
+        }
+      }
+    }
+    for (let i = 0; i < lectureStructure.discussions.length; i++) {
+      const discussion = lectureStructure.discussions[i];
+      if (discussion !== undefined) {
+        if (discussion.activated) {
+          return lectureStructure.course;
+        }
+      }
+    }
+  }
+}
+
 
 export function getActiveStructureItemAll() {
   const lectureStructure = getLectureStructure();

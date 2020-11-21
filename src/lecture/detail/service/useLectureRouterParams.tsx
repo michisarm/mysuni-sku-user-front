@@ -10,7 +10,15 @@ export function useLectureRouterParams(): LectureRouterParams | undefined {
   const [value, setValue] = useState<LectureRouterParams>();
 
   useEffect(() => {
-    setValue(parseLectureParams(params, pathname));
+    const next = parseLectureParams(params, pathname);
+    if (
+      value === undefined ||
+      value.contentId !== next.contentId ||
+      value.lectureId !== next.lectureId ||
+      value.contentType !== next.contentType
+    ) {
+      setValue(parseLectureParams(params, pathname));
+    }
   }, [params, pathname]);
 
   return value;
