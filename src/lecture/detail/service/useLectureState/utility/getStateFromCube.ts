@@ -618,6 +618,8 @@ async function getStateWhenApproved(
           hideAction: true,
           stateText: student.learningState === null ? WAIT : stateText,
         };
+      {/* Community => Task 데이터 현행화 후 수정 예정*/}
+      case 'Task':        
       case 'Community':
         return {
           ...lectureState,
@@ -728,6 +730,8 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
           }
         },
       };
+    {/* Community => Task 데이터 현행화 후 수정 예정*/}
+    case 'Task':
     case 'Community':
       return {
         ...lectureState,
