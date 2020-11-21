@@ -62,8 +62,8 @@ async function getLectureSummary(
     learningTime,
     operator,
     stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
-    passedCount: coursePlanComplex.courseLecture.passedStudentCount,
-    studentCount: coursePlanComplex.courseLecture.studentCount,
+    passedCount: serviceType === 'Program' ? coursePlanComplex.programLecture.passedStudentCount : coursePlanComplex.courseLecture.passedStudentCount,
+    studentCount: serviceType === 'Program' ? coursePlanComplex.programLecture.studentCount : coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
     difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel

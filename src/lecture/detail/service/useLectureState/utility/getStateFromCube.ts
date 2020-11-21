@@ -518,7 +518,8 @@ async function complete(params: LectureRouterParams, rollBookId: string) {
 
   /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
-  sessionStorage.setItem('completedtableViews', JSON.stringify(completedTableViews));
+  sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+  await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
@@ -613,7 +614,7 @@ async function getStateWhenApproved(
         return {
           ...lectureState,
           hideAction: true,
-          stateText: JOINED,
+          stateText: COMPLETE,
         };
     }
     if (cubeType === 'Video') {
