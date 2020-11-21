@@ -51,19 +51,20 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
 
     const homeworkFileBoxId = getLectureReport()?.studentReport
       ?.homeworkFileBoxId;
-    const homeworkContent = getLectureReport()?.studentReport
-      ?.homeworkContent;
+    const homeworkContent = getLectureReport()?.studentReport?.homeworkContent;
 
     if (
       (homeworkFileBoxId === '' ||
-      homeworkFileBoxId === null ||
-      homeworkFileBoxId === undefined) &&
+        homeworkFileBoxId === null ||
+        homeworkFileBoxId === undefined) &&
       (homeworkContent === '' ||
-      homeworkContent === null ||
-      homeworkContent === undefined)
-
+        homeworkContent === null ||
+        homeworkContent === undefined)
     ) {
-      reactAlert({ title: '알림', message: '내용 또는 첨부파일을 업로드해주세요.' });
+      reactAlert({
+        title: '알림',
+        message: '내용 또는 첨부파일을 업로드해주세요.',
+      });
       return;
     }
 
@@ -76,8 +77,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
           if (params !== undefined) {
             requestLectureStructure(params.lectureParams, params.pathname);
             //새로고침
-            if( params.contentType === 'coures') {
-              getCourseLectureReport(params)
+            if (params.contentType === 'coures') {
+              getCourseLectureReport(params);
             } else {
               getCubeLectureReport(params);
             }
@@ -290,13 +291,12 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         </div>
       )}
       <div className="survey-preview">
-        {lectureReport?.state !== 'Completed' &&
+        {lectureReport?.state !== 'Completed' && (
           // lectureReport?.state !== 'Progress' &&
-           (
-            <button className="ui button fix bg" onClick={onSubmitClick}>
-              제출
-            </button>
-          )}
+          <button className="ui button fix bg" onClick={onSubmitClick}>
+            제출
+          </button>
+        )}
       </div>
     </>
   );
