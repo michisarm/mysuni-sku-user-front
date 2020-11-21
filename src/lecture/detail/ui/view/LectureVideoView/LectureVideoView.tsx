@@ -1,6 +1,12 @@
 /*eslint-disable*/
 
 import React, { useCallback, useEffect, useState } from 'react';
+import {
+  reactAlert,
+  getCookie,
+  setCookie,
+  deleteCookie,
+} from '@nara.platform/accent';
 import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
 import {
   getLectureMedia,
@@ -109,6 +115,60 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const history = useHistory();
 
+// 멀티 시청 제한
+  // 학습하기 - 학습 모달창 팝업
+  function onDoLearn(params : LectureRouterParams | undefined
+  ): void {
+
+    // 20200717 video 멀티 시청불가~! = return true
+    // if (handleMultiVideo(lectureView)) {
+    if (handleMultiVideo(params)) {
+      reactAlert({
+        title: '알림',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
+      });
+    }
+  }
+
+
+  function handleMultiVideo(params : LectureRouterParams | undefined) {
+    function nvl(str: any, dvalue: any) {
+      if (typeof str === 'undefined' || str === null || str === '') {
+        str = dvalue;
+      }
+      return str;
+    }
+    const lectureCardId = params?.lectureId;
+    const liveLectureCardId = getCookie('liveLectureCardId');
+    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
+    let rtnLive = false;
+    const after2Min = new Date();
+    after2Min.setMinutes(after2Min.getMinutes() + 2);
+    const nowTime = new Date().getTime();
+
+    console.log('1.lectureCardId', lectureCardId);
+    console.log('1.liveLectureCardId', liveLectureCardId);
+    if (
+      nvl(liveLectureCardId, 0) === 0 ||
+      liveLectureCardId === lectureCardId ||
+      (liveLectureCardId !== lectureCardId && term < nowTime)
+    ) {
+      deleteCookie('liveLectureCardId');
+      deleteCookie('liveLectureCardIdTime');
+      setCookie('liveLectureCardId', lectureCardId);
+      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
+      console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
+      console.log(
+        '2.local.liveLectureCardIdTime',
+        getCookie('liveLectureCardIdTime')
+      );
+    } else {
+      rtnLive = true;
+    }
+    return rtnLive;
+  }
+
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
     setNextContentsView(false);
@@ -171,7 +231,18 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     if(params){
       setNextContentsView(false);
+      //중복 동영상 체크
+      onDoLearn(params);
     }
+    return () => {
+      const liveLectureCardId = getCookie('liveLectureCardId');
+      console.log('3.lectureCardId', params?.lectureId);
+      console.log('3.liveLectureCardId', liveLectureCardId);
+      if (params?.lectureId === liveLectureCardId) {
+        deleteCookie('liveLectureCardId');
+        deleteCookie('liveLectureCardIdTime');
+      }
+    };    
   }, [params]);
 
   const lectureParams = useParams<LectureParams>();
@@ -336,7 +407,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setProgressInterval('');
       setEmbedApi('');
       setLectureConfirmProgress();
-      
     };
   }, []);
 
