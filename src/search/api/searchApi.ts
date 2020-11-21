@@ -42,9 +42,9 @@ interface CubeTypeGroup {
 }
 
 export function findCubeTypeGroup(
-  text_idx: string
+  text_idx: string, companyCode: string
 ) {
-  const url = `${BASE_URL}?select=cube_type,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off`;
+  const url = `${BASE_URL}?select=cube_type,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off`;
   return axiosApi
     .get<SearchResult<CubeTypeGroup>>(url)
     .then(AxiosReturn);
@@ -63,9 +63,9 @@ interface ColleageGroup {
 }
 
 export function findColleageGroup(
-  text_idx: string
+  text_idx: string, companyCode: string
 ) {
-  const url = `${BASE_URL}?select=all_college_name,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off`;
+  const url = `${BASE_URL}?select=all_college_name,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off`;
   return axiosApi
     .get<SearchResult<ColleageGroup>>(url)
     .then(AxiosReturn);
@@ -84,9 +84,9 @@ interface CPGroup {
 }
 
 export function findCPGroup(
-  text_idx: string
+  text_idx: string, companyCode: string
 ) {
-  const url = `${BASE_URL}?select=organizer,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'SKCC'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off`;
+  const url = `${BASE_URL}?select=organizer,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off`;
   return axiosApi
     .get<SearchResult<CPGroup>>(url)
     .then(AxiosReturn);
