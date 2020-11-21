@@ -60,7 +60,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
     super();
 
     if (myTraining) {
-      Object.assign(this, { ...myTraining });
+      Object.assign(this, myTraining);
       this.originalSerivceType = myTraining.serviceType;
       this.serviceType = MyTrainingModel.getServiceType(myTraining);
 
@@ -103,19 +103,22 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   static getServiceType(myTraining: MyTrainingModel) {
 
-    //
+    /* 
+      서버로부터 전달받는 데이터는 'PROGRAM', 'COURSE', 'CARD'
+      한번 변환 과정을 거친 데이터는 'Program', 'Course', 'Card'
+      세션 스토리지의 json 데이터는 Program, Course, Card 로 저장되며,
+      세션 스토리지의 json 을 파싱하기 위한 조건도 필요함. 2020.11.21 김동구
+    */
     const serviceType = myTraining.serviceType as string;
 
-    if (serviceType === 'PROGRAM') {
+    if (serviceType.toUpperCase() === 'PROGRAM') {
       return LectureServiceType.Program;
     }
-    else if (serviceType === 'COURSE') {
+    if (serviceType.toUpperCase() === 'COURSE') {
       return LectureServiceType.Course;
     }
-    else {
 
-      return LectureServiceType.Card;
-    }
+    return LectureServiceType.Card;
   }
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {

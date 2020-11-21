@@ -52,8 +52,6 @@ const InProgressLearning: React.FC<Props> = Props => {
 
   const { myTrainings } = myTrainingService!;
 
-  console.log('myTrainings :: ', myTrainings);
-
   // myTrainingService 변경  실행
   useEffect(() => {
     findMyContent();
@@ -68,10 +66,6 @@ const InProgressLearning: React.FC<Props> = Props => {
     /* 스토리지에 데이터가 있는 경우 & 데이터가 8개 이상인 경우 스토리지 데이터를 myTrainings 로 사용. 2020.11.20 김동구 */
     if (savedInProgressLearningList && savedInProgressLearningList.length > 0) {
       const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
-
-      console.log('inProgressMain :: ', inProgressMain);
-
-
 
       if (inProgressMain.totalCount > PAGE_SIZE - 1) {
         myTrainingService!.setMyTrainingsWithState(inProgressMain);
