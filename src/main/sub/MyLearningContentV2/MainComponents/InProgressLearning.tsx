@@ -225,7 +225,7 @@ const InProgressLearning: React.FC<Props> = Props => {
         <Lecture.Group type={Lecture.GroupType.Line}>
           {myTrainings.map(
             (
-              learning: MyTrainingModel,
+              learning: MyTrainingModel | LectureModel | InMyLectureModel,
               index: number
             ) => {
               //
