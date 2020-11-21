@@ -202,7 +202,7 @@ class MyTrainingService {
       MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
 
 
-    const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
+    const offsetList: OffsetElementList<MyTrainingModel> = await this.myTrainingApi.findAllMyTrainings(rdo);
     if (fromMain) {
       //window.sessionStorage.removeItem('InProgressLearningList');
       //this.clear();
