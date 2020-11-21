@@ -343,11 +343,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   ]);
 
   useEffect(() => {
-    let interval: any = null;
+    let intervalTranscript: any = null;
 
     if (isActive && params && watchlogState) {
-      clearInterval(interval);
-      interval = setInterval(() => {
+      clearInterval(intervalTranscript);
+      intervalTranscript = setInterval(() => {
         const currentTime = (embedApi.getCurrentTime() as unknown) as number;
 
         if (!startTime) {
@@ -383,7 +383,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       }, 2000);
     }
     return () => {
-      clearInterval(interval);
+      clearInterval(intervalTranscript);
     };
   }, [
     isActive,
