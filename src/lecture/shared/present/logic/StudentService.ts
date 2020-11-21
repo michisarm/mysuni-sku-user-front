@@ -297,8 +297,8 @@ class StudentService {
   ////////////////////////////////////// 개편 //////////////////////////////////////
   async hideWithSelectedServiceIds(selectedServiceIds: string[]) {
     const studentHideUdo = StudentHideUdo.createWith(selectedServiceIds);
-    const result = await this.studentApi.modifyStudentHide(studentHideUdo);
-    return result;
+    const isHidden = await this.studentApi.modifyStudentHide(studentHideUdo);
+    return isHidden;
   }
   ////////////////////////////////////// 개편 //////////////////////////////////////
 }
