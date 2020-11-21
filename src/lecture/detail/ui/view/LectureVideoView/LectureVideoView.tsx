@@ -537,7 +537,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   //     console.log(userAgent.includes('rv:11.0'))
   //   }
   // })
-  
+
   return (
     <div className="course-video">
       <div className="video-container">
@@ -613,7 +613,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </>
         )}
-      {getLectureTranscripts() && !displayTranscript && (
+      {getLectureTranscripts()?.length !== 0 && !displayTranscript && (
         <button
           className="ui icon button right btn-blue"
           onClick={() => setDisplayTranscript(true)}
