@@ -125,10 +125,10 @@ export function progressByCardId(studentCdo: StudentCdo): Promise<Student> {
 }
 
 //close 버튼 또는 학습완료 시 상태 업데이트 조회
-export function putProgressByCardId(studentId: string): Promise<Student> {
+export function getProgressByCardId(studentId: string): Promise<Student> {
   const url = `${BASE_URL}/students/flow/confirm/progressByCardId/${studentId}`;
   return axiosApi
-    .put<Student>(url)
+    .get<Student>(url)
     .then(response => response && response.data);
 }
 
