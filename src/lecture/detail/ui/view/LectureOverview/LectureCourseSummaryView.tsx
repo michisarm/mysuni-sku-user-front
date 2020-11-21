@@ -12,7 +12,7 @@ import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
-  var pattern = /(-?\d+)(\d{3})/;
+  const pattern = /(-?\d+)(\d{3})/;
   while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
   return s;
 }
