@@ -20,46 +20,46 @@ import AppContext from '../../layout/UserApp/ui/logic/AppContext';
 
 export default function LectureDetailCubeRoutes() {
   const [lectureStructure] = useLectureStructure();
-  const { breadcrumb } = useContext(AppContext);
-  useEffect(() => {
-    if (lectureStructure === undefined) {
-      return;
-    }
+  // const { breadcrumb } = useContext(AppContext);
+  // useEffect(() => {
+  //   if (lectureStructure === undefined) {
+  //     return;
+  //   }
 
-    let category: Category | undefined;
-    const lecture = getActiveStructureItem();
-    if (lecture === undefined) {
-      return;
-    }
-    if (lecture.lectureView !== undefined) {
-      category = lecture.lectureView.category;
-    }
-    if (
-      (lecture as LectureStructureCourseItem).coursePlanComplex !== undefined
-    ) {
-      category = (lecture as LectureStructureCourseItem).coursePlanComplex
-        ?.coursePlan.category;
-    }
-    if ((lecture as LectureStructureCubeItem).cube !== undefined) {
-      category = (lecture as LectureStructureCubeItem).cube?.category;
-    }
-    if (category !== undefined) {
-      const breadcrumbValue = [
-        {
-          text: `${category.college.name} College`,
-          path: routePaths.collegeLectures(category.college.id),
-        },
-        {
-          text: `${category.channel.name} Channel`,
-          path: routePaths.channelLectures(
-            category.college.id,
-            category.channel.id
-          ),
-        },
-      ];
-      breadcrumb.setBreadcrumb(breadcrumbValue);
-    }
-  }, [lectureStructure]);
+  //   let category: Category | undefined;
+  //   const lecture = getActiveStructureItem();
+  //   if (lecture === undefined) {
+  //     return;
+  //   }
+  //   if (lecture.lectureView !== undefined) {
+  //     category = lecture.lectureView.category;
+  //   }
+  //   if (
+  //     (lecture as LectureStructureCourseItem).coursePlanComplex !== undefined
+  //   ) {
+  //     category = (lecture as LectureStructureCourseItem).coursePlanComplex
+  //       ?.coursePlan.category;
+  //   }
+  //   if ((lecture as LectureStructureCubeItem).cube !== undefined) {
+  //     category = (lecture as LectureStructureCubeItem).cube?.category;
+  //   }
+  //   if (category !== undefined) {
+  //     const breadcrumbValue = [
+  //       {
+  //         text: `${category.college.name} College`,
+  //         path: routePaths.collegeLectures(category.college.id),
+  //       },
+  //       {
+  //         text: `${category.channel.name} Channel`,
+  //         path: routePaths.channelLectures(
+  //           category.college.id,
+  //           category.channel.id
+  //         ),
+  //       },
+  //     ];
+  //     breadcrumb.setBreadcrumb(breadcrumbValue);
+  //   }
+  // }, [lectureStructure]);
 
   return (
     <Switch>
