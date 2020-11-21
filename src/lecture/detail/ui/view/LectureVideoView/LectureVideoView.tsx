@@ -70,6 +70,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       clearInterval(playIntervalRef.current);
       clearInterval(checkIntervalRef.current);
       clearInterval(transcriptIntervalRef.current);
+      setPanoptoState(0);
     };
   }, [pathname]);
 
@@ -88,7 +89,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
-  const [panoptoState, setPanoptoState] = useState<number>();
+  const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
 
   useEffect(() => {
