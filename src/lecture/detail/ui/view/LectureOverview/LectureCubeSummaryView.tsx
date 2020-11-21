@@ -245,14 +245,16 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                     <span>명</span>
                   </Label>
                 )}
-              {lectureSummary.cubeType !== 'Community' && (
+                {/* Community => Task 데이터 현행화 후 수정 예정*/}
+              {lectureSummary.cubeType !== 'Community' && lectureSummary.cubeType !== 'Task' && (
                 <Label className="bold onlytext">
                   <span className="header-span-first">이수</span>
                   <span>{lectureSummary.passedCount}</span>
                   <span>명</span>
                 </Label>
               )}
-              {lectureSummary.cubeType === 'Community' && (
+              {/* Community => Task 데이터 현행화 후 수정 예정*/}
+              {lectureSummary.cubeType === 'Community' || lectureSummary.cubeType === 'Task' && (
                 <>
                   <Label className="bold onlytext">
                     <span className="header-span-first">참여</span>
