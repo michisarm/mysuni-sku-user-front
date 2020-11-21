@@ -7,6 +7,7 @@ import { useLecturePrecourse } from '../../../service/useLectureCourseOverview/u
 import { useLectureRelations } from '../../../service/useLectureCourseOverview/useLectureRelations';
 import { useLectureSubcategory } from '../../../service/useLectureCourseOverview/useLectureSubcategory';
 import { useLectureTags } from '../../../service/useLectureCourseOverview/useLectureTags';
+import { useLectureFile } from '../../../service/useLectureFile';
 import LectureCourseContentView from '../../view/LectureOverview/LectureCourseContentView';
 
 function LectureCourseContentContainer() {
@@ -18,6 +19,7 @@ function LectureCourseContentContainer() {
   const [lectureBadge] = useLectureBadge();
   const [lectureComment] = useLectureComment();
   const [lectureRelations] = useLectureRelations();
+  const [lectureFile] = useLectureFile();
   return (
     <LectureCourseContentView
       lectureDescription={lectureDescription}
@@ -28,6 +30,7 @@ function LectureCourseContentContainer() {
       lectureBadge={lectureBadge}
       lectureComment={lectureComment}
       lectureRelations={lectureRelations}
+      lectureFile={lectureFile}
     />
   );
 }

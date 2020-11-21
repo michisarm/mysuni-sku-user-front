@@ -201,6 +201,7 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
     cubeIntroId,
     studentJoin: { rollBookId },
     params,
+    hasSurvey,
   } = option;
 
   if (contentsId !== undefined) {
@@ -235,7 +236,7 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
               actionText: COMPLETE,
               action: () => {
                 linkVideoOpen(linkMediaUrl)
-                complete(params, rollBookId)
+                complete(params, rollBookId, hasSurvey)
               },
               actionClassName: 'bg2',
               stateText,
@@ -326,7 +327,7 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
       if (!hasTest) {
         return {
           ...lectureState,
-          action: () => complete(params, rollBookId),
+          action: () => complete(params, rollBookId, hasSurvey),
           canAction: true,
           actionText: COMPLETE,
           stateText,
@@ -510,7 +511,13 @@ async function join(
   requestLectureStructure(params.lectureParams, params.pathname);
 }
 
-async function complete(params: LectureRouterParams, rollBookId: string) {
+async function complete(params: LectureRouterParams, rollBookId: string, hasSurvey: boolean) {
+  if (hasSurvey) {
+    reactAlert({
+      title: '안내',
+      message: 'Survey 설문 참여를 해주세요.',
+    })
+  }
   const myTrainingService = MyTrainingService.instance;
   await markComplete({ rollBookId });
   await getStateFromCube(params);
@@ -520,6 +527,7 @@ async function complete(params: LectureRouterParams, rollBookId: string) {
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
   sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
   await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
+
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
@@ -581,7 +589,7 @@ async function getStateWhenApproved(
             if (!hasTest) {
               return {
                 ...lectureState,
-                action: () => complete(params, rollBookId),
+                action: () => complete(params, rollBookId, hasSurvey),
                 canAction: true,
                 actionText: COMPLETE,
                 stateText,

@@ -16,11 +16,14 @@ import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import LectureRelationsView from './LectureRelationsView';
 import './LectureCubeContentView.css';
+import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import LectureFileView from './LectureFileView';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
   lectureSubcategory?: LectureSubcategory;
   lectureTags?: LectureTags;
+  lectureFile?: LectureFile;
   lectureInstructor?: LectureInstructor;
   lecturePrecourse?: LecturePrecourse;
   lectureBadge?: LectureBadge;
@@ -44,6 +47,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureBadge,
   lectureComment,
   lectureRelations,
+  lectureFile,
 }) {
   const [fixed, setFixed] = useState<boolean>(false);
   // useEffect(() => {
@@ -172,6 +176,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             {lectureSubcategory && (
               <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
             )}
+            {lectureFile && <LectureFileView lectureFile={lectureFile} />}
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
           </div>
           {lectureInstructor &&

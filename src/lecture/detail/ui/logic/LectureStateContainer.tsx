@@ -11,6 +11,18 @@ import { useLectureClassroom } from '../../service/useLectureClassroom/useLectur
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
+import {
+  setInMyLectureCdo,
+  setLectureComment,
+  setLectureCubeSummary,
+  setLectureDescription,
+  setLectureFile,
+  setLectureInstructor,
+  setLecturePrecourse,
+  setLectureReview,
+  setLectureSubcategory,
+  setLectureTags,
+} from '../../store/LectureOverviewStore';
 import { Classroom } from '../../viewModel/LectureClassroom';
 import LectureStateView from '../view/LectureStateView';
 
@@ -41,6 +53,7 @@ function LectureStateContainer() {
     setSelectedClassroom,
   ] = useState<ClassroomModel | null>(null);
   const params = useLectureRouterParams();
+  const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
   const [fileDonwloadPopShow, setFileDonwloadPopShow] = useState<boolean>(
     false
   );
@@ -112,11 +125,24 @@ function LectureStateContainer() {
     if (params === undefined) {
       return;
     }
-    if (lectureState.type === 'Documents') {
-      const { contentId, lectureId } = params;
-      getCubeLectureOverview(contentId, lectureId);
+    if (lectureState.type !== 'Documents') {
+      return;
     }
-  }, [lectureState, params]);
+    const { contentId, lectureId } = params;
+    getCubeLectureOverview(contentId, lectureId);
+    return () => {
+      setLectureCubeSummary();
+      setLectureDescription();
+      setLectureSubcategory();
+      setLectureTags();
+      setLectureInstructor();
+      setLecturePrecourse();
+      setLectureFile();
+      setLectureComment();
+      setLectureReview();
+      setInMyLectureCdo();
+    };
+  }, [lectureState, contentId, lectureId]);
 
   return (
     <>
