@@ -110,12 +110,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
     // Load video will begin playback
-    console.log('panopto iframe loaded...');
     //embedApi.loadVideo();//페이지 로드 시 자동 실행됩니다.
   };
 
   const onPanoptoLoginShown = () => {
-    console.log('------로그인이 안 되어 있어요....!!!!!!!!!');
     //로그인 페이지가 안 떠 있는 경우 바로 Clear 시켜서 반복 호출을 막아야 합니다.
     // cleanUpPanoptoIframe();
   };
@@ -152,8 +150,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       after2Min.setMinutes(after2Min.getMinutes() + 2);
       const nowTime = new Date().getTime();
   
-      console.log('1.lectureCardId', lectureCardId);
-      console.log('1.liveLectureCardId', liveLectureCardId);
       if (
         nvl(liveLectureCardId, 0) === 0 ||
         liveLectureCardId === lectureCardId ||
@@ -163,11 +159,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         deleteCookie('liveLectureCardIdTime');
         setCookie('liveLectureCardId', lectureCardId);
         setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-        console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
-        console.log(
-          '2.local.liveLectureCardIdTime',
-          getCookie('liveLectureCardIdTime')
-        );
       } else {
         rtnLive = true;
       }
@@ -179,28 +170,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setNextContentsView(false);
     history.push(path);
   }, []);
-
-  const sendWatchLog = useCallback(() => {
-    if (params && watchlogState) {
-      const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
-
-      // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
-      const end = (embedApi.getCurrentTime() as unknown) as number;
-      const start =
-        startTime > end || end - startTime > 50
-          ? end - 20 * playbackRate
-          : startTime;
-
-      setWatchlogState({
-        ...watchlogState,
-        start: start < 0 ? 0 : start,
-        end: end,
-      });
-
-      //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
-      setWatchLog(params, watchlogState);
-    }
-  }, [params, embedApi, startTime, watchlogState]);
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
@@ -249,8 +218,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
     return () => {
       const liveLectureCardId = getCookie('liveLectureCardId');
-      console.log('3.lectureCardId', params?.lectureId);
-      console.log('3.liveLectureCardId', liveLectureCardId);
       if (params?.lectureId === liveLectureCardId) {
         deleteCookie('liveLectureCardId');
         deleteCookie('liveLectureCardIdTime');
@@ -296,15 +263,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (isActive && params && watchlogState) {
       // clearInterval(interval);
       interval = setInterval(() => {
-        // setWatchInterval(setInterval(() => {
-        //const currentTime = embedApi.getCurrentTime() as unknown as number;
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
         // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
         const end = (embedApi.getCurrentTime() as unknown) as number;
         const start =
-          startTime > end || end - startTime > 21
-            ? end - 10 * playbackRate
+          startTime > end || end - startTime > 50
+            ? end - 20 * playbackRate
             : startTime;
 
         setWatchlogState({
@@ -322,14 +287,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         ) {
           setNextContentsView(true);
         }
-        // }, 10000));
       }, 10000);
     } else if (!isActive) {
       // sendWatchLog();
       clearInterval(interval);
     }
     return () => {
-      console.log('clearInterval return run');
       clearInterval(interval);
     };
   }, [
@@ -415,7 +378,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       clearInterval(checkInterval);
     }
     return () => {
-      console.log('clearCheckInterval return run');
       clearInterval(checkInterval);
     };
   }, [checkInterval, isActive]);
