@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Label, Icon, Rating, Card, Button } from 'semantic-ui-react';
+import { SkProfileService } from '../../profile/stores';
 
 import { useCard } from './SearchFilter';
 // DUMMY
@@ -18,6 +19,7 @@ function Box({ item, index }: { item: any; index: number }) {
     cineroom_id,
     cube_id,
     course_plan_id,
+    reqCom_id,
   } = item.fields;
 
   const path =
@@ -36,7 +38,13 @@ function Box({ item, index }: { item: any; index: number }) {
     >
       {/*tag*/}
       <div className="card-ribbon-wrap">
-        <Label className="ribbon2">{/* Required */}핵인싸 과정</Label>
+        {reqCom_id !== undefined &&
+          reqCom_id.indexOf !== undefined &&
+          reqCom_id.indexOf(
+            SkProfileService.instance.profileMemberCompanyCode
+          ) > -1 && (
+            <Label className="ribbon2">{/* Required */}핵인싸 과정</Label>
+          )}
       </div>
       <div className="card-inner">
         {/*썸네일*/}
@@ -86,9 +94,9 @@ function Box({ item, index }: { item: any; index: number }) {
         </div>
         <p className="text-area">{item.fields.description}</p>
         <div className="btn-area">
-          <Button icon className="icon-line">
+          {/* <Button icon className="icon-line">
             <Icon className="remove2 icon" />
-          </Button>
+          </Button> */}
           <Link
             to={path}
             className="ui icon button fix bg"
@@ -96,6 +104,7 @@ function Box({ item, index }: { item: any; index: number }) {
               display: 'inline-flex',
               justifyContent: 'center',
               alignItems: 'center',
+              width: '13.75rem',
             }}
           >
             {/* View Details */} 상세보기
