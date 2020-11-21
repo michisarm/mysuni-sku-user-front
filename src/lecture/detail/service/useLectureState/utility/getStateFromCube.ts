@@ -39,6 +39,11 @@ const REJECTED = '반려됨';
 const WAIT = '학습예정';
 const JOIN = '작성하기';
 
+function isEmpty(text: string) {
+  return text === null || text === '';
+}
+
+
 interface ChangeStateOption {
   params: LectureRouterParams;
   studentJoins?: StudentJoin[];
@@ -215,7 +220,13 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
       const { linkMediaUrl } = mediaContents;
       if (stateText === PROGRESS) {
         const cubeIntro = await findCubeIntro(cubeIntroId);
-        if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+
+        if (cubeIntro === undefined ||
+          (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
+            && isEmpty(cubeIntro.reportFileBox.fileBoxId))
+          )
+
+        ) {
           if (!hasTest) {
             return {
               ...lectureState,
@@ -290,7 +301,7 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
   //     c.name && c.name.toLowerCase && c.name.toLowerCase().endsWith('.pdf')
   //   )) {
   //     if (stateText === PROGRESS) {
-  //       if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+  //       if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || isEmpty cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
   //         if (!hasTest) {
   //           return {
   //             ...lectureState,
@@ -308,7 +319,10 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
 
   if (stateText === PROGRESS) {
     const cubeIntro = await findCubeIntro(cubeIntroId);
-    if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
+    if (cubeIntro === undefined ||
+      (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
+        && isEmpty(cubeIntro.reportFileBox.fileBoxId))
+      )) {
       if (!hasTest) {
         return {
           ...lectureState,
@@ -559,7 +573,10 @@ async function getStateWhenApproved(
       case 'Experiential':
         if (stateText === PROGRESS) {
           const cubeIntro = await findCubeIntro(cubeIntroId);
-          if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
+          if (cubeIntro === undefined ||
+            (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
+              && isEmpty(cubeIntro.reportFileBox.fileBoxId))
+            )) {
             if (!hasTest) {
               return {
                 ...lectureState,
