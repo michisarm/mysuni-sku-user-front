@@ -187,8 +187,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
       const end = (embedApi.getCurrentTime() as unknown) as number;
       const start =
-        startTime > end || end - startTime > 21
-          ? end - 10 * playbackRate
+        startTime > end || end - startTime > 50
+          ? end - 20 * playbackRate
           : startTime;
 
       setWatchlogState({
