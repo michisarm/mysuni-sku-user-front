@@ -118,31 +118,31 @@ function LectureStateContainer() {
     },
     [lectureState, selectedClassroom]
   );
-  useEffect(() => {
-    if (lectureState === undefined) {
-      return;
-    }
-    if (params === undefined) {
-      return;
-    }
-    if (lectureState.type !== 'Documents') {
-      return;
-    }
-    const { contentId, lectureId } = params;
-    getCubeLectureOverview(contentId, lectureId);
-    return () => {
-      setLectureCubeSummary();
-      setLectureDescription();
-      setLectureSubcategory();
-      setLectureTags();
-      setLectureInstructor();
-      setLecturePrecourse();
-      setLectureFile();
-      setLectureComment();
-      setLectureReview();
-      setInMyLectureCdo();
-    };
-  }, [lectureState, contentId, lectureId]);
+  // useEffect(() => {
+  //   if (lectureState === undefined) {
+  //     return;
+  //   }
+  //   if (params === undefined) {
+  //     return;
+  //   }
+  //   if (lectureState.type !== 'Documents') {
+  //     return;
+  //   }
+  //   const { contentId, lectureId } = params;
+  //   getCubeLectureOverview(contentId, lectureId);
+  //   return () => {
+  //     setLectureCubeSummary();
+  //     setLectureDescription();
+  //     setLectureSubcategory();
+  //     setLectureTags();
+  //     setLectureInstructor();
+  //     setLecturePrecourse();
+  //     setLectureFile();
+  //     setLectureComment();
+  //     setLectureReview();
+  //     setInMyLectureCdo();
+  //   };
+  // }, [lectureState, contentId, lectureId]);
 
   return (
     <>
