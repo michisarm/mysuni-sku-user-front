@@ -10,7 +10,7 @@ import Student from 'lecture/detail/model/Student';
 import {
   findIsJsonStudentByCube,
   findStudent,
-  getProgressByCardId,
+  putProgressByCardId,
   progressByCardId,
 } from 'lecture/detail/api/lectureApi';
 import StudentCdo from 'lecture/detail/model/StudentCdo';
@@ -87,7 +87,7 @@ export async function confirmProgress(
       };
       */
 
-      setLectureConfirmProgress(await getProgressByCardId(stateMap.studentId));
+      setLectureConfirmProgress(await putProgressByCardId(stateMap.studentId));
       getStateFromCube(params);
 
     }
