@@ -96,7 +96,7 @@ export function findCard(text_idx: string) {
   const queryOptions = parseFilterCondition();
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
-  const url = `${BASE_URL}?select=*&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')${query}`
+  const url = `${BASE_URL}?select=*&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')${query}&offset=0&limit=96`
   return axiosApi.get<any>(url).then(AxiosReturn)
 }
 
@@ -104,7 +104,7 @@ export function findExpert(text_idx: string) {
   const queryOptions = parseFilterCondition();
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
-  const url = `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)+desc&offset=0&limit=96${query}`
+  const url = `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96`
   return axiosApi.get<any>(url).then(AxiosReturn)
 }
 
@@ -135,7 +135,7 @@ export function getEmptyQueryOptions(): QueryOptions {
 }
 
 function makeSubQuery(column: string, keywords: string[]) {
-  return `(${keywords.map(keyword => `${column}+=+${keyword}`).join('+AND+')})`
+  return `(${keywords.map(keyword => `${column}+=+'${keyword}'`).join('+AND+')})`
 }
 
 function makeLearingTimeQuery(learning_time_query: number[]) {

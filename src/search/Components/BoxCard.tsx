@@ -1,9 +1,47 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Label, Icon, Rating, Card, Button } from 'semantic-ui-react';
+import { SkProfileService } from '../../profile/stores';
+import CategoryColorType from '../../shared/model/CategoryColorType';
 
 import { useCard } from './SearchFilter';
-// DUMMY
+
+function getColor(college_name: string) {
+  let color = CategoryColorType.Default;
+
+  switch (college_name) {
+    case 'AI':
+      color = CategoryColorType.AI;
+      break;
+    case 'DT':
+      color = CategoryColorType.DT;
+      break;
+    case 'Global':
+      color = CategoryColorType.Global;
+      break;
+    case 'Leadership':
+      color = CategoryColorType.Leadership;
+      break;
+    case 'Management':
+      color = CategoryColorType.Management;
+      break;
+    case 'SV':
+      color = CategoryColorType.SV;
+      break;
+    case '행복':
+      color = CategoryColorType.Happiness;
+      break;
+    case '반도체':
+      color = CategoryColorType.SemicondDesign;
+      break;
+    case '혁신디자인':
+      color = CategoryColorType.InnovationDesign;
+      break;
+    case '에너지솔루션':
+      color = CategoryColorType.EnergySolution;
+  }
+  return color;
+}
 
 function Box({ item, index }: { item: any; index: number }) {
   const [hovered, setHovered] = useState<boolean>(false);
@@ -18,6 +56,7 @@ function Box({ item, index }: { item: any; index: number }) {
     cineroom_id,
     cube_id,
     course_plan_id,
+    reqCom_id,
   } = item.fields;
 
   const path =
@@ -36,14 +75,22 @@ function Box({ item, index }: { item: any; index: number }) {
     >
       {/*tag*/}
       <div className="card-ribbon-wrap">
-        <Label className="ribbon2">{/* Required */}핵인싸 과정</Label>
+        {reqCom_id !== undefined &&
+          reqCom_id.indexOf !== undefined &&
+          reqCom_id.indexOf(
+            SkProfileService.instance.profileMemberCompanyCode
+          ) > -1 && (
+            <Label className="ribbon2">{/* Required */}핵인싸 과정</Label>
+          )}
       </div>
       <div className="card-inner">
         {/*썸네일*/}
         <div className="thumbnail" />
 
         <div className="title-area">
-          <Label color="green">{item.fields.college_name}</Label>
+          <div className={`ui label ${getColor(item.fields.college_name)}`}>
+            {item.fields.college_name}
+          </div>
           <div className="header">{item.fields.card_name}</div>
         </div>
         <div className="icon-area">
@@ -86,9 +133,9 @@ function Box({ item, index }: { item: any; index: number }) {
         </div>
         <p className="text-area">{item.fields.description}</p>
         <div className="btn-area">
-          <Button icon className="icon-line">
+          {/* <Button icon className="icon-line">
             <Icon className="remove2 icon" />
-          </Button>
+          </Button> */}
           <Link
             to={path}
             className="ui icon button fix bg"
@@ -96,6 +143,7 @@ function Box({ item, index }: { item: any; index: number }) {
               display: 'inline-flex',
               justifyContent: 'center',
               alignItems: 'center',
+              width: '13.75rem',
             }}
           >
             {/* View Details */} 상세보기
