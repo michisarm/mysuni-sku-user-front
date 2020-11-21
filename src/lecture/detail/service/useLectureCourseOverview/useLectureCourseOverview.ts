@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { setInMyLectureCdo, setLectureComment, setLectureCourseSummary, setLectureDescription, setLectureFile, setLectureInstructor, setLecturePrecourse, setLectureRelations, setLectureReview, setLectureSubcategory, setLectureTags } from '../../store/LectureOverviewStore';
 import { parseLectureParams } from '../../utility/lectureRouterParamsHelper';
 import LectureParams from '../../viewModel/LectureParams';
 import { LectureStructureCourseItem } from '../../viewModel/LectureStructure';
@@ -46,6 +47,20 @@ export function useLectureCourseOverview() {
         collegeId,
         cineroomId
       );
+
+      return () => {
+        setLectureCourseSummary();
+        setLectureDescription();
+        setLectureSubcategory();
+        setLectureTags();
+        setLectureInstructor();
+        setLecturePrecourse();
+        setLectureFile();
+        setLectureComment();
+        setLectureReview();
+        setInMyLectureCdo();
+        setLectureRelations();
+      }
     },
     []
   );
