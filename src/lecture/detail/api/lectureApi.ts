@@ -124,15 +124,6 @@ export function progressByCardId(studentCdo: StudentCdo): Promise<Student> {
     .then(response => response && response.data);
 }
 
-//close 버튼 또는 학습완료 시 상태 업데이트 조회
-export function getProgressByCardId(studentId: string): Promise<Student> {
-  const url = `${BASE_URL}/students/flow/confirm/progressByCardId/${studentId}`;
-  return axiosApi
-    .get<Student>(url)
-    .then(response => response && response.data);
-}
-
-
 export function setCubeStudentExamId(
   personalCubeId: string,
   studentId: string

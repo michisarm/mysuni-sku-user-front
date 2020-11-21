@@ -2,7 +2,7 @@
 import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import {
+import  {
   State,
   StudentStateMap,
 } from 'lecture/detail/viewModel/LectureWatchLog';
@@ -10,7 +10,6 @@ import Student from 'lecture/detail/model/Student';
 import {
   findIsJsonStudentByCube,
   findStudent,
-  getProgressByCardId,
   progressByCardId,
 } from 'lecture/detail/api/lectureApi';
 import StudentCdo from 'lecture/detail/model/StudentCdo';
@@ -65,7 +64,6 @@ export async function confirmProgress(
     const stateMap = await getStateMapByParams(params);
     let student: Student;
     if (stateMap !== undefined) {
-      /*
       student = await findStudent(stateMap.studentId);
 
       const studentCdo: StudentCdo = {
@@ -85,9 +83,8 @@ export async function confirmProgress(
         url: student.url,
         classroomId: '',
       };
-      */
 
-      setLectureConfirmProgress(await getProgressByCardId(stateMap.studentId));
+      setLectureConfirmProgress(await progressByCardId(studentCdo));
       getStateFromCube(params);
 
     }
