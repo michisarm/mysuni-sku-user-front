@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TutorialPop from './components/tutorialPop';
 import { Checkbox, Button } from 'semantic-ui-react';
 import './style.css';
+import { relative } from 'path';
 
 const Tutorial: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(true);
@@ -46,6 +47,7 @@ const Tutorial: React.FC = () => {
       className={`ui dimmer modals page hidden ${
         modalOpen ? 'visible active' : ''
       }`}
+      style={{'position':'relative'}}
     >
       <div
         className={`ui base w1000 modal tutorials2 front transition hidden ${
