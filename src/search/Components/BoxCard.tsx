@@ -85,7 +85,9 @@ function Box({ item, index }: { item: any; index: number }) {
       </div>
       <div className="card-inner">
         {/*썸네일*/}
-        <div className="thumbnail" />
+        <div className="thumbnail">
+          <img alt="card-thumbnail" src={item.fields.icon_url} className="ui small image" />
+        </div>
 
         <div className="title-area">
           <div className={`ui label ${getColor(item.fields.college_name)}`}>
@@ -117,8 +119,9 @@ function Box({ item, index }: { item: any; index: number }) {
           <div className="fixed-rating">
             {/*  */}
             <Rating
-              defaultRating={item.fields.stamp_count}
+              defaultRating={0}
               maxRating={5}
+              rating={Math.round(item.fields.score/100)}
               size="small"
               disabled
               className="rating-num"
