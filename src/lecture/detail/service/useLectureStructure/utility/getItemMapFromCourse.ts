@@ -18,7 +18,7 @@ import {
 } from '../../../viewModel/LectureStructure';
 
 function isEmpty(text: string) {
-  return text === null || text === ""
+  return text === null || text === '';
 }
 
 async function getTestItem(
@@ -40,14 +40,16 @@ async function getTestItem(
         examination.id,
         denizenId
       );
-      if (findAnswerSheetData.result !== null) {
-        state = 'Progress';
-        if (
-          student !== undefined &&
-          (student.learningState === 'Passed' ||
-            student.learningState === 'TestPassed')
-        ) {
-          state = 'Completed';
+      if (student !== undefined) {
+        if (findAnswerSheetData.result !== null) {
+          state = 'Progress';
+          if (
+            student !== undefined &&
+            (student.learningState === 'Passed' ||
+              student.learningState === 'TestPassed')
+          ) {
+            state = 'Completed';
+          }
         }
       }
     }
@@ -132,7 +134,7 @@ async function getReportItem(
         state = 'Progress';
       }
       if (student.learningState === 'Passed') {
-        state = 'Completed'
+        state = 'Completed';
       }
     }
     const item: LectureStructureReportItem = {
