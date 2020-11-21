@@ -28,7 +28,7 @@ class InstructorContentHeaderView extends React.Component<Props> {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <Image src={profileImg} alt="기본 프로필사진" />
+                  <Image src={memberSummary.photoId||profileImg} alt="기본 프로필사진" />
                 </div>
               </div>
               <div className="text-info">
