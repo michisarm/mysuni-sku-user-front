@@ -31,7 +31,7 @@ import {
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 function isEmpty(text: string) {
-  return text === null || text === ""
+  return text === null || text === '';
 }
 
 interface GetItemMapArg {
@@ -55,14 +55,16 @@ async function getTestItem(
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
-      if (findAnswerSheetData.result !== null) {
-        state = 'Progress';
-        if (
-          student !== undefined &&
-          (student.learningState === 'Passed' ||
-            student.learningState === 'TestPassed')
-        ) {
-          state = 'Completed';
+      if (student !== undefined) {
+        if (findAnswerSheetData.result !== null) {
+          state = 'Progress';
+          if (
+            student !== undefined &&
+            (student.learningState === 'Passed' ||
+              student.learningState === 'TestPassed')
+          ) {
+            state = 'Completed';
+          }
         }
       }
     }
@@ -148,7 +150,7 @@ async function getReportItem(
         state = 'Progress';
       }
       if (student.learningState === 'Passed') {
-        state = 'Completed'
+        state = 'Completed';
       }
     }
     const item: LectureStructureReportItem = {
