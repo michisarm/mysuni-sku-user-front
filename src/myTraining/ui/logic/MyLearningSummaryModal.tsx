@@ -68,6 +68,15 @@ class MyLearningSummaryModal extends Component<Props> {
     }
   }
 
+  showApl(): boolean {
+    const { menuControlAuthService } = this.props;
+    const { menuControlAuth } = menuControlAuthService!;
+
+    return (menuControlAuth.companyCode === '' || (
+      menuControlAuth.authCode === MenuControlAuth.User &&
+      menuControlAuth.useYn === MenuControlAuth.Yes)) ? true : false;
+  }
+
   /* handlers */
   onOpenModal() {
     this.setState({
@@ -102,10 +111,9 @@ class MyLearningSummaryModal extends Component<Props> {
 
   /* render functions */
   renderLearningTimeByTab() {
-    const { myLearningSummaryService, menuControlAuthService } = this.props;
+    const { myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = myLearningSummary;
-    const { menuControlAuth } = menuControlAuthService!;
     const { checkedTab } = this.state;
 
     /* MyCompany  */
@@ -121,18 +129,16 @@ class MyLearningSummaryModal extends Component<Props> {
             </span>
           </li>
           {/* user 이고 useYn이 Y인 경우만 */}
-          { (menuControlAuth.companyCode === ''
-            || (menuControlAuth.authCode === MenuControlAuth.User
-              && menuControlAuth.useYn === MenuControlAuth.Yes)) && (
-              <li>
-                <span className="name">개인 학습시간</span>
-                <span className="time">
-                  {timeToHourMinutePaddingFormat(
-                    myLearningSummary.aplAllowTime
-                  )}
-                </span>
-              </li>
-            )}
+          {this.showApl() && (
+            <li>
+              <span className="name">개인 학습시간</span>
+              <span className="time">
+                {timeToHourMinutePaddingFormat(
+                  myLearningSummary.aplAllowTime
+                )}
+              </span>
+            </li>
+          )}
         </ul>
       );
     }
@@ -312,22 +318,17 @@ class MyLearningSummaryModal extends Component<Props> {
   /* render */
   render() {
     const { open, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } = this.props;
+    const { trigger, myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = myLearningSummary;
-    const { menuControlAuth } = menuControlAuthService!;
 
     /* companyCode 가 존재할 때는 개인학습 시간을 포함하지 않음. */
-    const totalMyCompanyLearningTime = (menuControlAuth.companyCode === ''
-      || (menuControlAuth.authCode === MenuControlAuth.User
-        && menuControlAuth.useYn === MenuControlAuth.Yes)) &&
-      myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime || myLearningSummary.displayMyCompanyLearningTime;
+    const totalMyCompanyLearningTime = this.showApl() &&
+      myLearningSummary.displayMyCompanyLearningTime + myLearningSummary.aplAllowTime ||
+      myLearningSummary.displayMyCompanyLearningTime;
 
-    const myCompanyTabText = (menuControlAuth.companyCode === ''
-      || (menuControlAuth.authCode === MenuControlAuth.User
-        && menuControlAuth.useYn === MenuControlAuth.Yes)) &&
-      `mySUNI에서 이수한 학습 시간과 자사에서 인정 받은 학습 시간을
-    구분하여 확인하실 수 있습니다.` || 'mySUNI에서 이수한 학습 시간';
+    const myCompanyTabText = this.showApl() &&
+      <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span> || <span>각 사에서 학습한 시간</span>;
 
     let today = moment(new Date()).format('YYYY.MM.DD');
     let year: number = new Date().getFullYear();
@@ -349,7 +350,8 @@ class MyLearningSummaryModal extends Component<Props> {
         <Modal.Header className="res">
           학습 이수 시간
           <span className="sub f12">
-            {myCompanyTabText}
+            mySUNI에서 이수한 학습 시간과 자사에서 인정 받은 학습 시간을
+            구분하여 확인하실 수 있습니다.
           </span>
         </Modal.Header>
         <Modal.Content>
@@ -409,7 +411,7 @@ class MyLearningSummaryModal extends Component<Props> {
                                 My Company ({timeToHourMinutePaddingFormat(
                                 totalMyCompanyLearningTime)})
                               </strong>
-                              <span>각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간</span>
+                              {myCompanyTabText}
                             </label>
                             <span className="buri" />
                           </div>
