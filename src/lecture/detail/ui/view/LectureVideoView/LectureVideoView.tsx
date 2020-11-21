@@ -127,13 +127,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   
       // 20200717 video 멀티 시청불가~! = return true
       // if (handleMultiVideo(lectureView)) {
-      if (handleMultiVideo(params)) {
-        reactAlert({
-          title: '알림',
-          message:
-            '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
-        });
-      }
+      // if (handleMultiVideo(params)) {
+      //   reactAlert({
+      //     title: '알림',
+      //     message:
+      //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
+      //   });
+      // }
     }
   
   
