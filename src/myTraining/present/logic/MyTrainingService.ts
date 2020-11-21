@@ -216,10 +216,9 @@ class MyTrainingService {
   @action
   async setMyTrainingsWithState(lectures: OffsetElementList<MyTrainingModel>) {
     //
-    const offsetList = lectures;
 
-    runInAction(() => (this._myTrainings = offsetList.results.map(result => new MyTrainingModel(result))));
-    return offsetList;
+    runInAction(() => (this._myTrainings = lectures.results.map(result => new MyTrainingModel(result))));
+    return lectures;
   }
 
   @action
