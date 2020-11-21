@@ -364,7 +364,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         ) : (
           <>
             <Document
-              renderMode="svg"
+              renderMode="canvas"
               // file="/assets/docs/sample-pdf.pdf"
               // file="/api/depot/depotFile/flow/download/37-2"
               file={file}
