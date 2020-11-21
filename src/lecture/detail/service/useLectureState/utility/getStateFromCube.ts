@@ -614,7 +614,7 @@ async function getStateWhenApproved(
         return {
           ...lectureState,
           hideAction: true,
-          stateText: JOINED,
+          stateText: COMPLETE,
         };
     }
     if (cubeType === 'Video') {
