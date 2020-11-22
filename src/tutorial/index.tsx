@@ -45,10 +45,11 @@ const Tutorial: React.FC = () => {
     <div
       className={`ui dimmer modals page hidden ${
         modalOpen ? 'visible active' : ''
-      }`}
+      }`
+    }
     >
       <div
-        className={`ui base w1000 modal tutorials2 front transition hidden ${
+        className={`ui base w1000 tutorials2 front transition hidden ${
           modalOpen ? 'visible active' : ''
         }`}
       >

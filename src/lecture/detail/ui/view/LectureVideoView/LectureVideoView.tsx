@@ -1,6 +1,6 @@
 /*eslint-disable*/
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   reactAlert,
   getCookie,
@@ -58,6 +58,22 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   checkStudent,
 }) {
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
+  const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
+  const { pathname } = useLocation();
+  const playIntervalRef = useRef<any>(0);
+  const checkIntervalRef = useRef<any>(0);
+  const transcriptIntervalRef = useRef<any>(0);
+
+  useEffect(() => {
+    // all cleare interval
+    return () => {
+      clearInterval(playIntervalRef.current);
+      clearInterval(checkIntervalRef.current);
+      clearInterval(transcriptIntervalRef.current);
+      setPanoptoState(0);
+    };
+  }, [pathname]);
+
   const [
     watchLogValue,
     getCubeWatchLogItem,
@@ -73,7 +89,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
-  const [panoptoState, setPanoptoState] = useState<number>();
+  const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
 
   useEffect(() => {
@@ -87,13 +103,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
   const [isActive, setIsActive] = useState(false);
-  const [progressInterval, setProgressInterval] = useState<any>();
-
-  const [watchInterval, setWatchInterval] = useState<any>();
-  const [checkInterval, setCheckInterval] = useState<any>();
-
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  
   const [startTime, setStartTime] = useState(0);
 
   const [embedApi, setEmbedApi] = useState<any | undefined>({
@@ -120,51 +130,48 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const history = useHistory();
   // 멀티 시청 제한
-  function onDoLearn(params : LectureRouterParams | undefined
-    ): void {
-  
-      // 20200717 video 멀티 시청불가~! = return true
-      // if (handleMultiVideo(lectureView)) {
-      // if (handleMultiVideo(params)) {
-      //   reactAlert({
-      //     title: '알림',
-      //     message:
-      //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
-      //   });
-      // }
-    }
-  
-  
-    function handleMultiVideo(params : LectureRouterParams | undefined) {
-      function nvl(str: any, dvalue: any) {
-        if (typeof str === 'undefined' || str === null || str === '') {
-          str = dvalue;
-        }
-        return str;
+  function onDoLearn(params: LectureRouterParams | undefined): void {
+    // 20200717 video 멀티 시청불가~! = return true
+    // if (handleMultiVideo(lectureView)) {
+    // if (handleMultiVideo(params)) {
+    //   reactAlert({
+    //     title: '알림',
+    //     message:
+    //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
+    //   });
+    // }
+  }
+
+  function handleMultiVideo(params: LectureRouterParams | undefined) {
+    function nvl(str: any, dvalue: any) {
+      if (typeof str === 'undefined' || str === null || str === '') {
+        str = dvalue;
       }
-      const lectureCardId = params?.lectureId;
-      const liveLectureCardId = getCookie('liveLectureCardId');
-      const term = nvl(getCookie('liveLectureCardIdTime'), 0);
-      let rtnLive = false;
-      const after2Min = new Date();
-      after2Min.setMinutes(after2Min.getMinutes() + 2);
-      const nowTime = new Date().getTime();
-  
-      if (
-        nvl(liveLectureCardId, 0) === 0 ||
-        liveLectureCardId === lectureCardId ||
-        (liveLectureCardId !== lectureCardId && term < nowTime)
-      ) {
-        deleteCookie('liveLectureCardId');
-        deleteCookie('liveLectureCardIdTime');
-        setCookie('liveLectureCardId', lectureCardId);
-        setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-      } else {
-        rtnLive = true;
-      }
-      return rtnLive;
+      return str;
     }
-  
+    const lectureCardId = params?.lectureId;
+    const liveLectureCardId = getCookie('liveLectureCardId');
+    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
+    let rtnLive = false;
+    const after2Min = new Date();
+    after2Min.setMinutes(after2Min.getMinutes() + 2);
+    const nowTime = new Date().getTime();
+
+    if (
+      nvl(liveLectureCardId, 0) === 0 ||
+      liveLectureCardId === lectureCardId ||
+      (liveLectureCardId !== lectureCardId && term < nowTime)
+    ) {
+      deleteCookie('liveLectureCardId');
+      deleteCookie('liveLectureCardIdTime');
+      setCookie('liveLectureCardId', lectureCardId);
+      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
+    } else {
+      rtnLive = true;
+    }
+    return rtnLive;
+  }
+
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
     setNextContentsView(false);
@@ -222,11 +229,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         deleteCookie('liveLectureCardId');
         deleteCookie('liveLectureCardIdTime');
       }
-    };    
+    };
   }, [params]);
 
   const lectureParams = useParams<LectureParams>();
-  const { pathname } = useLocation();
 
   useEffect(() => {
     setNextContentsView(false);
@@ -247,10 +253,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   }, [panoptoState]);
 
-  useEffect(() => {
-    setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
-    setDuration((embedApi.getDuration() as unknown) as number);
-  }, [isActive, lectureParams, pathname, params]);
 
   useEffect(() => {
     let interval: any = null;
@@ -288,6 +290,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           setNextContentsView(true);
         }
       }, 10000);
+      playIntervalRef.current = interval;
     } else if (!isActive) {
       // sendWatchLog();
       clearInterval(interval);
@@ -347,6 +350,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }else if (!isActive) {
       // sendWatchLog();
       clearInterval(intervalTranscript);
+      transcriptIntervalRef.current = intervalTranscript;
     }
     return () => {
       clearInterval(intervalTranscript);
@@ -362,7 +366,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   ]);
 
   useEffect(() => {
-    clearTimeout(progressInterval);
     let checkInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 10) * 1000;
@@ -377,13 +380,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         mediaCheckEvent(params);
         // }, 20000));
       }, 20000);
+      checkIntervalRef.current = checkInterval;
     } else if (!isActive) {
       clearInterval(checkInterval);
     }
     return () => {
       clearInterval(checkInterval);
     };
-  }, [checkInterval, isActive]);
+  }, [params, isActive]);
 
   // useEffect(() => {
   //   return () => {
@@ -402,7 +406,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setNextContentsName('');
       setIsActive(false);
       setNextContentsView(false);
-      setProgressInterval('');
       setEmbedApi('');
       setLectureConfirmProgress();
     };
@@ -643,7 +646,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         (getLectureMedia()?.mediaType == 'InternalMedia' ||
           getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
         (getLectureTranscripts()?.length || 0) > 0 &&
-        displayTranscript && false && (
+        displayTranscript &&
+        false && (
           <>
             <button
               className="ui icon button right btn-blue"
