@@ -261,7 +261,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setStartTime(currentTime);
     }
     if (isActive && params && watchlogState) {
-      // clearInterval(interval);
+      // clearInterval(interval);      
       interval = setInterval(() => {
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
@@ -297,12 +297,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, [
     isActive,
-    lectureParams,
-    pathname,
+    // lectureParams,
+    // pathname,
     params,
     embedApi,
     startTime,
-    watchlogState,
+    // watchlogState,
   ]);
 
   useEffect(() => {
@@ -344,6 +344,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           }
         });
       }, 2000);
+    }else if (!isActive) {
+      // sendWatchLog();
+      clearInterval(intervalTranscript);
     }
     return () => {
       clearInterval(intervalTranscript);
