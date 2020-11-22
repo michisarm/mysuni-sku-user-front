@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TutorialPop from './components/tutorialPop';
 import { Checkbox, Button } from 'semantic-ui-react';
 import './style.css';
@@ -6,10 +6,14 @@ import './style.css';
 const Tutorial: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const [noMoreModal, setNoMoreModal] = useState(false);
-  
+
   useEffect(() => {
     const valTutorialModal = window.localStorage.getItem('TutorialModal');
     const tutorialModal = valTutorialModal;
+    if (tutorialModal === 'HIDE') {
+      setModalOpen(false);
+      return;
+    }
 
     if (modalOpen) {
       document.body.style.overflow = 'hidden';
@@ -24,10 +28,8 @@ const Tutorial: React.FC = () => {
     } else {
       setModalOpen(false);
     }
-    
+  }, [noMoreModal]);
 
-  },[noMoreModal])
-  
   const ModalClose = () => {
     window.localStorage.setItem('TutorialModal', noMoreModal ? 'HIDE' : 'SHOW');
     document.body.style.overflow = 'auto';
@@ -36,12 +38,21 @@ const Tutorial: React.FC = () => {
 
   const onHandleChange = () => {
     setNoMoreModal(!noMoreModal);
-    setModalOpen(false)
+    setModalOpen(false);
   };
 
   return (
-    <div className={`ui dimmer modals page hidden ${modalOpen ? "visible active" : ""}`} >
-      <div className={`ui base w1000 modal tutorials2 front transition hidden ${modalOpen ? "visible active" : ""}`}>
+    <div
+      className={`ui dimmer modals page hidden ${
+        modalOpen ? 'visible active' : ''
+      }`
+    }
+    >
+      <div
+        className={`ui base w1000 tutorials2 front transition hidden ${
+          modalOpen ? 'visible active' : ''
+        }`}
+      >
         <div className="header2">
           <div className="right-btn">
             <Checkbox
@@ -54,16 +65,16 @@ const Tutorial: React.FC = () => {
             </Button>
           </div>
         </div>
-        <div className="content" style={{padding:"0"}}>
+        <div className="content" style={{ padding: '0' }}>
           <div className="scrolling-80vh">
             <div className="cont-wrap newtype-cont">
-              <TutorialPop/>
+              <TutorialPop />
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default Tutorial;

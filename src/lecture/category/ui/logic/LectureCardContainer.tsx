@@ -476,17 +476,18 @@ class LectureCardContainer extends Component<Props, State> {
   onClickPlay() {
     // 동영상 close click 시 lectureCardId 가 다르면
     // 20200717 video 멀티 시청불가~!
-    const { lectureCardId } = this.props;
-    if (storageHelper.checkMultiVideo(lectureCardId)) {
-      reactAlert({
-        title: '알림',
-        message:
-          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-        onClose: () => this.playVideo(),
-      });
-    } else {
-      this.playVideo();
-    }
+    // const { lectureCardId } = this.props;
+    // if (storageHelper.checkMultiVideo(lectureCardId)) {
+    //   reactAlert({
+    //     title: '알림',
+    //     message:
+    //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+    //     onClose: () => this.playVideo(),
+    //   });
+    // } else {
+    //   this.playVideo();
+    // }
+    this.playVideo();
   }
 
   /* 실제 작동되고 있지 않는 것으로 추정. 2020.10.06 by 김동구 */

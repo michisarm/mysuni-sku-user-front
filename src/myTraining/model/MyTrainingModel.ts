@@ -80,7 +80,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
       학습유형: this.cubeType,
       Level: this.level,
       학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
-      학습시작일: moment(this.startDate).format('YYYY.MM.DD')
+      최근학습일: moment(this.time).format('YYYY.MM.DD')
     };
   }
 

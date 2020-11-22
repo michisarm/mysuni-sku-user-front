@@ -287,16 +287,18 @@ class CourseContainer extends Component<Props, State> {
     lectureView?: LectureViewModel
   ): void {
     // 20200717 video 멀티 시청불가~! = return true
-    if (this.handleMultiVideo(lectureView)) {
-      reactAlert({
-        title: '알림',
-        message:
-          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-        onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
-      });
-    } else {
-      this.playVideo(videoUrl, studentCdo, lectureView);
-    }
+    // if (this.handleMultiVideo(lectureView)) {
+    //   reactAlert({
+    //     title: '알림',
+    //     message:
+    //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+    //     onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
+    //   });
+    // } else {
+    //   this.playVideo(videoUrl, studentCdo, lectureView);
+    // }
+
+    this.playVideo(videoUrl, studentCdo, lectureView);
   }
 
   playVideo(

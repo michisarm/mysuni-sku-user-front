@@ -346,6 +346,7 @@ function MultiFilterBox(props: Props) {
             case FilterConditionName.LearningTime:
             case FilterConditionName.Certification:
             case FilterConditionName.LearningSchedule:
+            case FilterConditionName.DifficultyLevel:
               return true;
             default:
               return false;
@@ -366,6 +367,7 @@ function MultiFilterBox(props: Props) {
           case FilterConditionName.Required:
           case FilterConditionName.LearningTime:
           case FilterConditionName.LearningSchedule:
+          case FilterConditionName.DifficultyLevel:
             return true;
           default:
             return false;
