@@ -368,10 +368,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     let checkInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
-    let confirmProgressTime = (duration / 10) * 1000;
+    let confirmProgressTime = (duration / 20) * 1000;
 
-    if (!confirmProgressTime || confirmProgressTime > 60000) {
-      confirmProgressTime = 60000;
+    if (!confirmProgressTime || confirmProgressTime < 30000) {
+      confirmProgressTime = 30000;
     }
 
     if (isActive && params) {
@@ -379,7 +379,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       checkInterval = setInterval(() => {
         mediaCheckEvent(params);
         // }, 20000));
-      }, 20000);
+      }, confirmProgressTime);
       checkIntervalRef.current = checkInterval;
     } else if (!isActive) {
       clearInterval(checkInterval);
