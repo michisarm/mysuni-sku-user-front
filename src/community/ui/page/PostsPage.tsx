@@ -29,7 +29,10 @@ function PostsPage() {
     getCommunityPostList(params);
   }, [communityId, menuId]);
 
-  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
+  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string, offset?: number, limit?: number) => {
+    console.log('onSearch')
+    console.log('offset', offset)
+    console.log('limit', limit)
     const param: PostRdo = {
       title: '',
       html: '',
@@ -42,6 +45,7 @@ function PostsPage() {
       sort: sortType,
       pinned,
     };
+    console.log('param', param)
     if (searchType === 'all') {
       param.title = '';
     } else if (searchType === 'title') {
@@ -55,8 +59,15 @@ function PostsPage() {
     getPostListMapFromCommunity(param);
   }
 
+  const onPaging = (page: number) => {
+    console.log("onPaging -> page", page)
+  }
+
   return (
-    <CommunityPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
+    <CommunityPostListContainer 
+      handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}
+      onPaging={onPaging}
+    />
   );
 }
 

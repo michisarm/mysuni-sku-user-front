@@ -8,6 +8,7 @@ import { getPostListMapFromCommunity } from '../../../community/service/useCommu
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
+import { Pagination } from 'semantic-ui-react';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -16,6 +17,7 @@ interface CommunityPostListContainerProps {
     searchType: SearchType,
     searchText: string
   ) => void;
+  onPaging?: (page: number) => void,
 }
 interface Params {
   communityId: string;
@@ -26,7 +28,7 @@ export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
 const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
-  handelOnSearch,
+  handelOnSearch, onPaging
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
@@ -86,6 +88,11 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     // setSearch('searchText')
   };
 
+  const test = (data: any) => {
+    console.log('data', data)
+    // onPaging!(data.activePage)
+  }
+
   return (
     <>
       {postItems !== undefined && (
@@ -126,6 +133,16 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
               {/* <a className="lms-next">이후10개</a> */}
             </div>
           </div>
+
+          {/* <div className="center"> */}
+            <Pagination
+              activePage={1}
+              totalPages={3}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={(e, data) => test(data)}
+            />
+          {/* </div> */}
 
           <CommunityPostListSearchBox
             searchType={searchType}
