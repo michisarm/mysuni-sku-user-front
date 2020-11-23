@@ -45,14 +45,17 @@ const BadgeCompRight: React.FC<Props> = Props => {
     const keyStr = data.patronKey.keyString;
     const cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
     const collegeId = data.category.college.id;
+    /* 뱃지 학습리스트는 PROGRAM 이 제외되며 COURSE, CARD 만 포함됨. */
+    /* URL 표현을 위한 변환. */
+    const serviceType = data.serviceType === 'COURSE' ? 'Course' : 'Card';
 
-    if (data.serviceType === 'COURSE') {
+    if (serviceType === 'Course') {
       history.push(
         lectureRoutePaths.courseOverview(
           cineroomId,
           collegeId,
           data.coursePlanId,
-          data.serviceType,
+          serviceType,
           data.serviceId
         )
       );
