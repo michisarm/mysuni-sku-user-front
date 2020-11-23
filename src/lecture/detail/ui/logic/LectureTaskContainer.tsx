@@ -102,7 +102,8 @@ function LectureTaskContainer() {
 
   const onClickModify = useCallback(() => {
     setCreate(true);
-    history.goBack();
+    history.push('#edit');
+    // history.goBack();
   }, []);
 
   const onClickReplies = useCallback(() => {}, []);
