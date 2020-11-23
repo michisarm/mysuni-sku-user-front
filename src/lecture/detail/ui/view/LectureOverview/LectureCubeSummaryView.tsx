@@ -159,6 +159,13 @@ function getCapacity(classrooms: Classroom[]): string | undefined {
   }
 }
 
+function getElearningLink(classrooms: Classroom[]): string | undefined {
+  const classroom = getClassroom(classrooms);
+  if (classroom !== undefined) {
+    return classroom.siteUrl;
+  }
+}
+
 const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function LectureCubeSummaryView({
   lectureSummary,
   lectureInstructor,
@@ -208,6 +215,18 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                     </span>
                   </div>
                 )}
+              {lectureClassroom &&
+                Array.isArray(lectureClassroom.classrooms) &&
+                lectureClassroom.classrooms.length > 0 &&
+                getElearningLink(lectureClassroom.classrooms) !== '' &&
+                getElearningLink(lectureClassroom.classrooms) !== null && (
+                  <a
+                    id="webpage-link"
+                    target="_blank"
+                    style={{ display: 'none' }}
+                    href={getElearningLink(lectureClassroom.classrooms)}
+                  />
+                )}
               <Label className="bold onlytext">
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
@@ -245,24 +264,26 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                     <span>명</span>
                   </Label>
                 )}
-                {/* Community => Task 데이터 현행화 후 수정 예정*/}
-              {lectureSummary.cubeType !== 'Community' && lectureSummary.cubeType !== 'Task' && (
-                <Label className="bold onlytext">
-                  <span className="header-span-first">이수</span>
-                  <span>{lectureSummary.passedCount}</span>
-                  <span>명</span>
-                </Label>
-              )}
               {/* Community => Task 데이터 현행화 후 수정 예정*/}
-              {lectureSummary.cubeType === 'Community' || lectureSummary.cubeType === 'Task' && (
-                <>
+              {lectureSummary.cubeType !== 'Community' &&
+                lectureSummary.cubeType !== 'Task' && (
                   <Label className="bold onlytext">
-                    <span className="header-span-first">참여</span>
-                    <span>{lectureSummary.studentCount}</span>
+                    <span className="header-span-first">이수</span>
+                    <span>{lectureSummary.passedCount}</span>
                     <span>명</span>
                   </Label>
-                </>
-              )}
+                )}
+              {/* Community => Task 데이터 현행화 후 수정 예정*/}
+              {lectureSummary.cubeType === 'Community' ||
+                (lectureSummary.cubeType === 'Task' && (
+                  <>
+                    <Label className="bold onlytext">
+                      <span className="header-span-first">참여</span>
+                      <span>{lectureSummary.studentCount}</span>
+                      <span>명</span>
+                    </Label>
+                  </>
+                ))}
               <Label className="bold onlytext">
                 <span className="header-span-first">담당</span>
                 <span className="tool-tip">

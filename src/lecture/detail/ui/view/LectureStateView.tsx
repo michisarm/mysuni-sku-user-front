@@ -6,15 +6,6 @@ interface LectureStateViewProps {
   hookAction: () => void;
 }
 
-interface LectureStateViewInnerState {
-  canAction: boolean;
-  actionText: string;
-  action?: () => void;
-  stateText: string;
-  subStateVisible: boolean;
-  subStateText: string;
-}
-
 const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateView({
   lectureState,
   hookAction,
