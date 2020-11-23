@@ -46,6 +46,7 @@ function LectureTaskContainer() {
   useEffect(() => {
     if (hash === '#create') {
       setLectureTaskViewType('create');
+      setCreate(true);
       return;
     } else if (hash === '#edit') {
       setLectureTaskViewType('edit');
