@@ -48,7 +48,7 @@ async function getTestItem(
 ) {
   const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
 
-  if (examId !== '') {
+  if (examId !== '' && examId !== null) {
     const { result } = await findExamination(examId);
     let state: State = 'None';
 
