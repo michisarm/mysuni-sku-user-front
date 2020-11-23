@@ -48,7 +48,7 @@ interface CubeTypeGroup {
 
 export function findCubeTypeGroup(text_idx: string, companyCode: string) {
   const url = encodeURI(
-    `${BASE_URL}?select=cube_type,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off`
+    `${BASE_URL}?select=cube_type,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+cube_type+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
   );
   return axiosApi.get<SearchResult<CubeTypeGroup>>(url).then(AxiosReturn);
 }
@@ -67,7 +67,7 @@ interface ColleageGroup {
 
 export function findColleageGroup(text_idx: string, companyCode: string) {
   const url = encodeURI(
-    `${BASE_URL}?select=all_college_name,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off`
+    `${BASE_URL}?select=all_college_name,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+all_college_name+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
   );
   return axiosApi.get<SearchResult<ColleageGroup>>(url).then(AxiosReturn);
 }
@@ -86,7 +86,7 @@ interface CPGroup {
 
 export function findCPGroup(text_idx: string, companyCode: string) {
   const url = encodeURI(
-    `${BASE_URL}?select=organizer,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off`
+    `${BASE_URL}?select=organizer,+count(*)&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+=+'ALL')+group+by+organizer+order+by+count(*)+desc&limit=100&default-hilite=off&t=${Date.now()}`
   );
   return axiosApi.get<SearchResult<CPGroup>>(url).then(AxiosReturn);
 }
@@ -96,7 +96,7 @@ export function findCard(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=*&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')${query}&offset=0&limit=96`
+    `${BASE_URL}?select=*&from=card.card&where=text_idx='${text_idx}'+allword+and+(subSidiaries_id+=+'${companyCode}'+or+subSidiaries_id+='ALL')${query}&offset=0&limit=96&t=${Date.now()}`
   );
   return axiosApi.get<any>(url).then(AxiosReturn);
 }
@@ -106,7 +106,7 @@ export function findExpert(text_idx: string) {
   const companyCode = SkProfileService.instance.profileMemberCompanyCode;
   const query = makeQuery(text_idx, companyCode, queryOptions);
   const url = encodeURI(
-    `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96`
+    `${BASE_URL}?select=*&from=expert.expert&where=text_idx='${text_idx}'+allword+order+by+$MATCHFIELD(name,+department)${query}&offset=0&limit=96&t=${Date.now()}`
   );
   return axiosApi.get<any>(url).then(AxiosReturn);
 }
