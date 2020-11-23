@@ -606,6 +606,11 @@ async function getStateWhenApproved(
           stateText,
         };
       case 'ClassRoomLecture':
+        return {
+          ...lectureState,
+          hideAction: true,
+          stateText: student.learningState === null ? WAIT : stateText,
+        };
       case 'ELearning':
         /**
          * 학습완료
@@ -615,17 +620,38 @@ async function getStateWhenApproved(
          */
         return {
           ...lectureState,
-          hideAction: true,
+          actionClassName: 'bg',
+          hideAction: student.learningState === null,
+          canAction: student.learningState !== null,
+          action: () => {
+            if (document.getElementById('webpage-link') !== null) {
+              document.getElementById('webpage-link')?.click();
+            }
+          },
+          actionText: APPROVE,
           stateText: student.learningState === null ? WAIT : stateText,
         };
-      {/* Community => Task 데이터 현행화 후 수정 예정*/}
-      case 'Task':        
+        {/* Community => Task 데이터 현행화 후 수정 예정*/ }
+      case 'Task':
       case 'Community':
-        return {
-          ...lectureState,
-          hideAction: true,
-          stateText: COMPLETE,
-        };
+        if (stateText === PROGRESS) {
+          return {
+            ...lectureState,
+            actionClassName: 'bg',
+            hideAction: false,
+            canAction: true,
+            href: '#create',
+            actionText: JOIN,
+            stateText: PROGRESS,
+          };
+        }
+        if (stateText === COMPLETE) {
+          return {
+            ...lectureState,
+            hideAction: true,
+            stateText: COMPLETE,
+          };
+        }
     }
     if (cubeType === 'Video') {
       const mLectureState = await getVideoApprovedState(option, stateText);
@@ -730,7 +756,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
           }
         },
       };
-    {/* Community => Task 데이터 현행화 후 수정 예정*/}
+      {/* Community => Task 데이터 현행화 후 수정 예정*/ }
     case 'Task':
     case 'Community':
       return {
@@ -738,6 +764,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         canAction: true,
         actionText: JOIN,
         action: () => join(params, rollBookId, student),
+        href: '#create',
         hideState: true,
       };
   }
