@@ -14,6 +14,7 @@ import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import {
   getActiveStructureItem,
   getActiveStructureItemAll,
+  useLectureStructure,
 } from '../../../service/useLectureStructure/useLectureStructure';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 
@@ -28,6 +29,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
 }) {
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
+  const [lectureStructure] = useLectureStructure();
 
   let readOnly = false;
   if (
@@ -122,7 +124,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         },
       });
     }
-  }, [answerItem, params]);
+  }, [answerItem, params, lectureStructure]);
 
   let testClassName = ' ui segment full ';
   if (answerItem?.submitted) {

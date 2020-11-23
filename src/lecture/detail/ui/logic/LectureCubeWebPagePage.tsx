@@ -5,6 +5,18 @@
  */
 
 import React, { useEffect } from 'react';
+import {
+  setInMyLectureCdo,
+  setLectureComment,
+  setLectureCubeSummary,
+  setLectureDescription,
+  setLectureFile,
+  setLectureInstructor,
+  setLecturePrecourse,
+  setLectureReview,
+  setLectureSubcategory,
+  setLectureTags,
+} from '../../store/LectureOverviewStore';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
@@ -16,13 +28,25 @@ import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummar
 
 function LectureCubeWebPagePage() {
   const params = useLectureRouterParams();
+  const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
   useEffect(() => {
     if (params === undefined) {
       return;
     }
-    const { contentId, lectureId } = params;
     getCubeLectureOverview(contentId, lectureId);
-  }, [params]);
+    return () => {
+      setLectureCubeSummary();
+      setLectureDescription();
+      setLectureSubcategory();
+      setLectureTags();
+      setLectureInstructor();
+      setLecturePrecourse();
+      setLectureFile();
+      setLectureComment();
+      setLectureReview();
+      setInMyLectureCdo();
+    };
+  }, [contentId, lectureId]);
 
   const [lectureWebpage] = useLectureWebpage();
   const [lectureState] = useLectureState();

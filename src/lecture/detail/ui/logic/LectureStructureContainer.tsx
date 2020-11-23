@@ -46,13 +46,50 @@ export function requestLectureStructure(
 }
 
 function LectureStructureContainer() {
-  const params = useParams<LectureParams>();
+  const {
+    cineroomId,
+    collegeId,
+    cubeId,
+    lectureCardId,
+    coursePlanId,
+    serviceType,
+    serviceId,
+    lectureType,
+    contentId,
+    lectureId,
+  } = useParams<LectureParams>();
   const { pathname } = useLocation();
 
   useEffect(() => {
+    const params: LectureParams = {
+      cineroomId,
+      collegeId,
+      cubeId,
+      lectureCardId,
+      coursePlanId,
+      serviceType,
+      serviceId,
+      lectureType,
+      contentId,
+      lectureId,
+    };
     requestLectureStructure(params, pathname);
-    return () => setLectureStructure();
-  }, [params, pathname]);
+    return () => {
+      setLectureStructure();
+    };
+  }, [
+    cineroomId,
+    collegeId,
+    cubeId,
+    lectureCardId,
+    coursePlanId,
+    serviceType,
+    serviceId,
+    lectureType,
+    contentId,
+    lectureId,
+    pathname,
+  ]);
 
   //   useEffect(() => {
   //   const options = {};

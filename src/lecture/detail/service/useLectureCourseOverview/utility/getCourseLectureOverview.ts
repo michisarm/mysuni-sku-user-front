@@ -5,6 +5,7 @@ import {
   setLectureComment,
   setLectureCourseSummary,
   setLectureDescription,
+  setLectureFile,
   setLectureInstructor,
   setLecturePrecourse,
   setLectureRelations,
@@ -28,6 +29,8 @@ import { CourseSetModel } from '../../../../../course/model';
 import { findInMyLecture } from '../../../api/mytrainingApi';
 import Instructor from '../../../model/Instructor';
 import CoursePlanContents from '../../../model/CoursePlanContents';
+import { getFiles } from '../../../utility/depotFilesHelper';
+import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -62,8 +65,8 @@ async function getLectureSummary(
     learningTime,
     operator,
     stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
-    passedCount: coursePlanComplex.courseLecture.passedStudentCount,
-    studentCount: coursePlanComplex.courseLecture.studentCount,
+    passedCount: serviceType === 'Program' ? coursePlanComplex.programLecture.passedStudentCount : coursePlanComplex.courseLecture.passedStudentCount,
+    studentCount: serviceType === 'Program' ? coursePlanComplex.programLecture.studentCount : coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
     difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel
@@ -200,6 +203,11 @@ function findCoursePlanComplex(coursePlanId: string, serviceId: string) {
   return findCoursePlanContents(coursePlanId, serviceId);
 }
 
+function getLectureFile(fileBoxId: string): Promise<LectureFile> {
+  const fileBoxIds = [fileBoxId];
+  return getFiles(fileBoxIds).then(files => ({ files }));
+}
+
 export async function getCourseLectureOverviewFromCoursePlanComplex(
   params: LectureParams,
   coursePlanComplex: CoursePlanComplex,
@@ -232,6 +240,13 @@ export async function getCourseLectureOverviewFromCoursePlanComplex(
   const lecturePrecourse = getLecturePrecourse(coursePlanComplex, path);
   setLecturePrecourse(lecturePrecourse);
   const lectureComment = getLectureComment(coursePlanComplex);
+  if (coursePlanComplex.coursePlanContents.fileBoxId !== '' && coursePlanComplex.coursePlanContents.fileBoxId !== null && coursePlanComplex.coursePlanContents.fileBoxId !== undefined) {
+    const lectureFile = await getLectureFile(coursePlanComplex.coursePlanContents.fileBoxId);
+    setLectureFile(lectureFile);
+  } else {
+    setLectureFile();
+  }
+
   setLectureComment(lectureComment);
   const lectureReview = getLectureReview(coursePlanComplex);
   setLectureReview(lectureReview);

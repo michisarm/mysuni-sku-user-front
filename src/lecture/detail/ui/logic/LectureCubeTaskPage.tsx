@@ -1,19 +1,43 @@
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import React, { useEffect, useState } from 'react';
+import {
+  setInMyLectureCdo,
+  setLectureComment,
+  setLectureCubeSummary,
+  setLectureDescription,
+  setLectureFile,
+  setLectureInstructor,
+  setLecturePrecourse,
+  setLectureReview,
+  setLectureSubcategory,
+  setLectureTags,
+} from '../../store/LectureOverviewStore';
+
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureTaskContainer from './LectureTaskContainer';
+import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 
 function LectureCubeTaskPage() {
   const params = useLectureRouterParams();
+  const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
   useEffect(() => {
     if (params === undefined) {
       return;
     }
-    const { contentId, lectureId } = params;
     getCubeLectureOverview(contentId, lectureId);
-  }, [params]);
-
+    return () => {
+      setLectureCubeSummary();
+      setLectureDescription();
+      setLectureSubcategory();
+      setLectureTags();
+      setLectureInstructor();
+      setLecturePrecourse();
+      setLectureFile();
+      setLectureComment();
+      setLectureReview();
+      setInMyLectureCdo();
+    };
+  }, [contentId, lectureId]);
   return (
     <LectureDetailLayout>
       <LectureTaskContainer />
