@@ -147,13 +147,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [params]);
 
   const [isActive, setIsActive] = useState(false);
-  const [progressInterval, setProgressInterval] = useState<any>();
-
-  const [watchInterval, setWatchInterval] = useState<any>();
-  const [checkInterval, setCheckInterval] = useState<any>();
-
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  
   const [startTime, setStartTime] = useState(0);
 
   const [embedApi, setEmbedApi] = useState<any | undefined>({
@@ -183,13 +177,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   function onDoLearn(params: LectureRouterParams | undefined): void {
     // 20200717 video 멀티 시청불가~! = return true
     // if (handleMultiVideo(lectureView)) {
-    // if (handleMultiVideo(params)) {
-    //   reactAlert({
-    //     title: '알림',
-    //     message:
-    //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
-    //   });
-    // }
+    if (handleMultiVideo(params)) {
+      reactAlert({
+        title: '알림',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
+      });
+    }
   }
 
   function handleMultiVideo(params: LectureRouterParams | undefined) {
@@ -303,10 +297,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   }, [panoptoState]);
 
-  useEffect(() => {
-    setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
-    setDuration((embedApi.getDuration() as unknown) as number);
-  }, [isActive, lectureParams, pathname, params]);
 
   useEffect(() => {
     let interval: any = null;
@@ -317,15 +307,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setStartTime(currentTime);
     }
     if (isActive && params && watchlogState) {
-      // clearInterval(interval);
+      clearInterval(interval);
       interval = setInterval(() => {
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
         // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
         const end = (embedApi.getCurrentTime() as unknown) as number;
         const start =
-          startTime > end || end - startTime > 50
-            ? end - 20 * playbackRate
+          startTime > end || end - startTime > 25
+            ? end - 10 * playbackRate
             : startTime;
 
         setWatchlogState({
@@ -344,7 +334,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           setNextContentsView(true);
         }
       }, 10000);
-      playIntervalRef.current = interval;
+      // playIntervalRef.current = interval;
     } else if (!isActive) {
       // sendWatchLog();
       clearInterval(interval);
@@ -354,76 +344,76 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, [
     isActive,
-    lectureParams,
-    pathname,
+    // lectureParams,
+    // pathname,
     params,
     embedApi,
     startTime,
-    watchlogState,
+    // watchlogState,
   ]);
 
+  // useEffect(() => {
+  //   let intervalTranscript: any = null;
+
+  //   if (isActive && params && watchlogState) {
+  //     clearInterval(intervalTranscript);
+  //     intervalTranscript = setInterval(() => {
+  //       const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+
+  //       if (!startTime) {
+  //         setStartTime(currentTime);
+  //       }
+
+  //       //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+  //       let array: any = [];
+  //       getLectureTranscripts()?.map((lectureTranscript, key) => {
+  //         array.push({
+  //           startTime:
+  //             parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
+  //             parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
+  //             parseInt(lectureTranscript.startTime.substr(4, 2), 10),
+  //           endTime:
+  //             parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
+  //             parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
+  //             parseInt(lectureTranscript.endTime.substr(4, 2), 10),
+  //           idx: lectureTranscript.idx,
+  //         });
+  //       });
+  //       array.map((item: any, key: number) => {
+  //         if (item.startTime < currentTime) {
+  //           if (currentTime < item.endTime) {
+  //             const currentScript = document.getElementById(item.idx);
+  //             setTransciptHighlight(item.idx);
+  //             if (currentScript !== null) {
+  //               scrollMove(item.idx);
+  //             }
+  //           }
+  //         }
+  //       });
+  //     }, 2000);
+  //     transcriptIntervalRef.current = intervalTranscript;
+  //   }
+  //   return () => {
+  //     clearInterval(intervalTranscript);
+  //   };
+  // }, [
+  //   isActive,
+  //   lectureParams,
+  //   pathname,
+  //   params,
+  //   embedApi,
+  //   startTime,
+  //   watchlogState,
+  // ]);
+
   useEffect(() => {
-    let intervalTranscript: any = null;
-
-    if (isActive && params && watchlogState) {
-      clearInterval(intervalTranscript);
-      intervalTranscript = setInterval(() => {
-        const currentTime = (embedApi.getCurrentTime() as unknown) as number;
-
-        if (!startTime) {
-          setStartTime(currentTime);
-        }
-
-        //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
-        let array: any = [];
-        getLectureTranscripts()?.map((lectureTranscript, key) => {
-          array.push({
-            startTime:
-              parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
-              parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
-              parseInt(lectureTranscript.startTime.substr(4, 2), 10),
-            endTime:
-              parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
-              parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
-              parseInt(lectureTranscript.endTime.substr(4, 2), 10),
-            idx: lectureTranscript.idx,
-          });
-        });
-        array.map((item: any, key: number) => {
-          if (item.startTime < currentTime) {
-            if (currentTime < item.endTime) {
-              const currentScript = document.getElementById(item.idx);
-              setTransciptHighlight(item.idx);
-              if (currentScript !== null) {
-                scrollMove(item.idx);
-              }
-            }
-          }
-        });
-      }, 2000);
-      transcriptIntervalRef.current = intervalTranscript;
-    }
-    return () => {
-      clearInterval(intervalTranscript);
-    };
-  }, [
-    isActive,
-    lectureParams,
-    pathname,
-    params,
-    embedApi,
-    startTime,
-    watchlogState,
-  ]);
-
-  useEffect(() => {
-    clearTimeout(progressInterval);
+    // clearTimeout(progressInterval);
     let checkInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
-    let confirmProgressTime = (duration / 10) * 1000;
+    let confirmProgressTime = (duration / 20) * 1000;
 
-    if (!confirmProgressTime || confirmProgressTime > 60000) {
-      confirmProgressTime = 60000;
+    if (!confirmProgressTime || confirmProgressTime < 30000) {
+      confirmProgressTime = 30000;
     }
 
     if (isActive && params) {
@@ -431,7 +421,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       checkInterval = setInterval(() => {
         mediaCheckEvent(params);
         // }, 20000));
-      }, 20000);
+      }, confirmProgressTime);
       checkIntervalRef.current = checkInterval;
     } else if (!isActive) {
       clearInterval(checkInterval);
@@ -439,7 +429,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => {
       clearInterval(checkInterval);
     };
-  }, [checkInterval, isActive]);
+  }, [params, isActive]);
 
   // useEffect(() => {
   //   return () => {
@@ -458,7 +448,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setNextContentsName('');
       setIsActive(false);
       setNextContentsView(false);
-      setProgressInterval('');
       setEmbedApi('');
       setLectureConfirmProgress();
     };
