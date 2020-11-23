@@ -266,7 +266,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       // console.log('interval ' , interval);
       clearInterval(interval);
       interval = setInterval(() => {
-        console.log('interval ' , interval);
+        // console.log('interval ' , interval);
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
         // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)
@@ -368,10 +368,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // clearTimeout(progressInterval);
     let checkInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
-    let confirmProgressTime = (duration / 10) * 1000;
+    let confirmProgressTime = (duration / 20) * 1000;
 
-    if (!confirmProgressTime || confirmProgressTime > 60000) {
-      confirmProgressTime = 60000;
+    if (!confirmProgressTime || confirmProgressTime < 30000) {
+      confirmProgressTime = 30000;
     }
 
     if (isActive && params) {
@@ -379,7 +379,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       checkInterval = setInterval(() => {
         mediaCheckEvent(params);
         // }, 20000));
-      }, 20000);
+      }, confirmProgressTime);
       checkIntervalRef.current = checkInterval;
     } else if (!isActive) {
       clearInterval(checkInterval);
