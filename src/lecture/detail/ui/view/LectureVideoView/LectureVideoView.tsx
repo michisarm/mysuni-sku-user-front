@@ -26,7 +26,13 @@ import {
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import moment from 'moment';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import {
+  Link,
+  matchPath,
+  useHistory,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
@@ -40,6 +46,7 @@ import {
   LectureStructureDiscussionItem,
 } from 'lecture/detail/viewModel/LectureStructure';
 import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
+import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -65,6 +72,43 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const transcriptIntervalRef = useRef<any>(0);
 
   useEffect(() => {
+    let mathch = matchPath<LectureParams>(pathname, {
+      path:
+        '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
+      exact: true,
+      strict: true,
+    });
+    if (!mathch?.isExact) {
+      mathch = matchPath<LectureParams>(pathname, {
+        path:
+          '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
+        exact: true,
+        strict: true,
+      });
+    }
+    if (!mathch?.isExact) {
+      mathch = matchPath<LectureParams>(pathname, {
+        path:
+          '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
+        exact: true,
+        strict: true,
+      });
+    }
+    if (!mathch?.isExact) {
+      mathch = matchPath<LectureParams>(pathname, {
+        path:
+          '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
+        exact: true,
+        strict: true,
+      });
+    }
+    if (mathch !== null) {
+      const mlectureParams = mathch.params;
+      const mParams = parseLectureParams(mlectureParams, pathname);
+      confirmProgress(mParams);
+      requestLectureStructure(mParams.lectureParams, pathname);
+    }
+
     // all cleare interval
     return () => {
       clearInterval(playIntervalRef.current);
