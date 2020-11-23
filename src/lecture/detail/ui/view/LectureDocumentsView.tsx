@@ -16,6 +16,7 @@ import LearningState from 'lecture/detail/model/LearningState';
 import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
+import { reactAlert } from '@nara.platform/accent';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -66,6 +67,23 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [courseIdx, setCourseIdx] = useState<number>(0);
   const [pageWidth, setPageWidth] = useState<number>(0);
 
+  const [lectureState] = useLectureState();
+
+  useEffect(() => {
+    if (lectureState === null) {
+      return
+    }
+    if(learningState !== 'Passed') {
+      reactAlert({
+        title: '',
+        message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.
+        <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
+      });
+    }
+    
+  }, [lectureState]);
+
+
   const headerWidth: any = useRef();
 
   const nameList: string[] = [''];
@@ -103,7 +121,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       setPageWidth(headerWidth.current?.clientWidth!)
     }
   };
-
+  
   useEffect(() => {
     return ()=>{
       setPdfUrl([]);
@@ -129,11 +147,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
 
-  useEffect(() => {
-    return ()=>{
-      setPageNumber(1);
-    }    
-  }, []);
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
