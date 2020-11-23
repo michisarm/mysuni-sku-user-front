@@ -31,7 +31,7 @@ function getCoursePlanComplexByParams(
 }
 
 async function getTestItem(examId: string) {
-  if (examId !== '') {
+  if (examId !== '' && examId !== null) {
     let examination = null;
     {
       const { result } = await findExamination(examId);
@@ -103,7 +103,7 @@ export async function getTestItemMapFromCourse(
     });
   }
 
-  if (examId !== undefined) {
+  if (examId !== undefined && examId !== null && examId !== '') {
     const testItem = await getTestItem(examId);
     if (testItem !== undefined) {
       setLectureTestItem(testItem);
