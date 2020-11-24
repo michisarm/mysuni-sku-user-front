@@ -64,7 +64,7 @@ const TutorialModalView = () => {
   };
 
   return (
-    <Modal open={modalOpen} className="base w1000 tutorials2 front scrolling">
+    <Modal open={modalOpen} className="base w1000 tutorials2 front scrolling" style={{'position':'relative'}} >
       <Modal.Header className="header2">
         <div className="right-btn">
           <Checkbox

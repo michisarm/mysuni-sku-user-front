@@ -91,6 +91,7 @@ function MyLearningTableBody(props: Props) {
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
 
+    /* URL 표현을 위한 변환. */
     serviceType = serviceType === 'COURSE' ? 'Course' : 'Program';
 
 
@@ -172,7 +173,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {formatDate(model.startDate)}{/* 학습시작일 */}
+              {formatDate(model.time)}{/* 최근학습일 */}
             </Table.Cell>
           </>
         );

@@ -11,7 +11,7 @@ interface LectureTaskEditViewProps {
   handleCloseClick: () => void;
 }
 
-const LectureTaskEditView: React.FC<LectureTaskEditViewProps> = function LectureTeskView({
+const LectureTaskEditView: React.FC<LectureTaskEditViewProps> = function LectureTaskEditView({
   postId,
   boardId,
   detailType,

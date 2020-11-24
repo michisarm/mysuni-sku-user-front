@@ -16,11 +16,14 @@ import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import LectureRelationsView from './LectureRelationsView';
 import './LectureCubeContentView.css';
+import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import LectureFileView from './LectureFileView';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
   lectureSubcategory?: LectureSubcategory;
   lectureTags?: LectureTags;
+  lectureFile?: LectureFile;
   lectureInstructor?: LectureInstructor;
   lecturePrecourse?: LecturePrecourse;
   lectureBadge?: LectureBadge;
@@ -44,6 +47,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureBadge,
   lectureComment,
   lectureRelations,
+  lectureFile,
 }) {
   const [fixed, setFixed] = useState<boolean>(false);
   // useEffect(() => {
@@ -115,30 +119,36 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           >
             Overview
           </a>
-          {lectureInstructor && lectureInstructor.instructors.length > 0 && (
-            <a
-              onClick={instructorHashClick}
-              className={activatedTab === 'instructor' ? 'lms-act' : ''}
-            >
-              강사정보
-            </a>
-          )}
-          {lectureBadge && lectureBadge.badges.length > 0 && (
-            <a
-              onClick={badgeHashClick}
-              className={activatedTab === 'badge' ? 'lms-act' : ''}
-            >
-              관련 Badge
-            </a>
-          )}
-          {lectureRelations && lectureRelations.lectures.length > 0 && (
-            <a
-              onClick={relatedHashClick}
-              className={activatedTab === 'related' ? 'lms-act' : ''}
-            >
-              관련과정
-            </a>
-          )}
+          {lectureInstructor &&
+            Array.isArray(lectureInstructor.instructors) &&
+            lectureInstructor.instructors.length > 0 && (
+              <a
+                onClick={instructorHashClick}
+                className={activatedTab === 'instructor' ? 'lms-act' : ''}
+              >
+                강사정보
+              </a>
+            )}
+          {lectureBadge &&
+            Array.isArray(lectureBadge.badges) &&
+            lectureBadge.badges.length > 0 && (
+              <a
+                onClick={badgeHashClick}
+                className={activatedTab === 'badge' ? 'lms-act' : ''}
+              >
+                관련 Badge
+              </a>
+            )}
+          {lectureRelations &&
+            Array.isArray(lectureRelations.lectures) &&
+            lectureRelations.lectures.length > 0 && (
+              <a
+                onClick={relatedHashClick}
+                className={activatedTab === 'related' ? 'lms-act' : ''}
+              >
+                관련과정
+              </a>
+            )}
           <a
             onClick={commentHashClick}
             className={
@@ -166,16 +176,27 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             {lectureSubcategory && (
               <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
             )}
+            {lectureFile && <LectureFileView lectureFile={lectureFile} />}
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
           </div>
-          <div className="badge-detail" id="lms-instructor-Info">
-            <div className="ov-paragraph">
-              {lectureInstructor && (
-                <LectureInstructorView lectureInstructor={lectureInstructor} />
-              )}
-            </div>
-          </div>
-          {lectureBadge && <LectureBadgeView lectureBadge={lectureBadge} />}
+          {lectureInstructor &&
+            Array.isArray(lectureInstructor.instructors) &&
+            lectureInstructor.instructors.length > 0 && (
+              <div className="badge-detail" id="lms-instructor-Info">
+                <div className="ov-paragraph">
+                  {lectureInstructor && (
+                    <LectureInstructorView
+                      lectureInstructor={lectureInstructor}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+          {lectureBadge &&
+            Array.isArray(lectureBadge.badges) &&
+            lectureBadge.badges.length > 0 && (
+              <LectureBadgeView lectureBadge={lectureBadge} />
+            )}
           {lectureRelations &&
             Array.isArray(lectureRelations.lectures) &&
             lectureRelations.lectures.length > 0 && (

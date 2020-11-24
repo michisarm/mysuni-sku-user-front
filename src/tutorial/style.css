@@ -1,0 +1,111 @@
+
+/*==== Tutorial New ====*/
+.tutorials2 .content .cont-wrap .left .inner a .new{display:inline-block;width:2rem;height:0.9375rem;margin:-0.135rem 0 0 0.5rem;vertical-align:middle;background:url(../style/media/tag-new.svg) 0 0 no-repeat;}
+.newtype-cont .tu-cont .info_makrer{position:absolute;right:20px;top:0;padding:0 13px;color:#fff;font-size:10px;line-height:2rem;box-shadow:1px 3px 1px rgba(133,143,163,.3);background:#858fa3;z-index:10;}
+
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont .title{position:absolute;top:0;left:0;width:100%;padding-left:0;padding-top:3.125rem;z-index:3;text-align:center;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont#tu2 .title,
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont#tu3 .title{padding-left:0;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont .title .tit1{margin-bottom:7px;padding:0;font-size:18px;line-height:1.625rem;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont .title .tit2{color:#666;font-size:14px;line-height:1.375rem;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont .title strong{font-weight:700;}
+
+/*= tu1 | 업데이트 사항 소개 =*/
+.newtype-cont .tu1-main{position:absolute;bottom:80px;width:100%;padding-top:282px;background:url(../style/media/bg-tu1-main.png) no-repeat center top;}
+.newtype-cont .btn-list{display:flex;flex-wrap:nowrap;justify-content:space-around;width:68%;margin:0 auto;}
+.newtype-cont .btn-list a{display:inline-block;min-width:90px;padding-top:97px;font-weight:700;text-align:center;line-height:1.5;}
+.newtype-cont .btn-list a:hover,.newtype-cont .btn-list a:focus{color:#ff664d;}
+.newtype-cont .btn-list span{display:block;}
+.newtype-cont .btn-list a:nth-child(1){background:url(../style/media/icon-btn-list01.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(2){background:url(../style/media/icon-btn-list02.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(3){background:url(../style/media/icon-btn-list03.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(4){background:url(../style/media/icon-btn-list04.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(1):hover{background:url(../style/media/icon-btn-list01-hover.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(2):hover{background:url(../style/media/icon-btn-list02-hover.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(3):hover{background:url(../style/media/icon-btn-list03-hover.png) no-repeat center top;}
+.newtype-cont .btn-list a:nth-child(4):hover{background:url(../style/media/icon-btn-list04-hover.png) no-repeat center top;}
+
+/*= tu2 | 학습페이지, Swiper =*/
+.tu2-main{position:absolute;top:145px;width:100%;left:0;padding:0 100px;box-sizing:border-box;}
+.tu2-main li{margin-top:36px;}
+.tu2-main li:first-child{margin:0;}
+.tu2-main dl{min-height:100px;padding:10px 0 0 200px;}
+.tu2-main dt{margin-bottom:6px;color:#222;font-size:16px;font-weight:700;line-height:1.5rem;}
+.tu2-main dd{color:#666;font-size:14px;line-height:1.375rem;}
+
+.tu2-main li:nth-child(1) dl{background:url(../style/media/bg-tu2-main01.png) no-repeat left top;}
+.tu2-main li:nth-child(2) dl{background:url(../style/media/bg-tu2-main02.png) no-repeat left top;}
+.tu2-main li:nth-child(3) dl{background:url(../style/media/bg-tu2-main03.png) no-repeat left top;}
+
+/* tu2 main Swiper */
+.tutorials2 .content .cont-wrap.newtype-cont .swiper-section{height:100%;}
+.tutorials2 .content .cont-wrap.newtype-cont .swiper-section .swiper-container{overflow:hidden;height:100%;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont#tu2 .swiper-section .img{width:100%;bottom:68px;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont#tu2 .swiper-section .img img{width:100%;}
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont#tu2 .swiper-section .tutorial-cont{position:absolute;bottom:4.25rem;}
+
+.tutorials2 .content .cont-wrap.newtype-cont .swiper-section .swiper-pagination{left:50%;bottom:50px;transform:translateX(-50%);}
+.tutorials2 .content .cont-wrap.newtype-cont .swiper-section .swiper-pagination .swiper-pagination-bullet{background:#c9d3e6;}
+.tutorials2 .content .cont-wrap.newtype-cont .swiper-section .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active{background:#ff664d;}
+
+.newtype-cont .swiper-button-next,
+.newtype-cont .swiper-button-prev{width:26px;height:38px;}
+.newtype-cont .swiper-button-next:after,
+.newtype-cont .swiper-button-prev:after{font-size:0;}
+.newtype-cont .swiper-button-prev{left:30px;background:url(../style/media/swiper-button-prev.png) no-repeat center center;}
+.newtype-cont .swiper-button-next{right:30px;background:url(../style/media/swiper-button-next.png) no-repeat center center;}
+
+.newtype-cont .swiper-button-next.swiper-button-disabled,
+.newtype-cont .swiper-button-prev.swiper-button-disabled{display:none;}
+
+/* tutorial step Swiper Common */
+.swiper-sub .swiper-container{overflow:hidden;position:relative;height:100%;padding-top:186px;box-sizing:border-box;}
+.swiper-sub .swiper-container .swiper-slide .sub-img{overflow:hidden;position:relative;}
+.swiper-sub .swiper-container .swiper-slide .sub-img img{vertical-align:top;}
+.swiper-sub .swiper-container .swiper-slide .sub-img .pointLine{overflow:hidden;position:absolute;border-radius:4px;transition:.1s;transition-delay:.1s;opacity:0;}
+.swiper-sub .swiper-container .swiper-slide.swiper-slide-active .sub-img .pointLine{box-shadow:1px 1px 5px rgba(0,0,0,.3);opacity:1;transition:.6s;transition-delay:.6s;}
+
+.swiper-sub-pagenation{position:absolute;top:125px;bottom:auto !important;display:flex;flex-wrap:nowrap;justify-content:space-around;padding:0 80px;box-sizing:border-box;}
+.swiper-sub-pagenation.step-style2{padding:0 180px;}
+.swiper-section .swiper-sub-pagenation .swiper-pagination-bullet{display:inline-block;width:auto;height:auto;color:#858fa3;text-align:center;background:none;opacity:1;}
+.swiper-section .swiper-sub-pagenation .swiper-pagination-bullet em{display:inline-block;width:18px;height:18px;color:#fff;font-size:12px;line-height:18px;border-radius:50%;background:#858fa3;font-weight:400; font-style: normal;}
+.swiper-section .swiper-sub-pagenation .swiper-pagination-bullet span{display:block;margin-top:6px;font-weight:700;}
+
+.swiper-section .swiper-sub-pagenation .swiper-pagination-bullet.swiper-pagination-bullet-active{color:#ff664d;}
+.swiper-section .swiper-sub-pagenation .swiper-pagination-bullet.swiper-pagination-bullet-active em{background:#ff664d;}
+
+/*= tu3 | MyLearning =*/
+.tutorials2 .content .cont-wrap.newtype-cont .right .tu-cont#tu3 .swiper-container .swiper-wrapper .swiper-slide img{width:auto;}
+
+/*= tu4 | 검색 =*/
+.newtype-cont .tu4-main{position:absolute;bottom:62px;width:100%;}
+
+/*= tu5 | 커뮤니티 =*/
+.newtype-cont .tu5-main{position:absolute;top:164px;width:100%;padding-top:282px;background:url(../style/media/bg-tu5-main.png) no-repeat center top;}
+.newtype-cont .tu5-main ul{position:relative;display:flex;flex-wrap:nowrap;justify-content:space-around;width:80%;margin:0 auto;text-align:center;}
+.newtype-cont .tu5-main ul:after{position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);width:1px;height:60px;background:#c9d3e6;content:'';}
+.newtype-cont .tu5-main li{min-width:210px;}
+.newtype-cont .tu5-main dt{color:#222;font-weight:700;line-height:1.5rem;}
+.newtype-cont .tu5-main dd{margin-top:6px;color:#666;font-size:14px;line-height:1.375rem;}
+
+.newtype-cont .tu5-sub{position:absolute;bottom:62px;width:100%;}
+
+/* tutorial step pointLine */
+.tu2-step1-1 .pointLine{left:105px;bottom:20px;}
+.tu2-step1-2 .pointLine{right:105px;bottom:156px;}
+.tu2-step1-3 .pointLine{right:105px;bottom:15px;}
+.tu2-step1-4 .pointLine{right:105px;top:37px;}
+.tu2-step1-5 .pointLine{right:105px;bottom:137px;}
+.tu2-step1-6 .pointLine{right:105px;bottom:15px;}
+
+.tu2-step2-1 .pointLine{right:110px;bottom:87px;}
+.tu2-step2-2 .pointLine{right:110px;bottom:94px;}
+
+.tu3-step1 .pointLine{right:120px;bottom:15px;}
+.tu3-step2 .pointLine{right:177px;top:116px;}
+.tu3-step3 .pointLine{left:107px;top:119px;}
+
+.tu5-step1-1 .pointLine{left:100px;top:87px;}
+.tu5-step1-2 .pointLine{left:120px;bottom:15px;}
+.tu5-step2-1 .pointLine{left:116px;top:86px;}
+.tu5-step2-2 .pointLine{right:124px;bottom:15px;}

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
 import { SkProfileService } from '../../../../../profile/stores';
+import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import {
   deleteStudentByRollBookId,
   findIsJsonStudentByCube,
@@ -38,6 +39,11 @@ const REJECTED = '반려됨';
 const WAIT = '학습예정';
 const JOIN = '작성하기';
 
+function isEmpty(text: string) {
+  return text === null || text === '';
+}
+
+
 interface ChangeStateOption {
   params: LectureRouterParams;
   studentJoins?: StudentJoin[];
@@ -61,6 +67,7 @@ async function submit(
   const {
     skProfile: { member },
   } = SkProfileService.instance;
+
   let nextStudentCdo: StudentCdo = {
     rollBookId,
     name: member.name,
@@ -194,6 +201,7 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
     cubeIntroId,
     studentJoin: { rollBookId },
     params,
+    hasSurvey,
   } = option;
 
   if (contentsId !== undefined) {
@@ -213,7 +221,13 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
       const { linkMediaUrl } = mediaContents;
       if (stateText === PROGRESS) {
         const cubeIntro = await findCubeIntro(cubeIntroId);
-        if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+
+        if (cubeIntro === undefined ||
+          (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
+            && isEmpty(cubeIntro.reportFileBox.fileBoxId))
+          )
+
+        ) {
           if (!hasTest) {
             return {
               ...lectureState,
@@ -222,7 +236,7 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
               actionText: COMPLETE,
               action: () => {
                 linkVideoOpen(linkMediaUrl)
-                complete(params, rollBookId)
+                complete(params, rollBookId, hasSurvey)
               },
               actionClassName: 'bg2',
               stateText,
@@ -288,7 +302,7 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
   //     c.name && c.name.toLowerCase && c.name.toLowerCase().endsWith('.pdf')
   //   )) {
   //     if (stateText === PROGRESS) {
-  //       if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
+  //       if (cubeIntro === undefined || (cubeIntro.reportFileBox === null || isEmpty cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null)) {
   //         if (!hasTest) {
   //           return {
   //             ...lectureState,
@@ -306,11 +320,14 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
 
   if (stateText === PROGRESS) {
     const cubeIntro = await findCubeIntro(cubeIntroId);
-    if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
+    if (cubeIntro === undefined ||
+      (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
+        && isEmpty(cubeIntro.reportFileBox.fileBoxId))
+      )) {
       if (!hasTest) {
         return {
           ...lectureState,
-          action: () => complete(params, rollBookId),
+          action: () => complete(params, rollBookId, hasSurvey),
           canAction: true,
           actionText: COMPLETE,
           stateText,
@@ -382,6 +399,7 @@ async function approve(
   const {
     skProfile: { member },
   } = SkProfileService.instance;
+  const myTrainingService = MyTrainingService.instance;
   // classroomModal.show
   let nextStudentCdo: StudentCdo = {
     rollBookId,
@@ -428,6 +446,12 @@ async function approve(
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+
+  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+  /* 메인 페이지 학습중 스토리지  업데이트를 위한 로직 추가. InProgressLearning.tsx 파일에서 참조 가능합니다! */
+  await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
 }
 
 async function join(
@@ -487,10 +511,23 @@ async function join(
   requestLectureStructure(params.lectureParams, params.pathname);
 }
 
-async function complete(params: LectureRouterParams, rollBookId: string) {
+async function complete(params: LectureRouterParams, rollBookId: string, hasSurvey: boolean) {
+  if (hasSurvey) {
+    reactAlert({
+      title: '안내',
+      message: 'Survey 설문 참여를 해주세요.',
+    })
+  }
+  const myTrainingService = MyTrainingService.instance;
   await markComplete({ rollBookId });
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+
+  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
+  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+  sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
+  await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
+
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
@@ -545,11 +582,14 @@ async function getStateWhenApproved(
       case 'Experiential':
         if (stateText === PROGRESS) {
           const cubeIntro = await findCubeIntro(cubeIntroId);
-          if (cubeIntro === undefined || cubeIntro.reportFileBox === null || cubeIntro.reportFileBox.reportName === '' || cubeIntro.reportFileBox.reportName === null) {
+          if (cubeIntro === undefined ||
+            (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
+              && isEmpty(cubeIntro.reportFileBox.fileBoxId))
+            )) {
             if (!hasTest) {
               return {
                 ...lectureState,
-                action: () => complete(params, rollBookId),
+                action: () => complete(params, rollBookId, hasSurvey),
                 canAction: true,
                 actionText: COMPLETE,
                 stateText,
@@ -566,6 +606,11 @@ async function getStateWhenApproved(
           stateText,
         };
       case 'ClassRoomLecture':
+        return {
+          ...lectureState,
+          hideAction: true,
+          stateText: student.learningState === null ? WAIT : stateText,
+        };
       case 'ELearning':
         /**
          * 학습완료
@@ -575,15 +620,38 @@ async function getStateWhenApproved(
          */
         return {
           ...lectureState,
-          hideAction: true,
+          actionClassName: 'bg',
+          hideAction: student.learningState === null,
+          canAction: student.learningState !== null,
+          action: () => {
+            if (document.getElementById('webpage-link') !== null) {
+              document.getElementById('webpage-link')?.click();
+            }
+          },
+          actionText: APPROVE,
           stateText: student.learningState === null ? WAIT : stateText,
         };
+        {/* Community => Task 데이터 현행화 후 수정 예정*/ }
+      case 'Task':
       case 'Community':
-        return {
-          ...lectureState,
-          hideAction: true,
-          stateText: JOINED,
-        };
+        if (stateText === PROGRESS) {
+          return {
+            ...lectureState,
+            actionClassName: 'bg',
+            hideAction: false,
+            canAction: true,
+            href: '#create',
+            actionText: JOIN,
+            stateText: PROGRESS,
+          };
+        }
+        if (stateText === COMPLETE) {
+          return {
+            ...lectureState,
+            hideAction: true,
+            stateText: COMPLETE,
+          };
+        }
     }
     if (cubeType === 'Video') {
       const mLectureState = await getVideoApprovedState(option, stateText);
@@ -688,12 +756,15 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
           }
         },
       };
+      {/* Community => Task 데이터 현행화 후 수정 예정*/ }
+    case 'Task':
     case 'Community':
       return {
         ...lectureState,
         canAction: true,
         actionText: JOIN,
         action: () => join(params, rollBookId, student),
+        href: '#create',
         hideState: true,
       };
   }

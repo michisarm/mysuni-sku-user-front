@@ -17,6 +17,10 @@ import {
   LectureStructureTestItem,
 } from '../../../viewModel/LectureStructure';
 
+function isEmpty(text: string) {
+  return text === null || text === '';
+}
+
 async function getTestItem(
   coursePlanComplex: CoursePlanComplex,
   params: LectureParams,
@@ -36,14 +40,16 @@ async function getTestItem(
         examination.id,
         denizenId
       );
-      if (findAnswerSheetData.result !== null) {
-        state = 'Progress';
-        if (
-          student !== undefined &&
-          (student.learningState === 'Passed' ||
-            student.learningState === 'TestPassed')
-        ) {
-          state = 'Completed';
+      if (student !== undefined) {
+        if (findAnswerSheetData.result !== null) {
+          state = 'Progress';
+          if (
+            student !== undefined &&
+            (student.learningState === 'Passed' ||
+              student.learningState === 'TestPassed')
+          ) {
+            state = 'Completed';
+          }
         }
       }
     }
@@ -115,8 +121,9 @@ async function getReportItem(
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   if (
     coursePlanComplex.coursePlan.reportFileBox !== null &&
-    coursePlanComplex.coursePlan.reportFileBox.reportName !== '' &&
-    coursePlanComplex.coursePlan.reportFileBox.reportName !== null
+    (!isEmpty(coursePlanComplex.coursePlan.reportFileBox.reportName) ||
+      !isEmpty(coursePlanComplex.coursePlan.reportFileBox.reportQuestion) ||
+      !isEmpty(coursePlanComplex.coursePlan.reportFileBox.fileBoxId))
   ) {
     let state: State = 'None';
     if (student !== undefined && student !== null) {
@@ -127,7 +134,7 @@ async function getReportItem(
         state = 'Progress';
       }
       if (student.learningState === 'Passed') {
-        state = 'Completed'
+        state = 'Completed';
       }
     }
     const item: LectureStructureReportItem = {

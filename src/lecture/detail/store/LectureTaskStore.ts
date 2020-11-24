@@ -1,3 +1,4 @@
+import { TaskViewType } from '../service/useLectureTask/useLectureTaskViewType';
 import { LectureTask } from '../viewModel/LectureTask';
 import { LectureTaskDetail } from '../viewModel/LectureTaskDetail';
 // import {
@@ -20,7 +21,7 @@ const [
   setLectureTaskViewType,
   onLectureTaskViewType,
   getLectureTaskViewType,
-] = createStore<string>('list');
+] = createStore<TaskViewType>('list');
 
 const [
   setLectureTaskDetail,
@@ -28,9 +29,9 @@ const [
   getLectureTaskDetail,
 ] = createStore<LectureTaskDetail>();
 
-const [setLectureTaskTab, onLectureTaskTab, getLectureTaskTab] = createStore<
+const [setLectureTaskTab, onLectureTaskTab, getLectureTaskTab, useLectureTaskTab] = createStore<
   string
->('Posts');
+>('Overview');
 
 export {
   setLectureTaskItem,
@@ -48,4 +49,5 @@ export {
   setLectureTaskTab,
   onLectureTaskTab,
   getLectureTaskTab,
+  useLectureTaskTab,
 };

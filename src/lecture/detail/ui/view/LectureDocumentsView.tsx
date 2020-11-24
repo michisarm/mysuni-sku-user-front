@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
 import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { Document, Page } from 'react-pdf';
@@ -16,6 +16,7 @@ import LearningState from 'lecture/detail/model/LearningState';
 import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
+import { reactAlert } from '@nara.platform/accent';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -39,11 +40,8 @@ interface LectureDocumentsViewProps {
 }
 
 // 차후 진행 내역
-// 파일 형식 pdf = 페이지 끝까지 확인 
+// 파일 형식 pdf = 페이지 끝까지 확인
 // 파일 형식 !pdf = 다운로드
-
-
-
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
 // const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {
@@ -67,8 +65,25 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [openToggle, setOpenToggle] = useState<boolean>(false);
   const [courseName, setCourseName] = useState<any>([]);
   const [courseIdx, setCourseIdx] = useState<number>(0);
+  const [pageWidth, setPageWidth] = useState<number>(0);
 
-  // const [lectureState] = useLectureState();
+  const [lectureState] = useLectureState();
+
+  // useEffect(() => {
+  //   if (lectureState === null) {
+  //     return
+  //   }
+  //   if(learningState !== 'Passed') {
+  //     reactAlert({
+  //       title: '',
+  //       message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.
+  //       <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
+  //     });
+  //   }
+
+  // }, [lectureState]);
+
+  const headerWidth: any = useRef();
 
   const nameList: string[] = [''];
 
@@ -83,7 +98,10 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           setFiles(filesArr);
           setCourseName(filesArr);
           for (let i = 0; i < filesArr.length; ++i) {
-            setPdfUrl(oldArray => [...oldArray, '/api/depot/depotFile/flow/download/' + filesArr[i].id]);
+            setPdfUrl(oldArray => [
+              ...oldArray,
+              '/api/depot/depotFile/flow/download/' + filesArr[i].id,
+            ]);
           }
         }
         // id 1개 일때
@@ -100,13 +118,23 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     nameList[i] = courseName[i].name;
   }
 
+  const updateHeaderWidth = () => {
+    if (headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
+      setPageWidth(headerWidth.current?.clientWidth!);
+    }
+  };
 
   useEffect(() => {
-    return ()=>{
+    return () => {
       setPdfUrl([]);
       setFiles([]);
       setFile('');
-    }
+    };
+  }, []);
+
+  useEffect(() => {
+    updateHeaderWidth();
+    window.addEventListener('resize', updateHeaderWidth);
   }, []);
 
   useEffect(() => {
@@ -120,21 +148,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [bar, setBar] = useState<number>(4.7);
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
-
-  // useEffect(() => {
-  //   if (lectureState === undefined || lectureState.action === undefined) {
-  //     return;
-  //   }
-  //   if (files === undefined) {
-  //     return;
-  //   }
-  //   if (numPages === pageNumber) {
-  //     if (files.length === 1) {
-  //       lectureState.action();
-  //     }
-  //   }
-  //   console.log('LectureDocumentsView', numPages, pageNumber);
-  // }, [numPages, pageNumber, lectureState, files]);
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
@@ -167,16 +180,22 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   };
 
   useEffect(() => {
+    return () => {
+      setPageNumber(1);
+    };
+  }, [fileBoxId, pdfUrl, params]);
+
+  useEffect(() => {
     // setTimeout(() => {
-      setFile({
-        url: pdfUrl[courseIdx],
-        httpHeaders: {
-          audienceId: patronInfo.getPatronId(),
-          Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
-        },
-      });
+    setFile({
+      url: pdfUrl[courseIdx],
+      httpHeaders: {
+        audienceId: patronInfo.getPatronId(),
+        Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
+      },
+    });
     // }, 500);
-  }, [pdfUrl,courseIdx,params]);
+  }, [pdfUrl, courseIdx, params]);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
@@ -301,7 +320,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   return (
     <>
-      <div className="documents-viewer">
+      <div className="documents-viewer" ref={headerWidth}>
         <div className="pdf-header">
           <i className="list24 icon" />
           <span className="pdf-header-title">
@@ -352,7 +371,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         ) : (
           <>
             <Document
-              renderMode="svg"
+              renderMode="canvas"
               // file="/assets/docs/sample-pdf.pdf"
               // file="/api/depot/depotFile/flow/download/37-2"
               file={file}
@@ -381,7 +400,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
               <Page
                 pageNumber={pageNumber}
                 renderAnnotationLayer={false}
-                width={1200}
+                width={pageWidth}
               />
             </Document>
 

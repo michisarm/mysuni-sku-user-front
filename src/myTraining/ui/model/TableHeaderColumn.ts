@@ -22,7 +22,7 @@ const TableHeaderColumn = {
     { key: 4, text: 'Level' },
     { key: 5, text: '진행률' },
     { key: 6, text: '학습시간', icon: true },
-    { key: 7, text: '학습시작일', icon: true },
+    { key: 7, text: '최근학습일', icon: true },
   ],
 
   InMyList: [

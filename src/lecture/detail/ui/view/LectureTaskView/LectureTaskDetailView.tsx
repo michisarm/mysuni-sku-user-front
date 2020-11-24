@@ -5,6 +5,8 @@ import { useState } from 'react';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { Button, Icon } from 'semantic-ui-react';
+import { useLectureTaskViewType } from '../../../service/useLectureTask/useLectureTaskViewType';
+import { useHistory } from 'react-router-dom';
 
 interface LectureTaskDetailViewProps {
   taskId: string;
@@ -16,7 +18,7 @@ interface LectureTaskDetailViewProps {
   handleOnClickDelete: (id: string, type: string) => void;
 }
 
-const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTeskView({
+const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTaskDetailView({
   taskDetail,
   detailType,
   taskId,
@@ -25,6 +27,8 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   handleOnClickReplies,
   handleOnClickDelete,
 }) {
+  const [viewType] = useLectureTaskViewType();
+  const history = useHistory();
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -63,6 +67,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   }, []);
 
   const onClickReplies = useCallback(() => {
+    history.push('#reply');
     handleOnClickReplies(taskId);
   }, []);
 
@@ -83,17 +88,14 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             onClickReplies={onClickReplies}
             onClickDelete={OnClickDelete}
           />
-
           <div className="class-guide-txt fn-parents ql-snow">
-            <div className="text ql-editor">
-              <div
-                className="text description ql-editor"
-                dangerouslySetInnerHTML={{
-                  __html: taskDetail.contents,
-                }}
-                ref={textContainerRef}
-              />
-            </div>
+            <div
+              className="text ql-editor"
+              dangerouslySetInnerHTML={{
+                __html: taskDetail.contents,
+              }}
+              ref={textContainerRef}
+            />
           </div>
           <div className="ov-paragraph download-area task-read-down">
             <div className="detail">
@@ -137,13 +139,15 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               <Icon className="delete" />
               delete
             </Button>
-            <Button
-              className="ui icon button left post reply"
-              onClick={onClickReplies}
-            >
-              <Icon className="reply" />
-              reply
-            </Button>
+            {viewType !== 'reply' && (
+              <Button
+                className="ui icon button left post reply"
+                onClick={onClickReplies}
+              >
+                <Icon className="reply" />
+                reply
+              </Button>
+            )}
             <Button
               className="ui icon button left post list2"
               onClick={OnClicList}

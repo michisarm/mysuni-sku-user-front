@@ -53,10 +53,6 @@ export function useLectureWatchLog(): [
   }, []);
 
   useEffect(() => {
-    params && getCubeWatchLogItem(params);
-  }, [params]);
-
-  useEffect(() => {
     const next = `useLectureWatchLog-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);

@@ -15,10 +15,11 @@ import {
   LectureTask,
   // LectureTaskParams,
 } from 'lecture/detail/viewModel/LectureTask';
+import { useLocalStore } from 'mobx-react';
 /* eslint-disable consistent-return */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { PatronKey } from 'shared/model';
 import {
   LectureStructureCourseItemParams,
@@ -39,26 +40,23 @@ export function useLectureTask(): [TaskValue] {
   const params = useParams<
     LectureStructureCourseItemParams & LectureStructureCubeItemParams
   >();
+  const { pathname } = useLocation();
   const [viewFlag, setViewFlag] = useState<string>('list');
   // const [tabFlag, setTabFlag] = useState<string>('Posts');
 
   const param = useLectureRouterParams();
 
   useEffect(() => {
-    console.log('params', params)
-    if (param && param.contentId !== undefined) {
-      setLectureTaskItem({
-        items: [],
-        totalCount: 0,
-        empty: false,
-        offset: 0,
-        limit: 10,
-      });
-      setLectureTaskViewType('list');
-      setLectureTaskTab('Posts');
-      setLectureTaskOffset(0);
-    }
-  }, [params]);
+    setLectureTaskItem({
+      items: [],
+      totalCount: 0,
+      empty: false,
+      offset: 0,
+      limit: 10,
+    });
+    setLectureTaskTab('Overview');
+    setLectureTaskOffset(0);
+  }, [pathname]);
 
   useEffect(() => {
     const next = `useLectureTask-${++subscriberIdRef}`;
@@ -103,12 +101,12 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskViewType(next => {
-      if(next === 'edit') {
+      if (next === 'edit') {
         return
       }
       setViewFlag(next!);
       getCubeLectureTaskDetail(next!);
-      if (next === 'create' || 'reply') {
+      if (next === 'create') {
         setLectureTaskDetail();
       }
       if (next === 'list') {
@@ -124,10 +122,9 @@ export function useLectureTask(): [TaskValue] {
     }
     return onLectureTaskTab(next => {
       if (next === 'Overview') {
-        setLectureTaskViewType('Overview');
         return;
       }
-      
+
       setLectureTaskItem();
       setLectureTaskOffset(0);
 

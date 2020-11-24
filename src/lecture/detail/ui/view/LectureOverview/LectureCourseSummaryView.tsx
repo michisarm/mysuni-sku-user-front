@@ -10,6 +10,13 @@ import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 
+function numberWithCommas(x: number) {
+  let s = x.toString();
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
+  return s;
+}
+
 interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
   lectureReview?: LectureReview;
@@ -111,7 +118,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               )}
               <Label className="bold onlytext">
                 <span className="header-span-first">이수</span>
-                <span>{lectureSummary.passedCount}</span>
+                <span>{numberWithCommas(lectureSummary.passedCount)}</span>
                 <span>명</span>
               </Label>
               <Label className="bold onlytext">

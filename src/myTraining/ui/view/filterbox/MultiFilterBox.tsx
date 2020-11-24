@@ -346,6 +346,7 @@ function MultiFilterBox(props: Props) {
             case FilterConditionName.LearningTime:
             case FilterConditionName.Certification:
             case FilterConditionName.LearningSchedule:
+            case FilterConditionName.DifficultyLevel:
               return true;
             default:
               return false;
@@ -366,6 +367,7 @@ function MultiFilterBox(props: Props) {
           case FilterConditionName.Required:
           case FilterConditionName.LearningTime:
           case FilterConditionName.LearningSchedule:
+          case FilterConditionName.DifficultyLevel:
             return true;
           default:
             return false;
@@ -385,7 +387,6 @@ function MultiFilterBox(props: Props) {
           <div className="title">
             Filter
             <a className="result-button" onClick={onClickShowResult}>
-              <img src={result_button_img} alt="btn" className="result-btn-img" />
               <span className="result-text">결과보기</span>
             </a>
           </div>
@@ -632,7 +633,6 @@ function MultiFilterBox(props: Props) {
             onClearOne={onClearOne}
           />
           <div className="moreAll">
-            <span className="arrow-more">{'->'}</span>
             <a className="more-text" onClick={onClickShowResult}>결과보기</a>
           </div>
         </>

@@ -196,9 +196,11 @@ export async function getCubeLectureOverview(
   const lectureInstructor = getLectureInstructor(cubeIntro);
   setLectureInstructor(lectureInstructor);
   setLecturePrecourse(getEmptyLecturePrecourse());
-  if (personalCube.contents.fileBoxId !== '') {
+  if (personalCube.contents.fileBoxId !== '' && personalCube.contents.fileBoxId !== null && personalCube.contents.fileBoxId !== undefined) {
     const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
     setLectureFile(lectureFile);
+  } else {
+    setLectureFile();
   }
   const lectureComment = await getLectureComment(lectureCard);
   if (

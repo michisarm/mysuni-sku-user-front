@@ -16,6 +16,7 @@ import {
 } from '../api/searchApi';
 import { createStore } from '../../community/store/Store';
 import moment from 'moment';
+import { SkProfileService } from '../../profile/stores';
 
 interface Props {
   isOnFilter: boolean;
@@ -685,7 +686,8 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     if (searchValue === '') {
       return;
     }
-    findColleageGroup(searchValue).then(searchResult => {
+    const companyCode = SkProfileService.instance.profileMemberCompanyCode;
+    findColleageGroup(searchValue, companyCode).then(searchResult => {
       if (searchResult === undefined) {
         setCollegeOptions([]);
       } else {
@@ -698,7 +700,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         );
       }
     });
-    findCPGroup(searchValue).then(searchResult => {
+    findCPGroup(searchValue, companyCode).then(searchResult => {
       if (searchResult === undefined) {
         setOrganizerOptions([]);
       } else {
@@ -711,7 +713,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         );
       }
     });
-    findCubeTypeGroup(searchValue).then(searchResult => {
+    findCubeTypeGroup(searchValue, companyCode).then(searchResult => {
       if (searchResult === undefined) {
         setCubeTypeOptions([]);
       } else {
