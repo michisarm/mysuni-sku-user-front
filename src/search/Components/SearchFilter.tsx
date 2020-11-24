@@ -1529,7 +1529,6 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         </table>
       </div>
       <div className="moreAll">
-        <span className="arrow-more">→</span>
         <a
           className="more-text"
           onClick={() => {
