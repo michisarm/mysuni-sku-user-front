@@ -83,7 +83,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
       });
     }
-  }, [lectureState]);
+  }, [lectureState, pathname]);
 
   useEffect(() => {
     setProgressAlert(false)
