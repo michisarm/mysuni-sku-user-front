@@ -15,16 +15,11 @@ import {
   LectureTask,
   // LectureTaskParams,
 } from 'lecture/detail/viewModel/LectureTask';
-import { useLocalStore } from 'mobx-react';
 /* eslint-disable consistent-return */
+import { useEffect, useState } from 'react';
+import { useLocation, } from 'react-router-dom';
+import { parseLectureParamsFromPathname } from '../../utility/lectureRouterParamsHelper';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { PatronKey } from 'shared/model';
-import {
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-} from '../../viewModel/LectureTest';
 import { useLectureRouterParams } from '../useLectureRouterParams';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTask } from './utility/getCubeLectureTask';
@@ -37,9 +32,7 @@ export function useLectureTask(): [TaskValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [taskValue, setTaskValue] = useState<TaskValue>();
   const [limit, setLimit] = useState<number>(10);
-  const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
-  >();
+
   const { pathname } = useLocation();
   const [viewFlag, setViewFlag] = useState<string>('list');
   // const [tabFlag, setTabFlag] = useState<string>('Posts');
@@ -77,12 +70,11 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskOffset(next => {
-      let contentId = '';
-      let lectureId = '';
-      if (param) {
-        contentId = param.contentId;
-        lectureId = param.lectureId;
+      const params = parseLectureParamsFromPathname(pathname);
+      if (params === undefined) {
+        return;
       }
+      const { contentId, lectureId } = params
       if (getLectureTaskTab() === 'Overview') {
         return;
       }
@@ -94,7 +86,7 @@ export function useLectureTask(): [TaskValue] {
         getLectureTaskTab() || 'post'
       );
     }, subscriberId);
-  }, [subscriberId]);
+  }, [subscriberId, pathname]);
 
   useEffect(() => {
     if (subscriberId === undefined) {
