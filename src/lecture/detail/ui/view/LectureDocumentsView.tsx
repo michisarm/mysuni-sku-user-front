@@ -17,6 +17,10 @@ import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmPr
 import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
 import { reactAlert } from '@nara.platform/accent';
+import {
+  getLectureState,
+  setLectureState,
+} from '../../store/LectureStateStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -68,14 +72,15 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [pageWidth, setPageWidth] = useState<number>(0);
   const [progressAlert, setProgressAlert] = useState<boolean>(false);
 
-  const [lectureState] = useLectureState();
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (lectureState === undefined) {
-      return
-    }
-    if(lectureState?.learningState === 'Progress' && !progressAlert) {
+    const mLectureState = getLectureState();
+    if (
+      mLectureState?.type === 'Documents' &&
+      mLectureState?.learningState === 'Progress' &&
+      !progressAlert
+    ) {
       setProgressAlert(true);
       reactAlert({
         title: '',
@@ -83,11 +88,14 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
       });
     }
-  }, [lectureState]);
+    return () => {
+      setLectureState();
+    };
+  }, [pathname]);
 
   useEffect(() => {
-    setProgressAlert(false)
-  }, [pathname])
+    setProgressAlert(false);
+  }, [pathname]);
 
   const headerWidth: any = useRef();
 

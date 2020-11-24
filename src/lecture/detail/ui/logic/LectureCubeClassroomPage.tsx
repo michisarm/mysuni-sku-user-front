@@ -1,4 +1,3 @@
-import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 import React, { useEffect } from 'react';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
@@ -14,6 +13,7 @@ import {
   setLectureSubcategory,
   setLectureTags,
 } from '../../store/LectureOverviewStore';
+import { setLectureState } from '../../store/LectureStateStore';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';

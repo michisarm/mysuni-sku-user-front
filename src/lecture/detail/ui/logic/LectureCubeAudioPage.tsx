@@ -6,7 +6,6 @@
 
 import { getCubeLectureOverview } from 'lecture/detail/service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
-import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 import React, { useEffect } from 'react';
 import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import {
@@ -21,6 +20,7 @@ import {
   setLectureSubcategory,
   setLectureTags,
 } from '../../store/LectureOverviewStore';
+import { setLectureState } from '../../store/LectureStateStore';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureAudioContainer from './LectureAudioContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
