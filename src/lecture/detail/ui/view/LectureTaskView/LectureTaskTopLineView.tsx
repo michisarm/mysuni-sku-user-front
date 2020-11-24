@@ -4,21 +4,22 @@ import { observer } from 'mobx-react';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ListPanelTopLine } from 'shared';
+import { useLectureState } from '../../../service/useLectureState/useLectureState';
 
 interface Props {
   totalCount: number;
   handelClickCreateTask: () => void;
 }
 
-@reactAutobind
-@observer
-class LectureTaskTopLineView extends React.Component<Props> {
-  render() {
-    //
-    const { totalCount, handelClickCreateTask } = this.props;
-
-    return (
-      <ListPanelTopLine className="size-type3" count={totalCount}>
+const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView({
+  totalCount,
+  handelClickCreateTask,
+}) {
+  const [lectureState] = useLectureState();
+  return (
+    <ListPanelTopLine className="size-type3" count={totalCount}>
+      {(lectureState?.state === 'Progress' ||
+        lectureState?.state === 'Completed') && (
         <div className="right-wrap">
           <a
             className="ui icon button left post"
@@ -29,9 +30,9 @@ class LectureTaskTopLineView extends React.Component<Props> {
             post
           </a>
         </div>
-      </ListPanelTopLine>
-    );
-  }
-}
+      )}
+    </ListPanelTopLine>
+  );
+};
 
 export default LectureTaskTopLineView;

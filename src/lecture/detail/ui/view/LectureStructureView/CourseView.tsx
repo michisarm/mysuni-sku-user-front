@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import {
@@ -84,10 +84,9 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             if (item.type === 'CUBE') {
               const cube = item as LectureStructureCubeItem;
               return (
-                <>
+                <Fragment key={cube.id}>
                   {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
                     <CubeView
-                      key={cube.id}
                       name={cube.name}
                       state={cube.state}
                       activated={cube.activated}
@@ -99,7 +98,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   )}
                   {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
                     <DurationableCubeView
-                      key={cube.id}
                       name={cube.name}
                       state={cube.state}
                       activated={cube.activated}
@@ -141,7 +139,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       can={cube.report.can}
                     />
                   )}
-                </>
+                </Fragment>
               );
             }
             if (item.type === 'DISCUSSION') {

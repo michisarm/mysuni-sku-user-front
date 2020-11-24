@@ -138,6 +138,8 @@ function parseCoursePlanComplex(
         path: toPath(cubeParams),
         serviceId,
         lectureView,
+        cube: lectureView.personalCube,
+        cubeIntro: lectureView.cubeIntro,
         can: true,
         order: 0,
         type: 'CUBE',
