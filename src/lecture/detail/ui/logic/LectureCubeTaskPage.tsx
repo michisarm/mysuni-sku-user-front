@@ -16,6 +16,7 @@ import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/uti
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureTaskContainer from './LectureTaskContainer';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
+import { setLectureState } from '../../store/LectureStateStore';
 
 function LectureCubeTaskPage() {
   const params = useLectureRouterParams();
@@ -36,6 +37,7 @@ function LectureCubeTaskPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
   return (
