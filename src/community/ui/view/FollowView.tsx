@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 
 import ProfileImg from '../../../style/media/profile-110-px-sample-4.png';
 
+import Modal from './CommunityProfile/MyProfileModalFollower';
+
 interface FollowViewProps {}
 
 const FollowView: React.FC<FollowViewProps> = function FollowView() {
