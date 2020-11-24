@@ -92,6 +92,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            answerResult={answerResult}
           />
         )}
         {question.questionType === 'MultiChoice' && (
@@ -100,6 +101,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            answerResult={answerResult}
           />
         )}
         {question.questionType === 'ShortAnswer' && (

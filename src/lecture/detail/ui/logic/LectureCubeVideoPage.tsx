@@ -17,7 +17,7 @@ import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import LectureVideoContainer from './LectureVideoContainer';
-import { setLectureState } from '../../store/LectureStateStore';
+import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 
 function LectureCubeVideoPage() {
   const params = useLectureRouterParams();
