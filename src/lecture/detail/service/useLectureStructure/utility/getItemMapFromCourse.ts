@@ -97,10 +97,14 @@ async function getSurveyItem(
         state = 'Progress';
       }
     }
+    let questionsLength = 0;
+    if (questions !== undefined && questions !== null) {
+      questionsLength = questions.length;
+    }
     const item: LectureStructureSurveyItem = {
       id: surveyFormId,
       name: title,
-      questionCount: questions.length,
+      questionCount: questionsLength,
       params,
       routerParams,
       path: `${toPath(params)}/survey`,
