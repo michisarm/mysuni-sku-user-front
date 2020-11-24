@@ -16,6 +16,12 @@ import LectureClassroom, {
 } from '../../../viewModel/LectureClassroom';
 import moment from 'moment';
 
+function numberWithCommas(x: number) {
+  let s = x.toString();
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
+  return s;
+}
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
   lectureInstructor?: LectureInstructor;
@@ -155,7 +161,7 @@ function getLearningPeriod(classrooms: Classroom[]): string | undefined {
 function getCapacity(classrooms: Classroom[]): string | undefined {
   const classroom = getClassroom(classrooms);
   if (classroom !== undefined) {
-    return `${classroom.capacity}`;
+    return `${numberWithCommas(classroom.capacity)}`;
   }
 }
 
@@ -269,7 +275,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 lectureSummary.cubeType !== 'Task' && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">이수</span>
-                    <span>{lectureSummary.passedCount}</span>
+                    <span>{numberWithCommas(lectureSummary.passedCount)}</span>
                     <span>명</span>
                   </Label>
                 )}
