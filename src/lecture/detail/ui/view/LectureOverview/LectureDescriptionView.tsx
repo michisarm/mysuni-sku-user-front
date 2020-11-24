@@ -5,17 +5,24 @@ import './LectureDescriptionView.css';
 
 interface LectureDescriptionViewProps {
   htmlContent: string;
+  getHeightFunc?: () => void;
 }
 
-function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
+function LectureDescriptionView({ htmlContent, getHeightFunc }: any) {
   const [descriptionOpen, setDescriptionOpen] = useState<boolean>();
   const [showMoreButton, setShowMoreButton] = useState<boolean>();
   const textContainerRef = useRef<HTMLDivElement>(null);
+
+  let textContainer: any;
   const toggleMore = useCallback(() => {
+    setTimeout(() => {
+      getHeightFunc(textContainer);
+    }, 500);
     setDescriptionOpen(!descriptionOpen);
   }, [descriptionOpen]);
+
   useEffect(() => {
-    const textContainer = textContainerRef.current;
+    textContainer = textContainerRef.current;
     if (textContainer !== null) {
       if (textContainer.clientHeight < textContainer.scrollHeight) {
         setShowMoreButton(true);
@@ -37,7 +44,7 @@ function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
         }
       }
     }
-  }, []);
+  }, [descriptionOpen]);
   return (
     <div className="class-guide-txt fn-parents ql-snow">
       <div
