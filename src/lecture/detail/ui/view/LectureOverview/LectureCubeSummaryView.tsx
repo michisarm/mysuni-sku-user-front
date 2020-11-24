@@ -325,20 +325,23 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         <div className="title-area">
           <div className="header-deatil">
             <div className="item">
-              <div className="header-rating">
-                <Rating
-                  defaultRating={0}
-                  maxRating={5}
-                  rating={lectureReview && lectureReview.average}
-                  disabled
-                  className="fixed-rating"
-                />
-                <span>
-                  {lectureReview !== undefined
-                    ? `${Math.round(lectureReview.average * 10) / 10}`
-                    : ''}
-                </span>
-              </div>
+              {lectureSummary.cubeType !== 'Task' &&
+                lectureSummary.cubeType !== 'Community' && (
+                  <div className="header-rating">
+                    <Rating
+                      defaultRating={0}
+                      maxRating={5}
+                      rating={lectureReview && lectureReview.average}
+                      disabled
+                      className="fixed-rating"
+                    />
+                    <span>
+                      {lectureReview !== undefined
+                        ? `${Math.round(lectureReview.average * 10) / 10}`
+                        : ''}
+                    </span>
+                  </div>
+                )}
             </div>
           </div>
         </div>
