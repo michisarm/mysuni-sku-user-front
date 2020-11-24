@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLectureCourseOverview } from '../../../service/useLectureCourseOverview/useLectureCourseOverview';
 import { useLectureStructure } from '../../../service/useLectureStructure/useLectureStructure';
 import LectureDetailLayout from '../../view/LectureDetailLayout';
@@ -9,11 +9,26 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 function LectureCourseOverviewPage() {
   useLectureCourseOverview();
   const [lectureStructure] = useLectureStructure();
+  const [navigatorState, setNavigatorState] = useState<any>();
+
+  const navigatorClose = (el: any) => {
+    return setNavigatorState(el);
+  };
+
   return (
     <LectureDetailLayout>
-      {lectureStructure !== undefined && <LectureCubeNavigatorView lectureStructure={lectureStructure}/>}
+      {lectureStructure !== undefined && (
+        <LectureCubeNavigatorView
+          lectureStructure={lectureStructure}
+          navigatorClose={navigatorClose}
+        />
+      )}
       <LectureCourseSummaryContainer />
-      <LectureCourseContentContainer />
+      {navigatorState ? (
+        <LectureCourseContentContainer navigatorState={navigatorState} />
+      ) : (
+        <LectureCourseContentContainer />
+      )}
     </LectureDetailLayout>
   );
 }
