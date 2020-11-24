@@ -40,7 +40,7 @@ function PostsPage() {
       offset: 0,
       limit: 20,
       searchFilter: '', //얘 안쓰는거 같은데
-      menuId: '',
+      menuId,
       communityId,
       sort: sortType,
       pinned,
@@ -61,6 +61,7 @@ function PostsPage() {
 
   const onPaging = (page: number) => {
     console.log("onPaging -> page", page)
+    // onSearch()
   }
 
   return (

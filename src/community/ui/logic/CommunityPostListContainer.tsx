@@ -36,6 +36,9 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const [postItems] = useCommunityPostList();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
+
+  const [activePage, setActivePage] = useState(1);
+
   // const { pageMap } = SharedService;
 
   const handelClickCreatePost = () => {};
@@ -69,7 +72,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       offset: 0,
       limit: 10,
       searchFilter: '', //얘 안쓰는거 같은데
-      menuId: '',
+      menuId,
       communityId,
       sort: sortType,
       pinned: false,
@@ -89,8 +92,36 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   };
 
   const test = (data: any) => {
-    console.log('data', data)
-    // onPaging!(data.activePage)
+    console.log("test -> data", data)
+    console.log('data.activePage', data.activePage)
+    console.log('postItems', postItems)
+
+    const param: PostRdo = {
+      title: '',
+      html: '',
+      creatorId: '',
+      offset: (data.activePage-1)*10,
+      limit: 10,
+      searchFilter: '', //얘 안쓰는거 같은데
+      menuId,
+      communityId,
+      sort: sortType,
+      pinned: false,
+    };
+    if (searchType === 'all') {
+      param.title = '';
+    } else if (searchType === 'title') {
+      param.title = searchText;
+    } else if (searchType === 'html') {
+      param.html = searchText;
+    } else if (searchType === 'creatorId') {
+      param.creatorId = searchText;
+    }
+    // http://local.mysuni.sk.com:3000/api/community/postviews/menu/BOARD-2?sort=createTime&offset=0&limit=10
+    // http://local.mysuni.sk.com:3000/api/community/postviews/menu/?sort=createTime&offset=3&limit=10
+    getPostListMapFromCommunity(param);
+
+    setActivePage(data.activePage);
   }
 
   return (
@@ -136,7 +167,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
           {/* <div className="center"> */}
             <Pagination
-              activePage={1}
+              activePage={activePage}
               totalPages={3}
               firstItem={null}
               lastItem={null}

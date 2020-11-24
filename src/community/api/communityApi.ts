@@ -61,6 +61,7 @@ export function findPostViewsByMenuId(
   offset: number,
   limit: number
 ): Promise<OffsetElementList<Post> | undefined> {
+  console.log('menuId', menuId)
   const url = `${BASE_URL}/postviews/menu/${menuId}?sort=${sort}&offset=${offset}&limit=${limit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }

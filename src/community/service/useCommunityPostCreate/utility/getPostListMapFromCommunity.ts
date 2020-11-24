@@ -18,7 +18,7 @@ export async function getPostItem(
     offset: 0,
     limit: 0,
   };
-
+  console.log('param', param)
   //TODO api 수정되면 바꿀 예정
   if (param.communityId !== '') {
     {
