@@ -1,4 +1,5 @@
 import CoursePlanComplex from '../model/CoursePlanComplex';
+import CubeIntro from '../model/CubeIntro';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 import LectureView from '../model/LectureView';
@@ -63,6 +64,7 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
   name: string;
   cubeId: string;
   cube?: PersonalCube;
+  cubeIntro?: CubeIntro;
   cubeType: CubeType;
   learningTime: number;
   learningState?: LearningState;

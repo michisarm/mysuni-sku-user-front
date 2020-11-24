@@ -5,6 +5,7 @@ import CubeType from './CubeType';
 import Examination from './Examination';
 import IconBox from './IconBox';
 import LearningState from './LearningState';
+import PersonalCube from './PersonalCube';
 import AnswerSheet from './SurveyAnswerSheet';
 import SurveyCase from './SurveyCase';
 
@@ -13,6 +14,7 @@ export default interface LectureView {
   serviceType: string;
   serviceId: string;
   cubeId: string;
+  personalCube: PersonalCube;
   cubeIntro: CubeIntro;
   coursePlanId: string;
   name: string;
