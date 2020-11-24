@@ -88,7 +88,7 @@
     "react-docgen-typescript-loader": "^3.6.0",
     "ts-loader": "^6.2.1"
   },
-  "proxy": "http://10.178.66.114/",
+  "proxy": "http://ma.mysuni.sk.com",
   "eslintConfig": {
     "extends": [
       "react-app"
