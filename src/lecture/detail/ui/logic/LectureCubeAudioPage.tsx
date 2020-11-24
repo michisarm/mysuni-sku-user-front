@@ -6,6 +6,7 @@
 
 import { getCubeLectureOverview } from 'lecture/detail/service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
+import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 import React, { useEffect } from 'react';
 import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import {
@@ -44,6 +45,7 @@ function LectureCubeAudioPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
 

@@ -1,3 +1,4 @@
+import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 import React, { useEffect } from 'react';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
@@ -36,6 +37,7 @@ function LectureCubeClassroomPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
   return (

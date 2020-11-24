@@ -27,6 +27,7 @@ import {
   getActiveStructureItem,
   useLectureStructure,
 } from '../../service/useLectureStructure/useLectureStructure';
+import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 
 function LectureCubeTaskPage() {
   const params = useLectureRouterParams();
@@ -47,6 +48,7 @@ function LectureCubeTaskPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
 
