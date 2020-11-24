@@ -17,6 +17,7 @@ import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeDocumentsContainer from './LectureCubeDocumentsContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
+import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 
 function LectureCubeDocumentsPage() {
   const params = useLectureRouterParams();
@@ -37,6 +38,7 @@ function LectureCubeDocumentsPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
   // useLectureMedia();

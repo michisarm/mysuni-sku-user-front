@@ -72,7 +72,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (lectureState === null) {
+    if (lectureState === undefined) {
       return
     }
     if(lectureState?.learningState === 'Progress' && !progressAlert) {
