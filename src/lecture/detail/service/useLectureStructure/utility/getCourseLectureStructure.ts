@@ -138,7 +138,7 @@ function parseCoursePlanComplex(
           learningCardId,
           params: cubeParams,
           routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
-          path: toPath(params),
+          path: toPath(cubeParams),
           serviceId,
           lectureView,
           can: true,
