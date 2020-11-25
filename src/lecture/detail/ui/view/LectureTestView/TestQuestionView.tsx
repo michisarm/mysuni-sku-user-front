@@ -76,10 +76,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       question.questionType === 'MultiChoice'
     ) {
       if (submitted) {
-        if (answerResult) {
-          questionClassName += ' correct ';
-        } else {
-          questionClassName += ' wrong ';
+        if (!answerResult) {
           if (learningState === 'Failed') {
             setAnswer(question.questionNo, '');  // 미이수 로딩시 틀린답안 표시 안함
           }
