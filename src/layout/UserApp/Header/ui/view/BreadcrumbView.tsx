@@ -176,7 +176,6 @@ class BreadcrumbView extends Component<Props, State> {
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div> */}
-
           {/* <div className="right"> */}
             {/* {process.env.NODE_ENV === 'development' && (
               <>
