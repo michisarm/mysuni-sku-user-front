@@ -149,9 +149,15 @@ async function mClassroomSubmit(
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
-  const messageStr =
-    '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
-  reactAlert({ title: '알림', message: messageStr });
+  if (classroom.enrolling.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
+    const messageStr =
+      '본 과정은 과정담당자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  } else {
+    const messageStr =
+      '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  }
 }
 
 async function cancel(params: LectureRouterParams, student: Student) {
@@ -159,6 +165,39 @@ async function cancel(params: LectureRouterParams, student: Student) {
   await deleteStudentByRollBookId(rollBookId);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
+}
+
+async function getVideoCanceledState(option: ChangeStateOption): Promise<LectureState> {
+  const {
+    params,
+    lectureState,
+    cubeType,
+    student,
+    studentJoins,
+    studentJoin: { rollBookId },
+    contentsId,
+  } = option;
+
+  if (contentsId !== undefined) {
+    const { mediaType } = await findMedia(contentsId)
+    if (mediaType === MediaType.InternalMedia || mediaType === MediaType.InternalMediaUpload) {
+      return {
+        ...lectureState,
+        hideAction: true,
+        canAction: false,
+        hideState: true,
+      };
+    }
+  }
+
+
+  return {
+    ...lectureState,
+    canAction: true,
+    actionText: APPROVE,
+    action: () => videoApprove(params, rollBookId, contentsId, student),
+    hideState: true,
+  };
 }
 
 async function videoApprove(params: LectureRouterParams,
@@ -574,6 +613,7 @@ async function getStateWhenApproved(
     }
 
     switch (cubeType) {
+      case 'Audio':
       case 'Video':
         break;
       case 'Documents':
@@ -597,14 +637,6 @@ async function getStateWhenApproved(
             }
           }
         }
-      case 'Audio':
-        return {
-          ...lectureState,
-          hideAction: true,
-          canAction: false,
-          actionText: APPROVE,
-          stateText,
-        };
       case 'ClassRoomLecture':
         return {
           ...lectureState,
@@ -653,7 +685,7 @@ async function getStateWhenApproved(
           };
         }
     }
-    if (cubeType === 'Video') {
+    if (cubeType === 'Video' || cubeType === 'Audio') {
       const mLectureState = await getVideoApprovedState(option, stateText);
       return mLectureState;
     }
@@ -682,7 +714,7 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
   }
 }
 
-function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
+async function getStateWhenCanceled(option: ChangeStateOption): Promise<LectureState | undefined> {
   const {
     params,
     lectureState,
@@ -693,6 +725,9 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
     contentsId,
   } = option;
   switch (cubeType) {
+    case 'Video':
+    case 'Audio':
+      break;
     case 'WebPage':
     case 'Experiential':
       return {
@@ -713,22 +748,6 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         ...lectureState,
         canAction: true,
         actionText: DOWNLOAD,
-        action: () => approve(params, rollBookId, student),
-        hideState: true,
-      };
-    case 'Video':
-      return {
-        ...lectureState,
-        canAction: true,
-        actionText: APPROVE,
-        action: () => videoApprove(params, rollBookId, contentsId, student),
-        hideState: true,
-      };
-    case 'Audio':
-      return {
-        ...lectureState,
-        canAction: true,
-        actionText: APPROVE,
         action: () => approve(params, rollBookId, student),
         hideState: true,
       };
@@ -767,6 +786,10 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         href: '#create',
         hideState: true,
       };
+  }
+  if (cubeType === 'Video' || cubeType === 'Audio') {
+    const mLectureState = await getVideoCanceledState(option);
+    return mLectureState;
   }
 }
 
@@ -894,7 +917,7 @@ export async function getStateFromCube(params: LectureRouterParams) {
           break;
         default:
           {
-            const next = getStateWhenCanceled({
+            const next = await getStateWhenCanceled({
               params,
               lectureState,
               student,
