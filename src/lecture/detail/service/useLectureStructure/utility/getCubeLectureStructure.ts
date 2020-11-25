@@ -51,7 +51,7 @@ async function getLectureStructureCubeItemByPersonalCube(
   };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
-    if (type === 'Video') {
+    if (type === 'Video' || type === 'Audio') {
 
       const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
         id,
@@ -59,26 +59,7 @@ async function getLectureStructureCubeItemByPersonalCube(
         name,
         cubeId,
         cube: personalCube,
-        cubeType,
-        learningTime,
-        params,
-        routerParams,
-        path: toPath(params),
-        serviceId: lectureCardId,
-        can: true,
-        duration: 0,
-        order: 0,
-        type: 'CUBE',
-      };
-      return lectureStructureDurationableCubeItem;
-    }
-    if (type === 'Audio') {
-      const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
-        id,
-        cubeContentsId,
-        name,
-        cubeId: cubeId!,
-        cube: personalCube,
+        cubeIntro,
         cubeType,
         learningTime,
         params,
@@ -95,8 +76,9 @@ async function getLectureStructureCubeItemByPersonalCube(
     return {
       id,
       name,
-      cubeId: cubeId!,
+      cubeId,
       cube: personalCube,
+      cubeIntro,
       cubeType,
       learningTime,
       params,
@@ -171,16 +153,7 @@ export async function getCubeLectureStructure(
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
       cube.student = student;
-      if (cube.cubeType === 'Audio') {
-        (cube as LectureStructureDurationableCubeItem).duration = 0;
-        if (student !== undefined) {
-          (cube as LectureStructureDurationableCubeItem).duration =
-            student.durationViewSeconds === null
-              ? undefined
-              : parseInt(student.durationViewSeconds);
-        }
-      }
-      if (cube.cubeType === 'Video') {
+      if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
         const { mediaType } = await findMedia((cube as LectureStructureDurationableCubeItem).cubeContentsId)
         if (mediaType === MediaType.ContentsProviderMedia || mediaType === MediaType.LinkMedia) {
           (cube as LectureStructureDurationableCubeItem).duration = 50;
