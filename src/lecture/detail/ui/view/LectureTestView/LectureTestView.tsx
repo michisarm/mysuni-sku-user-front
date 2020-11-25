@@ -6,7 +6,7 @@ import {
   getLectureTestStudentItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
@@ -54,6 +54,9 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
   }, [answerItem, params]);
+
+  const [submitOk, setSubmitOk] = useState<boolean>(true);  // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
+
   const submitAnswerSheet = useCallback(() => {
     let answerItemId = '';
     if (answerItem !== undefined) {
@@ -121,6 +124,8 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 break;
             }
           }
+
+          setSubmitOk(true);
         },
       });
     }
@@ -251,6 +256,9 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   answer={answer}
                   answerResult={answerResult}
                   readOnly={readOnly}
+                  learningState={testStudentItem?.learningState}
+                  submitOk = {submitOk}
+                  setSubmitOk = {setSubmitOk}
                 />
               );
             })}

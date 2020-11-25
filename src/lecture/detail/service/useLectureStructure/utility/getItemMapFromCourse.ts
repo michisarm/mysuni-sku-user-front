@@ -34,23 +34,15 @@ async function getTestItem(
   if (examination !== null) {
     let state: State = 'None';
 
-    const denizenId = patronInfo.getDenizenId();
-    if (denizenId !== undefined) {
-      const findAnswerSheetData = await findAnswerSheet(
-        examination.id,
-        denizenId
-      );
-      if (student !== undefined) {
-        if (findAnswerSheetData.result !== null) {
-          state = 'Progress';
-          if (
-            student !== undefined &&
-            (student.learningState === 'Passed' ||
-              student.learningState === 'TestPassed')
-          ) {
-            state = 'Completed';
-          }
-        }
+    if (student !== undefined) {
+      state = 'Progress';
+      if (
+        student !== undefined &&
+        (student.learningState === 'Passed' ||
+          student.learningState === 'TestPassed' ||
+          student.learningState === 'HomeworkWaiting')
+      ) {
+        state = 'Completed';
       }
     }
 
@@ -97,10 +89,14 @@ async function getSurveyItem(
         state = 'Progress';
       }
     }
+    let questionsLength = 0;
+    if (questions !== undefined && questions !== null) {
+      questionsLength = questions.length;
+    }
     const item: LectureStructureSurveyItem = {
       id: surveyFormId,
       name: title,
-      questionCount: questions.length,
+      questionCount: questionsLength,
       params,
       routerParams,
       path: `${toPath(params)}/survey`,
