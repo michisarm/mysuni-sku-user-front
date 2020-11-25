@@ -251,6 +251,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   answer={answer}
                   answerResult={answerResult}
                   readOnly={readOnly}
+                  learningState={testStudentItem?.learningState}
                 />
               );
             })}

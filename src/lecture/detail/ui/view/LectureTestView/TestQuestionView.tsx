@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
 import TestShortAnswerView from './TestShortAnswerView';
@@ -8,6 +8,7 @@ import {
   getLectureTestAnswerItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
+import LearningState from 'lecture/detail/model/LearningState';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
@@ -15,6 +16,7 @@ interface TestQuestionViewProps {
   answerResult?: boolean;
   submitted?: boolean;
   readOnly: boolean;
+  learningState?: LearningState;
 }
 
 function setAnswer(questionNo: string, value: string) {
@@ -41,6 +43,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   answerResult,
   submitted,
   readOnly,
+  learningState,
 }) {
   let questionClassName = ' course-radio-survey ';
   if (
@@ -67,6 +70,23 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       questionClassName += ' survey-radio-img ';
     }
   }
+  useEffect(() => {
+    if (
+      question.questionType === 'SingleChoice' ||
+      question.questionType === 'MultiChoice'
+    ) {
+      if (submitted) {
+        if (answerResult) {
+          questionClassName += ' correct ';
+        } else {
+          questionClassName += ' wrong ';
+          if (learningState === 'Failed') {
+            setAnswer(question.questionNo, '');  // 미이수 로딩시 틀린답안 표시 안함
+          }
+        }
+      }
+    }
+  }, [submitted,learningState]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
   return (
     <>
       <div key={question.id} className={questionClassName}>
@@ -92,7 +112,6 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
-            answerResult={answerResult}
           />
         )}
         {question.questionType === 'MultiChoice' && (
@@ -101,7 +120,6 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
-            answerResult={answerResult}
           />
         )}
         {question.questionType === 'ShortAnswer' && (
