@@ -31,7 +31,7 @@ const Instructor: React.FC = () => {
               <div className="no-cont-wrap">
                 <Icon className="no-contents80" />
                 <span className="blind">콘텐츠 없음</span>
-                <div className="text">검색된 Expert가 없습니다.</div>
+                <div className="text">검색된 강사가 없습니다.</div>
               </div>
             </div>
           )}
