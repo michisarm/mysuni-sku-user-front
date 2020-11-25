@@ -31,14 +31,12 @@ interface LectureCourseContentViewProps {
   lectureRelations?: LectureRelations;
 }
 
-// function hashLink(hash: string) {
-//   const element = document.getElementById(hash);
-//   if (element !== null) {
-//     console.log('el', element, 'hash', hash);
-
-//     element.scrollIntoView();
-//   }
-// }
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
 
 const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = function LectureCourseContentView({
   lectureDescription,
@@ -51,37 +49,28 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureRelations,
   lectureFile,
 }) {
-
   const [activatedTab, setActivatedTab] = useState<string>('overview');
-  // const overviewHashClick = useCallback(() => {
-  //   hashLink('lms-overview');
-  //   setActivatedTab('overview');
-  // }, []);
-  // const instructorHashClick = useCallback(() => {
-  //   hashLink('lms-instructor-Info');
-  //   setActivatedTab('instructor');
-  // }, []);
-  // const badgeHashClick = useCallback(() => {
-  //   hashLink('lms-related-badge');
-  //   setActivatedTab('badge');
-  // }, []);
-  // const relatedHashClick = useCallback(() => {
-  //   hashLink('lms-related-process');
-  //   setActivatedTab('related');
-  // }, []);
+  const overviewHashClick = useCallback(() => {
+    hashLink('lms-overview');
+    setActivatedTab('overview');
+  }, []);
+  const instructorHashClick = useCallback(() => {
+    hashLink('lms-instructor-Info');
+    setActivatedTab('instructor');
+  }, []);
+  const badgeHashClick = useCallback(() => {
+    hashLink('lms-related-badge');
+    setActivatedTab('badge');
+  }, []);
+  const relatedHashClick = useCallback(() => {
+    hashLink('lms-related-process');
+    setActivatedTab('related');
+  }, []);
 
-  // const commentHashClick = useCallback(() => {
-  //   hashLink('lms-comment');
-  //   setActivatedTab('comment');
-  // }, []);
-
-  // const getHeightFunc = useCallback(node => {
-  //   if (node !== null) {
-  //     if (node.clientHeight) {
-  //       setHeight(node.clientHeight);
-  //     }
-  //   }
-  // }, []);
+  const commentHashClick = useCallback(() => {
+    hashLink('lms-comment');
+    setActivatedTab('comment');
+  }, []);
 
   return (
     <>
@@ -89,32 +78,47 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
       <div className="lms-sticky-menu">
-        <div className="lms-fixed-inner">
-          <a>
+        <div className="lms-fixed-inner" id="lms-overview">
+          <a
+            onClick={overviewHashClick}
+            className={activatedTab === 'overview' ? 'lms-act' : ''}
+          >
             Overview
           </a>
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
             lectureInstructor.instructors.length > 0 && (
-              <a>
+              <a
+                onClick={instructorHashClick}
+                className={activatedTab === 'instructor' ? 'lms-act' : ''}
+              >
                 강사정보
               </a>
             )}
           {lectureBadge &&
             Array.isArray(lectureBadge.badges) &&
             lectureBadge.badges.length > 0 && (
-              <a>
+              <a
+                onClick={badgeHashClick}
+                className={activatedTab === 'badge' ? 'lms-act' : ''}
+              >
                 관련 Badge
               </a>
             )}
           {lectureRelations &&
             Array.isArray(lectureRelations.lectures) &&
             lectureRelations.lectures.length > 0 && (
-              <a>
+              <a
+                onClick={relatedHashClick}
+                className={activatedTab === 'related' ? 'lms-act' : ''}
+              >
                 관련과정
               </a>
             )}
-          <a>
+          <a
+            onClick={commentHashClick}
+            className={activatedTab === 'comment' ? 'lms-act' : ''}
+          >
             <i className="lms-comment-icon" />
             Comments
             <span className="count">
@@ -142,7 +146,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
             lectureInstructor.instructors.length > 0 && (
-              <div className="badge-detail">
+              <div className="badge-detail" id="lms-instructor-Info">
                 <div className="ov-paragraph">
                   {lectureInstructor && (
                     <LectureInstructorView
