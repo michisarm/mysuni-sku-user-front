@@ -87,7 +87,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
         }
       }
     }
-  }, [submitted,learningState,submitOk]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
+  }, [question.questionNo, submitted,learningState,submitOk]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
   return (
     <>
       <div key={question.id} className={questionClassName}>
