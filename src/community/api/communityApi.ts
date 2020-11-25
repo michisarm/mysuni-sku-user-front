@@ -108,10 +108,10 @@ export function findProfile(): Promise<Profile | undefined> {
   return axiosApi.get<Profile>(url).then(AxiosReturn);
 }
 
-export function findAllMyCommunities(): Promise<
+export function findAllMyCommunities(sort:string): Promise<
   OffsetElementList<Community> | undefined
 > {
-  const url = `${BASE_URL}/communities/my?offset=0&limit=100`;
+  const url = `${BASE_URL}/communities/my?sort=${sort}&offset=0&limit=100`;
   return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
 }
 
