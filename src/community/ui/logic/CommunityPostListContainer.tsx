@@ -1,6 +1,6 @@
 import { ContentLayout } from 'certification/shared';
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
 import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
@@ -38,8 +38,15 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const history = useHistory();
 
   const [activePage, setActivePage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   // const { pageMap } = SharedService;
+  useEffect(() => {
+    if(postItems === undefined) {
+      return
+    }
+    totalPages()
+  },[postItems])
 
   const handelClickCreatePost = () => {};
   const handleClickRow = (param: any) => {
@@ -91,7 +98,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     // setSearch('searchText')
   };
 
-  const test = (data: any) => {
+  const onPageChange = (data: any) => {
     console.log("test -> data", data)
     console.log('data.activePage', data.activePage)
     console.log('postItems', postItems)
@@ -123,6 +130,20 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
     setActivePage(data.activePage);
   }
+
+  const totalPages = () => {
+
+    let totalpage = Math.ceil(postItems!.totalCount / 10);
+    console.log('totalpage', totalpage)
+    if(postItems!.totalCount % 10 < 0) {
+      totalpage++
+    }
+    console.log('totalpage', totalpage)
+    setTotalPage(totalpage)
+    // return totalpage;
+  }
+
+  console.log('postItems', postItems)
 
   return (
     <>
@@ -168,10 +189,10 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
           {/* <div className="center"> */}
             <Pagination
               activePage={activePage}
-              totalPages={3}
+              totalPages={totalPage}
               firstItem={null}
               lastItem={null}
-              onPageChange={(e, data) => test(data)}
+              onPageChange={(e, data) => onPageChange(data)}
             />
           {/* </div> */}
 

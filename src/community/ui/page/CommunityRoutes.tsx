@@ -73,7 +73,7 @@ function CommunityRoutes() {
               <Route
                 exact
                 path="/community/:communityId/data/:postId"
-                component={DataPostPage}
+                component={PostsPage}
               />
               <Route
                 exact
