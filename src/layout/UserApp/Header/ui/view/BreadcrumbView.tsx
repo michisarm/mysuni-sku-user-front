@@ -161,7 +161,7 @@ class BreadcrumbView extends Component<Props, State> {
               ))}
           </div>
           {/* 임시 로그인창 표시 (삭제예정) */}
-          {/* <div style={{position:'absolute', top: '0', left: '600px'}}>
+          <div style={{position:'absolute', top: '0', left: '600px'}}>
             <input
               style={{
                 width: 200,
@@ -175,7 +175,7 @@ class BreadcrumbView extends Component<Props, State> {
             로그인
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </div> */}
+          </div>
 
           {/* <div className="right"> */}
             {/* {process.env.NODE_ENV === 'development' && (
