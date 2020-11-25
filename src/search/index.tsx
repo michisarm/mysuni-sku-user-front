@@ -1,18 +1,16 @@
+import MemberPage from 'community/ui/page/MemberPage';
 import React from 'react';
 import Tutorial from '../tutorial';
 import './style.css';
-
+import '../community/api/MemberApi'
 // internal Components
-import HeaderArea from './HeaderArea';
-import NoDataPage from './SectionArea/NoDataPage';
-import AllView from './SectionArea/AllView';
+
 
 const SearchComponent: React.FC = () => {
   return (
     <>
-      <section className="content">
-        <HeaderArea />
-        {/* <AllView /> */}
+      <section className="content community">
+        <MemberPage/>
       </section>
     </>
   );
