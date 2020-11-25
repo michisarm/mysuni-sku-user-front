@@ -54,7 +54,7 @@ export function useLectureTestAnswer(): [AnswerValue] {
     }
     return onLectureTestAnswerItem(next => {
       setAnswerValue(next);
-      console.log('LectureTestAnswerItem', next);
+      //console.log('LectureTestAnswerItem', next);
     }, subscriberId);
   }, [subscriberId]);
 
