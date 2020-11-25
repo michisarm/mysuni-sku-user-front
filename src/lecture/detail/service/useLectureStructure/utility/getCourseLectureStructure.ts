@@ -505,20 +505,12 @@ export async function getCourseLectureStructure(
           cube.report.can = stateCan;
         }
         if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
-          // const { mediaType } = await findMedia((cube as LectureStructureDurationableCubeItem).cubeContentsId)
-          // if (mediaType === MediaType.ContentsProviderMedia || mediaType === MediaType.LinkMedia) {
-          //   (cube as LectureStructureDurationableCubeItem).duration = 50;
-          // } else {
-          //   (cube as LectureStructureDurationableCubeItem).duration = 0;
-          //   if (student !== undefined && student !== null &&  student.durationViewSeconds !== null) {
-          //     (cube as LectureStructureDurationableCubeItem).duration =
-          //       parseInt(student.durationViewSeconds);
-          //   }
-          // }
           (cube as LectureStructureDurationableCubeItem).duration = 0;
-          if (student !== undefined && student !== null && student.durationViewSeconds !== null) {
+          if (cube.student !== undefined && cube.student !== null) {
             (cube as LectureStructureDurationableCubeItem).duration =
-              parseInt(student.durationViewSeconds);
+              cube.student.durationViewSeconds === null
+                ? undefined
+                : parseInt(cube.student.durationViewSeconds);
           }
         }
       };
