@@ -4,11 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
 import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
-import { getPostListMapFromCommunity } from '../../../community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
+import { getPostListMapFromCommunity } from '../../service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
+import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -27,7 +28,7 @@ interface Params {
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
-const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
+const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
   handelOnSearch, onPaging
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
@@ -122,13 +123,13 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     }
     // http://local.mysuni.sk.com:3000/api/community/postviews/menu/BOARD-2?sort=createTime&offset=0&limit=10
     // http://local.mysuni.sk.com:3000/api/community/postviews/menu/?sort=createTime&offset=3&limit=10
-    getPostListMapFromCommunity(param);
+    getAllPostListMapFromCommunity(param);
 
     setActivePage(data.activePage);
   }
 
   const totalPages = () => {
-
+    console.log('postItems', postItems)
     let totalpage = Math.ceil(postItems!.totalCount / 10);
     console.log('totalpage', totalpage)
     if(postItems!.totalCount % 10 < 0) {
@@ -196,4 +197,4 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   );
 };
 
-export default CommunityPostListContainer;
+export default CommunityAllPostListContainer;

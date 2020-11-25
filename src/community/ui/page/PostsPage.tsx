@@ -25,7 +25,6 @@ function PostsPage() {
       sort: 'createdTime',
       pinned: false
     };
-
     getCommunityPostList(params);
   }, [communityId, menuId]);
 

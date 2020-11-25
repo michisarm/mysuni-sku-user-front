@@ -56,13 +56,9 @@ export function registerNoticePost(
 }
 
 export function findPostViewsByMenuId(
-  menuId: string,
-  sort: string,
-  offset: number,
-  limit: number
+  postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  console.log('menuId', menuId)
-  const url = `${BASE_URL}/postviews/menu/${menuId}?sort=${sort}&offset=${offset}&limit=${limit}`;
+  const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -88,10 +84,25 @@ export function findNoticePostViews(
 export function findPostView(
   postId: string
 ): Promise<Post> {
-  const url = `${BASE_URL}/postviews/${postId}`;
+  const url = `${BASE_URL}/postviews/post/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
+//커뮤니티 - 전체글
+export function findAllPost(
+  postRdo: any
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(response => response && response.data);
+}
+
+//커뮤니티 - 공지사항
+export function findNoticePost(
+  communityId: string
+): Promise<Post> {
+  const url = `${BASE_URL}/postviews/notice/${communityId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
 
 export function modifyCommunityPost(
   communityId: string,
@@ -149,6 +160,7 @@ export function findAllMenus(
   const url = `${BASE_URL}/${communityId}/menus`;
   return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
 }
+
 export function deleteCommunityPost(
   communityId: string,
   postId: string

@@ -138,6 +138,7 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
 
 function CommunityHomeTreeContainer() {
   const communtyHome = useCommunityHome();
+  console.log('communtyHome', communtyHome)
   if (communtyHome === undefined || communtyHome.community === undefined) {
     return null;
   }

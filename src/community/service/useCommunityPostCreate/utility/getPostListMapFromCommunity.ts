@@ -18,25 +18,23 @@ export async function getPostItem(
     offset: 0,
     limit: 0,
   };
-  console.log('param', param)
   //TODO api 수정되면 바꿀 예정
   if (param.communityId !== '') {
     {
       const postRdo = {
-        // 'startDate': 1573052400000,
-        // 'endDate': 1604674799999,
         'title': param.title,
         'html': param.html,
         'creatorId': param.creatorId,
         'offset': param.offset,
-        'limit': 20,
+        'limit': 10,
         'searchFilter': param.searchFilter,
         'menuId': param.menuId,
         'communityId': param.communityId,
         'sort': param.sort,
         'pinned': param.pinned
       }
-      const findPostData = await findPostViewsByMenuId(param.menuId!, 'createTime', param.offset, 10);
+
+      const findPostData = await findPostViewsByMenuId(postRdo);
       if (findPostData) {
         communityPost.totalCount = findPostData.totalCount;
         communityPost.offset = param.offset;

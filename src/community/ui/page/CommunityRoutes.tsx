@@ -72,7 +72,7 @@ function CommunityRoutes() {
               />
               <Route
                 exact
-                path="/community/:communityId/data/:postId"
+                path="/community/:communityId/data/:menuId"
                 component={PostsPage}
               />
               <Route
