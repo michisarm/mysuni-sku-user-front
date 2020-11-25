@@ -99,10 +99,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   };
 
   const onPageChange = (data: any) => {
-    console.log("test -> data", data)
-    console.log('data.activePage', data.activePage)
-    console.log('postItems', postItems)
-
     const param: PostRdo = {
       title: '',
       html: '',

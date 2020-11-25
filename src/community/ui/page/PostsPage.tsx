@@ -30,9 +30,6 @@ function PostsPage() {
   }, [communityId, menuId]);
 
   const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string, offset?: number, limit?: number) => {
-    console.log('onSearch')
-    console.log('offset', offset)
-    console.log('limit', limit)
     const param: PostRdo = {
       title: '',
       html: '',
