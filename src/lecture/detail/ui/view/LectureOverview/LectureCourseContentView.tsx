@@ -34,8 +34,6 @@ interface LectureCourseContentViewProps {
 function hashLink(hash: string) {
   const element = document.getElementById(hash);
   if (element !== null) {
-    console.log('el', element, 'hash', hash);
-
     element.scrollIntoView();
   }
 }
@@ -51,7 +49,6 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureRelations,
   lectureFile,
 }) {
-
   const [activatedTab, setActivatedTab] = useState<string>('overview');
   const overviewHashClick = useCallback(() => {
     hashLink('lms-overview');
@@ -81,32 +78,47 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
       <div className="lms-sticky-menu">
-        <div className="lms-fixed-inner">
-          <a onClick={overviewHashClick} className={activatedTab === 'overview' ? 'lms-act' : ''}>
+        <div className="lms-fixed-inner" id="lms-overview">
+          <a
+            onClick={overviewHashClick}
+            className={activatedTab === 'overview' ? 'lms-act' : ''}
+          >
             Overview
           </a>
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
             lectureInstructor.instructors.length > 0 && (
-              <a onClick={instructorHashClick} className={activatedTab === 'instructor' ? 'lms-act' : ''}>
+              <a
+                onClick={instructorHashClick}
+                className={activatedTab === 'instructor' ? 'lms-act' : ''}
+              >
                 강사정보
               </a>
             )}
           {lectureBadge &&
             Array.isArray(lectureBadge.badges) &&
             lectureBadge.badges.length > 0 && (
-              <a onClick={badgeHashClick} className={activatedTab === 'badge' ? 'lms-act' : ''}>
+              <a
+                onClick={badgeHashClick}
+                className={activatedTab === 'badge' ? 'lms-act' : ''}
+              >
                 관련 Badge
               </a>
             )}
           {lectureRelations &&
             Array.isArray(lectureRelations.lectures) &&
             lectureRelations.lectures.length > 0 && (
-              <a onClick={relatedHashClick} className={activatedTab === 'related' ? 'lms-act' : ''}>
+              <a
+                onClick={relatedHashClick}
+                className={activatedTab === 'related' ? 'lms-act' : ''}
+              >
                 관련과정
               </a>
             )}
-          <a onClick={commentHashClick} className={activatedTab === 'comment' ? 'lms-act' : ''}>
+          <a
+            onClick={commentHashClick}
+            className={activatedTab === 'comment' ? 'lms-act' : ''}
+          >
             <i className="lms-comment-icon" />
             Comments
             <span className="count">
@@ -134,7 +146,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
             lectureInstructor.instructors.length > 0 && (
-              <div className="badge-detail">
+              <div className="badge-detail" id="lms-instructor-Info">
                 <div className="ov-paragraph">
                   {lectureInstructor && (
                     <LectureInstructorView
