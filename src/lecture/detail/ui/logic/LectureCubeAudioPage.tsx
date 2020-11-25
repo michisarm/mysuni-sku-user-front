@@ -20,6 +20,7 @@ import {
   setLectureSubcategory,
   setLectureTags,
 } from '../../store/LectureOverviewStore';
+import { setLectureState } from '../../store/LectureStateStore';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureAudioContainer from './LectureAudioContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
@@ -44,6 +45,7 @@ function LectureCubeAudioPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
 

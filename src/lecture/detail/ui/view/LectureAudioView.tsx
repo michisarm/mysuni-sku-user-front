@@ -105,7 +105,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   const onPanoptoStateUpdate = useCallback(
     async (state: number) => {
-      console.log('PanoptoState : ', state);
       setPanoptoState(state);
       setIsActive(false);
       if (state == 2) {
@@ -223,26 +222,26 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       clearInterval(interval);
     }
     return () => {
-      console.log('clearInterval return run');
       clearInterval(interval);
     };
   }, [
     isActive,
-    lectureParams,
-    pathname,
+    // lectureParams,
+    // pathname,
     params,
     embedApi,
     startTime,
-    watchlogState,
+    // watchlogState,
   ]);
 
   useEffect(() => {
+    // clearTimeout(progressInterval);
     let checkInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
-    let confirmProgressTime = (duration / 10) * 1000;
+    let confirmProgressTime = (duration / 20) * 1000;
 
-    if (!confirmProgressTime || confirmProgressTime > 60000) {
-      confirmProgressTime = 60000;
+    if (!confirmProgressTime || confirmProgressTime < 30000) {
+      confirmProgressTime = 30000;
     }
 
     if (isActive && params) {
@@ -250,15 +249,15 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       checkInterval = setInterval(() => {
         mediaCheckEvent(params);
         // }, 20000));
-      }, 20000);
+      }, confirmProgressTime);
+      // checkIntervalRef.current = checkInterval;
     } else if (!isActive) {
       clearInterval(checkInterval);
     }
     return () => {
-      console.log('clearCheckInterval return run');
       clearInterval(checkInterval);
     };
-  }, [isActive]);
+  }, [params, isActive]);
 
   // useEffect(() => {
   //   return () => {
@@ -407,9 +406,11 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
-      if (typeof lectureMedia === 'undefined') {
-        //do nothing!
-      } else {
+      if (
+        lectureMedia &&
+        (lectureMedia.mediaType == 'InternalMedia' ||
+          lectureMedia.mediaType == 'InternalMediaUpload')
+      ) {
         const currentPaonoptoSessionId =
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
         const embedApi = new window.EmbedApi('panopto-embed-audio-player', {
