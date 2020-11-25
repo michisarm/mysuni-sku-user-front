@@ -10,7 +10,6 @@ import {
 
 interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
-  navigatorClose: (el: string) => void;
 }
 
 function findActiveCourseCubes(
@@ -23,13 +22,11 @@ function findActiveCourseCubes(
 }
 
 const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = function LectureCubeNavigatorView({
-  lectureStructure,
-  navigatorClose,
+  lectureStructure
 }) {
   const [visible, setVisible] = useState<boolean>(true);
   const close = useCallback(() => {
     setVisible(false);
-    navigatorClose('true');
   }, []);
   const cubes = findActiveCourseCubes(lectureStructure);
   if (cubes === undefined) {

@@ -10,7 +10,7 @@ import { useLectureTags } from '../../../service/useLectureCourseOverview/useLec
 import { useLectureFile } from '../../../service/useLectureFile';
 import LectureCourseContentView from '../../view/LectureOverview/LectureCourseContentView';
 
-function LectureCourseContentContainer({ navigatorState }: any) {
+function LectureCourseContentContainer() {
   const [lectureDescription] = useLectureDescription();
   const [lectureSubcategory] = useLectureSubcategory();
   const [lectureTags] = useLectureTags();
@@ -31,7 +31,6 @@ function LectureCourseContentContainer({ navigatorState }: any) {
       lectureComment={lectureComment}
       lectureRelations={lectureRelations}
       lectureFile={lectureFile}
-      navigatorState={navigatorState}
     />
   );
 }
