@@ -403,6 +403,14 @@ export function getActiveCourseStructureItem() {
   }
 }
 
+export function getActiveProgramStructureItem() {
+  const lectureStructure = getLectureStructure();
+  if (lectureStructure !== undefined) {
+    if (lectureStructure.course?.type === 'PROGRAM') {
+      return lectureStructure.course;
+    }
+  }
+}
 
 export function getActiveStructureItemAll() {
   const lectureStructure = getLectureStructure();

@@ -12,6 +12,8 @@ import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import {
+  getActiveCourseStructureItem,
+  getActiveProgramStructureItem,
   getActiveStructureItem,
   getActiveStructureItemAll,
   useLectureStructure,
@@ -55,7 +57,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
   }, [answerItem, params]);
 
-  const [submitOk, setSubmitOk] = useState<boolean>(true);  // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
+  const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
 
   const submitAnswerSheet = useCallback(() => {
     let answerItemId = '';
@@ -94,7 +96,10 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
 
-            requestLectureStructure(params.lectureParams, params.pathname);
+            await requestLectureStructure(
+              params.lectureParams,
+              params.pathname
+            );
             const lectureTestStudentItem = getLectureTestStudentItem();
             switch (lectureTestStudentItem?.learningState) {
               case 'Waiting':
@@ -114,12 +119,27 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 break;
               case 'Passed':
               case 'TestPassed':
-                reactAlert({
-                  title: '알림',
-                  message:
-                    '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.',
-                });
-
+                const course = getActiveCourseStructureItem();
+                const program = getActiveProgramStructureItem();
+                if (
+                  (course?.state === 'Completed' &&
+                    course.survey !== undefined) ||
+                  (program?.state === 'Completed' &&
+                    program.survey !== undefined)
+                ) {
+                  reactAlert({
+                    title: '안내',
+                    message:
+                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
+                  });
+                } else {
+                  reactAlert({
+                    title: '알림',
+                    message:
+                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.',
+                  });
+                }
+                break;
               default:
                 break;
             }
@@ -257,9 +277,9 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   answerResult={answerResult}
                   readOnly={readOnly}
                   learningState={testStudentItem?.learningState}
-                  submitOk = {submitOk}
-                  setSubmitOk = {setSubmitOk}
-                  dataLoadTime = {answerItem?.dataLoadTime}
+                  submitOk={submitOk}
+                  setSubmitOk={setSubmitOk}
+                  dataLoadTime={answerItem?.dataLoadTime}
                 />
               );
             })}
