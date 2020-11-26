@@ -24,12 +24,3 @@ export function modifyCommunityProfile(
     .put<Profile>(url,profileNameValues)
     .then(response => response && response.data);
 }
-
-/*export function modifyCommunityProfile(
-  profileUdo: ProfileUdo
-): void {
-  const url = `${BASE_URL}/profiles`;
-  axiosApi
-    .put<Profile>(url,profileUdo)
-    .then(response => response && response.data);
-}*/
