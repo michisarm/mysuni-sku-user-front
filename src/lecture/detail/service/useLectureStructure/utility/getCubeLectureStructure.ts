@@ -159,7 +159,7 @@ export async function getCubeLectureStructure(
           (cube as LectureStructureDurationableCubeItem).duration = 50;
         } else {
           (cube as LectureStructureDurationableCubeItem).duration = 0;
-          if (student !== undefined && student.durationViewSeconds !== null) {
+          if (student !== undefined && student !== null && student.durationViewSeconds !== null) {
             (cube as LectureStructureDurationableCubeItem).duration =
               parseInt(student.durationViewSeconds);
           }

@@ -86,7 +86,11 @@ function Box({ item, index }: { item: any; index: number }) {
       <div className="card-inner">
         {/*썸네일*/}
         <div className="thumbnail">
-          <img alt="card-thumbnail" src={item.fields.icon_url} className="ui small image" />
+          <img
+            alt="card-thumbnail"
+            src={item.fields.icon_url}
+            className="ui small image"
+          />
         </div>
 
         <div className="title-area">
@@ -121,7 +125,7 @@ function Box({ item, index }: { item: any; index: number }) {
             <Rating
               defaultRating={0}
               maxRating={5}
-              rating={Math.round(item.fields.score/100)}
+              rating={Math.round(item.fields.score / 100)}
               size="small"
               disabled
               className="rating-num"
@@ -131,7 +135,11 @@ function Box({ item, index }: { item: any; index: number }) {
       </div>
       <div className="hover-content">
         <div className="title-area">
-          <div className="ui color green label">{item.fields.college_name}</div>
+          <div
+            className={`ui color label ${getColor(item.fields.college_name)}`}
+          >
+            {item.fields.college_name}
+          </div>
           <div className="header">{item.fields.card_name_uni}</div>
         </div>
         <p className="text-area">{item.fields.description}</p>
