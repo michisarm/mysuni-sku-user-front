@@ -46,10 +46,10 @@ async function getTestItem(
   if (examination !== null) {
     let state: State = 'None';
 
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       state = 'Progress';
       if (
-        student !== undefined &&
+        student !== undefined && student !== null &&
         (student.learningState === 'Passed' ||
           student.learningState === 'TestPassed' ||
           student.learningState === 'HomeworkWaiting')
@@ -131,7 +131,7 @@ async function getReportItem(
       !isEmpty(coursePlan.reportFileBox.fileBoxId))
   ) {
     let state: State = 'None';
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       if (
         student.homeworkContent !== null ||
         student.homeworkFileBoxId !== null

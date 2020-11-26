@@ -83,7 +83,7 @@ async function submit(
     classroomId: '',
     approvalProcess: false,
   };
-  if (student !== undefined) {
+  if (student !== undefined && student !== null) {
     const {
       rollBookId,
       name,
@@ -455,7 +455,7 @@ async function approve(
     classroomId: '',
     approvalProcess: false,
   };
-  if (student !== undefined) {
+  if (student !== undefined && student !== null) {
     const {
       rollBookId,
       name,
@@ -517,7 +517,7 @@ async function join(
     classroomId: '',
     approvalProcess: false,
   };
-  if (student !== undefined) {
+  if (student !== undefined && student !== null) {
     const {
       rollBookId,
       name,
@@ -574,7 +574,7 @@ async function complete(params: LectureRouterParams, rollBookId: string, hasSurv
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
   const { params, lectureState, cubeType, student } = option;
-  if (student !== undefined) {
+  if (student !== undefined && student !== null) {
     switch (cubeType) {
       case 'ClassRoomLecture':
       case 'ELearning':
@@ -604,7 +604,7 @@ async function getStateWhenApproved(
     params,
   } = option;
 
-  if (student !== undefined) {
+  if (student !== undefined && student !== null) {
     let stateText = PROGRESS;
 
     switch (student.learningState) {
@@ -702,7 +702,7 @@ async function getStateWhenApproved(
 function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
   const { params, lectureState, cubeType, student, studentJoin } = option;
 
-  if (student !== undefined) {
+  if (student !== undefined && student !== null) {
     switch (cubeType) {
       case 'ClassRoomLecture':
       case 'ELearning':
