@@ -47,7 +47,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.nickName = post.nickName!;
             postDetailItem.introduce = post.introduce!;
             postDetailItem.profileImg = post.profileImg!;
-            postDetailItem.commentFeedbackId = post.commentFeebackId
+            postDetailItem.commentFeedbackId = post.commentFeedbackId
         }
     }
     setCommunityPostDetailItem(postDetailItem);

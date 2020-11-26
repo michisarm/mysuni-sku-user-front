@@ -58,8 +58,18 @@ export function registerNoticePost(
 export function findPostViewsByMenuId(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
-  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle
+
+  };
+  const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}`
+  return axiosApi.get<OffsetElementList<Post>>(url, {params}).then(AxiosReturn);
 }
 
 export function findAllPostViewsFromMyCommunities(
@@ -98,10 +108,10 @@ export function findAllPost(
 
 //커뮤니티 - 공지사항
 export function findNoticePost(
-  communityId: string
-): Promise<Post> {
-  const url = `${BASE_URL}/postviews/notice/${communityId}`;
-  return axiosApi.get<Post>(url).then(response => response && response.data);
+  postRdo: any
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(response => response && response.data);
 }
 
 export function modifyCommunityPost(

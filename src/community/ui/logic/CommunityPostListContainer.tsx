@@ -45,6 +45,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     if(postItems === undefined) {
       return
     }
+    console.log('@@@@@@@@@@@@@@', postItems)
     totalPages()
   },[postItems])
 
@@ -78,21 +79,22 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       creatorId: '',
       offset: 0,
       limit: 10,
-      searchFilter: '', //얘 안쓰는거 같은데
+      searchGubun: searchType, //얘 안쓰는거 같은데
+      searchTitle: searchText,
       menuId,
       communityId,
       sort: sortType,
       pinned: false,
     };
-    if (searchType === 'all') {
-      param.title = '';
-    } else if (searchType === 'title') {
-      param.title = searchText;
-    } else if (searchType === 'html') {
-      param.html = searchText;
-    } else if (searchType === 'creatorId') {
-      param.creatorId = searchText;
-    }
+    // if (searchType === 'all') {
+    //   param.title = '';
+    // } else if (searchType === 'title') {
+    //   param.title = searchText;
+    // } else if (searchType === 'html') {
+    //   param.html = searchText;
+    // } else if (searchType === 'creatorId') {
+    //   param.creatorId = searchText;
+    // }
 
     getPostListMapFromCommunity(param);
     // setSearch('searchText')
@@ -130,16 +132,12 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const totalPages = () => {
 
     let totalpage = Math.ceil(postItems!.totalCount / 10);
-    console.log('totalpage', totalpage)
     if(postItems!.totalCount % 10 < 0) {
       totalpage++
     }
-    console.log('totalpage', totalpage)
     setTotalPage(totalpage)
     // return totalpage;
   }
-
-  console.log('postItems', postItems)
 
   return (
     <>

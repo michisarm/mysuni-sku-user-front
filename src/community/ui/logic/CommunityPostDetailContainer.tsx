@@ -32,6 +32,7 @@ function CommunityPostDetailContainer() {
   const history = useHistory();
 
   useEffect(() => {
+    console.log('postDetail', postDetail)
     getFileIds();
   }, [postDetail]);
 
@@ -62,7 +63,9 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickModify = useCallback(() => {
-    //TODO. 수정 페이지 연결
+    history.push({
+      pathname: `/community/${communityId}/post/${postId}/edit`,
+    });
   }, []);
 
   async function deletePost(communityId: string, postId: string) {
@@ -150,7 +153,6 @@ function CommunityPostDetailContainer() {
               list
             </Button>
           </div>
-          {/* commentFeedbackId 안날라옴 */}
           <CommentList
             feedbackId={postDetail.commentFeedbackId}
             hideCamera

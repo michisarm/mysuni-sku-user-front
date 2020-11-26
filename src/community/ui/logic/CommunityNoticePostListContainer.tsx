@@ -9,7 +9,6 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -28,7 +27,7 @@ interface Params {
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
-const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
+const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
   handelOnSearch, onPaging
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
@@ -123,24 +122,19 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     }
     // http://local.mysuni.sk.com:3000/api/community/postviews/menu/BOARD-2?sort=createTime&offset=0&limit=10
     // http://local.mysuni.sk.com:3000/api/community/postviews/menu/?sort=createTime&offset=3&limit=10
-    getAllPostListMapFromCommunity(param);
+    getPostListMapFromCommunity(param);
 
     setActivePage(data.activePage);
   }
 
   const totalPages = () => {
-    console.log('postItems', postItems)
+
     let totalpage = Math.ceil(postItems!.totalCount / 10);
-    console.log('totalpage', totalpage)
     if(postItems!.totalCount % 10 < 0) {
       totalpage++
     }
-    console.log('totalpage', totalpage)
     setTotalPage(totalpage)
-    // return totalpage;
   }
-
-  console.log('postItems', postItems)
 
   return (
     <>
@@ -148,7 +142,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
         <>
           <div className="course-info-header">
             <div className="survey-header border-none mb30 pt0">
-              <div className="survey-header-left">전체글</div>
+              <div className="survey-header-left">공지사항</div>
             </div>
           </div>
           <CommunityPostTopLineView
@@ -156,7 +150,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
             totalCount={postItems.totalCount}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
-            pageType="all"
+            pageType="notice"
           />
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
@@ -166,14 +160,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
               />
             </div>
           </div>
-
-          {/* <div className="paging margin-none">
-            <div className="lms-paging-holder">
-              <a className="lms-num lms-on">1</a>
-            </div>
-          </div> */}
-
-          {/* <div className="center"> */}
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}
@@ -183,8 +169,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
               onPageChange={(e, data) => onPageChange(data)}
             />
           </div>
-          {/* </div> */}
-
           <CommunityPostListSearchBox
             searchType={searchType}
             searchText={searchText}
@@ -198,4 +182,4 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
   );
 };
 
-export default CommunityAllPostListContainer;
+export default CommunityNoticePostListContainer;

@@ -19,7 +19,7 @@ function PostsPage() {
       creatorId: '',
       offset: 0,
       limit: 20,
-      searchFilter: '',
+      searchGubun: 'all',
       menuId,
       communityId,
       sort: 'createdTime',
@@ -34,14 +34,13 @@ function PostsPage() {
       html: '',
       creatorId: '',
       offset: 0,
-      limit: 20,
-      searchFilter: '', //얘 안쓰는거 같은데
+      limit: 10,
+      searchGubun: '', //얘 안쓰는거 같은데
       menuId,
       communityId,
       sort: sortType,
       pinned,
     };
-    console.log('param', param)
     if (searchType === 'all') {
       param.title = '';
     } else if (searchType === 'title') {

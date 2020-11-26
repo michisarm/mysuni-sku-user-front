@@ -33,7 +33,6 @@ export async function getAllPostItem(
         'sort': param.sort,
         'pinned': param.pinned
       }
-    console.log(param.communityId)
       const findPostData = await findAllPost(postRdo);
       if (findPostData) {
         console.log('findPostData', findPostData)
@@ -48,7 +47,7 @@ export async function getAllPostItem(
               html: post.html,
               createdTime: post.createdTime,
               replyCount: post.replyCount,
-              commentFeedbackId: post.commentFeebackId,
+              commentFeedbackId: post.commentFeedbackId,
               nickName: post.nickName || '',
               pinned: post.pinned,
               fileBoxId: post.fileBoxId,

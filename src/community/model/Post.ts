@@ -15,7 +15,7 @@ export default interface Post {
   replyCount: number;
 
   fileBoxId: string;
-  commentFeebackId: string;
+  commentFeedbackId: string;
 
   pinned: boolean;
   readCount: number;

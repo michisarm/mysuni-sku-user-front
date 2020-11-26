@@ -1,8 +1,8 @@
+import { findNoticePost, findPostViewsByMenuId } from 'community/api/communityApi';
 import PostRdo from 'community/model/PostRdo';
 import { setCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import { addNewBadge, compareAscendingByPinned } from 'community/utility/communityHelper';
 import { CommunityPostList } from 'community/viewModel/CommunityPostList';
-import { findPostViewsByMenuId } from '../../../api/communityApi';
 /* eslint-disable consistent-return */
 // report
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
@@ -27,15 +27,13 @@ export async function getPostItem(
         'creatorId': param.creatorId,
         'offset': param.offset,
         'limit': 10,
-        'searchGubun': param.searchGubun,
-        'searchTitle': param.searchTitle,
+        'searchFilter': param.searchFilter,
         'menuId': param.menuId,
         'communityId': param.communityId,
         'sort': param.sort,
         'pinned': param.pinned
       }
-
-      const findPostData = await findPostViewsByMenuId(postRdo);
+      const findPostData = await findNoticePost(postRdo);
       if (findPostData) {
         communityPost.totalCount = findPostData.totalCount;
         communityPost.offset = param.offset;
@@ -124,7 +122,7 @@ export async function getPostItem(
   }
 }
 
-export async function getPostListMapFromCommunity(
+export async function getNoticePostListMapFromCommunity(
 
   param: PostRdo
 ): Promise<void> {
