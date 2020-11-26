@@ -149,9 +149,15 @@ async function mClassroomSubmit(
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
-  const messageStr =
-    '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
-  reactAlert({ title: '알림', message: messageStr });
+  if (classroom.enrolling.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
+    const messageStr =
+      '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  } else {
+    const messageStr =
+      '본 과정은 과정담당자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  }
 }
 
 async function cancel(params: LectureRouterParams, student: Student) {

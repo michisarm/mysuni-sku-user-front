@@ -17,6 +17,9 @@ interface TestQuestionViewProps {
   submitted?: boolean;
   readOnly: boolean;
   learningState?: LearningState;
+  submitOk: boolean;
+  setSubmitOk: (submitOk:boolean) => void;
+  dataLoadTime?: Number;
 }
 
 function setAnswer(questionNo: string, value: string) {
@@ -44,6 +47,9 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   submitted,
   readOnly,
   learningState,
+  submitOk,
+  setSubmitOk,
+  dataLoadTime,
 }) {
   let questionClassName = ' course-radio-survey ';
   if (
@@ -75,7 +81,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       question.questionType === 'SingleChoice' ||
       question.questionType === 'MultiChoice'
     ) {
-      if (submitted) {
+      if (submitOk && submitted) {
         if (!answerResult) {
           if (learningState === 'Failed') {
             setAnswer(question.questionNo, '');  // 미이수 로딩시 틀린답안 표시 안함
@@ -83,7 +89,8 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
         }
       }
     }
-  }, [submitted,learningState]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
+  }, [question.questionNo, submitted,learningState,submitOk, dataLoadTime]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
+
   return (
     <>
       <div key={question.id} className={questionClassName}>
@@ -109,6 +116,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            setSubmitOk={setSubmitOk}
           />
         )}
         {question.questionType === 'MultiChoice' && (
@@ -117,6 +125,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            setSubmitOk={setSubmitOk}
           />
         )}
         {question.questionType === 'ShortAnswer' && (

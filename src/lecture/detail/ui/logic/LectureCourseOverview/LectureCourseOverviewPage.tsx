@@ -9,26 +9,13 @@ import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 function LectureCourseOverviewPage() {
   useLectureCourseOverview();
   const [lectureStructure] = useLectureStructure();
-  const [navigatorState, setNavigatorState] = useState<any>();
-
-  const navigatorClose = (el: any) => {
-    return setNavigatorState(el);
-  };
+  const [navigatorState, setNavigatorState] = useState<any>()
 
   return (
     <LectureDetailLayout>
-      {lectureStructure !== undefined && (
-        <LectureCubeNavigatorView
-          lectureStructure={lectureStructure}
-          navigatorClose={navigatorClose}
-        />
-      )}
+       {lectureStructure !== undefined && <LectureCubeNavigatorView lectureStructure={lectureStructure}/>}
       <LectureCourseSummaryContainer />
-      {navigatorState ? (
-        <LectureCourseContentContainer navigatorState={navigatorState} />
-      ) : (
-        <LectureCourseContentContainer />
-      )}
+      <LectureCourseContentContainer />
     </LectureDetailLayout>
   );
 }
