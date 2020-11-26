@@ -27,7 +27,6 @@ interface Params {
 
 function CommunityRoutes() {
   const { communityId } = useParams<Params>();
-  console.log('communityId', communityId)
   useEffect(() => {
     requestCommunity(communityId);
     requestCommunityHome(communityId);

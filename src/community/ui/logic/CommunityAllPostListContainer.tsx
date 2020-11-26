@@ -129,18 +129,13 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
   }
 
   const totalPages = () => {
-    console.log('postItems', postItems)
     let totalpage = Math.ceil(postItems!.totalCount / 10);
-    console.log('totalpage', totalpage)
     if(postItems!.totalCount % 10 < 0) {
       totalpage++
     }
-    console.log('totalpage', totalpage)
     setTotalPage(totalpage)
     // return totalpage;
   }
-
-  console.log('postItems', postItems)
 
   return (
     <>

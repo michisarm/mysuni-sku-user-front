@@ -13,6 +13,7 @@ interface Props {
   handelClickCreateTask: () => void;
   onChangeSortType: (name: string, value: SortType) => void;
   pageType?: string;
+  managerId?: boolean;
 }
 
 interface Params {
@@ -24,6 +25,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
   totalCount,
   sortType,
   pageType,
+  managerId,
   handelClickCreateTask,
   onChangeSortType,
 }) {
@@ -45,7 +47,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               onChangeSortType('sort', data.value)
             }
           />
-          {pageType === 'notice' && (
+          {pageType === 'notice' && managerId &&(
             <Link
               className="ui icon button post"
               to={`/community/${communityId}/board/noticeCreate/create`}

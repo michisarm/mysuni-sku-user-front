@@ -45,7 +45,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     if(postItems === undefined) {
       return
     }
-    console.log('@@@@@@@@@@@@@@', postItems)
     totalPages()
   },[postItems])
 

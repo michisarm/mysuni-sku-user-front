@@ -9,6 +9,8 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
+import { getCommunityHome } from 'community/store/CommunityHomeStore';
+import { patronInfo } from '@nara.platform/dock';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -36,9 +38,9 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   const [postItems] = useCommunityPostList();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
-
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [adminAuth, setAdminAuth] = useState<boolean>(false);
 
   // const { pageMap } = SharedService;
   useEffect(() => {
@@ -46,6 +48,12 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
       return
     }
     totalPages()
+    const denizenId = patronInfo.getDenizenId();
+
+    //managerId 가져와서 현재 로그인한 계정과 비교
+    if (getCommunityHome() && getCommunityHome()?.community && getCommunityHome()?.community?.managerId) {
+      setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId)
+    }
   },[postItems])
 
   const handelClickCreatePost = () => {};
@@ -151,6 +159,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
             pageType="notice"
+            managerId={adminAuth}
           />
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">

@@ -35,7 +35,6 @@ export async function getAllPostItem(
       }
       const findPostData = await findAllPost(postRdo);
       if (findPostData) {
-        console.log('findPostData', findPostData)
         communityPost.totalCount = findPostData.totalCount;
         communityPost.offset = param.offset;
         if (findPostData.results.length !== 0) {

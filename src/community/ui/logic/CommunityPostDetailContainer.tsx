@@ -34,11 +34,8 @@ function CommunityPostDetailContainer() {
   const history = useHistory();
 
   useEffect(() => {
-    console.log('postDetail', postDetail)
-
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);
-    console.log('denizenId', denizenId)
     getFileIds();
   }, [postDetail]);
 

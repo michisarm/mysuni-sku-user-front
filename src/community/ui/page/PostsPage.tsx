@@ -54,15 +54,9 @@ function PostsPage() {
     getPostListMapFromCommunity(param);
   }
 
-  const onPaging = (page: number) => {
-    console.log("onPaging -> page", page)
-    // onSearch()
-  }
-
   return (
     <CommunityPostListContainer 
       handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}
-      onPaging={onPaging}
     />
   );
 }
