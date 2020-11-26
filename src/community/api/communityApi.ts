@@ -87,7 +87,7 @@ export function findNoticePostViews(
 export function findPostView(
   postId: string
 ): Promise<Post> {
-  const url = `${BASE_URL}/postviews/${postId}`;
+  const url = `${BASE_URL}/postviews/post/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
