@@ -23,7 +23,8 @@ export default interface Post {
   visible: boolean;
 
   createdTime: number;
-
+  creatorId: string;
+  
   communityName: string;
 
   nickName?: string;

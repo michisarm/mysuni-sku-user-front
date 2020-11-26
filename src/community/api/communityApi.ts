@@ -10,6 +10,7 @@ import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
 import PostRdo from 'community/model/PostRdo';
+import { NameValueList } from 'shared/model';
 
 const BASE_URL = '/api/community';
 
@@ -117,11 +118,11 @@ export function findNoticePost(
 export function modifyCommunityPost(
   communityId: string,
   postId: string,
-  postUdo: PostUdo
+  nameValues: NameValueList
 ): Promise<Post> {
-  const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
+  const url = `${BASE_URL}/communities/${communityId}/posts/${postId}/nameValues`;
   return axiosApi
-    .put<Post>(url, postUdo)
+    .put<Post>(url, nameValues)
     .then(response => response && response.data);
 }
 

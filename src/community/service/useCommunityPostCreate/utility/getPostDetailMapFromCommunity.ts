@@ -42,6 +42,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.visible = post.visible;
             postDetailItem.fileBoxId = post.fileBoxId;
             postDetailItem.createdTime = post.createdTime;
+            postDetailItem.creatorId = post.creatorId;
             postDetailItem.replyCount = post.replyCount;
             postDetailItem.likeCount = post.likeCount;
             postDetailItem.nickName = post.nickName!;

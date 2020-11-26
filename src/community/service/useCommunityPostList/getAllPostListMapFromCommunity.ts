@@ -43,6 +43,7 @@ export async function getAllPostItem(
             communityPost.items.push({
               postId: post.postId,
               communityId: post.communityId,
+              communityName: post.communityName,
               title: post.title,
               html: post.html,
               createdTime: post.createdTime,

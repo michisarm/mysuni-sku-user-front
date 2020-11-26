@@ -11,6 +11,7 @@ export default interface PostRdo {
   
   postId?: string;
   communityId?: string;
+  communityName?: string;
   menuId?: string;
   //type?: PostTypeModel;
   title?: string;

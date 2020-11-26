@@ -31,6 +31,7 @@ export async function getPostItem(
         'searchTitle': param.searchTitle,
         'menuId': param.menuId,
         'communityId': param.communityId,
+        'communityName': param.communityName,
         'sort': param.sort,
         'pinned': param.pinned
       }
@@ -104,6 +105,7 @@ export async function getPostItem(
             communityPost.items.push({
               postId: post.postId,
               communityId: post.communityId,
+              communityName: post.communityName,
               title: post.title,
               html: post.html,
               createdTime: post.createdTime,

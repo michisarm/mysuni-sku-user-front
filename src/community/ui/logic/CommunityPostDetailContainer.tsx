@@ -15,6 +15,7 @@ import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCre
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
+import { patronInfo } from '@nara.platform/dock';
 // import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 
 interface Params {
@@ -29,10 +30,15 @@ function CommunityPostDetailContainer() {
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+  const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
 
   useEffect(() => {
     console.log('postDetail', postDetail)
+
+    const denizenId = patronInfo.getDenizenId();
+    setCreatorId(denizenId!);
+    console.log('denizenId', denizenId)
     getFileIds();
   }, [postDetail]);
 
@@ -131,13 +137,16 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
-            <Button
-              className="ui icon button left post edit"
-              onClick={OnClickModify}
-            >
-              <Icon className="edit" />
-              Edit
-            </Button>
+            { creatorId === postDetail.creatorId && (
+              <Button
+                className="ui icon button left post edit"
+                onClick={OnClickModify}
+              >
+                <Icon className="edit" />
+                Edit
+              </Button>
+              )
+            }
             <Button
               className="ui icon button left post delete"
               onClick={OnClickDelete}
