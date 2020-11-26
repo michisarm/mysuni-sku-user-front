@@ -259,6 +259,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                   learningState={testStudentItem?.learningState}
                   submitOk = {submitOk}
                   setSubmitOk = {setSubmitOk}
+                  dataLoadTime = {answerItem?.dataLoadTime}
                 />
               );
             })}

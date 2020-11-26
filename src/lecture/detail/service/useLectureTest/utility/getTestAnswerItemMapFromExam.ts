@@ -24,6 +24,7 @@ async function getTestAnswerItem(examId: string) {
     submitted: false,
     submitAnswers: [],
     finished: false,
+    dataLoadTime: 0,
   };
 
   if (examId !== '' && examId !== null) {
@@ -37,6 +38,7 @@ async function getTestAnswerItem(examId: string) {
         item.submitted = findAnswerSheetData.result.submitted!;
         item.submitAnswers = findAnswerSheetData.result.submitAnswers!;
         item.finished = findAnswerSheetData.result.finished!;
+        item.dataLoadTime = new Date().getTime(); // 화면에서 update용으로 사용
       }
     }
 
