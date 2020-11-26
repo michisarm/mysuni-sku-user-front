@@ -26,6 +26,7 @@ import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
 import depot from '@nara.drama/depot';
+import { getActiveCourseStructureItem, getActiveProgramStructureItem } from '../../useLectureStructure/useLectureStructure';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
@@ -551,16 +552,18 @@ async function join(
 }
 
 async function complete(params: LectureRouterParams, rollBookId: string, hasSurvey: boolean) {
-  if (hasSurvey) {
+  const myTrainingService = MyTrainingService.instance;
+  await markComplete({ rollBookId });
+  await getStateFromCube(params);
+  await requestLectureStructure(params.lectureParams, params.pathname);
+  const course = getActiveCourseStructureItem();
+  const program = getActiveProgramStructureItem();
+  if ((course?.state === 'Completed' && course.survey !== undefined) || program?.state === 'Completed' && program.survey !== undefined) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
     })
   }
-  const myTrainingService = MyTrainingService.instance;
-  await markComplete({ rollBookId });
-  await getStateFromCube(params);
-  requestLectureStructure(params.lectureParams, params.pathname);
 
   /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
