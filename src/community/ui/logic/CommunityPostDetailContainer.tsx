@@ -15,6 +15,7 @@ import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCre
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
+import { patronInfo } from '@nara.platform/dock';
 // import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 
 interface Params {
@@ -29,9 +30,12 @@ function CommunityPostDetailContainer() {
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+  const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
 
   useEffect(() => {
+    const denizenId = patronInfo.getDenizenId();
+    setCreatorId(denizenId!);
     getFileIds();
   }, [postDetail]);
 
@@ -62,7 +66,9 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickModify = useCallback(() => {
-    //TODO. 수정 페이지 연결
+    history.push({
+      pathname: `/community/${communityId}/post/${postId}/edit`,
+    });
   }, []);
 
   async function deletePost(communityId: string, postId: string) {
@@ -128,13 +134,16 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
-            <Button
-              className="ui icon button left post edit"
-              onClick={OnClickModify}
-            >
-              <Icon className="edit" />
-              Edit
-            </Button>
+            { creatorId === postDetail.creatorId && (
+              <Button
+                className="ui icon button left post edit"
+                onClick={OnClickModify}
+              >
+                <Icon className="edit" />
+                Edit
+              </Button>
+              )
+            }
             <Button
               className="ui icon button left post delete"
               onClick={OnClickDelete}
@@ -150,7 +159,6 @@ function CommunityPostDetailContainer() {
               list
             </Button>
           </div>
-          {/* commentFeedbackId 안날라옴 */}
           <CommentList
             feedbackId={postDetail.commentFeedbackId}
             hideCamera

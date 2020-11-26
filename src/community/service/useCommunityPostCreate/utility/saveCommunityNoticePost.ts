@@ -1,10 +1,10 @@
-import { modifyCommunityPost, registerCommunityCommentPost, registerPost } from "community/api/communityApi";
+import { modifyCommunityPost, registerCommunityCommentPost, registerNoticePost, registerPost } from "community/api/communityApi";
 import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
 import { NameValueList } from "shared/model";
 import PostCdo from "../../../model/PostCdo"
 import PostUdo from "../../../model/PostUdo"
 
-export async function saveCommunityPost(
+export async function saveCommunityNoticePost(
     communityId: string,
     menuId?: string,
     postId?: string
@@ -23,9 +23,10 @@ export async function saveCommunityPost(
                 commentFeedbackId
             };
 
-            registerPost(communityId, postCdo);
+            // registerPost(communityId, postCdo);
+            registerNoticePost(communityId, postCdo);
         } else if (postId !== undefined) {
-
+            //todo. 공지 수정 작업해야함
             const postUdo: PostUdo = {
                 title: postCreateItem.title,
                 html: postCreateItem.contents,

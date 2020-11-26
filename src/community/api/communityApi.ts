@@ -10,6 +10,7 @@ import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
 import PostRdo from 'community/model/PostRdo';
+import { NameValueList } from 'shared/model';
 
 const BASE_URL = '/api/community';
 
@@ -56,13 +57,20 @@ export function registerNoticePost(
 }
 
 export function findPostViewsByMenuId(
-  menuId: string,
-  sort: string,
-  offset: number,
-  limit: number
+  postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/menu/${menuId}?sort=${sort}&offset=${offset}&limit=${limit}`;
-  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle
+
+  };
+  const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}`
+  return axiosApi.get<OffsetElementList<Post>>(url, {params}).then(AxiosReturn);
 }
 
 export function findAllPostViewsFromMyCommunities(
@@ -91,15 +99,30 @@ export function findPostView(
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
+//커뮤니티 - 전체글
+export function findAllPost(
+  postRdo: any
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(response => response && response.data);
+}
+
+//커뮤니티 - 공지사항
+export function findNoticePost(
+  postRdo: any
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(response => response && response.data);
+}
 
 export function modifyCommunityPost(
   communityId: string,
   postId: string,
-  postUdo: PostUdo
+  nameValues: NameValueList
 ): Promise<Post> {
-  const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
+  const url = `${BASE_URL}/communities/${communityId}/posts/${postId}/nameValues`;
   return axiosApi
-    .put<Post>(url, postUdo)
+    .put<Post>(url, nameValues)
     .then(response => response && response.data);
 }
 
@@ -148,6 +171,7 @@ export function findAllMenus(
   const url = `${BASE_URL}/${communityId}/menus`;
   return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
 }
+
 export function deleteCommunityPost(
   communityId: string,
   postId: string

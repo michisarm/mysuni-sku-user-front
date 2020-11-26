@@ -19,25 +19,24 @@ function PostsPage() {
       creatorId: '',
       offset: 0,
       limit: 20,
-      searchFilter: '',
+      searchGubun: 'all',
       menuId,
       communityId,
       sort: 'createdTime',
       pinned: false
     };
-
     getCommunityPostList(params);
   }, [communityId, menuId]);
 
-  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
+  const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string, offset?: number, limit?: number) => {
     const param: PostRdo = {
       title: '',
       html: '',
       creatorId: '',
       offset: 0,
-      limit: 20,
-      searchFilter: '', //얘 안쓰는거 같은데
-      menuId: '',
+      limit: 10,
+      searchGubun: '', //얘 안쓰는거 같은데
+      menuId,
       communityId,
       sort: sortType,
       pinned,
@@ -56,7 +55,9 @@ function PostsPage() {
   }
 
   return (
-    <CommunityPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
+    <CommunityPostListContainer 
+      handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}
+    />
   );
 }
 

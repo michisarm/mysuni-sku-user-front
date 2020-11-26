@@ -1,5 +1,6 @@
 import { FileBox, ValidationType } from '@nara.drama/depot';
 import { PatronType, reactConfirm } from '@nara.platform/accent';
+import { saveCommunityNoticePost } from 'community/service/useCommunityPostCreate/utility/saveCommunityNoticePost';
 import { saveCommunityPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityPost';
 import {
   getCommunityPostCreateItem,
@@ -83,8 +84,14 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       title: '알림',
       message: '저장하시겠습니까?',
       onOk: async () => {
-        await saveCommunityPost(communityId, menuId, postId);
-        history.goBack();
+        //공지 등록 인 경우
+        if(menuId === 'noticeCreate') {
+          await saveCommunityNoticePost(communityId, menuId, postId);
+          history.goBack();
+        } else {
+          await saveCommunityPost(communityId, menuId, postId);
+          history.goBack();
+        }
       },
     });
   }, [communityId, menuId, postId, history]);
