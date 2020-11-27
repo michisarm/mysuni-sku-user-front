@@ -16,7 +16,6 @@ import { useCommunityPostList } from 'community/service/useCommunityPostCreate/u
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
-// import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 
 interface Params {
   communityId: string;
@@ -32,6 +31,7 @@ function CommunityPostDetailContainer() {
   );
   const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
+  const PUBLIC_URL = process.env.PUBLIC_URL;
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -71,6 +71,10 @@ function CommunityPostDetailContainer() {
     });
   }, []);
 
+  const OnClickLike = useCallback(() => {
+        //deletePost(communityId, postId);
+  }, []);
+
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
   }
@@ -87,6 +91,8 @@ function CommunityPostDetailContainer() {
             title={postDetail.title}
             time={postDetail.createdTime}
             readCount={postDetail.readCount}
+            replyCount={postDetail.replyCount}
+            likeCount={postDetail.likeCount}
             deletable={true}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
@@ -134,6 +140,10 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
+            <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
+              <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+              좋아요
+            </button>
             { creatorId === postDetail.creatorId && (
               <Button
                 className="ui icon button left post edit"

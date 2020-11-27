@@ -20,7 +20,7 @@ export async function getPostDetailMapFromCommunity(
         fileBoxId: '',
         commentFeedbackId: '',
         pinned: false,
-        readCount: '',
+        readCount: 0,
         visible: false,
         creatorId: '',
         createdTime: 0,
@@ -45,6 +45,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.creatorId = post.creatorId;
             postDetailItem.replyCount = post.replyCount;
             postDetailItem.likeCount = post.likeCount;
+            postDetailItem.readCount = post.readCount;
             postDetailItem.nickName = post.nickName!;
             postDetailItem.introduce = post.introduce!;
             postDetailItem.profileImg = post.profileImg!;
