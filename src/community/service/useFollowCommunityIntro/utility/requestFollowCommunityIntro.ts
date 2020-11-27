@@ -1,15 +1,16 @@
 import moment from 'moment';
 import {
-  findAllMyCommunities, findAllPostViewsFromMyCommunities
+followPostList,followList
 } from '../../../api/communityApi';
-import Community from '../../../model/Community';
+import Community from '../../../model/CommunityFollow';
 import Post from '../../../model/Post';
 import {
-  getMyCommunityIntro,
-  setMyCommunityIntro,
+  setFollowCommunityIntro,
+  getFollowCommunityIntro,
 } from '../../../store/CommunityMainStore';
-import CommunityItem from '../../../viewModel/MyCommunityIntro/CommunityItem';
-import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
+import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
+import CommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
+import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 
 const ONE_DAY = 24 * 60 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
@@ -33,56 +34,51 @@ function getTimeString(createTime: number): string {
   return moment(createTime).format('YYYY.MM.DD')
 }
 
-function communityToItem(community: Community): CommunityItem {
+function communityToItem(community: Community): Community {
   const {
-    type,
-    communityId,
-    fieldName,
-    thumbnailId,
     name,
-    managerName,
-    memberCount,
-    approved,
-    lastPostTime,
+    email,
+    nickName,
+    profileImg,
+    followerCount,
+    followingCount,
   } = community;
   return {
-    type,
-    communityId,
-    fieldTitle: fieldName,
-    image: thumbnailId,
     name,
-    hasNewPost: Date.now() - ONE_DAY < (lastPostTime === null ? 0 : lastPostTime),
-    manager: managerName,
-    memberCount,
-    approved,
-    lastPostTime,
+    email,
+    nickName,
+    profileImg,
+    followerCount,
+    followingCount,
   };
 }
 
-export function requestMyCommunityList() {
-  findAllMyCommunities().then(communities => {
-    const myCommunityIntro = getMyCommunityIntro() || {
+export function requestFollowCommunityList() {
+  followList().then(communities => {
+    console.log('communities',communities);
+    const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       postsTotalCount: 0,
     };
+
     if (communities === undefined) {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
         communities: [],
         communitiesTotalCount: 0,
       });
     } else {
-      const next: CommunityItem[] = [];
+      const next: FollowCommunityItem[] = [];
       communities.results.forEach(community => {
-        console.log('comm', community);
-        if (!next.some(c => c.communityId === community.communityId)) {
-          next.push(communityToItem(community));
-        }
+        // if (!next.some(c => c.createdTime === community.communityId)) {
+          // next.push(communityToItem(community));
+        // }
+        next.push(community);
       });
-      setMyCommunityIntro({
-        ...myCommunityIntro,
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
       });
@@ -105,23 +101,23 @@ function postToItem(post: Post): PostItem {
   };
 }
 
-export function requestMyCommunityPostList(sort: string = 'createTime', offset: number = 0, limit: number = 10) {
-  findAllPostViewsFromMyCommunities(sort, offset, limit).then(posts => {
-    const myCommunityIntro = getMyCommunityIntro() || {
+export function requestFollowCommunityPostList(offset: number = 0, limit: number = 10) {
+  followPostList(offset, limit).then(posts => {
+    const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       postsTotalCount: 0,
     };
     if (posts === undefined) {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
         posts: [],
         postsTotalCount: 0,
       });
     } else {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
         posts: posts.results.map(postToItem),
         postsTotalCount: posts.totalCount,
       });

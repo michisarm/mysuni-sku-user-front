@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
+import { Icon, Button } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
@@ -51,7 +52,7 @@ const FollowView: React.FC<FollowViewProps> = function FollowView() {
           <CommunityFollowPostListContainer />
           <CommunityFollowListContainer />
         </div>
-      </Segment>
+      </Segment>    
     </div>
   );
 };

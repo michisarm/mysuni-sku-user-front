@@ -10,6 +10,7 @@ import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
 import PostRdo from 'community/model/PostRdo';
+import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/FollowCommunityItem';
 
 const BASE_URL = '/api/community';
 
@@ -154,4 +155,19 @@ export function deleteCommunityPost(
 ): Promise<Post> {
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
   return axiosApi.delete(url).then(response => response && response.data);
+}
+// folowe
+export function followPostList(
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/followers?offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(response => response && response.data);
+}
+export function followList(): Promise<
+  OffsetElementList<FollowCommunityItem> | undefined
+> {
+  const url = `${BASE_URL}/profileviews/follow?offset=0&limit=10`;
+  // console.log('list',axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn));
+  return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
 }

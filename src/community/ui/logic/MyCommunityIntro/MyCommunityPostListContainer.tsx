@@ -91,6 +91,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
 
 function MyCommunityPostListContainer() {
   const myCommunityIntro = useMyCommunityIntro();
+  console.log('myC', myCommunityIntro);
   return (
     <div className="community-main-contants">
       {myCommunityIntro !== undefined &&
