@@ -24,18 +24,14 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
       return (
         <div className="depth2">
           <a
-            target="_blank"
+            href="#detail"
             key={index}
             onClick={() => handleClickTaskRow({ id: child.id, type: 'child' })}
           >
             <span className="title">
-              <Icon className="reply16-b"/>
+              <Icon className="reply16-b" />
               {child.title}
-              {
-              child.count !== 0 && (
-                <span>[{child.count}]</span>
-              )
-              }
+              {child.count !== 0 && <span>[{child.count}]</span>}
             </span>
             <span className="writer">{child.writer}</span>
             <span className="view">{child.readCount}</span>
@@ -50,26 +46,18 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
 
   return (
     <>
-      { task.delete === false && (
+      {task.delete === false && (
         <div className="depth1">
           <a
-            target="_blank"
+            href="#detail"
             onClick={() => handleClickTaskRow({ id: task.id, type: 'parent' })}
           >
-            {
-              task.count !== 0 && (
+            {task.count !== 0 && (
               <span className="title">
                 {task.title}[{task.count}]
               </span>
-              )
-            }
-            {
-              task.count === 0 && (
-              <span className="title">
-                {task.title}
-              </span>
-              )
-            }
+            )}
+            {task.count === 0 && <span className="title">{task.title}</span>}
             <span className="writer">{task.writer}</span>
             <span className="view">{task.readCount} 읽음</span>
             <span className="date">
@@ -78,15 +66,13 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
           </a>
         </div>
       )}
-      { task.delete === true && (
+      {task.delete === true && (
         <div className="depth1">
-              <span className="del">
-                <Icon className="listdel24" />
-                <span className="blind">삭제됨</span>
-                <span>
-                  삭제된 글입니다.
-                </span>
-              </span>
+          <span className="del">
+            <Icon className="listdel24" />
+            <span className="blind">삭제됨</span>
+            <span>삭제된 글입니다.</span>
+          </span>
         </div>
       )}
       {childElement}
@@ -94,7 +80,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
   );
 }
 
-const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function LectureTeskView({
+const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function LectureTaskPostView({
   taskItem,
   moreView,
   handleClickTaskRow,

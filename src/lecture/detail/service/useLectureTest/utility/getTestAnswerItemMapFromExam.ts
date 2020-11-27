@@ -26,7 +26,7 @@ async function getTestAnswerItem(examId: string) {
     finished: false,
   };
 
-  if (examId !== '') {
+  if (examId !== '' && examId !== null) {
     const denizenId = patronInfo.getDenizenId(); // denizenId는 파라메터로 넘기지 않고 서버단에서 해결할 것
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(examId, denizenId);

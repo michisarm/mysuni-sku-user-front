@@ -26,7 +26,13 @@ import {
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import moment from 'moment';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import {
+  Link,
+  matchPath,
+  useHistory,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
@@ -40,6 +46,7 @@ import {
   LectureStructureDiscussionItem,
 } from 'lecture/detail/viewModel/LectureStructure';
 import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
+import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -65,6 +72,43 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const transcriptIntervalRef = useRef<any>(0);
 
   useEffect(() => {
+    let mathch = matchPath<LectureParams>(pathname, {
+      path:
+        '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
+      exact: true,
+      strict: true,
+    });
+    if (!mathch?.isExact) {
+      mathch = matchPath<LectureParams>(pathname, {
+        path:
+          '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
+        exact: true,
+        strict: true,
+      });
+    }
+    if (!mathch?.isExact) {
+      mathch = matchPath<LectureParams>(pathname, {
+        path:
+          '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
+        exact: true,
+        strict: true,
+      });
+    }
+    if (!mathch?.isExact) {
+      mathch = matchPath<LectureParams>(pathname, {
+        path:
+          '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
+        exact: true,
+        strict: true,
+      });
+    }
+    if (mathch !== null) {
+      const mlectureParams = mathch.params;
+      const mParams = parseLectureParams(mlectureParams, pathname);
+      confirmProgress(mParams);
+      requestLectureStructure(mParams.lectureParams, pathname);
+    }
+
     // all cleare interval
     return () => {
       clearInterval(playIntervalRef.current);
@@ -133,13 +177,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   function onDoLearn(params: LectureRouterParams | undefined): void {
     // 20200717 video 멀티 시청불가~! = return true
     // if (handleMultiVideo(lectureView)) {
-    // if (handleMultiVideo(params)) {
-    //   reactAlert({
-    //     title: '알림',
-    //     message:
-    //       '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
-    //   });
-    // }
+    if (handleMultiVideo(params)) {
+      reactAlert({
+        title: '알림',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
+      });
+    }
   }
 
   function handleMultiVideo(params: LectureRouterParams | undefined) {
@@ -263,10 +307,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setStartTime(currentTime);
     }
     if (isActive && params && watchlogState) {
-      // console.log('interval ' , interval);
       clearInterval(interval);
       interval = setInterval(() => {
-        // console.log('interval ' , interval);
         const playbackRate = (embedApi.getPlaybackRate() as unknown) as number;
 
         // end 가 start보다 작은 경우 or start 보다 end가 20 이상 큰 경우(2배속 10초의 경우 20 이라 21 기준으로 변경함)

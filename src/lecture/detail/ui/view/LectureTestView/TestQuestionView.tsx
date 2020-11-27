@@ -74,15 +74,11 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           <span>{question.questionNo}</span>
           {(question.questionImgSrc && (
             <p>
-              <span className="copy">
-                {question.direction} ({question.allocatedPoint}점)
-              </span>
+              <span className="copy" dangerouslySetInnerHTML={{__html:`${question.direction} (${question.allocatedPoint}점)`}}/>
             </p>
           )) || (
             <>
-              <span className="copy">
-                {question.direction} ({question.allocatedPoint}점)
-              </span>
+              <span className="copy" dangerouslySetInnerHTML={{__html:`${question.direction} (${question.allocatedPoint}점)`}}/>
             </>
           )}
         </p>

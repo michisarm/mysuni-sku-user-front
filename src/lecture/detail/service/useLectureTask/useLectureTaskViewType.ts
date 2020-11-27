@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from 'react';
 import LectureTaskViewType from 'lecture/detail/viewModel/LectureTaskViewType';
 import { onLectureTaskViewType } from 'lecture/detail/store/LectureTaskStore';
 
-type Value = string | undefined;
+export type TaskViewType = 'list' | 'detail' | 'create' | 'reply' | 'edit'
+
+type Value = TaskViewType | undefined;
 
 let subscriberIdRef = 0;
 export function useLectureTaskViewType(): [Value] {
