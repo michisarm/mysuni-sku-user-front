@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Segment, } from "semantic-ui-react";
 import {CommunityProfileItem} from "community/viewModel/CommunityProfile";
 import ContentsProfileEditView from "./ContentsProfileEditView";
-import { reactConfirm } from "@nara.platform/accent";
+import { reactAlert, reactConfirm } from "@nara.platform/accent";
 import { saveCommunityProfile } from "community/service/useCommunityProfile/utility/saveCommunityProfile";
 
 
@@ -15,13 +15,23 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
 }) {
 
   const handleSave = useCallback(() => {
+    // 닉네임 필수
+    if (profileItem.nickname === '') {
+      reactAlert({
+        title: '알림',
+        message:
+          '닉네임을 입력해주세요.',
+      });
+      return; 
+    }
+
     reactConfirm({
       title: '알림',
       message:
         '저장하시겠습니까?',
       onOk: () => saveCommunityProfile(),
     });
-  },[]);
+  },[profileItem]);
 
   return (
     <>

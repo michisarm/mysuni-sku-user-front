@@ -4,11 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
 import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
-import { getPostListMapFromCommunity } from '../../../community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
+import { getPostListMapFromCommunity } from '../../service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
+import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -27,7 +28,7 @@ interface Params {
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
-const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
+const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
   handelOnSearch, onPaging
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
@@ -78,22 +79,21 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       creatorId: '',
       offset: 0,
       limit: 10,
-      searchGubun: searchType, //얘 안쓰는거 같은데
-      searchTitle: searchText,
+      searchFilter: '', //얘 안쓰는거 같은데
       menuId,
       communityId,
       sort: sortType,
       pinned: false,
     };
-    // if (searchType === 'all') {
-    //   param.title = '';
-    // } else if (searchType === 'title') {
-    //   param.title = searchText;
-    // } else if (searchType === 'html') {
-    //   param.html = searchText;
-    // } else if (searchType === 'creatorId') {
-    //   param.creatorId = searchText;
-    // }
+    if (searchType === 'all') {
+      param.title = '';
+    } else if (searchType === 'title') {
+      param.title = searchText;
+    } else if (searchType === 'html') {
+      param.html = searchText;
+    } else if (searchType === 'creatorId') {
+      param.creatorId = searchText;
+    }
 
     getPostListMapFromCommunity(param);
     // setSearch('searchText')
@@ -123,13 +123,12 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     }
     // http://local.mysuni.sk.com:3000/api/community/postviews/menu/BOARD-2?sort=createTime&offset=0&limit=10
     // http://local.mysuni.sk.com:3000/api/community/postviews/menu/?sort=createTime&offset=3&limit=10
-    getPostListMapFromCommunity(param);
+    getAllPostListMapFromCommunity(param);
 
     setActivePage(data.activePage);
   }
 
   const totalPages = () => {
-
     let totalpage = Math.ceil(postItems!.totalCount / 10);
     if(postItems!.totalCount % 10 < 0) {
       totalpage++
@@ -144,7 +143,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
         <>
           <div className="course-info-header">
             <div className="survey-header border-none mb30 pt0">
-              <div className="survey-header-left">메뉴명</div>
+              <div className="survey-header-left">전체글</div>
             </div>
           </div>
           <CommunityPostTopLineView
@@ -152,6 +151,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             totalCount={postItems.totalCount}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
+            pageType="all"
           />
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
@@ -193,4 +193,4 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   );
 };
 
-export default CommunityPostListContainer;
+export default CommunityAllPostListContainer;

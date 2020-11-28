@@ -18,7 +18,7 @@ const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = functio
   searchType
 }) {
 
-  const searchOptions = [{'text': '전체', 'value': 'all'},{'text': '제목', 'value': 'title'}, {'text': '내용', 'value': 'html'}, {'text': '작성자', 'value': 'creatorId'}]
+  const searchOptions = [{'text': '전체', 'value': 'all'},{'text': '제목', 'value': 'title'}, {'text': '내용', 'value': 'content'}, {'text': '작성자', 'value': 'nickname'}]
   // const onHandleClickRow = useCallback(
   //   // // param => {
   //   // //   handleClickRow(param);

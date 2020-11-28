@@ -6,6 +6,7 @@ class MentionModel {
   message: string = '';
   backLink: string = '';
   sentTime: number = 0;
+  read: boolean = false;
 }
 
 decorate(MentionModel, {
@@ -13,6 +14,7 @@ decorate(MentionModel, {
   message: observable,
   backLink: observable,
   sentTime: observable,
+  read: observable,
 });
 
 export default MentionModel;

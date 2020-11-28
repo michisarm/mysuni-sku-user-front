@@ -116,7 +116,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
               src={
                 (profileItem.profileBgImg &&
                   '/files/community/' + profileItem.profileBgImg) ||
-                'http://www.mysuni.fun/PC/REACT/static/media/bg-community-profilettl@3x.6156083d.png'
+                '/static/media/bg-community-profilettl@3x.6156083d.png'
               }
               alt="배경이미지"
             />

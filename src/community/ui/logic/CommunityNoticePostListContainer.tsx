@@ -4,11 +4,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
 import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
-import { getPostListMapFromCommunity } from '../../../community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
+import { getPostListMapFromCommunity } from '../../service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
+import { getCommunityHome } from 'community/store/CommunityHomeStore';
+import { patronInfo } from '@nara.platform/dock';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -27,7 +29,7 @@ interface Params {
 export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
-const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
+const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
   handelOnSearch, onPaging
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
@@ -36,9 +38,9 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const [postItems] = useCommunityPostList();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
-
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [adminAuth, setAdminAuth] = useState<boolean>(false);
 
   // const { pageMap } = SharedService;
   useEffect(() => {
@@ -46,6 +48,12 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       return
     }
     totalPages()
+    const denizenId = patronInfo.getDenizenId();
+
+    //managerId 가져와서 현재 로그인한 계정과 비교
+    if (getCommunityHome() && getCommunityHome()?.community && getCommunityHome()?.community?.managerId) {
+      setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId)
+    }
   },[postItems])
 
   const handelClickCreatePost = () => {};
@@ -78,22 +86,21 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       creatorId: '',
       offset: 0,
       limit: 10,
-      searchGubun: searchType, //얘 안쓰는거 같은데
-      searchTitle: searchText,
+      searchFilter: '', //얘 안쓰는거 같은데
       menuId,
       communityId,
       sort: sortType,
       pinned: false,
     };
-    // if (searchType === 'all') {
-    //   param.title = '';
-    // } else if (searchType === 'title') {
-    //   param.title = searchText;
-    // } else if (searchType === 'html') {
-    //   param.html = searchText;
-    // } else if (searchType === 'creatorId') {
-    //   param.creatorId = searchText;
-    // }
+    if (searchType === 'all') {
+      param.title = '';
+    } else if (searchType === 'title') {
+      param.title = searchText;
+    } else if (searchType === 'html') {
+      param.html = searchText;
+    } else if (searchType === 'creatorId') {
+      param.creatorId = searchText;
+    }
 
     getPostListMapFromCommunity(param);
     // setSearch('searchText')
@@ -135,7 +142,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       totalpage++
     }
     setTotalPage(totalpage)
-    // return totalpage;
   }
 
   return (
@@ -144,7 +150,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
         <>
           <div className="course-info-header">
             <div className="survey-header border-none mb30 pt0">
-              <div className="survey-header-left">메뉴명</div>
+              <div className="survey-header-left">공지사항</div>
             </div>
           </div>
           <CommunityPostTopLineView
@@ -152,6 +158,8 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             totalCount={postItems.totalCount}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
+            pageType="notice"
+            managerId={adminAuth}
           />
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
@@ -161,14 +169,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
               />
             </div>
           </div>
-
-          {/* <div className="paging margin-none">
-            <div className="lms-paging-holder">
-              <a className="lms-num lms-on">1</a>
-            </div>
-          </div> */}
-
-          {/* <div className="center"> */}
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}
@@ -178,8 +178,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
               onPageChange={(e, data) => onPageChange(data)}
             />
           </div>
-          {/* </div> */}
-
           <CommunityPostListSearchBox
             searchType={searchType}
             searchText={searchText}
@@ -193,4 +191,4 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   );
 };
 
-export default CommunityPostListContainer;
+export default CommunityNoticePostListContainer;

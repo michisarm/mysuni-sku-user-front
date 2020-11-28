@@ -60,7 +60,7 @@ function communityToItem(community: Community): CommunityItem {
 }
 
 export function requestMyCommunityList() {
-  findAllMyCommunities().then(communities => {
+  findAllMyCommunities('name').then(communities => {
     const myCommunityIntro = getMyCommunityIntro() || {
       communities: [],
       posts: [],
