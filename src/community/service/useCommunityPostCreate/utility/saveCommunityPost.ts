@@ -1,5 +1,6 @@
 import { modifyCommunityPost, registerCommunityCommentPost, registerPost } from "community/api/communityApi";
 import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
+import { NameValueList } from "shared/model";
 import PostCdo from "../../../model/PostCdo"
 import PostUdo from "../../../model/PostUdo"
 
@@ -32,7 +33,32 @@ export async function saveCommunityPost(
                 pinned: postCreateItem.pinned,
                 visible: postCreateItem.visible,
             };
-            modifyCommunityPost(communityId, postId, postUdo);
+            modifyCommunityPost(communityId, postId, modifyNameValueList(postUdo));
         }
     }
+}
+
+function modifyNameValueList(post: any): NameValueList {
+    const modifyNameValues = {
+        // title, html, pinned, visible
+      nameValues: [
+        {
+          name: 'title',
+          value: String(post.title),
+        },
+        {
+          name: 'html',
+          value: post.html,
+        },
+        {
+          name: 'pinned',
+          value: post.pinned,
+        },
+        {
+          name: 'visible',
+          value: post.visible
+        },
+      ],
+    };
+    return modifyNameValues;
 }

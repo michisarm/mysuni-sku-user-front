@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {
-  findAllMyCommunities, findAllPostViewsFromMyCommunities,
+  findAllMyCommunities, findAllPostViewsFromMyCommunities
 } from '../../../api/communityApi';
 import Community from '../../../model/Community';
 import Post from '../../../model/Post';
@@ -60,7 +60,7 @@ function communityToItem(community: Community): CommunityItem {
 }
 
 export function requestMyCommunityList() {
-  findAllMyCommunities().then(communities => {
+  findAllMyCommunities('name').then(communities => {
     const myCommunityIntro = getMyCommunityIntro() || {
       communities: [],
       posts: [],
@@ -76,6 +76,7 @@ export function requestMyCommunityList() {
     } else {
       const next: CommunityItem[] = [];
       communities.results.forEach(community => {
+        console.log('comm', community);
         if (!next.some(c => c.communityId === community.communityId)) {
           next.push(communityToItem(community));
         }

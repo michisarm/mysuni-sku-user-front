@@ -26,7 +26,6 @@ export async function getMyCommunityItemMapFromCommunity(): Promise<void> {
         profileItem.hobby = myProfile.hobby;
     }*/
 
-    console.log('api 호출 필요');
     const myCommunityItem:CommunityProfileMyCommunity = {
         totalCount: 10, 
         result: [{

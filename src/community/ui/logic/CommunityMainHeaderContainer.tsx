@@ -1,6 +1,7 @@
 import React from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
+// import {  } 
 import profileIcon from '../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
 

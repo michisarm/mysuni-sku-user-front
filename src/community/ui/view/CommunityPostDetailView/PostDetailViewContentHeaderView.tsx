@@ -12,7 +12,9 @@ interface Props {
   time: number;
   subField?: React.ReactNode;
   deletable?: boolean;
-  readCount?: string;
+  readCount?: number;
+  replyCount?: number;
+  likeCount?: number;
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
@@ -30,11 +32,15 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       subField,
       deletable,
       readCount,
+      replyCount,
+      likeCount,
       postDetail,
       onClickList,
       onClickDelete,
       onClickModify,
     } = this.props;
+
+    const PUBLIC_URL = process.env.PUBLIC_URL;
 
     const handelClickModify = () => {
       onClickModify(postDetail.id);
@@ -63,25 +69,29 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                   </div>
                   <div className="ui label onlytext">
                     <span className="header-span-first">댓글수</span>
-                    <span>{readCount}</span>
+                    <span>{replyCount}</span>
                   </div>
                 </div>
                 <div className="right-area">
+                <div className="ui onlytext">
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
+                  <span className="heartText">{likeCount}</span>
+                </div>
                   <div className="ui onlytext">
                     {onClickModify && (
                       <Button
                         icon
-                        className="left postset edit"
+                        className="postset edit2"
                         onClick={handelClickModify}
                       >
-                        <Icon name="edit" />
+                        <Icon name="edit" className="edit2" />
                         Edit
                       </Button>
                     )}
                     {deletable && (
                       <Button
                         icon
-                        className="left postset delete"
+                        className="postset delete"
                         onClick={handelClickDelete}
                       >
                         <Icon name="delete" />

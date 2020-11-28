@@ -15,7 +15,7 @@ export default interface Post {
   replyCount: number;
 
   fileBoxId: string;
-  commentFeebackId: string;
+  commentFeedbackId: string;
 
   pinned: boolean;
   readCount: number;
@@ -23,7 +23,8 @@ export default interface Post {
   visible: boolean;
 
   createdTime: number;
-
+  creatorId: string;
+  
   communityName: string;
 
   nickName?: string;
