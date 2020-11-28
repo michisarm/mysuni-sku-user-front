@@ -26,6 +26,9 @@ class NotieService {
   waitingCount: number = 0;
 
   @observable
+  myNotieNoReadMentionCount: number = 0;
+
+  @observable
   myNotieMentions: MentionModel[] = [];
 
   constructor(notieApi: NotieApi = NotieApi.instance) {
@@ -91,11 +94,24 @@ class NotieService {
   }
 
   @action
+  async findMyNotieNoReadMentionCount() {
+    const myNotieNoReadMentionCount = await this.notieApi.findMyNotieNoReadMentionCount();
+
+    runInAction(() => this.myNotieNoReadMentionCount = myNotieNoReadMentionCount);
+    return myNotieNoReadMentionCount;
+  }
+
+  @action
   async findAllMyNotieMentions() {
     const myNotieMentions = await this.notieApi.findAllMyNotieMentions();
 
     runInAction(() => this.myNotieMentions = myNotieMentions);
     return myNotieMentions;
+  }
+
+  @action
+  async readAllMyNotieMentions() {
+    await this.notieApi.readAllMyNotieMentions();
   }
 }
 

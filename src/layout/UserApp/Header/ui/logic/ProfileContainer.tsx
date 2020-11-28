@@ -32,12 +32,15 @@ class ProfileContainer extends Component<Props, State> {
   //
   componentDidMount() {
     //
-    const { skProfileService, notieService } = this.props;
+    const { skProfileService } = this.props;
 
     skProfileService!.findSkProfile();
 
-    //notieService!.findAllMyNotieMentions();
-
+    this.findNoReadCount();
+    setInterval(() => {
+      this.findNoReadCount();  // 1분마다 안 읽은 알림이 있는지 조회
+    }, 60*1000);
+    
     document.addEventListener('mousedown', this.handleClickOutside);
   }
 
@@ -78,13 +81,28 @@ class ProfileContainer extends Component<Props, State> {
     this.props.history.push(backLink);
   }
 
+  handleClickAlarm() {
+    const { notieService } = this.props;
+    notieService!.findAllMyNotieMentions().then(() => { // 알림 목록 화면 오픈시 안읽은 알림 보여주고
+      notieService!.readAllMyNotieMentions().then(() => { // 보여준 이후에 읽음 처리
+        this.findNoReadCount(); // 초기화
+      });
+    });
+  }
+
+  findNoReadCount() {
+    const { notieService } = this.props;
+    notieService!.findMyNotieNoReadMentionCount();  // 안 읽은 알림이 있는지 조회
+  }
+
   render() {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
-    const { myNotieMentions } = NotieService.instance;
+    const { myNotieMentions, myNotieNoReadMentionCount } = NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
+
     return (
       <div className="g-info">
         <button
@@ -111,7 +129,7 @@ class ProfileContainer extends Component<Props, State> {
                 <span>My Page</span>
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 onClick={() => this.props.history.push('/community/my-profile')}
@@ -122,7 +140,7 @@ class ProfileContainer extends Component<Props, State> {
                 />
                 <span>Community Profile</span>
               </a>
-            </li>
+            </li> */}
             <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon" />
@@ -132,10 +150,12 @@ class ProfileContainer extends Component<Props, State> {
           </ul>
         </div>
 
-        {/* <HeaderAlarmView
+        <HeaderAlarmView
           myNotieMentions={myNotieMentions}
+          myNotieNoReadMentionCount={myNotieNoReadMentionCount}
           routeToAlarmBackLink={this.routeToAlarmBackLink}
-        /> */}
+          handleClickAlarm={this.handleClickAlarm}
+        />
       </div>
     );
   }
