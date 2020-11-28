@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import { Document, Page } from 'react-pdf';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
@@ -16,11 +16,20 @@ interface Props {
 
 const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
 
-
   const [pdfUrl, setPdfUrl] = useState<string>();
   const [file, setFile] = useState<any>();
- 
- 
+  const [pageWidth, setPageWidth] = useState<number>(0);
+  const [pageNumber, setPageNumer] = useState<number>(1);
+  const headerWidth:any = useRef();
+
+
+  const updateHeaderWidth = () => {
+    if (headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
+      setPageWidth(headerWidth.current?.clientWidth!);
+    }
+  };
+
+
   useEffect(() => {
 
     setPdfUrl('/api/depot/depotFile/flow/download/' + viewItem.id);
@@ -47,7 +56,7 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
       >
         <Modal.Header className="dataroom-popup-header">
           <div className="dataroom-popup-left">
-            <span>mySUNI 프로그램북_New format_20년 3분기.pdf</span>
+            <span>{viewItem.id}</span>
           </div>
           <div className="dataroom-popup-right">
             {/*<button className="ui icon button left post list2">
@@ -61,7 +70,7 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
           </div>
         </Modal.Header>
         <Modal.Content className="dataroom-popup-content">
-          <div className="documents-viewer">
+          <div className="documents-viewer" ref={headerWidth}>
             <div className="scrolling-80vh">
               <div style={{backgroundColor:"gray", height:"2000px"}}>
                 <Document
@@ -92,9 +101,9 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
                   }
                 >
                 <Page
-                  pageNumber={1}
+                  pageNumber={pageNumber}
                   renderAnnotationLayer={false}
-                  width={1200}
+                  width={pageWidth}
                 />
                 </Document>
               </div>
