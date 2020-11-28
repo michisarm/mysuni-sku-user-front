@@ -1,4 +1,5 @@
 import CommunityHome from '../viewModel/CommunityHome';
+import FollowModalItem from '../viewModel/FollowModalIntro/FollowModalItem';
 import { createStore } from './Store';
 
 const [
@@ -23,13 +24,19 @@ export {
 const [
   setModalState,
   getModalState,
-] = createStore<any>({
+  useModalState
+] = createStore<FollowModalItem>({
+  id: '',
+  nickname: '',
+  profileImg: '',
+  unfollow: false,
   open: false
 });
 
 export {
   setModalState,
-  getModalState
+  getModalState,
+  useModalState
 };
 
 

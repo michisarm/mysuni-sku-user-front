@@ -1,17 +1,11 @@
 import React from 'react';
 import FollowModalContainer from '../../logic/FollowModalIntro/FollowModalContainer';
 
-interface ModalOpenProps {
-  open: boolean;
-}
-
-const FollowerView: React.FC<ModalOpenProps> = function FollowerView ({
-  open
-}) {
+const FollowerView: React.FC = function FollowerView () {
   return(
     <>
       <section className="content">
-        <FollowModalContainer open={open} />
+        {/* <FollowModalContainer /> */}
       </section>
     </>
   );

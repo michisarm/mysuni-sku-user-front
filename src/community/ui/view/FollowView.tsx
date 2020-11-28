@@ -7,12 +7,9 @@ import { Link } from 'react-router-dom';
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
 
-import FollowModal from '../view/CommunityFollowModal/FollowModalView';
-
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
-  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div ref={contextRef}>
@@ -53,7 +50,6 @@ const FollowView: React.FC = function FollowView() {
           <CommunityFollowListContainer />
         </div>
       </Segment>    
-      <FollowModal open={open} />
     </div>
   );
 };

@@ -3,4 +3,5 @@ export default interface FollowModalItem {
   nickname: string;
   profileImg: string; 
   unfollow: boolean;
+  open: boolean;
 }

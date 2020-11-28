@@ -1,12 +1,16 @@
 import React from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
-// import {  } 
+import { useModalState, setModalState } from '../../store/CommunityHomeStore'; 
 import profileIcon from '../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
 
 function CommunityMainHeaderContainer() {
+
   const profile = useMyProfile();
+  const modalState = useModalState();
+  console.log('modalState', modalState);
+
   return (
     <div className="main-info-area community-main-header">
       <div className="progress-info-wrap">
@@ -33,7 +37,7 @@ function CommunityMainHeaderContainer() {
         </div>
         <div className="cell">
           <div className="ui statistic community-num">
-            <Label className="onlytext">
+            <Label className="onlytext" style={{border: '1px red solid'}}>
               <span>Followers</span>
             </Label>
             <div className="value2">0</div>
