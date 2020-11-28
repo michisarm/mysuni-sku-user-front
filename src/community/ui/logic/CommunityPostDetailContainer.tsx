@@ -16,6 +16,7 @@ import { useCommunityPostList } from 'community/service/useCommunityPostCreate/u
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
+import CommunityPdfModal from '../view/CommunityPdfModal';
 
 interface Params {
   communityId: string;
@@ -32,6 +33,19 @@ function CommunityPostDetailContainer() {
   const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
   const PUBLIC_URL = process.env.PUBLIC_URL;
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const viewModal = (pdf:string, other:string) => {
+    console.log("@@ 클릭한 대상이 pdf파일?",pdf.includes('.pdf'))
+    console.log("@@pdf Name",other)
+    const PdfFile = pdf.includes('.pdf')
+    if (PdfFile) {
+      setOpen(!open)
+    } else {
+      depot.downloadDepotFile(other)
+    }
+  }
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -82,6 +96,8 @@ function CommunityPostDetailContainer() {
   const OnClickPrevious = () => {
     console.log('OnClickPrevious');
   };
+
+  console.log(open)
   return (
     <Fragment>
       {postDetail && (
@@ -116,19 +132,21 @@ function CommunityPostDetailContainer() {
                 filesMap
                   .get('reference')
                   .map((foundedFile: DepotFileViewModel, index: number) => (
-                    <div className="file-down-wrap">
-                      <div className="down">
-                        <span>첨부파일 :</span>
-                        <a
-                          key={index}
-                          onClick={() =>
-                            depot.downloadDepotFile(foundedFile.id)
-                          }
-                        >
-                          <span>{foundedFile.name}</span>
-                        </a>
+                    <>
+                      <div className="file-down-wrap">
+                        <div className="down">
+                          <span>첨부파일 :</span>
+                          
+                          <a
+                            key={index}
+                            onClick={() => viewModal(foundedFile.name, foundedFile.id)}
+                          >
+                            <span>{foundedFile.name}</span>
+                          </a>
+                        </div>
                       </div>
-                    </div>
+                      <CommunityPdfModal open={open} viewItem={foundedFile} setOpen={setOpen} /> 
+                    </>
                   ))}
             </div>
           </div>
@@ -200,6 +218,7 @@ function CommunityPostDetailContainer() {
         </div>
       )}
     </Fragment>
+    
   );
 }
 
