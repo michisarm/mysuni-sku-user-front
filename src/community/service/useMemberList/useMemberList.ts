@@ -1,54 +1,41 @@
-import { findAllMemberByQuery, findApprovedMember, modifyMembers, removeMembers } from 'community/api/MemberApi';
-import { useState, useEffect, useCallback } from 'react';
-import ElementList from '../../model/ElementList';
-import Member from '../../model/Member';
-import MemberStore from '../../store/MemberStore';
-import MemberCdo from 'community/model/MemberCdo';
-import MemberRdo from '../../model/MemberRdo';
+import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel } from 'community/api/MemberApi';
+import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
+import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
+import { setCommunityMember } from 'community/store/CommunityMemberStore';
 
-export function useMemberList(): [
-  ElementList<Member>,
-  MemberRdo,
-  (get:any) => void,
-  (get:any) => void,
-  (
-    communityId: string,
-    memberIdList: (string | undefined)[],
-    confirmType: string
-  ) => void,
-] {
-  
-  const Member = MemberStore.instance;
-  const MemberResult = Member.memberList;
-  
-  const [member, setMember] = useState<ElementList<Member>>(MemberResult)
-  const [approved, setApproved] = useState<any>();
+export function getAllMember(communityId: string) {
+  findAllMemberByQuery(communityId)
+  .then(response => response && setCommunityMember(response.data));
+}
 
-  const getAllMember = (communityId: string) => {
-    findAllMemberByQuery(communityId)
-    .then(response => response && setMember(response.data));
-  }
+export function getApproveMember(communityId: string) {
+  findApprovedMember(communityId)
+  .then(response => response && setCommunityMemberApprove(response.data));
+}
 
-  const getApproveMember = (communityId: string) => {
-    findApprovedMember(communityId)
-    .then(response => response && setApproved(response.data));
-  }
+export function updateMembers  (
+  communityId: string,
+  memberIdList: (string | undefined)[]
+  ) {
+    modifyMembers(communityId, memberIdList).then((response) => {
+      //  searchQuery();
+  });
+}
 
-  const updateMembers = useCallback(
-    (
-      communityId: string,
-      memberIdList: (string | undefined)[],
-      confirmType: string
-    ) => {
-    confirmType === 'remove'
-    ? removeMembers(communityId, memberIdList).then((response) => {
-        // searchQuery();
-      })
-    : modifyMembers(communityId, memberIdList).then((response) => {
-        // searchQuery();
-      });
+export function getSearchMember(
+  communityId:string, nickName:any
+  ) {
+  searchMember(communityId, nickName).then(res => res && setCommunityMember(res.data))
+}
 
-    }, []);
+export function onFollow(
+  memberId:string
+) {
+  memberFollowAdd(memberId).then(res => res && setFollowMember(res.data))
+}
 
-  return [member, approved, getAllMember, getApproveMember, updateMembers];
+export function onUnFollow(
+  memberId:string
+  ) {
+  memberFollowDel(memberId).then(res => res && res.data)
 }

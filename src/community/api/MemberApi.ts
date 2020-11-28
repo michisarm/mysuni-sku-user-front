@@ -1,13 +1,10 @@
 import { axiosApi as axios } from '@nara.platform/accent';
-import MemberRdo from '../model/MemberRdo';
-import Member from '../model/Member';
 import MemberCdo from '../model/MemberCdo';
 
-
-const BASE_URL = "api/community/communities";
+const BASE_URL = "/api/community";
 
 export function findCommunities(limit: number, offset: number): Promise<any> {
-  return axios.get<Member[]>(`${BASE_URL}`, {
+  return axios.get(`${BASE_URL}`, {
     params: { limit, offset },
   });
 }
@@ -15,19 +12,45 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
 export function findAllMemberByQuery(
   communityId:string
   ): Promise<any> { 
-    
   return (
     axios
-    .get<Member[]>(`${BASE_URL}/${communityId}/members`)
+    .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8`)
   );
 }
 
 export function findApprovedMember(
   communityId:string
   ): Promise<any> {
-    
   return(
-    axios.get<Member[]>(`${BASE_URL}/${communityId}/members?startDate=1574694000000&endDate=1606316399999&companyName=&name=&teamName=&nickName=&email=&offset=0&limit=20&searchFilter=&communityId=${communityId}&approved=false&groupId=`)
+    axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=13&approved=false`)
+  )
+}
+
+export function searchMember(
+  communityId:string,
+  nickName:any,
+):Promise<any>{
+
+  return(
+    axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8&nickName=${nickName}`)
+  )
+}
+
+export function memberFollowAdd(
+  memberId:string
+):Promise<any> {
+
+  return (
+    axios.post(`${BASE_URL}/follow/flow/${memberId}`)
+  )
+}
+
+export function memberFollowDel (
+  memberId:string
+):Promise<any> {
+
+  return (
+    axios.delete(`${BASE_URL}/follow/flow/${memberId}/unfollow`).then(res => res && res.data)
   )
 }
 
@@ -49,7 +72,7 @@ export function modifyMembers(
 ): Promise<string> {
   
   return axios
-    .put<string>(`${BASE_URL}/${communityId}/members/${memberIdList.join(',')}`)
+    .put<string>(`${BASE_URL}/communities/${communityId}/members/${memberIdList.join(',')}`)
     .then((response) => response && response.data);
 }
 
