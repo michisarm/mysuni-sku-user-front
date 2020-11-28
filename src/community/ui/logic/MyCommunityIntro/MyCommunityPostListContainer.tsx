@@ -41,7 +41,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     const url = `${host}/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
-  let icon = boardIcon;
+  // let icon = boardIcon;
   // switch (type) {
   //   case 'STORE':
   //     icon = storeIcon;
