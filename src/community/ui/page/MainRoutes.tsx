@@ -8,6 +8,7 @@ import FollowPage from './FollowPage';
 import CommunityMainHeaderContainer from '../logic/CommunityMainHeaderContainer';
 import { findProfile } from '../../api/communityApi';
 import { setMyProfile } from '../../store/MyProfileStore';
+import FollowModal from './FollowModalPage';
 
 function MainRoutes() {
   useEffect(() => {
@@ -25,6 +26,8 @@ function MainRoutes() {
           component={OpenCommunityPage}
         />
         <Route exact path="/community/main/follow" component={FollowPage} />
+        <Route path="/community/main/follow-modal" component={FollowModal} />
+
         <Route component={NotFoundPage} />
       </Switch>
     </section>

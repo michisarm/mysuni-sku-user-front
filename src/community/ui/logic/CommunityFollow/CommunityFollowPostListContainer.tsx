@@ -6,6 +6,8 @@ import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import { followList } from '../../../api/communityApi';
 import { requestFollowCommunityPostList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
+import {off} from 'process';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -16,6 +18,13 @@ function copyUrl(url: string) {
   document.execCommand('copy');
   document.body.removeChild(textarea);
   reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+}
+
+const bookMark = (): void => {
+  reactAlert({
+    title: '북마크',
+    message: '북마크 추가 완료'
+  });
 }
 
 const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowItemView({
@@ -39,6 +48,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
     const url = `${host}/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
+
   return (
     <>
       <div className="sub-info-box">
@@ -66,7 +76,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   </Comment.Text>
                   <Comment.Actions>
                     <div className="right top">
-                      <Button icon className="img-icon">
+                      <Button icon className="img-icon" onClick={bookMark}>
                         <Icon className="bookmark2" />
                         <span className="blind">북마크</span>
                       </Button>
@@ -104,19 +114,29 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
 
+  // 페이지네이션 
+  // const addList = (communityFollowPostList: any) => {
+  //   console.log('add', communityFollowPostList);
+  //   if(communityFollowPostList.postsTotalCount < limitPage) {
+  //     console.log('return');
+  //     return;
+  //   }
+  //   setLimitPage(limitPage + 5);
+  //   requestFollowCommunityPostList(0, limitPage);
+  //   // console.log('limit', limitPage);
+  // }
+  
+  const [limitPage, setLimitPage] = useState<number>(5);
+  const [offsetPage, setOffsetPage] = useState<number>(0);
   const addList = () => {
-
-    // setOffsetPage(offsetPage + );
-    console.log('offset', offsetPage, limitPage);
-  
-    requestFollowCommunityPostList(offsetPage,undefined);
+    if(communityFollowPostList&& communityFollowPostList.postsTotalCount < offsetPage) {
+      console.log('return');
+      return;
+    }
+    setOffsetPage(offsetPage + 5);
+    requestFollowCommunityPostList(offsetPage, 3);
   }
-  
-  const [limitPage, setLimitPage] = useState<number>(2);
-  const [offsetPage, setOffsetPage] = useState<any>(communityFollowPostList && communityFollowPostList.communitiesTotalCount);
-
-  console.log('list', communityFollowPostList);
-  console.log('offset', offsetPage);
+  // console.log('list', communityFollowPostList);
 
   return (
     <div className="community-main-contants">
@@ -127,7 +147,7 @@ function CommunityFollowPostListContainer() {
 
       <div className="more-comments">
         <Button icon className="left moreview">
-          <div style={{border: '1px red solid'}} onClick={addList}>
+          <div onClick={addList}>
             <Icon className="moreview" /> list more
           </div>
         </Button>

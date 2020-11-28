@@ -34,27 +34,9 @@ function getTimeString(createTime: number): string {
   return moment(createTime).format('YYYY.MM.DD')
 }
 
-function communityToItem(community: Community): Community {
-  const {
-    name,
-    email,
-    nickName,
-    profileImg,
-    followerCount,
-    followingCount,
-  } = community;
-  return {
-    name,
-    email,
-    nickName,
-    profileImg,
-    followerCount,
-    followingCount,
-  };
-}
 
-export function requestFollowCommunityList() {
-  followList().then(communities => {
+export function requestFollowCommunityList(offset: number = 0, limit:number = 10, nickName:string = "") {
+  followList(offset, limit, nickName).then(communities => {
     // console.log('communities',communities);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
@@ -101,8 +83,9 @@ function postToItem(post: Post): PostItem {
   };
 }
 
-export function requestFollowCommunityPostList(offset: number = 0, limit: number=2) {
+export function requestFollowCommunityPostList(offset: number = 0, limit: number = 3) {
   followPostList(offset, limit).then(posts => {
+    console.log('post',posts);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],

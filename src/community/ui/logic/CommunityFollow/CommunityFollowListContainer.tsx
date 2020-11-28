@@ -3,6 +3,8 @@ import { Icon, Button } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowListItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
+import { requestFollowCommunityList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+// import { findNickNameApi } from '../../../api/communityApi';
 
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
   nickName,
@@ -34,6 +36,18 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
 const CommunityFollowListContainer: React.FC = () => {
   const communityFollowList = useFollowCommunityIntro();
   const [text, setText] = useState<string>('');
+  const [limit, setLimit] = useState<number>(0);
+
+  // 페이지네이션 
+  const addList = () => {
+    if(communityFollowList && communityFollowList.postsTotalCount < limit) {
+      console.log('list return');
+      return;
+    }
+    setLimit(limit + 5);
+    requestFollowCommunityList(0, limit, text);
+  }
+  console.log('aaaaa', communityFollowList?.postsTotalCount);
 
   return (
     <>
@@ -48,8 +62,10 @@ const CommunityFollowListContainer: React.FC = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
               />
-              {/* <Icon className="clear link" onClick={() => this.setState({write: ''})}/> */}
-              <Icon className="search link" />
+              <div onClick={()=>{requestFollowCommunityList(0, 10, text)}}>
+              
+                <Icon className="search link" />
+              </div>
             </div>
           </div>
           {communityFollowList !== undefined && (
@@ -64,9 +80,11 @@ const CommunityFollowListContainer: React.FC = () => {
           )}
 
           <div className="more-comments community-side">
-            <Button icon className="ui icon button left moreview">
-              <Icon className="moreview" /> list more
-            </Button>
+            <div onClick={addList}>
+              <Button icon className="ui icon button left moreview">
+                <Icon className="moreview" /> list more
+              </Button>
+            </div>
           </div>
         </div>
       </div>

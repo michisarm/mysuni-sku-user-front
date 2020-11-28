@@ -1,5 +1,5 @@
 import { axiosApi, OffsetElementList } from '@nara.platform/accent';
-import { AxiosResponse } from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
 import PostList from 'community/model/PostList';
 import PostCdo from 'community/model/PostCdo';
@@ -156,7 +156,7 @@ export function deleteCommunityPost(
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
   return axiosApi.delete(url).then(response => response && response.data);
 }
-// folowe
+// follow
 export function followPostList(
   offset: number,
   limit: number
@@ -165,10 +165,19 @@ export function followPostList(
   // console.log('axios offset', offset, limit);
   return axiosApi.get<OffsetElementList<Post>>(url).then(response => response && response.data);
 }
-export function followList(): Promise<
+export function followList(
+  offset: number,
+  limit: number,
+  nickName: string
+): Promise<
   OffsetElementList<FollowCommunityItem> | undefined
 > {
-  const url = `${BASE_URL}/profileviews/follow?offset=0&limit=10`;
+  const url = `${BASE_URL}/profileviews/follow?offset=${offset}&limit=${limit}&nickName=${nickName}`;
   // console.log('list',axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn));
   return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
+}
+
+export function followModal(): Promise<any> {
+  const url=`${BASE_URL}/profileviews/following?offset=0&limit=13`;
+  return axiosApi.get(url).then(AxiosReturn);
 }
