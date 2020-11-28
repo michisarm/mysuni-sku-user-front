@@ -5,7 +5,9 @@ import MyCommunityIntro, {
 import OpenCommunityIntro, {
   getEmptyOpenCommunityIntro,
 } from '../viewModel/OpenCommunityIntro/OpenCommunityIntro';
+import CommunityFollowIntro from '../viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { createStore } from './Store';
+import PostsPage from 'community/ui/page/PostsPage';
 
 const [setCommunityIntro, onCommunityIntro, getCommunityIntro] = createStore<
   CommunityIntro
@@ -22,6 +24,17 @@ const [
   getOpenCommunityIntro,
   useOpenCommunityIntro,
 ] = createStore<OpenCommunityIntro>(getEmptyOpenCommunityIntro());
+const [
+  setFollowCommunityIntro,
+  onFollowCommunityIntro,
+  getFollowCommunityIntro,
+  useFollowCommunityIntro,
+] = createStore<CommunityFollowIntro>({
+  communities: [],
+  posts: [],
+  communitiesTotalCount: 0,
+  postsTotalCount: 0,
+});
 
 export {
   setCommunityIntro,
@@ -35,4 +48,8 @@ export {
   onOpenCommunityIntro,
   getOpenCommunityIntro,
   useOpenCommunityIntro,
+  setFollowCommunityIntro,
+  onFollowCommunityIntro,
+  getFollowCommunityIntro,
+  useFollowCommunityIntro,
 };

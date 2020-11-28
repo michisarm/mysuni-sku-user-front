@@ -88,7 +88,7 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
             <span className="ellipsis">제목</span>
           </span>
         </span>
-        <span className="cell nick">등록자</span>
+        <span className="cell nick">작성자</span>
         <span className="cell date">등록일</span>
       </a>
       {postItems.items.map((post, index) => {

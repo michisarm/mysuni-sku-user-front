@@ -49,6 +49,7 @@ function MainRoutes() {
           component={OpenCommunityPage}
         />
         <Route exact path="/community/main/follow" component={FollowPage} />
+
         <Route component={NotFoundPage} />
       </Switch>
     </section>

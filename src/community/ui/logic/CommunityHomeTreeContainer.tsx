@@ -199,6 +199,7 @@ function MemberView() {
 
 function CommunityHomeTreeContainer() {
   const communtyHome = useCommunityHome();
+  console.log('communtyHome', communtyHome)
   if (communtyHome === undefined || communtyHome.community === undefined) {
     return null;
   }

@@ -24,8 +24,18 @@ class NotieApi {
     axiosApi.put<void>(this.feedBaseUrl + `/type?feedType=${notieType}`);
   }
 
+  findMyNotieNoReadMentionCount() {
+    return axiosApi.get<number>(this.baseUrl + `/mentions/noRead/count`)
+      .then(response => response.data);
+  }
+
   findAllMyNotieMentions() {
-    return axiosApi.get<[MentionModel]>(this.baseUrl + `/mentions?offset=0&limit=100`)
+    return axiosApi.get<[MentionModel]>(this.baseUrl + `/mentions`)
+      .then(response => response.data);
+  }
+
+  readAllMyNotieMentions() {
+    return axiosApi.put(this.baseUrl + `/mentions/onread`)
       .then(response => response.data);
   }
 

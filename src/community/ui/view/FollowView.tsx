@@ -1,13 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
-import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
+import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import { Link } from 'react-router-dom';
 
-interface FollowViewProps {}
+import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
+import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
 
-const FollowView: React.FC<FollowViewProps> = function FollowView() {
+import FollowModal from '../view/CommunityFollowModal/FollowModalView';
+
+
+const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div ref={contextRef}>
@@ -42,12 +47,13 @@ const FollowView: React.FC<FollowViewProps> = function FollowView() {
           </Menu>
         </div>
       </Sticky>
-
       <Segment className="full">
         <div className="course-detail-center community-containter">
-          {/* 컨텐츠 영역 */}
+          <CommunityFollowPostListContainer />
+          <CommunityFollowListContainer />
         </div>
-      </Segment>
+      </Segment>    
+      <FollowModal open={open} />
     </div>
   );
 };

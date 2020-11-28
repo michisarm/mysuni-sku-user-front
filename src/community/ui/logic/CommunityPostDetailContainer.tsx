@@ -15,7 +15,8 @@ import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCre
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
 import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
-// import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
+import { patronInfo } from '@nara.platform/dock';
+import CommunityPdfModal from '../view/CommunityPdfModal';
 
 interface Params {
   communityId: string;
@@ -29,9 +30,26 @@ function CommunityPostDetailContainer() {
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+  const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
+  const PUBLIC_URL = process.env.PUBLIC_URL;
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const viewModal = (pdf:string, other:string) => {
+    console.log("@@ 클릭한 대상이 pdf파일?",pdf.includes('.pdf'))
+    console.log("@@pdf Name",other)
+    const PdfFile = pdf.includes('.pdf')
+    if (PdfFile) {
+      setOpen(!open)
+    } else {
+      depot.downloadDepotFile(other)
+    }
+  }
 
   useEffect(() => {
+    const denizenId = patronInfo.getDenizenId();
+    setCreatorId(denizenId!);
     getFileIds();
   }, [postDetail]);
 
@@ -62,7 +80,13 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickModify = useCallback(() => {
-    //TODO. 수정 페이지 연결
+    history.push({
+      pathname: `/community/${communityId}/post/${postId}/edit`,
+    });
+  }, []);
+
+  const OnClickLike = useCallback(() => {
+        //deletePost(communityId, postId);
   }, []);
 
   async function deletePost(communityId: string, postId: string) {
@@ -72,6 +96,8 @@ function CommunityPostDetailContainer() {
   const OnClickPrevious = () => {
     console.log('OnClickPrevious');
   };
+
+  console.log(open)
   return (
     <Fragment>
       {postDetail && (
@@ -81,6 +107,8 @@ function CommunityPostDetailContainer() {
             title={postDetail.title}
             time={postDetail.createdTime}
             readCount={postDetail.readCount}
+            replyCount={postDetail.replyCount}
+            likeCount={postDetail.likeCount}
             deletable={true}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
@@ -104,19 +132,21 @@ function CommunityPostDetailContainer() {
                 filesMap
                   .get('reference')
                   .map((foundedFile: DepotFileViewModel, index: number) => (
-                    <div className="file-down-wrap">
-                      <div className="down">
-                        <span>첨부파일 :</span>
-                        <a
-                          key={index}
-                          onClick={() =>
-                            depot.downloadDepotFile(foundedFile.id)
-                          }
-                        >
-                          <span>{foundedFile.name}</span>
-                        </a>
+                    <>
+                      <div className="file-down-wrap">
+                        <div className="down">
+                          <span>첨부파일 :</span>
+                          
+                          <a
+                            key={index}
+                            onClick={() => viewModal(foundedFile.name, foundedFile.id)}
+                          >
+                            <span>{foundedFile.name}</span>
+                          </a>
+                        </div>
                       </div>
-                    </div>
+                      <CommunityPdfModal open={open} viewItem={foundedFile} setOpen={setOpen} /> 
+                    </>
                   ))}
             </div>
           </div>
@@ -128,13 +158,20 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
-            <Button
-              className="ui icon button left post edit"
-              onClick={OnClickModify}
-            >
-              <Icon className="edit" />
-              Edit
-            </Button>
+            <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
+              <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+              좋아요
+            </button>
+            { creatorId === postDetail.creatorId && (
+              <Button
+                className="ui icon button left post edit"
+                onClick={OnClickModify}
+              >
+                <Icon className="edit" />
+                Edit
+              </Button>
+              )
+            }
             <Button
               className="ui icon button left post delete"
               onClick={OnClickDelete}
@@ -150,7 +187,6 @@ function CommunityPostDetailContainer() {
               list
             </Button>
           </div>
-          {/* commentFeedbackId 안날라옴 */}
           <CommentList
             feedbackId={postDetail.commentFeedbackId}
             hideCamera
@@ -182,6 +218,7 @@ function CommunityPostDetailContainer() {
         </div>
       )}
     </Fragment>
+    
   );
 }
 
