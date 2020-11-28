@@ -37,7 +37,7 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
                 </tr>
               </thead>
               <tbody>
-                {myCommunityIntro.communities.map(
+                {/* {myCommunityIntro.communities.map(
                   ({
                     type,
                     fieldTitle,
@@ -65,7 +65,7 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
                       </tr>
                     );
                   }
-                )}
+                )} */}
               </tbody>
             </table>
           </div>

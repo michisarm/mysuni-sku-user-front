@@ -10,6 +10,7 @@ import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
 import PostRdo from 'community/model/PostRdo';
+import CommunityView from '../model/CommunityView';
 
 const BASE_URL = '/api/community';
 
@@ -26,12 +27,14 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   return response.data;
 }
 
-export function registerCommunityCommentPost(
-  title: string,
-): Promise<string> {
+export function registerCommunityCommentPost(title: string): Promise<string> {
   const url = `/api/feedback/feedback/comment`;
   return axiosApi
-    .post<string>(url, { "title": title, "audienceKey": "", "sourceEntity": { "id": "post", "name": "post" } })
+    .post<string>(url, {
+      title,
+      audienceKey: '',
+      sourceEntity: { id: 'post', name: 'post' },
+    })
     .then(response => response && response.data);
 }
 
@@ -39,7 +42,7 @@ export function registerPost(
   communityId: string,
   postCdo: PostCdo
 ): Promise<Post> {
-  const url = `${BASE_URL}/communities/${communityId}/posts`;
+  const url = `${BASE_URL}/communities/${communityId}/posts/flow`;
   return axiosApi
     .post<Post>(url, postCdo)
     .then(response => response && response.data);
@@ -67,10 +70,9 @@ export function findPostViewsByMenuId(
 
 export function findAllPostViewsFromMyCommunities(
   sort: string,
-  offset: number,
-  limit: number
+  offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=${offset}&limit=${limit}`;
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=${offset}&limit=10`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -84,13 +86,10 @@ export function findNoticePostViews(
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
-export function findPostView(
-  postId: string
-): Promise<Post> {
+export function findPostView(postId: string): Promise<Post> {
   const url = `${BASE_URL}/postviews/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
-
 
 export function modifyCommunityPost(
   communityId: string,
@@ -109,18 +108,41 @@ export function findProfile(): Promise<Profile | undefined> {
 }
 
 export function findAllMyCommunities(): Promise<
-  OffsetElementList<Community> | undefined
+  OffsetElementList<CommunityView> | undefined
 > {
-  const url = `${BASE_URL}/communities/my?offset=0&limit=100`;
-  return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
+  const url = `${BASE_URL}/communities/communityView/my?offset=0&limit=100`;
+  return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+}
+
+export function findAllMyOpenCommunities(
+  sort: string,
+  offset: number
+): Promise<OffsetElementList<CommunityView> | undefined> {
+  const url = `${BASE_URL}/communities/communityView/open/my?sort=${sort}&offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
 export function findAllOpenCommunities(
+  sort: string,
+  offset: number,
   fieldId?: string
-): Promise<OffsetElementList<Community> | undefined> {
-  const url = `${BASE_URL}/communities/openCommunities?field=${fieldId === undefined ? '' : fieldId
-    }&offset=0&limit=100`;
-  return axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn);
+): Promise<OffsetElementList<CommunityView> | undefined> {
+  const url = `${BASE_URL}/communities/communityView/open?${
+    fieldId === undefined ? '' : `field=${fieldId}`
+  }&sort=${sort}&offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+}
+
+export function findCommunityView(
+  communityId: string
+): Promise<CommunityView | undefined> {
+  const url = `${BASE_URL}/communities/communityView/${communityId}`;
+  return axiosApi.get<CommunityView>(url).then(AxiosReturn);
+}
+
+export function joinCommunity(communityId: string): Promise<void> {
+  const url = `${BASE_URL}/communities/${communityId}/members/join`;
+  return axiosApi.post<void>(url).then(AxiosReturn);
 }
 
 export function findAllFields(): Promise<FieldItem[] | undefined> {

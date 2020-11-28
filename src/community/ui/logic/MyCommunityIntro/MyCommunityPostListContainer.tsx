@@ -3,8 +3,12 @@ import moment from 'moment';
 import React, { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Icon, Button, Comment } from 'semantic-ui-react';
+import { requestAppendMyCommunityPostList } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 import { useMyCommunityIntro } from '../../../store/CommunityMainStore';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
+
+import boardIcon from '../../../style/media/icon-communtiy-menu-board.png';
+import storeIcon from '../../../style/media/icon-communtiy-menu-download.png';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -37,6 +41,15 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     const url = `${host}/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
+  let icon = boardIcon;
+  // switch (type) {
+  //   case 'STORE':
+  //     icon = storeIcon;
+  //     path = 'data';
+  //     break;
+  //   default:
+  //     break;
+  // }
   return (
     <div className="sub-info-box">
       <div className="comment-area community-main-card">
@@ -91,6 +104,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
 
 function MyCommunityPostListContainer() {
   const myCommunityIntro = useMyCommunityIntro();
+  if (myCommunityIntro === undefined) {
+    return null;
+  }
   return (
     <div className="community-main-contants">
       {myCommunityIntro !== undefined &&
@@ -98,10 +114,23 @@ function MyCommunityPostListContainer() {
           <PostItemView key={postItem.postId} {...postItem} />
         ))}
 
-      <div className="more-comments">
-        <Button icon className="left moreview">
-          {/* <Icon className="moreview" /> list more */}
-        </Button>
+      <div className="more-comments community-side">
+        {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
+          <Button
+            icon
+            className="left moreview"
+            onClick={requestAppendMyCommunityPostList}
+          >
+            <Icon className="moreview" /> list more
+          </Button>
+        )}
+        {myCommunityIntro.postsTotalCount <= myCommunityIntro.postsOffset && (
+          <Button
+            icon
+            className="left moreview"
+            style={{ cursor: 'default' }}
+          />
+        )}
       </div>
     </div>
   );
