@@ -172,6 +172,13 @@ export function findAllMenus(
   return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
 }
 
+export function findPostByMenuId(
+  menuId: string
+): Promise<Post> {
+  const url = `${BASE_URL}/post/menu/${menuId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
 export function deleteCommunityPost(
   communityId: string,
   postId: string
