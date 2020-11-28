@@ -8,7 +8,9 @@ import moment from 'moment';
 
 interface Props {
     myNotieMentions: MentionModel[],
+    myNotieNoReadMentionCount: number,
     routeToAlarmBackLink: (backLink:string) => void,
+    handleClickAlarm: () => void,
 }
 
 interface State {
@@ -34,7 +36,11 @@ class HeaderAlarmView extends Component<Props, State> {
 
   onTogglePop() {
     const { alarmShowClass } = this.state;
+    const { handleClickAlarm } = this.props;
+
     this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
+
+    handleClickAlarm();
   }
 
   handleClickOutside(e: MouseEvent) {
@@ -48,13 +54,18 @@ class HeaderAlarmView extends Component<Props, State> {
 
   render() {
     //
-    const { myNotieMentions, routeToAlarmBackLink } = this.props;
+    const { myNotieMentions, myNotieNoReadMentionCount, routeToAlarmBackLink } = this.props;
     const { alarmShowClass } = this.state;
+
+    let existNoReadClass = '';
+    if (myNotieNoReadMentionCount > 0) {
+      existNoReadClass = 'lms-on'
+    }
 
     return (
       <>
         <a 
-          className="lms-alarm lms-on" 
+          className={`lms-alarm ${existNoReadClass}`}
           onClick={this.onTogglePop}
           ref={this.alarmButtonRef}
         >
@@ -72,15 +83,22 @@ class HeaderAlarmView extends Component<Props, State> {
                 </Button>
             </div>
             <div className="lms-alarm-body">
-                {myNotieMentions && myNotieMentions.map((result,index)=>(
-                  <a 
-                    className="lms-alarm-item"
-                    onClick={() => routeToAlarmBackLink(result.backLink)}
-                  >
-                    <span className="lms-alarm-copy">{result.message}</span>
-                    <span className="lms-alarm-time">{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
-                  </a>
-                ))}
+                {myNotieMentions && myNotieMentions.map((result,index)=>{
+                  let notReadClass = '';
+                  if (!result.read) {
+                    notReadClass = 'not-read';
+                  }
+
+                  return(
+                    <a 
+                      className={`lms-alarm-item ${notReadClass}`}
+                      onClick={() => routeToAlarmBackLink(result.backLink)}
+                    >
+                      <span className="lms-alarm-copy">{result.message}</span>
+                      <span className="lms-alarm-time">{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
+                    </a>
+                  );
+                })}
             </div>
         </div>
       </>
