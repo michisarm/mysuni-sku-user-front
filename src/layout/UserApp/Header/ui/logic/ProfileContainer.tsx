@@ -129,7 +129,7 @@ class ProfileContainer extends Component<Props, State> {
                 <span>My Page</span>
               </a>
             </li>
-            {/* <li>
+            <li>
               <a
                 href="#"
                 onClick={() => this.props.history.push('/community/my-profile')}
@@ -140,7 +140,7 @@ class ProfileContainer extends Component<Props, State> {
                 />
                 <span>Community Profile</span>
               </a>
-            </li> */}
+            </li>
             <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon" />
