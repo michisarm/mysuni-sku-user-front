@@ -84,7 +84,9 @@ class ProfileContainer extends Component<Props, State> {
   handleClickAlarm() {
     const { notieService } = this.props;
     notieService!.findAllMyNotieMentions().then(() => { // 알림 목록 화면 오픈시 안읽은 알림 보여주고
-      notieService!.readAllMyNotieMentions(); // 보여준 이후에 읽음 처리
+      notieService!.readAllMyNotieMentions().then(() => { // 보여준 이후에 읽음 처리
+        this.findNoReadCount(); // 초기화
+      });
     });
   }
 
