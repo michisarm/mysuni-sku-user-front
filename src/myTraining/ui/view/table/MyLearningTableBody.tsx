@@ -91,6 +91,7 @@ function MyLearningTableBody(props: Props) {
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
 
+    /* URL 표현을 위한 변환. */
     serviceType = serviceType === 'COURSE' ? 'Course' : 'Program';
 
 

@@ -2,19 +2,38 @@
 import { modifyCommunityProfile } from "community/api/profileApi";
 import ProfileUdo from "community/model/ProfileUdo";
 import { getCommunityProfileItem } from "community/store/CommunityProfileStore";
+import { NameValueList } from "shared/model";
 import { getProfileItemMapFromCommunity } from "./getProfileItemMapFromCommunity";
 
 export async function saveCommunityProfile(): Promise<void> {
     const profileItem = getCommunityProfileItem();
     if (profileItem !== undefined) {
-        const profileUdo: ProfileUdo = {
-            profileImg: profileItem.profileImg,
-            profileBgImg: profileItem.profileBgImg,
-            nickname: profileItem.nickname,
-            introduce: profileItem.introduce,
-            hobby: profileItem.hobby,
+        const profileNameValues: NameValueList = {
+            nameValues: [
+              {
+                name: 'profileImg',
+                value: profileItem.profileImg,
+              },
+              {
+                name: 'profileBgImg',
+                value: profileItem.profileBgImg,
+              },
+              {
+                name: 'nickname',
+                value: profileItem.nickname,
+              },
+              {
+                name: 'introduce',
+                value: profileItem.introduce,
+              },
+              {
+                name:'hobby',
+                value: profileItem.hobby,
+              }
+            ]
         };
-        await modifyCommunityProfile(profileUdo);
-        await getProfileItemMapFromCommunity();
+        await modifyCommunityProfile(profileNameValues).then(() => {
+            getProfileItemMapFromCommunity();
+        });
     }
 }

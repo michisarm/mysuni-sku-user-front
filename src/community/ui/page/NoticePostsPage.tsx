@@ -1,8 +1,10 @@
 import PostRdo from 'community/model/PostRdo';
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
 import { getPostListMapFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
+import { getCommunityNoticePostList } from 'community/service/useCommunityPostList/getCommunityNoticePostList';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
+import CommunityNoticePostListContainer from '../logic/CommunityNoticePostListContainer';
 import CommunityPostListContainer, { SearchType } from '../logic/CommunityPostListContainer';
 
 interface Params {
@@ -13,7 +15,7 @@ interface Params {
 function NoticePostsPage() {
   const { communityId, menuId } = useParams<Params>();
   useEffect(() => {
-    const test: PostRdo = {
+    const post: PostRdo = {
       title: '',
       html: '',
       creatorId: '',
@@ -25,8 +27,7 @@ function NoticePostsPage() {
       sort: 'createdTime',
       pinned: true,
     };
-
-    getCommunityPostList(test);
+    getCommunityNoticePostList(post);
   }, [communityId, menuId]);
 
   const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
@@ -56,7 +57,7 @@ function NoticePostsPage() {
   }
 
   return (
-    <CommunityPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
+    <CommunityNoticePostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
   );
 }
 

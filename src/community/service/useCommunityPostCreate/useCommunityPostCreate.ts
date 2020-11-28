@@ -34,7 +34,6 @@ export function useCommunityPostCreate(
     }
     return onCommunityPostCreateItem(next => {
       setPostCreateValue(next);
-      console.log('CommunityPostCreateItem', next);
     }, subscriberId);
   }, [subscriberId]);
 

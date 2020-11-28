@@ -14,6 +14,7 @@ export interface CommunityPostList {
 export interface CommunityPostItem {
   postId: string;
   communityId: string;
+  communityName: string;
   title: string;
   html: string;
   replyCount: number;
