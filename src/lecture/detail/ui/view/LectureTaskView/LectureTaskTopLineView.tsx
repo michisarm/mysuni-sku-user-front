@@ -20,13 +20,14 @@ class LectureTaskTopLineView extends React.Component<Props> {
     return (
       <ListPanelTopLine className="size-type3" count={totalCount}>
         <div className="right-wrap">
-          <Button
+          <a
             className="ui icon button left post"
             onClick={handelClickCreateTask}
+            href="#create"
           >
             <Icon className="post" />
             post
-          </Button>
+          </a>
         </div>
       </ListPanelTopLine>
     );
