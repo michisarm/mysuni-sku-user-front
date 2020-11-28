@@ -1,6 +1,10 @@
 import CommunityIntro from '../viewModel/CommunityIntro';
-import MyCommunityIntro from '../viewModel/MyCommunityIntro/MyCommunityIntro';
-import OpenCommunityIntro from '../viewModel/OpenCommunityIntro/OpenCommunityIntro';
+import MyCommunityIntro, {
+  getEmptyMyCommunityIntro,
+} from '../viewModel/MyCommunityIntro/MyCommunityIntro';
+import OpenCommunityIntro, {
+  getEmptyOpenCommunityIntro,
+} from '../viewModel/OpenCommunityIntro/OpenCommunityIntro';
 import CommunityFollowIntro from '../viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { createStore } from './Store';
 import PostsPage from 'community/ui/page/PostsPage';
@@ -13,22 +17,13 @@ const [
   onMyCommunityIntro,
   getMyCommunityIntro,
   useMyCommunityIntro,
-] = createStore<MyCommunityIntro>({
-  communities: [],
-  posts: [],
-  communitiesTotalCount: 0,
-  postsTotalCount: 0,
-});
+] = createStore<MyCommunityIntro>(getEmptyMyCommunityIntro());
 const [
   setOpenCommunityIntro,
   onOpenCommunityIntro,
   getOpenCommunityIntro,
   useOpenCommunityIntro,
-] = createStore<OpenCommunityIntro>({
-  fields: [],
-  communities: [],
-  communitiesTotalCount: 0,
-});
+] = createStore<OpenCommunityIntro>(getEmptyOpenCommunityIntro());
 const [
   setFollowCommunityIntro,
   onFollowCommunityIntro,
@@ -38,7 +33,7 @@ const [
   communities: [],
   posts: [],
   communitiesTotalCount: 0,
-  postsTotalCount: 0
+  postsTotalCount: 0,
 });
 
 export {

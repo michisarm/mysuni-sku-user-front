@@ -1,4 +1,5 @@
-import { IdName } from "@nara.platform/accent";
+import { IdName } from '@nara.platform/accent';
+import CommunityType from '../model/CommunityType';
 
 interface Item {
   activated?: boolean;
@@ -26,13 +27,13 @@ export interface CommunityProfile {
 }
 
 export interface CommunityProfileMyCommunityItem {
-  type: string;
-  field: string;
+  type: CommunityType;
   name: string;
-  // 왕관
-  creatorName: string;
-  memberCount: number;
+  managerId: string;
   createdTime: number;
+  fieldName: string;
+  managerName: string;
+  memberCount: number;
 }
 
 export interface CommunityProfileMyCommunity {
