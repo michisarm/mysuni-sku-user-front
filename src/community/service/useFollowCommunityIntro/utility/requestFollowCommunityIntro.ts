@@ -55,7 +55,7 @@ function communityToItem(community: Community): Community {
 
 export function requestFollowCommunityList() {
   followList().then(communities => {
-    console.log('communities',communities);
+    // console.log('communities',communities);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
@@ -71,11 +71,11 @@ export function requestFollowCommunityList() {
       });
     } else {
       const next: FollowCommunityItem[] = [];
-      communities.results.forEach(community => {
+      communities.results.forEach(followPostList => {
         // if (!next.some(c => c.createdTime === community.communityId)) {
           // next.push(communityToItem(community));
         // }
-        next.push(community);
+        next.push(followPostList);
       });
       setFollowCommunityIntro({
         ...followCommunityIntro,
@@ -101,7 +101,7 @@ function postToItem(post: Post): PostItem {
   };
 }
 
-export function requestFollowCommunityPostList(offset: number = 0, limit: number = 10) {
+export function requestFollowCommunityPostList(offset: number = 0, limit: number=2) {
   followPostList(offset, limit).then(posts => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],

@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import { followList } from '../../../api/communityApi';
+import { requestFollowCommunityPostList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -26,6 +27,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   createTime,
   name,
   contents,
+  
 }) {
   const { pathname } = useLocation();
   const shareUrl = useCallback(() => {
@@ -37,7 +39,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
     const url = `${host}/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
-
   return (
     <>
       <div className="sub-info-box">
@@ -89,9 +90,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                     more
                     <i aria-hidden="true" className="icon more2" />
                   </button>
-                  {/* <button className="ui icon button right btn-blue btn-hide">
-                    hide<i aria-hidden="true" className="icon hide2"/>
-                  </button> */}
                 </div>
               </div>
             </Comment.Group>
@@ -102,8 +100,24 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
+
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
+
+  const addList = () => {
+
+    // setOffsetPage(offsetPage + );
+    console.log('offset', offsetPage, limitPage);
+  
+    requestFollowCommunityPostList(offsetPage,undefined);
+  }
+  
+  const [limitPage, setLimitPage] = useState<number>(2);
+  const [offsetPage, setOffsetPage] = useState<any>(communityFollowPostList && communityFollowPostList.communitiesTotalCount);
+
+  console.log('list', communityFollowPostList);
+  console.log('offset', offsetPage);
+
   return (
     <div className="community-main-contants">
       {communityFollowPostList !== undefined &&
@@ -113,7 +127,7 @@ function CommunityFollowPostListContainer() {
 
       <div className="more-comments">
         <Button icon className="left moreview">
-          <div>
+          <div style={{border: '1px red solid'}} onClick={addList}>
             <Icon className="moreview" /> list more
           </div>
         </Button>

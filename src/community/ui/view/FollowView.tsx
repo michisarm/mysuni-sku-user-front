@@ -2,16 +2,13 @@ import React, { useRef } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
-import { Icon, Button } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
 
 
-interface FollowViewProps {}
-
-const FollowView: React.FC<FollowViewProps> = function FollowView() {
+const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
 
   return (
