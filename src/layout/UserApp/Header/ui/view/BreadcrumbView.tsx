@@ -178,7 +178,7 @@ class BreadcrumbView extends Component<Props, State> {
           </div> */}
 
           {/* <div className="right"> */}
-            {/* {process.env.NODE_ENV === 'development' && (
+            {process.env.NODE_ENV === 'development' && (
               <>
                 <input
                   style={{
@@ -194,7 +194,7 @@ class BreadcrumbView extends Component<Props, State> {
                 </button>
                 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
               </>
-            )} */}
+            )}
             {/* <Link to={supportPath}>
               <i className="support12 icon" />
               <span>Support</span>

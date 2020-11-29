@@ -179,3 +179,13 @@ export function deleteCommunityPost(
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
   return axiosApi.delete(url).then(response => response && response.data);
 }
+
+export function findPostMenuName(
+  communityId: string,
+  menuId: string
+): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus/${menuId}`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  });
+}
