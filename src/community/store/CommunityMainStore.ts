@@ -38,7 +38,7 @@ const [
   communities: [],
   posts: [],
   communitiesTotalCount: 0,
-  postsTotalCount: 0
+  postsTotalCount: 0,
 });
 
 export {

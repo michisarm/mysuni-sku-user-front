@@ -3,8 +3,7 @@ import { Icon, Button } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowListItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
-import { requestFollowCommunityList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
-// import { findNickNameApi } from '../../../api/communityApi';
+import { requestFollowCommunityList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
   nickName,
@@ -40,14 +39,13 @@ const CommunityFollowListContainer: React.FC = () => {
 
   // 페이지네이션 
   const addList = () => {
-    if(communityFollowList && communityFollowList.postsTotalCount < limit) {
+    if (communityFollowList && communityFollowList.postsTotalCount < limit) {
       console.log('list return');
       return;
     }
     setLimit(limit + 5);
     requestFollowCommunityList(0, limit, text);
   }
-  console.log('aaaaa', communityFollowList?.postsTotalCount);
 
   return (
     <>
@@ -62,8 +60,8 @@ const CommunityFollowListContainer: React.FC = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
               />
-              <div onClick={()=>{requestFollowCommunityList(0, 10, text)}}>
-              
+              <div onClick={() => { requestFollowCommunityList(0, 10, text) }}>
+
                 <Icon className="search link" />
               </div>
             </div>

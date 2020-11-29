@@ -5,9 +5,9 @@ import { useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import { followList } from '../../../api/communityApi';
-import { requestFollowCommunityPostList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+import { requestFollowCommunityPostList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
-import {off} from 'process';
+import { off } from 'process';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -36,7 +36,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   createTime,
   name,
   contents,
-  
+
 }) {
   const { pathname } = useLocation();
   const shareUrl = useCallback(() => {
@@ -48,7 +48,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
     const url = `${host}/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
-
   return (
     <>
       <div className="sub-info-box">
@@ -113,28 +112,20 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
 
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
+  // console.log('container', communityFollowPostList);
 
-  // 페이지네이션 
-  // const addList = (communityFollowPostList: any) => {
-  //   console.log('add', communityFollowPostList);
-  //   if(communityFollowPostList.postsTotalCount < limitPage) {
-  //     console.log('return');
-  //     return;
-  //   }
-  //   setLimitPage(limitPage + 5);
-  //   requestFollowCommunityPostList(0, limitPage);
-  //   // console.log('limit', limitPage);
-  // }
-  
+
   const [limitPage, setLimitPage] = useState<number>(5);
   const [offsetPage, setOffsetPage] = useState<number>(0);
+
   const addList = () => {
-    if(communityFollowPostList&& communityFollowPostList.postsTotalCount < offsetPage) {
+    if (communityFollowPostList && communityFollowPostList.postsTotalCount < offsetPage) {
       console.log('return');
       return;
     }
     setOffsetPage(offsetPage + 5);
-    requestFollowCommunityPostList(offsetPage, 3);
+    requestFollowCommunityPostList(offsetPage, 5);
+    console.log('offset', offsetPage);
   }
   // console.log('list', communityFollowPostList);
 

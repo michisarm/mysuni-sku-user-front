@@ -71,7 +71,7 @@ export function findPostViewsByMenuId(
 
   };
   const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}`
-  return axiosApi.get<OffsetElementList<Post>>(url, {params}).then(AxiosReturn);
+  return axiosApi.get<OffsetElementList<Post>>(url, { params }).then(AxiosReturn);
 }
 
 export function findAllPostViewsFromMyCommunities(
@@ -132,7 +132,7 @@ export function findProfile(): Promise<Profile | undefined> {
   return axiosApi.get<Profile>(url).then(AxiosReturn);
 }
 
-export function findAllMyCommunities(sort:string): Promise<
+export function findAllMyCommunities(sort: string): Promise<
   OffsetElementList<Community> | undefined
 > {
   const url = `${BASE_URL}/communities/my?sort=${sort}&offset=0&limit=100`;
@@ -209,6 +209,7 @@ export function followList(
 }
 
 export function followModal(): Promise<any> {
-  const url=`${BASE_URL}/profileviews/following?offset=0&limit=13`;
+  const url = `${BASE_URL}/profileviews/following?offset=0&limit=13`;
+  console.log('modal', axiosApi.get(url).then(AxiosReturn));
   return axiosApi.get(url).then(AxiosReturn);
 }

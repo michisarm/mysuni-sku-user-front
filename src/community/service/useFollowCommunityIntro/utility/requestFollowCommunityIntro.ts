@@ -1,15 +1,15 @@
 import moment from 'moment';
 import {
-followPostList,followList
+  followPostList, followList
 } from '../../../api/communityApi';
 import Community from '../../../model/CommunityFollow';
 import Post from '../../../model/Post';
 import {
   setFollowCommunityIntro,
   getFollowCommunityIntro,
+  onFollowCommunityIntro,
 } from '../../../store/CommunityMainStore';
 import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
-import CommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 
 const ONE_DAY = 24 * 60 * 60 * 1000
@@ -35,9 +35,8 @@ function getTimeString(createTime: number): string {
 }
 
 
-export function requestFollowCommunityList(offset: number = 0, limit:number = 10, nickName:string = "") {
+export function requestFollowCommunityList(offset: number = 0, limit: number = 10, nickName: string = "") {
   followList(offset, limit, nickName).then(communities => {
-    // console.log('communities',communities);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
@@ -54,9 +53,6 @@ export function requestFollowCommunityList(offset: number = 0, limit:number = 10
     } else {
       const next: FollowCommunityItem[] = [];
       communities.results.forEach(followPostList => {
-        // if (!next.some(c => c.createdTime === community.communityId)) {
-          // next.push(communityToItem(community));
-        // }
         next.push(followPostList);
       });
       setFollowCommunityIntro({
@@ -83,9 +79,8 @@ function postToItem(post: Post): PostItem {
   };
 }
 
-export function requestFollowCommunityPostList(offset: number = 0, limit: number = 3) {
+export function requestFollowCommunityPostList(offset: number = 0, limit: number = 5) {
   followPostList(offset, limit).then(posts => {
-    console.log('post',posts);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
@@ -99,9 +94,13 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
         postsTotalCount: 0,
       });
     } else {
+      const nextList = [
+        ...followCommunityIntro.posts,
+        ...posts.results.map(postToItem),
+      ];
       setFollowCommunityIntro({
         ...followCommunityIntro,
-        posts: posts.results.map(postToItem),
+        posts: nextList,
         postsTotalCount: posts.totalCount,
       });
     }
