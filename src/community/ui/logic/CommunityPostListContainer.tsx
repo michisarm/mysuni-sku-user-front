@@ -9,6 +9,7 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
+import { findPostMenuName } from 'community/api/communityApi';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -33,6 +34,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
+  const [menuName, setMenuName] = useState<string>('');
   const [postItems] = useCommunityPostList();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
@@ -46,6 +48,12 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       return
     }
     totalPages()
+
+    const menuData = findPostMenuName(communityId, menuId);
+    menuData.then((result) => {
+      console.log(result)
+      setMenuName(result.name)
+    })
   },[postItems])
 
   const handelClickCreatePost = () => {};
@@ -135,7 +143,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       totalpage++
     }
     setTotalPage(totalpage)
-    // return totalpage;
   }
 
   return (
@@ -144,7 +151,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
         <>
           <div className="course-info-header">
             <div className="survey-header border-none mb30 pt0">
-              <div className="survey-header-left">메뉴명</div>
+      <div className="survey-header-left">{menuName}</div>
             </div>
           </div>
           <CommunityPostTopLineView

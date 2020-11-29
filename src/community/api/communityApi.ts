@@ -212,3 +212,13 @@ export function followModal(): Promise<any> {
   const url=`${BASE_URL}/profileviews/following?offset=0&limit=13`;
   return axiosApi.get(url).then(AxiosReturn);
 }
+
+export function findPostMenuName(
+  communityId: string,
+  menuId: string
+): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus/${menuId}`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  });
+}
