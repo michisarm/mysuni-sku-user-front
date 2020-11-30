@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
 import TestShortAnswerView from './TestShortAnswerView';
@@ -8,6 +8,7 @@ import {
   getLectureTestAnswerItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
+import LearningState from 'lecture/detail/model/LearningState';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
@@ -15,6 +16,10 @@ interface TestQuestionViewProps {
   answerResult?: boolean;
   submitted?: boolean;
   readOnly: boolean;
+  learningState?: LearningState;
+  submitOk: boolean;
+  setSubmitOk: (submitOk:boolean) => void;
+  dataLoadTime?: Number;
 }
 
 function setAnswer(questionNo: string, value: string) {
@@ -41,6 +46,10 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   answerResult,
   submitted,
   readOnly,
+  learningState,
+  submitOk,
+  setSubmitOk,
+  dataLoadTime,
 }) {
   let questionClassName = ' course-radio-survey ';
   if (
@@ -67,6 +76,21 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       questionClassName += ' survey-radio-img ';
     }
   }
+  useEffect(() => {
+    if (
+      question.questionType === 'SingleChoice' ||
+      question.questionType === 'MultiChoice'
+    ) {
+      if (submitOk && submitted) {
+        if (!answerResult) {
+          if (learningState === 'Failed') {
+            setAnswer(question.questionNo, '');  // 미이수 로딩시 틀린답안 표시 안함
+          }
+        }
+      }
+    }
+  }, [question.questionNo, submitted,learningState,submitOk, dataLoadTime]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
+
   return (
     <>
       <div key={question.id} className={questionClassName}>
@@ -74,15 +98,11 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           <span>{question.questionNo}</span>
           {(question.questionImgSrc && (
             <p>
-              <span className="copy">
-                {question.direction} ({question.allocatedPoint}점)
-              </span>
+              <span className="copy" dangerouslySetInnerHTML={{__html:`${question.direction} (${question.allocatedPoint}점)`}}/>
             </p>
           )) || (
             <>
-              <span className="copy">
-                {question.direction} ({question.allocatedPoint}점)
-              </span>
+              <span className="copy" dangerouslySetInnerHTML={{__html:`${question.direction} (${question.allocatedPoint}점)`}}/>
             </>
           )}
         </p>
@@ -96,6 +116,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            setSubmitOk={setSubmitOk}
           />
         )}
         {question.questionType === 'MultiChoice' && (
@@ -104,6 +125,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            setSubmitOk={setSubmitOk}
           />
         )}
         {question.questionType === 'ShortAnswer' && (

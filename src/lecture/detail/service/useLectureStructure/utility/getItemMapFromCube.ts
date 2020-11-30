@@ -48,24 +48,19 @@ async function getTestItem(
 ) {
   const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
 
-  if (examId !== '') {
+  if (examId !== '' && examId !== null) {
     const { result } = await findExamination(examId);
     let state: State = 'None';
 
-    const denizenId = patronInfo.getDenizenId();
-    if (denizenId !== undefined) {
-      const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
-      if (student !== undefined) {
-        if (findAnswerSheetData.result !== null) {
-          state = 'Progress';
-          if (
-            student !== undefined &&
-            (student.learningState === 'Passed' ||
-              student.learningState === 'TestPassed')
-          ) {
-            state = 'Completed';
-          }
-        }
+    if (student !== undefined && student !== null) {
+      state = 'Progress';
+      if (
+        student !== undefined && student !== null &&
+        (student.learningState === 'Passed' ||
+          student.learningState === 'TestPassed' ||
+          student.learningState === 'HomeworkWaiting')
+      ) {
+        state = 'Completed';
       }
     }
 
@@ -142,7 +137,7 @@ async function getReportItem(
       !isEmpty(cubeIntro.reportFileBox.fileBoxId))
   ) {
     let state: State = 'None';
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       if (
         student.homeworkContent !== null ||
         student.homeworkFileBoxId !== null

@@ -16,12 +16,24 @@ import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/uti
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureTaskContainer from './LectureTaskContainer';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
+import { isEmptyText } from '../../utility/isEmpty';
+import {
+  setLectureTaskDetail,
+  setLectureTaskOffset,
+  setLectureTaskTab,
+  setLectureTaskViewType,
+} from '../../store/LectureTaskStore';
+import {
+  getActiveStructureItem,
+  useLectureStructure,
+} from '../../service/useLectureStructure/useLectureStructure';
+import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 
 function LectureCubeTaskPage() {
   const params = useLectureRouterParams();
   const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
   useEffect(() => {
-    if (params === undefined) {
+    if (isEmptyText(contentId) || isEmptyText(lectureId)) {
       return;
     }
     getCubeLectureOverview(contentId, lectureId);
@@ -36,11 +48,27 @@ function LectureCubeTaskPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
+
+  useEffect(() => {
+    if (isEmptyText(contentId) || isEmptyText(lectureId)) {
+      return;
+    }
+    return () => {
+      setLectureTaskOffset(0);
+      setLectureTaskViewType('list');
+      setLectureTaskDetail();
+      setLectureTaskTab('Overview');
+    };
+  }, [contentId, lectureId]);
+
+  const [lectureStructure] = useLectureStructure();
+
   return (
     <LectureDetailLayout>
-      <LectureTaskContainer />
+      {lectureStructure && getActiveStructureItem() && <LectureTaskContainer />}
     </LectureDetailLayout>
   );
 }

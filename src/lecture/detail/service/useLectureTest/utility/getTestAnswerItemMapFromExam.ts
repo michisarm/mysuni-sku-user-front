@@ -24,9 +24,10 @@ async function getTestAnswerItem(examId: string) {
     submitted: false,
     submitAnswers: [],
     finished: false,
+    dataLoadTime: 0,
   };
 
-  if (examId !== '') {
+  if (examId !== '' && examId !== null) {
     const denizenId = patronInfo.getDenizenId(); // denizenId는 파라메터로 넘기지 않고 서버단에서 해결할 것
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
@@ -37,6 +38,7 @@ async function getTestAnswerItem(examId: string) {
         item.submitted = findAnswerSheetData.result.submitted!;
         item.submitAnswers = findAnswerSheetData.result.submitAnswers!;
         item.finished = findAnswerSheetData.result.finished!;
+        item.dataLoadTime = new Date().getTime(); // 화면에서 update용으로 사용
       }
     }
 

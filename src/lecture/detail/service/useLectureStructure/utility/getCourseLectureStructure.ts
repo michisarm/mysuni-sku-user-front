@@ -3,9 +3,11 @@ import {
   studentInfoView,
   StudentInfoViewBody,
 } from '../../../api/lectureApi';
+import { findMedia } from '../../../api/mPersonalCubeApi';
 import CoursePlanComplex from '../../../model/CoursePlanComplex';
 import IdNameSequence from '../../../model/IdNameSequence';
 import LectureStudentView from '../../../model/LectureStudentView';
+import { MediaType } from '../../../model/MediaType';
 import ProgramSet from '../../../model/ProgramSet';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
@@ -126,22 +128,48 @@ function parseCoursePlanComplex(
         contentId: cubeId,
         lectureId: serviceId,
       };
-      lectureStructure.cubes.push({
-        id,
-        name,
-        cubeId,
-        cubeType,
-        learningTime,
-        learningCardId,
-        params: cubeParams,
-        routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
-        path: toPath(cubeParams),
-        serviceId,
-        lectureView,
-        can: true,
-        order: 0,
-        type: 'CUBE',
-      });
+      if (cubeType === 'Audio' || cubeType === 'Video') {
+        const lectureStructureDurationableCubeItem: LectureStructureDurationableCubeItem = {
+          id,
+          name,
+          cubeId,
+          cubeType,
+          learningTime,
+          learningCardId,
+          params: cubeParams,
+          routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
+          path: toPath(cubeParams),
+          serviceId,
+          lectureView,
+          can: true,
+          order: 0,
+          type: 'CUBE',
+          cube: lectureView.personalCube,
+          cubeIntro: lectureView.cubeIntro,
+          cubeContentsId: lectureView.personalCube.contents.contents.id,
+          duration: 0,
+        };
+        lectureStructure.cubes.push(lectureStructureDurationableCubeItem);
+      } else {
+        lectureStructure.cubes.push({
+          id,
+          name,
+          cubeId,
+          cubeType,
+          learningTime,
+          learningCardId,
+          params: cubeParams,
+          routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
+          path: toPath(cubeParams),
+          serviceId,
+          lectureView,
+          can: true,
+          order: 0,
+          type: 'CUBE',
+          cube: lectureView.personalCube,
+          cubeIntro: lectureView.cubeIntro,
+        });
+      }
       lectureCardIds.push(serviceId);
     }
   });
@@ -476,17 +504,17 @@ export async function getCourseLectureStructure(
           cube.report = cubeItemMap.report;
           cube.report.can = stateCan;
         }
+        if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
+          (cube as LectureStructureDurationableCubeItem).duration = 0;
+          if (cube.student !== undefined && cube.student !== null) {
+            (cube as LectureStructureDurationableCubeItem).duration =
+              cube.student.durationViewSeconds === null
+                ? undefined
+                : parseInt(cube.student.durationViewSeconds);
+          }
+        }
       };
       getItemMapFromCubeLectureArray.push(getItemMapFromCubePromise());
-    }
-    if (cube.cubeType === 'Audio' || cube.cubeType === 'Video') {
-      (cube as LectureStructureDurationableCubeItem).duration = 0;
-      if (cube.student !== undefined) {
-        (cube as LectureStructureDurationableCubeItem).duration =
-          cube.student.durationViewSeconds === null
-            ? undefined
-            : parseInt(cube.student.durationViewSeconds);
-      }
     }
   });
 
