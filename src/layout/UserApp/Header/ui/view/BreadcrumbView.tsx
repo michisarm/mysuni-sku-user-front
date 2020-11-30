@@ -177,7 +177,7 @@ class BreadcrumbView extends Component<Props, State> {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div> */}
           {/* <div className="right"> */}
-            {/* {process.env.NODE_ENV === 'development' && (
+          {/* {process.env.NODE_ENV === 'development' && (
               <>
                 <input
                   style={{
@@ -203,13 +203,6 @@ class BreadcrumbView extends Component<Props, State> {
               <i aria-hidden="true" className="icon help-tel" />
               Help Desk : 02-6323-9002
             </div> */}
-          </div>
-          {/* <div className="lms-right">
-            <Button icon className="btn-black">
-              커뮤니티로 이동
-              <Icon className="morelink" />
-            </Button>
-          </div> */}
         </div>
       </div>
     );
