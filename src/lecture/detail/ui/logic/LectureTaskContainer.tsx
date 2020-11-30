@@ -4,6 +4,7 @@ import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
   getLectureTaskDetail,
   setLectureTaskDetail,
+  setLectureTaskItem,
   setLectureTaskOffset,
   setLectureTaskTab,
   setLectureTaskViewType,
@@ -31,8 +32,35 @@ import {
 import { reactConfirm } from '@nara.platform/accent';
 import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility/updateLectureTask';
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
+import { useHistory, useLocation } from 'react-router-dom';
+import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskDetailCube';
 
 function LectureTaskContainer() {
+  const { pathname, hash } = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    return () => {
+      setLectureTaskTab('Overview');
+    };
+  }, [pathname]);
+  useEffect(() => {
+    if (hash === '#create') {
+      setLectureTaskViewType('create');
+      setCreate(true);
+      return;
+    } else if (hash === '#edit') {
+      setLectureTaskViewType('edit');
+      return;
+    } else if (hash === '#reply') {
+      setLectureTaskViewType('reply');
+      return;
+    } else if (hash === '#detail') {
+      setLectureTaskViewType('detail');
+      return;
+    }
+    setLectureTaskViewType('list');
+  }, [hash]);
+
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
   const params = useLectureRouterParams();
@@ -53,41 +81,40 @@ function LectureTaskContainer() {
   }, []);
 
   const moveToDetail = useCallback((param: any) => {
-    setLectureTaskViewType(param);
+    getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
+
     //게시글 부모인지 자식인지
   }, []);
 
   const onClickList = useCallback(() => {
-    setLectureTaskViewType('list');
+    history.goBack();
   }, []);
 
   const onHandleSave = useCallback(() => {
-    setLectureTaskViewType('list');
+    history.goBack();
   }, []);
 
   const onHandleReply = useCallback(() => {
-    setLectureTaskViewType('list');
+    history.goBack();
   }, []);
 
   const onClickModify = useCallback(() => {
     setCreate(true);
-    setLectureTaskViewType('edit');
+    history.push('#edit');
+    // history.goBack();
   }, []);
 
-  const onClickReplies = useCallback(() => {
-    setLectureTaskViewType('reply');
-  }, []);
+  const onClickReplies = useCallback(() => {}, []);
 
   const onClickDelete = useCallback((id: string, type: string) => {
-    setLectureTaskViewType('list');
     deletePost(id, type);
+    history.goBack();
   }, []);
 
   const listHashLink = useCallback((hash: string) => {
     setLectureTaskTab(hash);
-    setLectureTaskViewType('list');
     const element = document.getElementById(hash);
     if (element !== null) {
       element.scrollIntoView();
@@ -96,7 +123,6 @@ function LectureTaskContainer() {
 
   const overviewHashLink = useCallback((hash: string) => {
     setLectureTaskTab(hash);
-    setLectureTaskViewType('Overview');
     const element = document.getElementById(hash);
     if (element !== null) {
       element.scrollIntoView();
@@ -105,7 +131,6 @@ function LectureTaskContainer() {
 
   const handelClickCreateTask = useCallback(() => {
     setCreate(true);
-    setLectureTaskViewType('create');
   }, []);
 
   const onHandleChange = useCallback(
@@ -160,12 +185,11 @@ function LectureTaskContainer() {
               commentFeedbackId: '',
               notice: false,
             });
-  
-            setLectureTaskViewType('list');
-          })
+            history.goBack();
+          });
         } else {
           updateLectureTask(detailTaskId);
-          setLectureTaskViewType('list');
+          history.goBack();
         }
       },
     });
@@ -211,7 +235,7 @@ function LectureTaskContainer() {
           </ContentLayout>
         </div>
       )}
-      {viewType !== 'list' && viewType !== 'create' && viewType !== 'edit' && (
+      {viewType === 'detail' && (
         <>
           <LectureTaskDetailView
             taskId={detailTaskId}
@@ -259,21 +283,6 @@ function LectureTaskContainer() {
           handleOnClickList={onHandleReply}
           handleCloseClick={onClickList}
         />
-      )}
-      {viewType === 'Overview' && (
-        <>
-          <LectureCubeSummaryContainer />
-          <ContentLayout className="support">
-            <LectureTaskView
-              lectureDescription={lectureDescription}
-              lectureSubcategory={lectureSubcategory}
-              lectureTags={lectureTags}
-              lectureFile={lectureFile}
-              listHashLink={listHashLink}
-              overviewHashLink={overviewHashLink}
-            />
-          </ContentLayout>
-        </>
       )}
     </>
   );
