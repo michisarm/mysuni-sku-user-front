@@ -13,9 +13,9 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
   const groupData = useCommunityGroup();
 
   useEffect(() => {
-    getGroup(currentCommunity)
+    getGroup(currentCommunity, 0)
   },[])
-  console.log(groupData)
+  
   return (
     <>
       <div className="table-board-title">
