@@ -5,9 +5,9 @@ import { useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import { followList } from '../../../api/communityApi';
-import { requestFollowCommunityPostList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+import { requestFollowCommunityPostList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
-import {off} from 'process';
+import { off } from 'process';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -23,9 +23,9 @@ function copyUrl(url: string) {
 const bookMark = (): void => {
   reactAlert({
     title: '북마크',
-    message: '북마크 추가 완료'
+    message: '북마크 추가 완료',
   });
-}
+};
 
 const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowItemView({
   communityId,
@@ -33,10 +33,9 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   communityName,
   profileImage,
   profileId,
-  createTime,
+  createdTime,
   name,
   contents,
-  
 }) {
   const { pathname } = useLocation();
   const shareUrl = useCallback(() => {
@@ -70,7 +69,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   <Comment.Text>
                     <div className="ellipsis">
                       <span className="id">{name}</span>
-                      <span className="date">{createTime}</span>
+                      <span className="date">{createdTime}</span>
                     </div>
                     {/* <Button>+ View more</Button> */}
                   </Comment.Text>
@@ -110,11 +109,10 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
-
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
 
-  // 페이지네이션 
+  // 페이지네이션
   // const addList = (communityFollowPostList: any) => {
   //   console.log('add', communityFollowPostList);
   //   if(communityFollowPostList.postsTotalCount < limitPage) {
@@ -125,17 +123,20 @@ function CommunityFollowPostListContainer() {
   //   requestFollowCommunityPostList(0, limitPage);
   //   // console.log('limit', limitPage);
   // }
-  
+
   const [limitPage, setLimitPage] = useState<number>(5);
   const [offsetPage, setOffsetPage] = useState<number>(0);
   const addList = () => {
-    if(communityFollowPostList&& communityFollowPostList.postsTotalCount < offsetPage) {
+    if (
+      communityFollowPostList &&
+      communityFollowPostList.postsTotalCount < offsetPage
+    ) {
       console.log('return');
       return;
     }
     setOffsetPage(offsetPage + 5);
     requestFollowCommunityPostList(offsetPage, 3);
-  }
+  };
   // console.log('list', communityFollowPostList);
 
   return (
