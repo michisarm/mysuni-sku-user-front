@@ -6,7 +6,7 @@ import FollowListItem from '../../../viewModel/CommunityFollowIntro/FollowCommun
 import { requestFollowCommunityList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
-  nickName,
+  nickname,
   profileImg,
   followerCount,
   followingCount,
@@ -20,7 +20,7 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
           <img src={`/files/community/${profileImg}`} />
         </div>
         <div className="community-main-left-list">
-          <div className="community-main-left-h3">{nickName}</div>
+          <div className="community-main-left-h3">{nickname}</div>
           <div className="community-main-left-span">
             Followers
             <span>{followerCount}</span>

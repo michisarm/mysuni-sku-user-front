@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {
-  followPostList, followList
+  followPostList, followList, followModalAdd, followModalDelete,followersModal
 } from '../../../api/communityApi';
 import Community from '../../../model/CommunityFollow';
 import Post from '../../../model/Post';
@@ -9,6 +9,12 @@ import {
   getFollowCommunityIntro,
   onFollowCommunityIntro,
 } from '../../../store/CommunityMainStore';
+
+import {
+  getFollowModal,
+  setFollowModal,
+} from '../../../store/CommunityFollowModalStore';
+
 import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 
@@ -102,6 +108,91 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
         ...followCommunityIntro,
         posts: nextList,
         postsTotalCount: posts.totalCount,
+      });
+    }
+  });
+}
+
+// 팔로우 모달 
+// export function requestFollowersList() {
+//   followersModal().then(posts => {
+//     const followCommunityIntro = getFollowModal() || {
+//       communities: [],
+//       posts: [],
+//       communitiesTotalCount: 0,
+//       postsTotalCount: 0,
+//     };
+//     if (posts === undefined) {
+//       setFollowModal({
+//         ...followCommunityIntro,
+//         posts: [],
+//         postsTotalCount: 0,
+//       });
+//     } else {
+//       const nextList = [
+//         ...followCommunityIntro.posts,
+//         ...posts.results.map(postToItem),
+//       ];
+//       setFollowModal({
+//         ...followCommunityIntro,
+//         posts: nextList,
+//         postsTotalCount: posts.totalCount,
+//       });
+//     }
+//   });
+// }
+
+export function requestFollowModalAdd(id: string) {
+  followModalAdd(id).then(posts => {
+    const followCommunityIntro = getFollowCommunityIntro() || {
+      communities: [],
+      posts: [],
+      communitiesTotalCount: 0,
+      postsTotalCount: 0,
+    };
+    if (posts === undefined) {
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
+        posts: [],
+        postsTotalCount: 0,
+      });
+    } else {
+      const nextList = [
+        ...followCommunityIntro.posts,
+        ...posts.results.map(postToItem),
+      ];
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
+        posts: nextList,
+        postsTotalCount: posts.totalCount,
+      });
+    }
+  });
+}
+
+export function requestFollowModalDelete(id: string) {
+  followModalDelete(id).then(posts => {
+    const followCommunityIntro = getFollowCommunityIntro() || {
+      communities: [],
+      posts: [],
+      communitiesTotalCount: 0,
+      postsTotalCount: 0,
+    };
+    if (posts === undefined) {
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
+        posts: [],
+        postsTotalCount: 0,
+      });
+    } else {
+      const nextList = [
+        ...followCommunityIntro.posts,
+        // ...posts.results.map(postToItem),
+      ];
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
+        posts: nextList,
+        // postsTotalCount: posts.totalCount,
       });
     }
   });

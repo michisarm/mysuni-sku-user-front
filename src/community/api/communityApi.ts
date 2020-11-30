@@ -203,13 +203,25 @@ export function followList(
 ): Promise<
   OffsetElementList<FollowCommunityItem> | undefined
 > {
-  const url = `${BASE_URL}/profileviews/follow?offset=${offset}&limit=${limit}&nickName=${nickName}`;
-  // console.log('list',axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn));
+  const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
   return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
 }
-
-export function followModal(): Promise<any> {
+export function followModal(): Promise<FollowCommunityItem> {
   const url = `${BASE_URL}/profileviews/following?offset=0&limit=13`;
-  console.log('modal', axiosApi.get(url).then(AxiosReturn));
   return axiosApi.get(url).then(AxiosReturn);
+}
+
+// 모달 팔로워
+export function followersModal(): Promise<any> {
+  const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
+  return axiosApi.get(url).then(AxiosReturn);
+}
+
+export function followModalAdd(id: string): Promise<any> {
+  const url = `${BASE_URL}/follow/flow/${id}`;
+  return axiosApi.post(url).then(AxiosReturn);
+}
+export function followModalDelete(id: string): Promise<FollowCommunityItem> {
+  const url = `${BASE_URL}/follow/flow/${id}/unfollow`;
+  return axiosApi.delete(url).then(AxiosReturn);
 }

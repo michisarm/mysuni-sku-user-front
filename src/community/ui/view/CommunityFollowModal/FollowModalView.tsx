@@ -5,7 +5,9 @@ const FollowerView: React.FC = function FollowerView() {
   return (
     <>
       <section className="content">
-        <FollowModalContainer />
+        <div className="scrolling-60vh">
+          <FollowModalContainer />
+        </div>
       </section>
     </>
   );
