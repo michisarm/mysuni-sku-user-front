@@ -20,6 +20,11 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
 
+  useEffect(() => {
+    getApproveMember(currentCommunity)
+  },[currentCommunity])
+
+
   const totalPages = () => {
     let totalPage = Math.ceil(approveData!.totalCount / 8)
     if (approveData!.totalCount % 8 < 0) {
@@ -36,12 +41,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   }, [approveData])
 
   const onPageChange = (data:any) => {
+    getApproveMember(currentCommunity, (data.activePage - 1) * 8)
     setActivePage(data.activePage)
   }
-
-  useEffect(() => {
-    getApproveMember(currentCommunity)
-  },[currentCommunity])
 
   const checkAll = useCallback(() => {
     setSelectAll(!selectAll)

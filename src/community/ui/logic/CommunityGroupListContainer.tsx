@@ -30,11 +30,11 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
   }, [groupData])
 
   const onPageChange = (data:any) => {
-    setActivePage(data.activePage)
+    getGroup(currentCommunity, (activePage - 1) * 8)
   }
 
   useEffect(() => {
-    getGroup(currentCommunity)
+    getGroup(currentCommunity, 0)
   },[])
   
   return (

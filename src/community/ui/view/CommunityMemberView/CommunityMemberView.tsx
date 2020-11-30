@@ -9,21 +9,18 @@ import { memberFollowDel } from 'community/api/MemberApi';
 import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 
-function ItemBox({memberList}: {memberList:any}, index:number) {
+function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
   const [follow, setFollow] = useState<boolean>(false);
-  const [followList, setFollowList] = useState<boolean[]>([]);
 
+  const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
+    // console.log("ACTIVE PAGE MEMBERVIEW",activePage)
 
-  // setFollowList(followList.concat(memberList.follow));
-
-  const handleFollow = useCallback(async (memberId:string, followState:boolean) => {
-    
     if(followState === false) {
-      onFollow(memberId)
+      onFollow(communityId,memberId, (activePage - 1) * 8)
     } else {
-      onUnFollow(memberId)
+      onUnFollow(communityId,memberId, (activePage - 1) * 8)
     }
-  }, [follow])
+  }, [activePage])
 
   return (
     <>
@@ -34,7 +31,7 @@ function ItemBox({memberList}: {memberList:any}, index:number) {
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
               <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.nickname}</span>
-              <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
+              <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
             </Comment.Author>
             <Comment.Metadata>
               <span>게시물</span>
@@ -75,20 +72,17 @@ export const CommunityMemberView = () => {
       return
     }
     totalPages();
-  }, [memberData, activePage])
+  }, [memberData])
   
   const onPageChange = (data:any) => {
-
     getAllMember(communityId,(data.activePage-1)*8);
-
     setActivePage(data.activePage)
-    // setCommunityMember(communityId, activePage)
   }
 
   return (
     <>
       <div className="mycommunity-card-list">
-        {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} /> )}
+        {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} /> )}
       </div>
       
       {

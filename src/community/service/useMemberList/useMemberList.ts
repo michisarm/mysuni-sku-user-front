@@ -3,13 +3,13 @@ import { setCommunityMemberApprove } from 'community/store/CommunityMemberApprov
 import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
 
-export function getAllMember(communityId:string, page:number = 0) {
-  findAllMemberByQuery(communityId , page)
+export function getAllMember(communityId:string, pageNumer:number = 0) {
+  findAllMemberByQuery(communityId , pageNumer)
   .then(response => response && setCommunityMember(response.data));
 }
 
-export function getApproveMember(communityId: string) {
-  findApprovedMember(communityId)
+export function getApproveMember(communityId: string, pageNum:number = 0) {
+  findApprovedMember(communityId, pageNum)
   .then(response => response && setCommunityMemberApprove(response.data));
 }
 
@@ -29,13 +29,18 @@ export function getSearchMember(
 }
 
 export function onFollow(
-  memberId:string
+  communityId: string,
+  memberId:string,
+  pageNum: number
 ) {
-  memberFollowAdd(memberId).then(res => {getAllMember('COMMUNITY-f',0)})
+  //
+  memberFollowAdd(memberId).then(res => {getAllMember(communityId, pageNum)})
 }
 
 export function onUnFollow(
-  memberId:string
+  communityId: string,
+  memberId:string,
+  pageNum: number
   ) {
-  memberFollowDel(memberId).then(res => {getAllMember('COMMUNITY-f',0)})
+  memberFollowDel(memberId).then(res => {getAllMember(communityId, pageNum)})
 }

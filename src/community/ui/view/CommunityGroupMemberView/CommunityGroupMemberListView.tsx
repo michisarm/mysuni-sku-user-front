@@ -6,24 +6,20 @@ import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { onFollow } from 'community/service/useMemberList/useMemberList';
+import { onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
 import { memberFollowDel } from 'community/api/MemberApi';
 import { getGroupMember } from 'community/service/useGroupList/useGroupList';
 import StarRatingItem from 'lecture/shared/LectureContentHeader/sub/StarRatingItem';
 
-function ItemBox({groupMemberList} :{groupMemberList:any}) {
-  const [follow, setFollow] = useState<boolean>(false);
+function ItemBox({groupMemberList,activePage} :{groupMemberList:any, activePage:number}) {
 
-  const handleFollow = useCallback((memberId:string, followState:boolean) => {
-    setFollow(!follow)
-
+  const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
     if(followState === false) {
-      onFollow(memberId)
-    } else if (followState === true ) {
-      setFollow(!follow)
-      memberFollowDel(memberId)
+      onFollow(communityId,memberId,(activePage - 1) * 2)
+    } else {
+      onUnFollow(communityId,memberId, (activePage - 1) * 2)
     }
-  }, [])
+  }, [activePage])
 
 
 
@@ -35,7 +31,7 @@ function ItemBox({groupMemberList} :{groupMemberList:any}) {
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
             <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span>{groupMemberList.name}</span>
-            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.memberId, groupMemberList.follow)}><span className="card-follow">{groupMemberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
+            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}><span className="card-follow">{groupMemberList.follow ? "Unfollow" : "Follow"}</span></button>
           </Comment.Author>
           <Comment.Metadata>
             <span>게시물</span>
@@ -81,14 +77,14 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   }, [groupMemberData])
 
   const onPageChange = (data:any) => {
-    getGroupMember(communityId, groupId, (data.activePage-1)* 2)
+    getGroupMember(communityId, groupId, (data.activePage - 1 ) * 2)
     setActivePage(data.activePage)
   }
 
 
   return (
     <>
-      {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} key={index} />)}
+      {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} key={index} activePage={activePage} />)}
       {
         groupMemberData && groupMemberData.totalCount >= 2 ? (
           <div className="lms-paging-holder">

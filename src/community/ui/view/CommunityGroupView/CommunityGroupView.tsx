@@ -11,14 +11,15 @@ import { useParams } from 'react-router-dom';
 
 
 
-function ItemBox({groupList} : {groupList:any}) {
+function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   const [cardopen, setCardOpen] = useState<any>(false);
   const groupItem = useRef<any>()
-
+//.ParentNode.find(BoxItem)
   // 열기버튼을 누른 그룹박스 감지
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
+
   const handleClickOutside = (event:any) => {
-    if (groupItem.current && !groupItem.current.contains(event.target)){
+    if (groupItem.current && !groupItem.current.contains(event.target.parentNode)){
       setCardOpen(false);
     }
   }
@@ -31,7 +32,7 @@ function ItemBox({groupList} : {groupList:any}) {
   // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
   const handleGetMember = (communityId:string, groupId:string) => {
     setCardOpen(!cardopen)
-    if(!cardopen){
+    if(!cardopen) {
       getGroupMember(communityId, groupId, 0)
     }
   }
@@ -73,7 +74,7 @@ export const CommunityGroupView = () => {
   const [totalPage, setTotalPage] = useState<number>(1);
 
   const totalPages = () => {
-    let totalPage = Math.floor(groupData!.totalCount / 8)
+    let totalPage = Math.ceil(groupData!.totalCount / 8)
     if (groupData!.totalCount % 8 < 0) {
       totalPage++
     }
@@ -85,18 +86,17 @@ export const CommunityGroupView = () => {
       return
     }
     totalPages();
-    // getCommunityMember();
     console.log(activePage)
-  }, [groupData, activePage])
+  }, [groupData])
     
   const onPageChange = (data:any) => {
-    setActivePage(data.activePage * 8)
-    // setCommunityGroupMember(communityId, groupId)
+    getGroup(communityId, (data.activePage - 1) * 8)
+    setActivePage(data.activePage)
   }
 
   return (
     <>
-      {groupData && groupData.results.map((item, index) => <ItemBox groupList={item} key={index} />)}
+      {groupData && groupData.results.map((item, index) => <ItemBox groupList={item} key={index} activePage={activePage} />)}
       {
         groupData && groupData.totalCount >= 8 ? (
           <div className="lms-paging-holder">
