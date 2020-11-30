@@ -4,7 +4,7 @@ import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
 
 export function getAllMember(communityId: string) {
-  findAllMemberByQuery(communityId)
+  findAllMemberByQuery(communityId, 0)
   .then(response => response && setCommunityMember(response.data));
 }
 

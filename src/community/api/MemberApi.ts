@@ -10,11 +10,12 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
 }
 
 export function findAllMemberByQuery(
-  communityId:string
+  communityId:string,
+  page:number
   ): Promise<any> { 
   return (
     axios
-    .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8`)
+    .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${page}&limit=8`)
   );
 }
 
