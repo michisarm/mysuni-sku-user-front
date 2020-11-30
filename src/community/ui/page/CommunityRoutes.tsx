@@ -3,7 +3,6 @@ import { Route, Switch, useParams } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
 import {
   requestCommunity,
-  requestCommunityHome,
   requestCommunityMenus,
 } from '../../service/useCommunityHome/requestCommunity';
 import CommunityHomeTreeContainer from '../logic/CommunityHomeTreeContainer';
@@ -29,7 +28,6 @@ function CommunityRoutes() {
   const { communityId } = useParams<Params>();
   useEffect(() => {
     requestCommunity(communityId);
-    requestCommunityHome(communityId);
     requestCommunityMenus(communityId);
   }, [communityId]);
   return (
