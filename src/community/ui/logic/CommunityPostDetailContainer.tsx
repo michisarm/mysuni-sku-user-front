@@ -145,7 +145,7 @@ function CommunityPostDetailContainer() {
                           </a>
                         </div>
                       </div>
-                      <CommunityPdfModal open={open} viewItem={foundedFile} setOpen={setOpen} /> 
+                      <CommunityPdfModal open={open} viewItem={foundedFile} setOpen={setOpen} pdfName={foundedFile.id} /> 
                     </>
                   ))}
             </div>
