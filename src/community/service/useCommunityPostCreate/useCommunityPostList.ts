@@ -38,16 +38,6 @@ export function useCommunityPostList(): [PostListValue] {
     }, subscriberId);
   }, [subscriberId]);
 
-  useEffect(() => {
-    if (subscriberId === undefined) {
-      return;
-    }
-    return onCommunityPostListItem(next => {
-      if (next !== undefined) {
-        setPostItems(next);
-      }
-    }, subscriberId);
-  }, [subscriberId]);
 
   useEffect(() => {
     if (communityId === undefined) {
@@ -64,7 +54,6 @@ export function useCommunityPostList(): [PostListValue] {
       searchType: '',
       searchText: '',
     });
-
   }, [communityId, menuId]);
 
   return [postItems];

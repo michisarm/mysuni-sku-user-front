@@ -1,14 +1,10 @@
-import CommunityType from '../../model/CommunityType';
+import CommunityHomeType from '../../model/CommunityHomeType';
 
 export default interface CommunityItem {
-  type: CommunityType;
   communityId: string;
-  image: string;
+  thumbnailId: string;
   name: string;
-  hasNewPost: boolean;
-  manager: string;
+  managerName: string;
   memberCount: number;
-  approved: boolean | null;
-  fieldTitle: string;
-  lastPostTime: number | null;
+  hasNewPost: boolean;
 }

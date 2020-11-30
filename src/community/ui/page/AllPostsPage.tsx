@@ -1,8 +1,10 @@
 import PostRdo from 'community/model/PostRdo';
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
 import { getPostListMapFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
+import { getCommunityAllPostList } from 'community/service/useCommunityPostList/getCommunityAllPostList';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
+import CommunityAllPostListContainer from '../logic/CommunityAllPostListContainer';
 import CommunityPostListContainer, { SearchType } from '../logic/CommunityPostListContainer';
 
 interface Params {
@@ -25,8 +27,7 @@ function AllPostsPage() {
       sort: 'createdTime',
       pinned: false
     };
-
-    getCommunityPostList(params);
+    getCommunityAllPostList(params);
   }, [communityId, menuId]);
 
   const onSearch = (sortType: string, pinned: boolean, searchType: SearchType, searchText: string) => {
@@ -56,7 +57,7 @@ function AllPostsPage() {
   }
 
   return (
-    <CommunityPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
+    <CommunityAllPostListContainer handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}/>
   );
 }
 

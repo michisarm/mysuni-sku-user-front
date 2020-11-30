@@ -3,7 +3,6 @@ import { Route, Switch, useParams } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
 import {
   requestCommunity,
-  requestCommunityHome,
   requestCommunityMenus,
 } from '../../service/useCommunityHome/requestCommunity';
 import CommunityHomeTreeContainer from '../logic/CommunityHomeTreeContainer';
@@ -29,7 +28,6 @@ function CommunityRoutes() {
   const { communityId } = useParams<Params>();
   useEffect(() => {
     requestCommunity(communityId);
-    requestCommunityHome(communityId);
     requestCommunityMenus(communityId);
   }, [communityId]);
   return (
@@ -66,13 +64,18 @@ function CommunityRoutes() {
               />
               <Route
                 exact
+                path="/community/:communityId/board/noticeCreate/create"
+                component={CreatePostPage}
+              />
+              <Route
+                exact
                 path="/community/:communityId/post/:postId"
                 component={BasicPostPage}
               />
               <Route
                 exact
-                path="/community/:communityId/data/:postId"
-                component={DataPostPage}
+                path="/community/:communityId/data/:menuId"
+                component={PostsPage}
               />
               <Route
                 exact

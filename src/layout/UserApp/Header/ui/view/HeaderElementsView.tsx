@@ -6,6 +6,7 @@ import lecturePaths from 'lecture/routePaths';
 import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
 import personalCubePaths from 'personalcube/routePaths';
+import communityPaths from 'community/routePaths';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -55,6 +56,13 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
         onClick={() => onClickMenu('Certification')}
       >
         Certification
+      </NavLink>
+      <NavLink
+        to={communityPaths.community()}
+        className="item"
+        onClick={() => onClickMenu('Community')}
+      >
+        Community
       </NavLink>
     </div>
   </div>
