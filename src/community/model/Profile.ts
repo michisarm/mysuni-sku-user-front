@@ -15,4 +15,6 @@ export default interface Profile {
   hobby: string;
   profileImg: string;
   profileBgImg: string;
+  followerCount: number;
+  followingCount: number;
 }

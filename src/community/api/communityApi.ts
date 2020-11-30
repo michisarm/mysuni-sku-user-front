@@ -13,6 +13,7 @@ import PostRdo from 'community/model/PostRdo';
 import CommunityView from '../model/CommunityView';
 import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/FollowCommunityItem';
 import { NameValueList } from 'shared/model';
+import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { patronInfo } from '@nara.platform/dock';
 
 const BASE_URL = '/api/community';
@@ -73,10 +74,8 @@ export function findPostViewsByMenuId(
     sort: postRdo.sort,
     searchTitle: postRdo.searchTitle,
   };
-  const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}`;
-  return axiosApi
-    .get<OffsetElementList<Post>>(url, { params })
-    .then(AxiosReturn);
+  const url = `${BASE_URL}/postviews/menu/${postRdo.menuId}`
+  return axiosApi.get<OffsetElementList<Post>>(url, { params }).then(AxiosReturn);
 }
 
 export function findAllPostViewsFromMyCommunities(
@@ -228,17 +227,31 @@ export function followList(
   offset: number,
   limit: number,
   nickName: string
-): Promise<OffsetElementList<FollowCommunityItem> | undefined> {
-  const url = `${BASE_URL}/profileviews/follow?offset=${offset}&limit=${limit}&nickName=${nickName}`;
-  // console.log('list',axiosApi.get<OffsetElementList<Community>>(url).then(AxiosReturn));
-  return axiosApi
-    .get<OffsetElementList<FollowCommunityItem>>(url)
-    .then(AxiosReturn);
+): Promise<
+  OffsetElementList<FollowCommunityItem> | undefined
+> {
+  const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
+  return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
 }
-
-export function followModal(): Promise<any> {
+export function followModal(): Promise<FollowCommunityItem> {
   const url = `${BASE_URL}/profileviews/following?offset=0&limit=13`;
   return axiosApi.get(url).then(AxiosReturn);
+}
+
+// 모달 팔로워
+export function followersModal(): Promise<FollowModal> {
+  const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
+  console.log('api!!!',axiosApi.get(url).then(AxiosReturn));
+  return axiosApi.get(url).then(AxiosReturn);
+}
+
+export function followModalAdd(id: string): Promise<any> {
+  const url = `${BASE_URL}/follow/flow/${id}`;
+  return axiosApi.post(url).then(AxiosReturn);
+}
+export function followModalDelete(id: string): Promise<FollowCommunityItem> {
+  const url = `${BASE_URL}/follow/flow/${id}/unfollow`;
+  return axiosApi.delete(url).then(AxiosReturn);
 }
 
 export function findPostMenuName(

@@ -1,38 +1,64 @@
 import React,{useState, useEffect, useCallback} from 'react';
 import { Comment, Checkbox } from "semantic-ui-react";
-import AvartarImage from '../../../style/media/profile-110-06.png';
+import AvartarImage from '../../../style/media/img-profile-80-px.png';
 import AllSelect from '../../../style/media/icon-addinfo-24-px.png';
 import Approve from '../../../style/media/icon-approval-24-px.png';
 import { getApproveMember, updateMembers } from 'community/service/useMemberList/useMemberList';
 import { useCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
+import { Pagination } from 'semantic-ui-react';
+import { useHistory } from 'react-router';
 
 interface Props {
   currentCommunity:string
 }
 
 const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => {
-  const [selectedList, setSelectedList] = useState<(any)[]>([]);
+  const [selectedList, setSelectedList] = useState<(any)>();
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const approveData = useCommunityMemberApprove();
-  const allSelected = approveData?.results.map(item => item.memberId).toString()
+  const AllData = approveData && approveData.results.map(item => item.memberId)
+  const history = useHistory();
+
+  const [activePage, setActivePage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
 
   useEffect(() => {
     getApproveMember(currentCommunity)
+    checkAll();
   },[currentCommunity])
+
+  const totalPages = () => {
+    let totalPage = Math.ceil(approveData!.totalCount / 8)
+    if (approveData!.totalCount % 8 < 0) {
+      totalPage++
+    }
+    setTotalPage(totalPage)
+  }
+  
+  useEffect(() => {
+    if(approveData === undefined) {
+      return
+    }
+    totalPages();
+    
+  }, [approveData])
+  
+  const onPageChange = (data:any) => {
+    getApproveMember(currentCommunity, (data.activePage - 1) * 8)
+    setActivePage(data.activePage)
+  }
 
   const checkAll = useCallback(() => {
     setSelectAll(!selectAll)
     if(selectAll) {
-      setSelectedList([allSelected]);
+      setSelectedList(AllData);
       setSelectAll(!selectAll)
     } else {
       setSelectedList([]);
       setSelectAll(!selectAll);
     }
   },[selectAll])
-
-  console.log(selectedList)
-
+  
   const checkOne = (groupMemberId:string) => {
     const copiedSelectedList: (string | undefined)[] = [...selectedList];
     const index = copiedSelectedList.indexOf(groupMemberId);
@@ -50,6 +76,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
 
   const updateUser = useCallback(() => {
     updateMembers(currentCommunity, selectedList);
+    setTimeout(() => {
+      history.go(0);
+    }, 500)
   }, [currentCommunity, selectedList])
 
   return (
@@ -76,12 +105,12 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
             <Comment>
               <Checkbox 
                 style={{marginTop:"2rem",marginRight:"1rem",verticalAlign:"top"}}
-                checked={selectedList && selectedList.includes(item.memberId)}
+                checked={selectedList && selectedList.includes(item.memberId)} 
                 onChange={(e:any) => checkOne(item.memberId)}
               />
-              <Comment.Avatar src={AvartarImage} />
+              <Comment.Avatar src={item.profileImg != null ? `/files/community/${item.profileImg}` : `${AvartarImage}`} />
               <Comment.Content>
-                <Comment.Author as="a"><h3>{item.name}</h3>
+                <Comment.Author as="a"><h3>{item.nickname}</h3>
                 </Comment.Author>
               </Comment.Content>
             </Comment>
@@ -89,6 +118,21 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
         ))
       }
       </div>
+      {
+        approveData && approveData.totalCount >= 8 ? (
+          <div className="lms-paging-holder">
+            <Pagination
+              activePage={activePage}
+              totalPages={totalPage}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={(e, data) => onPageChange(data)}
+            />
+          </div>
+        ) : (
+          null
+        )
+      } 
     </>
   )
 }

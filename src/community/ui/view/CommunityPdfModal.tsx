@@ -3,48 +3,89 @@ import { Button, Modal } from "semantic-ui-react";
 import { Document, Page } from 'react-pdf';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { patronInfo } from "@nara.platform/dock";
+import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
 // import down from "../../../../../images/all/icon-down-type-4-24-px.png";
 // import ProfileSample2 from "../../../../../images/all/profile-110-px-sample-2.jpg";
 // import NotSupported from "../../../../../images/all/btn-download.svg";
 // import playerBtn from "../../../../../images/all/btn-player-next.png";
 
+
 interface Props {
-  open: boolean
+  open: boolean;
   setOpen: (state:boolean) => void;
-  viewItem: DepotFileViewModel,
+  fileId:string;
+  fileName:string
 }
 
-const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
+const CommunityPdfModal:React.FC<Props> = ({open, setOpen, fileId,fileName}) => {
 
   const [pdfUrl, setPdfUrl] = useState<string>();
   const [file, setFile] = useState<any>();
   const [pageWidth, setPageWidth] = useState<number>(0);
-  const [pageNumber, setPageNumer] = useState<number>(1);
+  const [numPages, setNumPages] = useState(0); // 총 페이지
+  const [bar, setBar] = useState<number>(4.7);
+  const [pageNumber, setPageNumber] = useState<number>(1); //현재 페이지
   const headerWidth:any = useRef();
-
 
   const updateHeaderWidth = () => {
     if (headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
       setPageWidth(headerWidth.current?.clientWidth!);
     }
   };
+  console.log(fileName)
+  useEffect(() => {
+    updateHeaderWidth();
+    window.addEventListener("resize", updateHeaderWidth)
+  }, [])
 
+  const onDocumentLoadSuccess = (pdf: any) => {
+    setNumPages(pdf.numPages);
+  };
 
   useEffect(() => {
+    setNumPages(1)
+  }, [])
 
-    setPdfUrl('/api/depot/depotFile/flow/download/' + viewItem.id);
+  const prev = () => {
+    const value = (100 / numPages) * pageNumber;
+    if (pageNumber > 1) {
+      if (pageNumber === 1) {
+        setBar(4.7);
+      } else {
+        setBar(value);
+      }
+      setPageNumber(pageNumber - 1);
+    }
+  };
 
-    console.log('pdfUrl : ', pdfUrl);
-    // setTimeout(() => {
+  const next = () => {
+    const value = (100 / numPages) * pageNumber + 1;
+    if (pageNumber < numPages) {
+      if (pageNumber >= numPages - 1) {
+        setBar(100);
+      } else {
+        setBar(value);
+      }
+      setPageNumber(pageNumber + 1);
+    }
+  };
+
+  const downloadFile = () => {
+    depot.downloadDepotFile(fileId);
+  };
+
+  useEffect(() => {
+    setPdfUrl('/api/depot/depotFile/flow/download/' + fileId);
     setFile({
-      url: '/api/depot/depotFile/flow/download/' + viewItem.id,
+      url: '/api/depot/depotFile/flow/download/' + fileId,
       httpHeaders: {
         audienceId: patronInfo.getPatronId(),
         Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
       },
     });
+    setPageNumber(1);
     // }, 500);
-  }, []);
+  }, [fileId]);
 
   
   return (
@@ -56,7 +97,7 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
       >
         <Modal.Header className="dataroom-popup-header">
           <div className="dataroom-popup-left">
-            <span>{viewItem.id}</span>
+            <span>{fileName}</span>
           </div>
           <div className="dataroom-popup-right">
             {/*<button className="ui icon button left post list2">
@@ -72,13 +113,13 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
         <Modal.Content className="dataroom-popup-content">
           <div className="documents-viewer" ref={headerWidth}>
             <div className="scrolling-80vh">
-              <div style={{backgroundColor:"gray", height:"2000px"}}>
+              <div style={{backgroundColor:"rgba(0,0,0,0.7)"}}>
                 <Document
                   renderMode="canvas"
                   // file="/assets/docs/sample-pdf.pdf"
                   // file="/api/depot/depotFile/flow/download/37-2"
                   file={file}
-                  // onLoadSuccess={onDocumentLoadSuccess}
+                  onLoadSuccess={onDocumentLoadSuccess}
                   error={
                   <div
                     style={{
@@ -100,11 +141,11 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
                   </div>
                   }
                 >
-                <Page
-                  pageNumber={pageNumber}
-                  renderAnnotationLayer={false}
-                  width={pageWidth}
-                />
+                  <Page
+                    pageNumber={pageNumber}
+                    renderAnnotationLayer={false}
+                    width={974.5}
+                  />
                 </Document>
               </div>
             </div>
@@ -113,27 +154,19 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem}) => {
               <a className="btn-not-supported"><img src={NotSupported} /></a>
             </div>*/}
 
-            {/* <div className="video-overlay">
-              <div className="video-overlay-btn">
-                <button>
-                  <img src="" />
-                </button>
-              </div>
-              <div className="video-overlay-text">
-                <p>다음 학습 이어하기</p>
-                <h3>[반도체 클라쓰] Keyword로 알아보는 반도체의 품격</h3>
-              </div>
-            </div> */}
-
-            {/* <div className="pdf-control disable">
+            <div className="pdf-control">
               <div className="pagination">
-                <a className="pdf-prev">이전</a>
-                <span className="num">1/40</span>
-                <a className="pdf-next">이후</a>
+                <a className="pdf-prev" onClick={prev}>이전</a>
+                <span className="num">
+                  {pageNumber}/{numPages}
+                </span>
+                <a className="pdf-next" onClick={next}>이후</a>
               </div>
-              <a className="pdf-down on"><i aria-hidden="true" className="icon down-white24"/></a>
-              <div className="pdf-bar"><span className="pdf-gauge" /></div>
-            </div> */}
+              <a className="pdf-down on" onClick={downloadFile}>
+                <i aria-hidden="true" className="icon down-white24"/>
+              </a>
+              <div className="pdf-bar"><span className="pdf-gauge" style={{ width: `${bar.toString()}%` }} /></div>
+            </div>
           </div>
              {/* <div className="pdf-down-drop">
                 <a>전략_Intermediate_과정.ppt</a>
