@@ -40,7 +40,7 @@ export function searchMember(
 export function memberFollowAdd(
   memberId:string
 ):Promise<any> {
-
+  
   return (
     axios.post(`${BASE_URL}/follow/flow/${memberId}`)
   )

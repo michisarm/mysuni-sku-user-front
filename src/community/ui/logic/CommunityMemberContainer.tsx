@@ -4,7 +4,6 @@ import {Icon} from "semantic-ui-react";
 import { CommunityMemberView } from '../view/CommunityMemberView/CommunityMemberView';
 import { getAllMember, getSearchMember } from 'community/service/useMemberList/useMemberList';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
-import { useCallback } from 'react';
 
 interface Props {
   currentCommunity: string
@@ -13,7 +12,6 @@ interface Props {
 const CommunityMemberListContainer: React.FC<Props> = function GroupListContainer({currentCommunity}) {
   const memberData = useCommunityMember();
   const [searchValue, setSearchValue] = useState<any>();
-  const [focus, setFocus] = useState<boolean>(false);
   
   const onSearch = (value:any) => {
     if(value != null) {
@@ -27,7 +25,7 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
   }
 
   useEffect(() => {
-    getAllMember(currentCommunity)
+    getAllMember(currentCommunity, 0)
   },[])
   
   return (

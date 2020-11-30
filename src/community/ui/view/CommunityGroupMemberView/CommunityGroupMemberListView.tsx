@@ -1,9 +1,11 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
 import { useCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
+import { useParams } from 'react-router-dom';
+import { Pagination } from 'semantic-ui-react';
 
 function ItemBox({groupMemberList} :{groupMemberList:any}) {
   const [follow, setFollow] = useState<boolean>(false)
@@ -33,27 +35,57 @@ function ItemBox({groupMemberList} :{groupMemberList:any}) {
   )
 }
 
+
+interface Params {
+  communityId: string
+}
+
 export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   const groupMemberData = useCommunityGroupMember();
+  const [activePage, setActivePage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const {communityId} = useParams<Params>();
+
+  const totalPages = () => {
+    let totalPage = Math.floor(groupMemberData!.totalCount / 8)
+    if (groupMemberData!.totalCount) {
+      totalPage++
+    }
+    setTotalPage(totalPage)
+
+    console.log(totalPage)
+  }
+  
+  useEffect(() => {
+    if(groupMemberData === undefined) {
+      return
+    }
+    totalPages();
+  }, [groupMemberData])
+
+  const onPageChange = (data:any) => {
+    setActivePage(data.activePage)
+  }
+
+
   return (
     <>
       {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} key={index} />)}
-      <div className="paging mb0">
-        <div className="lms-paging-holder">
-          <a className="lms-prev">이전10개</a>
-          <a className="lms-num lms-on">1</a>
-          <a className="lms-num">2</a>
-          <a className="lms-num">3</a>
-          <a className="lms-num">4</a>
-          <a className="lms-num">5</a>
-          <a className="lms-num">6</a>
-          <a className="lms-num">7</a>
-          <a className="lms-num">8</a>
-          <a className="lms-num">9</a>
-          <a className="lms-num">10</a>
-          <a className="lms-next">이후10개</a>
-        </div>
-      </div>
+      {
+        groupMemberData && groupMemberData.totalCount >= 8 ? (
+          <div className="lms-paging-holder">
+            <Pagination
+              activePage={activePage}
+              totalPages={totalPage}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={(e, data) => onPageChange(data)}
+            />
+          </div>
+        ) : (
+          null
+        )
+      } 
     </>
   )
 }

@@ -1,22 +1,22 @@
 import React,{useState,useCallback,useEffect} from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
-import { useCommunityMember, setCommunityMember } from 'community/store/CommunityMemberStore';
+import { useCommunityMember, setCommunityMember, getCommunityMember } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { onFollow } from 'community/service/useMemberList/useMemberList';
-import { getFollowMember, useFollowMember } from 'community/store/CommunityMemberFollowStore';
+import { getFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { memberFollowDel } from 'community/api/MemberApi';
 import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 
 function ItemBox({memberList}: {memberList:any}) {
   const [follow, setFollow] = useState<boolean>(false)
-  const follwer = useFollowMember();
 
   const handleFollow = useCallback((memberId) => {
     setFollow(!follow)
     getFollowMember();
+  
     if(follow) {
       onFollow(memberId)
     } else {
@@ -33,7 +33,7 @@ function ItemBox({memberList}: {memberList:any}) {
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
               <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.name}</span>
-              <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId)}><span className="card-follow">{follow ? "Unfollow" : "Follow"}</span></button>
+              <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId)}><span className="card-follow">{memberList.follow ? "Unfollow" : "Follow"}</span></button>
             </Comment.Author>
             <Comment.Metadata>
               <span>게시물</span>
@@ -52,17 +52,17 @@ function ItemBox({memberList}: {memberList:any}) {
 }
 
 interface Params {
-  communityId: string
+  communityId: any
 }
 
 export const CommunityMemberView = () => {
   const memberData = useCommunityMember();
-  const [activePage, setActivePage] = useState<number>(1);
+  const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const {communityId} = useParams<Params>();
 
   const totalPages = () => {
-    let totalPage = Math.ceil(memberData!.totalCount / 8)
+    let totalPage = Math.floor(memberData!.totalCount / 8)
     if (memberData!.totalCount) {
       totalPage++
     }
@@ -74,18 +74,20 @@ export const CommunityMemberView = () => {
       return
     }
     totalPages();
-  }, [memberData])
-
+    getCommunityMember();
+  }, [memberData, activePage])
+  
   const onPageChange = (data:any) => {
-
     setActivePage(data.activePage)
-    setCommunityMember()
+    setCommunityMember(communityId, activePage)
   }
-   
+
+  console.log(activePage)
+
   return (
     <>
       <div className="mycommunity-card-list">
-        {memberData?.results.map((item, index) => <ItemBox memberList={item} key={index} /> )}
+        {memberData&& memberData.results.map((item, index) => <ItemBox memberList={item} key={index} /> )}
       </div>
       
       {
