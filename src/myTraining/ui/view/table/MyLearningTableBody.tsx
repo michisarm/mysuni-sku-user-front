@@ -16,7 +16,9 @@ import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { AplState } from 'myTraining/model/AplState';
 import { AplStateName } from 'myTraining/model/AplStateName';
+import { LectureServiceType } from 'lecture/model';
 import { MyLearningContentType, MyPageContentType } from '../../model';
+
 
 
 
@@ -86,24 +88,12 @@ function MyLearningTableBody(props: Props) {
   /* handlers */
   const onClickLearn = (model: MyTableView) => {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
-    const { category: { college }, serviceId, coursePlanId, cubeId } = model;
-    let { serviceType } = model;
+    const { category: { college }, serviceId, serviceType, coursePlanId, cubeId } = model;
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
 
     /* URL 표현을 위한 변환. */
-    serviceType = serviceType === 'COURSE' ? 'Course' : 'Program';
-
-
-    // const { id: collegeId } = college;
-    // const cineroomId = patronInfo.getCineroomId() || '';
-
-    // switch (serviceType) {
-    //   case 'COURSE':
-    //     serviceType = 'Course';
-    //   case 'PROGRAM':
-    //     serviceType = 'Program';
-    // }
+    const convertedServiceType = convertServiceType(serviceType);
 
     // Card
     if (model.isCardType()) {
@@ -111,7 +101,7 @@ function MyLearningTableBody(props: Props) {
     }
     // Program 또는 Course
     else {
-      history.push(lectureRoutePaths.courseOverview(cineroomId, collegeId, coursePlanId, serviceType, serviceId));
+      history.push(lectureRoutePaths.courseOverview(cineroomId, collegeId, coursePlanId, convertedServiceType, serviceId));
     }
   };
 
@@ -397,5 +387,16 @@ export default inject(mobxHelper.injectFrom(
 const formatDate = (time: number) => {
   return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
 };
+
+const convertServiceType = (serviceType: string): LectureServiceType => {
+  switch (serviceType.toUpperCase()) {
+    case 'COURSE':
+      return LectureServiceType.Course;
+    case 'PROGRAM':
+      return LectureServiceType.Program;
+    default:
+      return LectureServiceType.Card;
+  }
+}
 
 export type MyTableView = MyTrainingTableViewModel | InMyLectureTableViewModel | LectureTableViewModel;

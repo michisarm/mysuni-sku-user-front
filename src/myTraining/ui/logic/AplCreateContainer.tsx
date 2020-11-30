@@ -85,13 +85,13 @@ class AplCreateContainer extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state =
-    {
-      //open :  false,
-      //titleWrite: '',
-      //typeNameWrite: '',
-      //instituteWrite: ''
-      collegeSelect:[],
-    };
+      {
+        //open :  false,
+        //titleWrite: '',
+        //typeNameWrite: '',
+        //instituteWrite: ''
+        collegeSelect:[],
+      };
   }
 
 
@@ -643,7 +643,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               </div>
             </Form.Field>
             <Form.Field>
-            <label>첨부파일</label>
+              <label>첨부파일</label>
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
@@ -682,12 +682,12 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <span className="ml40">{apl && apl.approvalCompany || ''}</span>
                       <span className="line">{apl && apl.approvalDepartment || ''}</span>
                       {approvalShow && (
-                      <div className="info-text">
-                        <Icon className="info16">
-                          <span className="blind">infomation</span>
-                        </Icon>
-                        본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
-                      </div>
+                        <div className="info-text">
+                          <Icon className="info16">
+                            <span className="blind">infomation</span>
+                          </Icon>
+                          본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
+                        </div>
                       )}
                     </span>
                   </Modal.Actions>

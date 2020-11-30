@@ -52,7 +52,6 @@ export function useLectureTestStudent(): [TestStudentValue] {
     }
     return onLectureTestStudentItem(next => {
       setTestStudentValue(next);
-      console.log('LectureTestStudentItem', next);
     }, subscriberId);
   }, [subscriberId]);
 

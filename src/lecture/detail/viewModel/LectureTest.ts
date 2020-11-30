@@ -52,6 +52,7 @@ export interface LectureTestAnswerItem extends Item {
   submitted: boolean;
   submitAnswers: Answer[];
   finished: boolean;
+  dataLoadTime: Number;
 }
 
 export interface LectureTestStudentItem extends Item {
