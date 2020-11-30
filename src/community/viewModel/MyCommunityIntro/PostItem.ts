@@ -1,3 +1,5 @@
+import CommunityMenuType from "../../model/CommunityMenuType";
+
 export default interface PostItem {
   communityId: string;
   menuId: string;
@@ -8,4 +10,6 @@ export default interface PostItem {
   createdTime: string;
   name: string;
   contents: string;
+  menuType: CommunityMenuType;
+  bookmarked: boolean;
 }

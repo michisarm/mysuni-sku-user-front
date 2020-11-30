@@ -122,6 +122,8 @@ function postToItem(post: Post): PostItem {
     creatorName,
     nickName,
     profileImg,
+    menuType,
+    bookmarked,
   } = post;
   return {
     communityId,
@@ -133,6 +135,8 @@ function postToItem(post: Post): PostItem {
     createdTime: getTimeString(createdTime),
     name: title,
     contents: html,
+    menuType,
+    bookmarked,
   };
 }
 
