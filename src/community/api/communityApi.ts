@@ -137,10 +137,10 @@ export function findProfile(): Promise<Profile | undefined> {
   return axiosApi.get<Profile>(url).then(AxiosReturn);
 }
 
-export function findAllMyCommunities(): Promise<
+export function findAllMyCommunities(sort: string, offset: number): Promise<
   OffsetElementList<CommunityView> | undefined
 > {
-  const url = `${BASE_URL}/communities/communityView/my?offset=0&limit=100`;
+  const url = `${BASE_URL}/communities/communityView/my?sort=${sort}&offset=${offset}&limit=10`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -157,9 +157,8 @@ export function findAllOpenCommunities(
   offset: number,
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
-  const url = `${BASE_URL}/communities/communityView/open?${
-    fieldId === undefined ? '' : `field=${fieldId}`
-  }&sort=${sort}&offset=${offset}&limit=10`;
+  const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
+    }&sort=${sort}&offset=${offset}&limit=10`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 

@@ -1,5 +1,6 @@
 import { IdName } from '@nara.platform/accent';
 import CommunityType from '../model/CommunityType';
+import ProfileCommunityItem from './CommunityProfile/ProfileCommunityItem';
 
 interface Item {
   activated?: boolean;
@@ -37,6 +38,15 @@ export interface CommunityProfileMyCommunityItem {
 }
 
 export interface CommunityProfileMyCommunity {
-  result: CommunityProfileMyCommunityItem[];
-  totalCount: number;
+  communities: ProfileCommunityItem[];
+  communitiesTotalCount: number;
+  communitiesOffset: number;
+}
+
+export function getEmtpyCommunityProfileMyCommunity(): CommunityProfileMyCommunity {
+  return {
+    communities: [],
+    communitiesTotalCount: 0,
+    communitiesOffset: 0
+  }
 }

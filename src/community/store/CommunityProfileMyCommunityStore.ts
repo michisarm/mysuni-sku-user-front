@@ -1,14 +1,16 @@
-import {CommunityProfileMyCommunity} from 'community/viewModel/CommunityProfile';
+import { CommunityProfileMyCommunity } from 'community/viewModel/CommunityProfile';
 import { createStore } from './Store';
 
 const [
-    setCommunityMyCommunityItem, 
-    onCommunityMyCommunityItem, 
-    getCommunityMyCommunityItem
+    setCommunityProfileMyCommunity,
+    onCommunityProfileMyCommunity,
+    getCommunityProfileMyCommunity,
+    useCommunityProfileMyCommunity
 ] = createStore<CommunityProfileMyCommunity>();
 
 export {
-    setCommunityMyCommunityItem,
-    onCommunityMyCommunityItem,
-    getCommunityMyCommunityItem,
+    setCommunityProfileMyCommunity,
+    onCommunityProfileMyCommunity,
+    getCommunityProfileMyCommunity,
+    useCommunityProfileMyCommunity
 }
