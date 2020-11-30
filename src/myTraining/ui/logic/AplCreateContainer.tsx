@@ -140,7 +140,8 @@ class AplCreateContainer extends React.Component<Props, States> {
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
       .then(() => companyApproverService!.findCompanyAplApprover())
-      .then((companyApprover: CompanyApproverModel) => {
+      .then((companyAplApprover) => memberService!.findApprovalMemberByEmployeeId(companyAplApprover.employeeId))
+      .then((companyApprover) => {
         this.onChangeAplProps('approvalId', companyApprover.id);
         this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);

@@ -77,17 +77,25 @@ class AplModel extends NewQueryModel {
   /* 교육시간(교육인정시간) */
   @computed get displayAllowTime() {
     let allowLearningTime = '-';
-
+    /* 승인 */
     if (this.state === AplState.Opened) {
       if (this.updateHour || this.updateMinute) {
+        /* updateHour 가 있으면, updateHour 기준. */
         allowLearningTime = `${this.updateHour}시 ${this.updateMinute}분`;
+        /* updateHour 가 없으면, allowHour 기준. */
       } else {
         allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
       }
     }
-
+    /* 반려 */
     if (this.state === AplState.Rejected) {
+      /* updateHour 관계없이, allowHour 기준. */
       allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
+    }
+    /* 승인대기 */
+    if(this.state === AplState.OpenApproval) {
+      /* updateHour, allowHour 관계없이, requestHour 기준. */
+      allowLearningTime = (this.requestHour || this.requestMinute) ? `${this.requestHour}시 ${this.requestMinute}분` : '-';
     }
 
     return allowLearningTime;
