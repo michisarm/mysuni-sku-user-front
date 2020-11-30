@@ -5,10 +5,10 @@ import profileIcon from '../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
 import FollowerView from '../../ui/logic/FollowModalIntro/FollowModalContainer';
 import {Button, Modal} from 'semantic-ui-react';
-import {useFollowModal} from 'community/store/CommunityFollowModalStore';
 import {requestFollowCommunityList, requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
-// import {getCommunityProfileMyCommunity} from 'community/service/useCommunityProfile/useCommunityProfile';
+import { useFollowModal, getFollowModal} from '../../store/CommunityFollowModalStore';
+import {requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 
 
 
@@ -19,13 +19,16 @@ function CommunityMainHeaderContainer() {
 
   useEffect(() => {
     // requestFollowCommunityList();
-    // requestFollowersList();
+    requestFollowModal();
   }, []);
 
-  const followModalContainerList = useFollowCommunityIntro();
 
+  const followModalContainerList = useFollowCommunityIntro();
   const profile = useMyProfile();
-  console.log('profile', profile);
+  const followersList = useFollowModal();
+ 
+
+  console.log('folowersList',followersList);
 
   const modalOpen = (value: string) => {
     if(value === "followers") {
@@ -80,13 +83,15 @@ function CommunityMainHeaderContainer() {
               <Label className="onlytext">
                 <span>Followers</span>
               </Label>
-              <div className="value2" onClick={()=>modalOpen("followers")}>00</div>
+              {/* <div className="value2" onClick={()=>modalOpen("followers")}>{profile && profile.followerCount < 0 ? 0 : profile?.followerCount}</div> */}
+              <div className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
             </div>
             <div className="ui statistic community-num">
               <Label className="onlytext">
                 <span>Following</span>
               </Label>
-              <div className="value2" onClick={()=>modalOpen("following")}>0</div>
+              <div className="value2" onClick={()=>modalOpen("following")}>{profile && profile.followingCount < 0 ? 0 : profile?.followingCount}</div>
+              {/* <div className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div> */}
             </div>
           </div>
         </div> 
@@ -107,7 +112,7 @@ function CommunityMainHeaderContainer() {
                         <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow && "unfollow"}</span>
                       </label>
                     </li>      
-                  )) : '.'
+                  )) : 'HI'
                 }
               </ul>
             </div> 

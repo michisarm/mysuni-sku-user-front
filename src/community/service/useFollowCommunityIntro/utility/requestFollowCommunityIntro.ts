@@ -42,7 +42,7 @@ function getTimeString(createTime: number): string {
 }
 
 
-export function requestFollowCommunityList(offset: number = 0, limit: number = 10, nickName: string = "") {
+export function requestFollowCommunityList(offset: number = 0, limit: number = 5, nickName: string = "") {
   followList(offset, limit, nickName).then(communities => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
@@ -164,7 +164,7 @@ export function requestFollowModalAdd(id: string) {
       ];
       setFollowModal({
         ...followCommunityIntro,
-        posts: nextList,
+        posts: nextList
         // postsTotalCount: posts.totalCount,
       });
     }

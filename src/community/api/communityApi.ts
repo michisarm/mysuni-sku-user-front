@@ -12,6 +12,7 @@ import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
 import PostRdo from 'community/model/PostRdo';
 import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/FollowCommunityItem';
 import { NameValueList } from 'shared/model';
+import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 
 const BASE_URL = '/api/community';
 
@@ -212,8 +213,9 @@ export function followModal(): Promise<FollowCommunityItem> {
 }
 
 // 모달 팔로워
-export function followersModal(): Promise<any> {
+export function followersModal(): Promise<FollowModal> {
   const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
+  console.log('api!!!',axiosApi.get(url).then(AxiosReturn));
   return axiosApi.get(url).then(AxiosReturn);
 }
 

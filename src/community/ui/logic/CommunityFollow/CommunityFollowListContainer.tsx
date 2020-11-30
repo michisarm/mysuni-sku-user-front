@@ -5,6 +5,9 @@ import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowListItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import { requestFollowCommunityList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 
+//default imgage
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
   nickname,
   profileImg,
@@ -17,7 +20,7 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
       {/* 프로필 카드 */}
       <div className="community-main-left-contents">
         <div className="thumbnail">
-          <img src={`/files/community/${profileImg}`} />
+          <img src={profileImg === null ? `${DefaultImg}` : `/files/community/${profileImg}`} />
         </div>
         <div className="community-main-left-list">
           <div className="community-main-left-h3">{nickname}</div>
@@ -35,11 +38,11 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
 const CommunityFollowListContainer: React.FC = () => {
   const communityFollowList = useFollowCommunityIntro();
   const [text, setText] = useState<string>('');
-  const [limit, setLimit] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
 
   // 페이지네이션 
   const addList = () => {
-    if (communityFollowList && communityFollowList.postsTotalCount < limit) {
+    if (communityFollowList && communityFollowList.communitiesTotalCount < limit) {
       console.log('list return');
       return;
     }

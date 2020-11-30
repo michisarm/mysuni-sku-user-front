@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useLocation } from 'react-router-dom';
@@ -8,6 +8,9 @@ import { followList } from '../../../api/communityApi';
 import { requestFollowCommunityPostList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { off } from 'process';
+
+//default imgage
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -59,7 +62,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
               {/*comment : 2줄이상 말줄임, 대댓글*/}
               <Comment>
                 <Comment.Avatar
-                  src={`/files/community/${profileImage}`}
+                  src={profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
                   alt="profile"
                 />
                 <Comment.Content>
@@ -109,11 +112,13 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
+interface Props {
+  setNotPosts: boolean
+}
 
-function CommunityFollowPostListContainer() {
+function CommunityFollowPostListContainer({setNotPosts}: any) {
   const communityFollowPostList = useFollowCommunityIntro();
   // console.log('container', communityFollowPostList);
-
 
   const [limitPage, setLimitPage] = useState<number>(5);
   const [offsetPage, setOffsetPage] = useState<number>(0);
@@ -127,7 +132,13 @@ function CommunityFollowPostListContainer() {
     requestFollowCommunityPostList(offsetPage, 5);
     console.log('offset', offsetPage);
   }
-  // console.log('list', communityFollowPostList);
+  console.log('list@@@@@@@', communityFollowPostList?.postsTotalCount);
+
+  useEffect(() => {
+    if(communityFollowPostList?.postsTotalCount === 0) {
+      setNotPosts(true);
+    }
+  },[communityFollowPostList]);
 
   return (
     <div className="community-main-contants">

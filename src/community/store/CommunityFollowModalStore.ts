@@ -9,7 +9,7 @@ const [
 ] = createStore<FollowModalIntro>({
   communities: [],
   communitiesTotalCount: 0,
-  posts: []
+  posts: [],
 });
 
 export {
