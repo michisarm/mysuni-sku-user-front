@@ -8,6 +8,7 @@ import {Button, Modal} from 'semantic-ui-react';
 import {useFollowModal} from 'community/store/CommunityFollowModalStore';
 import {requestFollowCommunityList, requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
+// import {getCommunityProfileMyCommunity} from 'community/service/useCommunityProfile/useCommunityProfile';
 
 
 
@@ -24,6 +25,7 @@ function CommunityMainHeaderContainer() {
   const followModalContainerList = useFollowCommunityIntro();
 
   const profile = useMyProfile();
+  console.log('profile', profile);
 
   const modalOpen = (value: string) => {
     if(value === "followers") {
@@ -35,14 +37,14 @@ function CommunityMainHeaderContainer() {
     setOpen(!open);
   }
 
-  const followBtn = (id: string, idx: number, follow: boolean) => {
+  const followBtn =async (id: string, idx: number, follow: boolean) => {
     console.log('idx', idx, id, follow);
 
     if(follow === true) {
-      requestFollowModalDelete(id);
+      await requestFollowModalDelete(id);
     }
     else {
-      requestFollowModalAdd(id);
+      await requestFollowModalAdd(id);
     }
   }
 
@@ -78,7 +80,7 @@ function CommunityMainHeaderContainer() {
               <Label className="onlytext">
                 <span>Followers</span>
               </Label>
-            <div className="value2" onClick={()=>modalOpen("followers")}>0</div>
+              <div className="value2" onClick={()=>modalOpen("followers")}>00</div>
             </div>
             <div className="ui statistic community-num">
               <Label className="onlytext">

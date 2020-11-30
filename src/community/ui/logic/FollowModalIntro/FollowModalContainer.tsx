@@ -7,7 +7,7 @@ const FollowModalItemView: React.FC<FollowModalItem> = function FollowModalItemV
   id,
   nickname,
   profileImg,
-  unfollow,
+  follow,
 }) {
   return (
     <>

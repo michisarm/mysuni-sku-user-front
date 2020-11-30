@@ -17,6 +17,7 @@ import {
 
 import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
+import FollowModalItem from '../../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 
 const ONE_DAY = 24 * 60 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
@@ -124,9 +125,10 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
 //     };
 //     if (posts === undefined) {
 //       setFollowModal({
-//         ...followCommunityIntro,
+//         // ...followCommunityIntro,
+//         communities: [],
 //         posts: [],
-//         postsTotalCount: 0,
+//         communitiesTotalCount: 0,
 //       });
 //     } else {
 //       const nextList = [
@@ -136,64 +138,65 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
 //       setFollowModal({
 //         ...followCommunityIntro,
 //         posts: nextList,
-//         postsTotalCount: posts.totalCount,
+//         communitiesTotalCount: posts.totalCount,
 //       });
 //     }
 //   });
 // }
-
 export function requestFollowModalAdd(id: string) {
   followModalAdd(id).then(posts => {
-    const followCommunityIntro = getFollowCommunityIntro() || {
+    const followCommunityIntro = getFollowModal() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       postsTotalCount: 0,
     };
     if (posts === undefined) {
-      setFollowCommunityIntro({
+      setFollowModal({
         ...followCommunityIntro,
         posts: [],
-        postsTotalCount: 0,
+        // postsTotalCount: 0,
       });
     } else {
       const nextList = [
-        ...followCommunityIntro.posts,
+        ...followCommunityIntro.communities,
         ...posts.results.map(postToItem),
       ];
-      setFollowCommunityIntro({
+      setFollowModal({
         ...followCommunityIntro,
         posts: nextList,
-        postsTotalCount: posts.totalCount,
+        // postsTotalCount: posts.totalCount,
       });
     }
+    requestFollowCommunityList();
   });
 }
 
 export function requestFollowModalDelete(id: string) {
   followModalDelete(id).then(posts => {
-    const followCommunityIntro = getFollowCommunityIntro() || {
+    const followCommunityIntro = getFollowModal() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
       postsTotalCount: 0,
     };
     if (posts === undefined) {
-      setFollowCommunityIntro({
+      setFollowModal({
         ...followCommunityIntro,
         posts: [],
-        postsTotalCount: 0,
+        // postsTotalCount: 0,
       });
     } else {
       const nextList = [
         ...followCommunityIntro.posts,
         // ...posts.results.map(postToItem),
       ];
-      setFollowCommunityIntro({
+      setFollowModal({
         ...followCommunityIntro,
         posts: nextList,
         // postsTotalCount: posts.totalCount,
       });
     }
+    requestFollowCommunityList();
   });
 }

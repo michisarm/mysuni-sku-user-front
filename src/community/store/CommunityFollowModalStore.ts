@@ -1,4 +1,4 @@
-import FollowModalIntro from '../viewModel/FollowModalIntro/FollowModalIntro';
+import FollowModalIntro from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { createStore } from './Store';
 
 const [
@@ -8,7 +8,8 @@ const [
   useFollowModal,
 ] = createStore<FollowModalIntro>({
   communities: [],
-  communitiesTotalCount: 0
+  communitiesTotalCount: 0,
+  posts: []
 });
 
 export {

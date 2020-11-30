@@ -9,22 +9,24 @@ export function requestFollowModal() {
   followModal().then(lists => {
     console.log('modal lists', lists);
 
-    const followCommunityIntro = getFollowModal() || {
+    const followMadalIntro = getFollowModal() || {
       communities: [],
       communitiesTotalCount: 0,
     }
     if (lists === undefined) {
       setFollowModal({
-        ...followCommunityIntro,
+        ...followMadalIntro,
         communities: [],
-        communitiesTotalCount: 0,
+        posts:[],
+        // communitiesTotalCount: 0,
       });
     }
     else {
       setFollowModal({
-        ...followCommunityIntro,
+        ...followMadalIntro,
         communities: [],
-        communitiesTotalCount: 0,
+        posts:[],
+        // communitiesTotalCount: 0,
       });
     }
   })
