@@ -6,13 +6,56 @@ import ContentsMoreView from './ContentsMoreView';
 import { CommunityProfileMyCommunity } from 'community/viewModel/CommunityProfile';
 import MyCommunityIntro from '../../../viewModel/MyCommunityIntro/MyCommunityIntro';
 import moment from 'moment';
+import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
+import CommunityType from '../../../model/CommunityType';
+import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
 
 interface ContentsMyCommunityViewProps {
-  myCommunityIntro: MyCommunityIntro;
+  communityProfileMyCommunity: CommunityProfileMyCommunity;
 }
 
+function CommunityTypeToString(type: CommunityType) {
+  switch (type) {
+    case 'COHORT':
+      return 'Cohort';
+    case 'LEARNING':
+      return 'Learning';
+    case 'OPEN':
+      return 'Open';
+    default:
+      return '';
+  }
+}
+
+const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItemView({
+  communityId,
+  type,
+  fieldName,
+  name,
+  managerName,
+  memberCount,
+  createdTime,
+  isManager,
+}) {
+  return (
+    <tr key={communityId}>
+      <td>{CommunityTypeToString(type)}</td>
+      <td className="title ellipsis">
+        <span className="label">{fieldName}</span>
+        <Link to={`/community/${communityId}`}>{name}</Link>
+      </td>
+      <td>
+        {isManager && <span className="manager">{managerName}</span>}
+        {!isManager && <span>{managerName}</span>}
+      </td>
+      <td>{memberCount}</td>
+      <td>{createdTime}</td>
+    </tr>
+  );
+};
+
 const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function ContentsMyCommunityView({
-  myCommunityIntro,
+  communityProfileMyCommunity,
 }) {
   return (
     <Segment className="full">
@@ -37,39 +80,22 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
                 </tr>
               </thead>
               <tbody>
-                {myCommunityIntro.communities.map(
-                  ({
-                    type,
-                    fieldTitle,
-                    name,
-                    manager,
-                    memberCount,
-                    lastPostTime,
-                  }) => {
-                    return (
-                      <tr>
-                        <td>{type}</td>
-                        <td className="title ellipsis">
-                          <span className="label">{fieldTitle}</span>
-                          {name}
-                        </td>
-                        <td>
-                          <span className="manager">{manager}</span>
-                        </td>
-                        <td>{memberCount}</td>
-                        <td>
-                          {lastPostTime === null
-                            ? ''
-                            : moment(lastPostTime).format('YYYY.MM.DD')}
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                {communityProfileMyCommunity.communities.map(CommunityItemView)}
               </tbody>
             </table>
           </div>
           {/* <ContentsMoreView /> */}
+          <div className="more-comments">
+            {communityProfileMyCommunity.communitiesTotalCount >
+              communityProfileMyCommunity.communitiesOffset && (
+              <button
+                className="ui icon button left moreview"
+                onClick={requestAppendProfileCommunities}
+              >
+                <i aria-hidden="true" className="icon moreview" /> list more
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </Segment>

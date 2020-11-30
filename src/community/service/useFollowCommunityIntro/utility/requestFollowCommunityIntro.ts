@@ -24,8 +24,8 @@ const ONE_HOUR = 60 * 60 * 1000
 const TWO_DAY = ONE_DAY * 2
 
 
-function getTimeString(createTime: number): string {
-  const timeStamp = Date.now() - createTime;
+function getTimeString(createdTime: number): string {
+  const timeStamp = Date.now() - createdTime;
   if (timeStamp < 0) {
     return '';
   }
@@ -38,7 +38,7 @@ function getTimeString(createTime: number): string {
   if (timeStamp < TWO_DAY) {
     return '1일 전'
   }
-  return moment(createTime).format('YYYY.MM.DD')
+  return moment(createdTime).format('YYYY.MM.DD')
 }
 
 
@@ -80,7 +80,7 @@ function postToItem(post: Post): PostItem {
     communityName,
     profileImage: profileImg || '',
     profileId: nickName || creatorName || '',
-    createTime: getTimeString(createdTime),
+    createdTime: getTimeString(createdTime),
     name: title,
     contents: html,
   };

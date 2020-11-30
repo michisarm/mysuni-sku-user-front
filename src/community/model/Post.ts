@@ -1,3 +1,4 @@
+import CommunityMenuType from "./CommunityMenuType";
 import PostType from "./PostType";
 
 export default interface Post {
@@ -24,7 +25,7 @@ export default interface Post {
 
   createdTime: number;
   creatorId: string;
-  
+
   communityName: string;
 
   nickName?: string;
@@ -36,4 +37,6 @@ export default interface Post {
   creatorCompanyCode?: string
   creatorCompanyName?: string
 
+  bookmarked: boolean;
+  menuType: CommunityMenuType;
 }

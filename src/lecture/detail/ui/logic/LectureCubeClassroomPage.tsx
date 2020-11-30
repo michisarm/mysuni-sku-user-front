@@ -13,6 +13,7 @@ import {
   setLectureSubcategory,
   setLectureTags,
 } from '../../store/LectureOverviewStore';
+import { setLectureState } from '../../store/LectureStateStore';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
@@ -36,6 +37,7 @@ function LectureCubeClassroomPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
   return (

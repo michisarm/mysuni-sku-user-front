@@ -43,10 +43,10 @@ const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView
         <ul className="type-info">
           <li>{parseCubeType(cubeType)}</li>
           <li>
-            {cubeType === 'Community'
+            {cubeType === 'Community' || cubeType === 'Task'
               ? ''
               : timeToHourMinuteFormat(learningTime)}
-          </li>{' '}
+          </li>
         </ul>
       </span>
     </Link>

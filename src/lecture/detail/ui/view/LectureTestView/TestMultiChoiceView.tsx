@@ -7,6 +7,7 @@ interface TestMultiChoiceViewProps {
   answer?: string;
   setAnswer: (questionNo: string, value: string) => void;
   readOnly: boolean;
+  setSubmitOk: (submitOk:boolean) => void;
 }
 
 const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMultiChoiceView({
@@ -14,6 +15,7 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
   answer,
   setAnswer,
   readOnly,
+  setSubmitOk,
 }) {
   const setAnswerFromCheckbox = useCallback(
     (e: any, data: any) => {
@@ -50,6 +52,7 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
             checked={answer?.includes(item.itemNo)}
             onChange={setAnswerFromCheckbox}
             readOnly={readOnly}
+            onClick={() => setSubmitOk(false)}
           />
           {item.imgSrc !== undefined && item.imgSrc !== '' && (
             <img src={item.imgSrc} />

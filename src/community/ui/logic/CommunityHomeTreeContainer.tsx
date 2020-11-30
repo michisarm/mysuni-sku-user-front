@@ -1,5 +1,8 @@
-import React from 'react';
-import { useCommunityHome } from '../../store/CommunityHomeStore';
+import React, { useCallback } from 'react';
+import {
+  getCommunityHome,
+  useCommunityHome,
+} from '../../store/CommunityHomeStore';
 import managerIcon from '../../../style/media/icon-community-manager.png';
 import boardIcon from '../../../style/media/icon-communtiy-menu-board.png';
 import discussionIcon from '../../../style/media/icon-communtiy-menu-discussion.png';
@@ -12,6 +15,9 @@ import homeArrowIcon from '../../../style/media/icon-community-menu-open.png';
 import subIcon from '../../../style/media/icon-reply-16-px.png';
 import { Link } from 'react-router-dom';
 import CommunityMenu from '../../model/CommunityMenu';
+import { joinCommunity } from '../../api/communityApi';
+import { requestCommunity } from '../../service/useCommunityHome/requestCommunity';
+import { reactConfirm } from '@nara.platform/accent';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -136,6 +142,61 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
   );
 };
 
+function JoinView() {
+  const join = useCallback(async () => {
+    reactConfirm({
+      title: '알림',
+      message: '커뮤니티에 가입하시겠습니까?',
+      onOk: async () => {
+        const communtyHome = getCommunityHome();
+        if (
+          communtyHome === undefined ||
+          communtyHome.community === undefined
+        ) {
+          return;
+        }
+        await joinCommunity(communtyHome.community.communityId);
+        requestCommunity(communtyHome.community.communityId);
+      },
+    });
+  }, []);
+
+  return (
+    <button className="ui button fix line" onClick={join}>
+      가입하기
+    </button>
+  );
+}
+
+function WaitView() {
+  return (
+    <button className="ui button fix line" style={{ cursor: 'default' }}>
+      가입대기
+    </button>
+  );
+}
+
+function MemberView() {
+  const communtyHome = useCommunityHome();
+  if (communtyHome === undefined || communtyHome.community === undefined) {
+    return null;
+  }
+
+  return (
+    <Link
+      to={`/community/${communtyHome.community.communityId}/member`}
+      className="ui button fix line"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      멤버보기
+    </Link>
+  );
+}
+
 function CommunityHomeTreeContainer() {
   const communtyHome = useCommunityHome();
   console.log('communtyHome', communtyHome)
@@ -165,7 +226,9 @@ function CommunityHomeTreeContainer() {
                 멤버 <strong>{communtyHome.community.memberCount}</strong>
               </span>
             </div>
-            {/* <button className="ui button fix line">가입하기</button> */}
+            {communtyHome.community.approved === null && <JoinView />}
+            {communtyHome.community.approved === false && <WaitView />}
+            {communtyHome.community.approved === true && <MemberView />}
           </div>
         </div>
         <div className="community-home-right-contents">

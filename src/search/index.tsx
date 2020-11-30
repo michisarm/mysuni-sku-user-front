@@ -4,10 +4,9 @@ import './style.css';
 
 // internal Components
 import HeaderArea from './HeaderArea';
-import NoDataPage from './SectionArea/NoDataPage';
-import AllView from './SectionArea/AllView';
 
 const SearchComponent: React.FC = () => {
+  
   return (
     <>
       <section className="content">
@@ -15,7 +14,7 @@ const SearchComponent: React.FC = () => {
         {/* <AllView /> */}
       </section>
     </>
-  );
+  )
 };
 
 export default SearchComponent;

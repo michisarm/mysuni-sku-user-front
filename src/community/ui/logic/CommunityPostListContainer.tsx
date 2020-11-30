@@ -9,6 +9,7 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
+import { findPostMenuName } from 'community/api/communityApi';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -17,7 +18,7 @@ interface CommunityPostListContainerProps {
     searchType: SearchType,
     searchText: string
   ) => void;
-  onPaging?: (page: number) => void,
+  onPaging?: (page: number) => void;
 }
 interface Params {
   communityId: string;
@@ -28,11 +29,13 @@ export type SortType = 'createdTime' | 'replyCount';
 export type SearchType = 'all' | 'title' | 'html' | 'creatorId';
 
 const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = function LectureTeskView({
-  handelOnSearch, onPaging
+  handelOnSearch,
+  onPaging,
 }) {
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
+  const [menuName, setMenuName] = useState<string>('');
   const [postItems] = useCommunityPostList();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
@@ -42,11 +45,17 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
   // const { pageMap } = SharedService;
   useEffect(() => {
-    if(postItems === undefined) {
-      return
+    if (postItems === undefined) {
+      return;
     }
-    totalPages()
-  },[postItems])
+    totalPages();
+
+    const menuData = findPostMenuName(communityId, menuId);
+    menuData.then(result => {
+      console.log(result);
+      setMenuName(result.name);
+    });
+  }, [postItems]);
 
   const handelClickCreatePost = () => {};
   const handleClickRow = (param: any) => {
@@ -104,7 +113,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       title: '',
       html: '',
       creatorId: '',
-      offset: (data.activePage-1)*10,
+      offset: (data.activePage - 1) * 10,
       limit: 10,
       searchFilter: '', //얘 안쓰는거 같은데
       menuId,
@@ -121,22 +130,18 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     } else if (searchType === 'creatorId') {
       param.creatorId = searchText;
     }
-    // http://local.mysuni.sk.com:3000/api/community/postviews/menu/BOARD-2?sort=createTime&offset=0&limit=10
-    // http://local.mysuni.sk.com:3000/api/community/postviews/menu/?sort=createTime&offset=3&limit=10
     getPostListMapFromCommunity(param);
 
     setActivePage(data.activePage);
-  }
+  };
 
   const totalPages = () => {
-
     let totalpage = Math.ceil(postItems!.totalCount / 10);
-    if(postItems!.totalCount % 10 < 0) {
-      totalpage++
+    if (postItems!.totalCount % 10 < 0) {
+      totalpage++;
     }
-    setTotalPage(totalpage)
-    // return totalpage;
-  }
+    setTotalPage(totalpage);
+  };
 
   return (
     <>
@@ -144,7 +149,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
         <>
           <div className="course-info-header">
             <div className="survey-header border-none mb30 pt0">
-              <div className="survey-header-left">메뉴명</div>
+              <div className="survey-header-left">{menuName}</div>
             </div>
           </div>
           <CommunityPostTopLineView

@@ -664,15 +664,15 @@ function toggle_cube_type_query(value: string) {
   }
 }
 
-function search(searchValue: string) {
-  findCard(searchValue).then(response => {
+async function search(searchValue: string) {
+  await findCard(searchValue).then(response => {
     if (response && response.result && response.result.rows) {
       setCard(response.result.rows);
     } else {
       setCard();
     }
   });
-  findExpert(searchValue).then(response => {
+  await findExpert(searchValue).then(response => {
     if (response && response.result && response.result.rows) {
       setExpert(response.result.rows);
     } else {
@@ -686,47 +686,60 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
     if (searchValue === '') {
       return;
     }
-    const companyCode = SkProfileService.instance.profileMemberCompanyCode;
-    findColleageGroup(searchValue, companyCode).then(searchResult => {
-      if (searchResult === undefined) {
-        setCollegeOptions([]);
-      } else {
-        setCollegeOptions(
-          searchResult.result.rows.map(({ fields }) => ({
-            key: fields['all_college_name'],
-            value: fields['all_college_name'],
-            text: `${fields['all_college_name']}(${fields['count(*)']})`,
-          }))
+    const companyCode = localStorage.getItem('nara.companyCode');
+    if (companyCode === null) {
+      return;
+    }
+    findColleageGroup(searchValue, companyCode)
+      .then(searchResult => {
+        if (searchResult === undefined) {
+          setCollegeOptions([]);
+        } else {
+          setCollegeOptions(
+            searchResult.result.rows.map(({ fields }) => ({
+              key: fields['all_college_name'],
+              value: fields['all_college_name'],
+              text: `${fields['all_college_name']}(${fields['count(*)']})`,
+            }))
+          );
+        }
+      })
+      .then(() => {
+        return findCPGroup(searchValue, companyCode).then(searchResult => {
+          if (searchResult === undefined) {
+            setOrganizerOptions([]);
+          } else {
+            setOrganizerOptions(
+              searchResult.result.rows.map(({ fields }) => ({
+                key: fields['organizer'],
+                value: fields['organizer'],
+                text: `${fields['organizer']}(${fields['count(*)']})`,
+              }))
+            );
+          }
+        });
+      })
+      .then(() => {
+        return findCubeTypeGroup(searchValue, companyCode).then(
+          searchResult => {
+            if (searchResult === undefined) {
+              setCubeTypeOptions([]);
+            } else {
+              setCubeTypeOptions(
+                searchResult.result.rows.map(({ fields }) => ({
+                  key: fields['cube_type'],
+                  value: fields['cube_type'],
+                  text: `${fields['cube_type']}(${fields['count(*)']})`,
+                }))
+              );
+            }
+          }
         );
-      }
-    });
-    findCPGroup(searchValue, companyCode).then(searchResult => {
-      if (searchResult === undefined) {
-        setOrganizerOptions([]);
-      } else {
-        setOrganizerOptions(
-          searchResult.result.rows.map(({ fields }) => ({
-            key: fields['organizer'],
-            value: fields['organizer'],
-            text: `${fields['organizer']}(${fields['count(*)']})`,
-          }))
-        );
-      }
-    });
-    findCubeTypeGroup(searchValue, companyCode).then(searchResult => {
-      if (searchResult === undefined) {
-        setCubeTypeOptions([]);
-      } else {
-        setCubeTypeOptions(
-          searchResult.result.rows.map(({ fields }) => ({
-            key: fields['cube_type'],
-            value: fields['cube_type'],
-            text: `${fields['cube_type']}(${fields['count(*)']})`,
-          }))
-        );
-      }
-    });
-    search(searchValue);
+      })
+      .then(() => {
+        search(searchValue);
+      });
+
     return () => {
       setFilterCondition({ ...InitialConditions });
       setQueryOptions(getEmptyQueryOptions());
@@ -1529,7 +1542,6 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         </table>
       </div>
       <div className="moreAll">
-        <span className="arrow-more">→</span>
         <a
           className="more-text"
           onClick={() => {

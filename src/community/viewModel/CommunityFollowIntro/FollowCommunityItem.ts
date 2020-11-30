@@ -11,15 +11,4 @@ export default interface FollowCommunityItem {
   name: string;
   createdTime: string;
   follow: boolean;
-  
-  // communityId: string; 
-  // menuId: string; 
-  // postId: string;
-  // communityName: string; 
-  // profileImage: string; 
-  // profileId: string; 
-  // createTime: string; 
-  // name: string; 
-  // contents: string; 
-  // key: string;
 }

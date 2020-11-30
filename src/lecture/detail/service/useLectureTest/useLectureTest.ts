@@ -49,7 +49,6 @@ export function useLectureTest(): [TestValue] {
     }
     return onLectureTestItem(next => {
       setTestValue(next);
-      console.log('LectureTestItem', next);
     }, subscriberId);
   }, [subscriberId]);
 

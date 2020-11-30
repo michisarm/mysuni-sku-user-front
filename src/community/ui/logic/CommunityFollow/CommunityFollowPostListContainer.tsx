@@ -26,9 +26,9 @@ function copyUrl(url: string) {
 const bookMark = (): void => {
   reactAlert({
     title: '북마크',
-    message: '북마크 추가 완료'
+    message: '북마크 추가 완료',
   });
-}
+};
 
 const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowItemView({
   communityId,
@@ -36,10 +36,9 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   communityName,
   profileImage,
   profileId,
-  createTime,
+  createdTime,
   name,
   contents,
-
 }) {
   const { pathname } = useLocation();
   const shareUrl = useCallback(() => {
@@ -72,7 +71,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   <Comment.Text>
                     <div className="ellipsis">
                       <span className="id">{name}</span>
-                      <span className="date">{createTime}</span>
+                      <span className="date">{createdTime}</span>
                     </div>
                     {/* <Button>+ View more</Button> */}
                   </Comment.Text>

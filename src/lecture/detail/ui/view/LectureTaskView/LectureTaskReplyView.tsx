@@ -11,7 +11,7 @@ interface LectureTaskReplyViewProps {
   handleCloseClick: () => void;
 }
 
-const LectureTaskReplyView: React.FC<LectureTaskReplyViewProps> = function LectureTeskView({
+const LectureTaskReplyView: React.FC<LectureTaskReplyViewProps> = function LectureTaskReplyView({
   postId,
   replyId,
   handleOnClickList,
