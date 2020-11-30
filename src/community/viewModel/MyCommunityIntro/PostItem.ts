@@ -5,7 +5,7 @@ export default interface PostItem {
   communityName: string;
   profileImage: string;
   profileId: string;
-  createTime: string;
+  createdTime: string;
   name: string;
   contents: string;
 }

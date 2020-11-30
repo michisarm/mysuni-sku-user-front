@@ -27,7 +27,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityName,
   profileImage,
   profileId,
-  createTime,
+  createdTime,
   name,
   contents,
 }) {
@@ -65,7 +65,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Text>
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
-                  <span className="date">{createTime}</span>
+                  <span className="date">{createdTime}</span>
                 </div>
                 {/* <Button>+ View more</Button> */}
               </Comment.Text>
