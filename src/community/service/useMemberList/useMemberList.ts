@@ -31,11 +31,11 @@ export function getSearchMember(
 export function onFollow(
   memberId:string
 ) {
-  memberFollowAdd(memberId).then(res => res.data)
+  memberFollowAdd(memberId).then(res => {getAllMember('COMMUNITY-f',0)})
 }
 
 export function onUnFollow(
   memberId:string
   ) {
-  memberFollowDel(memberId).then(res => res && res.data)
+  memberFollowDel(memberId).then(res => {getAllMember('COMMUNITY-f',0)})
 }

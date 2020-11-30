@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useCommunityMember, setCommunityMember, getCommunityMember } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
-import { getAllMember, onFollow } from 'community/service/useMemberList/useMemberList';
+import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
 import { memberFollowDel } from 'community/api/MemberApi';
 import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
@@ -16,16 +16,12 @@ function ItemBox({memberList}: {memberList:any}, index:number) {
 
   // setFollowList(followList.concat(memberList.follow));
 
-  const handleFollow = useCallback((memberId:string, followState:boolean) => {
+  const handleFollow = useCallback(async (memberId:string, followState:boolean) => {
     
-
-    // setFollow(!follow)
-    // setFollowList(followList.concat(memberList.follow));
-
     if(followState === false) {
       onFollow(memberId)
     } else {
-      memberFollowDel(memberId)
+      onUnFollow(memberId)
     }
   }, [follow])
 
@@ -37,7 +33,7 @@ function ItemBox({memberList}: {memberList:any}, index:number) {
           <Comment.Content>
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
-              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.name}</span>
+              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.nickname}</span>
               <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
             </Comment.Author>
             <Comment.Metadata>
