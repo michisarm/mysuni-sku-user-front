@@ -11,9 +11,11 @@ function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
   const [descriptionOpen, setDescriptionOpen] = useState<boolean>();
   const [showMoreButton, setShowMoreButton] = useState<boolean>();
   const textContainerRef = useRef<HTMLDivElement>(null);
+
   const toggleMore = useCallback(() => {
     setDescriptionOpen(!descriptionOpen);
   }, [descriptionOpen]);
+
   useEffect(() => {
     const textContainer = textContainerRef.current;
     if (textContainer !== null) {
@@ -37,7 +39,7 @@ function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
         }
       }
     }
-  }, []);
+  }, [descriptionOpen]);
   return (
     <div className="class-guide-txt fn-parents ql-snow">
       <div

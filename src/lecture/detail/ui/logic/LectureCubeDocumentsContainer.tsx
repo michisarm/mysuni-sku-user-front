@@ -35,7 +35,7 @@ function LectureCubeDocumentsContainer() {
  
   return (
       <>
-        {(lectureWebpage && <LectureDocumentsView fileBoxId = {lectureWebpage.fileBoxId} hookAction={hookAction} learningState={lectureState?.learningState} params={params} />)}
+        {(lectureWebpage && lectureState && <LectureDocumentsView fileBoxId = {lectureWebpage.fileBoxId} hookAction={hookAction} learningState={lectureState?.learningState} params={params} />)}
       </>
     )
 }

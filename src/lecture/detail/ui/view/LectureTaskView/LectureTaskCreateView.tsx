@@ -1,4 +1,5 @@
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
+import { patronInfo } from '@nara.platform/dock';
 import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
 import { getCubeLectureTaskDetail } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import {
@@ -6,9 +7,17 @@ import {
   setLectureTaskCreateItem,
 } from 'lecture/detail/store/LectureTaskCreateStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import React, { Fragment, useCallback, useEffect } from 'react';
+import { toJS } from 'mobx';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Checkbox, Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
+import { SkProfileService } from '../../../../../profile/stores';
+import {
+  getActiveStructureItem,
+  getActiveStructureItemAll,
+} from '../../../service/useLectureStructure/useLectureStructure';
+import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
 
@@ -30,7 +39,46 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   changeProps,
   handleSubmitClick,
 }) {
+  const { pathname } = useLocation();
   let [taskDetail] = useLectureTaskCreate();
+  const [canNotice, setCanNotice] = useState<boolean>(false);
+  useEffect(() => {
+    console.log('Profile', toJS(SkProfileService.instance.skProfile));
+    console.log(
+      'Cube',
+      (getActiveStructureItem()! as LectureStructureCubeItem).cube
+    );
+    if (
+      (getActiveStructureItem()! as LectureStructureCubeItem).cube === undefined
+    ) {
+      return;
+    }
+    let denizenKey = (getActiveStructureItem()! as LectureStructureCubeItem)
+      .cube!.patronKey.keyString;
+    if (
+      (getActiveStructureItem()! as LectureStructureCubeItem).cube!.patronKey
+        .patronType !== 'Denizen'
+    ) {
+      /* eslint-disable prefer-const */
+      let [pre, last] = denizenKey.split('@');
+      if (pre === undefined || last === undefined) {
+        return;
+      }
+      [pre] = pre.split('-');
+      if (pre === undefined) {
+        return;
+      }
+      const [last1, last2] = last.split('-');
+      if (last1 === undefined || last2 === undefined) {
+        return;
+      }
+      denizenKey = `${pre}@${last1}-${last2}`;
+    }
+    if (SkProfileService.instance.skProfile.id === denizenKey) {
+      setCanNotice(true);
+    }
+    return () => setCanNotice(false);
+  }, [pathname]);
 
   //edit인경우
   if (taskEdit !== undefined) {
@@ -89,13 +137,15 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               <Form.Field>
                 <div className="board-write-checkbox">
                   <div className="ui checkbox base">
-                    <Checkbox
-                      className="base"
-                      label="공지 등록"
-                      name="communityPostCreatePinned"
-                      checked={taskDetail.notice}
-                      onChange={handlePinnedChange}
-                    />
+                    {canNotice && (
+                      <Checkbox
+                        className="base"
+                        label="공지 등록"
+                        name="communityPostCreatePinned"
+                        checked={taskDetail.notice}
+                        onChange={handlePinnedChange}
+                      />
+                    )}
                   </div>
                 </div>
                 <div

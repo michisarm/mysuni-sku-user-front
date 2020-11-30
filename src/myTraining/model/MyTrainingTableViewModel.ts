@@ -27,7 +27,7 @@ class MyTrainingTableViewModel {
   learningState?: LearningState; // 학습 상태
   learningTime: number = 0; // 학습시간
   startDate: number = 0; // 학습시작일
-  endDate: number = 0; // 학습완료일 
+  endDate: number = 0; // 학습완료일
   createDate: number = 0; // 등록일
   time: number = 0; // 최근학습일 || 취소 미이수일
   stampCount: number = 0; // 스탬프
@@ -87,21 +87,14 @@ class MyTrainingTableViewModel {
 
 
   toXlsxForInProgress(index: number): InProgressXlsxModel {
-    /*
-      No: string = '';
-      College: string = '';
-      과정명: string = '';
-      학습유형: string = '';
-      Level: string = '';
-      진행률: string = '';
-      학습시간: string = '';
-      학습시작일: string = '';
-    */
+    /* CARD 가 아닌 PROGRAM & COURSE 는 'Course' 를 화면에 보여준다. */
+    const displayCourse = 'Course';
+
     return {
       No: String(index),
       College: this.isCollegeEmpty() ? '-' : this.category.college.name,
       과정명: this.name || '-',
-      학습유형: this.cubeType && this.cubeType || this.serviceType,
+      학습유형: this.cubeType && this.cubeType || displayCourse,
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       최근학습일: moment(this.time).format('YYYY.MM.DD')
@@ -109,20 +102,14 @@ class MyTrainingTableViewModel {
   }
 
   toXlsxForCompleted(index: number): CompletedXlsxModel {
-    /*
-      No: string = '';
-      College: string = '';
-      과정명: string = '';
-      학습유형: string = '';
-      Level: string = '';
-      학습시간: string = '';
-      학습완료일: string = '';
-    */
+    /* CARD 가 아닌 PROGRAM & COURSE 는 'Course' 를 화면에 보여준다. */
+    const displayCourse = 'Course';
+
     return {
       No: String(index),
       College: this.isCollegeEmpty() ? '-' : this.category.college.name,
       과정명: this.name || '-',
-      학습유형: this.cubeType && this.cubeType || this.serviceType,
+      학습유형: this.cubeType && this.cubeType || displayCourse,
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD')

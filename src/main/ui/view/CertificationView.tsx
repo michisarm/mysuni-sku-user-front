@@ -15,7 +15,7 @@ class CertificationView extends Component {
           <div className="inner">
             <div className="strong">mySUNI에서는 구성원의 자발적 학습과 Career 개발을 위해<br/>인증제도를 운영하고 있습니다.</div>
             <iframe title="인증안내 영상" className="inner-video" src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=2c3a5cdd-5683-48a5-86b3-ac4d0086b990&amp;offerviewer=false&amp;showtitle=false&amp;interactivity=none&amp;showbrand=false"/>
-            <img src={certification} alt=""/>
+            <img src={certification} alt="" className="lms-marginTop-30"/>
           </div>
         </div>
 

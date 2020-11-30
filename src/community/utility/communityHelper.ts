@@ -17,9 +17,9 @@ export function compareAscendingByPinned(
 }
 
 export function addNewBadge(
-  createTime: number,
+  createdTime: number,
 ) {
-  const subtractTime = new Date().getTime() - createTime
+  const subtractTime = new Date().getTime() - createdTime
 
   if (subtractTime < 86400000) {
     return true
