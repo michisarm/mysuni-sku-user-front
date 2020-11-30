@@ -153,8 +153,9 @@ class AplModel extends NewQueryModel {
     if (!aplModel.period.startDateMoment) return '교육시작일자';
     if (!aplModel.period.endDateMoment) return '교육종료일자';
     if (!aplModel.institute) return '교육기관';
-    if (!aplModel.requestHour) return '교육시간(시)';
-    if (!aplModel.requestMinute) return '교육시간(분)';
+    if ((Number(aplModel.requestHour) === 0 && Number(aplModel.requestMinute) === 0)) return '교육시간';
+    //if (!aplModel.requestHour) return '교육시간(시)';
+    //if (!aplModel.requestMinute) return '교육시간(분)';
     if (!aplModel.content) return '교육내용';
     if (!aplModel.approvalId) return '승인자';
     // if (!aplModel.fileIds) return '첨부파일';
