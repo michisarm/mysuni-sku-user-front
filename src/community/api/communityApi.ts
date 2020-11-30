@@ -253,3 +253,27 @@ export function followModalDelete(id: string): Promise<FollowCommunityItem> {
   const url = `${BASE_URL}/follow/flow/${id}/unfollow`;
   return axiosApi.delete(url).then(AxiosReturn);
 }
+
+export function findPostMenuName(
+  communityId: string,
+  menuId: string
+): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus/${menuId}`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  });
+}
+
+export function registerBookmark(postId: string) {
+  const bookmarkCdo = {
+    postId,
+    memberId: patronInfo.getDenizenId(),
+  }
+  const url = `${BASE_URL}/bookmarks`
+  return axiosApi.post<string>(url, bookmarkCdo).then(AxiosReturn);
+}
+
+export function removeBookmark(postId: string) {
+  const url = `${BASE_URL}/bookmarks/${postId}/patronInfo.getDenizenId()`
+  return axiosApi.delete(url).then(AxiosReturn);
+}
