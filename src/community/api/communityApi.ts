@@ -13,6 +13,7 @@ import PostRdo from 'community/model/PostRdo';
 import CommunityView from '../model/CommunityView';
 import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/FollowCommunityItem';
 import { NameValueList } from 'shared/model';
+import { patronInfo } from '@nara.platform/dock';
 
 const BASE_URL = '/api/community';
 
@@ -248,4 +249,18 @@ export function findPostMenuName(
   return axiosApi.get(url).then(response => {
     return response && response.data
   });
+}
+
+export function registerBookmark(postId: string) {
+  const bookmarkCdo = {
+    postId,
+    memberId: patronInfo.getDenizenId(),
+  }
+  const url = `${BASE_URL}/bookmarks`
+  return axiosApi.post<string>(url, bookmarkCdo).then(AxiosReturn);
+}
+
+export function removeBookmark(postId: string) {
+  const url = `${BASE_URL}/bookmarks/${postId}/patronInfo.getDenizenId()`
+  return axiosApi.delete(url).then(AxiosReturn);
 }
