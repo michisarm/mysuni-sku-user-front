@@ -29,6 +29,7 @@ export interface MemberApproveList {
   creatorId: string;
   groupId: string;
   introduce: string;
+  nickname:string,
   manager: boolean
   managerId: string;
   managerNickName: string

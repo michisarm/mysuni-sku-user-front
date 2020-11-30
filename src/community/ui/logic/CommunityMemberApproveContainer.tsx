@@ -6,6 +6,7 @@ import Approve from '../../../style/media/icon-approval-24-px.png';
 import { getApproveMember, updateMembers } from 'community/service/useMemberList/useMemberList';
 import { useCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { Pagination } from 'semantic-ui-react';
+import { useHistory } from 'react-router';
 
 interface Props {
   currentCommunity:string
@@ -15,15 +16,16 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   const [selectedList, setSelectedList] = useState<(any)>();
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const approveData = useCommunityMemberApprove();
-  const AllData = approveData?.results.map(item => item.memberId)
+  const AllData = approveData && approveData.results.map(item => item.memberId)
+  const history = useHistory();
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
 
   useEffect(() => {
     getApproveMember(currentCommunity)
+    checkAll();
   },[currentCommunity])
-
 
   const totalPages = () => {
     let totalPage = Math.ceil(approveData!.totalCount / 8)
@@ -38,8 +40,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
       return
     }
     totalPages();
+    
   }, [approveData])
-
+  
   const onPageChange = (data:any) => {
     getApproveMember(currentCommunity, (data.activePage - 1) * 8)
     setActivePage(data.activePage)
@@ -51,11 +54,11 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
       setSelectedList(AllData);
       setSelectAll(!selectAll)
     } else {
-      setSelectedList('');
+      setSelectedList([]);
       setSelectAll(!selectAll);
     }
   },[selectAll])
-
+  
   const checkOne = (groupMemberId:string) => {
     const copiedSelectedList: (string | undefined)[] = [...selectedList];
     const index = copiedSelectedList.indexOf(groupMemberId);
@@ -73,6 +76,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
 
   const updateUser = useCallback(() => {
     updateMembers(currentCommunity, selectedList);
+    setTimeout(() => {
+      history.go(0);
+    }, 500)
   }, [currentCommunity, selectedList])
 
   return (
@@ -104,7 +110,7 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
               />
               <Comment.Avatar src={item.profileImg != null ? `/files/community/${item.profileImg}` : `${AvartarImage}`} />
               <Comment.Content>
-                <Comment.Author as="a"><h3>{item.name && item.name ? item.name : "알 수 없는 사용자"}</h3>
+                <Comment.Author as="a"><h3>{item.nickname}</h3>
                 </Comment.Author>
               </Comment.Content>
             </Comment>

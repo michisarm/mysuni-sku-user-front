@@ -13,13 +13,13 @@ import { useParams } from 'react-router-dom';
 
 function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   const [cardopen, setCardOpen] = useState<any>(false);
-  const groupItem = useRef<any>()
-//.ParentNode.find(BoxItem)
+  const groupItem = useRef<any>();
+
   // 열기버튼을 누른 그룹박스 감지
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
 
   const handleClickOutside = (event:any) => {
-    if (groupItem.current && !groupItem.current.contains(event.target.parentNode)){
+    if (groupItem.current && !groupItem.current.contains(event.target)){
       setCardOpen(false);
     }
   }
@@ -36,8 +36,6 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
       getGroupMember(communityId, groupId, 0)
     }
   }
-
-  console.log(groupList.memberCount)
 
   return (
     <div className="mycommunity-card-list" style={{marginBottom:"20px"}} ref={groupItem}>
@@ -68,7 +66,7 @@ interface Params {
 }
 
 export const CommunityGroupView = () => {
-  const {communityId, groupId} = useParams<Params>();
+  const {communityId} = useParams<Params>();
   const groupData = useCommunityGroup();
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
@@ -89,7 +87,10 @@ export const CommunityGroupView = () => {
     console.log(activePage)
   }, [groupData])
     
-  const onPageChange = (data:any) => {
+  const onPageChange = (event:any, data:any) => {
+    // console.log(event.currentTarget.className);
+    // event.stopPropagation();
+    // console.log(event.currentTarget.className);
     getGroup(communityId, (data.activePage - 1) * 8)
     setActivePage(data.activePage)
   }
@@ -105,7 +106,7 @@ export const CommunityGroupView = () => {
               totalPages={totalPage}
               firstItem={null}
               lastItem={null}
-              onPageChange={(e, data) => onPageChange(data)}
+              onPageChange={(e, data) => onPageChange(e,data)}
             />
           </div>
         ) : (

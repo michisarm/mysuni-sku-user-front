@@ -30,7 +30,7 @@ function ItemBox({groupMemberList,activePage} :{groupMemberList:any, activePage:
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span>{groupMemberList.name}</span>
+            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span>{groupMemberList.nickname}</span>
             <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}><span className="card-follow">{groupMemberList.follow ? "Unfollow" : "Follow"}</span></button>
           </Comment.Author>
           <Comment.Metadata>
@@ -69,7 +69,6 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   }
   
   useEffect(() => {
-    console.log("@@TOTAL GROUP PAGE",totalPage)
     if(groupMemberData === undefined) {
       return
     }

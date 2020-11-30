@@ -13,7 +13,6 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
   const [follow, setFollow] = useState<boolean>(false);
 
   const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
-    // console.log("ACTIVE PAGE MEMBERVIEW",activePage)
 
     if(followState === false) {
       onFollow(communityId,memberId, (activePage - 1) * 8)

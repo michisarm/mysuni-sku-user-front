@@ -11,27 +11,6 @@ interface Props {
 
 const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer({currentCommunity}) {
   const groupData = useCommunityGroup();
-  const [activePage, setActivePage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
-
-  const totalPages = () => {
-    let totalPage = Math.ceil(groupData!.totalCount / 8)
-    if (groupData!.totalCount % 8 < 0) {
-      totalPage++
-    }
-    setTotalPage(totalPage)
-  }
-  
-  useEffect(() => {
-    if(groupData === undefined) {
-      return
-    }
-    totalPages();
-  }, [groupData])
-
-  const onPageChange = (data:any) => {
-    getGroup(currentCommunity, (activePage - 1) * 8)
-  }
 
   useEffect(() => {
     getGroup(currentCommunity, 0)
