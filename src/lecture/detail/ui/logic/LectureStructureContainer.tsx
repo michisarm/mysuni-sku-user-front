@@ -40,7 +40,7 @@ export function requestLectureStructure(
   const { lectureType, contentId, lectureId, ...structParams } = params;
   if (params.cubeId !== undefined) {
     getCubeItem(structParams, pathname);
-  } else {
+  } else if(params.coursePlanId !== undefined) {
     getCourseItem(structParams, pathname);
   }
 }
