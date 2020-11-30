@@ -3,19 +3,21 @@ import { Button, Modal } from "semantic-ui-react";
 import { Document, Page } from 'react-pdf';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { patronInfo } from "@nara.platform/dock";
+import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
 // import down from "../../../../../images/all/icon-down-type-4-24-px.png";
 // import ProfileSample2 from "../../../../../images/all/profile-110-px-sample-2.jpg";
 // import NotSupported from "../../../../../images/all/btn-download.svg";
 // import playerBtn from "../../../../../images/all/btn-player-next.png";
 
+
 interface Props {
-  open: boolean
+  open: boolean;
   setOpen: (state:boolean) => void;
-  viewItem: DepotFileViewModel,
-  pdfName:string
+  fileId:string;
+  fileName:string
 }
 
-const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem, pdfName}) => {
+const CommunityPdfModal:React.FC<Props> = ({open, setOpen, fileId,fileName}) => {
 
   const [pdfUrl, setPdfUrl] = useState<string>();
   const [file, setFile] = useState<any>();
@@ -30,6 +32,11 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem, pdfName}) =
       setPageWidth(headerWidth.current?.clientWidth!);
     }
   };
+  console.log(fileName)
+  useEffect(() => {
+    updateHeaderWidth();
+    window.addEventListener("resize", updateHeaderWidth)
+  }, [])
 
   const onDocumentLoadSuccess = (pdf: any) => {
     setNumPages(pdf.numPages);
@@ -63,21 +70,22 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem, pdfName}) =
     }
   };
 
-  // const downloadFile = () => {
-  //   depot.downloadDepotFile(file;
-  // };
+  const downloadFile = () => {
+    depot.downloadDepotFile(fileId);
+  };
 
   useEffect(() => {
-    setPdfUrl('/api/depot/depotFile/flow/download/' + pdfName);
+    setPdfUrl('/api/depot/depotFile/flow/download/' + fileId);
     setFile({
-      url: '/api/depot/depotFile/flow/download/' + pdfName,
+      url: '/api/depot/depotFile/flow/download/' + fileId,
       httpHeaders: {
         audienceId: patronInfo.getPatronId(),
         Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
       },
     });
+    setPageNumber(1);
     // }, 500);
-  }, []);
+  }, [fileId]);
 
   
   return (
@@ -89,7 +97,7 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem, pdfName}) =
       >
         <Modal.Header className="dataroom-popup-header">
           <div className="dataroom-popup-left">
-            <span>{viewItem.id}</span>
+            <span>{fileName}</span>
           </div>
           <div className="dataroom-popup-right">
             {/*<button className="ui icon button left post list2">
@@ -133,13 +141,11 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem, pdfName}) =
                   </div>
                   }
                 >
-                <div style={{margin:"0 auto"}}>
                   <Page
                     pageNumber={pageNumber}
                     renderAnnotationLayer={false}
-                    width={pageWidth}
+                    width={974.5}
                   />
-                </div>
                 </Document>
               </div>
             </div>
@@ -156,7 +162,9 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, viewItem, pdfName}) =
                 </span>
                 <a className="pdf-next" onClick={next}>이후</a>
               </div>
-              <a className="pdf-down on"><i aria-hidden="true" className="icon down-white24"/></a>
+              <a className="pdf-down on" onClick={downloadFile}>
+                <i aria-hidden="true" className="icon down-white24"/>
+              </a>
               <div className="pdf-bar"><span className="pdf-gauge" style={{ width: `${bar.toString()}%` }} /></div>
             </div>
           </div>

@@ -35,16 +35,19 @@ function CommunityPostDetailContainer() {
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
   const [open, setOpen] = useState<boolean>(false);
+  const [fileId, setFileId] = useState<string>();
+  const [fileName, setFileName] = useState<string>();
+  const viewModal = (pdf:string, fileId:string) => {
 
-  const viewModal = (pdf:string, other:string) => {
-    console.log("@@ 클릭한 대상이 pdf파일?",pdf.includes('.pdf'))
-    console.log("@@pdf Name",other)
     const PdfFile = pdf.includes('.pdf')
     if (PdfFile) {
-      setOpen(!open)
+      setOpen(!open);
+      setFileId(fileId);
+      setFileName(pdf);
     } else {
-      depot.downloadDepotFile(other)
+      depot.downloadDepotFile(fileId)
     }
+    
   }
 
   useEffect(() => {
@@ -145,7 +148,6 @@ function CommunityPostDetailContainer() {
                           </a>
                         </div>
                       </div>
-                      <CommunityPdfModal open={open} viewItem={foundedFile} setOpen={setOpen} pdfName={foundedFile.id} /> 
                     </>
                   ))}
             </div>
@@ -217,6 +219,7 @@ function CommunityPostDetailContainer() {
           </div>
         </div>
       )}
+      <CommunityPdfModal open={open} setOpen={setOpen} fileId={fileId||''} fileName={fileName || ''}/> 
     </Fragment>
     
   );
