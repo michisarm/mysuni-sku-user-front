@@ -1,4 +1,5 @@
 import { modifyCommunityPost, registerCommunityCommentPost, registerPost } from "community/api/communityApi";
+import Post from "community/model/Post";
 import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
 import { NameValueList } from "shared/model";
 import PostCdo from "../../../model/PostCdo"
@@ -8,7 +9,7 @@ export async function saveCommunityPost(
     communityId: string,
     menuId?: string,
     postId?: string
-): Promise<void> {
+): Promise<any> {
     const postCreateItem = getCommunityPostCreateItem();
     if (postCreateItem !== undefined) {
         if (postId === undefined && menuId !== undefined) {
@@ -22,10 +23,8 @@ export async function saveCommunityPost(
                 menuId,
                 commentFeedbackId
             };
-
-            registerPost(communityId, postCdo);
+            return registerPost(communityId, postCdo);
         } else if (postId !== undefined) {
-
             const postUdo: PostUdo = {
                 title: postCreateItem.title,
                 html: postCreateItem.contents,
@@ -33,7 +32,7 @@ export async function saveCommunityPost(
                 pinned: postCreateItem.pinned,
                 visible: postCreateItem.visible,
             };
-            modifyCommunityPost(communityId, postId, modifyNameValueList(postUdo));
+            return modifyCommunityPost(communityId, postId, modifyNameValueList(postUdo));
         }
     }
 }
