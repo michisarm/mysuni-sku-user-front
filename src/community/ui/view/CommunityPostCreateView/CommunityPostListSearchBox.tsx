@@ -48,6 +48,7 @@ const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = functio
             placeholder="검색어를 입력해주세요."
             value={searchText}
             onChange={handleSearchTextChange}
+            onKeyPress={e => e.key === 'Enter' && onSearch()}
           />
           <Icon className="search link" onClick={() => onSearch()} />
         </div>

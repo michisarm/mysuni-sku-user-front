@@ -17,6 +17,7 @@ import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { getWebpageFromCube } from '../../service/useLectureWebpage/utility/getWebpageFromCube';
+import { setLectureState } from '../../store/LectureStateStore';
 
 function LectureCubeElearningPage() {
   const params = useLectureRouterParams();
@@ -38,6 +39,7 @@ function LectureCubeElearningPage() {
       setLectureComment();
       setLectureReview();
       setInMyLectureCdo();
+      setLectureState();
     };
   }, [contentId, lectureId]);
 

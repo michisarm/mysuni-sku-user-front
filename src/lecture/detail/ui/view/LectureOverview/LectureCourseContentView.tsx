@@ -49,27 +49,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureRelations,
   lectureFile,
 }) {
-  const [fixed, setFixed] = useState<boolean>(false);
-  // useEffect(() => {
-  //   const options = {};
-  //   const observer = new IntersectionObserver(intersectionCallback, options);
-  //   function intersectionCallback(entries: IntersectionObserverEntry[]) {
-  //     entries.forEach(entry => {
-  //       if (entry.isIntersecting) {
-  //         setFixed(false);
-  //       } else {
-  //         setFixed(true);
-  //       }
-  //     });
-  //   }
-  //   const lmsOverviewTop = document.getElementById('lms-overview-top');
-  //   if (lmsOverviewTop !== null) {
-  //     observer.observe(lmsOverviewTop);
-  //   }
-  //   return () => observer.disconnect();
-  // }, []);
   const [activatedTab, setActivatedTab] = useState<string>('overview');
-
   const overviewHashClick = useCallback(() => {
     hashLink('lms-overview');
     setActivatedTab('overview');
@@ -86,32 +66,18 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
     hashLink('lms-related-process');
     setActivatedTab('related');
   }, []);
+
   const commentHashClick = useCallback(() => {
+    hashLink('lms-comment');
     setActivatedTab('comment');
   }, []);
-
-  // 스티키 적용 시 필요한 코드
-  // useEffect(() => {
-  //   if (activatedTab === 'comment') {
-  //     setTimeout(() => {
-  //       const element = document.getElementById('lms-overview');
-  //       if (element !== null) {
-  //         element.scrollIntoView();
-  //       }
-  //     }, 0);
-  //   }
-  // }, [activatedTab]);
 
   return (
     <>
       {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
-      <div id="lms-overview-top" />
-      <div
-        className={`lms-sticky-menu ${fixed ? 'lms-fixed' : ''}`}
-        id="lms-overview"
-      >
+      <div className="lms-sticky-menu">
         <div className="lms-fixed-inner" id="lms-overview">
           <a
             onClick={overviewHashClick}
@@ -151,9 +117,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
             )}
           <a
             onClick={commentHashClick}
-            className={
-              activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
-            }
+            className={activatedTab === 'comment' ? 'lms-act' : ''}
           >
             <i className="lms-comment-icon" />
             Comments

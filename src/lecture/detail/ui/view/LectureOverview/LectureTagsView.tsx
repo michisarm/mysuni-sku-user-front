@@ -27,7 +27,7 @@ const LectureTagsView: React.FC<LectureTagsViewProps> = function LectureTagsView
               <Link
                 className="ui label tag"
                 key={key}
-                to={`/search?query=${tag}`}
+                to={`/search?query=${encodeURI(tag.trim())}`}
                 target="_blank"
               >
                 {tag}

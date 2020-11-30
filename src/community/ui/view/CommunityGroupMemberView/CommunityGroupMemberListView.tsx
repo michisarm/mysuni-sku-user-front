@@ -65,8 +65,8 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   const {communityId, groupId} = useParams<Params>();
 
   const totalPages = () => {
-    let totalPage = Math.ceil(groupMemberData!.totalCount / 8)
-    if (groupMemberData!.totalCount % 8 < 0) {
+    let totalPage = Math.ceil(groupMemberData!.totalCount / 2)
+    if (groupMemberData!.totalCount % 2 < 0) {
       totalPage++
     }
     setTotalPage(totalPage)
@@ -81,7 +81,7 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   }, [groupMemberData])
 
   const onPageChange = (data:any) => {
-    getGroupMember(communityId, groupId, (data.active-1)* 8)
+    getGroupMember(communityId, groupId, (data.activePage-1)* 2)
     setActivePage(data.activePage)
   }
 
@@ -90,7 +90,7 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
     <>
       {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} key={index} />)}
       {
-        groupMemberData && groupMemberData.totalCount >= 8 ? (
+        groupMemberData && groupMemberData.totalCount >= 2 ? (
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}

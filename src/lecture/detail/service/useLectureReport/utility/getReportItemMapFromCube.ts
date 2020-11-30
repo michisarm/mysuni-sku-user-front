@@ -26,7 +26,7 @@ export async function getReportItem(
     reportFileBox.reportName = cubeIntro.reportFileBox.reportName;
     reportFileBox.reportQuestion = cubeIntro.reportFileBox.reportQuestion;
 
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       if (
         student.homeworkContent !== null ||
         student.homeworkFileBoxId !== null

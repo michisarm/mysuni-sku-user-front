@@ -1,15 +1,15 @@
-import { useCommunityProfileMyCommunity } from 'community/service/useCommunityProfile/useCommunityProfileMyCommunity';
-import { getCommunityProfileMyCommunity } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
-import React, { useEffect } from 'react';
-import { useMyCommunityIntro } from '../../store/CommunityMainStore';
+import React from 'react';
+import { useCommunityProfileMyCommunity } from '../../store/CommunityProfileMyCommunityStore';
 import ContentsMyCommunityView from '../view/CommunityProfile/ContentsMyCommunityView';
 
 function CommunityMyProfileMyCommunityContainer() {
-  const myCommunityIntro = useMyCommunityIntro();
+  const communityProfileMyCommunity = useCommunityProfileMyCommunity();
   return (
     <>
-      {myCommunityIntro !== undefined && (
-        <ContentsMyCommunityView myCommunityIntro={myCommunityIntro} />
+      {communityProfileMyCommunity !== undefined && (
+        <ContentsMyCommunityView
+          communityProfileMyCommunity={communityProfileMyCommunity}
+        />
       )}
     </>
   );

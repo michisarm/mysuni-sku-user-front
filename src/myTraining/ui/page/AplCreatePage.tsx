@@ -79,6 +79,9 @@ class AplCreatePage extends React.Component<Props, States> {
   componentDidMount(): void {
     document.body.classList.add('white');
     this.init();
+
+    this.onChangeAplProps('requestHour', 0);
+    this.onChangeAplProps('requestMinute', 0);
   }
 
   componentWillUnmount() {
@@ -217,8 +220,8 @@ class AplCreatePage extends React.Component<Props, States> {
 
   async handleSave(mode: string) {
     //
-    const { apl } = this.props.aplService!;
-
+    const { aplService } = this.props;
+    const { apl } = aplService || ({} as AplService);
     //기본정보 입력항목 체크
     const aplObject = AplModel.isBlank(apl);
     let aplMessageList = (
@@ -337,24 +340,6 @@ class AplCreatePage extends React.Component<Props, States> {
       }
     }
 
-    if(name === 'requestHour'){
-      if(this.timeValid(name, value)){
-        return;
-      }
-      if (invalidHour) {
-        return;
-      }
-    }
-
-    if(name === 'requestMinute'){
-      if(this.timeValid(name, value)){
-        return;
-      }
-      if (invalidMin) {
-        return;
-      }
-    }
-
     if(name === 'content'){
       if (invalidContent) {
         return;
@@ -364,16 +349,49 @@ class AplCreatePage extends React.Component<Props, States> {
     if (aplService) aplService.changeAplProps(name, value);
   }
 
-  timeValid( name: string, value: string ) {
+  onChangeAplTimePropsValid(name: string, value: string | number ) {
     //
     const { aplService } = this.props;
-    if(isNaN(Number(value))){
-      const newValue = value.replace(/[^0-9]/g, '');
-      if (aplService)aplService.changeAplProps(name, newValue);
-      return true;
+    //if (value === '') value = 0;
+    //if(isNaN(Number(String(value)))){
+    if (typeof value !== 'number') {
+      value = value.replace(/[^0-9]/g, '');
+      if (value === '') value = 0;
+    } else {
+      value = Number(String(value).replace(/[^0-9]/g, ''));
     }
-    return false;
+    if (value === '') value = 0;
+
+    const invalidHour = Number(value) >= 100 || Number(value) < 0;
+    const invalidMin = Number(value) > 59 || Number(value) < 0;
+
+    if(name === 'requestHour'){
+      if (invalidHour) {
+        return;
+      }
+    }
+
+    if(name === 'requestMinute'){
+      if (invalidMin) {
+        return;
+      }
+    }
+    //value = this.timeValid(name, value);
+
+    if (Number(String(value)) < 0) value = 0;
+
+    if (aplService) aplService.changeAplProps(name, value);
   }
+
+  /*
+  timeValid( name: string, value: string | number ) {
+    //
+    if(isNaN(Number(String(value)))){
+      return String(value).replace(/[^0-9]/g, '');
+    }
+    return Number(String(value).replace(/[^0-9]/g, ''));
+  }
+  */
 
   handleOK(member: MemberViewModel) {
     //
@@ -434,6 +452,7 @@ class AplCreatePage extends React.Component<Props, States> {
           //AplModel={apl}
           focusControlName={focusControlName}
           onChangeAplPropsValid={this.onChangeAplPropsValid}
+          onChangeAplTimePropsValid={this.onChangeAplTimePropsValid}
           onResetFocusControl={this.onResetFocusControl}
           //onGetFileBoxIdForApl={this.getFileBoxIdForApl}
           aplService={aplService}

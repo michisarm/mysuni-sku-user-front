@@ -63,10 +63,11 @@ function ItemBox({groupList} : {groupList:any}) {
 
 interface Params {
   communityId: string
+  groupId: string
 }
 
 export const CommunityGroupView = () => {
-  const communityId = useParams<Params>();
+  const {communityId, groupId} = useParams<Params>();
   const groupData = useCommunityGroup();
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
@@ -88,7 +89,7 @@ export const CommunityGroupView = () => {
     console.log(activePage)
   }, [groupData, activePage])
     
-  const onPageChange = (data:any, groupId:string,) => {
+  const onPageChange = (data:any) => {
     setActivePage(data.activePage * 8)
     // setCommunityGroupMember(communityId, groupId)
   }
@@ -104,7 +105,7 @@ export const CommunityGroupView = () => {
               totalPages={totalPage}
               firstItem={null}
               lastItem={null}
-              onPageChange={(e, data) => onPageChange(data, groupData.results[0].groupId)}
+              onPageChange={(e, data) => onPageChange(data)}
             />
           </div>
         ) : (

@@ -8,7 +8,7 @@ import {
 export function requestNotice(communityId: string) {
   const offset = 0;
   const limit = 3;
-  findNoticePostViews(communityId, 'createTime', offset, limit).then(posts => {
+  findNoticePostViews(communityId, 'createdTime', offset, limit).then(posts => {
     const communityHome = getCommunityHome() || {
       menus: [],
       recent: [],
@@ -25,7 +25,7 @@ export function requestNotice(communityId: string) {
 export function requestRecent(communityId: string) {
   const offset = 0;
   const limit = 4;
-  findNoticePostViews(communityId, 'createTime', offset, limit).then(posts => {
+  findNoticePostViews(communityId, 'createdTime', offset, limit).then(posts => {
     const communityHome = getCommunityHome() || {
       menus: [],
       recent: [],

@@ -37,6 +37,7 @@ interface Props extends RouteComponentProps<{ cineroomId: string, studentId: str
   departmentService?: DepartmentService
   aplService: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
+  onChangeAplTimePropsValid: (name: string, value: string | number) => void;
   apl?:AplModel;
   focusControlName?: string;
   onResetFocusControl?: () => void;
@@ -84,13 +85,13 @@ class AplCreateContainer extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state =
-    {
-      //open :  false,
-      //titleWrite: '',
-      //typeNameWrite: '',
-      //instituteWrite: ''
-      collegeSelect:[],
-    };
+      {
+        //open :  false,
+        //titleWrite: '',
+        //typeNameWrite: '',
+        //instituteWrite: ''
+        collegeSelect:[],
+      };
   }
 
 
@@ -140,7 +141,8 @@ class AplCreateContainer extends React.Component<Props, States> {
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
       .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
       .then(() => companyApproverService!.findCompanyAplApprover())
-      .then((companyApprover: CompanyApproverModel) => {
+      .then((companyAplApprover) => memberService!.findApprovalMemberByEmployeeId(companyAplApprover.employeeId))
+      .then((companyApprover) => {
         this.onChangeAplProps('approvalId', companyApprover.id);
         this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
@@ -266,7 +268,12 @@ class AplCreateContainer extends React.Component<Props, States> {
 
   onClear(name: string) {
     //
-    this.onChangeAplProps(name, '');
+    const {onChangeAplTimePropsValid} = this.props;
+    if(name === 'requestHour' || name === 'requestMinute'){
+      onChangeAplTimePropsValid(name, 0);
+    } else{
+      this.onChangeAplProps(name, '');
+    }
   }
 
   onClickManagerListOk(approvalMember: ApprovalMemberModel) {
@@ -294,13 +301,12 @@ class AplCreateContainer extends React.Component<Props, States> {
     //
     const { handleOk, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
-    const { companyApprover } = companyApproverService!;
     handleOk(approvalMember);
     this.close();
   }
 
   render() {
-    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, handleSave, handleCancel } = this.props;
+    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, onChangeAplTimePropsValid, handleSave, handleCancel } = this.props;
     const { apl } = aplService;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
@@ -555,10 +561,13 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <input
                       id="requestHour"
                       type="text"
-                      value={parseInt(String(apl && apl.requestHour), 10) || ''}
+                      value={isNaN(apl && apl.requestHour) ? 0 : parseInt(String(apl && apl.requestHour))}
                       min="0"
                       onChange={(e: any) =>
-                        onChangeAplPropsValid('requestHour', e.target.value)
+                        onChangeAplTimePropsValid('requestHour', e.target.value)
+                      }
+                      onBlur={(e: any) =>
+                        onChangeAplTimePropsValid('requestHour', e.target.value)
                       }
                       ref={this.focusInputRefs.requestHour}
                     />
@@ -575,10 +584,13 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <input
                       id="requestMinute"
                       type="text"
-                      value={parseInt(String(apl && apl.requestMinute), 10) || ''}
+                      value={isNaN(apl && apl.requestMinute) ? 0 : parseInt(String(apl && apl.requestMinute))}
                       min="0"
                       onChange={(e: any) =>
-                        onChangeAplPropsValid('requestMinute', e.target.value)
+                        onChangeAplTimePropsValid('requestMinute', e.target.value)
+                      }
+                      onBlur={(e: any) =>
+                        onChangeAplTimePropsValid('requestMinute', e.target.value)
                       }
                       ref={this.focusInputRefs.requestMinute}
                     />
@@ -631,7 +643,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               </div>
             </Form.Field>
             <Form.Field>
-            <label>첨부파일</label>
+              <label>첨부파일</label>
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
@@ -670,12 +682,12 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <span className="ml40">{apl && apl.approvalCompany || ''}</span>
                       <span className="line">{apl && apl.approvalDepartment || ''}</span>
                       {approvalShow && (
-                      <div className="info-text">
-                        <Icon className="info16">
-                          <span className="blind">infomation</span>
-                        </Icon>
-                        본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
-                      </div>
+                        <div className="info-text">
+                          <Icon className="info16">
+                            <span className="blind">infomation</span>
+                          </Icon>
+                          본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
+                        </div>
                       )}
                     </span>
                   </Modal.Actions>
