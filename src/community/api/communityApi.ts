@@ -265,15 +265,28 @@ export function findPostMenuName(
 }
 
 export function registerBookmark(postId: string) {
-  const bookmarkCdo = {
-    postId,
-    memberId: patronInfo.getDenizenId(),
-  }
-  const url = `${BASE_URL}/bookmarks`
-  return axiosApi.post<string>(url, bookmarkCdo).then(AxiosReturn);
+  const url = `${BASE_URL}/bookmarks?postId=${postId}`
+  return axiosApi.post<string>(url).then(AxiosReturn);
 }
 
 export function removeBookmark(postId: string) {
-  const url = `${BASE_URL}/bookmarks/${postId}/patronInfo.getDenizenId()`
+  const url = `${BASE_URL}/bookmarks/${postId}`
   return axiosApi.delete(url).then(AxiosReturn);
+}
+
+// profile - feed
+export function findAllPostViewsFromProfileFeed(
+  offset: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+
+// profile - bookmark
+export function findAllPostViewsFromProfileBookmark(
+  offset: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/bookmarks?offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
