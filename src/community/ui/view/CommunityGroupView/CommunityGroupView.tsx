@@ -2,15 +2,18 @@ import React,{useState,useEffect} from 'react';
 import {CommunityGroupMemberListView} from '../CommunityGroupMemberView/CommunityGroupMemberListView';
 import { useCommunityGroup } from 'community/store/CommunityGroupStore';
 import { getGroup } from 'community/service/useGroupList/useGroupList';
-import { useParams } from 'react-router-dom';
 import { getGroupMember } from 'community/service/useGroupList/useGroupList';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
+import { Pagination } from 'semantic-ui-react';
 import { useRef } from 'react';
+import { setCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
+import { useParams } from 'react-router-dom';
+
+
 
 function ItemBox({groupList} : {groupList:any}) {
   const [cardopen, setCardOpen] = useState<any>(false);
   const groupItem = useRef<any>()
-
 
   // 열기버튼을 누른 그룹박스 감지
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
@@ -29,9 +32,11 @@ function ItemBox({groupList} : {groupList:any}) {
   const handleGetMember = (communityId:string, groupId:string) => {
     setCardOpen(!cardopen)
     if(!cardopen){
-      getGroupMember(communityId, groupId)
+      getGroupMember(communityId, groupId, 0)
     }
   }
+
+  console.log(groupList.memberCount)
 
   return (
     <div className="mycommunity-card-list" style={{marginBottom:"20px"}} ref={groupItem}>
@@ -55,28 +60,57 @@ function ItemBox({groupList} : {groupList:any}) {
   )
 }
 
+
+interface Params {
+  communityId: string
+}
+
 export const CommunityGroupView = () => {
+  const communityId = useParams<Params>();
   const groupData = useCommunityGroup();
-  console.log(groupData)
+  const [activePage, setActivePage] = useState<any>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+
+  const totalPages = () => {
+    let totalPage = Math.floor(groupData!.totalCount / 8)
+    if (groupData!.totalCount % 8 < 0) {
+      totalPage++
+    }
+    setTotalPage(totalPage)
+  }
+  
+  useEffect(() => {
+    if(groupData === undefined) {
+      return
+    }
+    totalPages();
+    // getCommunityMember();
+    console.log(activePage)
+  }, [groupData, activePage])
+    
+  const onPageChange = (data:any, groupId:string,) => {
+    setActivePage(data.activePage * 8)
+    // setCommunityGroupMember(communityId, groupId)
+  }
+
   return (
     <>
       {groupData && groupData.results.map((item, index) => <ItemBox groupList={item} key={index} />)}
-      <div className="paging mb0">
-        <div className="lms-paging-holder">
-          <a className="lms-prev">이전10개</a>
-          <a className="lms-num lms-on">1</a>
-          <a className="lms-num">2</a>
-          <a className="lms-num">3</a>
-          <a className="lms-num">4</a>
-          <a className="lms-num">5</a>
-          <a className="lms-num">6</a>
-          <a className="lms-num">7</a>
-          <a className="lms-num">8</a>
-          <a className="lms-num">9</a>
-          <a className="lms-num">10</a>
-          <a className="lms-next">이후10개</a>
-        </div>
-      </div>
+      {
+        groupData && groupData.totalCount >= 8 ? (
+          <div className="lms-paging-holder">
+            <Pagination
+              activePage={activePage}
+              totalPages={totalPage}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={(e, data) => onPageChange(data, groupData.results[0].groupId)}
+            />
+          </div>
+        ) : (
+          null
+        )
+      } 
     </>
   )
 }

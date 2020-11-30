@@ -3,8 +3,8 @@ import { setCommunityMemberApprove } from 'community/store/CommunityMemberApprov
 import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
 
-export function getAllMember(communityId:string, page:number) {
-  findAllMemberByQuery(communityId , page = 0)
+export function getAllMember(communityId:string, page:number = 0) {
+  findAllMemberByQuery(communityId , page)
   .then(response => response && setCommunityMember(response.data));
 }
 

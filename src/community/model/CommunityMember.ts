@@ -39,6 +39,7 @@ export interface MemberApproveList {
   name: string;
   teamId: string;
   teamName: string;
+  profileImg:string
 }
 
 export interface CommunityMemberList {

@@ -6,6 +6,6 @@ export function getGroup(communityId:string) {
   findAllGroupByQuery(communityId).then(res => setCommunityGroup(res.data))
 }
 
-export function getGroupMember(communityId:string, groupId:string) {
-  findGroupMember(communityId, groupId).then(res => setCommunityGroupMember(res.data))
+export function getGroupMember(communityId:string, groupId:string, page:number) {
+  findGroupMember(communityId, groupId, page).then(res => setCommunityGroupMember(res.data))
 }

@@ -23,7 +23,7 @@ export function findApprovedMember(
   communityId:string
   ): Promise<any> {
   return(
-    axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=13&approved=false`)
+    axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8&approved=false`)
   )
 }
 

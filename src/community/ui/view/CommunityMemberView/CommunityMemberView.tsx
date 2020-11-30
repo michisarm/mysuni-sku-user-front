@@ -4,25 +4,30 @@ import moment from 'moment';
 import { useCommunityMember, setCommunityMember, getCommunityMember } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
-import { onFollow } from 'community/service/useMemberList/useMemberList';
-import { getFollowMember } from 'community/store/CommunityMemberFollowStore';
+import { getAllMember, onFollow } from 'community/service/useMemberList/useMemberList';
 import { memberFollowDel } from 'community/api/MemberApi';
 import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 
-function ItemBox({memberList}: {memberList:any}) {
-  const [follow, setFollow] = useState<boolean>(false)
+function ItemBox({memberList}: {memberList:any}, index:number) {
+  const [follow, setFollow] = useState<boolean>(false);
+  const [followList, setFollowList] = useState<boolean[]>([]);
 
-  const handleFollow = useCallback((memberId) => {
-    setFollow(!follow)
-    getFollowMember();
-  
-    if(follow) {
+
+  // setFollowList(followList.concat(memberList.follow));
+
+  const handleFollow = useCallback((memberId:string, followState:boolean) => {
+    
+
+    // setFollow(!follow)
+    // setFollowList(followList.concat(memberList.follow));
+
+    if(followState === false) {
       onFollow(memberId)
     } else {
       memberFollowDel(memberId)
     }
-  }, [])
+  }, [follow])
 
   return (
     <>
@@ -33,7 +38,7 @@ function ItemBox({memberList}: {memberList:any}) {
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
               <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.name}</span>
-              <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId)}><span className="card-follow">{memberList.follow ? "Unfollow" : "Follow"}</span></button>
+              <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
             </Comment.Author>
             <Comment.Metadata>
               <span>게시물</span>
@@ -51,7 +56,7 @@ function ItemBox({memberList}: {memberList:any}) {
   );
 }
 
-interface Params {
+interface MemberList {
   communityId: any
 }
 
@@ -59,11 +64,11 @@ export const CommunityMemberView = () => {
   const memberData = useCommunityMember();
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-  const {communityId} = useParams<Params>();
+  const {communityId} = useParams<MemberList>();
 
   const totalPages = () => {
-    let totalPage = Math.floor(memberData!.totalCount / 8)
-    if (memberData!.totalCount) {
+    let totalPage = Math.ceil(memberData!.totalCount / 8)
+    if (memberData!.totalCount % 8 < 0) {
       totalPage++
     }
     setTotalPage(totalPage)
@@ -74,20 +79,20 @@ export const CommunityMemberView = () => {
       return
     }
     totalPages();
-    getCommunityMember();
   }, [memberData, activePage])
   
   const onPageChange = (data:any) => {
-    setActivePage(data.activePage)
-    setCommunityMember(communityId, activePage)
-  }
 
-  console.log(activePage)
+    getAllMember(communityId,(data.activePage-1)*8);
+
+    setActivePage(data.activePage)
+    // setCommunityMember(communityId, activePage)
+  }
 
   return (
     <>
       <div className="mycommunity-card-list">
-        {memberData&& memberData.results.map((item, index) => <ItemBox memberList={item} key={index} /> )}
+        {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} /> )}
       </div>
       
       {

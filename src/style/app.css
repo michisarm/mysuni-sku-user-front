@@ -675,8 +675,3 @@ body .badge_new .title .cell span {
 .ui.modal.transition.visible.active.base.w700 .scrolling-80vh .row.head + .row {
   height: 522px;
 }
-
-/* 2020.11.30 pdf팝업 ie 가로스크롤 fix css */
-.ui.modals.transition.visible.active .scrolling-80vh {
-  overflow-x:hidden
-}
