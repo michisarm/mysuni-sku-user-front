@@ -77,25 +77,17 @@ class AplModel extends NewQueryModel {
   /* 교육시간(교육인정시간) */
   @computed get displayAllowTime() {
     let allowLearningTime = '-';
-    /* 승인 */
+
     if (this.state === AplState.Opened) {
       if (this.updateHour || this.updateMinute) {
-        /* updateHour 가 있으면, updateHour 기준. */
         allowLearningTime = `${this.updateHour}시 ${this.updateMinute}분`;
-        /* updateHour 가 없으면, allowHour 기준. */
       } else {
         allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
       }
     }
-    /* 반려 */
+
     if (this.state === AplState.Rejected) {
-      /* updateHour 관계없이, allowHour 기준. */
       allowLearningTime = (this.allowHour || this.allowMinute) ? `${this.allowHour}시 ${this.allowMinute}분` : '-';
-    }
-    /* 승인대기 */
-    if(this.state === AplState.OpenApproval) {
-      /* updateHour, allowHour 관계없이, requestHour 기준. */
-      allowLearningTime = (this.requestHour || this.requestMinute) ? `${this.requestHour}시 ${this.requestMinute}분` : '-';
     }
 
     return allowLearningTime;
@@ -150,22 +142,22 @@ class AplModel extends NewQueryModel {
     return this.isNameShow ? 'Yes' : 'No';
   }*/
 
-  static isBlank(aplModel: AplModel): string {
-    if (!aplModel.title) return '교육명';
-    if (!aplModel.type) return '교육형태';
-    /*if (!aplModel.typeName) return '교육형태명';*/
-    if (aplModel.type === AplType.Etc && !aplModel.typeName) return '교육형태명';
-    if (!aplModel.collegeId) return 'College';
-    if (!aplModel.channelId) return 'Channel';
-    /*if (!aplModel.channelId) return 'Channel';*/
-    if (!aplModel.period.startDateMoment) return '교육시작일자';
-    if (!aplModel.period.endDateMoment) return '교육종료일자';
-    if (!aplModel.institute) return '교육기관';
-    if (!aplModel.requestHour) return '교육시간(시)';
-    if (!aplModel.requestMinute) return '교육시간(분)';
-    if (!aplModel.content) return '교육내용';
-    if (!aplModel.approvalId) return '승인자';
-    // if (!aplModel.fileIds) return '첨부파일';
+  static isBlank(apl: AplModel): string {
+    if (!apl.title) return '교육명';
+    if (!apl.type) return '교육형태';
+    /*if (!apl.typeName) return '교육형태명';*/
+    if (apl.type === AplType.Etc && !apl.typeName) return '교육형태명';
+    if (!apl.collegeId) return 'College';
+    if (!apl.channelId) return 'Channel';
+    /*if (!apl.channelId) return 'Channel';*/
+    if (!apl.period.startDateMoment) return '교육시작일자';
+    if (!apl.period.endDateMoment) return '교육종료일자';
+    if (!apl.institute) return '교육기관';
+    if ((Number(apl.requestHour) === 0 && Number(apl.requestMinute) === 0)) return '교육시간';
+    //if (!apl.requestMinute || ((Number(apl.requestHour) === 0 && Number(apl.requestMinute) === 0))) return '교육시간(분)';
+    if (!apl.content) return '교육내용';
+    if (!apl.approvalId) return '승인자';
+    // if (!apl.fileIds) return '첨부파일';
     return 'success';
   }
 

@@ -8,6 +8,7 @@ const APL_FOCUS_MAP: any = {
   교육시작일자: 'startDate',
   교육종료일자: 'endDate',
   교육기관: 'institute',
+  교육시간: 'requestHour',
   '교육시간(시)': 'requestHour',
   '교육시간(분)': 'requestMinute',
   교육내용: 'content',
