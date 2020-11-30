@@ -676,7 +676,11 @@ body .badge_new .title .cell span {
   height: 522px;
 }
 
-/* 2020.11.30 pdf팝업 ie 가로스크롤 fix css */
-.ui.modals.transition.visible.active .scrolling-80vh {
+/* 2020.11.30 Community Pdf Modal, IE 스크롤현상 FIX */
+body.msie .ui.modals.transition.visible.active .scrolling-80vh {
   overflow-x:hidden
+}
+
+body.msie .ui.modals.transition.visible.active .scrolling-80vh .react-pdf__Document .react-pdf__Page {
+  overflow:hidden;
 }
