@@ -1,7 +1,11 @@
-import React from 'react'
+import React from 'react';
+import CommunityProfileFeedContainer from '../logic/CommunityProfileFeedContainer';
 
 function ProfileFeedPage() {
-  return (<>ProfileFeedPage</>)
+  return (   
+  <div>
+    <CommunityProfileFeedContainer />
+  </div>
+  );
 }
-
-export default ProfileFeedPage
+export default ProfileFeedPage;

@@ -3,13 +3,15 @@ import { Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 import MyProfilePage from './MyProfilePage';
-import MyProfileFeedPage from './MyProfileFeedPage';
+import ProfileFeedPage from './ProfileFeedPage';
 import MyProfileCommunitiesPage from './MyProfileCommunitiesPage';
 import MyProfileBookmarkPage from './MyProfileBookmarkPage';
 import { getCommunityProfile } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
 import CommunityMyProfileTitleContainer from '../logic/CommunityMyProfileTitleContainer';
 import CommunityMyProfileMenuContainer from '../logic/CommunityMyProfileMenuContainer';
 import { requestProfileCommunities } from '../../service/useCommunityProfile/utility/requestProfileCommunities';
+import { requestProfileFeeds } from '../../service/useCommunityProfile/utility/requestProfileFeeds';
+import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 
 const MyProfileRoutes: React.FC = function MyProfileRoutes() {
   //
@@ -17,6 +19,8 @@ const MyProfileRoutes: React.FC = function MyProfileRoutes() {
   useEffect(() => {
     getCommunityProfile();
     requestProfileCommunities();
+    requestProfileFeeds();
+    requestProfileBookmarks();
   }, []);
 
   return (
@@ -29,7 +33,7 @@ const MyProfileRoutes: React.FC = function MyProfileRoutes() {
           <Route
             exact
             path="/community/my-profile/feed"
-            component={MyProfileFeedPage}
+            component={ProfileFeedPage}
           />
           <Route
             exact

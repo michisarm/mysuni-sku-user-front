@@ -1,6 +1,7 @@
 import { IdName } from '@nara.platform/accent';
 import CommunityType from '../model/CommunityType';
 import ProfileCommunityItem from './CommunityProfile/ProfileCommunityItem';
+import PostItem from './CommunityProfileFeed/PostItem';
 
 interface Item {
   activated?: boolean;
@@ -48,5 +49,36 @@ export function getEmtpyCommunityProfileMyCommunity(): CommunityProfileMyCommuni
     communities: [],
     communitiesTotalCount: 0,
     communitiesOffset: 0
+  }
+}
+
+
+// Feed 추가
+export interface CommunityProfileFeed {
+  posts: PostItem[];
+  postsTotalCount: number;
+  postsOffset: number;
+}
+
+export function getEmtpyCommunityProfileFeed(): CommunityProfileFeed {
+  return {
+    posts: [],
+    postsTotalCount: 0,
+    postsOffset: 0
+  }
+}
+
+// Bookmark 추가
+export interface CommunityProfileBookmark {
+  posts: PostItem[];
+  postsTotalCount: number;
+  postsOffset: number;
+}
+
+export function getEmtpyCommunityProfileBookmark(): CommunityProfileBookmark {
+  return {
+    posts: [],
+    postsTotalCount: 0,
+    postsOffset: 0
   }
 }
