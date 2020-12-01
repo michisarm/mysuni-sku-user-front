@@ -51,12 +51,16 @@ interface Params {
   groupId: string
 }
 
-export const CommunityGroupMemberListView:React.FC = function GroupListView() {
+interface Props {
+  groupId: string
+}
+
+export const CommunityGroupMemberListView:React.FC<Props> = function GroupListView({groupId}) {
   const groupMemberData = useCommunityGroupMember();
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-  const {communityId, groupId} = useParams<Params>();
-
+  const {communityId} = useParams<Params>();
+  
   const totalPages = () => {
     let totalPage = Math.ceil(groupMemberData!.totalCount / 8)
     if (groupMemberData!.totalCount % 8 < 0) {
@@ -72,7 +76,7 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
     totalPages();
   }, [groupMemberData])
 
-  const onPageChange = (data:any) => {
+  const onPageChange = (e:any,data:any) => {
     getGroupMember(communityId, groupId, (data.activePage - 1 ) * 8)
     setActivePage(data.activePage)
   }
@@ -88,7 +92,7 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
               totalPages={totalPage}
               firstItem={null}
               lastItem={null}
-              onPageChange={(e, data) => onPageChange(data)}
+              onPageChange={(e, data) => onPageChange(e,data)}
             />
           </div>
         ) : (

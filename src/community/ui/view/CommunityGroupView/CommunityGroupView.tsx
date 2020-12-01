@@ -19,17 +19,19 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   // 열기버튼을 누른 그룹박스 감지
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
 
-  // const handleClickOutside = useCallback((event:any) => {
-  //   console.log(groupItem.current.contains(event.target))
-  //   if (groupItem.current && !groupItem.current.contains(event.target)){
-  //     setCardOpen(false);
-  //   }
-  // },[])
+  const handleClickOutside = useCallback((event:any) => {
+    if (groupItem.current && !groupItem.current.contains(event.target)){
+      setCardOpen(false);
+    }
+  },[])
 
-  // useEffect(() => {
-  //   document.addEventListener("click", handleClickOutside);
-  //   return () => document.removeEventListener("click", handleClickOutside)
-  // }, [])
+  useEffect(() => {
+    if(cardopen) {
+      setCardOpen(cardopen)
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside)
+  }, [])
 
   // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
   const handleGetMember = (communityId:string, groupId:string) => {
@@ -37,9 +39,8 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
     if(!cardopen) {
       getGroupMember(communityId, groupId, 0)
     }
-    console.log("@@ handle Get Member",groupId)
   }
-
+  
   return (
     <div className="mycommunity-card-list" style={{marginBottom:"20px"}} ref={groupItem}>
       <div className="card-group">
@@ -56,7 +57,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
       </div>
       <div className="card-group-body" style={cardopen ? {display:"block"} : {display:"none"}}>
         <p>{groupList.introduce}</p>
-        <CommunityGroupMemberListView />
+        <CommunityGroupMemberListView groupId={groupList.groupId} />
       </div>
     </div>
   )
@@ -69,8 +70,8 @@ interface Params {
 }
 
 export const CommunityGroupView = () => {
-  const {communityId} = useParams<Params>();
   const groupData = useCommunityGroup();
+  const {communityId} = useParams<Params>();
   const [activePage, setActivePage] = useState<any>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
 
@@ -90,8 +91,7 @@ export const CommunityGroupView = () => {
 
   }, [groupData])
     
-  const onPageChange = (event:any, data:any) => {
-    
+  const onPageChange = (e:any,data:any) => {
     getGroup(communityId, (data.activePage - 1) * 8)
     setActivePage(data.activePage)
   }
@@ -107,7 +107,7 @@ export const CommunityGroupView = () => {
               totalPages={totalPage}
               firstItem={null}
               lastItem={null}
-              onPageChange={(e, data) => onPageChange(e,data)}
+              onPageChange={(e,data) => onPageChange(e,data)}
             />
           </div>
         ) : (
