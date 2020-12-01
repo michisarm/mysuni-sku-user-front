@@ -23,12 +23,6 @@ interface Props {
 @reactAutobind
 class TitleCell extends Component<Props> {
   //
-  componentDidMount() {
-    setTimeout(() => {
-      // console.log('DidMount', this.props.title);
-      ReactGA.pageview(window.location.pathname + window.location.search, [], `${this.props.title}`);
-    }, 2000);
-  }
 
   render() {
     //
