@@ -168,7 +168,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
                     className="btn_profile_edit"
                     onClick={handleEditClick}
                   >
-                    프로필수정
+                    프로필 수정
                   </button>
                 </li>
               )}

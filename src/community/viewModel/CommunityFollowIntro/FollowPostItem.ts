@@ -8,4 +8,5 @@ export default interface FollowPostItem {
   createdTime: string;
   name: string;
   contents: string;
+  bookmarked: boolean;
 }
