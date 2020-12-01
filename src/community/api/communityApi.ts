@@ -144,6 +144,13 @@ export function findAllMyCommunities(sort: string, offset: number): Promise<
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
+export function findAllOtherCommunities(memberId: string, sort: string, offset: number): Promise<
+  OffsetElementList<CommunityView> | undefined
+> {
+  const url = `${BASE_URL}/communities/communityView/other/${memberId}?sort=${sort}&offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+}
+
 export function findAllMyOpenCommunities(
   sort: string,
   offset: number
