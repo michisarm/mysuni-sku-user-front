@@ -276,9 +276,10 @@ export function removeBookmark(postId: string) {
 
 // profile - feed
 export function findAllPostViewsFromProfileFeed(
+  memberId:string,
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=10`;
+  const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=10&memberId=${memberId}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 

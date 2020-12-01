@@ -67,11 +67,11 @@ function postToItem(post: Post): PostItem {
 
 // 
 
-export async function requestProfileFeeds() {
+export async function requestProfileFeeds(profileId:string) {
   // const { postsSort } = getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
 
   // findAllPostViewsFromMyCommunities('', 0).then(posts => {
-  findAllPostViewsFromProfileFeed(0).then(posts => {
+  findAllPostViewsFromProfileFeed(profileId,0).then(posts => {
     const myCommunityIntro =
       getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
     if (posts === undefined) {
@@ -92,12 +92,12 @@ export async function requestProfileFeeds() {
   });
 }
 
-export function requestAppendProfileFeedPostList() {
+export function requestAppendProfileFeedPostList(profileId:string) {
   const {  postsOffset } =
   getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
 
   // findAllPostViewsFromMyCommunities('', postsOffset).then(posts => {
-  findAllPostViewsFromProfileFeed(postsOffset).then(posts => {
+  findAllPostViewsFromProfileFeed(profileId,postsOffset).then(posts => {
     const communityProfileFeed =
       getCommunityProfileFeed() || getEmtpyCommunityProfileFeed();
     if (posts === undefined) {

@@ -4,7 +4,7 @@ import { useCommunityProfileFeed } from '../../store/CommunityProfileFeedStore';
 import ContentsMyCommunityView from '../view/CommunityProfile/ContentsMyCommunityView';
 import ContentsFeedView from '../view/CommunityProfile/ContentsFeedView';
 
-function CommunityProfileFeedContainer() {
+function CommunityProfileFeedContainer(profileId:string) {
 
   const communityProfileFeed = useCommunityProfileFeed();
   return (
@@ -12,6 +12,7 @@ function CommunityProfileFeedContainer() {
       {communityProfileFeed !== undefined && (
         <ContentsFeedView
           communityProfileFeed={communityProfileFeed}
+          profileId={profileId}
         />
       )}
     </>

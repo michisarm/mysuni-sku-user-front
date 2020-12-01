@@ -20,13 +20,15 @@ import { requestAppendProfileFeedPostList } from 'community/service/useCommunity
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
+  profileId:string;
 }
 
 const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedView({
   communityProfileFeed,
+  profileId
 }) {
 
-  console.log('communityProfileFeed',communityProfileFeed);
+  // console.log('communityProfileFeed',communityProfileFeed);
 
   /* eslint-disable */
   return (
@@ -43,7 +45,7 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
             <Button
               icon
               className="left moreview"
-              onClick={requestAppendProfileFeedPostList}
+              onClick={()=>requestAppendProfileFeedPostList(profileId)}
             >
               <Icon className="moreview" /> list more
             </Button>

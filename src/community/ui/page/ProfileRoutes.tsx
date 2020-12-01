@@ -10,6 +10,7 @@ import Profile from '../../model/Profile';
 import OtherProfileMenuView from '../view/CommunityProfile/OtherProfileMenuView';
 import { findCommunityProfile } from '../../api/profileApi';
 import OtherProfileView from '../view/CommunityProfile/OtherProfileView';
+import { requestProfileFeeds } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
 
 interface Params {
   profileId: string;
@@ -21,6 +22,7 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
 
   useEffect(() => {
     findCommunityProfile(profileId).then(setProfile);
+    requestProfileFeeds(profileId);
   }, [profileId]);
   return (
     <section className="content community profile">
@@ -36,7 +38,7 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
           <Route
             exact
             path="/community/profile/:profileId/feed"
-            component={ProfileFeedPage}
+            component={() => ProfileFeedPage(profileId)}
           />
           <Route
             exact
