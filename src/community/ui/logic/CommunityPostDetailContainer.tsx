@@ -148,15 +148,13 @@ function CommunityPostDetailContainer() {
             onClickDelete={OnClickDelete}
           />
           <div className="class-guide-txt fn-parents ql-snow">
-            <div className="text ql-editor">
-              <div
-                className="text description ql-editor"
-                dangerouslySetInnerHTML={{
-                  __html: postDetail.html,
-                }}
-                ref={textContainerRef}
-              />
-            </div>
+            <div
+              className="text ql-editor"
+              dangerouslySetInnerHTML={{
+                __html: postDetail.html,
+              }}
+              ref={textContainerRef}
+            />
           </div>
           <div className="ov-paragraph download-area task-read-down">
             <div className="detail">
