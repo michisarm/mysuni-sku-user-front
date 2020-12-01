@@ -6,8 +6,9 @@ import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { getGroupMember } from 'community/service/useGroupList/useGroupList';
+import { getGroupMember, getGroupMemberData } from 'community/service/useGroupList/useGroupList';
 import { onFollowGroupMember,onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
+import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 
 function ItemBox({groupMemberList, activePage, groupId} :{groupMemberList:any, activePage:number, groupId:string}) {
   const [follow, setFollow] = useState<boolean>(false);
@@ -61,33 +62,46 @@ export const CommunityGroupMemberListView:React.FC<Props> = function GroupListVi
   const groupMemberData = useCommunityGroupMember();
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const [memberData, setMemberData] = useState<CommunityGroupMemberList>();
   const {communityId} = useParams<Params>();
   
+
+  async function test(){
+    const data = await getGroupMemberData(communityId, groupId, 0);
+    setMemberData(data);
+  }
+  
+  useEffect(() => {
+    test();
+  }, [])
+  
   const totalPages = () => {
-    let totalPage = Math.ceil(groupMemberData!.totalCount / 8)
-    if (groupMemberData!.totalCount % 8 < 0) {
+    let totalPage = Math.ceil(memberData!.totalCount / 8)
+    if (memberData!.totalCount % 8 < 0) {
       totalPage++
     }
     setTotalPage(totalPage)
   }
   
   useEffect(() => {
-    if(groupMemberData === undefined) {
+    if(memberData === undefined) {
       return
     }
     totalPages();
-  }, [groupMemberData])
+  }, [memberData])
 
-  const onPageChange = (e:any,data:any) => {
-    getGroupMember(communityId, groupId, (data.activePage - 1 ) * 8)
+  const onPageChange = async (e:any,data:any) => {
+    // getGroupMember(communityId, groupId, (data.activePage - 1 ) * 8)
+    const memberData = await getGroupMemberData(communityId, groupId, (data.activePage - 1 ) * 8);
+    setMemberData(memberData);
     setActivePage(data.activePage)
   }
 
   return (
     <>
-      {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} groupId={groupId} key={index} activePage={activePage} />)}
+      {memberData && memberData.results.map((item, index) => <ItemBox groupMemberList={item} groupId={groupId} key={index} activePage={activePage} />)}
       {
-        groupMemberData && groupMemberData.totalCount >= 8 ? (
+        memberData && memberData.totalCount >= 8 ? (
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}

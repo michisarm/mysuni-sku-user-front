@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {CommunityGroupMemberListView} from '../CommunityGroupMemberView/CommunityGroupMemberListView';
 import { useCommunityGroup } from 'community/store/CommunityGroupStore';
-import { getGroup } from 'community/service/useGroupList/useGroupList';
+import { getGroup, getGroupMemberData } from 'community/service/useGroupList/useGroupList';
 import { getGroupMember } from 'community/service/useGroupList/useGroupList';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { Pagination } from 'semantic-ui-react';
@@ -34,10 +34,10 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   // }, [])
 
   // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
-  const handleGetMember = (communityId:string, groupId:string) => {
+  const handleGetMember = async (communityId:string, groupId:string) => {
     setCardOpen(!cardopen)
     if(!cardopen) {
-      getGroupMember(communityId, groupId, 0)
+      // getGroupMember(communityId, groupId, 0)
     }
   }
   

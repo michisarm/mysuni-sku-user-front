@@ -11,6 +11,11 @@ export function getGroupMember(communityId:string, groupId:string, page:number) 
   findGroupMember(communityId, groupId, page).then(res => setCommunityGroupMember(res.data))
 }
 
+export function getGroupMemberData(communityId:string, groupId:string, page:number) {
+  return findGroupMember(communityId, groupId, page).then(response => response && response.data);
+}
+
+
 export function onFollowGroupMember(
   memberId:string,
   communityId: string,
