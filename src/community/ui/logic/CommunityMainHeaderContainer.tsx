@@ -72,7 +72,7 @@ function CommunityMainHeaderContainer() {
                     to="/community/my-profile"
                   >
                     <i aria-hidden="true" className="icon post" />
-                    프로필수정
+                    프로필 수정
                   </Link>
                 </div>
               </div>

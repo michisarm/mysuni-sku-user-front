@@ -15,12 +15,40 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
 }) {
 
   const handleSave = useCallback(() => {
+
+    if (profileItem.introduce.length > 100) {
+      reactAlert({
+        title: '알림',
+        message:
+          '인사말을 최대 100자까지만 입력해주세요.',
+      });
+      return; 
+    }
+
     // 닉네임 필수
     if (profileItem.nickname === '') {
       reactAlert({
         title: '알림',
         message:
           '닉네임을 입력해주세요.',
+      });
+      return; 
+    }
+
+    if ( profileItem.nickname.length > 100) {
+      reactAlert({
+        title: '알림',
+        message:
+          '닉네임을 최대 100자까지만 입력해주세요.',
+      });
+      return; 
+    }
+
+    if (profileItem.hobby.length > 100) {
+      reactAlert({
+        title: '알림',
+        message:
+          '취미를 최대 100자까지만 입력해주세요.',
       });
       return; 
     }
