@@ -11,6 +11,7 @@ import OtherProfileMenuView from '../view/CommunityProfile/OtherProfileMenuView'
 import { findCommunityProfile } from '../../api/profileApi';
 import OtherProfileView from '../view/CommunityProfile/OtherProfileView';
 import { requestProfileFeeds } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
+import { requestOtherProfileCommunities } from 'community/service/useCommunityProfile/utility/requestOtherProfileCommunities';
 
 interface Params {
   profileId: string;
@@ -22,6 +23,7 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
 
   useEffect(() => {
     findCommunityProfile(profileId).then(setProfile);
+    requestOtherProfileCommunities(profileId);
     requestProfileFeeds(profileId);
   }, [profileId]);
   return (
