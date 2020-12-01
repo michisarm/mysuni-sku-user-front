@@ -1,6 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { registerBookmark } from '../../../api/communityApi';
 import { requestAppendMyCommunityPostList } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
@@ -123,7 +123,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar src={`/files/community/${profileImage}`} />
             )}
             <Comment.Content>
-              <Comment.Author as="a">{communityName}</Comment.Author>
+              <Comment.Author as="a" href={`/community/${communityId}`}>
+                {communityName}
+              </Comment.Author>
               <Comment.Text>
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
@@ -156,7 +158,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           <div className="card-bottom">
             <h3>
               <span className={`ico_feed ${icon}`}>게시물</span>
-              {name}
+              <Link to={`/community/${communityId}/post/${postId}`}>
+                {name}
+              </Link>
             </h3>
             {more && (
               <div className="ql-snow">
