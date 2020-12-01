@@ -2,17 +2,11 @@ import React, { useEffect } from 'react';
 import { requestFollowModal } from '../../service/useFollowModal/utility/requestFollowModalIntro';
 import FollowModalView from '../view/CommunityFollowModal/FollowModalView';
 
-interface ModalOpenProps {
-  open: boolean;
-}
-
-const FollowModalPage:React.FC<ModalOpenProps> = function FollowModalPage ({
-  open
-}) {
+const FollowModalPage:React.FC = function FollowModalPage () {
   useEffect(() => {
     requestFollowModal();
   },[]);
-  return <FollowModalView open={open}/>
+  return <FollowModalView />
 }
 
 export default FollowModalPage;

@@ -1,13 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import { followList } from '../../../api/communityApi';
-import { requestFollowCommunityPostList} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+import { requestFollowCommunityPostList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
-import {off} from 'process';
+import { off } from 'process';
+
+//default imgage
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -23,9 +26,9 @@ function copyUrl(url: string) {
 const bookMark = (): void => {
   reactAlert({
     title: '북마크',
-    message: '북마크 추가 완료'
+    message: '북마크 추가 완료',
   });
-}
+};
 
 const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowItemView({
   communityId,
@@ -33,10 +36,9 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   communityName,
   profileImage,
   profileId,
-  createTime,
+  createdTime,
   name,
   contents,
-  
 }) {
   const { pathname } = useLocation();
   const shareUrl = useCallback(() => {
@@ -48,7 +50,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
     const url = `${host}/community/${communityId}/post/${postId}`;
     copyUrl(url);
   }, [pathname, communityId, postId]);
-
   return (
     <>
       <div className="sub-info-box">
@@ -60,7 +61,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
               {/*comment : 2줄이상 말줄임, 대댓글*/}
               <Comment>
                 <Comment.Avatar
-                  src={`/files/community/${profileImage}`}
+                  src={profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
                   alt="profile"
                 />
                 <Comment.Content>
@@ -70,7 +71,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   <Comment.Text>
                     <div className="ellipsis">
                       <span className="id">{name}</span>
-                      <span className="date">{createTime}</span>
+                      <span className="date">{createdTime}</span>
                     </div>
                     {/* <Button>+ View more</Button> */}
                   </Comment.Text>
@@ -110,33 +111,33 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
+interface Props {
+  setNotPosts: boolean
+}
 
-function CommunityFollowPostListContainer() {
+function CommunityFollowPostListContainer({setNotPosts}: any) {
   const communityFollowPostList = useFollowCommunityIntro();
+  // console.log('container', communityFollowPostList);
 
-  // 페이지네이션 
-  // const addList = (communityFollowPostList: any) => {
-  //   console.log('add', communityFollowPostList);
-  //   if(communityFollowPostList.postsTotalCount < limitPage) {
-  //     console.log('return');
-  //     return;
-  //   }
-  //   setLimitPage(limitPage + 5);
-  //   requestFollowCommunityPostList(0, limitPage);
-  //   // console.log('limit', limitPage);
-  // }
-  
   const [limitPage, setLimitPage] = useState<number>(5);
   const [offsetPage, setOffsetPage] = useState<number>(0);
+
   const addList = () => {
-    if(communityFollowPostList&& communityFollowPostList.postsTotalCount < offsetPage) {
+    if (communityFollowPostList && communityFollowPostList.postsTotalCount < offsetPage) {
       console.log('return');
       return;
     }
     setOffsetPage(offsetPage + 5);
-    requestFollowCommunityPostList(offsetPage, 3);
+    requestFollowCommunityPostList(offsetPage, 5);
+    console.log('offset', offsetPage);
   }
-  // console.log('list', communityFollowPostList);
+  console.log('list@@@@@@@', communityFollowPostList?.postsTotalCount);
+
+  useEffect(() => {
+    if(communityFollowPostList?.postsTotalCount === 0) {
+      setNotPosts(true);
+    }
+  },[communityFollowPostList]);
 
   return (
     <div className="community-main-contants">

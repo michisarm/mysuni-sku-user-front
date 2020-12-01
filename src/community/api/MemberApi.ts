@@ -10,19 +10,21 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
 }
 
 export function findAllMemberByQuery(
-  communityId:string
+  communityId:string,
+  pageNum:number
   ): Promise<any> { 
   return (
     axios
-    .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8`)
+    .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8`)
   );
 }
 
 export function findApprovedMember(
-  communityId:string
+  communityId:string,
+  pageNum:number
   ): Promise<any> {
   return(
-    axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=13&approved=false`)
+    axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&approved=false`)
   )
 }
 
@@ -39,7 +41,7 @@ export function searchMember(
 export function memberFollowAdd(
   memberId:string
 ):Promise<any> {
-
+  
   return (
     axios.post(`${BASE_URL}/follow/flow/${memberId}`)
   )

@@ -91,7 +91,7 @@ function CommunityHomePage() {
     requestNotice(communityId);
     requestRecent(communityId);
   }, [communityId]);
-  if (communityHome === undefined) {
+  if (communityHome === undefined || communityHome.community === undefined) {
     return null;
   }
   return (
@@ -99,32 +99,40 @@ function CommunityHomePage() {
       <div className="community-home-contants">
         {/* 배너 */}
         <div className="community-banner-type1">
-          {communityHome.home !== undefined && (
+          {communityHome.community.homeType === 'BASIC' && (
             <>
-              {communityHome.home.thumbnailId !== undefined && (
+              {communityHome.community.homeThumbnailId !== null && (
                 <img
-                  src={`/files/community/${communityHome.home.thumbnailId}`}
+                  src={`/files/community/${communityHome.community.homeThumbnailId}`}
                 />
               )}
-              {communityHome.home.thumbnailId === undefined && (
+              {communityHome.community.homeThumbnailId === null && (
                 <img src={defaultHeader} />
               )}
               <div className="community-banner-inner">
                 <div className="community-banner-title">
-                  {communityHome.community?.name}
+                  {communityHome.community.name}
                 </div>
                 <div className="community-banner-copy">
-                  {communityHome.home.introduce}
+                  {communityHome.community.introduce}
                 </div>
               </div>
             </>
           )}
-          {communityHome.home === undefined && (
+          {communityHome.community.homeType === 'HTML' && (
+            <div
+              className="community-banner-type2"
+              dangerouslySetInnerHTML={{
+                __html: communityHome.community.html || '',
+              }}
+            />
+          )}
+          {communityHome.community.homeType === null && (
             <>
               <img src={defaultHeader} />
               <div className="community-banner-inner">
                 <div className="community-banner-title">
-                  {communityHome.community?.name}
+                  {communityHome.community.name}
                 </div>
                 <div className="community-banner-copy" />
               </div>

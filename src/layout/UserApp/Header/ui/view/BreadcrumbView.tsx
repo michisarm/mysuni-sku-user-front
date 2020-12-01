@@ -160,10 +160,24 @@ class BreadcrumbView extends Component<Props, State> {
                 </Fragment>
               ))}
           </div>
-
-          {/* 개발모드 임시용 로그인 창 */}
-          <div className="right">
-            {process.env.NODE_ENV === 'development' && (
+          {/* 임시 로그인창 표시 (삭제예정) */}
+          {/* <div style={{position:'absolute', top: '0', left: '600px'}}>
+            <input
+              style={{
+                width: 200,
+                fontSize: 'small',
+              }}
+              value={this.state.id}
+              onChange={e => this.setState({ id: e.target.value })}
+            />
+            &nbsp;
+            <button style={{ fontSize: 'small' }} onClick={this.onLogin}>
+            로그인
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div> */}
+          {/* <div className="right"> */}
+          {/* {process.env.NODE_ENV === 'development' && (
               <>
                 <input
                   style={{
@@ -189,13 +203,6 @@ class BreadcrumbView extends Component<Props, State> {
               <i aria-hidden="true" className="icon help-tel" />
               Help Desk : 02-6323-9002
             </div> */}
-          </div>
-          {/* <div className="lms-right">
-            <Button icon className="btn-black">
-              커뮤니티로 이동
-              <Icon className="morelink" />
-            </Button>
-          </div> */}
         </div>
       </div>
     );

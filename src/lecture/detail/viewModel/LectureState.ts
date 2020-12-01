@@ -20,6 +20,7 @@ export default interface LectureState {
   stateText?: string;
   actionClassName: string;
   stateClassName: string;
+  href?: string;
   classroomSubmit?: (
     classroom: ClassroomModel,
     member?: ApprovalMemberModel

@@ -1,6 +1,7 @@
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { ApplyReferenceModal } from '../../../../approval';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../personalcube/classroom/model';
@@ -48,6 +49,7 @@ function canApplyng(classrooms: Classroom[]): boolean {
 }
 
 function LectureStateContainer() {
+  const history = useHistory();
   const [
     selectedClassroom,
     setSelectedClassroom,
@@ -79,6 +81,9 @@ function LectureStateContainer() {
     }
     if (lectureState?.type === 'Documents') {
       setFileDonwloadPopShow(true);
+    }
+    if (lectureState?.href !== undefined) {
+      history.push(lectureState.href);
     }
     if (lectureState !== undefined && lectureState.action !== undefined) {
       return lectureState.action();

@@ -7,6 +7,7 @@ import {
   useOpenCommunityIntro,
 } from '../../../store/CommunityMainStore';
 import FieldItem from '../../../viewModel/OpenCommunityIntro/FieldItem';
+import { getEmptyOpenCommunityIntro } from '../../../viewModel/OpenCommunityIntro/OpenCommunityIntro';
 
 interface FieldItemViewProps {
   fieldId?: string;
@@ -15,11 +16,8 @@ interface FieldItemViewProps {
 const FieldItemView: React.FC<FieldItem &
   FieldItemViewProps> = function FieldItemView({ id, title, fieldId }) {
   const onClick = useCallback(() => {
-    const openCommunityIntro = getOpenCommunityIntro() || {
-      fields: [],
-      communities: [],
-      communitiesTotalCount: 0,
-    };
+    const openCommunityIntro =
+      getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
     if (openCommunityIntro.fieldId === id) {
       return;
     }
@@ -43,11 +41,8 @@ function OpenCommunityIntroFieldListContainer() {
   const openCommunityIntro = useOpenCommunityIntro();
 
   const onClickAll = useCallback(() => {
-    const openCommunityIntro = getOpenCommunityIntro() || {
-      fields: [],
-      communities: [],
-      communitiesTotalCount: 0,
-    };
+    const openCommunityIntro =
+      getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
     if (openCommunityIntro.fieldId === undefined) {
       return;
     }

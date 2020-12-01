@@ -23,8 +23,6 @@ const CommunityMemberTabmenu:React.FC<Props> = ({activemenu, handleActiveMenu}) 
     getApproveMember(communityId)
   }, [communityId])
 
-  
-  console.log("@@approveMember",approveMember)
   return (
     <div className="contents-tab-menu">
       <Menu className="sku">

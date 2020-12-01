@@ -22,7 +22,7 @@ function findActiveCourseCubes(
 }
 
 const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = function LectureCubeNavigatorView({
-  lectureStructure,
+  lectureStructure
 }) {
   const [visible, setVisible] = useState<boolean>(true);
   const close = useCallback(() => {

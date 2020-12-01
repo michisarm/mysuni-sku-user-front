@@ -86,11 +86,17 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       onOk: async () => {
         //공지 등록 인 경우
         if(menuId === 'noticeCreate') {
-          await saveCommunityNoticePost(communityId, menuId, postId);
-          history.goBack();
+          saveCommunityNoticePost(communityId, menuId, postId).then((result) => {
+            if(result !== undefined) {
+              history.goBack();
+            }
+          })
         } else {
-          await saveCommunityPost(communityId, menuId, postId);
-          history.goBack();
+          saveCommunityPost(communityId, menuId, postId).then((result) => {
+            if(result !== undefined) {
+              history.goBack();
+            }
+          })
         }
       },
     });

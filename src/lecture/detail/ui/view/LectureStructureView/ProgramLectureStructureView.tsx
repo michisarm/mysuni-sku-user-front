@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {
   LectureStructure,
   LectureStructureCourseItem,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
+  LectureStructureDurationableCubeItem,
 } from '../../../viewModel/LectureStructure';
 import CourseView from './CourseView';
+import CubeView from './CubeView';
+import DurationableCubeView from './DurationableCubeView';
 import ProgramCubeView from './ProgramCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ProgramHeaderView from './ProgramHeaderView';
 import ProgramReportView from './ProgramReportView';
 import ProgramSurveyView from './ProgramSurveyView';
 import ProgramTestView from './ProgramTestView';
+import ReportView from './ReportView';
+import SurveyView from './SurveyView';
+import TestView from './TestView';
 
 interface ProgramLectureStructureViewProps {
   lectureStructure: LectureStructure;
@@ -49,16 +55,64 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
         if (item.type === 'CUBE') {
           const cube = item as LectureStructureCubeItem;
           return (
-            <ProgramCubeView
-              key={cube.id}
-              name={cube.name}
-              state={cube.state}
-              activated={cube.activated}
-              learningTime={cube.learningTime}
-              cubeType={cube.cubeType}
-              path={cube.path}
-              can={cube.can}
-            />
+            <Fragment key={cube.id}>
+              {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+                <CubeView
+                  key={cube.id}
+                  name={cube.name}
+                  state={cube.state}
+                  activated={cube.activated}
+                  learningTime={cube.learningTime}
+                  cubeType={cube.cubeType}
+                  path={cube.path}
+                  can={cube.can}
+                />
+              )}
+              {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+                <DurationableCubeView
+                  key={cube.id}
+                  name={cube.name}
+                  state={cube.state}
+                  activated={cube.activated}
+                  learningTime={cube.learningTime}
+                  cubeType={cube.cubeType}
+                  path={cube.path}
+                  can={cube.can}
+                  duration={
+                    (cube as LectureStructureDurationableCubeItem).duration
+                  }
+                />
+              )}
+              {cube?.test !== undefined && (
+                <TestView
+                  name={cube.test.name}
+                  state={cube.test.state}
+                  questionCount={cube.test.questionCount}
+                  path={cube.test.path}
+                  can={cube.test.can}
+                  activated={cube.test.activated}
+                />
+              )}
+              {cube?.survey !== undefined && (
+                <SurveyView
+                  name={cube.survey.name}
+                  state={cube.survey.state}
+                  questionCount={cube.survey.questionCount}
+                  path={cube.survey.path}
+                  can={cube.survey.can}
+                  activated={cube.survey.activated}
+                />
+              )}
+              {cube?.report !== undefined && (
+                <ReportView
+                  name={cube.report.name}
+                  state={cube.report.state}
+                  path={cube.report.path}
+                  can={cube.report.can}
+                  activated={cube.report.activated}
+                />
+              )}{' '}
+            </Fragment>
           );
         }
         if (item.type === 'DISCUSSION') {
