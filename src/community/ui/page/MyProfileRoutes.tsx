@@ -19,7 +19,7 @@ const MyProfileRoutes: React.FC = function MyProfileRoutes() {
   useEffect(() => {
     getCommunityProfile();
     requestProfileCommunities();
-    requestProfileFeeds();
+    requestProfileFeeds('');
     requestProfileBookmarks();
   }, []);
 
@@ -33,7 +33,7 @@ const MyProfileRoutes: React.FC = function MyProfileRoutes() {
           <Route
             exact
             path="/community/my-profile/feed"
-            component={ProfileFeedPage}
+            component={()=>ProfileFeedPage('')}
           />
           <Route
             exact
