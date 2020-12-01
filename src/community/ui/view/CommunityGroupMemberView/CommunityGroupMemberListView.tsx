@@ -6,19 +6,19 @@ import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
 import { getGroupMember } from 'community/service/useGroupList/useGroupList';
+import { onFollowGroupMember,onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
 
-function ItemBox({groupMemberList, activePage} :{groupMemberList:any, activePage:number}) {
+function ItemBox({groupMemberList, activePage, groupId} :{groupMemberList:any, activePage:number, groupId:string}) {
   const [follow, setFollow] = useState<boolean>(false);
 
-  const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
-    
+  const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
+
     if(followState === false) {
-      onFollow(communityId, memberId,(activePage - 1) * 8)
+      onFollowGroupMember(communityId,  groupId, memberId,(activePage - 1) * 8)
     } else {
-      onUnFollow(communityId, memberId, (activePage - 1) * 8)
-    }
+      onUnFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8)
+  }
   }, [activePage])
 
   return (
@@ -29,7 +29,9 @@ function ItemBox({groupMemberList, activePage} :{groupMemberList:any, activePage
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
             <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span>{groupMemberList.nickname}</span>
-            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}><span className="card-follow">{groupMemberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
+            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
+              <span className="card-follow">{groupMemberList.follow || follow ? "Unfollow" : "Follow"}</span>
+            </button>
           </Comment.Author>
           <Comment.Metadata>
             <span>게시물</span>
@@ -83,7 +85,7 @@ export const CommunityGroupMemberListView:React.FC<Props> = function GroupListVi
 
   return (
     <>
-      {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} key={index} activePage={activePage} />)}
+      {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} groupId={groupId} key={index} activePage={activePage} />)}
       {
         groupMemberData && groupMemberData.totalCount >= 8 ? (
           <div className="lms-paging-holder">

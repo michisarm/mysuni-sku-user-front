@@ -25,7 +25,7 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
         <div className="right-wrap member-search">
           <div className={classNames("ui h38 search input")}>
             <input type="text"
-              placeholder="닉네임 입력"
+              placeholder="그룹명 입력"
               // value={write}
               // onClick={() => setFocus(true)}
               // onBlur={() => setFocus(false)}

@@ -19,19 +19,19 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   // 열기버튼을 누른 그룹박스 감지
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
 
-  const handleClickOutside = useCallback((event:any) => {
-    if (groupItem.current && !groupItem.current.contains(event.target)){
-      setCardOpen(false);
-    }
-  },[])
+  // const handleClickOutside = (event:any) => {
+  //   if (groupItem.current && !groupItem.current.contains(event.target)){
+  //     setCardOpen(false);
+  //   }
+  // }
 
-  useEffect(() => {
-    if(cardopen) {
-      setCardOpen(cardopen)
-    }
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside)
-  }, [])
+  // useEffect(() => {
+  //   if(cardopen) {
+  //     setCardOpen(cardopen)
+  //   }
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => document.removeEventListener("click", handleClickOutside)
+  // }, [])
 
   // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
   const handleGetMember = (communityId:string, groupId:string) => {
@@ -63,7 +63,6 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   )
 }
 
-
 interface Params {
   communityId: string
   groupId: string
@@ -76,8 +75,8 @@ export const CommunityGroupView = () => {
   const [totalPage, setTotalPage] = useState<number>(1);
 
   const totalPages = () => {
-    let totalPage = Math.ceil(groupData!.totalCount / 8)
-    if (groupData!.totalCount % 8 < 0) {
+    let totalPage = Math.ceil(groupData!.totalCount / 20)
+    if (groupData!.totalCount % 20 < 0) {
       totalPage++
     }
     setTotalPage(totalPage)
@@ -92,15 +91,17 @@ export const CommunityGroupView = () => {
   }, [groupData])
     
   const onPageChange = (e:any,data:any) => {
-    getGroup(communityId, (data.activePage - 1) * 8)
+    getGroup(communityId, (data.activePage - 1) * 20)
     setActivePage(data.activePage)
   }
 
   return (
     <>
-      {groupData && groupData.results.map((item, index) => <ItemBox groupList={item} key={index} activePage={activePage} />)}
+      {groupData && groupData.results.map((item, index) => (
+        <ItemBox groupList={item} key={index} activePage={activePage} />
+      ))}
       {
-        groupData && groupData.totalCount >= 8 ? (
+        groupData && groupData.totalCount >= 20 ? (
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}

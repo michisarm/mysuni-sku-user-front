@@ -8,7 +8,7 @@ const BASE_URL_T = '/api/community/communities';
 
 export function findAllGroupByQuery(communityId:string, pageNum:number): Promise<any> {
   return axios
-  .get(`${BASE_URL}/groupviews?communityId=${communityId}&offset=${pageNum}&limit=8`)
+  .get(`${BASE_URL}/groupviews?communityId=${communityId}&offset=${pageNum}&limit=20`)
 }
 
 export function findGroupMember(communityId:string, groupId:string, page:number): Promise<any> {
