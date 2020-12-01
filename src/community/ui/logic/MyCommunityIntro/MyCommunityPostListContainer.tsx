@@ -123,8 +123,8 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar src={`/files/community/${profileImage}`} />
             )}
             <Comment.Content>
-              <Comment.Author as="a" href={`/community/${communityId}`}>
-                {communityName}
+              <Comment.Author>
+                <Link to={`/community/${communityId}`}>{communityName}</Link>
               </Comment.Author>
               <Comment.Text>
                 <div className="ellipsis">
