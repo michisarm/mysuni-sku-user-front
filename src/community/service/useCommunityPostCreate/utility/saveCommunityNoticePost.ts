@@ -8,7 +8,7 @@ export async function saveCommunityNoticePost(
     communityId: string,
     menuId?: string,
     postId?: string
-): Promise<void> {
+): Promise<any> {
     const postCreateItem = getCommunityPostCreateItem();
     if (postCreateItem !== undefined) {
         if (postId === undefined && menuId !== undefined) {
@@ -24,7 +24,7 @@ export async function saveCommunityNoticePost(
             };
 
             // registerPost(communityId, postCdo);
-            registerNoticePost(communityId, postCdo);
+            return registerNoticePost(communityId, postCdo);
         } else if (postId !== undefined) {
             //todo. 공지 수정 작업해야함
             const postUdo: PostUdo = {
@@ -34,7 +34,7 @@ export async function saveCommunityNoticePost(
                 pinned: postCreateItem.pinned,
                 visible: postCreateItem.visible,
             };
-            modifyCommunityPost(communityId, postId, modifyNameValueList(postUdo));
+            return modifyCommunityPost(communityId, postId, modifyNameValueList(postUdo));
         }
     }
 }

@@ -10,6 +10,8 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { findPostMenuName } from 'community/api/communityApi';
+import { getCommunityHome } from 'community/store/CommunityHomeStore';
+import { patronInfo } from '@nara.platform/dock';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -36,10 +38,11 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
   const [menuName, setMenuName] = useState<string>('');
+  const [menuType, setMenuType] = useState<string>('');
   const [postItems] = useCommunityPostList();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
-
+  const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -52,9 +55,19 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
     const menuData = findPostMenuName(communityId, menuId);
     menuData.then(result => {
-      console.log("@@ PostListContainer Result",result);
       setMenuName(result.name);
+      setMenuType(result.type)
     });
+
+    const denizenId = patronInfo.getDenizenId();
+    //managerId 가져와서 현재 로그인한 계정과 비교
+    if (
+      getCommunityHome() &&
+      getCommunityHome()?.community &&
+      getCommunityHome()?.community?.managerId
+    ) {
+      setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId);
+    }
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
@@ -94,15 +107,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       sort: sortType,
       pinned: false,
     };
-    // if (searchType === 'all') {
-    //   param.title = '';
-    // } else if (searchType === 'title') {
-    //   param.title = searchText;
-    // } else if (searchType === 'html') {
-    //   param.html = searchText;
-    // } else if (searchType === 'creatorId') {
-    //   param.creatorId = searchText;
-    // }
 
     getPostListMapFromCommunity(param);
     // setSearch('searchText')
@@ -155,6 +159,8 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
           <CommunityPostTopLineView
             sortType={sortType}
             totalCount={postItems.totalCount}
+            menuType={menuType}
+            managerId={adminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />
