@@ -36,18 +36,22 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
 };
 
 const CommunityFollowListContainer: React.FC = () => {
-  const communityFollowList = useFollowCommunityIntro();
+
+
   const [text, setText] = useState<string>('');
-  const [limit, setLimit] = useState<number>(10);
+
+  const communityFollowList = useFollowCommunityIntro();
+  if (communityFollowList === undefined) {
+    return null;
+  }
+  // console.log('communityFollowList', communityFollowList);
+  
+  
 
   // 페이지네이션 
-  const addList = () => {
-    if (communityFollowList && communityFollowList.communitiesTotalCount < limit) {
-      console.log('list return');
-      return;
-    }
-    setLimit(limit + 5);
-    requestFollowCommunityList(0, limit, text);
+  const addList = (offset:number) => {
+    console.log('offffffff', offset);
+    requestFollowCommunityList(offset, 10, text);
   }
 
   return (
@@ -81,11 +85,23 @@ const CommunityFollowListContainer: React.FC = () => {
           )}
 
           <div className="more-comments community-side">
-            <div onClick={addList}>
+            {communityFollowList.communitiesTotalCount > communityFollowList.communitiesOffset && (
+            <Button icon className="ui icon button left moreview" onClick={()=>addList(communityFollowList.communitiesOffset)}>
+              <Icon className="moreview" /> list more
+            </Button>
+            )}
+            {communityFollowList.communitiesTotalCount <= communityFollowList.communitiesOffset && (
+              <Button
+                icon
+                className="moreview"
+                style={{ cursor: 'default' }}
+              />
+            )}
+            {/* <div onClick={addList}>
               <Button icon className="ui icon button left moreview">
                 <Icon className="moreview" /> list more
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
