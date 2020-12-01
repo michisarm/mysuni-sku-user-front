@@ -8,6 +8,7 @@ import { Pagination } from 'semantic-ui-react';
 import { useRef } from 'react';
 import { setCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
 import { useParams } from 'react-router-dom';
+import { useCallback } from 'react';
 
 
 
@@ -18,17 +19,17 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   // 열기버튼을 누른 그룹박스 감지
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
 
-  const handleClickOutside = (event:any) => {
+  // const handleClickOutside = useCallback((event:any) => {
+  //   console.log(groupItem.current.contains(event.target))
+  //   if (groupItem.current && !groupItem.current.contains(event.target)){
+  //     setCardOpen(false);
+  //   }
+  // },[])
 
-    if (groupItem.current && !groupItem.current.contains(event.target)){
-      setCardOpen(false);
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true);
-    return () => document.removeEventListener("click", handleClickOutside, true)
-  }, [])
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => document.removeEventListener("click", handleClickOutside)
+  // }, [])
 
   // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
   const handleGetMember = (communityId:string, groupId:string) => {
@@ -36,13 +37,14 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
     if(!cardopen) {
       getGroupMember(communityId, groupId, 0)
     }
+    console.log("@@ handle Get Member",groupId)
   }
 
   return (
     <div className="mycommunity-card-list" style={{marginBottom:"20px"}} ref={groupItem}>
       <div className="card-group">
         <div className="card-group-list">
-          <h3>{groupList.groupId}</h3>
+          <h3>{groupList.name}</h3>
           <div className="card-group-span">
             <img src={AdminIcon} className="community-manager" />
             <span>{groupList.name}</span>
@@ -57,7 +59,6 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
         <CommunityGroupMemberListView />
       </div>
     </div>
-    
   )
 }
 
@@ -86,7 +87,7 @@ export const CommunityGroupView = () => {
       return
     }
     totalPages();
-    console.log(activePage)
+
   }, [groupData])
     
   const onPageChange = (event:any, data:any) => {
@@ -98,6 +99,21 @@ export const CommunityGroupView = () => {
   return (
     <>
       {groupData && groupData.results.map((item, index) => <ItemBox groupList={item} key={index} activePage={activePage} />)}
+      {
+        groupData && groupData.totalCount >= 8 ? (
+          <div className="lms-paging-holder">
+            <Pagination
+              activePage={activePage}
+              totalPages={totalPage}
+              firstItem={null}
+              lastItem={null}
+              onPageChange={(e, data) => onPageChange(e,data)}
+            />
+          </div>
+        ) : (
+          null
+        )
+      } 
     </>
   )
 }
