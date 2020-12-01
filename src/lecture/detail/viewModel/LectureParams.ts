@@ -13,6 +13,8 @@ export default interface LectureParams {
   lectureType?: ContentType;
   contentId?: string;
   lectureId?: string;
+  communityId?: string;
+  menuId?: string;
 }
 
 export function compareLectureParams(a: LectureParams, b: LectureParams) {
