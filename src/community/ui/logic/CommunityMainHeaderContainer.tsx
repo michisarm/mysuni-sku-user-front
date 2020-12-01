@@ -10,7 +10,8 @@ import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 import { useFollowModal, getFollowModal} from '../../store/CommunityFollowModalStore';
 import {requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 
-
+//default imgage
+import DefaultImg from '../../../style/media/img-profile-80-px.png';
 
 function CommunityMainHeaderContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -61,7 +62,7 @@ function CommunityMainHeaderContainer() {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <img src={profileIcon} />
+                  <img src={profileIcon === null ? `${DefaultImg}` : `/files/community/${profileIcon}`} />
                 </div>
               </div>
               <div className="text-info">
