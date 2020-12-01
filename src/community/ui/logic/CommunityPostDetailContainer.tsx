@@ -20,6 +20,7 @@ import CommunityPdfModal from '../view/CommunityPdfModal';
 import { saveCommunityPostLike } from 'community/service/useCommunityPostDetail/utility/saveCommunityPostLike';
 import { getCommunityPostLikeCountByMember } from 'community/service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
+import { reactConfirm } from '@nara.platform/accent';
 
 interface Params {
   communityId: string;
@@ -98,9 +99,14 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickDelete = useCallback(() => {
-    deletePost(communityId, postId);
-
-    history.goBack();
+    reactConfirm({
+      title: '알림',
+      message: '삭제하시겠습니까?',
+      onOk: async () => {
+        deletePost(communityId, postId);
+        history.goBack();
+      },
+    });
   }, []);
 
   const OnClickModify = useCallback(() => {
