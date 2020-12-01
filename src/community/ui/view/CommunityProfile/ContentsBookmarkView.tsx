@@ -13,10 +13,11 @@ import MyCommunityPostListContainer from 'community/ui/logic/MyCommunityIntro/My
 import { requestAppendMyCommunityPostList } from 'community/service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 
 import { reactAlert } from '@nara.platform/accent';
-import { registerBookmark } from 'community/api/communityApi';
+import { registerBookmark, removeBookmark } from 'community/api/communityApi';
 import { getMyProfile } from 'community/store/MyProfileStore';
 import PostItem from 'community/viewModel/CommunityProfileBookmark/PostItem';
 import { getCommunityProfileBookmark, setCommunityProfileBookmark } from "community/store/CommunityProfileBookmarkStore";
+import { requestAppendProfileBookmarkPostList } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 
 
 interface ContentsBookmarkViewProps {
@@ -44,7 +45,7 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
             <Button
               icon
               className="left moreview"
-              onClick={requestAppendMyCommunityPostList}
+              onClick={requestAppendProfileBookmarkPostList}
             >
               <Icon className="moreview" /> list more
             </Button>
@@ -235,7 +236,7 @@ async function bookmark(postId: string) {
 }
 
 async function unbookmark(postId: string) {
-  await registerBookmark(postId);
+  await removeBookmark(postId);
   const communityProfileBookmark = getCommunityProfileBookmark();
   if (communityProfileBookmark === undefined) {
     return;
