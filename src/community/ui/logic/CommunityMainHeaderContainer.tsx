@@ -9,6 +9,7 @@ import {requestFollowCommunityList, requestFollowModalAdd, requestFollowModalDel
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 import { useFollowModal, getFollowModal} from '../../store/CommunityFollowModalStore';
 import {requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
+import FollowModalIntro from '../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 
 //default imgage
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
@@ -41,14 +42,14 @@ function CommunityMainHeaderContainer() {
     setOpen(!open);
   }
 
-  const followBtn =async (id: string, idx: number, follow: boolean) => {
-    console.log('idx', idx, id, follow);
+  // 팔로잉 모달 리스트 버튼
+  const followBtn = (id: string, idx: number, follow: boolean) => {
 
     if(follow === true) {
-      await requestFollowModalDelete(id);
+       requestFollowModalDelete(id);
     }
     else {
-      await requestFollowModalAdd(id);
+       requestFollowModalAdd(id);
     }
   }
 
@@ -101,22 +102,33 @@ function CommunityMainHeaderContainer() {
       <Modal open={open} className="w500 base">
         <Modal.Header>{modalHeader === "followers" ? 'Followers' : "Followings"}</Modal.Header>
           <Modal.Content>
-            <div className="content-wrap-follow">
-              <ul className="follow_list">
-                {modalHeader === "following" ? followModalContainerList !== undefined &&
-                  followModalContainerList.communities.map((item,idx) => (
-                    <li>
-                      <p className="pic"><img src={`/files/community/${item.profileImg}`} alt="" /></p>
-                      <p className="nickname">{item.nickname}</p>
-                      <label className="chk_follow">
-                        <input type="checkbox" name="" />
-                        <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow && "unfollow"}</span>
-                      </label>
-                    </li>      
-                  )) : 'HI'
-                }
-              </ul>
-            </div> 
+            <div className="scrolling-60vh">
+              <div className="content-wrap-follow">
+                <ul className="follow_list">
+                  {modalHeader === "following" ? followModalContainerList !== undefined &&
+                    followModalContainerList.communities.map((item,idx) => (
+                      <li>
+                        <p className="pic"><img src={`/files/community/${item.profileImg}`} alt="" /></p>
+                        <p className="nickname">{item.nickname}</p>
+                        <label className="chk_follow">
+                          <input type="checkbox" name="" />
+                          <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow && "unfollow"}</span>
+                        </label>
+                      </li>      
+                    )) : followersList?.results.map((item,idx) => (
+                      <li>
+                        <p className="pic"><img src={`/files/community/${item.profileImg}`} alt="" /></p>
+                        <p className="nickname">{item.nickname}</p>
+                        <label className="chk_follow">
+                          <input type="checkbox" name="" />
+                          <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow ? "unfollow" : "follow"}</span>
+                        </label>
+                      </li>   
+                    ))
+                  }
+                </ul>
+              </div> 
+            </div>
           </Modal.Content>
           <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={()=>setOpen(false)}>닫기</Button>

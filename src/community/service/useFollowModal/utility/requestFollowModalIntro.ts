@@ -17,6 +17,7 @@ export function requestFollowModal() {
         communities: [],
         posts:[],
         communitiesTotalCount: 0,
+        results:[]
       });
     }
     else {

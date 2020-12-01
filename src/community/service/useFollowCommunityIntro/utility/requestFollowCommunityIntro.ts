@@ -72,7 +72,7 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 5
 }
 
 function postToItem(post: Post): PostItem {
-  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg } = post;
+  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg, bookmarked,} = post;
   return {
     communityId,
     menuId,
@@ -83,6 +83,7 @@ function postToItem(post: Post): PostItem {
     createdTime: getTimeString(createdTime),
     name: title,
     contents: html,
+    bookmarked,
   };
 }
 
@@ -114,35 +115,6 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
   });
 }
 
-// 팔로우 모달 
-// export function requestFollowersList() {
-//   followersModal().then(posts => {
-//     const followCommunityIntro = getFollowModal() || {
-//       communities: [],
-//       posts: [],
-//       communitiesTotalCount: 0,
-//       postsTotalCount: 0,
-//     };
-//     if (posts === undefined) {
-//       setFollowModal({
-//         // ...followCommunityIntro,
-//         communities: [],
-//         posts: [],
-//         communitiesTotalCount: 0,
-//       });
-//     } else {
-//       const nextList = [
-//         ...followCommunityIntro.posts,
-//         ...posts.results.map(postToItem),
-//       ];
-//       setFollowModal({
-//         ...followCommunityIntro,
-//         posts: nextList,
-//         communitiesTotalCount: posts.totalCount,
-//       });
-//     }
-//   });
-// }
 export function requestFollowModalAdd(id: string) {
   followModalAdd(id).then(posts => {
     const followCommunityIntro = getFollowModal() || {
@@ -150,11 +122,13 @@ export function requestFollowModalAdd(id: string) {
       posts: [],
       communitiesTotalCount: 0,
       postsTotalCount: 0,
+      results:[]
     };
     if (posts === undefined) {
       setFollowModal({
         ...followCommunityIntro,
         posts: [],
+        results:[]
         // postsTotalCount: 0,
       });
     } else {
@@ -164,7 +138,8 @@ export function requestFollowModalAdd(id: string) {
       ];
       setFollowModal({
         ...followCommunityIntro,
-        posts: nextList
+        posts: nextList,
+        results:[]
         // postsTotalCount: posts.totalCount,
       });
     }
@@ -179,11 +154,13 @@ export function requestFollowModalDelete(id: string) {
       posts: [],
       communitiesTotalCount: 0,
       postsTotalCount: 0,
+      results:[]
     };
     if (posts === undefined) {
       setFollowModal({
         ...followCommunityIntro,
         posts: [],
+        results:[]
         // postsTotalCount: 0,
       });
     } else {
@@ -194,6 +171,7 @@ export function requestFollowModalDelete(id: string) {
       setFollowModal({
         ...followCommunityIntro,
         posts: nextList,
+        results:[]
         // postsTotalCount: posts.totalCount,
       });
     }

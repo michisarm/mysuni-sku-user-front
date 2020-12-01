@@ -12,9 +12,7 @@ import CommunityFollowPostListContainer from '../logic/CommunityFollow/Community
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
   const [notPosts, setNotPosts] = useState<boolean>(false);
-  useEffect(() => {
-    console.log('@######',notPosts);
-  },[]);
+
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">

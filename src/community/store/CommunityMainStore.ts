@@ -7,7 +7,6 @@ import OpenCommunityIntro, {
 } from '../viewModel/OpenCommunityIntro/OpenCommunityIntro';
 import CommunityFollowIntro from '../viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { createStore } from './Store';
-import PostsPage from 'community/ui/page/PostsPage';
 
 const [setCommunityIntro, onCommunityIntro, getCommunityIntro] = createStore<
   CommunityIntro
