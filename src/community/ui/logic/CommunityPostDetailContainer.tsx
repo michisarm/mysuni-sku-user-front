@@ -17,6 +17,8 @@ import { getCommunityPostListItem } from 'community/store/CommunityPostListStore
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
 import CommunityPdfModal from '../view/CommunityPdfModal';
+import { saveCommunityPostLike } from 'community/service/useCommunityPostDetail/utility/saveCommunityPostLike';
+import { getCommunityPostLikeCountByMember } from 'community/service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 
 interface Params {
@@ -32,6 +34,7 @@ function CommunityPostDetailContainer() {
     new Map<string, any>()
   );
   const [creatorId, setCreatorId] = useState<string>('');
+  const [like, setLike] = useState<boolean>();
   const history = useHistory();
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -58,7 +61,7 @@ function CommunityPostDetailContainer() {
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);
     getFileIds();
-    console.log('postDetail', postDetail)
+    getLikeState();
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -75,6 +78,19 @@ function CommunityPostDetailContainer() {
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
     });
+  }, []);
+
+  const getLikeState = useCallback(() => {
+    const memberId = patronInfo.getDenizenId();
+    if(memberId != undefined && memberId != ''){
+      getCommunityPostLikeCountByMember(postId, memberId).then((result) => {
+        if(result > 0){
+          setLike(true);
+        }else{
+          setLike(false);
+        }
+      })
+    }
   }, []);
 
   const OnClickList = useCallback(() => {
@@ -94,8 +110,18 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickLike = useCallback(() => {
-        //deletePost(communityId, postId);
-  }, []);
+    const memberId = patronInfo.getDenizenId();
+    if(memberId != undefined && memberId != ''){
+      saveCommunityPostLike(postId, memberId).then((result) => {
+        
+      })
+      if(like === true){
+        setLike(false);
+      }else{
+        setLike(true);
+      }
+    }
+  }, [like]);
 
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
@@ -166,7 +192,11 @@ function CommunityPostDetailContainer() {
           </div>
           <div className="task-read-bottom">
             <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
-              <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+              {like && (
+                <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
+              ) || (
+                <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+              )}
               좋아요
             </button>
             { creatorId === postDetail.creatorId && (
