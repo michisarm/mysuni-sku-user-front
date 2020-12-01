@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { axiosApi, setCustomDialog } from '@nara.platform/accent';
+import ReactGA from 'react-ga';
 
 import Dialog from './shared/components/Dialog';
 import StoreProvider from './StoreProvider';
@@ -24,7 +25,10 @@ function App() {
     //const firstScriptTag = document.getElementsByTagName('script')[0];
     //if (firstScriptTag !== null) {
       //firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
-    //}    
+    //}
+    
+    //react-ga init
+    ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
   
     document.body.appendChild(script);
   
