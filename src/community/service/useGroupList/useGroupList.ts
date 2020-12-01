@@ -17,20 +17,20 @@ export function getGroupMemberData(communityId:string, groupId:string, page:numb
 
 
 export function onFollowGroupMember(
-  memberId:string,
   communityId: string,
   groupId:string,
-  pageNum: number
+  memberId:string,
+  pageNum: number,
 ) {
   //
-  memberFollowAdd(groupId).then(res => {getGroupMember(memberId, communityId, pageNum)})
+  memberFollowAdd(memberId).then(res => {getGroupMemberData(communityId, groupId, pageNum)})
 }
 
 export function onUnFollowGroupMember(
-  memberId:string,
   communityId: string,
   groupId:string,
-  pageNum: number
+  memberId:string,
+  pageNum: number,
   ) {
-  memberFollowDel(groupId).then(res => {getGroupMember(memberId, communityId, pageNum)})
+  memberFollowDel(memberId).then(res => {getGroupMemberData(communityId, groupId, pageNum)})
 }

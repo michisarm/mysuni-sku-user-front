@@ -33,13 +33,6 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   //   return () => document.removeEventListener("click", handleClickOutside)
   // }, [])
 
-  // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
-  const handleGetMember = async (communityId:string, groupId:string) => {
-    setCardOpen(!cardopen)
-    if(!cardopen) {
-      // getGroupMember(communityId, groupId, 0)
-    }
-  }
   
   return (
     <div className="mycommunity-card-list" style={{marginBottom:"20px"}} ref={groupItem}>
@@ -51,7 +44,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
             <span>{groupList.name}</span>
             <span>멤버</span>
             <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount >= 0 ? groupList.memberCount : "0명"}</span>
-            <button onClick={() => handleGetMember(groupList.communityId, groupList.groupId)} type="button" title="열기닫기" className={cardopen ? "community-btn-open" : "community-btn-close"}><span>열기닫기</span></button>
+            <button onClick={() => setCardOpen(!cardopen)} type="button" title="열기닫기" className={cardopen ? "community-btn-open" : "community-btn-close"}><span>열기닫기</span></button>
           </div>
         </div>
       </div>
