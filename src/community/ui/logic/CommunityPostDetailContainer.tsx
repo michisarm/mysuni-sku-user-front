@@ -8,7 +8,7 @@ import React, {
 import { useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { CommentList } from '@nara.drama/feedback';
+import { CommentList, CommentService, CommunityCommentList } from '@nara.drama/feedback';
 import { Button, Icon } from 'semantic-ui-react';
 import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
@@ -38,7 +38,6 @@ function CommunityPostDetailContainer() {
   const [fileId, setFileId] = useState<string>();
   const [fileName, setFileName] = useState<string>();
   const viewModal = (pdf:string, fileId:string) => {
-
     const PdfFile = pdf.includes('.pdf')
     if (PdfFile) {
       setOpen(!open);
@@ -191,7 +190,7 @@ function CommunityPostDetailContainer() {
               list
             </Button>
           </div>
-          <CommentList
+          <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
             hideCamera
             name=""
