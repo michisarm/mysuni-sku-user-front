@@ -32,7 +32,7 @@ const CommunityPdfModal:React.FC<Props> = ({open, setOpen, fileId,fileName}) => 
       setPageWidth(headerWidth.current?.clientWidth!);
     }
   };
-  console.log(fileName)
+  
   useEffect(() => {
     updateHeaderWidth();
     window.addEventListener("resize", updateHeaderWidth)
