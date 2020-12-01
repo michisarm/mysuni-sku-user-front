@@ -11,6 +11,7 @@ export default interface CommunityMenu {
   html: string;
   discussionTopic: string;
   surveyId: string;
+  surveyCaseId: string;
   surveyInformation: string;
   order: number;
   accessType: CommunityAccessType;
