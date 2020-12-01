@@ -16,6 +16,8 @@ export interface CommunityProfileItem extends Item {
   nickname: string;
   introduce: string;
   hobby: string;
+  followerCount: number;
+  followingCount: number;
 }
 
 export interface CommunityProfile {
@@ -26,6 +28,8 @@ export interface CommunityProfile {
   nickname: string;
   introduce: string;
   hobby: string;
+  followerCount: number;
+  followingCount: number;
 }
 
 export interface CommunityProfileMyCommunityItem {
