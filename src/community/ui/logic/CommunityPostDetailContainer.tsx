@@ -21,6 +21,7 @@ import { saveCommunityPostLike } from 'community/service/useCommunityPostDetail/
 import { getCommunityPostLikeCountByMember } from 'community/service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
+import { getCommunityHome } from 'community/store/CommunityHomeStore';
 
 interface Params {
   communityId: string;
