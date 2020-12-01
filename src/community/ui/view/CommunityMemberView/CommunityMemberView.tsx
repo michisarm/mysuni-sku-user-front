@@ -12,12 +12,12 @@ import { useParams } from 'react-router-dom';
 function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
   const [follow, setFollow] = useState<boolean>(false);
 
-  const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
+  const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
 
     if(followState === false) {
-      onFollow(communityId,memberId, (activePage - 1) * 8)
+      onFollow(communityId, memberId, (activePage - 1) * 8)
     } else {
-      onUnFollow(communityId,memberId, (activePage - 1) * 8)
+      onUnFollow(communityId, memberId, (activePage - 1) * 8)
     }
   }, [activePage])
 
