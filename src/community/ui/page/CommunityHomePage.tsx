@@ -144,14 +144,15 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>공지사항</p>
-            {/* more */}
-            <Link
-              className="ui icon button right btn-blue btn-more"
-              to={`/community/${communityId}/notice`}
-            >
-              more
-              <i aria-hidden="true" className="icon more3" />
-            </Link>
+            {communityHome.community.approved === true && (
+              <Link
+                className="ui icon button right btn-blue btn-more"
+                to={`/community/${communityId}/notice`}
+              >
+                more
+                <i aria-hidden="true" className="icon more3" />
+              </Link>
+            )}
           </div>
           {communityHome.notice.map(post => (
             <NoticeItemView key={post.postId} {...post} />
@@ -162,14 +163,15 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
-            {/* more */}
-            <Link
-              className="ui icon button right btn-blue btn-more"
-              to={`/community/${communityId}/all`}
-            >
-              more
-              <i aria-hidden="true" className="icon more3" />
-            </Link>
+            {communityHome.community.approved === true && (
+              <Link
+                className="ui icon button right btn-blue btn-more"
+                to={`/community/${communityId}/all`}
+              >
+                more
+                <i aria-hidden="true" className="icon more3" />
+              </Link>
+            )}
           </div>
           <div className="new-board">
             {communityHome.recent.map(post => (
