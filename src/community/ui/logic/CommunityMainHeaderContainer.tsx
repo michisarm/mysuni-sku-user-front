@@ -87,15 +87,13 @@ function CommunityMainHeaderContainer() {
               <Label className="onlytext">
                 <span>Followers</span>
               </Label>
-              {/* <div className="value2" onClick={()=>modalOpen("followers")}>{profile && profile.followerCount < 0 ? 0 : profile?.followerCount}</div> */}
-              <div style={profile?.followerCount ? {cursor:'pointer'} : {cursor:'none'} } className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
+              <div style={profile?.followerCount ? {cursor:'pointer'} : {} } className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
             </div>
             <div className="ui statistic community-num">
               <Label className="onlytext">
                 <span>Following</span>
               </Label>
-              {/* <div style={profile?.followingCount ? {cursor:'pointer'} : {cursor:'none'} } className="value2" onClick={()=>modalOpen("following")}>{profile && profile.followingCount < 0 ? 0 : profile?.followingCount}</div> */}
-              <div style={profile?.followingCount ? {cursor:'pointer'} : {cursor:'none'} } className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div>
+              <div style={profile?.followingCount ? {cursor:'pointer'} : {} } className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div>
             </div>
           </div>
         </div> 
