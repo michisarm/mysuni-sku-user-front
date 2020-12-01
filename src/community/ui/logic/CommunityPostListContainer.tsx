@@ -52,7 +52,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
     const menuData = findPostMenuName(communityId, menuId);
     menuData.then(result => {
-      console.log(result);
+      console.log("@@ PostListContainer Result",result);
       setMenuName(result.name);
     });
   }, [postItems]);
