@@ -70,7 +70,6 @@ export function requestMyCommunityList() {
     } else {
       const next: CommunityItem[] = [];
       communities.results.forEach(community => {
-        console.log('comm', community);
         if (!next.some(c => c.communityId === community.communityId)) {
           next.push(communityToItem(community));
         }
