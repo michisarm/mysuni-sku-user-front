@@ -19,6 +19,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
 
   const handleClickOutside = (event:any) => {
+
     if (groupItem.current && !groupItem.current.contains(event.target)){
       setCardOpen(false);
     }
@@ -26,7 +27,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);
-    return () => document.addEventListener("click", handleClickOutside, true)
+    return () => document.removeEventListener("click", handleClickOutside, true)
   }, [])
 
   // 열기버튼을 눌렀을 때 해당 그룹의 멤버리스트 API 호출
@@ -56,6 +57,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
         <CommunityGroupMemberListView />
       </div>
     </div>
+    
   )
 }
 
@@ -88,9 +90,7 @@ export const CommunityGroupView = () => {
   }, [groupData])
     
   const onPageChange = (event:any, data:any) => {
-    // console.log(event.currentTarget.className);
-    // event.stopPropagation();
-    // console.log(event.currentTarget.className);
+    
     getGroup(communityId, (data.activePage - 1) * 8)
     setActivePage(data.activePage)
   }
@@ -98,21 +98,6 @@ export const CommunityGroupView = () => {
   return (
     <>
       {groupData && groupData.results.map((item, index) => <ItemBox groupList={item} key={index} activePage={activePage} />)}
-      {
-        groupData && groupData.totalCount >= 8 ? (
-          <div className="lms-paging-holder">
-            <Pagination
-              activePage={activePage}
-              totalPages={totalPage}
-              firstItem={null}
-              lastItem={null}
-              onPageChange={(e, data) => onPageChange(e,data)}
-            />
-          </div>
-        ) : (
-          null
-        )
-      } 
     </>
   )
 }

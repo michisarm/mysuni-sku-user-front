@@ -7,21 +7,19 @@ import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
-import { memberFollowDel } from 'community/api/MemberApi';
 import { getGroupMember } from 'community/service/useGroupList/useGroupList';
-import StarRatingItem from 'lecture/shared/LectureContentHeader/sub/StarRatingItem';
 
-function ItemBox({groupMemberList,activePage} :{groupMemberList:any, activePage:number}) {
+function ItemBox({groupMemberList, activePage} :{groupMemberList:any, activePage:number}) {
+  const [follow, setFollow] = useState<boolean>(false);
 
   const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
+    
     if(followState === false) {
-      onFollow(communityId,memberId,(activePage - 1) * 2)
+      onFollow(communityId, memberId,(activePage - 1) * 8)
     } else {
-      onUnFollow(communityId,memberId, (activePage - 1) * 2)
+      onUnFollow(communityId, memberId, (activePage - 1) * 8)
     }
   }, [activePage])
-
-
 
   return (
     <div className="member-card">
@@ -31,7 +29,7 @@ function ItemBox({groupMemberList,activePage} :{groupMemberList:any, activePage:
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
             <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span>{groupMemberList.nickname}</span>
-            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}><span className="card-follow">{groupMemberList.follow ? "Unfollow" : "Follow"}</span></button>
+            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}><span className="card-follow">{groupMemberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
           </Comment.Author>
           <Comment.Metadata>
             <span>게시물</span>
@@ -48,7 +46,6 @@ function ItemBox({groupMemberList,activePage} :{groupMemberList:any, activePage:
   )
 }
 
-
 interface Params {
   communityId: string,
   groupId: string
@@ -61,8 +58,8 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   const {communityId, groupId} = useParams<Params>();
 
   const totalPages = () => {
-    let totalPage = Math.ceil(groupMemberData!.totalCount / 2)
-    if (groupMemberData!.totalCount % 2 < 0) {
+    let totalPage = Math.ceil(groupMemberData!.totalCount / 8)
+    if (groupMemberData!.totalCount % 8 < 0) {
       totalPage++
     }
     setTotalPage(totalPage)
@@ -76,16 +73,15 @@ export const CommunityGroupMemberListView:React.FC = function GroupListView() {
   }, [groupMemberData])
 
   const onPageChange = (data:any) => {
-    getGroupMember(communityId, groupId, (data.activePage - 1 ) * 2)
+    getGroupMember(communityId, groupId, (data.activePage - 1 ) * 8)
     setActivePage(data.activePage)
   }
-
 
   return (
     <>
       {groupMemberData && groupMemberData.results.map((item, index) => <ItemBox groupMemberList={item} key={index} activePage={activePage} />)}
       {
-        groupMemberData && groupMemberData.totalCount >= 2 ? (
+        groupMemberData && groupMemberData.totalCount >= 8 ? (
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}
