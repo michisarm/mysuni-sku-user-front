@@ -430,7 +430,6 @@ export async function getLectureSurvey(params: LectureRouterParams) {
   }
   if (contentType === 'coures') {
     const { surveyCase } = await findCoursePlanContents(contentId, lectureId);
-    console.log(surveyCase);
     if (
       surveyCase !== undefined &&
       surveyCase !== null &&
