@@ -22,7 +22,7 @@ function CommunityMainHeaderContainer() {
   useEffect(() => {
     // requestFollowCommunityList();
     requestFollowModal();
-  }, []);
+  }, [requestFollowModalDelete,requestFollowModalAdd]);
 
 
   const followModalContainerList = useFollowCommunityIntro();
