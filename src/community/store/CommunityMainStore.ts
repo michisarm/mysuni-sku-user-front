@@ -32,7 +32,10 @@ const [
   communities: [],
   posts: [],
   communitiesTotalCount: 0,
+  communitiesOffset: 0,
   postsTotalCount: 0,
+  postsOffset:0,
+
 });
 
 export {

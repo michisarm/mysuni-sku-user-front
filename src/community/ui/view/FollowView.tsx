@@ -7,11 +7,13 @@ import {Segment, Icon, Button} from "semantic-ui-react";
 
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
+import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
-  const [notPosts, setNotPosts] = useState<boolean>(false);
+
+  const followCommunityIntro = useFollowCommunityIntro();
 
   return (
     <div ref={contextRef}>
@@ -48,9 +50,9 @@ const FollowView: React.FC = function FollowView() {
       </Sticky>
       <Segment className="full">
         <div className="course-detail-center community-containter">
-          {!notPosts ?
+          {followCommunityIntro?.postsTotalCount !== 0 ?
             <>
-              <CommunityFollowPostListContainer setNotPosts={setNotPosts}/>
+              <CommunityFollowPostListContainer />
               <CommunityFollowListContainer />
             </> 
             :

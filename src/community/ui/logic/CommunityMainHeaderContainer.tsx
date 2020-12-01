@@ -8,7 +8,7 @@ import {Button, Modal} from 'semantic-ui-react';
 import {requestFollowCommunityList, requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 import { useFollowModal, getFollowModal} from '../../store/CommunityFollowModalStore';
-import {requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
+import {requestFollowingModal, requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 import FollowModalIntro from '../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 
 //default imgage
@@ -22,7 +22,7 @@ function CommunityMainHeaderContainer() {
   useEffect(() => {
     // requestFollowCommunityList();
     requestFollowModal();
-  }, [requestFollowModalDelete,requestFollowModalAdd]);
+  }, []);
 
 
   const followModalContainerList = useFollowCommunityIntro();
@@ -34,9 +34,11 @@ function CommunityMainHeaderContainer() {
 
   const modalOpen = (value: string) => {
     if(value === "followers") {
+      requestFollowModal();
       setModalHeader("followers");
     }
     if(value === "following") {
+      requestFollowingModal();
       setModalHeader("following");
     }
     setOpen(!open);
@@ -86,14 +88,14 @@ function CommunityMainHeaderContainer() {
                 <span>Followers</span>
               </Label>
               {/* <div className="value2" onClick={()=>modalOpen("followers")}>{profile && profile.followerCount < 0 ? 0 : profile?.followerCount}</div> */}
-              <div className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
+              <div style={profile?.followerCount ? {cursor:'pointer'} : {cursor:'none'} } className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
             </div>
             <div className="ui statistic community-num">
               <Label className="onlytext">
                 <span>Following</span>
               </Label>
-              <div className="value2" onClick={()=>modalOpen("following")}>{profile && profile.followingCount < 0 ? 0 : profile?.followingCount}</div>
-              {/* <div className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div> */}
+              {/* <div style={profile?.followingCount ? {cursor:'pointer'} : {cursor:'none'} } className="value2" onClick={()=>modalOpen("following")}>{profile && profile.followingCount < 0 ? 0 : profile?.followingCount}</div> */}
+              <div style={profile?.followingCount ? {cursor:'pointer'} : {cursor:'none'} } className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div>
             </div>
           </div>
         </div> 
@@ -105,19 +107,9 @@ function CommunityMainHeaderContainer() {
             <div className="scrolling-60vh">
               <div className="content-wrap-follow">
                 <ul className="follow_list">
-                  {modalHeader === "following" ? followModalContainerList !== undefined &&
-                    followModalContainerList.communities.map((item,idx) => (
+                  {followersList?.results.map((item,idx) => (
                       <li>
-                        <p className="pic"><img src={`/files/community/${item.profileImg}`} alt="" /></p>
-                        <p className="nickname">{item.nickname}</p>
-                        <label className="chk_follow">
-                          <input type="checkbox" name="" />
-                          <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow && "unfollow"}</span>
-                        </label>
-                      </li>      
-                    )) : followersList?.results.map((item,idx) => (
-                      <li>
-                        <p className="pic"><img src={`/files/community/${item.profileImg}`} alt="" /></p>
+                        <p className="pic"><img src={item.profileImg === null ? `${DefaultImg}` : `/files/community/${item.profileImg}`} alt="" /></p>
                         <p className="nickname">{item.nickname}</p>
                         <label className="chk_follow">
                           <input type="checkbox" name="" />

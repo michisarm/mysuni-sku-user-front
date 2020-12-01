@@ -4,7 +4,7 @@ import { reactAlert } from '@nara.platform/accent';
 import { useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
-import { followList } from '../../../api/communityApi';
+import { followList, removeBookmark } from '../../../api/communityApi';
 import { requestFollowCommunityPostList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { off } from 'process';
@@ -47,7 +47,7 @@ async function bookmark(postId: string) {
 }
 
 async function unbookmark(postId: string) {
-  await registerBookmark(postId);
+  await removeBookmark(postId);
   const followCommunityIntro = getFollowCommunityIntro();
   if (followCommunityIntro === undefined) {
     return;
@@ -125,7 +125,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
               {/*comment : 2줄이상 말줄임, 대댓글*/}
               <Comment>
                 <Comment.Avatar
-                  src={profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
+                  src={profileImage === '' || profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
                   alt="profile"
                 />
                 <Comment.Content>
@@ -208,33 +208,22 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
-interface Props {
-  setNotPosts: boolean
-}
 
-function CommunityFollowPostListContainer({setNotPosts}: any) {
+function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
-  // console.log('container', communityFollowPostList);
+  console.log('container', communityFollowPostList);
 
-  const [limitPage, setLimitPage] = useState<number>(5);
   const [offsetPage, setOffsetPage] = useState<number>(0);
 
-  const addList = () => {
-    if (communityFollowPostList && communityFollowPostList.postsTotalCount < offsetPage) {
-      console.log('return');
-      return;
-    }
-    setOffsetPage(offsetPage + 5);
-    requestFollowCommunityPostList(offsetPage, 5);
+  if (communityFollowPostList === undefined) {
+    return null;
   }
-  console.log('container', communityFollowPostList?.postsTotalCount,communityFollowPostList);
 
-
-  useEffect(() => {
-    if(communityFollowPostList?.postsTotalCount === 0) {
-      setNotPosts(true);
-    }
-  },[communityFollowPostList]);
+  const addList = (offset:number) => {
+    console.log('offset ' , offset);
+    
+    requestFollowCommunityPostList(offset, 5);
+  }
 
   return (
     <div className="community-main-contants">
@@ -242,13 +231,23 @@ function CommunityFollowPostListContainer({setNotPosts}: any) {
         communityFollowPostList.posts.map(postItem => (
           <FollowPostItemView key={postItem.postId} {...postItem} />
         ))}
-
       <div className="more-comments">
-        <Button icon className="left moreview">
-          <div onClick={addList}>
+        {communityFollowPostList.postsTotalCount > communityFollowPostList.postsOffset && (
+          <Button
+            icon
+            className="left moreview"
+            onClick={()=>addList(communityFollowPostList.postsOffset)}
+          >
             <Icon className="moreview" /> list more
-          </div>
-        </Button>
+          </Button>
+        )}
+        {communityFollowPostList.postsTotalCount <= communityFollowPostList.postsOffset && (
+          <Button
+            icon
+            className="left moreview"
+            style={{ cursor: 'default' }}
+          />
+        )}
       </div>
     </div>
   );
