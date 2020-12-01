@@ -56,7 +56,7 @@ export function registerNoticePost(
   communityId: string,
   postCdo: PostCdo
 ): Promise<Post> {
-  const url = `${BASE_URL}/communities/${communityId}/noticePosts`;
+  const url = `${BASE_URL}/communities/${communityId}/posts/flow/noticePosts`;
   return axiosApi
     .post<Post>(url, postCdo)
     .then(response => response && response.data);
