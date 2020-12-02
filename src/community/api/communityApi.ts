@@ -116,9 +116,18 @@ export function findPostView(postId: string): Promise<Post> {
 export function findAllPost(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle,
+  };
+  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}`;
   return axiosApi
-    .get<OffsetElementList<Post>>(url)
+    .get<OffsetElementList<Post>>(url, { params })
     .then(response => response && response.data);
 }
 
@@ -126,9 +135,18 @@ export function findAllPost(
 export function findNoticePost(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle,
+  };
+  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}`;
   return axiosApi
-    .get<OffsetElementList<Post>>(url)
+    .get<OffsetElementList<Post>>(url, { params })
     .then(response => response && response.data);
 }
 

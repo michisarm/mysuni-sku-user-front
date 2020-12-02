@@ -68,7 +68,16 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               post
             </Link>
           )}
-          {pageType === undefined && menuType !== 'NOTICE' && pageType !== 'all' && (
+          {(menuType === 'ANONYMOUS') && (
+            <Link
+              className="ui icon button post"
+              to={`/community/${communityId}/board/${menuId}/${menuType}/create`}
+            >
+              <Icon className="post" />
+              post
+            </Link>
+          )}
+          {pageType === undefined && menuType !== 'NOTICE' && pageType !== 'all' && menuType !== 'ANONYMOUS' && (
             <Link
               className="ui icon button post"
               to={`/community/${communityId}/board/${menuId}/create`}

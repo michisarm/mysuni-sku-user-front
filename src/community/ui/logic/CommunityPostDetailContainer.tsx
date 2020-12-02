@@ -8,7 +8,7 @@ import React, {
 import { useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { CommentList } from '@nara.drama/feedback';
+import { CommentList, CommentService, CommunityCommentList } from '@nara.drama/feedback';
 import { Button, Icon } from 'semantic-ui-react';
 import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
@@ -26,10 +26,11 @@ import { getCommunityHome } from 'community/store/CommunityHomeStore';
 interface Params {
   communityId: string;
   postId: string;
+  menuType: string;
 }
 
 function CommunityPostDetailContainer() {
-  const { communityId, postId } = useParams<Params>();
+  const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -47,7 +48,6 @@ function CommunityPostDetailContainer() {
   const [fileName, setFileName] = useState<string>();
 
   const viewModal = (pdf:string, fileId:string) => {
-
     const PdfFile = pdf.includes('.pdf')
     if (PdfFile) {
       setPdfOpen(!pdfOpen);
@@ -136,6 +136,10 @@ function CommunityPostDetailContainer() {
 
   const OnClickPrevious = () => {
     console.log('OnClickPrevious');
+  };
+
+  const OnClickNext = () => {
+    console.log('OnClickNext');
   };
 
   return (
@@ -231,8 +235,9 @@ function CommunityPostDetailContainer() {
               list
             </Button>
           </div>
-          <CommentList
+          <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
+            menuType={menuType}
             hideCamera
             name=""
             email=""
@@ -249,7 +254,7 @@ function CommunityPostDetailContainer() {
                   <span>작성 날짜</span>
                 </div>
               </div>
-              <div className="paging-list-box">
+              <div className="paging-list-box" onClick={OnClickNext}>
                 <div className="paging-list-icon" />
                 <h2>다음글</h2>
                 <h3>다음글 타이틀 </h3>

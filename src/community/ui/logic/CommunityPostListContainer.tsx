@@ -59,7 +59,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
       setMenuName(result.name);
       setMenuType(result.type)
     });
-
     const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     if (
@@ -72,6 +71,16 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
+  const handleClickRow = (param: any, menuType: string) => {
+    if(menuType === 'ANONYMOUS') {
+      history.push({
+        pathname: `/community/${param.communityId}/${menuType}/post/${param.postId}`,
+      });
+    } else{
+      history.push({
+        pathname: `/community/${param.communityId}/post/${param.postId}`,
+      });  
+    }
   const handleClickRow = async (param: any) => {
     //멤버 가입 체크
     if(!await checkMember(communityId)){
@@ -172,8 +181,9 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
               <CommunityPostListView
+                menuType={menuType}
                 postItems={postItems}
-                handleClickRow={param => handleClickRow(param)}
+                handleClickRow={(param, menuType) => handleClickRow(param, menuType)}
               />
             </div>
           </div>
