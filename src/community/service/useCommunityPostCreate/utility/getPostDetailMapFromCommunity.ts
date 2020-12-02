@@ -36,6 +36,7 @@ export async function getPostDetailMapFromCommunity(
         if (post !== undefined && post !== null) {
             postDetailItem.id = post.id!;
             postDetailItem.postId = post.postId;
+            postDetailItem.menuId = post.menuId;
             postDetailItem.pinned = post.pinned;
             postDetailItem.title = post.title;
             postDetailItem.html = post.html;

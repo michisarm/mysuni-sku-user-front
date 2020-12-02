@@ -73,10 +73,12 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                   </div>
                 </div>
                 <div className="right-area">
-                <div className="ui onlytext">
-                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
-                  <span className="heartText">{likeCount}</span>
-                </div>
+                { postDetail.menuId !== 'NOTICE' && (
+                  <div className="ui onlytext">
+                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
+                    <span className="heartText">{likeCount}</span>
+                  </div>
+                )}
                   <div className="ui onlytext">
                     {onClickModify && (
                       <Button
