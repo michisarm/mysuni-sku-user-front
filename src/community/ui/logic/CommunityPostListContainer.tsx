@@ -72,9 +72,15 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
   const handelClickCreatePost = () => {};
   const handleClickRow = (param: any) => {
-    history.push({
-      pathname: `/community/${param.communityId}/post/${param.postId}`,
-    });
+    if(menuType === 'ANONYMOUS') {
+      history.push({
+        pathname: `/community/${param.communityId}/${menuType}/${param.postId}`,
+      });
+    } else{
+      history.push({
+        pathname: `/community/${param.communityId}/${param.postId}`,
+      });  
+    }
   };
 
   const onChangeSearchType = (name: string, value: SearchType) => {

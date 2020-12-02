@@ -26,10 +26,11 @@ import { getCommunityHome } from 'community/store/CommunityHomeStore';
 interface Params {
   communityId: string;
   postId: string;
+  menuType: string;
 }
 
 function CommunityPostDetailContainer() {
-  const { communityId, postId } = useParams<Params>();
+  const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -63,6 +64,7 @@ function CommunityPostDetailContainer() {
     setCreatorId(denizenId!);
     getFileIds();
     getLikeState();
+    console.log('postDetail', postDetail);
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -234,7 +236,7 @@ function CommunityPostDetailContainer() {
           </div>
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
-            menuType=""
+            menuType={menuType}
             hideCamera
             name=""
             email=""
