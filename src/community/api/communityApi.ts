@@ -176,7 +176,7 @@ export function findAllOpenCommunities(
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
   const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-    }&sort=${sort}&offset=${offset}&limit=10`;
+    }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
