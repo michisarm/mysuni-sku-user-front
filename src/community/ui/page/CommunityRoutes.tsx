@@ -35,11 +35,7 @@ function CommunityRoutes() {
     <section className="content community">
       <Segment className="full">
         <div className="course-detail-center community-containter">
-              <Route
-                exact
-                path="/community/:communityId/preview"
-                component={CommunityPreviewPage}
-              />
+              
           <CommunityHomeTreeContainer />
           <div className="community-home-contants">
             <Switch>
