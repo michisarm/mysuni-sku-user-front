@@ -138,10 +138,14 @@ function CommunityPostDetailContainer() {
     console.log('OnClickPrevious');
   };
 
+  const OnClickNext = () => {
+    console.log('OnClickNext');
+  };
+
   return (
     <Fragment>
       {postDetail && (
-        <div className="ui segment full">
+        <div>
           <PostDetailViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -247,7 +251,7 @@ function CommunityPostDetailContainer() {
                   <span>작성 날짜</span>
                 </div>
               </div>
-              <div className="paging-list-box">
+              <div className="paging-list-box" onClick={OnClickNext}>
                 <div className="paging-list-icon" />
                 <h2>다음글</h2>
                 <h3>다음글 타이틀 </h3>

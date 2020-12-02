@@ -9,10 +9,11 @@ interface Params {
   communityId: string;
   menuId?: string;
   postId?: string;
+  menuType?: string;
 }
 
 function CommunityPostCreateContainer() {
-  const { communityId, postId, menuId } = useParams<Params>();
+  const { communityId, postId, menuId, menuType } = useParams<Params>();
   const communityHome = useCommunityHome();
   const [postCreateItem] = useCommunityPostCreate(postId);
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
@@ -34,6 +35,7 @@ function CommunityPostCreateContainer() {
           communityId={communityId}
           menuId={menuId}
           postId={postId}
+          menuType={menuType}
           menus={communityHome.menus}
           managerAuth={adminAuth}
         />

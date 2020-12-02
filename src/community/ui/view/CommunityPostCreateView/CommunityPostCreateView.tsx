@@ -19,6 +19,7 @@ interface CommunityPostCreateViewProps {
   communityId: string;
   menuId?: string;
   postId?: string;
+  menuType?: string;
   menus: CommunityMenu[];
   managerAuth: boolean;
 }
@@ -28,6 +29,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   communityId,
   menuId,
   postId,
+  menuType,
   menus,
   managerAuth,
 }) {
@@ -93,7 +95,11 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
               history.goBack();
             }
           })
-        } else {
+        }
+        // else if(menuType === 'anonymous') {
+        //   //익명 등록인 경우
+        // }
+        else {
           saveCommunityPost(communityId, menuId, postId).then((result) => {
             if(result !== undefined) {
               history.goBack();

@@ -167,6 +167,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
               <CommunityPostListView
+                menuType={menuType}
                 postItems={postItems}
                 handleClickRow={param => handleClickRow(param)}
               />
