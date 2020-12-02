@@ -1,7 +1,7 @@
 import React,{useState,useCallback,useEffect} from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
-import { useCommunityMember, setCommunityMember, getCommunityMember } from 'community/store/CommunityMemberStore';
+import { useCommunityMember } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
@@ -25,7 +25,7 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
     <>
       <div className="member-card">
         <Comment>
-          <Comment.Avatar src={memberList.profileImg != null ? `/files/community/${memberList.profileImg}` : `${AvartarImage}`} />
+          <Comment.Avatar src={memberList.profileImg ? `/files/community/${memberList.profileImg}` : `${AvartarImage}`} />
           <Comment.Content>
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
@@ -83,22 +83,15 @@ export const CommunityMemberView = () => {
       <div className="mycommunity-card-list">
         {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} /> )}
       </div>
-      
-      {
-        memberData && memberData.totalCount >= 8 ? (
-          <div className="lms-paging-holder">
-            <Pagination
-              activePage={activePage}
-              totalPages={totalPage}
-              firstItem={null}
-              lastItem={null}
-              onPageChange={(e, data) => onPageChange(data)}
-            />
-          </div>
-        ) : (
-          null
-        )
-      } 
+      <div className="lms-paging-holder">
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          firstItem={null}
+          lastItem={null}
+          onPageChange={(e, data) => onPageChange(data)}
+        />
+      </div>
     </>
   )
 }

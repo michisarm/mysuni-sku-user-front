@@ -1,5 +1,6 @@
-import { axiosApi as axios } from '@nara.platform/accent';
+import { axiosApi as axios, axiosApi } from '@nara.platform/accent';
 import MemberCdo from '../model/MemberCdo';
+import Member from 'community/model/Member';
 
 const BASE_URL = "/api/community";
 
@@ -86,3 +87,12 @@ export function removeMembers(
     `${BASE_URL}/${communityId}/members/${memberIdList.join(',')}`
   );
 }
+
+export function findMember(
+  communityId:string
+  ): Promise<Member> { 
+
+  const url = `${BASE_URL}/communities/${communityId}/members/findMember`
+  return axiosApi.get<Member>(url).then((response) => response && response.data);
+}
+

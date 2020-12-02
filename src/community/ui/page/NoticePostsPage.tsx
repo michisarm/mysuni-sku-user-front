@@ -1,7 +1,7 @@
 import PostRdo from 'community/model/PostRdo';
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
-import { getPostListMapFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import { getCommunityNoticePostList } from 'community/service/useCommunityPostList/getCommunityNoticePostList';
+import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import CommunityNoticePostListContainer from '../logic/CommunityNoticePostListContainer';
@@ -53,7 +53,7 @@ function NoticePostsPage() {
       param.creatorId = searchText;
     }
 
-    getPostListMapFromCommunity(param);
+    getNoticePostListMapFromCommunity(param);
   }
 
   return (

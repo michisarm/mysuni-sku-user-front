@@ -16,13 +16,11 @@ interface Props {
   replyCount?: number;
   likeCount?: number;
   onClickList?: (e: any) => void;
-  onClickDelete: (id: string) => void;
-  onClickModify: (id: string) => void;
 }
 
 @reactAutobind
 @observer
-class PostDetailViewContentHeaderView extends Component<Props> {
+class DiscussionViewContentHeaderView extends Component<Props> {
   //
   render() {
     //
@@ -36,19 +34,9 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       likeCount,
       postDetail,
       onClickList,
-      onClickDelete,
-      onClickModify,
     } = this.props;
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
-
-    const handelClickModify = () => {
-      onClickModify(postDetail.id);
-    };
-
-    const handelClickDelete = () => {
-      onClickDelete(postDetail.id);
-    };
 
     return (
       <>
@@ -56,7 +44,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
           <div className="survey-header">
             <div className="survey-header-left debate-header-sub">
               <div className="title">{title}</div>
-              <div className="survey-read-side mb0">
+              {/* <div className="survey-read-side mb0">
                 <div className="title-area">
                   <div className="ui label onlytext">
                     <span>
@@ -72,45 +60,22 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                     <span>{replyCount}</span>
                   </div>
                 </div>
-                <div className="right-area">
-                { postDetail.menuId !== 'NOTICE' && (
-                  <div className="ui onlytext">
-                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
-                    <span className="heartText">{likeCount}</span>
-                  </div>
-                )}
-                  <div className="ui onlytext">
-                    {onClickModify && (
-                      <Button
-                        icon
-                        className="postset edit2"
-                        onClick={handelClickModify}
-                      >
-                        <Icon name="edit" className="edit2" />
-                        Edit
-                      </Button>
-                    )}
-                    {deletable && (
-                      <Button
-                        icon
-                        className="postset delete"
-                        onClick={handelClickDelete}
-                      >
-                        <Icon name="delete" />
-                        Delete
-                      </Button>
-                    )}
-                    <Button
-                      icon
-                      className="left postset commu-list16"
-                      onClick={onClickList}
-                    >
-                      <Icon className="commu-list16" />
-                      List
-                    </Button>
+              </div> */}
+              {/* <div className="comment-area course-comment">
+                <div className="ui comments sub-debate">
+                  <div className="comment">
+                    <div className="avatar">
+                      <img src={`/files/community/${postDetail.profileImg}`}/>
+                    </div>
+                    <div className="content">
+                      <a className="author">{postDetail.nickName}</a>
+                      <div className="metadata">
+                        <span className="heartText">2020.09.26</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -124,4 +89,4 @@ class PostDetailViewContentHeaderView extends Component<Props> {
   }
 }
 
-export default PostDetailViewContentHeaderView;
+export default DiscussionViewContentHeaderView;

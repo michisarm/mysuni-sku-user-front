@@ -1,5 +1,5 @@
 import { FileBox, ValidationType } from '@nara.drama/depot';
-import { PatronType, reactConfirm } from '@nara.platform/accent';
+import { PatronType, reactConfirm, reactAlert } from '@nara.platform/accent';
 import { saveCommunityNoticePost } from 'community/service/useCommunityPostCreate/utility/saveCommunityNoticePost';
 import { saveCommunityPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityPost';
 import {
@@ -13,13 +13,19 @@ import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import CommunityMenu from '../../../model/CommunityMenu';
 import Editor from './Editor';
+import { findMember } from 'community/api/MemberApi';
+import { joinCommunity } from 'community/api/communityApi';
+import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
+import { checkMember } from 'community/service/useMember/useMember';
 
 interface CommunityPostCreateViewProps {
   postItem: CommunityPostCreateItem;
   communityId: string;
   menuId?: string;
   postId?: string;
+  menuType?: string;
   menus: CommunityMenu[];
+  managerAuth: boolean;
 }
 
 const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
@@ -27,7 +33,9 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   communityId,
   menuId,
   postId,
+  menuType,
   menus,
+  managerAuth,
 }) {
   const history = useHistory();
   const handlePinnedChange = useCallback((e: any, data: any) => {
@@ -79,7 +87,13 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     setCommunityPostCreateItem(nextPostCreateItem);
   }, []);
 
-  const handleSubmitClick = useCallback(() => {
+  const handleSubmitClick = useCallback( async () => {
+
+    //멤버 가입 체크
+    if(!checkMember(communityId)){
+      return;
+    }
+
     reactConfirm({
       title: '알림',
       message: '저장하시겠습니까?',
@@ -91,7 +105,11 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
               history.goBack();
             }
           })
-        } else {
+        }
+        // else if(menuType === 'anonymous') {
+        //   //익명 등록인 경우
+        // }
+        else {
           saveCommunityPost(communityId, menuId, postId).then((result) => {
             if(result !== undefined) {
               history.goBack();
@@ -115,15 +133,17 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         <Form>
           <Form.Field>
             {/* 공지 등록 체크박스 */}
-            <div className="board-write-checkbox">
-              <Checkbox
-                className="base"
-                label="중요 등록"
-                name="communityPostCreatePinned"
-                checked={postItem.pinned}
-                onChange={handlePinnedChange}
-              />
-            </div>
+            {managerAuth && (
+              <div className="board-write-checkbox">
+                <Checkbox
+                  className="base"
+                  label="중요 등록"
+                  name="communityPostCreatePinned"
+                  checked={postItem.pinned}
+                  onChange={handlePinnedChange}
+                />
+              </div>
+            )}
             <div
               className={
                 titleLength >= 100
