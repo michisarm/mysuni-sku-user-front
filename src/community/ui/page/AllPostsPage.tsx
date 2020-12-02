@@ -1,6 +1,6 @@
 import PostRdo from 'community/model/PostRdo';
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
-import { getPostListMapFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
+import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
 import { getCommunityAllPostList } from 'community/service/useCommunityPostList/getCommunityAllPostList';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
@@ -53,7 +53,7 @@ function AllPostsPage() {
       param.creatorId = searchText;
     }
 
-    getPostListMapFromCommunity(param);
+    getAllPostListMapFromCommunity(param);
   }
 
   return (
