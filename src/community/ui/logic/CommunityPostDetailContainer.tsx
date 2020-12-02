@@ -200,14 +200,16 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
-            <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
-              {like && (
-                <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
-              ) || (
-                <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
-              )}
-              좋아요
-            </button>
+            { postDetail.menuId !== 'NOTICE' && (
+              <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
+                {like && (
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
+                ) || (
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+                )}
+                좋아요
+              </button>
+            )}
             { creatorId === postDetail.creatorId && (
               <Button
                 className="ui icon button left post edit"

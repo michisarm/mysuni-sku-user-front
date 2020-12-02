@@ -109,6 +109,7 @@ export async function getPostItem(
               createdTime: post.createdTime,
               replyCount: post.replyCount,
               commentFeedbackId: post.commentFeedbackId,
+              menuId: post.menuId,
               nickName: post.nickName || '',
               pinned: post.pinned,
               fileBoxId: post.fileBoxId,

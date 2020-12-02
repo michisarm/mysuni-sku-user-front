@@ -29,6 +29,7 @@ export interface CommunityPostDetail {
 export interface CommunityPostItem {
   postId: string;
   communityId: string;
+  menuId: string,
   title: string;
   html: string;
   readCount: number,
