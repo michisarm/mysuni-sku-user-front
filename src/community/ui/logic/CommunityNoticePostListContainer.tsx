@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
 import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
-import { getPostListMapFromCommunity } from '../../service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -12,6 +11,7 @@ import { Pagination } from 'semantic-ui-react';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { findPostMenuName } from 'community/api/communityApi';
+import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -100,7 +100,8 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
       creatorId: '',
       offset: 0,
       limit: 10,
-      searchFilter: '', //얘 안쓰는거 같은데
+      searchGubun: searchType, //얘 안쓰는거 같은데
+      searchTitle: searchText,
       menuId,
       communityId,
       sort: sortType,
@@ -116,7 +117,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
       param.creatorId = searchText;
     }
 
-    getPostListMapFromCommunity(param);
+    getNoticePostListMapFromCommunity(param);
     // setSearch('searchText')
   };
 
@@ -142,7 +143,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     } else if (searchType === 'creatorId') {
       param.creatorId = searchText;
     }
-    getPostListMapFromCommunity(param);
+    getNoticePostListMapFromCommunity(param);
 
     setActivePage(data.activePage);
   };
