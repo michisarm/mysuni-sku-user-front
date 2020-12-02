@@ -7,6 +7,8 @@ export default interface CommunityHome {
   menus: CommunityMenu[];
   notice: Post[];
   recent: Post[];
+  noticeRequested: boolean;
+  recentRequested: boolean;
 }
 
 export function getEmptyCommunityHome(): CommunityHome {
@@ -14,5 +16,7 @@ export function getEmptyCommunityHome(): CommunityHome {
     menus: [],
     recent: [],
     notice: [],
+    noticeRequested: false,
+    recentRequested: false,
   };
 }
