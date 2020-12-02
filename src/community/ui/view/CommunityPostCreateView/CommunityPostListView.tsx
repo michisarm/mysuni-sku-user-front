@@ -6,7 +6,7 @@ import { Icon } from 'semantic-ui-react';
 interface CommunityPostListViewProps{
   menuType: string
   postItems: CommunityPostList
-  handleClickRow: (param: object) => void
+  handleClickRow: (param: object, menuType: string) => void
 }
 
 function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: string) {
@@ -87,9 +87,9 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
 }) {
   const onHandleClickRow = useCallback(
     param => {
-      handleClickRow(param);
+      handleClickRow(param, menuType);
     },
-    []
+    [menuType]
   );
 
   return (
