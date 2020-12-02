@@ -198,7 +198,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
 
   useEffect(() => {
     setTimeout(() => {
-      ReactGA.pageview(window.location.pathname + window.location.search, [], `${lectureSummary.name}`);
+      ReactGA.pageview(window.location.pathname + window.location.search, [], `(Cube) - ${lectureSummary.name}`);
     }, 1000);
   },[]);
 
