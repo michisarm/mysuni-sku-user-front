@@ -359,7 +359,23 @@ function MemberView() {
 
 function CommunityHomeTreeContainer() {
   const communtyHome = useCommunityHome();
-  console.log('communtyHome', communtyHome);
+  const copyUrl = useCallback(() => {
+    if (communtyHome === undefined || communtyHome.community === undefined) {
+      return;
+    }
+    const currentUrl = window.location.toString();
+    const url = `${currentUrl.split('/community/')[0]}/community/${
+      communtyHome.community.communityId
+    }`;
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, 9999);
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  }, [communtyHome?.community?.communityId]);
   if (communtyHome === undefined || communtyHome.community === undefined) {
     return null;
   }
@@ -371,7 +387,7 @@ function CommunityHomeTreeContainer() {
             <span className="community-badge blue">
               {communtyHome.community.fieldName}
             </span>
-            <a className="community-share">
+            <a className="community-share" onClick={copyUrl}>
               <span>공유하기</span>
             </a>
           </div>

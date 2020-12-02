@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import {
   requestNotice,
   requestRecent,
@@ -85,12 +85,22 @@ interface Params {
 }
 
 function CommunityHomePage() {
+  const { pathname } = useLocation();
   const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
   useEffect(() => {
+    const match = matchPath<Params>(pathname, {
+      path: '/community/:communityId',
+      exact: true,
+    });
+    if (match === null) {
+      return;
+    }
+    const { communityId } = match.params;
+
     requestNotice(communityId);
     requestRecent(communityId);
-  }, [communityId]);
+  }, [pathname]);
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
   }
