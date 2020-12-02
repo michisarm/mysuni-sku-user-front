@@ -1,7 +1,6 @@
 import React,{useState,useEffect,useCallback} from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
-import { useCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import { useParams } from 'react-router-dom';
@@ -10,20 +9,27 @@ import { getGroupMemberData } from 'community/service/useGroupList/useGroupList'
 import { onFollowGroupMember,onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
 import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 
-function ItemBox({groupMemberList, activePage, groupId, handleChange, setPage} :{groupMemberList:any, setPage:(page:number) => void, activePage:number, groupId:string, handleChange:(state:any) => void,}) {
-  const [follow, setFollow] = useState<boolean>(false);
+function ItemBox({
+  groupMemberList, memberData, setMemberData, activePage, groupId} 
+  :{groupMemberList:any, memberData:any, setMemberData:any, activePage:number, groupId:string}) 
+{
 
   const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
-    const memberData = await getGroupMemberData(communityId, groupId, (activePage - 1 ) * 8);
-    handleChange(memberData);
+
+    const updateData = async () => {
+      const newData = await getGroupMemberData(communityId, groupId, (activePage - 1 ) * 8);
+      setMemberData(newData);
+    }
+
     if(followState === false) {
-      onFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8)    
+      onFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8)
+      updateData();
     } else {
       onUnFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8)
-  }
-  setFollow(!follow)
-  setPage(activePage)
-},[follow, handleChange])
+      updateData();
+    }
+    
+  },[activePage, memberData])
 
   return (
     <div className="member-card">
@@ -34,7 +40,7 @@ function ItemBox({groupMemberList, activePage, groupId, handleChange, setPage} :
             {/* 어드민 아이콘 영역 */}
             <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span>{groupMemberList.nickname}</span>
             <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
-              <span className="card-follow">{groupMemberList.follow && follow ? "Unfollow" : "Follow"}</span>
+              <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
             </button>
           </Comment.Author>
           <Comment.Metadata>
@@ -62,20 +68,19 @@ interface Props {
 }
 
 export const CommunityGroupMemberListView:React.FC<Props> = function GroupListView({groupId}) {
-  const groupMemberData = useCommunityGroupMember();
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [memberData, setMemberData] = useState<CommunityGroupMemberList>();
   const {communityId} = useParams<Params>();
   
 
-  async function test(){
+  async function MemberData(){
     const data = await getGroupMemberData(communityId, groupId, 0);
     setMemberData(data);
   }
   
   useEffect(() => {
-    test();
+    MemberData();
   }, [])
   
   const totalPages = () => {
@@ -93,31 +98,24 @@ export const CommunityGroupMemberListView:React.FC<Props> = function GroupListVi
     totalPages();
   }, [memberData])
 
-  const onPageChange = async (e:any,data:any) => {
-    // getGroupMember(communityId, groupId, (data.activePage - 1 ) * 8)
-    const memberData = await getGroupMemberData(communityId, groupId, (data.activePage - 1 ) * 8);
-    setMemberData(memberData);
+  const onPageChange = async (data:any) => {
+    const newData = await getGroupMemberData(communityId, groupId, (data.activePage - 1 ) * 8);
+    setMemberData(newData);
     setActivePage(data.activePage)
   }
 
   return (
     <>
-      {memberData && memberData.results.map((item, index) => <ItemBox groupMemberList={item} setPage={setActivePage} handleChange={setMemberData} groupId={groupId} key={index} activePage={activePage} />)}
-      {
-        memberData && memberData.totalCount >= 8 ? (
-          <div className="lms-paging-holder">
-            <Pagination
-              activePage={activePage}
-              totalPages={totalPage}
-              firstItem={null}
-              lastItem={null}
-              onPageChange={(e, data) => onPageChange(e,data)}
-            />
-          </div>
-        ) : (
-          null
-        )
-      } 
+      {memberData && memberData.results.map((item, index) => <ItemBox groupMemberList={item} memberData={memberData} setMemberData={setMemberData} groupId={groupId} key={index} activePage={activePage} />)}
+      <div className="lms-paging-holder">
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          firstItem={null}
+          lastItem={null}
+          onPageChange={(e, data) => onPageChange(data)}
+        />
+      </div>
     </>
   )
 }

@@ -2,7 +2,6 @@ import React,{useState,useEffect} from 'react';
 import {CommunityGroupMemberListView} from '../CommunityGroupMemberView/CommunityGroupMemberListView';
 import { useCommunityGroup } from 'community/store/CommunityGroupStore';
 import { getGroup, getGroupMemberData } from 'community/service/useGroupList/useGroupList';
-import { getGroupMember } from 'community/service/useGroupList/useGroupList';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { Pagination } from 'semantic-ui-react';
 import { useRef } from 'react';
@@ -42,7 +41,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
           <div className="card-group-span">
             <img src={AdminIcon} className="community-manager" />
             <span>{groupList.name}</span>
-            <span>멤버</span>
+  <span>멤버11{cardopen}</span>
             <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount >= 0 ? groupList.memberCount : "0명"}</span>
             <button onClick={() => setCardOpen(!cardopen)} type="button" title="열기닫기" className={cardopen ? "community-btn-open" : "community-btn-close"}><span>열기닫기</span></button>
           </div>

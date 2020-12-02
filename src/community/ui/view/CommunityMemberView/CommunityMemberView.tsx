@@ -83,22 +83,15 @@ export const CommunityMemberView = () => {
       <div className="mycommunity-card-list">
         {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} /> )}
       </div>
-      
-      {
-        memberData && memberData.totalCount >= 8 ? (
-          <div className="lms-paging-holder">
-            <Pagination
-              activePage={activePage}
-              totalPages={totalPage}
-              firstItem={null}
-              lastItem={null}
-              onPageChange={(e, data) => onPageChange(data)}
-            />
-          </div>
-        ) : (
-          null
-        )
-      } 
+      <div className="lms-paging-holder">
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          firstItem={null}
+          lastItem={null}
+          onPageChange={(e, data) => onPageChange(data)}
+        />
+      </div>
     </>
   )
 }

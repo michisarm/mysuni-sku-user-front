@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import classNames from "classnames";
 import {Icon} from "semantic-ui-react";
-import { getGroup, getGroupMember, getSearchGroup } from 'community/service/useGroupList/useGroupList';
+import { getGroup } from 'community/service/useGroupList/useGroupList';
 import {useCommunityGroup} from 'community/store/CommunityGroupStore';
 import { CommunityGroupView } from '../view/CommunityGroupView/CommunityGroupView';
 
@@ -15,7 +15,7 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
   
   const onSearch = (value:any) => {
     if(value != null) {
-      getSearchGroup(currentCommunity, 1)
+      // getSearchGroup(currentCommunity, 1)
       setSearchValue('')
     }
   }
@@ -25,7 +25,7 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
   }
 
   useEffect(() => {
-    getSearchGroup(currentCommunity, 0)
+    // getSearchGroup(currentCommunity, 0)
   },[])
   useEffect(() => {
     getGroup(currentCommunity, 0)

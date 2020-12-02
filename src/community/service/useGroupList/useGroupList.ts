@@ -7,30 +7,29 @@ export function getGroup(communityId:string, pageNum:number) {
   findAllGroupByQuery(communityId, pageNum).then(res => setCommunityGroup(res.data))
 }
 
-export function getGroupMember(communityId:string, groupId:string, page:number) {
-  findGroupMember(communityId, groupId, page).then(res => setCommunityGroupMember(res.data))
-}
+// export function getGroupMember(communityId:string, groupId:string, page:number) {
+//   findGroupMember(communityId, groupId, page).then(res => setCommunityGroupMember(res.data))
+// }
 
 export function getGroupMemberData(communityId:string, groupId:string, page:number) {
   return findGroupMember(communityId, groupId, page).then(response => response && response.data);
 }
 
-
 export function onFollowGroupMember(
   communityId: string,
   groupId:string,
   memberId:string,
-  pageNum: number,
+  page: number,
 ) {
   //
-  memberFollowAdd(memberId).then(res => {getGroupMemberData(communityId, groupId, pageNum)})
+  memberFollowAdd(memberId).then(res => {getGroupMemberData(communityId, groupId, page)})
 }
 
 export function onUnFollowGroupMember(
   communityId: string,
   groupId:string,
   memberId:string,
-  pageNum: number,
+  page: number,
   ) {
-  memberFollowDel(memberId).then(res => {getGroupMemberData(communityId, groupId, pageNum)})
+  memberFollowDel(memberId).then(res => {getGroupMemberData(communityId, groupId, page)})
 }
