@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { requestFollowModal } from '../../service/useFollowModal/utility/requestFollowModalIntro';
+import { requestFollowersModal, requestFollowingsModal } from '../../service/useFollowModal/utility/requestFollowModalIntro';
 import FollowModalView from '../view/CommunityFollowModal/FollowModalView';
 
 const FollowModalPage:React.FC = function FollowModalPage () {
   useEffect(() => {
-    requestFollowModal();
+    requestFollowersModal();
+    requestFollowingsModal();
   },[]);
   return <FollowModalView />
 }
