@@ -10,10 +10,11 @@ import CommunityPanelTopLineContainer from '../CommunityPostList/PostPanelTopLin
 interface Props {
   totalCount: number;
   sortType: string;
+  menuType?: string;
+  pageType?: string;
+  managerAuth?: boolean;
   handelClickCreateTask: () => void;
   onChangeSortType: (name: string, value: SortType) => void;
-  pageType?: string;
-  managerId?: boolean;
 }
 
 interface Params {
@@ -25,7 +26,8 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
   totalCount,
   sortType,
   pageType,
-  managerId,
+  managerAuth,
+  menuType,
   handelClickCreateTask,
   onChangeSortType,
 }) {
@@ -34,6 +36,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
     { text: '최신순', value: 'createdTime' },
     { text: '댓글순', value: 'replyCount' },
   ];
+
   return (
     <div className="table-board-title">
       <CommunityPanelTopLineContainer count={totalCount}>
@@ -47,7 +50,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               onChangeSortType('sort', data.value)
             }
           />
-          {pageType === 'notice' && managerId &&(
+          {(pageType === 'notice') && managerAuth && (
             <Link
               className="ui icon button post"
               to={`/community/${communityId}/board/noticeCreate/create`}
@@ -56,7 +59,16 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               post
             </Link>
           )}
-          {pageType === undefined && pageType !== 'all' && (
+          {(menuType === 'NOTICE') && managerAuth && (
+            <Link
+              className="ui icon button post"
+              to={`/community/${communityId}/board/${menuId}/create`}
+            >
+              <Icon className="post" />
+              post
+            </Link>
+          )}
+          {pageType === undefined && menuType !== 'NOTICE' && pageType !== 'all' && (
             <Link
               className="ui icon button post"
               to={`/community/${communityId}/board/${menuId}/create`}

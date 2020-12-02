@@ -3,11 +3,11 @@ import React from 'react';
 import ContentsProfileView from '../view/CommunityProfile/ContentsProfileView';
 
 function CommunityMyProfileContainer() {
-  const [ profileItem ] = useCommunityProfile();
+  const [profileItem] = useCommunityProfile();
   return (
     <>
-      { profileItem !== undefined && (
-        <ContentsProfileView profileItem={profileItem}/>
+      {profileItem !== undefined && (
+        <ContentsProfileView profileItem={profileItem} />
       )}
     </>
   );

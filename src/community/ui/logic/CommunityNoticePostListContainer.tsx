@@ -158,10 +158,10 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
           <CommunityPostTopLineView
             sortType={sortType}
             totalCount={postItems.totalCount}
+            pageType="notice"
+            managerAuth={adminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
-            pageType="notice"
-            managerId={adminAuth}
           />
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">

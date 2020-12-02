@@ -1,6 +1,6 @@
 export default interface FollowModalItem {
-  id: string; 
+  id: string;
   nickname: string;
-  profileImg: string; 
-  unfollow: boolean;
+  profileImg: string;
+  follow: boolean;
 }

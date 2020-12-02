@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import {
   requestNotice,
   requestRecent,
@@ -85,12 +85,22 @@ interface Params {
 }
 
 function CommunityHomePage() {
+  const { pathname } = useLocation();
   const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
   useEffect(() => {
+    const match = matchPath<Params>(pathname, {
+      path: '/community/:communityId',
+      exact: true,
+    });
+    if (match === null) {
+      return;
+    }
+    const { communityId } = match.params;
+
     requestNotice(communityId);
     requestRecent(communityId);
-  }, [communityId]);
+  }, [pathname]);
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
   }
@@ -144,14 +154,15 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>공지사항</p>
-            {/* more */}
-            <Link
-              className="ui icon button right btn-blue btn-more"
-              to={`/community/${communityId}/notice`}
-            >
-              more
-              <i aria-hidden="true" className="icon more3" />
-            </Link>
+            {communityHome.community.approved === true && (
+              <Link
+                className="ui icon button right btn-blue btn-more"
+                to={`/community/${communityId}/notice`}
+              >
+                more
+                <i aria-hidden="true" className="icon more3" />
+              </Link>
+            )}
           </div>
           {communityHome.notice.map(post => (
             <NoticeItemView key={post.postId} {...post} />
@@ -162,14 +173,15 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
-            {/* more */}
-            <Link
-              className="ui icon button right btn-blue btn-more"
-              to={`/community/${communityId}/all`}
-            >
-              more
-              <i aria-hidden="true" className="icon more3" />
-            </Link>
+            {communityHome.community.approved === true && (
+              <Link
+                className="ui icon button right btn-blue btn-more"
+                to={`/community/${communityId}/all`}
+              >
+                more
+                <i aria-hidden="true" className="icon more3" />
+              </Link>
+            )}
           </div>
           <div className="new-board">
             {communityHome.recent.map(post => (

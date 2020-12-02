@@ -1,13 +1,18 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
-import { followList } from '../../../api/communityApi';
+import { followList, removeBookmark } from '../../../api/communityApi';
 import { requestFollowCommunityPostList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { off } from 'process';
+import { registerBookmark } from '../../../api/communityApi';
+import { getFollowCommunityIntro, setFollowCommunityIntro } from '../../../store/CommunityMainStore';
+
+//default imgage
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -20,12 +25,43 @@ function copyUrl(url: string) {
   reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
 }
 
-const bookMark = (): void => {
-  reactAlert({
-    title: '북마크',
-    message: '북마크 추가 완료',
+async function bookmark(postId: string) {
+  const bookmarkId = await registerBookmark(postId);
+  console.log('bookmarkId', bookmarkId);
+
+  if (bookmarkId !== undefined) {
+    const followCommunityIntro = getFollowCommunityIntro();
+    if (followCommunityIntro === undefined) {
+      return;
+    }
+    setFollowCommunityIntro({
+      ...followCommunityIntro,
+      posts: followCommunityIntro.posts.map(c => {
+        if (c.postId !== postId) {
+          return c;
+        }
+        return { ...c, bookmarked: true };
+      }),
+    });
+  }
+}
+
+async function unbookmark(postId: string) {
+  await removeBookmark(postId);
+  const followCommunityIntro = getFollowCommunityIntro();
+  if (followCommunityIntro === undefined) {
+    return;
+  }
+  setFollowCommunityIntro({
+    ...followCommunityIntro,
+    posts: followCommunityIntro.posts.map(c => {
+      if (c.postId !== postId) {
+        return c;
+      }
+      return { ...c, bookmarked: false };
+    }),
   });
-};
+}
 
 const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowItemView({
   communityId,
@@ -36,7 +72,12 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   createdTime,
   name,
   contents,
+  bookmarked
 }) {
+
+  const [text, setText] = useState<string>('');
+  const [more, setMore] = useState<boolean>(false);
+
   const { pathname } = useLocation();
   const shareUrl = useCallback(() => {
     const hostLength = window.location.href.indexOf(pathname);
@@ -48,6 +89,31 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
     copyUrl(url);
   }, [pathname, communityId, postId]);
 
+  const viewMore = useCallback(() => {
+    setMore(true);
+  }, []);
+  const hideMore = useCallback(() => {
+    setMore(false);
+  }, []);
+
+  const bookmarkClick = useCallback(() => {
+    bookmark(postId);
+  }, [postId]);
+  const unbookmarkClick = useCallback(() => {
+    unbookmark(postId);
+  }, [postId]);
+
+  useEffect(() => {
+    const div = document.createElement('div');
+    div.innerHTML = contents;
+    let nextText = div.innerText;
+    nextText = nextText
+      .split('\n')
+      .filter(c => c !== '')
+      .join('\n');
+    setText(nextText);
+  }, []);
+  
   return (
     <>
       <div className="sub-info-box">
@@ -59,7 +125,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
               {/*comment : 2줄이상 말줄임, 대댓글*/}
               <Comment>
                 <Comment.Avatar
-                  src={`/files/community/${profileImage}`}
+                  src={profileImage === '' || profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
                   alt="profile"
                 />
                 <Comment.Content>
@@ -75,10 +141,18 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   </Comment.Text>
                   <Comment.Actions>
                     <div className="right top">
-                      <Button icon className="img-icon" onClick={bookMark}>
-                        <Icon className="bookmark2" />
-                        <span className="blind">북마크</span>
-                      </Button>
+                      {!bookmarked && (
+                        <Button icon className="img-icon" onClick={bookmarkClick}>
+                          <Icon className="bookmark2" />
+                          <span className="blind">북마크</span>
+                        </Button>
+                      )}
+                      {bookmarked && (
+                        <Button icon className="img-icon" onClick={unbookmarkClick}>
+                          <Icon className="remove3" />
+                          <span className="blind">북마크</span>
+                        </Button>
+                      )}
                       <Button icon className="img-icon" onClick={shareUrl}>
                         <Icon className="share2" />
                         <span className="blind">공유</span>
@@ -92,13 +166,38 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   <span className="ico_feed board">게시물</span>
                   {name}
                 </h3>
-                {/* <p>SK그룹은 내년 1월 그룹 싱크탱크인 SK경영경제연구소와 기업문화 교육기관인 SK아카데미 등 역량개발 조직을 통합한 SUNI를 공식 출범시킬 예정이라고 18일 밝혔다. 최태원 SK 회장은 급속한 경영환경 변화에 따라 Human…</p> */}
-                <div dangerouslySetInnerHTML={{ __html: contents }} />
+                {more && (
+                  <div className="ql-snow">
+                    <div
+                      className="ql-editor"
+                      dangerouslySetInnerHTML={{ __html: contents }}
+                    />
+                  </div>
+                )}
+                {!more && (
+                  <div>
+                    <p>{text}</p>
+                  </div>
+                )}
                 <div className="text-right">
-                  <button className="ui icon button right btn-blue btn-more">
-                    more
-                    <i aria-hidden="true" className="icon more2" />
-                  </button>
+                  {!more && (
+                    <button
+                      className="ui icon button right btn-blue btn-more"
+                      onClick={viewMore}
+                    >
+                      more
+                      <i aria-hidden="true" className="icon more2" />
+                    </button>
+                  )}
+                  {more && (
+                    <button
+                      className="ui icon button right btn-blue fn-more-toggle"
+                      onClick={hideMore}
+                    >
+                      hide
+                      <i aria-hidden="true" className="icon hide2" />
+                    </button>
+                  )}
                 </div>
               </div>
             </Comment.Group>
@@ -109,35 +208,22 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
+
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
+  console.log('container', communityFollowPostList);
 
-  // 페이지네이션
-  // const addList = (communityFollowPostList: any) => {
-  //   console.log('add', communityFollowPostList);
-  //   if(communityFollowPostList.postsTotalCount < limitPage) {
-  //     console.log('return');
-  //     return;
-  //   }
-  //   setLimitPage(limitPage + 5);
-  //   requestFollowCommunityPostList(0, limitPage);
-  //   // console.log('limit', limitPage);
-  // }
-
-  const [limitPage, setLimitPage] = useState<number>(5);
   const [offsetPage, setOffsetPage] = useState<number>(0);
-  const addList = () => {
-    if (
-      communityFollowPostList &&
-      communityFollowPostList.postsTotalCount < offsetPage
-    ) {
-      console.log('return');
-      return;
-    }
-    setOffsetPage(offsetPage + 5);
-    requestFollowCommunityPostList(offsetPage, 3);
-  };
-  // console.log('list', communityFollowPostList);
+
+  if (communityFollowPostList === undefined) {
+    return null;
+  }
+
+  const addList = (offset:number) => {
+    console.log('offset ' , offset);
+    
+    requestFollowCommunityPostList(offset, 5);
+  }
 
   return (
     <div className="community-main-contants">
@@ -145,13 +231,23 @@ function CommunityFollowPostListContainer() {
         communityFollowPostList.posts.map(postItem => (
           <FollowPostItemView key={postItem.postId} {...postItem} />
         ))}
-
       <div className="more-comments">
-        <Button icon className="left moreview">
-          <div onClick={addList}>
+        {communityFollowPostList.postsTotalCount > communityFollowPostList.postsOffset && (
+          <Button
+            icon
+            className="left moreview"
+            onClick={()=>addList(communityFollowPostList.postsOffset)}
+          >
             <Icon className="moreview" /> list more
-          </div>
-        </Button>
+          </Button>
+        )}
+        {communityFollowPostList.postsTotalCount <= communityFollowPostList.postsOffset && (
+          <Button
+            icon
+            className="left moreview"
+            style={{ cursor: 'default' }}
+          />
+        )}
       </div>
     </div>
   );

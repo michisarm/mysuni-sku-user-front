@@ -29,6 +29,7 @@ export interface MemberApproveList {
   creatorId: string;
   groupId: string;
   introduce: string;
+  nickname:string,
   manager: boolean
   managerId: string;
   managerNickName: string
@@ -39,6 +40,7 @@ export interface MemberApproveList {
   name: string;
   teamId: string;
   teamName: string;
+  profileImg:string
 }
 
 export interface CommunityMemberList {

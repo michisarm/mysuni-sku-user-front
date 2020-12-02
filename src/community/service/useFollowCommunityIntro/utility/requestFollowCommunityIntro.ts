@@ -1,16 +1,24 @@
 import moment from 'moment';
 import {
-  followPostList, followList
+  followPostList, followList, followModalAdd, followModalDelete,followersModal
 } from '../../../api/communityApi';
 import Community from '../../../model/CommunityFollow';
 import Post from '../../../model/Post';
 import {
   setFollowCommunityIntro,
   getFollowCommunityIntro,
+  onFollowCommunityIntro,
 } from '../../../store/CommunityMainStore';
+
+import {
+  getFollowModal,
+  setFollowModal,
+} from '../../../store/CommunityFollowModalStore';
+
 import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
-import CommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
+import FollowModalItem from '../../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
+import {requestFollowingModal, requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 
 const ONE_DAY = 24 * 60 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
@@ -34,15 +42,15 @@ function getTimeString(createdTime: number): string {
   return moment(createdTime).format('YYYY.MM.DD')
 }
 
-
-export function requestFollowCommunityList(offset: number = 0, limit: number = 10, nickName: string = "") {
+export function requestFollowCommunityList(offset: number = 0, limit: number = 5, nickName: string = "") {
   followList(offset, limit, nickName).then(communities => {
-    // console.log('communities',communities);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
+      communitiesOffset: 0,
       postsTotalCount: 0,
+      postsOffset:0
     };
 
     if (communities === undefined) {
@@ -50,26 +58,26 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 1
         ...followCommunityIntro,
         communities: [],
         communitiesTotalCount: 0,
+        communitiesOffset:0,
       });
     } else {
-      const next: FollowCommunityItem[] = [];
-      communities.results.forEach(followPostList => {
-        // if (!next.some(c => c.createdTime === community.communityId)) {
-        // next.push(communityToItem(community));
-        // }
+      const next: FollowCommunityItem[] = [...followCommunityIntro.communities];
+      communities.results.map(followPostList => {
         next.push(followPostList);
       });
       setFollowCommunityIntro({
         ...followCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
+        communitiesOffset: next.length,   
       });
+      console.log('communites:', communities);
     }
   });
 }
 
-function postToItem(post: Post): PostItem {
-  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg } = post;
+function postToItem(post: Post): PostItem  {
+  const { postId, communityId, menuId, title, html, createdTime, communityName, creatorName, nickName, profileImg, bookmarked,} = post;
   return {
     communityId,
     menuId,
@@ -80,30 +88,49 @@ function postToItem(post: Post): PostItem {
     createdTime: getTimeString(createdTime),
     name: title,
     contents: html,
+    bookmarked,
   };
 }
 
-export function requestFollowCommunityPostList(offset: number = 0, limit: number = 3) {
+export function requestFollowCommunityPostList(offset: number = 0, limit: number = 5) {
   followPostList(offset, limit).then(posts => {
-    console.log('post', posts);
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
       posts: [],
       communitiesTotalCount: 0,
+      communitiesOffset: 0,
       postsTotalCount: 0,
+      postsOffset:0
     };
     if (posts === undefined) {
       setFollowCommunityIntro({
         ...followCommunityIntro,
         posts: [],
         postsTotalCount: 0,
+        postsOffset:0
       });
     } else {
+      const nextList = [
+        ...followCommunityIntro.posts,
+        ...posts.results.map(postToItem),
+      ];
       setFollowCommunityIntro({
         ...followCommunityIntro,
-        posts: posts.results.map(postToItem),
+        posts: nextList,
         postsTotalCount: posts.totalCount,
+        postsOffset:nextList.length,
       });
+
     }
   });
+}
+
+export async function requestFollowModalAdd(id: string) {
+  await followModalAdd(id);
+  requestFollowModal();
+}
+
+export async function requestFollowModalDelete(id: string) {
+  await followModalDelete(id);
+  requestFollowModal();
 }

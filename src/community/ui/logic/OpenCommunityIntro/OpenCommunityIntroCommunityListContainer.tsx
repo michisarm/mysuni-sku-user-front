@@ -43,7 +43,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         <div className="community-main-left-list">
           <div
             className="community-main-left-h3"
-            dangerouslySetInnerHTML={{ __html: description }}
+            dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
           />
         </div>
       </div>
@@ -76,14 +76,14 @@ function sortCreatedTime() {
   requestOpenCommunityList();
 }
 
-function sortLastPostTime() {
+function sortMemberCount() {
   const openCommunityIntro = getOpenCommunityIntro();
   if (openCommunityIntro === undefined) {
     return;
   }
   setOpenCommunityIntro({
     ...openCommunityIntro,
-    communitiesSort: 'lastPostTime',
+    communitiesSort: 'memberCount',
     communitiesOffset: 0,
   });
   requestOpenCommunityList();
@@ -137,9 +137,9 @@ function OpenCommunityIntroCommunityListContainer() {
           className="base"
           label="멤버순"
           name="sort"
-          value="lastPostTime"
-          checked={openCommunityIntro.communitiesSort === 'lastPostTime'}
-          onClick={sortLastPostTime}
+          value="memberCount"
+          checked={openCommunityIntro.communitiesSort === 'memberCount'}
+          onClick={sortMemberCount}
         />
         <Radio
           className="base"

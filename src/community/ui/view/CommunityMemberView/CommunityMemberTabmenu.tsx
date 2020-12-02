@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Menu } from "semantic-ui-react";
 import { useCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { getApproveMember } from 'community/service/useMemberList/useMemberList';
+import { useCommunityMember } from 'community/store/CommunityMemberStore';
 
 interface Params {
   communityId: string
@@ -23,8 +24,6 @@ const CommunityMemberTabmenu:React.FC<Props> = ({activemenu, handleActiveMenu}) 
     getApproveMember(communityId)
   }, [communityId])
 
-  
-  console.log("@@approveMember",approveMember)
   return (
     <div className="contents-tab-menu">
       <Menu className="sku">
@@ -42,6 +41,7 @@ const CommunityMemberTabmenu:React.FC<Props> = ({activemenu, handleActiveMenu}) 
         >
           Groups
         </Menu.Item>
+
         <Menu.Item
           name="Approval"
           active={activemenu === "approve"}

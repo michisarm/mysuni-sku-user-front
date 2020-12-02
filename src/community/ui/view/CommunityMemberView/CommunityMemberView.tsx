@@ -1,39 +1,36 @@
-import React,{useState,useCallback} from 'react';
+import React,{useState,useCallback,useEffect} from 'react';
 import { Comment } from "semantic-ui-react";
 import moment from 'moment';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
-import { onFollow } from 'community/service/useMemberList/useMemberList';
-import { getFollowMember, useFollowMember } from 'community/store/CommunityMemberFollowStore';
+import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
 import { memberFollowDel } from 'community/api/MemberApi';
+import { Pagination } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
 
-function ItemBox({memberList}: {memberList:any}) {
-  const [follow, setFollow] = useState<boolean>(false)
-  const follwer = useFollowMember();
+function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
+  const [follow, setFollow] = useState<boolean>(false);
 
-  const handleFollow = useCallback((memberId) => {
-    setFollow(!follow)
-    getFollowMember();
-    if(follow) {
-      onFollow(memberId)
+  const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
+
+    if(followState === false) {
+      onFollow(communityId,memberId, (activePage - 1) * 8)
     } else {
-      memberFollowDel(memberId)
+      onUnFollow(communityId,memberId, (activePage - 1) * 8)
     }
-  }, [])
-
-  console.log(follwer)
+  }, [activePage])
 
   return (
     <>
       <div className="member-card">
         <Comment>
-          <Comment.Avatar src={memberList.profileImg != null ? `/files/community/${memberList.profileImg}` : `${AvartarImage}`} />
+          <Comment.Avatar src={memberList.profileImg ? `/files/community/${memberList.profileImg}` : `${AvartarImage}`} />
           <Comment.Content>
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
-              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.name}</span>
-              <button type="button" title="Follow" onClick={() => handleFollow(memberList.memberId)}><span className="card-follow">{follow ? "Unfollow" : "Follow"}</span></button>
+              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.nickname}</span>
+              <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
             </Comment.Author>
             <Comment.Metadata>
               <span>게시물</span>
@@ -51,29 +48,49 @@ function ItemBox({memberList}: {memberList:any}) {
   );
 }
 
+interface MemberList {
+  communityId: any
+}
+
 export const CommunityMemberView = () => {
   const memberData = useCommunityMember();
+  const [activePage, setActivePage] = useState<any>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const {communityId} = useParams<MemberList>();
+
+  const totalPages = () => {
+    let totalPage = Math.ceil(memberData!.totalCount / 8)
+    if (memberData!.totalCount % 8 < 0) {
+      totalPage++
+    }
+    setTotalPage(totalPage)
+  }
   
+  useEffect(() => {
+    if(memberData === undefined) {
+      return
+    }
+    totalPages();
+  }, [memberData])
+  
+  const onPageChange = (data:any) => {
+    getAllMember(communityId,(data.activePage-1)*8);
+    setActivePage(data.activePage)
+  }
+
   return (
     <>
       <div className="mycommunity-card-list">
-        {memberData?.results.map((item, index) => <ItemBox memberList={item} key={index} /> )}
+        {memberData&& memberData.results && memberData.results.map((item, index) => <ItemBox memberList={item} key={index} activePage={activePage} /> )}
       </div>
-      <div className="paging mb0">
-        <div className="lms-paging-holder">
-          <a className="lms-prev">이전10개</a>
-          <a className="lms-num lms-on">1</a>
-          <a className="lms-num">2</a>
-          <a className="lms-num">3</a>
-          <a className="lms-num">4</a>
-          <a className="lms-num">5</a>
-          <a className="lms-num">6</a>
-          <a className="lms-num">7</a>
-          <a className="lms-num">8</a>
-          <a className="lms-num">9</a>
-          <a className="lms-num">10</a>
-          <a className="lms-next">이후10개</a>
-        </div>
+      <div className="lms-paging-holder">
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          firstItem={null}
+          lastItem={null}
+          onPageChange={(e, data) => onPageChange(data)}
+        />
       </div>
     </>
   )
