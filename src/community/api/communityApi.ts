@@ -306,10 +306,6 @@ export function followingsModal(): Promise<OffsetElementList<FollowModalItem> | 
 
 export function followersModal(): Promise<OffsetElementList<FollowModalItem> | undefined> {
   const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
-<<<<<<< HEAD
-=======
-  console.log('api!!!', axiosApi.get(url).then(AxiosReturn));
->>>>>>> 23cc49339c7ad40f2ac48beeadd433ea63e86802
   return axiosApi.get(url).then(AxiosReturn);
 }
 
