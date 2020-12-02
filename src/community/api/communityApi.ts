@@ -96,6 +96,17 @@ export function findNoticePostViews(
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
+export function findAllPostViews(
+  communityId: string,
+  sort: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/community/${communityId}?sort=${sort}&offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+
 export function findPostView(postId: string): Promise<Post> {
   const url = `${BASE_URL}/postviews/post/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
@@ -290,7 +301,7 @@ export function removeBookmark(postId: string) {
 
 // profile - feed
 export function findAllPostViewsFromProfileFeed(
-  memberId:string,
+  memberId: string,
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=10&memberId=${memberId}`;
