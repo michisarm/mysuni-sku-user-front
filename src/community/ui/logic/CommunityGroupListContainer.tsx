@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import classNames from "classnames";
 import {Icon} from "semantic-ui-react";
-import { getGroup, getGroupMember } from 'community/service/useGroupList/useGroupList';
+import { getGroup, getGroupMember, getSearchGroup } from 'community/service/useGroupList/useGroupList';
 import {useCommunityGroup} from 'community/store/CommunityGroupStore';
 import { CommunityGroupView } from '../view/CommunityGroupView/CommunityGroupView';
 
@@ -11,7 +11,22 @@ interface Props {
 
 const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer({currentCommunity}) {
   const groupData = useCommunityGroup();
+  const [searchValue, setSearchValue] = useState<any>();
+  
+  const onSearch = (value:any) => {
+    if(value != null) {
+      getSearchGroup(currentCommunity, 1)
+      setSearchValue('')
+    }
+  }
 
+  const onClickSearchInput = () => {
+    onSearch(searchValue)
+  }
+
+  useEffect(() => {
+    getSearchGroup(currentCommunity, 0)
+  },[])
   useEffect(() => {
     getGroup(currentCommunity, 0)
   },[])
@@ -26,12 +41,11 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
           <div className={classNames("ui h38 search input")}>
             <input type="text"
               placeholder="그룹명 입력"
-              // value={write}
-              // onClick={() => setFocus(true)}
-              // onBlur={() => setFocus(false)}
-              // onChange={(e) => setWrite(e.target.value)}
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+              onKeyPress={e=> e.key === 'Enter' && onSearch(searchValue)}
             />
-            <Icon className="search link top"/>
+            <Icon className="search link top" onClick={onClickSearchInput}/>
           </div>
         </div>
       </div>
