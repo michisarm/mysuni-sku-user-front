@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
@@ -22,6 +22,7 @@ import { getCommunityPostLikeCountByMember } from 'community/service/useCommunit
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
+import moment from 'moment';
 
 interface Params {
   communityId: string;
@@ -134,14 +135,6 @@ function CommunityPostDetailContainer() {
     await deleteCommunityPostDetail(communityId, postId);
   }
 
-  const OnClickPrevious = () => {
-    console.log('OnClickPrevious');
-  };
-
-  const OnClickNext = () => {
-    console.log('OnClickNext');
-  };
-
   return (
     <Fragment>
       {postDetail && (
@@ -245,22 +238,30 @@ function CommunityPostDetailContainer() {
           />
           <div className="paging" style={{ marginTop: '20px' }}>
             <div className="paging-list">
-              <div className="paging-list-box" onClick={OnClickPrevious}>
-                <div className="paging-list-icon" />
-                <h2>이전글</h2>
-                <h3>이전글 타이틀 </h3>
-                <div className="paging-list-span">
-                  <span>작성 날짜</span>
-                </div>
-              </div>
-              <div className="paging-list-box" onClick={OnClickNext}>
-                <div className="paging-list-icon" />
-                <h2>다음글</h2>
-                <h3>다음글 타이틀 </h3>
-                <div className="paging-list-span">
-                  <span>작성 날짜</span>
-                </div>
-              </div>
+              {postDetail.prevPost && (
+                <Link to={`/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`}>
+                  <div className="paging-list-box">
+                    <div className="paging-list-icon" />
+                    <h2>이전글</h2>
+                    <h3>{postDetail.prevPost.title}</h3>
+                    <div className="paging-list-span">
+                      <span>{moment(postDetail.prevPost.createdTime).format('YYYY.MM.DD HH:MM')}</span>
+                    </div>
+                  </div>
+                </Link>
+              )}
+              {postDetail.nextPost && (
+                <Link to={`/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`}>
+                  <div className="paging-list-box">
+                    <div className="paging-list-icon" />
+                    <h2>다음글</h2>
+                    <h3>{postDetail.nextPost.title}</h3>
+                    <div className="paging-list-span">
+                      <span>{moment(postDetail.nextPost.createdTime).format('YYYY.MM.DD HH:MM')}</span>
+                    </div>
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
         </div>
