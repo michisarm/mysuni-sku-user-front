@@ -1,5 +1,5 @@
 import { FileBox, ValidationType } from '@nara.drama/depot';
-import { PatronType, reactConfirm } from '@nara.platform/accent';
+import { PatronType, reactConfirm, reactAlert } from '@nara.platform/accent';
 import { saveCommunityNoticePost } from 'community/service/useCommunityPostCreate/utility/saveCommunityNoticePost';
 import { saveCommunityPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityPost';
 import {
@@ -13,6 +13,10 @@ import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import CommunityMenu from '../../../model/CommunityMenu';
 import Editor from './Editor';
+import { findMember } from 'community/api/MemberApi';
+import { joinCommunity } from 'community/api/communityApi';
+import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
+import { checkMember } from 'community/service/useMember/useMember';
 
 interface CommunityPostCreateViewProps {
   postItem: CommunityPostCreateItem;
@@ -79,7 +83,13 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     setCommunityPostCreateItem(nextPostCreateItem);
   }, []);
 
-  const handleSubmitClick = useCallback(() => {
+  const handleSubmitClick = useCallback( async () => {
+
+    //멤버 가입 체크
+    if(!checkMember(communityId)){
+      return;
+    }
+
     reactConfirm({
       title: '알림',
       message: '저장하시겠습니까?',
