@@ -1,8 +1,8 @@
 import React, { memo, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { AplModel } from 'myTraining/model';
 import { AplState } from 'myTraining/model/AplState';
-
 
 
 interface Props {
@@ -16,9 +16,15 @@ interface Props {
   allowMinuteRef: any;
 }
 
+interface RouteParams {
+  page: string;
+}
+
 
 function MyApprovalInfoTable(props: Props) {
   const { model, files, allowHour, allowMinute, onChangeTime, onClearTime, allowHourRef, allowMinuteRef } = props;
+  const { page } = useParams<RouteParams>();
+
   /* handlers */
   const changeAllowHour = useCallback((e: any) => {
     onChangeTime('hour', e);
@@ -38,14 +44,19 @@ function MyApprovalInfoTable(props: Props) {
 
   /* render functions */
   const getAllowTimeByState = (model: AplModel) => {
-    /* 승인 또는 반려 */
+    /* LearningPage :: 전체 */
+    if(page === 'learning') {
+      return (
+        <div>{model.displayAllowTime}</div>
+      );
+    }
+    /* MyApprovalPage :: 승인 & 반려 */
     if (model.state === AplState.Opened || model.state === AplState.Rejected) {
       return (
         <div>{model.displayAllowTime}</div>
       );
     }
-
-    /* 승인요청 & 반려 */
+    /* MyApprovalPage :: 승인대기 */
     return (
       <div className="time-wrap">
         <div className="time">
