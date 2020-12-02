@@ -2,6 +2,7 @@ import { CommunityPostItem, CommunityPostList } from 'community/viewModel/Commun
 import moment from 'moment';
 import React, { useCallback } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { checkMember } from 'community/service/useMember/useMember';
 
 interface CommunityPostListViewProps{
   postItems: CommunityPostList

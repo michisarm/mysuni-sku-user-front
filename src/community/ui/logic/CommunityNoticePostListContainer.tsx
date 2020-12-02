@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
+import { checkMember } from 'community/service/useMember/useMember';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -62,7 +63,11 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
-  const handleClickRow = (param: any) => {
+  const handleClickRow = async (param: any) => {
+    //멤버 가입 체크
+    if(!await checkMember(communityId)){
+      return;
+    }         
     history.push({
       pathname: `/community/${param.communityId}/post/${param.postId}`,
     });
