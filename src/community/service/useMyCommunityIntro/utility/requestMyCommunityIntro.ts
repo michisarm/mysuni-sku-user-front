@@ -66,6 +66,7 @@ export function requestMyCommunityList() {
         communities: [],
         communitiesTotalCount: 0,
         communitiesOffset: 0,
+        requested: true,
       });
     } else {
       const next: CommunityItem[] = [];
@@ -79,6 +80,7 @@ export function requestMyCommunityList() {
         communities: next,
         communitiesTotalCount: communities.totalCount,
         communitiesOffset: communities.results.length,
+        requested: true,
       });
     }
   });

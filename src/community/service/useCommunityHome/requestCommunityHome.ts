@@ -4,20 +4,17 @@ import {
   getCommunityHome,
   setCommunityHome,
 } from '../../store/CommunityHomeStore';
+import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 
 export function requestNotice(communityId: string) {
   const offset = 0;
   const limit = 3;
   findNoticePostViews(communityId, 'createdTime', offset, limit).then(posts => {
-    const communityHome = getCommunityHome() || {
-      menus: [],
-      recent: [],
-      notice: [],
-    };
+    const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
-      setCommunityHome({ ...communityHome, notice: [] });
+      setCommunityHome({ ...communityHome, notice: [], noticeRequested: true, });
     } else {
-      setCommunityHome({ ...communityHome, notice: posts.results });
+      setCommunityHome({ ...communityHome, notice: posts.results, noticeRequested: true, });
     }
   });
 }
@@ -26,15 +23,11 @@ export function requestRecent(communityId: string) {
   const offset = 0;
   const limit = 4;
   findAllPostViews(communityId, 'createdTime', offset, limit).then(posts => {
-    const communityHome = getCommunityHome() || {
-      menus: [],
-      recent: [],
-      notice: [],
-    };
+    const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
-      setCommunityHome({ ...communityHome, recent: [] });
+      setCommunityHome({ ...communityHome, recent: [], recentRequested: true, });
     } else {
-      setCommunityHome({ ...communityHome, recent: posts.results });
+      setCommunityHome({ ...communityHome, recent: posts.results, recentRequested: true, });
     }
   });
 }

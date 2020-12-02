@@ -1,4 +1,4 @@
-import CommunityHome from '../viewModel/CommunityHome';
+import CommunityHome, { getEmptyCommunityHome } from '../viewModel/CommunityHome';
 import { createStore } from './Store';
 
 const [
@@ -6,11 +6,7 @@ const [
   onCommunityHome,
   getCommunityHome,
   useCommunityHome,
-] = createStore<CommunityHome>({
-  menus: [],
-  notice: [],
-  recent: [],
-});
+] = createStore<CommunityHome>(getEmptyCommunityHome());
 
 export {
   setCommunityHome,
