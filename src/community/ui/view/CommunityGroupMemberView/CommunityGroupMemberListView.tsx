@@ -11,15 +11,14 @@ import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 
 function ItemBox({
   groupMemberList, memberData, setMemberData, activePage, groupId} 
-  :{groupMemberList:any, memberData:any, setMemberData:any, activePage:number, groupId:string}) 
+  :{groupMemberList:any, memberData:any, setMemberData:any, activePage:number, groupId:string,}) 
 {
 
   const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
-
     if(activePage === undefined || memberData === undefined) {
       return false
     }
-
+    
     if(followState === false) {
       onFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8).then((result) => {
         setMemberData(result);
@@ -36,7 +35,7 @@ function ItemBox({
   return (
     <div className="member-card">
       <Comment>
-        <Comment.Avatar src={groupMemberList.profileImg !== null ? `/files/community/${groupMemberList.profileImg}` : `${AvartarImage}`} />
+        <Comment.Avatar src={groupMemberList.profileImg ? `/files/community/${groupMemberList.profileImg}` : `${AvartarImage}`} />
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}

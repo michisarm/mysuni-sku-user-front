@@ -16,6 +16,15 @@ export function findGroupMember(communityId:string, groupId:string, page:number)
   .get(`${BASE_URL}/groupviews/memberList?communityId=${communityId}&groupId=${groupId}&offset=${page}&limit=8`)
 }
 
+export function searchGroup(
+  communityId: string,
+  searchTerm: string
+):Promise<any> {
+
+  return axios
+  .get(`${BASE_URL_T}/${communityId}/groups?name=${searchTerm}&offset=0&limit=20&searchFilter=&communityId=${communityId}`)
+}
+
 export function registerGroup(groupCdoModel: GroupCdoModel): Promise<string> {
   return axios
     .post<string>(

@@ -1,4 +1,4 @@
-import { findAllGroupByQuery,findGroupMember } from 'community/api/GroupApi';
+import { findAllGroupByQuery,findGroupMember, searchGroup } from 'community/api/GroupApi';
 import { setCommunityGroup } from 'community/store/CommunityGroupStore';
 import { setCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
 import { memberFollowAdd, memberFollowDel } from 'community/api/MemberApi';
@@ -15,6 +15,10 @@ export function getGroupMemberData(communityId:string, groupId:string, page:numb
   return findGroupMember(communityId, groupId, page).then(response => {
     return response && response.data
   });
+}
+
+export function onSearchGroup(communityId:string, searchTerm:string) {
+  searchGroup(communityId, searchTerm).then(res => setCommunityGroup(res.data))
 }
 
 export function onFollowGroupMember(
