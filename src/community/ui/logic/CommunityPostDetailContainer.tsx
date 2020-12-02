@@ -141,7 +141,7 @@ function CommunityPostDetailContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <div className="ui segment full">
+        <div>
           <PostDetailViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
