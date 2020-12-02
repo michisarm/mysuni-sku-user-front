@@ -56,9 +56,11 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
     const menuData = findPostMenuName(communityId, menuId);
     menuData.then(result => {
+      console.log('result', result.type)
       setMenuName(result.name);
       setMenuType(result.type)
     });
+    console.log('menuType', menuType)
     const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     if (
@@ -71,7 +73,11 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
-  const handleClickRow = (param: any, menuType: string) => {
+  const handleClickRow = async (param: any, menuType: string) => {
+    //멤버 가입 체크
+    if(!await checkMember(communityId)){
+      return;
+    }          
     if(menuType === 'ANONYMOUS') {
       history.push({
         pathname: `/community/${param.communityId}/${menuType}/post/${param.postId}`,
@@ -81,14 +87,6 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
         pathname: `/community/${param.communityId}/post/${param.postId}`,
       });  
     }
-  const handleClickRow = async (param: any) => {
-    //멤버 가입 체크
-    if(!await checkMember(communityId)){
-      return;
-    }             
-    history.push({
-      pathname: `/community/${param.communityId}/post/${param.postId}`,
-    });
   };
 
   const onChangeSearchType = (name: string, value: SearchType) => {
