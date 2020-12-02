@@ -4,30 +4,11 @@ import { useMyProfile } from '../../store/MyProfileStore';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
 import FollowerView from '../../ui/logic/FollowModalIntro/FollowModalContainer';
-<<<<<<< HEAD
 import {Button, Modal} from 'semantic-ui-react';
 import { requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 import { useFollowersModal, useFollowingsModal} from '../../store/CommunityFollowModalStore';
 import {requestFollowingsModal, requestFollowersModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
-=======
-import { Button, Modal } from 'semantic-ui-react';
-import {
-  requestFollowCommunityList,
-  requestFollowModalAdd,
-  requestFollowModalDelete,
-} from 'community/service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
-import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
-import {
-  useFollowModal,
-  getFollowModal,
-} from '../../store/CommunityFollowModalStore';
-import {
-  requestFollowingModal,
-  requestFollowModal,
-} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
-import FollowModalIntro from '../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
->>>>>>> 23cc49339c7ad40f2ac48beeadd433ea63e86802
 
 //default imgage
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
@@ -44,7 +25,6 @@ function CommunityMainHeaderContainer() {
     // requestFollowingModal();
   }, []);
 
-<<<<<<< HEAD
 
   // const followModalContainerList = useFollowCommunityIntro();
   const profile = useMyProfile();
@@ -70,29 +50,9 @@ function CommunityMainHeaderContainer() {
     }
     console.log(value);
   }
-=======
-  const followModalContainerList = useFollowCommunityIntro();
-  const profile = useMyProfile();
-  const followersList = useFollowModal();
-
-  console.log('folowersList', followersList);
-
-  const modalOpen = (value: string) => {
-    if (value === 'followers') {
-      requestFollowModal();
-      setModalHeader('followers');
-    }
-    if (value === 'following') {
-      requestFollowingModal();
-      setModalHeader('following');
-    }
-    setOpen(!open);
-  };
->>>>>>> 23cc49339c7ad40f2ac48beeadd433ea63e86802
 
 
   // 팔로잉 모달 리스트 버튼
-<<<<<<< HEAD
   const followersBtn = (id: string, idx: number, follow: boolean) => {
 
     if(follow === true) {
@@ -109,12 +69,6 @@ function CommunityMainHeaderContainer() {
       requestFollowModalDelete(id);
     }
     else {
-=======
-  const followBtn = (id: string, idx: number, follow: boolean) => {
-    if (follow === true) {
-      requestFollowModalDelete(id);
-    } else {
->>>>>>> 23cc49339c7ad40f2ac48beeadd433ea63e86802
       requestFollowModalAdd(id);
     }
   };
@@ -210,7 +164,6 @@ function CommunityMainHeaderContainer() {
       </div>
 
       <Modal open={open} className="w500 base">
-<<<<<<< HEAD
         <Modal.Header>{modalHeader === "followers" ? 'Followers' : "Followings"}</Modal.Header>
           <Modal.Content>
             <div className="scrolling-60vh">
@@ -219,41 +172,7 @@ function CommunityMainHeaderContainer() {
                   {modalHeader === "followers" ? followersModal : followingsModal}
                 </ul>
               </div> 
-=======
-        <Modal.Header>
-          {modalHeader === 'followers' ? 'Followers' : 'Followings'}
-        </Modal.Header>
-        <Modal.Content>
-          <div className="scrolling-60vh">
-            <div className="content-wrap-follow">
-              <ul className="follow_list">
-                {followersList?.results.map((item, idx) => (
-                  <li>
-                    <p className="pic">
-                      <img
-                        src={
-                          item.profileImg === null
-                            ? `${DefaultImg}`
-                            : `/files/community/${item.profileImg}`
-                        }
-                        alt=""
-                      />
-                    </p>
-                    <p className="nickname">{item.nickname}</p>
-                    <label className="chk_follow">
-                      <input type="checkbox" name="" />
-                      <span
-                        onClick={() => followBtn(item.id, idx, item.follow)}
-                      >
-                        {item.follow ? 'unfollow' : 'follow'}
-                      </span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
->>>>>>> 23cc49339c7ad40f2ac48beeadd433ea63e86802
             </div>
-          </div>
         </Modal.Content>
         <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={() => setOpen(false)}>
