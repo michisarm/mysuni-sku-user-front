@@ -361,6 +361,11 @@ class LectureCardContainer extends Component<Props, State> {
         path = typeViewObject.url;
 
         break;
+      case CubeType.Cohort:
+        action = StudyActionType.WebPageLinked;
+        path = typeViewObject.url;
+
+        break;
       case CubeType.Experiential:
         action = StudyActionType.Experimential;
         path = typeViewObject.url;
@@ -976,6 +981,7 @@ class LectureCardContainer extends Component<Props, State> {
           };
         }
       case CubeType.WebPage:
+      case CubeType.Cohort:
       case CubeType.Experiential:
         return {
           type: LectureSubInfo.ActionType.LearningStart,
@@ -1041,6 +1047,7 @@ class LectureCardContainer extends Component<Props, State> {
         }
         break;
       case CubeType.WebPage:
+      case CubeType.Cohort:
       case CubeType.Experiential:
       case CubeType.Documents:
         if (
@@ -1289,6 +1296,7 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Audio:
       case CubeType.Video:
       case CubeType.WebPage:
+      case CubeType.Cohort:
       case CubeType.Experiential:
       case CubeType.Documents:
       case CubeType.Community:

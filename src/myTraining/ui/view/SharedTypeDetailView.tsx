@@ -154,7 +154,7 @@ class SharedTypeDetailView extends React.Component<Props> {
               )
             }
             {
-              cubeType === 'WebPage' && (
+              cubeType === 'WebPage' || cubeType === 'Cohort' && (
                 this.renderWebPage()
               )
             }

@@ -94,7 +94,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
         if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
         if (cubeType === 'Community') this.setCommunity(contentsId);
-        if (cubeType === 'Documents' || cubeType === 'WebPage') this.setOfficeWeb(contentsId);
+        if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Cohort') this.setOfficeWeb(contentsId);
       });
   }
 
@@ -205,7 +205,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
     else if (cubeType === CubeType.Community) {
       this.modifyCommunity(personalCubeId, cubeIntro);
     }
-    else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage) {
+    else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage || cubeType === CubeType.Cohort) {
       this.modifyOfficeWeb(personalCubeId, cubeIntro);
     }
   }
