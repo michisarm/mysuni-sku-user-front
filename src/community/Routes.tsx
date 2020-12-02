@@ -18,6 +18,7 @@ import ProfileRoutes from './ui/page/ProfileRoutes';
 import BasicPostEditPage from './ui/page/BasicPostEditPage';
 import DataPostEditPage from './ui/page/DataPostEditPage';
 import CommunityRoutes from './ui/page/CommunityRoutes';
+import CommunityPreviewPage from './ui/page/CommunityPreviewPage';
 
 class Routes extends React.Component {
   //
@@ -28,9 +29,8 @@ class Routes extends React.Component {
         <Route path="/community/main" component={MainRoutes} />
         <Route path="/community/my-profile" component={MyProfileRoutes} />
         <Route path="/community/profile/:profileId" component={ProfileRoutes} />
-
+        <Route exact path="/community/:communityId/preview" component={CommunityPreviewPage}/>
         <Route path="/community/:communityId" component={CommunityRoutes} />
-
         <Route component={NotFoundPage} />
       </Switch>
     );

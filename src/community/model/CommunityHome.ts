@@ -6,4 +6,5 @@ export default interface CommunityHomeInfo {
   introduce: string;
   thumbnailId: string;
   html: string;
+  draft: number;
 }

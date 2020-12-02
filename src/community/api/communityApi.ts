@@ -200,6 +200,16 @@ export function findHome(
   return axiosApi.get<CommunityHomeInfo>(url).then(AxiosReturn);
 }
 
+// 미리보기
+export function findPreview(
+  communityId: string,
+  draft: number
+): Promise<CommunityHomeInfo | undefined> {
+  const url = `${BASE_URL}/${communityId}/home/${draft}`;
+  return axiosApi.get<CommunityHomeInfo>(url).then(AxiosReturn);
+}
+
+
 export function findAllMenus(
   communityId: string
 ): Promise<CommunityMenu[] | undefined> {
