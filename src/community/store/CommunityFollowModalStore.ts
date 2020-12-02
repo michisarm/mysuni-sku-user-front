@@ -10,6 +10,7 @@ const [
   communities: [],
   communitiesTotalCount: 0,
   posts: [],
+  results: [],
 });
 
 export {

@@ -20,6 +20,8 @@ import CommunityPdfModal from '../view/CommunityPdfModal';
 import { saveCommunityPostLike } from 'community/service/useCommunityPostDetail/utility/saveCommunityPostLike';
 import { getCommunityPostLikeCountByMember } from 'community/service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
+import { reactConfirm } from '@nara.platform/accent';
+import { getCommunityHome } from 'community/store/CommunityHomeStore';
 
 interface Params {
   communityId: string;
@@ -98,9 +100,14 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickDelete = useCallback(() => {
-    deletePost(communityId, postId);
-
-    history.goBack();
+    reactConfirm({
+      title: '알림',
+      message: '삭제하시겠습니까?',
+      onOk: async () => {
+        deletePost(communityId, postId);
+        history.goBack();
+      },
+    });
   }, []);
 
   const OnClickModify = useCallback(() => {
@@ -148,15 +155,13 @@ function CommunityPostDetailContainer() {
             onClickDelete={OnClickDelete}
           />
           <div className="class-guide-txt fn-parents ql-snow">
-            <div className="text ql-editor">
-              <div
-                className="text description ql-editor"
-                dangerouslySetInnerHTML={{
-                  __html: postDetail.html,
-                }}
-                ref={textContainerRef}
-              />
-            </div>
+            <div
+              className="text ql-editor"
+              dangerouslySetInnerHTML={{
+                __html: postDetail.html,
+              }}
+              ref={textContainerRef}
+            />
           </div>
           <div className="ov-paragraph download-area task-read-down">
             <div className="detail">

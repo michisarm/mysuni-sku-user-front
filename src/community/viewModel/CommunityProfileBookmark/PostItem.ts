@@ -1,4 +1,6 @@
-export default interface FollowPostItem {
+import CommunityMenuType from "../../model/CommunityMenuType";
+
+export default interface PostItem {
   communityId: string;
   menuId: string;
   postId: string;
@@ -8,5 +10,6 @@ export default interface FollowPostItem {
   createdTime: string;
   name: string;
   contents: string;
+  menuType: CommunityMenuType;
   bookmarked: boolean;
 }

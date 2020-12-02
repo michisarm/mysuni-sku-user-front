@@ -1,62 +1,67 @@
-import { reactAlert } from '@nara.platform/accent';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Component, createRef, useState, useEffect, useCallback } from 'react';
+import { Segment, Sticky, Icon, Menu, Button ,Comment } from 'semantic-ui-react';
 import { Link, useLocation } from 'react-router-dom';
-import { Icon, Button, Comment } from 'semantic-ui-react';
-import { registerBookmark } from '../../../api/communityApi';
-import { requestAppendMyCommunityPostList } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
-import {
-  getMyCommunityIntro,
-  setMyCommunityIntro,
-  useMyCommunityIntro,
-} from '../../../store/CommunityMainStore';
-import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
+// import "../../style.css"
+import ContentsMoreView from './ContentsMoreView';
+import { CommunityProfileFeed } from 'community/viewModel/CommunityProfile';
+import moment from 'moment';
+import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
+import CommunityType from '../../../model/CommunityType';
+import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import MyCommunityListContainer from 'community/ui/logic/MyCommunityIntro/MyCommunityListContainer';
+import MyCommunityPostListContainer from 'community/ui/logic/MyCommunityIntro/MyCommunityPostListContainer';
+import { requestAppendMyCommunityPostList } from 'community/service/useMyCommunityIntro/utility/requestMyCommunityIntro';
+import PostItem from 'community/viewModel/CommunityProfileFeed/PostItem';
+import { reactAlert } from '@nara.platform/accent';
+import { registerBookmark, removeBookmark } from 'community/api/communityApi';
+import { getMyProfile } from 'community/store/MyProfileStore';
+import { getCommunityProfileFeed, setCommunityProfileFeed } from 'community/store/CommunityProfileFeedStore';
+import { requestAppendProfileFeedPostList } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
 
-function copyUrl(url: string) {
-  const textarea = document.createElement('textarea');
-  textarea.value = url;
-  document.body.appendChild(textarea);
-  textarea.select();
-  textarea.setSelectionRange(0, 9999);
-  document.execCommand('copy');
-  document.body.removeChild(textarea);
-  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+interface ContentsFeedViewProps {
+  communityProfileFeed: CommunityProfileFeed;
+  profileId:string;
 }
 
-async function bookmark(postId: string) {
-  const bookmarkId = await registerBookmark(postId);
-  if (bookmarkId !== undefined) {
-    const myCommunityIntro = getMyCommunityIntro();
-    if (myCommunityIntro === undefined) {
-      return;
-    }
-    setMyCommunityIntro({
-      ...myCommunityIntro,
-      posts: myCommunityIntro.posts.map(c => {
-        if (c.postId !== postId) {
-          return c;
-        }
-        return { ...c, bookmarked: true };
-      }),
-    });
-  }
-}
+const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedView({
+  communityProfileFeed,
+  profileId
+}) {
 
-async function unbookmark(postId: string) {
-  await registerBookmark(postId);
-  const myCommunityIntro = getMyCommunityIntro();
-  if (myCommunityIntro === undefined) {
-    return;
-  }
-  setMyCommunityIntro({
-    ...myCommunityIntro,
-    posts: myCommunityIntro.posts.map(c => {
-      if (c.postId !== postId) {
-        return c;
-      }
-      return { ...c, bookmarked: false };
-    }),
-  });
-}
+  // console.log('communityProfileFeed',communityProfileFeed);
+
+  /* eslint-disable */
+  return (
+    <Segment className="full">
+    <div className="course-detail-center community-containter">
+      <div className="community-main-contants">
+        {communityProfileFeed !== undefined &&
+          communityProfileFeed.posts.map(postItem => (
+            <PostItemView key={postItem.postId} {...postItem} />
+        ))}
+      </div>
+        <div className="more-comments">
+          {communityProfileFeed.postsTotalCount > communityProfileFeed.postsOffset && (
+            <Button
+              icon
+              className="left moreview"
+              onClick={()=>requestAppendProfileFeedPostList(profileId)}
+            >
+              <Icon className="moreview" /> list more
+            </Button>
+          )}
+          {communityProfileFeed.postsTotalCount <= communityProfileFeed.postsOffset && (
+            <Button
+              icon
+              className="left moreview"
+              style={{ cursor: 'default' }}
+            />
+          )}
+        </div>   
+    </div>
+  </Segment>    
+  );
+};
 
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
@@ -123,9 +128,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar src={`/files/community/${profileImage}`} />
             )}
             <Comment.Content>
-              <Comment.Author>
-                <Link to={`/community/${communityId}`}>{communityName}</Link>
-              </Comment.Author>
+              <Comment.Author as="a">{communityName}</Comment.Author>
               <Comment.Text>
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
@@ -158,9 +161,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           <div className="card-bottom">
             <h3>
               <span className={`ico_feed ${icon}`}>게시물</span>
-              <Link to={`/community/${communityId}/post/${postId}`}>
-                {name}
-              </Link>
+              {name}
             </h3>
             {more && (
               <div className="ql-snow">
@@ -202,38 +203,54 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   );
 };
 
-function MyCommunityPostListContainer() {
-  const myCommunityIntro = useMyCommunityIntro();
-  if (myCommunityIntro === undefined) {
-    return null;
-  }
-  return (
-    <div className="community-main-contants">
-      {myCommunityIntro !== undefined &&
-        myCommunityIntro.posts.map(postItem => (
-          <PostItemView key={postItem.postId} {...postItem} />
-        ))}
 
-      <div className="more-comments community-side">
-        {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
-          <Button
-            icon
-            className="left moreview"
-            onClick={requestAppendMyCommunityPostList}
-          >
-            <Icon className="moreview" /> list more
-          </Button>
-        )}
-        {myCommunityIntro.postsTotalCount <= myCommunityIntro.postsOffset && (
-          <Button
-            icon
-            className="left moreview"
-            style={{ cursor: 'default' }}
-          />
-        )}
-      </div>
-    </div>
-  );
+
+function copyUrl(url: string) {
+  const textarea = document.createElement('textarea');
+  textarea.value = url;
+  document.body.appendChild(textarea);
+  textarea.select();
+  textarea.setSelectionRange(0, 9999);
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
 }
 
-export default MyCommunityPostListContainer;
+async function bookmark(postId: string) {
+  const bookmarkId = await registerBookmark(postId);
+  if (bookmarkId !== undefined) {
+    const communityProfileFeed = getCommunityProfileFeed();
+    if (communityProfileFeed === undefined) {
+      return;
+    }
+    setCommunityProfileFeed({
+      ...communityProfileFeed,
+      posts: communityProfileFeed.posts.map(c => {
+        if (c.postId !== postId) {
+          return c;
+        }
+        return { ...c, bookmarked: true };
+      }),
+    });
+  }
+}
+
+async function unbookmark(postId: string) {
+  await removeBookmark(postId);
+  const communityProfileFeed = getCommunityProfileFeed();
+  if (communityProfileFeed === undefined) {
+    return;
+  }
+  setCommunityProfileFeed({
+    ...communityProfileFeed,
+    posts: communityProfileFeed.posts.map(c => {
+      if (c.postId !== postId) {
+        return c;
+      }
+      return { ...c, bookmarked: false };
+    }),
+  });
+}
+
+
+export default ContentsFeedView;

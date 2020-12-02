@@ -8,9 +8,11 @@ import {Button, Modal} from 'semantic-ui-react';
 import {requestFollowCommunityList, requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 import { useFollowModal, getFollowModal} from '../../store/CommunityFollowModalStore';
-import {requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
+import {requestFollowingModal, requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
+import FollowModalIntro from '../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 
-
+//default imgage
+import DefaultImg from '../../../style/media/img-profile-80-px.png';
 
 function CommunityMainHeaderContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -32,22 +34,24 @@ function CommunityMainHeaderContainer() {
 
   const modalOpen = (value: string) => {
     if(value === "followers") {
+      requestFollowModal();
       setModalHeader("followers");
     }
     if(value === "following") {
+      requestFollowingModal();
       setModalHeader("following");
     }
     setOpen(!open);
   }
 
-  const followBtn =async (id: string, idx: number, follow: boolean) => {
-    console.log('idx', idx, id, follow);
+  // 팔로잉 모달 리스트 버튼
+  const followBtn = (id: string, idx: number, follow: boolean) => {
 
     if(follow === true) {
-      await requestFollowModalDelete(id);
+       requestFollowModalDelete(id);
     }
     else {
-      await requestFollowModalAdd(id);
+       requestFollowModalAdd(id);
     }
   }
 
@@ -61,7 +65,7 @@ function CommunityMainHeaderContainer() {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <img src={profileIcon} />
+                  <img src={profileIcon === null ? `${DefaultImg}` : `/files/community/${profileIcon}`} />
                 </div>
               </div>
               <div className="text-info">
@@ -72,7 +76,7 @@ function CommunityMainHeaderContainer() {
                     to="/community/my-profile"
                   >
                     <i aria-hidden="true" className="icon post" />
-                    프로필수정
+                    프로필 수정
                   </Link>
                 </div>
               </div>
@@ -83,15 +87,13 @@ function CommunityMainHeaderContainer() {
               <Label className="onlytext">
                 <span>Followers</span>
               </Label>
-              {/* <div className="value2" onClick={()=>modalOpen("followers")}>{profile && profile.followerCount < 0 ? 0 : profile?.followerCount}</div> */}
-              <div className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
+              <div style={profile?.followerCount ? {cursor:'pointer'} : {} } className="value2" onClick={()=>modalOpen("followers")}>{profile?.followerCount}</div>
             </div>
             <div className="ui statistic community-num">
               <Label className="onlytext">
                 <span>Following</span>
               </Label>
-              <div className="value2" onClick={()=>modalOpen("following")}>{profile && profile.followingCount < 0 ? 0 : profile?.followingCount}</div>
-              {/* <div className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div> */}
+              <div style={profile?.followingCount ? {cursor:'pointer'} : {} } className="value2" onClick={()=>modalOpen("following")}>{profile?.followingCount}</div>
             </div>
           </div>
         </div> 
@@ -100,22 +102,23 @@ function CommunityMainHeaderContainer() {
       <Modal open={open} className="w500 base">
         <Modal.Header>{modalHeader === "followers" ? 'Followers' : "Followings"}</Modal.Header>
           <Modal.Content>
-            <div className="content-wrap-follow">
-              <ul className="follow_list">
-                {modalHeader === "following" ? followModalContainerList !== undefined &&
-                  followModalContainerList.communities.map((item,idx) => (
-                    <li>
-                      <p className="pic"><img src={`/files/community/${item.profileImg}`} alt="" /></p>
-                      <p className="nickname">{item.nickname}</p>
-                      <label className="chk_follow">
-                        <input type="checkbox" name="" />
-                        <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow && "unfollow"}</span>
-                      </label>
-                    </li>      
-                  )) : 'HI'
-                }
-              </ul>
-            </div> 
+            <div className="scrolling-60vh">
+              <div className="content-wrap-follow">
+                <ul className="follow_list">
+                  {followersList?.results.map((item,idx) => (
+                      <li>
+                        <p className="pic"><img src={item.profileImg === null ? `${DefaultImg}` : `/files/community/${item.profileImg}`} alt="" /></p>
+                        <p className="nickname">{item.nickname}</p>
+                        <label className="chk_follow">
+                          <input type="checkbox" name="" />
+                          <span onClick={()=>followBtn(item.id, idx, item.follow)}>{item.follow ? "unfollow" : "follow"}</span>
+                        </label>
+                      </li>   
+                    ))
+                  }
+                </ul>
+              </div> 
+            </div>
           </Modal.Content>
           <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={()=>setOpen(false)}>닫기</Button>

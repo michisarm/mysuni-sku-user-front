@@ -75,10 +75,13 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   }
 
   const updateUser = useCallback(() => {
-    updateMembers(currentCommunity, selectedList);
-    setTimeout(() => {
-      history.go(0);
-    }, 500)
+    if (selectedList !== null && undefined) {
+      updateMembers(currentCommunity, selectedList);
+      setTimeout(() => {
+        history.go(0);
+      }, 500)
+    } 
+    return null;
   }, [currentCommunity, selectedList])
 
   return (
