@@ -12,6 +12,7 @@ import {
 } from 'community/store/CommunityProfileStore';
 import ContentsProfileEditView from './ContentsProfileEditView';
 import { upload } from 'community/api/FileApi';
+import defaultBg from '../../../../style/media/bg-ttl-sample-02.png';
 
 interface ProfileTitleViewProps {
   profileItem: CommunityProfileItem;
@@ -116,7 +117,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
               src={
                 (profileItem.profileBgImg &&
                   '/files/community/' + profileItem.profileBgImg) ||
-                '/static/media/bg-community-profilettl@3x.6156083d.png'
+                defaultBg
               }
               alt="배경이미지"
             />
@@ -168,7 +169,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
                     className="btn_profile_edit"
                     onClick={handleEditClick}
                   >
-                    프로필수정
+                    프로필 수정
                   </button>
                 </li>
               )}

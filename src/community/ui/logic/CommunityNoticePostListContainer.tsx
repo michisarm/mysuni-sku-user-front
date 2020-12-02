@@ -164,7 +164,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
             sortType={sortType}
             totalCount={postItems.totalCount}
             pageType="notice"
-            managerId={adminAuth}
+            managerAuth={adminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />

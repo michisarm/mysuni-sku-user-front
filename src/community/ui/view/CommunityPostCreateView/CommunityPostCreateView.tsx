@@ -24,6 +24,7 @@ interface CommunityPostCreateViewProps {
   menuId?: string;
   postId?: string;
   menus: CommunityMenu[];
+  managerAuth: boolean;
 }
 
 const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
@@ -32,6 +33,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   menuId,
   postId,
   menus,
+  managerAuth,
 }) {
   const history = useHistory();
   const handlePinnedChange = useCallback((e: any, data: any) => {
@@ -125,15 +127,17 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         <Form>
           <Form.Field>
             {/* 공지 등록 체크박스 */}
-            <div className="board-write-checkbox">
-              <Checkbox
-                className="base"
-                label="중요 등록"
-                name="communityPostCreatePinned"
-                checked={postItem.pinned}
-                onChange={handlePinnedChange}
-              />
-            </div>
+            {managerAuth && (
+              <div className="board-write-checkbox">
+                <Checkbox
+                  className="base"
+                  label="중요 등록"
+                  name="communityPostCreatePinned"
+                  checked={postItem.pinned}
+                  onChange={handlePinnedChange}
+                />
+              </div>
+            )}
             <div
               className={
                 titleLength >= 100

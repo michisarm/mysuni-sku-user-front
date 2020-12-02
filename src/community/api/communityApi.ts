@@ -96,6 +96,17 @@ export function findNoticePostViews(
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
+export function findAllPostViews(
+  communityId: string,
+  sort: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/community/${communityId}?sort=${sort}&offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+
 export function findPostView(postId: string): Promise<Post> {
   const url = `${BASE_URL}/postviews/post/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
@@ -144,6 +155,13 @@ export function findAllMyCommunities(sort: string, offset: number): Promise<
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
+export function findAllOtherCommunities(memberId: string, sort: string, offset: number): Promise<
+  OffsetElementList<CommunityView> | undefined
+> {
+  const url = `${BASE_URL}/communities/communityView/other/${memberId}?sort=${sort}&offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+}
+
 export function findAllMyOpenCommunities(
   sort: string,
   offset: number
@@ -158,7 +176,7 @@ export function findAllOpenCommunities(
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
   const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-    }&sort=${sort}&offset=${offset}&limit=10`;
+    }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -193,6 +211,16 @@ export function findHome(
   return axiosApi.get<CommunityHomeInfo>(url).then(AxiosReturn);
 }
 
+// 미리보기
+export function findPreview(
+  communityId: string,
+  draft: number
+): Promise<CommunityHomeInfo | undefined> {
+  const url = `${BASE_URL}/${communityId}/home/${draft}`;
+  return axiosApi.get<CommunityHomeInfo>(url).then(AxiosReturn);
+}
+
+
 export function findAllMenus(
   communityId: string
 ): Promise<CommunityMenu[] | undefined> {
@@ -200,8 +228,20 @@ export function findAllMenus(
   return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
 }
 
+export function findMyMenus(
+  communityId: string
+): Promise<CommunityMenu[] | undefined> {
+  const url = `${BASE_URL}/${communityId}/menus/my`;
+  return axiosApi.get<CommunityMenu[]>(url).then(AxiosReturn);
+}
+
 export function findPostByMenuId(menuId: string): Promise<Post> {
   const url = `${BASE_URL}/post/menu/${menuId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
+export function findPostByMenuIdAndType(menuId: string, type: string): Promise<Post> {
+  const url = `${BASE_URL}/post/menu/${menuId}/type/${type}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
@@ -241,7 +281,7 @@ export function followModal(): Promise<FollowCommunityItem> {
 // 모달 팔로워
 export function followersModal(): Promise<FollowModal> {
   const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
-  console.log('api!!!',axiosApi.get(url).then(AxiosReturn));
+  console.log('api!!!', axiosApi.get(url).then(AxiosReturn));
   return axiosApi.get(url).then(AxiosReturn);
 }
 
@@ -276,7 +316,7 @@ export function removeBookmark(postId: string) {
 
 // profile - feed
 export function findAllPostViewsFromProfileFeed(
-  memberId:string,
+  memberId: string,
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=10&memberId=${memberId}`;
