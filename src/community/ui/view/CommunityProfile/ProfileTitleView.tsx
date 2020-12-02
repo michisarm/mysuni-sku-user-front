@@ -155,11 +155,11 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
             <ul>
               <li>
                 <span>Followers</span>
-                <em>0</em>
+                <em>{profileItem.followerCount}</em>
               </li>
               <li>
                 <span>Following</span>
-                <em>0</em>
+                <em>{profileItem.followingCount}</em>
               </li>
               {menuType === 'myProfile' && (
                 <li>
@@ -168,7 +168,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
                     className="btn_profile_edit"
                     onClick={handleEditClick}
                   >
-                    프로필수정
+                    프로필 수정
                   </button>
                 </li>
               )}

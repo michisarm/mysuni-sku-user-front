@@ -160,13 +160,14 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             sortType={sortType}
             totalCount={postItems.totalCount}
             menuType={menuType}
-            managerId={adminAuth}
+            managerAuth={adminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
               <CommunityPostListView
+                menuType={menuType}
                 postItems={postItems}
                 handleClickRow={param => handleClickRow(param)}
               />

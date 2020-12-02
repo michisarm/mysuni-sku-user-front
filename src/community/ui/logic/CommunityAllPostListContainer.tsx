@@ -10,6 +10,7 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
+import { findPostMenuName } from 'community/api/communityApi';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -41,12 +42,21 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
 
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [menuType, setMenuType] = useState<string>('');
+  const [menuName, setMenuName] = useState<string>('');
 
   // const { pageMap } = SharedService;
   useEffect(() => {
     if (postItems === undefined) {
       return;
     }
+
+    const menuData = findPostMenuName(communityId, menuId);
+    menuData.then(result => {
+      setMenuName(result.name);
+      setMenuType(result.type)
+    });
+    
     totalPages();
   }, [postItems]);
 
@@ -155,6 +165,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
           <div className="mycommunity-list-wrap">
             <div className="su-list notice">
               <CommunityPostListView
+                menuType={menuType}
                 postItems={postItems}
                 handleClickRow={param => handleClickRow(param)}
               />

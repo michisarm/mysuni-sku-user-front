@@ -105,9 +105,18 @@ export function findPostView(postId: string): Promise<Post> {
 export function findAllPost(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle,
+  };
+  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}`;
   return axiosApi
-    .get<OffsetElementList<Post>>(url)
+    .get<OffsetElementList<Post>>(url, { params })
     .then(response => response && response.data);
 }
 
@@ -115,9 +124,18 @@ export function findAllPost(
 export function findNoticePost(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle,
+  };
+  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}`;
   return axiosApi
-    .get<OffsetElementList<Post>>(url)
+    .get<OffsetElementList<Post>>(url, { params })
     .then(response => response && response.data);
 }
 
@@ -141,6 +159,13 @@ export function findAllMyCommunities(sort: string, offset: number): Promise<
   OffsetElementList<CommunityView> | undefined
 > {
   const url = `${BASE_URL}/communities/communityView/my?sort=${sort}&offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+}
+
+export function findAllOtherCommunities(memberId: string, sort: string, offset: number): Promise<
+  OffsetElementList<CommunityView> | undefined
+> {
+  const url = `${BASE_URL}/communities/communityView/other/${memberId}?sort=${sort}&offset=${offset}&limit=10`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -265,15 +290,29 @@ export function findPostMenuName(
 }
 
 export function registerBookmark(postId: string) {
-  const bookmarkCdo = {
-    postId,
-    memberId: patronInfo.getDenizenId(),
-  }
-  const url = `${BASE_URL}/bookmarks`
-  return axiosApi.post<string>(url, bookmarkCdo).then(AxiosReturn);
+  const url = `${BASE_URL}/bookmarks?postId=${postId}`
+  return axiosApi.post<string>(url).then(AxiosReturn);
 }
 
 export function removeBookmark(postId: string) {
-  const url = `${BASE_URL}/bookmarks/${postId}/patronInfo.getDenizenId()`
+  const url = `${BASE_URL}/bookmarks/${postId}`
   return axiosApi.delete(url).then(AxiosReturn);
+}
+
+// profile - feed
+export function findAllPostViewsFromProfileFeed(
+  memberId:string,
+  offset: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/feed?offset=${offset}&limit=10&memberId=${memberId}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
+
+// profile - bookmark
+export function findAllPostViewsFromProfileBookmark(
+  offset: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/bookmarks?offset=${offset}&limit=10`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }

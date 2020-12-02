@@ -19,7 +19,9 @@ interface CommunityPostCreateViewProps {
   communityId: string;
   menuId?: string;
   postId?: string;
+  menuType?: string;
   menus: CommunityMenu[];
+  managerAuth: boolean;
 }
 
 const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
@@ -27,7 +29,9 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   communityId,
   menuId,
   postId,
+  menuType,
   menus,
+  managerAuth,
 }) {
   const history = useHistory();
   const handlePinnedChange = useCallback((e: any, data: any) => {
@@ -91,7 +95,11 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
               history.goBack();
             }
           })
-        } else {
+        }
+        // else if(menuType === 'anonymous') {
+        //   //익명 등록인 경우
+        // }
+        else {
           saveCommunityPost(communityId, menuId, postId).then((result) => {
             if(result !== undefined) {
               history.goBack();
@@ -115,15 +123,17 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         <Form>
           <Form.Field>
             {/* 공지 등록 체크박스 */}
-            <div className="board-write-checkbox">
-              <Checkbox
-                className="base"
-                label="중요 등록"
-                name="communityPostCreatePinned"
-                checked={postItem.pinned}
-                onChange={handlePinnedChange}
-              />
-            </div>
+            {managerAuth && (
+              <div className="board-write-checkbox">
+                <Checkbox
+                  className="base"
+                  label="중요 등록"
+                  name="communityPostCreatePinned"
+                  checked={postItem.pinned}
+                  onChange={handlePinnedChange}
+                />
+              </div>
+            )}
             <div
               className={
                 titleLength >= 100

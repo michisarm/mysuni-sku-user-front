@@ -4,11 +4,12 @@ import React, { useCallback } from 'react';
 import { Icon } from 'semantic-ui-react';
 
 interface CommunityPostListViewProps{
+  menuType: string
   postItems: CommunityPostList
   handleClickRow: (param: object) => void
 }
 
-function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
+function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: string) {
   return (
     <>
       {post.pinned === false && ( 
@@ -32,7 +33,12 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
               </span>
             </span>
           </span>
-          <span className="cell nick">{post.nickName}</span>
+          { menuType === 'ANONYMOUS' && (
+            <span className="cell nick">익명</span>
+          )}
+          { menuType !== 'ANONYMOUS' && (
+            <span className="cell nick">{post.nickName}</span>
+          )}
           <span className="cell date">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
           </span>
@@ -59,7 +65,12 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
               </span>
             </span>
           </span>
-          <span className="cell nick">{post.nickName}</span>
+          { menuType === 'ANONYMOUS' && (
+            <span className="cell nick">익명</span>
+          )}
+          { menuType !== 'ANONYMOUS' && (
+            <span className="cell nick">{post.nickName}</span>
+          )}
           <span className="cell date">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
           </span>
@@ -71,6 +82,7 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any) {
 
 const CommunityPostListView: React.FC<CommunityPostListViewProps> = function CommunityPost({
   postItems,
+  menuType,
   handleClickRow
 }) {
   const onHandleClickRow = useCallback(
@@ -92,7 +104,7 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
         <span className="cell date">등록일</span>
       </a>
       {postItems.items.map((post, index) => {
-        return renderPostRow(post, onHandleClickRow);
+        return renderPostRow(post, onHandleClickRow, menuType);
       })}
     </>
   );
