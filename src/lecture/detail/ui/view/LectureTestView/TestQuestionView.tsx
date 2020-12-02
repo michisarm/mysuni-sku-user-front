@@ -60,7 +60,8 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   }
   if (
     question.questionType === 'SingleChoice' ||
-    question.questionType === 'MultiChoice'
+    question.questionType === 'MultiChoice' ||
+    question.questionType === 'ShortAnswer'
   ) {
     if (submitted) {
       if (answerResult) {
@@ -79,7 +80,8 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   useEffect(() => {
     if (
       question.questionType === 'SingleChoice' ||
-      question.questionType === 'MultiChoice'
+      question.questionType === 'MultiChoice' ||
+      question.questionType === 'ShortAnswer'
     ) {
       if (submitOk && submitted) {
         if (!answerResult) {

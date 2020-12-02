@@ -17,8 +17,8 @@ import { getCommunityPostListItem } from 'community/store/CommunityPostListStore
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
 import CommunityPdfModal from '../view/CommunityPdfModal';
-import { saveCommunityPostLike } from 'community/service/useCommunityPostDetail/utility/saveCommunityPostLike';
-import { getCommunityPostLikeCountByMember } from 'community/service/useCommunityPostDetail/utility/getCommunityPostLike';
+import { saveCommunityPostLike } from '../../service/useCommunityPostDetail/utility/saveCommunityPostLike';
+import { getCommunityPostLikeCountByMember } from '../../service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
@@ -64,7 +64,6 @@ function CommunityPostDetailContainer() {
     setCreatorId(denizenId!);
     getFileIds();
     getLikeState();
-    console.log('postDetail', postDetail);
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -201,14 +200,16 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
-            <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
-              {like && (
-                <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
-              ) || (
-                <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
-              )}
-              좋아요
-            </button>
+            { postDetail.menuId !== 'NOTICE' && (
+              <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
+                {like && (
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
+                ) || (
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+                )}
+                좋아요
+              </button>
+            )}
             { creatorId === postDetail.creatorId && (
               <Button
                 className="ui icon button left post edit"

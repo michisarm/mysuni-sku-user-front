@@ -10,6 +10,8 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
 import { patronInfo } from '@nara.platform/dock';
 import { useCommunityDiscussionPostDetail } from 'community/service/useCommunityPostDetail/useCommunityDiscussionPost';
+import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
+import DiscussionViewContentHeaderView from '../view/CommunityPostDetailView/DiscussionViewContentHeaderView';
 
 
 interface Params {
@@ -58,17 +60,15 @@ function CommunityDiscussionContainer() {
     <Fragment>
       {postDetail && (
         <div className="ui segment full">
-          {/* <PostDetailViewContentHeaderView
+          <DiscussionViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
             time={postDetail.createdTime}
             readCount={postDetail.readCount}
             deletable={true}
             onClickList={OnClickList}
-            onClickModify={OnClickModify}
-            onClickDelete={OnClickDelete}
-          /> */}          
-          <div className="class-guide-txt fn-parents ql-snow">
+          />         
+          {/* <div className="class-guide-txt fn-parents ql-snow">
             <div className="text ql-editor">
               <div
                 className="text description ql-editor"
@@ -78,7 +78,7 @@ function CommunityDiscussionContainer() {
                 ref={textContainerRef}
               />
             </div>
-          </div>
+          </div> */}
           {/* <div className="ov-paragraph download-area task-read-down">
             <div className="detail">
               {postDetail.fileBoxId &&

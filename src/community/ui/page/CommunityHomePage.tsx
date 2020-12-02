@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import {
   requestNotice,
   requestRecent,
@@ -85,12 +85,22 @@ interface Params {
 }
 
 function CommunityHomePage() {
+  const { pathname } = useLocation();
   const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
   useEffect(() => {
+    const match = matchPath<Params>(pathname, {
+      path: '/community/:communityId',
+      exact: true,
+    });
+    if (match === null) {
+      return;
+    }
+    const { communityId } = match.params;
+
     requestNotice(communityId);
     requestRecent(communityId);
-  }, [communityId]);
+  }, [pathname]);
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
   }
@@ -144,38 +154,56 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>공지사항</p>
-            {/* more */}
-            <Link
-              className="ui icon button right btn-blue btn-more"
-              to={`/community/${communityId}/notice`}
-            >
-              more
-              <i aria-hidden="true" className="icon more3" />
-            </Link>
+            {communityHome.community.approved === true &&
+              communityHome.notice.length > 0 && (
+                <Link
+                  className="ui icon button right btn-blue btn-more"
+                  to={`/community/${communityId}/notice`}
+                >
+                  more
+                  <i aria-hidden="true" className="icon more3" />
+                </Link>
+              )}
           </div>
-          {communityHome.notice.map(post => (
-            <NoticeItemView key={post.postId} {...post} />
-          ))}
+          {communityHome.notice.length > 0 &&
+            communityHome.notice.map(post => (
+              <NoticeItemView key={post.postId} {...post} />
+            ))}
+          {communityHome.noticeRequested && communityHome.notice.length === 0 && (
+            <div className="no-cont-wrap">
+              <i aria-hidden="true" className="icon no-contents80" />
+              <div className="text">등록된 게시물이 없습니다.</div>
+            </div>
+          )}
         </div>
 
         {/* 최근 게시글 */}
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
-            {/* more */}
-            <Link
-              className="ui icon button right btn-blue btn-more"
-              to={`/community/${communityId}/all`}
-            >
-              more
-              <i aria-hidden="true" className="icon more3" />
-            </Link>
+            {communityHome.community.approved === true &&
+              communityHome.recent.length > 0 && (
+                <Link
+                  className="ui icon button right btn-blue btn-more"
+                  to={`/community/${communityId}/all`}
+                >
+                  more
+                  <i aria-hidden="true" className="icon more3" />
+                </Link>
+              )}
           </div>
           <div className="new-board">
-            {communityHome.recent.map(post => (
-              <RecentItemView key={post.postId} {...post} />
-            ))}
+            {communityHome.recent.length > 0 &&
+              communityHome.recent.map(post => (
+                <RecentItemView key={post.postId} {...post} />
+              ))}
           </div>
+          {communityHome.recentRequested && communityHome.recent.length === 0 && (
+            <div className="no-cont-wrap">
+              <i aria-hidden="true" className="icon no-contents80" />
+              <div className="text">등록된 게시물이 없습니다.</div>
+            </div>
+          )}
         </div>
       </div>
     </>
