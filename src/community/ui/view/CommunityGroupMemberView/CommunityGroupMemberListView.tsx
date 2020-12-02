@@ -16,17 +16,19 @@ function ItemBox({
 
   const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
 
-    const updateData = async () => {
-      const newData = await getGroupMemberData(communityId, groupId, (activePage - 1 ) * 8);
-      setMemberData(newData);
+    if(activePage === undefined || memberData === undefined) {
+      return false
     }
 
     if(followState === false) {
-      onFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8)
-      updateData();
+      onFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8).then((result) => {
+        setMemberData(result);
+      })
+      
     } else {
-      onUnFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8)
-      updateData();
+      onUnFollowGroupMember(communityId, groupId, memberId, (activePage - 1) * 8).then((result) => {
+        setMemberData(result);
+      })
     }
     
   },[activePage, memberData])

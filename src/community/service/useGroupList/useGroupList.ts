@@ -7,12 +7,14 @@ export function getGroup(communityId:string, pageNum:number) {
   findAllGroupByQuery(communityId, pageNum).then(res => setCommunityGroup(res.data))
 }
 
-// export function getGroupMember(communityId:string, groupId:string, page:number) {
-//   findGroupMember(communityId, groupId, page).then(res => setCommunityGroupMember(res.data))
-// }
+export function getGroupMember(communityId:string, groupId:string, page:number) {
+  findGroupMember(communityId, groupId, page).then(res => setCommunityGroupMember(res.data))
+}
 
 export function getGroupMemberData(communityId:string, groupId:string, page:number) {
-  return findGroupMember(communityId, groupId, page).then(response => response && response.data);
+  return findGroupMember(communityId, groupId, page).then(response => {
+    return response && response.data
+  });
 }
 
 export function onFollowGroupMember(
@@ -22,7 +24,9 @@ export function onFollowGroupMember(
   page: number,
 ) {
   //
-  memberFollowAdd(memberId).then(res => {getGroupMemberData(communityId, groupId, page)})
+  return memberFollowAdd(memberId).then(res => {
+    return getGroupMemberData(communityId, groupId, page)
+  })
 }
 
 export function onUnFollowGroupMember(
@@ -31,5 +35,7 @@ export function onUnFollowGroupMember(
   memberId:string,
   page: number,
   ) {
-  memberFollowDel(memberId).then(res => {getGroupMemberData(communityId, groupId, page)})
+  return memberFollowDel(memberId).then(res => { 
+    return getGroupMemberData(communityId, groupId, page)
+  })
 }
