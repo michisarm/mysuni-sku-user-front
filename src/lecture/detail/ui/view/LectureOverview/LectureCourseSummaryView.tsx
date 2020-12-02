@@ -94,7 +94,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   // (react-ga) post pageTitle
   useEffect(() => {
     setTimeout(() => {
-      ReactGA.pageview(window.location.pathname + window.location.search, [], `${lectureSummary.name}`);
+      ReactGA.pageview(window.location.pathname + window.location.search, [], `(Course) - ${lectureSummary.name}`);
     }, 1000);
   })
 
