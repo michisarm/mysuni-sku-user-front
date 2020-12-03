@@ -51,11 +51,11 @@ const ReadOnlyProfileTitleView: React.FC<ReadOnlyProfileTitleViewProps> = functi
               <span>Following</span>
               <em>{profile?.followingCount}</em>
             </li>
-            <li>
+            {/*<li>
               <Button className="btn_profile_follow">
                   {(profile?.isFollow && "Unfollow") || "Follow"}
               </Button>
-            </li>
+            </li>*/}
           </ul>
         </>
       </div>
