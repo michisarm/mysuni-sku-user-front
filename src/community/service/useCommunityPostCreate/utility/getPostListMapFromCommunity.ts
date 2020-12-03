@@ -18,25 +18,26 @@ export async function getPostItem(
     offset: 0,
     limit: 0,
   };
-
   //TODO api 수정되면 바꿀 예정
   if (param.communityId !== '') {
     {
       const postRdo = {
-        // 'startDate': 1573052400000,
-        // 'endDate': 1604674799999,
         'title': param.title,
         'html': param.html,
         'creatorId': param.creatorId,
         'offset': param.offset,
-        'limit': 20,
-        'searchFilter': param.searchFilter,
+        'limit': 10,
+        'searchGubun': param.searchGubun,
+        'searchTitle': param.searchTitle,
         'menuId': param.menuId,
+        'menuType': param.type,
         'communityId': param.communityId,
+        'communityName': param.communityName,
         'sort': param.sort,
         'pinned': param.pinned
       }
-      const findPostData = await findPostViewsByMenuId(param.menuId!, 'createTime', param.offset, 10);
+
+      const findPostData = await findPostViewsByMenuId(postRdo);
       if (findPostData) {
         communityPost.totalCount = findPostData.totalCount;
         communityPost.offset = param.offset;
@@ -105,11 +106,14 @@ export async function getPostItem(
             communityPost.items.push({
               postId: post.postId,
               communityId: post.communityId,
+              communityName: post.communityName,
               title: post.title,
               html: post.html,
               createdTime: post.createdTime,
               replyCount: post.replyCount,
-              commentFeedbackId: post.commentFeebackId,
+              commentFeedbackId: post.commentFeedbackId,
+              menuId: post.menuId,
+              menuType: post.menuType,
               nickName: post.nickName || '',
               pinned: post.pinned,
               fileBoxId: post.fileBoxId,

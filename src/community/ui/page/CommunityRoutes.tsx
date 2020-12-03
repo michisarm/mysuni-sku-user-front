@@ -3,7 +3,6 @@ import { Route, Switch, useParams } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
 import {
   requestCommunity,
-  requestCommunityHome,
   requestCommunityMenus,
 } from '../../service/useCommunityHome/requestCommunity';
 import CommunityHomeTreeContainer from '../logic/CommunityHomeTreeContainer';
@@ -11,6 +10,7 @@ import AllPostsPage from './AllPostsPage';
 import BasicPostEditPage from './BasicPostEditPage';
 import BasicPostPage from './BasicPostPage';
 import CommunityHomePage from './CommunityHomePage';
+import CommunityPreviewPage from './CommunityPreviewPage';
 import CommunityHtmlPage from './CommunityHtmlPage';
 import CreatePostPage from './CreatePostPage';
 import DataPostEditPage from './DataPostEditPage';
@@ -29,13 +29,13 @@ function CommunityRoutes() {
   const { communityId } = useParams<Params>();
   useEffect(() => {
     requestCommunity(communityId);
-    requestCommunityHome(communityId);
     requestCommunityMenus(communityId);
   }, [communityId]);
   return (
     <section className="content community">
       <Segment className="full">
         <div className="course-detail-center community-containter">
+              
           <CommunityHomeTreeContainer />
           <div className="community-home-contants">
             <Switch>
@@ -66,13 +66,28 @@ function CommunityRoutes() {
               />
               <Route
                 exact
+                path="/community/:communityId/board/:menuId/:menuType/create"
+                component={CreatePostPage}
+              />
+              <Route
+                exact
+                path="/community/:communityId/board/noticeCreate/create"
+                component={CreatePostPage}
+              />
+              <Route
+                exact
                 path="/community/:communityId/post/:postId"
                 component={BasicPostPage}
               />
               <Route
                 exact
-                path="/community/:communityId/data/:postId"
-                component={DataPostPage}
+                path="/community/:communityId/:menuType/post/:postId"
+                component={BasicPostPage}
+              />
+              <Route
+                exact
+                path="/community/:communityId/data/:menuId"
+                component={PostsPage}
               />
               <Route
                 exact

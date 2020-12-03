@@ -1,3 +1,4 @@
+import { findPostMenuName } from 'community/api/communityApi';
 import { CriteriaItemModel } from '../../../../../survey/form/model/CriteriaItemModel';
 import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
 import {
@@ -437,6 +438,19 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId);
       setLectureSurvey(lectureSurvey);
       await getCourseLectureSurveyState(lectureId, surveyCase.id);
+    }
+  }
+  if (contentType === 'community') {
+    const surveyCase = await findPostMenuName(contentId, lectureId);
+    if (
+      surveyCase !== undefined &&
+      surveyCase !== null &&
+      surveyCase.surveyId !== '' &&
+      surveyCase.surveyCaseId !== ''
+    ) {
+      const lectureSurvey = await parseSurveyForm(surveyCase.surveyId);
+      setLectureSurvey(lectureSurvey);
+      await getCourseLectureSurveyState(lectureId, surveyCase.surveyCaseId);
     }
   }
 }

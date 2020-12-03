@@ -1,3 +1,4 @@
+import CommunityMenuType from "./CommunityMenuType";
 import PostType from "./PostType";
 
 export default interface Post {
@@ -15,7 +16,7 @@ export default interface Post {
   replyCount: number;
 
   fileBoxId: string;
-  commentFeebackId: string;
+  commentFeedbackId: string;
 
   pinned: boolean;
   readCount: number;
@@ -23,6 +24,7 @@ export default interface Post {
   visible: boolean;
 
   createdTime: number;
+  creatorId: string;
 
   communityName: string;
 
@@ -35,4 +37,9 @@ export default interface Post {
   creatorCompanyCode?: string
   creatorCompanyName?: string
 
+  bookmarked: boolean;
+  menuType: CommunityMenuType;
+
+  prevPost: Post;
+  nextPost: Post;
 }

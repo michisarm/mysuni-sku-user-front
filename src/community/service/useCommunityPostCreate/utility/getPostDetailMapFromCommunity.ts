@@ -20,7 +20,7 @@ export async function getPostDetailMapFromCommunity(
         fileBoxId: '',
         commentFeedbackId: '',
         pinned: false,
-        readCount: '',
+        readCount: 0,
         visible: false,
         creatorId: '',
         createdTime: 0,
@@ -36,18 +36,23 @@ export async function getPostDetailMapFromCommunity(
         if (post !== undefined && post !== null) {
             postDetailItem.id = post.id!;
             postDetailItem.postId = post.postId;
+            postDetailItem.menuId = post.menuId;
             postDetailItem.pinned = post.pinned;
             postDetailItem.title = post.title;
             postDetailItem.html = post.html;
             postDetailItem.visible = post.visible;
             postDetailItem.fileBoxId = post.fileBoxId;
             postDetailItem.createdTime = post.createdTime;
+            postDetailItem.creatorId = post.creatorId;
             postDetailItem.replyCount = post.replyCount;
             postDetailItem.likeCount = post.likeCount;
+            postDetailItem.readCount = post.readCount;
             postDetailItem.nickName = post.nickName!;
             postDetailItem.introduce = post.introduce!;
             postDetailItem.profileImg = post.profileImg!;
-            postDetailItem.commentFeedbackId = post.commentFeebackId
+            postDetailItem.commentFeedbackId = post.commentFeedbackId;
+            postDetailItem.prevPost = post.prevPost;
+            postDetailItem.nextPost = post.nextPost;
         }
     }
     setCommunityPostDetailItem(postDetailItem);

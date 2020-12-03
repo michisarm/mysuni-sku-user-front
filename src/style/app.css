@@ -675,3 +675,12 @@ body .badge_new .title .cell span {
 .ui.modal.transition.visible.active.base.w700 .scrolling-80vh .row.head + .row {
   height: 522px;
 }
+
+/* 2020.11.30 Community Pdf Modal, IE 스크롤현상 FIX */
+body.msie .ui.modals.transition.visible.active .scrolling-80vh {
+  overflow-x:hidden
+}
+
+body.msie .ui.modals.transition.visible.active .scrolling-80vh .react-pdf__Document .react-pdf__Page {
+  overflow:hidden;
+}

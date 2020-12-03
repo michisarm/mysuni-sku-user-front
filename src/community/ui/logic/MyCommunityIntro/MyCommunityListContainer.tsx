@@ -1,22 +1,30 @@
-import React, { useEffect } from 'react';
-import { Button, Icon, Select } from 'semantic-ui-react';
-import { useMyCommunityIntro } from '../../../store/CommunityMainStore';
+import React from 'react';
+import { Button, DropdownProps, Icon, Select } from 'semantic-ui-react';
+import {
+  getMyCommunityIntro,
+  setMyCommunityIntro,
+  useMyCommunityIntro,
+} from '../../../store/CommunityMainStore';
 import CommunityItem from '../../../viewModel/MyCommunityIntro/CommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
 import { Link } from 'react-router-dom';
+import {
+  requestAppendMyCommunityList,
+  requestMyCommunityList,
+} from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 
 const SORT_OPTIONS = [
-  { key: 'last-join', value: 'last-join', text: '최근가입순' },
-  { key: 'last-writing', value: 'last-writing', text: '최신글순' },
-  { key: 'Alphabetically', value: 'Alphabetically', text: '가나다순' },
+  { key: 'memberCreatedTime', value: 'memberCreatedTime', text: '최근가입순' },
+  { key: 'lastPostTime', value: 'lastPostTime', text: '최신글순' },
+  { key: 'name', value: 'name', text: '가나다순' },
 ];
 
 const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
   communityId,
   name,
-  image,
+  thumbnailId,
   hasNewPost,
-  manager,
+  managerName,
   memberCount,
 }) {
   return (
@@ -25,7 +33,7 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
       to={`/community/${communityId}`}
     >
       <div className="thumbnail">
-        <img src={image} />
+        <img src={thumbnailId} />
       </div>
       <div className="community-main-left-list">
         <div className="community-main-left-h3">
@@ -35,7 +43,7 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
         <div className="community-main-left-span">
           <span>
             <img src={managerIcon} />
-            {manager}
+            {managerName}
           </span>
           멤버<span>{memberCount}</span>
         </div>
@@ -44,8 +52,25 @@ const CommunityItemView: React.FC<CommunityItem> = function CommunityItemView({
   );
 };
 
+function changeSort(_: any, data: DropdownProps) {
+  const myCommunityIntro = getMyCommunityIntro();
+  if (myCommunityIntro === undefined) {
+    return;
+  }
+  const communitiesSort = (data.value || 'memberCreatedTime').toString();
+  setMyCommunityIntro({
+    ...myCommunityIntro,
+    communitiesSort,
+    communitiesOffset: 0,
+  });
+  requestMyCommunityList();
+}
+
 function MyCommunityListContainer() {
   const myCommunityIntro = useMyCommunityIntro();
+  if (myCommunityIntro === undefined) {
+    return null;
+  }
   return (
     <div className="community-left community-main-left">
       <div className="sub-info-box">
@@ -54,7 +79,8 @@ function MyCommunityListContainer() {
             placeholder="선택해주세요"
             className="dropdown w302 selection"
             options={SORT_OPTIONS}
-            value="last-join"
+            value={myCommunityIntro.communitiesSort}
+            onChange={changeSort}
           />
         </div>
         {myCommunityIntro !== undefined && (
@@ -69,9 +95,24 @@ function MyCommunityListContainer() {
         )}
 
         <div className="more-comments community-side">
-          <Button icon className="left moreview">
-            {/* <Icon className="moreview" /> list more */}
-          </Button>
+          {myCommunityIntro.communitiesTotalCount >
+            myCommunityIntro.communitiesOffset && (
+            <Button
+              icon
+              className="left moreview"
+              onClick={requestAppendMyCommunityList}
+            >
+              <Icon className="moreview" /> list more
+            </Button>
+          )}
+          {myCommunityIntro.communitiesTotalCount <=
+            myCommunityIntro.communitiesOffset && (
+            <Button
+              icon
+              className="left moreview"
+              style={{ cursor: 'default' }}
+            />
+          )}
         </div>
       </div>
     </div>

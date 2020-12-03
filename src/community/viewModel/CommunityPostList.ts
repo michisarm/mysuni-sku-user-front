@@ -14,13 +14,16 @@ export interface CommunityPostList {
 export interface CommunityPostItem {
   postId: string;
   communityId: string;
+  communityName: string;
   title: string;
   html: string;
   replyCount: number;
   commentFeedbackId: string;
+  menuId: string;
   createdTime: number;
   nickName: string;
   pinned: boolean;
   fileBoxId: string;
   newBadge: boolean;
+  menuType?: string;
 }
