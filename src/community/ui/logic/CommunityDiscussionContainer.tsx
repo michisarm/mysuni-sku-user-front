@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { CommentList } from '@nara.drama/feedback';
+import { CommunityCommentList } from '@nara.drama/feedback';
 import { patronInfo } from '@nara.platform/dock';
 import { useCommunityDiscussionPostDetail } from 'community/service/useCommunityPostDetail/useCommunityDiscussionPost';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
@@ -85,7 +85,7 @@ function CommunityDiscussionContainer() {
                   ))}
             </div>
           </div> */}
-          <CommentList
+          <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
             hideCamera
             name=""
