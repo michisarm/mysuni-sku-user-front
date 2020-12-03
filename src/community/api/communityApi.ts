@@ -300,7 +300,6 @@ export function followList(
 // 모달 팔로워 **************************
 export function followingsModal(): Promise<OffsetElementList<FollowModalItem> | undefined> {
   const url = `${BASE_URL}/profileviews/following?offset=0&limit=999`;
-  console.log('팔로윙 api!!!!!',axiosApi.get(url).then(AxiosReturn) );
   return axiosApi.get<OffsetElementList<FollowModalItem>>(url).then(AxiosReturn);
 }
 

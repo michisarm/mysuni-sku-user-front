@@ -20,10 +20,9 @@ function CommunityMainHeaderContainer() {
   const [modalHeader, setModalHeader] = useState<string>('');
 
   useEffect(() => {
-    // requestFollowCommunityList();
-    // requestFollowModal();
-    // requestFollowingModal();
-  }, []);
+    requestFollowersModal();
+    requestFollowingsModal();
+  },[]);
 
 
   // const followModalContainerList = useFollowCommunityIntro();
@@ -33,8 +32,8 @@ function CommunityMainHeaderContainer() {
   const followingsList = useFollowingsModal();
  
 
-  console.log('folowersList',followersList);
-  console.log('folowingList',followingsList);
+  // console.log('folowersList',followersList);
+  // console.log('folowingList',followingsList);
 
   const modalOpen = (value: string) => {
     if(value === "followers") {
@@ -48,7 +47,6 @@ function CommunityMainHeaderContainer() {
       setModalHeader("following");
       setOpen(!open);
     }
-    console.log(value);
   }
 
 
@@ -56,20 +54,20 @@ function CommunityMainHeaderContainer() {
   const followersBtn = (id: string, idx: number, follow: boolean) => {
 
     if(follow === true) {
-      requestFollowModalDelete(id);
+      requestFollowModalDelete(id, 'follower');
     }
     else {
-      requestFollowModalAdd(id);
+      requestFollowModalAdd(id, 'follower');
     }
   }
 
   const followingsBtn = (id: string, idx: number, follow: boolean) => {
 
     if(follow === true) {
-      requestFollowModalDelete(id);
+      requestFollowModalDelete(id, 'following');
     }
     else {
-      requestFollowModalAdd(id);
+      requestFollowModalAdd(id, 'following');
     }
   };
 
@@ -144,7 +142,7 @@ function CommunityMainHeaderContainer() {
                 className="value2"
                 onClick={() => modalOpen('followers')}
               >
-                {profile?.followerCount}
+                {followersList?.followers.length}
               </div>
             </div>
             <div className="ui statistic community-num">
@@ -156,7 +154,7 @@ function CommunityMainHeaderContainer() {
                 className="value2"
                 onClick={() => modalOpen('following')}
               >
-                {profile?.followingCount}
+                {followingsList?.followings.length}
               </div>
             </div>
           </div>
