@@ -33,24 +33,7 @@ function CommunityDiscussionContainer() {
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);
-    getFileIds();
   }, [postDetail]);
-
-  const getFileIds = useCallback(() => {
-    const referenceFileBoxId = postDetail && postDetail.fileBoxId;
-
-    Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
-    });
-  }, [postDetail]);
-
-  const findFiles = useCallback((type: string, fileBoxId: string) => {
-    depot.getDepotFiles(fileBoxId).then(files => {
-      filesMap.set(type, files);
-      const newMap = new Map(filesMap.set(type, files));
-      setFilesMap(newMap);
-    });
-  }, []);
 
   const OnClickList = useCallback(() => {
     history.goBack();
