@@ -65,7 +65,7 @@ const CommunityFollowListContainer: React.FC = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
               />
-              <div onClick={() => { requestFollowSearchList(0, 2, text) }}>
+              <div onClick={() => { requestFollowSearchList(0, 5, text) }}>
 
                 <Icon className="search link" />
               </div>
