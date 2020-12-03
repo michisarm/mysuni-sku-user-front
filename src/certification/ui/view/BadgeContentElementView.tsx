@@ -28,7 +28,8 @@ export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => {
 
   ++count;
   if (count === 3) {
-    ReactGA.pageview(window.location.pathname + window.location.search, [], `${name}`);
+    // console.log('name',name);
+    ReactGA.pageview(window.location.pathname + window.location.search, [], `(Badge) - ${name}`);
   }
 
   useEffect(() => {
