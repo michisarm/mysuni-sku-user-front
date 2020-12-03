@@ -234,6 +234,13 @@ export function findCommunity(
   return axiosApi.get<Community>(url).then(AxiosReturn);
 }
 
+export function findCommunityByCourseId(
+  communityId: string
+): Promise<Community | undefined> {
+  const url = `${BASE_URL}/communities/byCourseId/${communityId}`;
+  return axiosApi.get<Community>(url).then(AxiosReturn);
+}
+
 export function findHome(
   communityId: string
 ): Promise<CommunityHomeInfo | undefined> {

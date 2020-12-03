@@ -31,6 +31,7 @@ import Instructor from '../../../model/Instructor';
 import CoursePlanContents from '../../../model/CoursePlanContents';
 import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import { findCommunityByCourseId } from '../../../../../community/api/communityApi';
 
 function getEmpty(text?: string) {
   if (text === undefined || text === null || text == '') {
@@ -56,6 +57,7 @@ async function getLectureSummary(
     lectureType !== undefined ? 'Course' : serviceType!
   );
   const { difficultyLevel } = coursePlanComplex.coursePlanContents;
+  const community = await findCommunityByCourseId(coursePlanComplex.coursePlan.coursePlanId);
   return {
     name: coursePlanComplex.coursePlan.name,
     category: {
@@ -69,7 +71,9 @@ async function getLectureSummary(
     studentCount: serviceType === 'Program' ? coursePlanComplex.programLecture.studentCount : coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
-    difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel
+    difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel,
+    hasCommunity: community !== undefined,
+    communityId: community?.communityId,
   };
 }
 
