@@ -70,14 +70,10 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   contents,
   menuType,
   bookmarked,
-  creatorId,
-  introduce,
-  nickName
 }) {
   const { pathname } = useLocation();
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -127,7 +123,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
             {profileImage !== undefined && profileImage !== '' && (
-              <Comment.Avatar src={`/files/community/${profileImage}`} onClick={() => setOpen(!open)} />
+              <Comment.Avatar src={`/files/community/${profileImage}`}/>
             )}
             <Comment.Content>
               <Comment.Author as="a">{communityName}</Comment.Author>
@@ -202,14 +198,6 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
         </Comment.Group>
       </div>
     </div>
-    <CommunityProfileModal
-      open={open}
-      setOpen={setOpen}
-      userProfile={profileImage}
-      creatorId={creatorId}
-      introduce={introduce}
-      nickName={nickName}
-    />
     </>
   );
 };

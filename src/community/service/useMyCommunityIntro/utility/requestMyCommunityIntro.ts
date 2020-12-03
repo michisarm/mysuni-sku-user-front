@@ -124,8 +124,6 @@ function postToItem(post: Post): PostItem {
     profileImg,
     menuType,
     bookmarked,
-    creatorId,
-    introduce,
   } = post;
   return {
     communityId,
@@ -139,9 +137,6 @@ function postToItem(post: Post): PostItem {
     contents: html,
     menuType,
     bookmarked,
-    introduce: introduce || '',
-    creatorId: creatorId || '',
-    nickName: nickName || '',
   };
 }
 
