@@ -35,6 +35,15 @@ export function modifyCommunityProfile(
     .then(response => response && response.data);
 }
 
+export function findCommunityProfile_new(
+  profileId: string
+): Promise<Profile | undefined> {
+  const url = `${BASE_URL}/profiles/flow/${profileId}`;
+  return axiosApi
+    .get<Profile>(url)
+    .then(AxiosReturn);
+}
+
 export function findCommunityProfile(
   profileId: string
 ): Promise<Profile | undefined> {
