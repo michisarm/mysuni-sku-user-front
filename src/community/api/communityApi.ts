@@ -15,6 +15,7 @@ import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/Follow
 import { NameValueList } from 'shared/model';
 import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { patronInfo } from '@nara.platform/dock';
+import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
 
 const BASE_URL = '/api/community';
 
@@ -57,6 +58,17 @@ export function registerNoticePost(
   postCdo: PostCdo
 ): Promise<Post> {
   const url = `${BASE_URL}/communities/${communityId}/posts/flow/noticePosts`;
+  return axiosApi
+    .post<Post>(url, postCdo)
+    .then(response => response && response.data);
+}
+
+export function registerAnonymousePost(
+  communityId: string,
+  postCdo: PostCdo
+): Promise<Post> {
+  postCdo.type='ANONYMOUS';
+  const url = `${BASE_URL}/communities/${communityId}/posts/flow/anonymous`;
   return axiosApi
     .post<Post>(url, postCdo)
     .then(response => response && response.data);
@@ -116,9 +128,18 @@ export function findPostView(postId: string): Promise<Post> {
 export function findAllPost(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle,
+  };
+  const url = `${BASE_URL}/postviews/community/${postRdo.communityId}`;
   return axiosApi
-    .get<OffsetElementList<Post>>(url)
+    .get<OffsetElementList<Post>>(url, { params })
     .then(response => response && response.data);
 }
 
@@ -126,9 +147,18 @@ export function findAllPost(
 export function findNoticePost(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}?sort=${postRdo.sort}&offset=${postRdo.offset}&limit=${postRdo.limit}`;
+  const params = {
+    communityId: postRdo.communityId,
+    offset: postRdo.offset,
+    limit: postRdo.limit,
+    menuId: postRdo.menuId,
+    searchGubun: postRdo.searchGubun,
+    sort: postRdo.sort,
+    searchTitle: postRdo.searchTitle,
+  };
+  const url = `${BASE_URL}/postviews/notice/${postRdo.communityId}`;
   return axiosApi
-    .get<OffsetElementList<Post>>(url)
+    .get<OffsetElementList<Post>>(url, { params })
     .then(response => response && response.data);
 }
 
@@ -176,7 +206,7 @@ export function findAllOpenCommunities(
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
   const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-    }&sort=${sort}&offset=${offset}&limit=10`;
+    }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -240,6 +270,11 @@ export function findPostByMenuId(menuId: string): Promise<Post> {
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
+export function findPostByMenuIdAndType(menuId: string, type: string): Promise<Post> {
+  const url = `${BASE_URL}/post/menu/${menuId}/type/${type}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
 export function deleteCommunityPost(
   communityId: string,
   postId: string
@@ -247,7 +282,7 @@ export function deleteCommunityPost(
   const url = `${BASE_URL}/communities/${communityId}/posts/${postId}`;
   return axiosApi.delete(url).then(response => response && response.data);
 }
-// follow
+// follow main **********************************************************
 export function followPostList(
   offset: number,
   limit: number
@@ -266,17 +301,21 @@ export function followList(
   OffsetElementList<FollowCommunityItem> | undefined
 > {
   const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
+  console.log('api name',axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn));
   return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
 }
-export function followModal(): Promise<FollowCommunityItem> {
-  const url = `${BASE_URL}/profileviews/following?offset=0&limit=13`;
-  return axiosApi.get(url).then(AxiosReturn);
+
+// *******************************
+
+
+// 모달 팔로워 **************************
+export function followingsModal(): Promise<OffsetElementList<FollowModalItem> | undefined> {
+  const url = `${BASE_URL}/profileviews/following?offset=0&limit=999`;
+  return axiosApi.get<OffsetElementList<FollowModalItem>>(url).then(AxiosReturn);
 }
 
-// 모달 팔로워
-export function followersModal(): Promise<FollowModal> {
+export function followersModal(): Promise<OffsetElementList<FollowModalItem> | undefined> {
   const url = `${BASE_URL}/profileviews/follow?offset=0&limit=1000`;
-  console.log('api!!!', axiosApi.get(url).then(AxiosReturn));
   return axiosApi.get(url).then(AxiosReturn);
 }
 
@@ -288,6 +327,8 @@ export function followModalDelete(id: string): Promise<FollowCommunityItem> {
   const url = `${BASE_URL}/follow/flow/${id}/unfollow`;
   return axiosApi.delete(url).then(AxiosReturn);
 }
+
+// *****************************************
 
 export function findPostMenuName(
   communityId: string,

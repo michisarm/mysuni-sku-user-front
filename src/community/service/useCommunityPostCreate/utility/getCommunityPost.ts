@@ -1,4 +1,4 @@
-import { findPostByMenuId } from "community/api/communityApi";
+import { findPostByMenuIdAndType } from "community/api/communityApi";
 import Post from "community/model/Post";
 import { setCommunityPostDetailItem } from "community/store/CommunityPostDetailStore";
 import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
@@ -33,7 +33,7 @@ export async function getCommunityPost(
 
   }
   if (menuId !== undefined) {
-      const post: Post = await findPostByMenuId(menuId);
+      const post: Post = await findPostByMenuIdAndType(menuId, 'DISCUSSION');
       if (post !== undefined && post !== null) {
           postDetailItem.id = post.id!;
           postDetailItem.postId = post.postId;
@@ -50,7 +50,9 @@ export async function getCommunityPost(
           postDetailItem.nickName = post.nickName!;
           postDetailItem.introduce = post.introduce!;
           postDetailItem.profileImg = post.profileImg!;
-          postDetailItem.commentFeedbackId = post.commentFeedbackId
+          postDetailItem.commentFeedbackId = post.commentFeedbackId;
+          postDetailItem.prevPost = post.prevPost;
+          postDetailItem.nextPost = post.nextPost;
       }
   }
   setCommunityPostDetailItem(postDetailItem);

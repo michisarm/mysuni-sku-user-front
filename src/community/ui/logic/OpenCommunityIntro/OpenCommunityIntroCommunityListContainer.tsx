@@ -43,7 +43,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         <div className="community-main-left-list">
           <div
             className="community-main-left-h3"
-            dangerouslySetInnerHTML={{ __html: description }}
+            dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
           />
         </div>
       </div>

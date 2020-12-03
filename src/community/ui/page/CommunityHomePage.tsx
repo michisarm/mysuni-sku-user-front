@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import {
   requestNotice,
@@ -14,20 +14,39 @@ import moment from 'moment';
 import { patronInfo } from '@nara.platform/dock';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
+  communityId,
+  postId,
   title,
   html,
   createdTime,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
+  const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    let nextText = div.innerText;
+    nextText = nextText
+      .split('\n')
+      .filter(c => c !== '')
+      .join('\n');
+    setText(nextText);
+  }, []);
+
   return (
     <div className="community-home-card">
-      <div className="ui comments base">
+      <Link
+        className="ui comments base"
+        to={`/community/${communityId}/post/${postId}`}
+        style={{ display: 'block' }}
+      >
         <div className="home-card-top">
           <h3>
             {title} {isNew && <span className="new-label">NEW</span>}
           </h3>
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          <p>{text}</p>
         </div>
         <div className="home-card-bottom">
           <span>{createdDate}</span>
@@ -35,12 +54,14 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
             <img src={commentIcon} />0
           </span>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
 
 const RecentItemView: React.FC<Post> = function RecentItemView({
+  communityId,
+  postId,
   title,
   html,
   fileBoxId,
@@ -49,8 +70,25 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
+  const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    let nextText = div.innerText;
+    nextText = nextText
+      .split('\n')
+      .filter(c => c !== '')
+      .join('\n');
+    setText(nextText);
+  }, []);
+
   return (
-    <div className="new-board-list">
+    <Link
+      className="new-board-list"
+      to={`/community/${communityId}/post/${postId}`}
+      style={{ display: 'block' }}
+    >
       <div className="new-board-list-top">
         {/* <img src={BadgeImportant} className="board-badge" /> */}
         {fileBoxId !== undefined && fileBoxId !== null && fileBoxId !== '' && (
@@ -59,7 +97,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <strong>{title}</strong>
         {isNew && <span className="new-label">NEW</span>}
       </div>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <p>{text}</p>
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
@@ -76,7 +114,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -154,40 +192,56 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>공지사항</p>
-            {communityHome.community.approved === true && (
-              <Link
-                className="ui icon button right btn-blue btn-more"
-                to={`/community/${communityId}/notice`}
-              >
-                more
-                <i aria-hidden="true" className="icon more3" />
-              </Link>
-            )}
+            {communityHome.community.approved === true &&
+              communityHome.notice.length > 0 && (
+                <Link
+                  className="ui icon button right btn-blue btn-more"
+                  to={`/community/${communityId}/notice`}
+                >
+                  more
+                  <i aria-hidden="true" className="icon more3" />
+                </Link>
+              )}
           </div>
-          {communityHome.notice.map(post => (
-            <NoticeItemView key={post.postId} {...post} />
-          ))}
+          {communityHome.notice.length > 0 &&
+            communityHome.notice.map(post => (
+              <NoticeItemView key={post.postId} {...post} />
+            ))}
+          {communityHome.noticeRequested && communityHome.notice.length === 0 && (
+            <div className="no-cont-wrap">
+              <i aria-hidden="true" className="icon no-contents80" />
+              <div className="text">등록된 게시물이 없습니다.</div>
+            </div>
+          )}
         </div>
 
         {/* 최근 게시글 */}
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
-            {communityHome.community.approved === true && (
-              <Link
-                className="ui icon button right btn-blue btn-more"
-                to={`/community/${communityId}/all`}
-              >
-                more
-                <i aria-hidden="true" className="icon more3" />
-              </Link>
-            )}
+            {communityHome.community.approved === true &&
+              communityHome.recent.length > 0 && (
+                <Link
+                  className="ui icon button right btn-blue btn-more"
+                  to={`/community/${communityId}/all`}
+                >
+                  more
+                  <i aria-hidden="true" className="icon more3" />
+                </Link>
+              )}
           </div>
           <div className="new-board">
-            {communityHome.recent.map(post => (
-              <RecentItemView key={post.postId} {...post} />
-            ))}
+            {communityHome.recent.length > 0 &&
+              communityHome.recent.map(post => (
+                <RecentItemView key={post.postId} {...post} />
+              ))}
           </div>
+          {communityHome.recentRequested && communityHome.recent.length === 0 && (
+            <div className="no-cont-wrap">
+              <i aria-hidden="true" className="icon no-contents80" />
+              <div className="text">등록된 게시물이 없습니다.</div>
+            </div>
+          )}
         </div>
       </div>
     </>

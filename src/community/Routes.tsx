@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 import MainRoutes from './ui/page/MainRoutes';
@@ -30,7 +30,7 @@ class Routes extends React.Component {
         <Route path="/community/my-profile" component={MyProfileRoutes} />
         <Route path="/community/profile/:profileId" component={ProfileRoutes} />
         <Route exact path="/community/:communityId/preview" component={CommunityPreviewPage}/>
-        <Route path="/community/:communityId" component={CommunityRoutes} />
+        <Route path="/community/:communityId" component={withRouter(CommunityRoutes)} />
         <Route component={NotFoundPage} />
       </Switch>
     );

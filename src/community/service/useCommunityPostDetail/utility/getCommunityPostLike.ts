@@ -1,4 +1,4 @@
-import { findCommunityPostLikeCountByMember } from "community/api/likeApi";
+import { findCommunityPostLikeCountByMember } from "../../../api/likeApi"
 
 export async function getCommunityPostLikeCountByMember(
   postId: string,

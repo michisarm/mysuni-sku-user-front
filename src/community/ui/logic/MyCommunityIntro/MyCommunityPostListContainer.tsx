@@ -175,7 +175,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             )}
             {!more && (
               <div>
-                <p>{text}</p>
+                <p className="summary">{text}</p>
               </div>
             )}
             <div className="text-right">

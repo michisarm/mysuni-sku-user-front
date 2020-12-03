@@ -75,6 +75,27 @@ const MenuItemView: React.FC<CommunityMenu &
       </li>
     );
   }
+  if (type === 'CATEGORY') {
+    return (
+      <>
+        <li>
+          <span>
+            <img src={icon} />
+            {name}
+          </span>
+        </li>
+        {subMenus.length > 0 && (
+          <ul>
+            {subMenus
+              .sort((a, b) => a.order - b.order)
+              .map(menu => (
+                <SubMenuItemView key={menu.menuId} {...menu} />
+              ))}
+          </ul>
+        )}
+      </>
+    );
+  }
   return (
     <>
       <li>
@@ -288,6 +309,17 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
           <img src={icon} />
           {name}
         </a>
+      </li>
+    );
+  }
+  if (type === 'CATEGORY') {
+    return (
+      <li>
+        <span>
+          <img src={subIcon} />
+          <img src={icon} />
+          {name}
+        </span>
       </li>
     );
   }

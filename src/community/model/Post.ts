@@ -39,4 +39,7 @@ export default interface Post {
 
   bookmarked: boolean;
   menuType: CommunityMenuType;
+
+  prevPost: Post;
+  nextPost: Post;
 }

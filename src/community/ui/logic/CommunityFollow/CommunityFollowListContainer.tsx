@@ -20,7 +20,7 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
       {/* 프로필 카드 */}
       <div className="community-main-left-contents">
         <div className="thumbnail">
-          <img src={profileImg === null ? `${DefaultImg}` : `/files/community/${profileImg}`} />
+          <img src={profileImg === null || profileImg === '' ? `${DefaultImg}` : `/files/community/${profileImg}`} />
         </div>
         <div className="community-main-left-list">
           <div className="community-main-left-h3">{nickname}</div>
@@ -50,7 +50,6 @@ const CommunityFollowListContainer: React.FC = () => {
 
   // 페이지네이션 
   const addList = (offset:number) => {
-    console.log('offffffff', offset);
     requestFollowCommunityList(offset, 10, text);
   }
 
