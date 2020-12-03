@@ -119,7 +119,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             }
 
             const compData = new BadgeCompData();
-            //console.log( data );
             // 공통
             compData.compType = data.serviceType;
             compData.id = data.id;

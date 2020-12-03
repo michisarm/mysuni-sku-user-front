@@ -13,9 +13,7 @@ export default class LearningCardApi {
     //
     return axios.post<string>(this.URL, learningCard)
       .then(response => response && response.data || null)
-      .catch((reason) => {
-        console.log(reason);
-      });
+      .catch(() => {});
   }
 
   findLearningCard(learningCardId: string) {

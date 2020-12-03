@@ -265,6 +265,17 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                       answerResult = true;
                     }
                   }
+                  if (question.questionType === 'ShortAnswer') {
+                    const shortAnswers = question.answer && question.answer.split(',');
+                    if (shortAnswers != null && shortAnswers.length > 0 && shortAnswers[0] !== 'undefined' && submitAnswer) {
+                      for (let j = 0; j < shortAnswers.length; j++) {
+                        // 정답지 사용자 문제지 체크
+                        if (submitAnswer.trim().toLowerCase() === shortAnswers[j].trim().toLowerCase()) {
+                          answerResult = true;
+                        }
+                      }
+                    }
+                  }
                 }
               }
 

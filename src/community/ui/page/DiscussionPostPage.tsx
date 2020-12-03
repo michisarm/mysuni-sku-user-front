@@ -1,7 +1,8 @@
 import React from 'react'
+import CommunityDiscussionContainer from '../logic/CommunityDiscussionContainer'
 
 function DiscussionPostPage() {
-  return (<>DiscussionPostPage</>)
+  return (<CommunityDiscussionContainer/>)
 }
 
 export default DiscussionPostPage

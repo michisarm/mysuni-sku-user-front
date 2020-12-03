@@ -108,7 +108,6 @@ class MyTrainingService {
         data
       );
       // if (newModel.results.length > 0) {
-      //   console.log('newModel Count : ', newModel.results.length);
       // }
       const oldJson = sessionStorage.getItem('learningPassed');
       const oldInProgressJson = sessionStorage.getItem(
@@ -119,14 +118,11 @@ class MyTrainingService {
           const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
             oldJson
           );
-          // console.log('oldModel Count : ', oldModel.results.length);
           if (oldModel.results.length > 0) {
             newModel.results = newModel.results.concat(oldModel.results);
           }
         }
       }
-
-      // console.log('total Count : ', newModel.results.length);
 
       if (newModel && newModel.results && newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
@@ -874,8 +870,6 @@ export const convertToKey = (column: string): any => {
   }
 };
 
-// console.log('offset : ', offset);
-// console.log('limit : ', limit + offset);
 // if (channelIds.length > 0) {
 //   // const result: ConcatArray<MyTrainingModel> = [];
 //   const trst: MyTrainingModel[][] = [];
@@ -894,8 +888,6 @@ export const convertToKey = (column: string): any => {
 //   rest.sort((a, b) => b.endDate - a.endDate).slice(offset, limit + offset);
 //
 //   offsetList.totalCount = rest.length;
-//
-//   console.log(rest);
 //
 //   // const result = offsetList.results.slice(offset, limit + offset).find(e => e.category.channel.id === channelIds[0]);
 //   const result = offsetList.results.filter(e => e.category.channel.id === channelIds[0]).slice(offset, limit + offset);

@@ -100,7 +100,6 @@ const NEWLearning: React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    console.log(CONTENT_TYPE_NAME);
     // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');

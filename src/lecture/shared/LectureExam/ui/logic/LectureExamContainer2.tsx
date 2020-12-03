@@ -36,8 +36,6 @@ class LectureExamContainer2 extends Component<Props> {
     //
     const { onReport, onReportNotReady, onTest, onTestNotReady, onAlreadyPassed, onTestWaiting, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name, sort } = this.props;
 
-    // console.log('LectureExamContainer2 : ', sort);
-
     return (
       <>
         {sort === 'box' ? (

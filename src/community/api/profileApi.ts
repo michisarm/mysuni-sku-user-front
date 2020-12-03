@@ -1,11 +1,22 @@
 import { axiosApi } from '@nara.platform/accent';
-import Post from 'community/model/Post';
-import PostCdo from 'community/model/PostCdo';
-import PostUdo from 'community/model/PostUdo';
+import { AxiosResponse } from 'axios';
 import Profile from 'community/model/Profile';
-import ProfileUdo from 'community/model/ProfileUdo';
+import { NameValueList } from 'shared/model';
 
 const BASE_URL = '/api/community';
+
+function AxiosReturn<T>(response: AxiosResponse<T>) {
+  if (
+    response === null ||
+    response === undefined ||
+    response.data === null ||
+    response.data === null ||
+    (response.data as unknown) === ''
+  ) {
+    return undefined;
+  }
+  return response.data;
+}
 
 export function findCommunityMyProfile(
 ): Promise<Profile> {
@@ -16,10 +27,28 @@ export function findCommunityMyProfile(
 }
 
 export function modifyCommunityProfile(
-  profileUdo: ProfileUdo
-): void {
+  profileNameValues: NameValueList
+): Promise<Profile> {
   const url = `${BASE_URL}/profiles`;
-  axiosApi
-    .put<Profile>(url,profileUdo)
+  return axiosApi
+    .put<Profile>(url, profileNameValues)
     .then(response => response && response.data);
+}
+
+export function findCommunityProfile_new(
+  profileId: string
+): Promise<Profile | undefined> {
+  const url = `${BASE_URL}/profiles/flow/${profileId}`;
+  return axiosApi
+    .get<Profile>(url)
+    .then(AxiosReturn);
+}
+
+export function findCommunityProfile(
+  profileId: string
+): Promise<Profile | undefined> {
+  const url = `${BASE_URL}/profiles/${profileId}`;
+  return axiosApi
+    .get<Profile>(url)
+    .then(AxiosReturn);
 }

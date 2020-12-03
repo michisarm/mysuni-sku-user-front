@@ -431,14 +431,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, [params, isActive]);
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log('page out clear Interval ');
-  //     clearInterval(watchInterval);
-  //     clearInterval(checkInterval);
-  //   };
-  // }, [checkInterval, watchInterval]);
-
   useEffect(() => {
     setNextContentsView(false);
     return () => {
@@ -646,7 +638,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   //   const userAgent = navigator.userAgent;
   //   if(userAgent.includes('rv:11.0')){
   //     setDetected(true)
-  //     console.log(userAgent.includes('rv:11.0'))
   //   }
   // })
 

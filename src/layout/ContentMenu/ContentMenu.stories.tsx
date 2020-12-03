@@ -34,7 +34,7 @@ export const Basic = () => {
     <ContentMenu
       menus={menus}
       type="MenuHasCount"
-      onSelectMenu={(type) => console.log(type)}
+      onSelectMenu={() => {}}
     />
   );
 };

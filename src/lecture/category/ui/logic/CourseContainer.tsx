@@ -330,8 +330,6 @@ class CourseContainer extends Component<Props, State> {
     const after2Min = new Date();
     after2Min.setMinutes(after2Min.getMinutes() + 2);
     const nowTime = new Date().getTime();
-    console.log('1.lectureCardId', lectureCardId);
-    console.log('1.liveLectureCardId', liveLectureCardId);
     if (
       nvl(liveLectureCardId, 0) === 0 ||
       liveLectureCardId === lectureCardId ||
@@ -341,11 +339,6 @@ class CourseContainer extends Component<Props, State> {
       deleteCookie('liveLectureCardIdTime');
       setCookie('liveLectureCardId', lectureCardId);
       setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-      console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
-      console.log(
-        '2.local.liveLectureCardIdTime',
-        getCookie('liveLectureCardIdTime')
-      );
     } else {
       rtnLive = true;
     }
@@ -360,8 +353,6 @@ class CourseContainer extends Component<Props, State> {
     // 동영상 close click 시 lectureCardId 가 같다면
     // 20200717 video 멀티 시청불가~! 해제
     const liveLectureCardId = getCookie('liveLectureCardId');
-    console.log('3.lectureCardId', this.lectureView.serviceId);
-    console.log('3.liveLectureCardId', liveLectureCardId);
     if (this.lectureView.serviceId === liveLectureCardId) {
       deleteCookie('liveLectureCardId');
       deleteCookie('liveLectureCardIdTime');

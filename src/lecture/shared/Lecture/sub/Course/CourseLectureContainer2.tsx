@@ -205,7 +205,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     prevState: Readonly<State>,
     snapshot?: any
   ): void {
-    // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
     if (
       (this.props.studentInfo !== null &&
         prevProps.studentInfo !== this.props.studentInfo) ||
@@ -250,8 +249,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
           answerSheetService.progress === AnswerProgress.Complete;
         this.state.surveyState = disabled;
 
-        // console.log('this.lectureView.surveyCase.id : ', lectureView.surveyCase.surveyFormId);
-        // console.log('this.surveyForm : ', surveyForm);
         if (
           surveyForm &&
           surveyForm.titles &&
@@ -280,7 +277,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
       this.viewObject = this.getViewObject();
 
-      // console.log('this.viewObject : ', this.viewObject);
       this.setExamState(this.studentData);
     }
   }
@@ -370,7 +366,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { open, setOpen } = this.context;
     setOpen(!open);
 
-    /*console.log('this.state.inProgress : ' + this.state.inProgress);
+    /*
 
     if( this.state.inProgress === LearningState.Progress ) {
       setOpen(open);
@@ -442,7 +438,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
       //window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -453,7 +448,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
       //window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -464,7 +458,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
       window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -477,7 +470,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   //   } else
   //   {
   //     reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-  //     console.warn('[UserFront] Url is empty.');
   //   }
   // }
 
@@ -565,8 +557,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { mediaService, isPreCoursePassed, lectureView } = this.props;
     // const { personalCube } = personalCubeService!;
 
-    // console.log('personalCube : ', lectureView);
-
     // const { service, contents } = this.personalCube!.contents;
 
     if (isPreCoursePassed) {
@@ -579,8 +569,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
           lectureView.personalCube?.contents.contents.id
         );
         const url = this.getMediaUrl(media);
-
-        console.log('media : ', media);
 
         //외부 영상, CP사 영상
         if (
@@ -674,7 +662,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
         state = SubState.InProgress;
       }
     }
-    // console.log('getViewObject>>>> : ', this.state.isContent);
     return {
       // Sub info
       state,
@@ -754,7 +741,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
       }
     }
 
-    // console.log('getViewObject>>>> : ', this.state.isContent);
     return {
       // Sub info
       state,
@@ -835,16 +821,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   setExamState(studentData?: any) {
-    // console.log('시험정보 세팅');
-    // console.log('studentData : ',studentData);
-    // console.log('serviceType : ' + studentData.serviceType);
 
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
     }
 
     this.setStateName('1', 'Test');
-    // console.log('setExamState : ', studentData);
     if (studentData) {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
         if (
@@ -886,7 +868,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
         } else {
           this.setStateName('1', 'Test');
         }
-        // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
       } else if (
         studentData.serviceType === 'Course' ||
         studentData.serviceType === 'Program'
@@ -937,8 +918,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
         }
       }
     }
-
-    // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
   }
 
   setStateName(type: string, name: string) {

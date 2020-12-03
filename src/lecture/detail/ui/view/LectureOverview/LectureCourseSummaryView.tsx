@@ -185,6 +185,17 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
         </div>
         <div className="right-area">
           <div className="header-right-link">
+            {lectureSummary.hasCommunity && (
+              <Link
+                to={`/community/${lectureSummary.communityId}`}
+                target="_blank"
+              >
+                <span className="communityText">
+                  <Icon className="communityLink" />
+                  커뮤니티로 이동
+                </span>
+              </Link>
+            )}
             <a onClick={toggleCourseBookmark}>
               <span>
                 <Icon

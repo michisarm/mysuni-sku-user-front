@@ -118,7 +118,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
           if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
           else if (cubeType === 'Community') this.setCommunity(contentsId);
-          else if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
+          else if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Cohort' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
         });
     }
   }
@@ -150,8 +150,6 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
 
-    // console.log('setOperator() member.name=', member.name + ', member.employeeId=', member.employeeId + '
-    // , member.email=', member.email + ', member.companyCode=', member.companyCode);
     changeCubeIntroProps('operation.operator.name', member.name);
     changeCubeIntroProps('operation.operator.employeeId', member.employeeId);
     changeCubeIntroProps('operation.operator.email', member.email);
@@ -300,8 +298,6 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
 
-    // console.log('handleOKConfirmWin cubeIntroService!.modifyCubeIntro cubeIntro=', cubeIntro);
-
     if (personalCubeId) {
       return personalCubeService!.modifyPersonalCube(personalCubeId, personalCube)
         .then(() => {
@@ -318,7 +314,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
           else if (cubeType === CubeType.Community) {
             this.makeCommunity(personalCubeId, personalCube, cubeIntro,  contentId, cubeIntroId, mode && mode);
           }
-          else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage) {
+          else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage || cubeType === CubeType.Cohort) {
             this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
           }
         });
@@ -460,7 +456,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
       .then(() => {
         if (cubeType === 'Video' || cubeType === 'Audio') mediaService!.removeMedia(personalCubeId);
         if (cubeType === 'Community') boardService!.removeBoard(personalCubeId);
-        if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService!.removeOfficeWeb(personalCubeId);
+        if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Cohort') officeWebService!.removeOfficeWeb(personalCubeId);
       })
       .then(() => this.props.history.push(routePaths.create()));
   }

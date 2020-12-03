@@ -3,56 +3,53 @@ import { Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 import MyProfilePage from './MyProfilePage';
-import MyProfileFeedPage from './MyProfileFeedPage';
+import ProfileFeedPage from './ProfileFeedPage';
 import MyProfileCommunitiesPage from './MyProfileCommunitiesPage';
 import MyProfileBookmarkPage from './MyProfileBookmarkPage';
-import TitleArea from '../view/CommunityProfile/ProfileTitleView';
-import { useCommunityProfile } from 'community/service/useCommunityProfile/useCommunityProfile';
 import { getCommunityProfile } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
 import CommunityMyProfileTitleContainer from '../logic/CommunityMyProfileTitleContainer';
 import CommunityMyProfileMenuContainer from '../logic/CommunityMyProfileMenuContainer';
+import { requestProfileCommunities } from '../../service/useCommunityProfile/utility/requestProfileCommunities';
+import { requestProfileFeeds } from '../../service/useCommunityProfile/utility/requestProfileFeeds';
+import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 
-class MyProfileRoutes extends React.Component {
+const MyProfileRoutes: React.FC = function MyProfileRoutes() {
   //
 
-  componentDidMount() {
+  useEffect(() => {
     getCommunityProfile();
-  }
+    requestProfileCommunities();
+    requestProfileFeeds('');
+    requestProfileBookmarks();
+  }, []);
 
-  render() {
-    //
-    return (
-      <section className="content community profile">
-        <CommunityMyProfileTitleContainer />
-        <div>
-          <CommunityMyProfileMenuContainer />
-          <Switch>
-            <Route
-              exact
-              path="/community/my-profile"
-              component={MyProfilePage}
-            />
-            <Route
-              exact
-              path="/community/my-profile/feed"
-              component={MyProfileFeedPage}
-            />
-            <Route
-              exact
-              path="/community/my-profile/communities"
-              component={MyProfileCommunitiesPage}
-            />
-            <Route
-              exact
-              path="/community/my-profile/bookmark"
-              component={MyProfileBookmarkPage}
-            />
-            <Route component={NotFoundPage} />
-          </Switch>
-        </div>
-      </section>
-    );
-  }
-}
+  return (
+    <section className="content community profile">
+      <CommunityMyProfileTitleContainer />
+      <div>
+        <CommunityMyProfileMenuContainer />
+        <Switch>
+          <Route exact path="/community/my-profile" component={MyProfilePage} />
+          <Route
+            exact
+            path="/community/my-profile/feed"
+            component={()=>ProfileFeedPage('')}
+          />
+          <Route
+            exact
+            path="/community/my-profile/communities"
+            component={MyProfileCommunitiesPage}
+          />
+          <Route
+            exact
+            path="/community/my-profile/bookmark"
+            component={MyProfileBookmarkPage}
+          />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </div>
+    </section>
+  );
+};
 
 export default MyProfileRoutes;

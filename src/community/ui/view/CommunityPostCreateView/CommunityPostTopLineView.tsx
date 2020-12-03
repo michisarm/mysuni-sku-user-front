@@ -10,6 +10,9 @@ import CommunityPanelTopLineContainer from '../CommunityPostList/PostPanelTopLin
 interface Props {
   totalCount: number;
   sortType: string;
+  menuType?: string;
+  pageType?: string;
+  managerAuth?: boolean;
   handelClickCreateTask: () => void;
   onChangeSortType: (name: string, value: SortType) => void;
 }
@@ -22,6 +25,9 @@ interface Params {
 const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineView({
   totalCount,
   sortType,
+  pageType,
+  managerAuth,
+  menuType,
   handelClickCreateTask,
   onChangeSortType,
 }) {
@@ -30,6 +36,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
     { text: '최신순', value: 'createdTime' },
     { text: '댓글순', value: 'replyCount' },
   ];
+
   return (
     <div className="table-board-title">
       <CommunityPanelTopLineContainer count={totalCount}>
@@ -43,13 +50,42 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               onChangeSortType('sort', data.value)
             }
           />
-          <Link
-            className="ui icon button post"
-            to={`/community/${communityId}/board/${menuId}/create`}
-          >
-            <Icon className="post" />
-            post
-          </Link>
+          {(pageType === 'notice') && managerAuth && (
+            <Link
+              className="ui icon button post"
+              to={`/community/${communityId}/board/noticeCreate/create`}
+            >
+              <Icon className="post" />
+              post
+            </Link>
+          )}
+          {(menuType === 'NOTICE') && managerAuth && (
+            <Link
+              className="ui icon button post"
+              to={`/community/${communityId}/board/${menuId}/create`}
+            >
+              <Icon className="post" />
+              post
+            </Link>
+          )}
+          {(menuType === 'ANONYMOUS') && (
+            <Link
+              className="ui icon button post"
+              to={`/community/${communityId}/board/${menuId}/${menuType}/create`}
+            >
+              <Icon className="post" />
+              post
+            </Link>
+          )}
+          {pageType === undefined && menuType !== 'NOTICE' && pageType !== 'all' && menuType !== 'ANONYMOUS' && (
+            <Link
+              className="ui icon button post"
+              to={`/community/${communityId}/board/${menuId}/create`}
+            >
+              <Icon className="post" />
+              post
+            </Link>
+          )}
         </div>
       </CommunityPanelTopLineContainer>
     </div>

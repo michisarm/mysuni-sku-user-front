@@ -12,9 +12,7 @@ export default class CollegeApi {
   registerCollege(college: CollegeModel) {
     return axios.post<string>(this.URLCollege, college)
       .then(response => response && response.data || null)
-      .catch((reason) => {
-        console.log(reason);
-      });
+      .catch(() => {});
   }
 
   findCollege(collegeId: string) {

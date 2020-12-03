@@ -11,8 +11,7 @@ export default class InstructorApi {
     //
     return axios.get<OffsetElement<InstructorModel>>(this.URL + `/${id}`)
       .then(response => response && response.data && new InstructorModel(response.data.result) || new InstructorModel())
-      .catch((t) => {
-        console.error(t);
+      .catch(() => {
         return new InstructorModel();
       });
   }

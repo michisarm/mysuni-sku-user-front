@@ -15,6 +15,7 @@ enum CubeTypeNameType {
   Program = 'Course', // System상 Program이 사용자에게는 같은 Course임.
   Course  = 'Course',
   Cube  = 'Cube',
+  Cohort = 'Cohort'
 }
 
 export default CubeTypeNameType;

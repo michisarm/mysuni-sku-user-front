@@ -18,7 +18,7 @@ const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = functio
   searchType
 }) {
 
-  const searchOptions = [{'text': '전체', 'value': 'all'},{'text': '제목', 'value': 'title'}, {'text': '내용', 'value': 'html'}, {'text': '작성자', 'value': 'creatorId'}]
+  const searchOptions = [{'text': '전체', 'value': 'all'},{'text': '제목', 'value': 'title'}, {'text': '내용', 'value': 'content'}, {'text': '작성자', 'value': 'nickname'}]
   // const onHandleClickRow = useCallback(
   //   // // param => {
   //   // //   handleClickRow(param);
@@ -48,6 +48,7 @@ const CommunityPostListSearchBox: React.FC<CommunityPostListViewProps> = functio
             placeholder="검색어를 입력해주세요."
             value={searchText}
             onChange={handleSearchTextChange}
+            onKeyPress={e => e.key === 'Enter' && onSearch()}
           />
           <Icon className="search link" onClick={() => onSearch()} />
         </div>

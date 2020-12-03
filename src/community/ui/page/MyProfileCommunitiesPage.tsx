@@ -4,15 +4,10 @@ import CommunityMyProfileMenuContainer from '../logic/CommunityMyProfileMenuCont
 import { requestMyCommunityList } from '../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 
 function MyProfileCommunitiesPage() {
-  useEffect(() => {
-    requestMyCommunityList();
-  }, []);
   return (
-    <>
-      <div>
-        <CommunityMyProfileMyCommunityContainer />
-      </div>
-    </>
+    <div>
+      <CommunityMyProfileMyCommunityContainer />
+    </div>
   );
 }
 

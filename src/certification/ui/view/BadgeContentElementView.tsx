@@ -31,12 +31,10 @@ export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => {
     // console.log('name',name);
     ReactGA.pageview(window.location.pathname + window.location.search, [], `(Badge) - ${name}`);
   }
-  // console.log('count', count);
 
   useEffect(() => {
     return () => {
       count = 0;
-      // console.log('unmount', count);
     };
   }, []);
 

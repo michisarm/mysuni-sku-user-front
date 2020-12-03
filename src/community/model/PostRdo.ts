@@ -1,16 +1,20 @@
 export default interface PostRdo {
-  searchFilter: string;
+  searchFilter?: string;
   creatorName?: string;
   startDate?: number;
   endDate?: number;
   limit: number;
   offset: number;
   sort: string;
-
+  searchGubun?: string;
+  searchTitle?: string;
+  
   postId?: string;
   communityId?: string;
+  communityName?: string;
   menuId?: string;
-  //type?: PostTypeModel;
+  menuType?: string;
+  type?: string;
   title?: string;
   html?: string;
   likeCount?: number;

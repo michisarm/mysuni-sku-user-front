@@ -1,5 +1,11 @@
-import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import {
+  Route,
+  Switch,
+  Redirect,
+  withRouter,
+  useLocation,
+} from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 import MainRoutes from './ui/page/MainRoutes';
@@ -18,24 +24,36 @@ import ProfileRoutes from './ui/page/ProfileRoutes';
 import BasicPostEditPage from './ui/page/BasicPostEditPage';
 import DataPostEditPage from './ui/page/DataPostEditPage';
 import CommunityRoutes from './ui/page/CommunityRoutes';
+import CommunityPreviewPage from './ui/page/CommunityPreviewPage';
+import AppContext from '../layout/UserApp/ui/logic/AppContext';
 
-class Routes extends React.Component {
-  //
-  render() {
-    //
-    return (
-      <Switch>
-        <Route path="/community/main" component={MainRoutes} />
-        <Route path="/community/my-profile" component={MyProfileRoutes} />
-        <Route path="/community/profile/:profileId" component={ProfileRoutes} />
+const Routes = function Routes() {
+  const {
+    breadcrumb: { setBreadcrumb },
+  } = useContext(AppContext);
+  const { pathname } = useLocation();
+  useEffect(() => {
+    setBreadcrumb([]);
+  }, [pathname]);
 
-        <Route path="/community/:communityId" component={CommunityRoutes} />
-
-        <Route component={NotFoundPage} />
-      </Switch>
-    );
-  }
-}
+  return (
+    <Switch>
+      <Route path="/community/main" component={MainRoutes} />
+      <Route path="/community/my-profile" component={MyProfileRoutes} />
+      <Route path="/community/profile/:profileId" component={ProfileRoutes} />
+      <Route
+        exact
+        path="/community/:communityId/preview"
+        component={CommunityPreviewPage}
+      />
+      <Route
+        path="/community/:communityId"
+        component={withRouter(CommunityRoutes)}
+      />
+      <Route component={NotFoundPage} />
+    </Switch>
+  );
+};
 
 export default Routes;
 

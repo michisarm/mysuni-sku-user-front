@@ -13,9 +13,7 @@ class SubsidiaryApi {
   registerSubsidiary(subsidiary: SubsidiaryModel) {
     return axios.post<string>(this.URL, subsidiary)
       .then(response => response && response.data || null)
-      .catch((reason) => {
-        console.log(reason);
-      });
+      .catch(() => {});
   }
 
   findSubsidiary(subsidiaryId: string) {

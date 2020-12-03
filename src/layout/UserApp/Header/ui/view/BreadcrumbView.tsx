@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 import { ActionLogService } from 'shared/stores';
 import { BreadcrumbValue } from '../../../index';
-import {Icon, Button} from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -161,7 +161,7 @@ class BreadcrumbView extends Component<Props, State> {
               ))}
           </div>
           {/* 임시 로그인창 표시 (삭제예정) */}
-          {/* <div style={{position:'absolute', top: '0', left: '600px'}}>
+          {/* <div style={{ position: 'absolute', top: '0', left: '600px' }}>
             <input
               style={{
                 width: 200,
@@ -172,12 +172,12 @@ class BreadcrumbView extends Component<Props, State> {
             />
             &nbsp;
             <button style={{ fontSize: 'small' }} onClick={this.onLogin}>
-            로그인
+              로그인
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div> */}
           {/* <div className="right"> */}
-            {/* {process.env.NODE_ENV === 'development' && (
+          {/* {process.env.NODE_ENV === 'development' && (
               <>
                 <input
                   style={{
@@ -193,24 +193,17 @@ class BreadcrumbView extends Component<Props, State> {
                 </button>
                 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
               </>
-            )} */}
-            {/* <Link to={supportPath}>
+            )}
+            <Link to={supportPath}>
               <i className="support12 icon" />
               <span>Support</span>
               <i className="arrow8 black-jump icon" />
             </Link>
-            <div className="help-desk">
+            {/* <div className="help-desk">
               <i aria-hidden="true" className="icon help-tel" />
               Help Desk : 02-6323-9002
-            </div>
-          </div>
-          <div className="lms-right">
-            <Button icon className="btn-black">
-              커뮤니티로 이동
-              <Icon className="morelink"/>
-            </Button>
-          </div>*/}
-        </div> 
+            </div> */}
+        </div>
       </div>
     );
   }

@@ -61,7 +61,6 @@ class CourseLectureService {
     const courseLecture: CourseLectureModel = await this.courseLectureApi.findCourseLectureByCoursePlanId(
       coursePlanId
     );
-    // console.log('courseLecture : ', courseLecture);
     runInAction(() => (this.courseLecture = courseLecture));
     return courseLecture;
   }
@@ -70,10 +69,8 @@ class CourseLectureService {
   setPreLectureViews(
     preLectureViewSet: LectureViewModel[]
   ) {
-    // console.log('preLectureViewSet : ', preLectureViewSet);
     // runInAction(() => (this.preLectureViews = preLectureViewSet));
     this.preLectureViews = preLectureViewSet;
-    // console.log('preLectureViews : ', this);
     return preLectureViewSet;
   }
 

@@ -11,6 +11,7 @@ enum CubeType {
   Community = 'Community',
   Task = 'Task',
   None = 'None',
+  Cohort = 'Cohort'
 }
 
 export default CubeType;

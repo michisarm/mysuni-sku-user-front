@@ -159,7 +159,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
         .then(() => {
           if (cubeType === 'Video' || cubeType === 'Audio') mediaService!.removeMedia(personalCubeId);
           if (cubeType === 'Community') boardService!.removeBoard(personalCubeId);
-          if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService!.removeOfficeWeb(personalCubeId);
+          if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Cohort') officeWebService!.removeOfficeWeb(personalCubeId);
         })
         .then(() => history.push(routePaths.create()));
     }

@@ -1,23 +1,20 @@
 import { post } from 'jquery';
-import { findNoticePostViews } from '../../api/communityApi';
+import { findAllPostViews, findNoticePostViews } from '../../api/communityApi';
 import {
   getCommunityHome,
   setCommunityHome,
 } from '../../store/CommunityHomeStore';
+import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 
 export function requestNotice(communityId: string) {
   const offset = 0;
   const limit = 3;
-  findNoticePostViews(communityId, 'createTime', offset, limit).then(posts => {
-    const communityHome = getCommunityHome() || {
-      menus: [],
-      recent: [],
-      notice: [],
-    };
+  findNoticePostViews(communityId, 'createdTime', offset, limit).then(posts => {
+    const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
-      setCommunityHome({ ...communityHome, notice: [] });
+      setCommunityHome({ ...communityHome, notice: [], noticeRequested: true, });
     } else {
-      setCommunityHome({ ...communityHome, notice: posts.results });
+      setCommunityHome({ ...communityHome, notice: posts.results, noticeRequested: true, });
     }
   });
 }
@@ -25,16 +22,12 @@ export function requestNotice(communityId: string) {
 export function requestRecent(communityId: string) {
   const offset = 0;
   const limit = 4;
-  findNoticePostViews(communityId, 'createTime', offset, limit).then(posts => {
-    const communityHome = getCommunityHome() || {
-      menus: [],
-      recent: [],
-      notice: [],
-    };
+  findAllPostViews(communityId, 'createdTime', offset, limit).then(posts => {
+    const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
-      setCommunityHome({ ...communityHome, recent: [] });
+      setCommunityHome({ ...communityHome, recent: [], recentRequested: true, });
     } else {
-      setCommunityHome({ ...communityHome, recent: posts.results });
+      setCommunityHome({ ...communityHome, recent: posts.results, recentRequested: true, });
     }
   });
 }
