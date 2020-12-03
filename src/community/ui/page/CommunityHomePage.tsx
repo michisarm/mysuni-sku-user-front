@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import {
   requestNotice,
@@ -20,6 +20,19 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
+  const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    let nextText = div.innerText;
+    nextText = nextText
+      .split('\n')
+      .filter(c => c !== '')
+      .join('\n');
+    setText(nextText);
+  }, []);
+
   return (
     <div className="community-home-card">
       <div className="ui comments base">
@@ -27,7 +40,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
           <h3>
             {title} {isNew && <span className="new-label">NEW</span>}
           </h3>
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          <div>{text}</div>
         </div>
         <div className="home-card-bottom">
           <span>{createdDate}</span>
@@ -49,6 +62,19 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
+  const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    let nextText = div.innerText;
+    nextText = nextText
+      .split('\n')
+      .filter(c => c !== '')
+      .join('\n');
+    setText(nextText);
+  }, []);
+
   return (
     <div className="new-board-list">
       <div className="new-board-list-top">
@@ -59,7 +85,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <strong>{title}</strong>
         {isNew && <span className="new-label">NEW</span>}
       </div>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div>{text}</div>
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
