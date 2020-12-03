@@ -8,9 +8,11 @@ import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberL
 import { memberFollowDel } from 'community/api/MemberApi';
 import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
+import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 
 function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
   const [follow, setFollow] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
 
@@ -29,7 +31,7 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
           <Comment.Content>
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
-              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span>{memberList.nickname}</span>
+              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} /><span className="lms-nick" onClick={() => setOpen(!open)}>{memberList.nickname}</span>
               <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
             </Comment.Author>
             <Comment.Metadata>
@@ -44,6 +46,14 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
           </Comment.Content>
         </Comment>
       </div>
+      <CommunityProfileModal
+        open={open}
+        setOpen={setOpen}
+        userProfile={memberList.profileImg}
+        creatorId={memberList.creatorId}
+        introduce={memberList.introduce}
+        nickName={memberList.nickname}
+      />
     </>
   );
 }
