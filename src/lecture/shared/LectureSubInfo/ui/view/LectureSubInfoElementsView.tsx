@@ -52,7 +52,8 @@ export const Buttons = ({
           subAction =>
             (subAction.subType === 'Documents' ||
               subAction.subType === 'Video' ||
-              subAction.subType === 'WebPage') && (
+              subAction.subType === 'WebPage' ||
+              subAction.subType === 'Cohort') && (
               <Button
                 key={subAction.type}
                 className="fix bg blue"
