@@ -68,7 +68,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       return;
     }             
     history.push({
-      pathname: `/community/${param.communityId}/post/${param.postId}`,
+      pathname: `/community/${param.communityId}/all/post/${param.postId}`,
     });
   };
 
@@ -95,7 +95,8 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       creatorId: '',
       offset: 0,
       limit: 10,
-      searchFilter: '', //얘 안쓰는거 같은데
+      searchGubun: searchType, //얘 안쓰는거 같은데
+      searchTitle: searchText,
       menuId,
       communityId,
       sort: sortType,
@@ -111,7 +112,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       param.creatorId = searchText;
     }
 
-    getPostListMapFromCommunity(param);
+    getAllPostListMapFromCommunity(param);
     // setSearch('searchText')
   };
 

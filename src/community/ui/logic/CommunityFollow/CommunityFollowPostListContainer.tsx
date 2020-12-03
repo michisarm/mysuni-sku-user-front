@@ -211,7 +211,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
 
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
-  console.log('container', communityFollowPostList);
+  // console.log('container', communityFollowPostList);
 
   const [offsetPage, setOffsetPage] = useState<number>(0);
 

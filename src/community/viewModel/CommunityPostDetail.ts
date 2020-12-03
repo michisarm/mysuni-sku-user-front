@@ -1,3 +1,4 @@
+import Post from "community/model/Post";
 import PostType from "community/model/PostType";
 
 export interface CommunityPostDetail {
@@ -20,7 +21,9 @@ export interface CommunityPostDetail {
   modifiedTime: number,
   nickName: string,
   introduce: string,
-  profileImg: string
+  profileImg: string,
+  prevPost?: Post,
+  nextPost?: Post,
 }
 
 export interface CommunityPostItem {

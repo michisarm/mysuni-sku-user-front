@@ -50,7 +50,9 @@ export async function getCommunityPost(
           postDetailItem.nickName = post.nickName!;
           postDetailItem.introduce = post.introduce!;
           postDetailItem.profileImg = post.profileImg!;
-          postDetailItem.commentFeedbackId = post.commentFeedbackId
+          postDetailItem.commentFeedbackId = post.commentFeedbackId;
+          postDetailItem.prevPost = post.prevPost;
+          postDetailItem.nextPost = post.nextPost;
       }
   }
   setCommunityPostDetailItem(postDetailItem);
