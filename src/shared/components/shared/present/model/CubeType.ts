@@ -9,6 +9,7 @@ enum CubeType {
   Experiential = 'Experiential',
   Community = 'Community',
   Task = 'Task',
+  Cohort = 'Cohort',
 }
 
 export default CubeType;

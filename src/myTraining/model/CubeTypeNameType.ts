@@ -14,6 +14,7 @@ enum CubeTypeNameType {
   // Todo: 임시, 제거
   Program = 'Course', // System상 Program이 사용자에게는 같은 Course임.
   Course  = 'Course',
+  Cohort = 'Cohort'
 }
 
 export default CubeTypeNameType;
