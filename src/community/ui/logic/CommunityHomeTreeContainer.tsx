@@ -13,12 +13,14 @@ import linkIcon from '../../../style/media/icon-community-menu-link.png';
 import homeIcon from '../../../style/media/icon-communtiy-menu-home-on.png';
 import homeArrowIcon from '../../../style/media/icon-community-menu-open.png';
 import subIcon from '../../../style/media/icon-reply-16-px.png';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import CommunityMenu from '../../model/CommunityMenu';
 import { joinCommunity } from '../../api/communityApi';
 import { requestCommunity } from '../../service/useCommunityHome/requestCommunity';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import CommunityMenuType from '../../model/CommunityMenuType';
+import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
+import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -335,7 +337,34 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
 };
 
 function JoinView() {
+  const history = useHistory();
   const join = useCallback(async () => {
+    const community = getCommunityHome()?.community;
+    if (community === undefined) {
+      return;
+    }
+    const { courseId } = community;
+    if (courseId !== null && courseId !== undefined && courseId !== '') {
+      const isStudent = await checkStudentByCoursePlanId(courseId);
+      const linkUrl = await findlinkUrl(courseId);
+      if (!isStudent) {
+        if (linkUrl === undefined) {
+          reactAlert({
+            title: '알림',
+            message: 'Course를 학습하셔야지 참가가 가능합니다.',
+          });
+        } else {
+          reactConfirm({
+            title: '알림',
+            message: 'Course를 학습하시겠습니까?',
+            onOk: () => {
+              history.push(linkUrl);
+            },
+          });
+        }
+        return;
+      }
+    }
     reactConfirm({
       title: '알림',
       message: '커뮤니티에 가입하시겠습니까?',
@@ -351,7 +380,7 @@ function JoinView() {
         requestCommunity(communtyHome.community.communityId);
       },
     });
-  }, []);
+  }, [history]);
 
   return (
     <button className="ui button fix line" onClick={join}>
