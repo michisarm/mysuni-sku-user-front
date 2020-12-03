@@ -74,7 +74,7 @@ function CommunityMainHeaderContainer() {
     return(
       <li>
         <p className="pic"><img src={item.profileImg === null || item.profileImg === '' ? `${DefaultImg}` : `/files/community/${item.profileImg}`} alt="" /></p>
-        <p className="nickname">{item.nickname === '' ? 'testtt' : 'testname'}</p>
+        <p className="nickname">{item.nickname}</p>
         <label className="chk_follow">
           <input type="checkbox" name="" />
           <span onClick={()=>followersBtn(item.id, idx, item.follow)}>{item.follow ? "unfollow" : "follow"}</span>
@@ -87,7 +87,7 @@ function CommunityMainHeaderContainer() {
     return(
       <li>
         <p className="pic"><img src={item.profileImg === null || item.profileImg === ''  ? `${DefaultImg}` : `/files/community/${item.profileImg}`} alt="" /></p>
-        <p className="nickname">{item.nickname === ''? 'testtt' : 'testname'}</p>
+        <p className="nickname">{item.nickname}</p>
         <label className="chk_follow">
           <input type="checkbox" name="" />
           <span onClick={()=>followingsBtn(item.id, idx, item.follow)}>{item.follow ? "unfollow" : "follow"}</span>
