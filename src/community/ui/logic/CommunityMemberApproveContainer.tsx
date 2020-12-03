@@ -108,9 +108,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
                 checked={selectedList && selectedList.includes(item.memberId)} 
                 onChange={(e:any) => checkOne(item.memberId)}
               />
-              <Comment.Avatar src={item.profileImg != null ? `/files/community/${item.profileImg}` : `${AvartarImage}`} />
+              <Comment.Avatar src={item.profileImg != null || item.profileImg != "" || item.profileImg != undefined ? `/files/community/${item.profileImg}` : `${AvartarImage}`} />
               <Comment.Content>
-                <Comment.Author as="a"><h3>{item.nickname}</h3>
+                <Comment.Author as="a"><h3>{item.nickname || item.name}</h3>
                 </Comment.Author>
               </Comment.Content>
             </Comment>
