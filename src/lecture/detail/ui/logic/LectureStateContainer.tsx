@@ -151,7 +151,7 @@ function LectureStateContainer() {
 
   return (
     <>
-      {lectureState && (
+      {lectureState && lectureState.type !== 'Cohort' && (
         <LectureStateView lectureState={lectureState} hookAction={hookAction} />
       )}
       {(lectureState?.type === 'ClassRoomLecture' ||

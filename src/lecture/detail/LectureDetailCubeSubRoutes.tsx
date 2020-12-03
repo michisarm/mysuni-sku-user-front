@@ -8,6 +8,7 @@ import LectureCubeElearningPage from './ui/logic/LectureCubeElearningPage';
 import LectureCubeTaskPage from './ui/logic/LectureCubeTaskPage';
 import LectureCubeVideoPage from './ui/logic/LectureCubeVideoPage';
 import LectureCubeWebPagePage from './ui/logic/LectureCubeWebPagePage';
+import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
 
 function LectureDetailCubeSubRoutes() {
   const params = useLectureRouterParams();
@@ -24,7 +25,7 @@ function LectureDetailCubeSubRoutes() {
         <LectureCubeWebPagePage />
       )}
       {cubeType !== undefined && cubeType.type === 'Cohort' && (
-        <LectureCubeWebPagePage />
+        <LectureCubeCohortPage />
       )}
       {cubeType !== undefined && cubeType.type === 'Experiential' && (
         <LectureCubeWebPagePage />
