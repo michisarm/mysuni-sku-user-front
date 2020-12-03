@@ -23,6 +23,7 @@ export async function getPostDetailMapFromCommunity(
         readCount: 0,
         visible: false,
         creatorId: '',
+        creatorName: '',
         createdTime: 0,
         modifierId: '',
         modifiedTime: 0,
