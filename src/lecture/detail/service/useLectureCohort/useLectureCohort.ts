@@ -29,11 +29,11 @@ export function useLectureCohort(): [Value] {
   }, [subscriberId]);
 
   useEffect(() => {
-    if (params === undefined) {
+    if (params?.contentId === undefined) {
       return;
     }
-    getCohortFromCube(params);
-  }, [params]);
+    getCohortFromCube(params?.contentId);
+  }, [params?.contentId]);
 
   return [value];
 }

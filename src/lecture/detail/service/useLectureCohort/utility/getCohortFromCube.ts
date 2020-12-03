@@ -4,12 +4,10 @@ import { setLectureWebpage } from '../../../store/LectureWebpageStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 
-export async function getCohortFromCube(params: LectureRouterParams) {
-  const { contentId } = params;
+export async function getCohortFromCube(contentId: string) {
+  //const { contentId } = params;
   const cube = await findPersonalCube(contentId);
   const cubeIntro = await findCubeIntro(cube.cubeIntro.id);
-  const officeWeb = await findOfficeWeb(cube.contents.contents.id);
-  const PUBLIC_URL = process.env.PUBLIC_URL;
   let url = '';
   if(cubeIntro){
     url = `/community/`+cubeIntro.communityId;
