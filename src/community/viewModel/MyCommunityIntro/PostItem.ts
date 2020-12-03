@@ -12,4 +12,8 @@ export default interface PostItem {
   contents: string;
   menuType: CommunityMenuType;
   bookmarked: boolean;
+  
+  creatorId: string;
+  introduce:string;
+  nickName:string;
 }

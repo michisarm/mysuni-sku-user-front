@@ -7,17 +7,13 @@ import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate
 interface Props {
   open: boolean;
   setOpen: (state:boolean) => void,
-  postDetail: any
+  userProfile:string,
+  creatorId:string,
+  introduce:string,
+  nickName:string
 }
 
-interface Params {
-  communityId: string;
-  postId: string;
-}
-
-const CommunityProfileModal:React.FC<Props> = ({open, setOpen, postDetail}) => {
-  // const { communityId, postId } = useParams<Params>();
-  // const [postDetail] = useCommunityPostDetail(communityId, postId);
+const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, creatorId, introduce, nickName}) => {
   const history = useHistory();
 
   return (
@@ -30,19 +26,19 @@ const CommunityProfileModal:React.FC<Props> = ({open, setOpen, postDetail}) => {
         <div className="profile_box profile_v">
           <div className="profile_pic">
             <div className="pic_area user">
-              <p style={{width:"85px",margin:"0 auto"}}><img src={`/files/community/${postDetail && postDetail.profileImg}`} style={{width:"100%"}} alt="프로필 사진"/></p>
+              <p style={{width:"85px",margin:"0 auto"}}><img src={`/files/community/${userProfile}`} style={{width:"100%"}} alt="프로필 사진"/></p>
             </div>
           </div>
 
           <div className="profile_info">
-            <p className="name">{postDetail && postDetail.nickName}</p>
-            <p>{postDetail && postDetail.introduce}</p>
+            <p className="name">{nickName}</p>
+            <p>{introduce}</p>
           </div>
         </div>
       </Modal.Content>
       <Modal.Actions className="actions actions2">
         <button className="ui button pop2 d" onClick={() => setOpen(!open)}>닫기</button>
-        <button className="ui button pop2 p" onClick={() => history.push(`/community/profile/${postDetail.creatorId}`)}>상세보기</button>
+        <button className="ui button pop2 p" onClick={() => history.push(`/community/profile/${creatorId}`)}>상세보기</button>
       </Modal.Actions>
     </Modal>
   )
