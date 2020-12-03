@@ -128,7 +128,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
   eachUpload() {
     const file = this.uploadFiles.shift();
-    console.log(file);
 
     const sessionName = this.sessionNames.shift();
     if (file === undefined) {
@@ -185,7 +184,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
         // setTimeout(clazzThis.eachUpload, 500); //다음 파일 업로드
         clazzThis.setData(ret);
         reactAlert({ title: '알림', message: '업로드가 완료되었습니다.' });
-        // console.log(ret);
         if (ret.boolResult) clazzThis.uploadResult.push(ret.obj.list);
 
       },
@@ -236,7 +234,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
     if (ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [];
       if (Array.isArray(ret.obj.list)) {
-        console.log(ret.obj.list);
         Promise.resolve()
           .then(() => {
             ret.obj.list.map((list: any) => {

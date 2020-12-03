@@ -15,7 +15,6 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
   
   const onSearch = (value:any) => {
     if(value !== null) {
-      console.log(searchValue)
       onSearchGroup(currentCommunity, searchValue)
       setSearchValue('')
     }

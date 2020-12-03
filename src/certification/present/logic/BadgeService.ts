@@ -185,8 +185,6 @@ class BadgeService {
       BadgeModel
     > | null = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
 
-    console.log(badgeOffsetElementList);
-
     if (badgeOffsetElementList) {
       runInAction(() => {
         this._badgeCount = badgeOffsetElementList.totalCount;

@@ -154,8 +154,6 @@ class QnaModifyContainer extends React.Component<Props, States> {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
     });
 
-    console.log('post : ', post);
-
     return (
       <>
         <Segment className="full">

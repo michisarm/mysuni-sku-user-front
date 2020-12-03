@@ -261,7 +261,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   // useEffect(() => {
   //   return () => {
-  //     console.log('page out clear Interval ');
   //     clearInterval(watchInterval);
   //     clearInterval(checkInterval);
   //   };
@@ -394,11 +393,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     // Load video will begin playback
     //embedApi.loadVideo();//페이지 로드 시 자동 실행됩니다.
     const playerEl = document.getElementById('panopto-embed-audio-player'); //audio player 라는 것이 따로 없습니다.
-    if (playerEl) {
-      console.log(
-        (playerEl.getElementsByTagName('iframe')[0].height = '100px')
-      );
-    }
   };
 
   const onPanoptoLoginShown = () => {};

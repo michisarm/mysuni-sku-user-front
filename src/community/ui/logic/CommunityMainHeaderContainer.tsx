@@ -31,9 +31,6 @@ function CommunityMainHeaderContainer() {
   const followingsList = useFollowingsModal();
  
 
-  // console.log('folowersList',followersList);
-  // console.log('folowingList',followingsList);
-
   const modalOpen = (value: string) => {
     if(value === "followers") {
       requestFollowersModal();

@@ -93,9 +93,6 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
     const { approvalMember } = memberService!;
     const { companyApprover } = companyApproverService!;
 
-    console.log('render start companyApprover.titleName ::' + companyApprover.titleName);
-    console.log('render start approvalMember.titleName ::' + approvalMember.titleName);
-
     // 회사명
     let companyNamVal = '';
     if ( approvalMember.companyName === '' ) {
@@ -157,8 +154,6 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
       emailVal = approvalMember.email;
     }
     const email = emailVal;
-
-    console.log('render start companyApprover.approverType ::' + companyApprover.approverType);
 
     // 리더 승인 일 경우
     let approverTypeVal = '';

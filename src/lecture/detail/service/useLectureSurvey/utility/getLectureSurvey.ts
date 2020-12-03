@@ -234,7 +234,6 @@ async function parseSurveyForm(
   surveyId: string
 ): Promise<LectureSurvey | undefined> {
   const surveyForm = await findSurveyForm(surveyId);
-  console.log('surveyForm', surveyForm);
   const { id, titles, questions: remoteQuestions } = surveyForm;
   const title = titles.langStringMap[titles.defaultLanguage];
   const surveyItems = remoteQuestions.map(question => {

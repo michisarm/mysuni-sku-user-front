@@ -481,7 +481,6 @@ class CoursePlanService {
   async findAllPreCourseIdList( coursePlanId: string) {
     const preCourseIdSet = await this.coursePlanApi.findAllPreCourseIdList( coursePlanId );
     if (preCourseIdSet) {
-      console.log( 'preCourseIdSet : ', preCourseIdSet );
       this.preCourseIdSet = preCourseIdSet;
       return preCourseIdSet;
     } else {

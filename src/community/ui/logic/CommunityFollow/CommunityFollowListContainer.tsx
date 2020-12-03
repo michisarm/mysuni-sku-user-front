@@ -44,8 +44,6 @@ const CommunityFollowListContainer: React.FC = () => {
   if (communityFollowList === undefined) {
     return null;
   }
-  // console.log('communityFollowList', communityFollowList);
-  
 
   // 페이지네이션 
   const addList = (offset:number) => {

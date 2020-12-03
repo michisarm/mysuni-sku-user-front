@@ -125,27 +125,16 @@ class CoursePageV2 extends Component<Props, State> {
     props.coursePlanService.clearCoursePlanContents();
     props.lectureService.clearLectureViews();
 
-    // const { cineroomId, collegeId, lectureCardId, coursePlanId, serviceId, serviceType } = this.props.match.params!;
-    //
-    // console.log('Course Page : ', cineroomId);
-    // console.log('Course Page : ', collegeId);
-    // console.log('Course Page : ', lectureCardId);
-    // console.log('Course Page : ', coursePlanId);
-    // console.log('Course Page : ', serviceId);
-    // console.log('Course Page : ', serviceType);
   }
 
   componentDidMount() {
     //
     this.setCineroom();
     this.init();
-    // console.log('Course Page : componentDidMount');
   }
 
   componentDidUpdate(prevProps: Props) {
     //
-    // console.log('serviceId : ', prevProps.match.params.serviceId, ' - ', this.props.match.params.serviceId);
-    // console.log('serviceType : ', prevProps.match.params.serviceType, ' - ', this.props.match.params.serviceType);
 
     if (
       prevProps.match.params.serviceType !== this.props.match.params.serviceType
@@ -276,10 +265,6 @@ class CoursePageV2 extends Component<Props, State> {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
       // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);1
 
-      // console.log(
-      //   'examPaperService.examPaper.title : ',
-      //   examPaperService.examPaper.title
-      // );
       const examTitle = examPaperService.examPaper.title;
       this.state.examTitle = examTitle;
       this.setState({ examTitle });
@@ -317,7 +302,6 @@ class CoursePageV2 extends Component<Props, State> {
 
   // 선수코스 세팅..
   getPreCourseModel() {
-    // console.log('선수코스 세팅 시작!');
     const {
       match,
       coursePlanService,
@@ -327,14 +311,12 @@ class CoursePageV2 extends Component<Props, State> {
     } = this.props;
     const { location } = history;
 
-    // console.log('location : ', location);
     let isPreCoursePassed = true;
 
     if (!location.search.match('postCourseLectureId')) {
       // course_plan 테이블
 
       // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
-      // console.log(studentService.StudentInfos);
       if (
         courseLectureService.getPreLectureViews &&
         studentService.StudentInfos!.preCourses
@@ -345,20 +327,17 @@ class CoursePageV2 extends Component<Props, State> {
         ) {
           const preLectureViews = courseLectureService.getPreLectureViews;
           const preCourseStudentList = studentService.StudentInfos!.preCourses;
-          // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
           // @ts-ignore
           for (let i = 0; i < preCourseStudentList.length; i++) {
             // @ts-ignore
             const preCourse = preCourseStudentList[i];
             for (let j = 0; j < preLectureViews.length; j++) {
               const preLectureView = preLectureViews[j];
-              // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
               if (preLectureView.serviceId === preCourse.lectureUsid) {
                 if (
                   preLectureView.required &&
                   preCourse.learningState !== 'Passed'
                 ) {
-                  // console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
                   isPreCoursePassed = false;
                   break;
                 }
@@ -400,7 +379,6 @@ class CoursePageV2 extends Component<Props, State> {
         // }
       }
 
-      // console.log('isPreCoursePassed? : ', isPreCoursePassed);
       this.setState({ isPreCoursePassed });
     }
   }
@@ -416,7 +394,6 @@ class CoursePageV2 extends Component<Props, State> {
       await AnswerSheetService.instance
         .findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId)
         .then(response => {
-          // console.log('answerSheet : ', response);
           const disabled =
             response && response.progress === AnswerProgress.Complete;
           // this.state.surveyState = disabled;
@@ -429,7 +406,6 @@ class CoursePageV2 extends Component<Props, State> {
       await surveyFormService
         .findSurveyForm(coursePlanService.coursePlanContents.surveyId)
         .then(response => {
-          // console.log('surveyForm : ', response);
           const surveyForm: SurveyFormModel = response;
           this.setState({
             surveyTitle: surveyForm.titles.langStringMap.get('ko'),
@@ -438,10 +414,6 @@ class CoursePageV2 extends Component<Props, State> {
     }
 
     if (coursePlanService.coursePlanContents.testId) {
-      // console.log(
-      //   'examPaperService.examPaper.title : ',
-      //   examPaperService.examPaper.title
-      // );
       const examTitle = examPaperService.examPaper.title;
       this.state.examTitle = examTitle;
       this.setState({ examTitle });
@@ -552,8 +524,6 @@ class CoursePageV2 extends Component<Props, State> {
     let examType: string = '';
     let examName: string = '';
 
-    // console.log('student : ', student);
-    // console.log('examinationService : ', examinationService);
     if (student && student.id) {
       this.setExamState(student);
 
@@ -593,11 +563,8 @@ class CoursePageV2 extends Component<Props, State> {
         student.phaseCount !== student.completePhaseCount &&
         student.learningState === LearningState.Progress
       ) {
-        // console.log('Course Page Waiting : ', SubState.InProgress);
         state = SubState.InProgress;
       }
-
-      // console.log('student info  gget~~~~~~~~~~~~~~~~~');
     } else {
       this.setExamState();
     }
@@ -811,16 +778,12 @@ class CoursePageV2 extends Component<Props, State> {
   // }
 
   setExamState(studentData?: any) {
-    // console.log('시험정보 세팅');
-    // console.log('studentData : ',studentData);
-    // console.log('serviceType : ' + studentData.serviceType);
 
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
     }
 
     this.setStateName('1', 'Test');
-    // console.log('setExamState : ', studentData);
     if (studentData) {
       if (
         studentData.phaseCount === studentData.completePhaseCount &&
@@ -868,7 +831,6 @@ class CoursePageV2 extends Component<Props, State> {
       }
     }
 
-    // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
   }
 
   setStateName(type: string, name: string) {
@@ -888,8 +850,6 @@ class CoursePageV2 extends Component<Props, State> {
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
-
-    // console.log('renderOverview --------> ', viewObject);
 
     return this.renderBaseContentWith(
       <LectureOverviewViewV2

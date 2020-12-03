@@ -28,8 +28,6 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
   communityProfileBookmark,
 }) {
 
-  console.log('communityProfileBookmark',communityProfileBookmark);
-
   /* eslint-disable */
   return (
     <Segment className="full">

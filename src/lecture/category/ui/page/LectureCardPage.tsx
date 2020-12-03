@@ -149,10 +149,6 @@ class LectureCardPage extends Component<Props, State> {
       lectureCardId,
     } = this.props.match.params!;
 
-    // console.log('Lecture Card Page : ', cineroomId);
-    // console.log('Lecture Card Page : ', collegeId);
-    // console.log('Lecture Card Page : ', cubeId);
-    // console.log('Lecture Card Page : ', lectureCardId);
   }
 
   componentDidMount() {
@@ -161,13 +157,11 @@ class LectureCardPage extends Component<Props, State> {
     this.init();
     this.publishViewEvent();
 
-    // console.log('Lecture Card Page : componentDidMount');
   }
 
   componentWillUnmount(): void {
     //
     patronInfo.clearWorkspace();
-    // console.log('Lecture Card Page : componentWillUnmount');
   }
 
   setCineroom() {
@@ -220,9 +214,6 @@ class LectureCardPage extends Component<Props, State> {
         const { service, contents } = personalCube.contents;
 
         await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
-
-        // console.log('mediaService : ', mediaService);
-        // console.log('contents : ', contents);
 
         if (service.type === ContentsServiceType.Classroom) {
           await classroomService.findClassrooms(personalCube.personalCubeId);
@@ -530,8 +521,6 @@ class LectureCardPage extends Component<Props, State> {
     studentId = student.id || '';
     rollBookId = rollBooks[0]?.id || '';
     serviceId = match.params.lectureCardId || '';
-
-    // console.log('lecture card page student : ', student);
 
     if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) {

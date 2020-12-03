@@ -44,8 +44,6 @@ class ApprovalManagerBoard extends Component {
   };
 
   statusChange = (approvalStatus: any) => {
-    console.log(' approvalStatus :: ' + approvalStatus );
-
     let approvalNameVal = '신청일자';
 
     if ( approvalStatus === 'required' ) {

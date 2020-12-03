@@ -295,7 +295,6 @@ export function followPostList(
   limit: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const url = `${BASE_URL}/postviews/followers?offset=${offset}&limit=${limit}`;
-  // console.log('axios offset', offset, limit);
   return axiosApi
     .get<OffsetElementList<Post>>(url)
     .then(response => response && response.data);

@@ -14,9 +14,7 @@ export default class BoardFlowApi {
     //
     return axios.post<string>(this.URL, boardFlowCdo)
       .then(response => response && response.data || '')
-      .catch((reason) => {
-        console.log(reason);
-      });
+      .catch(() => {});
   }
 
   makeBoardByUser(boardFlowUserCdoModel: BoardFlowUserCdoModel) {

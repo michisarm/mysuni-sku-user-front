@@ -341,8 +341,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { params } = match;
     const { search } = location;
 
-    // console.log('lecture : ', lecture);
-
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
       if (params.cineroomId) {
@@ -536,7 +534,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       //   state = SubState.InProgress;
       // }
     }
-    // console.log('getViewObject>>>> : ', this.state.isContent);
     return {
       // Sub info
       state,
@@ -620,9 +617,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
     const hasNotPostCourse = !location.search.match('postCourseLectureId');
-
-    // console.log('LectureOverviewViewV2 viewObject : ', viewObject);
-    // console.log('LectureOverviewViewV2 : ', params.serviceType);
 
     return (
       <OverviewField.Wrapper>
@@ -744,7 +738,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                           </>
                         )
                       )}
-                      {/*{console.log('================ : ', lectureViewsIndex)}*/}
                       <Lecture2.TRS
                         key={`course-trs-${lectureViewsIndex}`}
                         className="course-trs"
@@ -769,7 +762,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                         studentInfo={studentInfo}
                         onLectureInitRequest={this.handleLectureInitRequest}
                       />
-                      {/*{console.log('================ : ', lecture.name)}*/}
                     </Lecture2.CourseSection>
                   )
                 )}
