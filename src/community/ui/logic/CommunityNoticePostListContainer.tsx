@@ -13,6 +13,7 @@ import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { findPostMenuName } from 'community/api/communityApi';
 import { checkMember } from 'community/service/useMember/useMember';
+import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -76,7 +77,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     //멤버 가입 체크
     if(!await checkMember(communityId)){
       return;
-    }         
+    }
     history.push({
       pathname: `/community/${param.communityId}/post/${param.postId}`,
     });
@@ -105,7 +106,8 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
       creatorId: '',
       offset: 0,
       limit: 10,
-      searchFilter: '', //얘 안쓰는거 같은데
+      searchGubun: searchType, //얘 안쓰는거 같은데
+      searchTitle: searchText,
       menuId,
       communityId,
       sort: sortType,
@@ -121,7 +123,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
       param.creatorId = searchText;
     }
 
-    getPostListMapFromCommunity(param);
+    getNoticePostListMapFromCommunity(param);
     // setSearch('searchText')
   };
 

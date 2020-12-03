@@ -8,6 +8,7 @@ export interface CommunityPostCreateItem extends Item {
   contents: string;
   visible: boolean;
   fileBoxId?: string;
+  menuType?: string;
 }
 
 export interface CommunityPostCreate {
@@ -17,4 +18,5 @@ export interface CommunityPostCreate {
   contents: string;
   visible: boolean;
   fileBoxId?: string;
+  menuType?: string;
 }
