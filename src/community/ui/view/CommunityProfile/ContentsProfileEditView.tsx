@@ -43,9 +43,9 @@ const ContentsProfileEditView: React.FC<ContentsProfileEditViewProps> = function
       <input 
         type="text" 
         placeholder={
-          (keyId==='introduce' && '소개를 입력해주세요.') || 
-          (keyId==='nickname' && '닉네임을 입력해주세요.') || 
-          (keyId==='hobby' && '취미를 입력해주세요.') || 
+          (keyId==='introduce' && '소개를 입력해주세요(100자까지 입력 가능)') || 
+          (keyId==='nickname' && '닉네임을 입력해주세요(20자까지 입력 가능)') || 
+          (keyId==='hobby' && '취미를 입력해주세요(100자까지 입력 가능)') || 
           ''} 
         value={value}
         onChange={handleChange}
