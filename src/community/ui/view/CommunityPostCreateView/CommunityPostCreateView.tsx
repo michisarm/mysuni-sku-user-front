@@ -188,7 +188,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
           <Form.Field>
             <label>본문</label>
             <div className="ui editor-wrap">
-              <Editor contents={postItem.contents} />
+              <Editor contents={postItem.contents || ''} />
             </div>
           </Form.Field>
 
