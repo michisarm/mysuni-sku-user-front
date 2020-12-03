@@ -14,6 +14,8 @@ import moment from 'moment';
 import { patronInfo } from '@nara.platform/dock';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
+  communityId,
+  postId,
   title,
   html,
   createdTime,
@@ -35,12 +37,16 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
 
   return (
     <div className="community-home-card">
-      <div className="ui comments base">
+      <Link
+        className="ui comments base"
+        to={`/community/${communityId}/post/${postId}`}
+        style={{ display: 'block' }}
+      >
         <div className="home-card-top">
           <h3>
             {title} {isNew && <span className="new-label">NEW</span>}
           </h3>
-          <div>{text}</div>
+          <p>{text}</p>
         </div>
         <div className="home-card-bottom">
           <span>{createdDate}</span>
@@ -48,12 +54,14 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
             <img src={commentIcon} />0
           </span>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
 
 const RecentItemView: React.FC<Post> = function RecentItemView({
+  communityId,
+  postId,
   title,
   html,
   fileBoxId,
@@ -76,7 +84,11 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   }, []);
 
   return (
-    <div className="new-board-list">
+    <Link
+      className="new-board-list"
+      to={`/community/${communityId}/post/${postId}`}
+      style={{ display: 'block' }}
+    >
       <div className="new-board-list-top">
         {/* <img src={BadgeImportant} className="board-badge" /> */}
         {fileBoxId !== undefined && fileBoxId !== null && fileBoxId !== '' && (
@@ -85,7 +97,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <strong>{title}</strong>
         {isNew && <span className="new-label">NEW</span>}
       </div>
-      <div>{text}</div>
+      <p>{text}</p>
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
@@ -102,7 +114,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

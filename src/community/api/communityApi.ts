@@ -63,6 +63,17 @@ export function registerNoticePost(
     .then(response => response && response.data);
 }
 
+export function registerAnonymousePost(
+  communityId: string,
+  postCdo: PostCdo
+): Promise<Post> {
+  postCdo.type='ANONYMOUS';
+  const url = `${BASE_URL}/communities/${communityId}/posts/flow/anonymous`;
+  return axiosApi
+    .post<Post>(url, postCdo)
+    .then(response => response && response.data);
+}
+
 export function findPostViewsByMenuId(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
