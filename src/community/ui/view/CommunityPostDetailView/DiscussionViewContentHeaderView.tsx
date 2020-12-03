@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import moment from 'moment';
-import { Button, Icon } from 'semantic-ui-react';
-import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
+
+import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
+
 
 interface Props {
   postDetail: any;
@@ -61,21 +61,21 @@ class DiscussionViewContentHeaderView extends Component<Props> {
                   </div>
                 </div>
               </div> */}
-              {/* <div className="comment-area course-comment">
+              <div className="comment-area course-comment">
                 <div className="ui comments sub-debate">
                   <div className="comment">
                     <div className="avatar">
-                      <img src={`/files/community/${postDetail.profileImg}`}/>
+                      <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === ''  ? `${DefaultImg}` : `/files/community/${postDetail.profileImg}`} alt="" />
                     </div>
                     <div className="content">
-                      <a className="author">{postDetail.nickName}</a>
+                      <a className="author">{postDetail.creatorName}</a>
                       <div className="metadata">
-                        <span className="heartText">2020.09.26</span>
+                        <span className="heartText">{time && moment(time).format('YYYY.MM.DD')}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
