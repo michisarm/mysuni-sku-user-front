@@ -48,6 +48,8 @@ function CommunityPostDetailContainer() {
   const [fileId, setFileId] = useState<string>();
   const [fileName, setFileName] = useState<string>();
 
+  const [editAuth, setEditAuth] = useState<boolean>(false);
+
   const viewModal = (pdf:string, fileId:string) => {
 
     const PdfFile = pdf.includes('.pdf')
@@ -66,6 +68,10 @@ function CommunityPostDetailContainer() {
     setCreatorId(denizenId!);
     getFileIds();
     getLikeState();
+    if(!postDetail) {
+      return
+    }
+    setEditAuth(denizenId === postDetail.creatorId)
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -148,6 +154,7 @@ function CommunityPostDetailContainer() {
             replyCount={postDetail.replyCount}
             likeCount={postDetail.likeCount}
             deletable={true}
+            editAuth={editAuth}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
@@ -205,22 +212,24 @@ function CommunityPostDetailContainer() {
               </button>
             )}
             { creatorId === postDetail.creatorId && (
-              <Button
-                className="ui icon button left post edit"
-                onClick={OnClickModify}
-              >
-                <Icon className="edit" />
-                Edit
-              </Button>
+              <>
+                <Button
+                  className="ui icon button left post edit"
+                  onClick={OnClickModify}
+                >
+                  <Icon className="edit" />
+                  Edit
+                </Button>
+                <Button
+                  className="ui icon button left post delete"
+                  onClick={OnClickDelete}
+                >
+                  <Icon className="delete" />
+                  delete
+                </Button>
+              </>
               )
             }
-            <Button
-              className="ui icon button left post delete"
-              onClick={OnClickDelete}
-            >
-              <Icon className="delete" />
-              delete
-            </Button>
             <Button
               className="ui icon button left post list2"
               onClick={OnClickList}
