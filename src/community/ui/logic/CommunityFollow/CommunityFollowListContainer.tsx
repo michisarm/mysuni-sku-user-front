@@ -13,6 +13,7 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
   profileImg,
   followerCount,
   followingCount,
+  name
 }) {
   return (
     <>
@@ -23,7 +24,7 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
           <img src={profileImg === null || profileImg === '' ? `${DefaultImg}` : `/files/community/${profileImg}`} />
         </div>
         <div className="community-main-left-list">
-          <div className="community-main-left-h3">{nickname}</div>
+          <div className="community-main-left-h3">{nickname === '' ? name : nickname}</div>
           <div className="community-main-left-span">
             Followers
             <span>{followerCount}</span>
