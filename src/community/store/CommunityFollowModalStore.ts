@@ -1,21 +1,38 @@
 import FollowModalIntro from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { createStore } from './Store';
 
+
+// modal - follower
 const [
-  setFollowModal,
-  onFollowModal,
-  getFollowModal,
-  useFollowModal,
+  setFollowersModal,
+  onFollowersModal,
+  getFollowersModal,
+  useFollowersModal,
 ] = createStore<FollowModalIntro>({
-  communities: [],
-  communitiesTotalCount: 0,
-  posts: [],
-  results: [],
+  followers: [],
+  followings: [],
+});
+
+
+// modal - following
+const [
+  setFollowingsModal,
+  onFollowMingsodal,
+  getFollowingsModal,
+  useFollowingsModal,
+] = createStore<FollowModalIntro>({
+  followers: [],
+  followings: [],
 });
 
 export {
-  setFollowModal,
-  onFollowModal,
-  getFollowModal,
-  useFollowModal
+  setFollowersModal,
+  onFollowersModal,
+  getFollowersModal,
+  useFollowersModal,
+
+  setFollowingsModal,
+  onFollowMingsodal,
+  getFollowingsModal,
+  useFollowingsModal,
 };

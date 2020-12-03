@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 import FollowModalItem from '../../../viewModel/FollowModalIntro/FollowModalItem';
-import { useFollowModal } from '../../../store/CommunityFollowModalStore';
+// import { useFollowModal } from '../../../store/CommunityFollowModalStore';
 
 const FollowModalItemView: React.FC<FollowModalItem> = function FollowModalItemViewFunction({
   id,
