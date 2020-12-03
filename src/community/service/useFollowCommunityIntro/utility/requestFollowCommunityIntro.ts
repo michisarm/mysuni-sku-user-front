@@ -10,15 +10,15 @@ import {
   onFollowCommunityIntro,
 } from '../../../store/CommunityMainStore';
 
-import {
-  getFollowModal,
-  setFollowModal,
-} from '../../../store/CommunityFollowModalStore';
+// import {
+//   getFollowModal,
+//   setFollowModal,
+// } from '../../../store/CommunityFollowModalStore';
 
 import FollowCommunityItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
 import PostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import FollowModalItem from '../../../viewModel/FollowModalIntro/CommunityFollowModalIntro';
-import {requestFollowingModal, requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
+// import {requestFollowingModal, requestFollowModal} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 
 const ONE_DAY = 24 * 60 * 60 * 1000
 const ONE_HOUR = 60 * 60 * 1000
@@ -65,13 +65,13 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 5
       communities.results.map(followPostList => {
         next.push(followPostList);
       });
+      console.log('next@@', next);
       setFollowCommunityIntro({
         ...followCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
         communitiesOffset: next.length,   
       });
-      console.log('communites:', communities);
     }
   });
 }
@@ -125,12 +125,3 @@ export function requestFollowCommunityPostList(offset: number = 0, limit: number
   });
 }
 
-export async function requestFollowModalAdd(id: string) {
-  await followModalAdd(id);
-  requestFollowModal();
-}
-
-export async function requestFollowModalDelete(id: string) {
-  await followModalDelete(id);
-  requestFollowModal();
-}

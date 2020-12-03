@@ -17,11 +17,7 @@ export function requestCommunity(communityId: string) {
 
 export function requestCommunityMenus(communityId: string) {
   findMyMenus(communityId).then(menus => {
-    const communityHome = getCommunityHome() || {
-      menus: [],
-      recent: [],
-      notice: [],
-    };
+    const communityHome = getCommunityHome() || getEmptyCommunityHome();
     setCommunityHome({
       ...communityHome,
       menus: menus === undefined ? [] : menus,

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import CommunityPostListView from '../view/CommunityPostCreateView/CommunityPostListView';
 import CommunityPostTopLineView from '../view/CommunityPostCreateView/CommunityPostTopLineView';
 import CommunityPostListSearchBox from '../view/CommunityPostCreateView/CommunityPostListSearchBox';
+import { getPostListMapFromCommunity } from '../../service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -11,6 +12,7 @@ import { Pagination } from 'semantic-ui-react';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { findPostMenuName } from 'community/api/communityApi';
+import { checkMember } from 'community/service/useMember/useMember';
 import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
@@ -71,7 +73,11 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
-  const handleClickRow = (param: any) => {
+  const handleClickRow = async (param: any) => {
+    //멤버 가입 체크
+    if(!await checkMember(communityId)){
+      return;
+    }
     history.push({
       pathname: `/community/${param.communityId}/post/${param.postId}`,
     });
@@ -143,7 +149,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     } else if (searchType === 'creatorId') {
       param.creatorId = searchText;
     }
-    getNoticePostListMapFromCommunity(param);
+    getPostListMapFromCommunity(param);
 
     setActivePage(data.activePage);
   };

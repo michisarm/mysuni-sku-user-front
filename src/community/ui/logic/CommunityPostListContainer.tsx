@@ -12,6 +12,7 @@ import { Pagination } from 'semantic-ui-react';
 import { findPostMenuName } from 'community/api/communityApi';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
+import { checkMember } from 'community/service/useMember/useMember';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -55,10 +56,11 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
 
     const menuData = findPostMenuName(communityId, menuId);
     menuData.then(result => {
+      console.log('result', result.type)
       setMenuName(result.name);
       setMenuType(result.type)
     });
-
+    console.log('menuType', menuType)
     const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     if (
@@ -71,10 +73,20 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
-  const handleClickRow = (param: any) => {
-    history.push({
-      pathname: `/community/${param.communityId}/post/${param.postId}`,
-    });
+  const handleClickRow = async (param: any, menuType: string) => {
+    //멤버 가입 체크
+    if(!await checkMember(communityId)){
+      return;
+    }          
+    if(menuType === 'ANONYMOUS') {
+      history.push({
+        pathname: `/community/${param.communityId}/${menuType}/post/${param.postId}`,
+      });
+    } else{
+      history.push({
+        pathname: `/community/${param.communityId}/post/${param.postId}`,
+      });  
+    }
   };
 
   const onChangeSearchType = (name: string, value: SearchType) => {
@@ -169,7 +181,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
               <CommunityPostListView
                 menuType={menuType}
                 postItems={postItems}
-                handleClickRow={param => handleClickRow(param)}
+                handleClickRow={(param, menuType) => handleClickRow(param, menuType)}
               />
             </div>
           </div>

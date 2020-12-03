@@ -3,4 +3,6 @@ export default interface FollowModalItem {
   nickname: string;
   profileImg: string;
   follow: boolean;
+  followrCount: number;
+  followingCount: number;
 }

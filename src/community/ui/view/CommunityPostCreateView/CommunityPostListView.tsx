@@ -2,11 +2,12 @@ import { CommunityPostItem, CommunityPostList } from 'community/viewModel/Commun
 import moment from 'moment';
 import React, { useCallback } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { checkMember } from 'community/service/useMember/useMember';
 
 interface CommunityPostListViewProps{
   menuType: string
   postItems: CommunityPostList
-  handleClickRow: (param: object) => void
+  handleClickRow: (param: object, menuType: string) => void
 }
 
 function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: string) {
@@ -87,9 +88,9 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
 }) {
   const onHandleClickRow = useCallback(
     param => {
-      handleClickRow(param);
+      handleClickRow(param, menuType);
     },
-    []
+    [menuType]
   );
 
   return (
