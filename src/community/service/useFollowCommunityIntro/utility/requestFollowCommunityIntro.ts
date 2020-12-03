@@ -65,7 +65,6 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 5
       communities.results.map(followPostList => {
         next.push(followPostList);
       });
-      console.log('next@@', next);
       setFollowCommunityIntro({
         ...followCommunityIntro,
         communities: next,

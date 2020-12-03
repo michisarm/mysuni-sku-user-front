@@ -290,7 +290,6 @@ export function followList(
   OffsetElementList<FollowCommunityItem> | undefined
 > {
   const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
-  console.log('api name',axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn));
   return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
 }
 
