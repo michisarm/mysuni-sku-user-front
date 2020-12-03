@@ -81,6 +81,11 @@ function CommunityRoutes() {
               />
               <Route
                 exact
+                path="/community/:communityId/:menuType/post/:postId"
+                component={BasicPostPage}
+              />
+              <Route
+                exact
                 path="/community/:communityId/data/:menuId"
                 component={PostsPage}
               />

@@ -63,7 +63,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
   const handelClickCreatePost = () => {};
   const handleClickRow = (param: any) => {
     history.push({
-      pathname: `/community/${param.communityId}/post/${param.postId}`,
+      pathname: `/community/${param.communityId}/all/post/${param.postId}`,
     });
   };
 

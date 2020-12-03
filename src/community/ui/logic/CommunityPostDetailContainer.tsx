@@ -27,10 +27,11 @@ import moment from 'moment';
 interface Params {
   communityId: string;
   postId: string;
+  menuType?: string;
 }
 
 function CommunityPostDetailContainer() {
-  const { communityId, postId } = useParams<Params>();
+  const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -236,34 +237,36 @@ function CommunityPostDetailContainer() {
             companyName=""
             departmentName=""
           />
-          <div className="paging" style={{ marginTop: '20px' }}>
-            <div className="paging-list">
-              {postDetail.prevPost && (
-                <Link to={`/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`}>
-                  <div className="paging-list-box">
-                    <div className="paging-list-icon" />
-                    <h2>이전글</h2>
-                    <h3>{postDetail.prevPost.title}</h3>
-                    <div className="paging-list-span">
-                      <span>{moment(postDetail.prevPost.createdTime).format('YYYY.MM.DD HH:MM')}</span>
+          {menuType !== 'all' && (
+            <div className="paging" style={{ marginTop: '20px' }}>
+              <div className="paging-list">
+                {postDetail.prevPost && (
+                  <Link to={`/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`}>
+                    <div className="paging-list-box">
+                      <div className="paging-list-icon" />
+                      <h2>이전글</h2>
+                      <h3>{postDetail.prevPost.title}</h3>
+                      <div className="paging-list-span">
+                        <span>{moment(postDetail.prevPost.createdTime).format('YYYY.MM.DD HH:MM')}</span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              )}
-              {postDetail.nextPost && (
-                <Link to={`/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`}>
-                  <div className="paging-list-box">
-                    <div className="paging-list-icon" />
-                    <h2>다음글</h2>
-                    <h3>{postDetail.nextPost.title}</h3>
-                    <div className="paging-list-span">
-                      <span>{moment(postDetail.nextPost.createdTime).format('YYYY.MM.DD HH:MM')}</span>
+                  </Link>
+                )}
+                {postDetail.nextPost && (
+                  <Link to={`/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`}>
+                    <div className="paging-list-box">
+                      <div className="paging-list-icon" />
+                      <h2>다음글</h2>
+                      <h3>{postDetail.nextPost.title}</h3>
+                      <div className="paging-list-span">
+                        <span>{moment(postDetail.nextPost.createdTime).format('YYYY.MM.DD HH:MM')}</span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              )}
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
       <CommunityPdfModal open={pdfOpen} setOpen={setPdfOpen} fileId={fileId||''} fileName={fileName || ''} />
