@@ -3,7 +3,6 @@ import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
-import FollowerView from '../../ui/logic/FollowModalIntro/FollowModalContainer';
 import {Button, Modal} from 'semantic-ui-react';
 import { requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';

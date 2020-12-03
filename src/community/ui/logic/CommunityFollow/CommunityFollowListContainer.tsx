@@ -46,7 +46,6 @@ const CommunityFollowListContainer: React.FC = () => {
   }
   // console.log('communityFollowList', communityFollowList);
   
-  
 
   // 페이지네이션 
   const addList = (offset:number) => {
@@ -66,7 +65,7 @@ const CommunityFollowListContainer: React.FC = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
               />
-              <div onClick={() => { requestFollowCommunityList(0, 10, text) }}>
+              <div onClick={() => { requestFollowCommunityList(0, 5, text) }}>
 
                 <Icon className="search link" />
               </div>
