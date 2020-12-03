@@ -17,4 +17,6 @@ export default interface Profile {
   profileBgImg: string;
   followerCount: number;
   followingCount: number;
+
+  isFollow?: boolean;
 }

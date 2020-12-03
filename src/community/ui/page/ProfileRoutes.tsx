@@ -8,7 +8,7 @@ import ProfileCommunitiesPage from './ProfileCommunitiesPage';
 import ReadOnlyProfileTitleView from '../view/CommunityProfile/ReadOnlyProfileTitleView';
 import Profile from '../../model/Profile';
 import OtherProfileMenuView from '../view/CommunityProfile/OtherProfileMenuView';
-import { findCommunityProfile } from '../../api/profileApi';
+import { findCommunityProfile, findCommunityProfile_new } from '../../api/profileApi';
 import OtherProfileView from '../view/CommunityProfile/OtherProfileView';
 import { requestProfileFeeds } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
 import { requestOtherProfileCommunities } from 'community/service/useCommunityProfile/utility/requestOtherProfileCommunities';
@@ -22,6 +22,7 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
   const { profileId } = useParams<Params>();
 
   useEffect(() => {
+    findCommunityProfile_new(profileId);
     findCommunityProfile(profileId).then(setProfile);
     requestOtherProfileCommunities(profileId);
     requestProfileFeeds(profileId);
