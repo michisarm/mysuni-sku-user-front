@@ -3,7 +3,7 @@ import { Icon, Button } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowListItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
-import { requestFollowCommunityList, requestFollowSearchList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+import { requestAppendFollowCommunityList, requestFollowCommunityList, requestFollowSearchList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -52,7 +52,7 @@ const CommunityFollowListContainer: React.FC = () => {
 
   // 페이지네이션 
   const addList = (offset:number) => {
-    requestFollowCommunityList(offset, 10, text);
+    requestAppendFollowCommunityList(offset, 10, text);
   }
 
   return (
@@ -68,10 +68,10 @@ const CommunityFollowListContainer: React.FC = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
               />
-              <div onClick={() => { requestFollowSearchList(0, 5, text) }}>
+              <button onClick={() => { requestFollowSearchList(0, 5, encodeURIComponent(text)) }}>
 
                 <Icon className="search link" />
-              </div>
+              </button>
             </div>
           </div>
           {communityFollowList !== undefined && (
