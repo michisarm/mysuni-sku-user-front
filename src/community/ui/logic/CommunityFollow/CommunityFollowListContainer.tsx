@@ -7,19 +7,23 @@ import { requestAppendFollowCommunityList, requestFollowCommunityList, requestFo
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+import { useHistory } from 'react-router-dom';
 
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
+  id,
   nickname,
   profileImg,
   followerCount,
   followingCount,
   name
 }) {
+
+  const history = useHistory();
   return (
     <>
       {/* Right */}
       {/* 프로필 카드 */}
-      <div className="community-main-left-contents">
+      <div className="community-main-left-contents" style={{cursor:"pointer"}} onClick={() => history.push(`/community/profile/${id}`)}>
         <div className="thumbnail">
           <img src={profileImg === null || profileImg === '' ? `${DefaultImg}` : `/files/community/${profileImg}`} />
         </div>

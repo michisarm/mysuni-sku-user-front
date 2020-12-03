@@ -684,3 +684,8 @@ body.msie .ui.modals.transition.visible.active .scrolling-80vh {
 body.msie .ui.modals.transition.visible.active .scrolling-80vh .react-pdf__Document .react-pdf__Page {
   overflow:hidden;
 }
+
+/* 2020.12.03 Community Main Follow 이미지 Radius 수정 */
+.community-main-left .community-main-left-contents .thumbnail > img {
+  border-radius: 36px !important;
+}

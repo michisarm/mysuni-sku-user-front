@@ -278,7 +278,7 @@ export function findPostByMenuId(menuId: string): Promise<Post> {
 }
 
 export function findPostByMenuIdAndType(menuId: string, type: string): Promise<Post> {
-  const url = `${BASE_URL}/post/menu/${menuId}/type/${type}`;
+  const url = `${BASE_URL}/postviews/post/menu/${menuId}/type/${type}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
