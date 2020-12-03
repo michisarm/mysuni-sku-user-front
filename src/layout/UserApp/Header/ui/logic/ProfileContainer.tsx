@@ -38,8 +38,8 @@ class ProfileContainer extends Component<Props, State> {
 
     this.findNoReadCount();
     setInterval(() => {
-      this.findNoReadCount();  // 1분마다 안 읽은 알림이 있는지 조회
-    }, 60*1000);
+      this.findNoReadCount();  // 5분마다 안 읽은 알림이 있는지 조회
+    }, 3000000);
     
     document.addEventListener('mousedown', this.handleClickOutside);
   }

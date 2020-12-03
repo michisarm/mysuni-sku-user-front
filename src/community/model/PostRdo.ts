@@ -13,7 +13,8 @@ export default interface PostRdo {
   communityId?: string;
   communityName?: string;
   menuId?: string;
-  //type?: PostTypeModel;
+  menuType?: string;
+  type?: string;
   title?: string;
   html?: string;
   likeCount?: number;

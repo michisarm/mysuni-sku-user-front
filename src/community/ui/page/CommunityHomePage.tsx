@@ -36,12 +36,12 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   }, []);
 
   return (
-    <Link
-      className="community-home-card"
-      to={`/community/${communityId}/post/${postId}`}
-      style={{ display: 'block' }}
-    >
-      <div className="ui comments base">
+    <div className="community-home-card">
+      <Link
+        className="ui comments base"
+        to={`/community/${communityId}/post/${postId}`}
+        style={{ display: 'block' }}
+      >
         <div className="home-card-top">
           <h3>
             {title} {isNew && <span className="new-label">NEW</span>}
@@ -54,8 +54,8 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
             <img src={commentIcon} />0
           </span>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

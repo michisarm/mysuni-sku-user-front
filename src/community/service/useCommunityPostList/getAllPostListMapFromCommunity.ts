@@ -30,6 +30,7 @@ export async function getAllPostItem(
         'searchGubun': param.searchGubun,
         'searchTitle': param.searchTitle,
         'menuId': param.menuId,
+        'menuType': param.menuType,
         'communityId': param.communityId,
         'sort': param.sort,
         'pinned': param.pinned
@@ -50,6 +51,7 @@ export async function getAllPostItem(
               replyCount: post.replyCount,
               commentFeedbackId: post.commentFeedbackId,
               menuId: post.menuId,
+              menuType: post.menuType,
               nickName: post.nickName || '',
               pinned: post.pinned,
               fileBoxId: post.fileBoxId,

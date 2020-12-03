@@ -7,4 +7,6 @@ export default interface LectureCourseSummary extends LectureSummary {
   iconBox?: IconBox;
   mytrainingId?: string;
   difficultyLevel: DifficultyLevel;
+  hasCommunity?: boolean;
+  communityId?: string;
 }
