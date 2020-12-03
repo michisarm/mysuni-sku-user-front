@@ -21,7 +21,7 @@ class ContentsService {
     else if (cubeType === CubeType.Video || cubeType === CubeType.Audio) {
       return ContentsServiceType.Media;
     }
-    else if (cubeType === CubeType.WebPage || cubeType === CubeType.Documents || cubeType === CubeType.Experiential) {
+    else if (cubeType === CubeType.WebPage || cubeType === CubeType.Cohort || cubeType === CubeType.Documents || cubeType === CubeType.Experiential) {
       return ContentsServiceType.OfficeWeb;
     }
     else if (cubeType === CubeType.Community) {

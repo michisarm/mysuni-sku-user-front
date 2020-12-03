@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 import Profile from '../../../model/Profile';
 
 interface ReadOnlyProfileTitleViewProps {
@@ -49,6 +50,11 @@ const ReadOnlyProfileTitleView: React.FC<ReadOnlyProfileTitleViewProps> = functi
             <li>
               <span>Following</span>
               <em>{profile?.followingCount}</em>
+            </li>
+            <li>
+              <Button className="btn_profile_follow">
+                  {(profile?.isFollow && "Unfollow") || "Follow"}
+              </Button>
             </li>
           </ul>
         </>

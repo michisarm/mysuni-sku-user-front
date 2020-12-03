@@ -118,7 +118,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
           if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
           else if (cubeType === 'Community') this.setCommunity(contentsId);
-          else if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
+          else if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Cohort' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
         });
     }
   }
@@ -318,7 +318,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
           else if (cubeType === CubeType.Community) {
             this.makeCommunity(personalCubeId, personalCube, cubeIntro,  contentId, cubeIntroId, mode && mode);
           }
-          else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage) {
+          else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage || cubeType === CubeType.Cohort) {
             this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
           }
         });
@@ -460,7 +460,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
       .then(() => {
         if (cubeType === 'Video' || cubeType === 'Audio') mediaService!.removeMedia(personalCubeId);
         if (cubeType === 'Community') boardService!.removeBoard(personalCubeId);
-        if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService!.removeOfficeWeb(personalCubeId);
+        if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Cohort') officeWebService!.removeOfficeWeb(personalCubeId);
       })
       .then(() => this.props.history.push(routePaths.create()));
   }

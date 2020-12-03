@@ -16,8 +16,8 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   const [selectedList, setSelectedList] = useState<(any)>();
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const approveData = useCommunityMemberApprove();
-  const AllData = approveData && approveData.results.map(item => item.memberId)
   const history = useHistory();
+  const AllData = approveData && approveData.results.map(item => item.memberId)
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
@@ -51,7 +51,7 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   const checkAll = useCallback(() => {
     setSelectAll(!selectAll)
     if(selectAll) {
-      setSelectedList(AllData);
+      setSelectedList(AllData && AllData);
       setSelectAll(!selectAll)
     } else {
       setSelectedList([]);
@@ -85,7 +85,7 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
     <>
       <div className="table-board-title">
         <div className="list-number">
-          {/* 총 <strong>{approved && approved.results.length}</strong>명 */}
+          총 <strong>{approveData && approveData.totalCount}</strong>명
         </div>
         <div className="right-wrap board-down-title-right">
           <button className="ui icon button left post delete" onClick={checkAll}>

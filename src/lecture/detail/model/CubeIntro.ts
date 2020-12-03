@@ -13,4 +13,5 @@ export default interface CubeIntro {
   feedbackId: string;
   reportFileBox: ReportFileBox;
   instructor: Instructor[];
+  communityId: string;
 }

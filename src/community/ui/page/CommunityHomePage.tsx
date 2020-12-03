@@ -62,6 +62,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
 const RecentItemView: React.FC<Post> = function RecentItemView({
   communityId,
   postId,
+  type,
   title,
   html,
   fileBoxId,
@@ -102,7 +103,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <div className="title-area read-header-left">
           <div className="text-list">
             <img src={profileIcon} />
-            <span>{creatorName}</span>
+            <span>{type === 'ANONYMOUS' ? '익명' : creatorName}</span>
           </div>
           <div className="text-list">
             <span>{createdDate}</span>

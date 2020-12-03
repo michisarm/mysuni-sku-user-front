@@ -9,4 +9,5 @@ export enum AplType {
   Documents = 'Documents',
   Experiential = 'Experiential',
   Etc = 'Etc',
+  Cohort = 'Cohort',
 }

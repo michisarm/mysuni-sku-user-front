@@ -622,6 +622,7 @@ async function getStateWhenApproved(
       case 'Documents':
         break;
       case 'WebPage':
+      case 'Cohort':
       case 'Experiential':
         if (stateText === PROGRESS) {
           const cubeIntro = await findCubeIntro(cubeIntroId);
@@ -732,6 +733,7 @@ async function getStateWhenCanceled(option: ChangeStateOption): Promise<LectureS
     case 'Audio':
       break;
     case 'WebPage':
+    case 'Cohort':
     case 'Experiential':
       return {
         ...lectureState,

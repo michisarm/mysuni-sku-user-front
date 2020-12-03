@@ -112,7 +112,7 @@ class CubeIntroMediaContainer extends React.Component<Props> {
             : null
         }
         {
-          cubeType === 'WebPage' ?
+          cubeType === 'WebPage' || cubeType === 'Cohort' ?
             <CreateWebPageTypeView
               onChangeOfficeWebProps={this.onChangeOfficeWebProps}
               officeWeb={officeWeb}
