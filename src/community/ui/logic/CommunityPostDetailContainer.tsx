@@ -17,6 +17,11 @@ import { getCommunityPostListItem } from 'community/store/CommunityPostListStore
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
 import CommunityPdfModal from '../view/CommunityPdfModal';
+import { saveCommunityPostLike } from 'community/service/useCommunityPostDetail/utility/saveCommunityPostLike';
+import { getCommunityPostLikeCountByMember } from 'community/service/useCommunityPostDetail/utility/getCommunityPostLike';
+import CommunityProfileModal from '../view/CommunityProfileModal';
+import { reactConfirm } from '@nara.platform/accent';
+import { getCommunityHome } from 'community/store/CommunityHomeStore';
 
 interface Params {
   communityId: string;
@@ -31,6 +36,7 @@ function CommunityPostDetailContainer() {
     new Map<string, any>()
   );
   const [creatorId, setCreatorId] = useState<string>('');
+  const [like, setLike] = useState<boolean>();
   const history = useHistory();
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -56,7 +62,7 @@ function CommunityPostDetailContainer() {
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);
     getFileIds();
-    console.log('postDetail', postDetail)
+    getLikeState();
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -75,14 +81,32 @@ function CommunityPostDetailContainer() {
     });
   }, []);
 
+  const getLikeState = useCallback(() => {
+    const memberId = patronInfo.getDenizenId();
+    if(memberId != undefined && memberId != ''){
+      getCommunityPostLikeCountByMember(postId, memberId).then((result) => {
+        if(result > 0){
+          setLike(true);
+        }else{
+          setLike(false);
+        }
+      })
+    }
+  }, []);
+
   const OnClickList = useCallback(() => {
     history.goBack();
   }, []);
 
   const OnClickDelete = useCallback(() => {
-    deletePost(communityId, postId);
-
-    history.goBack();
+    reactConfirm({
+      title: '알림',
+      message: '삭제하시겠습니까?',
+      onOk: async () => {
+        deletePost(communityId, postId);
+        history.goBack();
+      },
+    });
   }, []);
 
   const OnClickModify = useCallback(() => {
@@ -92,8 +116,18 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const OnClickLike = useCallback(() => {
-        //deletePost(communityId, postId);
-  }, []);
+    const memberId = patronInfo.getDenizenId();
+    if(memberId != undefined && memberId != ''){
+      saveCommunityPostLike(postId, memberId).then((result) => {
+        
+      })
+      if(like === true){
+        setLike(false);
+      }else{
+        setLike(true);
+      }
+    }
+  }, [like]);
 
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
@@ -120,15 +154,13 @@ function CommunityPostDetailContainer() {
             onClickDelete={OnClickDelete}
           />
           <div className="class-guide-txt fn-parents ql-snow">
-            <div className="text ql-editor">
-              <div
-                className="text description ql-editor"
-                dangerouslySetInnerHTML={{
-                  __html: postDetail.html,
-                }}
-                ref={textContainerRef}
-              />
-            </div>
+            <div
+              className="text ql-editor"
+              dangerouslySetInnerHTML={{
+                __html: postDetail.html,
+              }}
+              ref={textContainerRef}
+            />
           </div>
           <div className="ov-paragraph download-area task-read-down">
             <div className="detail">
@@ -163,10 +195,16 @@ function CommunityPostDetailContainer() {
             </div>
           </div>
           <div className="task-read-bottom">
-            <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
-              <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
-              좋아요
-            </button>
+            { postDetail.menuId !== 'NOTICE' && (
+              <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
+                {like && (
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
+                ) || (
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+                )}
+                좋아요
+              </button>
+            )}
             { creatorId === postDetail.creatorId && (
               <Button
                 className="ui icon button left post edit"

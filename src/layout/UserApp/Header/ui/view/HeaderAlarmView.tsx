@@ -26,13 +26,13 @@ class HeaderAlarmView extends Component<Props, State> {
     alarmShowClass: '',
   };
 
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
+  //componentDidMount() {
+  //  document.addEventListener('mousedown', this.handleClickOutside);
+  //}
 
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }
+  //componentWillUnmount() {
+  //  document.removeEventListener('mousedown', this.handleClickOutside);
+  //}
 
   onTogglePop() {
     const { alarmShowClass } = this.state;
@@ -43,14 +43,14 @@ class HeaderAlarmView extends Component<Props, State> {
     handleClickAlarm();
   }
 
-  handleClickOutside(e: MouseEvent) {
-    if (
-      this.alarmButtonRef &&
-      !this.alarmButtonRef.current.contains(e.target)
-    ) {
-      setTimeout(() => this.setState({ alarmShowClass: '' }), 500);
-    }
-  }
+  //handleClickOutside(e: MouseEvent) {
+  //  if (
+  //    this.alarmButtonRef &&
+  //    !this.alarmButtonRef.current.contains(e.target)
+  //  ) {
+  //    setTimeout(() => this.setState({ alarmShowClass: '' }), 500);
+  //  }
+  //}
 
   render() {
     //

@@ -160,7 +160,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             sortType={sortType}
             totalCount={postItems.totalCount}
             menuType={menuType}
-            managerId={adminAuth}
+            managerAuth={adminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />

@@ -1,8 +1,6 @@
 import {
-  findAllMenus,
-  findCommunity,
+  findMyMenus,
   findCommunityView,
-  findHome,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -18,7 +16,7 @@ export function requestCommunity(communityId: string) {
 }
 
 export function requestCommunityMenus(communityId: string) {
-  findAllMenus(communityId).then(menus => {
+  findMyMenus(communityId).then(menus => {
     const communityHome = getCommunityHome() || {
       menus: [],
       recent: [],
