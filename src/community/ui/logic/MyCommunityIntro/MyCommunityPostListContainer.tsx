@@ -1,4 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
+import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Icon, Button, Comment } from 'semantic-ui-react';
@@ -73,6 +74,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const { pathname } = useLocation();
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
+
   useEffect(() => {
     const div = document.createElement('div');
     div.innerHTML = contents;
@@ -113,6 +115,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     setMore(false);
   }, []);
   return (
+    <>
     <div className="sub-info-box">
       <div className="comment-area community-main-card">
         {/* comments */}
@@ -120,7 +123,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
             {profileImage !== undefined && profileImage !== '' && (
-              <Comment.Avatar src={`/files/community/${profileImage}`} />
+              <Comment.Avatar src={`/files/community/${profileImage}`}/>
             )}
             <Comment.Content>
               <Comment.Author>
@@ -199,6 +202,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
         </Comment.Group>
       </div>
     </div>
+    </>
   );
 };
 
@@ -208,12 +212,13 @@ function MyCommunityPostListContainer() {
     return null;
   }
   return (
+    <>
     <div className="community-main-contants">
       {myCommunityIntro !== undefined &&
         myCommunityIntro.posts.map(postItem => (
           <PostItemView key={postItem.postId} {...postItem} />
         ))}
-
+      
       <div className="more-comments community-side">
         {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
           <Button
@@ -233,6 +238,7 @@ function MyCommunityPostListContainer() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
