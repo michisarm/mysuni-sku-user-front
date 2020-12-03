@@ -7,10 +7,10 @@ import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate
 interface Props {
   open: boolean;
   setOpen: (state:boolean) => void,
-  userProfile:string,
-  creatorId:string,
-  introduce:string,
-  nickName:string
+  userProfile:string | undefined,
+  creatorId:string | undefined,
+  introduce:string | undefined,
+  nickName:string | undefined
 }
 
 const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, creatorId, introduce, nickName}) => {

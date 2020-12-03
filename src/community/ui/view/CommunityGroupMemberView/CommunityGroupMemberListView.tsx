@@ -6,7 +6,7 @@ import AvartarImage from '../../../../style/media/img-profile-80-px.png';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getGroupMemberData } from 'community/service/useGroupList/useGroupList';
-import { onFollowGroupMember,onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
+import { onFollowGroupMember, onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
 import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 import CommunityProfileModal from '../CommunityProfileModal';
 
@@ -42,7 +42,7 @@ function ItemBox({
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} /><span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname}</span>
+            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} /><span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname}</span>
             <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
               <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
             </button>
