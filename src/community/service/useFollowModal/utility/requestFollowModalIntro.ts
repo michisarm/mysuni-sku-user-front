@@ -61,12 +61,28 @@ export function requestFollowingsModal() {
 
 
 
-export async function requestFollowModalAdd(id: string) {
-  await followModalAdd(id);
-  requestFollowingsModal();
+export async function requestFollowModalAdd(id: string, type: string) {
+  if(type === 'follower') {
+    followModalAdd(id).then(async (result) => {
+      await requestFollowersModal();
+    })
+  } else {
+    followModalAdd(id).then(async (result) => {
+      await requestFollowingsModal();
+    })
+  }
 }
 
-export async function requestFollowModalDelete(id: string) {
-  await followModalDelete(id);
-  requestFollowingsModal();
+export async function requestFollowModalDelete(id: string, type: string) {
+  if(type==='following') {
+    followModalDelete(id).then(async (result) => {
+      await requestFollowingsModal();
+    })
+  }
+  else {
+    followModalDelete(id).then(async (result) => {
+      await requestFollowersModal();
+    })
+  }
+  
 }

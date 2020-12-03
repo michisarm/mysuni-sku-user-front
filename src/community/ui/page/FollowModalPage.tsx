@@ -3,10 +3,10 @@ import { requestFollowersModal, requestFollowingsModal } from '../../service/use
 import FollowModalView from '../view/CommunityFollowModal/FollowModalView';
 
 const FollowModalPage:React.FC = function FollowModalPage () {
-  useEffect(() => {
-    requestFollowersModal();
-    requestFollowingsModal();
-  },[]);
+  // useEffect(() => {
+  //   requestFollowersModal();
+  //   requestFollowingsModal();
+  // },[]);
   return <FollowModalView />
 }
 
