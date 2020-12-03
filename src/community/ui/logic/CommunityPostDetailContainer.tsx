@@ -58,7 +58,6 @@ function CommunityPostDetailContainer() {
     }
     
   }
-
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);

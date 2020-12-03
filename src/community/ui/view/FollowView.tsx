@@ -50,9 +50,7 @@ const FollowView: React.FC = function FollowView() {
       </Sticky>
       <Segment className="full">
         <div className="course-detail-center community-containter">
-          <CommunityFollowPostListContainer />
-          <CommunityFollowListContainer />
-          {/* {followCommunityIntro?.postsTotalCount !== 0 ?
+          {followCommunityIntro?.postsTotalCount !== 0 ?
             <>
               <CommunityFollowPostListContainer />
               <CommunityFollowListContainer />
@@ -74,7 +72,7 @@ const FollowView: React.FC = function FollowView() {
                 </Segment>
               </section>
             </>
-          } */}
+          }
         </div>
       </Segment>    
     </div>
