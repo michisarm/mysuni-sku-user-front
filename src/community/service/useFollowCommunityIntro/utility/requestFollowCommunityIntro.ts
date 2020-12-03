@@ -42,7 +42,7 @@ function getTimeString(createdTime: number): string {
   return moment(createdTime).format('YYYY.MM.DD')
 }
 
-export function requestFollowCommunityList(offset: number = 0, limit: number = 5, nickName: string = "") {
+export function requestFollowCommunityList(offset: number = 0, limit: number = 2, nickName: string = "") {
   followList(offset, limit, nickName).then(communities => {
     const followCommunityIntro = getFollowCommunityIntro() || {
       communities: [],
@@ -62,6 +62,40 @@ export function requestFollowCommunityList(offset: number = 0, limit: number = 5
       });
     } else {
       const next: FollowCommunityItem[] = [...followCommunityIntro.communities];
+      communities.results.map(followPostList => {
+        next.push(followPostList);
+      });
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
+        communities: next,
+        communitiesTotalCount: communities.totalCount,
+        communitiesOffset: next.length,   
+      });
+    }
+  });
+}
+
+// list 검색부분 별도
+export function requestFollowSearchList(offset: number = 0, limit: number = 5, nickName: string = "") {
+  followList(offset, limit, nickName).then(communities => {
+    const followCommunityIntro = getFollowCommunityIntro() || {
+      communities: [],
+      posts: [],
+      communitiesTotalCount: 0,
+      communitiesOffset: 0,
+      postsTotalCount: 0,
+      postsOffset:0
+    };
+
+    if (communities === undefined) {
+      setFollowCommunityIntro({
+        ...followCommunityIntro,
+        communities: [],
+        communitiesTotalCount: 0,
+        communitiesOffset:0,
+      });
+    } else {
+      const next: FollowCommunityItem[] = [];
       communities.results.map(followPostList => {
         next.push(followPostList);
       });
