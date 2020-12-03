@@ -25,7 +25,7 @@ function CommunityPostCreateContainer() {
     const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     setAdminAuth(communityHome.community?.managerId! === denizenId);
-  }, [postCreateItem,communityHome]);
+  }, [postCreateItem, communityHome]);
 
   return (
     <>
