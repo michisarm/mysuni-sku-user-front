@@ -17,6 +17,9 @@ import { findMember } from 'community/api/MemberApi';
 import { joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { checkMember } from 'community/service/useMember/useMember';
+import { getPostMenuFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostMenuNameFromCommunity';
+import depot from '@nara.drama/depot';
+
 
 interface CommunityPostCreateViewProps {
   postItem: CommunityPostCreateItem;
@@ -88,8 +91,18 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   const handleSubmitClick = useCallback( async () => {
 
     //멤버 가입 체크
-    if(!checkMember(communityId)){
+    if(!await checkMember(communityId)){
       return;
+    }
+
+    //자료실 타입 첨부파일 필수 체크
+    const menu = menuId && await getPostMenuFromCommunity(communityId, menuId);
+    if(menu && menu.type == "STORE" || getCommunityPostCreateItem()?.menuType == "STORE"){
+      const filesArr = await depot.getDepotFiles(postItem.fileBoxId||'');
+      if (filesArr && Array.isArray(filesArr) && filesArr.length === 0) {
+        reactAlert({ title: '알림', message: '첨부파일을 등록해 주세요' });
+        return true;
+      }
     }
 
     reactConfirm({
@@ -112,7 +125,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         }
       },
     });
-  }, [communityId, menuId, postId, history]);
+  }, [communityId, menuId, postId, history, postItem.fileBoxId]);
 
   const menu = menus.find(c => c.menuId === menuId);
 

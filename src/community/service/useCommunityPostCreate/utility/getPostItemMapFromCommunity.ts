@@ -11,6 +11,7 @@ export async function getPostItemMapFromCommunity(
         title: '',
         contents: '',
         visible: true,
+        menuType:'',
     }
     if (postId !== undefined) {
         const post: Post = await findPostView(postId);
@@ -21,6 +22,7 @@ export async function getPostItemMapFromCommunity(
             postCreateItem.contents = post.html;
             postCreateItem.visible = post.visible;
             postCreateItem.fileBoxId = post.fileBoxId;
+            postCreateItem.menuType = post.menuType;
         }
     }
     setCommunityPostCreateItem(postCreateItem);
