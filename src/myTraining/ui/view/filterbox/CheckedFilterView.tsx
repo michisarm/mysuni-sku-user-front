@@ -128,7 +128,6 @@ function CheckedFilterView(props: Props) {
     }
 
     if (conditions.applying === 'true') {
-      console.log('passed~!');
       buttons.push(
         <Fragment key="checked-applying-0">
           <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningSchedule, conditions.applying)}>

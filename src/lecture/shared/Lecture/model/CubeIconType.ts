@@ -14,6 +14,7 @@ enum CubeIconType {
   Program = 'course',
   Course = 'course',
   Card = 'course',
+  Cohort = 'webpage',
 }
 
 export default CubeIconType;

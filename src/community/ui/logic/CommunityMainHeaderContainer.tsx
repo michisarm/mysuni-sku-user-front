@@ -3,7 +3,6 @@ import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
 import { Link } from 'react-router-dom';
-import FollowerView from '../../ui/logic/FollowModalIntro/FollowModalContainer';
 import {Button, Modal} from 'semantic-ui-react';
 import { requestFollowModalAdd, requestFollowModalDelete} from 'community/service/useFollowModal/utility/requestFollowModalIntro';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
@@ -31,9 +30,6 @@ function CommunityMainHeaderContainer() {
   const followersList = useFollowersModal();
   const followingsList = useFollowingsModal();
  
-
-  // console.log('folowersList',followersList);
-  // console.log('folowingList',followingsList);
 
   const modalOpen = (value: string) => {
     if(value === "followers") {
@@ -75,7 +71,7 @@ function CommunityMainHeaderContainer() {
     return(
       <li>
         <p className="pic"><img src={item.profileImg === null || item.profileImg === '' ? `${DefaultImg}` : `/files/community/${item.profileImg}`} alt="" /></p>
-        <p className="nickname">{item.nickname === '' ? 'testtt' : 'testname'}</p>
+        <p className="nickname">{item.nickname === '' ? item.name : item.nickname}</p>
         <label className="chk_follow">
           <input type="checkbox" name="" />
           <span onClick={()=>followersBtn(item.id, idx, item.follow)}>{item.follow ? "unfollow" : "follow"}</span>
@@ -88,7 +84,7 @@ function CommunityMainHeaderContainer() {
     return(
       <li>
         <p className="pic"><img src={item.profileImg === null || item.profileImg === ''  ? `${DefaultImg}` : `/files/community/${item.profileImg}`} alt="" /></p>
-        <p className="nickname">{item.nickname === ''? 'testtt' : 'testname'}</p>
+        <p className="nickname">{item.nickname === '' ? item.name : item.nickname}</p>
         <label className="chk_follow">
           <input type="checkbox" name="" />
           <span onClick={()=>followingsBtn(item.id, idx, item.follow)}>{item.follow ? "unfollow" : "follow"}</span>

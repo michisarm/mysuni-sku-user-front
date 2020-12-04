@@ -15,7 +15,7 @@ const CommunityMemberListContainer: React.FC<Props> = function GroupListContaine
   
   const onSearch = (value:any) => {
     if(value != null) {
-      getSearchMember(currentCommunity, decodeURI(value))
+      getSearchMember(currentCommunity, encodeURIComponent(searchValue))
       setSearchValue('')
     }
   }

@@ -21,7 +21,7 @@ export function useCommunityPostCreate(
 
   useEffect(() => {
     getCommunityPostItem(postId);
-  }, []);
+  }, [postId]);
 
   useEffect(() => {
     const next = `useCommunityPostCreate-${++subscriberIdRef}`;

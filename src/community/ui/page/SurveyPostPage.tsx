@@ -9,14 +9,11 @@ function SurveyPostPage() {
   const params = useLectureRouterParams();
   useEffect(() => {
     if (params !== undefined) {
-      console.log(params);
       getLectureSurvey(params);
     }
   }, [params]);
   return (
-    // <LectureDetailLayout>
       <LectureSurveyContainer />
-    // </LectureDetailLayout>
   );
 }
 

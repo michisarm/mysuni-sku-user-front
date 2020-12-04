@@ -12,7 +12,7 @@ export function useCommunityDiscussionPostDetail(menuId: string): [PostDetailVal
     
     useEffect(() => {
       getCommunityPost(menuId);
-    }, []);
+    }, [menuId]);
 
     useEffect(() => {
       const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;

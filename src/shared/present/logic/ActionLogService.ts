@@ -54,21 +54,15 @@ class ActionLogService {
 
     if (isEmpty) {
 
-      // console.log('ActionLogService _actionLogs empty');
-
       clearTimeout(this._timerId);
       this._registerActionLog();
 
     } else if (this._actionLogs.length >= this.CHUNCK_SIZE) {
 
-      // console.log('ActionLogService _actionLogs size');
-
       clearTimeout(this._timerId);
       this._registerActionLog();
 
     } else if (this._timerId === -1) {
-
-      // console.log('ActionLogService _actionLogs timeout');
 
       this._timerId = setTimeout(this._registerActionLog, this.TIME_OUT);
 
@@ -81,11 +75,7 @@ class ActionLogService {
 
     actionLogs.forEach(actionLogModel => actionLogModel.requestTimestampe = moment().toISOString(true));
 
-    // console.log('ActionLogService _actionLogs request');
-
-    this.actionLogApi.registerActionLogs(actionLogs).catch(err => {
-      console.log('action log api error : ', err);
-    });
+    this.actionLogApi.registerActionLogs(actionLogs).catch(() => {});
   }
 
 }

@@ -127,8 +127,6 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
     }
 
-    // console.log('photoFilePath=', photoFilePath);
-
     return (
       <>
         <Modal size={size} open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose} className="base w380">

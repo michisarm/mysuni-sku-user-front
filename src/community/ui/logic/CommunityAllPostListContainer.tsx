@@ -66,10 +66,16 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     //멤버 가입 체크
     if(!await checkMember(communityId)){
       return;
-    }             
-    history.push({
-      pathname: `/community/${param.communityId}/all/post/${param.postId}`,
-    });
+    }
+    if (param.menuType === 'ANONYMOUS') {
+      history.push({
+        pathname: `/community/${param.communityId}/ANONYMOUS/post/${param.postId}`,
+      });
+    } else {
+      history.push({
+        pathname: `/community/${param.communityId}/all/post/${param.postId}`,
+      });
+    }          
   };
 
   const onChangeSearchType = (name: string, value: SearchType) => {

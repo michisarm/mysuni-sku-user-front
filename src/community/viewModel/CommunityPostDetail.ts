@@ -16,6 +16,7 @@ export interface CommunityPostDetail {
   readCount: number,
   visible: boolean,
   creatorId: string,
+  creatorName: string,
   createdTime: number,
   modifierId: string,
   modifiedTime: number,
@@ -37,6 +38,7 @@ export interface CommunityPostItem {
   likeCount: number,
   commentFeedbackId: string;
   creatorId: string;
+  creatorName: string;
   createdTime: number;
   nick: string;
 }

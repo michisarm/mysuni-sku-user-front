@@ -61,8 +61,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       )
       .flat();
 
-    console.log('companyChannels :: ', companyChannels);
-
     const favoriteChannelsWithoutCompany = favoriteChannels.filter(channel =>
       !companyChannels.some(companyChannel => companyChannel.channelId === channel.channelId)
     );

@@ -38,8 +38,8 @@ class ProfileContainer extends Component<Props, State> {
 
     this.findNoReadCount();
     setInterval(() => {
-      this.findNoReadCount();  // 1분마다 안 읽은 알림이 있는지 조회
-    }, 60*1000);
+      this.findNoReadCount();  // 5분마다 안 읽은 알림이 있는지 조회
+    }, 3000000);
     
     document.addEventListener('mousedown', this.handleClickOutside);
   }
@@ -129,7 +129,7 @@ class ProfileContainer extends Component<Props, State> {
                 <span>My Page</span>
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 onClick={() => this.props.history.push('/community/my-profile')}
@@ -140,7 +140,7 @@ class ProfileContainer extends Component<Props, State> {
                 />
                 <span>Community Profile</span>
               </a>
-            </li>
+            </li> */}
             <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon" />
@@ -150,12 +150,12 @@ class ProfileContainer extends Component<Props, State> {
           </ul>
         </div>
 
-        <HeaderAlarmView
+        {/* <HeaderAlarmView
           myNotieMentions={myNotieMentions}
           myNotieNoReadMentionCount={myNotieNoReadMentionCount}
           routeToAlarmBackLink={this.routeToAlarmBackLink}
           handleClickAlarm={this.handleClickAlarm}
-        />
+        /> */}
       </div>
     );
   }

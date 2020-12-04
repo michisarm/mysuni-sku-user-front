@@ -63,6 +63,17 @@ export function registerNoticePost(
     .then(response => response && response.data);
 }
 
+export function registerAnonymousePost(
+  communityId: string,
+  postCdo: PostCdo
+): Promise<Post> {
+  postCdo.type='ANONYMOUS';
+  const url = `${BASE_URL}/communities/${communityId}/posts/flow/anonymous`;
+  return axiosApi
+    .post<Post>(url, postCdo)
+    .then(response => response && response.data);
+}
+
 export function findPostViewsByMenuId(
   postRdo: any
 ): Promise<OffsetElementList<Post> | undefined> {
@@ -223,6 +234,13 @@ export function findCommunity(
   return axiosApi.get<Community>(url).then(AxiosReturn);
 }
 
+export function findCommunityByCourseId(
+  communityId: string
+): Promise<Community | undefined> {
+  const url = `${BASE_URL}/communities/byCourseId/${communityId}`;
+  return axiosApi.get<Community>(url).then(AxiosReturn);
+}
+
 export function findHome(
   communityId: string
 ): Promise<CommunityHomeInfo | undefined> {
@@ -260,7 +278,7 @@ export function findPostByMenuId(menuId: string): Promise<Post> {
 }
 
 export function findPostByMenuIdAndType(menuId: string, type: string): Promise<Post> {
-  const url = `${BASE_URL}/post/menu/${menuId}/type/${type}`;
+  const url = `${BASE_URL}/postviews/post/menu/${menuId}/type/${type}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
@@ -277,7 +295,6 @@ export function followPostList(
   limit: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const url = `${BASE_URL}/postviews/followers?offset=${offset}&limit=${limit}`;
-  // console.log('axios offset', offset, limit);
   return axiosApi
     .get<OffsetElementList<Post>>(url)
     .then(response => response && response.data);
@@ -290,7 +307,6 @@ export function followList(
   OffsetElementList<FollowCommunityItem> | undefined
 > {
   const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
-  console.log('api name',axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn));
   return axiosApi.get<OffsetElementList<FollowCommunityItem>>(url).then(AxiosReturn);
 }
 

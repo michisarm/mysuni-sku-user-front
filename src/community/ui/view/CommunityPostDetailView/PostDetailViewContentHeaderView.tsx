@@ -15,6 +15,7 @@ interface Props {
   readCount?: number;
   replyCount?: number;
   likeCount?: number;
+  editAuth?: boolean;
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
@@ -35,6 +36,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       replyCount,
       likeCount,
       postDetail,
+      editAuth,
       onClickList,
       onClickDelete,
       onClickModify,
@@ -80,7 +82,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                   </div>
                 )}
                   <div className="ui onlytext">
-                    {onClickModify && (
+                    {onClickModify && editAuth && (
                       <Button
                         icon
                         className="postset edit2"
@@ -90,7 +92,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                         Edit
                       </Button>
                     )}
-                    {deletable && (
+                    {deletable && editAuth && (
                       <Button
                         icon
                         className="postset delete"

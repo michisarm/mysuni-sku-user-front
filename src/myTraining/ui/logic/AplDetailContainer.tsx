@@ -104,7 +104,7 @@ function AplDetailContainer(props: Props) {
     if (hourOrMinute === 'hour') {
       const allowHour = Number(e.target.value);
       /* input value 유효성 검사 */
-      if (allowHour >= 0 && allowHour <= 12) {
+      if (allowHour >= 0 && allowHour <= 999999) {
         setAllowHour(String(allowHour));
       }
 

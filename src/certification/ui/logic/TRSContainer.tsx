@@ -82,10 +82,6 @@ const TRSContainer: React.FC<Props> = (Props) => {
       personalCube = lectureView.personalCube;
       rollBooks = lectureView.rollBooks;
 
-      // console.log('init lectureView : ', lectureView);
-      // console.log('init personalCube : ', personalCube);
-      // console.log('init rollBoo.ks : ', rollBooks[0]);
-
       if (rollBooks[0]) {
         // studentData = await StudentApi.instance.findStudentByRollBookId(rollBooks[0].id);
 
@@ -105,8 +101,6 @@ const TRSContainer: React.FC<Props> = (Props) => {
           // const surveyCase = await surveyFormService!.findSurveyForm(personalCube?.contents.surveyId);
           const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;
           const surveyCase = lectureView.surveyForm  === null ? new SurveyFormModel() : lectureView.surveyForm;
-
-          // console.log('surveyCase : ', surveyCase);
 
           const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
           const title = JSON.parse(JSON.stringify(obj.langStringMap));

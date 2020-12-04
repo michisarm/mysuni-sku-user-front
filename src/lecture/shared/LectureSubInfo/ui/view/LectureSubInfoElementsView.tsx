@@ -34,7 +34,6 @@ export const Buttons = ({
 }: ButtonsProp) => {
   //
   if (!mainAction && !subActions && !onCancel) return null;
-  // console.log('subActions : ', subActions);
 
   // const subAc = subActions?[0].find(subType) | '';
 
@@ -52,7 +51,8 @@ export const Buttons = ({
           subAction =>
             (subAction.subType === 'Documents' ||
               subAction.subType === 'Video' ||
-              subAction.subType === 'WebPage') && (
+              subAction.subType === 'WebPage' ||
+              subAction.subType === 'Cohort') && (
               <Button
                 key={subAction.type}
                 className="fix bg blue"
@@ -80,8 +80,6 @@ interface StateProp {
 export const StateView = ({ state }: StateProp) => {
   //
   if (!state) return null;
-
-  // console.log('sub state : ', state);
 
   let st = state;
 

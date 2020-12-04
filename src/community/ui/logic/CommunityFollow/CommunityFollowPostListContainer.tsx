@@ -10,6 +10,7 @@ import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/Follo
 import { off } from 'process';
 import { registerBookmark } from '../../../api/communityApi';
 import { getFollowCommunityIntro, setFollowCommunityIntro } from '../../../store/CommunityMainStore';
+import { Link } from 'react-router-dom';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -27,7 +28,6 @@ function copyUrl(url: string) {
 
 async function bookmark(postId: string) {
   const bookmarkId = await registerBookmark(postId);
-  console.log('bookmarkId', bookmarkId);
 
   if (bookmarkId !== undefined) {
     const followCommunityIntro = getFollowCommunityIntro();
@@ -129,12 +129,12 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                   alt="profile"
                 />
                 <Comment.Content>
-                  <Comment.Author as="a">
-                    자동차의 핵심은 인공지능 (커뮤니티명)
+                  <Comment.Author>
+                    <Link to={`/community/${communityId}`}>{communityName}</Link>
                   </Comment.Author>
                   <Comment.Text>
                     <div className="ellipsis">
-                      <span className="id">{name}</span>
+                      <span className="id">{profileId}</span>
                       <span className="date">{createdTime}</span>
                     </div>
                     {/* <Button>+ View more</Button> */}
@@ -164,7 +164,9 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
               <div className="card-bottom">
                 <h3>
                   <span className="ico_feed board">게시물</span>
-                  {name}
+                  <Link to={`/community/${communityId}/post/${postId}`}>
+                    {name}
+                  </Link>
                 </h3>
                 {more && (
                   <div className="ql-snow">
@@ -211,7 +213,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
 
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
-  // console.log('container', communityFollowPostList);
 
   const [offsetPage, setOffsetPage] = useState<number>(0);
 
@@ -220,7 +221,6 @@ function CommunityFollowPostListContainer() {
   }
 
   const addList = (offset:number) => {
-    console.log('offset ' , offset);
     
     requestFollowCommunityPostList(offset, 5);
   }

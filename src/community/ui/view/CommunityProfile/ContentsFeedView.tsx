@@ -28,8 +28,6 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
   profileId
 }) {
 
-  // console.log('communityProfileFeed',communityProfileFeed);
-
   /* eslint-disable */
   return (
     <Segment className="full">

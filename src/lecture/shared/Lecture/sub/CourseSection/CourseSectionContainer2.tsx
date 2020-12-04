@@ -30,7 +30,6 @@ class CourseSectionContainer extends Component<Props, State> {
   };
 
   // componentDidUpdate() {
-  //   console.log('learningState : ' + this.props.learningState);
   //   if( this.props.learningState === 'InProgress' ) {
   //     this.state.open = true;
   //   }

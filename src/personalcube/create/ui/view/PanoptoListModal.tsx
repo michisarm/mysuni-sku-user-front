@@ -36,7 +36,6 @@ class PanoptoListModal extends React.Component<Props, States> {
     const { sharedService, mediaService } = this.props;
     const { panoptoCdo } = this.props.mediaService!;
     const patronEmail = patronInfo.getPatronEmail() || '';
-    console.log(patronEmail);
 
     mediaService!.changePanoptoCdoProps('folderOwnerId', patronEmail);
 

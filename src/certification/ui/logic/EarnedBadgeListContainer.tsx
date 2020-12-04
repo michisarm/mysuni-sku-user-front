@@ -24,7 +24,6 @@ interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
 // 페이징 처리없이 모두 표시한다.
 const EarnedBadgeListContainer: React.FC<Props> = Props => {
   //
-  console.log('EarnedBadgeListContainer :: render :: ');
   const { badgeService, history } = Props;
   const { myBadges } = badgeService!;
 
@@ -38,7 +37,6 @@ const EarnedBadgeListContainer: React.FC<Props> = Props => {
 
   useEffect(() => {
     //
-    console.log('difficultyLevel :: ', difficultyLevel);
     badgeService!.clearMyBadges();
     findMyContent();
   }, [difficultyLevel]);

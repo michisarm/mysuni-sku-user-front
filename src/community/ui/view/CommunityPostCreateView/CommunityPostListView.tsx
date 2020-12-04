@@ -34,10 +34,10 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
               </span>
             </span>
           </span>
-          { menuType === 'ANONYMOUS' && (
+          { post.menuType === 'ANONYMOUS' && (
             <span className="cell nick">익명</span>
           )}
-          { menuType !== 'ANONYMOUS' && (
+          { post.menuType !== 'ANONYMOUS' && (
             <span className="cell nick">{post.nickName}</span>
           )}
           <span className="cell date">
@@ -66,10 +66,10 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
               </span>
             </span>
           </span>
-          { menuType === 'ANONYMOUS' && (
+          { post.menuType === 'ANONYMOUS' && (
             <span className="cell nick">익명</span>
           )}
-          { menuType !== 'ANONYMOUS' && (
+          { post.menuType !== 'ANONYMOUS' && (
             <span className="cell nick">{post.nickName}</span>
           )}
           <span className="cell date">

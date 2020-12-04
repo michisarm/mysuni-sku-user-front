@@ -154,7 +154,7 @@ export default class PersonalCubeApi {
       axios
         .get<ExcelView>(this.URL + `/excel`, { params: personalCubeRdo })
         // .then((response: any) => window.location.href = response.request.responseURL);
-        .then((response: any) => console.log(response))
+        .then(() => {})
     );
   }
 

@@ -271,9 +271,6 @@ class LectureCardContainer extends Component<Props, State> {
     }
 
     // if (!classroom.enrolling.enrollingAvailable) {
-    //
-    //   console.log('onSelectClassroom if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
-    //
     //   if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
     //     window.open(typeViewObject.siteUrl, '_blank');
     //   }
@@ -357,6 +354,11 @@ class LectureCardContainer extends Component<Props, State> {
         break;
 
       case CubeType.WebPage:
+        action = StudyActionType.WebPageLinked;
+        path = typeViewObject.url;
+
+        break;
+      case CubeType.Cohort:
         action = StudyActionType.WebPageLinked;
         path = typeViewObject.url;
 
@@ -513,7 +515,6 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ openLearningModal: true });
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -528,7 +529,6 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ openLearningModal: true });
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -552,7 +552,6 @@ class LectureCardContainer extends Component<Props, State> {
       //this.setState( {openLearningModal: true});
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -976,6 +975,7 @@ class LectureCardContainer extends Component<Props, State> {
           };
         }
       case CubeType.WebPage:
+      case CubeType.Cohort:
       case CubeType.Experiential:
         return {
           type: LectureSubInfo.ActionType.LearningStart,
@@ -1041,6 +1041,7 @@ class LectureCardContainer extends Component<Props, State> {
         }
         break;
       case CubeType.WebPage:
+      case CubeType.Cohort:
       case CubeType.Experiential:
       case CubeType.Documents:
         if (
@@ -1061,8 +1062,6 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    // console.log('viewObject : ', JSON.stringify(viewObject));
-    // console.log('student : ', JSON.stringify(student));
     if (
       viewObject &&
       viewObject.reportFileBoxId &&
@@ -1187,7 +1186,6 @@ class LectureCardContainer extends Component<Props, State> {
         }
       }
       const studentNumberOfTrials = student.numberOfTrials;
-      //console.log('student numberOfTrials ::' + studentNumberOfTrials);
       // setter
       localStorage.setItem('numberOfTrials', studentNumberOfTrials.toString());
     }
@@ -1289,6 +1287,7 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Audio:
       case CubeType.Video:
       case CubeType.WebPage:
+      case CubeType.Cohort:
       case CubeType.Experiential:
       case CubeType.Documents:
       case CubeType.Community:
@@ -1312,10 +1311,6 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
-
-    // console.log('LectureCardContainer : ', viewObject);
-    // console.log('LectureCardContainer : ', lectureServiceType);
-    // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
       <LectureCardContentWrapperView>

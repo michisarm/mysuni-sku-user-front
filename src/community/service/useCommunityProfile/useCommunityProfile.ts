@@ -24,7 +24,6 @@ export function useCommunityProfile(): [ProfileValue] {
       }
       return onCommunityProfileItem(next => {
         setProfileValue(next);
-        console.log('CommunityProfileItem', next);
       }, subscriberId);
     }, [subscriberId]);
   

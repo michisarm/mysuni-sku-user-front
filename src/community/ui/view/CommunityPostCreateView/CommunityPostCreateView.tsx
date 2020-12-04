@@ -19,6 +19,7 @@ import { requestCommunity } from 'community/service/useCommunityHome/requestComm
 import { checkMember } from 'community/service/useMember/useMember';
 import { getPostMenuFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostMenuNameFromCommunity';
 import depot from '@nara.drama/depot';
+import { saveCommunityAnonymousPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityAnonymousPost';
 
 
 interface CommunityPostCreateViewProps {
@@ -119,9 +120,14 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
             }
           })
         }
-        // else if(menuType === 'anonymous') {
-        //   //익명 등록인 경우
-        // }
+        else if(menuType === 'ANONYMOUS') {
+          //익명 등록인 경우
+          saveCommunityAnonymousPost(communityId, menuId, postId).then((result) => {
+            if(result !== undefined) {
+              history.goBack();
+            }
+          })
+        }
         else {
           saveCommunityPost(communityId, menuId, postId).then((result) => {
             if(result !== undefined) {

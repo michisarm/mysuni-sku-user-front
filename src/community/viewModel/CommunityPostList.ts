@@ -25,4 +25,5 @@ export interface CommunityPostItem {
   pinned: boolean;
   fileBoxId: string;
   newBadge: boolean;
+  menuType?: string;
 }

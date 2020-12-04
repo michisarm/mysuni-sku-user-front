@@ -194,7 +194,6 @@ class MyPageListContainerV2 extends Component<Props, States> {
     const { myTrainings } = myTrainingService!;
     const { channels } = this.state;
     const activeItem = this.getAContentType();
-    console.log('myTrainings ;; ', myTrainings);
     if (myTrainings.length < 1) {
       /* return (
         <NoSuchContentPanel

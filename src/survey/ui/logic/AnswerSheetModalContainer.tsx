@@ -87,8 +87,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       surveyCaseId,
     } = this.props;
 
-    // console.log('surveyId : ', surveyId, ' surveyCaseId : ', surveyCaseId);
-
     if (surveyId && surveyCaseId) {
       answerSheetService!.findAnswerSheet(surveyCaseId);
       surveyCaseService!.findSurveyCase(surveyCaseId);
@@ -162,10 +160,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
 
-    console.log('finished : ', finished);
-    console.log('serviceId : ', serviceId);
-    console.log('serviceType : ', serviceType);
-
     if (!finished) {
       if (answerSheet && answerSheet.id && answerSheet.id.length) {
         answerSheetService!.saveAnswerSheet().then(() => {
@@ -213,7 +207,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
   // add survey optional check by gon
   onSaveAnswerSubmission() {
-    // console.log('최종제출');
     const {
       answerSheetService,
       surveyCaseService,

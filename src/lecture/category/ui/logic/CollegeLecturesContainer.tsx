@@ -185,7 +185,6 @@ class CollegeLecturesContainer extends Component<Props, State> {
         totalCount = data.totalCount;
       }
     });
-    // console.log(totalCount);
     this.setState({ totalCnt: totalCount });
 
     newPageService!.setTotalCountAndPageNo(

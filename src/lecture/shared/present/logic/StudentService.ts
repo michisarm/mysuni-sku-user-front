@@ -132,7 +132,6 @@ class StudentService {
     if (studentJoinsForVideo && studentJoinsForVideo.length) {
       studentJoinsForVideo.sort(this.compare);
       const studentJoin = studentJoinsForVideo[0];
-      // console.log(studentJoin);
       student = await this.findStudentForVideo(studentJoin!.studentId);
 
     } else this.clearForVideo();

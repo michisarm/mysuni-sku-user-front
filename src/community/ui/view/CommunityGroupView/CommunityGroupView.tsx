@@ -42,7 +42,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
             <img src={AdminIcon} className="community-manager" />
             <span>{groupList.name}</span>
             <span>멤버</span>
-            <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount >= 0 ? groupList.memberCount : "0명"}</span>
+            <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount<= 0 ? "0명" : groupList.memberCount}</span>
             <button onClick={() => setCardOpen(!cardopen)} type="button" title="열기닫기" className={cardopen ? "community-btn-open" : "community-btn-close"}><span>열기닫기</span></button>
           </div>
         </div>

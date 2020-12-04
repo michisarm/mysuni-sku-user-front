@@ -7,6 +7,7 @@ type CubeType =
   | 'Experiential'
   | 'WebPage'
   | 'Community'
-  | 'Task';
+  | 'Task'
+  | 'Cohort';
 
 export default CubeType;
