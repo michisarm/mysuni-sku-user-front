@@ -38,20 +38,27 @@ function ItemBox({
     <>
     <div className="member-card">
       <Comment>
-        <Comment.Avatar src={groupMemberList.profileImg !== null && groupMemberList.profileImg !== "" && groupMemberList.profileImg !== undefined ? `/files/community/${groupMemberList.profileImg}` : `${AvartarImage}`} />
+        <Comment.Avatar src={
+          groupMemberList.profileImg === null ||
+          groupMemberList.profileImg === undefined ||
+          groupMemberList.profileImg === ''  ? 
+          `${AvartarImage}` : `/files/community/${groupMemberList.profileImg}`
+          }
+        />
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} /><span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
+            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} />
+            <span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
             <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
               <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
             </button>
           </Comment.Author>
           <Comment.Metadata>
             <span>게시물</span>
-            <span>{groupMemberList.postCount === null ? 0 : groupMemberList.postCount}</span>
+            <span>{groupMemberList.postCount === null || undefined ? 0 : groupMemberList.postCount}</span>
             <span>댓글</span>
-            <span>{groupMemberList.replyCount === null ? 0 : groupMemberList.replyCount}</span>
+            <span>{groupMemberList.replyCount === null || undefined ? 0 : groupMemberList.replyCount}</span>
           </Comment.Metadata>
           <Comment.Metadata>
             <span className="date">{groupMemberList.createdTime && moment(groupMemberList.createdTime).format('YYYY.MM.DD')}</span>

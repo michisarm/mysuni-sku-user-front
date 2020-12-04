@@ -52,6 +52,7 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
     <>
       <CommunityMemberHeader />
       <CommunityMemberTabmenu activemenu={activemenu} handleActiveMenu={handleActiveMenu} />
+
       <div className="table-board-title">
         <div className="list-number">
           총 <strong>{groupData?.totalCount}</strong>개의 그룹
@@ -68,6 +69,7 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
           </div>
         </div>
       </div>
+      
       <CommunityGroupView />
     </>
   );

@@ -26,18 +26,27 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
     <>
       <div className="member-card">
         <Comment>
-          <Comment.Avatar src={memberList.profileImg != null && memberList.profileImg != "" && memberList.profileImg != undefined ? `/files/community/${memberList.profileImg}` : `${AvartarImage}`} />
+          <Comment.Avatar src={
+            memberList.profileImg === null ||
+            memberList.profileImg === undefined ||
+            memberList.profileImg === ''  ? 
+            `${AvartarImage}` : `/files/community/${memberList.profileImg}`
+          }
+          />
           <Comment.Content>
             <Comment.Author as="a">
               {/* 어드민 아이콘 영역 */}
-              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} /><span className="lms-nick" onClick={() => setOpen(!open)}>{memberList.nickname || memberList.name}</span>
-              <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}><span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span></button>
+              <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} />
+              <span className="lms-nick" onClick={() => setOpen(!open)}>{memberList.nickname || memberList.name}</span>
+              <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}>
+                <span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span>
+              </button>
             </Comment.Author>
             <Comment.Metadata>
               <span>게시물</span>
-              <span>{memberList.postCount === null ? 0 : memberList.postCount}</span>
+              <span>{memberList.postCount === null || undefined ? 0 : memberList.postCount}</span>
               <span>댓글</span>
-              <span>{memberList.replyCount === null ? 0 : memberList.replyCount}</span>
+              <span>{memberList.replyCount === null || undefined ? 0 : memberList.replyCount}</span>
             </Comment.Metadata>
             <Comment.Metadata>
               <span className="date">{memberList.createdTime && moment(memberList.createdTime).format('YYYY.MM.DD')}</span>
