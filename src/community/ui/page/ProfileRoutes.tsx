@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Switch, useParams } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
@@ -21,6 +21,10 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
   const [profile, setProfile] = useState<Profile>();
   const { profileId } = useParams<Params>();
 
+  const followReload = useCallback(() => {
+    findCommunityProfile(profileId).then(setProfile);
+  },[]);
+
   useEffect(() => {
     findCommunityProfile(profileId).then(setProfile);
     requestOtherProfileCommunities(profileId);
@@ -28,7 +32,7 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
   }, [profileId]);
   return (
     <section className="content community profile">
-      <ReadOnlyProfileTitleView profile={profile} />
+      <ReadOnlyProfileTitleView profile={profile} followReload={followReload} />
       <div>
         <OtherProfileMenuView />
         <Switch>

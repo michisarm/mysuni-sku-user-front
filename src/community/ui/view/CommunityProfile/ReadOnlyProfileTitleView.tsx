@@ -6,21 +6,23 @@ import Profile from '../../../model/Profile';
 
 interface ReadOnlyProfileTitleViewProps {
   profile?: Profile;
+  followReload?: () => void;
 }
 
 const ReadOnlyProfileTitleView: React.FC<ReadOnlyProfileTitleViewProps> = function ReadOnlyProfileTitleView({
   profile,
+  followReload,
 }) {
 
   const followingsBtn = useCallback(() => {
     if (profile !== undefined && profile.id !== undefined) {
       if (profile?.follow) {
         requestFollowDelete(profile?.id).then(() => {
-          findCommunityProfile(profile?.id);
+          followReload!();
         });
       } else {
         requestFollowAdd(profile?.id).then(() => {
-          findCommunityProfile(profile?.id);
+          followReload!();
         });
       }
     }
