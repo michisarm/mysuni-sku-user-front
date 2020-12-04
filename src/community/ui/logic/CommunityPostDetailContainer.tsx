@@ -68,11 +68,11 @@ function CommunityPostDetailContainer() {
     setCreatorId(denizenId!);
     getFileIds();
     getLikeState();
-    if(!postDetail) {
+    if(!postDetail || communityId || !postDetail.creatorId) {
       return
     }
     setEditAuth(denizenId === postDetail.creatorId)
-  }, [postDetail]);
+  }, [postDetail, communityId]);
 
   const getFileIds = useCallback(() => {
     const referenceFileBoxId = postDetail && postDetail.fileBoxId;

@@ -50,7 +50,7 @@ function CommunityDiscussionContainer() {
             readCount={postDetail.readCount}
             deletable={true}
             onClickList={OnClickList}
-          />         
+          />
           {/* <div className="class-guide-txt fn-parents ql-snow">
             <div className="text ql-editor">
               <div
