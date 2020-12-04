@@ -41,6 +41,7 @@ function CommunityPostDetailContainer() {
   );
   const [creatorId, setCreatorId] = useState<string>('');
   const [like, setLike] = useState<boolean>();
+  const [likeCount, setLikeCount] = useState<number>(0);
   const history = useHistory();
   const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -67,6 +68,7 @@ function CommunityPostDetailContainer() {
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);
     getFileIds();
+    getLikeCount();
     getLikeState();
     if(!postDetail || communityId || !postDetail.creatorId) {
       return
@@ -89,6 +91,14 @@ function CommunityPostDetailContainer() {
       setFilesMap(newMap);
     });
   }, []);
+
+  const getLikeCount = useCallback(() => {
+    const likeCount = postDetail && postDetail.likeCount;
+
+    Promise.resolve().then(() => {
+      setLikeCount(likeCount || 0);
+    });
+  }, [postDetail]);
 
   const getLikeState = useCallback(() => {
     const memberId = patronInfo.getDenizenId();
@@ -132,8 +142,10 @@ function CommunityPostDetailContainer() {
       })
       if(like === true){
         setLike(false);
+        setLikeCount(likeCount-1);
       }else{
         setLike(true);
+        setLikeCount(likeCount+1);
       }
     }
   }, [like]);
@@ -152,7 +164,7 @@ function CommunityPostDetailContainer() {
             time={postDetail.createdTime}
             readCount={postDetail.readCount}
             replyCount={postDetail.replyCount}
-            likeCount={postDetail.likeCount}
+            likeCount={likeCount}
             deletable={true}
             editAuth={editAuth}
             onClickList={OnClickList}
