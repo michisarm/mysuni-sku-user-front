@@ -42,7 +42,7 @@ function CommunityDiscussionContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <div className="ui segment full">
+        <div>
           <DiscussionViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}

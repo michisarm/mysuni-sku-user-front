@@ -28,13 +28,17 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
   communityProfileBookmark,
 }) {
 
+// 북마크 해제시 화면에서 제거
+const result = communityProfileBookmark.posts.filter(x => {
+  return x.bookmarked === true;
+})
   /* eslint-disable */
   return (
     <Segment className="full">
     <div className="course-detail-center community-containter">
       <div className="community-main-contants">
-        {communityProfileBookmark !== undefined &&
-          communityProfileBookmark.posts.map(postItem => (
+        {result !== undefined &&
+          result.map(postItem => (
             <PostItemView key={postItem.postId} {...postItem} />
         ))}
       </div>
@@ -99,6 +103,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     bookmark(postId);
   }, [postId]);
   const unbookmarkClick = useCallback(() => {
+    reactAlert({ title: '알림', message: '북마크가 해제되었습니다.' });
     unbookmark(postId);
   }, [postId]);
   let icon = 'board';
