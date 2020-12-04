@@ -145,7 +145,7 @@ function CommunityPostDetailContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <div>
+        <>
           <PostDetailViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -278,7 +278,7 @@ function CommunityPostDetailContainer() {
               </div>
             </div>
           )}
-        </div>
+        </>
       )}
       <CommunityPdfModal open={pdfOpen} setOpen={setPdfOpen} fileId={fileId||''} fileName={fileName || ''} />
       <CommunityProfileModal

@@ -42,7 +42,7 @@ function CommunityDiscussionContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <div>
+        <>
           <DiscussionViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -93,7 +93,7 @@ function CommunityDiscussionContainer() {
             companyName=""
             departmentName=""
           />
-        </div>
+        </>
       )}
     </Fragment>
   );
