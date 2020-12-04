@@ -70,7 +70,7 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
             <span className="cell nick">익명</span>
           )}
           { post.menuType !== 'ANONYMOUS' && (
-            <span className="cell nick">{post.nickName}</span>
+            <span className="cell nick">{post.nickName || post.creatorName}</span>
           )}
           <span className="cell date center">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
