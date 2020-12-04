@@ -38,11 +38,11 @@ function ItemBox({
     <>
     <div className="member-card">
       <Comment>
-        <Comment.Avatar src={groupMemberList.profileImg ? `/files/community/${groupMemberList.profileImg}` : `${AvartarImage}`} />
+        <Comment.Avatar src={groupMemberList.profileImg !== null && groupMemberList.profileImg !== "" && groupMemberList.profileImg !== undefined ? `/files/community/${groupMemberList.profileImg}` : `${AvartarImage}`} />
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} /><span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname}</span>
+            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} /><span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
             <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
               <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
             </button>

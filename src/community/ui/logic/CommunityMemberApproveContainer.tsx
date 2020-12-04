@@ -6,7 +6,9 @@ import Approve from '../../../style/media/icon-approval-24-px.png';
 import { getApproveMember, updateMembers } from 'community/service/useMemberList/useMemberList';
 import { useCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { Pagination } from 'semantic-ui-react';
-import { useHistory } from 'react-router';
+import CommunityMemberTabmenu from '../view/CommunityMemberView/CommunityMemberTabmenu';
+import { useHistory } from 'react-router-dom';
+import CommunityMemberHeader from '../view/CommunityMemberView/CommunityMemberHeader';
 
 interface Props {
   currentCommunity:string
@@ -16,11 +18,28 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
   const [selectedList, setSelectedList] = useState<(any)>();
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const approveData = useCommunityMemberApprove();
-  const history = useHistory();
   const AllData = approveData && approveData.results.map(item => item.memberId)
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
+  
+  const [activemenu, setActiveMenu] = useState<string>("approve");
+  const history = useHistory();
+  
+  const handleActiveMenu = useCallback((active: string) => {
+    
+    setActiveMenu(active);
+    switch (active) {
+      case 'member': history.push(`/community/${currentCommunity}/member`)
+        break 
+      case 'group': history.push(`/community/${currentCommunity}/member/group`)
+        break 
+      case 'approve': history.push(`/community/${currentCommunity}/member/approve`)
+        break
+      default:
+    }
+
+  },[activemenu])
 
   useEffect(() => {
     getApproveMember(currentCommunity)
@@ -83,6 +102,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
 
   return (
     <>
+      <CommunityMemberHeader />
+      <CommunityMemberTabmenu activemenu={activemenu} handleActiveMenu={handleActiveMenu} />
+
       <div className="table-board-title">
         <div className="list-number">
           총 <strong>{approveData && approveData.totalCount}</strong>명
@@ -108,7 +130,7 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
                 checked={selectedList && selectedList.includes(item.memberId)} 
                 onChange={(e:any) => checkOne(item.memberId)}
               />
-              <Comment.Avatar src={item.profileImg != null || item.profileImg != "" || item.profileImg != undefined ? `/files/community/${item.profileImg}` : `${AvartarImage}`} />
+              <Comment.Avatar src={item.profileImg != null && item.profileImg != "" && item.profileImg != undefined ? `/files/community/${item.profileImg}` : `${AvartarImage}`} />
               <Comment.Content>
                 <Comment.Author as="a"><h3>{item.nickname || item.name}</h3>
                 </Comment.Author>
