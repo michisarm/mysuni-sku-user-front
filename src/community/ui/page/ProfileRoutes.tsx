@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Switch, useParams } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
@@ -8,7 +8,7 @@ import ProfileCommunitiesPage from './ProfileCommunitiesPage';
 import ReadOnlyProfileTitleView from '../view/CommunityProfile/ReadOnlyProfileTitleView';
 import Profile from '../../model/Profile';
 import OtherProfileMenuView from '../view/CommunityProfile/OtherProfileMenuView';
-import { findCommunityProfile, findCommunityProfile_new } from '../../api/profileApi';
+import { findCommunityProfile } from '../../api/profileApi';
 import OtherProfileView from '../view/CommunityProfile/OtherProfileView';
 import { requestProfileFeeds } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
 import { requestOtherProfileCommunities } from 'community/service/useCommunityProfile/utility/requestOtherProfileCommunities';
@@ -21,15 +21,18 @@ const ProfileRoutes: React.FC = function ProfileRoutes() {
   const [profile, setProfile] = useState<Profile>();
   const { profileId } = useParams<Params>();
 
+  const followReload = useCallback(() => {
+    findCommunityProfile(profileId).then(setProfile);
+  },[]);
+
   useEffect(() => {
-    findCommunityProfile_new(profileId);
     findCommunityProfile(profileId).then(setProfile);
     requestOtherProfileCommunities(profileId);
     requestProfileFeeds(profileId);
   }, [profileId]);
   return (
     <section className="content community profile">
-      <ReadOnlyProfileTitleView profile={profile} />
+      <ReadOnlyProfileTitleView profile={profile} followReload={followReload} />
       <div>
         <OtherProfileMenuView />
         <Switch>
