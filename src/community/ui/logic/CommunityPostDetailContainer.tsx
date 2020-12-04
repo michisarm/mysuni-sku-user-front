@@ -153,7 +153,7 @@ function CommunityPostDetailContainer() {
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
   }
-
+  console.log('postDetail',postDetail);
   return (
     <Fragment>
       {postDetail && (
@@ -206,9 +206,13 @@ function CommunityPostDetailContainer() {
           </div>
           {menuType !== 'ANONYMOUS' && (
             <div className="community-board-card" style={{cursor:"pointer"}} onClick={() => setProfileOpen(!profileOpen)}>
-              <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === ''  ? `${DefaultImg}` : `/files/community/${postDetail.profileImg}`} alt="프로필 사진" />
+              <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === '' ?
+                `data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCI+DQogICAgPGRlZnM+DQogICAgICAgIDxjaXJjbGUgaWQ9ImEiIGN4PSI0MCIgY3k9IjQwIiByPSI0MCIvPg0KICAgIDwvZGVmcz4NCiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPg0KICAgICAgICA8bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+DQogICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNhIi8+DQogICAgICAgIDwvbWFzaz4NCiAgICAgICAgPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMzkuNSIgc3Ryb2tlPSIjREREIi8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNEREQiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTU5LjExIDY3Ljc4Yy04LjM5LTMuMDU3LTExLjA3NC01LjYzNy0xMS4wNzQtMTEuMTYyIDAtMy4zMTYgMi43NS01LjQ2NSAzLjY4Ny04LjMwNi45MzgtMi44NDIgMS40OC02LjIwNyAxLjkzLTguNjU0LjQ1MS0yLjQ0OC42My0zLjM5NC44NzUtNi4wMDJDNTQuODI4IDMwLjQwMiA1Mi42NSAyMiA0MSAyMmMtMTEuNjQ2IDAtMTMuODMyIDguNDAyLTEzLjUyNSAxMS42NTYuMjQ1IDIuNjA4LjQyNSAzLjU1NS44NzUgNi4wMDIuNDUgMi40NDcuOTg2IDUuODEyIDEuOTIzIDguNjU0LjkzNyAyLjg0MSAzLjY5IDQuOTkgMy42OSA4LjMwNiAwIDUuNTI1LTIuNjgyIDguMTA1LTExLjA3NCAxMS4xNjJDMTQuNDY3IDcwLjg0NCA5IDczLjg2NiA5IDc2djEwaDY0Vjc2YzAtMi4xMzEtNS40Ny01LjE1Mi0xMy44OS04LjIyeiIgbWFzaz0idXJsKCNiKSIvPg0KICAgIDwvZz4NCjwvc3ZnPg0K`
+                  : `/files/community/${postDetail.profileImg}`} 
+                alt="프로필 사진" 
+              />
               <div className="board-card-title">
-                <h3>{postDetail.nickName}</h3>
+                <h3>{postDetail.nickName || postDetail.creatorName}</h3>
                 <h4>{postDetail.introduce}</h4>
               </div>
             </div>
