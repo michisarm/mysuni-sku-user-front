@@ -28,7 +28,7 @@ const CommunityPreviewPage : React.FC = function CommunityPreviewPage({
             <div className="community-home-contants">
               {/* 배너 */}
               <div className="community-banner-type1">
-                 <img src={preview?.preview?.thumbnailId}/>
+                 <img src={(preview?.preview && '/files/community/' + preview?.preview.thumbnailId) || '' } />
                 <div className="community-banner-inner">
                   <div className="community-banner-title">
                     {preview?.preview?.introduce}
@@ -50,21 +50,9 @@ const CommunityPreviewPage : React.FC = function CommunityPreviewPage({
                   more{/* <i aria-hidden="true" className="icon more3"></i> */}
                   </button>
                 </div>
-                <CommunityCard01 />
+                {/* <CommunityCard01 />
                 <CommunityCard02 />
-                <CommunityCard03 />
-              </div>
-
-              {/* 최근 게시글 */}
-              <div className="home-card-container">
-                <div className="home-card-title">
-                  <p>최근 게시글</p>
-                  {/* more */}
-                  <button className="ui icon button right btn-blue btn-more">
-                  more{/* <i aria-hidden="true" className="icon more3"></i> */}
-                  </button>
-                </div>
-                <NewBoard />
+                <CommunityCard03 /> */}
               </div>
             </div>
           </div>
