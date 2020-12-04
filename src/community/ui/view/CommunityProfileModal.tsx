@@ -1,21 +1,30 @@
 import React, {useEffect} from 'react'
 import { Button, Checkbox, Image, Modal,} from 'semantic-ui-react'
-import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail'
 import { useParams, useHistory } from 'react-router-dom';
-import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
+import { patronInfo } from '@nara.platform/dock';
+import Avartar from '../../../style/media/img-profile-80-px.png'
 
 interface Props {
   open: boolean;
   setOpen: (state:boolean) => void,
   userProfile:string | undefined,
-  creatorId:string | undefined,
+  memberId:string | undefined,
   introduce:string | undefined,
-  nickName:string | undefined
+  nickName:string | undefined,
 }
 
-const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, creatorId, introduce, nickName}) => {
+const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, memberId, introduce, nickName}) => {
   const history = useHistory();
+  const currentUser = patronInfo.getDenizenId();
 
+  const handleProfileView = (targetId:string | undefined) => {
+    if (targetId === currentUser) {
+      history.push('/community/my-profile')
+    } else {
+      history.push(`/community/profile/${targetId}`)
+    }
+  }
+  
   return (
     // open={open}
     <Modal open={open} className="w500 base">
@@ -26,7 +35,9 @@ const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, crea
         <div className="profile_box profile_v">
           <div className="profile_pic">
             <div className="pic_area user">
-              <p style={{width:"85px",margin:"0 auto"}}><img src={`/files/community/${userProfile}`} style={{width:"100%"}} alt="프로필 사진"/></p>
+              <p style={{width:"85px",margin:"0 auto"}}>
+              <img src={ userProfile === null || userProfile === '' || userProfile === undefined ? `${Avartar}` : `/files/community/${userProfile}`} style={{width:"100%"}} alt="프로필 사진"/>
+              </p>
             </div>
           </div>
 
@@ -38,7 +49,7 @@ const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, crea
       </Modal.Content>
       <Modal.Actions className="actions actions2">
         <button className="ui button pop2 d" onClick={() => setOpen(!open)}>닫기</button>
-        <button className="ui button pop2 p" onClick={() => history.push(`/community/profile/${creatorId}`)}>상세보기</button>
+        <button className="ui button pop2 p" onClick={() => handleProfileView(memberId)}>{memberId === currentUser ? "프로필 수정" : "상세보기"}</button>
       </Modal.Actions>
     </Modal>
   )

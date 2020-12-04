@@ -62,8 +62,8 @@ function CommunityPostDetailContainer() {
     } else {
       depot.downloadDepotFile(fileId)
     }
-
   }
+
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     setCreatorId(denizenId!);
@@ -73,6 +73,7 @@ function CommunityPostDetailContainer() {
     if(!postDetail || communityId || !postDetail.creatorId) {
       return
     }
+    
     setEditAuth(denizenId === postDetail.creatorId)
   }, [postDetail, communityId]);
 
@@ -297,7 +298,7 @@ function CommunityPostDetailContainer() {
         open={profileOpen}
         setOpen={setProfileOpen}
         userProfile={postDetail && postDetail.profileImg}
-        creatorId={postDetail && postDetail.creatorId}
+        memberId={postDetail && postDetail.creatorId}
         introduce={postDetail && postDetail.introduce}
         nickName={postDetail && postDetail.nickName}
       />

@@ -3,12 +3,13 @@ import { Comment } from "semantic-ui-react";
 import moment from 'moment';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getGroupMemberData } from 'community/service/useGroupList/useGroupList';
 import { onFollowGroupMember, onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
 import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 import CommunityProfileModal from '../CommunityProfileModal';
+import { patronInfo } from '@nara.platform/dock';
 
 function ItemBox({
   groupMemberList, memberData, setMemberData, activePage, groupId} 
@@ -34,6 +35,7 @@ function ItemBox({
     
   },[activePage, memberData])
 
+
   return (
     <>
     <div className="member-card">
@@ -48,7 +50,7 @@ function ItemBox({
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} />
+            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} />
             <span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
             <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
               <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
@@ -70,7 +72,7 @@ function ItemBox({
       open={open}
       setOpen={setOpen}
       userProfile={groupMemberList.profileImg}
-      creatorId={groupMemberList.creatorId}
+      memberId={groupMemberList.memberId}
       introduce={groupMemberList.introduce}
       nickName={groupMemberList.nickname}
     />

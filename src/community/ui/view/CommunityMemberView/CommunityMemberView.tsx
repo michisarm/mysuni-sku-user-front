@@ -58,7 +58,7 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
         open={open}
         setOpen={setOpen}
         userProfile={memberList.profileImg}
-        creatorId={memberList.creatorId}
+        memberId={memberList.memberId}
         introduce={memberList.introduce}
         nickName={memberList.nickname}
       />
