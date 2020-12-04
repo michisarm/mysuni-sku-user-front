@@ -33,10 +33,8 @@ export function requestRecent(communityId: string) {
 }
 
 export function findPreViewHome(communityId: string,draft: number) {
-  findPreview(communityId,1).then(CommunityHome =>{
+  findPreview(communityId,1).then(preview =>{
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
-    if(CommunityHome !== undefined){
-      setCommunityHome({ ...communityHome, recent: [], recentRequested: true, });
-    }
+    setCommunityHome({ ...communityHome, preview });
   });
 }

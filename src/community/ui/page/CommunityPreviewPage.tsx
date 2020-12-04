@@ -1,14 +1,25 @@
-import React, { Component, createRef } from "react";
-import { Link, useParams } from 'react-router-dom';
+import { useCommunityHome } from "community/store/CommunityHomeStore";
+import { param } from "jquery";
+import React, { Component, createRef, useEffect } from "react";
+import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import { Segment } from "semantic-ui-react";
-import { useCommunityHome } from '../../store/CommunityHomeStore';
+import { findPreViewHome } from '../../service/useCommunityHome/requestCommunityHome'
 
+const CommunityPreviewPage : React.FC = function CommunityPreviewPage({
 
-class CommunityPreviewPage extends Component {
-  contextRef = createRef();
-//   state = { activeItem: "MyCommunity" };
+})  {
+  interface Params{
+    communityId: string;
+  }
 
-  render() {
+  const { communityId } = useParams<Params>();
+  const preview = useCommunityHome();
+
+  useEffect(()=>{
+    findPreViewHome(communityId , 1);
+  },[]);
+
+  
     return (
       <div>
         <Segment className="full">
@@ -17,10 +28,10 @@ class CommunityPreviewPage extends Component {
             <div className="community-home-contants">
               {/* 배너 */}
               <div className="community-banner-type1">
-                {/* <img src={Banner} /> */}
+                 <img src={preview?.preview?.thumbnailId}/>
                 <div className="community-banner-inner">
                   <div className="community-banner-title">
-                    Deep Learning Community
+                    {preview?.preview?.introduce}
                   </div>
                   <div className="community-banner-copy">
                     과정 플랫폼은 여러분들이 동기 구성원들과 서로 소통하고  배우며 성장할 수 있는 공간입니다
@@ -61,7 +72,7 @@ class CommunityPreviewPage extends Component {
       </div>
     );
   }
-}
+
 
 export default CommunityPreviewPage;
 
