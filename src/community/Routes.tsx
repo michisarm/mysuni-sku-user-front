@@ -48,7 +48,7 @@ const Routes = function Routes() {
       />
       <Route
         path="/community/:communityId"
-        component={withRouter(CommunityRoutes)}
+        component={CommunityRoutes}
       />
       <Route component={NotFoundPage} />
     </Switch>
