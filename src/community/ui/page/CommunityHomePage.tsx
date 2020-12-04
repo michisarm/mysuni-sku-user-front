@@ -88,7 +88,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   return (
     <Link
       className="new-board-list"
-      to={`/community/${communityId}/post/${postId}`}
+      to={type === 'ANONYMOUS' ? `/community/${communityId}/ANONYMOUS/post/${postId}` : `/community/${communityId}/post/${postId}`}
       style={{ display: 'block' }}
     >
       <div className="new-board-list-top">
