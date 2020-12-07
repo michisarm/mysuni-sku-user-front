@@ -11,9 +11,10 @@ interface Props {
   memberId:string | undefined,
   introduce:string | undefined,
   nickName:string | undefined,
+  name:string | undefined
 }
 
-const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, memberId, introduce, nickName}) => {
+const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, memberId, introduce, nickName, name}) => {
   const history = useHistory();
   const currentUser = patronInfo.getDenizenId();
 
@@ -49,14 +50,14 @@ const CommunityProfileModal:React.FC<Props> = ({open, setOpen, userProfile, memb
           </div>
 
           <div className="profile_info">
-            <p className="name">{nickName}</p>
+            <p className="name">{nickName || name}</p>
             <p>{introduce}</p>
           </div>
         </div>
       </Modal.Content>
       <Modal.Actions className="actions actions2">
         <button className="ui button pop2 d" onClick={() => setOpen(!open)}>닫기</button>
-        <button className="ui button pop2 p" onClick={() => handleProfileView(memberId)}>{memberId === currentUser ? "프로필 수정" : "상세보기"}</button>
+        <button className="ui button pop2 p" onClick={() => handleProfileView(memberId)}>상세보기</button>
       </Modal.Actions>
     </Modal>
   )
