@@ -6,6 +6,8 @@ import { IdNameCount } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { ActionLogService } from 'shared/stores';
 
+import ReactGA from 'react-ga';
+
 interface Props {
   actionLogService?: ActionLogService;
   colleges: CollegeLectureCountRdo[];
@@ -21,6 +23,15 @@ interface Props {
 @observer
 class CategoryMenuPanelView extends Component<Props> {
   //
+
+  onClickChannelActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], `${text}`);
+    }, 1000);
+  }
 
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
@@ -76,7 +87,7 @@ class CategoryMenuPanelView extends Component<Props> {
                     <>
                       <button
                         onClick={e => {
-                          this.onClickActionLog(
+                          this.onClickChannelActionLog(
                             `${activeCollege.name} 전체보기`
                           );
                           onRouteChannel(e);
@@ -91,7 +102,7 @@ class CategoryMenuPanelView extends Component<Props> {
                           <button
                             key={`sub-category-${channel.id}`}
                             onClick={e => {
-                              this.onClickActionLog(channel.name);
+                              this.onClickChannelActionLog(channel.name);
                               onRouteChannel(e, channel);
                             }}
                           >
