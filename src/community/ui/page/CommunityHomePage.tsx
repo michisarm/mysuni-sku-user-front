@@ -69,6 +69,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   nickName,
   createdTime,
   creatorName,
+  profileImg
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -103,7 +104,12 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
-            <img src={profileIcon} />
+            {type !=='ANONYMOUS' && (
+            <img src={`/files/community/${profileImg}`} />
+            )}
+            {type ==='ANONYMOUS' && (
+              <img src={profileIcon} />
+            )}
             <span>{type === 'ANONYMOUS' ? '익명' : nickName || creatorName}</span>
           </div>
           <div className="text-list">
