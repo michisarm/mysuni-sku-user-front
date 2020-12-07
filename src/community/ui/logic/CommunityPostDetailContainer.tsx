@@ -23,7 +23,6 @@ import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import moment from 'moment';
-
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 
 interface Params {
@@ -73,7 +72,6 @@ function CommunityPostDetailContainer() {
     if(!postDetail || communityId || !postDetail.creatorId) {
       return
     }
-    
     setEditAuth(denizenId === postDetail.creatorId)
   }, [postDetail, communityId]);
 
@@ -305,6 +303,7 @@ function CommunityPostDetailContainer() {
         memberId={postDetail && postDetail.creatorId}
         introduce={postDetail && postDetail.introduce}
         nickName={postDetail && postDetail.nickName}
+        name={postDetail && postDetail.creatorName}
       />
     </Fragment>
   );

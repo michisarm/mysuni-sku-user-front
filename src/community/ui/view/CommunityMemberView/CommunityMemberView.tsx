@@ -61,6 +61,7 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
         memberId={memberList.memberId}
         introduce={memberList.introduce}
         nickName={memberList.nickname}
+        name={memberList.name}
       />
     </>
   );
