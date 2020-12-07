@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -7,20 +6,17 @@ import { IdNameCount } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { ActionLogService } from 'shared/stores';
 
-
 interface Props {
-  actionLogService?: ActionLogService,
-  colleges: CollegeLectureCountRdo[],
-  activeCollege?: CollegeLectureCountRdo,
-  channels?: IdNameCount[],
-  actions: React.ReactNode,
-  onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void,
-  onRouteChannel: (e: any, channel?: IdNameCount) => void,
+  actionLogService?: ActionLogService;
+  colleges: CollegeLectureCountRdo[];
+  activeCollege?: CollegeLectureCountRdo;
+  channels?: IdNameCount[];
+  actions: React.ReactNode;
+  onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
+  onRouteChannel: (e: any, channel?: IdNameCount) => void;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
+@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 @observer
 class CategoryMenuPanelView extends Component<Props> {
@@ -29,13 +25,18 @@ class CategoryMenuPanelView extends Component<Props> {
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: text });
+    console.log('text@@@', text);
   }
 
   render() {
     //
     const {
-      colleges, activeCollege, channels, actions,
-      onActiveCollege, onRouteChannel,
+      colleges,
+      activeCollege,
+      channels,
+      actions,
+      onActiveCollege,
+      onRouteChannel,
     } = this.props;
 
     return (
@@ -49,11 +50,16 @@ class CategoryMenuPanelView extends Component<Props> {
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling">
-                  { colleges.map((college) => (
+                  {colleges.map(college => (
                     <button
                       key={`category_${college.collegeId}`}
-                      className={activeCollege && activeCollege.collegeId === college.collegeId ? 'active' : ''}
-                      onClick={(e) => {
+                      className={
+                        activeCollege &&
+                        activeCollege.collegeId === college.collegeId
+                          ? 'active'
+                          : ''
+                      }
+                      onClick={e => {
                         this.onClickActionLog(college.name);
                         onActiveCollege(e, college);
                       }}
@@ -67,21 +73,25 @@ class CategoryMenuPanelView extends Component<Props> {
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling">
-                  { activeCollege && (
+                  {activeCollege && (
                     <>
-                      <button onClick={(e) => {
-                        this.onClickActionLog(`${activeCollege.name} 전체보기`);
-                        onRouteChannel(e);
-                      }}
+                      <button
+                        onClick={e => {
+                          this.onClickActionLog(
+                            `${activeCollege.name} 전체보기`
+                          );
+                          onRouteChannel(e);
+                        }}
                       >
                         {activeCollege.name} 전체보기
                         <span>({activeCollege.totalCount})</span>
                       </button>
 
-                      { Array.isArray(channels) && (
-                        channels.map((channel) => (
-                          <button key={`sub-category-${channel.id}`}
-                            onClick={(e) => {
+                      {Array.isArray(channels) &&
+                        channels.map(channel => (
+                          <button
+                            key={`sub-category-${channel.id}`}
+                            onClick={e => {
                               this.onClickActionLog(channel.name);
                               onRouteChannel(e, channel);
                             }}
@@ -89,8 +99,7 @@ class CategoryMenuPanelView extends Component<Props> {
                             {channel.name}
                             <span>({channel.count})</span>
                           </button>
-                        ))
-                      )}
+                        ))}
                     </>
                   )}
                 </div>
@@ -99,7 +108,7 @@ class CategoryMenuPanelView extends Component<Props> {
           </div>
         </div>
 
-        { actions }
+        {actions}
       </div>
     );
   }

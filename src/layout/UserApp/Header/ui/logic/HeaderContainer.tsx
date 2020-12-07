@@ -89,13 +89,11 @@ class HeaderContainer extends Component<Props, State> {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: menuName });
 
-    setTimeout(() => {
-      ReactGA.pageview(
-        window.location.pathname + window.location.search,
-        [],
-        `${menuName}`
-      );
-    }, 1000);
+    ReactGA.pageview(
+      window.location.pathname + window.location.search,
+      [],
+      `${menuName}`
+    );
   }
 
   render() {
