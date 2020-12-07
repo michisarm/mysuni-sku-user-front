@@ -75,6 +75,7 @@ function ItemBox({
       memberId={groupMemberList.memberId}
       introduce={groupMemberList.introduce}
       nickName={groupMemberList.nickname}
+      name={groupMemberList.name}
     />
     </>
   )
