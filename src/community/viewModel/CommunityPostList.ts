@@ -26,4 +26,5 @@ export interface CommunityPostItem {
   fileBoxId: string;
   newBadge: boolean;
   menuType?: string;
+  creatorName: string;
 }

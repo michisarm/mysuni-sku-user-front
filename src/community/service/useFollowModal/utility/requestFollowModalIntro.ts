@@ -84,5 +84,12 @@ export async function requestFollowModalDelete(id: string, type: string) {
       await requestFollowersModal();
     })
   }
-  
+}
+
+export async function requestFollowAdd(id: string) {
+  await followModalAdd(id);
+}
+
+export async function requestFollowDelete(id: string) {
+  await followModalDelete(id);
 }

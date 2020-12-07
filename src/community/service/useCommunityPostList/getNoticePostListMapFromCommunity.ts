@@ -113,7 +113,8 @@ export async function getPostItem(
               nickName: post.nickName || '',
               pinned: post.pinned,
               fileBoxId: post.fileBoxId,
-              newBadge: addNewBadge(post.createdTime)
+              newBadge: addNewBadge(post.createdTime),
+              creatorName: post.creatorName!
             });
           });
         }

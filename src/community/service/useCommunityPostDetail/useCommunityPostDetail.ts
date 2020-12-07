@@ -14,8 +14,11 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
     const [PostDetailValue, setPostDetailValue] = useState<CommunityPostDetail>();
     
     useEffect(() => {
-        getCommunityPostDetail(communityId, postId);
-    }, []);
+      if(communityId === undefined || postId === undefined) {
+        return
+      }
+      getCommunityPostDetail(communityId, postId);
+    }, [communityId, postId]);
 
     useEffect(() => {
       const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;

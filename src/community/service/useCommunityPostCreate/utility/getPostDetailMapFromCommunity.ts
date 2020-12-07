@@ -54,6 +54,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.commentFeedbackId = post.commentFeedbackId;
             postDetailItem.prevPost = post.prevPost;
             postDetailItem.nextPost = post.nextPost;
+            postDetailItem.creatorName = post.creatorName!;
         }
     }
     setCommunityPostDetailItem(postDetailItem);
