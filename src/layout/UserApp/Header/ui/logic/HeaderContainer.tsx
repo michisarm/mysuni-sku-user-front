@@ -12,6 +12,7 @@ import HeaderWrapperView from '../view/HeaderWrapperView';
 import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -87,6 +88,14 @@ class HeaderContainer extends Component<Props, State> {
   onClickMenu(menuName: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: menuName });
+
+    setTimeout(() => {
+      ReactGA.pageview(
+        window.location.pathname + window.location.search,
+        [],
+        `${menuName}`
+      );
+    }, 1000);
   }
 
   render() {

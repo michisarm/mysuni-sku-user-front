@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
@@ -7,6 +7,7 @@ import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
 import personalCubePaths from 'personalcube/routePaths';
 import communityPaths from 'community/routePaths';
+import reactGA from 'react-ga';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -109,4 +110,3 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
     </div>
   </div>
 );
-
