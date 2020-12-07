@@ -10,13 +10,14 @@ import { onFollowGroupMember, onUnFollowGroupMember } from 'community/service/us
 import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 import CommunityProfileModal from '../CommunityProfileModal';
 import { patronInfo } from '@nara.platform/dock';
-
+  
 function ItemBox({
   groupMemberList, memberData, setMemberData, activePage, groupId} 
   :{groupMemberList:any, memberData:any, setMemberData:any, activePage:number, groupId:string,}) 
 {
   const [open, setOpen] = useState<boolean>(false);
-
+  const currentUser = patronInfo.getDenizenId();
+  
   const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
     if(activePage === undefined || memberData === undefined) {
       return false
@@ -34,8 +35,7 @@ function ItemBox({
     }
     
   },[activePage, memberData])
-
-
+  
   return (
     <>
     <div className="member-card">
@@ -52,9 +52,14 @@ function ItemBox({
             {/* 어드민 아이콘 영역 */}
             <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} />
             <span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
-            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
-              <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
-            </button>
+            {
+              // 멤버보기 목록에서 본인의 프로필인 경우 Follow버튼 출력하지 않음
+              currentUser !== groupMemberList.memberId ? (
+                <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
+                  <span className="card-follow">{groupMemberList.follow ? "Unfollow" : "Follow"}</span>
+                </button>
+              ) : ( null )
+            }
           </Comment.Author>
           <Comment.Metadata>
             <span>게시물</span>

@@ -7,11 +7,13 @@ import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import { getAllMember, onFollow, onUnFollow } from 'community/service/useMemberList/useMemberList';
 import { Pagination } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
+import { patronInfo } from '@nara.platform/dock';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 
 function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
   const [follow, setFollow] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const currentUser = patronInfo.getDenizenId();
 
   const handleFollow = useCallback(async (communityId:string,memberId:string, followState:boolean) => {
 
@@ -38,9 +40,14 @@ function ItemBox({memberList, activePage}: {memberList:any,activePage:number}) {
               {/* 어드민 아이콘 영역 */}
               <img src={AdminIcon} style={memberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} />
               <span className="lms-nick" onClick={() => setOpen(!open)}>{memberList.nickname || memberList.name}</span>
-              <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}>
-                <span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span>
-              </button>
+              {
+                // 멤버보기 목록에서 본인의 프로필인 경우 Follow버튼 출력하지 않음
+                currentUser !== memberList.memberId ? (
+                  <button type="button" title="Follow" onClick={() => handleFollow(memberList.communityId, memberList.memberId, memberList.follow)}>
+                    <span className="card-follow">{memberList.follow || follow ? "Unfollow" : "Follow"}</span>
+                  </button>
+                ) : ( null )
+              }
             </Comment.Author>
             <Comment.Metadata>
               <span>게시물</span>
