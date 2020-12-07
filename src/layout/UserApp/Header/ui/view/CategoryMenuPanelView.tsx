@@ -25,7 +25,6 @@ class CategoryMenuPanelView extends Component<Props> {
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: text });
-    console.log('text@@@', text);
   }
 
   render() {
