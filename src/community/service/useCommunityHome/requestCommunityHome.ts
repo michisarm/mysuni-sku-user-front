@@ -1,5 +1,5 @@
 import { post } from 'jquery';
-import { findAllPostViews, findNoticePostViews } from '../../api/communityApi';
+import { findAllPostViews, findNoticePostViews,  findPreview } from '../../api/communityApi';
 import {
   getCommunityHome,
   setCommunityHome,
@@ -29,5 +29,12 @@ export function requestRecent(communityId: string) {
     } else {
       setCommunityHome({ ...communityHome, recent: posts.results, recentRequested: true, });
     }
+  });
+}
+
+export function findPreViewHome(communityId: string,draft: number) {
+  findPreview(communityId,1).then(preview =>{
+    const communityHome = getCommunityHome() || getEmptyCommunityHome();
+    setCommunityHome({ ...communityHome, preview });
   });
 }

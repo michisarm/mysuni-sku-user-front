@@ -138,7 +138,8 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
                 }
               />
               <Comment.Content>
-                <Comment.Author as="a"><h3>{item.nickname || item.name}</h3>
+                <Comment.Author as="a">
+                  <span className="lms-nick">{item.nickname || item.name}</span>
                 </Comment.Author>
               </Comment.Content>
             </Comment>
