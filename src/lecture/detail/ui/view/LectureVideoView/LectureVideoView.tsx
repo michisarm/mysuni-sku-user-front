@@ -593,12 +593,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
-  const [time, setTime] = useState<number>(0);
-
+  const [currnetTime, setCurrnetTime] = useState<number>(0);
+  let duration = embedApi.getDuration();
   useEffect(() => {
-    setTime(embedApi.getCurrentTime());
-  }, [time]);
-  let durationTime = embedApi.getDuration();
+    setInterval(() => {
+      setCurrnetTime(embedApi.getCurrentTime());
+    }, 1000);
+  }, [currnetTime, duration]);
+
+  let hours = Math.floor(currnetTime / 3600);
 
   useEffect(() => {
     onLectureMedia(lectureMedia => {
@@ -687,7 +690,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
           </div>
           <div className="time-check">
-            <strong>{time / 60}</strong> / {durationTime / 60}
+            <strong>{Math.floor((currnetTime - hours * 3600) / 60)}</strong> /{' '}
+            {duration / 60}
           </div>
           <div className="contents-header-side">
             <div className="header-right-link">
