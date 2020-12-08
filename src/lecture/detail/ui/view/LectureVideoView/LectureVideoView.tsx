@@ -593,6 +593,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+  const [time, setTime] = useState<number>(0);
+
+  useEffect(() => {
+    setTime(embedApi.getCurrentTime());
+  }, [time]);
+  let durationTime = embedApi.getDuration();
+
   useEffect(() => {
     onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
@@ -605,7 +612,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '';
         let embedApi = new window.EmbedApi('panopto-embed-player', {
           width: '100%',
-          height: `${scroll > videoPosition ? '220' : '700'}`,
+          height: '700',
           //This is the URL of your Panopto site
           //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
           // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
@@ -635,7 +642,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => {
       cleanUpPanoptoIframe();
     };
-  }, [scroll > videoPosition]);
+  }, []);
 
   return (
     <div
@@ -680,7 +687,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
           </div>
           <div className="time-check">
-            <strong>00:02</strong> / 27:21
+            <strong>{time / 60}</strong> / {durationTime / 60}
           </div>
           <div className="contents-header-side">
             <div className="header-right-link">

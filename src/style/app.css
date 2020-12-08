@@ -42,7 +42,7 @@
   width: 75rem !important;
 }
 
-body.msie #root section.content .tab-menu-inner .ui.menu .item{
+body.msie #root section.content .tab-menu-inner .ui.menu .item {
   flex: none;
   width: auto;
   flex-grow: 1;
@@ -628,35 +628,51 @@ body .badge_new .title .cell span {
   background-color: #e6e6e6;
 } */
 
-.apl-form-wrap .ml18{
-  margin-left:1.125rem
+.apl-form-wrap .ml18 {
+  margin-left: 1.125rem;
 }
-.apl-form-wrap .w878{
-  width:54.875rem!important
+.apl-form-wrap .w878 {
+  width: 54.875rem !important;
 }
 .apl-form-wrap .edu-wrap .dropdown,
-.apl-form-wrap .edu-wrap .w878{
-  display:inline-block;vertical-align:middle
+.apl-form-wrap .edu-wrap .w878 {
+  display: inline-block;
+  vertical-align: middle;
 }
-.apl-form-wrap .post.change-admin.btn{
+.apl-form-wrap .post.change-admin.btn {
   width: 6.9375rem;
   margin-right: 3.125rem;
 }
 
 .ui.button.fix2 {
-  width: 13.75rem;height: 3rem;border-radius: 0.25rem;padding: 0;margin: 0;font-size: 1rem;font-weight: 700;-webkit-box-sizing: border-box;box-sizing: border-box;
+  width: 13.75rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ui.button.fix2.line {
-  border: 1px solid #ff664d;background: #fff;color: #ff664d;
+  border: 1px solid #ff664d;
+  background: #fff;
+  color: #ff664d;
 }
 .ui.button.fix2.line.disabled {
-  color: #b7c0d1;border-color: #b7c0d1;opacity: 1 !important;
+  color: #b7c0d1;
+  border-color: #b7c0d1;
+  opacity: 1 !important;
 }
 .ui.button.fix2.bg {
-  background: #ff664d !important;color: #fff;
+  background: #ff664d !important;
+  color: #fff;
 }
 .ui.button.fix2.bg.disabled {
-  color: #b7c0d1;background: #e5eaf2 !important;opacity: 1 !important;
+  color: #b7c0d1;
+  background: #e5eaf2 !important;
+  opacity: 1 !important;
 }
 .ui.button.fix2.bg.blue {
   background: #5772c7 !important;
@@ -678,14 +694,23 @@ body .badge_new .title .cell span {
 
 /* 2020.11.30 Community Pdf Modal, IE 스크롤현상 FIX */
 body.msie .ui.modals.transition.visible.active .scrolling-80vh {
-  overflow-x:hidden
+  overflow-x: hidden;
 }
 
-body.msie .ui.modals.transition.visible.active .scrolling-80vh .react-pdf__Document .react-pdf__Page {
-  overflow:hidden;
+body.msie
+  .ui.modals.transition.visible.active
+  .scrolling-80vh
+  .react-pdf__Document
+  .react-pdf__Page {
+  overflow: hidden;
 }
 
 /* 2020.12.03 Community Main Follow 이미지 Radius 수정 */
 .community-main-left .community-main-left-contents .thumbnail > img {
   border-radius: 36px !important;
+}
+
+/* 2020-12-08 Lecture video sticky 스타일 */
+.video-fixed-holder.lms-video-fixed #panopto-embed-player iframe {
+  height: 220px !important;
 }
