@@ -31,12 +31,12 @@ interface LectureCourseContentViewProps {
   lectureRelations?: LectureRelations;
 }
 
-function hashLink(hash: string) {
-  const element = document.getElementById(hash);
-  if (element !== null) {
-    element.scrollIntoView();
-  }
-}
+// function hashLink(hash: string) {
+//   const element = document.getElementById(hash);
+//   if (element !== null) {
+//     element.scrollIntoView();
+//   }
+// }
 
 const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = function LectureCourseContentView({
   lectureDescription,
@@ -51,24 +51,24 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
   const overviewHashClick = useCallback(() => {
-    hashLink('lms-overview');
+    // hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const instructorHashClick = useCallback(() => {
-    hashLink('lms-instructor-Info');
+    // hashLink('lms-instructor-Info');
     setActivatedTab('instructor');
   }, []);
   const badgeHashClick = useCallback(() => {
-    hashLink('lms-related-badge');
+    // hashLink('lms-related-badge');
     setActivatedTab('badge');
   }, []);
   const relatedHashClick = useCallback(() => {
-    hashLink('lms-related-process');
+    // hashLink('lms-related-process');
     setActivatedTab('related');
   }, []);
 
   const commentHashClick = useCallback(() => {
-    hashLink('lms-comment');
+    // hashLink('lms-comment');
     setActivatedTab('comment');
   }, []);
 
