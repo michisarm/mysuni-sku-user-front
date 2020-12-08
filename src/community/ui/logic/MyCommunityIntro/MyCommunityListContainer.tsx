@@ -60,8 +60,7 @@ function changeSort(_: any, data: DropdownProps) {
   const communitiesSort = (data.value || 'memberCreatedTime').toString();
   setMyCommunityIntro({
     ...myCommunityIntro,
-    communitiesSort,
-    communitiesOffset: 0,
+    communitiesSort
   });
   requestMyCommunityList();
 }
@@ -71,6 +70,7 @@ function MyCommunityListContainer() {
   if (myCommunityIntro === undefined) {
     return null;
   }
+
   return (
     <div className="community-left community-main-left">
       <div className="sub-info-box">
@@ -93,10 +93,9 @@ function MyCommunityListContainer() {
             ))}
           </>
         )}
-
-        <div className="more-comments community-side">
-          {myCommunityIntro.communitiesTotalCount >
-            myCommunityIntro.communitiesOffset && (
+        {myCommunityIntro.communitiesTotalCount > 
+          myCommunityIntro.communitiesOffset && (
+          <div className="more-comments community-side">
             <Button
               icon
               className="left moreview"
@@ -104,16 +103,8 @@ function MyCommunityListContainer() {
             >
               <Icon className="moreview" /> list more
             </Button>
-          )}
-          {myCommunityIntro.communitiesTotalCount <=
-            myCommunityIntro.communitiesOffset && (
-            <Button
-              icon
-              className="left moreview"
-              style={{ cursor: 'default' }}
-            />
-          )}
-        </div>
+          </div>
+        ) }
       </div>
     </div>
   );
