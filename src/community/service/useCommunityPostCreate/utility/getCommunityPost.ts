@@ -24,6 +24,7 @@ export async function getCommunityPost(
       readCount: 0,
       visible: false,
       creatorId: '',
+      creatorName: '',
       createdTime: 0,
       modifierId: '',
       modifiedTime: 0,
@@ -44,6 +45,7 @@ export async function getCommunityPost(
           postDetailItem.fileBoxId = post.fileBoxId;
           postDetailItem.createdTime = post.createdTime;
           postDetailItem.creatorId = post.creatorId;
+          postDetailItem.creatorName = post.creatorName!;
           postDetailItem.replyCount = post.replyCount;
           postDetailItem.likeCount = post.likeCount;
           postDetailItem.readCount = post.readCount;

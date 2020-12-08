@@ -23,7 +23,6 @@ class DynamicImport extends Component<Props, State> {
   componentDidMount() {
     //
     this.props.load().then((component: any) => {
-      console.log('[DynamicImport] Load component', component);
       if (component.ContentHeader) {
         this.setState({ component: component.ContentHeader });
       }

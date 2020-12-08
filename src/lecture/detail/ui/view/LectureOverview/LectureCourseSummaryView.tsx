@@ -1,6 +1,6 @@
 import { IdName, reactAlert } from '@nara.platform/accent';
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -9,6 +9,7 @@ import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
+import ReactGA from 'react-ga';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -89,6 +90,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
     default:
       break;
   }
+
+  // (react-ga) post pageTitle
+  useEffect(() => {
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname + window.location.search, [], `(Course) - ${lectureSummary.name}`);
+    }, 1000);
+  })
 
   return (
     <div className="course-info-header">

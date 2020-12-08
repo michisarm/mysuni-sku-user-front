@@ -1,5 +1,5 @@
 import { IdName, reactAlert } from '@nara.platform/accent';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -9,6 +9,7 @@ import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSu
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureStateContainer from '../../logic/LectureStateContainer';
+import ReactGA from 'react-ga';
 
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
 import LectureClassroom, {
@@ -194,6 +195,13 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
       break;
   }
   const instrutor = lectureInstructor?.instructors.find(c => c.represent === 1);
+
+  useEffect(() => {
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname + window.location.search, [], `(Cube) - ${lectureSummary.name}`);
+    }, 1000);
+  },[]);
+
 
   return (
     <div className="course-info-header">

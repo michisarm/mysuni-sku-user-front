@@ -183,7 +183,6 @@ class TRSContainer extends Component<Props, State> {
     prevState: Readonly<State>,
     snapshot?: any
   ): void {
-    // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
     if (
       (this.props.studentInfo !== null &&
         prevProps.studentInfo !== this.props.studentInfo) ||
@@ -228,8 +227,6 @@ class TRSContainer extends Component<Props, State> {
           answerSheetService.progress === AnswerProgress.Complete;
         this.state.surveyState = disabled;
 
-        // console.log('this.lectureView.surveyCase.id : ', lectureView.surveyCase.surveyFormId);
-        // console.log('this.surveyForm : ', surveyForm);
         if (
           surveyForm &&
           surveyForm.titles &&
@@ -254,7 +251,6 @@ class TRSContainer extends Component<Props, State> {
 
       this.viewObject = this.getViewObject();
 
-      // console.log('this.viewObject : ', this.viewObject);
       this.setExamState(this.studentData);
     }
   }
@@ -348,13 +344,11 @@ class TRSContainer extends Component<Props, State> {
     const { open, setOpen } = this.context;
     setOpen(!open);
 
-    /*console.log('this.state.inProgress : ' + this.state.inProgress);
-
     if( this.state.inProgress === LearningState.Progress ) {
       setOpen(open);
     } else {
       setOpen(!open);
-    }*/
+    }
   }
 
   registerStudentForVideo(studentCdo: StudentCdoModel) {
@@ -503,7 +497,6 @@ class TRSContainer extends Component<Props, State> {
         state = SubState.InProgress;
       }
     }
-    // console.log('getViewObject>>>> : ', this.state.isContent);
     return {
       // Sub info
       state,
@@ -622,10 +615,6 @@ class TRSContainer extends Component<Props, State> {
       surveyFormService,
     } = this.props;
 
-    // console.log('lectureView : ', lectureView);
-    // console.log('setExamState : ', studentData);
-    // console.log('setExamState : ', studentData?.serviceType);
-
     this.setStateName('1', 'Test');
 
     if (studentData) {
@@ -670,7 +659,6 @@ class TRSContainer extends Component<Props, State> {
         } else {
           this.setStateName('1', 'Test');
         }
-        // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
       } else if (
         studentData.serviceType === 'Course' ||
         studentData.serviceType === 'Program'
@@ -804,7 +792,6 @@ class TRSContainer extends Component<Props, State> {
 
         {className === 'course-trs' && !lectureView.cubeId && (
           <ul className="step1">
-            {/*{console.log('lectureView : ', lectureView)}*/}
             {this.viewObject && this.state.isContent && (
               <LectureExam2
                 onTest={lectureView.examination?.id ? this.onTest : undefined}

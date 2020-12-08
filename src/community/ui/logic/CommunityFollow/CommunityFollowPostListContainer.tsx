@@ -28,7 +28,6 @@ function copyUrl(url: string) {
 
 async function bookmark(postId: string) {
   const bookmarkId = await registerBookmark(postId);
-  console.log('bookmarkId', bookmarkId);
 
   if (bookmarkId !== undefined) {
     const followCommunityIntro = getFollowCommunityIntro();
@@ -214,7 +213,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
 
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
-  // console.log('container', communityFollowPostList);
 
   const [offsetPage, setOffsetPage] = useState<number>(0);
 

@@ -29,14 +29,12 @@ export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => {
   ++count;
   if (count === 3) {
     // console.log('name',name);
-    ReactGA.pageview(window.location.pathname + window.location.search, [], `${name}`);
+    ReactGA.pageview(window.location.pathname + window.location.search, [], `(Badge) - ${name}`);
   }
-  // console.log('count', count);
 
   useEffect(() => {
     return () => {
       count = 0;
-      // console.log('unmount', count);
     };
   }, []);
 

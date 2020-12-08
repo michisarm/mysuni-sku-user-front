@@ -77,9 +77,7 @@ export default class CoursePlanApi {
     return axios
       .post<string>(this.coursePlanContentsURL, coursePlanContentsModel)
       .then(response => (response && response.data) || null)
-      .catch(reason => {
-        console.log(reason);
-      });
+      .catch(() => {});
   }
 
   findCoursePlanContents(coursePlanContentsId: string) {

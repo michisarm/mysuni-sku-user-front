@@ -8,9 +8,9 @@ const spinner = {
   requestInterceptor: 0,
   responseInterceptor: 0,
 
-  open: () => console.warn('Spinner가 존재하지 않습니다.'),
-  close: () => console.warn('Spinner가 존재하지 않습니다.'),
-  closeAll: () => console.warn('Spinner가 존재하지 않습니다.'),
+  open: () => {},
+  close: () => {},
+  closeAll: () => {},
   // without: axiosApi.create(),
 
 

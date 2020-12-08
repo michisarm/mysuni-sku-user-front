@@ -190,8 +190,6 @@ class CourseLectureContainer extends Component<Props, State> {
   // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
   //
   //   if (this.props !== prevProps) {
-  //     console.log('componentDidUpdate this.props : ', this.props);
-  //     console.log('componentDidUpdate prevProps : ', prevProps);
   //     this.init();
   //   }
   // }
@@ -201,9 +199,6 @@ class CourseLectureContainer extends Component<Props, State> {
     prevState: Readonly<State>,
     snapshot?: any
   ): void {
-    // console.log('componentDidUpdate this.props : ', this.props);
-    // console.log('componentDidUpdate prevProps : ', prevProps);
-    // console.log('componentDidUpdate prevState : ', prevState);
   }
 
   async init() {
@@ -226,9 +221,6 @@ class CourseLectureContainer extends Component<Props, State> {
         lectureView.serviceId
       );
       // alert(lectureView.serviceId);
-      // console.log('init lectureView : ', lectureView);
-      // console.log('init personalCube : ', this.personalCube);ß
-      // console.log('init rollBooks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
         this.studentData = await StudentApi.instance.findStudentByRollBookId(
@@ -470,7 +462,6 @@ class CourseLectureContainer extends Component<Props, State> {
       //window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -484,7 +475,6 @@ class CourseLectureContainer extends Component<Props, State> {
       //window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -498,7 +488,6 @@ class CourseLectureContainer extends Component<Props, State> {
       window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -752,7 +741,6 @@ class CourseLectureContainer extends Component<Props, State> {
     }
 
     this.setStateName('1', 'Test');
-    // console.log('setExamState : ', studentData);
     if (studentData) {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
         if (
@@ -871,10 +859,6 @@ class CourseLectureContainer extends Component<Props, State> {
       this.state.inProgress !== SubState.Completed
         ? thumbnailImage
         : `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
-
-    // console.log('lecture container viewObject : ', this.viewObject);
-    // console.log('CourseLectureContainer : ', lectureView.serviceId);
-    // console.log('CourseLectureContainer : ', lectureView.serviceType);
 
     return (
       <div>

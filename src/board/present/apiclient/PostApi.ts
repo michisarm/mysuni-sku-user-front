@@ -16,9 +16,7 @@ class PostApi {
     //
     return axios.post<string>(this.URL, post)
       .then(response => response && response.data || null)
-      .catch((reason) => {
-        console.log(reason);
-      });
+      .catch(() => {});
   }
 
   findPostsByBoardId(boardId: string, offset: number = 0, limit: number = 10) {

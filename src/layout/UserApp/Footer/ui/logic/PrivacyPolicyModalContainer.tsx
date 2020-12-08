@@ -55,8 +55,6 @@ export default class PrivacyPolicyModalContainer extends Component<
 
     if (depotFile) {
       depot.downloadDepotFile(depotFile.id);
-    } else {
-      console.warn('[mySUNI] 개인정보처 요구서 파일이 없습니다.');
     }
   }
 

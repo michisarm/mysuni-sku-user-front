@@ -15,7 +15,7 @@ export async function getPostItemMapFromCommunity(
     }
     if (postId !== undefined) {
         const post: Post = await findPostView(postId);
-        if (post !== undefined && post !== null) {
+        if (post !== undefined && post !== null && post) {
             postCreateItem.postId = post.postId;
             postCreateItem.pinned = post.pinned;
             postCreateItem.title = post.title;

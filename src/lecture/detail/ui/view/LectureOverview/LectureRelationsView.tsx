@@ -1,15 +1,12 @@
 import { patronInfo } from '@nara.platform/dock';
-import { boolean } from '@storybook/addon-knobs';
 import React, { useCallback, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import LectureModel from '../../../../model/LectureModel';
 import CardGroup, {
   GroupType,
 } from '../../../../shared/Lecture/sub/CardGroup/CardGroupContainer';
-import LectureContainer from '../../../../shared/Lecture/ui/logic/LectureContainer';
 import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
-import ListCardView from '../../../../shared/Lecture/ui/view/ListCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
 
@@ -20,22 +17,12 @@ interface LectureRelationsViewProps {
 interface LectureViewProps {
   model: LectureModel;
   thumbnailImage?: string;
-  onAction: () => void;
   rating?: number;
-}
-
-interface CourseDetailParams {
-  cineroomId?: string;
-  collegeId: string;
-  coursePlanId: string;
-  serviceType: string;
-  serviceId: string;
 }
 
 const LectureView: React.FC<LectureViewProps> = function LectureView({
   model,
   thumbnailImage,
-  onAction,
   rating,
 }) {
   const [hovered, setHovered] = useState<boolean>(false);
@@ -120,7 +107,6 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
                 <LectureView
                   model={new LectureModel(lecture)}
                   thumbnailImage={lecture.baseUrl || undefined}
-                  onAction={() => {}}
                 />
               );
             })}

@@ -38,9 +38,9 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
             <span className="cell nick">익명</span>
           )}
           { post.menuType !== 'ANONYMOUS' && (
-            <span className="cell nick">{post.nickName}</span>
+            <span className="cell nick">{post.nickName || post.creatorName}</span>
           )}
-          <span className="cell date">
+          <span className="cell date center">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
           </span>
         </a>
@@ -70,9 +70,9 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
             <span className="cell nick">익명</span>
           )}
           { post.menuType !== 'ANONYMOUS' && (
-            <span className="cell nick">{post.nickName}</span>
+            <span className="cell nick">{post.nickName || post.creatorName}</span>
           )}
-          <span className="cell date">
+          <span className="cell date center">
           {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
           </span>
         </a>
@@ -102,7 +102,7 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
           </span>
         </span>
         <span className="cell nick">작성자</span>
-        <span className="cell date">등록일</span>
+        <span className="cell date center">등록일</span>
       </a>
       {postItems.items.map((post, index) => {
         return renderPostRow(post, onHandleClickRow, menuType);

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import moment from 'moment';
-import { Button, Icon } from 'semantic-ui-react';
-import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
+
+import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
+
 
 interface Props {
   postDetail: any;
@@ -36,8 +36,6 @@ class DiscussionViewContentHeaderView extends Component<Props> {
       onClickList,
     } = this.props;
 
-    const PUBLIC_URL = process.env.PUBLIC_URL;
-
     return (
       <>
         <div className="course-info-header">
@@ -61,21 +59,21 @@ class DiscussionViewContentHeaderView extends Component<Props> {
                   </div>
                 </div>
               </div> */}
-              {/* <div className="comment-area course-comment">
+              <div className="comment-area course-comment">
                 <div className="ui comments sub-debate">
                   <div className="comment">
                     <div className="avatar">
-                      <img src={`/files/community/${postDetail.profileImg}`}/>
+                      <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === ''  ? `${DefaultImg}` : `/files/community/${postDetail.profileImg}`} alt="" />
                     </div>
                     <div className="content">
-                      <a className="author">{postDetail.nickName}</a>
+                      <a className="author">{postDetail.nickName === null || postDetail.nickName === undefined || postDetail.nickName === '' ? postDetail.creatorName : postDetail.nickName }</a>
                       <div className="metadata">
-                        <span className="heartText">2020.09.26</span>
+                        <span className="heartText">{time && moment(time).format('YYYY.MM.DD')}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

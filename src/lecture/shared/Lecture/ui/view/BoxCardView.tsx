@@ -36,7 +36,6 @@ interface Props {
   onHoverOut?: () => void;
   onAction?: () => void;
   onViewDetail?: (e: any) => void;
-  GA_NAME?: string;
 }
 
 interface States {
@@ -102,26 +101,11 @@ class BoxCardView extends Component<Props, States> {
       onHoverOut,
       onAction,
       onViewDetail,
-      GA_NAME,
     } = this.props;
 
     const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(
       model!.learningTime
     );
-
-    // react-ga : gtm에서 클래스 이름에 접근하기 위해 각 카테고리별 클래스 분기 처리
-    let btnClassNames: string = '';
-
-    if (GA_NAME === 'recommend_detail_btn') {
-      // 추천과정 클래스명
-      btnClassNames = 'fix bg ga-click-rc';
-    } else if (GA_NAME === 'studying_detail_btn') {
-      // 학습중인 과정 클래스명
-      btnClassNames = 'fix bg ga-click-studing';
-    } else {
-      // 기존 클래스명
-      btnClassNames = 'fix bg';
-    }
 
     return (
       <Card
@@ -203,13 +187,29 @@ class BoxCardView extends Component<Props, States> {
 
           <Buttons>
             {action && (
-              <Button icon className="icon-line" onClick={onAction}>
-                <Icon className={action.iconName} />
+              <>
+                <Button icon className="icon-line" onClick={onAction}>
+                  <Icon className={action.iconName} />
+                </Button>
+                <Button className="ui button fix bg" onClick={onViewDetail}>
+                  상세보기
+                </Button>
+              </>
+            )}
+            {!action && (
+              <Button
+                className="ui button fix bg"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '13.75rem',
+                }}
+                onClick={onViewDetail}
+              >
+                상세보기
               </Button>
             )}
-            <Button className={btnClassNames} onClick={onViewDetail}>
-              상세보기
-            </Button>
           </Buttons>
         </div>
       </Card>

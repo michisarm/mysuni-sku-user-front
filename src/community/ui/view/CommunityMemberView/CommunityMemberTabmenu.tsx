@@ -44,7 +44,7 @@ const CommunityMemberTabmenu:React.FC<Props> = ({activemenu, handleActiveMenu}) 
           active={activemenu === "member"}
           onClick={() => handleActiveMenu("member")}
         >
-          Member
+          Members
         </Menu.Item>
         <Menu.Item
           name="Groups"

@@ -6,6 +6,33 @@ import CategoryColorType from '../../shared/model/CategoryColorType';
 
 import { useCard } from './SearchFilter';
 
+function numberWithCommas(x: number | string | null | undefined) {
+  let s = (x || 0).toString();
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
+  return s;
+}
+
+export function timeToHourMinuteFormat(x: number | string | null | undefined) {
+  //
+  const time = parseInt( (x||0).toString());
+  const hour = Math.floor(time / 60) || 0;
+  const minute = time % 60 || 0;
+
+  if (hour < 1 && minute < 1) {
+    return '00h 00m';
+  }
+  else if (hour < 1) {
+    return `${minute}m`;
+  }
+  else if (minute < 1) {
+    return `${hour}h`;
+  }
+  else {
+    return `${hour}h ${minute}m`;
+  }
+}
+
 function getColor(college_name: string) {
   let color = CategoryColorType.Default;
 
@@ -109,13 +136,13 @@ function Box({ item, index }: { item: any; index: number }) {
           <div className="li">
             <Label className="bold onlytext">
               <Icon className="time2" />
-              <span>{item.fields.learning_time}</span>
+              <span>{timeToHourMinuteFormat(item.fields.learning_time)}</span>
             </Label>
           </div>
           <div className="li">
             <Label className="onlytext">
               <Icon className="complete" />
-              <span>{item.fields.student_count}</span>
+              <span>{numberWithCommas(item.fields.student_count)}</span>
             </Label>
           </div>
         </div>

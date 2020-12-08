@@ -11,6 +11,7 @@ import {
   useMyCommunityIntro,
 } from '../../../store/CommunityMainStore';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -61,10 +62,12 @@ async function unbookmark(postId: string) {
 
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
+  type,
   postId,
   communityName,
   profileImage,
   profileId,
+  nickName,
   createdTime,
   name,
   contents,
@@ -116,92 +119,105 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   }, []);
   return (
     <>
-    <div className="sub-info-box">
-      <div className="comment-area community-main-card">
-        {/* comments */}
-        <Comment.Group className="base">
-          {/*comment : 2줄이상 말줄임, 대댓글*/}
-          <Comment>
-            {profileImage !== undefined && profileImage !== '' && (
-              <Comment.Avatar src={`/files/community/${profileImage}`}/>
-            )}
-            <Comment.Content>
-              <Comment.Author>
-                <Link to={`/community/${communityId}`}>{communityName}</Link>
-              </Comment.Author>
-              <Comment.Text>
-                <div className="ellipsis">
-                  <span className="id">{profileId}</span>
-                  <span className="date">{createdTime}</span>
-                </div>
-                {/* <Button>+ View more</Button> */}
-              </Comment.Text>
-              <Comment.Actions>
-                <div className="right top">
-                  {!bookmarked && (
-                    <Button icon className="img-icon" onClick={bookmarkClick}>
-                      <Icon className="bookmark2" />
-                      <span className="blind">북마크</span>
+      <div className="sub-info-box">
+        <div className="comment-area community-main-card">
+          {/* comments */}
+          <Comment.Group className="base">
+            {/*comment : 2줄이상 말줄임, 대댓글*/}
+            <Comment>
+              <Comment.Avatar
+                src={
+                  profileImage === undefined ||
+                  profileImage === null ||
+                  profileImage === '' ||
+                  type === 'ANONYMOUS'
+                    ? DefaultImg
+                    : `/files/community/${profileImage}`
+                }
+              />
+              <Comment.Content>
+                <Comment.Author>
+                  <Link to={`/community/${communityId}`}>{communityName}</Link>
+                </Comment.Author>
+                <Comment.Text>
+                  <div className="ellipsis">
+                    <span className="id">
+                      {type === 'ANONYMOUS' ? '익명' : nickName || profileId}
+                    </span>
+                    <span className="date">{createdTime}</span>
+                  </div>
+                  {/* <Button>+ View more</Button> */}
+                </Comment.Text>
+                <Comment.Actions>
+                  <div className="right top">
+                    {!bookmarked && (
+                      <Button icon className="img-icon" onClick={bookmarkClick}>
+                        <Icon className="bookmark2" />
+                        <span className="blind">북마크</span>
+                      </Button>
+                    )}
+                    {bookmarked && (
+                      <Button
+                        icon
+                        className="img-icon"
+                        onClick={unbookmarkClick}
+                      >
+                        <Icon className="remove3" />
+                        <span className="blind">북마크</span>
+                      </Button>
+                    )}
+                    <Button icon className="img-icon" onClick={shareUrl}>
+                      <Icon className="share2" />
+                      <span className="blind">공유</span>
                     </Button>
-                  )}
-                  {bookmarked && (
-                    <Button icon className="img-icon" onClick={unbookmarkClick}>
-                      <Icon className="remove3" />
-                      <span className="blind">북마크</span>
-                    </Button>
-                  )}
-                  <Button icon className="img-icon" onClick={shareUrl}>
-                    <Icon className="share2" />
-                    <span className="blind">공유</span>
-                  </Button>
-                </div>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
-          <div className="card-bottom">
-            <h3>
-              <span className={`ico_feed ${icon}`}>게시물</span>
-              <Link to={`/community/${communityId}/post/${postId}`}>
-                {name}
-              </Link>
-            </h3>
-            {more && (
-              <div className="ql-snow">
-                <div
-                  className="ql-editor"
-                  dangerouslySetInnerHTML={{ __html: contents }}
-                />
-              </div>
-            )}
-            {!more && (
-              <div>
-                <p className="summary">{text}</p>
-              </div>
-            )}
-            <div className="text-right">
-              {!more && (
-                <button
-                  className="ui icon button right btn-blue btn-more"
-                  onClick={viewMore}
-                >
-                  more
-                  <i aria-hidden="true" className="icon more2" />
-                </button>
-              )}
+                  </div>
+                </Comment.Actions>
+              </Comment.Content>
+            </Comment>
+            <div className="card-bottom">
+              <h3>
+                <span className={`ico_feed ${icon}`}>게시물</span>
+                <Link to={`/community/${communityId}/post/${postId}`}>
+                  {name}
+                </Link>
+              </h3>
               {more && (
-                <button
-                  className="ui icon button right btn-blue fn-more-toggle"
-                  onClick={hideMore}
-                >
-                  hide
-                  <i aria-hidden="true" className="icon hide2" />
-                </button>
+                <div className="ql-snow">
+                  <div
+                    className="ql-editor"
+                    dangerouslySetInnerHTML={{ __html: contents }}
+                  />
+                </div>
               )}
+              {!more && (
+                <div>
+                  <p className="summary">{text}</p>
+                </div>
+              )}
+              <div className="text-right">
+                {!more && (
+                  <button
+                    className="ui icon button right btn-blue btn-more"
+                    onClick={viewMore}
+                  >
+                    more
+                    <i aria-hidden="true" className="icon more2" />
+                  </button>
+                )}
+                {more && (
+                  <button
+                    className="ui icon button right btn-blue fn-more-toggle"
+                    onClick={hideMore}
+                  >
+                    hide
+                    <i aria-hidden="true" className="icon hide2" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        </Comment.Group>
+          </Comment.Group>
+        </div>
       </div>
-    </div>
     </>
   );
 };
@@ -213,31 +229,31 @@ function MyCommunityPostListContainer() {
   }
   return (
     <>
-    <div className="community-main-contants">
-      {myCommunityIntro !== undefined &&
-        myCommunityIntro.posts.map(postItem => (
-          <PostItemView key={postItem.postId} {...postItem} />
-        ))}
-      
-      <div className="more-comments community-side">
-        {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
-          <Button
-            icon
-            className="left moreview"
-            onClick={requestAppendMyCommunityPostList}
-          >
-            <Icon className="moreview" /> list more
-          </Button>
-        )}
-        {myCommunityIntro.postsTotalCount <= myCommunityIntro.postsOffset && (
-          <Button
-            icon
-            className="left moreview"
-            style={{ cursor: 'default' }}
-          />
-        )}
+      <div className="community-main-contants">
+        {myCommunityIntro !== undefined &&
+          myCommunityIntro.posts.map(postItem => (
+            <PostItemView key={postItem.postId} {...postItem} />
+          ))}
+
+        <div className="more-comments community-side">
+          {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
+            <Button
+              icon
+              className="left moreview"
+              onClick={requestAppendMyCommunityPostList}
+            >
+              <Icon className="moreview" /> list more
+            </Button>
+          )}
+          {myCommunityIntro.postsTotalCount <= myCommunityIntro.postsOffset && (
+            <Button
+              icon
+              className="left moreview"
+              style={{ cursor: 'default' }}
+            />
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 }

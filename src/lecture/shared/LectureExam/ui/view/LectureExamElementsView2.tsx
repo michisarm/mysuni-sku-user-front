@@ -25,8 +25,6 @@ export const Test = ({
   //
   if (!OnTest) return null;
 
-  // console.log('Test viewObject : ', viewObject);
-  // console.log('examTitle', viewObject.examTitle, 'type : ', type, 'name : ', name);
   return (
     <>
       {sort === 'detail' && (
@@ -301,7 +299,6 @@ export const Report = ({
 }: ReportProps) => {
   //
   if (!OnReport) return null;
-  // console.log('Report viewObject : ', viewObject);
   // if (passedState !== undefined) {
   //   alert(passedState);
   // }
@@ -492,8 +489,6 @@ export const Survey = ({
 }: SurveyProps) => {
   //
   if (!onSurvey) return null;
-
-  // console.log('Survey sort : ', sort);
 
   return (
     <>

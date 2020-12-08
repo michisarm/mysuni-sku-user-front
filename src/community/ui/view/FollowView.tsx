@@ -14,7 +14,6 @@ const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
 
   const followCommunityIntro = useFollowCommunityIntro();
-  console.log('@@@@@@', followCommunityIntro);
 
   return (
     <div ref={contextRef}>

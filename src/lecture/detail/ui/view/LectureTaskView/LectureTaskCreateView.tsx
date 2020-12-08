@@ -43,11 +43,6 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   let [taskDetail] = useLectureTaskCreate();
   const [canNotice, setCanNotice] = useState<boolean>(false);
   useEffect(() => {
-    console.log('Profile', toJS(SkProfileService.instance.skProfile));
-    console.log(
-      'Cube',
-      (getActiveStructureItem()! as LectureStructureCubeItem).cube
-    );
     if (
       (getActiveStructureItem()! as LectureStructureCubeItem).cube === undefined
     ) {

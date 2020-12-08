@@ -107,15 +107,6 @@ class CoursePage extends Component<Props, State> {
     props.coursePlanService.clearCoursePlan();
     props.coursePlanService.clearCoursePlanContents();
     props.lectureService.clearLectureViews();
-
-    // const { cineroomId, collegeId, lectureCardId, coursePlanId, serviceId, serviceType } = this.props.match.params!;
-    //
-    // console.log('Course Page : ', cineroomId);
-    // console.log('Course Page : ', collegeId);
-    // console.log('Course Page : ', lectureCardId);
-    // console.log('Course Page : ', coursePlanId);
-    // console.log('Course Page : ', serviceId);
-    // console.log('Course Page : ', serviceType);
   }
 
   componentDidMount() {
@@ -123,14 +114,10 @@ class CoursePage extends Component<Props, State> {
     this.setCineroom();
     this.init();
     this.publishViewEvent();
-    // console.log('Course Page : componentDidMount');
   }
 
   componentDidUpdate(prevProps: Props) {
     //
-    // console.log('serviceId : ', prevProps.match.params.serviceId, ' - ', this.props.match.params.serviceId);
-    // console.log('serviceType : ', prevProps.match.params.serviceType, ' - ', this.props.match.params.serviceType);
-
     if (
       prevProps.match.params.serviceType !== this.props.match.params.serviceType
     ) {
@@ -381,8 +368,6 @@ class CoursePage extends Component<Props, State> {
     reportFileBoxId = coursePlan.reportFileBox ? coursePlan.reportFileBox.fileBoxId : '';
     tabState = this.state.tabState || '';
 
-    // console.log('course page student : ', student);
-
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
         if (
@@ -418,7 +403,6 @@ class CoursePage extends Component<Props, State> {
       // }
 
       // if (!examId && (student.phaseCount !== student.completePhaseCount) && student.learningState === LearningState.Progress) {
-      //   console.log('Course Page Waiting : ', SubState.Waiting);
       //   state = SubState.Waiting;
       // }
     }
