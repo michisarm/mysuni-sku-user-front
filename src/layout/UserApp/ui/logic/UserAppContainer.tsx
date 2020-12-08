@@ -33,11 +33,11 @@ class UserAppContainer extends Component<Props, State> {
       if (location.pathname === '/search') {
         setTimeout(() => {
           ReactGA.pageview(location.pathname, [], 'mySUNI 검색');
-        }, 2000);
+        }, 1000);
       } else {
         setTimeout(() => {
-          ReactGA.pageview(location.pathname + location.search);
-        }, 2000);
+          ReactGA.pageview(location.pathname + window.location.search);
+        }, 1000);
       }
     });
   }

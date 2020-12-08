@@ -7,7 +7,6 @@ import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
 import personalCubePaths from 'personalcube/routePaths';
 import communityPaths from 'community/routePaths';
-import reactGA from 'react-ga';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;

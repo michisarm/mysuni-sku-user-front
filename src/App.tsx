@@ -27,17 +27,6 @@ function App() {
     ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`);
 
     document.body.appendChild(script);
-    console.log('pathname', window.location.pathname);
-    if (window.location.pathname === '/pages/1') {
-      setTimeout(() => {
-        ReactGA.pageview(window.location.pathname, [], 'mySUNI 메인');
-      }, 1000);
-    }
-    if (window.location.pathname === '/') {
-      setTimeout(() => {
-        ReactGA.pageview('/', [], 'mySUNI 메인');
-      }, 1000);
-    }
 
     return () => {
       document.body.removeChild(script);
