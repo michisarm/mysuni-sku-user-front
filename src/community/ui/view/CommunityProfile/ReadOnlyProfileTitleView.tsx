@@ -1,14 +1,33 @@
-import React from 'react';
+import { findCommunityProfile } from 'community/api/profileApi';
+import { requestFollowAdd, requestFollowDelete } from 'community/service/useFollowModal/utility/requestFollowModalIntro';
+import React, { useCallback } from 'react';
 import { Button } from 'semantic-ui-react';
 import Profile from '../../../model/Profile';
 
 interface ReadOnlyProfileTitleViewProps {
   profile?: Profile;
+  followReload?: () => void;
 }
 
 const ReadOnlyProfileTitleView: React.FC<ReadOnlyProfileTitleViewProps> = function ReadOnlyProfileTitleView({
   profile,
+  followReload,
 }) {
+
+  const followingsBtn = useCallback(() => {
+    if (profile !== undefined && profile.id !== undefined) {
+      if (profile?.follow) {
+        requestFollowDelete(profile?.id).then(() => {
+          followReload!();
+        });
+      } else {
+        requestFollowAdd(profile?.id).then(() => {
+          followReload!();
+        });
+      }
+    }
+  },[profile?.id, profile?.follow]);
+
   return (
     <div className="profile_box">
       <div className="profile_pic">
@@ -52,8 +71,11 @@ const ReadOnlyProfileTitleView: React.FC<ReadOnlyProfileTitleViewProps> = functi
               <em>{profile?.followingCount}</em>
             </li>
             <li>
-              <Button className="btn_profile_follow">
-                  {(profile?.isFollow && "Unfollow") || "Follow"}
+              <Button
+                className="btn_profile_follow"
+                onClick={followingsBtn}
+              >
+                {(profile?.follow && "Unfollow") || "Follow"}
               </Button>
             </li>
           </ul>

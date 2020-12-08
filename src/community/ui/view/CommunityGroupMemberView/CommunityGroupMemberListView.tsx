@@ -3,19 +3,21 @@ import { Comment } from "semantic-ui-react";
 import moment from 'moment';
 import AdminIcon from '../../../../style/media/icon-community-manager.png';
 import AvartarImage from '../../../../style/media/img-profile-80-px.png';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getGroupMemberData } from 'community/service/useGroupList/useGroupList';
 import { onFollowGroupMember, onUnFollowGroupMember } from 'community/service/useGroupList/useGroupList';
 import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 import CommunityProfileModal from '../CommunityProfileModal';
-
+import { patronInfo } from '@nara.platform/dock';
+  
 function ItemBox({
   groupMemberList, memberData, setMemberData, activePage, groupId} 
   :{groupMemberList:any, memberData:any, setMemberData:any, activePage:number, groupId:string,}) 
 {
   const [open, setOpen] = useState<boolean>(false);
-
+  const currentUser = patronInfo.getDenizenId();
+  
   const handleFollow = useCallback(async (communityId:string, memberId:string, followState:boolean) => {
     if(activePage === undefined || memberData === undefined) {
       return false
@@ -33,25 +35,37 @@ function ItemBox({
     }
     
   },[activePage, memberData])
-
+  
   return (
     <>
     <div className="member-card">
       <Comment>
-        <Comment.Avatar src={groupMemberList.profileImg ? `/files/community/${groupMemberList.profileImg}` : `${AvartarImage}`} />
+        <Comment.Avatar src={
+          groupMemberList.profileImg === null ||
+          groupMemberList.profileImg === undefined ||
+          groupMemberList.profileImg === ''  ? 
+          `${AvartarImage}` : `/files/community/${groupMemberList.profileImg}`
+          }
+        />
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} onClick={() => setOpen(!open)} /><span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname}</span>
-            <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
-              <span className="card-follow">{groupMemberList.follow  ? "Unfollow" : "Follow"}</span>
-            </button>
+            <img src={AdminIcon} style={groupMemberList.manager ? {display:"inline"} : {display:"none"}} />
+            <span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
+            {
+              // 멤버보기 목록에서 본인의 프로필인 경우 Follow버튼 출력하지 않음
+              currentUser !== groupMemberList.memberId ? (
+                <button type="button" title="Follow" onClick={() => handleFollow(groupMemberList.communityId, groupMemberList.memberId, groupMemberList.follow)}>
+                  <span className="card-follow">{groupMemberList.follow ? "Unfollow" : "Follow"}</span>
+                </button>
+              ) : ( null )
+            }
           </Comment.Author>
           <Comment.Metadata>
             <span>게시물</span>
-            <span>{groupMemberList.postCount === null ? 0 : groupMemberList.postCount}</span>
+            <span>{groupMemberList.postCount === null || undefined ? 0 : groupMemberList.postCount}</span>
             <span>댓글</span>
-            <span>{groupMemberList.replyCount === null ? 0 : groupMemberList.replyCount}</span>
+            <span>{groupMemberList.replyCount === null || undefined ? 0 : groupMemberList.replyCount}</span>
           </Comment.Metadata>
           <Comment.Metadata>
             <span className="date">{groupMemberList.createdTime && moment(groupMemberList.createdTime).format('YYYY.MM.DD')}</span>
@@ -63,9 +77,10 @@ function ItemBox({
       open={open}
       setOpen={setOpen}
       userProfile={groupMemberList.profileImg}
-      creatorId={groupMemberList.creatorId}
+      memberId={groupMemberList.memberId}
       introduce={groupMemberList.introduce}
       nickName={groupMemberList.nickname}
+      name={groupMemberList.name}
     />
     </>
   )

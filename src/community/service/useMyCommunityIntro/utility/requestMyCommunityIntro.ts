@@ -125,12 +125,14 @@ function postToItem(post: Post): PostItem {
     profileImg,
     menuType,
     bookmarked,
+    type,
   } = post;
   return {
     communityId,
     menuId,
     postId,
     communityName,
+    type,
     profileImage: profileImg || '',
     profileId: nickName || creatorName || '',
     createdTime: getTimeString(createdTime),
@@ -138,6 +140,7 @@ function postToItem(post: Post): PostItem {
     contents: html,
     menuType,
     bookmarked,
+    nickName,
   };
 }
 

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { CommentList } from '@nara.drama/feedback';
+import { CommunityCommentList } from '@nara.drama/feedback';
 import { patronInfo } from '@nara.platform/dock';
 import { useCommunityDiscussionPostDetail } from 'community/service/useCommunityPostDetail/useCommunityDiscussionPost';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
@@ -42,7 +42,7 @@ function CommunityDiscussionContainer() {
   return (
     <Fragment>
       {postDetail && (
-        <div className="ui segment full">
+        <>
           <DiscussionViewContentHeaderView
             postDetail={postDetail}
             title={postDetail.title}
@@ -50,7 +50,7 @@ function CommunityDiscussionContainer() {
             readCount={postDetail.readCount}
             deletable={true}
             onClickList={OnClickList}
-          />         
+          />
           {/* <div className="class-guide-txt fn-parents ql-snow">
             <div className="text ql-editor">
               <div
@@ -85,7 +85,7 @@ function CommunityDiscussionContainer() {
                   ))}
             </div>
           </div> */}
-          <CommentList
+          <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
             hideCamera
             name=""
@@ -93,7 +93,7 @@ function CommunityDiscussionContainer() {
             companyName=""
             departmentName=""
           />
-        </div>
+        </>
       )}
     </Fragment>
   );

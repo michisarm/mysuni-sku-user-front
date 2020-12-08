@@ -187,13 +187,29 @@ class BoxCardView extends Component<Props, States> {
 
           <Buttons>
             {action && (
-              <Button icon className="icon-line" onClick={onAction}>
-                <Icon className={action.iconName} />
+              <>
+                <Button icon className="icon-line" onClick={onAction}>
+                  <Icon className={action.iconName} />
+                </Button>
+                <Button className="ui button fix bg" onClick={onViewDetail}>
+                  상세보기
+                </Button>
+              </>
+            )}
+            {!action && (
+              <Button
+                className="ui button fix bg"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '13.75rem',
+                }}
+                onClick={onViewDetail}
+              >
+                상세보기
               </Button>
             )}
-            <Button className="ui button fix bg" onClick={onViewDetail}>
-              상세보기
-            </Button>
           </Buttons>
         </div>
       </Card>

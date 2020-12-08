@@ -14,24 +14,6 @@ import { useCallback } from 'react';
 function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
   const [cardopen, setCardOpen] = useState<any>(false);
   const groupItem = useRef<any>();
-
-  // 열기버튼을 누른 그룹박스 감지
-  // 한번에 하나의 그룹멤버만 볼 수 있도록 임시설정, BODY영역 클릭시 닫기
-
-  // const handleClickOutside = (event:any) => {
-  //   if (groupItem.current && !groupItem.current.contains(event.target)){
-  //     setCardOpen(false);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if(cardopen) {
-  //     setCardOpen(cardopen)
-  //   }
-  //   document.addEventListener("click", handleClickOutside);
-  //   return () => document.removeEventListener("click", handleClickOutside)
-  // }, [])
-
   
   return (
     <div className="mycommunity-card-list" style={{marginBottom:"20px"}} ref={groupItem}>
@@ -42,7 +24,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
             <img src={AdminIcon} className="community-manager" />
             <span>{groupList.name}</span>
             <span>멤버</span>
-            <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount<= 0 ? "0명" : groupList.memberCount}</span>
+            <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount <= 0 ? "0명" : `${groupList.memberCount}명`}</span>
             <button onClick={() => setCardOpen(!cardopen)} type="button" title="열기닫기" className={cardopen ? "community-btn-open" : "community-btn-close"}><span>열기닫기</span></button>
           </div>
         </div>

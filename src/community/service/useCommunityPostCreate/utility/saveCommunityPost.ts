@@ -57,6 +57,10 @@ function modifyNameValueList(post: any): NameValueList {
           name: 'visible',
           value: post.visible
         },
+        {
+          name: 'fileBoxId',
+          value: post.fileBoxId
+        }
       ],
     };
     return modifyNameValues;

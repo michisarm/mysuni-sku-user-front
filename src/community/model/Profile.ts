@@ -1,6 +1,7 @@
 import { IdName } from '@nara.platform/accent';
 
 export default interface Profile {
+  id: string;
   name: string;
   company: IdName;
   department: IdName;
@@ -18,5 +19,5 @@ export default interface Profile {
   followerCount: number;
   followingCount: number;
 
-  isFollow?: boolean;
+  follow?: boolean;
 }

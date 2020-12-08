@@ -98,6 +98,17 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       return;
     }
 
+    if (postItem.pinned) {
+      if (postItem.title === '') {
+        reactAlert({ title: '알림', message: '제목을 입력해 주세요' });
+        return;
+      }
+      if (postItem.contents === '') {
+        reactAlert({ title: '알림', message: '내용을 입력해 주세요' });
+        return;
+      }
+    }
+
     //자료실 타입 첨부파일 필수 체크
     const menu = menuId && await getPostMenuFromCommunity(communityId, menuId);
     if(menu && menu.type == "STORE" || getCommunityPostCreateItem()?.menuType == "STORE"){
@@ -137,7 +148,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         }
       },
     });
-  }, [communityId, menuId, postId, history, postItem.fileBoxId]);
+  }, [communityId, menuId, postId, history, postItem]);
 
   const menu = menus.find(c => c.menuId === menuId);
 
@@ -227,27 +238,29 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
               </div>
             </div>
           </Form.Field>
-          <Form.Field>
-            {/* 공개, 비공개 */}
-            <div className="board-write-radio">
-              <Radio
-                className="base"
-                label="멤버 공개"
-                name="communityPostVisible"
-                value={1}
-                checked={postItem.visible}
-                onChange={handleVisibleChange}
-              />
-              <Radio
-                className="base"
-                label="비공개 (본인과 관리자만 게시물 확인)"
-                name="communityPostVisible"
-                value={0}
-                checked={!postItem.visible}
-                onChange={handleVisibleChange}
-              />
-            </div>
-          </Form.Field>
+          {!managerAuth && (
+            <Form.Field>
+              {/* 공개, 비공개 */}
+              <div className="board-write-radio">
+                <Radio
+                  className="base"
+                  label="멤버 공개"
+                  name="communityPostVisible"
+                  value={1}
+                  checked={postItem.visible}
+                  onChange={handleVisibleChange}
+                />
+                <Radio
+                  className="base"
+                  label="비공개 (본인과 관리자만 게시물 확인)"
+                  name="communityPostVisible"
+                  value={0}
+                  checked={!postItem.visible}
+                  onChange={handleVisibleChange}
+                />
+              </div>
+            </Form.Field>
+          )}
         </Form>
 
         {/* Bottom */}

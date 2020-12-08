@@ -36,8 +36,6 @@ class DiscussionViewContentHeaderView extends Component<Props> {
       onClickList,
     } = this.props;
 
-    const PUBLIC_URL = process.env.PUBLIC_URL;
-
     return (
       <>
         <div className="course-info-header">
@@ -68,7 +66,7 @@ class DiscussionViewContentHeaderView extends Component<Props> {
                       <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === ''  ? `${DefaultImg}` : `/files/community/${postDetail.profileImg}`} alt="" />
                     </div>
                     <div className="content">
-                      <a className="author">{postDetail.creatorName}</a>
+                      <a className="author">{postDetail.nickName === null || postDetail.nickName === undefined || postDetail.nickName === '' ? postDetail.creatorName : postDetail.nickName }</a>
                       <div className="metadata">
                         <span className="heartText">{time && moment(time).format('YYYY.MM.DD')}</span>
                       </div>
