@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
@@ -109,4 +109,3 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
     </div>
   </div>
 );
-
