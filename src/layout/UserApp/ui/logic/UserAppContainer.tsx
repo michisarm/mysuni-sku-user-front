@@ -7,15 +7,13 @@ import { patronInfo } from '@nara.platform/dock';
 import AppContext, { BreadcrumbValue } from './AppContext';
 import ResponsiveWrapper from './ResponsiveWrapper';
 
-
 interface Props extends RouteComponentProps {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
 interface State {
-  breadcrumbValues: BreadcrumbValue[],
+  breadcrumbValues: BreadcrumbValue[];
 }
-
 
 @reactAutobind
 class UserAppContainer extends Component<Props, State> {
@@ -27,13 +25,20 @@ class UserAppContainer extends Component<Props, State> {
   componentDidMount(): void {
     // set patronID
     ReactGA.set({ userId: patronInfo.getPatronId() });
-    // refresh page tracking
     ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.setLocalAuth();
 
     this.props.history.listen(location => {
-      ReactGA.pageview(location.pathname + location.search);
+      if (location.pathname === '/search') {
+        setTimeout(() => {
+          ReactGA.pageview(location.pathname, [], 'mySUNI 검색');
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          ReactGA.pageview(location.pathname + window.location.search);
+        }, 1000);
+      }
     });
   }
 
@@ -66,12 +71,8 @@ class UserAppContainer extends Component<Props, State> {
     const { children } = this.props;
 
     return (
-      <AppContext.Provider
-        value={this.getContext()}
-      >
-        <ResponsiveWrapper>
-          {children}
-        </ResponsiveWrapper>
+      <AppContext.Provider value={this.getContext()}>
+        <ResponsiveWrapper>{children}</ResponsiveWrapper>
       </AppContext.Provider>
     );
   }

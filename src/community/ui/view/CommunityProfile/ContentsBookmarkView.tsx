@@ -18,7 +18,7 @@ import { getMyProfile } from 'community/store/MyProfileStore';
 import PostItem from 'community/viewModel/CommunityProfileBookmark/PostItem';
 import { getCommunityProfileBookmark, setCommunityProfileBookmark } from "community/store/CommunityProfileBookmarkStore";
 import { requestAppendProfileBookmarkPostList } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
-
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 interface ContentsBookmarkViewProps {
   communityProfileBookmark: CommunityProfileBookmark;
@@ -127,9 +127,11 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
         <Comment.Group className="base">
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
-            {profileImage !== undefined && profileImage !== '' && (
+            {profileImage !== undefined && profileImage !== '' && profileImage !== null ? 
               <Comment.Avatar src={`/files/community/${profileImage}`} />
-            )}
+              :
+              <Comment.Avatar src={`${DefaultImg}`} />
+            }
             <Comment.Content>
               <Comment.Author as="a">
                 <Link to={`/community/${communityId}`}>{communityName}</Link>

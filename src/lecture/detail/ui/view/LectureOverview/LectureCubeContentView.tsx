@@ -24,12 +24,12 @@ interface LectureCubeContentViewProps {
   lectureClassroom?: LectureClassroom;
 }
 
-function hashLink(hash: string) {
-  const element = document.getElementById(hash);
-  if (element !== null) {
-    element.scrollIntoView();
-  }
-}
+// function hashLink(hash: string) {
+//   const element = document.getElementById(hash);
+//   if (element !== null) {
+//     element.scrollIntoView();
+//   }
+// }
 
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
   lectureDescription,
@@ -62,11 +62,11 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
-    hashLink('lms-overview');
+    // hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const classroomHashClick = useCallback(() => {
-    hashLink('lms-classroom');
+    // hashLink('lms-classroom');
     setActivatedTab('classroom');
   }, []);
   const commentHashClick = useCallback(() => {
