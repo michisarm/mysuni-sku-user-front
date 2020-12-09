@@ -41,7 +41,7 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
     <tr key={communityId}>
       <td>{CommunityTypeToString(type)}</td>
       <td className="title ellipsis">
-        {/* {type === 'OPEN' && (<span className="label">{fieldName}</span>)} */}
+        {type === 'OPEN' && (<span className="label">{fieldName}</span>)}
         <Link to={`/community/${communityId}`}>{name}</Link>
       </td>
       <td>
