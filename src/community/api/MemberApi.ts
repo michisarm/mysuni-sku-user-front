@@ -75,7 +75,7 @@ export function modifyMembers(
 ): Promise<string> {
   
   return axios
-    .put<string>(`${BASE_URL}/communities/${communityId}/members/${memberIdList.join(',')}`)
+    .put<string>(`${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`)
     .then((response) => response && response.data);
 }
 
