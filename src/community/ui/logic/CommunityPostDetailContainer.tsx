@@ -10,10 +10,7 @@ import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList, CommentService, CommunityCommentList } from '@nara.drama/feedback';
 import { Button, Icon } from 'semantic-ui-react';
-import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
-import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
-import { getCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
 import CommunityPdfModal from '../view/CommunityPdfModal';
@@ -21,9 +18,8 @@ import { saveCommunityPostLike } from '../../service/useCommunityPostDetail/util
 import { getCommunityPostLikeCountByMember } from '../../service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
-import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import moment from 'moment';
-import DefaultImg from '../../../style/media/img-profile-80-px.png';
+import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
 
 interface Params {
   communityId: string;
@@ -62,6 +58,12 @@ function CommunityPostDetailContainer() {
       depot.downloadDepotFile(fileId)
     }
   }
+
+  useEffect(() => {
+    window.addEventListener('commentCount', async (event: any) => {
+      getCommunityPostDetail(communityId, postId);
+    });
+  },[])
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
