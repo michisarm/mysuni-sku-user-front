@@ -7,6 +7,8 @@ interface Props {
   action?: () => void;
 }
 
+const PUBLIC_URL = process.env.PUBLIC_URL;
+
 const LectureCohortView: React.FC<LectureWebpage &
   Props> = function LectureCohortView({
   title,
@@ -22,7 +24,7 @@ const LectureCohortView: React.FC<LectureWebpage &
         <div className="lms-open-title">{title}</div>
         <div className="lms-open-copy">{description}</div>
         <a
-          href={url}
+          href={'${PUBLIC_URL}/'+url}
           className="lms-open-link"
           target="_blank"
           id="webpage-link"
