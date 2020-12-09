@@ -69,7 +69,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   nickName,
   createdTime,
   creatorName,
-  profileImg
+  profileImg,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -89,7 +89,11 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   return (
     <Link
       className="new-board-list"
-      to={type === 'ANONYMOUS' ? `/community/${communityId}/ANONYMOUS/post/${postId}` : `/community/${communityId}/post/${postId}`}
+      to={
+        type === 'ANONYMOUS'
+          ? `/community/${communityId}/ANONYMOUS/post/${postId}`
+          : `/community/${communityId}/post/${postId}`
+      }
       style={{ display: 'block' }}
     >
       <div className="new-board-list-top">
@@ -104,13 +108,13 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
-            {type !=='ANONYMOUS' && (
-            <img src={`/files/community/${profileImg}`} />
+            {type !== 'ANONYMOUS' && (
+              <img src={`/files/community/${profileImg}`} />
             )}
-            {type ==='ANONYMOUS' && (
-              <img src={profileIcon} />
-            )}
-            <span>{type === 'ANONYMOUS' ? '익명' : nickName || creatorName}</span>
+            {type === 'ANONYMOUS' && <img src={profileIcon} />}
+            <span>
+              {type === 'ANONYMOUS' ? '익명' : nickName || creatorName}
+            </span>
           </div>
           <div className="text-list">
             <span>{createdDate}</span>
