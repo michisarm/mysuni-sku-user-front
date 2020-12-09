@@ -452,6 +452,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   useEffect(() => {
+    setInterval(() => {
+      getTimeStringSeconds(embedApi.getCurrentTime());
+    }, 1000);
+    console.log('render!');
     // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure = getLectureStructure();
     setNextContentsPath('');
@@ -593,15 +597,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
-  const [currnetTime, setCurrnetTime] = useState<number>(0);
+  // const [currnetTime, setCurrnetTime] = useState<any>(0);
+  let current = embedApi.getCurrentTime();
   let duration = embedApi.getDuration();
-  useEffect(() => {
-    setInterval(() => {
-      setCurrnetTime(embedApi.getCurrentTime());
-    }, 1000);
-  }, [currnetTime, duration]);
 
-  let hours = Math.floor(currnetTime / 3600);
+  // useEffect(() => {
+  // setInterval(() => {
+  //   getTimeStringSeconds(embedApi.getCurrentTime());
+  // }, 1000);
+  // console.log('render!');
+  // }, [current]);
 
   useEffect(() => {
     onLectureMedia(lectureMedia => {
@@ -647,6 +652,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, []);
 
+  // 영상 스티키 시작 시간표시
+  const getTimeStringSeconds = (seconds: number) => {
+    let min, sec;
+
+    min = Math.floor((seconds % 3600) / 60);
+    sec = Math.floor(seconds % 60);
+
+    if (min.toString().length == 1) min = '0' + min;
+    if (sec.toString().length == 1) sec = '0' + sec;
+
+    return min + ':' + sec;
+  };
+
   return (
     <div
       className={
@@ -690,8 +708,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
           </div>
           <div className="time-check">
-            <strong>{Math.floor((currnetTime - hours * 3600) / 60)}</strong> /{' '}
-            {duration / 60}
+            <strong>{getTimeStringSeconds(current)}</strong> /{' '}
+            {getTimeStringSeconds(duration)}
           </div>
           <div className="contents-header-side">
             <div className="header-right-link">

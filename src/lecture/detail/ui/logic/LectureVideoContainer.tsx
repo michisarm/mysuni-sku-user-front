@@ -40,8 +40,6 @@ function LectureVideoContainer() {
   const [scroll, setScroll] = useState<number>(0);
   const [videoPosition, setVideoPosition] = useState<number>(0);
 
-  console.log('현재스크롤', scroll);
-
   // 실시간 스크롤 감시
   useEffect(() => {
     const onScroll = () => setScroll(window.pageYOffset);
@@ -64,7 +62,6 @@ function LectureVideoContainer() {
     },
     [getLectureMedia(), pathname]
   );
-  console.log('video position', videoPosition);
   return (
     <>
       <LectureVideoView
