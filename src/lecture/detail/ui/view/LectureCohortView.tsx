@@ -24,7 +24,7 @@ const LectureCohortView: React.FC<LectureWebpage &
         <div className="lms-open-title">{title}</div>
         <div className="lms-open-copy">{description}</div>
         <a
-          href={'${PUBLIC_URL}/'+url}
+          href={`${PUBLIC_URL}/`+url}
           className="lms-open-link"
           target="_blank"
           id="webpage-link"
