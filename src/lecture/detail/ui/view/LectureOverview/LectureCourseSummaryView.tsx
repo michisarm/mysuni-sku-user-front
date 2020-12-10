@@ -10,6 +10,7 @@ import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
+import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -97,6 +98,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
       ReactGA.pageview(window.location.pathname + window.location.search, [], `(Course) - ${lectureSummary.name}`);
     }, 1000);
   })
+  const lectureStructure = getLectureStructure();
+  let qnaUrl = '/board/support-qna';
+  if (lectureStructure !== undefined && lectureStructure.course !== undefined) {
+    qnaUrl += '/course/'+lectureStructure.course.coursePlanId;
+  }
 
   return (
     <div className="course-info-header">
@@ -147,7 +153,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 </span>
               </Label>
               <Link
-                to="/board/support-qna"
+                to={qnaUrl}
                 className="ui icon button left post-s"
               >
                 <Icon className="ask" />
