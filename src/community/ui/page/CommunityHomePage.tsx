@@ -15,6 +15,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
+import { Console } from 'console';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -22,6 +23,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   title,
   html,
   createdTime,
+  replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -85,7 +87,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
         <div className="home-card-bottom">
           <span>{createdDate}</span>
           <span>
-            <img src={commentIcon} />0
+            <img src={commentIcon} />{replyCount}
           </span>
         </div>
       </div>
@@ -104,6 +106,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   createdTime,
   creatorName,
   profileImg,
+  replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -187,7 +190,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         </div>
         <div className="right-area">
           <button>
-            <img src={commentIcon} />0
+            <img src={commentIcon} />{replyCount}
           </button>
         </div>
       </div>
