@@ -12,6 +12,7 @@ import defaultHeader from '../../../style/media/bg-ttl-sample-02.png';
 import Post from '../../model/Post';
 import moment from 'moment';
 import { patronInfo } from '@nara.platform/dock';
+import { Console } from 'console';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -19,6 +20,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   title,
   html,
   createdTime,
+  replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -51,7 +53,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
         <div className="home-card-bottom">
           <span>{createdDate}</span>
           <span>
-            <img src={commentIcon} />0
+            <img src={commentIcon} />{replyCount}
           </span>
         </div>
       </Link>
@@ -70,6 +72,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   createdTime,
   creatorName,
   profileImg,
+  replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
   const isNew = moment().format('YYYY.MM.DD') === createdDate;
@@ -122,7 +125,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         </div>
         <div className="right-area">
           <button>
-            <img src={commentIcon} />0
+            <img src={commentIcon} />{replyCount}
           </button>
         </div>
       </div>
@@ -231,6 +234,7 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
+            {console.log("@@",communityHome.recent.length)}
             {communityHome.community.approved === true &&
               communityHome.recent.length > 0 && (
                 <Link
