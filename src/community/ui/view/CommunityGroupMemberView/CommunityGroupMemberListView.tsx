@@ -50,7 +50,7 @@ function ItemBox({
         <Comment.Content>
           <Comment.Author as="a">
             {/* 어드민 아이콘 영역 */}
-            <img src={AdminIcon} style={groupMemberList.nickname === managerNickName ? {display:"inline"} : {display:"none"}} />
+            <img src={AdminIcon} style={groupMemberList.nickname === managerNickName || groupMemberList.name === managerName ? {display:"inline"} : {display:"none"}} />
             <span className="lms-nick" onClick={() => setOpen(!open)}>{groupMemberList.nickname || groupMemberList.name}</span>
             {
               // 멤버보기 목록에서 본인의 프로필인 경우 Follow버튼 출력하지 않음
