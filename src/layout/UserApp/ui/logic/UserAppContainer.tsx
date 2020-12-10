@@ -31,9 +31,35 @@ class UserAppContainer extends Component<Props, State> {
 
     this.props.history.listen(location => {
       if (location.pathname === '/search') {
-        setTimeout(() => {
-          ReactGA.pageview(location.pathname, [], 'mySUNI 검색');
-        }, 1000);
+        return false;
+      }
+      if (
+        location.pathname.match(
+          '/my-training/learning/InProgress/pages/1' && '/my-training/learning'
+        )
+      ) {
+        return false;
+      }
+      if (
+        location.pathname.match(
+          '/personalcube/create/Create/pages/1' && '/personalcube/create'
+        )
+      ) {
+        return false;
+      }
+      if (
+        location.pathname.match(
+          '/lecture/recommend/pages/' && '/lecture/recommend'
+        )
+      ) {
+        return false;
+      }
+      if (
+        location.pathname.match(
+          '/certification/badge/AllBadgeList/pages/1' && '/certification/badge'
+        )
+      ) {
+        return false;
       } else {
         setTimeout(() => {
           ReactGA.pageview(location.pathname + window.location.search);

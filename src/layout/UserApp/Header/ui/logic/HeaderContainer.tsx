@@ -49,6 +49,7 @@ class HeaderContainer extends Component<Props, State> {
 
   onSearch() {
     //
+    console.log('search');
     const { actionLogService } = this.props;
     const { searchValue } = this.state;
 
@@ -88,7 +89,7 @@ class HeaderContainer extends Component<Props, State> {
   onClickMenu(menuName: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: menuName });
-
+    console.log('menu', menuName);
     if (menuName === 'mySUNI') {
       setTimeout(() => {
         ReactGA.pageview(
