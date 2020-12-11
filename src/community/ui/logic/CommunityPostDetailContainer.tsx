@@ -9,7 +9,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList, CommentService, CommunityCommentList } from '@nara.drama/feedback';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import { useCommunityPostList } from 'community/service/useCommunityPostCreate/useCommunityPostList';
@@ -24,6 +24,8 @@ import { reactConfirm } from '@nara.platform/accent';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import moment from 'moment';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
+
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 interface Params {
   communityId: string;
@@ -52,7 +54,9 @@ function CommunityPostDetailContainer() {
 
   const [editAuth, setEditAuth] = useState<boolean>(false);
 
-  const viewModal = (pdf:string, fileId:string) => {
+  const originArr: string[] = []
+
+  const fileDownload = (pdf:string, fileId:string) => {
     const PdfFile = pdf.includes('.pdf')
     if (PdfFile) {
       setPdfOpen(!pdfOpen);
@@ -62,6 +66,22 @@ function CommunityPostDetailContainer() {
       depot.downloadDepotFile(fileId)
     }
   }
+
+  const zipFileDownload = useCallback((type: string) => {
+    if (type === 'select') {
+      if(originArr.length === 0) {
+        return
+      }
+      depot.downloadDepotFiles(originArr)
+    } else {
+      const idArr: string[] = []
+      filesMap.get('reference')
+      .map((foundedFile: DepotFileViewModel)=> {
+        idArr.push(foundedFile.id)
+      })
+      depot.downloadDepotFiles(idArr)
+    }
+  }, [])
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -149,6 +169,12 @@ function CommunityPostDetailContainer() {
     }
   }, [like]);
 
+  const checkOne = useCallback((e:any, value: any, depotData: any) => {
+    if(value.checked && depotData.id) {
+      originArr.push(depotData.id)
+    }
+  }, []);
+
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
   }
@@ -179,31 +205,45 @@ function CommunityPostDetailContainer() {
               ref={textContainerRef}
             />
           </div>
-          <div className="ov-paragraph download-area task-read-down">
-            <div className="detail">
-              {postDetail.fileBoxId &&
-                filesMap.get('reference') &&
-                filesMap
-                  .get('reference')
-                  .map((foundedFile: DepotFileViewModel, index: number) => (
-                    <>
-                      <div className="file-down-wrap">
-                        <div className="down">
-                          <span>첨부파일 :</span>
+            <div className="community-contants">
+              <div className="community-board-down">
+                <div className="board-down-title">
+                  <p>
+                    <img src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`} />
+                    첨부파일
+                  </p>
+                  <div className="board-down-title-right">
+                    <button className="ui icon button left post delete" onClick={() => zipFileDownload('select')}>
+                      <i aria-hidden="true" className="icon check icon"/>선택 다운로드
+                    </button>
+                    <button className="ui icon button left post list2" onClick={() => zipFileDownload('all')}>
+                      <img src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`} />
+                      전체 다운로드
+                    </button>
+                  </div>
+                </div>
+            {postDetail.fileBoxId &&
+              filesMap.get('reference') &&
+              filesMap
+                .get('reference')
+                .map((foundedFile: DepotFileViewModel) => (
+                <div className="down">
+                  <Checkbox
+                    className="base"
+                    label={foundedFile.name}
+                    name={'depot'+foundedFile.id}
+                    onChange={(event, value) => checkOne(event, value, foundedFile)}
+                  />
+                  <Icon
+                    className="icon-down-type4"
+                    onClick={() => fileDownload(foundedFile.name, foundedFile.id)}
+                  />
+                </div>
+                ))}
 
-                          <a
-                            key={index}
-                            onClick={() => viewModal(foundedFile.name, foundedFile.id)}
-                          >
-                            <span>{foundedFile.name}</span>
-                          </a>
-                        </div>
-                      </div>
-                    </>
-                  ))}
+              </div>
             </div>
-          </div>
-          {menuType !== 'ANONYMOUS' && (
+            {menuType !== 'ANONYMOUS' && (
             <div className="community-board-card" style={{cursor:"pointer"}} onClick={() => setProfileOpen(!profileOpen)}>
               <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === '' ?
                 `data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCI+DQogICAgPGRlZnM+DQogICAgICAgIDxjaXJjbGUgaWQ9ImEiIGN4PSI0MCIgY3k9IjQwIiByPSI0MCIvPg0KICAgIDwvZGVmcz4NCiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPg0KICAgICAgICA8bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+DQogICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNhIi8+DQogICAgICAgIDwvbWFzaz4NCiAgICAgICAgPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMzkuNSIgc3Ryb2tlPSIjREREIi8+DQogICAgICAgIDxwYXRoIGZpbGw9IiNEREQiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTU5LjExIDY3Ljc4Yy04LjM5LTMuMDU3LTExLjA3NC01LjYzNy0xMS4wNzQtMTEuMTYyIDAtMy4zMTYgMi43NS01LjQ2NSAzLjY4Ny04LjMwNi45MzgtMi44NDIgMS40OC02LjIwNyAxLjkzLTguNjU0LjQ1MS0yLjQ0OC42My0zLjM5NC44NzUtNi4wMDJDNTQuODI4IDMwLjQwMiA1Mi42NSAyMiA0MSAyMmMtMTEuNjQ2IDAtMTMuODMyIDguNDAyLTEzLjUyNSAxMS42NTYuMjQ1IDIuNjA4LjQyNSAzLjU1NS44NzUgNi4wMDIuNDUgMi40NDcuOTg2IDUuODEyIDEuOTIzIDguNjU0LjkzNyAyLjg0MSAzLjY5IDQuOTkgMy42OSA4LjMwNiAwIDUuNTI1LTIuNjgyIDguMTA1LTExLjA3NCAxMS4xNjJDMTQuNDY3IDcwLjg0NCA5IDczLjg2NiA5IDc2djEwaDY0Vjc2YzAtMi4xMzEtNS40Ny01LjE1Mi0xMy44OS04LjIyeiIgbWFzaz0idXJsKCNiKSIvPg0KICAgIDwvZz4NCjwvc3ZnPg0K`
@@ -218,11 +258,11 @@ function CommunityPostDetailContainer() {
           )}
           <div className="task-read-bottom">
             { postDetail.menuId !== 'NOTICE' && (
-              <button className="ui icon button left post edit dataroom-icon" onClick={OnClickLike}>
+              <button className="ui icon button left post edit" onClick={OnClickLike}>
                 {like && (
-                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} style={{marginBottom:"-3px", marginRight:"3px"}}/>
                 ) || (
-                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />
+                  <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} style={{marginBottom:"-3px", marginRight:"3px"}}/>
                 )}
                 좋아요
               </button>
