@@ -178,7 +178,7 @@ function CommunityPostDetailContainer() {
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
   }
-  
+
   return (
     <Fragment>
       {postDetail && (

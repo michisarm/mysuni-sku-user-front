@@ -56,7 +56,9 @@ export async function getAllPostItem(
               pinned: post.pinned,
               fileBoxId: post.fileBoxId,
               newBadge: addNewBadge(post.createdTime),
-              creatorName: post.creatorName!
+              creatorName: post.creatorName!,
+              visible:post.visible,
+              creatorId: post.creatorId
             });
           });
         }

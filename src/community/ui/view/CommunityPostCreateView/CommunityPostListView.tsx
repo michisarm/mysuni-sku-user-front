@@ -3,21 +3,25 @@ import moment from 'moment';
 import React, { useCallback } from 'react';
 import { Icon } from 'semantic-ui-react';
 import { checkMember } from 'community/service/useMember/useMember';
+import { reactAlert } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+import { useCommunityHome } from 'community/store/CommunityHomeStore';
 
 interface CommunityPostListViewProps{
   menuType: string
   postItems: CommunityPostList
-  handleClickRow: (param: object, menuType: string) => void
+  handleClickRow: (param: object, menuType: string, visible:boolean, creatorId:string) => void
 }
 
 function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: string) {
+
   return (
     <>
       {post.pinned === false && ( 
         <a
           target="_blank"
           className={post.newBadge ? 'row new' : 'row'}
-          onClick={() => handleClickRow(post)}
+          onClick={() => handleClickRow(post, post.visible, post.creatorId)}
         >
           <span className="cell title">
             <span className="inner">
@@ -86,12 +90,28 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
   menuType,
   handleClickRow
 }) {
-  const onHandleClickRow = useCallback(
-    param => {
-      handleClickRow(param, menuType);
-    },
-    [menuType]
-  );
+
+  const denizenId = patronInfo.getDenizenId();
+  const communityHome = useCommunityHome();
+
+  const onHandleClickRow = useCallback((param, visible, creatorId) => {
+    console.log("@@ onHandleClickRow 1",visible)
+    console.log("@@ onHandleClickRow 2", creatorId)
+    console.log("@@ onHandleClickRow 3",creatorId === denizenId)
+    console.log("@@ onHandleClickRow 4",communityHome?.community?.managerId === denizenId)
+    console.log("@@ onHandleClickRow 5",communityHome?.community?.managerId === denizenId && creatorId === denizenId)
+    
+
+    if (visible) {
+      handleClickRow(param, menuType, visible, creatorId);
+    } else {
+      if (communityHome?.community?.managerId === denizenId || creatorId === denizenId) {
+        handleClickRow(param, menuType, visible, creatorId);
+      } else {
+        reactAlert({title: '알림', message: '비밀글 입니다'});
+      }
+    }
+  },[menuType]);
 
   return (
     <>
