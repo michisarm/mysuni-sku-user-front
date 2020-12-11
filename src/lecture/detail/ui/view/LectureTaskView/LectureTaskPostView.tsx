@@ -57,6 +57,8 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
                 {task.title}[{task.count}]
               </span>
             )}
+            {/* TODO.퍼블리싱 확인하고 공지인경우 뱃지로 작업해야된다. */}
+            {task.pinned && <span>공지</span>}
             {task.count === 0 && <span className="title">{task.title}</span>}
             <span className="writer">{task.writer}</span>
             <span className="view">{task.readCount} 읽음</span>
