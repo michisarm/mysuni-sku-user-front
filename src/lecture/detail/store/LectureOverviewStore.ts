@@ -25,6 +25,13 @@ const [
   getLectureCourseSummary,
 ] = createStore<LectureCourseSummary>();
 
+// course 학습완료표시 learningState 보기 위한 store
+const [
+  setLectureCourseSummaryLearningState,
+  onLectureCourseSummaryLearningState,
+  getLectureCourseSummaryLearningState,
+] = createStore<LectureCourseSummary>();
+
 const [
   setLectureDescription,
   onLectureDescription,
@@ -111,5 +118,9 @@ export {
   setInMyLectureCdo,
   onInMyLectureCdo,
   getInMyLectureCdo,
-  setLectureRelations, onLectureRelations, getLectureRelations
+  setLectureRelations, onLectureRelations, getLectureRelations,
+
+  setLectureCourseSummaryLearningState,
+  onLectureCourseSummaryLearningState,
+  getLectureCourseSummaryLearningState,
 };
