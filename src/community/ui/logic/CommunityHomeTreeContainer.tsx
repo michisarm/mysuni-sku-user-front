@@ -516,22 +516,31 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              <li>
-                <Link
-                  to={`/community/${communtyHome.community.communityId}/all`}
-                >
-                  <img src={boardIcon} />
-                  전체글
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={`/community/${communtyHome.community.communityId}/notice`}
-                >
-                  <img src={boardIcon} />
-                  공지사항
-                </Link>
-              </li>
+              {
+                communtyHome.community.communityId === "COMMUNITY-a" ||
+                communtyHome.community.name.includes("신입임원") ? (
+                  null
+                ) : (
+                  <>
+                    <li>
+                      <Link
+                        to={`/community/${communtyHome.community.communityId}/all`}
+                      >
+                        <img src={boardIcon} />
+                        전체글
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={`/community/${communtyHome.community.communityId}/notice`}
+                      >
+                        <img src={boardIcon} />
+                        공지사항
+                      </Link>
+                    </li>
+                  </>
+                )
+              }
               {communtyHome.menus
                 .filter(c => c.parentId === null)
                 .sort((a, b) => a.order - b.order)
