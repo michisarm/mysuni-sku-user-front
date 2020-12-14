@@ -10,6 +10,7 @@ import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
+import StampCompleted from '../../../../../style/media/stamp-completed.svg';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -21,6 +22,7 @@ function numberWithCommas(x: number) {
 interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
   lectureReview?: LectureReview;
+  lectureLearningState: any;
 }
 
 function copyUrl() {
@@ -74,6 +76,7 @@ function getColor(college: IdName) {
 const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = function LectureCourseSummaryView({
   lectureSummary,
   lectureReview,
+  lectureLearningState,
 }) {
   let difficultyLevelIcon = 'basic';
   switch (lectureSummary.difficultyLevel) {
@@ -157,9 +160,11 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           </div>
         </div>
         <div className="right-area">
-          {lectureSummary.iconBox !== undefined && (
-            <img src={lectureSummary.iconBox.baseUrl} />
-          )}
+          {
+            lectureLearningState.learningState === 'Passed' ? <img src={StampCompleted} /> :
+              lectureSummary.iconBox !== undefined &&
+              <img src={lectureSummary.iconBox.baseUrl} />
+          }
         </div>
       </div>
       <div className="contents-header-side">
