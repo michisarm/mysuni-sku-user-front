@@ -53,7 +53,7 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
         <a
           target="_blank"
           className={post.newBadge ? 'row important new' : 'row important'}
-          onClick={() => handleClickRow(post)}
+          onClick={() => handleClickRow(post, post.visible, post.creatorId)}
         >
           <span className="cell title">
             <span className="inner">
@@ -95,11 +95,11 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
   const communityHome = useCommunityHome();
 
   const onHandleClickRow = useCallback((param, visible, creatorId) => {
-    console.log("@@ onHandleClickRow 1",visible)
+    console.log("@@ onHandleClickRow 1", visible)
     console.log("@@ onHandleClickRow 2", creatorId)
-    console.log("@@ onHandleClickRow 3",creatorId === denizenId)
-    console.log("@@ onHandleClickRow 4",communityHome?.community?.managerId === denizenId)
-    console.log("@@ onHandleClickRow 5",communityHome?.community?.managerId === denizenId && creatorId === denizenId)
+    console.log("@@ onHandleClickRow 3", creatorId === denizenId)
+    console.log("@@ onHandleClickRow 4", communityHome?.community?.managerId === denizenId)
+    console.log("@@ onHandleClickRow 5", communityHome?.community?.managerId === denizenId && creatorId === denizenId)
     
 
     if (visible) {
