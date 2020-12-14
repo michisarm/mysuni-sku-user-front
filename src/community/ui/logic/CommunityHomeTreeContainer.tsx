@@ -509,16 +509,8 @@ function CommunityHomeTreeContainer() {
           )}
           {communtyHome.community.approved === true && (
             <ul>
-              <li>
-                <Link to={`/community/${communtyHome.community.communityId}`}>
-                  <img src={homeIcon} />
-                  HOME
-                  <img src={homeArrowIcon} className="right-menu-arrow" />
-                </Link>
-              </li>
-              {
-                communtyHome.community.communityId === "COMMUNITY-a" ||
-                communtyHome.community.name.includes("신입임원") ? (
+              { 
+                communtyHome.community.name.includes("신임임원") ? (
                   null
                 ) : (
                   <>
