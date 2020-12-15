@@ -13,6 +13,7 @@ import { findPostMenuName } from 'community/api/communityApi';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { checkMember } from 'community/service/useMember/useMember';
+import { getNoticePostGroupManager } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -44,6 +45,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
+  const [groupAuth, setGroupAuth] = useState<boolean>(false);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -55,11 +57,24 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     totalPages();
 
     const menuData = findPostMenuName(communityId, menuId);
+    const denizenId = patronInfo.getDenizenId();
+
     menuData.then(result => {
       setMenuName(result.name);
-      setMenuType(result.type)
+      setMenuType(result.type);
+      //그룹장과 현재 로그인한 계정 비교
+      getNoticePostGroupManager(communityId).then((result2)=> {
+        result2.results.map((value: any, index: any) => {
+          if(result.groupId === value.groupId) {
+            if(denizenId === value.managerId) {
+              setGroupAuth(true);
+            }else {
+              setGroupAuth(false);
+            }
+          }
+        })
+      })
     });
-    const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     if (
       getCommunityHome() &&
@@ -68,7 +83,8 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     ) {
       setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId);
     }
-  }, [postItems]);
+  
+  }, [postItems, communityId]);
 
   const handelClickCreatePost = () => {};
   const handleClickRow = async (param: any, menuType: string) => {
@@ -171,6 +187,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             totalCount={postItems.totalCount}
             menuType={menuType}
             managerAuth={adminAuth}
+            groupAuth={groupAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />
