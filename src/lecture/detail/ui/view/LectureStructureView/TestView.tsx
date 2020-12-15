@@ -45,7 +45,7 @@ const TestView: React.FC<TestViewProps> = function TestView({
       <span className="copy-holder">
         <span className="copy-title">Test</span>
         <ul className="type-info">
-          <li>Test</li>
+          {/* <li>Test</li> */}
           {/* <li>{`${questionCount}문항`}</li> */}
         </ul>
       </span>
