@@ -597,16 +597,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
-  // const [currnetTime, setCurrnetTime] = useState<any>(0);
-  let current = embedApi.getCurrentTime();
-  let duration = embedApi.getDuration();
-
-  // useEffect(() => {
-  // setInterval(() => {
-  //   getTimeStringSeconds(embedApi.getCurrentTime());
-  // }, 1000);
-  // console.log('render!');
-  // }, [current]);
+  // const [currnetTime, setCurrnetTime] = useState<number | string>(embedApi.getCurrentTime());
+  let current = (embedApi.getCurrentTime() as unknown) as number;
+  let duration = (embedApi.getDuration() as unknown) as number;
 
   useEffect(() => {
     onLectureMedia(lectureMedia => {
@@ -662,7 +655,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (min.toString().length == 1) min = '0' + min;
     if (sec.toString().length == 1) sec = '0' + sec;
 
-    return min + ':' + sec;
+    return (min + ':' + sec);
   };
 
   return (
@@ -708,7 +701,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
           </div>
           <div className="time-check">
-            <strong>{getTimeStringSeconds(current)}</strong> /{' '}
+            <strong>{getTimeStringSeconds(current)}</strong> /
             {getTimeStringSeconds(duration)}
           </div>
           <div className="contents-header-side">
