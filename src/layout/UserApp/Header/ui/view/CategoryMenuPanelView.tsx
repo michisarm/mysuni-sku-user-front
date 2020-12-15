@@ -49,6 +49,8 @@ class CategoryMenuPanelView extends Component<Props> {
       onRouteChannel,
     } = this.props;
 
+    console.log('channels', channels)
+
     return (
       <div className="layer">
         <div className="table-css">
@@ -74,13 +76,120 @@ class CategoryMenuPanelView extends Component<Props> {
                         onActiveCollege(e, college);
                       }}
                     >
-                      {college.name}
+                      1{college.name}
                     </button>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="cell vtop">
+            <div className="category-channel-wrap">
+            {activeCollege && (
+              <>
+              <div className="category-title-bar">
+                  <span className="category-title">AI College <span className="num">(125)</span></span>
+                  <button className="btn-category-all"
+                    onClick={e => {
+                    this.onClickChannelActionLog(
+                      `${activeCollege.name} 전체보기`
+                    );
+                    onRouteChannel(e);
+                    }}
+                  >
+                  {activeCollege.name} 전체보기
+                  <span>({activeCollege.totalCount})</span>
+                      {/* <span> */}
+                        {/* `${activeCollege.name} 전체보기` */}
+                        {/* </span> */}
+                      {/* <i className="arr-r-gray" /> */}
+                  </button>
+              </div>
+              <div className="category-body">
+                {Array.isArray(channels) &&
+                  channels.map((channel, index) => (
+                    // <button
+                    //   key={`sub-category-${channel.id}`}
+                    //   onClick={e => {
+                    //     this.onClickChannelActionLog(channel.name);
+                    //     onRouteChannel(e, channel);
+                    //   }}
+                    // >
+                    //   {channel.name}
+                    // <span>({channel.count})</span>
+                    <>
+                    <label htmlFor={'check'+index} className="check-type2">
+                      <input type="checkbox" id={'check'+index} />
+                    </label>
+                    <span className="check-type2-text">{channel.name}<strong> ({channel.count})</strong></span>
+                    </>
+                    // {/* </button> */}
+                  ))
+                }
+                  {/* <label htmlFor="check1" className="check-type2">
+                      <input type="checkbox" id="check1" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check2" className="check-type2">
+                      <input type="checkbox" id="check2" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check3" className="check-type2">
+                      <input type="checkbox" id="check3" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check4" className="check-type2">
+                      <input type="checkbox" id="check4" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check5" className="check-type2">
+                      <input type="checkbox" id="check5" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check6" className="check-type2">
+                      <input type="checkbox" id="check6" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check7" className="check-type2">
+                      <input type="checkbox" id="check7" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check8" className="check-type2">
+                      <input type="checkbox" id="check8" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check9" className="check-type2">
+                      <input type="checkbox" id="check9" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check10" className="check-type2">
+                      <input type="checkbox" id="check10" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check11" className="check-type2">
+                      <input type="checkbox" id="check11" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check12" className="check-type2">
+                      <input type="checkbox" id="check12" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label>
+                  <label htmlFor="check13" className="check-type2">
+                      <input type="checkbox" id="check13" />
+                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
+                  </label> */}
+              </div>
+              {/*<div className="category-banner">
+                  <img src={CategoryBanner1} alt=""/>
+                  <img src={CategoryBanner2} alt=""/>
+              </div>*/}
+
+              <div className="category-banner-single">
+                {/* TODO.카테고리 배너 들어가야한다 */}
+                  {/* <img src={CategoryBanner3} alt=""/> */}
+              </div>
+              </>
+              )}
+            </div>
+            {/* <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling">
                   {activeCollege && (
@@ -109,12 +218,13 @@ class CategoryMenuPanelView extends Component<Props> {
                             {channel.name}
                             <span>({channel.count})</span>
                           </button>
-                        ))}
+                        ))
+                      }
                     </>
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

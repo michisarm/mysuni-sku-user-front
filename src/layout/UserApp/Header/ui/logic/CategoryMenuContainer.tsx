@@ -93,6 +93,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
+    console.log('onActiveCollege')
     //
     const { collegeLectureCountService } = this.props;
 
