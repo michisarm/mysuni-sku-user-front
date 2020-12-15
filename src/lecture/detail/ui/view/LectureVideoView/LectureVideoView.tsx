@@ -647,10 +647,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   // 영상 스티키 시작 시간표시
   const getTimeStringSeconds = (seconds: number) => {
-    let min, sec;
+    let min: number | string = 0; 
+    let sec: number | string = 0;
 
-    min = Math.floor((seconds % 3600) / 60);
-    sec = Math.floor(seconds % 60);
+    min = Math.round((seconds % 3600) / 60);
+    sec = Math.round(seconds % 60);
 
     if (min.toString().length == 1) min = '0' + min;
     if (sec.toString().length == 1) sec = '0' + sec;
