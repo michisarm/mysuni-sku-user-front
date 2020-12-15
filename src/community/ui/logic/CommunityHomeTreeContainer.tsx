@@ -510,7 +510,7 @@ function CommunityHomeTreeContainer() {
           {communtyHome.community.approved === true && (
             <ul>
               { 
-                communtyHome.community.name.includes("신임임원") ? (
+                communtyHome.community.communityId === "COMMUNITY-a" ? (
                   null
                 ) : (
                   <li>
