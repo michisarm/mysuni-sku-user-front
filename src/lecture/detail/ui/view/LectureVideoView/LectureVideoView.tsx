@@ -597,6 +597,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+    // 2020.12.10 IE iframe Fix
+    const Iframe = document.querySelector("iframe")
+
+    const setFullscreenIframe = () => {
+      Iframe?.setAttribute("allowfullscreen", "")
+    }
+  
+    useEffect(() => {
+      if (Iframe) {
+        setFullscreenIframe();
+      }
+    }, [Iframe])
+
   // const [currnetTime, setCurrnetTime] = useState<number | string>(embedApi.getCurrentTime());
   let current = (embedApi.getCurrentTime() as unknown) as number;
   let duration = (embedApi.getDuration() as unknown) as number;

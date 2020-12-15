@@ -15,12 +15,37 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
     setStructureVisible(true);
   }, []);
 
+  const [scrollValue, setScrollValue] = useState<any>();
+  const [nowScroll, setNowScroll] = useState<any>(0);
+
+  // 실시간 스크롤 감시
+  useEffect(() => {
+    const onScroll = () => setNowScroll(window.pageYOffset);
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // 리스트 헤더위치 추출
+  const tabScrollRef = useCallback(node => {
+    // console.log('asdf', lecturePrecourse, lectureDescription);
+    if (node !== null) {
+      setScrollValue(window.pageYOffset + node.getBoundingClientRect().top);
+    }
+  }, []);
+
   return (
     <section
-      className={`content lms ${structureVisible ? 'v-wide' : ''}`}
+      className={`content lms ${
+        structureVisible
+          ? nowScroll > scrollValue
+            ? 'v-wide lms-lnb-fixed'
+            : 'v-wide'
+          : ''
+      }`}
       id="lms-content"
     >
-      <div className="course-info-list">
+      <div className="course-info-list" ref={tabScrollRef}>
         <div className="course-header-list">
           <a className="btn-view-change">
             <Icon className="list24 icon" />
@@ -33,7 +58,12 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         <LectureStructureContainer />
       </div>
       <div className="course-info-detail responsive-course">
-        <a className="btn-wide" onClick={openStructure}>
+        <a
+          className={
+            nowScroll > scrollValue ? 'btn-wide lms-wide-fixed' : 'btn-wide'
+          }
+          onClick={openStructure}
+        >
           <span>펼치기</span>
         </a>
         <div className="course-detail-center">

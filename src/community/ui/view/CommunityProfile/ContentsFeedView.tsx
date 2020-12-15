@@ -17,6 +17,7 @@ import { registerBookmark, removeBookmark } from 'community/api/communityApi';
 import { getMyProfile } from 'community/store/MyProfileStore';
 import { getCommunityProfileFeed, setCommunityProfileFeed } from 'community/store/CommunityProfileFeedStore';
 import { requestAppendProfileFeedPostList } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
@@ -122,11 +123,15 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
         <Comment.Group className="base">
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
-            {profileImage !== undefined && profileImage !== '' && (
+            {profileImage !== undefined && profileImage !== '' && profileImage !== null ? 
               <Comment.Avatar src={`/files/community/${profileImage}`} />
-            )}
+              :
+              <Comment.Avatar src={`${DefaultImg}`} />
+            }
             <Comment.Content>
-              <Comment.Author as="a">{communityName}</Comment.Author>
+              <Comment.Author as="a">
+                <Link to={`/community/${communityId}`}>{communityName}</Link>
+              </Comment.Author>
               <Comment.Text>
                 <div className="ellipsis">
                   <span className="id">{profileId}</span>
@@ -159,7 +164,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
           <div className="card-bottom">
             <h3>
               <span className={`ico_feed ${icon}`}>게시물</span>
-              {name}
+              <Link to={`/community/${communityId}/post/${postId}`}>
+                {name}
+              </Link>
             </h3>
             {more && (
               <div className="ql-snow">

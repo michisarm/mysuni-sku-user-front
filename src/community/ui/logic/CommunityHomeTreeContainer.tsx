@@ -509,21 +509,20 @@ function CommunityHomeTreeContainer() {
           )}
           {communtyHome.community.approved === true && (
             <ul>
-              <li>
-                <Link to={`/community/${communtyHome.community.communityId}`}>
-                  <img src={homeIcon} />
-                  HOME
-                  <img src={homeArrowIcon} className="right-menu-arrow" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={`/community/${communtyHome.community.communityId}/all`}
-                >
-                  <img src={boardIcon} />
-                  전체글
-                </Link>
-              </li>
+              { 
+                communtyHome.community.communityId === "COMMUNITY-a" ? (
+                  null
+                ) : (
+                  <li>
+                    <Link
+                      to={`/community/${communtyHome.community.communityId}/all`}
+                    >
+                      <img src={boardIcon} />
+                      전체글
+                    </Link>
+                  </li>
+                )
+              }
               <li>
                 <Link
                   to={`/community/${communtyHome.community.communityId}/notice`}
