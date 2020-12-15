@@ -116,11 +116,25 @@ class CategoryMenuPanelView extends Component<Props> {
                     //   {channel.name}
                     // <span>({channel.count})</span>
                     <>
+                    <span className="check-type2">
                     <label htmlFor={'check'+index} className="check-type2">
                       <input type="checkbox" id={'check'+index} />
+                      <span className="check-type2-marker"/>
                     </label>
-                    <span className="check-type2-text">{channel.name}<strong> ({channel.count})</strong></span>
+                    <a className="check-type2-text">{channel.name}<strong> ({channel.count})</strong>
+                    </a>
+                    </span>
                     </>
+                    
+
+                      // <span className="check-type2">
+                      // <label htmlFor="check1">
+                      //     <input type="checkbox" id="check1"/>
+                      //     <span className="check-type2-marker"/>
+                      // </label>
+                      // <a className="check-type2-text">AI Fundamental<strong> (20)</strong></a>
+                      // </span>
+
                     // {/* </button> */}
                   ))
                 }
