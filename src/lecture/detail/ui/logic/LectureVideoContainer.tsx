@@ -70,6 +70,7 @@ function LectureVideoContainer() {
         getStickyPosition={getStickyPosition}
         scroll={scroll}
         videoPosition={videoPosition}
+        enabled={linkedInOpen}
       />
       <LinkedInModal enabled={linkedInOpen} />
     </>

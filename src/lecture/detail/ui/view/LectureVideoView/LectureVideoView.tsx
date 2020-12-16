@@ -60,6 +60,7 @@ interface LectureVideoViewProps {
   getStickyPosition: any;
   scroll: number;
   videoPosition: number;
+  enabled: boolean;
 }
 
 //FIXME SSO 로그인된 상태가 아니면 동작 안 함.
@@ -69,6 +70,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   getStickyPosition,
   scroll,
   videoPosition,
+  enabled, // 링크드인 판별 state
 }) {
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
@@ -76,7 +78,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const playIntervalRef = useRef<any>(0);
   const checkIntervalRef = useRef<any>(0);
   const transcriptIntervalRef = useRef<any>(0);
-  // console.log('비디오 위치:', videoPosition);
 
   useEffect(() => {
     let mathch = matchPath<LectureParams>(pathname, {
@@ -611,8 +612,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [Iframe]);
 
   const [currentTime, setCurrnetTime] = useState<number>(0);
+  const [durationTime, setDurationTime] = useState<number>(0);
   // let current = (embedApi.getCurrentTime() as unknown) as number;
-  let duration = (embedApi.getDuration() as unknown) as number;
+  // let duration = (embedApi.getDuration() as unknown) as number;
 
   useEffect(() => {
     onLectureMedia(lectureMedia => {
@@ -674,27 +676,26 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   // isPaused에 따라 인터벌 사용
   let intervalFunc: any;
   useEffect(() => {
-    if (!embedApi.isPaused) {
+    if (isActive) {
       intervalFunc = setInterval(() => {
         setCurrnetTime((embedApi.getCurrentTime() as unknown) as number);
+        setDurationTime((embedApi.getDuration() as unknown) as number);
       }, 1000);
     } else {
       return () => clearInterval(intervalFunc);
     }
 
     return () => clearInterval(intervalFunc);
-  }, [embedApi.isPaused]);
-
-  // getCurrentTime 표시
-  console.log('currentTime', currentTime);
-
+  }, [isActive]);
+  console.log('enabled', enabled);
   return (
     <div
       className={
-        scroll > videoPosition
+        scroll > videoPosition && !enabled
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
+      style={{ height: `${embedApi.height}` }}
       ref={getStickyPosition}
     >
       <div className="lms-video-sticky">
@@ -731,7 +732,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
           </div>
           <div className="time-check">
-            <strong>{currentTime}</strong> /{getTimeStringSeconds(duration)}
+            <strong>{getTimeStringSeconds(currentTime)}</strong> /
+            {getTimeStringSeconds(durationTime)}
           </div>
           <div className="contents-header-side">
             <div className="header-right-link">
