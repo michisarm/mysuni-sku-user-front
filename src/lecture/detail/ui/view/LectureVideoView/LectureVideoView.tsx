@@ -455,7 +455,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setInterval(() => {
       getTimeStringSeconds(embedApi.getCurrentTime());
     }, 1000);
-    console.log('render!');
+
     // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure = getLectureStructure();
     setNextContentsPath('');
@@ -597,21 +597,21 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
-    // 2020.12.10 IE iframe Fix
-    const Iframe = document.querySelector("iframe")
+  // 2020.12.10 IE iframe Fix
+  const Iframe = document.querySelector('iframe');
 
-    const setFullscreenIframe = () => {
-      Iframe?.setAttribute("allowfullscreen", "")
+  const setFullscreenIframe = () => {
+    Iframe?.setAttribute('allowfullscreen', '');
+  };
+
+  useEffect(() => {
+    if (Iframe) {
+      setFullscreenIframe();
     }
-  
-    useEffect(() => {
-      if (Iframe) {
-        setFullscreenIframe();
-      }
-    }, [Iframe])
+  }, [Iframe]);
 
-  // const [currnetTime, setCurrnetTime] = useState<number | string>(embedApi.getCurrentTime());
-  let current = (embedApi.getCurrentTime() as unknown) as number;
+  const [currentTime, setCurrnetTime] = useState<number>(0);
+  // let current = (embedApi.getCurrentTime() as unknown) as number;
   let duration = (embedApi.getDuration() as unknown) as number;
 
   useEffect(() => {
@@ -659,8 +659,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   // 영상 스티키 시작 시간표시
-  const getTimeStringSeconds = (seconds: number) => {
-    let min: number | string = 0; 
+  const getTimeStringSeconds = useCallback((seconds: any) => {
+    let min: number | string = 0;
     let sec: number | string = 0;
 
     min = Math.round((seconds % 3600) / 60);
@@ -668,9 +668,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
     if (min.toString().length == 1) min = '0' + min;
     if (sec.toString().length == 1) sec = '0' + sec;
+    return min + ':' + sec;
+  }, []);
 
-    return (min + ':' + sec);
-  };
+  // isPaused에 따라 인터벌 사용
+  let intervalFunc: any;
+  useEffect(() => {
+    if (!embedApi.isPaused) {
+      intervalFunc = setInterval(() => {
+        setCurrnetTime((embedApi.getCurrentTime() as unknown) as number);
+      }, 1000);
+    } else {
+      return () => clearInterval(intervalFunc);
+    }
+
+    return () => clearInterval(intervalFunc);
+  }, [embedApi.isPaused]);
+
+  // getCurrentTime 표시
+  console.log('currentTime', currentTime);
 
   return (
     <div
@@ -715,8 +731,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
           </div>
           <div className="time-check">
-            <strong>{getTimeStringSeconds(current)}</strong> /
-            {getTimeStringSeconds(duration)}
+            <strong>{currentTime}</strong> /{getTimeStringSeconds(duration)}
           </div>
           <div className="contents-header-side">
             <div className="header-right-link">
