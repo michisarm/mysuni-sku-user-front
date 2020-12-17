@@ -47,6 +47,9 @@ export default class CollegeService {
   @observable
   mainColleges: CollegeModel[] = [];
 
+  @observable
+  banner: any[] = [];
+
   constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
     this.channelApi = channelApi;
@@ -263,9 +266,8 @@ export default class CollegeService {
 
   @action
   async getBanner() {
-    //
     const banner = await this.collegeApi.getBanner();
-    return banner;
+    if(banner) return runInAction(() => this.banner = banner);
   }
 
 }

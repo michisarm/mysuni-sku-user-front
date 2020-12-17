@@ -28,6 +28,7 @@ interface Props extends RouteComponentProps {
 interface State {
   categoryOpen: boolean;
   activeCollege?: CollegeLectureCountRdo;
+  banner: any;
 }
 
 @inject(
@@ -48,6 +49,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   state = {
     categoryOpen: false,
     activeCollege: undefined,
+    banner: undefined
   };
 
   async findCollegeLectureCount() {
@@ -98,12 +100,27 @@ class CategoryMenuContainer extends Component<Props, State> {
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
     console.log('onActiveCollege')
     //
-    const { collegeLectureCountService } = this.props;
+    const { collegeLectureCountService, collegeService } = this.props;
+    console.log('college', college)
+    let bannerData = {}
+    collegeService!.getBanner().then((result) => {
+      console.log('result', result)
+      if(result) {
+        result.map((item:any, index:number)=> {
+          if(item.collegeId === college.collegeId) {
+            bannerData = item
+          }
+        })
+      }
+      this.setState({
+        activeCollege: college,
+        banner: bannerData
+      });
+      console.log('this.state', this.state)
+      collegeLectureCountService!.setChannelCounts(college.channelCounts);
+    })
 
-    this.setState({
-      activeCollege: college,
-    });
-    collegeLectureCountService!.setChannelCounts(college.channelCounts);
+    // collegeService!.getBanner()
   }
 
   onClickChannel(e: any, channel?: IdNameCount) {
@@ -176,7 +193,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   render() {
     //
     const { skProfileService, collegeLectureCountService, collegeService } = this.props;
-    const { categoryOpen, activeCollege } = this.state;
+    const { categoryOpen, activeCollege, banner } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
     const channels =
@@ -184,6 +201,18 @@ class CategoryMenuContainer extends Component<Props, State> {
         channel => new ChannelModel({ ...channel, channelId: channel.id })
       ) || [];
 
+      if(activeCollege !== undefined) {
+        // console.log('activeCollege', activeCollege)
+
+        // const banner = collegeService!.getBanner();
+        // console.log(banner)
+
+        // banner.then((result: any) => {
+        //   console.log('result', result)
+        //   result.map((item: any, index: number) => {
+        //   })
+        // })
+      }
     return (
       <>
         <div className="g-menu-detail">
@@ -203,17 +232,23 @@ class CategoryMenuContainer extends Component<Props, State> {
             onOpen={this.onOpen}
             onClose={this.onClose}
           >
-            <CategoryMenuPanelView
-              colleges={collegeLectureCountService!.collegeLectureCounts}
-              activeCollege={activeCollege}
-              channels={collegeLectureCountService!.channelCounts}
-              favorites={channels}
-              studySummaryFavoriteChannels={studySummaryFavoriteChannels}
-              actions={this.renderMenuActions()}
-              onActiveCollege={this.onActiveCollege}
-              onRouteChannel={this.onClickChannel}
-              banner={collegeService!.getBanner()}
-            />
+            { activeCollege && (
+              <>
+              <CategoryMenuPanelView
+                colleges={collegeLectureCountService!.collegeLectureCounts}
+                activeCollege={activeCollege}
+                channels={collegeLectureCountService!.channelCounts}
+                favorites={channels}
+                studySummaryFavoriteChannels={studySummaryFavoriteChannels}
+                actions={this.renderMenuActions()}
+                onActiveCollege={this.onActiveCollege}
+                onRouteChannel={this.onClickChannel}
+                banner={banner}
+              />
+              </>
+              )
+            }
+            
           </Popup>
         </div>
 

@@ -10,10 +10,12 @@ import ReactGA from 'react-ga';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { StudySummaryModel } from 'profile/model';
+import { CollegeService } from 'college/stores';
 
 interface Props {
   actionLogService?: ActionLogService;
   skProfileService?: SkProfileService
+  collegeService?: CollegeService
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
   channels?: IdNameCount[];
@@ -21,16 +23,20 @@ interface Props {
   studySummaryFavoriteChannels: IdName[];
   actions: React.ReactNode;
   banner: any;
+  test?: {};
   onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
   onRouteChannel: (e: any, channel?: IdNameCount) => void;
   onConfirmCallback?: () => void
 }
 
+// interface State {
+//   test: any
+// }
+
 @inject(mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService'))
 @reactAutobind
 @observer
 class CategoryMenuPanelView extends Component<Props> {
-  //
 
   onClickChannelActionLog(text: string) {
     const { actionLogService } = this.props;
@@ -85,6 +91,43 @@ class CategoryMenuPanelView extends Component<Props> {
     }
   }
 
+  // bannerType(collegeId: string) {
+  //   const { banner } = this.props;
+  //   let data = {}
+  //   banner.then((result: any) => {
+  //     result.map((item: any, index: number) => {
+  //       if(item.collegeId === collegeId) {
+  //         // this.setState({test: item.collegeBannerContents})
+  //         data = item
+  //         return item.viewType
+  //       }
+  //     })
+  //   })
+  //   // console.log('data', data)
+  //   // if(item.viewType === '1') {
+  //   //   return '1'
+  //   // }else {
+  //   //   return '2'
+  //   // }
+  //   return '2'
+  // }
+
+  // imgHandle(id: string, type: number) {
+  //   const { banner } = this.props;
+  //   banner.then((result: any) => {
+  //     result.map((item: any, index: number) => {
+  //       if(item.collegeId === id) {
+  //         // this.setState({test: item.collegeBannerContents})
+  //         if(type === 2) {
+  //           return item.collegeBannerContents[0].imageUrl
+  //         } else if (type === 1) {
+  //           return item.collegeBannerContents[1].imageUrl
+  //         }
+  //       }
+  //     })
+  //   })
+  // }
+
   render() {
     //
     const {
@@ -92,12 +135,26 @@ class CategoryMenuPanelView extends Component<Props> {
       activeCollege,
       channels,
       actions,
+      banner,
+      test,
       onActiveCollege,
       onRouteChannel,
     } = this.props;
 
-    console.log('colleges', colleges)
-    console.log('activeCollege', activeCollege)
+    console.log('banner', banner)
+
+    function imgHandle(id: string) {
+      banner.then((result: any) => {
+        result.map((item: any, index: number) => {
+          if(item.collegeId === id) {
+            // this.setState({test: item.collegeBannerContents})
+            return item.collegeBannerContents.imageUrl
+          }
+        })
+      })
+      return '';
+    }
+
     return (
       <div className="layer">
         <div className="table-css">
@@ -180,15 +237,40 @@ class CategoryMenuPanelView extends Component<Props> {
                   ))
                 }
               </div>
+              {/* 1열인지 2열인지 알아야한다. */}
               {/* <Image src={`${process.env.PUBLIC_URL}${imageUrl}`} alt="Banner" /> */}
-              {/*<div className="category-banner">
-                  <img src={CategoryBanner1} alt=""/>
-                  <img src={CategoryBanner2} alt=""/>
-              </div>*/}
-              <div className="category-banner-single">
-                {/* TODO.카테고리 배너 들어가야한다 */}
-                  {/* <img src={CategoryBanner3} alt=""/> */}
+              { banner.viewType === '2' &&  (
+                <>
+                <div className="category-banner">
+                  { banner.collegeBannerContents[0].visible === 1 &&  (
+                    <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                  )}
+                  { banner.collegeBannerContents[0].visible === 0 &&  (
+                    <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                  )}
+                  { banner.collegeBannerContents[1].visible === 1 &&  (
+                    <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                  )}
+                  { banner.collegeBannerContents[1].visible === 0 &&  (
+                    <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                  )}
+                </div>
+                </>
+              ) }
+              { banner.viewType === '1' &&  (
+              <div className="category-banner">
+                { banner.collegeBannerContents[0].visible === '1' &&  (
+                  <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                )}
+                { banner.collegeBannerContents[0].visible === '0' &&  (
+                  <div/>
+                )}
               </div>
+              ) }
+              {/* <div className="category-banner-single">
+                <span>1열</span>
+                <img src={imgHandle(activeCollege.collegeId)} alt=""/>
+              </div> */}
               </>
               )}
             </div>
