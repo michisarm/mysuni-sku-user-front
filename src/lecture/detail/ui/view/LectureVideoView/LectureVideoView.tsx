@@ -695,7 +695,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
-      style={{ height: `${embedApi.height}` }}
+      style={{ height: '700px' }}
       ref={getStickyPosition}
     >
       <div className="lms-video-sticky">
