@@ -687,11 +687,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
     return () => clearInterval(intervalFunc);
   }, [isActive]);
-  console.log('enabled', enabled);
+
   return (
     <div
       className={
-        scroll > videoPosition && !enabled
+        scroll > videoPosition && !enabled && getLectureMedia()?.mediaType !== 'LinkMedia'
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
