@@ -61,7 +61,8 @@ async function getTaskItem(
                 count: 0,
                 commentFeedbackId: task.commentFeedbackId,
                 childItems: [],
-                delete: task.deleted
+                delete: task.deleted,
+                pinned: task.pinned
               });
             });
 
@@ -80,7 +81,8 @@ async function getTaskItem(
                 count: 0,
                 commentFeedbackId: task.commentFeedbackId,
                 childItems: [],
-                delete: task.deleted
+                delete: task.deleted,
+                pinned: task.pinned
               });
             });
             setLectureTaskItem(lectureTask);

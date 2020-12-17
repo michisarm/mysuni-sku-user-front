@@ -57,7 +57,8 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
                 {task.title}[{task.count}]
               </span>
             )}
-            {task.count === 0 && <span className="title">{task.title}</span>}
+            {task.count === 0 && task.pinned && <span className="title important"><span className="ellipsis">{task.title}</span></span>}
+            {task.count === 0 && !task.pinned && <span className="title"><span>{task.title}</span></span>}
             <span className="writer">{task.writer}</span>
             <span className="view">{task.readCount} 읽음</span>
             <span className="date">

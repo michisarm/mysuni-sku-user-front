@@ -631,6 +631,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     };
   }, []);
 
+  // 2020.12.10 IE iframe Fix
+  const Iframe = document.querySelector("iframe")
+
+  const setFullscreenIframe = () => {
+    Iframe?.setAttribute("allowfullscreen", "")
+  }
+
+  useEffect(() => {
+    if (Iframe) {
+      setFullscreenIframe();
+    }
+  }, [Iframe])
+
   // IE 조건처리 주석
 
   // const [detected, setDetected] = useState(false);

@@ -112,6 +112,7 @@ class ClassroomModalView extends Component<Props, States> {
                     return (
                       <Table.Row key={`overview-table-row-${index}`}>
                         <Table.Cell>
+                        <Table.Cell verticalAlign="middle"></Table.Cell>
                           <Radio
                             name="class-radioGroup"
                             disabled={
@@ -124,13 +125,14 @@ class ClassroomModalView extends Component<Props, States> {
                             onChange={() => this.setState({ selectedClassroom: classroom })}
                           />
                         </Table.Cell>
-                        <Table.Cell>{classroom.round}</Table.Cell>
-                        <Table.Cell>{classroom.instructor.name}</Table.Cell>
-                        <Table.Cell className="el"><span>{classroom.operation.location}</span></Table.Cell>
-                        <Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
-                        <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
-                        <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
+                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.round}</Table.Cell>
+                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.instructor.name}</Table.Cell>
+                        <Table.Cell className="el"><Table.Cell verticalAlign="middle"></Table.Cell><span>{classroom.operation.location}</span></Table.Cell>
+                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
+                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
+                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
                         <Table.Cell>
+                        <Table.Cell verticalAlign="middle"></Table.Cell>
                           { classroom.enrolling.cancellationPenalty ?
                             <Popup
                               content={<span>{classroom.enrolling.cancellationPenalty}</span>}

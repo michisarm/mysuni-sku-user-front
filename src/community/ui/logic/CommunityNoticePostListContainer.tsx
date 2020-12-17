@@ -13,7 +13,8 @@ import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { findPostMenuName } from 'community/api/communityApi';
 import { checkMember } from 'community/service/useMember/useMember';
-import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
+import { getNoticePostGroupManager, getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
+import { useCommunityGroup } from 'community/store/CommunityGroupStore';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -47,7 +48,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [menuType, setMenuType] = useState<string>('');
   const [menuName, setMenuName] = useState<string>('');
-
+  
   // const { pageMap } = SharedService;
   useEffect(() => {
     if (postItems === undefined) {

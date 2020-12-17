@@ -319,7 +319,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 </span>
               </Label>
               <Link
-                to="/board/support-qna"
+                to={`/board/support-qna/cube/${lectureSummary.learningCard.id}`}
                 className="ui icon button left post-s"
               >
                 <Icon className="ask" />
