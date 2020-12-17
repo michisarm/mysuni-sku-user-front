@@ -478,13 +478,19 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              <ReadonlyMenuItemView
-                type="NOTICE"
-                name="전체글"
-                icon={boardIcon}
-                approved={communtyHome.community?.approved}
-                subMenus={[]}
-              />
+              {
+                communtyHome.community.communityId === "COMMUNITY-a" ? (
+                  null
+                ) : (
+                  <ReadonlyMenuItemView
+                    type="NOTICE"
+                    name="전체글"
+                    icon={boardIcon}
+                    approved={communtyHome.community?.approved}
+                    subMenus={[]}
+                  />
+                )
+              }
               <ReadonlyMenuItemView
                 type="NOTICE"
                 name="공지사항"
@@ -509,6 +515,13 @@ function CommunityHomeTreeContainer() {
           )}
           {communtyHome.community.approved === true && (
             <ul>
+              <li>
+                <Link to={`/community/${communtyHome.community.communityId}`}>
+                  <img src={homeIcon} />
+                  HOME
+                  <img src={homeArrowIcon} className="right-menu-arrow" />
+                </Link>
+              </li>
               { 
                 communtyHome.community.communityId === "COMMUNITY-a" ? (
                   null
