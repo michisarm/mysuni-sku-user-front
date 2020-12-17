@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -15,28 +14,30 @@ import routePaths from '../../../routePaths';
 import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';
 import ChannelsContentWrapperView from '../view/ChannelsContentWrapperView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
-
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService,
-  collegeService?: CollegeService
-  lectureService?: LectureService
-  reviewService?: ReviewService
+  actionLogService?: ActionLogService;
+  collegeService?: CollegeService;
+  lectureService?: LectureService;
+  reviewService?: ReviewService;
 
-  channels: ChannelModel[]
-  onViewAll:(e: any, data: any) => void
+  channels: ChannelModel[];
+  onViewAll: (e: any, data: any) => void;
 }
 
 interface RouteParams {
-  pageNo: string
+  pageNo: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'college.collegeService',
-  'lecture.lectureService',
-  'shared.reviewService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'college.collegeService',
+    'lecture.lectureService',
+    'shared.reviewService'
+  )
+)
 @reactAutobind
 @observer
 class ChannelsContainer extends Component<Props> {
@@ -45,14 +46,18 @@ class ChannelsContainer extends Component<Props> {
 
   LECTURES_SIZE = 8;
 
-
   componentDidMount(): void {
     //
     const { collegeService, channels } = this.props;
 
-    collegeService!.setChannels(channels && channels.length && channels.map(chanel =>
-      new ChannelModel({ ...chanel, checked: false })
-    ) || []);
+    collegeService!.setChannels(
+      (channels &&
+        channels.length &&
+        channels.map(
+          chanel => new ChannelModel({ ...chanel, checked: false })
+        )) ||
+        []
+    );
     this.findPagingRecommendLectures();
   }
 
@@ -65,12 +70,15 @@ class ChannelsContainer extends Component<Props> {
       const sameLength = prevChannels.length === channels.length;
 
       if (!sameLength && channels) {
-        collegeService!.setChannels(channels.map((chanel, index) => (
-          new ChannelModel({
-            ...chanel,
-            checked: sameLength ? channels[index].checked :  false,
-          })
-        )) || []);
+        collegeService!.setChannels(
+          channels.map(
+            (chanel, index) =>
+              new ChannelModel({
+                ...chanel,
+                checked: sameLength ? channels[index].checked : false,
+              })
+          ) || []
+        );
         // 이거 주석했더니 렌더가 한번만 된다..^^;;;
         // this.onConfirmChangeFavorite();
       }
@@ -89,14 +97,22 @@ class ChannelsContainer extends Component<Props> {
     const { lectureService } = this.props;
     const initialLimit = this.getPageNo() * this.CHANNELS_SIZE;
 
-    lectureService!.findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE);
+    lectureService!.findPagingRecommendLectures(
+      initialLimit,
+      this.LECTURES_SIZE
+    );
   }
 
   async addPagingRecommendLectures() {
     //
     const { lectureService } = this.props;
 
-    lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, this.getPageNo() - 1, this.LECTURES_SIZE, 0);
+    lectureService!.addFindPagingRecommendLectures(
+      this.CHANNELS_SIZE,
+      this.getPageNo() - 1,
+      this.LECTURES_SIZE,
+      0
+    );
   }
 
   findAllRecommendLectures() {
@@ -126,7 +142,7 @@ class ChannelsContainer extends Component<Props> {
     const { recommendLectures } = this.props.lectureService!;
     const { channels } = this.props.collegeService!;
 
-    const notChecked = channels.every((channel) => !channel.checked);
+    const notChecked = channels.every(channel => !channel.checked);
     let displayableRecommendLectures: RecommendLectureRdo[] = [];
 
     /**
@@ -137,10 +153,13 @@ class ChannelsContainer extends Component<Props> {
     }
     // 선택된 관심채널에 대한 추천Lecture 라인들만 보여줌.(체크확인 filter 처리)
     else {
-      const checkedChannelIds = channels.filter((channel) => channel.checked)
-        .map((channel) => channel.id);
+      const checkedChannelIds = channels
+        .filter(channel => channel.checked)
+        .map(channel => channel.id);
 
-      displayableRecommendLectures = recommendLectures.filter((lecture) => checkedChannelIds.includes(lecture.channel.id));
+      displayableRecommendLectures = recommendLectures.filter(lecture =>
+        checkedChannelIds.includes(lecture.channel.id)
+      );
     }
 
     return displayableRecommendLectures;
@@ -163,20 +182,36 @@ class ChannelsContainer extends Component<Props> {
       .map((channel: ChannelModel) => channel.id)
       .findIndex((id: string) => channel.id === id);
 
-    const prevAllChecked = collegeService.channels.every(channel => channel.checked);
-    const prevAllNotChecked = collegeService.channels.every(channel => !channel.checked);
+    const prevAllChecked = collegeService.channels.every(
+      channel => channel.checked
+    );
+    const prevAllNotChecked = collegeService.channels.every(
+      channel => !channel.checked
+    );
 
     collegeService.setChannelsProp(index, 'checked', !channel.checked);
-    const allChecked = collegeService.channels.every(channel => channel.checked);
-    const allNotChecked = collegeService.channels.every(channel => !channel.checked);
+    const allChecked = collegeService.channels.every(
+      channel => channel.checked
+    );
+    const allNotChecked = collegeService.channels.every(
+      channel => !channel.checked
+    );
 
     // 채널별 조회 -> 전체 채널 조회
-    if (!prevAllChecked && !prevAllNotChecked && (allChecked || allNotChecked)) {
+    if (
+      !prevAllChecked &&
+      !prevAllNotChecked &&
+      (allChecked || allNotChecked)
+    ) {
       this.findPagingRecommendLectures();
       history.replace(routePaths.currentPage(1));
     }
     // 전체 채널 조회 -> 채널별 조회
-    else if ((prevAllChecked || prevAllNotChecked) && (!allChecked && !allNotChecked)) {
+    else if (
+      (prevAllChecked || prevAllNotChecked) &&
+      !allChecked &&
+      !allNotChecked
+    ) {
       this.findAllRecommendLectures();
     }
   }
@@ -187,6 +222,10 @@ class ChannelsContainer extends Component<Props> {
 
     actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Recommend');
+    }, 1000);
   }
 
   render() {
@@ -202,20 +241,22 @@ class ChannelsContainer extends Component<Props> {
         onConfirmCallback={this.onConfirmChangeFavorite}
       >
         <div className="recommend-area">
-          { (!displayableRecommendLectures || displayableRecommendLectures.length < 1) ?
+          {!displayableRecommendLectures ||
+          displayableRecommendLectures.length < 1 ? (
             <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
-            :
-            displayableRecommendLectures
-              .map((lecture: RecommendLectureRdo, index: number) => (
+          ) : (
+            displayableRecommendLectures.map(
+              (lecture: RecommendLectureRdo, index: number) => (
                 <ChannelLecturesLineContainer
                   key={`channel_cont_${index}`}
                   channel={new ChannelModel(lecture.channel)}
                   lectures={lecture.lectures}
                   onViewAll={onViewAll}
                 />
-              ))
-          }
-          { this.isContentMore() && (
+              )
+            )
+          )}
+          {this.isContentMore() && (
             <SeeMoreButtonView onClick={this.onClickSeeMore} />
           )}
         </div>
