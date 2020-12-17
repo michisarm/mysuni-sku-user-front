@@ -16,7 +16,7 @@ import { BoardService, CategoryService, PostService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
 
 
-interface Props extends RouteComponentProps<{ boardId: string }> {
+interface Props extends RouteComponentProps<{ sourceType: string, sourceId: string }> {
   boardService?: BoardService,
   categoryService?: CategoryService,
   skProfileService?: SkProfileService,
@@ -52,7 +52,6 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     fieldName: '',
     length: 0,
   };
-
 
   componentDidMount(): void {
     //
@@ -97,6 +96,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     //
     const { postService, history } = this.props;
     const { post } = postService!;
+    const { params } = this.props.match;
+
+    if (params.sourceType !== undefined && params.sourceId !== undefined) {
+      post.config.sourceType = params.sourceType;
+      post.config.sourceId = params.sourceId;
+    }
 
     postService!.registerPost(post)
       .then((postId) => history.push(routePaths.supportQnAPost(postId as string)));
