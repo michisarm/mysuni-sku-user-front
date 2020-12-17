@@ -260,6 +260,14 @@ export default class CollegeService {
     return null;
   }
 
+
+  @action
+  async getBanner() {
+    //
+    const banner = await this.collegeApi.getBanner();
+    return banner;
+  }
+
 }
 
 Object.defineProperty(CollegeService, 'instance', {

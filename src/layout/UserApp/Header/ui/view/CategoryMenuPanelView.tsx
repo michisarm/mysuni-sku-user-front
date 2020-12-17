@@ -20,6 +20,7 @@ interface Props {
   favorites?: ChannelModel[];
   studySummaryFavoriteChannels: IdName[];
   actions: React.ReactNode;
+  banner: any;
   onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
   onRouteChannel: (e: any, channel?: IdNameCount) => void;
   onConfirmCallback?: () => void
@@ -95,6 +96,8 @@ class CategoryMenuPanelView extends Component<Props> {
       onRouteChannel,
     } = this.props;
 
+    console.log('colleges', colleges)
+    console.log('activeCollege', activeCollege)
     return (
       <div className="layer">
         <div className="table-css">

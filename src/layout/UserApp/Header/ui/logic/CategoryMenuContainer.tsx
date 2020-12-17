@@ -15,12 +15,14 @@ import lectureRoutePaths from 'lecture/routePaths';
 import mainRoutePaths from 'main/routePaths';
 import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
+import { CollegeService } from 'college/stores';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeLectureCountService?: CollegeLectureCountService;
   lectureCountService?: LectureCountService;
+  collegeService?: CollegeService;
 }
 
 interface State {
@@ -33,7 +35,8 @@ interface State {
     'shared.actionLogService',
     'profile.skProfileService',
     'lecture.collegeLectureCountService',
-    'lecture.lectureCountService'
+    'lecture.lectureCountService',
+    'college.collegeService'
   )
 )
 @reactAutobind
@@ -172,7 +175,7 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, collegeLectureCountService } = this.props;
+    const { skProfileService, collegeLectureCountService, collegeService } = this.props;
     const { categoryOpen, activeCollege } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
@@ -209,6 +212,7 @@ class CategoryMenuContainer extends Component<Props, State> {
               actions={this.renderMenuActions()}
               onActiveCollege={this.onActiveCollege}
               onRouteChannel={this.onClickChannel}
+              banner={collegeService!.getBanner()}
             />
           </Popup>
         </div>
