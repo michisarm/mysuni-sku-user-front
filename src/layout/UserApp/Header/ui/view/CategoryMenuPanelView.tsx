@@ -1,24 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { IdNameCount } from 'shared/model';
+import { IdName, IdNameCount } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { ActionLogService } from 'shared/stores';
 
 import ReactGA from 'react-ga';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
+import { StudySummaryModel } from 'profile/model';
 
 interface Props {
   actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
   channels?: IdNameCount[];
+  favorites?: ChannelModel[];
+  studySummaryFavoriteChannels: IdName[];
   actions: React.ReactNode;
   onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
   onRouteChannel: (e: any, channel?: IdNameCount) => void;
+  onConfirmCallback?: () => void
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
+@inject(mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService'))
 @reactAutobind
 @observer
 class CategoryMenuPanelView extends Component<Props> {
@@ -38,6 +45,45 @@ class CategoryMenuPanelView extends Component<Props> {
     actionLogService?.registerClickActionLog({ subAction: text });
   }
 
+  //초기 선택
+  categoryCheck(id: string) {
+    const array: boolean[] = [];
+    this.props.favorites?.map((value) => {
+      if(value.id === id) {
+        array.push(true)
+      }else {
+        array.push(false)
+      }
+    })
+    if(array.indexOf(true) !== -1) {
+      return true
+    }else {
+      return false
+    }
+  }
+
+  favoriteChannel(e: any, channel: any) {
+    const { skProfileService } = this.props;
+    const array: any[] = [];
+    this.props.favorites?.map((value, index) => {
+      if(value.id === channel.id) {
+        array.splice(index, 1)
+      }else {
+        array.push(value)
+      }
+    })
+    const checkedValue = document.getElementsByName(channel.id)[0] as HTMLInputElement;
+    if(checkedValue.checked) {
+      //체크 안되어있는 경우
+      const nextFavoriteChannels = [...this.props.studySummaryFavoriteChannels, channel];
+      skProfileService!.setStudySummaryProp('favoriteChannels', { idNames: nextFavoriteChannels });
+      skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary))
+    } else {
+      skProfileService!.setStudySummaryProp('favoriteChannels', { idNames: array });
+      skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary))
+    }
+  }
+
   render() {
     //
     const {
@@ -48,8 +94,6 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege,
       onRouteChannel,
     } = this.props;
-
-    console.log('channels', channels)
 
     return (
       <div className="layer">
@@ -106,96 +150,38 @@ class CategoryMenuPanelView extends Component<Props> {
               <div className="category-body">
                 {Array.isArray(channels) &&
                   channels.map((channel, index) => (
-                    // <button
-                    //   key={`sub-category-${channel.id}`}
-                    //   onClick={e => {
-                    //     this.onClickChannelActionLog(channel.name);
-                    //     onRouteChannel(e, channel);
-                    //   }}
-                    // >
-                    //   {channel.name}
-                    // <span>({channel.count})</span>
-                    <>
+                    <Fragment key={index}>
                     <span className="check-type2">
-                    <label htmlFor={'check'+index} className="check-type2">
-                      <input type="checkbox" id={'check'+index} />
-                      <span className="check-type2-marker"/>
-                    </label>
-                    <a className="check-type2-text">{channel.name}<strong> ({channel.count})</strong>
-                    </a>
+                      <label htmlFor={channel.id}>
+                        <input type="checkbox" 
+                          id={channel.id}
+                          name={channel.id}
+                          checked={this.categoryCheck(channel.id)}
+                          onChange={(e)=> {
+                            this.favoriteChannel(e, channel);
+                          }}
+                          key={index} 
+                        />
+                        <span className="check-type2-marker"/>
+                      </label>
+                      <a 
+                        className="check-type2-text"
+                        onClick={e => {
+                          this.onClickChannelActionLog(channel.name);
+                          onRouteChannel(e, channel);
+                        }}
+                      >{channel.name}<strong> ({channel.count})</strong>
+                      </a>
                     </span>
-                    </>
-                    
-
-                      // <span className="check-type2">
-                      // <label htmlFor="check1">
-                      //     <input type="checkbox" id="check1"/>
-                      //     <span className="check-type2-marker"/>
-                      // </label>
-                      // <a className="check-type2-text">AI Fundamental<strong> (20)</strong></a>
-                      // </span>
-
-                    // {/* </button> */}
+                    </Fragment>
                   ))
                 }
-                  {/* <label htmlFor="check1" className="check-type2">
-                      <input type="checkbox" id="check1" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check2" className="check-type2">
-                      <input type="checkbox" id="check2" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check3" className="check-type2">
-                      <input type="checkbox" id="check3" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check4" className="check-type2">
-                      <input type="checkbox" id="check4" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check5" className="check-type2">
-                      <input type="checkbox" id="check5" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check6" className="check-type2">
-                      <input type="checkbox" id="check6" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check7" className="check-type2">
-                      <input type="checkbox" id="check7" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check8" className="check-type2">
-                      <input type="checkbox" id="check8" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check9" className="check-type2">
-                      <input type="checkbox" id="check9" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check10" className="check-type2">
-                      <input type="checkbox" id="check10" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check11" className="check-type2">
-                      <input type="checkbox" id="check11" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check12" className="check-type2">
-                      <input type="checkbox" id="check12" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label>
-                  <label htmlFor="check13" className="check-type2">
-                      <input type="checkbox" id="check13" />
-                      <span className="check-type2-text">AI Fundamental<strong> (20)</strong></span>
-                  </label> */}
               </div>
+              {/* <Image src={`${process.env.PUBLIC_URL}${imageUrl}`} alt="Banner" /> */}
               {/*<div className="category-banner">
                   <img src={CategoryBanner1} alt=""/>
                   <img src={CategoryBanner2} alt=""/>
               </div>*/}
-
               <div className="category-banner-single">
                 {/* TODO.카테고리 배너 들어가야한다 */}
                   {/* <img src={CategoryBanner3} alt=""/> */}

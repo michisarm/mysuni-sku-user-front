@@ -102,11 +102,9 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     //
     const { skProfileService, onConfirmCallback } = this.props;
     const { favoriteChannels, favoriteCompanyChannels } = this.state;
-
     const nextFavoriteChannels = [...favoriteChannels, ...favoriteCompanyChannels];
 
     this.onClickActionLog('Confirm');
-
     skProfileService!.setStudySummaryProp('favoriteChannels', { idNames: nextFavoriteChannels });
     skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary))
       .then(() => {

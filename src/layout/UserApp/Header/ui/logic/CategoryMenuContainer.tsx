@@ -204,6 +204,8 @@ class CategoryMenuContainer extends Component<Props, State> {
               colleges={collegeLectureCountService!.collegeLectureCounts}
               activeCollege={activeCollege}
               channels={collegeLectureCountService!.channelCounts}
+              favorites={channels}
+              studySummaryFavoriteChannels={studySummaryFavoriteChannels}
               actions={this.renderMenuActions()}
               onActiveCollege={this.onActiveCollege}
               onRouteChannel={this.onClickChannel}
