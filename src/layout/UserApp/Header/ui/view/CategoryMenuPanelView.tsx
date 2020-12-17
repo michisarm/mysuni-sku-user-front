@@ -242,14 +242,25 @@ class CategoryMenuPanelView extends Component<Props> {
               { banner.viewType === '2' &&  (
                 <>
                 <div className="category-banner">
-                  { banner.collegeBannerContents[0].visible === 1 &&  (
+                  { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 && (
                     <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                  )}
+                  { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 && (
+                    <a href={banner.collegeBannerContents[0].linkUrl}>
+                      <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    </a>
                   )}
                   { banner.collegeBannerContents[0].visible === 0 &&  (
                     <span style={{width:"244px", height:"80px", display:"inline-block"}} />
                   )}
-                  { banner.collegeBannerContents[1].visible === 1 &&  (
+
+                  { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 0 && (
                     <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                  )}
+                  { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 0 && (
+                    <a href={banner.collegeBannerContents[0].linkUrl}>
+                      <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    </a>
                   )}
                   { banner.collegeBannerContents[1].visible === 0 &&  (
                     <span style={{width:"244px", height:"80px", display:"inline-block"}} />
