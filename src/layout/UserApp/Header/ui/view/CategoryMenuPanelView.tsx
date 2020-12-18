@@ -124,7 +124,7 @@ class CategoryMenuPanelView extends Component<Props> {
                         onActiveCollege(e, college);
                       }}
                     >
-                      1{college.name}
+                      {college.name}
                     </button>
                   ))}
                 </div>
