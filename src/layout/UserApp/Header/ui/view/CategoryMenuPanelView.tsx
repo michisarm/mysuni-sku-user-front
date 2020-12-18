@@ -98,6 +98,7 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege,
       onRouteChannel,
     } = this.props;
+
     return (
       <div className="layer lms-category">
         <div className="table-css">
@@ -329,16 +330,19 @@ class CategoryMenuPanelView extends Component<Props> {
                 </>
               ) }
               { banner.viewType === '1' &&  (
-              <div className="category-banner">
-                { banner.collegeBannerContents[0].visible === '1' &&  (
+              <div className="category-banner-single">
+                { banner.collegeBannerContents[0].visible === 0 &&  (
+                  <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                )}
+                { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 &&  (
                   <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
                 )}
-                { banner.collegeBannerContents[0].visible === '1' && banner.collegeBannerContents[0].useLink === 1 &&  (
+                { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 &&  (
                   <a href={banner.collegeBannerContents[0].linkUrl}>
                     <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
                   </a>
                 )}
-                { banner.collegeBannerContents[0].visible === '0' &&  (
+                { banner.collegeBannerContents[0].visible === 0 &&  (
                   <div/>
                 )}
               </div>
