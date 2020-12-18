@@ -124,7 +124,7 @@ class CategoryMenuPanelView extends Component<Props> {
                         onActiveCollege(e, college);
                       }}
                     >
-                      1{college.name}
+                      {college.name}
                     </button>
                   ))}
                 </div>
@@ -185,11 +185,11 @@ class CategoryMenuPanelView extends Component<Props> {
                 <>
                 <div className="category-banner">
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 && (
-                    <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
                   )}
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 && (
                     <a href={banner.collegeBannerContents[0].linkUrl}>
-                      <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                      <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
                     </a>
                   )}
                   { banner.collegeBannerContents[0].visible === 0 &&  (
@@ -197,11 +197,11 @@ class CategoryMenuPanelView extends Component<Props> {
                   )}
 
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 0 && (
-                    <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
                   )}
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 1 && (
                     <a href={banner.collegeBannerContents[0].linkUrl}>
-                      <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                      <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
                     </a>
                   )}
                   { banner.collegeBannerContents[1].visible === 0 &&  (
@@ -213,11 +213,11 @@ class CategoryMenuPanelView extends Component<Props> {
               { banner.viewType === '1' &&  (
               <div className="category-banner">
                 { banner.collegeBannerContents[0].visible === '1' &&  (
-                  <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                  <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
                 )}
                 { banner.collegeBannerContents[0].visible === '1' && banner.collegeBannerContents[0].useLink === 1 &&  (
                   <a href={banner.collegeBannerContents[0].linkUrl}>
-                    <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
                   </a>
                 )}
                 { banner.collegeBannerContents[0].visible === '0' &&  (
