@@ -315,7 +315,7 @@ class CategoryMenuPanelView extends Component<Props> {
                   )}
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 1 && (
                     <span className="banner-holder">
-                      <a href={banner.collegeBannerContents[0].linkUrl}>
+                      <a href={banner.collegeBannerContents[1].linkUrl}>
                         <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
                       </a>
                     </span>
@@ -335,7 +335,7 @@ class CategoryMenuPanelView extends Component<Props> {
                 )}
                 { banner.collegeBannerContents[0].visible === '1' && banner.collegeBannerContents[0].useLink === 1 &&  (
                   <a href={banner.collegeBannerContents[0].linkUrl}>
-                    <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
                   </a>
                 )}
                 { banner.collegeBannerContents[0].visible === '0' &&  (
