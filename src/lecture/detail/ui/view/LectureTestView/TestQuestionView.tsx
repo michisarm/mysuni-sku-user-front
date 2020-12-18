@@ -85,7 +85,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
     ) {
       if (submitOk && submitted) {
         if (!answerResult) {
-          if (learningState === 'Failed') {
+          if (learningState === 'Failed' || learningState === 'Missed') {
             setAnswer(question.questionNo, '');  // 미이수 로딩시 틀린답안 표시 안함
           }
         }
