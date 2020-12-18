@@ -155,7 +155,7 @@ function LectureTaskContainer() {
         if (taskEditItem === undefined) {
           return;
         }
-        const nextTaskEditItem = { ...taskEditItem, name: value };
+        const nextTaskEditItem = { ...taskEditItem, [name]: value };
         setLectureTaskDetail(nextTaskEditItem);
       }
     },
