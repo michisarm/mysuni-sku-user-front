@@ -133,7 +133,7 @@ class CategoryMenuPanelView extends Component<Props> {
             {activeCollege && (
               <>
               <div className="category-title-bar">
-                  <span className="category-title">{activeCollege.name} College<span className="num"> (125)</span></span>
+                  <span className="category-title">{activeCollege.name} College<span className="num"> ({activeCollege.totalCount})</span></span>
                   <button className="btn-category-all"
                     onClick={e => {
                     this.onClickChannelActionLog(
@@ -142,15 +142,11 @@ class CategoryMenuPanelView extends Component<Props> {
                     onRouteChannel(e);
                     }}
                   >
-                  {activeCollege.name} 전체보기
-                  <span>({activeCollege.totalCount})</span>
-                      {/* <span> */}
-                        {/* `${activeCollege.name} 전체보기` */}
-                        {/* </span> */}
-                      {/* <i className="arr-r-gray" /> */}
+                  전체보기
+                  <i className="arr-r-gray" />
                   </button>
               </div>
-              {/* 이전내용 주석처리 */}
+              {/* 원복 이전내용 주석처리 */}
               {/* <div className="category-body">
                 {Array.isArray(channels) &&
                   channels.map((channel, index) => (
@@ -295,7 +291,9 @@ class CategoryMenuPanelView extends Component<Props> {
                 <>
                 <div className="category-banner">
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 && (
-                    <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    <span className="banner-holder">
+                      <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    </span>
                   )}
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 && (
                     <span className="banner-holder">
@@ -305,11 +303,15 @@ class CategoryMenuPanelView extends Component<Props> {
                     </span>
                   )}
                   { banner.collegeBannerContents[0].visible === 0 &&  (
-                    <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    <span className="banner-holder">
+                      <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    </span>
                   )}
 
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 0 && (
-                    <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    <span className="banner-holder">
+                      <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    </span>
                   )}
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 1 && (
                     <span className="banner-holder">
@@ -319,7 +321,9 @@ class CategoryMenuPanelView extends Component<Props> {
                     </span>
                   )}
                   { banner.collegeBannerContents[1].visible === 0 &&  (
-                    <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    <span className="banner-holder">
+                      <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    </span>
                   )}
                 </div>
                 </>
