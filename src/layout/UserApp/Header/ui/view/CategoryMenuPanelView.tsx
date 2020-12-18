@@ -98,7 +98,6 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege,
       onRouteChannel,
     } = this.props;
-
     return (
       <div className="layer lms-category">
         <div className="table-css">
@@ -134,7 +133,7 @@ class CategoryMenuPanelView extends Component<Props> {
             {activeCollege && (
               <>
               <div className="category-title-bar">
-                  <span className="category-title">AI College <span className="num">(125)</span></span>
+                  <span className="category-title">{activeCollege.name} College<span className="num"> (125)</span></span>
                   <button className="btn-category-all"
                     onClick={e => {
                     this.onClickChannelActionLog(
@@ -213,7 +212,7 @@ class CategoryMenuPanelView extends Component<Props> {
               { banner.viewType === '1' &&  (
               <div className="category-banner">
                 { banner.collegeBannerContents[0].visible === '1' &&  (
-                  <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                  <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
                 )}
                 { banner.collegeBannerContents[0].visible === '1' && banner.collegeBannerContents[0].useLink === 1 &&  (
                   <a href={banner.collegeBannerContents[0].linkUrl}>
