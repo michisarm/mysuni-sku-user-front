@@ -87,7 +87,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
 
   return (
     <>
-      <div id="lms-overview-top" />
       <div
         className={`lms-sticky-menu ${fixed ? 'lms-fixed' : ''}`}
         id="lms-overview"
