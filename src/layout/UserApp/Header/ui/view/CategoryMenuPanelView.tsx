@@ -28,11 +28,6 @@ interface Props {
   onRouteChannel: (e: any, channel?: IdNameCount) => void;
   onConfirmCallback?: () => void
 }
-
-// interface State {
-//   test: any
-// }
-
 @inject(mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService'))
 @reactAutobind
 @observer
@@ -91,43 +86,6 @@ class CategoryMenuPanelView extends Component<Props> {
     }
   }
 
-  // bannerType(collegeId: string) {
-  //   const { banner } = this.props;
-  //   let data = {}
-  //   banner.then((result: any) => {
-  //     result.map((item: any, index: number) => {
-  //       if(item.collegeId === collegeId) {
-  //         // this.setState({test: item.collegeBannerContents})
-  //         data = item
-  //         return item.viewType
-  //       }
-  //     })
-  //   })
-  //   // console.log('data', data)
-  //   // if(item.viewType === '1') {
-  //   //   return '1'
-  //   // }else {
-  //   //   return '2'
-  //   // }
-  //   return '2'
-  // }
-
-  // imgHandle(id: string, type: number) {
-  //   const { banner } = this.props;
-  //   banner.then((result: any) => {
-  //     result.map((item: any, index: number) => {
-  //       if(item.collegeId === id) {
-  //         // this.setState({test: item.collegeBannerContents})
-  //         if(type === 2) {
-  //           return item.collegeBannerContents[0].imageUrl
-  //         } else if (type === 1) {
-  //           return item.collegeBannerContents[1].imageUrl
-  //         }
-  //       }
-  //     })
-  //   })
-  // }
-
   render() {
     //
     const {
@@ -140,20 +98,6 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege,
       onRouteChannel,
     } = this.props;
-
-    console.log('banner', banner)
-
-    function imgHandle(id: string) {
-      banner.then((result: any) => {
-        result.map((item: any, index: number) => {
-          if(item.collegeId === id) {
-            // this.setState({test: item.collegeBannerContents})
-            return item.collegeBannerContents.imageUrl
-          }
-        })
-      })
-      return '';
-    }
 
     return (
       <div className="layer lms-category">
@@ -237,8 +181,6 @@ class CategoryMenuPanelView extends Component<Props> {
                   ))
                 }
               </div>
-              {/* 1열인지 2열인지 알아야한다. */}
-              {/* <Image src={`${process.env.PUBLIC_URL}${imageUrl}`} alt="Banner" /> */}
               { banner.viewType === '2' &&  (
                 <>
                 <div className="category-banner">
@@ -283,49 +225,9 @@ class CategoryMenuPanelView extends Component<Props> {
                 )}
               </div>
               ) }
-              {/* <div className="category-banner-single">
-                <span>1열</span>
-                <img src={imgHandle(activeCollege.collegeId)} alt=""/>
-              </div> */}
               </>
               )}
             </div>
-            {/* <div className="cell vtop">
-              <div className="select-area">
-                <div className="scrolling">
-                  {activeCollege && (
-                    <>
-                      <button
-                        onClick={e => {
-                          this.onClickChannelActionLog(
-                            `${activeCollege.name} 전체보기`
-                          );
-                          onRouteChannel(e);
-                        }}
-                      >
-                        {activeCollege.name} 전체보기
-                        <span>({activeCollege.totalCount})</span>
-                      </button>
-
-                      {Array.isArray(channels) &&
-                        channels.map(channel => (
-                          <button
-                            key={`sub-category-${channel.id}`}
-                            onClick={e => {
-                              this.onClickChannelActionLog(channel.name);
-                              onRouteChannel(e, channel);
-                            }}
-                          >
-                            {channel.name}
-                            <span>({channel.count})</span>
-                          </button>
-                        ))
-                      }
-                    </>
-                  )}
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
 

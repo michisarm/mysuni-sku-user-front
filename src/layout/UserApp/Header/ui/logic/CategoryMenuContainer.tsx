@@ -98,13 +98,10 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
-    console.log('onActiveCollege')
     //
     const { collegeLectureCountService, collegeService } = this.props;
-    console.log('college', college)
     let bannerData = {}
     collegeService!.getBanner().then((result) => {
-      console.log('result', result)
       if(result) {
         result.map((item:any, index:number)=> {
           if(item.collegeId === college.collegeId) {
@@ -116,7 +113,6 @@ class CategoryMenuContainer extends Component<Props, State> {
         activeCollege: college,
         banner: bannerData
       });
-      console.log('this.state', this.state)
       collegeLectureCountService!.setChannelCounts(college.channelCounts);
     })
 
@@ -200,19 +196,6 @@ class CategoryMenuContainer extends Component<Props, State> {
       studySummaryFavoriteChannels.map(
         channel => new ChannelModel({ ...channel, channelId: channel.id })
       ) || [];
-
-      if(activeCollege !== undefined) {
-        // console.log('activeCollege', activeCollege)
-
-        // const banner = collegeService!.getBanner();
-        // console.log(banner)
-
-        // banner.then((result: any) => {
-        //   console.log('result', result)
-        //   result.map((item: any, index: number) => {
-        //   })
-        // })
-      }
     return (
       <>
         <div className="g-menu-detail">
