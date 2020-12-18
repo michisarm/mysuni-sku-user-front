@@ -1,247 +1,241 @@
-<html xmlns:th='http://www.thymeleaf.org'>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-<table width='740' cellpadding='0' cellspacing='0'>
-  <tbody>
-  <tr>
-    <td width='40'></td>
-    <td width='700'>
-      <table width='700' cellpadding='0' cellspacing='0'>
-        <tbody>
-        <tr>
-          <td height='50'></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <table width='700' cellpadding='0' cellspacing='0'>
-              <tbody>
-              <tr>
-                <td valign='top' width='20'></td>
-                <td valign='top'><img
-                  src='http://int.mysuni.sk.com/profile/email-img/logo-email.png'
-                  alt='SUNI' border='0'></td>
-              </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td height='10'></td>
-        </tr>
-        <tr>
-          <td>
-            <table width='100%' cellpadding='0' cellspacing='0' border='1' bordercolor='#c8d0e0'
-                   style='border-collapse:collapse'>
-              <tbody>
-              <tr>
-                <td align='center'>
-                  <table width='698' cellpadding='0' cellspacing='0' bgcolor='#ffffff'>
-                    <tbody>
-                    <tr>
-                      <td height='30' width='40'></td>
-                      <td width='620'></td>
-                      <td width='40'></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><span
-                        style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:1.58;letter-spacing:-0.4px;color:#222;'>my<span
-                        style='color: red'>SUNI</span> Badge 반려 안내</span></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='12'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td bgcolor='#222222' height='2'></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='30'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td>
-                        <span
-                          style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;line-height:1.43;letter-spacing:-0.2px;color:#222;'>
-                          승인 요청하신 <span th:text='${badgeName}'/> Badge가 다음과 같은 사유로 승인되지 않았습니다.<br/>
-                          추가 문의사항은 아래 담당자에게 연락바랍니다.
-                        </span>
-                      </td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='30'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td bgcolor='#c8d0e0' height='1'></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td bgcolor='#f4f7fd'>
-                        <table width='620' cellpadding='0' cellspacing='0'>
-                          <tbody>
-                          <tr>
-                            <td width='30' height='30'></td>
-                            <td width='163'></td>
-                            <td width='397'></td>
-                            <td width='30'></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td valign='top'><span
-                              style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>Badge명</span>
-                            </td>
-                            <td valign='top'>
-                              <div
-                                style='width:397px;font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>
-                                <span th:text='${badgeName}'/>
-                                <a
-                                  th:href='${url}'
-                                  target='_blank'
-                                  style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:16px;font-weight:bold;letter-spacing:-0.4px;color:#ff664d;'
-                                >
-                                  바로가기
-                                </a>
-                                <img
-                                  src='http://int.mysuni.sk.com/profile/email-img/icon-mail-16-px.png'
-                                  alt='' border='0'>
-                              </div>
-                            </td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td height='20'></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td valign='top'><span
-                              style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>사유</span>
-                            </td>
-                            <td valign='top'>
-                              <div
-                                style='width:397px;font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>
-                                <span th:text='${reason}'/>
-                              </div>
-                            </td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td height='20'></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td valign='top' width='163'><span
-                              style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;'>my<span
-                              style='color: red'>SUNI</span> 담당자</span>
-                            </td>
-                            <td>
-                              <div
-                                style='width:397px;font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>
-                                <span th:text='${operatorName}'/> <img
-                                src='http://int.mysuni.sk.com/profile/email-img/devider.png'
-                                alt='' border='0'> <span th:text='${operatorEmail}'/>
-                              </div>
-                            </td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td height='30'></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td bgcolor='#c8d0e0' height='1'></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='30'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='20'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='20'></td>
-                      <td>
-                        <span
-                          style='font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;letter-spacing:-0.2px;color:#222;'>감사합니다.<br>SUNI 드림.</span>
-                      </td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='100'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td bgcolor='#dddddd' height='1'></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='20'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td valign='middle'><img
-                        src='http://int.mysuni.sk.com/profile/email-img/email-bottom.png'
-                        alt='my suni copyright 2020 suni. all rights reserved'
-                        border='0'></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td height='40'></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </td>
-    <td width='40'></td>
-  </tr>
-  </tbody>
-</table>
-
-
+	<table width="740" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td width="40"></td>
+				<td width="700">
+					<table width="700" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td height="50"></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<table width="700" cellpadding="0" cellspacing="0">
+										<tbody>
+											<tr>
+												<td valign="top" width="20"></td>
+												<td valign="top"><img
+													src="data:image/png;base64,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"
+													alt="SUNI" border="0"></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td height="10"></td>
+							</tr>
+							<tr>
+								<td>
+									<table width="100%" cellpadding="0" cellspacing="0" border="1"
+										bordercolor="#c8d0e0" style="border-collapse: collapse">
+										<tbody>
+											<tr>
+												<td align="center">
+													<table width="698" cellpadding="0" cellspacing="0"
+														bgcolor="#ffffff">
+														<tbody>
+															<tr>
+																<td height="30" width="40"></td>
+																<td width="620"></td>
+																<td width="40"></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td><span
+																	style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 24px; font-weight: bold; line-height: 1.58; letter-spacing: -0.4px; color: #222;">my<span
+																		style="color: red">SUNI</span> Badge 반려 안내
+																</span></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="12"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td bgcolor="#222222" height="2"></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="30"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td><span
+																	style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; line-height: 1.43; letter-spacing: -0.2px; color: #222;">
+																		승인 요청하신 <span th:text="${badgeName}" /> Badge가 다음과 같은
+																		사유로 승인되지 않았습니다.<br /> 추가 문의사항은 아래 담당자에게 연락바랍니다.
+																</span></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="30"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td bgcolor="#c8d0e0" height="1"></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td bgcolor="#f4f7fd">
+																	<table width="620" cellpadding="0" cellspacing="0">
+																		<tbody>
+																			<tr>
+																				<td width="30" height="30"></td>
+																				<td width="163"></td>
+																				<td width="397"></td>
+																				<td width="30"></td>
+																			</tr>
+																			<tr>
+																				<td></td>
+																				<td valign="top"><span
+																					style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; font-weight: bold; letter-spacing: -0.2px; color: #222;">Badge명</span>
+																				</td>
+																				<td valign="top">
+																					<div
+																						style="width: 397px; font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; letter-spacing: -0.2px; color: #222;">
+																						<span th:text="${badgeName}" /> <a
+																							th:href="${url}" target="_blank"
+																							style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 16px; font-weight: bold; letter-spacing: -0.4px; color: #ff664d;">
+																							바로가기 </a> <img
+																							src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDgzNDA4NEQxQUY1MTFFQThDNEY5RjJEODNFRjVBMEEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDgzNDA4NEUxQUY1MTFFQThDNEY5RjJEODNFRjVBMEEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowODM0MDg0QjFBRjUxMUVBOEM0RjlGMkQ4M0VGNUEwQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowODM0MDg0QzFBRjUxMUVBOEM0RjlGMkQ4M0VGNUEwQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pn7WeoUAAABrSURBVHjaYvz//z8DTcD/ggCB/xn+hejiTAR1/vhvzvD/X9f/NN+JpNua7h/yP933N1U0M/5P93Nl+M+QSqR2cyAhB8STmBhoDcjyJ3maMvzdsWki7EcOxpMMjExljLM25yMLM5Kb5AACDAAT7zwTOAiYiwAAAABJRU5ErkJggg=="
+																							alt="" border="0">
+																					</div>
+																				</td>
+																				<td></td>
+																			</tr>
+																			<tr>
+																				<td height="20"></td>
+																				<td></td>
+																				<td></td>
+																				<td></td>
+																			</tr>
+																			<tr>
+																				<td></td>
+																				<td valign="top"><span
+																					style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; font-weight: bold; letter-spacing: -0.2px; color: #222;">사유</span>
+																				</td>
+																				<td valign="top">
+																					<div
+																						style="width: 397px; font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; letter-spacing: -0.2px; color: #222;">
+																						<span th:text="${reason}" />
+																					</div>
+																				</td>
+																				<td></td>
+																			</tr>
+																			<tr>
+																				<td height="20"></td>
+																				<td></td>
+																				<td></td>
+																				<td></td>
+																			</tr>
+																			<tr>
+																				<td></td>
+																				<td valign="top" width="163"><span
+																					style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; font-weight: bold; letter-spacing: -0.2px; color: #222;">my<span
+																						style="color: red">SUNI</span> 담당자
+																				</span></td>
+																				<td>
+																					<div
+																						style="width: 397px; font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; letter-spacing: -0.2px; color: #222;">
+																						<span th:text="${operatorName}" /> <img
+																							src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKCAYAAAB10jRKAAAAAXNSR0IArs4c6QAAABNJREFUCB1juHv37n8mBiAglgAArBYDqXnGf3kAAAAASUVORK5CYII="
+																							alt="" border="0"> <span
+																							th:text="${operatorEmail}" />
+																					</div>
+																				</td>
+																				<td></td>
+																			</tr>
+																			<tr>
+																				<td height="30"></td>
+																				<td></td>
+																				<td></td>
+																				<td></td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td bgcolor="#c8d0e0" height="1"></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="30"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="20"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="20"></td>
+																<td><span
+																	style="font-family: -apple-system, system-ui, BlinkMacSystemFont,&amp; #39; Segoe UI&amp;#39; , Roboto ,&amp;#39; Helvetica Neue&amp;#39; , Arial ,sans-serif; font-size: 14px; letter-spacing: -0.2px; color: #222;">감사합니다.<br>mySUNI
+																		드림.
+																</span></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="100"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td bgcolor="#dddddd" height="1"></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="20"></td>
+																<td></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td></td>
+																<td valign="middle"><img
+																	src="data:image/png;base64,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"
+																	alt="my suni copyright 2020 suni. all rights reserved"
+																	border="0"></td>
+																<td></td>
+															</tr>
+															<tr>
+																<td height="40"></td>
+																<td></td>
+																<td></td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td width="40"></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>
