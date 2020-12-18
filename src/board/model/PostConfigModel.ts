@@ -13,6 +13,9 @@ class PostConfigModel implements DomainEntity {
   shareable: boolean = false;
   answered: boolean = false;
 
+  sourceType: String = '';
+  sourceId: String = '';
+
 
   constructor(postConfig?: PostConfigModel) {
     if (postConfig) {
@@ -21,6 +24,8 @@ class PostConfigModel implements DomainEntity {
       this.notifiable = postConfig.notifiable || postConfig.notifiable;
       this.shareable = postConfig.shareable || postConfig.shareable;
       this.answered = postConfig.answered || postConfig.answered;
+      this.sourceType = postConfig.sourceType || postConfig.sourceType;
+      this.sourceId = postConfig.sourceId || postConfig.sourceId;
     }
   }
 }
@@ -33,6 +38,8 @@ decorate(PostConfigModel, {
   notifiable: observable,
   shareable: observable,
   answered: observable,
+  sourceType: observable,
+  sourceId: observable,
 });
 
 export default PostConfigModel;

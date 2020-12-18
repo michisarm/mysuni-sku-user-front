@@ -7,15 +7,13 @@ import { patronInfo } from '@nara.platform/dock';
 import AppContext, { BreadcrumbValue } from './AppContext';
 import ResponsiveWrapper from './ResponsiveWrapper';
 
-
 interface Props extends RouteComponentProps {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
 interface State {
-  breadcrumbValues: BreadcrumbValue[],
+  breadcrumbValues: BreadcrumbValue[];
 }
-
 
 @reactAutobind
 class UserAppContainer extends Component<Props, State> {
@@ -27,14 +25,47 @@ class UserAppContainer extends Component<Props, State> {
   componentDidMount(): void {
     // set patronID
     ReactGA.set({ userId: patronInfo.getPatronId() });
-    // refresh page tracking
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    // ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.setLocalAuth();
 
-    this.props.history.listen(location => {
-      ReactGA.pageview(location.pathname + location.search);
-    });
+    // this.props.history.listen(location => {
+    //   if (location.pathname === '/search') {
+    //     return false;
+    //   }
+    //   if (
+    //     location.pathname.match(
+    //       '/my-training/learning/InProgress/pages/1' && '/my-training/learning'
+    //     )
+    //   ) {
+    //     return false;
+    //   }
+    //   if (
+    //     location.pathname.match(
+    //       '/personalcube/create/Create/pages/1' && '/personalcube/create'
+    //     )
+    //   ) {
+    //     return false;
+    //   }
+    //   if (
+    //     location.pathname.match(
+    //       '/lecture/recommend/pages/' && '/lecture/recommend'
+    //     )
+    //   ) {
+    //     return false;
+    //   }
+    //   if (
+    //     location.pathname.match(
+    //       '/certification/badge/AllBadgeList/pages/1' && '/certification/badge'
+    //     )
+    //   ) {
+    //     return false;
+    //   } else {
+    //     setTimeout(() => {
+    //       ReactGA.pageview(location.pathname + window.location.search);
+    //     }, 1000);
+    //   }
+    // });
   }
 
   setLocalAuth() {
@@ -66,12 +97,8 @@ class UserAppContainer extends Component<Props, State> {
     const { children } = this.props;
 
     return (
-      <AppContext.Provider
-        value={this.getContext()}
-      >
-        <ResponsiveWrapper>
-          {children}
-        </ResponsiveWrapper>
+      <AppContext.Provider value={this.getContext()}>
+        <ResponsiveWrapper>{children}</ResponsiveWrapper>
       </AppContext.Provider>
     );
   }

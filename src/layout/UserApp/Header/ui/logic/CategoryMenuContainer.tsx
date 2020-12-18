@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -10,33 +9,37 @@ import { ActionLogService } from 'shared/stores';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
-import { CollegeLectureCountRdo }  from 'lecture/model';
-import { CollegeLectureCountService }  from 'lecture/stores';
+import { CollegeLectureCountRdo } from 'lecture/model';
+import { CollegeLectureCountService } from 'lecture/stores';
 import lectureRoutePaths from 'lecture/routePaths';
 import mainRoutePaths from 'main/routePaths';
 import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
-
-
+import { CollegeService } from 'college/stores';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  skProfileService?: SkProfileService,
-  collegeLectureCountService?: CollegeLectureCountService,
-  lectureCountService?: LectureCountService
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  collegeLectureCountService?: CollegeLectureCountService;
+  lectureCountService?: LectureCountService;
+  collegeService?: CollegeService;
 }
 
 interface State {
-  categoryOpen: boolean,
-  activeCollege?: CollegeLectureCountRdo,
+  categoryOpen: boolean;
+  activeCollege?: CollegeLectureCountRdo;
+  banner: any;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'profile.skProfileService',
-  'lecture.collegeLectureCountService',
-  'lecture.lectureCountService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'profile.skProfileService',
+    'lecture.collegeLectureCountService',
+    'lecture.lectureCountService',
+    'college.collegeService'
+  )
+)
 @reactAutobind
 @observer
 class CategoryMenuContainer extends Component<Props, State> {
@@ -46,6 +49,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   state = {
     categoryOpen: false,
     activeCollege: undefined,
+    banner: undefined
   };
 
   async findCollegeLectureCount() {
@@ -59,13 +63,15 @@ class CategoryMenuContainer extends Component<Props, State> {
     // }
 
     const category = sessionStorage.getItem('category');
-    if (category !== null && collegeLectureCountService!.collegeLectureCounts.length > 0) {
+    if (
+      category !== null &&
+      collegeLectureCountService!.collegeLectureCounts.length > 0
+    ) {
       const collegeLectureCounts = JSON.parse(category);
       if (collegeLectureCounts.length > 0) {
         this.onActiveCollege({}, collegeLectureCounts[0]);
       }
-    }
-    else {
+    } else {
       const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
       if (collegeLectureCounts.length > 0) {
         this.onActiveCollege({}, collegeLectureCounts[0]);
@@ -93,12 +99,24 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
     //
-    const { collegeLectureCountService } = this.props;
+    const { collegeLectureCountService, collegeService } = this.props;
+    let bannerData = {}
+    collegeService!.getBanner().then((result) => {
+      if(result) {
+        result.map((item:any, index:number)=> {
+          if(item.collegeId === college.collegeId) {
+            bannerData = item
+          }
+        })
+      }
+      this.setState({
+        activeCollege: college,
+        banner: bannerData
+      });
+      collegeLectureCountService!.setChannelCounts(college.channelCounts);
+    })
 
-    this.setState({
-      activeCollege: college,
-    });
-    collegeLectureCountService!.setChannelCounts(college.channelCounts);
+    // collegeService!.getBanner()
   }
 
   onClickChannel(e: any, channel?: IdNameCount) {
@@ -107,15 +125,14 @@ class CategoryMenuContainer extends Component<Props, State> {
     const { history, lectureCountService } = this.props;
     const active: CollegeLectureCountRdo = activeCollege as any;
 
-    if (!channel)
-    {
+    if (!channel) {
       lectureCountService!.setCategoryType('CollegeLectures');
       history.push(lectureRoutePaths.collegeLectures(active.collegeId));
-    }
-    else if (active.collegeId && channel.id)
-    {
+    } else if (active.collegeId && channel.id) {
       lectureCountService!.setCategoryType('ChannelsLectures');
-      history.push(lectureRoutePaths.channelLectures(active.collegeId, channel.id));
+      history.push(
+        lectureRoutePaths.channelLectures(active.collegeId, channel.id)
+      );
     }
     this.setState({
       categoryOpen: false,
@@ -137,8 +154,7 @@ class CategoryMenuContainer extends Component<Props, State> {
 
     if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
       history.replace(mainRoutePaths.main());
-    }
-    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+    } else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
       history.replace(lectureRoutePaths.recommend());
     }
   }
@@ -156,11 +172,11 @@ class CategoryMenuContainer extends Component<Props, State> {
           icon
           className="img-icon change-channel-of-interest"
           onClick={this.onOpenFavorite}
-        >
-          <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
-        </Button>
+        />
         <Button className="close" onClick={this.onClose}>
-          <i className="new16x17 icon"><span className="blind">close</span></i>
+          <i className="new16x17 icon">
+            <span className="blind">close</span>
+          </i>
         </Button>
       </>
     );
@@ -168,17 +184,26 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, collegeLectureCountService } = this.props;
-    const { categoryOpen, activeCollege } = this.state;
+    const { skProfileService, collegeLectureCountService, collegeService } = this.props;
+    const { categoryOpen, activeCollege, banner } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
-    const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
-
+    const channels =
+      studySummaryFavoriteChannels.map(
+        channel => new ChannelModel({ ...channel, channelId: channel.id })
+      ) || [];
     return (
       <>
         <div className="g-menu-detail">
           <Popup
-            trigger={<Button className="detail-open" onClick={() => this.onClickActionLog('Category')}>Category</Button>}
+            trigger={
+              <Button
+                className="detail-open"
+                onClick={() => this.onClickActionLog('Category')}
+              >
+                Category
+              </Button>
+            }
             on="click"
             className="g-menu-detail"
             basic
@@ -186,19 +211,28 @@ class CategoryMenuContainer extends Component<Props, State> {
             onOpen={this.onOpen}
             onClose={this.onClose}
           >
-            <CategoryMenuPanelView
-              colleges={collegeLectureCountService!.collegeLectureCounts}
-              activeCollege={activeCollege}
-              channels={collegeLectureCountService!.channelCounts}
-              actions={this.renderMenuActions()}
-              onActiveCollege={this.onActiveCollege}
-              onRouteChannel={this.onClickChannel}
-            />
+            { activeCollege && (
+              <>
+              <CategoryMenuPanelView
+                colleges={collegeLectureCountService!.collegeLectureCounts}
+                activeCollege={activeCollege}
+                channels={collegeLectureCountService!.channelCounts}
+                favorites={channels}
+                studySummaryFavoriteChannels={studySummaryFavoriteChannels}
+                actions={this.renderMenuActions()}
+                onActiveCollege={this.onActiveCollege}
+                onRouteChannel={this.onClickChannel}
+                banner={banner}
+              />
+              </>
+              )
+            }
+            
           </Popup>
         </div>
 
         <FavoriteChannelChangeModal
-          ref={modal => this.modal = modal}
+          ref={modal => (this.modal = modal)}
           favorites={channels}
           onConfirmCallback={this.onConfirmFavorite}
         />

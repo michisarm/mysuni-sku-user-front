@@ -1,3 +1,5 @@
+import { IdName } from "@nara.platform/accent";
+
 export default interface LectureCard {
   usid: string;
   reviewId: string;
@@ -6,4 +8,5 @@ export default interface LectureCard {
   passedStudentCount: number;
   starCount: number;
   time: number;
+  learningCard: IdName;
 }
