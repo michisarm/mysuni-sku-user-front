@@ -172,11 +172,7 @@ class CategoryMenuContainer extends Component<Props, State> {
           icon
           className="img-icon change-channel-of-interest"
           onClick={this.onOpenFavorite}
-        >
-          <span className="underline">
-            관심 Channel 변경 <Icon className="setting17" />
-          </span>
-        </Button>
+        />
         <Button className="close" onClick={this.onClose}>
           <i className="new16x17 icon">
             <span className="blind">close</span>
