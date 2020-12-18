@@ -198,10 +198,13 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
 
   useEffect(() => {
     setTimeout(() => {
-      ReactGA.pageview(window.location.pathname + window.location.search, [], `(Cube) - ${lectureSummary.name}`);
+      ReactGA.pageview(
+        window.location.pathname + window.location.search,
+        [],
+        `(Cube) - ${lectureSummary.name}`
+      );
     }, 1000);
-  },[]);
-
+  }, []);
 
   return (
     <div className="course-info-header">
@@ -316,7 +319,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 </span>
               </Label>
               <Link
-                to="/board/support-qna"
+                to={`/board/support-qna/cube/${lectureSummary.learningCard.id}`}
                 className="ui icon button left post-s"
               >
                 <Icon className="ask" />

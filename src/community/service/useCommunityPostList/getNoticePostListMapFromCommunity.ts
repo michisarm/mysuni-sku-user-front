@@ -1,4 +1,4 @@
-import { findNoticePost, findPostViewsByMenuId } from 'community/api/communityApi';
+import { findNoticePost, findNoticePostGroupManager, findPostViewsByMenuId } from 'community/api/communityApi';
 import PostRdo from 'community/model/PostRdo';
 import { setCommunityPostListItem } from 'community/store/CommunityPostListStore';
 import { addNewBadge, compareAscendingByPinned } from 'community/utility/communityHelper';
@@ -40,66 +40,6 @@ export async function getPostItem(
         communityPost.offset = param.offset;
         if (findPostData.results.length !== 0) {
           findPostData.results.forEach(post => {
-            //mock data
-            // communityPost.items = [
-            //   {  
-            //     postId: '1',
-            //     communityId: '2',
-            //     title: '둘다 펄스',
-            //     html: '2',
-            //     replyCount: 1,
-            //     commentFeedbackId: '123',
-            //     creatorId: '1',
-            //     createdTime: 123,
-            //     nick: '123',
-            //     pinned: false,
-            //     fileBoxId: '1',
-            //     newBadge: false
-            //   },
-            //   {  
-            //     postId: '1',
-            //     communityId: '2',
-            //     title: '둘다 트루',
-            //     html: '2',
-            //     replyCount: 1,
-            //     commentFeedbackId: '123',
-            //     creatorId: '1',
-            //     createdTime: 123,
-            //     nick: '123',
-            //     pinned: true,
-            //     fileBoxId: '1',
-            //     newBadge: true
-            //   },
-            //   {  
-            //     postId: '2',
-            //     communityId: '1',
-            //     title: '핀드는 펄스 뉴뱃지는 트루',
-            //     html: '1',
-            //     replyCount: 1,
-            //     commentFeedbackId: '123',
-            //     creatorId: '1',
-            //     createdTime: 123,
-            //     nick: '123',
-            //     pinned: false,
-            //     fileBoxId: '1',
-            //     newBadge: true
-            //   },
-            //   {  
-            //     postId: '3',
-            //     communityId: '2',
-            //     title: '핀드는 트루 뉴뱃지는 펄스',
-            //     html: '2',
-            //     replyCount: 1,
-            //     commentFeedbackId: '123',
-            //     creatorId: '1',
-            //     createdTime: 123,
-            //     nick: '123',
-            //     pinned: true,
-            //     fileBoxId: '1',
-            //     newBadge: false
-            //   }
-            // ]
-
             communityPost.items.push({
               postId: post.postId,
               communityId: post.communityId,
@@ -126,6 +66,14 @@ export async function getPostItem(
   }
 }
 
+export async function getNoticePostGroupManager(
+  communityId: string
+
+) {
+  const findGroupManagerData = await findNoticePostGroupManager(communityId);
+  return findGroupManagerData
+}
+
 export async function getNoticePostListMapFromCommunity(
 
   param: PostRdo
@@ -138,5 +86,17 @@ export async function getNoticePostListMapFromCommunity(
     if (postItems !== undefined) {
       setCommunityPostListItem({ ...postItems });
     }
+  }
+}
+
+export async function getNoticePostGroupManagerFromCommunity(
+
+  communityId: string
+): Promise<void> {
+  // void : return이 없는 경우 undefined
+  if (communityId !== undefined) {
+    const groupManager = await getNoticePostGroupManager(
+      communityId
+    );
   }
 }

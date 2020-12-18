@@ -126,6 +126,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     });
   }, []);
 
+  {/*eslint-disable*/}
   return (
     <>
       {/* Header */}
@@ -137,9 +138,11 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         <Form>
           <Form.Field>
             <label>작성 가이드</label>
-            <div className="ui editor-wrap">
-              {lectureReport?.reportFileBox?.reportQuestion}
-            </div>
+            <div className="ui editor-wrap"
+              dangerouslySetInnerHTML={{
+                __html: `${lectureReport?.reportFileBox?.reportQuestion?.replace(/(\n|\r\n)/g, '<br/>')}`,
+              }}
+          />
           </Form.Field>
           <Form.Field>
             {lectureReport?.reportFileBox?.fileBoxId && (
@@ -301,5 +304,5 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     </>
   );
 };
-
+{/*eslint-enable*/}
 export default LectureReportView;
