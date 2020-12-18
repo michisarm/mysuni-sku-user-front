@@ -273,6 +273,11 @@ class CategoryMenuPanelView extends Component<Props> {
                 { banner.collegeBannerContents[0].visible === '1' &&  (
                   <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
                 )}
+                { banner.collegeBannerContents[0].visible === '1' && banner.collegeBannerContents[0].useLink === 1 &&  (
+                  <a href={banner.collegeBannerContents[0].linkUrl}>
+                    <img src={`${process.env.PUBLIC_URL}${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                  </a>
+                )}
                 { banner.collegeBannerContents[0].visible === '0' &&  (
                   <div/>
                 )}
