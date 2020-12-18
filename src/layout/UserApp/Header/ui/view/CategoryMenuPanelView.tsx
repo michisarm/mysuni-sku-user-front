@@ -133,7 +133,7 @@ class CategoryMenuPanelView extends Component<Props> {
             {activeCollege && (
               <>
               <div className="category-title-bar">
-                  <span className="category-title">{activeCollege.name} College<span className="num"> (125)</span></span>
+                  <span className="category-title">{activeCollege.name} College<span className="num"> ({activeCollege.totalCount})</span></span>
                   <button className="btn-category-all"
                     onClick={e => {
                     this.onClickChannelActionLog(
@@ -142,69 +142,188 @@ class CategoryMenuPanelView extends Component<Props> {
                     onRouteChannel(e);
                     }}
                   >
-                  {activeCollege.name} 전체보기
-                  <span>({activeCollege.totalCount})</span>
-                      {/* <span> */}
-                        {/* `${activeCollege.name} 전체보기` */}
-                        {/* </span> */}
-                      {/* <i className="arr-r-gray" /> */}
+                  전체보기
+                  <i className="arr-r-gray" />
                   </button>
               </div>
-              <div className="category-body">
+              {/* 원복 이전내용 주석처리 */}
+              {/* <div className="category-body">
                 {Array.isArray(channels) &&
                   channels.map((channel, index) => (
                     <Fragment key={index}>
-                    <span className="check-type2">
-                      <label htmlFor={channel.id}>
-                        <input type="checkbox" 
-                          id={channel.id}
-                          name={channel.id}
-                          checked={this.categoryCheck(channel.id)}
-                          onChange={(e)=> {
-                            this.favoriteChannel(e, channel);
-                          }}
-                          key={index} 
-                        />
-                        <span className="check-type2-marker"/>
-                      </label>
-                      <a 
-                        className="check-type2-text"
-                        onClick={e => {
-                          this.onClickChannelActionLog(channel.name);
-                          onRouteChannel(e, channel);
-                        }}
-                      >{channel.name}<strong> ({channel.count})</strong>
-                      </a>
-                    </span>
+                      <div className="category-row">
+                        <span className="check-type2">
+                          <label htmlFor={channel.id}>
+                            <input type="checkbox" 
+                              id={channel.id}
+                              name={channel.id}
+                              checked={this.categoryCheck(channel.id)}
+                              onChange={(e)=> {
+                                this.favoriteChannel(e, channel);
+                              }}
+                              key={index} 
+                            />
+                            <span className="check-type2-marker"/>
+                          </label>
+                          <a 
+                            className="check-type2-text"
+                            onClick={e => {
+                              this.onClickChannelActionLog(channel.name);
+                              onRouteChannel(e, channel);
+                            }}
+                          >{channel.name}<strong> ({channel.count})</strong>
+                          </a>
+                        </span>
+                        <span className="check-type2">
+                          <label htmlFor={channel.id}>
+                            <input type="checkbox" 
+                              id={channel.id}
+                              name={channel.id}
+                              checked={this.categoryCheck(channel.id)}
+                              onChange={(e)=> {
+                                this.favoriteChannel(e, channel);
+                              }}
+                              key={index} 
+                            />
+                            <span className="check-type2-marker"/>
+                          </label>
+                          <a 
+                            className="check-type2-text"
+                            onClick={e => {
+                              this.onClickChannelActionLog(channel.name);
+                              onRouteChannel(e, channel);
+                            }}
+                          >{channel.name}<strong> ({channel.count})</strong>
+                          </a>
+                        </span>
+                      </div>
+                      
                     </Fragment>
                   ))
+                }
+              </div> */}
+              <div className="category-body">
+                {Array.isArray(channels) &&
+                  channels.map((channel, index) => {
+                    if(index % 2 === 0) {
+                      if(channels[index+1] !== undefined) {
+                        return (
+                          <div className="category-row">
+                            <span className="check-type2">
+                              <label htmlFor={channel.id}>
+                                <input type="checkbox" 
+                                  id={channel.id}
+                                  name={channel.id}
+                                  checked={this.categoryCheck(channel.id)}
+                                  onChange={(e)=> {
+                                    this.favoriteChannel(e, channel);
+                                  }}
+                                  key={index} 
+                                />
+                                <span className="check-type2-marker"/>
+                              </label>
+                              <a 
+                                className="check-type2-text"
+                                onClick={e => {
+                                  this.onClickChannelActionLog(channel.name);
+                                  onRouteChannel(e, channel);
+                                }}
+                              >{channel.name}<strong> ({channel.count})</strong>
+                              </a>
+                            </span>
+                            <span className="check-type2">
+                              <label htmlFor={channels[index+1].id}>
+                                <input type="checkbox" 
+                                  id={channels[index+1].id}
+                                  name={channels[index+1].id}
+                                  checked={this.categoryCheck(channels[index+1].id)}
+                                  onChange={(e)=> {
+                                    this.favoriteChannel(e, channels[index+1]);
+                                  }}
+                                  key={index} 
+                                />
+                                <span className="check-type2-marker"/>
+                              </label>
+                              <a 
+                                className="check-type2-text"
+                                onClick={e => {
+                                  this.onClickChannelActionLog(channels[index+1].name);
+                                  onRouteChannel(e, channels[index+1]);
+                                }}
+                              >{channels[index+1].name}<strong> ({channels[index+1].count})</strong>
+                              </a>
+                            </span>
+                          </div>
+                        )
+                      } else {
+                        return (
+                          <div className="category-row">
+                            <span className="check-type2">
+                              <label htmlFor={channel.id}>
+                                <input type="checkbox" 
+                                  id={channel.id}
+                                  name={channel.id}
+                                  checked={this.categoryCheck(channel.id)}
+                                  onChange={(e)=> {
+                                    this.favoriteChannel(e, channel);
+                                  }}
+                                  key={index} 
+                                />
+                                <span className="check-type2-marker"/>
+                              </label>
+                              <a 
+                                className="check-type2-text"
+                                onClick={e => {
+                                  this.onClickChannelActionLog(channel.name);
+                                  onRouteChannel(e, channel);
+                                }}
+                              >{channel.name}<strong> ({channel.count})</strong>
+                              </a>
+                            </span>
+                          </div>
+                        )
+                      }
+                    }
+                  })
                 }
               </div>
               { banner.viewType === '2' &&  (
                 <>
                 <div className="category-banner">
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 && (
-                    <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    <span className="banner-holder">
+                      <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    </span>
                   )}
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 && (
-                    <a href={banner.collegeBannerContents[0].linkUrl}>
-                      <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
-                    </a>
+                    <span className="banner-holder">
+                      <a href={banner.collegeBannerContents[0].linkUrl}>
+                        <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                      </a>
+                    </span>
                   )}
                   { banner.collegeBannerContents[0].visible === 0 &&  (
-                    <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    <span className="banner-holder">
+                      <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    </span>
                   )}
 
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 0 && (
-                    <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    <span className="banner-holder">
+                      <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                    </span>
                   )}
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 1 && (
-                    <a href={banner.collegeBannerContents[0].linkUrl}>
-                      <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
-                    </a>
+                    <span className="banner-holder">
+                      <a href={banner.collegeBannerContents[0].linkUrl}>
+                        <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                      </a>
+                    </span>
                   )}
                   { banner.collegeBannerContents[1].visible === 0 &&  (
-                    <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    <span className="banner-holder">
+                      <span style={{width:"244px", height:"80px", display:"inline-block"}} />
+                    </span>
                   )}
                 </div>
                 </>
