@@ -453,10 +453,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   useEffect(() => {
-    setInterval(() => {
-      getTimeStringSeconds(embedApi.getCurrentTime());
-    }, 1000);
-
     // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure = getLectureStructure();
     setNextContentsPath('');
@@ -661,7 +657,23 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, []);
 
   // 영상 스티키 시작 시간표시
-  const getTimeStringSeconds = useCallback((seconds: any) => {
+  const getTimeStringSeconds = useCallback((seconds: number) => {
+    if (seconds >= 3600) {
+      let min: number | string = 0;
+      let sec: number | string = 0;
+      let hour: number | string = 0;
+
+      hour = Math.round(seconds / 3600);
+      min = Math.round((seconds % 3600) / 60);
+      sec = Math.round(seconds % 60);
+
+      if (hour.toString().length == 1) hour = '0' + hour;
+      if (min.toString().length == 1) min = '0' + min;
+      if (sec.toString().length == 1) sec = '0' + sec;
+
+      return hour + ':' + min + ':' + sec;
+    }
+
     let min: number | string = 0;
     let sec: number | string = 0;
 
@@ -673,7 +685,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return min + ':' + sec;
   }, []);
 
-  // isPaused에 따라 인터벌 사용
+  // isActive 따라 인터벌 사용
   let intervalFunc: any;
   useEffect(() => {
     if (isActive) {
@@ -691,7 +703,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   return (
     <div
       className={
-        scroll > videoPosition && !enabled && getLectureMedia()?.mediaType !== 'LinkMedia'
+        scroll > videoPosition &&
+        !enabled &&
+        getLectureMedia()?.mediaType !== 'LinkMedia'
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
