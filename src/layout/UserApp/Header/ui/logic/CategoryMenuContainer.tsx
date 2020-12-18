@@ -15,17 +15,20 @@ import lectureRoutePaths from 'lecture/routePaths';
 import mainRoutePaths from 'main/routePaths';
 import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
+import { CollegeService } from 'college/stores';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
   collegeLectureCountService?: CollegeLectureCountService;
   lectureCountService?: LectureCountService;
+  collegeService?: CollegeService;
 }
 
 interface State {
   categoryOpen: boolean;
   activeCollege?: CollegeLectureCountRdo;
+  banner: any;
 }
 
 @inject(
@@ -33,7 +36,8 @@ interface State {
     'shared.actionLogService',
     'profile.skProfileService',
     'lecture.collegeLectureCountService',
-    'lecture.lectureCountService'
+    'lecture.lectureCountService',
+    'college.collegeService'
   )
 )
 @reactAutobind
@@ -45,6 +49,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   state = {
     categoryOpen: false,
     activeCollege: undefined,
+    banner: undefined
   };
 
   async findCollegeLectureCount() {
@@ -94,12 +99,24 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
     //
-    const { collegeLectureCountService } = this.props;
+    const { collegeLectureCountService, collegeService } = this.props;
+    let bannerData = {}
+    collegeService!.getBanner().then((result) => {
+      if(result) {
+        result.map((item:any, index:number)=> {
+          if(item.collegeId === college.collegeId) {
+            bannerData = item
+          }
+        })
+      }
+      this.setState({
+        activeCollege: college,
+        banner: bannerData
+      });
+      collegeLectureCountService!.setChannelCounts(college.channelCounts);
+    })
 
-    this.setState({
-      activeCollege: college,
-    });
-    collegeLectureCountService!.setChannelCounts(college.channelCounts);
+    // collegeService!.getBanner()
   }
 
   onClickChannel(e: any, channel?: IdNameCount) {
@@ -171,15 +188,14 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, collegeLectureCountService } = this.props;
-    const { categoryOpen, activeCollege } = this.state;
+    const { skProfileService, collegeLectureCountService, collegeService } = this.props;
+    const { categoryOpen, activeCollege, banner } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
     const channels =
       studySummaryFavoriteChannels.map(
         channel => new ChannelModel({ ...channel, channelId: channel.id })
       ) || [];
-
     return (
       <>
         <div className="g-menu-detail">
@@ -199,14 +215,23 @@ class CategoryMenuContainer extends Component<Props, State> {
             onOpen={this.onOpen}
             onClose={this.onClose}
           >
-            <CategoryMenuPanelView
-              colleges={collegeLectureCountService!.collegeLectureCounts}
-              activeCollege={activeCollege}
-              channels={collegeLectureCountService!.channelCounts}
-              actions={this.renderMenuActions()}
-              onActiveCollege={this.onActiveCollege}
-              onRouteChannel={this.onClickChannel}
-            />
+            { activeCollege && (
+              <>
+              <CategoryMenuPanelView
+                colleges={collegeLectureCountService!.collegeLectureCounts}
+                activeCollege={activeCollege}
+                channels={collegeLectureCountService!.channelCounts}
+                favorites={channels}
+                studySummaryFavoriteChannels={studySummaryFavoriteChannels}
+                actions={this.renderMenuActions()}
+                onActiveCollege={this.onActiveCollege}
+                onRouteChannel={this.onClickChannel}
+                banner={banner}
+              />
+              </>
+              )
+            }
+            
           </Popup>
         </div>
 

@@ -48,6 +48,12 @@ export default class CollegeApi {
     return axios.get<CollegeModel[]>(this.URLCollege  + `/forCurrentCineroom`)
       .then(response => response && response.data || null);
   }
+
+  getBanner() {
+    return axios.get<CollegeModel[]>(this.URLCollege  + `/banner`)
+      .then(response => response && response.data || null);
+  }
+
 }
 
 Object.defineProperty(CollegeApi, 'instance', {
