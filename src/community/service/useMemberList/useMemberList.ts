@@ -1,7 +1,12 @@
-import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel } from 'community/api/MemberApi';
+import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel, findMembers } from 'community/api/MemberApi';
 import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
+
+export function getMembers(communityId:string, pageNumer:number = 0, limit:number = 20) {
+  findMembers(communityId , pageNumer, limit)
+  .then(response => response && setCommunityMember(response.data));
+}
 
 export function getAllMember(communityId:string, pageNumer:number = 0) {
   findAllMemberByQuery(communityId , pageNumer)
