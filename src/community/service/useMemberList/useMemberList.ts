@@ -2,9 +2,15 @@ import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMember
 import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
+import { useSearchBox } from 'community/store/SearchBoxStore';
+import { SearchBox } from 'community/model/SearchBox';
+import moment from 'moment';
 
-export function getMembers(communityId:string, pageNumer:number = 0, limit:number = 20) {
-  findMembers(communityId , pageNumer, limit)
+export function getMembers(communityId:string, searchBox:SearchBox = {offset:0, 
+                                                                      limit:20,
+                                                                      startDate:moment().startOf('day').subtract(1, 'M').toDate().getTime(),
+                                                                      endDate:moment().startOf('day').toDate().getTime()}) {
+  findMembers(communityId , searchBox)
   .then(response => response && setCommunityMember(response.data));
 }
 

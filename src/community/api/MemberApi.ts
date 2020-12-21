@@ -1,6 +1,7 @@
 import { axiosApi as axios, axiosApi } from '@nara.platform/accent';
 import MemberCdo from '../model/MemberCdo';
 import Member from 'community/model/Member';
+import { SearchBox } from 'community/model/SearchBox';
 
 const BASE_URL = "/api/community";
 
@@ -12,13 +13,16 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
 
 export function findMembers(
   communityId:string,
-  pageNum:number,
-  limit:number
+  // pageNum:number,
+  // limit:number,
+  searchBox : SearchBox
   ): Promise<any> { 
   return (
     axios
     // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
-    .get(`${BASE_URL}/communities/${communityId}/members?startDate=1576940400000&endDate=1608562799999&offset=${pageNum}&limit=${limit}`)
+    .get(`${BASE_URL}/communities/${communityId}/members`, {
+      params: searchBox,
+    })
 
     // http://university.sk.com/api/community/communities/COMMUNITY-1t/members
   );

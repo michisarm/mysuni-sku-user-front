@@ -7,7 +7,9 @@ import classNames from 'classnames';
 import {  getMembers} from 'community/service/useMemberList/useMemberList';
 import { CommunityMemberList } from 'community/model/CommunityMember';
 import moment from 'moment';
-
+import DatePicker from "react-datepicker";
+import Calendar from './Calendar';
+import { getSearchBox } from 'community/store/SearchBoxStore';
 
 interface AdminMemberViewProps {
   communityId: string;
@@ -31,15 +33,17 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   ];
 
   const limitOptions = [
-    { text: '20', value: '20' },
-    { text: '50', value: '50' },
-    { text: '100', value: '100' },
+    { text: '20개씩 보기', value: '20' },
+    { text: '50개씩 보기', value: '50' },
+    { text: '100개씩 보기', value: '100' },
   ];  
 
   const [focus, setFocus] = useState<boolean>(false);
   const [write, setWrite] = useState<string>('');
   const [selectedList, setSelectedList] = useState<((string | undefined)[])>([]);
   const [selectAll, setSelectAll] = useState<boolean>(true);
+
+
   // const approveData = useCommunityMemberApprove();
   const AllData = communityMembers && communityMembers.results.map(item => item.memberId)
 
@@ -88,7 +92,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   }, [communityMembers])
   
   const onPageChange = (data:any) => {
-    getMembers(communityId, (data.activePage - 1) * 20)
+    getMembers(communityId, getSearchBox())
     setActivePage(data.activePage)
   }
 
@@ -119,6 +123,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     }
   }
 
+
   return (
     <>
       <table className="ui admin_table_top">
@@ -127,14 +132,14 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           <col />
         </colgroup>
         <tbody>
-          {/* <tr>
+          <tr>
             <th>가입일자</th>
             <td>
               <div className="preview">
-                <Calendar />
+                <Calendar />              
               </div>
             </td>
-          </tr> */}
+          </tr>
           <tr>
             <th>검색어</th>
             <td>
@@ -170,9 +175,11 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           className="ui small-border admin_table_select"
           defaultValue={limitOptions[0].value}
           options={limitOptions}
+          // onChange={(e: any, data: any) =>
+          //   changeMemberQueryProps('limit', data.value)
+          // }          
         />
         <button className="ui button admin_table_button" onClick={e=>handleSubmitClick()} >멤버 삭제</button>
-        {/* <button class="ui button admin_table_button02" disabled="" tabindex="">그룹 멤버 삭제</button> */}
         </div>
       </div>
       <table className="ui admin_table">
@@ -229,15 +236,6 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
 
         </tbody>
       </table>
-      {/* <div className="lms-paging-holder">
-        <a className="lms-prev">이전10개</a>
-        <a className="lms-num lms-on">1</a>
-        <a className="lms-num">2</a>
-        <a className="lms-num">3</a>
-        <a className="lms-num">4</a>
-        <a className="lms-num">5</a>
-        <a className="lms-next">이후10개</a>
-      </div> */}
       {
         communityMembers && communityMembers.totalCount >= 20 ? (
           <div className="lms-paging-holder">
