@@ -16,6 +16,7 @@ import CommunityAdminMenuContainer from '../logic/CommunityAdminMenuContainer';
 import { Segment } from 'semantic-ui-react';
 import AdminMemberPage from './AdminMemberPage';
 import AdminTitleView from '../view/CommunityAdmin/AdminTitleView';
+import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 
 interface Params {
   communityId: string;
@@ -33,9 +34,8 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   // }, []);
   
   useEffect(() => {
-    // requestCommunity(communityId);
+    requestCommunity(communityId);
     // requestCommunityMenus(communityId);
-    console.log('CommunityAdminRoutes communityId', communityId);
   }, [communityId]);
 
   return (

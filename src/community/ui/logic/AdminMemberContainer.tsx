@@ -16,6 +16,7 @@ function AdminMemberContainer() {
   const communityHome = useCommunityHome();
   const communityMembers = useCommunityMember();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
+  const [adminId, setAdminId] = useState<string>('');
 
   useEffect(() => {
     if (communityHome === undefined) {
@@ -24,6 +25,7 @@ function AdminMemberContainer() {
     const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     setAdminAuth(communityHome.community?.managerId! === denizenId);
+    setAdminId(communityHome.community?.managerId!);
   }, [communityHome]);
 
   return (
@@ -32,6 +34,7 @@ function AdminMemberContainer() {
         <AdminMemberView 
           communityId={communityId} 
           managerAuth={adminAuth}
+          managerId={adminId}
           communityMembers={communityMembers}
         />
       )}

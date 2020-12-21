@@ -12,12 +12,14 @@ import moment from 'moment';
 interface AdminMemberViewProps {
   communityId: string;
   managerAuth: boolean;
+  managerId: string;
   communityMembers: CommunityMemberList;
 }
 
 const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView({
   communityId,
   managerAuth,
+  managerId,
   communityMembers
 }) {
 
@@ -46,6 +48,11 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
 
 
   const handleSubmitClick = useCallback(() => {
+
+    if(selectedList && selectedList.map((item, index) => {return item === managerId}).length > 0){
+      reactAlert({ title: '알림', message: '관리자는 삭제할수 없습니다.' });
+      return;      
+    }
 
     if(selectedList && selectedList.length === 0){
       reactAlert({ title: '알림', message: '멤버를 선택해 주세요' });
