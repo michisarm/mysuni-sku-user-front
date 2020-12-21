@@ -124,6 +124,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setWatchLog,
     getWatchLogSumViewCount,
     confirmProgress,
+    retMultiVideoOverlap,
   ] = useLectureWatchLog();
 
   // const params = useLectureRouterParams();
@@ -172,49 +173,50 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // cleanUpPanoptoIframe();
   };
 
-  const history = useHistory();
-  // 멀티 시청 제한
-  function onDoLearn(params: LectureRouterParams | undefined): void {
-    // 20200717 video 멀티 시청불가~! = return true
-    // if (handleMultiVideo(lectureView)) {
-    if (handleMultiVideo(params)) {
-      reactAlert({
-        title: '알림',
-        message:
-          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.'
-      });
-    }
-  }
-
-  function handleMultiVideo(params: LectureRouterParams | undefined) {
-    function nvl(str: any, dvalue: any) {
-      if (typeof str === 'undefined' || str === null || str === '') {
-        str = dvalue;
+  const history = useHistory();  
+  function handleMultiVideo(params: string) {
+    // 멀티시청 제한
+    retMultiVideoOverlap(params).then( function(res) {
+      if (res) {
+        reactAlert({
+          title: '알림',
+          message:
+            '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+            onClose: () => history.goBack(),
+        }        );  
       }
-      return str;
-    }
-    const lectureCardId = params?.lectureId;
-    const liveLectureCardId = getCookie('liveLectureCardId');
-    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
-    let rtnLive = false;
-    const after2Min = new Date();
-    after2Min.setMinutes(after2Min.getMinutes() + 2);
-    const nowTime = new Date().getTime();
-
-    if (
-      nvl(liveLectureCardId, 0) === 0 ||
-      liveLectureCardId === lectureCardId ||
-      (liveLectureCardId !== lectureCardId && term < nowTime)
-    ) {
-      deleteCookie('liveLectureCardId');
-      deleteCookie('liveLectureCardIdTime');
-      setCookie('liveLectureCardId', lectureCardId);
-      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-    } else {
-      rtnLive = true;
-    }
-    return rtnLive;
+    });    
   }
+
+  // function handleMultiVideo(params: LectureRouterParams | undefined) {
+  //   function nvl(str: any, dvalue: any) {
+  //     if (typeof str === 'undefined' || str === null || str === '') {
+  //       str = dvalue;
+  //     }
+  //     return str;
+  //   }
+  //   const lectureCardId = params?.lectureId;
+  //   const liveLectureCardId = getCookie('liveLectureCardId');
+  //   const term = nvl(getCookie('liveLectureCardIdTime'), 0);
+  //   let rtnLive = false;
+  //   const after2Min = new Date();
+  //   after2Min.setMinutes(after2Min.getMinutes() + 2);
+  //   const nowTime = new Date().getTime();
+
+  //   if (
+  //     nvl(liveLectureCardId, 0) === 0 ||
+  //     liveLectureCardId === lectureCardId ||
+  //     (liveLectureCardId !== lectureCardId && term < nowTime)
+  //   ) {
+  //     deleteCookie('liveLectureCardId');
+  //     deleteCookie('liveLectureCardIdTime');
+  //     setCookie('liveLectureCardId', lectureCardId);
+  //     setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
+  //   } else {
+  //     rtnLive = true;
+  //   }
+  //   return rtnLive;
+  // }
 
   const nextContents = useCallback((path: string) => {
     setLectureConfirmProgress();
@@ -265,7 +267,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (params) {
       setNextContentsView(false);
       //중복 동영상 체크
-      onDoLearn(params);
+      handleMultiVideo('start');
     }
     return () => {
       const liveLectureCardId = getCookie('liveLectureCardId');
@@ -288,6 +290,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         Math.floor((embedApi.getDuration() as unknown) as number)
       ) {
         setNextContentsView(true);
+        //중복 동영상 체크
+        handleMultiVideo('end');
       }
     }
     //동영상 시작시 student 정보 확인 및 등록
@@ -423,6 +427,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         // }, 20000));
       }, confirmProgressTime);
       checkIntervalRef.current = checkInterval;
+      //중복 동영상 체크
+      handleMultiVideo('view');
     } else if (!isActive) {
       clearInterval(checkInterval);
     }

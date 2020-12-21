@@ -31,3 +31,15 @@ export function findSumViewSeconds(
   const url = `${BASE_URL}/watchLog/sumViewSeconds?patronKeyString=${patronKeyString}&lectureUsid=${lectureUsid}`;
   return axiosApi.get<number>(url).then(response => response && response.data);
 }
+
+// 동영상 중복 시청불가
+// viewState : start=시작시 end=종료시 view=시청중
+export function multiVideoOverlap(
+  patronKeyString: String,
+  viewState: String
+): Promise<string> {
+  const url = `${BASE_URL}/videoOverlap?patronKeyString=${patronKeyString}&state=${viewState}`;
+  const rtn = axiosApi.get<string>(url).then(response => response && response.data);
+  console.log('2222222222222222222222222222222222222222222222222222:',rtn)
+  return rtn;
+}

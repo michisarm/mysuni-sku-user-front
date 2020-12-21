@@ -4,7 +4,7 @@ import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { PatronKey } from 'shared/model/PatronKey';
 import { setLectureWatchLogSumViewCount } from '../../../store/LectureWatchLogSumViewCountStore';
-import { findSumViewSeconds } from '../../../api/mWatchlogApi';
+import { findSumViewSeconds, multiVideoOverlap } from '../../../api/mWatchlogApi';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
@@ -26,3 +26,11 @@ export async function getWatchLogSumViewSeconds(
   }
   // return 0;
 }
+
+export async function getMultiVideoOverlap(
+  viewState: String
+): Promise<string> {
+      const rtn = await multiVideoOverlap(new PatronKey().keyString, viewState)      
+      return rtn;
+}
+
