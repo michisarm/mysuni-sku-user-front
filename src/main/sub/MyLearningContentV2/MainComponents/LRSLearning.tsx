@@ -24,6 +24,7 @@ import myTrainingRoutes from '../../../../myTraining/routePaths';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
@@ -139,6 +140,14 @@ const LRSLearning: React.FC<Props> = Props => {
   const onViewDetail = (e: any, data: any) => {
     //
     const { model } = data;
+
+    // react-ga event
+    ReactGA.event({
+      category: '추천 과정',
+      action: `${model.name}`,
+      label: `${model.name}`,
+    });
+
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
@@ -264,14 +273,14 @@ const LRSLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-        <NoSuchContentPanel
-          message={
-            <div className="text">
-              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
-            </div>
-          }
-        />
-      )}
+          <NoSuchContentPanel
+            message={
+              <div className="text">
+                {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
+              </div>
+            }
+          />
+        )}
     </ContentWrapper>
   );
 };

@@ -20,7 +20,7 @@ import { InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
-
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
@@ -111,6 +111,14 @@ const POPLearning: React.FC<Props> = (Props) => {
   const onViewDetail = (e: any, data: any) => {
     //
     const { model } = data;
+
+    // react-ga event
+    ReactGA.event({
+      category: '인기 과정',
+      action: `${model.name}`,
+      label: `${model.name}`,
+    });
+
     const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {

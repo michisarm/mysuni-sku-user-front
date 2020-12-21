@@ -22,6 +22,7 @@ import {
 import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
+import ReactGA from 'react-ga';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -116,6 +117,14 @@ const InProgressLearning: React.FC<Props> = Props => {
   const onViewDetail = (e: any, data: any) => {
     //
     const { model } = data;
+
+    // react-ga event
+    ReactGA.event({
+      category: '학습중인 과정',
+      action: `${model.name}`,
+      label: `${model.name}`,
+    });
+
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
