@@ -26,6 +26,7 @@ import DataPostEditPage from './ui/page/DataPostEditPage';
 import CommunityRoutes from './ui/page/CommunityRoutes';
 import CommunityPreviewPage from './ui/page/CommunityPreviewPage';
 import AppContext from '../layout/UserApp/ui/logic/AppContext';
+import CommunityAdminRoutes from './ui/page/CommunityAdminRoutes';
 
 const Routes = function Routes() {
   const {
@@ -37,7 +38,7 @@ const Routes = function Routes() {
   }, [pathname]);
 
   return (
-    <Switch>
+    <Switch>   
       <Route path="/community/main" component={MainRoutes} />
       <Route path="/community/my-profile" component={MyProfileRoutes} />
       <Route path="/community/profile/:profileId" component={ProfileRoutes} />
@@ -46,6 +47,10 @@ const Routes = function Routes() {
         path="/community/:communityId/preview"
         component={CommunityPreviewPage}
       />
+      <Route
+        path="/community/admin/:communityId"
+        component={CommunityAdminRoutes}
+      />         
       <Route
         path="/community/:communityId"
         component={CommunityRoutes}

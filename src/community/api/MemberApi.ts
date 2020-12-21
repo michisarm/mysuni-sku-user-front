@@ -10,6 +10,20 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
   });
 }
 
+export function findMembers(
+  communityId:string,
+  pageNum:number,
+  limit:number
+  ): Promise<any> { 
+  return (
+    axios
+    // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
+    .get(`${BASE_URL}/communities/${communityId}/members?startDate=1576940400000&endDate=1608562799999&offset=${pageNum}&limit=${limit}`)
+
+    // http://university.sk.com/api/community/communities/COMMUNITY-1t/members
+  );
+}
+
 export function findAllMemberByQuery(
   communityId:string,
   pageNum:number
@@ -79,15 +93,6 @@ export function modifyMembers(
     .then((response) => response && response.data);
 }
 
-export function removeMembers(
-  communityId: string,
-  memberIdList: (string | undefined)[]
-): Promise<any> {
-  return axios.delete(
-    `${BASE_URL}/${communityId}/members/${memberIdList.join(',')}`
-  );
-}
-
 export function findMember(
   communityId:string
   ): Promise<Member> { 
@@ -96,3 +101,11 @@ export function findMember(
   return axiosApi.get<Member>(url).then((response) => response && response.data);
 }
 
+export function removeMembers(
+  communityId: string,
+  memberIdList: (string | undefined)[]
+): Promise<any> {
+  return axios.delete(
+    `${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`
+  );
+}
