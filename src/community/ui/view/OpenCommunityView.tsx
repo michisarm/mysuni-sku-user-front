@@ -12,45 +12,45 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
   const contextRef = useRef(null);
 
   return (
-    <div ref={contextRef}>
-      <Sticky context={contextRef} className="tab-menu offset0">
-        <div className="cont-inner">
-          <Menu className="sku">
-            <Menu.Item
-              name="MyCommunity"
-              active={false}
-              as={Link}
-              to="/community/main"
-            >
-              My Community
-              <span className="count" />
-            </Menu.Item>
-            <Menu.Item
-              name="MyCreatedCommunity"
-              active={true}
-              as={Link}
-              to="/community/main/open-communities"
-            >
-              Open Community
-            </Menu.Item>
-            <Menu.Item
-              name="MyFeed"
-              active={false}
-              as={Link}
-              to="/community/main/follow"
-            >
-              Follow
-            </Menu.Item>
-          </Menu>
-        </div>
-      </Sticky>
+      <div ref={contextRef}>
+        <Sticky context={contextRef} className="tab-menu offset0">
+          <div className="cont-inner">
+            <Menu className="sku">
+              <Menu.Item
+                name="MyCommunity"
+                active={false}
+                as={Link}
+                to="/community/main"
+              >
+                My Community
+                <span className="count" />
+              </Menu.Item>
+              <Menu.Item
+                name="MyCreatedCommunity"
+                active={true}
+                as={Link}
+                to="/community/main/open-communities"
+              >
+                Open Community
+              </Menu.Item>
+              <Menu.Item
+                name="MyFeed"
+                active={false}
+                as={Link}
+                to="/community/main/follow"
+              >
+                Follow
+              </Menu.Item>
+            </Menu>
+          </div>
+        </Sticky>
 
-      {/* 컨텐츠 영역 */}
-      <Segment className="full">
-        <OpenCommunityIntroFieldListContainer />
-        <OpenCommunityIntroCommunityListContainer />
-      </Segment>
-    </div>
+        {/* 컨텐츠 영역 */}
+        <Segment className="full">
+          <OpenCommunityIntroFieldListContainer />
+          <OpenCommunityIntroCommunityListContainer />
+        </Segment>
+      </div>
   );
 };
 

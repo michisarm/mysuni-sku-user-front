@@ -161,7 +161,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         <>
           <div className="course-info-header">
             <div className="survey-header">
-              <div className="survey-header-left" />
+              <div className="survey-header-left">{testItem.name}</div>
               <div className="survey-header-right">
                 {!testStudentItem ||
                   !testStudentItem.learningState ||

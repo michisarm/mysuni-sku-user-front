@@ -22,7 +22,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
           <h3>{groupList.name}</h3>
           <div className="card-group-span">
             <img src={AdminIcon} className="community-manager" />
-            <span>{groupList.name}</span>
+            <span>{groupList.managerNickName}</span>
             <span>멤버</span>
             <span style={{display:"inline-block", marginLeft:"2px"}}>{groupList.memberCount <= 0 ? "0명" : `${groupList.memberCount}명`}</span>
             <button onClick={() => setCardOpen(!cardopen)} type="button" title="열기닫기" className={cardopen ? "community-btn-open" : "community-btn-close"}><span>열기닫기</span></button>
@@ -31,7 +31,7 @@ function ItemBox({groupList, activePage} : {groupList:any,activePage:number}) {
       </div>
       <div className="card-group-body" style={cardopen ? {display:"block"} : {display:"none"}}>
         <p>{groupList.introduce}</p>
-        <CommunityGroupMemberListView groupId={groupList.groupId} />
+        <CommunityGroupMemberListView groupId={groupList.groupId} managerName={groupList.managerName} managerNickName={groupList.managerNickName}/>
       </div>
     </div>
   )

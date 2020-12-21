@@ -10,6 +10,7 @@ export default interface TaskItem {
   replies: [];
   deleted: boolean;
   id: string;
+  pinned: boolean;
 }
 
 export default interface Task {

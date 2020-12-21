@@ -74,7 +74,10 @@ function CommunityMainHeaderContainer() {
   const followersModal = followersList?.followers.map((item, idx) => {
     return (
       <li style={{ cursor: 'pointer' }}>
-        <p className="pic">
+        <p
+          className="pic"
+          onClick={() => history.push(`/community/profile/${item.id}`)}
+        >
           <img
             src={
               item.profileImg === null || item.profileImg === ''
@@ -103,7 +106,10 @@ function CommunityMainHeaderContainer() {
   const followingsModal = followingsList?.followings.map((item, idx) => {
     return (
       <li style={{ cursor: 'pointer' }}>
-        <p className="pic">
+        <p
+          className="pic"
+          onClick={() => history.push(`/community/profile/${item.id}`)}
+        >
           <img
             src={
               item.profileImg === null || item.profileImg === ''

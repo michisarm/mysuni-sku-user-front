@@ -17,6 +17,7 @@ import { registerBookmark, removeBookmark } from 'community/api/communityApi';
 import { getMyProfile } from 'community/store/MyProfileStore';
 import { getCommunityProfileFeed, setCommunityProfileFeed } from 'community/store/CommunityProfileFeedStore';
 import { requestAppendProfileFeedPostList } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
+import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
@@ -122,9 +123,11 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
         <Comment.Group className="base">
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
-            {profileImage !== undefined && profileImage !== '' && (
+            {profileImage !== undefined && profileImage !== '' && profileImage !== null ? 
               <Comment.Avatar src={`/files/community/${profileImage}`} />
-            )}
+              :
+              <Comment.Avatar src={`${DefaultImg}`} />
+            }
             <Comment.Content>
               <Comment.Author as="a">
                 <Link to={`/community/${communityId}`}>{communityName}</Link>

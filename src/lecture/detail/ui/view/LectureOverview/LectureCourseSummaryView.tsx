@@ -10,6 +10,8 @@ import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
+import StampCompleted from '../../../../../style/media/stamp-completed.svg';
+import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -21,6 +23,7 @@ function numberWithCommas(x: number) {
 interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
   lectureReview?: LectureReview;
+  lectureLearningState: any;
 }
 
 function copyUrl() {
@@ -74,6 +77,7 @@ function getColor(college: IdName) {
 const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = function LectureCourseSummaryView({
   lectureSummary,
   lectureReview,
+  lectureLearningState,
 }) {
   let difficultyLevelIcon = 'basic';
   switch (lectureSummary.difficultyLevel) {
@@ -94,9 +98,18 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   // (react-ga) post pageTitle
   useEffect(() => {
     setTimeout(() => {
-      ReactGA.pageview(window.location.pathname + window.location.search, [], `(Course) - ${lectureSummary.name}`);
+      ReactGA.pageview(
+        window.location.pathname + window.location.search,
+        [],
+        `(Course) - ${lectureSummary.name}`
+      );
     }, 1000);
-  })
+  });
+  const lectureStructure = getLectureStructure();
+  let qnaUrl = '/board/support-qna';
+  if (lectureStructure !== undefined && lectureStructure.course !== undefined) {
+    qnaUrl += '/course/'+lectureStructure.course.coursePlanId;
+  }
 
   return (
     <div className="course-info-header">
@@ -147,7 +160,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 </span>
               </Label>
               <Link
-                to="/board/support-qna"
+                to={qnaUrl}
                 className="ui icon button left post-s"
               >
                 <Icon className="ask" />
@@ -157,8 +170,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           </div>
         </div>
         <div className="right-area">
-          {lectureSummary.iconBox !== undefined && (
-            <img src={lectureSummary.iconBox.baseUrl} />
+          {lectureLearningState &&
+          lectureLearningState.learningState === 'Passed' ? (
+            <img src={StampCompleted} />
+          ) : (
+            lectureSummary.iconBox !== undefined && (
+              <img src={lectureSummary.iconBox.baseUrl} />
+            )
           )}
         </div>
       </div>
