@@ -16,18 +16,16 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
         const searchBox = useSearchBox();
      
         useEffect(() => {
-            if(!startDate && !endDate){
-                onSetSearchWeek(1);
-            }
-          }, [])
+          onSetSearchWeek(1);
+        }, [])
           
-          useEffect(() => {
-            setSearchBox({
-              ...searchBox,
-              startDate: startDate && startDate.toDate().getTime(),
-              endDate: endDate && endDate.toDate().getTime()
-            });
-          }, [searchBox, startDate, endDate]);          
+        useEffect(() => {
+          setSearchBox({
+            ...searchBox,
+            startDate: startDate && startDate.toDate().getTime(),
+            endDate: endDate && endDate.toDate().getTime()
+          });
+        }, [startDate, endDate]);          
 
         const onSetSearchDate = useCallback((day?: number) => {
             const endDate = moment().endOf('day');

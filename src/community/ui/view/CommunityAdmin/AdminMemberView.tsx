@@ -177,7 +177,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           options={limitOptions}
           // onChange={(e: any, data: any) =>
           //   changeMemberQueryProps('limit', data.value)
-          // }          
+          // }
         />
         <button className="ui button admin_table_button" onClick={e=>handleSubmitClick()} >멤버 삭제</button>
         </div>
@@ -212,7 +212,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
         <tbody>
         {
         communityMembers?.results.map((item, index) => (
-          <tr>
+          <tr key={index}>
             <td>
               <Checkbox
                 className="base"
