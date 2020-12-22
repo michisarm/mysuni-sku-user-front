@@ -32,14 +32,18 @@ export function findSumViewSeconds(
   return axiosApi.get<number>(url).then(response => response && response.data);
 }
 
-// 동영상 중복 시청불가
-// viewState : start=시작시 end=종료시 view=시청중
+// 멀티시청 제한 param = patronKeyString, state, lectureId
+// state = start:시작, 중간 end:종료
+// lectureId = 시청중인 ID
+// return = false:중복시청, true:시청가능
 export function multiVideoOverlap(
   patronKeyString: String,
-  viewState: String
+  viewState: String,
+  usid: String
 ): Promise<string> {
-  const url = `${BASE_URL}/videoOverlap?patronKeyString=${patronKeyString}&state=${viewState}`;
-  const rtn = axiosApi.get<string>(url).then(response => response && response.data);
-  console.log('2222222222222222222222222222222222222222222222222222:',rtn)
+  const url = `${BASE_URL}/videoOverlap?patronKeyString=${patronKeyString}&state=${viewState}&usid=${usid}`;
+  const rtn = axiosApi
+    .get<string>(url)
+    .then(response => response && response.data);
   return rtn;
 }
