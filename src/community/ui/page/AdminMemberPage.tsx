@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import AdminMemberContainer from '../logic/AdminMemberContainer';
 import { getMembers } from 'community/service/useMemberList/useMemberList';
-import { useSearchBox } from 'community/store/SearchBoxStore';
+import { useSearchBox, getSearchBox, setSearchBox } from 'community/store/SearchBoxStore';
+import { getEmptySearchBox } from 'community/model/SearchBox';
 
-function AdminMemberPage(community:string) {
-  const searchBox =  useSearchBox();
+function AdminMemberPage(community:string, approveMember:boolean) {
   useEffect(() => {
-    getMembers(community,searchBox);
-  }, [community]);
+    setSearchBox(getEmptySearchBox(approveMember));
+    getMembers(community);
+  }, [community,approveMember]);
     
   return <AdminMemberContainer />;
 }
