@@ -25,13 +25,6 @@ interface Params {
 const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   //
   const { communityId } = useParams<Params>();
-
-  // useEffect(() => {
-  //   getCommunityProfile();
-  //   requestProfileCommunities();
-  //   requestProfileFeeds('');
-  //   requestProfileBookmarks();
-  // }, []);
   
   useEffect(() => {
     requestCommunity(communityId);
@@ -46,7 +39,9 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
           <div className="admin-container">              
             <CommunityAdminMenuContainer />
             <Switch>
-              <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId)} />
+              <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId,true)} />
+              <Route exact path="/community/admin/:communityId/memberManagement/memberJoin" component={()=>AdminMemberPage(communityId,false)} />
+
               <Route
                 exact
                 path="/community/my-profile/feed"

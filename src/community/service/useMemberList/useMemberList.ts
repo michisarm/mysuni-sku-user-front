@@ -1,16 +1,12 @@
-import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel, findMembers } from 'community/api/MemberApi';
+import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel, findMembers, removeMembers } from 'community/api/MemberApi';
 import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
-import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
-import { useSearchBox } from 'community/store/SearchBoxStore';
-import { SearchBox } from 'community/model/SearchBox';
-import moment from 'moment';
+import { getSearchBox } from 'community/store/SearchBoxStore';
+import { getEmptySearchBox } from 'community/model/SearchBox';
 
-export function getMembers(communityId:string, searchBox:SearchBox = {offset:0, 
-                                                                      limit:20,
-                                                                      startDate:moment().startOf('day').subtract(1, 'M').toDate().getTime(),
-                                                                      endDate:moment().startOf('day').toDate().getTime()}) {
-  findMembers(communityId , searchBox)
+export function getMembers(communityId:string) {
+  console.log('getSearchBox() : ' , getSearchBox());
+  findMembers(communityId , getSearchBox()||getEmptySearchBox())
   .then(response => response && setCommunityMember(response.data));
 }
 
@@ -32,6 +28,17 @@ export function updateMembers  (
       //  searchQuery();
   });
 }
+
+export function deleteMembers  (
+  communityId: string,
+  memberIdList: (string | undefined)[]
+  ) {
+    removeMembers(communityId, memberIdList).then((response) => {
+      //  searchQuery();
+  });
+}
+
+
 
 export function getSearchMember(
   communityId:string, nickName:any
