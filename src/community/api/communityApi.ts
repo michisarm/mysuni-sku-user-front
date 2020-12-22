@@ -372,3 +372,13 @@ export function findAllPostViewsFromProfileBookmark(
   const url = `${BASE_URL}/postviews/bookmarks?offset=${offset}&limit=10`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
+
+//커뮤니티 - 그룹장리스트
+export function findNoticePostGroupManager(
+  communityId: string
+): Promise<any> {
+  const url = `${BASE_URL}/groupviews/groupList?communityId=${communityId}`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  });
+}

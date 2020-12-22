@@ -14,6 +14,8 @@ import SelectType from '../../model/SelectOptions';
 import CreateListPanelTopLineView from '../view/CreateListPanelTopLineView';
 import CreateListView from '../view/CreateListView';
 
+import ReactGA from 'react-ga';
+
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   actionLogService?: ActionLogService;
   pageService?: PageService;
@@ -179,6 +181,10 @@ class CreateListContainer extends React.Component<Props> {
 
     actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Create');
+    }, 1000);
   }
 
   render() {

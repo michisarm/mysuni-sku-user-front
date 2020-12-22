@@ -5,7 +5,8 @@ export default interface TaskCdo {
     title: string,
     writer: string,
     commentFeedbackId: string,
-    boardId: string
+    boardId: string,
+    pinned: boolean
   },
   postBodyCdo:
   {

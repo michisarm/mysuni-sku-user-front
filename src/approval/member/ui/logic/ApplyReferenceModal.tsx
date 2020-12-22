@@ -222,11 +222,11 @@ class ApplyReferenceModal extends React.Component<Props> {
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell><span>{companyApprover.companyName}</span></Table.Cell>
-                      <Table.Cell><span>{companyApprover.departmentName}</span></Table.Cell>
-                      <Table.Cell><span>{companyApprover.name}</span></Table.Cell>
-                      <Table.Cell><span>{companyApprover.titleName}</span></Table.Cell>
-                      <Table.Cell><span>{companyApprover.email}</span></Table.Cell>
+                      <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell><span>{companyApprover.companyName}</span></Table.Cell>
+                      <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell><span>{companyApprover.departmentName}</span></Table.Cell>
+                      <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell><span>{companyApprover.name}</span></Table.Cell>
+                      <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell><span>{companyApprover.titleName}</span></Table.Cell>
+                      <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell><span>{companyApprover.email}</span></Table.Cell>
                     </Table.Row>
 
                   </Table.Body>

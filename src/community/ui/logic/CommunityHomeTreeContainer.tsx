@@ -478,13 +478,19 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              <ReadonlyMenuItemView
-                type="NOTICE"
-                name="전체글"
-                icon={boardIcon}
-                approved={communtyHome.community?.approved}
-                subMenus={[]}
-              />
+              {
+                communtyHome.community.communityId === "COMMUNITY-a" ? (
+                  null
+                ) : (
+                  <ReadonlyMenuItemView
+                    type="NOTICE"
+                    name="전체글"
+                    icon={boardIcon}
+                    approved={communtyHome.community?.approved}
+                    subMenus={[]}
+                  />
+                )
+              }
               <ReadonlyMenuItemView
                 type="NOTICE"
                 name="공지사항"
@@ -509,30 +515,35 @@ function CommunityHomeTreeContainer() {
           )}
           {communtyHome.community.approved === true && (
             <ul>
+              <li>
+                <Link to={`/community/${communtyHome.community.communityId}`}>
+                  <img src={homeIcon} />
+                  HOME
+                  <img src={homeArrowIcon} className="right-menu-arrow" />
+                </Link>
+              </li>
               { 
-                communtyHome.community.name.includes("신임임원") ? (
+                communtyHome.community.communityId === "COMMUNITY-a" ? (
                   null
                 ) : (
-                  <>
-                    <li>
-                      <Link
-                        to={`/community/${communtyHome.community.communityId}/all`}
-                      >
-                        <img src={boardIcon} />
-                        전체글
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={`/community/${communtyHome.community.communityId}/notice`}
-                      >
-                        <img src={boardIcon} />
-                        공지사항
-                      </Link>
-                    </li>
-                  </>
+                  <li>
+                    <Link
+                      to={`/community/${communtyHome.community.communityId}/all`}
+                    >
+                      <img src={boardIcon} />
+                      전체글
+                    </Link>
+                  </li>
                 )
               }
+              <li>
+                <Link
+                  to={`/community/${communtyHome.community.communityId}/notice`}
+                >
+                  <img src={boardIcon} />
+                  공지사항
+                </Link>
+              </li>
               {communtyHome.menus
                 .filter(c => c.parentId === null)
                 .sort((a, b) => a.order - b.order)

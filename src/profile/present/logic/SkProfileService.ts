@@ -51,7 +51,6 @@ class SkProfileService {
   get studySummaryFavoriteChannels() {
     //
     const { favoriteChannels } = this.studySummary;
-
     return (favoriteChannels && favoriteChannels.idNames) || [];
   }
 

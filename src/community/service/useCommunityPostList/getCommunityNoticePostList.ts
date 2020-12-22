@@ -1,5 +1,5 @@
 import PostRdo from "community/model/PostRdo";
-import { getNoticePostListMapFromCommunity } from "./getNoticePostListMapFromCommunity";
+import { getNoticePostGroupManagerFromCommunity, getNoticePostListMapFromCommunity } from "./getNoticePostListMapFromCommunity";
 
 export async function getCommunityNoticePostList(
   // startDate: string,
@@ -15,4 +15,10 @@ export async function getCommunityNoticePostList(
   param: PostRdo
 ): Promise<void> {
   await getNoticePostListMapFromCommunity(param);
+}
+
+export async function getNoticePostGroupManager(
+  communityId: string
+): Promise<void> {
+  return getNoticePostGroupManagerFromCommunity(communityId);
 }

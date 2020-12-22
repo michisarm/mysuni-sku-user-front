@@ -64,6 +64,15 @@ class HeaderContainer extends Component<Props, State> {
       const { history } = this.props;
       history.push(`/search?query=${searchValue}`);
       // window.location.href = encodeURI(`/search?query=${searchValue}`);
+
+      // react-GA logic
+      setTimeout(() => {
+        ReactGA.pageview(
+          window.location.pathname + window.location.search,
+          [],
+          'search'
+        );
+      }, 1000);
     }
   }
 
@@ -89,6 +98,7 @@ class HeaderContainer extends Component<Props, State> {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: menuName });
 
+    // react-GA logic
     if (menuName === 'mySUNI') {
       setTimeout(() => {
         ReactGA.pageview(

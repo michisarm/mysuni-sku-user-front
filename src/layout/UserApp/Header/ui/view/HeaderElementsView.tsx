@@ -87,25 +87,25 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onClick,
   onClear,
 }) => (
-  <div className="g-search">
-    <div
-      className={classNames('ui h38 search input', {
-        focus: focused,
-        write: value,
-      })}
-      style={{ display: 'block' }}
-    >
-      <input
-        type="text"
-        placeholder="Search"
-        value={value}
-        onChange={onChange}
-        onClick={onClick}
-        onBlur={onBlur}
-        onKeyPress={e => e.key === 'Enter' && onSearch()}
-      />
-      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
+    <div className="g-search">
+      <div
+        className={classNames('ui h38 search input', {
+          focus: focused,
+          write: value,
+        })}
+        style={{ display: 'block' }}
+      >
+        <input
+          type="text"
+          placeholder="Search"
+          value={value}
+          onChange={onChange}
+          onClick={onClick}
+          onBlur={onBlur}
+          onKeyPress={e => e.key === 'Enter' && onSearch()}
+        />
+        <i aria-hidden="true" className="clear link icon" onClick={onClear} />
+        <i aria-hidden="true" className="search link icon" onClick={onSearch} />
+      </div>
     </div>
-  </div>
-);
+  );

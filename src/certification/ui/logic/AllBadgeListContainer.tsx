@@ -1,36 +1,42 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {inject, observer} from 'mobx-react';
-import {mobxHelper} from '@nara.platform/accent';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {NoSuchContentPanel} from 'shared';
+import React, { useEffect, useRef, useState } from 'react';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { NoSuchContentPanel } from 'shared';
 import routePaths from '../../../personalcube/routePaths';
-import {PageService} from '../../../shared/stores';
+import { PageService } from '../../../shared/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import LineHeaderContainer from './LineHeaderContainer';
 import BadgeListContainer from './BadgeListContainer';
-import {SeeMoreButton} from '../../shared/Badge';
+import { SeeMoreButton } from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
-import {OffsetElementList} from '../../../shared/model';
+import { OffsetElementList } from '../../../shared/model';
 import BadgeModel from '../model/BadgeModel';
+import ReactGA from 'react-ga';
 
+interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
+  pageService?: PageService;
+  badgeService?: BadgeService;
 
-interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
-  pageService?: PageService,
-  badgeService?: BadgeService,
-
-  categorySelection: string,
+  categorySelection: string;
 }
 
-const AllBadgeListContainer: React.FC<Props> = (Props) => {
+const AllBadgeListContainer: React.FC<Props> = Props => {
   //
-  const { pageService, badgeService, categorySelection, history, match } = Props;
+  const {
+    pageService,
+    badgeService,
+    categorySelection,
+    history,
+    match,
+  } = Props;
   const { badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
-  const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
+  const PAGE_SIZE = 12; // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
   const prevCategory = useRef<string>('');
@@ -54,10 +60,9 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
 
     refresh.current = true;
 
-    return (() => {
+    return () => {
       window.scrollTo(0, 0);
-    });
-
+    };
   }, []);
 
   useEffect(() => {
@@ -87,11 +92,12 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(pageKey.current);
 
     if (getPageNo() > 1) {
-      const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
-        page!.nextOffset + PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + PAGE_SIZE
+          : page!.nextOffset;
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
-    }
-    else {
+    } else {
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
       badgeService!.clearBadges();
     }
@@ -105,7 +111,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     history.replace(routePaths.currentPage(1));
 
     // 페이지키 재설정 및 초기화
-    diffLevel = diffLevel === '전체' ? '': diffLevel;
+    diffLevel = diffLevel === '전체' ? '' : diffLevel;
     pageKey.current = PAGE_KEY + categorySelection + diffLevel;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
 
@@ -117,12 +123,28 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(pageKey.current);
 
-    const badgeOffsetList: OffsetElementList<BadgeModel> | null = await badgeService!
-      .findPagingAllBadges(BadgeFilterRdoModel.all(categorySelection, difficultyLevel, page!.limit, page!.nextOffset));
+    const badgeOffsetList: OffsetElementList<
+      BadgeModel
+    > | null = await badgeService!.findPagingAllBadges(
+      BadgeFilterRdoModel.all(
+        categorySelection,
+        difficultyLevel,
+        page!.limit,
+        page!.nextOffset
+      )
+    );
 
     if (badgeOffsetList) {
-      pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
-      pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+      pageService!.initPageMap(
+        pageKey.current,
+        (pageNo - 1) * PAGE_SIZE,
+        PAGE_SIZE
+      );
+      pageService!.setTotalCountAndPageNo(
+        pageKey.current,
+        badgeOffsetList.totalCount,
+        pageNo + 1
+      );
     }
     setBadgeCount(badgeService!.badgeCount);
   };
@@ -143,6 +165,10 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     match.params.pageNo = nextPage.toString();
     history.replace(routePaths.currentPage(nextPage));
     //showBadges();
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Certification');
+    }, 1000);
   };
 
   return (
@@ -155,7 +181,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.AllBadgeList}
       />
 
-      {badges.length > 0 ?
+      {badges.length > 0 ? (
         <>
           {/*Badge List*/}
           <BadgeListContainer
@@ -163,19 +189,17 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
             badgeStyle={BadgeStyle.List}
             badgeSize={BadgeSize.Small}
           />
-          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
+          {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
         </>
-        :
+      ) : (
         <>
-          <NoSuchContentPanel message="등록된 Badge List가 없습니다."/>
+          <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
         </>
-      }
+      )}
     </>
   );
 };
 
-
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-  'shared.pageService',
-))(withRouter(observer(AllBadgeListContainer)));
+export default inject(
+  mobxHelper.injectFrom('badge.badgeService', 'shared.pageService')
+)(withRouter(observer(AllBadgeListContainer)));

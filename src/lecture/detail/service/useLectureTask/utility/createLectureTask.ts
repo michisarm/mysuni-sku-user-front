@@ -15,7 +15,8 @@ export async function createLectureTask(): Promise<void> {
         title: taskCreateItem.title,
         writer: name,
         commentFeedbackId: taskCreateItem.commentFeedbackId,
-        boardId: taskCreateItem.id
+        boardId: taskCreateItem.id,
+        pinned: taskCreateItem.notice
       },
       postBodyCdo:
       {

@@ -6,10 +6,6 @@ import { ActionEventService } from 'shared/stores';
 import MyLearningSummary from '../../sub/MyLearningSummaryV2';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
-import Tutorial from '../../../tutorial';
-import { useParams } from 'react-router-dom';
-// 현업 요청으로 팝업제거 20201007
-// import TutorialModalView from '../../sub/MainModals/TutorialModalViewV2';
 
 interface Props {
   actionEventService: ActionEventService;
@@ -82,11 +78,6 @@ class UserMainPageV2 extends Component<Props> {
         <div className="main-wrap">
           <MyLearningSummary />
           <MyLearningContentContainer />
-
-          {/* 튜토리얼 팝업 */}
-          {/* 현업 요청으로 팝업제거 20201007*/}
-          {/* <TutorialModalView/> */}
-          <Tutorial />
         </div>
       </ContentLayout>
     );
