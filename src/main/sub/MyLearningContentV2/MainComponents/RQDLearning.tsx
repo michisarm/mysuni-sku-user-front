@@ -141,7 +141,7 @@ const RQDLearning: React.FC<Props> = Props => {
 
     ReactGA.event({
       category: '권장 과정',
-      action: `${model.name}`,
+      action: 'Click',
       label: `${model.name}`,
     });
     const cineroom =

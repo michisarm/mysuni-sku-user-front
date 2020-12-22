@@ -114,7 +114,7 @@ const NEWLearning: React.FC<Props> = (Props) => {
     // react-ga event
     ReactGA.event({
       category: '신규 학습과정',
-      action: `${model.name}`,
+      action: 'Click',
       label: `${model.name}`,
     });
 

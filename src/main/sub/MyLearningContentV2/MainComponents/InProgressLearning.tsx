@@ -121,7 +121,7 @@ const InProgressLearning: React.FC<Props> = Props => {
     // react-ga event
     ReactGA.event({
       category: '학습중인 과정',
-      action: `${model.name}`,
+      action: 'Click',
       label: `${model.name}`,
     });
 
