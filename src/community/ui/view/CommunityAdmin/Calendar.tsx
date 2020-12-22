@@ -2,7 +2,7 @@ import React, {Component, createRef, useCallback, useEffect, useState} from 'rea
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import { setSearchBox, getSearchBox } from 'community/store/SearchBoxStore';
+import { setSearchBox, getSearchBox, useSearchBox } from 'community/store/SearchBoxStore';
 
 
 interface CalendarProps {
@@ -13,20 +13,21 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
 
         const [startDate, setStartDate] = useState<moment.Moment>();
         const [endDate, setEndDate] = useState<moment.Moment>();
-
-        // setSearchBox();
-        const searchBox = getSearchBox();
-        setSearchBox({
-            ...searchBox,
-            startDate: startDate && startDate.toDate().getTime(),
-            endDate: endDate && endDate.toDate().getTime()
-        });
-
+        const searchBox = useSearchBox();
+     
         useEffect(() => {
             if(!startDate && !endDate){
                 onSetSearchWeek(1);
             }
           }, [])
+          
+          useEffect(() => {
+            setSearchBox({
+              ...searchBox,
+              startDate: startDate && startDate.toDate().getTime(),
+              endDate: endDate && endDate.toDate().getTime()
+            });
+          }, [searchBox, startDate, endDate]);          
 
         const onSetSearchDate = useCallback((day?: number) => {
             const endDate = moment().endOf('day');
