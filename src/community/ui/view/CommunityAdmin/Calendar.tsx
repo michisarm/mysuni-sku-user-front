@@ -3,17 +3,18 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import { setSearchBox, getSearchBox, useSearchBox } from 'community/store/SearchBoxStore';
+import { SearchBox } from 'community/model/SearchBox';
 
 
 interface CalendarProps {
+  searchBox:SearchBox
 }
 
-const Calendar: React.FC<CalendarProps> = function Calendar({
+const Calendar: React.FC<CalendarProps> = function Calendar({searchBox
       }) {    
 
         const [startDate, setStartDate] = useState<moment.Moment>();
         const [endDate, setEndDate] = useState<moment.Moment>();
-        const searchBox = useSearchBox();
      
         useEffect(() => {
           onSetSearchWeek(1);

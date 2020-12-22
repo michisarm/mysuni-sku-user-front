@@ -6,6 +6,7 @@ import { getCommunityHome, useCommunityHome } from '../../store/CommunityHomeSto
 import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPostCreateView';
 import AdminMemberView from '../view/CommunityAdmin/AdminMemberView';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
+import { useSearchBox } from 'community/store/SearchBoxStore';
 
 interface Params {
   communityId: string;
@@ -17,6 +18,7 @@ function AdminMemberContainer() {
   const communityMembers = useCommunityMember();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>('');
+  const searchBox = useSearchBox();
 
   useEffect(() => {
     if (communityHome === undefined) {
@@ -30,12 +32,13 @@ function AdminMemberContainer() {
 
   return (
     <>
-      {communityMembers !== undefined && (
+      {communityMembers !== undefined && searchBox !== undefined && (
         <AdminMemberView 
           communityId={communityId} 
           managerAuth={adminAuth}
           managerId={adminId}
           communityMembers={communityMembers}
+          searchBox={searchBox}
         />
       )}
     </>
