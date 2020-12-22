@@ -17,6 +17,8 @@ import { Segment } from 'semantic-ui-react';
 import AdminMemberPage from './AdminMemberPage';
 import AdminTitleView from '../view/CommunityAdmin/AdminTitleView';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
+import AdminMemberRegisterPage from './AdminMemberRegisterPage';
+import AdminGroupPage from './AdminGroupPage';
 
 interface Params {
   communityId: string;
@@ -41,22 +43,8 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
             <Switch>
               <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId,true)} />
               <Route exact path="/community/admin/:communityId/memberManagement/memberJoin" component={()=>AdminMemberPage(communityId,false)} />
-
-              <Route
-                exact
-                path="/community/my-profile/feed"
-                component={()=>ProfileFeedPage('')}
-              />
-              <Route
-                exact
-                path="/community/my-profile/communities"
-                component={MyProfileCommunitiesPage}
-              />
-              <Route
-                exact
-                path="/community/my-profile/bookmark"
-                component={MyProfileBookmarkPage}
-              />
+              <Route exact path="/community/admin/:communityId/memberManagement/memberRegister" component={()=>AdminMemberRegisterPage(communityId,false)} />
+              <Route exact path="/community/admin/:communityId/memberManagement/group" component={()=>AdminGroupPage(communityId,false)} />
               <Route component={NotFoundPage} />
             </Switch>
           </div>
