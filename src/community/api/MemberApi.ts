@@ -13,18 +13,13 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
 
 export function findMembers(
   communityId:string,
-  // pageNum:number,
-  // limit:number,
   searchBox : SearchBox
   ): Promise<any> { 
   return (
     axios
-    // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
     .get(`${BASE_URL}/communities/${communityId}/members`, {
       params: searchBox,
     })
-
-    // http://university.sk.com/api/community/communities/COMMUNITY-1t/members
   );
 }
 
