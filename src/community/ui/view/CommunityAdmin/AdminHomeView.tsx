@@ -3,6 +3,7 @@ import React from 'react';
 // sementic-ui
 import { Segment, Select, Form, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
+import HtmlEditor from './HtmlEditor';
 
 interface AdminHomeViewProps {
   communityId: string;
@@ -11,7 +12,10 @@ interface AdminHomeViewProps {
 const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   communityId,
 }) {
-  const selectOptions = [{ key: 'normal', value: 'normal', text: '기본' }];
+  const selectOptions = [
+    { key: 'normal', value: 'normal', text: '기본' },
+    { key: 'HTML', text: 'HTML', value: 'HTML' },
+  ];
   return (
     <>
       {/* 검색창 */}
@@ -95,6 +99,7 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
         </button>
         <button className="ui button admin_table_button">저장</button>
       </div>
+      {/* <HtmlEditor /> */}
     </>
   );
 };
