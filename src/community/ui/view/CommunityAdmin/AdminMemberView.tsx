@@ -123,6 +123,17 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     totalPages();
   }, [communityMembers])
 
+  useEffect(() => {
+    if(selectedList === undefined) {
+      return
+    }
+    setSearchBox({
+      ...searchBox,
+      communityId,
+      groupMemberIdList: selectedList||[]
+    });       
+
+  }, [selectedList])
 
   useEffect(() => {
     //TODO : 로직 개선 필요함
@@ -189,7 +200,6 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
 
 
   const checkAll = useCallback(() => {
-    setSelectAll(!selectAll);
     if(selectAll) {
       setSelectedList(AllData && AllData);
       setSelectAll(!selectAll);
@@ -197,7 +207,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       setSelectedList([]);
       setSelectAll(!selectAll);
     }
-  },[selectAll])
+  },[selectAll, communityMembers])
   
   const checkOne = (groupMemberId:string) => {
     const copiedSelectedList: (string | undefined)[] = [...selectedList];
@@ -217,20 +227,23 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
 
   return (
     <>
+    {!searchBox.groupId? (
       <table className="ui admin_table_top">
         <colgroup>
-          <col width="200px" />
+          <col width="100px" />
           <col />
         </colgroup>
         <tbody>
-          <tr>
-            <th>가입일자</th>
-            <td>
-              <div className="preview">
-                <Calendar searchBox={searchBox} />              
-              </div>
-            </td>
-          </tr>
+          
+            <tr>
+              <th>가입일자</th>
+              <td>
+                <div className="preview">
+                  <Calendar searchBox={searchBox} />              
+                </div>
+              </td>
+            </tr>
+          
           <tr>
             <th>검색어</th>
             <td>
@@ -249,9 +262,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                   type="text"
                   placeholder="검색어를 입력해주세요."
                   value={searchText}
-                  disabled={searchType === ''}                  
-                  // onClick={() => setFocus(true)}
-                  // onBlur={() => setFocus(false)}
+                  disabled={searchType === ''}       
                   onChange={(e: any) =>setSearchText(e.target.value)}
                 />
                 <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
@@ -260,6 +271,40 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           </tr>
         </tbody>
       </table>
+      ):(
+        <table className="ui admin_table_search sub">
+          <colgroup>
+            <col width="100px" />
+            <col />
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>검색어</th>
+              <td>
+              <Select
+                placeholder="전체"
+                className="ui small-border admin_tab_select"
+                defaultValue={selectOptions[0].value}
+                options={selectOptions}
+                onChange={(e: any,data:any) =>setSearchType(data.value)}
+              />
+                <div
+                  className={classNames("ui input admin_text_input add")}
+                >
+                  <input
+                    type="text"
+                    placeholder="검색어를 입력해주세요."
+                    value={searchText}
+                    disabled={searchType === ''}        
+                    onChange={(e: any) =>setSearchText(e.target.value)}
+                  />
+                  <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )}
       <div className="table-board-title">
         <div className="table_list_string">
         ㆍ전체 <strong>{communityMembers.totalCount}명</strong>멤버
@@ -271,11 +316,16 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           options={limitOptions}
           onChange={(e: any, data: any) => setLimit(data.value)}
         />
-        {searchBox.approved?
-        <button className="ui button admin_table_button" onClick={e=>deleteMemberList()} >멤버 삭제</button>
+        
+        {searchBox.approved?(
+          !searchBox.groupId && (<button className="ui button admin_table_button" onClick={e=>deleteMemberList()} >멤버 삭제</button>)
+        )
         :
-        <button className="ui button admin_table_button" onClick={e=>approveMemberList()} >멤버 승인</button>
+        (
+          <button className="ui button admin_table_button" onClick={e=>approveMemberList()} >멤버 승인</button>
+        )
         }
+        
         </div>
       </div>
       {communityMembers && communityMembers?.results.length > 0?(

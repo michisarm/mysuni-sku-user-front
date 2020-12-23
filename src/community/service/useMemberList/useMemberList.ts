@@ -5,7 +5,6 @@ import { getSearchBox } from 'community/store/SearchBoxStore';
 import { getEmptySearchBox } from 'community/model/SearchBox';
 
 export function getMembers(communityId:string) {
-  console.log('getSearchBox() : ' , getSearchBox());
   findMembers(communityId , getSearchBox()||getEmptySearchBox())
   .then(response => response && setCommunityMember(response.data));
 }

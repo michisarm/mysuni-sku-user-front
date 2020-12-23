@@ -7,20 +7,26 @@ import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPo
 import AdminMemberView from '../view/CommunityAdmin/AdminMemberView';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
 import { useSearchBox } from 'community/store/SearchBoxStore';
-import AdminGroupView from '../view/CommunityAdmin/AdminGroupView';
+import AdminGroupCreateView from '../view/CommunityAdmin/AdminGroupCreateView';
 import { useCommunityGroup } from 'community/store/CommunityGroupStore';
+import { setAdminGroupCreateItem, getAdminGroupCreateItem, useAdminGroupCreateItem } from 'community/store/AdminGroupCreateStore';
+import { getEmptyAdminGroupCreate } from 'community/viewModel/AdminGroupCreate';
+import { useCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
+import { getEmptyGroupDetailSearchBox } from 'community/model/SearchBox';
 
 interface Params {
   communityId: string;
+  groupId?: string;
 }
 
-function AdminGroupContainer() {
-  const { communityId} = useParams<Params>();
+function AdminGroupCreateContainer() {
+  const { communityId, groupId} = useParams<Params>();
   const communityHome = useCommunityHome();
-  const communityGroups = useCommunityGroup();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>('');
   const searchBox = useSearchBox();
+  const adminGroupCreateItem = useAdminGroupCreateItem()||getEmptyAdminGroupCreate(communityId);
+  const communityGroupMembers = useCommunityGroupMember();
 
   useEffect(() => {
     if (communityHome === undefined) {
@@ -34,17 +40,19 @@ function AdminGroupContainer() {
 
   return (
     <>
-      {communityGroups !== undefined && searchBox !== undefined && (
-        <AdminGroupView 
+      {searchBox !== undefined && adminGroupCreateItem !== undefined && (
+        <AdminGroupCreateView 
           communityId={communityId} 
           managerAuth={adminAuth}
           managerId={adminId}
-          communityGroups={communityGroups}
           searchBox={searchBox}
+          adminGroupCreateItem={adminGroupCreateItem}
+          groupId={groupId}
+          communityGroupMembers={communityGroupMembers}
         />
       )}
     </>
   );
 }
 
-export default AdminGroupContainer;
+export default AdminGroupCreateContainer;
