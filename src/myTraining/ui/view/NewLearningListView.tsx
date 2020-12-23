@@ -386,6 +386,7 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   const onViewDetail = (e: any, data: any) => {
     //
+    console.log('data', data.name);
     const { model } = data;
     const collegeId = model.category.college.id;
     const cineroom =
