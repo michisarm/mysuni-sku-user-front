@@ -31,3 +31,19 @@ export function findSumViewSeconds(
   const url = `${BASE_URL}/watchLog/sumViewSeconds?patronKeyString=${patronKeyString}&lectureUsid=${lectureUsid}`;
   return axiosApi.get<number>(url).then(response => response && response.data);
 }
+
+// 멀티시청 제한 param = patronKeyString, state, lectureId
+// state = start:시작, 중간 end:종료
+// lectureId = 시청중인 ID
+// return = false:중복시청, true:시청가능
+export function multiVideoOverlap(
+  patronKeyString: String,
+  viewState: String,
+  usid: String
+): Promise<string> {
+  const url = `${BASE_URL}/videoOverlap?patronKeyString=${patronKeyString}&state=${viewState}&usid=${usid}`;
+  const rtn = axiosApi
+    .get<string>(url)
+    .then(response => response && response.data);
+  return rtn;
+}

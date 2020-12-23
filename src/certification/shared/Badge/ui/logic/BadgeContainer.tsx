@@ -48,7 +48,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     certiAdminCategory,
     certiAdminSubcategory,
   } = badge;
-  console.log('url', iconUrl);
+
   const domainPath =
     process.env.NODE_ENV !== 'development'
       ? window.location.protocol + '//' + window.location.host

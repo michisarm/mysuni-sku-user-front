@@ -63,6 +63,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
         <div className="challenge-badge">
 
           {/*Badge UI Information*/}
+          <div style={{border: '1px red solid'}}>
           <BadgeCompLeft
             badge={myBadge}
             badgeStyle={badgeStyle}
@@ -72,7 +73,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
             passedAll={learningCount > 0 && learningCount === passedCount}
             refreshChallengingContainer={refreshChallengingContainer}
           />
-
+          </div>
           {/*도전중 뱃지별 학습리스트*/}
           <BadgeCompRight
             badge={myBadge}
