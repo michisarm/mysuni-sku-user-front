@@ -19,6 +19,7 @@ import AdminTitleView from '../view/CommunityAdmin/AdminTitleView';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import AdminMemberRegisterPage from './AdminMemberRegisterPage';
 import AdminGroupPage from './AdminGroupPage';
+import AdminHomePage from './AdminHomePage';
 
 interface Params {
   communityId: string;
@@ -27,7 +28,7 @@ interface Params {
 const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   //
   const { communityId } = useParams<Params>();
-  
+
   useEffect(() => {
     requestCommunity(communityId);
     // requestCommunityMenus(communityId);
@@ -36,19 +37,40 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   return (
     <section className="content admin">
       <div>
-        <AdminTitleView communityId={communityId}/>
+        <AdminTitleView communityId={communityId} />
         <Segment className="full">
-          <div className="admin-container">              
+          <div className="admin-container">
             <CommunityAdminMenuContainer />
             <Switch>
-              <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId,true)} />
-              <Route exact path="/community/admin/:communityId/memberManagement/memberJoin" component={()=>AdminMemberPage(communityId,false)} />
-              <Route exact path="/community/admin/:communityId/memberManagement/memberRegister" component={()=>AdminMemberRegisterPage(communityId,false)} />
-              <Route exact path="/community/admin/:communityId/memberManagement/group" component={()=>AdminGroupPage(communityId,false)} />
+              <Route
+                exact
+                path="/community/admin/:communityId/memberManagement/member"
+                component={() => AdminMemberPage(communityId, true)}
+              />
+              <Route
+                exact
+                path="/community/admin/:communityId/memberManagement/memberJoin"
+                component={() => AdminMemberPage(communityId, false)}
+              />
+              <Route
+                exact
+                path="/community/admin/:communityId/memberManagement/memberRegister"
+                component={() => AdminMemberRegisterPage(communityId, false)}
+              />
+              <Route
+                exact
+                path="/community/admin/:communityId/memberManagement/group"
+                component={() => AdminGroupPage(communityId, false)}
+              />
+              <Route
+                exact
+                path="/community/admin/:communityId/homeManagement"
+                component={() => AdminHomePage(communityId)}
+              />
               <Route component={NotFoundPage} />
             </Switch>
           </div>
-        </Segment>          
+        </Segment>
       </div>
     </section>
   );
