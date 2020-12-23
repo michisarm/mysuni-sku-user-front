@@ -18,7 +18,7 @@ import { AplState } from 'myTraining/model/AplState';
 import { AplStateName } from 'myTraining/model/AplStateName';
 import { LectureServiceType } from 'lecture/model';
 import { MyLearningContentType, MyPageContentType } from '../../model';
-
+import ReactGA from 'react-ga';
 
 
 
@@ -91,7 +91,6 @@ function MyLearningTableBody(props: Props) {
     const { category: { college }, serviceId, serviceType, coursePlanId, cubeId } = model;
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
-
     /* URL 표현을 위한 변환. */
     const convertedServiceType = convertServiceType(serviceType);
 
@@ -103,6 +102,13 @@ function MyLearningTableBody(props: Props) {
     else {
       history.push(lectureRoutePaths.courseOverview(cineroomId, collegeId, coursePlanId, convertedServiceType, serviceId));
     }
+
+    // react-ga event
+    ReactGA.event({
+      category: '학습중인 과정',
+      action: 'Click',
+      label: `${model.name}`
+    })
   };
 
   const onCheckOne = useCallback((e: any, data: any) => {

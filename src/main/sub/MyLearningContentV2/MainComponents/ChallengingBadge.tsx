@@ -13,6 +13,7 @@ import BadgeFilterRdoModel from '../../../../certification/ui/model/BadgeFilterR
 import { Badge } from '../../../../certification/shared/Badge';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
+import ReactGA from 'react-ga';
 
 
 interface Props extends RouteComponentProps {
@@ -69,6 +70,14 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
     history.push(certificationRoutes.badgeAllBadgeList());
   };
 
+  // react-ga event
+  const onClick = (idx: number) => {
+    ReactGA.event({
+      category: '도전중인 Badge',
+      action: 'Click',
+      label: `${myBadges[idx].name}`,
+    });
+  }
 
   return (
     <ContentWrapper className="badge-scrolling">
@@ -90,7 +99,7 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
           <ul className="belt">
             {myBadges.map((badge: BadgeModel, index: number) => {
               return (
-                <li key={index}>
+                <li key={index} onClick={() => onClick(index)}>
                   <Badge
                     badge={badge}
                     badgeStyle={BadgeStyle.List}

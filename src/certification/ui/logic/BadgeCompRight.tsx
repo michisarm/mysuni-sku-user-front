@@ -11,6 +11,7 @@ import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
 import BadgeCourseData from '../model/BadgeCourseData';
 import lectureRoutePaths from '../../../lecture/routePaths';
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService;
@@ -41,7 +42,6 @@ const BadgeCompRight: React.FC<Props> = Props => {
     if (e) {
       e.preventDefault();
     }
-
     const keyStr = data.patronKey.keyString;
     const cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
     const collegeId = data.category.college.id;
@@ -69,6 +69,13 @@ const BadgeCompRight: React.FC<Props> = Props => {
         )
       );
     }
+
+    // react-ga event
+    ReactGA.event({
+      category: '도전중인 Badge',
+      action: 'Click',
+      label: `${data.name}`
+    })
   };
 
   return (
