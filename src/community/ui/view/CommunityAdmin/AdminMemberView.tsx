@@ -184,14 +184,19 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     setSearchBox({
       ...searchBox,
       limit: limit || 20,
+      offset: 0,
     });    
     handleSubmitClick(); 
   }, [limit])    
   
   const onPageChange = useCallback((data:any) => {
+    setSearchBox({
+      ...searchBox,
+      offset: (data.activePage - 1) * limit,
+    });        
     getMembers(communityId);
     setActivePage(data.activePage);
-  }, [communityId,searchBox]);
+  }, [communityId,searchBox,limit]);
 
   const handleSubmitClick = useCallback(async (limit?:number) => {
     getMembers(communityId);
