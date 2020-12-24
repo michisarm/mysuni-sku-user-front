@@ -21,10 +21,12 @@ export interface CommunityPostItem {
   commentFeedbackId: string;
   menuId: string;
   createdTime: number;
+  creatorId:string;
   nickName: string;
   pinned: boolean;
   fileBoxId: string;
   newBadge: boolean;
   menuType?: string;
   creatorName: string;
+  visible: boolean;
 }
