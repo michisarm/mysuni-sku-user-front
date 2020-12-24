@@ -56,14 +56,14 @@ const HtmlEditor: React.FC<HtmlEditorProps> = function HtmlEditor({
           />
         </div>
       )}
-      <div style={{ position: 'absolute', top: 7, right: 0 }}>
+      {/* <div style={{ position: 'absolute', top: 7, right: 0 }}>
         {!onlyHtml && (
           <Button onClick={() => setIsHtml(!isHtml)}>
             {`${isHtml ? 'EDIT' : 'HTML'}`}
           </Button>
         )}
         {onlyHtml && <Button disabled>HTML</Button>}
-      </div>
+      </div> */}
     </div>
   );
 };
