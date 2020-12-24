@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // sementic-ui
 import { Segment, Select, Form, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import HtmlEditor from './HtmlEditor';
+
+import { adminHomeSave } from 'community/service/useAdminHome/useHome';
+import { values } from 'mobx';
 
 interface AdminHomeViewProps {
   communityId: string;
@@ -12,14 +15,23 @@ interface AdminHomeViewProps {
 const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   communityId,
 }) {
+
+  const [changeSelectType, setChangeSelectType] = useState<string>();
+
   const selectOptions = [
     { key: 'normal', value: 'normal', text: '기본' },
     { key: 'HTML', text: 'HTML', value: 'HTML' },
   ];
+
+  const onSave = () => {
+    console.log('click', communityId);
+    adminHomeSave(communityId);
+  }
+
   return (
     <>
       {/* 검색창 */}
-      <table className="ui admin_table_top none">
+      {/* <table className="ui admin_table_top none">
         <colgroup>
           <col width="200px" />
           <col />
@@ -27,13 +39,14 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
         <tbody>
           <tr>
             <th>
-              유형<span>*</span>
+              유형<span id="type">*</span>
             </th>
             <td>
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
                 defaultValue={selectOptions[0].value}
+                onChange={(e: any, data: any) => setChangeSelectType(data.value)}
                 options={selectOptions}
               />
             </td>
@@ -75,14 +88,14 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                 <input
                   type="text"
                   placeholder="커뮤니티 환영 메시지를 입력해주세요."
-                  // // value={this.state.write}
-                  // onClick={() => this.setState({ focus: true })}
-                  // onBlur={() => this.setState({ focus: false })}
-                  // onChange={e => this.setState({ write: e.target.value })}
+                // // value={this.state.write}
+                // onClick={() => this.setState({ focus: true })}
+                // onBlur={() => this.setState({ focus: false })}
+                // onChange={e => this.setState({ write: e.target.value })}
                 />
                 <Icon
                   className="clear link"
-                  // onClick={() => this.setState({ write: '' })}
+                // onClick={() => this.setState({ write: '' })}
                 />
                 <span className="validation">
                   You can enter up to 100 characters.
@@ -91,15 +104,15 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> */}
+      <HtmlEditor />
 
       <div className="admin_bottom_button line none">
         <button className="ui button admin_table_button02 left">
           미리보기
         </button>
-        <button className="ui button admin_table_button">저장</button>
+        <button className="ui button admin_table_button" onClick={onSave}>저장</button>
       </div>
-      {/* <HtmlEditor /> */}
     </>
   );
 };

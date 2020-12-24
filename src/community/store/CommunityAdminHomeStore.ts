@@ -1,4 +1,4 @@
-import Home from '../model/Home';
+import AdminHome from '../model/CommunityAdminHome';
 import { createStore } from './Store';
 
 const [
@@ -6,7 +6,7 @@ const [
   onCommunityAdminHome,
   getCommunityAdminHome,
   useCommunityAdminHome,
-] = createStore<Home>();
+] = createStore<AdminHome>();
 
 export {
   setCommunityAdminHome,
