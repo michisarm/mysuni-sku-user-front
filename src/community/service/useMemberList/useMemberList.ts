@@ -1,8 +1,10 @@
-import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel, findMembers, removeMembers } from 'community/api/MemberApi';
+import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel, findMembers, removeMembers, registerMemberTempComplete } from 'community/api/MemberApi';
 import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
 import { getSearchBox } from 'community/store/SearchBoxStore';
 import { getEmptySearchBox } from 'community/model/SearchBox';
+import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
+import { MemberTempModel } from 'community/model/MemberTempModel';
 
 export function getMembers(communityId:string) {
   findMembers(communityId , getSearchBox()||getEmptySearchBox())
@@ -60,4 +62,17 @@ export function onUnFollow(
   pageNum: number
   ) {
   memberFollowDel(memberId).then(res => {getAllMember(communityId, pageNum)})
+}
+
+
+export function registerMembersTempComplete(
+  communityId: string,
+  memberTempCboList: MemberTempCdoModel[]
+): Promise<MemberTempModel[]> {
+  //
+  const memberTempProcList = registerMemberTempComplete(
+    communityId,
+    memberTempCboList
+  );
+  return memberTempProcList;
 }
