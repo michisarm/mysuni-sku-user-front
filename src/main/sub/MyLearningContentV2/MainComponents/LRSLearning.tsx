@@ -145,7 +145,9 @@ const LRSLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '추천 과정',
       action: 'Click',
-      label: `${model.name}`,
+      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+        model.name
+      }`,
     });
 
     const cineroom =
@@ -273,14 +275,14 @@ const LRSLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-          <NoSuchContentPanel
-            message={
-              <div className="text">
-                {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
-              </div>
-            }
-          />
-        )}
+        <NoSuchContentPanel
+          message={
+            <div className="text">
+              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
+            </div>
+          }
+        />
+      )}
     </ContentWrapper>
   );
 };

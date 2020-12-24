@@ -15,17 +15,16 @@ import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
 
-
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  badgeService?: BadgeService,
+  actionLogService?: ActionLogService;
+  badgeService?: BadgeService;
 
-  profileMemberName: string
+  profileMemberName: string;
 }
 
-const ChallengingBadge: React.FC<Props> = (Props) => {
+const ChallengingBadge: React.FC<Props> = Props => {
   //
-  const { actionLogService, badgeService, profileMemberName, history, } = Props;
+  const { actionLogService, badgeService, profileMemberName, history } = Props;
 
   const CONTENT_TYPE = 'Badge';
   /*
@@ -53,7 +52,10 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
     // }
 
     badgeService!.clearMyBadges();
-    badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0), true);
+    badgeService!.findPagingChallengingBadges(
+      BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0),
+      true
+    );
   };
 
   const onViewAll = () => {
@@ -75,26 +77,27 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
     ReactGA.event({
       category: '도전중인 Badge',
       action: 'Click',
-      label: `${myBadges[idx].name}`,
+      label: `(Badge) - ${myBadges[idx].name}`,
     });
-  }
+  };
 
   return (
     <ContentWrapper className="badge-scrolling">
       <div className="section-head">
-        <strong><span className="ellipsis">{profileMemberName}</span>님의 도전중인 Badge</strong>
+        <strong>
+          <span className="ellipsis">{profileMemberName}</span>님의 도전중인
+          Badge
+        </strong>
         <div className="right">
-          {
-            myBadges.length > 0 && (
-              <Button icon className="right btn-blue" onClick={onViewAll}>
-                View All <Icon className="morelink" />
-              </Button>
-            )
-          }
+          {myBadges.length > 0 && (
+            <Button icon className="right btn-blue" onClick={onViewAll}>
+              View All <Icon className="morelink" />
+            </Button>
+          )}
         </div>
       </div>
 
-      {myBadges.length > 0 && myBadges[0] ?
+      {myBadges.length > 0 && myBadges[0] ? (
         <div className="scrolling">
           <ul className="belt">
             {myBadges.map((badge: BadgeModel, index: number) => {
@@ -110,28 +113,32 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
             })}
           </ul>
         </div>
-        :
-        <NoSuchContentPanel message={(
-          <>
-            <div className="text">도전중인 Badge가 없습니다.<br />등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.</div>
-            <Button
-              icon
-              as="a"
-              className="right btn-blue2"
-              onClick={onClickLink}
-            >
-              <span className="border">Badge List 바로가기</span>
-              <Icon className="morelink" />
-            </Button>
-          </>
-        )}
+      ) : (
+        <NoSuchContentPanel
+          message={
+            <>
+              <div className="text">
+                도전중인 Badge가 없습니다.
+                <br />
+                등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+              </div>
+              <Button
+                icon
+                as="a"
+                className="right btn-blue2"
+                onClick={onClickLink}
+              >
+                <span className="border">Badge List 바로가기</span>
+                <Icon className="morelink" />
+              </Button>
+            </>
+          }
         />
-      }
+      )}
     </ContentWrapper>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'badge.badgeService',
-))(withRouter(observer(ChallengingBadge)));
+export default inject(
+  mobxHelper.injectFrom('shared.actionLogService', 'badge.badgeService')
+)(withRouter(observer(ChallengingBadge)));
