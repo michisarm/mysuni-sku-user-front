@@ -19,6 +19,7 @@ import AdminTitleView from '../view/CommunityAdmin/AdminTitleView';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import AdminMemberRegisterPage from './AdminMemberRegisterPage';
 import AdminGroupPage from './AdminGroupPage';
+import AdminHomePage from './AdminHomePage';
 import AdminGroupCreatePage from './AdminGroupCreatePage';
 import CommunityMenuPage from './CommunityMenuPage';
 
@@ -30,7 +31,6 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   //
   const { communityId  } = useParams<Params>();
   
-
   useEffect(() => {
     requestCommunity(communityId);
     // requestCommunityMenus(communityId);
@@ -39,9 +39,9 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   return (
     <section className="content admin">
       <div>
-        <AdminTitleView communityId={communityId}/>
+        <AdminTitleView communityId={communityId} />
         <Segment className="full">
-          <div className="admin-container">              
+          <div className="admin-container">
             <CommunityAdminMenuContainer />
             <Switch>
               <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId,true)} />
@@ -57,12 +57,17 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
                 exact
                 path="/community/admin/:communityId/memberManagement/group/detail/:groupId"
                 component={()=>AdminGroupCreatePage(communityId)}
+              />
+              <Route
+                exact
+                path="/community/admin/:communityId/homeManagement"
+                component={() => AdminHomePage(communityId)}
               />                     
               <Route exact path="/community/admin/:communityId/menuManagement" component={()=>CommunityMenuPage(communityId)} />
               <Route component={NotFoundPage} />
             </Switch>
           </div>
-        </Segment>          
+        </Segment>
       </div>
     </section>
   );
