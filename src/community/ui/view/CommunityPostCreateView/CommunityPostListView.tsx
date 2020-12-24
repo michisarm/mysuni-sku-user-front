@@ -1,8 +1,9 @@
 import { CommunityPostItem, CommunityPostList } from 'community/viewModel/CommunityPostList';
 import moment from 'moment';
 import React, { useCallback } from 'react';
-import { Icon } from 'semantic-ui-react';
-import { checkMember } from 'community/service/useMember/useMember';
+import { useCommunityHome } from 'community/store/CommunityHomeStore';
+import { patronInfo } from '@nara.platform/dock';
+import { reactAlert } from '@nara.platform/accent';
 
 interface CommunityPostListViewProps{
   menuType: string
@@ -11,6 +12,7 @@ interface CommunityPostListViewProps{
 }
 
 function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: string) {
+
   return (
     <>
       {post.pinned === false && ( 
@@ -86,9 +88,24 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
   menuType,
   handleClickRow
 }) {
-  const onHandleClickRow = useCallback(
-    param => {
-      handleClickRow(param, menuType);
+
+  const denizenId = patronInfo.getDenizenId();
+  const communityHome = useCommunityHome();
+
+  const onHandleClickRow = useCallback(param => {
+
+      if(param.visible) {
+        handleClickRow(param, menuType);
+      } else {
+        if (
+          communityHome?.community?.managerId === denizenId ||
+          param.creatorId === denizenId 
+        ) {
+          handleClickRow(param, menuType);
+        } else {
+          reactAlert({title: '알림', message: '비밀글 입니다'});
+        }
+      }
     },
     [menuType]
   );
@@ -112,3 +129,4 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
 }
 
 export default CommunityPostListView;
+

@@ -2,6 +2,8 @@ import { axiosApi as axios, axiosApi } from '@nara.platform/accent';
 import MemberCdo from '../model/MemberCdo';
 import Member from 'community/model/Member';
 import { SearchBox } from 'community/model/SearchBox';
+import { MemberTempModel } from 'community/model/MemberTempModel';
+import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
 
 const BASE_URL = "/api/community";
 
@@ -13,18 +15,13 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
 
 export function findMembers(
   communityId:string,
-  // pageNum:number,
-  // limit:number,
   searchBox : SearchBox
   ): Promise<any> { 
   return (
     axios
-    // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
     .get(`${BASE_URL}/communities/${communityId}/members`, {
       params: searchBox,
     })
-
-    // http://university.sk.com/api/community/communities/COMMUNITY-1t/members
   );
 }
 
@@ -112,4 +109,16 @@ export function removeMembers(
   return axios.delete(
     `${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`
   );
+}
+
+export function registerMemberTempComplete(
+  communityId: string,
+  memberTempCdoList: MemberTempCdoModel[]
+) {
+  return axios
+    .post<MemberTempModel[]>(
+      `${BASE_URL}/communities/${communityId}/members/flow/registerMemberTempComplete`,
+      memberTempCdoList
+    )
+    .then((response) => (response && response.data) || null);
 }

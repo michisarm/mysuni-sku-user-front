@@ -21,6 +21,7 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import CommunityMenuType from '../../model/CommunityMenuType';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
+import { patronInfo } from '@nara.platform/dock';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -418,6 +419,27 @@ function MemberView() {
   );
 }
 
+function AdminView() {
+  const communtyHome = useCommunityHome();
+  if (communtyHome === undefined || communtyHome.community === undefined) {
+    return null;
+  }
+
+  return (
+    <Link
+      to={`/community/admin/${communtyHome.community.communityId}/memberManagement/member`}
+      className="ui button fix line02"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      커뮤니티 관리
+    </Link>
+  );
+}
+
 function CommunityHomeTreeContainer() {
   const communtyHome = useCommunityHome();
   const copyUrl = useCallback(() => {
@@ -466,6 +488,8 @@ function CommunityHomeTreeContainer() {
             {communtyHome.community.approved === null && <JoinView />}
             {communtyHome.community.approved === false && <WaitView />}
             {communtyHome.community.approved === true && <MemberView />}
+            {/* TODO : 커뮤니티 front 관리자 기능 개발 완료 후 주석 해제 */}
+            {/* {communtyHome.community.managerId === patronInfo.getDenizenId() && <AdminView />} */}
           </div>
         </div>
         <div className="community-home-right-contents">

@@ -135,6 +135,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   };
 
   const onHandleChangeModal = () => {
+    console.log('hihi');
     setRequestModal(!requestModal);
   };
 

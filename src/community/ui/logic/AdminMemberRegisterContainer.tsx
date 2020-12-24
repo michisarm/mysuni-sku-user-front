@@ -16,10 +16,8 @@ interface Params {
 function AdminMemberRegisterContainer() {
   const { communityId} = useParams<Params>();
   const communityHome = useCommunityHome();
-  const communityMembers = useCommunityMember();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>('');
-  const searchBox = useSearchBox();
 
   useEffect(() => {
     if (communityHome === undefined) {
@@ -33,15 +31,11 @@ function AdminMemberRegisterContainer() {
 
   return (
     <>
-      {communityMembers !== undefined && searchBox !== undefined && (
-        <AdminMemberRegisterView 
-          communityId={communityId} 
-          managerAuth={adminAuth}
-          managerId={adminId}
-          communityMembers={communityMembers}
-          searchBox={searchBox}
-        />
-      )}
+      <AdminMemberRegisterView 
+        communityId={communityId} 
+        managerAuth={adminAuth}
+        managerId={adminId}
+      />
     </>
   );
 }

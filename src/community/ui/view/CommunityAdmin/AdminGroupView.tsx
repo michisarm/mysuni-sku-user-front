@@ -10,12 +10,16 @@ import moment from 'moment';
 import Calendar from './Calendar';
 import { getSearchBox, useSearchBox, setSearchBox } from 'community/store/SearchBoxStore';
 import { SearchBox } from 'community/model/SearchBox';
+import { CommunityGroup } from 'community/model/CommunityMemberGroup';
+import { useHistory } from 'react-router-dom';
+import { getgroups } from 'process';
+import { getAdminGroups } from 'community/service/useGroupList/useGroupList';
 
 interface AdminGroupViewProps {
   communityId: string;
   managerAuth: boolean;
   managerId: string;
-  communityMembers: CommunityMemberList;
+  communityGroups: CommunityGroup;
   searchBox:SearchBox;
 }
 
@@ -23,140 +27,54 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
   communityId,
   managerAuth,
   managerId,
-  communityMembers,
+  communityGroups,
   searchBox
 }) {
-
-  const selectOptions = [
-    { key: "all", value: "", text: "전체" },
-    { key: "companyName", value: "companyName", text: "소속사" },
-    { key: "teamName", value: "teamName", text: "소속 조직(팀)" },
-    { key: "name", value: "name", text: "성명" },
-    { key: "email", value: "email", text: "E-mail" },
-  ];
 
   const limitOptions = [
     { text: '20개씩 보기', value: '20' },
     { text: '50개씩 보기', value: '50' },
     { text: '100개씩 보기', value: '100' },
-  ];  
-
-  // const [focus, setFocus] = useState<boolean>(false);
-  // const [write, setWrite] = useState<string>('');
-  const [selectedList, setSelectedList] = useState<((string | undefined)[])>([]);
-  const [selectAll, setSelectAll] = useState<boolean>(true);
+  ]; 
   const [limit, setLimit] = useState<number>(20);
   const [searchText, setSearchText] = useState<string>('');
-  const [searchType, setSearchType] = useState<string>('');
-  
-  // const approveData = useCommunityMemberApprove();
-  const AllData = communityMembers && communityMembers.results.map(item => item.memberId)
-
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const history = useHistory();
 
-  const deleteMemberList = useCallback(() => {
+  const routeToGroupCreate = useCallback(() => {
+    history.push(`/community/admin/${communityId}/memberManagement/group/create`);
+  }, [communityId]);
 
-    if(selectedList && selectedList.find(item => item === managerId)){
-      reactAlert({ title: '알림', message: '관리자는 삭제할수 없습니다.' });
-      return;      
-    }
-
-    if(selectedList && selectedList.length === 0){
-      reactAlert({ title: '알림', message: '멤버를 선택해 주세요' });
-      return;
-    }
-
-    reactConfirm({
-      title: '알림',
-      message: '선택한 멤버를 삭제하시겠습니까?',
-      onOk: async () => {
-        await deleteMembers(communityId, selectedList);
-        // getMembers(communityId);
-        //TODO 로직 변경 필요
-        setTimeout(() => {
-          getMembers(communityId);
-        }, 500)
-        setSelectedList([]);
-      },
-    });
-  }, [communityId, selectedList,searchBox]);
-
-  const approveMemberList = useCallback(() => {
-
-    if(selectedList && selectedList.length === 0){
-      reactAlert({ title: '알림', message: '멤버를 선택해 주세요' });
-      return;
-    }
-
-    reactConfirm({
-      title: '알림',
-      message: '선택한 멤버를 승인하시겠습니까?',
-      onOk: async () => {
-        // await removeMembers(communityId, selectedList);
-        await updateMembers(communityId, selectedList);
-        // getMembers(communityId);
-        //TODO 로직 변경 필요
-        setTimeout(() => {
-          getMembers(communityId);
-        }, 500)
-        setSelectedList([]);
-      },
-    });
-  }, [communityId, selectedList,searchBox]);
-  
-
-
+  const routeToGroupDetail = useCallback((groupId:string) => {
+    history.push(`/community/admin/${communityId}/memberManagement/group/Detail/${groupId}`);
+  }, [communityId]);
 
   const totalPages = useCallback(() => {    
-    let totalPage = Math.ceil(communityMembers!.totalCount / limit)
-    if (communityMembers!.totalCount % limit < 0) {
+    let totalPage = Math.ceil(communityGroups!.totalCount / limit)
+    if (communityGroups!.totalCount % limit < 0) {
       totalPage++
     }
     setTotalPage(totalPage)
-  }, [communityMembers, limit])
+  }, [communityGroups, limit])
   
   useEffect(() => {
-    if(communityMembers === undefined) {
+    if(communityGroups === undefined) {
       return
     }
     totalPages();
-  }, [communityMembers])
+  }, [communityGroups])
 
 
   useEffect(() => {
     //TODO : 로직 개선 필요함
-    if(searchType === 'companyName'){
-      setSearchBox({
-        ...searchBox,
-        companyName: searchText||'',
-        teamName: '',
-        name: '',
-        email: '',
-      });   
-    }else if(searchType === 'teamName'){
-      setSearchBox({
-        ...searchBox,
-        companyName:'',
-        teamName: searchText,
-        name: '',
-        email: '',
-      });   
-    }else if(searchType === 'name'){
+    if(searchText && searchText !== ''){
       setSearchBox({
         ...searchBox,
         companyName:'',
         teamName: '',
         name: searchText||'',
         email: '',
-      });   
-    }else if(searchType === 'email'){
-      setSearchBox({
-        ...searchBox,
-        companyName:'',
-        teamName: '',
-        name: '',
-        email: searchText||'',
       });   
     }else{
       setSearchBox({
@@ -167,91 +85,49 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
         email: '',
       });       
     }
-  }, [searchType,searchText])  
+  }, [searchText])  
 
   useEffect(() => {
     setSearchBox({
       ...searchBox,
       limit: limit || 20,
+      offset: 0,
     });    
     handleSubmitClick(); 
   }, [limit])    
   
   const onPageChange = useCallback((data:any) => {
-    getMembers(communityId);
+    setSearchBox({
+      ...searchBox,
+      offset: (data.activePage - 1) * limit,
+    });        
+    getAdminGroups(communityId);
     setActivePage(data.activePage);
-  }, [communityId,searchBox]);
+  }, [communityId,searchBox,limit]);
 
   const handleSubmitClick = useCallback(async (limit?:number) => {
-    getMembers(communityId);
+    getAdminGroups(communityId);
     setActivePage(1);
   }, [communityId,searchBox,limit]);
 
-
-  const checkAll = useCallback(() => {
-    setSelectAll(!selectAll);
-    if(selectAll) {
-      setSelectedList(AllData && AllData);
-      setSelectAll(!selectAll);
-    } else {
-      setSelectedList([]);
-      setSelectAll(!selectAll);
-    }
-  },[selectAll])
-  
-  const checkOne = (groupMemberId:string) => {
-    const copiedSelectedList: (string | undefined)[] = [...selectedList];
-    const index = copiedSelectedList.indexOf(groupMemberId);
-
-    if (index >= 0) {
-      const newSelectedList = copiedSelectedList
-        .slice(0, index)
-        .concat(copiedSelectedList.slice(index + 1));
-      setSelectedList(newSelectedList);
-    } else {
-      copiedSelectedList.push(groupMemberId);
-      setSelectedList(copiedSelectedList);
-    }
-  }
-
-
   return (
     <>
-      <table className="ui admin_table_top">
+      <table className="ui admin_table_search">
         <colgroup>
           <col width="200px" />
           <col />
         </colgroup>
         <tbody>
           <tr>
-            <th>가입일자</th>
-            <td>
-              <div className="preview">
-                <Calendar searchBox={searchBox} />              
-              </div>
-            </td>
-          </tr>
-          <tr>
             <th>검색어</th>
             <td>
-              <Select
-                placeholder="전체"
-                className="ui small-border admin_tab_select"
-                defaultValue={selectOptions[0].value}
-                options={selectOptions}
-                onChange={(e: any,data:any) =>setSearchType(data.value)}
-                // setSearchType
-              />
               <div
-                className={classNames("ui input admin_text_input")}
+                className={classNames("ui input admin_search_input")}
               >
                 <input
                   type="text"
-                  placeholder="검색어를 입력해주세요."
+                  placeholder="그룹명을 입력해주세요."
                   value={searchText}
-                  disabled={searchType === ''}                  
-                  // onClick={() => setFocus(true)}
-                  // onBlur={() => setFocus(false)}
                   onChange={(e: any) =>setSearchText(e.target.value)}
                 />
                 <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
@@ -260,9 +136,10 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
           </tr>
         </tbody>
       </table>
+
       <div className="table-board-title">
         <div className="table_list_string">
-        ㆍ전체 <strong>{communityMembers.totalCount}명</strong>멤버
+        ㆍ전체 <strong>{communityGroups.totalCount}명</strong>그룹등록
         </div>
         <div className="right-wrap">
         <Select
@@ -271,62 +148,25 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
           options={limitOptions}
           onChange={(e: any, data: any) => setLimit(data.value)}
         />
-        {searchBox.approved?
-        <button className="ui button admin_table_button" onClick={e=>deleteMemberList()} >멤버 삭제</button>
-        :
-        <button className="ui button admin_table_button" onClick={e=>approveMemberList()} >멤버 승인</button>
-        }
+        <button className="ui button admin_table_button" onClick={e=>routeToGroupCreate()} >Create</button>
         </div>
       </div>
-      {communityMembers && communityMembers?.results.length > 0?(
+      {communityGroups && communityGroups?.results.length > 0?(
         <table className="ui admin_table">
           <thead>
             <tr>
-              <th>
-                <Checkbox
-                  className="base"
-                  label=""
-                  name="radioGroup"
-                  checked={
-                    selectedList &&
-                    selectedList.length > 0 &&
-                    selectedList.length === communityMembers.results.length
-                  }
-                  value={selectAll?"Yes":"No"}
-                  onChange={(e: any, data: any) => checkAll()}
-                />
-                
-              </th>
               <th>No</th>
-              <th>소속사</th>
-              <th>소속 조직(팀)</th>
-              <th>성명</th>
-              <th>닉네임</th>
-              <th>E-mail</th>
-              <th>가입일</th>
+              <th>그룹명</th>
+              <th>멤버수</th>
             </tr>
           </thead>
           <tbody>
           {
-            communityMembers?.results.map((item, index) => (
-              <tr key={index}>
-                <td>
-                  <Checkbox
-                    className="base"
-                    label=""
-                    name="radioGroup"
-                    value={item.memberId}
-                    checked={selectedList && selectedList.includes(item.memberId)} 
-                    onChange={(e:any) => checkOne(item.memberId)}                
-                  />
-                </td>
-                <td>{communityMembers?.totalCount - index - (activePage - 1) * limit}</td>
-                <td>{item.companyName}</td>
-                <td>{item.teamName}</td>
+            communityGroups?.results.map((item, index) => (
+              <tr key={index} onClick={() => routeToGroupDetail(item.groupId)}>
+                <td>{communityGroups?.totalCount - index - (activePage - 1) * limit}</td>
                 <td>{item.name}</td>
-                <td>{item.nickname}</td>
-                <td>{item.email}</td>
-                <td>{item.createdTime && moment(item.createdTime).format('YYYY.MM.DD')}</td>
+                <td>{item.memberCount}</td>
               </tr>
             ))
           }
@@ -336,11 +176,11 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
         <div className="no-cont-wrap">
           <Icon className="no-contents80" />
           <span className="blind">콘텐츠 없음</span>
-          <div className="text">{searchBox.approved?'커뮤니티 멤버가 없습니다.':'가입 대기가 없습니다.'}</div>
-        </div> 
+          <div className="text">그룹이 없습니다.</div>
+        </div>
       )}     
       {
-        communityMembers && communityMembers.totalCount >= 20 ? (
+        communityGroups && communityGroups.totalCount >= 20 ? (
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}
