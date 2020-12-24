@@ -1,7 +1,7 @@
-import React, { LegacyRef, useState } from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import * as Quill from 'quill';
-import { Button, TextArea } from 'semantic-ui-react';
+import { TextArea } from 'semantic-ui-react';
 
 interface HtmlEditorProps {
   modules?: Quill.StringMap;

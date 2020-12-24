@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 
 // sementic-ui
 import { Segment, Select, Form, Icon } from 'semantic-ui-react';
@@ -7,6 +8,7 @@ import HtmlEditor from './HtmlEditor';
 
 import { adminHomeSave } from 'community/service/useAdminHome/useHome';
 import { values } from 'mobx';
+import { useRouteMatch } from 'react-router-dom';
 
 interface AdminHomeViewProps {
   communityId: string;
@@ -15,19 +17,41 @@ interface AdminHomeViewProps {
 const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   communityId,
 }) {
-
+  const { params } = useRouteMatch<AdminHomeViewProps>();
+ 
+  // 기본 / HTML 유형 
   const [changeSelectType, setChangeSelectType] = useState<string>('normal');
+  // 환영 메세지 텍스트
+  const [text, setText] = useState<string>('');
 
   const selectOptions = [
     { key: 'normal', value: 'normal', text: '기본' },
     { key: 'HTML', text: 'HTML', value: 'HTML' },
   ];
 
+  // 저장 api 호출
   const onSave = () => {
     console.log('click', communityId);
+
+    if(text.length <= 0) {
+      reactAlert({
+        title: '',
+        message: '환영 메세지를 입력해 주세요',
+      });
+    }
+
+    // 정상 일때
+    reactAlert({
+      title: '완료 안내',
+      message: '저장 되었습니다',
+    });
     adminHomeSave(communityId);
   }
-  console.log('type', changeSelectType);
+
+  // 미리보기 팝업 (admin과 같은 화면증상, 확인필요)
+  const previewPop = useCallback(() => {
+    window.open('https://mysuni.sk.com/suni-main/community/' + params.communityId + '/preview', '_blank');
+  },[params])
 
   return (
     <>
@@ -91,10 +115,8 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                   <input
                     type="text"
                     placeholder="커뮤니티 환영 메시지를 입력해주세요."
-                  // // value={this.state.write}
-                  // onClick={() => this.setState({ focus: true })}
-                  // onBlur={() => this.setState({ focus: false })}
-                  // onChange={e => this.setState({ write: e.target.value })}
+                    value={text}
+                    onChange={e => setText(e.target.value)}
                   />
                   <Icon
                     className="clear link"
@@ -114,7 +136,7 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
       {changeSelectType === 'HTML' && <HtmlEditor />}
 
       <div className="admin_bottom_button line none">
-        <button className="ui button admin_table_button02 left">
+        <button className="ui button admin_table_button02 left" onClick={previewPop}>
           미리보기
         </button>
         <button className="ui button admin_table_button" onClick={onSave}>저장</button>
