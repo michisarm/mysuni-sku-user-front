@@ -30,14 +30,6 @@ const AdminMemberRegisterView: React.FC<AdminMemberRegisterViewProps> = function
 
   const fileInputRef = React.createRef<HTMLInputElement>();
 
-  const selectOptions = [
-    { key: "all", value: "", text: "전체" },
-    { key: "companyName", value: "companyName", text: "소속사" },
-    { key: "teamName", value: "teamName", text: "소속 조직(팀)" },
-    { key: "name", value: "name", text: "성명" },
-    { key: "email", value: "email", text: "E-mail" },
-  ];
-
   const limitOptions = [
     { text: '20개씩 보기', value: '20' },
     { text: '50개씩 보기', value: '50' },
@@ -58,8 +50,6 @@ const AdminMemberRegisterView: React.FC<AdminMemberRegisterViewProps> = function
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-
-  const baseUrl = `${process.env.NODE_ENV}` === 'development' ? '/' : '/manager/';
 
   // const totalPages = useCallback(() => {    
   //   let totalPage = Math.ceil(communityMembers!.totalCount / limit)
@@ -204,7 +194,7 @@ const AdminMemberRegisterView: React.FC<AdminMemberRegisterViewProps> = function
               <Button 
                 content="양식 다운로드"
                 className="ui button admin_text_button02"
-                href={baseUrl + 'upload_member_sample.xlsx'}
+                href={`${process.env.PUBLIC_URL}/upload_member_sample.xlsx`}
               />
             </td>
           </tr>
