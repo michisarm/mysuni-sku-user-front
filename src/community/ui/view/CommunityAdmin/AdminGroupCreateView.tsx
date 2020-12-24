@@ -270,15 +270,20 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
     setSearchBox({
       ...searchBox,
       limit: limit || 20,
+      offset: 0,
     });    
     handleSubmitClick(); 
   }, [limit])    
   
   const onPageChange = useCallback((data:any) => {
+    setSearchBox({
+      ...searchBox,
+      offset: (data.activePage - 1) * limit,
+    });        
     getAdminGroup();
     getAllGroupMemberByQuery();
     setActivePage(data.activePage);
-  }, []);
+  }, [limit]);
 
   const handleSubmitClick = useCallback(() => {
     getAdminGroup();
