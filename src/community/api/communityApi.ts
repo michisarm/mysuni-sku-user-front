@@ -16,7 +16,6 @@ import { NameValueList } from 'shared/model';
 import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { patronInfo } from '@nara.platform/dock';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
-import HomeCdo from '../model/HomeCdo';
 
 const BASE_URL = '/api/community';
 
@@ -212,7 +211,7 @@ export function findAllOpenCommunities(
 ): Promise<OffsetElementList<CommunityView> | undefined> {
   const url = `${BASE_URL}/communities/communityView/open?${
     fieldId === undefined ? '' : `field=${fieldId}`
-  }&sort=${sort}&offset=${offset}&limit=12`;
+    }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -394,11 +393,9 @@ export function findNoticePostGroupManager(communityId: string): Promise<any> {
 }
 
 // admin Home - save
-export function registerHome(
+export function modifyHome(
   communityId: string,
-  homeCdo: HomeCdo
-): Promise<string> {
-  return axiosApi
-    .post<string>(`${BASE_URL}/${communityId}/home`, homeCdo)
-    .then(response => response && response.data && response.data);
+  homeId?: string,
+): Promise<any> {
+  return axiosApi.put(`${BASE_URL}/${communityId}/home/${homeId}`);
 }
