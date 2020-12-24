@@ -20,7 +20,7 @@ import { requestCommunity } from 'community/service/useCommunityHome/requestComm
 import AdminMemberRegisterPage from './AdminMemberRegisterPage';
 import AdminGroupPage from './AdminGroupPage';
 import AdminGroupCreatePage from './AdminGroupCreatePage';
-
+import CommunityMenuPage from './CommunityMenuPage';
 
 interface Params {
   communityId: string;
@@ -58,6 +58,7 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
                 path="/community/admin/:communityId/memberManagement/group/detail/:groupId"
                 component={()=>AdminGroupCreatePage(communityId)}
               />                     
+              <Route exact path="/community/admin/:communityId/menuManagement" component={()=>CommunityMenuPage(communityId)} />
               <Route component={NotFoundPage} />
             </Switch>
           </div>
