@@ -15,7 +15,7 @@ import { MemberTempExcelModel } from 'community/model/MemberTempExcelModel';
 import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
 import { MemberTempModel } from 'community/model/MemberTempModel';
 
-
+// TODO: 페이징 처리 진행시 주석 해제하여 진행
 interface AdminMemberRegisterViewProps {
   communityId: string;
   managerAuth: boolean;
