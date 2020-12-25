@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, ChangeEvent } from 'react';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 
 // sementic-ui
@@ -12,7 +12,8 @@ import CommunityHome from 'community/viewModel/CommunityHome';
 import { saveCommunityHome } from 'community/service/useCommunityHome/saveCommunityHome';
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
 import Editor from './Editor';
-import { setCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
+import { setCommunityHomeCreateItem, getCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
+import { upload } from 'community/api/FileApi';
 
 
 interface AdminHomeViewProps {
@@ -30,14 +31,27 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   const [changeSelectType, setChangeSelectType] = useState<string>(communityHome.type);
   // 환영 메세지 텍스트
   const [text, setText] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectOptions = [
     { key: 'BASIC', value: 'BASIC', text: '기본' },
     { key: 'HTML', text: 'HTML', value: 'HTML' },
   ];
 
-  // 저장 api 호출
 
+  const setProfileImgId = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      upload(e)?.then(response => {
+        if (communityHome === undefined) {
+          return;
+        }
+        const nextProfileItem = { ...communityHome, thumbnailId : response };
+        setCommunityHomeCreateItem(nextProfileItem);
+      }),
+    []
+  );
+
+  // 저장 api 호출
   const onSave = useCallback(async () => {
     console.log('click', communityId);
 
@@ -101,16 +115,32 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                       htmlFor="hidden-new-file2"
                       className="ui button admin_text_button"
                     >
-                      {/* TODO depot 연결 필요 */}
-                      {communityHome.thumbnailId||'이미지 첨부'}
+                      이미지 첨부
                     </label>
-                    <input type="file" id="hidden-new-file2" />
+                    <input 
+                      ref={fileInputRef}
+                      type="file" 
+                      accept=".jpg,.jpeg,.png,.gif"                      
+                      id="hidden-new-file2" 
+                      onChange={setProfileImgId}
+                    />
                   </div>
                 </div>
                 <span className="regi_span">
                   ※ 이미지 최적 사이즈는 가로 850px 입니다. (jpg, jpeg, png, gif
                   확장자만 첨부 가능)
                 </span>
+                {communityHome.thumbnailId && (
+                  <p style={{ background: 'white' }}>
+                    <img
+                      src={
+                        (communityHome.thumbnailId&&
+                          '/files/community/' + communityHome.thumbnailId )
+                      }
+                      alt="배경이미지"
+                    />
+                  </p>    
+                )}            
               </td>
             </tr>
             <tr>
