@@ -488,8 +488,7 @@ function CommunityHomeTreeContainer() {
             {communtyHome.community.approved === null && <JoinView />}
             {communtyHome.community.approved === false && <WaitView />}
             {communtyHome.community.approved === true && <MemberView />}
-            {/* TODO : 커뮤니티 front 관리자 기능 개발 완료 후 주석 해제 */}
-            {/* {communtyHome.community.managerId === patronInfo.getDenizenId() && <AdminView />} */}
+            {communtyHome.community.managerId === patronInfo.getDenizenId() && <AdminView />}
           </div>
         </div>
         <div className="community-home-right-contents">

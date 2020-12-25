@@ -25,7 +25,6 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   communityId,
   communityHome
 }) {
-  // const { params } = useRouteMatch<AdminHomeViewProps>();
  
   // 기본 / HTML 유형 
   const [changeSelectType, setChangeSelectType] = useState<string>(communityHome.type);
