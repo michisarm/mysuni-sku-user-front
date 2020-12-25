@@ -247,10 +247,11 @@ export function findCommunityByCourseId(
   return axiosApi.get<Community>(url).then(AxiosReturn);
 }
 
+//community 관리자 Home 조회 - draft 값 없을시 draft 1 조회가 됨 차후 수정 필요
 export function findHome(
   communityId: string
 ): Promise<CommunityHomeCreateItem | undefined> {
-  const url = `${BASE_URL}/${communityId}/home`;
+  const url = `${BASE_URL}/${communityId}/home/0`;
   return axiosApi.get<CommunityHomeCreateItem>(url).then(AxiosReturn);
 }
 

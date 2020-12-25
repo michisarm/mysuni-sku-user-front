@@ -34,3 +34,9 @@ export function registerHome(
     .post<string>(`${BASE_URL}/${communityId}/home`, communityHomeCreateItem)
     .then((response) => response && response.data && response.data);
 }
+
+export function registerPreviewHome(communityId: string, communityHomeCreateItem: CommunityHomeCreateItem): Promise<string> {
+  return axiosApi
+    .post<string>(`${BASE_URL}/${communityId}/home/preview`, communityHomeCreateItem)
+    .then((response) => response && response.data && response.data);
+}
