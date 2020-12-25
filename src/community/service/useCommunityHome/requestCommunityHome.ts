@@ -5,7 +5,6 @@ import {
   setCommunityHome,
 } from '../../store/CommunityHomeStore';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
-import { getEmptyCommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
 import { getCommunityHomeCreateItem, setCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
 
 export function requestNotice(communityId: string) {
