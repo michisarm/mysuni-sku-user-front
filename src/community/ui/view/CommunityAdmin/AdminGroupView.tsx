@@ -129,6 +129,7 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
                   placeholder="그룹명을 입력해주세요."
                   value={searchText}
                   onChange={(e: any) =>setSearchText(e.target.value)}
+                  onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
                 />
                 <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
               </div>
