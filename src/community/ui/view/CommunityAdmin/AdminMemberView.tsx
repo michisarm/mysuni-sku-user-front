@@ -269,6 +269,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                   value={searchText}
                   disabled={searchType === ''}       
                   onChange={(e: any) =>setSearchText(e.target.value)}
+                  onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
                 />
                 <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
               </div>
@@ -302,6 +303,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                     value={searchText}
                     disabled={searchType === ''}        
                     onChange={(e: any) =>setSearchText(e.target.value)}
+                    onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
                   />
                   <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
                 </div>
