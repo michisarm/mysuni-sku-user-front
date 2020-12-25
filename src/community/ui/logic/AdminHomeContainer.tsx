@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import AdminHomeView from '../view/CommunityAdmin/AdminHomeView';
+import { useCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
 
 interface Params {
   communityId: string;
@@ -8,9 +9,13 @@ interface Params {
 
 const AdminHomeContainer = () => {
   const { communityId } = useParams<Params>();
+  const communityHome = useCommunityHomeCreateItem();
+  
   return (
     <>
-      <AdminHomeView communityId={communityId} />
+      {communityHome !== undefined && (
+        <AdminHomeView communityId={communityId} communityHome={communityHome} />
+      )}
     </>
   );
 };

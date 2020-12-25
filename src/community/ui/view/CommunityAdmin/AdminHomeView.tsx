@@ -5,53 +5,65 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { Segment, Select, Form, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import HtmlEditor from './HtmlEditor';
-
-import { adminHomeSave } from 'community/service/useAdminHome/useHome';
+ 
 import { values } from 'mobx';
 import { useRouteMatch } from 'react-router-dom';
+import CommunityHome from 'community/viewModel/CommunityHome';
+import { saveCommunityHome } from 'community/service/useCommunityHome/saveCommunityHome';
+import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
+import Editor from './Editor';
+import { setCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
+
 
 interface AdminHomeViewProps {
   communityId: string;
+  communityHome: CommunityHomeCreateItem;
 }
 
 const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   communityId,
+  communityHome
 }) {
-  const { params } = useRouteMatch<AdminHomeViewProps>();
+  // const { params } = useRouteMatch<AdminHomeViewProps>();
  
   // 기본 / HTML 유형 
-  const [changeSelectType, setChangeSelectType] = useState<string>('normal');
+  const [changeSelectType, setChangeSelectType] = useState<string>(communityHome.type);
   // 환영 메세지 텍스트
   const [text, setText] = useState<string>('');
 
   const selectOptions = [
-    { key: 'normal', value: 'normal', text: '기본' },
+    { key: 'BASIC', value: 'BASIC', text: '기본' },
     { key: 'HTML', text: 'HTML', value: 'HTML' },
   ];
 
   // 저장 api 호출
-  const onSave = () => {
+
+  const onSave = useCallback(async () => {
     console.log('click', communityId);
 
-    if(text.length <= 0) {
+    if(communityHome.type === 'BASIC' && (communityHome.introduce && communityHome.introduce.length <= 0)) {
       reactAlert({
         title: '',
         message: '환영 메세지를 입력해 주세요',
       });
     }
 
+    // console.log('communityHome.id : ' , communityHome.id);
+    await saveCommunityHome(communityId, communityHome.id);
+
     // 정상 일때
     reactAlert({
       title: '완료 안내',
       message: '저장 되었습니다',
     });
-    adminHomeSave(communityId);
-  }
+    
+  },[communityId, communityHome])
 
   // 미리보기 팝업 (admin과 같은 화면증상, 확인필요)
   const previewPop = useCallback(() => {
-    window.open('https://mysuni.sk.com/suni-main/community/' + params.communityId + '/preview', '_blank');
-  },[params])
+    // window.open('https://mysuni.sk.com/suni-main/community/' + params.communityId + '/preview', '_blank');
+  // },[params])
+  },[])
 
   return (
     <>
@@ -70,13 +82,13 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
-                defaultValue={selectOptions[0].value}
-                onChange={(e:any, data: any) => setChangeSelectType(data.value)}
+                defaultValue={communityHome.type}
+                onChange={(e:any, data: any) => setCommunityHomeCreateItem({ ...communityHome, type:data.value })}
                 options={selectOptions}
               />
             </td>
           </tr>
-          { changeSelectType === "normal" ?
+          { communityHome.type === "BASIC" ?
           <>
             <tr>
               <th>
@@ -89,7 +101,8 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                       htmlFor="hidden-new-file2"
                       className="ui button admin_text_button"
                     >
-                      이미지 첨부
+                      {/* TODO depot 연결 필요 */}
+                      {communityHome.thumbnailId||'이미지 첨부'}
                     </label>
                     <input type="file" id="hidden-new-file2" />
                   </div>
@@ -115,8 +128,8 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                   <input
                     type="text"
                     placeholder="커뮤니티 환영 메시지를 입력해주세요."
-                    value={text}
-                    onChange={e => setText(e.target.value)}
+                    value={communityHome.introduce}
+                    onChange={e => setCommunityHomeCreateItem({ ...communityHome, introduce : e.target.value })}
                   />
                   <Icon
                     className="clear link"
@@ -133,7 +146,10 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
           }
         </tbody>
       </table>
-      {changeSelectType === 'HTML' && <HtmlEditor />}
+      {communityHome.type === 'HTML' && 
+      // <HtmlEditor />}
+        <Editor contents={communityHome.html||''} />
+      }
 
       <div className="admin_bottom_button line none">
         <button className="ui button admin_table_button02 left" onClick={previewPop}>

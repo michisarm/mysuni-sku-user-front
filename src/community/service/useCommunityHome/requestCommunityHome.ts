@@ -1,10 +1,12 @@
 import { post } from 'jquery';
-import { findAllPostViews, findNoticePostViews,  findPreview } from '../../api/communityApi';
+import { findAllPostViews, findNoticePostViews,  findPreview, findHome } from '../../api/communityApi';
 import {
   getCommunityHome,
   setCommunityHome,
 } from '../../store/CommunityHomeStore';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
+import { getEmptyCommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
+import { getCommunityHomeCreateItem, setCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
 
 export function requestNotice(communityId: string) {
   const offset = 0;
@@ -36,5 +38,11 @@ export function findPreViewHome(communityId: string,draft: number) {
   findPreview(communityId,1).then(preview =>{
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
     setCommunityHome({ ...communityHome, preview });
+  });
+}
+
+export function findHomeContents(communityId: string) {
+  findHome(communityId).then(communityHome =>{
+    setCommunityHomeCreateItem(communityHome);
   });
 }
