@@ -106,7 +106,7 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
-                defaultValue={communityHome.type}
+                value={communityHome.type}
                 onChange={(e:any, data: any) => setCommunityHomeCreateItem({ ...communityHome, type:data.value })}
                 options={selectOptions}
               />
