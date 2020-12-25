@@ -16,6 +16,7 @@ import { NameValueList } from 'shared/model';
 import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { patronInfo } from '@nara.platform/dock';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
+import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
 
 const BASE_URL = '/api/community';
 
@@ -248,9 +249,9 @@ export function findCommunityByCourseId(
 
 export function findHome(
   communityId: string
-): Promise<CommunityHomeInfo | undefined> {
+): Promise<CommunityHomeCreateItem | undefined> {
   const url = `${BASE_URL}/${communityId}/home`;
-  return axiosApi.get<CommunityHomeInfo>(url).then(AxiosReturn);
+  return axiosApi.get<CommunityHomeCreateItem>(url).then(AxiosReturn);
 }
 
 // 미리보기
@@ -392,10 +393,4 @@ export function findNoticePostGroupManager(communityId: string): Promise<any> {
   });
 }
 
-// admin Home - save
-export function modifyHome(
-  communityId: string,
-  homeId?: string,
-): Promise<any> {
-  return axiosApi.put(`${BASE_URL}/${communityId}/home/${homeId}`);
-}
+
