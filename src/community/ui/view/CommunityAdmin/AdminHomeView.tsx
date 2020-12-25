@@ -9,7 +9,7 @@ import HtmlEditor from './HtmlEditor';
 import { values } from 'mobx';
 import { useRouteMatch } from 'react-router-dom';
 import CommunityHome from 'community/viewModel/CommunityHome';
-import { saveCommunityHome } from 'community/service/useCommunityHome/saveCommunityHome';
+import { saveCommunityHome, previewSave } from 'community/service/useCommunityHome/saveCommunityHome';
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
 import Editor from './Editor';
 import { setCommunityHomeCreateItem, getCommunityHomeCreateItem } from 'community/store/CommunityHomeCreateStore';
@@ -39,30 +39,33 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   ];
 
 
-  const setProfileImgId = useCallback(
+  const setHomeImgId = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
       upload(e)?.then(response => {
         if (communityHome === undefined) {
           return;
         }
-        const nextProfileItem = { ...communityHome, thumbnailId : response };
-        setCommunityHomeCreateItem(nextProfileItem);
+        const nextHomeItem = { ...communityHome, thumbnailId : response };
+        setCommunityHomeCreateItem(nextHomeItem);
       }),
     []
   );
 
   // 저장 api 호출
   const onSave = useCallback(async () => {
-    console.log('click', communityId);
 
     if(communityHome.type === 'BASIC' && (communityHome.introduce && communityHome.introduce.length <= 0)) {
       reactAlert({
         title: '',
         message: '환영 메세지를 입력해 주세요',
       });
+    }else if(communityHome.type === 'BASIC' && (communityHome.thumbnailId && communityHome.thumbnailId.length <= 0)) {
+      reactAlert({
+        title: '',
+        message: '대표 이미지를 입력해 주세요',
+      });
     }
-
-    // console.log('communityHome.id : ' , communityHome.id);
+    setCommunityHomeCreateItem({ ...communityHome, draft:0 });
     await saveCommunityHome(communityId, communityHome.id);
 
     // 정상 일때
@@ -73,11 +76,18 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
     
   },[communityId, communityHome])
 
-  // 미리보기 팝업 (admin과 같은 화면증상, 확인필요)
   const previewPop = useCallback(() => {
-    // window.open('https://mysuni.sk.com/suni-main/community/' + params.communityId + '/preview', '_blank');
-  // },[params])
-  },[])
+    window.open(`${process.env.PUBLIC_URL}/community/` + communityId + '/preview', '_blank');
+  },[communityId])
+
+  const beforePreviewSave = useCallback(async () => {
+    setCommunityHomeCreateItem({ ...communityHome, draft:1 });
+    await previewSave(communityId);
+    reactAlert({
+      title: '안내',
+      message: '임시 저장 되었습니다',
+    });
+  }, [communityId, communityHome])
 
   return (
     <>
@@ -122,7 +132,7 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                       type="file" 
                       accept=".jpg,.jpeg,.png,.gif"                      
                       id="hidden-new-file2" 
-                      onChange={setProfileImgId}
+                      onChange={setHomeImgId}
                     />
                   </div>
                 </div>
@@ -185,6 +195,9 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
         <button className="ui button admin_table_button02 left" onClick={previewPop}>
           미리보기
         </button>
+        <button className="ui button admin_table_button02 left" onClick={beforePreviewSave}>
+          임시저장
+        </button>        
         <button className="ui button admin_table_button" onClick={onSave}>저장</button>
       </div>
     </>

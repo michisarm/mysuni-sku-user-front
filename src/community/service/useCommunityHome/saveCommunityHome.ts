@@ -1,6 +1,6 @@
 import { getCommunityHomeCreateItem } from "community/store/CommunityHomeCreateStore";
 import { NameValueList } from "shared/model";
-import { registerHome, modifyHome } from "community/api/homeApi";
+import { registerHome, modifyHome, registerPreviewHome } from "community/api/homeApi";
 import { CommunityHomeCreateItem } from "community/viewModel/CommunityHomeCreate";
 
 export async function saveCommunityHome(
@@ -17,6 +17,21 @@ export async function saveCommunityHome(
     }
 }
   
+export function previewSave(
+  communityId: string,
+  homeId?: string
+) {
+  const homeCreateItem = getCommunityHomeCreateItem();
+  if (homeCreateItem !== undefined) {
+      if (homeId === undefined) {
+          return registerPreviewHome(communityId, homeCreateItem)
+          
+      } else if (homeId !== undefined) {
+          return modifyHome(communityId, homeId, modifyNameValueList(homeCreateItem));
+      }
+  }  
+}
+
 
 function modifyNameValueList(home: CommunityHomeCreateItem): NameValueList {
     const modifyNameValues = {
