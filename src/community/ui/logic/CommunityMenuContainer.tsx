@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useCommunityProfileMyCommunity } from '../../store/CommunityProfileMyCommunityStore';
 import ContentsMyCommunityView from '../view/CommunityProfile/ContentsMyCommunityView';
 import ContentsFeedView from '../view/CommunityProfile/ContentsFeedView';
@@ -6,70 +6,78 @@ import ContentsBookmarkView from '../view/CommunityProfile/ContentsBookmarkView'
 import { useCommunityProfileBookmark } from 'community/store/CommunityProfileBookmarkStore';
 import { Icon, Radio, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { CommunityAdminMenuDetailView } from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
+import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 
 function CommunityMenuContainer() {
 
   const communityAdminMenu = useCommunityAdminMenu();
-  console.log('communityAdminMenu', communityAdminMenu)
+  const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<MenuItem>();
 
   const onHandleClickTaskRow = useCallback(
     param => {
       // handleClickTaskRow(param);
+      console.log('param', param)
+      setSelectedRow(param)
     },
     [communityAdminMenu]
   );
 
+  const handleAddMenu = useCallback(() => {
+    setAddMenuFlag(true);
+  }, [])
+
+  const handleSave = useCallback(() => {
+    console.log('handelSave')
+  }, [])
+
+  const onChangeValue = (value: {}) => {
+    console.log('value', value)
+    // setsearchText(value);
+  };
+
+
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
     let childElement = null;
-    console.log('menu', menu)
-    console.log('menu.child', menu.child)
     childElement = '<span></span>'
     // return ''
     if (menu) {
       // childElement = menu.child.map((child, index) => {
         return (
-          <li>
-            <a
-              href="#detail"
-              onClick={() => handleClickTaskRow()}
-            >
-              <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
-              {menu.name}
-            </a>
-          </li>
+          <>
+            <li>
+              <a
+                onClick={() => handleClickTaskRow(menu)}
+              >
+                <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
+                {menu.name}
+                <span>
+                  <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+                </span>
+                {/* {menu.child !== undefined && (
+                  <span>{menu.child.name}</span>
+                )} */}
+              </a>
+            </li>
+            {menu.child !== undefined && (
+              <ul>
+                <li>
+                  <a href="">
+                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
+                    {menu.child.name}
+                    <span>
+                      <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            )}
+          </>
         );
       // });
     }
-  
-    return (
-      <>
-        {/* {menu.delete === false && (
-          <div className="depth1">
-            <a
-              href="#detail"
-              onClick={() => handleClickTaskRow({ id: task.id, type: 'parent' })}
-            >
-              {task.count !== 0 && (
-                <span className="title">
-                  {task.title}[{task.count}]
-                </span>
-              )}
-              {task.count === 0 && task.pinned && <span className="title important"><span className="ellipsis">{task.title}</span></span>}
-              {task.count === 0 && !task.pinned && <span className="title"><span>{task.title}</span></span>}
-              <span className="writer">{task.writer}</span>
-              <span className="view">{task.readCount} 읽음</span>
-              <span className="date">
-                {task.time && moment(task.time).format('YYYY.MM.DD')}
-              </span>
-            </a>
-          </div>
-        )} */}
-        {childElement}
-      </>
-    );
   }
 
   return (
@@ -95,7 +103,7 @@ function CommunityMenuContainer() {
               <button>
                 <img src={`${process.env.PUBLIC_URL}/images/all/icon-arrow-down-20-px.png`} />
               </button>
-              <button>메뉴 추가</button>
+              <button onClick={handleAddMenu}>메뉴 추가</button>
               <button>하위 메뉴</button>
             </div>
             <ul>
@@ -127,9 +135,13 @@ function CommunityMenuContainer() {
                 </a>
               </li>
               {communityAdminMenu.menu.map((item, index) => {
-                console.log('2', item)
                 return renderMenuRow(item, onHandleClickTaskRow);
               })}
+              { addMenuFlag && (
+                <li>
+                  <input type="text" placeholder="메뉴명을 입력하세요" />
+                </li>
+              )}
 
               {/* <li>
                 <a href="">
@@ -159,17 +171,18 @@ function CommunityMenuContainer() {
                   </a>
                 </li>
               </ul> */}
-              <li>
-                <input type="text" placeholder="메뉴명을 입력하세요" />
-              </li>
             </ul>
           </div>
         </div>
         <div className="admin_menu_right">
-          <CommunityAdminMenuDetailView />
-          <div className="admin_bottom_button line">
-            <button className="ui button admin_table_button">저장</button>
-          </div>
+          {selectedRow && (
+            <>
+              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} onChangeValue={onChangeValue}/>
+              <div className="admin_bottom_button line">
+                <button className="ui button admin_table_button" onClick={() => handleSave()}>저장</button>
+              </div>
+            </>
+          )}
         </div>
       </div>
       </>

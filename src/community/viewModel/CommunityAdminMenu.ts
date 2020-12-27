@@ -14,7 +14,11 @@ export interface MenuItem {
   parentId: string;
   patronKey: any;
   type: string;
-  child: []
+  child: any;
+  discussionTopic: string;
+  surveyCaseId?: string;
+  surveyId?: string;
+  surveyInformation?: string;
 }
 
 export interface CommunityAdminMenu {

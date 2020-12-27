@@ -14,7 +14,6 @@ import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 export function requestCommunityMenu(communityId: string) {
   const menuArr: any[] = [];
   findCommunityMenu(communityId).then(community => {
-    console.log('community', community)
     community.data.map((item: any) => {
       if (item.parentId === null) {
         menuArr.push(item)
@@ -30,9 +29,6 @@ export function requestCommunityMenu(communityId: string) {
         })
       }
     })
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-    console.log('menuArr', menuArr)
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
 
     menuArr.sort((a: any, b: any) => {
       if (a.order < b.order) {
@@ -43,9 +39,6 @@ export function requestCommunityMenu(communityId: string) {
         return 0;
       }
     })
-    console.log('22222222222')
-    console.log('menuArr', menuArr)
-    console.log('22222222222')
     //여기서 트리구조 형태로 배열 만들어준다.
     setCommunityAdminMenu({'menu' : menuArr});
   });
