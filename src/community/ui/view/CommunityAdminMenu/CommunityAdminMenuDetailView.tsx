@@ -1,22 +1,47 @@
+import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState,useCallback,useEffect} from 'react';
 import { Radio, Select } from 'semantic-ui-react';
 
 interface MemberList {
   communityId: any
 }
+interface CommunityAdminMenuDetailViewProps {
+  addMenuFlag: boolean
+  selectedRow?: MenuItem
+  onChangeValue: (data: {}) => void
+}
 
-export const CommunityAdminMenuDetailView = () => {
-  const selectOptions02 = [
-    { key: "category", value: "category", text: "카테고리" },
-    { key: "normal", value: "normal", text: "일반 게시판" },
-    { key: "writer", value: "writer", text: "토론 게시판" },
-    { key: "anony", value: "anony", text: "익명 게시판" },
-    { key: "notice", value: "notice", text: "공지사항" },
-    { key: "board", value: "board", text: "자료실" },
-    { key: "survey", value: "survey", text: "설문조사" },
-    { key: "link", value: "link", text: "링크" },
-    { key: "html", value: "html", text: "HTML" },
+
+const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
+  addMenuFlag,
+  selectedRow,
+  onChangeValue
+}) {
+  console.log('selectedRow', selectedRow)
+  // const selectOptions02 = [
+  //   { key: "category", value: "category", text: "카테고리" },
+  //   { key: "normal", value: "normal", text: "일반 게시판" },
+  //   { key: "writer", value: "writer", text: "토론 게시판" },
+  //   { key: "anony", value: "anony", text: "익명 게시판" },
+  //   { key: "notice", value: "notice", text: "공지사항" },
+  //   { key: "board", value: "board", text: "자료실" },
+  //   { key: "survey", value: "survey", text: "설문조사" },
+  //   { key: "link", value: "link", text: "링크" },
+  //   { key: "html", value: "html", text: "HTML" },
+  // ];
+
+  const menuType = [
+    { key: 'CATEGORY', value: 'CATEGORY', text: '카테고리' },
+    { key: 'BASIC', value: 'BASIC', text: '일반 게시판' },
+    { key: 'DISCUSSION', value: 'DISCUSSION', text: '토론 게시판' },
+    { key: 'ANONYMOUS', value: 'ANONYMOUS', text: '익명 게시판' },
+    { key: 'NOTICE', value: 'NOTICE', text: '공지사항' },
+    { key: 'STORE', value: 'STORE', text: '자료실' },
+    { key: 'SURVEY', value: 'SURVEY', text: '설문조사' },
+    { key: 'LINK', value: 'LINK', text: '링크' },
+    { key: 'HTML', value: 'HTML', text: 'HTML' },
   ];
+
   const selectOptions03 = [
     { key: "all", value: "all", text: "선택하세요" },
     { key: "subject", value: "subject", text: "제목" },
@@ -48,6 +73,26 @@ export const CommunityAdminMenuDetailView = () => {
   //   setActivePage(data.activePage)
   // }
 
+  function changeSort(_: any, data: any) {
+    console.log('selectedRow', selectedRow)
+    console.log('data', data)
+    if(selectedRow && data) {
+      selectedRow.type = data.value
+      onChangeValue(selectedRow);
+    }
+    console.log('selectedRow', selectedRow)
+    // const myCommunityIntro = getMyCommunityIntro();
+    // if (myCommunityIntro === undefined) {
+    //   return;
+    // }
+    // const communitiesSort = (data.value || 'memberCreatedTime').toString();
+    // setMyCommunityIntro({
+    //   ...myCommunityIntro,
+    //   communitiesSort
+    // });
+    // requestMyCommunityList();
+  }
+
   return (
     <div className="menu_right_contents">
       <table>
@@ -57,13 +102,14 @@ export const CommunityAdminMenuDetailView = () => {
         </colgroup>
         <tbody>
           <tr>
-            <th>메뉴 유형</th>
+  <th>메뉴 유형{selectedRow!.type}</th>
             <td>
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
-                defaultValue={selectOptions02[0].value}
-                options={selectOptions02}
+                value={selectedRow!.type}
+                options={menuType}
+                onChange={changeSort}
               />
             </td>
           </tr>
@@ -128,3 +174,5 @@ export const CommunityAdminMenuDetailView = () => {
     </div>
   )
 }
+
+export default CommunityAdminMenuDetailView;
