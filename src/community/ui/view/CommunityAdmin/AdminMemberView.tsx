@@ -127,41 +127,63 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   }, [selectedList])
 
   useEffect(() => {
-    setSearchBox({
-      ...searchBox,
-      companyName: '',
-      teamName: '',
-      name: '',
-      email: '',
-      nickname:'',
-    }); 
+    //TODO : 차후 로직 개선 고민
     if(searchType === 'companyName'){
       setSearchBox({
         ...searchBox,
         companyName: searchText||'',
+        teamName: '',
+        name: '',
+        email: '',
+        nickname: '',
       });   
     }else if(searchType === 'teamName'){
       setSearchBox({
         ...searchBox,
+        companyName:'',
         teamName: searchText,
+        name: '',
+        email: '',
+        nickname: '',
       });   
     }else if(searchType === 'name'){
       setSearchBox({
         ...searchBox,
+        companyName:'',
+        teamName: '',
         name: searchText||'',
+        email: '',
+        nickname: '',
       });   
     }else if(searchType === 'email'){
       setSearchBox({
         ...searchBox,
+        companyName:'',
+        teamName: '',
+        name: '',
         email: searchText||'',
+        nickname: '',
       });   
     }else if(searchType === 'nickname'){
       setSearchBox({
         ...searchBox,
+        companyName:'',
+        teamName: '',
+        name: '',
+        email: '',
         nickname: searchText||'',
       });         
+    }else{
+      setSearchBox({
+        ...searchBox,
+        companyName:'',
+        teamName: '',
+        name: '',
+        email: '',
+        nickname: '',
+      });   
     }
-  }, [searchType,searchText])  
+  }, [searchType,searchText])   
 
   useEffect(() => {
     setSearchBox({

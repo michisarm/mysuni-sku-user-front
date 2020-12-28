@@ -38,6 +38,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
     { key: "companyName", value: "companyName", text: "소속사" },
     { key: "teamName", value: "teamName", text: "소속 조직(팀)" },
     { key: "name", value: "name", text: "성명" },
+    { key: "nickname", value: "nickname", text: "닉네임" },
     { key: "email", value: "email", text: "E-mail" },
   ];
   
@@ -237,6 +238,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         teamName: '',
         name: '',
         email: '',
+        nickname: '',
       });   
     }else if(searchType === 'teamName'){
       setSearchBox({
@@ -245,6 +247,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         teamName: searchText,
         name: '',
         email: '',
+        nickname: '',
       });   
     }else if(searchType === 'name'){
       setSearchBox({
@@ -253,6 +256,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         teamName: '',
         name: searchText||'',
         email: '',
+        nickname: '',
       });   
     }else if(searchType === 'email'){
       setSearchBox({
@@ -261,7 +265,17 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         teamName: '',
         name: '',
         email: searchText||'',
+        nickname: '',
       });   
+    }else if(searchType === 'nickname'){
+      setSearchBox({
+        ...searchBox,
+        companyName:'',
+        teamName: '',
+        name: '',
+        email: '',
+        nickname: searchText||'',
+      });         
     }else{
       setSearchBox({
         ...searchBox,
@@ -269,7 +283,8 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         teamName: '',
         name: '',
         email: '',
-      });       
+        nickname: '',
+      });   
     }
   }, [searchType,searchText])   
 
