@@ -271,16 +271,17 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         email: '',
       });       
     }
-  }, [searchType,searchText])  
+  }, [searchType,searchText])   
 
-  useEffect(() => {
+  const changeLimit = useCallback((data:number) => {
+    setLimit(data);    
     setSearchBox({
       ...searchBox,
-      limit: limit || 20,
+      limit: data || 20,
       offset: 0,
     });    
     handleSubmitClick(); 
-  }, [limit])    
+  }, [limit]);
   
   const onPageChange = useCallback((data:any) => {
     setSearchBox({
@@ -293,10 +294,13 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
   }, [limit]);
 
   const handleSubmitClick = useCallback(() => {
+    if(!groupId && !communityId){
+      return;
+    }
     getAdminGroup();
     getAllGroupMemberByQuery();
     setActivePage(1);
-  }, []);
+  }, [groupId, communityId]);
 
   const checkAll = useCallback(() => {
     if(selectAll) {
@@ -439,7 +443,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
                 className="ui small-border admin_table_select"
                 defaultValue={limitOptions[0].value}
                 options={limitOptions}
-                onChange={(e: any, data: any) => setLimit(data.value)}
+                onChange={(e: any, data: any) => changeLimit(data.value)}
               />
               <button className="ui button admin_table_button" onClick={()=>approveAdmin()}>그룹장 지정</button>
               <button className="ui button admin_table_button" onClick={()=>setOpen(true)}>그룹 멤버 추가</button>
@@ -458,7 +462,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
                 </Modal.Header>
                 <Modal.Content className="admin_popup_add">
                   {/* <AdminMemberPage {...communityId} /> */}
-                  {AdminMemberPage(communityId, true)}
+                  {communityId && AdminMemberPage(communityId, true, groupId)}
                 </Modal.Content>
                 <Modal.Actions className="actions">
                   <Button className="w190 pop x" onClick={()=>setOpen(false)}>
