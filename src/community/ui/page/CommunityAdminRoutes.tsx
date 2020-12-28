@@ -44,8 +44,8 @@ const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
           <div className="admin-container">
             <CommunityAdminMenuContainer />
             <Switch>
-              <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId,true)} />
-              <Route exact path="/community/admin/:communityId/memberManagement/memberJoin" component={()=>AdminMemberPage(communityId,false)} />
+              <Route exact path="/community/admin/:communityId/memberManagement/member" component={()=>AdminMemberPage(communityId,true,'')} />
+              <Route exact path="/community/admin/:communityId/memberManagement/memberJoin" component={()=>AdminMemberPage(communityId,false,'')} />
               <Route exact path="/community/admin/:communityId/memberManagement/memberRegister" component={()=>AdminMemberRegisterPage(communityId,false)} />
               <Route exact path="/community/admin/:communityId/memberManagement/group" component={()=>AdminGroupPage(communityId)} />
               <Route
