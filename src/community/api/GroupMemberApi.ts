@@ -1,5 +1,6 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { SearchBox } from 'community/model/SearchBox';
+import GroupMember from 'community/model/GroupMember';
 
 const BASE_URL = '/api/community';
 
@@ -51,5 +52,13 @@ export function registerGroupMembers(
         ','
       )}`
     )
+    .then((response) => response && response.data);
+}
+
+export function findGroupMemberAdmin(
+  searchBox: SearchBox
+): Promise<GroupMember | undefined> {
+  return axios
+    .get<GroupMember>(`${BASE_URL}/communities/${searchBox.communityId}/${searchBox.groupId}/members/admin`)
     .then((response) => response && response.data);
 }

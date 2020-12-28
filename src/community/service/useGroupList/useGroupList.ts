@@ -1,10 +1,11 @@
-import { findAllGroupByQuery,findGroupMember, searchGroup, findAdminGroups, registerGroup, modifyGroup, findAdminGroup, removeGroup } from 'community/api/GroupApi';
+import { findAllGroupByQuery,findGroupMember, searchGroup, findAdminGroups, registerGroup, modifyGroup, findAdminGroup, removeGroup, existsByCommunityIdAndName } from 'community/api/GroupApi';
 import { setCommunityGroup } from 'community/store/CommunityGroupStore';
 import { setCommunityGroupMember } from 'community/store/CommunityGroupMemberStore';
 import { memberFollowAdd, memberFollowDel } from 'community/api/MemberApi';
 import { getSearchBox } from 'community/store/SearchBoxStore';
 import { getEmptySearchBox, SearchBox } from 'community/model/SearchBox';
 import { getAdminGroupCreateItem, useAdminGroupCreateItem, setAdminGroupCreateItem } from 'community/store/AdminGroupCreateStore';
+import { findGroupMemberAdmin } from 'community/api/GroupMemberApi';
 
 export function getGroup(communityId:string, pageNum:number) {
   findAllGroupByQuery(communityId, pageNum).then(res => setCommunityGroup(res.data))
@@ -28,8 +29,11 @@ export function getAdminGroups(communityId:string) {
   findAdminGroups(communityId,getSearchBox()||getEmptySearchBox()).then(res => setCommunityGroup(res.data))
 }
 
-export function getAdminGroup() {
-  findAdminGroup(getSearchBox()||getEmptySearchBox()).then(res => setAdminGroupCreateItem(res.data))
+export async function getAdminGroup() {
+  const searchBox = getSearchBox()||getEmptySearchBox();
+  await findAdminGroup(searchBox).then(res => setAdminGroupCreateItem(res.data));
+  const adminGroupCreateItem = getAdminGroupCreateItem();
+  findGroupMemberAdmin(getSearchBox()||getEmptySearchBox()).then(res => setAdminGroupCreateItem({...adminGroupCreateItem, managerName:res?.name, managerId:res?.memberId}));
 }
 
 export function onFollowGroupMember(
@@ -69,5 +73,9 @@ export function updateGroup() {
 export function deleteGroup() {
   const adminGroupCreate = getAdminGroupCreateItem();
   if (adminGroupCreate) removeGroup(adminGroupCreate);
+}
+
+export function existsByGroupName(communityId:string, name:string) {
+  return existsByCommunityIdAndName(communityId, name);
 }
 
