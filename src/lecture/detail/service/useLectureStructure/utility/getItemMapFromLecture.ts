@@ -1,11 +1,7 @@
 /* eslint-disable consistent-return */
 // report
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
-
-import { patronInfo } from '@nara.platform/dock';
-import { findAnswerSheet } from '../../../api/assistantApi';
-import { findCoursePlan } from '../../../api/courseApi';
-import { findCoursePlanContents } from '../../../api/lectureApi';
+import { cacheableFindCoursePlan } from '../../../api/courseApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
@@ -17,7 +13,6 @@ import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
   ItemMap,
-  LectureStructureDiscussionItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -49,7 +44,8 @@ async function getTestItem(
     if (student !== undefined && student !== null) {
       state = 'Progress';
       if (
-        student !== undefined && student !== null &&
+        student !== undefined &&
+        student !== null &&
         (student.learningState === 'Passed' ||
           student.learningState === 'TestPassed' ||
           student.learningState === 'HomeworkWaiting')
@@ -120,7 +116,7 @@ async function getReportItem(
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
   const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
-  const coursePlan = await findCoursePlan(lectureView.coursePlanId);
+  const coursePlan = await cacheableFindCoursePlan(lectureView.coursePlanId);
   if (coursePlan === undefined) {
     return;
   }

@@ -4,7 +4,7 @@
  * http://ma.mysuni.sk.com/api/mytraining/mytraining/mytrainings/byState/filterWithJoinedValue
  */
 
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -21,7 +21,6 @@ import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/uti
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
 import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureWebpageView from '../view/LectureWebpageView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
@@ -57,7 +56,7 @@ function LectureCubeWebPagePage() {
   useCubeViewEvent();
 
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       {lectureWebpage && (
         <LectureWebpageView
@@ -66,7 +65,7 @@ function LectureCubeWebPagePage() {
         />
       )}
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

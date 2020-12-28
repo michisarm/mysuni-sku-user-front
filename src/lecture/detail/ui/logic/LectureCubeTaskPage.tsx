@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -13,7 +13,6 @@ import {
 } from '../../store/LectureOverviewStore';
 
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureTaskContainer from './LectureTaskContainer';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { isEmptyText } from '../../utility/isEmpty';
@@ -70,9 +69,9 @@ function LectureCubeTaskPage() {
   useCubeViewEvent();
 
   return (
-    <LectureDetailLayout>
+    <Fragment>
       {lectureStructure && getActiveStructureItem() && <LectureTaskContainer />}
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

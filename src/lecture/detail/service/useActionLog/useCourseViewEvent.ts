@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createViewLog } from '../../api/actionLogCollectorApi';
-import { findCoursePlan } from '../../api/courseApi';
+import { cacheableFindCoursePlan } from '../../api/courseApi';
 import LectureParams from '../../viewModel/LectureParams';
 
 export function useCourseViewEvent() {
@@ -35,7 +35,7 @@ export function useCourseViewEvent() {
     const _coursePlanId = contentId || coursePlanId;
     const lectureCardId = lectureId || serviceId;
 
-    findCoursePlan(_coursePlanId).then(coursePlan => {
+    cacheableFindCoursePlan(_coursePlanId).then(coursePlan => {
       if (coursePlan !== undefined) {
         const { name } = coursePlan;
         createViewLog({

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -15,7 +15,6 @@ import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/uti
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
 import { useLectureCohort } from '../../service/useLectureCohort/useLectureCohort';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCohortView from '../view/LectureCohortView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
@@ -51,7 +50,7 @@ function LectureCubeCohortPage() {
   useCubeViewEvent();
 
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       {lectureCohort && (
         <LectureCohortView
@@ -60,7 +59,7 @@ function LectureCubeCohortPage() {
         />
       )}
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

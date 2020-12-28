@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
@@ -15,7 +15,6 @@ import {
   setLectureTags,
 } from '../../store/LectureOverviewStore';
 import { setLectureState } from '../../store/LectureStateStore';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 
@@ -45,10 +44,10 @@ function LectureCubeClassroomPage() {
   useCubeViewEvent();
 
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

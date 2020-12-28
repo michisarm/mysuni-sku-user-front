@@ -23,6 +23,11 @@ import {
   clearFindCubeIntroCache,
   clearFindPersonalCubeCache,
 } from './api/mPersonalCubeApi';
+import LectureDetailLayout from './ui/view/LectureDetailLayout';
+import {
+  clearFindCoursePlanCache,
+  clearFindCoursePlanContentsCache,
+} from './api/courseApi';
 
 export default function LectureDetailCourseRoutes() {
   const [lectureStructure] = useLectureStructure();
@@ -118,115 +123,119 @@ export default function LectureDetailCourseRoutes() {
     return () => {
       clearFindPersonalCubeCache();
       clearFindCubeIntroCache();
+      clearFindCoursePlanCache();
+      clearFindCoursePlanContentsCache();
     };
   }, [coursePlanId, serviceId]);
 
   return (
-    <Switch>
-      {/* Program / Course */}
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-        component={LectureCourseOverviewPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-        component={LectureCourseOverviewPage}
-      />
-      {/* Program / Course / Exam, Survey, Report*/}
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/exam"
-        component={LectureTestPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/exam"
-        component={LectureTestPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/survey"
-        component={LectureSurveyPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/survey"
-        component={LectureSurveyPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
-        component={LectureReportPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
-        component={LectureReportPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
-        component={LectureDiscussionPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
-        component={LectureDiscussionPage}
-      />
-      {/* Content */}
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
-        component={LectureDetailCourseSubRoutes}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
-        component={LectureDetailCourseSubRoutes}
-      />
-      {/* Content Exam,Survey,Report */}
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/exam"
-        component={LectureTestPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/exam"
-        component={LectureTestPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
-        component={LectureSurveyPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
-        component={LectureSurveyPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
-        component={LectureReportPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
-        component={LectureReportPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/discussion"
-        component={LectureDiscussionPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/discussion"
-        component={LectureDiscussionPage}
-      />
-    </Switch>
+    <LectureDetailLayout>
+      <Switch>
+        {/* Program / Course */}
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
+          component={LectureCourseOverviewPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
+          component={LectureCourseOverviewPage}
+        />
+        {/* Program / Course / Exam, Survey, Report*/}
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/exam"
+          component={LectureTestPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/exam"
+          component={LectureTestPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/survey"
+          component={LectureSurveyPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/survey"
+          component={LectureSurveyPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
+          component={LectureReportPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
+          component={LectureReportPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
+          component={LectureDiscussionPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
+          component={LectureDiscussionPage}
+        />
+        {/* Content */}
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
+          component={LectureDetailCourseSubRoutes}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
+          component={LectureDetailCourseSubRoutes}
+        />
+        {/* Content Exam,Survey,Report */}
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/exam"
+          component={LectureTestPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/exam"
+          component={LectureTestPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
+          component={LectureSurveyPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
+          component={LectureSurveyPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
+          component={LectureReportPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
+          component={LectureReportPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/discussion"
+          component={LectureDiscussionPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/discussion"
+          component={LectureDiscussionPage}
+        />
+      </Switch>
+    </LectureDetailLayout>
   );
 }
