@@ -32,6 +32,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     { key: "companyName", value: "companyName", text: "소속사" },
     { key: "teamName", value: "teamName", text: "소속 조직(팀)" },
     { key: "name", value: "name", text: "성명" },
+    { key: "nickName", value: "nickName", text: "닉네임" },
     { key: "email", value: "email", text: "E-mail" },
   ];
 
@@ -126,47 +127,39 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   }, [selectedList])
 
   useEffect(() => {
-    //TODO : 로직 개선 필요함
+    setSearchBox({
+      ...searchBox,
+      companyName: '',
+      teamName: '',
+      name: '',
+      email: '',
+      nickName:'',
+    }); 
     if(searchType === 'companyName'){
       setSearchBox({
         ...searchBox,
         companyName: searchText||'',
-        teamName: '',
-        name: '',
-        email: '',
       });   
     }else if(searchType === 'teamName'){
       setSearchBox({
         ...searchBox,
-        companyName:'',
         teamName: searchText,
-        name: '',
-        email: '',
       });   
     }else if(searchType === 'name'){
       setSearchBox({
         ...searchBox,
-        companyName:'',
-        teamName: '',
         name: searchText||'',
-        email: '',
       });   
     }else if(searchType === 'email'){
       setSearchBox({
         ...searchBox,
-        companyName:'',
-        teamName: '',
-        name: '',
         email: searchText||'',
       });   
-    }else{
+    }else if(searchType === 'nickName'){
       setSearchBox({
         ...searchBox,
-        companyName:'',
-        teamName: '',
-        name: '',
-        email: '',
-      });       
+        nickName: searchText||'',
+      });         
     }
   }, [searchType,searchText])  
 
