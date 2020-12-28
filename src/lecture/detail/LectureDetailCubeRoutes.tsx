@@ -1,12 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import LectureDetailContainer from './ui/logic/LectureDetailContainer';
+import { Route, Switch, useParams } from 'react-router-dom';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
 import LectureSurveyPage from './ui/logic/LectureSurveyPage';
 import {
-  getActiveCourseStructureItem,
   getActiveStructureItem,
   useLectureStructure,
 } from './service/useLectureStructure/useLectureStructure';
@@ -17,6 +15,11 @@ import {
 } from './viewModel/LectureStructure';
 import routePaths from '../routePaths';
 import AppContext from '../../layout/UserApp/ui/logic/AppContext';
+import LectureParams from './viewModel/LectureParams';
+import {
+  clearFindCubeIntroCache,
+  clearFindPersonalCubeCache,
+} from './api/mPersonalCubeApi';
 
 export default function LectureDetailCubeRoutes() {
   const [lectureStructure] = useLectureStructure();
@@ -62,6 +65,15 @@ export default function LectureDetailCubeRoutes() {
       setBreadcrumb(breadcrumbValue);
     }
   }, [lectureStructure]);
+
+  const { cubeId, lectureCardId } = useParams<LectureParams>();
+
+  useEffect(() => {
+    return () => {
+      clearFindPersonalCubeCache();
+      clearFindCubeIntroCache();
+    };
+  }, [cubeId, lectureCardId]);
 
   return (
     <Switch>

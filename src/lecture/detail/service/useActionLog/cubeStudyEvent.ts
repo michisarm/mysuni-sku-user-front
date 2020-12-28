@@ -1,5 +1,5 @@
 import { createStudyLog, createViewLog } from '../../api/actionLogCollectorApi';
-import { findPersonalCube } from '../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../api/mPersonalCubeApi';
 import { StudyActions } from '../../model/StudyEvent';
 import { parseParamsFromPathname } from '../../utility/lectureRouterParamsHelper';
 
@@ -18,7 +18,7 @@ function studyLog(menu: string, action: StudyActions) {
     return;
   }
 
-  findPersonalCube(_cubeId).then(personalCube => {
+  cacheableFindPersonalCube(_cubeId).then(personalCube => {
     if (personalCube !== undefined) {
       const { name } = personalCube;
       createStudyLog({

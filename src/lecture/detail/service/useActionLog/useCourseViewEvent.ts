@@ -12,9 +12,13 @@ export function useCourseViewEvent() {
     serviceId,
     contentId,
     lectureId,
+    lectureType,
   } = useParams<LectureParams>();
 
   useEffect(() => {
+    if (lectureType === 'cube') {
+      return;
+    }
     if (
       coursePlanId === undefined ||
       serviceType === undefined ||
@@ -52,5 +56,13 @@ export function useCourseViewEvent() {
         });
       }
     });
-  }, [collegeId, coursePlanId, serviceType, serviceId, contentId, lectureId]);
+  }, [
+    collegeId,
+    coursePlanId,
+    serviceType,
+    serviceId,
+    contentId,
+    lectureId,
+    lectureType,
+  ]);
 }

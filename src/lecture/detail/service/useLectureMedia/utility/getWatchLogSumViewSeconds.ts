@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { PatronKey } from 'shared/model/PatronKey';
@@ -10,7 +10,7 @@ function getPersonalCubeByParams(
   params: LectureRouterParams
 ): Promise<PersonalCube> {
   const { contentId } = params;
-  return findPersonalCube(contentId!);
+  return cacheableFindPersonalCube(contentId!);
 }
 
 export async function getWatchLogSumViewSeconds(

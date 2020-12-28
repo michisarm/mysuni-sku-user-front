@@ -15,9 +15,9 @@ import {
   registerStudent,
 } from '../../../api/lectureApi';
 import {
-  findCubeIntro,
+  cacheableFindCubeIntro,
   findMedia,
-  findPersonalCube,
+  cacheableFindPersonalCube,
 } from '../../../api/mPersonalCubeApi';
 import CubeType from '../../../model/CubeType';
 import { MediaType } from '../../../model/MediaType';
@@ -290,7 +290,7 @@ async function getVideoApprovedState(
     if (mediaType === MediaType.LinkMedia) {
       const { linkMediaUrl } = mediaContents;
       if (stateText === PROGRESS) {
-        const cubeIntro = await findCubeIntro(cubeIntroId);
+        const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
 
         if (
           cubeIntro === undefined ||
@@ -391,7 +391,7 @@ async function getDocumentsApprovedState(
   // }
 
   if (stateText === PROGRESS) {
-    const cubeIntro = await findCubeIntro(cubeIntroId);
+    const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
     if (
       cubeIntro === undefined ||
       cubeIntro.reportFileBox === null ||
@@ -683,7 +683,7 @@ async function getStateWhenApproved(
       case 'Cohort':
       case 'Experiential':
         if (stateText === PROGRESS) {
-          const cubeIntro = await findCubeIntro(cubeIntroId);
+          const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
           if (
             cubeIntro === undefined ||
             cubeIntro.reportFileBox === null ||
@@ -875,7 +875,7 @@ export async function getStateFromCube(params: LectureRouterParams) {
       contents: { id: contentsId },
     },
     cubeIntro: { id: cubeIntroId },
-  } = await findPersonalCube(contentId);
+  } = await cacheableFindPersonalCube(contentId);
   const hasTest = examId !== undefined && examId !== null && examId !== '';
   const hasSurvey =
     surveyId !== undefined && surveyId !== null && surveyId !== '';

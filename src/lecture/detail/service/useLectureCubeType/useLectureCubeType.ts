@@ -2,7 +2,7 @@
 /* eslint-disable prefer-arrow-callback */
 
 import { useEffect, useRef, useState } from 'react';
-import { findPersonalCube } from '../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../api/mPersonalCubeApi';
 import {
   onLectureCubeType,
   setLectureCubeType,
@@ -34,8 +34,12 @@ export function useLectureCubeType(cubeId?: string): [Value] {
     if (cubeId === undefined) {
       return;
     }
-    findPersonalCube(cubeId).then(function (personalCube) {
-      if (personalCube !== undefined && personalCube !== null && (personalCube as unknown) !== "") {
+    cacheableFindPersonalCube(cubeId).then(function(personalCube) {
+      if (
+        personalCube !== undefined &&
+        personalCube !== null &&
+        (personalCube as unknown) !== ''
+      ) {
         setLectureCubeType({
           type: personalCube.contents.type,
         });

@@ -5,7 +5,7 @@ import {
   findCoursePlanContents,
   findIsJsonStudentByCube,
 } from '../../../api/lectureApi';
-import { findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
@@ -420,7 +420,7 @@ export async function getCourseLectureSurveyState(
 export async function getLectureSurvey(params: LectureRouterParams) {
   const { contentType, contentId, lectureId } = params;
   if (contentType === 'cube') {
-    const { contents } = await findPersonalCube(contentId);
+    const { contents } = await cacheableFindPersonalCube(contentId);
     if (contents !== undefined && contents.surveyId != '') {
       const lectureSurvey = await parseSurveyForm(contents.surveyId);
       setLectureSurvey(lectureSurvey);

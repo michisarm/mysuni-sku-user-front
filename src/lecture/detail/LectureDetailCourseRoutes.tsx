@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Switch, useParams } from 'react-router-dom';
 import LectureDetailCourseSubRoutes from './LectureDetailCourseSubRoutes';
-import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureTestPage from './ui/logic/LectureTestPage';
@@ -19,6 +18,11 @@ import {
 } from './viewModel/LectureStructure';
 import AppContext from '../../layout/UserApp/ui/logic/AppContext';
 import routePaths from '../routePaths';
+import LectureParams from './viewModel/LectureParams';
+import {
+  clearFindCubeIntroCache,
+  clearFindPersonalCubeCache,
+} from './api/mPersonalCubeApi';
 
 export default function LectureDetailCourseRoutes() {
   const [lectureStructure] = useLectureStructure();
@@ -107,6 +111,16 @@ export default function LectureDetailCourseRoutes() {
       setBreadcrumb(breadcrumbValue);
     }
   }, [lectureStructure]);
+
+  const { coursePlanId, serviceId } = useParams<LectureParams>();
+
+  useEffect(() => {
+    return () => {
+      clearFindPersonalCubeCache();
+      clearFindCubeIntroCache();
+    };
+  }, [coursePlanId, serviceId]);
+
   return (
     <Switch>
       {/* Program / Course */}

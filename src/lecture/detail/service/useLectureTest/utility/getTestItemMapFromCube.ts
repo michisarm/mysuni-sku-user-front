@@ -5,14 +5,13 @@
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
-import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import {
   findIsJsonStudentByCube,
   findStudent,
   setCubeStudentExamId,
 } from 'lecture/detail/api/lectureApi';
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 
 // exam
@@ -25,7 +24,7 @@ import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
-  return findPersonalCube(cubeId);
+  return cacheableFindPersonalCube(cubeId);
 }
 
 async function getTestItem(examId: string) {

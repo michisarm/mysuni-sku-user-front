@@ -1,15 +1,30 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createViewLog } from '../../api/actionLogCollectorApi';
-import { findPersonalCube } from '../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../api/mPersonalCubeApi';
 import LectureParams from '../../viewModel/LectureParams';
 
 export function useCubeViewEvent() {
-  const { collegeId, cubeId, lectureCardId, contentId, lectureId } = useParams<
-    LectureParams
-  >();
+  const {
+    collegeId,
+    cubeId,
+    lectureCardId,
+    contentId,
+    lectureId,
+    lectureType,
+    serviceType,
+  } = useParams<LectureParams>();
 
   useEffect(() => {
+    if (
+      serviceType !== 'Cube' &&
+      serviceType !== 'Card' &&
+      serviceType !== undefined
+    ) {
+      if (lectureType !== 'cube') {
+        return;
+      }
+    }
     const _cubeId = contentId || cubeId;
     const _lectureCardId = lectureId || lectureCardId;
     if (_cubeId === undefined || _lectureCardId === undefined) {
@@ -18,7 +33,7 @@ export function useCubeViewEvent() {
     const path = window.location.href;
     const email = localStorage.getItem('nara.email') || '';
 
-    findPersonalCube(_cubeId).then(personalCube => {
+    cacheableFindPersonalCube(_cubeId).then(personalCube => {
       if (personalCube !== undefined) {
         const { name } = personalCube;
         createViewLog({
@@ -39,5 +54,13 @@ export function useCubeViewEvent() {
         });
       }
     });
-  }, [collegeId, cubeId, lectureCardId, contentId, lectureId]);
+  }, [
+    collegeId,
+    cubeId,
+    lectureCardId,
+    contentId,
+    lectureId,
+    lectureType,
+    serviceType,
+  ]);
 }
