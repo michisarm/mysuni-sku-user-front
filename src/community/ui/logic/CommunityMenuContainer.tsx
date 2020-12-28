@@ -47,6 +47,8 @@ function CommunityMenuContainer() {
     }
   }, [communityId]);
 
+  const [communityAdminGroups] = useCommunityGroups()
+
   const onHandleClickTaskRow = useCallback(
     (e, param, type) => {
       setAddMenuFlag(false)

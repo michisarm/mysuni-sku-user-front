@@ -9,6 +9,7 @@ function CommunityMenuPage(communityId:string) {
   useEffect(() => {
     setSearchBox(getEmptySearchBox(false));
     requestCommunityMenu(communityId);
+    requestCommunityGroups(communityId);
   }, []);
 
   return (   

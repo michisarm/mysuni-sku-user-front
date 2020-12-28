@@ -1,29 +1,31 @@
+import { onCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import {
   onCommunityPostListItem,
   setCommunityPostListItem,
 } from 'community/store/CommunityPostListStore';
+import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 import { CommunityPostList } from 'community/viewModel/CommunityPostList';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-type PostListValue = CommunityPostList | undefined;
+type communityAdminMenu = CommunityAdminMenu | undefined;
 
 interface Params {
   communityId: string;
   menuId: string;
 }
 
-export function useCommunityMenu(): [PostListValue] {
+export function useCommunityAdminMenu(): [communityAdminMenu] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
-  const [postItems, setPostItems] = useState<PostListValue>();
+  const [menuItems, setMenuItems] = useState<communityAdminMenu>();
 
-  const { communityId, menuId } = useParams<Params>();
+  const { communityId } = useParams<Params>();
 
   // const params = useParams<PostParams>();
 
   useEffect(() => {
-    const next = `useCommunityPostList-${++subscriberIdRef.current}`;
+    const next = `useCommunityAdminMenu-${++subscriberIdRef.current}`;
     setSubscriberId(next);
   }, []);
 
@@ -31,9 +33,9 @@ export function useCommunityMenu(): [PostListValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onCommunityPostListItem(next => {
+    return onCommunityAdminMenu(next => {
       if (next !== undefined) {
-        setPostItems(next);
+        setMenuItems(next);
       }
     }, subscriberId);
   }, [subscriberId]);
@@ -44,17 +46,10 @@ export function useCommunityMenu(): [PostListValue] {
       return;
     }
 
-    setCommunityPostListItem({
-      items: [],
-      totalCount: 0,
-      empty: false,
-      offset: 0,
-      limit: 10,
-      sortType: '',
-      searchType: '',
-      searchText: '',
+    setCommunityAdminMenu({
+      menu: []
     });
-  }, [communityId, menuId]);
+  }, [communityId]);
 
-  return [postItems];
+  return [menuItems];
 }

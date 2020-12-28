@@ -1,7 +1,7 @@
 export interface MenuItem {
   accessType: string;
   communityId: string;
-  groupId: string;
+  groupId: any;
   id: string;
   munuId: string;
   name: string;
@@ -22,10 +22,11 @@ export interface CommunityAdminMenu {
   menu: MenuItem[];
 }
 
-export function getEmtpyCommunityAdminMenu(): CommunityAdminMenu {
-  return {
-    menu: [],
-  }
+export interface GroupListItem {
+  groupId: string;
+  id: string;
+  name: string;
+  commmunityId: string;
 }
 
 export interface GroupList {
