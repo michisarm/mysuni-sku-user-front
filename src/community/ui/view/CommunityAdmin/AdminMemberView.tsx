@@ -32,7 +32,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     { key: "companyName", value: "companyName", text: "소속사" },
     { key: "teamName", value: "teamName", text: "소속 조직(팀)" },
     { key: "name", value: "name", text: "성명" },
-    { key: "nickName", value: "nickName", text: "닉네임" },
+    { key: "nickname", value: "nickname", text: "닉네임" },
     { key: "email", value: "email", text: "E-mail" },
   ];
 
@@ -133,7 +133,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       teamName: '',
       name: '',
       email: '',
-      nickName:'',
+      nickname:'',
     }); 
     if(searchType === 'companyName'){
       setSearchBox({
@@ -155,10 +155,10 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
         ...searchBox,
         email: searchText||'',
       });   
-    }else if(searchType === 'nickName'){
+    }else if(searchType === 'nickname'){
       setSearchBox({
         ...searchBox,
-        nickName: searchText||'',
+        nickname: searchText||'',
       });         
     }
   }, [searchType,searchText])  
