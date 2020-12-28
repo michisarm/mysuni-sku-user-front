@@ -2,6 +2,7 @@ import { findCommunityMenu } from 'community/api/CommunityMenuApi';
 import {
   findMyMenus,
   findCommunityView,
+  getCommunityGroups,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -10,6 +11,7 @@ import {
 import { setCommunityAdminMenu } from '../../store/CommunityAdminMenuStore';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
+import { setCommunityAdminGroupsStore } from 'community/store/CommunityAdminGroupsStore';
 
 export function requestCommunityMenu(communityId: string) {
   const menuArr: any[] = [];
@@ -51,5 +53,17 @@ export function requestCommunityMenus(communityId: string) {
       ...communityHome,
       menus: menus === undefined ? [] : menus,
     });
+  });
+}
+
+export function requestCommunityGroups(communityId: string) {
+  getCommunityGroups(communityId).then(result => {
+    console.log('result', result)
+    setCommunityAdminGroupsStore(result)
+    // const communityHome = getCommunityHome() || getEmptyCommunityHome();
+    // setCommunityHome({
+    //   ...communityHome,
+    //   menus: menus === undefined ? [] : menus,
+    // });
   });
 }

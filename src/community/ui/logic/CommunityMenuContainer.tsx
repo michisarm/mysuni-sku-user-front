@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useCommunityProfileMyCommunity } from '../../store/CommunityProfileMyCommunityStore';
 import ContentsMyCommunityView from '../view/CommunityProfile/ContentsMyCommunityView';
 import ContentsFeedView from '../view/CommunityProfile/ContentsFeedView';
@@ -6,20 +6,34 @@ import ContentsBookmarkView from '../view/CommunityProfile/ContentsBookmarkView'
 import { useCommunityProfileBookmark } from 'community/store/CommunityProfileBookmarkStore';
 import { Icon, Radio, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { useCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
+import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
+import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
+import { requestCommunityGroups } from 'community/service/useCommunityMenu/requestCommunity';
+import { useParams } from 'react-router-dom';
+import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
+
+interface RouteParams {
+  communityId: string;
+}
 
 function CommunityMenuContainer() {
 
-  const communityAdminMenu = useCommunityAdminMenu();
+  const {communityId} = useParams<RouteParams>();
+
+  console.log('communityId', communityId)
+
+  const [communityAdminMenu] = useCommunityAdminMenu();
+
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
+
+  const [communityAdminGroups] = useCommunityGroups()
 
   const onHandleClickTaskRow = useCallback(
     param => {
       // handleClickTaskRow(param);
-      console.log('param', param)
       setSelectedRow(param)
     },
     [communityAdminMenu]
@@ -33,10 +47,17 @@ function CommunityMenuContainer() {
     console.log('handelSave')
   }, [])
 
-  const onChangeValue = (value: {}) => {
-    console.log('value', value)
-    // setsearchText(value);
-  };
+  const onChangeValue = useCallback((value: any) => {
+    console.log('communityAdminMenu', communityAdminMenu)
+    if (communityAdminMenu) {
+      communityAdminMenu.menu.map((item: MenuItem) => {
+        if(item.id === value.id) {
+          item = value
+        }
+      })
+    }
+    setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+  }, [communityAdminMenu]);
 
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
@@ -47,10 +68,8 @@ function CommunityMenuContainer() {
       // childElement = menu.child.map((child, index) => {
         return (
           <>
-            <li>
-              <a
-                onClick={() => handleClickTaskRow(menu)}
-              >
+            <li onClick={() => handleClickTaskRow(menu)}>
+              <a>
                 <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
                 {menu.name}
                 <span>
@@ -63,8 +82,8 @@ function CommunityMenuContainer() {
             </li>
             {menu.child !== undefined && (
               <ul>
-                <li>
-                  <a href="">
+                <li onClick={() => handleClickTaskRow(menu)}>
+                  <a>
                     <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
                     {menu.child.name}
                     <span>
@@ -177,7 +196,7 @@ function CommunityMenuContainer() {
         <div className="admin_menu_right">
           {selectedRow && (
             <>
-              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} onChangeValue={onChangeValue}/>
+              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data) => onChangeValue(data)}/>
               <div className="admin_bottom_button line">
                 <button className="ui button admin_table_button" onClick={() => handleSave()}>저장</button>
               </div>

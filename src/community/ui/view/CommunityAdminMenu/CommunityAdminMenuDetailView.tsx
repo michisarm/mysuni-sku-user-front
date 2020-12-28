@@ -1,34 +1,47 @@
-import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
+import { requestCommunityGroups } from 'community/service/useCommunityMenu/requestCommunity';
+import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
+import { GroupList, MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState,useCallback,useEffect} from 'react';
-import { Radio, Select } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
+import { DropdownItemProps, Radio, Select } from 'semantic-ui-react';
 
-interface MemberList {
-  communityId: any
+interface RouteParams {
+  communityId: string;
 }
+
 interface CommunityAdminMenuDetailViewProps {
   addMenuFlag: boolean
+  communityAdminGroups: any
   selectedRow?: MenuItem
-  onChangeValue: (data: {}) => void
+  onChangeValue: (data: any) => void
 }
 
 
 const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
+  communityAdminGroups,
   onChangeValue
 }) {
-  console.log('selectedRow', selectedRow)
-  // const selectOptions02 = [
-  //   { key: "category", value: "category", text: "카테고리" },
-  //   { key: "normal", value: "normal", text: "일반 게시판" },
-  //   { key: "writer", value: "writer", text: "토론 게시판" },
-  //   { key: "anony", value: "anony", text: "익명 게시판" },
-  //   { key: "notice", value: "notice", text: "공지사항" },
-  //   { key: "board", value: "board", text: "자료실" },
-  //   { key: "survey", value: "survey", text: "설문조사" },
-  //   { key: "link", value: "link", text: "링크" },
-  //   { key: "html", value: "html", text: "HTML" },
-  // ];
+  console.log('communityAdminGroups', communityAdminGroups)
+  
+  // const [communityAdminGroups] = useCommunityGroups()
+  // console.log('communityAdminGroups', communityAdminGroups)
+  //item 인데 results??
+  // console.log(communityAdminGroups!.results)
+
+  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
+    { key: '0', value: '0', text: '그룹 유형을 선택하세요.' }
+  ]
+  communityAdminGroups!.results.map((data:any, index: number) => {
+    console.log('data', data)
+    groupArr.push({
+      'key': data.groupId,
+      'value': data.groupId,
+      'text': data.name
+    })
+    // questionType.push({ key: index, value: data.categoryId, text: data.name });
+  });
 
   const menuType = [
     { key: 'CATEGORY', value: 'CATEGORY', text: '카테고리' },
@@ -73,24 +86,31 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   //   setActivePage(data.activePage)
   // }
 
-  function changeSort(_: any, data: any) {
-    console.log('selectedRow', selectedRow)
-    console.log('data', data)
+  function changeType(_: any, data: any) {
     if(selectedRow && data) {
       selectedRow.type = data.value
       onChangeValue(selectedRow);
     }
-    console.log('selectedRow', selectedRow)
-    // const myCommunityIntro = getMyCommunityIntro();
-    // if (myCommunityIntro === undefined) {
-    //   return;
-    // }
-    // const communitiesSort = (data.value || 'memberCreatedTime').toString();
-    // setMyCommunityIntro({
-    //   ...myCommunityIntro,
-    //   communitiesSort
-    // });
-    // requestMyCommunityList();
+  }
+
+  function changeValue(e: any) {
+    const value = e.target.value;
+    if(selectedRow) {
+      selectedRow.name = value
+      onChangeValue(selectedRow);
+    }
+  }
+
+  function changeAuth(e: any, value: any) {
+    console.log('value', value)
+    if(selectedRow) {
+      if (value === 'community') {
+        selectedRow.groupId = null
+      } else {
+        selectedRow.groupId = 'groupId'
+      }
+      onChangeValue(selectedRow);
+    }
   }
 
   return (
@@ -102,14 +122,14 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
         </colgroup>
         <tbody>
           <tr>
-  <th>메뉴 유형{selectedRow!.type}</th>
+            <th>메뉴 유형</th>
             <td>
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
-                value={selectedRow!.type}
+                value={selectedRow && selectedRow.type}
                 options={menuType}
-                onChange={changeSort}
+                onChange={changeType}
               />
             </td>
           </tr>
@@ -125,6 +145,14 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                 <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
                 <span className="validation">You can enter up to 100 characters.</span>
               </div> */}
+              <div className="ui right-top-count input admin">
+                <input 
+                  type="text"
+                  placeholder="제목을 입력해주세요."
+                  value={selectedRow && selectedRow.name}
+                  onChange={changeValue}
+                />
+              </div>
             </td>
           </tr>
           <tr>
@@ -137,24 +165,24 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   className="base"
                   label="커뮤니티 멤버"
                   name="radioGroup"
-                  value="value01"
-                  checked={true}
-                  // onChange={this.handleChange}
+                  value="community"
+                  checked={selectedRow?.groupId === null}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
                   className="base"
                   label="그룹지정"
                   name="radioGroup"
-                  value="value02"
-                  checked={true}
-                  // onChange={this.handleChange}
+                  value="group"
+                  checked={selectedRow?.groupId !== null}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
-                defaultValue={selectOptions03[0].value}
-                options={selectOptions03}
+                defaultValue={groupArr[0].value}
+                options={groupArr}
               />
             </td>
           </tr>

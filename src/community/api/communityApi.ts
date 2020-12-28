@@ -382,3 +382,13 @@ export function findNoticePostGroupManager(
     return response && response.data
   });
 }
+
+//커뮤니티 - 그룹리스트
+export function getCommunityGroups(
+  communityId: string
+): Promise<any> {
+  const url = `${BASE_URL}/communities/${communityId}/groups`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  });
+}
