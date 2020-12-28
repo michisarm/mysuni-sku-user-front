@@ -25,7 +25,6 @@ const CommunityPreviewPage : React.FC = function CommunityPreviewPage({
   useEffect(()=>{
     requestCommunity(communityId);
     findPreViewHome(communityId , 1);
-    
   },[]);
 
     return (

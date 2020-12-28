@@ -1,6 +1,9 @@
 import { axiosApi as axios, axiosApi } from '@nara.platform/accent';
 import MemberCdo from '../model/MemberCdo';
 import Member from 'community/model/Member';
+import { SearchBox } from 'community/model/SearchBox';
+import { MemberTempModel } from 'community/model/MemberTempModel';
+import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
 
 const BASE_URL = "/api/community";
 
@@ -8,6 +11,18 @@ export function findCommunities(limit: number, offset: number): Promise<any> {
   return axios.get(`${BASE_URL}`, {
     params: { limit, offset },
   });
+}
+
+export function findMembers(
+  communityId:string,
+  searchBox : SearchBox
+  ): Promise<any> { 
+  return (
+    axios
+    .get(`${BASE_URL}/communities/${communityId}/members`, {
+      params: searchBox,
+    })
+  );
 }
 
 export function findAllMemberByQuery(
@@ -79,15 +94,6 @@ export function modifyMembers(
     .then((response) => response && response.data);
 }
 
-export function removeMembers(
-  communityId: string,
-  memberIdList: (string | undefined)[]
-): Promise<any> {
-  return axios.delete(
-    `${BASE_URL}/${communityId}/members/${memberIdList.join(',')}`
-  );
-}
-
 export function findMember(
   communityId:string
   ): Promise<Member> { 
@@ -96,3 +102,23 @@ export function findMember(
   return axiosApi.get<Member>(url).then((response) => response && response.data);
 }
 
+export function removeMembers(
+  communityId: string,
+  memberIdList: (string | undefined)[]
+): Promise<any> {
+  return axios.delete(
+    `${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`
+  );
+}
+
+export function registerMemberTempComplete(
+  communityId: string,
+  memberTempCdoList: MemberTempCdoModel[]
+) {
+  return axios
+    .post<MemberTempModel[]>(
+      `${BASE_URL}/communities/${communityId}/members/flow/registerMemberTempComplete`,
+      memberTempCdoList
+    )
+    .then((response) => (response && response.data) || null);
+}

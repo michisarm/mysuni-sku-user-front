@@ -1,7 +1,15 @@
-import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel } from 'community/api/MemberApi';
+import { findAllMemberByQuery, findApprovedMember, memberFollowAdd, modifyMembers, searchMember, memberFollowDel, findMembers, removeMembers, registerMemberTempComplete } from 'community/api/MemberApi';
 import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
-import { setFollowMember } from 'community/store/CommunityMemberFollowStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
+import { getSearchBox } from 'community/store/SearchBoxStore';
+import { getEmptySearchBox } from 'community/model/SearchBox';
+import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
+import { MemberTempModel } from 'community/model/MemberTempModel';
+
+export function getMembers(communityId:string) {
+  findMembers(communityId , getSearchBox()||getEmptySearchBox())
+  .then(response => response && setCommunityMember(response.data));
+}
 
 export function getAllMember(communityId:string, pageNumer:number = 0) {
   findAllMemberByQuery(communityId , pageNumer)
@@ -21,6 +29,17 @@ export function updateMembers  (
       //  searchQuery();
   });
 }
+
+export function deleteMembers  (
+  communityId: string,
+  memberIdList: (string | undefined)[]
+  ) {
+    removeMembers(communityId, memberIdList).then((response) => {
+      //  searchQuery();
+  });
+}
+
+
 
 export function getSearchMember(
   communityId:string, nickName:any
@@ -43,4 +62,17 @@ export function onUnFollow(
   pageNum: number
   ) {
   memberFollowDel(memberId).then(res => {getAllMember(communityId, pageNum)})
+}
+
+
+export function registerMembersTempComplete(
+  communityId: string,
+  memberTempCboList: MemberTempCdoModel[]
+): Promise<MemberTempModel[]> {
+  //
+  const memberTempProcList = registerMemberTempComplete(
+    communityId,
+    memberTempCboList
+  );
+  return memberTempProcList;
 }
