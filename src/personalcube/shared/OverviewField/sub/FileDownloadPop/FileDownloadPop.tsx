@@ -6,6 +6,7 @@ import { Label, Icon, Button, Modal, Table, Checkbox } from 'semantic-ui-react';
 interface Props {
   fileBoxIds: string[];
   onClose: (regist: boolean) => void;
+  onDownloadStart?: () => void;
 }
 
 interface State {
@@ -70,12 +71,16 @@ class FileDownloadPop extends Component<Props, State> {
   onDownload() {
     // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
     const { checkedFileIds } = this.state;
+    const { onDownloadStart } = this.props;
     if (checkedFileIds && checkedFileIds.length) {
       depot.downloadDepotFiles(checkedFileIds);
       // 부모의 onRegisterStudent 실행
       this.closePop(true);
     } else {
       this.closePop(false);
+    }
+    if (onDownloadStart !== undefined) {
+      onDownloadStart();
     }
   }
 

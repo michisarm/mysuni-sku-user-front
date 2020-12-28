@@ -48,6 +48,10 @@ import {
 import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import { Icon, Rating } from 'semantic-ui-react';
+import {
+  videoClose,
+  videoStart,
+} from '../../../service/useActionLog/cubeStudyEvent';
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 //샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
@@ -297,11 +301,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       ) {
         setNextContentsView(true);
       }
+      videoClose();
     }
     //동영상 시작시 student 정보 확인 및 등록
     if (panoptoState == 1) {
       registCheckStudent(params);
       mediaCheckEvent(params);
+      videoStart();
     }
   }, [panoptoState]);
 
