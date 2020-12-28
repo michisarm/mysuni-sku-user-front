@@ -1,5 +1,5 @@
 type LogType = 'VIEW' | 'STUDY';
-type StudyActions =
+export type StudyActions =
   | 'VideoStart'
   | 'VideoClose'
   | 'AudioStart'
