@@ -78,6 +78,6 @@ export function deleteGroup() {
 }
 
 export function existsByGroupName(communityId:string, name:string) {
-  return existsByCommunityIdAndName(communityId, name);
+  return existsByCommunityIdAndName(encodeURI(communityId), encodeURI(name));
 }
 
