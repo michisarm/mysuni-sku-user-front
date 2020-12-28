@@ -2,19 +2,15 @@
 import { reactConfirm, reactAlert } from '@nara.platform/accent';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Checkbox, Select, Pagination, Icon, Modal, Button } from 'semantic-ui-react';
-import { removeMembers } from 'community/api/MemberApi';
 import classNames from 'classnames';
-import { getMembers, updateMembers ,deleteMembers } from 'community/service/useMemberList/useMemberList';
-import { CommunityMemberList } from 'community/model/CommunityMember';
 import moment from 'moment';
-import Calendar from './Calendar';
-import { getSearchBox, useSearchBox, setSearchBox } from 'community/store/SearchBoxStore';
+import {  setSearchBox } from 'community/store/SearchBoxStore';
 import { SearchBox } from 'community/model/SearchBox';
-import { CommunityGroup, CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
+import { CommunityGroupMemberList } from 'community/model/CommunityMemberGroup';
 import { useHistory } from 'react-router-dom';
 import { setAdminGroupCreateItem } from 'community/store/AdminGroupCreateStore';
 import AdminGroupCreate from 'community/viewModel/AdminGroupCreate';
-import { addGroup, updateGroup, getAdminGroup, deleteGroup } from 'community/service/useGroupList/useGroupList';
+import { addGroup, updateGroup, getAdminGroup, deleteGroup, existsByGroupName } from 'community/service/useGroupList/useGroupList';
 import { deleteGroupMembers, getAllGroupMemberByQuery, updateGroupMemberAdmin, createGroupMembers } from 'community/service/useGroupMemberList/useGroupMember';
 import AdminMemberPage from 'community/ui/page/AdminMemberPage';
 
@@ -92,6 +88,12 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
     });   
 
     if(!groupId){
+      const existsByGroupNameCheck = await existsByGroupName(communityId, name);
+      if (existsByGroupNameCheck) {
+        reactAlert({ title: '그룹명 중복 안내', message: '그룹명이 중복되었습니다.' });          
+        return true;
+      }       
+
       await addGroup();
       reactAlert({ title: '완료 안내', message: '그룹 등록 처리가 완료되었습니다.' });
     }else{
@@ -130,7 +132,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
       return;
     }
     
-    const checkManager = selectedList && selectedList.find(item=>item === selectedManagerId);
+    const checkManager = selectedList && selectedList.find(item=>item === adminGroupCreateItem.managerId);
 
     if(checkManager && checkManager.length > 0){
       reactAlert({ title: '알림', message: '그룹장은 삭제 할 수 없습니다.' });
@@ -149,7 +151,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
       },
     });
 
-  }, [communityId, groupId, selectedList, adminGroupCreateItem, communityGroupMembers, selectedManagerId]);
+  }, [communityId, groupId, selectedList, adminGroupCreateItem, communityGroupMembers]);
 
   const approveAdmin = useCallback(async () => {
 
@@ -166,7 +168,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
         ...adminGroupCreateItem,
         communityId: communityId||'',
         groupId:groupId||'',
-        managerId:selectedManagerId||'',
+        managerId:selectedList[0]||'',
       });
       await updateGroup();
 
@@ -195,9 +197,6 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
       return
     }
     totalPages();
-    //그룹장 지정 TODO : 차후 로직 개선 고민
-    setSelectedManagerName(communityGroupMembers?.results.find(item=> item.admin)?.name||'');
-    setSelectedManagerId(communityGroupMembers?.results.find(item=> item.admin)?.memberId||'');
     setName(adminGroupCreateItem.name||'');
     setIntroduce(adminGroupCreateItem.introduce||'');
   }, [communityGroupMembers, adminGroupCreateItem])
@@ -374,9 +373,9 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
                   <input
                     type="text"
                     placeholder="그룹장을 선택해주세요."
-                    value={selectedManagerName}
+                    // value={selectedManagerName}
                     disabled={true}
-                    // value={adminGroupCreateItem.managerName}
+                    value={adminGroupCreateItem.managerName}
                   />  
                 </div>                   
               </td>
