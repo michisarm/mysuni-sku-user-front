@@ -545,11 +545,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             contentHtml={replaceEnterWithBr(badgeDetail.obtainTerms)}
           />
 
-          {/*0826 C&C 요청으로 화면에서 숨김처리 */}
-          {/*<OverviewField.Item*/}
-          {/*title="자격증명"*/}
-          {/*content={badgeDetail.qualification}*/}
-          {/*/>*/}
+          <OverviewField.Item
+            title="자격증명"
+            contentHtml={replaceEnterWithBr(badgeDetail.qualification)}
+          />
         </OverviewField.List>
 
         {/*담당자*/}

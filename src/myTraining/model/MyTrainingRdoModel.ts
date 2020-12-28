@@ -15,6 +15,9 @@ class MyTrainingRdoModel {
   /* 메인페이지에서 호출하는지 확인하기 위한 프로퍼티. */
   pageName?: string = '';
 
+  startDate?: number = 0;
+  endDate?: number = 0;
+
 
   constructor(myTrainingRdo?: MyTrainingRdoModel) {
     //
@@ -23,13 +26,15 @@ class MyTrainingRdoModel {
     }
   }
 
-  static new(limit: number, offset: number, channelIds: string[]) {
+  static new(limit: number, offset: number, channelIds: string[], startDate?: number, endDate?: number) {
     //
     return new MyTrainingRdoModel({
       limit,
       offset,
       denizenKey: patronInfo.getDenizenId(),
       channelIds,
+      startDate,
+      endDate,
     });
   }
 
@@ -86,6 +91,8 @@ decorate(MyTrainingRdoModel, {
   required: observable,
   cubeType: observable,
   channelIds: observable,
+  startDate: observable,
+  endDate: observable,
 });
 
 export default MyTrainingRdoModel;
