@@ -11,6 +11,7 @@ export interface SearchBox {
   name?: string;
   teamName?: string;
   email?: string;
+  nickName?: string;
 
   groupId?: string;
   groupMemberIdList?: (string | undefined)[];
