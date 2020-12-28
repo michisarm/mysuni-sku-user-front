@@ -71,7 +71,7 @@ class MyLearningSummaryContainer extends Component<Props> {
 
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     myTrainingService!.countMyTrainingsWithStamp();
-    myTrainingService!.countMyTrainingsWithStamp([],moment([year,1,1]).toDate().getTime(),moment([year,12,31]).toDate().getTime());
+    myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
   }
 

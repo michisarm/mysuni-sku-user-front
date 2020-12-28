@@ -47,7 +47,7 @@ function MyContentHeaderContainer(props: Props) {
     if (myStampCount === 0 && myBadgeCount === 0 && thisYearMyStampCount === 0) {
       badgeService!.getCountOfBadges();
       myTrainingService!.countMyTrainingsWithStamp();
-      myTrainingService!.countMyTrainingsWithStamp([],moment([selectedYear,1,1]).toDate().getTime(),moment([selectedYear,12,31]).toDate().getTime());
+      myTrainingService!.countMyTrainingsWithStamp([],moment([selectedYear,1-1,1]).toDate().getTime(),moment([selectedYear,12-1,31]).toDate().getTime());
     }
   }, []);
 
