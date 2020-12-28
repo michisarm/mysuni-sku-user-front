@@ -1,6 +1,4 @@
 import { axiosApi as axios } from '@nara.platform/accent';
-import GroupCdoModel from '../model/GroupCdoModel';
-import { number } from '@storybook/addon-knobs';
 import { SearchBox } from 'community/model/SearchBox';
 import AdminGroupCreate from 'community/viewModel/AdminGroupCreate';
 

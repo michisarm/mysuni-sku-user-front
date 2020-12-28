@@ -197,13 +197,21 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
       return
     }
     totalPages();
+  }, [communityGroupMembers])
+
+
+  useEffect(() => {
+    if(adminGroupCreateItem === undefined) {
+      return
+    }
     setName(adminGroupCreateItem.name||'');
     setIntroduce(adminGroupCreateItem.introduce||'');
-  }, [communityGroupMembers, adminGroupCreateItem])
+  }, [adminGroupCreateItem])
 
   useEffect(() => {
     if(!groupId){
       adminGroupCreateItem={};
+      return;
     }
     setSearchBox({
       ...searchBox,
@@ -315,11 +323,14 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
     }
   }
 
-  // saveGroupMemberList()
-
+  //그룹 멤버 추가 modal save
   const saveGroupMemberList = useCallback(async () => {
     if(searchBox.groupMemberIdList && searchBox.groupMemberIdList.length > 0){
       await createGroupMembers();
+      reactAlert({ title: '알림', message: '멤버가 추가 되었습니다.' });
+    }else{
+      reactAlert({ title: '알림', message: '멤버를 선택해 주세요.' });
+      return true;      
     }   
     setSearchBox({
       ...searchBox,
