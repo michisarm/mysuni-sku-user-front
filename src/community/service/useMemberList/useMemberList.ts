@@ -26,6 +26,7 @@ export function updateMembers  (
   memberIdList: (string | undefined)[]
   ) {
     modifyMembers(communityId, memberIdList).then((response) => {
+      getMembers(communityId);
       //  searchQuery();
   });
 }
@@ -35,6 +36,7 @@ export function deleteMembers  (
   memberIdList: (string | undefined)[]
   ) {
     removeMembers(communityId, memberIdList).then((response) => {
+      getMembers(communityId);
       //  searchQuery();
   });
 }

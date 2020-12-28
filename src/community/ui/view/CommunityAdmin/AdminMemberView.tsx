@@ -63,7 +63,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     }
 
     if(selectedList && selectedList.length === 0){
-      reactAlert({ title: '알림', message: '멤버를 선택해 주세요' });
+      reactAlert({ title: '알림', message: '멤버를 선택해 주세요.' });
       return;
     }
 
@@ -72,11 +72,6 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       message: '선택한 멤버를 삭제하시겠습니까?',
       onOk: async () => {
         await deleteMembers(communityId, selectedList);
-        // getMembers(communityId);
-        //TODO 로직 변경 필요
-        setTimeout(() => {
-          getMembers(communityId);
-        }, 500)
         setSelectedList([]);
       },
     });
@@ -93,14 +88,9 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       title: '알림',
       message: '선택한 멤버를 승인하시겠습니까?',
       onOk: async () => {
-        // await removeMembers(communityId, selectedList);
         await updateMembers(communityId, selectedList);
-        // getMembers(communityId);
-        //TODO 로직 변경 필요
-        setTimeout(() => {
-          getMembers(communityId);
-        }, 500)
         setSelectedList([]);
+        getMembers(communityId);
       },
     });
   }, [communityId, selectedList,searchBox]);
@@ -324,14 +314,11 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           onChange={(e: any, data: any) => setLimit(data.value)}
         />
         
-        {searchBox.approved?(
-          !searchBox.groupId && (<button className="ui button admin_table_button" onClick={e=>deleteMemberList()} >멤버 삭제</button>)
-        )
-        :
-        (
-          <button className="ui button admin_table_button" onClick={e=>approveMemberList()} >멤버 승인</button>
-        )
-        }
+        {!searchBox.groupId && (<button className="ui button admin_table_button" onClick={e=>deleteMemberList()} >멤버 삭제</button>)}
+        
+        {!searchBox.approved && (<button className="ui button admin_table_button" onClick={e=>approveMemberList()} >가입 승인</button>)}
+        
+        
         
         </div>
       </div>
