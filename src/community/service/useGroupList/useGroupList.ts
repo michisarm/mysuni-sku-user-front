@@ -31,9 +31,11 @@ export function getAdminGroups(communityId:string) {
 
 export async function getAdminGroup() {
   const searchBox = getSearchBox()||getEmptySearchBox();
-  await findAdminGroup(searchBox).then(res => setAdminGroupCreateItem(res.data));
-  const adminGroupCreateItem = getAdminGroupCreateItem();
-  findGroupMemberAdmin(getSearchBox()||getEmptySearchBox()).then(res => setAdminGroupCreateItem({...adminGroupCreateItem, managerName:res?.name, managerId:res?.memberId}));
+  if(searchBox.communityId !== undefined && searchBox.groupId !== undefined){
+    await findAdminGroup(searchBox).then(res => setAdminGroupCreateItem(res.data));
+    const adminGroupCreateItem = getAdminGroupCreateItem();
+    findGroupMemberAdmin(searchBox).then(res => setAdminGroupCreateItem({...adminGroupCreateItem, managerName:res?.name, managerId:res?.memberId}));
+  }
 }
 
 export function onFollowGroupMember(
