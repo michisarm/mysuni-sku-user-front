@@ -28,6 +28,7 @@ import {
   useLectureStructure,
 } from '../../service/useLectureStructure/useLectureStructure';
 import { setLectureState } from 'lecture/detail/store/LectureStateStore';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeTaskPage() {
   const params = useLectureRouterParams();
@@ -65,6 +66,8 @@ function LectureCubeTaskPage() {
   }, [contentId, lectureId]);
 
   const [lectureStructure] = useLectureStructure();
+
+  useCubeViewEvent();
 
   return (
     <LectureDetailLayout>

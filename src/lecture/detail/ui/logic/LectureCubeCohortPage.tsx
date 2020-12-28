@@ -20,6 +20,7 @@ import LectureCohortView from '../view/LectureCohortView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { setLectureState } from 'lecture/detail/store/LectureStateStore';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeCohortPage() {
   const params = useLectureRouterParams();
@@ -46,6 +47,8 @@ function LectureCubeCohortPage() {
 
   const [lectureCohort] = useLectureCohort();
   const [lectureState] = useLectureState();
+
+  useCubeViewEvent();
 
   return (
     <LectureDetailLayout>

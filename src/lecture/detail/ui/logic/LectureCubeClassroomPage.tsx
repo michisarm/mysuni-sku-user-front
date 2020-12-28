@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import {
@@ -40,6 +41,9 @@ function LectureCubeClassroomPage() {
       setLectureState();
     };
   }, [contentId, lectureId]);
+
+  useCubeViewEvent();
+
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />

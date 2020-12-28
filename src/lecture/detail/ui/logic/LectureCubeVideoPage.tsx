@@ -22,6 +22,7 @@ import { onLectureMedia } from '../../store/LectureMediaStore';
 import { MediaType } from '../../model/MediaType';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeVideoPage() {
   const params = useLectureRouterParams();
@@ -85,6 +86,8 @@ function LectureCubeVideoPage() {
       }
     }, 'LectureCubeVideoPage');
   }, []);
+
+  useCubeViewEvent();
 
   return (
     <LectureDetailLayout>

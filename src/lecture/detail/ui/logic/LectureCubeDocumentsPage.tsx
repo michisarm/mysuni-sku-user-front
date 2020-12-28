@@ -18,6 +18,7 @@ import LectureCubeDocumentsContainer from './LectureCubeDocumentsContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { setLectureState } from '../../store/LectureStateStore';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeDocumentsPage() {
   const params = useLectureRouterParams();
@@ -41,7 +42,8 @@ function LectureCubeDocumentsPage() {
       setLectureState();
     };
   }, [contentId, lectureId]);
-  // useLectureMedia();
+
+  useCubeViewEvent();
 
   return (
     <LectureDetailLayout>

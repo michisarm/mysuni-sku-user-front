@@ -7,6 +7,7 @@
 import { getCubeLectureOverview } from 'lecture/detail/service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import React, { useEffect } from 'react';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import {
   setInMyLectureCdo,
@@ -50,6 +51,7 @@ function LectureCubeAudioPage() {
   }, [contentId, lectureId]);
 
   useLectureMedia();
+  useCubeViewEvent();
 
   return (
     <LectureDetailLayout>
