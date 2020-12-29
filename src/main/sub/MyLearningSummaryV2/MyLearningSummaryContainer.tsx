@@ -280,15 +280,15 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Stamp')}>
             <HeaderItemView
               label="My Stamp"
-              count={thisYearMyStampCount}
+              count={myStampCount}
               onClick={this.onClickStamp}
             />
-            <a className="main_sub_all">
+            {/*<a className="main_sub_all">
               &#40;누적
               <span className="big2">{myStampCount}</span>
               <span className="small2 h">개</span>
               &#41;
-            </a>
+            </a>*/}
           </ItemWrapper>
 
           {/*2차 My Badge 추가*/}
