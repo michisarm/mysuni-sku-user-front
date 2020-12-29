@@ -6,15 +6,26 @@ import ContentsBookmarkView from '../view/CommunityProfile/ContentsBookmarkView'
 import { useCommunityProfileBookmark } from 'community/store/CommunityProfileBookmarkStore';
 import { Icon, Radio, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { useCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
+import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
+import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
+import { requestCommunityGroups, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { useParams } from 'react-router-dom';
+import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
+
+interface RouteParams {
+  communityId: string;
+}
 
 function CommunityMenuContainer() {
 
-  const communityAdminMenu = useCommunityAdminMenu();
+  const {communityId} = useParams<RouteParams>();
+  const [communityAdminMenu] = useCommunityAdminMenu();
+  const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
+  const [nameValueList, setNameValueList] = useState<[]>();
 
   const onHandleClickTaskRow = useCallback(
     param => {
@@ -31,12 +42,28 @@ function CommunityMenuContainer() {
 
   const handleSave = useCallback(() => {
     console.log('handelSave')
+    console.log('getCommunityAdminMenu', getCommunityAdminMenu())
+    // modifyMenu(communityId, id, namevalueList);
+    saveCommunityMenu(communityId)
   }, [])
 
-  const onChangeValue = (value: {}) => {
+  const onChangeValue = useCallback((value: any, name: string) => {
+    console.log('communityAdminMenu', communityAdminMenu)
     console.log('value', value)
-    // setsearchText(value);
-  };
+    if (communityAdminMenu) {
+      communityAdminMenu.menu.map((item: MenuItem) => {
+        if(item.id === value.id) {
+          item = value
+        }
+      })
+    }
+    setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+
+    // setNameValueList()
+    //communityId, [id, namevalueList[name, value]]
+
+
+  }, [communityAdminMenu]);
 
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
@@ -177,7 +204,7 @@ function CommunityMenuContainer() {
         <div className="admin_menu_right">
           {selectedRow && (
             <>
-              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} onChangeValue={onChangeValue}/>
+              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
               <div className="admin_bottom_button line">
                 <button className="ui button admin_table_button" onClick={() => handleSave()}>저장</button>
               </div>

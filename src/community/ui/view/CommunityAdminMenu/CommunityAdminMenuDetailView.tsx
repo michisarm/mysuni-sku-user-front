@@ -1,34 +1,35 @@
-import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
+import { requestCommunityGroups } from 'community/service/useCommunityMenu/requestCommunity';
+import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
+import { GroupList, MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState,useCallback,useEffect} from 'react';
-import { Radio, Select } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
+import { DropdownItemProps, Radio, Select } from 'semantic-ui-react';
 
-interface MemberList {
-  communityId: any
+interface RouteParams {
+  communityId: string;
 }
+
 interface CommunityAdminMenuDetailViewProps {
   addMenuFlag: boolean
+  communityAdminGroups: any
   selectedRow?: MenuItem
-  onChangeValue: (data: {}) => void
+  onChangeValue: (data: any, name: string) => void
 }
-
 
 const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
+  communityAdminGroups,
   onChangeValue
 }) {
-  console.log('selectedRow', selectedRow)
-  // const selectOptions02 = [
-  //   { key: "category", value: "category", text: "카테고리" },
-  //   { key: "normal", value: "normal", text: "일반 게시판" },
-  //   { key: "writer", value: "writer", text: "토론 게시판" },
-  //   { key: "anony", value: "anony", text: "익명 게시판" },
-  //   { key: "notice", value: "notice", text: "공지사항" },
-  //   { key: "board", value: "board", text: "자료실" },
-  //   { key: "survey", value: "survey", text: "설문조사" },
-  //   { key: "link", value: "link", text: "링크" },
-  //   { key: "html", value: "html", text: "HTML" },
-  // ];
+  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = []
+  communityAdminGroups!.results.map((data:any, index: number) => {
+    groupArr.push({
+      'key': data.groupId,
+      'value': data.groupId,
+      'text': data.name
+    })
+  });
 
   const menuType = [
     { key: 'CATEGORY', value: 'CATEGORY', text: '카테고리' },
@@ -42,55 +43,38 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     { key: 'HTML', value: 'HTML', text: 'HTML' },
   ];
 
-  const selectOptions03 = [
-    { key: "all", value: "all", text: "선택하세요" },
-    { key: "subject", value: "subject", text: "제목" },
-    { key: "contents", value: "contents", text: "내용" },
-    { key: "writer", value: "writer", text: "작성자" },
-  ];
-  // const memberData = useCommunityMember();
-  // const [activePage, setActivePage] = useState<any>(1);
-  // const [totalPage, setTotalPage] = useState<number>(1);
-  // const {communityId} = useParams<MemberList>();
-
-  // const totalPages = () => {
-  //   let totalPage = Math.ceil(memberData!.totalCount / 8)
-  //   if (memberData!.totalCount % 8 < 0) {
-  //     totalPage++
-  //   }
-  //   setTotalPage(totalPage)
-  // }
-  
-  // useEffect(() => {
-  //   if(memberData === undefined) {
-  //     return
-  //   }
-  //   totalPages();
-  // }, [memberData])
-  
-  // const onPageChange = (data:any) => {
-  //   getAllMember(communityId,(data.activePage-1)*8);
-  //   setActivePage(data.activePage)
-  // }
-
-  function changeSort(_: any, data: any) {
-    console.log('selectedRow', selectedRow)
-    console.log('data', data)
+  function changeType(_: any, data: any) {
     if(selectedRow && data) {
       selectedRow.type = data.value
-      onChangeValue(selectedRow);
+      onChangeValue(selectedRow, 'type');
     }
-    console.log('selectedRow', selectedRow)
-    // const myCommunityIntro = getMyCommunityIntro();
-    // if (myCommunityIntro === undefined) {
-    //   return;
-    // }
-    // const communitiesSort = (data.value || 'memberCreatedTime').toString();
-    // setMyCommunityIntro({
-    //   ...myCommunityIntro,
-    //   communitiesSort
-    // });
-    // requestMyCommunityList();
+  }
+
+  function changeValue(e: any) {
+    const value = e.target.value;
+    if(selectedRow) {
+      selectedRow.name = value
+      onChangeValue(selectedRow, 'name');
+    }
+  }
+
+  function changeAuth(e: any, value: any) {
+    if(selectedRow) {
+      if (value === 'community') {
+        selectedRow.groupId = null
+      } else {
+        selectedRow.groupId = groupArr[0].value
+      }
+      onChangeValue(selectedRow, 'accessType');
+    }
+  }
+
+  function onChangeGroup(e: any, data: any) {
+    if(selectedRow) {
+      selectedRow.groupId = data.value
+      onChangeValue(selectedRow, 'accessType');
+      onChangeValue(selectedRow, 'groupId');
+    }
   }
 
   return (
@@ -102,29 +86,28 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
         </colgroup>
         <tbody>
           <tr>
-  <th>메뉴 유형{selectedRow!.type}</th>
+            <th>메뉴 유형</th>
             <td>
               <Select
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
-                value={selectedRow!.type}
+                value={selectedRow && selectedRow.type}
                 options={menuType}
-                onChange={changeSort}
+                onChange={changeType}
               />
             </td>
           </tr>
           <tr>
             <th>카테고리명</th>
             <td>
-              {/* <div className={classNames("ui right-top-count input admin", { focus: this.state.focus, write: this.state.write })} style={{width: '100%'}}>
-                <input type="text" placeholder="카테고리명을 입력하세요" className="bg"
-                      value={this.state.write}
-                      onClick={() => this.setState({ focus: true })} onBlur={() => this.setState({ focus: false})}
-                      onChange={(e) => this.setState({ write: e.target.value })}
+              <div className="ui right-top-count input admin">
+                <input 
+                  type="text"
+                  placeholder="제목을 입력해주세요."
+                  value={selectedRow && selectedRow.name}
+                  onChange={changeValue}
                 />
-                <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
-                <span className="validation">You can enter up to 100 characters.</span>
-              </div> */}
+              </div>
             </td>
           </tr>
           <tr>
@@ -137,24 +120,27 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   className="base"
                   label="커뮤니티 멤버"
                   name="radioGroup"
-                  value="value01"
-                  checked={true}
-                  // onChange={this.handleChange}
+                  value="community"
+                  checked={selectedRow?.groupId === null}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
                   className="base"
                   label="그룹지정"
                   name="radioGroup"
-                  value="value02"
-                  checked={true}
-                  // onChange={this.handleChange}
+                  value="group"
+                  checked={selectedRow?.groupId !== null}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
               <Select
-                placeholder="전체"
+                placeholder="그룹 유형을 선택하세요."
                 className="ui small-border admin_tab_select"
-                defaultValue={selectOptions03[0].value}
-                options={selectOptions03}
+                value={selectedRow?.groupId}
+                // defaultValue={groupArr[0].value}
+                options={groupArr}
+                onChange={onChangeGroup}
+                disabled={selectedRow?.groupId === null}
               />
             </td>
           </tr>
