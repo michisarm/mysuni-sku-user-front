@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import depot from '@nara.drama/depot';
 import { getCourseLectureReport } from '../../../service/useLectureReport/utility/getCourseLectureReport';
 import { getCubeLectureReport } from '../../../service/useLectureReport/utility/getCubeLectureReport';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
-import LectureParams from '../../../viewModel/LectureParams';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
-import LectureDetailLayout from '../../view/LectureDetailLayout';
 
 import LectureReportContainer from './LectureReportContainer';
 
@@ -50,11 +47,7 @@ function LectureReportPage() {
     }
   }, [params]);
 
-  return (
-    <LectureDetailLayout>
-      <LectureReportContainer />
-    </LectureDetailLayout>
-  );
+  return <LectureReportContainer />;
 }
 
 export default LectureReportPage;

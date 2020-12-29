@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -13,11 +13,11 @@ import {
 } from '../../store/LectureOverviewStore';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { getWebpageFromCube } from '../../service/useLectureWebpage/utility/getWebpageFromCube';
 import { setLectureState } from '../../store/LectureStateStore';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeElearningPage() {
   const params = useLectureRouterParams();
@@ -43,11 +43,13 @@ function LectureCubeElearningPage() {
     };
   }, [contentId, lectureId]);
 
+  useCubeViewEvent();
+
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

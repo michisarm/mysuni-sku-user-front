@@ -21,6 +21,10 @@ import {
 } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useHistory } from 'react-router-dom';
 import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
+import {
+  audioClose,
+  audioStart,
+} from '../../service/useActionLog/cubeStudyEvent';
 
 interface LectureAudioViewProps {
   params: LectureRouterParams | undefined;
@@ -109,6 +113,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       setIsActive(false);
       if (state == 2) {
         setNextContentsView(false);
+        audioClose();
       } else if (state == 1) {
         setIsActive(true);
         setNextContentsView(false);
@@ -117,8 +122,10 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
           sessionStorage.removeItem('inProgressTableViews');
           sessionStorage.removeItem('InProgressLearningList');
         }
+        audioStart();
       } else if (state == 0) {
         setNextContentsView(true);
+        audioClose();
       }
     },
     [params]

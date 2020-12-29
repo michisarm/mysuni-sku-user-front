@@ -14,7 +14,11 @@ import {
   markComplete,
   registerStudent,
 } from '../../../api/lectureApi';
-import { findCubeIntro, findMedia, findOfficeWeb, findPersonalCube } from '../../../api/mPersonalCubeApi';
+import {
+  cacheableFindCubeIntro,
+  findMedia,
+  cacheableFindPersonalCube,
+} from '../../../api/mPersonalCubeApi';
 import CubeType from '../../../model/CubeType';
 import { MediaType } from '../../../model/MediaType';
 import Student from '../../../model/Student';
@@ -25,8 +29,15 @@ import { requestLectureStructure } from '../../../ui/logic/LectureStructureConta
 import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureState, { State } from '../../../viewModel/LectureState';
-import depot from '@nara.drama/depot';
-import { getActiveCourseStructureItem, getActiveProgramStructureItem } from '../../useLectureStructure/useLectureStructure';
+import {
+  getActiveCourseStructureItem,
+  getActiveProgramStructureItem,
+} from '../../useLectureStructure/useLectureStructure';
+import {
+  cPLinked,
+  experimetial,
+  webPageLinked,
+} from '../../useActionLog/cubeStudyEvent';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
@@ -43,7 +54,6 @@ const JOIN = '작성하기';
 function isEmpty(text: string) {
   return text === null || text === '';
 }
-
 
 interface ChangeStateOption {
   params: LectureRouterParams;
@@ -150,7 +160,10 @@ async function mClassroomSubmit(
   await registerStudent(nextStudentCdo);
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
-  if (classroom.enrolling.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
+  if (
+    classroom.enrolling.enrollingAvailable &&
+    classroom.freeOfCharge.approvalProcess
+  ) {
     const messageStr =
       '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
     reactAlert({ title: '알림', message: messageStr });
@@ -168,20 +181,23 @@ async function cancel(params: LectureRouterParams, student: Student) {
   requestLectureStructure(params.lectureParams, params.pathname);
 }
 
-async function getVideoCanceledState(option: ChangeStateOption): Promise<LectureState> {
+async function getVideoCanceledState(
+  option: ChangeStateOption
+): Promise<LectureState> {
   const {
     params,
     lectureState,
-    cubeType,
     student,
-    studentJoins,
     studentJoin: { rollBookId },
     contentsId,
   } = option;
 
   if (contentsId !== undefined) {
-    const { mediaType } = await findMedia(contentsId)
-    if (mediaType === MediaType.InternalMedia || mediaType === MediaType.InternalMediaUpload) {
+    const { mediaType } = await findMedia(contentsId);
+    if (
+      mediaType === MediaType.InternalMedia ||
+      mediaType === MediaType.InternalMediaUpload
+    ) {
       return {
         ...lectureState,
         hideAction: true,
@@ -190,7 +206,6 @@ async function getVideoCanceledState(option: ChangeStateOption): Promise<Lecture
       };
     }
   }
-
 
   return {
     ...lectureState,
@@ -201,39 +216,52 @@ async function getVideoCanceledState(option: ChangeStateOption): Promise<Lecture
   };
 }
 
-async function videoApprove(params: LectureRouterParams,
+async function videoApprove(
+  params: LectureRouterParams,
   rollBookId: string,
   contentsId?: string,
-  student?: Student) {
+  student?: Student
+) {
   if (contentsId === undefined) {
     return;
   }
-  const { mediaType, mediaContents } = await findMedia(contentsId)
+  const { mediaType, mediaContents } = await findMedia(contentsId);
   if (mediaType === MediaType.ContentsProviderMedia) {
-    const { contentsProvider: { expiryDate, url } } = mediaContents;
-    if (moment(expiryDate).endOf('day').valueOf() < Date.now()) {
+    const {
+      contentsProvider: { expiryDate, url },
+    } = mediaContents;
+    if (
+      moment(expiryDate)
+        .endOf('day')
+        .valueOf() < Date.now()
+    ) {
       reactAlert({
         title: '안내',
-        message: '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.'
-      })
+        message:
+          '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+      });
       return;
     }
-    const link = document.createElement('a')
+    const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
     link.click();
+    cPLinked();
   }
   if (mediaType === MediaType.LinkMedia) {
     const { linkMediaUrl } = mediaContents;
-    const link = document.createElement('a')
+    const link = document.createElement('a');
     link.setAttribute('href', linkMediaUrl);
     link.setAttribute('target', '_blank');
     link.click();
   }
-  return approve(params, rollBookId, student)
+  return approve(params, rollBookId, student);
 }
 
-async function getVideoApprovedState(option: ChangeStateOption, stateText: string): Promise<LectureState> {
+async function getVideoApprovedState(
+  option: ChangeStateOption,
+  stateText: string
+): Promise<LectureState> {
   const {
     lectureState,
     hasTest,
@@ -245,9 +273,11 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
   } = option;
 
   if (contentsId !== undefined) {
-    const { mediaType, mediaContents } = await findMedia(contentsId)
+    const { mediaType, mediaContents } = await findMedia(contentsId);
     if (mediaType === MediaType.ContentsProviderMedia) {
-      const { contentsProvider: { expiryDate, url } } = mediaContents;
+      const {
+        contentsProvider: { expiryDate, url },
+      } = mediaContents;
       return {
         ...lectureState,
         hideAction: false,
@@ -260,13 +290,14 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
     if (mediaType === MediaType.LinkMedia) {
       const { linkMediaUrl } = mediaContents;
       if (stateText === PROGRESS) {
-        const cubeIntro = await findCubeIntro(cubeIntroId);
+        const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
 
-        if (cubeIntro === undefined ||
-          (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
-            && isEmpty(cubeIntro.reportFileBox.fileBoxId))
-          )
-
+        if (
+          cubeIntro === undefined ||
+          cubeIntro.reportFileBox === null ||
+          (isEmpty(cubeIntro.reportFileBox.reportName) &&
+            isEmpty(cubeIntro.reportFileBox.reportQuestion) &&
+            isEmpty(cubeIntro.reportFileBox.fileBoxId))
         ) {
           if (!hasTest) {
             return {
@@ -275,8 +306,8 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
               canAction: true,
               actionText: COMPLETE,
               action: () => {
-                linkVideoOpen(linkMediaUrl)
-                complete(params, rollBookId, hasSurvey)
+                linkVideoOpen(linkMediaUrl);
+                complete(params, rollBookId, hasSurvey);
               },
               actionClassName: 'bg2',
               stateText,
@@ -300,12 +331,11 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
           canAction: true,
           actionText: COMPLETE,
           action: () => {
-            linkVideoOpen(linkMediaUrl)
+            linkVideoOpen(linkMediaUrl);
           },
           actionClassName: 'bg2',
           stateText,
         };
-
       }
     }
   }
@@ -317,10 +347,12 @@ async function getVideoApprovedState(option: ChangeStateOption, stateText: strin
     actionText: APPROVE,
     stateText,
   };
-
 }
 
-async function getDocumentsApprovedState(option: ChangeStateOption, stateText: string): Promise<LectureState> {
+async function getDocumentsApprovedState(
+  option: ChangeStateOption,
+  stateText: string
+): Promise<LectureState> {
   const {
     lectureState,
     cubeType,
@@ -359,11 +391,14 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
   // }
 
   if (stateText === PROGRESS) {
-    const cubeIntro = await findCubeIntro(cubeIntroId);
-    if (cubeIntro === undefined ||
-      (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
-        && isEmpty(cubeIntro.reportFileBox.fileBoxId))
-      )) {
+    const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
+    if (
+      cubeIntro === undefined ||
+      cubeIntro.reportFileBox === null ||
+      (isEmpty(cubeIntro.reportFileBox.reportName) &&
+        isEmpty(cubeIntro.reportFileBox.reportQuestion) &&
+        isEmpty(cubeIntro.reportFileBox.fileBoxId))
+    ) {
       if (!hasTest) {
         return {
           ...lectureState,
@@ -380,7 +415,7 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
         hideAction: false,
         canAction: true,
         actionText: DOWNLOAD,
-        action: () => { },
+        action: () => {},
         stateText,
       };
     }
@@ -392,7 +427,7 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
       hideAction: true,
       canAction: true,
       actionText: DOWNLOAD,
-      action: () => { },
+      action: () => {},
       stateText,
     };
   }
@@ -404,32 +439,34 @@ async function getDocumentsApprovedState(option: ChangeStateOption, stateText: s
     actionText: APPROVE,
     stateText,
   };
-
 }
 
-
-async function cpVideoOpen(
-  expiryDate: string, url: string) {
-  if (moment(expiryDate).endOf('day').valueOf() < Date.now()) {
+async function cpVideoOpen(expiryDate: string, url: string) {
+  if (
+    moment(expiryDate)
+      .endOf('day')
+      .valueOf() < Date.now()
+  ) {
     reactAlert({
       title: '안내',
-      message: '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.'
-    })
+      message: '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+    });
     return;
   }
-  const link = document.createElement('a')
+  const link = document.createElement('a');
   link.setAttribute('href', url);
   link.setAttribute('target', '_blank');
   link.click();
+
+  cPLinked();
 }
 
 async function linkVideoOpen(url: string) {
-  const link = document.createElement('a')
+  const link = document.createElement('a');
   link.setAttribute('href', url);
   link.setAttribute('target', '_blank');
   link.click();
 }
-
 
 async function approve(
   params: LectureRouterParams,
@@ -487,11 +524,18 @@ async function approve(
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
   const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-  sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
-  /* 메인 페이지 학습중 스토리지  업데이트를 위한 로직 추가. InProgressLearning.tsx 파일에서 참조 가능합니다! */
-  await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
+  sessionStorage.setItem(
+    'inProgressTableViews',
+    JSON.stringify(inProgressTableViews)
+  );
+  await myTrainingService!.findAllMyTrainingsWithState(
+    'InProgress',
+    8,
+    0,
+    [],
+    true
+  );
 }
 
 async function join(
@@ -551,25 +595,39 @@ async function join(
   requestLectureStructure(params.lectureParams, params.pathname);
 }
 
-async function complete(params: LectureRouterParams, rollBookId: string, hasSurvey: boolean) {
+async function complete(
+  params: LectureRouterParams,
+  rollBookId: string,
+  hasSurvey: boolean
+) {
   const myTrainingService = MyTrainingService.instance;
   await markComplete({ rollBookId });
   await getStateFromCube(params);
   await requestLectureStructure(params.lectureParams, params.pathname);
   const course = getActiveCourseStructureItem();
   const program = getActiveProgramStructureItem();
-  if ((course?.state === 'Completed' && course.survey !== undefined) || program?.state === 'Completed' && program.survey !== undefined) {
+  if (
+    (course?.state === 'Completed' && course.survey !== undefined) ||
+    (program?.state === 'Completed' && program.survey !== undefined)
+  ) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
-    })
+    });
   }
 
-  /* 학습중, 학습완료 위치가 바뀐 것 같아서 임의로 수정했습니다. 혹시 에러나면 말씀해주세요! */
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
-  sessionStorage.setItem('completedTableViews', JSON.stringify(completedTableViews));
-  await myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
-
+  sessionStorage.setItem(
+    'completedTableViews',
+    JSON.stringify(completedTableViews)
+  );
+  await myTrainingService!.findAllMyTrainingsWithState(
+    'InProgress',
+    8,
+    0,
+    [],
+    true
+  );
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
@@ -625,11 +683,14 @@ async function getStateWhenApproved(
       case 'Cohort':
       case 'Experiential':
         if (stateText === PROGRESS) {
-          const cubeIntro = await findCubeIntro(cubeIntroId);
-          if (cubeIntro === undefined ||
-            (cubeIntro.reportFileBox === null || (isEmpty(cubeIntro.reportFileBox.reportName) && isEmpty(cubeIntro.reportFileBox.reportQuestion)
-              && isEmpty(cubeIntro.reportFileBox.fileBoxId))
-            )) {
+          const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
+          if (
+            cubeIntro === undefined ||
+            cubeIntro.reportFileBox === null ||
+            (isEmpty(cubeIntro.reportFileBox.reportName) &&
+              isEmpty(cubeIntro.reportFileBox.reportQuestion) &&
+              isEmpty(cubeIntro.reportFileBox.fileBoxId))
+          ) {
             if (!hasTest) {
               return {
                 ...lectureState,
@@ -648,12 +709,6 @@ async function getStateWhenApproved(
           stateText: student.learningState === null ? WAIT : stateText,
         };
       case 'ELearning':
-        /**
-         * 학습완료
-         * 승인대기
-         * 반려됨
-         * 학습예정
-         */
         return {
           ...lectureState,
           actionClassName: 'bg',
@@ -667,7 +722,9 @@ async function getStateWhenApproved(
           actionText: APPROVE,
           stateText: student.learningState === null ? WAIT : stateText,
         };
-        {/* Community => Task 데이터 현행화 후 수정 예정*/ }
+        {
+          /* Community => Task 데이터 현행화 후 수정 예정*/
+        }
       case 'Task':
       case 'Community':
         if (stateText === PROGRESS) {
@@ -718,7 +775,9 @@ function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
   }
 }
 
-async function getStateWhenCanceled(option: ChangeStateOption): Promise<LectureState | undefined> {
+async function getStateWhenCanceled(
+  option: ChangeStateOption
+): Promise<LectureState | undefined> {
   const {
     params,
     lectureState,
@@ -742,6 +801,12 @@ async function getStateWhenCanceled(option: ChangeStateOption): Promise<LectureS
         action: () => {
           if (document.getElementById('webpage-link') !== null) {
             document.getElementById('webpage-link')?.click();
+            if (cubeType === 'WebPage') {
+              webPageLinked();
+            }
+            if (cubeType === 'Experiential') {
+              experimetial();
+            }
           }
           approve(params, rollBookId, student);
         },
@@ -780,7 +845,9 @@ async function getStateWhenCanceled(option: ChangeStateOption): Promise<LectureS
           }
         },
       };
-      {/* Community => Task 데이터 현행화 후 수정 예정*/ }
+      {
+        /* Community => Task 데이터 현행화 후 수정 예정*/
+      }
     case 'Task':
     case 'Community':
       return {
@@ -801,9 +868,14 @@ async function getStateWhenCanceled(option: ChangeStateOption): Promise<LectureS
 export async function getStateFromCube(params: LectureRouterParams) {
   const { contentId, lectureId, pathname } = params;
   const {
-    contents: { type, examId, surveyId, contents: { id: contentsId } },
+    contents: {
+      type,
+      examId,
+      surveyId,
+      contents: { id: contentsId },
+    },
     cubeIntro: { id: cubeIntroId },
-  } = await findPersonalCube(contentId);
+  } = await cacheableFindPersonalCube(contentId);
   const hasTest = examId !== undefined && examId !== null && examId !== '';
   const hasSurvey =
     surveyId !== undefined && surveyId !== null && surveyId !== '';
@@ -844,8 +916,8 @@ export async function getStateFromCube(params: LectureRouterParams) {
       }
 
       if (type === 'Documents' && proposalState !== 'Approved') {
-        await approve(params, studentJoin.rollBookId)
-        getStateFromCube(params)
+        await approve(params, studentJoin.rollBookId);
+        getStateFromCube(params);
         return;
       }
 

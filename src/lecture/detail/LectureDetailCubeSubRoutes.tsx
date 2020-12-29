@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLectureCubeType } from './service/useLectureCubeType/useLectureCubeType';
 import { useLectureRouterParams } from './service/useLectureRouterParams';
 import LectureCubeAudioPage from './ui/logic/LectureCubeAudioPage';
@@ -13,6 +13,7 @@ import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
 function LectureDetailCubeSubRoutes() {
   const params = useLectureRouterParams();
   const [cubeType] = useLectureCubeType(params && params.contentId);
+
   return (
     <>
       {cubeType !== undefined && cubeType.type === 'Video' && (
@@ -33,11 +34,10 @@ function LectureDetailCubeSubRoutes() {
       {cubeType !== undefined && cubeType.type === 'ELearning' && (
         <LectureCubeElearningPage />
       )}
-      {cubeType !== undefined 
-      && (cubeType.type === 'Task' 
-      ||  cubeType.type === 'Community') && (  //TODO : Community 데이터 정리 후 제거 예정
-        <LectureCubeTaskPage />
-      )}
+      {cubeType !== undefined &&
+      (cubeType.type === 'Task' || cubeType.type === 'Community') && ( //TODO : Community 데이터 정리 후 제거 예정
+          <LectureCubeTaskPage />
+        )}
       {cubeType !== undefined && cubeType.type === 'Documents' && (
         <LectureCubeDocumentsPage />
       )}

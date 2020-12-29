@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 
-import { findCubeIntro } from '../../../api/mPersonalCubeApi';
+import { cacheableFindCubeIntro } from '../../../api/mPersonalCubeApi';
 import Student from '../../../model/Student';
 import { State } from '../../../viewModel/LectureReport';
 import {
@@ -14,7 +14,7 @@ export async function getReportItem(
   studentId: string,
   student?: Student
 ): Promise<LectureReport> {
-  const cubeIntro = await findCubeIntro(cubeIntroId);
+  const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
   const lectureReport: LectureReport = { reportId: cubeIntroId };
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};

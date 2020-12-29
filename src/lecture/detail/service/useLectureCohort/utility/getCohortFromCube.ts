@@ -1,16 +1,20 @@
 import { findCommunity } from 'community/api/communityApi';
-import { findOfficeWeb, findPersonalCube, findCubeIntro } from '../../../api/mPersonalCubeApi';
+import {
+  findOfficeWeb,
+  cacheableFindPersonalCube,
+  cacheableFindCubeIntro,
+} from '../../../api/mPersonalCubeApi';
 import { setLectureWebpage } from '../../../store/LectureWebpageStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 
 export async function getCohortFromCube(contentId: string) {
   //const { contentId } = params;
-  const cube = await findPersonalCube(contentId);
-  const cubeIntro = await findCubeIntro(cube.cubeIntro.id);
+  const cube = await cacheableFindPersonalCube(contentId);
+  const cubeIntro = await cacheableFindCubeIntro(cube.cubeIntro.id);
   let url = '';
-  if(cubeIntro){
-    url = `/community/`+cubeIntro.communityId;
+  if (cubeIntro) {
+    url = `/community/` + cubeIntro.communityId;
   }
   if (
     cubeIntro === null ||
