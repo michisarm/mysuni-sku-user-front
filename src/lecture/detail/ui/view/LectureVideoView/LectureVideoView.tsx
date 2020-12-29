@@ -231,7 +231,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           sessionStorage.removeItem('inProgressTableViews');
           sessionStorage.removeItem('InProgressLearningList');
         }
-      } else if (state == 0) {
+        videoStart();
+      } else if (state == 2) {
+        videoClose();
         // setNextContentsView(true);
       }
     },
