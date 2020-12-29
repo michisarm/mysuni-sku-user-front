@@ -79,6 +79,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
+  const [cubeName, setCubeName] = useState<any>();
 
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
@@ -715,6 +716,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => clearInterval(intervalFunc);
   }, [isActive]);
 
+  // sticky시 비디오명 표시
+  useEffect(() => {
+    setCubeName(getLectureStructure()?.cube?.name);
+  }, [getLectureStructure()?.cube?.name]);
+
+
   return (
     <div
       className={
@@ -758,7 +765,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         </div>
         <div className="sticky-video-content">
           <div className="header">
-            2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
+            {cubeName}
           </div>
           <div className="time-check">
             <strong>{getTimeStringSeconds(currentTime)}</strong> /
