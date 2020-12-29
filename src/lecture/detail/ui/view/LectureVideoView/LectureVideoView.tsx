@@ -202,7 +202,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setLiveLectureCardId(res);
       if (viewState !== 'end')
         if (!res || res === 'false') {
-          embedApi.pauseVideo();
+          // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
           reactAlert({
             title: '알림',
             message:
@@ -721,7 +721,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setCubeName(getLectureStructure()?.cube?.name);
   }, [getLectureStructure()?.cube?.name]);
 
-
   return (
     <div
       className={
@@ -764,9 +763,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             )}
         </div>
         <div className="sticky-video-content">
-          <div className="header">
-            {cubeName}
-          </div>
+          <div className="header">{cubeName}</div>
           <div className="time-check">
             <strong>{getTimeStringSeconds(currentTime)}</strong> /
             {getTimeStringSeconds(durationTime)}
