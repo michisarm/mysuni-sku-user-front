@@ -1,31 +1,24 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useCommunityProfileMyCommunity } from '../../store/CommunityProfileMyCommunityStore';
-import ContentsMyCommunityView from '../view/CommunityProfile/ContentsMyCommunityView';
-import ContentsFeedView from '../view/CommunityProfile/ContentsFeedView';
-import ContentsBookmarkView from '../view/CommunityProfile/ContentsBookmarkView';
-import { useCommunityProfileBookmark } from 'community/store/CommunityProfileBookmarkStore';
-import { Icon, Radio, Select } from 'semantic-ui-react';
-import classNames from 'classnames';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
-import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
-import { requestCommunityGroups, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
+import _ from 'lodash';
+import { saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 
 interface RouteParams {
   communityId: string;
 }
 
 function CommunityMenuContainer() {
-
   const {communityId} = useParams<RouteParams>();
   const [communityAdminMenu] = useCommunityAdminMenu();
   const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
-  const [nameValueList, setNameValueList] = useState<[]>();
+  const [nameValues, setnameValues] = useState<any[]>([]);
 
   const onHandleClickTaskRow = useCallback(
     param => {
@@ -40,15 +33,33 @@ function CommunityMenuContainer() {
   }, [])
 
   const handleSave = useCallback(() => {
-    console.log('handelSave')
-    console.log('getCommunityAdminMenu', getCommunityAdminMenu())
-    // modifyMenu(communityId, id, namevalueList);
-    saveCommunityMenu(communityId)
+    const result = 
+    _.chain(nameValues)
+      .groupBy('id')
+      .map((v, i) => {
+        return {
+          'id': _.get(_.find(v, 'id'), 'id'),
+          'nameValues': 
+          _.chain(v)
+            .groupBy('name')
+            .map((v, i) => {
+              return{
+                name: i,
+                value: _.get(_.find(v, 'value'), 'value')
+              }
+            }).value()
+        }
+      })
+      .orderBy(['id'])
+      .value()
+
+      console.log('result', result)
+      //communityId, [id, namevalueList[name, value]]
+      saveCommunityMenu(communityId, result)
+      
   }, [])
 
   const onChangeValue = useCallback((value: any, name: string) => {
-    console.log('communityAdminMenu', communityAdminMenu)
-    console.log('value', value)
     if (communityAdminMenu) {
       communityAdminMenu.menu.map((item: MenuItem) => {
         if(item.id === value.id) {
@@ -57,50 +68,50 @@ function CommunityMenuContainer() {
       })
     }
     setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
-
-    // setNameValueList()
-    //communityId, [id, namevalueList[name, value]]
-
-
+    const test = {'id': value.id, 'name': name, 'value': value[name]}
+    nameValues.map((item, index) => {
+      if(item.id === value.id && item.name === name) {
+        nameValues.splice(index,1)
+      }
+    })
+    nameValues.push(test)
+    setnameValues(nameValues)
   }, [communityAdminMenu]);
 
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
     let childElement = null;
     childElement = '<span></span>'
-    // return ''
     if (menu) {
-      // childElement = menu.child.map((child, index) => {
-        return (
-          <>
-            <li onClick={() => handleClickTaskRow(menu)}>
-              <a>
-                <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
-                {menu.name}
-                <span>
-                  <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                </span>
-                {/* {menu.child !== undefined && (
-                  <span>{menu.child.name}</span>
-                )} */}
-              </a>
-            </li>
-            {menu.child !== undefined && (
-              <ul>
-                <li onClick={() => handleClickTaskRow(menu)}>
-                  <a>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                    {menu.child.name}
-                    <span>
-                      <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                    </span>
-                  </a>
-                </li>
-              </ul>
-            )}
-          </>
-        );
-      // });
+      return (
+        <>
+          <li onClick={() => handleClickTaskRow(menu)}>
+            <a>
+              <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
+              {menu.name}
+              <span>
+                <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+              </span>
+              {/* {menu.child !== undefined && (
+                <span>{menu.child.name}</span>
+              )} */}
+            </a>
+          </li>
+          {menu.child !== undefined && (
+            <ul>
+              <li onClick={() => handleClickTaskRow(menu)}>
+                <a>
+                  <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
+                  {menu.child.name}
+                  <span>
+                    <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+                  </span>
+                </a>
+              </li>
+            </ul>
+          )}
+        </>
+      );
     }
   }
 
@@ -166,40 +177,11 @@ function CommunityMenuContainer() {
                   <input type="text" placeholder="메뉴명을 입력하세요" />
                 </li>
               )}
-
-              {/* <li>
-                <a href="">
-                  ㆍ 딥 러닝의 역사
-                  <span>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                  </span>
-                </a>
-              </li>
-              <ul>
-                <li>
-                  <a href="">
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                    알고리즘
-                    <span>
-                      <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="">
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                    심층 신경망
-                    <span>
-                      <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                    </span>
-                  </a>
-                </li>
-              </ul> */}
             </ul>
           </div>
         </div>
         <div className="admin_menu_right">
-          {selectedRow && (
+          {selectedRow && communityAdminGroups && (
             <>
               <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
               <div className="admin_bottom_button line">

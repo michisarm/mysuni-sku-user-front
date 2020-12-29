@@ -1,8 +1,5 @@
-import { requestCommunityGroups } from 'community/service/useCommunityMenu/requestCommunity';
-import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
-import { GroupList, MenuItem } from 'community/viewModel/CommunityAdminMenu';
+import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState,useCallback,useEffect} from 'react';
-import { useParams } from 'react-router-dom';
 import { DropdownItemProps, Radio, Select } from 'semantic-ui-react';
 
 interface RouteParams {
@@ -22,7 +19,14 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   communityAdminGroups,
   onChangeValue
 }) {
-  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = []
+  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
+    {
+      'key': 0,
+      'value': 0,
+      'text': '선택'
+    }
+  ]
+  console.log('communityAdminGroups', communityAdminGroups)
   communityAdminGroups!.results.map((data:any, index: number) => {
     groupArr.push({
       'key': data.groupId,

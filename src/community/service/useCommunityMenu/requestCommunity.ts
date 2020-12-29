@@ -64,9 +64,15 @@ export function requestCommunityGroups(communityId: string) {
   });
 }
 
-export function saveCommunityMenu(communityId: string) {
-  saveCommunityAdminMenu(communityId).then(result => {
-    console.log('result', result)
-    setCommunityAdminGroupsStore(result)
-  });
+export async function saveCommunityMenu(communityId: string, params: any) {
+
+  for await (const param of params) {
+    console.log('param', param)
+    // await removeMenu(communityId, id);
+    saveCommunityAdminMenu(communityId, param).then(result => {
+      console.log('result', result)
+      console.log('params', params)
+      // setCommunityAdminMenu(params)
+    });
+  }
 }

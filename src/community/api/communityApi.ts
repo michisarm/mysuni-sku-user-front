@@ -394,10 +394,15 @@ export function getCommunityGroups(
   });
 }
 
-export function saveCommunityAdminMenu(communityId: string): Promise<any> {
+export function saveCommunityAdminMenu(communityId: string, params: any): Promise<any> {
   // params: CommunityAdminMenu
-  const url = `${BASE_URL}/communities/${communityId}/groups`;
-  return axiosApi.get(url).then(response => {
+  const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
+
+  console.log('communityId',communityId);
+  console.log('params',params)
+
+  return axiosApi.put(url, {'nameValues': params.nameValues}).then(response => {
+    console.log('response', response)
     return response && response.data
   }); 
 }
