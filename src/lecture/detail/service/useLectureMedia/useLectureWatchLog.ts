@@ -11,7 +11,10 @@ import { setCubeLectureWatchLog } from './utility/setCubeLectureWatchLog';
 import { useLectureRouterParams } from '../useLectureRouterParams';
 import { onLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { getWatchLogSumViewSeconds } from './utility/getWatchLogSumViewSeconds';
+import {
+  getWatchLogSumViewSeconds,
+  getMultiVideoOverlap,
+} from './utility/getWatchLogSumViewSeconds';
 import WatchLog from 'lecture/detail/model/Watchlog';
 import { confirmProgress } from './utility/confirmProgress';
 
@@ -23,7 +26,8 @@ export function useLectureWatchLog(): [
   (params: LectureRouterParams) => void,
   (params: LectureRouterParams, watchLog: WatchLog) => void,
   (params: LectureRouterParams) => void,
-  (params: LectureRouterParams) => Promise<void>
+  (params: LectureRouterParams) => Promise<void>,
+  (viewState: string, usid: string) => Promise<string>
 ] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [watchLogValue, setWatchLogValue] = useState<WatchLogValues>();
@@ -52,6 +56,13 @@ export function useLectureWatchLog(): [
     getWatchLogSumViewSeconds(params);
   }, []);
 
+  const retMultiVideoOverlap = useCallback(
+    (viewState: string, usid: string) => {
+      return getMultiVideoOverlap(viewState, usid);
+    },
+    []
+  );
+
   useEffect(() => {
     const next = `useLectureWatchLog-${++subscriberIdRef}`;
     setSubscriberId(next);
@@ -72,5 +83,6 @@ export function useLectureWatchLog(): [
     setWatchLog,
     getWatchLogSumViewCount,
     LectureConfirmProgress,
+    retMultiVideoOverlap,
   ];
 }
