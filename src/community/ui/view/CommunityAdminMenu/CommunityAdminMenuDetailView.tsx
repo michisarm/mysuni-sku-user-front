@@ -13,9 +13,8 @@ interface CommunityAdminMenuDetailViewProps {
   addMenuFlag: boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
-  onChangeValue: (data: any) => void
+  onChangeValue: (data: any, name: string) => void
 }
-
 
 const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
@@ -23,24 +22,13 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   communityAdminGroups,
   onChangeValue
 }) {
-  console.log('communityAdminGroups', communityAdminGroups)
-  
-  // const [communityAdminGroups] = useCommunityGroups()
-  // console.log('communityAdminGroups', communityAdminGroups)
-  //item 인데 results??
-  // console.log(communityAdminGroups!.results)
-
-  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
-    { key: '0', value: '0', text: '그룹 유형을 선택하세요.' }
-  ]
+  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = []
   communityAdminGroups!.results.map((data:any, index: number) => {
-    console.log('data', data)
     groupArr.push({
       'key': data.groupId,
       'value': data.groupId,
       'text': data.name
     })
-    // questionType.push({ key: index, value: data.categoryId, text: data.name });
   });
 
   const menuType = [
@@ -55,41 +43,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     { key: 'HTML', value: 'HTML', text: 'HTML' },
   ];
 
-  const selectOptions03 = [
-    { key: "all", value: "all", text: "선택하세요" },
-    { key: "subject", value: "subject", text: "제목" },
-    { key: "contents", value: "contents", text: "내용" },
-    { key: "writer", value: "writer", text: "작성자" },
-  ];
-  // const memberData = useCommunityMember();
-  // const [activePage, setActivePage] = useState<any>(1);
-  // const [totalPage, setTotalPage] = useState<number>(1);
-  // const {communityId} = useParams<MemberList>();
-
-  // const totalPages = () => {
-  //   let totalPage = Math.ceil(memberData!.totalCount / 8)
-  //   if (memberData!.totalCount % 8 < 0) {
-  //     totalPage++
-  //   }
-  //   setTotalPage(totalPage)
-  // }
-  
-  // useEffect(() => {
-  //   if(memberData === undefined) {
-  //     return
-  //   }
-  //   totalPages();
-  // }, [memberData])
-  
-  // const onPageChange = (data:any) => {
-  //   getAllMember(communityId,(data.activePage-1)*8);
-  //   setActivePage(data.activePage)
-  // }
-
   function changeType(_: any, data: any) {
     if(selectedRow && data) {
       selectedRow.type = data.value
-      onChangeValue(selectedRow);
+      onChangeValue(selectedRow, 'type');
     }
   }
 
@@ -97,19 +54,26 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     const value = e.target.value;
     if(selectedRow) {
       selectedRow.name = value
-      onChangeValue(selectedRow);
+      onChangeValue(selectedRow, 'name');
     }
   }
 
   function changeAuth(e: any, value: any) {
-    console.log('value', value)
     if(selectedRow) {
       if (value === 'community') {
         selectedRow.groupId = null
       } else {
-        selectedRow.groupId = 'groupId'
+        selectedRow.groupId = groupArr[0].value
       }
-      onChangeValue(selectedRow);
+      onChangeValue(selectedRow, 'accessType');
+    }
+  }
+
+  function onChangeGroup(e: any, data: any) {
+    if(selectedRow) {
+      selectedRow.groupId = data.value
+      onChangeValue(selectedRow, 'accessType');
+      onChangeValue(selectedRow, 'groupId');
     }
   }
 
@@ -136,15 +100,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
           <tr>
             <th>카테고리명</th>
             <td>
-              {/* <div className={classNames("ui right-top-count input admin", { focus: this.state.focus, write: this.state.write })} style={{width: '100%'}}>
-                <input type="text" placeholder="카테고리명을 입력하세요" className="bg"
-                      value={this.state.write}
-                      onClick={() => this.setState({ focus: true })} onBlur={() => this.setState({ focus: false})}
-                      onChange={(e) => this.setState({ write: e.target.value })}
-                />
-                <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
-                <span className="validation">You can enter up to 100 characters.</span>
-              </div> */}
               <div className="ui right-top-count input admin">
                 <input 
                   type="text"
@@ -179,10 +134,13 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                 />
               </div>
               <Select
-                placeholder="전체"
+                placeholder="그룹 유형을 선택하세요."
                 className="ui small-border admin_tab_select"
-                defaultValue={groupArr[0].value}
+                value={selectedRow?.groupId}
+                // defaultValue={groupArr[0].value}
                 options={groupArr}
+                onChange={onChangeGroup}
+                disabled={selectedRow?.groupId === null}
               />
             </td>
           </tr>

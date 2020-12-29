@@ -16,6 +16,7 @@ import { NameValueList } from 'shared/model';
 import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { patronInfo } from '@nara.platform/dock';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
+import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 
 const BASE_URL = '/api/community';
 
@@ -392,3 +393,20 @@ export function getCommunityGroups(
     return response && response.data
   });
 }
+
+export function saveCommunityAdminMenu(communityId: string): Promise<any> {
+  // params: CommunityAdminMenu
+  const url = `${BASE_URL}/communities/${communityId}/groups`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  }); 
+}
+
+// export function modifyMenu(
+//   communityId: string,
+//   menuId: string,
+//   nameValueList: NameValueList
+// ): Promise<any> {
+//   return axios
+//     .put(`${BASE_URL}/${communityId}/menus/${menuId}`, nameValueList)
+// }

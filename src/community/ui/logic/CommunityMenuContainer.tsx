@@ -9,8 +9,8 @@ import classNames from 'classnames';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
-import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
-import { requestCommunityGroups } from 'community/service/useCommunityMenu/requestCommunity';
+import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
+import { requestCommunityGroups, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 
@@ -21,15 +21,11 @@ interface RouteParams {
 function CommunityMenuContainer() {
 
   const {communityId} = useParams<RouteParams>();
-
-  console.log('communityId', communityId)
-
   const [communityAdminMenu] = useCommunityAdminMenu();
-
+  const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
-
-  const [communityAdminGroups] = useCommunityGroups()
+  const [nameValueList, setNameValueList] = useState<[]>();
 
   const onHandleClickTaskRow = useCallback(
     param => {
@@ -45,10 +41,14 @@ function CommunityMenuContainer() {
 
   const handleSave = useCallback(() => {
     console.log('handelSave')
+    console.log('getCommunityAdminMenu', getCommunityAdminMenu())
+    // modifyMenu(communityId, id, namevalueList);
+    saveCommunityMenu(communityId)
   }, [])
 
-  const onChangeValue = useCallback((value: any) => {
+  const onChangeValue = useCallback((value: any, name: string) => {
     console.log('communityAdminMenu', communityAdminMenu)
+    console.log('value', value)
     if (communityAdminMenu) {
       communityAdminMenu.menu.map((item: MenuItem) => {
         if(item.id === value.id) {
@@ -57,6 +57,11 @@ function CommunityMenuContainer() {
       })
     }
     setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+
+    // setNameValueList()
+    //communityId, [id, namevalueList[name, value]]
+
+
   }, [communityAdminMenu]);
 
 
@@ -196,7 +201,7 @@ function CommunityMenuContainer() {
         <div className="admin_menu_right">
           {selectedRow && (
             <>
-              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data) => onChangeValue(data)}/>
+              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
               <div className="admin_bottom_button line">
                 <button className="ui button admin_table_button" onClick={() => handleSave()}>저장</button>
               </div>

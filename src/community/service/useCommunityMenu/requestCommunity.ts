@@ -3,6 +3,7 @@ import {
   findMyMenus,
   findCommunityView,
   getCommunityGroups,
+  saveCommunityAdminMenu,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -60,10 +61,12 @@ export function requestCommunityGroups(communityId: string) {
   getCommunityGroups(communityId).then(result => {
     console.log('result', result)
     setCommunityAdminGroupsStore(result)
-    // const communityHome = getCommunityHome() || getEmptyCommunityHome();
-    // setCommunityHome({
-    //   ...communityHome,
-    //   menus: menus === undefined ? [] : menus,
-    // });
+  });
+}
+
+export function saveCommunityMenu(communityId: string) {
+  saveCommunityAdminMenu(communityId).then(result => {
+    console.log('result', result)
+    setCommunityAdminGroupsStore(result)
   });
 }
