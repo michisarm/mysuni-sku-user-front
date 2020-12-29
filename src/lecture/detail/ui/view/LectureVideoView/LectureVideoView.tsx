@@ -197,20 +197,20 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // lectureId = 시청중인 ID
     // return = false:중복시청, true:시청가능
     // alert(`retMultiVideoOverlap before: ${usid}`);
-    retMultiVideoOverlap(viewState, usid).then(function(res) {
-      // alert(`retMultiVideoOverlap after: ${res}`);
-      setLiveLectureCardId(res);
-      if (viewState !== 'end')
-        if (!res || res === 'false') {
-          // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
-          reactAlert({
-            title: '알림',
-            message:
-              '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-            // onClose: () => history.goBack(),
-          });
-        }
-    });
+    // retMultiVideoOverlap(viewState, usid).then(function(res) {
+    //   // alert(`retMultiVideoOverlap after: ${res}`);
+    //   setLiveLectureCardId(res);
+    //   if (viewState !== 'end')
+    //     if (!res || res === 'false') {
+    //       // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
+    //       reactAlert({
+    //         title: '알림',
+    //         message:
+    //           '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+    //         // onClose: () => history.goBack(),
+    //       });
+    //     }
+    // });
   }
 
   const nextContents = useCallback((path: string) => {
