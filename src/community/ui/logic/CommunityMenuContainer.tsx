@@ -23,7 +23,6 @@ const nameValuesArr: any[] = []
 const deleteValuesArr: any[] = []
 
 function CommunityMenuContainer() {
-
   const {communityId} = useParams<RouteParams>();
   const [communityAdminMenu] = useCommunityAdminMenu();
   const [communityAdminGroups] = useCommunityGroups()
@@ -47,7 +46,6 @@ function CommunityMenuContainer() {
     }
   }, [communityId]);
 
-  const [communityAdminGroups] = useCommunityGroups()
 
   const onHandleClickTaskRow = useCallback(
     (e, param, type) => {
@@ -701,35 +699,6 @@ function CommunityMenuContainer() {
                   />
                 </li>
               )}
-
-              {/* <li>
-                <a href="">
-                  ㆍ 딥 러닝의 역사
-                  <span>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                  </span>
-                </a>
-              </li>
-              <ul>
-                <li>
-                  <a href="">
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                    알고리즘
-                    <span>
-                      <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="">
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                    심층 신경망
-                    <span>
-                      <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                    </span>
-                  </a>
-                </li>
-              </ul> */}
             </ul>
           </div>
         </div>
