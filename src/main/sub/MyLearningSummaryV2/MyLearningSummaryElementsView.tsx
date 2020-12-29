@@ -48,7 +48,7 @@ interface SharedHeaderItemViewProps {
 
 export const SharedHeaderItemView: FunctionComponent<SharedHeaderItemViewProps> = ({ label, children, onClick }) => (
   <>
-    <div className="title">{label}</div>
+    <div className="title" style={label.indexOf('완료학습')>-1 ? {width: '100px'} : {}}>{label}</div>
     <a onClick={onClick}>
       {children}
     </a>

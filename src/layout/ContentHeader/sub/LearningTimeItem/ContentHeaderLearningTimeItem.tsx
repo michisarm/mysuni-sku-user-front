@@ -6,7 +6,8 @@ import { MyLearningSummaryModal } from 'myTraining';
 
 interface Props {
   minute?: number,
-  year?: number
+  year?: number,
+  accrueMinute?: number,
 }
 
 
@@ -19,7 +20,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
 
   render() {
     //
-    const { minute, year } = this.props;
+    const { minute, year, accrueMinute } = this.props;
     let hour = 0;
     let onlyMinute = minute;
 
@@ -59,6 +60,49 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
       );
     }
 
+    let accrueHour = 0;
+    let onlyAccureMinute = minute;
+
+    if (accrueMinute) {
+      accrueHour = Math.floor(accrueMinute / 60);
+      onlyAccureMinute = accrueMinute % 60;
+    }
+
+    let accrueTotal: any = null;
+
+    if (accrueHour < 1 && onlyAccureMinute! < 1) {
+      accrueTotal = (
+        <>
+          <span className="big2">00</span>
+          <span className="small2">h</span> <span className="big">00</span>
+          <span className="small2">m</span>
+        </>
+      );
+    } else if (accrueHour < 1) {
+      accrueTotal = (
+        <>
+          <span className="big2">{accrueMinute}</span>
+          <span className="small2">m</span>
+        </>
+      );
+    } else if (onlyAccureMinute! < 1) {
+      accrueTotal = (
+        <>
+          <span className="big2">{accrueHour}</span>
+          <span className="small2">h</span>
+        </>
+      );
+    } else {
+      accrueTotal = (
+        <>
+          <span className="big2">{accrueHour}</span>
+          <span className="small2">h</span>{' '}
+          <span className="big2">{onlyAccureMinute}</span>
+          <span className="small2">m</span>
+        </>
+      );
+    }
+
     return (
       <div className="ui statistic total-time">
         {
@@ -66,9 +110,19 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
             trigger={(
               <Button className="btn-total-time">
                 <Label className="onlytext">
-                  <Icon className="total-time" /><span>총 학습시간</span>
+                  {/*<Icon className="total-time" /><span>총 학습시간</span>*/}
+                  <div>
+                    <span style={{textDecoration: "none", color: "#ea644d"}}>{year}년</span> <span style={{textDecoration: "none"}}>학습시간</span>
+                  </div>
                 </Label>
                 {total}
+                <div style={{marginTop: '5px', textAlign: 'left'}}>
+                  <a href="#" className="main_sub_all" style={{color: 'gray'}}>
+                    &#40;누적 
+                    {accrueTotal}
+                    &#41;
+                  </a>
+                </div>
               </Button>
             )}
             year={year}
