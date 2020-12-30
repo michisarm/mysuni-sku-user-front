@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
 import { deleteCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 
 interface RouteParams {
   communityId: string;
@@ -21,17 +22,17 @@ function CommunityMenuContainer() {
   const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
-  const [addRow, setAddRow] = useState<MenuItem>({
-    accessType: 'BASIC',
+  const [addRow, setAddRow] = useState<any>({
+    accessType: '',
     communityId: '',
-    groupId: '',
+    groupId: null,
     id: '',
     munuId: '',
     name: '',
     order: 999,
     parentId: '',
     patronKey: '',
-    type: '',
+    type: 'BASIC',
     child: '',
     discussionTopic: '',
     surveyCaseId: '',
@@ -43,6 +44,7 @@ function CommunityMenuContainer() {
 
   const onHandleClickTaskRow = useCallback(
     (e, param, type) => {
+      setAddMenuFlag(false)
       e.persist(); 
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
@@ -65,13 +67,32 @@ function CommunityMenuContainer() {
   );
 
   const handleAddMenu = useCallback(() => {
+    console.log('handleAddMenu')
+    console.log('communityAdminMenu', communityAdminMenu)
+    console.log('communityAdminMenu.menu', communityAdminMenu!.menu)
+    const order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
+    // [communityAdminMenu.menu.length-1]
     setAddMenuFlag(true);
-  }, [])
+    setAddRow({
+      accessType: '',
+      communityId: '',
+      groupId: null,
+      id: '',
+      munuId: '',
+      name: '',
+      order,
+      parentId: '',
+      patronKey: '',
+      type: 'BASIC',
+      child: '',
+      discussionTopic: '',
+      surveyCaseId: '',
+      surveyId: '',
+      surveyInformation: '',
+    })
+  }, [communityAdminMenu])
 
-  const handleSave = useCallback((nameValues?, deleteValues?) => {
-
-    console.log('nameValues', nameValues)
-    console.log('deleteValues', deleteValues)
+  const handleSave = useCallback((nameValues?, deleteValues?, type?) => {
     const result = 
     _.chain(nameValues)
       .groupBy('id')
@@ -92,23 +113,30 @@ function CommunityMenuContainer() {
       .orderBy(['id'])
       .value()
 
-      console.log('deleteValues', deleteValues)
       // 삭제한 메뉴있을시
       if(deleteValues.length !== 0) {
         deleteCommunityMenu(communityId, deleteValues)
-        console.log('deleteValues', deleteValues)
       }
       if(result.length !== 0) {
         saveCommunityMenu(communityId, result)
       }
-
       setNameValues([])
-      
+
+      if(type === 'add') {
+        console.log('add')
+      }
   }, [])
-  const onChangeValue = useCallback((value: any, name: string) => {
-    console.log('onChangeValue')
+
+  const onChangeAddValue = useCallback((data, name)=> {
+    console.log('data', data)
     console.log('name', name)
-    console.log('value', value)
+    console.log('addRow', addRow)
+    addRow[name] = data.name
+    setAddRow(addRow)
+
+  }, [])
+
+  const onChangeValue = useCallback((value: any, name: string) => {
     if (communityAdminMenu) {
       communityAdminMenu.menu.map((item: MenuItem) => {
         if(item.id === value.id) {
@@ -117,40 +145,25 @@ function CommunityMenuContainer() {
       })
     }
     setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
-
     const test = {'id': value.id, 'name': name, 'value': value[name]}
     nameValues.map((item: any, index: any) => {
       if(item.id === value.id && item.name === name) {
         nameValues.splice(index,1)
       }
     })
-    console.log('nameValues', nameValues)
     setNameValues(nameValues)
     nameValuesArr.push(test)
-    // setNameValues(nameValues.concat([test]))
-    console.log("nameValues", nameValues)
     setNameValues(nameValuesArr)
   }, [communityAdminMenu]);
 
   function changeValue(e: any) {
     const value = e.target.value;
-    console.log('addRow', addRow)
     if(addRow) {
       addRow.name = value
       // onChangeValue(addRow, 'name');
     }
-    console.log('addRow', addRow)
-
     setAddRow({...addRow})
   }
-
-  // const deleteMenu = useCallback((e, menu: MenuItem) => {
-  //   console.log('deleteMenu')
-  //   console.log('menu', menu)
-  //   e.preventDefault();
-  //   deleteValues.push()
-  // }, [])
-
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
     let childElement = null;
@@ -259,7 +272,7 @@ function CommunityMenuContainer() {
           </div>
         </div>
         <div className="admin_menu_right">
-          {selectedRow && communityAdminGroups && (
+          {selectedRow && communityAdminGroups && !addMenuFlag && (
             <>
               <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
               <div className="admin_bottom_button line">
@@ -270,9 +283,9 @@ function CommunityMenuContainer() {
           {addMenuFlag && addRow && (
             <>
               {/* <span>{addRow}</span> */}
-              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
+              <CommunityAdminMenuAddView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name)}/>
               <div className="admin_bottom_button line">
-                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues)}>저장</button>
+                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add')}>등록저장</button>
               </div>
             </>
           )}
