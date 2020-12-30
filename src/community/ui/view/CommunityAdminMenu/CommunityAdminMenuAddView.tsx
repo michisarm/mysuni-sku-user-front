@@ -6,18 +6,18 @@ interface RouteParams {
   communityId: string;
 }
 
-interface CommunityAdminMenuDetailViewProps {
+interface CommunityAdminMenuAddViewProps {
   addMenuFlag: boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
-  onChangeValue: (data: any, name: string) => void
+  onChangeAddValue: (data: any, name: string) => void
 }
 
-const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
+const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
   communityAdminGroups,
-  onChangeValue
+  onChangeAddValue
 }) {
   const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
     {
@@ -50,7 +50,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function changeType(_: any, data: any) {
     if(selectedRow && data) {
       selectedRow.type = data.value
-      onChangeValue(selectedRow, 'type');
+      onChangeAddValue(selectedRow, 'type');
     }
   }
 
@@ -58,7 +58,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     const value = e.target.value;
     if(selectedRow) {
       selectedRow.name = value
-      onChangeValue(selectedRow, 'name');
+      onChangeAddValue(selectedRow, 'name');
     }
   }
 
@@ -73,7 +73,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
         selectedRow.groupId = groupArr[0].value
         selectedRow.accessType = 'COMMUNITY_GROUP'
       }
-      onChangeValue(selectedRow, 'accessType');
+      onChangeAddValue(selectedRow, 'accessType');
     }
   }
 
@@ -81,7 +81,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     if(selectedRow) {
       selectedRow.groupId = data.value
       // onChangeValue(selectedRow, 'accessType');
-      onChangeValue(selectedRow, 'groupId');
+      onChangeAddValue(selectedRow, 'groupId');
     }
   }
 
@@ -171,4 +171,4 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   )
 }
 
-export default CommunityAdminMenuDetailView;
+export default CommunityAdminMenuAddView;
