@@ -26,7 +26,6 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
       'text': '선택'
     }
   ]
-  console.log('communityAdminGroups', communityAdminGroups)
   communityAdminGroups!.results.map((data:any, index: number) => {
     groupArr.push({
       'key': data.groupId,
@@ -65,11 +64,9 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   function changeAuth(e: any, value: any) {
     if(selectedRow) {
       if (value === 'community') {
-        console.log('0')
         selectedRow.groupId = null
         selectedRow.accessType = 'COMMUNITY_ALL_MEMBER'
       } else {
-        console.log('1')
         selectedRow.groupId = groupArr[0].value
         selectedRow.accessType = 'COMMUNITY_GROUP'
       }
@@ -84,8 +81,6 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
       onChangeAddValue(selectedRow, 'groupId');
     }
   }
-
-  console.log('selectedRow', selectedRow)
 
   return (
     <div className="menu_right_contents">

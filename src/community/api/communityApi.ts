@@ -411,11 +411,10 @@ export function deleteCommunityAdminMenu(communityId: string, params: any): Prom
   }); 
 }
 
-// export function modifyMenu(
-//   communityId: string,
-//   menuId: string,
-//   nameValueList: NameValueList
-// ): Promise<any> {
-//   return axios
-//     .put(`${BASE_URL}/${communityId}/menus/${menuId}`, nameValueList)
-// }
+export function addCommunityAdminMenu(communityId: string, addRow: any): Promise<any> {
+  // params: CommunityAdminMenu
+  const url = `${BASE_URL}/${communityId}/menus`;
+  return axiosApi.post(url, addRow).then(response => {
+    return response && response.data
+  }); 
+}
