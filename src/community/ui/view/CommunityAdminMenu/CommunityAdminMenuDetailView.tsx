@@ -1,8 +1,5 @@
-import { requestCommunityGroups } from 'community/service/useCommunityMenu/requestCommunity';
-import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
-import { GroupList, MenuItem } from 'community/viewModel/CommunityAdminMenu';
+import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState,useCallback,useEffect} from 'react';
-import { useParams } from 'react-router-dom';
 import { DropdownItemProps, Radio, Select } from 'semantic-ui-react';
 
 interface RouteParams {
@@ -13,16 +10,26 @@ interface CommunityAdminMenuDetailViewProps {
   addMenuFlag: boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
+  addRow?: MenuItem
   onChangeValue: (data: any, name: string) => void
 }
 
 const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
+  addRow,
   communityAdminGroups,
   onChangeValue
 }) {
-  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = []
+  console.log('addRow', addRow)
+  const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
+    {
+      'key': 0,
+      'value': 0,
+      'text': '선택'
+    }
+  ]
+  console.log('communityAdminGroups', communityAdminGroups)
   communityAdminGroups!.results.map((data:any, index: number) => {
     groupArr.push({
       'key': data.groupId,
@@ -61,9 +68,13 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function changeAuth(e: any, value: any) {
     if(selectedRow) {
       if (value === 'community') {
+        console.log('0')
         selectedRow.groupId = null
+        selectedRow.accessType = 'COMMUNITY_ALL_MEMBER'
       } else {
+        console.log('1')
         selectedRow.groupId = groupArr[0].value
+        selectedRow.accessType = 'COMMUNITY_GROUP'
       }
       onChangeValue(selectedRow, 'accessType');
     }
@@ -72,10 +83,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function onChangeGroup(e: any, data: any) {
     if(selectedRow) {
       selectedRow.groupId = data.value
-      onChangeValue(selectedRow, 'accessType');
+      // onChangeValue(selectedRow, 'accessType');
       onChangeValue(selectedRow, 'groupId');
     }
   }
+
+  console.log('selectedRow', selectedRow)
 
   return (
     <div className="menu_right_contents">
