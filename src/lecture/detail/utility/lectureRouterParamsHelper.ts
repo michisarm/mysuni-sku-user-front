@@ -5,8 +5,38 @@ import LectureRouterParams from '../viewModel/LectureRouterParams';
 export function parseLectureParamsFromPathname(
   pathname: string
 ): LectureRouterParams | void {
-  const lectureParams = parseParamsFromPathname(pathname);
-  if (lectureParams !== undefined) {
+  let mathch = matchPath<LectureParams>(pathname, {
+    path:
+      '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
+    exact: true,
+    strict: true,
+  });
+  if (!mathch?.isExact) {
+    mathch = matchPath<LectureParams>(pathname, {
+      path:
+        '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
+      exact: true,
+      strict: true,
+    });
+  }
+  if (!mathch?.isExact) {
+    mathch = matchPath<LectureParams>(pathname, {
+      path:
+        '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
+      exact: true,
+      strict: true,
+    });
+  }
+  if (!mathch?.isExact) {
+    mathch = matchPath<LectureParams>(pathname, {
+      path:
+        '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
+      exact: true,
+      strict: true,
+    });
+  }
+  if (mathch !== null) {
+    const lectureParams = mathch.params;
     const params = parseLectureParams(lectureParams, pathname);
     return params;
   }
@@ -15,15 +45,14 @@ export function parseLectureParamsFromPathname(
 export function parseParamsFromPathname(
   pathname: string
 ): LectureParams | void {
-  const path = pathname.substr(pathname.indexOf('/lecture'));
-  let mathch = matchPath<LectureParams>(path, {
+  let mathch = matchPath<LectureParams>(pathname, {
     path:
       '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
     exact: true,
     strict: true,
   });
   if (!mathch?.isExact) {
-    mathch = matchPath<LectureParams>(path, {
+    mathch = matchPath<LectureParams>(pathname, {
       path:
         '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
       exact: true,
@@ -31,7 +60,7 @@ export function parseParamsFromPathname(
     });
   }
   if (!mathch?.isExact) {
-    mathch = matchPath<LectureParams>(path, {
+    mathch = matchPath<LectureParams>(pathname, {
       path:
         '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
       exact: true,
@@ -39,7 +68,7 @@ export function parseParamsFromPathname(
     });
   }
   if (!mathch?.isExact) {
-    mathch = matchPath<LectureParams>(path, {
+    mathch = matchPath<LectureParams>(pathname, {
       path:
         '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
       exact: true,

@@ -125,6 +125,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         audioStart();
       } else if (state == 0) {
         setNextContentsView(true);
+        audioClose();
       }
     },
     [params]
