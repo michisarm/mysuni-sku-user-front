@@ -6,11 +6,14 @@ import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { deleteCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 
 interface RouteParams {
   communityId: string;
 }
+
+const nameValuesArr: any[] = []
+const deleteValuesArr: any[] = []
 
 function CommunityMenuContainer() {
   const {communityId} = useParams<RouteParams>();
@@ -18,12 +21,45 @@ function CommunityMenuContainer() {
   const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
-  const [nameValues, setnameValues] = useState<any[]>([]);
+  const [addRow, setAddRow] = useState<MenuItem>({
+    accessType: 'BASIC',
+    communityId: '',
+    groupId: '',
+    id: '',
+    munuId: '',
+    name: '',
+    order: 999,
+    parentId: '',
+    patronKey: '',
+    type: '',
+    child: '',
+    discussionTopic: '',
+    surveyCaseId: '',
+    surveyId: '',
+    surveyInformation: '',
+  });
+  const [nameValues, setNameValues] = useState<any[]>([]);
+  const [deleteValues, setDeleteValues] = useState<any[]>([]);
 
   const onHandleClickTaskRow = useCallback(
-    param => {
-      // handleClickTaskRow(param);
-      setSelectedRow(param)
+    (e, param, type) => {
+      e.persist(); 
+      e.nativeEvent.stopImmediatePropagation();
+      e.stopPropagation();
+      if (type !== 'delete'){
+        setSelectedRow(param)
+      } else if(type === 'delete') {
+        deleteValuesArr.push(param.id)
+        setDeleteValues(deleteValuesArr)
+        if (communityAdminMenu) {
+          communityAdminMenu.menu.map((item: MenuItem, index: number) => {
+            if(item.id === param.id) {
+              communityAdminMenu.menu.splice(index, 1)
+            }
+          })
+        }
+        setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+      }
     },
     [communityAdminMenu]
   );
@@ -32,7 +68,10 @@ function CommunityMenuContainer() {
     setAddMenuFlag(true);
   }, [])
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback((nameValues?, deleteValues?) => {
+
+    console.log('nameValues', nameValues)
+    console.log('deleteValues', deleteValues)
     const result = 
     _.chain(nameValues)
       .groupBy('id')
@@ -53,13 +92,23 @@ function CommunityMenuContainer() {
       .orderBy(['id'])
       .value()
 
-      console.log('result', result)
-      //communityId, [id, namevalueList[name, value]]
-      saveCommunityMenu(communityId, result)
+      console.log('deleteValues', deleteValues)
+      // 삭제한 메뉴있을시
+      if(deleteValues.length !== 0) {
+        deleteCommunityMenu(communityId, deleteValues)
+        console.log('deleteValues', deleteValues)
+      }
+      if(result.length !== 0) {
+        saveCommunityMenu(communityId, result)
+      }
+
+      setNameValues([])
       
   }, [])
-
   const onChangeValue = useCallback((value: any, name: string) => {
+    console.log('onChangeValue')
+    console.log('name', name)
+    console.log('value', value)
     if (communityAdminMenu) {
       communityAdminMenu.menu.map((item: MenuItem) => {
         if(item.id === value.id) {
@@ -68,15 +117,39 @@ function CommunityMenuContainer() {
       })
     }
     setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+
     const test = {'id': value.id, 'name': name, 'value': value[name]}
-    nameValues.map((item, index) => {
+    nameValues.map((item: any, index: any) => {
       if(item.id === value.id && item.name === name) {
         nameValues.splice(index,1)
       }
     })
-    nameValues.push(test)
-    setnameValues(nameValues)
+    console.log('nameValues', nameValues)
+    setNameValues(nameValues)
+    nameValuesArr.push(test)
+    // setNameValues(nameValues.concat([test]))
+    console.log("nameValues", nameValues)
+    setNameValues(nameValuesArr)
   }, [communityAdminMenu]);
+
+  function changeValue(e: any) {
+    const value = e.target.value;
+    console.log('addRow', addRow)
+    if(addRow) {
+      addRow.name = value
+      // onChangeValue(addRow, 'name');
+    }
+    console.log('addRow', addRow)
+
+    setAddRow({...addRow})
+  }
+
+  // const deleteMenu = useCallback((e, menu: MenuItem) => {
+  //   console.log('deleteMenu')
+  //   console.log('menu', menu)
+  //   e.preventDefault();
+  //   deleteValues.push()
+  // }, [])
 
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
@@ -85,12 +158,12 @@ function CommunityMenuContainer() {
     if (menu) {
       return (
         <>
-          <li onClick={() => handleClickTaskRow(menu)}>
+          <li onClick={(e) => handleClickTaskRow(e, menu, 'detail')}>
             <a>
               <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
               {menu.name}
               <span>
-                <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+                <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
               </span>
               {/* {menu.child !== undefined && (
                 <span>{menu.child.name}</span>
@@ -99,7 +172,7 @@ function CommunityMenuContainer() {
           </li>
           {menu.child !== undefined && (
             <ul>
-              <li onClick={() => handleClickTaskRow(menu)}>
+              <li onClick={(e) => handleClickTaskRow(e, menu)}>
                 <a>
                   <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
                   {menu.child.name}
@@ -143,7 +216,7 @@ function CommunityMenuContainer() {
             </div>
             <ul>
               <li>
-                <a href="">
+                <a>
                   <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-home-off.png`} />
                   Home
                   <span>
@@ -152,7 +225,7 @@ function CommunityMenuContainer() {
                 </a>
               </li>
               <li>
-                <a href="">
+                <a>
                   <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
                   전체글
                   <span>
@@ -161,7 +234,7 @@ function CommunityMenuContainer() {
                 </a>
               </li>
               <li>
-                <a href="">
+                <a>
                   <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
                   공지사항
                   <span>
@@ -174,7 +247,12 @@ function CommunityMenuContainer() {
               })}
               { addMenuFlag && (
                 <li>
-                  <input type="text" placeholder="메뉴명을 입력하세요" />
+                  <input 
+                    type="text"
+                    placeholder="제목을 입력해주세요."
+                    value={addRow && addRow.name}
+                    onChange={changeValue}
+                  />
                 </li>
               )}
             </ul>
@@ -185,7 +263,16 @@ function CommunityMenuContainer() {
             <>
               <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
               <div className="admin_bottom_button line">
-                <button className="ui button admin_table_button" onClick={() => handleSave()}>저장</button>
+                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues)}>저장</button>
+              </div>
+            </>
+          )}
+          {addMenuFlag && addRow && (
+            <>
+              {/* <span>{addRow}</span> */}
+              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
+              <div className="admin_bottom_button line">
+                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues)}>저장</button>
               </div>
             </>
           )}

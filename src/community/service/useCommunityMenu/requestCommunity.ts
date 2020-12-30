@@ -4,6 +4,7 @@ import {
   findCommunityView,
   getCommunityGroups,
   saveCommunityAdminMenu,
+  deleteCommunityAdminMenu,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -65,14 +66,19 @@ export function requestCommunityGroups(communityId: string) {
 }
 
 export async function saveCommunityMenu(communityId: string, params: any) {
-
   for await (const param of params) {
-    console.log('param', param)
     // await removeMenu(communityId, id);
     saveCommunityAdminMenu(communityId, param).then(result => {
-      console.log('result', result)
-      console.log('params', params)
-      // setCommunityAdminMenu(params)
+
+    });
+  }
+}
+
+export async function deleteCommunityMenu(communityId: string, params: any) {
+
+  for await (const param of params) {
+    // await removeMenu(communityId, id);
+    deleteCommunityAdminMenu(communityId, param).then(result => {
     });
   }
 }
