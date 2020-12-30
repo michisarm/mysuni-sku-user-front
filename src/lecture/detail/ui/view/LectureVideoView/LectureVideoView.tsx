@@ -88,43 +88,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const multiVideoIntervalRef = useRef<any>(0);
 
   useEffect(() => {
-    let mathch = matchPath<LectureParams>(pathname, {
-      path:
-        '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
-      exact: true,
-      strict: true,
-    });
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (mathch !== null) {
-      const mlectureParams = mathch.params;
-      const mParams = parseLectureParams(mlectureParams, pathname);
-      confirmProgress(mParams);
-      requestLectureStructure(mParams.lectureParams, pathname);
-    }
-
     // all cleare interval
     return () => {
       clearInterval(playIntervalRef.current);
@@ -197,20 +160,20 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // lectureId = 시청중인 ID
     // return = false:중복시청, true:시청가능
     // alert(`retMultiVideoOverlap before: ${usid}`);
-    retMultiVideoOverlap(viewState, usid).then(function(res) {
-      // alert(`retMultiVideoOverlap after: ${res}`);
-      setLiveLectureCardId(res);
-      if (viewState !== 'end')
-        if (!res || res === 'false') {
-          // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
-          reactAlert({
-            title: '알림',
-            message:
-              '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-            // onClose: () => history.goBack(),
-          });
-        }
-    });
+    // retMultiVideoOverlap(viewState, usid).then(function(res) {
+    //   // alert(`retMultiVideoOverlap after: ${res}`);
+    //   setLiveLectureCardId(res);
+    //   if (viewState !== 'end')
+    //     if (!res || res === 'false') {
+    //       // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
+    //       reactAlert({
+    //         title: '알림',
+    //         message:
+    //           '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+    //         // onClose: () => history.goBack(),
+    //       });
+    //     }
+    // });
   }
 
   const nextContents = useCallback((path: string) => {
@@ -231,7 +194,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           sessionStorage.removeItem('inProgressTableViews');
           sessionStorage.removeItem('InProgressLearningList');
         }
-      } else if (state == 0) {
+        videoStart();
+      } else if (state == 2) {
+        videoClose();
         // setNextContentsView(true);
       }
     },
@@ -290,7 +255,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       ) {
         setNextContentsView(true);
       }
-      videoClose();
       // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
       //중복 동영상 체크 종료 signal
       handleMultiVideo('end', liveLectureCardId);
@@ -300,7 +264,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (panoptoState == 1) {
       registCheckStudent(params);
       mediaCheckEvent(params);
-      videoStart();
       // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
       //중복 동영상 체크 시작 signal
       handleMultiVideo('start', params?.lectureId || 'start');
