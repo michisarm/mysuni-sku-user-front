@@ -10,11 +10,10 @@ import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
 import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
-import { requestCommunityGroups, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { deleteCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { addCommunityMenu, deleteCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 
 interface RouteParams {
@@ -32,20 +31,11 @@ function CommunityMenuContainer() {
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
   const [addRow, setAddRow] = useState<any>({
-    accessType: '',
-    communityId: '',
+    accessType: 'COMMUNITY_ALL_MEMBER',
     groupId: null,
-    id: '',
-    munuId: '',
     name: '',
-    order: 999,
-    parentId: '',
-    patronKey: '',
+    order: '',
     type: 'BASIC',
-    child: '',
-    discussionTopic: '',
-    surveyCaseId: '',
-    surveyId: '',
     surveyInformation: '',
   });
   const [nameValues, setNameValues] = useState<any[]>([]);
@@ -76,20 +66,15 @@ function CommunityMenuContainer() {
   );
 
   const handleAddMenu = useCallback(() => {
-    console.log('handleAddMenu')
-    console.log('communityAdminMenu', communityAdminMenu)
-    console.log('communityAdminMenu.menu', communityAdminMenu!.menu)
-    const order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
-    // [communityAdminMenu.menu.length-1]
     setAddMenuFlag(true);
     setAddRow({
-      accessType: '',
+      accessType: 'COMMUNITY_ALL_MEMBER',
       communityId: '',
       groupId: null,
       id: '',
       munuId: '',
       name: '',
-      order,
+      order: communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1,
       parentId: '',
       patronKey: '',
       type: 'BASIC',
@@ -132,17 +117,23 @@ function CommunityMenuContainer() {
       setNameValues([])
 
       if(type === 'add') {
-        console.log('add')
+        addRow.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
+        addCommunityMenu(communityId, addRow)
+        setCommunityAdminMenu({'menu': getCommunityAdminMenu()?.menu!});
       }
-  }, [])
+  }, [communityAdminMenu])
 
   const onChangeAddValue = useCallback((data, name)=> {
-    console.log('data', data)
-    console.log('name', name)
-    console.log('addRow', addRow)
-    addRow[name] = data.name
-    setAddRow(addRow)
-
+    addRow[name] = data[name]
+    if(data[name] === 'COMMUNITY_GROUP' && name === 'accessType') {
+      addRow.groupId = 0
+      addRow.accessType = 'COMMUNITY_GROUP'
+    }
+    if(data[name] === 'COMMUNITY_ALL_MEMBER' && name === 'accessType') {
+      addRow.groupId = null
+      addRow.accessType = 'COMMUNITY_ALL_MEMBER'
+    }
+    setAddRow({...addRow})
   }, [])
 
   const onChangeValue = useCallback((value: any, name: string) => {
@@ -154,14 +145,14 @@ function CommunityMenuContainer() {
       })
     }
     setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
-    const test = {'id': value.id, 'name': name, 'value': value[name]}
+    const ValuesArr = {'id': value.id, 'name': name, 'value': value[name]}
     nameValues.map((item: any, index: any) => {
       if(item.id === value.id && item.name === name) {
         nameValues.splice(index,1)
       }
     })
     setNameValues(nameValues)
-    nameValuesArr.push(test)
+    nameValuesArr.push(ValuesArr)
     setNameValues(nameValuesArr)
   }, [communityAdminMenu]);
 
@@ -169,9 +160,27 @@ function CommunityMenuContainer() {
     const value = e.target.value;
     if(addRow) {
       addRow.name = value
-      // onChangeValue(addRow, 'name');
     }
-    setAddRow({...addRow})
+    onChangeAddValue(addRow, 'name')
+  }
+  function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any) {
+    if (menu) {
+      console.log('menu', menu)
+      return (
+        <>
+          <ul>
+            <li onClick={(e) => handleClickTaskRow(e, menu)}>
+              <a>
+                <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
+                {menu.name}
+                <span>
+                  <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+                </span>
+              </a>
+            </li>
+          </ul>
+        </>
+      )}
   }
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
@@ -188,29 +197,17 @@ function CommunityMenuContainer() {
               <span>
                 <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
               </span>
-              {/* {menu.child !== undefined && (
-                <span>{menu.child.name}</span>
-              )} */}
             </a>
           </li>
-          {menu.child !== undefined && (
-            <ul>
-              <li onClick={(e) => handleClickTaskRow(e, menu)}>
-                <a>
-                  <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                  {menu.child.name}
-                  <span>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-                  </span>
-                </a>
-              </li>
-            </ul>
-          )}
+          {menu.child !== undefined && 
+            menu.child.map((item2: any, index2: any) => {
+              return renderMenuRow2(item2, onHandleClickTaskRow);
+            })
+          }
         </>
       );
     }
   }
-
   return (
     <>
     {communityAdminMenu !== undefined && ( 

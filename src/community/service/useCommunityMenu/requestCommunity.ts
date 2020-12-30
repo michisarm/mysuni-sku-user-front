@@ -5,6 +5,7 @@ import {
   getCommunityGroups,
   saveCommunityAdminMenu,
   deleteCommunityAdminMenu,
+  addCommunityAdminMenu,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -15,19 +16,23 @@ import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 
 export function requestCommunityMenu(communityId: string) {
-  const menuArr: any[] = [];
+  const menuArr: any = [];
   findCommunityMenu(communityId).then(community => {
-    community.data.map((item: any) => {
+    community.data.map((item: any, index: number) => {
       if (item.parentId === null) {
         menuArr.push(item)
       }
     })
-
     community.data.map((item: any) => {
-      if (item.parentId !== null) {
+      if (item.parentId !== '' && item.parentId !== null) {
         menuArr.map((item2: any, index: number) => {
           if(item.parentId === item2.id) {
-            menuArr[index].child = item
+            if(menuArr[index].child === undefined) {
+              menuArr[index].child = []
+              menuArr[index].child.push(item)
+            }else {
+              menuArr[index].child.push(item)
+            }
           }
         })
       }
@@ -40,6 +45,20 @@ export function requestCommunityMenu(communityId: string) {
         return 1;
       } else {
         return 0;
+      }
+    })
+
+    menuArr.map((item: any, index: number) => {
+      if(item.child) {
+        item.child.sort((a: any, b: any) => {
+          if (a.order < b.order) {
+            return -1;
+          } else if (a.order > b.order) {
+            return 1;
+          } else {
+            return 0;
+          }
+        })
       }
     })
     //여기서 트리구조 형태로 배열 만들어준다.
@@ -59,25 +78,25 @@ export function requestCommunityMenus(communityId: string) {
 
 export function requestCommunityGroups(communityId: string) {
   getCommunityGroups(communityId).then(result => {
-    console.log('result', result)
     setCommunityAdminGroupsStore(result)
   });
 }
 
 export async function saveCommunityMenu(communityId: string, params: any) {
   for await (const param of params) {
-    // await removeMenu(communityId, id);
     saveCommunityAdminMenu(communityId, param).then(result => {
-
     });
   }
 }
 
 export async function deleteCommunityMenu(communityId: string, params: any) {
-
   for await (const param of params) {
-    // await removeMenu(communityId, id);
     deleteCommunityAdminMenu(communityId, param).then(result => {
     });
   }
+}
+
+export function addCommunityMenu(communityId: string, addRow: any) {
+  addCommunityAdminMenu(communityId, addRow).then(result => {
+  });
 }
