@@ -88,43 +88,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const multiVideoIntervalRef = useRef<any>(0);
 
   useEffect(() => {
-    let mathch = matchPath<LectureParams>(pathname, {
-      path:
-        '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
-      exact: true,
-      strict: true,
-    });
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (mathch !== null) {
-      const mlectureParams = mathch.params;
-      const mParams = parseLectureParams(mlectureParams, pathname);
-      confirmProgress(mParams);
-      requestLectureStructure(mParams.lectureParams, pathname);
-    }
-
     // all cleare interval
     return () => {
       clearInterval(playIntervalRef.current);
@@ -292,7 +255,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       ) {
         setNextContentsView(true);
       }
-      videoClose();
       // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
       //중복 동영상 체크 종료 signal
       handleMultiVideo('end', liveLectureCardId);
@@ -302,7 +264,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (panoptoState == 1) {
       registCheckStudent(params);
       mediaCheckEvent(params);
-      videoStart();
       // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
       //중복 동영상 체크 시작 signal
       handleMultiVideo('start', params?.lectureId || 'start');

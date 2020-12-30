@@ -695,12 +695,34 @@ async function getStateWhenApproved(
               return {
                 ...lectureState,
                 action: () => complete(params, rollBookId, hasSurvey),
+                coreAction: () => {
+                  if (cubeType === 'WebPage') {
+                    webPageLinked();
+                  }
+                  if (cubeType === 'Experiential') {
+                    experimetial();
+                  }
+                },
                 canAction: true,
                 actionText: COMPLETE,
                 stateText,
               };
             }
           }
+        } else {
+          return {
+            ...lectureState,
+            hideAction: true,
+            coreAction: () => {
+              if (cubeType === 'WebPage') {
+                webPageLinked();
+              }
+              if (cubeType === 'Experiential') {
+                experimetial();
+              }
+            },
+            stateText: student.learningState === null ? WAIT : stateText,
+          };
         }
       case 'ClassRoomLecture':
         return {
@@ -810,7 +832,15 @@ async function getStateWhenCanceled(
           }
           approve(params, rollBookId, student);
         },
-        coreAction: () => approve(params, rollBookId, student),
+        coreAction: () => {
+          if (cubeType === 'WebPage') {
+            webPageLinked();
+          }
+          if (cubeType === 'Experiential') {
+            experimetial();
+          }
+          approve(params, rollBookId, student);
+        },
         hideState: true,
       };
     case 'Documents':
