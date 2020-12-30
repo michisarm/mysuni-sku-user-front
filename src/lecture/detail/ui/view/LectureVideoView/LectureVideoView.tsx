@@ -146,6 +146,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
+  const [contentsName, setContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
@@ -564,6 +565,114 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   }, [getLectureStructure(), getLectureConfirmProgress(), params]);
 
+  // sticky 시 비디오명
+  useEffect(() => {
+    // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
+    const lectureStructure = getLectureStructure();
+    setNextContentsPath('');
+    if (lectureStructure) {
+      if (lectureStructure.course?.type == 'COURSE') {
+        //일반 코스 로직
+        lectureStructure.items.map(item => {
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        });
+      } else if (lectureStructure.course?.type == 'PROGRAM') {
+        lectureStructure.items.map(item => {
+          if (item.type === 'COURSE') {
+            const course = item as LectureStructureCourseItem;
+            if (course.cubes) {
+              const currentCube = course.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = course.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = course.discussions?.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        });
+      }
+    }
+  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
+
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
     if (playerEl) playerEl.innerHTML = '';
@@ -613,8 +722,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [currentTime, setCurrnetTime] = useState<number>(0);
   const [durationTime, setDurationTime] = useState<number>(0);
-  // let current = (embedApi.getCurrentTime() as unknown) as number;
-  // let duration = (embedApi.getDuration() as unknown) as number;
 
   useEffect(() => {
     onLectureMedia(lectureMedia => {
@@ -704,10 +811,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => clearInterval(intervalFunc);
   }, [isActive]);
 
-  // video sticky시 비디오 이름
+  // sticky시 비디오명 표시 (cube)
   useEffect(() => {
-    setCubeName(getLectureStructure()?.cube?.name);
-  }, [getLectureStructure()?.cube?.name]);
+    if (getLectureStructure()?.type === 'Cube') {
+      setCubeName(getLectureStructure()?.cube?.name);
+    }
+  }, [getLectureStructure()]);
 
   return (
     <div
@@ -751,7 +860,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             )}
         </div>
         <div className="sticky-video-content">
-          <div className="header">{cubeName}</div>
+          <div className="header">
+            {getLectureStructure()?.type === 'Cube' ? cubeName : contentsName}
+          </div>
           <div className="time-check">
             <strong>{getTimeStringSeconds(currentTime)}</strong> /
             {getTimeStringSeconds(durationTime)}
