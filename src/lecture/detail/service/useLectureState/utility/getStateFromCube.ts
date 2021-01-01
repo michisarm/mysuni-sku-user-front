@@ -415,7 +415,7 @@ async function getDocumentsApprovedState(
         hideAction: false,
         canAction: true,
         actionText: DOWNLOAD,
-        action: () => {},
+        action: () => { },
         stateText,
       };
     }
@@ -427,7 +427,7 @@ async function getDocumentsApprovedState(
       hideAction: true,
       canAction: true,
       actionText: DOWNLOAD,
-      action: () => {},
+      action: () => { },
       stateText,
     };
   }
@@ -524,10 +524,10 @@ async function approve(
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
   sessionStorage.setItem(
-    'inProgressTableViews',
-    JSON.stringify(inProgressTableViews)
+    'completedTableViews',
+    JSON.stringify(completedTableViews)
   );
   await myTrainingService!.findAllMyTrainingsWithState(
     'InProgress',
