@@ -71,6 +71,9 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [courseIdx, setCourseIdx] = useState<number>(0);
   const [pageWidth, setPageWidth] = useState<number>(0);
   const [progressAlert, setProgressAlert] = useState<boolean>(false);
+  const [testSurveyYn, setTestSurveyYn] = useState<boolean>(false);
+  const [readyLecture, setReadyLecture] = useState<boolean>(false);
+  const [docuAlertClick, setDocuAlertClick] = useState<boolean>(false);
 
   const { pathname } = useLocation();
 
@@ -82,11 +85,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       !progressAlert
     ) {
       setProgressAlert(true);
-      reactAlert({
-        title: '',
-        message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.
-        <br> 단, Test나 Report가 포함된 과정의 경우, Test/Report의 결과에 따라 자동으로 이수될 예정입니다.`,
-      });
     }
     return () => {
       setLectureState();
@@ -94,11 +92,33 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   }, [pathname]);
 
   useEffect(() => {
-    setProgressAlert(false);
-  }, [pathname]);
+    if (docuAlertClick && testSurveyYn) {
+      setDocuAlertClick(false);
+      setTestSurveyYn(false);
+      reactAlert({
+        title: '',
+        message: `Test / Report가 포함된 과정입니다. <p>응시 후 결과에 따라 이수 처리 여부가 결정되니<p> 반드시 응시하시기 바랍니다.`,
+      });
+    }
+  }, [docuAlertClick, testSurveyYn]);
+
+  useEffect(() => {
+    if (readyLecture) {
+      if (progressAlert) {
+        setProgressAlert(false);
+        reactAlert({
+          title: '',
+          message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.`,
+          onClose: () =>
+            setTimeout(() => {
+              setDocuAlertClick(true);
+            }, 500),
+        });
+      }
+    }
+  }, [progressAlert, readyLecture]);
 
   const headerWidth: any = useRef();
-
   const nameList: string[] = [''];
 
   // '/api/depot/depotFile/flow/download/' + filesArr[0].id
@@ -232,11 +252,21 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   useEffect(() => {
     const lectureStructure = getLectureStructure();
     if (lectureStructure) {
-      if (lectureStructure.course?.type == 'COURSE') {
-        //일반 코스 로직
+      if (lectureStructure.cube?.type == 'CUBE') {
+        setReadyLecture(true);
+        // Documents && Progress && Cube 이고 test 나 survey 가 있는경우
 
+        //테스트나 설문이 있는 경우
+        const testId = lectureStructure.cube.test?.id;
+        const surveyId = lectureStructure.cube.survey?.id;
+        if (testId || surveyId) {
+          setTestSurveyYn(true);
+        }
+      } else if (lectureStructure.course?.type == 'COURSE') {
+        //일반 코스 로직
         lectureStructure.items.map(item => {
           if (item.type === 'CUBE') {
+            setReadyLecture(true);
             if (lectureStructure.cubes) {
               const currentCube = lectureStructure.cubes.find(
                 cube => cube.cubeId == params?.contentId
@@ -260,6 +290,15 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+
+                // Documents && Progress && Cube 이고 test 나 survey 가 있는경우
+
+                //테스트나 설문이 있는 경우
+                const testId = currentCube.test?.id;
+                const surveyId = currentCube.survey?.id;
+                if (testId || surveyId) {
+                  setTestSurveyYn(true);
                 }
               }
             }
@@ -299,6 +338,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
             }
           }
           if (item.type === 'CUBE') {
+            setReadyLecture(true);
             if (lectureStructure.cubes) {
               const currentCube = lectureStructure.cubes.find(
                 cube => cube.cubeId == params?.contentId
@@ -322,6 +362,15 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
                 if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+
+                // Documents && Progress && Cube 이고 test 나 survey 가 있는경우
+
+                //테스트나 설문이 있는 경우
+                const testId = currentCube.test?.id;
+                const surveyId = currentCube.survey?.id;
+                if (testId || surveyId) {
+                  setTestSurveyYn(true);
                 }
               }
             }
