@@ -415,7 +415,7 @@ async function getDocumentsApprovedState(
         hideAction: false,
         canAction: true,
         actionText: DOWNLOAD,
-        action: () => {},
+        action: () => { },
         stateText,
       };
     }
@@ -427,7 +427,7 @@ async function getDocumentsApprovedState(
       hideAction: true,
       canAction: true,
       actionText: DOWNLOAD,
-      action: () => {},
+      action: () => { },
       stateText,
     };
   }
@@ -615,7 +615,11 @@ async function complete(
       message: 'Survey 설문 참여를 해주세요.',
     });
   }
-
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem(
+    'inProgressTableViews',
+    JSON.stringify(inProgressTableViews)
+  );
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
   sessionStorage.setItem(
     'completedTableViews',
