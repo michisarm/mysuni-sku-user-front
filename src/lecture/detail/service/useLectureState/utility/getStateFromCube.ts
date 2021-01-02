@@ -524,10 +524,10 @@ async function approve(
   await getStateFromCube(params);
   requestLectureStructure(params.lectureParams, params.pathname);
 
-  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
   sessionStorage.setItem(
-    'completedTableViews',
-    JSON.stringify(completedTableViews)
+    'inProgressTableViews',
+    JSON.stringify(inProgressTableViews)
   );
   await myTrainingService!.findAllMyTrainingsWithState(
     'InProgress',
@@ -615,7 +615,11 @@ async function complete(
       message: 'Survey 설문 참여를 해주세요.',
     });
   }
-
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem(
+    'inProgressTableViews',
+    JSON.stringify(inProgressTableViews)
+  );
   const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
   sessionStorage.setItem(
     'completedTableViews',
