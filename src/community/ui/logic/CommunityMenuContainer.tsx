@@ -21,6 +21,7 @@ function CommunityMenuContainer() {
   const [communityAdminMenu] = useCommunityAdminMenu();
   const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
+  const [addChildMenuFlag, setAddChildMenuFlag] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
   const [addRow, setAddRow] = useState<any>({
     accessType: 'COMMUNITY_ALL_MEMBER',
@@ -41,6 +42,7 @@ function CommunityMenuContainer() {
       e.stopPropagation();
       if (type !== 'delete'){
         setSelectedRow(param)
+        console.log('selectedRow', selectedRow)
       } else if(type === 'delete') {
         deleteValuesArr.push(param.id)
         setDeleteValues(deleteValuesArr)
@@ -58,7 +60,23 @@ function CommunityMenuContainer() {
   );
 
   const handleAddMenu = useCallback(() => {
+    //선택된 row 초기화
+    setSelectedRow({
+      accessType: '',
+      communityId: '',
+      groupId: '',
+      id: '',
+      munuId: '',
+      name: '',
+      order: 0,
+      parentId: '',
+      patronKey: '',
+      type: '',
+      child: '',
+      discussionTopic: '',
+    })
     setAddMenuFlag(true);
+    setAddChildMenuFlag(false);
     setAddRow({
       accessType: 'COMMUNITY_ALL_MEMBER',
       communityId: '',
@@ -77,6 +95,34 @@ function CommunityMenuContainer() {
       surveyInformation: '',
     })
   }, [communityAdminMenu])
+
+  const handleAddChildMenu = useCallback(() => {
+    console.log('1111')
+    console.log("selectedRow", selectedRow)
+    if(selectedRow && selectedRow!.id) {
+      setAddChildMenuFlag(true);
+      setAddMenuFlag(false);
+      setAddRow({
+        accessType: 'COMMUNITY_ALL_MEMBER',
+        communityId: '',
+        groupId: null,
+        id: '',
+        munuId: '',
+        name: '',
+        order: communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1,
+        parentId: '',
+        patronKey: '',
+        type: 'BASIC',
+        child: '',
+        discussionTopic: '',
+        surveyCaseId: '',
+        surveyId: '',
+        surveyInformation: '',
+      })
+    }else {
+      alert('메뉴를 선택해주세요.')
+    }
+  }, [communityAdminMenu, selectedRow])
 
   const handleSave = useCallback(async (nameValues?, deleteValues?, type?) => {
     const result = 
@@ -156,6 +202,15 @@ function CommunityMenuContainer() {
     }
     onChangeAddValue(addRow, 'name')
   }
+
+  function selectedRow1() {
+    return {
+      border: 'red'
+    } as React.CSSProperties;
+    
+  }
+
+
   function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any) {
     if (menu) {
       return (
@@ -176,12 +231,13 @@ function CommunityMenuContainer() {
   }
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any) {
+
     let childElement = null;
     childElement = '<span></span>'
     if (menu) {
       return (
         <>
-          <li onClick={(e) => handleClickTaskRow(e, menu, 'detail')}>
+          <li onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
             <a>
               <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
               {menu.name}
@@ -195,6 +251,16 @@ function CommunityMenuContainer() {
               return renderMenuRow2(item2, onHandleClickTaskRow);
             })
           }
+          { addChildMenuFlag && selectedRow && (menu.id === selectedRow.id) && (
+            <li>
+              <input 
+                type="text"
+                placeholder="제목을 입력해주세요."
+                value={addRow && addRow.name}
+                onChange={changeValue}
+              />
+            </li>
+          )}
         </>
       );
     }
@@ -223,7 +289,7 @@ function CommunityMenuContainer() {
                 <img src={`${process.env.PUBLIC_URL}/images/all/icon-arrow-down-20-px.png`} />
               </button>
               <button onClick={handleAddMenu}>메뉴 추가</button>
-              <button>하위 메뉴</button>
+              <button onClick={handleAddChildMenu}>하위 메뉴</button>
             </div>
             <ul>
               <li>
@@ -270,7 +336,7 @@ function CommunityMenuContainer() {
           </div>
         </div>
         <div className="admin_menu_right">
-          {selectedRow && communityAdminGroups && !addMenuFlag && (
+          {selectedRow && communityAdminGroups && !addMenuFlag && !addChildMenuFlag && (
             <>
               <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
               <div className="admin_bottom_button line">
@@ -278,10 +344,21 @@ function CommunityMenuContainer() {
               </div>
             </>
           )}
-          {addMenuFlag && addRow && (
+          {addMenuFlag && addRow && !addChildMenuFlag && (
             <>
+              <span>메뉴추가</span>
               {/* <span>{addRow}</span> */}
               <CommunityAdminMenuAddView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name)}/>
+              <div className="admin_bottom_button line">
+                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add')}>저장</button>
+              </div>
+            </>
+          )}
+          {addChildMenuFlag && addRow && !addMenuFlag && (
+            <>
+              <span>하위메뉴추가</span>
+              {/* <span>{addRow}</span> */}
+              <CommunityAdminMenuAddView addChildMenuFlag={addChildMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name)}/>
               <div className="admin_bottom_button line">
                 <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add')}>저장</button>
               </div>
