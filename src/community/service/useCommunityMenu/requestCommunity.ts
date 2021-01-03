@@ -97,6 +97,7 @@ export async function deleteCommunityMenu(communityId: string, params: any) {
 }
 
 export function addCommunityMenu(communityId: string, addRow: any) {
-  addCommunityAdminMenu(communityId, addRow).then(result => {
+  return addCommunityAdminMenu(communityId, addRow).then(result => {
+    return result
   });
 }
