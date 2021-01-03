@@ -7,7 +7,8 @@ interface RouteParams {
 }
 
 interface CommunityAdminMenuAddViewProps {
-  addMenuFlag: boolean
+  addMenuFlag?: boolean
+  addChildMenuFlag? : boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
   onChangeAddValue: (data: any, name: string) => void
@@ -15,10 +16,17 @@ interface CommunityAdminMenuAddViewProps {
 
 const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
+  addChildMenuFlag,
   selectedRow,
   communityAdminGroups,
   onChangeAddValue
 }) {
+
+  useEffect(() => {
+    console.log('addChildMenuFlag', addChildMenuFlag)
+    console.log('addMenuFlag', addMenuFlag)
+  }, [addMenuFlag, addChildMenuFlag]);
+
   const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
     {
       'key': 0,
