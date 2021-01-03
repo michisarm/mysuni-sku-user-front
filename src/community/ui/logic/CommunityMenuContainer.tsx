@@ -6,7 +6,7 @@ import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/Co
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { addCommunityMenu, deleteCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 
 interface RouteParams {
@@ -78,7 +78,7 @@ function CommunityMenuContainer() {
     })
   }, [communityAdminMenu])
 
-  const handleSave = useCallback((nameValues?, deleteValues?, type?) => {
+  const handleSave = useCallback(async (nameValues?, deleteValues?, type?) => {
     const result = 
     _.chain(nameValues)
       .groupBy('id')
@@ -110,8 +110,9 @@ function CommunityMenuContainer() {
 
       if(type === 'add') {
         addRow.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
-        addCommunityMenu(communityId, addRow)
-        setCommunityAdminMenu({'menu': getCommunityAdminMenu()?.menu!});
+        addCommunityMenu(communityId, addRow).then((result)=> {
+          requestCommunityMenu(communityId);
+        })
       }
   }, [communityAdminMenu])
 
@@ -157,7 +158,6 @@ function CommunityMenuContainer() {
   }
   function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any) {
     if (menu) {
-      console.log('menu', menu)
       return (
         <>
           <ul>
@@ -283,7 +283,7 @@ function CommunityMenuContainer() {
               {/* <span>{addRow}</span> */}
               <CommunityAdminMenuAddView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name)}/>
               <div className="admin_bottom_button line">
-                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add')}>등록저장</button>
+                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add')}>저장</button>
               </div>
             </>
           )}
