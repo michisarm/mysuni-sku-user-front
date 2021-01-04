@@ -82,7 +82,7 @@ const ChallengingBadge: React.FC<Props> = (Props) => {
   return (
     <ContentWrapper className="badge-scrolling">
       <div className="section-head">
-        <strong><span className="ellipsis">{profileMemberName}</span>님의 도전중인 Badge</strong>
+        <strong><span className="ellipsis">{profileMemberName}</span>님이 도전중인 Badge</strong>
         <div className="right">
           {
             myBadges.length > 0 && (
