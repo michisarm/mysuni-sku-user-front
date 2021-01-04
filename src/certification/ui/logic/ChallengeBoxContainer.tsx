@@ -1,26 +1,31 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {inject} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {mobxHelper} from '@nara.platform/accent';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { mobxHelper } from '@nara.platform/accent';
 import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompLeft from './BadgeCompLeft';
 import BadgeCompRight from './BadgeCompRight';
 import BadgeCompModel from '../model/BadgeCompModel';
 import BadgeService from '../../present/logic/BadgeService';
 
-
 interface Props extends RouteComponentProps {
-  badgeService?: BadgeService,
+  badgeService?: BadgeService;
 
-  myBadge: MyBadgeModel,
-  badgeStyle: string,
-  badgeSize: string,
-  refreshChallengingContainer: () => void,
+  myBadge: MyBadgeModel;
+  badgeStyle: string;
+  badgeSize: string;
+  refreshChallengingContainer: () => void;
 }
 
-const ChallengeBoxContainer: React.FC<Props> = (Props) => {
+const ChallengeBoxContainer: React.FC<Props> = Props => {
   //
-  const { badgeService, myBadge, badgeStyle, badgeSize, refreshChallengingContainer } = Props;
+  const {
+    badgeService,
+    myBadge,
+    badgeStyle,
+    badgeSize,
+    refreshChallengingContainer,
+  } = Props;
 
   const [compLearnings, setCompLearnings] = useState<BadgeCompModel[]>([]);
 
@@ -37,8 +42,10 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   // 뱃지 구성학습 조회
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
-    const badgeComp: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
-    
+    const badgeComp: BadgeCompModel[] = await badgeService!.findBadgeComposition(
+      badgeId
+    );
+
     // 구성 학습 정보 설정
     setCompLearnings(badgeComp);
 
@@ -48,47 +55,40 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
     // 완료 학습 개수
     let count = 0;
     badgeComp.map((learning, index) => {
-      if ( learning.learningState === 'Passed' ) { count++; }
+      if (learning.learningState === 'Passed') {
+        count++;
+      }
     });
 
     setPassedCount(count);
   };
 
-
   // 도전중, 발급요청중인 뱃지 목록
   return (
     <div className="challenge-wrap">
-
       <Fragment key={`challenge-badge-${myBadge.badgeId}`}>
         <div className="challenge-badge">
-
           {/*Badge UI Information*/}
-          <div style={{border: '1px red solid'}}>
-          <BadgeCompLeft
-            badge={myBadge}
-            badgeStyle={badgeStyle}
-            badgeSize={badgeSize}
-            learningCount={learningCount}
-            passedCount={passedCount}
-            passedAll={learningCount > 0 && learningCount === passedCount}
-            refreshChallengingContainer={refreshChallengingContainer}
-          />
+          <div>
+            <BadgeCompLeft
+              badge={myBadge}
+              badgeStyle={badgeStyle}
+              badgeSize={badgeSize}
+              learningCount={learningCount}
+              passedCount={passedCount}
+              passedAll={learningCount > 0 && learningCount === passedCount}
+              refreshChallengingContainer={refreshChallengingContainer}
+            />
           </div>
           {/*도전중 뱃지별 학습리스트*/}
-          <BadgeCompRight
-            badge={myBadge}
-            compLearnings={compLearnings}
-          />
-
+          <BadgeCompRight badge={myBadge} compLearnings={compLearnings} />
         </div>
-        <hr className="dividing"/>
+        <hr className="dividing" />
       </Fragment>
-
     </div>
-
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(withRouter(ChallengeBoxContainer));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  withRouter(ChallengeBoxContainer)
+);
