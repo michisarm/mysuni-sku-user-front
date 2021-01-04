@@ -258,8 +258,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
         //테스트나 설문이 있는 경우
         const testId = lectureStructure.cube.test?.id;
-        const surveyId = lectureStructure.cube.survey?.id;
-        if (testId || surveyId) {
+        const report = lectureStructure.cube.report?.type;
+        if (testId || report) {
           setTestSurveyYn(true);
         }
       } else if (lectureStructure.course?.type == 'COURSE') {
@@ -296,8 +296,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
                 //테스트나 설문이 있는 경우
                 const testId = currentCube.test?.id;
-                const surveyId = currentCube.survey?.id;
-                if (testId || surveyId) {
+                const report = currentCube.report?.type;
+                if (testId || report) {
                   setTestSurveyYn(true);
                 }
               }
@@ -368,8 +368,8 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
                 //테스트나 설문이 있는 경우
                 const testId = currentCube.test?.id;
-                const surveyId = currentCube.survey?.id;
-                if (testId || surveyId) {
+                const report = currentCube.report?.type;
+                if (testId || report) {
                   setTestSurveyYn(true);
                 }
               }
