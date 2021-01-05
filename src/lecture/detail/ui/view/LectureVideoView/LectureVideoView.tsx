@@ -79,7 +79,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
-  const [cubeName, setCubeName] = useState<any>();
+  const [cubeName, setCubeName] = useState<any>('');
 
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
@@ -113,6 +113,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
+  const [contentsName, setContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
@@ -258,6 +259,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         setNextContentsView(true);
       }
       // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
+      videoClose();
       //중복 동영상 체크 종료 signal
       handleMultiVideo('end', liveLectureCardId, true);
       sessionStorage.removeItem('liveLectureCardId');
@@ -267,6 +269,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       registCheckStudent(params);
       mediaCheckEvent(params);
       // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
+      videoStart();
       //중복 동영상 체크 시작 signal
       handleMultiVideo('start', params?.lectureId || 'start', true);
       sessionStorage.setItem(
@@ -541,6 +544,114 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   }, [getLectureStructure(), getLectureConfirmProgress(), params]);
 
+  // 코스 sticky 시 비디오명
+  useEffect(() => {
+    // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
+    const lectureStructure = getLectureStructure();
+    setNextContentsPath('');
+    if (lectureStructure) {
+      if (lectureStructure.course?.type == 'COURSE') {
+        //일반 코스 로직
+        lectureStructure.items.map(item => {
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        });
+      } else if (lectureStructure.course?.type == 'PROGRAM') {
+        lectureStructure.items.map(item => {
+          if (item.type === 'COURSE') {
+            const course = item as LectureStructureCourseItem;
+            if (course.cubes) {
+              const currentCube = course.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = course.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = course.discussions?.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        });
+      }
+    }
+  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
+
   const cleanUpPanoptoIframe = () => {
     let playerEl = document.getElementById('panopto-embed-player');
     if (playerEl) playerEl.innerHTML = '';
@@ -681,10 +792,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => clearInterval(intervalFunc);
   }, [isActive]);
 
-  // sticky시 비디오명 표시
+  // sticky시 비디오명 표시 (cube)
   useEffect(() => {
     setCubeName(getLectureStructure()?.cube?.name);
-  }, [getLectureStructure()?.cube?.name]);
+  }, [getLectureStructure()]);
 
   return (
     <div
@@ -707,9 +818,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             nextContentsPath &&
             getLectureConfirmProgress()?.learningState == 'Passed' && (
               <>
-                <div id="video-overlay" className="video-overlay">
+                <div
+                  id="video-overlay"
+                  className="video-overlay"
+                  onClick={() => nextContents(nextContentsPath)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="video-overlay-btn">
-                    <button onClick={() => nextContents(nextContentsPath)}>
+                    <button>
                       <img src={playerBtn} />
                     </button>
                   </div>
@@ -718,7 +834,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                     <h3>{nextContentsName}</h3>
                   </div>
                 </div>
-                <div className="video-overlay-small">
+                <div
+                  className="video-overlay-small"
+                  onClick={() => nextContents(nextContentsPath)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <button>
                     <img src={playerBtn} />
                   </button>
@@ -728,7 +848,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             )}
         </div>
         <div className="sticky-video-content">
-          <div className="header">{cubeName}</div>
+          <div className="header">
+            {getLectureStructure()?.type === 'Cube' ? cubeName : contentsName}
+          </div>
           <div className="time-check">
             <strong>{getTimeStringSeconds(currentTime)}</strong> /
             {getTimeStringSeconds(durationTime)}
