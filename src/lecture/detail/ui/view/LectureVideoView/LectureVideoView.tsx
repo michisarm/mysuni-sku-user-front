@@ -79,11 +79,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
-<<<<<<< HEAD
-  const [cubeName, setCubeName] = useState<any>('');
-=======
   const [cubeName, setCubeName] = useState<any>();
->>>>>>> 476fdce92be641fe6402f07047a7b9673b6eb7a2
 
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
@@ -237,10 +233,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       const liveLectureId = JSON.parse(
         sessionStorage.getItem('liveLectureCardId')!
       );
-<<<<<<< HEAD
-=======
       // alert(`동영상종료 세션에서 가져온 liveLectureId: ${liveLectureId}`);
->>>>>>> 476fdce92be641fe6402f07047a7b9673b6eb7a2
       if (liveLectureId) {
         //중복 동영상 체크 종료 signal
         handleMultiVideo('end', liveLectureId);
@@ -263,10 +256,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       ) {
         setNextContentsView(true);
       }
-<<<<<<< HEAD
-=======
       // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
->>>>>>> 476fdce92be641fe6402f07047a7b9673b6eb7a2
       //중복 동영상 체크 종료 signal
       handleMultiVideo('end', liveLectureCardId);
       sessionStorage.removeItem('liveLectureCardId');
@@ -275,10 +265,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (panoptoState == 1) {
       registCheckStudent(params);
       mediaCheckEvent(params);
-<<<<<<< HEAD
-=======
       // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
->>>>>>> 476fdce92be641fe6402f07047a7b9673b6eb7a2
       //중복 동영상 체크 시작 signal
       handleMultiVideo('start', params?.lectureId || 'start');
       sessionStorage.setItem(
@@ -799,19 +786,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => clearInterval(intervalFunc);
   }, [isActive]);
 
-<<<<<<< HEAD
-  // sticky시 비디오명 표시 (cube)
-  useEffect(() => {
-    if (getLectureStructure()?.type === 'Cube') {
-      setCubeName(getLectureStructure()?.cube?.name);
-    }
-  }, [getLectureStructure()]);
-=======
   // sticky시 비디오명 표시
   useEffect(() => {
     setCubeName(getLectureStructure()?.cube?.name);
   }, [getLectureStructure()?.cube?.name]);
->>>>>>> 476fdce92be641fe6402f07047a7b9673b6eb7a2
 
   return (
     <div
@@ -855,13 +833,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             )}
         </div>
         <div className="sticky-video-content">
-<<<<<<< HEAD
           <div className="header">
             {getLectureStructure()?.type === 'Cube' ? cubeName : contentsName}
           </div>
-=======
-          <div className="header">{cubeName}</div>
->>>>>>> 476fdce92be641fe6402f07047a7b9673b6eb7a2
           <div className="time-check">
             <strong>{getTimeStringSeconds(currentTime)}</strong> /
             {getTimeStringSeconds(durationTime)}
