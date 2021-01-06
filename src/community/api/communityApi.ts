@@ -415,7 +415,6 @@ export function saveCommunityAdminMenu(communityId: string): Promise<any> {
 
 export function deleteCommunityAdminMenu(communityId: string, params: any): Promise<any> {
   // params: CommunityAdminMenu
-  console.log('params', params)
   const url = `${BASE_URL}/${communityId}/menus/${params}`;
   return axiosApi.delete(url).then(response => {
     return response && response.data
@@ -428,4 +427,11 @@ export function addCommunityAdminMenu(communityId: string, addRow: any): Promise
   return axiosApi.post(url, addRow).then(response => {
     return response && response.data
   }); 
+}
+
+export function findCommunitySurvey(params: any): Promise<any> {
+    const url = `api/survey/${params}`;
+    return axiosApi.get(url).then(response => {
+      return response && response.data
+    }); 
 }

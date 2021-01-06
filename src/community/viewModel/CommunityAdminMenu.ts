@@ -19,6 +19,8 @@ export interface MenuItem {
   surveyCaseId?: string;
   surveyId?: string;
   surveyInformation?: string;
+  url: string;
+  html: string;
 }
 
 export interface CommunityAdminMenu {
