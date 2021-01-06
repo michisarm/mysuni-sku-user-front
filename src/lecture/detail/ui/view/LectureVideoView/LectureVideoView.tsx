@@ -79,7 +79,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
-  const [cubeName, setCubeName] = useState<any>();
+  const [cubeName, setCubeName] = useState<any>('');
 
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
@@ -796,7 +796,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       className={
         scroll > videoPosition &&
         !enabled &&
-        getLectureMedia()?.mediaType !== 'LinkMedia'
+        getLectureMedia()?.mediaType === 'InternalMedia'
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
