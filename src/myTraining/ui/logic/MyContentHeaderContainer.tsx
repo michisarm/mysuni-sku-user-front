@@ -36,7 +36,7 @@ function MyContentHeaderContainer(props: Props) {
   const { contentType, skProfileService, myLearningSummaryService, badgeService, myTrainingService, history } = props;
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
-  const { myStampCount } = myTrainingService!;
+  const { myStampCount, thisYearMyStampCount } = myTrainingService!;
   const { earnedCount: myBadgeCount } = badgeService!;
 
   /* states */
@@ -44,9 +44,10 @@ function MyContentHeaderContainer(props: Props) {
 
   /* effects */
   useEffect(() => {
-    if (myStampCount === 0 && myBadgeCount === 0) {
+    if (myStampCount === 0 && myBadgeCount === 0 && thisYearMyStampCount === 0) {
       badgeService!.getCountOfBadges();
       myTrainingService!.countMyTrainingsWithStamp();
+      myTrainingService!.countMyTrainingsWithStamp([],moment([selectedYear,1-1,1]).toDate().getTime(),moment([selectedYear,12-1,31]).toDate().getTime());
     }
   }, []);
 
@@ -98,6 +99,7 @@ function MyContentHeaderContainer(props: Props) {
             <ContentHeader.LearningTimeItem
               minute={myLearningSummary.displayTotalLearningTime}
               year={selectedYear}
+              accrueMinute={myLearningSummary.displayAccrueTotalLearningTime}
             />
           ) ||
           (
@@ -108,19 +110,20 @@ function MyContentHeaderContainer(props: Props) {
           )}
         {/* DropDown 포지션 변경으로 인한 부모컨테이너 변경 */}
         {/* DropDown options 프롭스는 퍼블리싱 테스트를 위해 임의의 데이터로 다시 변경. */}
-        <div className="year">
+        {/*<div className="year">
           <Dropdown
             className="inline tight"
             value={selectedYear}
             onChange={onChangeYear}
             options={getYearOptions()}
           />
-        </div>
+          </div>*/}
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderStampView
           stampCount={myStampCount}
           onClickItem={onClickMyStamp}
+          thisYearStampCount={thisYearMyStampCount}
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell>

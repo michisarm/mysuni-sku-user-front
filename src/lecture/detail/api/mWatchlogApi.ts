@@ -37,7 +37,7 @@ export function findSumViewSeconds(
 // lectureId = 시청중인 ID
 // return = false:중복시청, true:시청가능
 export function multiVideoOverlap(
-  patronKeyString: String,
+  patronKeyString: String | undefined,
   viewState: String,
   usid: String
 ): Promise<string> {

@@ -1,12 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import LectureDetailContainer from './ui/logic/LectureDetailContainer';
+import { Route, Switch, useParams } from 'react-router-dom';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
 import LectureSurveyPage from './ui/logic/LectureSurveyPage';
 import {
-  getActiveCourseStructureItem,
   getActiveStructureItem,
   useLectureStructure,
 } from './service/useLectureStructure/useLectureStructure';
@@ -17,6 +15,12 @@ import {
 } from './viewModel/LectureStructure';
 import routePaths from '../routePaths';
 import AppContext from '../../layout/UserApp/ui/logic/AppContext';
+import LectureParams from './viewModel/LectureParams';
+import {
+  clearFindCubeIntroCache,
+  clearFindPersonalCubeCache,
+} from './api/mPersonalCubeApi';
+import LectureDetailLayout from './ui/view/LectureDetailLayout';
 
 export default function LectureDetailCubeRoutes() {
   const [lectureStructure] = useLectureStructure();
@@ -63,48 +67,59 @@ export default function LectureDetailCubeRoutes() {
     }
   }, [lectureStructure]);
 
+  const { cubeId, lectureCardId } = useParams<LectureParams>();
+
+  useEffect(() => {
+    return () => {
+      clearFindPersonalCubeCache();
+      clearFindCubeIntroCache();
+    };
+  }, [cubeId, lectureCardId]);
+
   return (
-    <Switch>
-      <Route
-        exact
-        path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-        component={LectureDetailCubeSubRoutes}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-        component={LectureDetailCubeSubRoutes}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam"
-        component={LectureTestPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam"
-        component={LectureTestPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/survey"
-        component={LectureSurveyPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/survey"
-        component={LectureSurveyPage}
-      />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/report"
-        component={LectureReportPage}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/report"
-        component={LectureReportPage}
-      />
-    </Switch>
+    <LectureDetailLayout>
+      <Switch>
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={LectureDetailCubeSubRoutes}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={LectureDetailCubeSubRoutes}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam"
+          component={LectureTestPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam"
+          component={LectureTestPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/survey"
+          component={LectureSurveyPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/survey"
+          component={LectureSurveyPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/report"
+          component={LectureReportPage}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/report"
+          component={LectureReportPage}
+        />
+      </Switch>
+    </LectureDetailLayout>
   );
 }

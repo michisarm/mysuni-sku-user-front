@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { getLectureSurvey } from '../../service/useLectureSurvey/utility/getLectureSurvey';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureSurveyContainer from './LectureSurveyContainer/LectureSurveyContainer';
 
 function LectureSurveyPage() {
@@ -11,11 +10,7 @@ function LectureSurveyPage() {
       getLectureSurvey(params);
     }
   }, [params]);
-  return (
-    <LectureDetailLayout>
-      <LectureSurveyContainer />
-    </LectureDetailLayout>
-  );
+  return <LectureSurveyContainer />;
 }
 
 export default LectureSurveyPage;

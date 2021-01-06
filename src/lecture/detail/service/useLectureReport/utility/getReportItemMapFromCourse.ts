@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 
-import { findCoursePlan } from '../../../api/courseApi';
+import { cacheableFindCoursePlan } from '../../../api/courseApi';
 import Student from '../../../model/Student';
 import { State } from '../../../viewModel/LectureReport';
 import {
@@ -13,14 +13,17 @@ export async function getReportItem(
   coursePlanId: string,
   student?: Student
 ): Promise<LectureReport | undefined> {
-  const coursePlan = await findCoursePlan(coursePlanId);
+  const coursePlan = await cacheableFindCoursePlan(coursePlanId);
   if (coursePlan === undefined) {
     return;
   }
   const lectureReport: LectureReport = { reportId: coursePlanId };
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
-  if (coursePlan.reportFileBox.reportName !== '' && coursePlan.reportFileBox.reportName !== null) {
+  if (
+    coursePlan.reportFileBox.reportName !== '' &&
+    coursePlan.reportFileBox.reportName !== null
+  ) {
     let state: State = 'None';
 
     reportFileBox.fileBoxId = coursePlan.reportFileBox.fileBoxId;
