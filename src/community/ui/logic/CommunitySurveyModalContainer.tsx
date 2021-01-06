@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import Calendar from '../view/CommunityAdmin/Calendar';
 import { SearchBox } from 'community/model/SearchBox';
 import { useSearchBox } from 'community/store/SearchBoxStore';
+import moment from 'moment';
 // import { ChannelModalContentWrapper } from '../view/DetailElementsView';
 
 
@@ -51,100 +52,26 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
       findAllSurvey();
     }
   }, [open]);
-  // state = {
-  //   open: false,
-  //   selectedCollege: new IdName(),
-  //   selectedChannel: new IdName(),
-  // };
-
-
-  // componentDidMount(): void {
-  //   //
-  //   this.findAllSurvey();
-  //   this.setDefaultSelectedChannel();
-  // }
-
-  // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
-  //   //
-  //   const { defaultSelectedChannel: prevDefaultSelectedChannel } = prevProps;
-  //   const { defaultSelectedChannel } = this.props;
-
-  //   if (prevDefaultSelectedChannel !== defaultSelectedChannel) {
-  //     this.setDefaultSelectedChannel();
-  //   }
-  // }
-
-  // findAllSurvey() {
-  //   // requestCommunitySurvey()
-  //   //
-  //   // this.props.collegeService!.findAllColleges();
-  // }
-
-  // setDefaultSelectedChannel() {
-  //   //
-  //   const { defaultSelectedChannel } = this.props;
-
-  //   this.setState({ selectedChannel: defaultSelectedChannel || new IdName() });
-  // }
-
-  // onOpen() {
-  //   //
-  //   this.setState({ open: true });
-  // }
-
-  // onClose() {
-  //   //
-  //   this.setState({ open: false });
-  // }
-
-  // onCancel() {
-  //   //
-  //   this.setDefaultSelectedChannel();
-  //   this.onClose();
-  // }
-
-  // onConfirm() {
-  //   //
-  //   const { colleges } = this.props.collegeService!;
-  //   const { onConfirmChannel } = this.props;
-  //   const { selectedCollege, selectedChannel } = this.state;
-
-  //   const college = colleges.find((college) => college.collegeId === selectedCollege.id);
-
-  //   onConfirmChannel(college!, selectedChannel);
-  //   this.onClose();
-  // }
-
-  // onClickCollege(currentSelectedCollege: CollegeModel) {
-  //   //
-  //   const { selectedCollege } = this.state;
-
-  //   if (selectedCollege.id === currentSelectedCollege.collegeId) {
-  //     this.setState({ selectedCollege: new IdName() });
-  //   }
-  //   else {
-  //     this.setState({ selectedCollege: currentSelectedCollege.toIdName() });
-  //   }
-  // }
-
-  // onClickChannel(currentSelectedChannel: IdName) {
-  //   //
-  //   this.setState({ selectedChannel: currentSelectedChannel });
-  // }
-
-    //
-    // const { collegeService, trigger } = this.props;
-    // const { open, selectedCollege, selectedChannel } = this.state;
-    // const colleges: CollegeModel[] = collegeService!.colleges;
-
+  
   const findAllSurvey = (() => {
     setActivePage(1);
     requestCommunitySurvey().then((result) => {
       console.log('result', result)
       setSurveyData(result.data.results)
+      totalPages(result.data.totalCount);
     })
-    
   })
+
+  const totalPages = (test: number) => {
+    console.log("surveyData", surveyData)
+      let totalpage = Math.ceil(test / 10);
+      if (test % 10 < 0) {
+        totalpage++;
+      }
+      console.log('totalpage', totalpage)
+      setTotalPage(totalpage)
+      // return totalpage;
+  };
 
   const onOpen = useCallback(() => {
     setOpen(true)
@@ -170,6 +97,9 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
     onClose()
   }, []);
 
+  const handleRadioChange = useCallback((id: string) => {
+    console.log('id', id)
+  }, [])
     // onConfirm() {
   //   //
   //   const { colleges } = this.props.collegeService!;
@@ -190,22 +120,25 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
   // }
 function renderSurveyRow(item: any) {
   if(item !== undefined) {
+
+    const createTime = moment(item.time).format('YYYY.MM.DD');
+    
     return(
       <tr>
         <td>
           <Radio
             className="base"
             name="radioGroup"
-            value="value01"
+            // value="value01"
             // checked={this.state.value === "value01"}
-            // onChange={this.handleChange}
+            onChange={() => handleRadioChange(item.id)}
           />
         </td>
         <td>
-          반도체 산업의 시작과 역사에 대해 개인 의견을 남겨주세요.
+          {item.titles.langStringMap[item.titles.defaultLanguage]}
         </td>
-        <td>김써니</td>
-        <td>2020.12.15</td>
+        <td>{item.formDesigner.names.langStringMap[item.formDesigner.names.defaultLanguage]}</td>
+        <td>{createTime}</td>
       </tr>
     )
   }
@@ -224,13 +157,13 @@ console.log('surveyData',surveyData)
         {/* 검색창 - sub */}
         <table className="ui admin_table_search sub">
           <colgroup>
-            <col width="200px" />
+            <col width="100px" />
             <col />
           </colgroup>
           <tbody>
             <tr>
               <th>등록일자</th>
-              <td>
+              <td style={{textAlign: 'left'}}>
                 {/* <div className="preview"> */}
                   <Calendar searchBox={searchBox!} />              
                 {/* </div> */}
@@ -238,7 +171,7 @@ console.log('surveyData',surveyData)
             </tr>
             <tr>
               <th>검색어</th>
-              <td>
+              <td style={{textAlign: 'left'}}>
                 <div className={classNames("ui input admin_text_input add")}>
                   <input
                     type="text"
@@ -274,14 +207,16 @@ console.log('surveyData',surveyData)
           </>
         )
         }
-        
-        <Pagination
-          activePage={activePage}
-          totalPages={totalPage}
-          firstItem={null}
-          lastItem={null}
-          onPageChange={(e, data) => onPageChange(data)}
-        />
+        {/* style={{marginTop: '30px'}} */}
+        <div className="lms-paging-holder">
+          <Pagination
+            activePage={1}
+            totalPages={totalPage}
+            firstItem={null}
+            lastItem={null}
+            onPageChange={(e, data) => onPageChange(data)}
+          />
+        </div>
         {/* <Paging /> */}
       </Modal.Content>
       <Modal.Actions>
