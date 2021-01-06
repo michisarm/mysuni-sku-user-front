@@ -237,7 +237,7 @@ export function findAllFields(): Promise<FieldItem[] | undefined> {
 export function findCommunity(
   communityId: string
 ): Promise<Community | undefined> {
-  const url = `${BASE_URL}/communities/${communityId}`;
+  const url = `${BASE_URL}/communities/communityView/detail/${communityId}`;
   return axiosApi.get<Community>(url).then(AxiosReturn);
 }
 
