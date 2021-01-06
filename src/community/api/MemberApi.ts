@@ -19,7 +19,7 @@ export function findMembers(
   ): Promise<any> { 
   return (
     axios
-    .get(`${BASE_URL}/communities/${communityId}/members/memberviews/all`, {
+    .get(`${BASE_URL}/memberviews/${communityId}`, {
       params: searchBox,
     })
   );
