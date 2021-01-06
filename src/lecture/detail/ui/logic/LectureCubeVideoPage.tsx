@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -13,7 +13,6 @@ import {
 } from '../../store/LectureOverviewStore';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import LectureVideoContainer from './LectureVideoContainer';
@@ -22,6 +21,7 @@ import { onLectureMedia } from '../../store/LectureMediaStore';
 import { MediaType } from '../../model/MediaType';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeVideoPage() {
   const params = useLectureRouterParams();
@@ -86,12 +86,14 @@ function LectureCubeVideoPage() {
     }, 'LectureCubeVideoPage');
   }, []);
 
+  useCubeViewEvent();
+
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       <LectureVideoContainer />
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

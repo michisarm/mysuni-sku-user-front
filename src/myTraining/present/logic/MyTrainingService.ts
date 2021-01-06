@@ -43,6 +43,9 @@ class MyTrainingService {
   @observable
   myStampCount: number = 0;
 
+  @observable
+  thisYearMyStampCount: number = 0;
+
 
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
@@ -366,12 +369,16 @@ class MyTrainingService {
   }
 
   @action
-  async countMyTrainingsWithStamp(channelIds: string[] = []) {
+  async countMyTrainingsWithStamp(channelIds: string[] = [], startDate?: number, endDate?: number) {
     //
-    const rdo = MyTrainingRdoModel.new(1, 0, channelIds);
+    const rdo = MyTrainingRdoModel.new(1, 0, channelIds, startDate, endDate);
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
 
-    runInAction(() => this.myStampCount = trainingOffsetElementList.totalCount);
+    if (startDate === undefined || endDate === undefined) {
+      runInAction(() => this.myStampCount = trainingOffsetElementList.totalCount);
+    } else {
+      runInAction(() => this.thisYearMyStampCount = trainingOffsetElementList.totalCount);
+    }
 
     return trainingOffsetElementList.totalCount;
   }

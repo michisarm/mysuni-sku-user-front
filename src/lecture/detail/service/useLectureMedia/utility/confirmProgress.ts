@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
-import { findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import  {
+import {
   State,
   StudentStateMap,
 } from 'lecture/detail/viewModel/LectureWatchLog';
@@ -22,7 +22,7 @@ function getPersonalCubeByParams(
   params: LectureRouterParams
 ): Promise<PersonalCube> {
   const { contentId } = params;
-  return findPersonalCube(contentId!);
+  return cacheableFindPersonalCube(contentId!);
 }
 
 async function getStateMapByParams(
@@ -67,9 +67,9 @@ export async function confirmProgress(
       student = await findStudent(stateMap.studentId);
 
       const studentCdo: StudentCdo = {
-        denizenKey:{
+        denizenKey: {
           keyString: patronInfo.getDenizenId() || '',
-          patronType: PatronType.Denizen
+          patronType: PatronType.Denizen,
         },
         rollBookId: student.rollBookId,
         name: student.name,
@@ -86,7 +86,6 @@ export async function confirmProgress(
 
       setLectureConfirmProgress(await progressByCardId(studentCdo));
       getStateFromCube(params);
-
     }
   }
 }

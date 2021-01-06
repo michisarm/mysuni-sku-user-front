@@ -38,7 +38,6 @@ class BreadcrumbView extends Component<Props, State> {
     postData.append('grant_type', 'password');
     postData.append('scope', 'client');
     postData.append('username', this.state.id);
-    // postData.append('password', 'skcc05526');
     postData.append('password', '1');
 
     const config = {
@@ -159,6 +158,7 @@ class BreadcrumbView extends Component<Props, State> {
                 </Fragment>
               ))}
           </div>
+<<<<<<< HEAD
           {/* 임시 로그인창 표시 (삭제예정) */}
           <div style={{ position: 'absolute', top: '0', left: '600px' }}>
             <input
@@ -175,6 +175,25 @@ class BreadcrumbView extends Component<Props, State> {
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
+=======
+          {process.env.NODE_ENV === 'development' && (
+            <div style={{ position: 'absolute', top: '0', left: '600px' }}>
+              <input
+                style={{
+                  width: 200,
+                  fontSize: 'small',
+                }}
+                value={this.state.id}
+                onChange={e => this.setState({ id: e.target.value })}
+              />
+              &nbsp;
+              <button style={{ fontSize: 'small' }} onClick={this.onLogin}>
+                로그인
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+          )}
+>>>>>>> 9e005db4701a1eceb157b293106bdbe3f83750cf
           {/* <div className="right"> */}
           {/* {process.env.NODE_ENV === 'development' && (
               <>

@@ -4,7 +4,7 @@ import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { getReportItem } from './getReportItemMapFromCube';
 import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
 
 export async function getCubeLectureReport(
   params: LectureRouterParams
@@ -12,7 +12,7 @@ export async function getCubeLectureReport(
   const { contentId, lectureId } = params;
   const {
     cubeIntro: { id: cubeIntroId },
-  } = await findPersonalCube(contentId);
+  } = await cacheableFindPersonalCube(contentId);
   const studentJoins = await findIsJsonStudentByCube(lectureId);
   if (!Array.isArray(studentJoins)) {
     return;

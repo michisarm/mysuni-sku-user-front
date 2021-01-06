@@ -214,8 +214,7 @@ const InProgressLearning: React.FC<Props> = Props => {
     <ContentWrapper>
       <div className="section-head">
         <strong>
-          <span className="ellipsis">{profileMemberName}</span>님이 학습중인
-          과정입니다.
+          <span className="ellipsis">{profileMemberName}</span>님이 학습중인 과정
         </strong>
         <div className="right">
           {myTrainings.length > 0 && (

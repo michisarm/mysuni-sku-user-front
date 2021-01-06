@@ -2,15 +2,28 @@ import { matchPath } from 'react-router-dom';
 import LectureParams from '../viewModel/LectureParams';
 import LectureRouterParams from '../viewModel/LectureRouterParams';
 
-export function parseLectureParamsFromPathname(pathname: string): LectureRouterParams | void {
-  let mathch = matchPath<LectureParams>(pathname, {
+export function parseLectureParamsFromPathname(
+  pathname: string
+): LectureRouterParams | void {
+  const lectureParams = parseParamsFromPathname(pathname);
+  if (lectureParams !== undefined) {
+    const params = parseLectureParams(lectureParams, pathname);
+    return params;
+  }
+}
+
+export function parseParamsFromPathname(
+  pathname: string
+): LectureParams | void {
+  const path = pathname.substr(pathname.indexOf('/lecture'));
+  let mathch = matchPath<LectureParams>(path, {
     path:
       '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
     exact: true,
     strict: true,
   });
   if (!mathch?.isExact) {
-    mathch = matchPath<LectureParams>(pathname, {
+    mathch = matchPath<LectureParams>(path, {
       path:
         '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
       exact: true,
@@ -18,7 +31,7 @@ export function parseLectureParamsFromPathname(pathname: string): LectureRouterP
     });
   }
   if (!mathch?.isExact) {
-    mathch = matchPath<LectureParams>(pathname, {
+    mathch = matchPath<LectureParams>(path, {
       path:
         '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
       exact: true,
@@ -26,7 +39,7 @@ export function parseLectureParamsFromPathname(pathname: string): LectureRouterP
     });
   }
   if (!mathch?.isExact) {
-    mathch = matchPath<LectureParams>(pathname, {
+    mathch = matchPath<LectureParams>(path, {
       path:
         '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
       exact: true,
@@ -35,8 +48,7 @@ export function parseLectureParamsFromPathname(pathname: string): LectureRouterP
   }
   if (mathch !== null) {
     const lectureParams = mathch.params;
-    const params = parseLectureParams(lectureParams, pathname);
-    return params;
+    return lectureParams;
   }
 }
 
@@ -61,8 +73,7 @@ export function parseLectureParams(
       pathname,
       lectureParams,
     };
-  }
-  else if(lectureParams.coursePlanId !== undefined){
+  } else if (lectureParams.coursePlanId !== undefined) {
     return {
       contentType: 'coures',
       contentId: lectureParams.coursePlanId!,
@@ -70,8 +81,7 @@ export function parseLectureParams(
       pathname,
       lectureParams,
     };
-  }
-  else{
+  } else {
     return {
       contentType: 'community',
       contentId: lectureParams.communityId!,

@@ -1,16 +1,20 @@
 /* eslint-disable consistent-return */
-import { findPersonalCube } from '../../../api/mPersonalCubeApi';
+import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { PatronKey } from 'shared/model/PatronKey';
+import { patronInfo } from '@nara.platform/dock';
 import { setLectureWatchLogSumViewCount } from '../../../store/LectureWatchLogSumViewCountStore';
-import { findSumViewSeconds } from '../../../api/mWatchlogApi';
+import {
+  findSumViewSeconds,
+  multiVideoOverlap,
+} from '../../../api/mWatchlogApi';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
 ): Promise<PersonalCube> {
   const { contentId } = params;
-  return findPersonalCube(contentId!);
+  return cacheableFindPersonalCube(contentId!);
 }
 
 export async function getWatchLogSumViewSeconds(
@@ -25,4 +29,17 @@ export async function getWatchLogSumViewSeconds(
     // return viewCount;
   }
   // return 0;
+}
+
+export async function getMultiVideoOverlap(
+  viewState: String,
+  usid: String
+): Promise<string> {
+  // alert(patronInfo.getPatronId());
+  const rtn = await multiVideoOverlap(
+    patronInfo.getPatronId(),
+    viewState,
+    usid
+  );
+  return rtn;
 }

@@ -48,6 +48,10 @@ import {
 import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import { Icon, Rating } from 'semantic-ui-react';
+import {
+  videoClose,
+  videoStart,
+} from '../../../service/useActionLog/cubeStudyEvent';
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 //샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
@@ -74,54 +78,22 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 }) {
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
+  const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
+  const [cubeName, setCubeName] = useState<any>('');
+
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
   const checkIntervalRef = useRef<any>(0);
   const transcriptIntervalRef = useRef<any>(0);
+  const multiVideoIntervalRef = useRef<any>(0);
 
   useEffect(() => {
-    let mathch = matchPath<LectureParams>(pathname, {
-      path:
-        '/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
-      exact: true,
-      strict: true,
-    });
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (!mathch?.isExact) {
-      mathch = matchPath<LectureParams>(pathname, {
-        path:
-          '/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId',
-        exact: true,
-        strict: true,
-      });
-    }
-    if (mathch !== null) {
-      const mlectureParams = mathch.params;
-      const mParams = parseLectureParams(mlectureParams, pathname);
-      confirmProgress(mParams);
-      requestLectureStructure(mParams.lectureParams, pathname);
-    }
-
     // all cleare interval
     return () => {
       clearInterval(playIntervalRef.current);
       clearInterval(checkIntervalRef.current);
       clearInterval(transcriptIntervalRef.current);
+      clearInterval(multiVideoIntervalRef.current);
       setPanoptoState(0);
     };
   }, [pathname]);
@@ -132,6 +104,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setWatchLog,
     getWatchLogSumViewCount,
     confirmProgress,
+    retMultiVideoOverlap,
   ] = useLectureWatchLog();
 
   // const params = useLectureRouterParams();
@@ -140,6 +113,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
   const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [nextContentsName, setNextContentsName] = useState<string>();
+  const [contentsName, setContentsName] = useState<string>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
@@ -181,47 +155,28 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const history = useHistory();
-  // 멀티 시청 제한
-  function onDoLearn(params: LectureRouterParams | undefined): void {
-    // 20200717 video 멀티 시청불가~! = return true
-    // if (handleMultiVideo(lectureView)) {
-    if (handleMultiVideo(params)) {
-      reactAlert({
-        title: '알림',
-        message:
-          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+  function handleMultiVideo(viewState: string, usid: string, show: boolean) {
+    // 멀티시청 제한 param = patronKeyString, state, lectureId
+    // state = start:시작, 중간 end:종료
+    // lectureId = 시청중인 ID
+    // return = false:중복시청, true:시청가능
+    // alert(`retMultiVideoOverlap before: ${usid}`);
+    if (show) {
+      retMultiVideoOverlap(viewState, usid).then(function(res) {
+        // alert(`retMultiVideoOverlap after: ${res}`);
+        setLiveLectureCardId(res);
+        if (viewState !== 'end')
+          if (!res || res === 'false') {
+            // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
+            reactAlert({
+              title: '알림',
+              message:
+                '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+              // onClose: () => history.goBack(),
+            });
+          }
       });
     }
-  }
-
-  function handleMultiVideo(params: LectureRouterParams | undefined) {
-    function nvl(str: any, dvalue: any) {
-      if (typeof str === 'undefined' || str === null || str === '') {
-        str = dvalue;
-      }
-      return str;
-    }
-    const lectureCardId = params?.lectureId;
-    const liveLectureCardId = getCookie('liveLectureCardId');
-    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
-    let rtnLive = false;
-    const after2Min = new Date();
-    after2Min.setMinutes(after2Min.getMinutes() + 2);
-    const nowTime = new Date().getTime();
-
-    if (
-      nvl(liveLectureCardId, 0) === 0 ||
-      liveLectureCardId === lectureCardId ||
-      (liveLectureCardId !== lectureCardId && term < nowTime)
-    ) {
-      deleteCookie('liveLectureCardId');
-      deleteCookie('liveLectureCardIdTime');
-      setCookie('liveLectureCardId', lectureCardId);
-      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-    } else {
-      rtnLive = true;
-    }
-    return rtnLive;
   }
 
   const nextContents = useCallback((path: string) => {
@@ -242,7 +197,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           sessionStorage.removeItem('inProgressTableViews');
           sessionStorage.removeItem('InProgressLearningList');
         }
-      } else if (state == 0) {
+        videoStart();
+      } else if (state == 2) {
+        videoClose();
         // setNextContentsView(true);
       }
     },
@@ -272,14 +229,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     if (params) {
       setNextContentsView(false);
-      //중복 동영상 체크
-      onDoLearn(params);
     }
+    // params 가 바뀌었을때 화면은 유지되면서 loading 만 한다.
     return () => {
-      const liveLectureCardId = getCookie('liveLectureCardId');
-      if (params?.lectureId === liveLectureCardId) {
-        deleteCookie('liveLectureCardId');
-        deleteCookie('liveLectureCardIdTime');
+      const liveLectureId = JSON.parse(
+        sessionStorage.getItem('liveLectureCardId')!
+      );
+      // alert(`동영상종료 세션에서 가져온 liveLectureId: ${liveLectureId}`);
+      if (liveLectureId) {
+        //중복 동영상 체크 종료 signal
+        handleMultiVideo('end', liveLectureId, true);
+        sessionStorage.removeItem('liveLectureCardId');
       }
     };
   }, [params]);
@@ -290,6 +250,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setNextContentsView(false);
     //동영상 종료
     if (panoptoState == 0 || panoptoState == 2) {
+      // alert(`동영상종료 panoptoState: ${panoptoState}`);
       mediaCheckEvent(params);
       if (
         Math.floor((embedApi.getCurrentTime() as unknown) as number) ==
@@ -297,11 +258,24 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       ) {
         setNextContentsView(true);
       }
+      // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
+      videoClose();
+      //중복 동영상 체크 종료 signal
+      handleMultiVideo('end', liveLectureCardId, true);
+      sessionStorage.removeItem('liveLectureCardId');
     }
     //동영상 시작시 student 정보 확인 및 등록
     if (panoptoState == 1) {
       registCheckStudent(params);
       mediaCheckEvent(params);
+      // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
+      videoStart();
+      //중복 동영상 체크 시작 signal
+      handleMultiVideo('start', params?.lectureId || 'start', true);
+      sessionStorage.setItem(
+        'liveLectureCardId',
+        JSON.stringify(liveLectureCardId)
+      );
     }
   }, [panoptoState]);
 
@@ -416,6 +390,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     // clearTimeout(progressInterval);
     let checkInterval: any = null;
+    let multiVideoInterval: any = null;
     const duration = (embedApi.getDuration() as unknown) as number;
     let confirmProgressTime = (duration / 20) * 1000;
 
@@ -430,16 +405,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         // }, 20000));
       }, confirmProgressTime);
       checkIntervalRef.current = checkInterval;
+
+      //중복 동영상 체크 중간 signal
+      multiVideoInterval = setInterval(() => {
+        handleMultiVideo('start', params?.lectureId || 'start', false);
+      }, 60000);
+      multiVideoIntervalRef.current = multiVideoInterval;
     } else if (!isActive) {
       clearInterval(checkInterval);
+      clearInterval(multiVideoInterval);
     }
     return () => {
       clearInterval(checkInterval);
+      clearInterval(multiVideoInterval);
     };
   }, [params, isActive]);
 
   useEffect(() => {
     setNextContentsView(false);
+    // 화면 나갈때 event
     return () => {
       mediaCheckEvent(params);
       setPanoptoState(10);
@@ -550,6 +534,114 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 if (nextDiscussion) {
                   setNextContentsPath(nextDiscussion.path);
                   setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        });
+      }
+    }
+  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
+
+  // 코스 sticky 시 비디오명
+  useEffect(() => {
+    // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
+    const lectureStructure = getLectureStructure();
+    setNextContentsPath('');
+    if (lectureStructure) {
+      if (lectureStructure.course?.type == 'COURSE') {
+        //일반 코스 로직
+        lectureStructure.items.map(item => {
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          return null;
+        });
+      } else if (lectureStructure.course?.type == 'PROGRAM') {
+        lectureStructure.items.map(item => {
+          if (item.type === 'COURSE') {
+            const course = item as LectureStructureCourseItem;
+            if (course.cubes) {
+              const currentCube = course.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = course.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = course.discussions?.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
+                }
+              }
+            }
+          }
+          if (item.type === 'CUBE') {
+            if (lectureStructure.cubes) {
+              const currentCube = lectureStructure.cubes.find(
+                cube => cube.cubeId == params?.contentId
+              );
+
+              if (currentCube) {
+                const nextCubeOrder = currentCube.order;
+
+                const nextCube = lectureStructure.cubes.find(
+                  cube => cube.order == nextCubeOrder
+                );
+
+                if (nextCube) {
+                  // setNextContentsPath(nextCube.path);
+                  setContentsName(nextCube.name);
+                }
+
+                //토론하기 항목이 있는 경우
+                const nextDiscussion = lectureStructure.discussions.find(
+                  discussion => discussion.order == nextCubeOrder
+                );
+                if (nextDiscussion) {
+                  // setNextContentsPath(nextDiscussion.path);
+                  setContentsName('[토론하기]'.concat(nextDiscussion.name));
                 }
               }
             }
@@ -700,6 +792,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => clearInterval(intervalFunc);
   }, [isActive]);
 
+  // sticky시 비디오명 표시 (cube)
+  useEffect(() => {
+    setCubeName(getLectureStructure()?.cube?.name);
+  }, [getLectureStructure()]);
+
   return (
     <div
       className={
@@ -721,9 +818,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             nextContentsPath &&
             getLectureConfirmProgress()?.learningState == 'Passed' && (
               <>
-                <div id="video-overlay" className="video-overlay">
+                <div
+                  id="video-overlay"
+                  className="video-overlay"
+                  onClick={() => nextContents(nextContentsPath)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="video-overlay-btn">
-                    <button onClick={() => nextContents(nextContentsPath)}>
+                    <button>
                       <img src={playerBtn} />
                     </button>
                   </div>
@@ -732,7 +834,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                     <h3>{nextContentsName}</h3>
                   </div>
                 </div>
-                <div className="video-overlay-small">
+                <div
+                  className="video-overlay-small"
+                  onClick={() => nextContents(nextContentsPath)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <button>
                     <img src={playerBtn} />
                   </button>
@@ -743,7 +849,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         </div>
         <div className="sticky-video-content">
           <div className="header">
-            2. [반도체 클라쓰] Keyword로 알아보는 반도체의 품격 2
+            {getLectureStructure()?.type === 'Cube' ? cubeName : contentsName}
           </div>
           <div className="time-check">
             <strong>{getTimeStringSeconds(currentTime)}</strong> /

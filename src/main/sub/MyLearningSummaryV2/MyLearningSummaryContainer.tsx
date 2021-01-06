@@ -71,6 +71,7 @@ class MyLearningSummaryContainer extends Component<Props> {
 
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     myTrainingService!.countMyTrainingsWithStamp();
+    myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
   }
 
@@ -143,14 +144,17 @@ class MyLearningSummaryContainer extends Component<Props> {
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
-    const { myStampCount } = myTrainingService!;
+    const { myStampCount, thisYearMyStampCount } = myTrainingService!;
     const { earnedCount: myBadgeCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
     /* 총 학습시간 */
+    const CURRENT_YEAR = moment().year();
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
+    const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
     let total: any = null;
+    let accrueTotal: any = null;
 
     const { menuControlAuth } = menuControlAuthService!;
 
@@ -187,6 +191,39 @@ class MyLearningSummaryContainer extends Component<Props> {
       );
     }
 
+    if (accrueHour < 1 && accrueMinute < 1) {
+      accrueTotal = (
+        <>
+          <span className="big2">00</span>
+          <span className="small2">h</span> <span className="big">00</span>
+          <span className="small2">m</span>
+        </>
+      );
+    } else if (accrueHour < 1) {
+      accrueTotal = (
+        <>
+          <span className="big2">{accrueMinute}</span>
+          <span className="small2">m</span>
+        </>
+      );
+    } else if (accrueMinute < 1) {
+      accrueTotal = (
+        <>
+          <span className="big2">{accrueHour}</span>
+          <span className="small2">h</span>
+        </>
+      );
+    } else {
+      accrueTotal = (
+        <>
+          <span className="big2">{accrueHour}</span>
+          <span className="small2">h</span>{' '}
+          <span className="big2">{accrueMinute}</span>
+          <span className="small2">m</span>
+        </>
+      );
+    }
+
     return (
       <>
         <HeaderWrapperView>
@@ -209,7 +246,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           </ItemWrapper>
 
           <ItemWrapper>
-            <div className="title">총 학습시간</div>
+            <div className="title">{CURRENT_YEAR}년 학습시간</div>
             <MyLearningSummaryModal
               trigger={(
                 <a>
@@ -217,16 +254,27 @@ class MyLearningSummaryContainer extends Component<Props> {
                 </a>
               )}
             />
+            <a className="main_sub_all">
+              &#40;누적
+              {accrueTotal}
+              &#41;
+            </a>
           </ItemWrapper>
 
           <ItemWrapper
             onClick={() => this.onClickLearningSummary('완료된 학습')}
           >
             <HeaderItemView
-              label="완료된 학습"
+              label={CURRENT_YEAR + "년 완료학습"}
               count={myLearningSummary.completeLectureCount}
               onClick={this.onClickComplete}
             />
+            <a className="main_sub_all">
+              &#40;누적
+              <span className="big2">{myLearningSummary.totalCompleteLectureCount}</span>
+              <span className="small2 h">개</span>
+              &#41;
+            </a>
           </ItemWrapper>
 
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Stamp')}>
@@ -235,6 +283,12 @@ class MyLearningSummaryContainer extends Component<Props> {
               count={myStampCount}
               onClick={this.onClickStamp}
             />
+            {/*<a className="main_sub_all">
+              &#40;누적
+              <span className="big2">{myStampCount}</span>
+              <span className="small2 h">개</span>
+              &#41;
+            </a>*/}
           </ItemWrapper>
 
           {/*2차 My Badge 추가*/}
