@@ -63,7 +63,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
         <div className="challenge-badge">
 
           {/*Badge UI Information*/}
-          <div style={{border: '1px red solid'}}>
+          <div>
           <BadgeCompLeft
             badge={myBadge}
             badgeStyle={badgeStyle}
