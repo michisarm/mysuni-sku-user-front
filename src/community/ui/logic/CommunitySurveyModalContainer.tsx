@@ -189,13 +189,13 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
         {/* 검색창 - sub */}
         <table className="ui admin_table_search sub">
           <colgroup>
-            <col width="200px" />
+            <col width="100px" />
             <col />
           </colgroup>
           <tbody>
             <tr>
               <th>등록일자</th>
-              <td>
+              <td style={{textAlign: 'left'}}>
                 {/* <div className="preview"> */}
                   <Calendar searchBox={searchBox!} />              
                 {/* </div> */}
@@ -203,7 +203,7 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
             </tr>
             <tr>
               <th>검색어</th>
-              <td>
+              <td style={{textAlign: 'left'}}>
                 <div className={classNames("ui input admin_text_input add")}>
                   <input
                     type="text"
@@ -248,7 +248,7 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
             </tr>
           </tbody>
         </table>
-        <Pagination
+        <Pagination style={{marginTop: '30px'}}
           activePage={activePage}
           totalPages={totalPage}
           firstItem={null}
