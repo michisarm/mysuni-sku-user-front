@@ -107,8 +107,8 @@ export function addCommunityMenu(communityId: string, addRow: any) {
   });
 }
 
-export function requestCommunitySurvey(params: any) {
-  return findCommunitySurvey(params).then(result => {
+export function requestCommunitySurvey() {
+  return findCommunitySurvey().then(result => {
     return result
   });
 }
