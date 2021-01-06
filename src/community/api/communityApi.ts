@@ -428,10 +428,10 @@ export function addCommunityAdminMenu(communityId: string, addRow: any): Promise
     return response && response.data
   }); 
 }
-
-export function findCommunitySurvey(params: any): Promise<any> {
-    const url = `api/survey/${params}`;
+export function findCommunitySurvey(): Promise<any> {
+    const url = `/api/survey/surveyForms/searchKey?startDate=1578322800000&endDate=1609945199999&designState=&name=&creatorName=&offset=0&limit=10`;
+    console.log('url', url)
     return axiosApi.get(url).then(response => {
-      return response && response.data
+      return response
     }); 
 }

@@ -42,11 +42,15 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
   const [open, setOpen] = useState<boolean>(false);
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const [surveyData, setSurveyData] = useState<any>();
   const searchBox = useSearchBox();
 
   useEffect(() => {
-    console.log('useEffect')
-  }, []);
+    if(open === true) {
+      console.log('useEffect')
+      findAllSurvey();
+    }
+  }, [open]);
   // state = {
   //   open: false,
   //   selectedCollege: new IdName(),
@@ -132,6 +136,16 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
     // const { collegeService, trigger } = this.props;
     // const { open, selectedCollege, selectedChannel } = this.state;
     // const colleges: CollegeModel[] = collegeService!.colleges;
+
+  const findAllSurvey = (() => {
+    setActivePage(1);
+    requestCommunitySurvey().then((result) => {
+      console.log('result', result)
+      setSurveyData(result.data.results)
+    })
+    
+  })
+
   const onOpen = useCallback(() => {
     setOpen(true)
   },[])
@@ -174,8 +188,29 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
   //   this.setDefaultSelectedChannel();
   //   this.onClose();
   // }
-
-
+function renderSurveyRow(item: any) {
+  if(item !== undefined) {
+    return(
+      <tr>
+        <td>
+          <Radio
+            className="base"
+            name="radioGroup"
+            value="value01"
+            // checked={this.state.value === "value01"}
+            // onChange={this.handleChange}
+          />
+        </td>
+        <td>
+          반도체 산업의 시작과 역사에 대해 개인 의견을 남겨주세요.
+        </td>
+        <td>김써니</td>
+        <td>2020.12.15</td>
+      </tr>
+    )
+  }
+}
+console.log('surveyData',surveyData)
   return (
     <Modal className="base w1000" open={open} trigger={trigger} onOpen={onOpen} onClose={onClose}>
       <Modal.Header>
@@ -219,36 +254,28 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
             </tr>
           </tbody>
         </table>
-
-        <table className="ui admin_table sub survey_popup_table">
-          <thead>
-            <tr>
-              <th/>
-              <th>제목</th>
-              <th>등록자</th>
-              <th>등록일</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <Radio
-                  className="base"
-                  name="radioGroup"
-                  value="value01"
-                  // checked={this.state.value === "value01"}
-                  // onChange={this.handleChange}
-                />
-              </td>
-              <td>
-                반도체 산업의 시작과 역사에 대해 개인 의견을 남겨주세요.
-              </td>
-              <td>김써니</td>
-              <td>2020.12.15</td>
-            </tr>
-          </tbody>
-        </table>
-        <Pagination style={{marginTop: '30px'}}
+        {surveyData !== undefined && (
+          <>
+            <table className="ui admin_table sub survey_popup_table">
+              <thead>
+                <tr>
+                  <th/>
+                  <th>제목</th>
+                  <th>등록자</th>
+                  <th>등록일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {surveyData.map((item:any, index: number) => {
+                  return renderSurveyRow(item);
+                })}
+              </tbody>
+            </table>
+          </>
+        )
+        }
+        
+        <Pagination
           activePage={activePage}
           totalPages={totalPage}
           firstItem={null}
