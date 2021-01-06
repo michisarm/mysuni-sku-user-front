@@ -1,4 +1,3 @@
-import { SearchBox } from 'community/model/SearchBox';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState,useCallback,useEffect} from 'react';
 import { DropdownItemProps, Radio, Select } from 'semantic-ui-react';
@@ -12,18 +11,20 @@ interface CommunityAdminMenuAddViewProps {
   addChildMenuFlag? : boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
-  // searchBox: SearchBox
   onChangeAddValue: (data: any, name: string) => void
 }
 
-const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
+const CommunityAdminMenuTest: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   addChildMenuFlag,
   selectedRow,
   communityAdminGroups,
-  // searchBox,
   onChangeAddValue
 }) {
+
+  useEffect(() => {
+    console.log('selectedRow', selectedRow)
+  }, [selectedRow]);
 
   const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
     {
@@ -172,4 +173,4 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   )
 }
 
-export default CommunityAdminMenuAddView;
+export default CommunityAdminMenuTest;

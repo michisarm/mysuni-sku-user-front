@@ -6,6 +6,7 @@ import {
   saveCommunityAdminMenu,
   deleteCommunityAdminMenu,
   addCommunityAdminMenu,
+  findCommunitySurvey,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -19,6 +20,7 @@ import { setCommunityAdminGroupsStore } from 'community/store/CommunityAdminGrou
 export function requestCommunityMenu(communityId: string) {
   const menuArr: any = [];
   findCommunityMenu(communityId).then(community => {
+
     community.data.map((item: any, index: number) => {
       if (item.parentId === null) {
         menuArr.push(item)
@@ -62,6 +64,7 @@ export function requestCommunityMenu(communityId: string) {
         })
       }
     })
+
     //여기서 트리구조 형태로 배열 만들어준다.
     setCommunityAdminMenu({'menu' : menuArr});
   });
@@ -86,6 +89,7 @@ export function requestCommunityGroups(communityId: string) {
 export async function saveCommunityMenu(communityId: string, params: any) {
   for await (const param of params) {
     saveCommunityAdminMenu(communityId, param).then(result => {
+      // requestCommunityMenu(communityId);
     });
   }
 }
@@ -99,6 +103,12 @@ export async function deleteCommunityMenu(communityId: string, params: any) {
 
 export function addCommunityMenu(communityId: string, addRow: any) {
   return addCommunityAdminMenu(communityId, addRow).then(result => {
+    return result
+  });
+}
+
+export function requestCommunitySurvey(params: any) {
+  return findCommunitySurvey(params).then(result => {
     return result
   });
 }
