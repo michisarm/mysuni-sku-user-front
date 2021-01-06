@@ -136,7 +136,6 @@ class BreadcrumbView extends Component<Props, State> {
   render() {
     //
     const { values, supportPath } = this.props;
-
     return (
       <div className="breadcrumbs">
         <div className="cont-inner">
