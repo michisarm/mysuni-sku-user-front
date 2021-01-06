@@ -18,7 +18,7 @@ export function findMembers(
   return (
     axios
     // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
-    .get(`${BASE_URL}/communities/${communityId}/members/memberviews/all`, {
+    .get(`${BASE_URL}/memberviews/${communityId}`, {
       params: searchBox,
     })
 
