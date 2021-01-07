@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import {
   getActiveStructureItemAll,
@@ -40,7 +40,7 @@ export function requestLectureStructure(
   const { lectureType, contentId, lectureId, ...structParams } = params;
   if (params.cubeId !== undefined) {
     return getCubeItem(structParams, pathname);
-  } else if(params.coursePlanId !== undefined) {
+  } else if (params.coursePlanId !== undefined) {
     return getCourseItem(structParams, pathname);
   }
 }
@@ -74,9 +74,6 @@ function LectureStructureContainer() {
       lectureId,
     };
     requestLectureStructure(params, pathname);
-    return () => {
-      setLectureStructure();
-    };
   }, [
     cineroomId,
     collegeId,
@@ -90,6 +87,10 @@ function LectureStructureContainer() {
     lectureId,
     pathname,
   ]);
+
+  useEffect(() => {
+    return setLectureStructure;
+  }, [coursePlanId, cubeId]);
 
   //   useEffect(() => {
   //   const options = {};

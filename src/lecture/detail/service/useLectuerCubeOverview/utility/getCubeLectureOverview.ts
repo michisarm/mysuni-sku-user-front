@@ -1,7 +1,7 @@
 import { findLectureCard } from 'lecture/detail/api/lectureApi';
 import {
-  findCubeIntro,
-  findPersonalCube,
+  cacheableFindCubeIntro,
+  cacheableFindPersonalCube,
 } from 'lecture/detail/api/mPersonalCubeApi';
 import CubeIntro from 'lecture/detail/model/CubeIntro';
 import LectureCard from 'lecture/detail/model/LectureCard';
@@ -165,11 +165,11 @@ function makeInMyLectureCdo(
 }
 
 function findCube(personalCubeId: string) {
-  return findPersonalCube(personalCubeId);
+  return cacheableFindPersonalCube(personalCubeId);
 }
 
 function findIntro(cubeIntroId: string) {
-  return findCubeIntro(cubeIntroId);
+  return cacheableFindCubeIntro(cubeIntroId);
 }
 
 export async function getCubeLectureOverview(
@@ -179,7 +179,7 @@ export async function getCubeLectureOverview(
   const personalCube = await findCube(personalCubeId);
   const cubeIntro = await findIntro(personalCube.cubeIntro.id);
   if (cubeIntro === undefined) {
-    return
+    return;
   }
   const lectureCard = await findLectureCard(lectureCardId);
   const lectureSummary = await getLectureSummary(
@@ -197,7 +197,11 @@ export async function getCubeLectureOverview(
   const lectureInstructor = getLectureInstructor(cubeIntro);
   setLectureInstructor(lectureInstructor);
   setLecturePrecourse(getEmptyLecturePrecourse());
-  if (personalCube.contents.fileBoxId !== '' && personalCube.contents.fileBoxId !== null && personalCube.contents.fileBoxId !== undefined) {
+  if (
+    personalCube.contents.fileBoxId !== '' &&
+    personalCube.contents.fileBoxId !== null &&
+    personalCube.contents.fileBoxId !== undefined
+  ) {
     const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
     setLectureFile(lectureFile);
   } else {

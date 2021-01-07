@@ -9,6 +9,7 @@ interface Props {
   // selectedYear: number;
   // onChangeYear: (e: any, data: any) => void;
   onClickItem?: () => void;
+  thisYearStampCount?: number;
 }
 
 @reactAutobind
@@ -16,7 +17,7 @@ class ContentHeaderStampView extends PureComponent<Props> {
   //
   render() {
     //
-    const { stampCount, onClickItem } = this.props;
+    const { stampCount, onClickItem, thisYearStampCount } = this.props;
 
     return (
       <div className="cell-inner">
@@ -29,6 +30,14 @@ class ContentHeaderStampView extends PureComponent<Props> {
                 <span className="text3">{stampCount || 0}</span>
               </span>
             </a>
+            {/*<div style={{marginTop: '5px', textAlign: 'left'}}>
+              <a href="#" className="main_sub_all" style={{color: 'gray'}}>
+                &#40;누적
+                <span className="big2">{stampCount}</span>
+                <span className="small2 h">개</span>
+                &#41;
+              </a>
+            </div>*/}
           </Label>
         </div>
       </div>

@@ -4,22 +4,15 @@
 
 import {
   deleteTaskPost,
-  findFileBox,
-  findPersonalCube,
   getCommentFeedbackId,
   getTaskCreateId,
   getTaskDetail,
 } from 'lecture/detail/api/mPersonalCubeApi';
-import PersonalCube from '../../../model/PersonalCube';
 import {
   setLectureTaskDetail,
   // setLectureChildTaskItem,
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-
-function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
-  return findPersonalCube(cubeId);
-}
 
 async function getTaskItem(postParam: any) {
   const lectureTaskDetail: LectureTaskDetail = {
@@ -38,7 +31,7 @@ async function getTaskItem(postParam: any) {
     time: 0,
     readCount: 0,
     commentFeedbackId: '',
-    notice: false
+    notice: false,
   };
   //
   if (postParam.id !== '') {

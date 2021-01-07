@@ -3,7 +3,7 @@
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
 import {
-  findPersonalCube,
+  cacheableFindPersonalCube,
   findTask,
   findTaskChild,
   findTaskCommentCount,
@@ -22,7 +22,7 @@ import {
 import { compareAscendingByTime } from '../../../utility/lectureTaskHelper';
 
 function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
-  return findPersonalCube(cubeId);
+  return cacheableFindPersonalCube(cubeId);
 }
 
 async function getTaskItem(
@@ -62,7 +62,7 @@ async function getTaskItem(
                 commentFeedbackId: task.commentFeedbackId,
                 childItems: [],
                 delete: task.deleted,
-                pinned: task.pinned
+                pinned: task.pinned,
               });
             });
 
@@ -82,7 +82,7 @@ async function getTaskItem(
                 commentFeedbackId: task.commentFeedbackId,
                 childItems: [],
                 delete: task.deleted,
-                pinned: task.pinned
+                pinned: task.pinned,
               });
             });
             setLectureTaskItem(lectureTask);

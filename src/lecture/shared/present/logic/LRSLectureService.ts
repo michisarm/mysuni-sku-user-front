@@ -28,7 +28,7 @@ class LRSLectureService {
       this._title = title;
     }
     else {
-      this._title = `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
+      this._title = `${this._profileName}님을 위한 mySUNI의 추천 과정`;
     }
   }
 
@@ -38,7 +38,7 @@ class LRSLectureService {
       return this._title;
     }
     else {
-      return `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
+      return `${this._profileName}님을 위한 mySUNI의 추천 과정`;
     }
   }
 

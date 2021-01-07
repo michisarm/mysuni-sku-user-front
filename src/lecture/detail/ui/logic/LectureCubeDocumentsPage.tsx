@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
 import {
   setInMyLectureCdo,
@@ -13,11 +13,11 @@ import {
   setLectureTags,
 } from '../../store/LectureOverviewStore';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeDocumentsContainer from './LectureCubeDocumentsContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { setLectureState } from '../../store/LectureStateStore';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeDocumentsPage() {
   const params = useLectureRouterParams();
@@ -41,14 +41,15 @@ function LectureCubeDocumentsPage() {
       setLectureState();
     };
   }, [contentId, lectureId]);
-  // useLectureMedia();
+
+  useCubeViewEvent();
 
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       <LectureCubeDocumentsContainer />
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

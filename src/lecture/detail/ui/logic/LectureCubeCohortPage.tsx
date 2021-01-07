@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -15,11 +15,11 @@ import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/uti
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import { useLectureState } from '../../service/useLectureState/useLectureState';
 import { useLectureCohort } from '../../service/useLectureCohort/useLectureCohort';
-import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCohortView from '../view/LectureCohortView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { setLectureState } from 'lecture/detail/store/LectureStateStore';
+import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 
 function LectureCubeCohortPage() {
   const params = useLectureRouterParams();
@@ -47,8 +47,10 @@ function LectureCubeCohortPage() {
   const [lectureCohort] = useLectureCohort();
   const [lectureState] = useLectureState();
 
+  useCubeViewEvent();
+
   return (
-    <LectureDetailLayout>
+    <Fragment>
       <LectureCubeSummaryContainer />
       {lectureCohort && (
         <LectureCohortView
@@ -57,7 +59,7 @@ function LectureCubeCohortPage() {
         />
       )}
       <LectureCubeContentContainer />
-    </LectureDetailLayout>
+    </Fragment>
   );
 }
 

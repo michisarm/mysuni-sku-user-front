@@ -13,6 +13,7 @@ import TaskDetailBody from '../model/TaskDetailBody';
 import { ClassroomModel } from '../../../personalcube/classroom/model';
 import TaskCdo from '../model/TaskCdo';
 import { AxiosResponse } from 'axios';
+import { createCacheApi } from './cacheableApi';
 
 const BASE_URL = '/api/personalCube';
 const FEEDBACK_URL = '/api/feedback';
@@ -30,22 +31,29 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   return response.data;
 }
 
-
-export function findPersonalCube(
-  personalCubeId: string
-): Promise<PersonalCube> {
+function findPersonalCube(personalCubeId: string): Promise<PersonalCube> {
   const url = `${BASE_URL}/personalcubes/${personalCubeId}`;
   return axiosApi
     .get<PersonalCube>(url)
     .then(response => response && response.data);
 }
 
-export function findCubeIntro(cubeIntroId: string): Promise<CubeIntro | undefined> {
+const [cacheableFindPersonalCube, clearFindPersonalCubeCache] = createCacheApi(
+  findPersonalCube
+);
+
+export { cacheableFindPersonalCube, clearFindPersonalCubeCache };
+
+function findCubeIntro(cubeIntroId: string): Promise<CubeIntro | undefined> {
   const url = `${BASE_URL}/cubeintros/${cubeIntroId}`;
-  return axiosApi
-    .get<CubeIntro>(url)
-    .then(AxiosReturn);
+  return axiosApi.get<CubeIntro>(url).then(AxiosReturn);
 }
+
+const [cacheableFindCubeIntro, clearFindCubeIntroCache] = createCacheApi(
+  findCubeIntro
+);
+
+export { cacheableFindCubeIntro, clearFindCubeIntroCache };
 
 export function findAllTranscript(deliveryId: string, locale: string) {
   return axiosApi
@@ -169,7 +177,7 @@ export function findFileBox(depotIds: string) {
   return axiosApi
     .get<string>(
       '/api/depot/depotFile/multiple' +
-      `?depotIds=%255B%2522${depotIds}%2522%255D`
+        `?depotIds=%255B%2522${depotIds}%2522%255D`
     )
     .then(response => (response && response.data) || null);
 }
