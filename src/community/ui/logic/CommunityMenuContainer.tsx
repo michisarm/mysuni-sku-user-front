@@ -116,6 +116,9 @@ function CommunityMenuContainer() {
 
   const handleAddChildMenu = useCallback(() => {
     if(selectedRow && selectedRow!.id) {
+      if(selectedRow.parentId) {
+        return false
+      }
       setAddChildMenuFlag(true);
       setAddMenuFlag(false);
       setAddRow({
@@ -587,8 +590,6 @@ function CommunityMenuContainer() {
           )}
           {addMenuFlag && addRow && !addChildMenuFlag && (
             <>
-              <span>메뉴추가</span>
-              {/* <span>{addRow}</span> */}
               <CommunityAdminMenuAddView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name, 'parent')}/>
               <div className="admin_bottom_button line">
                 <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add', addRow)}>저장</button>
@@ -597,8 +598,6 @@ function CommunityMenuContainer() {
           )}
           {addChildMenuFlag && addRow && !addMenuFlag && (
             <>
-              <span>하위메뉴추가</span>
-              {/* <span>{addRow}</span> */}
               <CommunityAdminMenuAddView addChildMenuFlag={addChildMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name, 'child')}/>
               <div className="admin_bottom_button line">
                 <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'childAdd', addRow)}>저장</button>
