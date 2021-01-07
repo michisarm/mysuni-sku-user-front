@@ -85,7 +85,7 @@ const ChallengingBadge: React.FC<Props> = Props => {
     <ContentWrapper className="badge-scrolling">
       <div className="section-head">
         <strong>
-          <span className="ellipsis">{profileMemberName}</span>님의 도전중인
+          <span className="ellipsis">{profileMemberName}</span>님이 도전중인
           Badge
         </strong>
         <div className="right">
