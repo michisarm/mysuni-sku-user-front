@@ -426,6 +426,14 @@ export function addCommunityAdminMenu(communityId: string, addRow: any): Promise
     return response && response.data
   }); 
 }
+
+export function addCommunityAdminDiscussion(communityId: string, addRow: any): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
+  return axiosApi.post(url, addRow).then(response => {
+    return response && response.data
+  }); 
+}
+
 export function findCommunitySurvey(params: any): Promise<any> {
     const url = `/api/survey/surveyForms/searchKey?`;
     return axiosApi.get(url, {params}).then(response => {

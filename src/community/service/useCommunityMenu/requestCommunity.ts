@@ -1,13 +1,13 @@
 import { findCommunityMenu } from 'community/api/CommunityMenuApi';
 import {
   findMyMenus,
-  findCommunityView,
   getCommunityGroups,
   saveCommunityAdminMenu,
   deleteCommunityAdminMenu,
   addCommunityAdminMenu,
   findCommunitySurvey,
   getCommunitySurveyInfo,
+  addCommunityAdminDiscussion,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -15,7 +15,6 @@ import {
 } from '../../store/CommunityHomeStore';
 import { setCommunityAdminMenu } from '../../store/CommunityAdminMenuStore';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
-import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 import { setCommunityAdminGroupsStore } from 'community/store/CommunityAdminGroupsStore';
 
 export function requestCommunityMenu(communityId: string) {
@@ -90,7 +89,6 @@ export function requestCommunityGroups(communityId: string) {
 export async function saveCommunityMenu(communityId: string, params: any) {
   for await (const param of params) {
     saveCommunityAdminMenu(communityId, param).then(result => {
-      // requestCommunityMenu(communityId);
     });
   }
 }
@@ -107,6 +105,13 @@ export function addCommunityMenu(communityId: string, addRow: any) {
     return result
   });
 }
+
+export function addCommunityDiscussion(communityId: string, addRow: any) {
+  return addCommunityAdminDiscussion(communityId, addRow).then(result => {
+    return result
+  });
+}
+
 
 export function requestCommunitySurvey(params: any) {
   return findCommunitySurvey(params).then(result => {

@@ -1,8 +1,3 @@
-import { IdName } from '@nara.platform/accent';
-import CommunityType from '../model/CommunityType';
-import ProfileCommunityItem from './CommunityProfile/ProfileCommunityItem';
-import PostItem from './CommunityProfileFeed/PostItem';
-
 export interface MenuItem {
   accessType: string;
   communityId: string;
@@ -25,8 +20,6 @@ export interface MenuItem {
 
 export interface CommunityAdminMenu {
   menu: MenuItem[];
-  // postsTotalCount: number;
-  // postsOffset: number;
 }
 
 export interface GroupListItem {
@@ -39,9 +32,3 @@ export interface GroupListItem {
 export interface GroupList {
   results: GroupListItem[]
 }
-
-// export function getEmtpyCommunityAdminMenu(): CommunityAdminMenu {
-//   return {
-//     menu: [],
-//   }
-// }
