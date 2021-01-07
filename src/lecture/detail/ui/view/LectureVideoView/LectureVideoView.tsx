@@ -802,7 +802,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       className={
         scroll > videoPosition &&
         !enabled &&
-        getLectureMedia()?.mediaType !== 'LinkMedia'
+        getLectureMedia()?.mediaType === 'InternalMedia'
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
