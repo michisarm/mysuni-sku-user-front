@@ -6,7 +6,7 @@ import PostItem from './CommunityProfileFeed/PostItem';
 export interface MenuItem {
   accessType: string;
   communityId: string;
-  groupId: string;
+  groupId: any;
   id: string;
   munuId: string;
   name: string;
@@ -14,7 +14,13 @@ export interface MenuItem {
   parentId: string;
   patronKey: any;
   type: string;
-  child: []
+  child: any;
+  discussionTopic: string;
+  surveyCaseId?: string;
+  surveyId?: string;
+  surveyInformation?: string;
+  url: string;
+  html: string;
 }
 
 export interface CommunityAdminMenu {
@@ -23,8 +29,19 @@ export interface CommunityAdminMenu {
   // postsOffset: number;
 }
 
-export function getEmtpyCommunityAdminMenu(): CommunityAdminMenu {
-  return {
-    menu: [],
-  }
+export interface GroupListItem {
+  groupId: string;
+  id: string;
+  name: string;
+  commmunityId: string;
 }
+
+export interface GroupList {
+  results: GroupListItem[]
+}
+
+// export function getEmtpyCommunityAdminMenu(): CommunityAdminMenu {
+//   return {
+//     menu: [],
+//   }
+// }

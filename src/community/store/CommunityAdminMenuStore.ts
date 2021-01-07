@@ -1,4 +1,4 @@
-import { CommunityAdminMenu, getEmtpyCommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
+import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 import { CommunityProfileBookmark, getEmtpyCommunityProfileBookmark } from 'community/viewModel/CommunityProfile';
 import { createStore } from './Store';
 
@@ -7,7 +7,7 @@ const [
     onCommunityAdminMenu,
     getCommunityAdminMenu,
     useCommunityAdminMenu
-] = createStore<CommunityAdminMenu>(getEmtpyCommunityAdminMenu());
+] = createStore<CommunityAdminMenu>();
 
 
 export {

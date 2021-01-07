@@ -17,6 +17,7 @@ import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro
 import { patronInfo } from '@nara.platform/dock';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
+import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 
 const BASE_URL = '/api/community';
 
@@ -395,3 +396,46 @@ export function findNoticePostGroupManager(communityId: string): Promise<any> {
 }
 
 
+//커뮤니티 - 그룹리스트
+export function getCommunityGroups(
+  communityId: string
+): Promise<any> {
+  const url = `${BASE_URL}/communities/${communityId}/groups`;
+  return axiosApi.get(url).then(response => {
+    return response && response.data
+  });
+}
+
+export function saveCommunityAdminMenu(communityId: string, params: any): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
+  return axiosApi.put(url, {'nameValues': params.nameValues}).then(response => {
+    return response && response.data
+  }); 
+}
+
+export function deleteCommunityAdminMenu(communityId: string, params: any): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus/${params}`;
+  return axiosApi.delete(url).then(response => {
+    return response && response.data
+  }); 
+}
+
+export function addCommunityAdminMenu(communityId: string, addRow: any): Promise<any> {
+  const url = `${BASE_URL}/${communityId}/menus`;
+  return axiosApi.post(url, addRow).then(response => {
+    return response && response.data
+  }); 
+}
+export function findCommunitySurvey(params: any): Promise<any> {
+    const url = `/api/survey/surveyForms/searchKey?`;
+    return axiosApi.get(url, {params}).then(response => {
+      return response
+    }); 
+}
+
+export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
+  const url = `/api/survey/surveyForms/${surveyId}`;
+  return axiosApi.get(url).then(response => {
+    return response
+  }); 
+}
