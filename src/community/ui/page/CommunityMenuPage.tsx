@@ -2,11 +2,14 @@ import React, { useEffect } from 'react';
 import CommunityProfileBookmarkContainer from '../logic/CommunityProfileBookmarkContainer';
 import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 import CommunityMenuContainer from '../logic/CommunityMenuContainer';
-import { requestCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { requestCommunityGroups, requestCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { setSearchBox } from 'community/store/SearchBoxStore';
+import { getEmptySearchBox } from 'community/model/SearchBox';
 
 function CommunityMenuPage(communityId:string) {
 
   useEffect(() => {
+    setSearchBox(getEmptySearchBox(false, 'survey'));
     requestCommunityMenu(communityId);
   }, []);
 

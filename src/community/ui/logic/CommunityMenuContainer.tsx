@@ -463,28 +463,23 @@ function CommunityMenuContainer() {
   function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any, parentIdx: number, childIdx: number) {
     if (menu) {
       return (
-        <>
-          <li onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
-            <a>
-              <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-              {menu.name}
-              <span>
-                <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
-              </span>
-            </a>
-          </li>
-        </>
+        <li key={parentIdx+'_'+childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
+          <a>
+            <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
+            {menu.name}
+            <span>
+              <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+            </span>
+          </a>
+        </li>
       )}
   }
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any, index: number) {
-    let childElement = null;
-    childElement = '<span></span>'
-    // return ''
     if (menu) {
       return (
         <>
-          <li onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
+          <li key={index} onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
             <a>
               <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
               {menu.name}
@@ -493,22 +488,13 @@ function CommunityMenuContainer() {
               </span>
             </a>
           </li>
-          {/* <ul> */}
           {menu.child !== undefined && (
-            <ul>
+            <ul key={index+'child'}>
               { menu.child.map((item2: any, index2: any) => {
                   return renderMenuRow2(item2, onHandleClickTaskRow, index, index2);
                 })
               }
               { addChildMenuFlag && selectedRow && (menu.id === selectedRow.id) && (
-                // <li>
-                //   <input 
-                //     type="text"
-                //     placeholder="제목을 입력해주세요."
-                //     value={addRow && addRow.name}
-                //     onChange={changeValue}
-                //   />
-                // </li>
                 <li>
                   <a>
                     <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
@@ -524,7 +510,6 @@ function CommunityMenuContainer() {
               )}
             </ul>
           )}
-          {/* </ul> */}
         </>
       );
     }

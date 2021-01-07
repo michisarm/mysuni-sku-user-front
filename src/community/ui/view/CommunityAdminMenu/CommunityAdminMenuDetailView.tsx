@@ -4,12 +4,13 @@ import { Button, DropdownItemProps, Radio, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import CommunitySurveyModalContainer from 'community/ui/logic/CommunitySurveyModalContainer';
 import { SearchBox } from 'community/model/SearchBox';
+import { useSearchBox } from 'community/store/SearchBoxStore';
+import { getCommunitySurvey } from 'community/service/useCommunityMenu/requestCommunity';
 
 interface CommunityAdminMenuDetailViewProps {
   addMenuFlag: boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
-  // searchBox: SearchBox
   onChangeValue: (data: any, name: string) => void
 }
 
@@ -17,9 +18,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   addMenuFlag,
   selectedRow,
   communityAdminGroups,
-  // searchBox,
   onChangeValue
 }) {
+
+  const searchBox = useSearchBox();
+  const [selectedSurvey, setSelectedSurvey] = useState<any>();
   const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
     {
       'key': 0,
@@ -34,6 +37,14 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
       'text': data.name
     })
   });
+
+  useEffect(() => {
+    if(selectedRow && selectedRow.type === 'SURVEY') {
+      getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
+        setSelectedSurvey(result.data)
+      })
+    }
+  }, [selectedRow]);
 
   const menuType = [
     { key: 'CATEGORY', value: 'CATEGORY', text: '카테고리' },
@@ -51,6 +62,15 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     if(selectedRow && data) {
       selectedRow.type = data.value
       onChangeValue(selectedRow, 'type');
+      if(selectedRow.type === 'SURVEY') {
+        getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
+          if(result.data) {
+            setSelectedSurvey(result.data)
+          } else {
+            setSelectedSurvey({})
+          }
+        })
+      }
     }
   }
 
@@ -97,10 +117,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     onChangeValue(selectedRow, 'html');
   }
 
-  function test() {
-    console.log('test')
+  function handleSurveyModalClose(data: any) {
+    setSelectedSurvey(data)
+    selectedRow!.surveyId = data.id
+    onChangeValue(selectedRow, 'surveyId');
   }
-  console.log('selectedRow', selectedRow)
   return (
     <div className="menu_right_contents">
       <table>
@@ -172,16 +193,17 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
             </td>
           </tr>
           )}
-          {selectedRow!.type === 'SURVEY' && (
+          {selectedRow!.type === 'SURVEY' && searchBox && selectedSurvey && (
           <tr>
             <th className="admin_survey_th">Survey 추가</th>
             <td className="admin_survey_btn">
               <CommunitySurveyModalContainer
                 trigger={<Button icon className="ui button admin_table_button02">Survey 찾기</Button>}
                 defaultSelectedChannel={null}
-                onConfirmChannel={test}
-                // searchBox={searchBox}
+                onConfirmChannel={handleSurveyModalClose}
+                searchBox={searchBox}
               />
+              {selectedSurvey.titles !== undefined && (
                 <table className="menu_survey">
                   <colgroup>
                     <col />
@@ -195,11 +217,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   </thead>
                   <tbody>
                     <tr>
-                      <td>반도체 산업의 시작과 역사에 대해 개인 의견을 남겨주세요.</td>
-                      <td>김써니</td>
+                      <td>{selectedSurvey.titles.langStringMap[selectedSurvey.titles.defaultLanguage]}</td>
+                      <td>{selectedSurvey.formDesigner.names.langStringMap[selectedSurvey.formDesigner.names.defaultLanguage]}</td>
                     </tr>
                   </tbody>
                 </table>
+              )}
             </td>
           </tr>
           )}
@@ -232,26 +255,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               </div>
             </td>
           </tr>
-          // <tr>
-          //   <th>URL</th>
-          //   <td>
-          //     <div className="ui right-top-count input admin">
-          //       <input 
-          //         type="text"
-          //         placeholder="URL를 입력해주세요."
-          //         value={selectedRow && selectedRow.url}
-          //         name="url"
-          //         onChange={changeValue}
-          //       />
-          //     </div>
-          //   </td>
-          // </tr>
           )}
           <tr>
             <th>접근 권한</th>
             <td>
-              {/* 공개, 비공개 */}
-              {/* <BoardWriteRadio /> */}
               <div className="board-write-radio">
                 <Radio
                   className="base"
