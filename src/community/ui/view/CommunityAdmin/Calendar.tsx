@@ -8,16 +8,21 @@ import { SearchBox } from 'community/model/SearchBox';
 
 interface CalendarProps {
   searchBox:SearchBox
+  defaultSearchType?: string
 }
 
-const Calendar: React.FC<CalendarProps> = function Calendar({searchBox
+const Calendar: React.FC<CalendarProps> = function Calendar({searchBox, defaultSearchType
       }) {    
 
         const [startDate, setStartDate] = useState<moment.Moment>();
         const [endDate, setEndDate] = useState<moment.Moment>();
      
         useEffect(() => {
-          onSetSearchWeek(1);
+          if(defaultSearchType && defaultSearchType === 'years') {
+            onSetSearchYear(1);
+          } else {
+            onSetSearchWeek(1);
+          }
         }, [])
           
         useEffect(() => {

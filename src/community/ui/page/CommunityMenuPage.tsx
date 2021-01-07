@@ -3,10 +3,13 @@ import CommunityProfileBookmarkContainer from '../logic/CommunityProfileBookmark
 import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 import CommunityMenuContainer from '../logic/CommunityMenuContainer';
 import { requestCommunityGroups, requestCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { setSearchBox } from 'community/store/SearchBoxStore';
+import { getEmptySearchBox } from 'community/model/SearchBox';
 
 function CommunityMenuPage(communityId:string) {
 
   useEffect(() => {
+    setSearchBox(getEmptySearchBox(false, 'survey'));
     requestCommunityMenu(communityId);
     requestCommunityGroups(communityId);
   }, []);

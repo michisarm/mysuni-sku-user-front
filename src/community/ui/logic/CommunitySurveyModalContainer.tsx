@@ -20,55 +20,52 @@ interface Props {
   collegeService?: CollegeService
   trigger: React.ReactNode
   defaultSelectedChannel: IdName | null
-  // searchBox: SearchBox
+  searchBox: SearchBox
   onConfirmChannel: (surveyId: string) => void
 }
 
-// interface State {
-//   open: boolean
-//   selectedCollege: IdName
-//   selectedChannel: IdName
-// }
-
-// @inject(mobxHelper.injectFrom('college.collegeService'))
-// @observer
-// @reactAutobind
 const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyModalContainer({
   collegeService,
   trigger,
   defaultSelectedChannel,
-  // searchBox,
+  searchBox,
   onConfirmChannel,
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [surveyData, setSurveyData] = useState<any>();
-  const searchBox = useSearchBox();
+  const [searchText, setSearchText] = useState<string>('');
+  const [selectedRow, setSelectedRow] = useState<string>();
 
   useEffect(() => {
     if(open === true) {
-      console.log('useEffect')
-      findAllSurvey();
+      findSurvey('');
+      setActivePage(1);
     }
   }, [open]);
   
-  const findAllSurvey = (() => {
-    setActivePage(1);
-    requestCommunitySurvey().then((result) => {
-      console.log('result', result)
-      setSurveyData(result.data.results)
-      totalPages(result.data.totalCount);
-    })
-  })
+  const findSurvey = useCallback((name: string, offset?: number) => {
+    if(searchBox !== undefined) {
+      const params = {
+        'name': name,
+        'offset': offset? offset : 0,
+        'limit': 5,
+        'startDate': searchBox!.startDate,
+        'endDate': searchBox!.endDate
+      }
+      requestCommunitySurvey(params).then((result) => {
+        setSurveyData(result.data.results)
+        totalPages(result.data.totalCount);
+      })
+    }
+  }, [searchText, searchBox])
 
   const totalPages = (test: number) => {
-    console.log("surveyData", surveyData)
-      let totalpage = Math.ceil(test / 10);
-      if (test % 10 < 0) {
+      let totalpage = Math.ceil(test / 5);
+      if (test % 5 < 0) {
         totalpage++;
       }
-      console.log('totalpage', totalpage)
       setTotalPage(totalpage)
       // return totalpage;
   };
@@ -78,12 +75,13 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
   },[])
 
   const onClose = useCallback(() => {
+    //데이터 init 해줘야 한다.
     setOpen(false)
   },[])
 
-  const onPageChange = useCallback((data:any) => {
-    // getMembers(communityId);
-    // setActivePage(data.activePage);
+  const onPageChange = useCallback((data:any, searchText: string) => {
+    setActivePage(data.activePage);
+    findSurvey(searchText, (data.activePage - 1) * 5)
   }, []);
   
   const onCancel = useCallback((data:any) => {
@@ -91,46 +89,41 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
     onClose()
   }, []);
 
-  const onConfirm = useCallback((data:any) => {
+  const onConfirm = useCallback(() => {
     // this.setDefaultSelectedChannel();
-    onConfirmChannel('surveyId')
-    onClose()
-  }, []);
+    if(!selectedRow) {
+      alert('설문을 선택해주세요.')
+    }
+    surveyData.map((item: any, index: number) => {
+      if(selectedRow === item.id) {
+        onConfirmChannel(item)
+        onClose()
+      }
+    })
+  }, [selectedRow, surveyData]);
 
   const handleRadioChange = useCallback((id: string) => {
-    console.log('id', id)
+    setSelectedRow(id)
   }, [])
-    // onConfirm() {
-  //   //
-  //   const { colleges } = this.props.collegeService!;
-  //   const { onConfirmChannel } = this.props;
-  //   const { selectedCollege, selectedChannel } = this.state;
 
-  //   const college = colleges.find((college) => college.collegeId === selectedCollege.id);
+  const handleSubmitClick = useCallback((searchText) => {
+    findSurvey(searchText);
+    setActivePage(1);
+  }, [searchBox]);
 
-  //   onConfirmChannel(college!, selectedChannel);
-  //   this.onClose();
-  // }
-
-
-    // onCancel() {
-  //   //
-  //   this.setDefaultSelectedChannel();
-  //   this.onClose();
-  // }
-function renderSurveyRow(item: any) {
+function renderSurveyRow(item: any, index: number) {
   if(item !== undefined) {
 
     const createTime = moment(item.time).format('YYYY.MM.DD');
     
     return(
-      <tr>
+      <tr key={index}>
         <td>
           <Radio
-            className="base"
+            // className="base"
             name="radioGroup"
-            // value="value01"
-            // checked={this.state.value === "value01"}
+            value={item.id}
+            checked={selectedRow === item.id}
             onChange={() => handleRadioChange(item.id)}
           />
         </td>
@@ -143,9 +136,8 @@ function renderSurveyRow(item: any) {
     )
   }
 }
-console.log('surveyData',surveyData)
   return (
-    <Modal className="base w1000" open={open} trigger={trigger} onOpen={onOpen} onClose={onClose}>
+    <Modal className="base w1000 inner-scroll" open={open} trigger={trigger} onOpen={onOpen} onClose={onClose}>
       <Modal.Header>
         <span>Survey 찾기</span>
         <button className="admin_popup_close" onClick={onClose}>
@@ -165,7 +157,7 @@ console.log('surveyData',surveyData)
               <th>등록일자</th>
               <td style={{textAlign: 'left'}}>
                 {/* <div className="preview"> */}
-                  <Calendar searchBox={searchBox!} />              
+                  <Calendar searchBox={searchBox!} defaultSearchType="years"/>              
                 {/* </div> */}
               </td>
             </tr>
@@ -176,12 +168,10 @@ console.log('surveyData',surveyData)
                   <input
                     type="text"
                     placeholder="설문조사 제목을 입력해주세요.​"
-                    // value={this.state.write}
-                    // onClick={() => this.setState({ focus: true })}
-                    // onBlur={() => this.setState({ focus: false })}
-                    // onChange={(e) => this.setState({ write: e.target.value })}
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
                   />
-                  <button className="ui button admin_text_button">검색</button>
+                  <Button type="button" className="ui button admin_text_button" onClick={() => handleSubmitClick(searchText)}>검색</Button>
                 </div>
               </td>
             </tr>
@@ -200,24 +190,22 @@ console.log('surveyData',surveyData)
               </thead>
               <tbody>
                 {surveyData.map((item:any, index: number) => {
-                  return renderSurveyRow(item);
+                  return renderSurveyRow(item, index);
                 })}
               </tbody>
             </table>
           </>
         )
         }
-        {/* style={{marginTop: '30px'}} */}
         <div className="lms-paging-holder">
           <Pagination
-            activePage={1}
+            activePage={activePage}
             totalPages={totalPage}
             firstItem={null}
             lastItem={null}
-            onPageChange={(e, data) => onPageChange(data)}
+            onPageChange={(e, data) => onPageChange(data, searchText)}
           />
         </div>
-        {/* <Paging /> */}
       </Modal.Content>
       <Modal.Actions>
         <Button type="button" className="w190 pop d" onClick={onCancel}>Cancel</Button>

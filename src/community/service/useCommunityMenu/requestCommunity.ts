@@ -7,6 +7,7 @@ import {
   deleteCommunityAdminMenu,
   addCommunityAdminMenu,
   findCommunitySurvey,
+  getCommunitySurveyInfo,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -107,8 +108,14 @@ export function addCommunityMenu(communityId: string, addRow: any) {
   });
 }
 
-export function requestCommunitySurvey() {
-  return findCommunitySurvey().then(result => {
+export function requestCommunitySurvey(params: any) {
+  return findCommunitySurvey(params).then(result => {
+    return result
+  });
+}
+
+export function getCommunitySurvey(surveyId: string) {
+  return getCommunitySurveyInfo(surveyId).then(result => {
     return result
   });
 }
