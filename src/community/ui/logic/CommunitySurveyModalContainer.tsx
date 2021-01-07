@@ -1,19 +1,14 @@
 
 import React, { Component, useCallback, useEffect, useState } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-
-import { Accordion, Button, Icon, Modal, Pagination, Radio } from 'semantic-ui-react';
+import { reactAlert } from '@nara.platform/accent';
+import { Button, Modal, Pagination, Radio } from 'semantic-ui-react';
 import { IdName } from 'shared/model';
-import { CollegeModel, CollegeColors } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { requestCommunitySurvey } from 'community/service/useCommunityMenu/requestCommunity';
 import classNames from 'classnames';
 import Calendar from '../view/CommunityAdmin/Calendar';
 import { SearchBox } from 'community/model/SearchBox';
-import { useSearchBox } from 'community/store/SearchBoxStore';
-// import { ChannelModalContentWrapper } from '../view/DetailElementsView';
-
+import moment from 'moment';
 
 interface Props {
   collegeService?: CollegeService
@@ -24,9 +19,7 @@ interface Props {
 }
 
 const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyModalContainer({
-  collegeService,
   trigger,
-  defaultSelectedChannel,
   searchBox,
   onConfirmChannel,
 }) {
@@ -66,7 +59,6 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
         totalpage++;
       }
       setTotalPage(totalpage)
-      // return totalpage;
   };
 
   const onOpen = useCallback(() => {
@@ -74,7 +66,6 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
   },[])
 
   const onClose = useCallback(() => {
-    //데이터 init 해줘야 한다.
     setOpen(false)
   },[])
 
@@ -83,15 +74,17 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
     findSurvey(searchText, (data.activePage - 1) * 5)
   }, []);
   
-  const onCancel = useCallback((data:any) => {
-    // this.setDefaultSelectedChannel();
+  const onCancel = useCallback(() => {
     onClose()
   }, []);
 
   const onConfirm = useCallback(() => {
-    // this.setDefaultSelectedChannel();
     if(!selectedRow) {
-      alert('설문을 선택해주세요.')
+      reactAlert({
+        title: '',
+        message:
+          '설문을 선택해주세요.',
+      });
     }
     surveyData.map((item: any, index: number) => {
       if(selectedRow === item.id) {
@@ -116,7 +109,6 @@ function renderSurveyRow(item: any, index: number) {
       <tr key={index}>
         <td>
           <Radio
-            // className="base"
             name="radioGroup"
             value={item.id}
             checked={selectedRow === item.id}
@@ -142,7 +134,6 @@ function renderSurveyRow(item: any, index: number) {
       </Modal.Header>
       <Modal.Content className="admin_popup_add">
         <p className="menuAdd_title">Manager에서 등록한 Survey가 표시됩니다.</p>
-        {/* 검색창 - sub */}
         <table className="ui admin_table_search sub">
           <colgroup>
             <col width="100px" />
@@ -152,9 +143,7 @@ function renderSurveyRow(item: any, index: number) {
             <tr>
               <th>등록일자</th>
               <td style={{textAlign: 'left'}}>
-                {/* <div className="preview"> */}
-                  <Calendar searchBox={searchBox!} defaultSearchType="years"/>              
-                {/* </div> */}
+                <Calendar searchBox={searchBox!} defaultSearchType="years"/>              
               </td>
             </tr>
             <tr>

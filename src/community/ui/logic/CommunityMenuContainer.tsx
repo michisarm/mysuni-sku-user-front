@@ -1,21 +1,14 @@
-import React, { useCallback, useState } from 'react';
-import { useCommunityProfileMyCommunity } from '../../store/CommunityProfileMyCommunityStore';
-import ContentsMyCommunityView from '../view/CommunityProfile/ContentsMyCommunityView';
-import ContentsFeedView from '../view/CommunityProfile/ContentsFeedView';
-import ContentsBookmarkView from '../view/CommunityProfile/ContentsBookmarkView';
-import { useCommunityProfileBookmark } from 'community/store/CommunityProfileBookmarkStore';
-import { Icon, Radio, Select } from 'semantic-ui-react';
-import classNames from 'classnames';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import CommunityAdminMenuDetailView from '../view/CommunityAdminMenu/CommunityAdminMenuDetailView';
 import { useCommunityAdminMenu } from 'community/service/useCommunityMenu/useCommunityMenu';
-import { getCommunityAdminMenu, setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
+import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
-import { useSearchBox } from 'community/store/SearchBoxStore';
+import { reactAlert } from '@nara.platform/accent';
 
 interface RouteParams {
   communityId: string;
@@ -34,7 +27,6 @@ function CommunityMenuContainer() {
   const [selectedRow, setSelectedRow] = useState<MenuItem>();
   const [addRow, setAddRow] = useState<any>({
     accessType: 'COMMUNITY_ALL_MEMBER',
-    // groupId: null,
     name: '',
     order: '',
     type: 'BASIC',
@@ -43,7 +35,12 @@ function CommunityMenuContainer() {
   });
   const [nameValues, setNameValues] = useState<any[]>([]);
   const [deleteValues, setDeleteValues] = useState<any[]>([]);
-  // const searchBox = useSearchBox();
+
+  useEffect(() => {
+    if(communityId !== undefined) {
+      handleAddMenu()
+    }
+  }, [communityId]);
 
   const onHandleClickTaskRow = useCallback(
     (e, param, type) => {
@@ -72,7 +69,6 @@ function CommunityMenuContainer() {
           })
         }
         setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
-        // requestCommunityMenu(communityId);
       }
     },
     [communityAdminMenu]
@@ -108,7 +104,7 @@ function CommunityMenuContainer() {
       id: '',
       munuId: '',
       name: '',
-      order: communityAdminMenu?.menu.length === 0 ? 1 : communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1,
+      order: communityAdminMenu ? (communityAdminMenu?.menu.length === 0 ? 1 : communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1) : 1,
       parentId: null,
       patronKey: '',
       type: 'BASIC',
@@ -148,7 +144,11 @@ function CommunityMenuContainer() {
         html:''
       })
     }else {
-      alert('메뉴를 선택해주세요.')
+      reactAlert({
+        title: '',
+        message:
+          '메뉴를 선택해주세요.',
+      });
       return false
     }
 
@@ -186,16 +186,21 @@ function CommunityMenuContainer() {
         saveCommunityMenu(communityId, result)
       }
       setNameValues([])
-
       if(type === 'add') {
         if(communityAdminMenu!.menu.length === 0) {
           obj.order = 1
         }else {
           obj.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
         }
-        addCommunityMenu(communityId, obj).then((result)=> {
-          requestCommunityMenu(communityId);
-        })
+        if(obj.type === 'DISCUSSION') {
+          addCommunityDiscussion(communityId, obj).then((result)=> {
+            requestCommunityMenu(communityId);
+          })
+        } else {
+          addCommunityMenu(communityId, obj).then((result)=> {
+            requestCommunityMenu(communityId);
+          })
+        }
       } else if(type === 'childAdd') {
         obj.parentId = selectedRow!.id
         communityAdminMenu!.menu.map((item, index) => {
@@ -207,10 +212,21 @@ function CommunityMenuContainer() {
             }
           }
         })
-        addCommunityMenu(communityId, obj).then((result)=> {
-          requestCommunityMenu(communityId);
-        })
+        if(obj.type === 'DISCUSSION') {
+          addCommunityDiscussion(communityId, obj).then((result)=> {
+            requestCommunityMenu(communityId);
+          })
+        } else {
+          addCommunityMenu(communityId, obj).then((result)=> {
+            requestCommunityMenu(communityId);
+          })
+        }
       }
+      reactAlert({
+        title: '',
+        message:
+          '저장되었습니다.',
+      });
   }, [communityAdminMenu, selectedRow])
 
   const onChangeAddValue = useCallback((data, name, type?)=> {
@@ -223,7 +239,7 @@ function CommunityMenuContainer() {
       addRow.groupId = null
       addRow.accessType = 'COMMUNITY_ALL_MEMBER'
     }
-    setAddRow({...addRow, [name]: addRow[name]})
+    setAddRow({...data, [name]: data[name]})
   }, [])
 
   const onChangeValue = useCallback((value: any, name: string) => {
@@ -481,8 +497,8 @@ function CommunityMenuContainer() {
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any, index: number) {
     if (menu) {
       return (
-        <>
-          <li key={index} onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
+        <Fragment key={index}>
+          <li key={index+'_parent'} onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
             <a>
               <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
               {menu.name}
@@ -513,7 +529,7 @@ function CommunityMenuContainer() {
               )}
             </ul>
           )}
-        </>
+        </Fragment>
       );
     }
   }

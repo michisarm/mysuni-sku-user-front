@@ -265,7 +265,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={selectedRow?.groupId === null}
+                  checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
