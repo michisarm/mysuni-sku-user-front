@@ -121,6 +121,11 @@ function CommunityMenuContainer() {
   const handleAddChildMenu = useCallback(() => {
     if(selectedRow && selectedRow!.id) {
       if(selectedRow.parentId) {
+        reactAlert({
+          title: '',
+          message:
+            '상위 메뉴를 선택해주세요.',
+        });
         return false
       }
       setAddChildMenuFlag(true);
