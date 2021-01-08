@@ -1,12 +1,7 @@
-import { IdName } from '@nara.platform/accent';
-import CommunityType from '../model/CommunityType';
-import ProfileCommunityItem from './CommunityProfile/ProfileCommunityItem';
-import PostItem from './CommunityProfileFeed/PostItem';
-
 export interface MenuItem {
   accessType: string;
   communityId: string;
-  groupId: string;
+  groupId: any;
   id: string;
   munuId: string;
   name: string;
@@ -14,17 +9,26 @@ export interface MenuItem {
   parentId: string;
   patronKey: any;
   type: string;
-  child: []
+  child: any;
+  discussionTopic: string;
+  surveyCaseId?: string;
+  surveyId?: string;
+  surveyInformation?: string;
+  url: string;
+  html: string;
 }
 
 export interface CommunityAdminMenu {
   menu: MenuItem[];
-  // postsTotalCount: number;
-  // postsOffset: number;
 }
 
-export function getEmtpyCommunityAdminMenu(): CommunityAdminMenu {
-  return {
-    menu: [],
-  }
+export interface GroupListItem {
+  groupId: string;
+  id: string;
+  name: string;
+  commmunityId: string;
+}
+
+export interface GroupList {
+  results: GroupListItem[]
 }

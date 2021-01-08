@@ -1,24 +1,28 @@
-import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
-import React,{useState,useCallback,useEffect} from 'react';
-import { Button, DropdownItemProps, Radio, Select } from 'semantic-ui-react';
-import ReactQuill from 'react-quill';
-import CommunitySurveyModalContainer from 'community/ui/logic/CommunitySurveyModalContainer';
-import { SearchBox } from 'community/model/SearchBox';
-import { useSearchBox } from 'community/store/SearchBoxStore';
 import { getCommunitySurvey } from 'community/service/useCommunityMenu/requestCommunity';
+import { useSearchBox } from 'community/store/SearchBoxStore';
+import CommunitySurveyModalContainer from 'community/ui/logic/CommunitySurveyModalContainer';
+import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
+import React,{useState, useEffect} from 'react';
+import ReactQuill from 'react-quill';
+import { Button, DropdownItemProps, Radio, Select } from 'semantic-ui-react';
 
-interface CommunityAdminMenuDetailViewProps {
-  addMenuFlag: boolean
-  communityAdminGroups: any
-  selectedRow?: MenuItem
-  onChangeValue: (data: any, name: string) => void
+interface RouteParams {
+  communityId: string;
 }
 
-const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
+interface CommunityAdminMenuAddViewProps {
+  addMenuFlag?: boolean
+  addChildMenuFlag? : boolean
+  communityAdminGroups: any
+  selectedRow?: MenuItem
+  onChangeAddValue: (data: any, name: string) => void
+}
+
+const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
   communityAdminGroups,
-  onChangeValue
+  onChangeAddValue
 }) {
 
   const searchBox = useSearchBox();
@@ -30,7 +34,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
       'text': '선택'
     }
   ]
-  communityAdminGroups!.results.map((data:any, index: number) => {
+  communityAdminGroups && communityAdminGroups!.results.map((data:any, index: number) => {
     groupArr.push({
       'key': data.groupId,
       'value': data.groupId,
@@ -65,7 +69,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function changeType(_: any, data: any) {
     if(selectedRow && data) {
       selectedRow.type = data.value
-      onChangeValue(selectedRow, 'type');
+      onChangeAddValue(selectedRow, 'type');
       if(selectedRow.type === 'SURVEY') {
         getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
           if(result.data) {
@@ -92,7 +96,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
       }else if(e.target.name === 'html'){
         selectedRow.html = value
       }
-      onChangeValue(selectedRow, e.target.name);
+      onChangeAddValue(selectedRow, e.target.name);
     }
   }
 
@@ -105,26 +109,26 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
         selectedRow.groupId = groupArr[0].value
         selectedRow.accessType = 'COMMUNITY_GROUP'
       }
-      onChangeValue(selectedRow, 'accessType');
+      onChangeAddValue(selectedRow, 'accessType');
     }
   }
 
   function onChangeGroup(e: any, data: any) {
     if(selectedRow) {
       selectedRow.groupId = data.value
-      onChangeValue(selectedRow, 'groupId');
+      onChangeAddValue(selectedRow, 'groupId');
     }
-  }
-
-  function handleChangeHtml(html: any) {
-    selectedRow!.html = html
-    onChangeValue(selectedRow, 'html');
   }
 
   function handleSurveyModalClose(data: any) {
     setSelectedSurvey(data)
     selectedRow!.surveyId = data.id
-    onChangeValue(selectedRow, 'surveyId');
+    onChangeAddValue(selectedRow, 'surveyId');
+  }
+
+  function handleChangeHtml(html: any) {
+    selectedRow!.html = html
+    onChangeAddValue(selectedRow, 'html');
   }
   return (
     <div className="menu_right_contents">
@@ -269,7 +273,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
+                  checked={selectedRow?.groupId === null}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
@@ -285,7 +289,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                 placeholder="그룹 유형을 선택하세요."
                 className="ui small-border admin_tab_select"
                 value={selectedRow?.groupId}
-                // defaultValue={groupArr[0].value}
                 options={groupArr}
                 onChange={onChangeGroup}
                 disabled={selectedRow?.groupId === null}
@@ -309,4 +312,4 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   )
 }
 
-export default CommunityAdminMenuDetailView;
+export default CommunityAdminMenuAddView;

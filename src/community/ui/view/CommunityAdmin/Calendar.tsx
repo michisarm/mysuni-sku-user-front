@@ -8,9 +8,10 @@ import { SearchBox } from 'community/model/SearchBox';
 
 interface CalendarProps {
   searchBox:SearchBox
+  defaultSearchType?: string
 }
 
-const Calendar: React.FC<CalendarProps> = function Calendar({searchBox
+const Calendar: React.FC<CalendarProps> = function Calendar({searchBox, defaultSearchType
       }) {    
 
         const [startDate, setStartDate] = useState<moment.Moment>();
