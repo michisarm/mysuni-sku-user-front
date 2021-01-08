@@ -45,7 +45,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   useEffect(() => {
     if(selectedRow && selectedRow.type === 'SURVEY') {
       getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
-        setSelectedSurvey(result.data)
+        if(result.data === '') {
+          setSelectedSurvey({})
+        }else {
+          setSelectedSurvey(result.data)
+        }
       })
     }
   }, [selectedRow]);
