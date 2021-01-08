@@ -12,8 +12,8 @@ import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
 //2020-12-29
-import './style/css/2.0a466f0f.chunk.css';
-import './style/css/main.bc259952.chunk.css';
+import './style/css/2.7f775cf4.chunk.css';
+import './style/css/main.44695d7f.chunk.css';
 
 initializeBody();
 
