@@ -225,21 +225,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     [params]
   );
 
+  const endMultiVideo = () => {
+    // alert(`동영상종료 세션에서 가져온 liveLectureId: ${liveLectureId}`);
+    const liveLectureId = JSON.parse(
+      sessionStorage.getItem('liveLectureCardId')!
+    );
+    if (liveLectureId) {
+      //중복 동영상 체크 종료 signal
+      handleMultiVideo('end', liveLectureId, true);
+      sessionStorage.removeItem('liveLectureCardId');
+    }
+  };
+
   useEffect(() => {
     if (params) {
       setNextContentsView(false);
     }
     // params 가 바뀌었을때 화면은 유지되면서 loading 만 한다.
     return () => {
-      const liveLectureId = JSON.parse(
-        sessionStorage.getItem('liveLectureCardId')!
-      );
-      // alert(`동영상종료 세션에서 가져온 liveLectureId: ${liveLectureId}`);
-      if (liveLectureId) {
-        //중복 동영상 체크 종료 signal
-        handleMultiVideo('end', liveLectureId, true);
-        sessionStorage.removeItem('liveLectureCardId');
-      }
+      endMultiVideo();
     };
   }, [params]);
 
@@ -257,7 +261,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       ) {
         setNextContentsView(true);
       }
-      // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
       //중복 동영상 체크 종료 signal
       handleMultiVideo('end', liveLectureCardId, true);
       sessionStorage.removeItem('liveLectureCardId');
@@ -266,12 +269,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (panoptoState == 1) {
       registCheckStudent(params);
       mediaCheckEvent(params);
-      // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
       //중복 동영상 체크 시작 signal
       handleMultiVideo('start', params?.lectureId || 'start', true);
       sessionStorage.setItem(
         'liveLectureCardId',
-        JSON.stringify(liveLectureCardId)
+        JSON.stringify(params?.lectureId)
       );
     }
   }, [panoptoState]);
@@ -422,6 +424,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setNextContentsView(false);
     // 화면 나갈때 event
     return () => {
+      endMultiVideo();
       mediaCheckEvent(params);
       setPanoptoState(10);
       setNextContentsPath('');
