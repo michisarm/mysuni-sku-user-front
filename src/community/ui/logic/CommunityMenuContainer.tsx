@@ -486,7 +486,7 @@ function CommunityMenuContainer() {
   function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any, parentIdx: number, childIdx: number) {
     if (menu) {
       return (
-        <li key={parentIdx+'_'+childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'test' : 'ddd'}>
+        <li key={parentIdx+'_'+childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : 'ddd'}>
           <a>
             <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
             {menu.name}
