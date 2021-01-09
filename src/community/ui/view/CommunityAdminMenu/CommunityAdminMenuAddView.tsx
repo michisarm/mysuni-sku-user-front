@@ -4,7 +4,7 @@ import CommunitySurveyModalContainer from 'community/ui/logic/CommunitySurveyMod
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState, useEffect} from 'react';
 import ReactQuill from 'react-quill';
-import { Button, DropdownItemProps, Radio, Select } from 'semantic-ui-react';
+import { Button, DropdownItemProps, Radio, Select, TextArea } from 'semantic-ui-react';
 
 interface RouteParams {
   communityId: string;
@@ -45,7 +45,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   useEffect(() => {
     if(selectedRow && selectedRow.type === 'SURVEY') {
       getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
-        setSelectedSurvey(result.data)
+        if(result.data === '') {
+          setSelectedSurvey({})
+        }else {
+          setSelectedSurvey(result.data)
+        }
       })
     }
   }, [selectedRow]);
@@ -122,8 +126,9 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
     onChangeAddValue(selectedRow, 'surveyId');
   }
 
-  function handleChangeHtml(html: any) {
-    selectedRow!.html = html
+  function handleChangeHtml(e: any) {
+    console.log('e', e)
+    selectedRow!.html = e.target.value
     onChangeAddValue(selectedRow, 'html');
   }
   return (
@@ -250,11 +255,21 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
           <tr>
             <td colSpan={2}>
               <div>
-                <ReactQuill
+                {/* <ReactQuill
                   theme="snow"
                   // value="12345"
                   value={selectedRow && selectedRow.html}
                   onChange={handleChangeHtml}
+                /> */}
+
+                <textarea
+                  style={{ height: 548, width: '100%' }}
+                  value={selectedRow && selectedRow.html}
+                  onChange={(e) => {
+                    // if (onChange !== undefined) {
+                      handleChangeHtml(e);
+                    // }
+                  }}
                 />
               </div>
             </td>

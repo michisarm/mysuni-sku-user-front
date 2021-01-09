@@ -183,6 +183,8 @@ function CommunityMenuContainer() {
       .orderBy(['id'])
       .value()
 
+      console.log('result', result)
+
       // 삭제한 메뉴있을시
       if(deleteValues.length !== 0) {
         deleteCommunityMenu(communityId, deleteValues)
@@ -202,6 +204,16 @@ function CommunityMenuContainer() {
             requestCommunityMenu(communityId);
           })
         } else {
+          console.log('obj.type', obj.type)
+          if (obj && obj.type === 'LINK') {
+            if (
+              !obj.url.includes('http://') &&
+              !obj.url.includes('https://')
+            ) {
+             alert("정확한 url을 입력해주세요.")
+            }
+          }
+          return false
           addCommunityMenu(communityId, obj).then((result)=> {
             requestCommunityMenu(communityId);
           })
