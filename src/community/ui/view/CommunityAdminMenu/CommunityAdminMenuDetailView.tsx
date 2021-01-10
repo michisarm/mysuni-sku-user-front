@@ -188,7 +188,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               <div className="ui right-top-count input admin">
                 <input 
                   type="text"
-                  placeholder="주제를 입력해주세요."
+                  placeholder="안내글을 입력해주세요."
                   value={selectedRow && selectedRow.surveyInformation}
                   name="surveyInformation"
                   onChange={changeValue}

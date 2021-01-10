@@ -4,7 +4,7 @@ import CommunitySurveyModalContainer from 'community/ui/logic/CommunitySurveyMod
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
 import React,{useState, useEffect} from 'react';
 import ReactQuill from 'react-quill';
-import { Button, DropdownItemProps, Radio, Select } from 'semantic-ui-react';
+import { Button, DropdownItemProps, Radio, Select, TextArea } from 'semantic-ui-react';
 
 interface RouteParams {
   communityId: string;
@@ -126,8 +126,9 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
     onChangeAddValue(selectedRow, 'surveyId');
   }
 
-  function handleChangeHtml(html: any) {
-    selectedRow!.html = html
+  function handleChangeHtml(e: any) {
+    console.log('e', e)
+    selectedRow!.html = e.target.value
     onChangeAddValue(selectedRow, 'html');
   }
   return (
@@ -192,7 +193,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
               <div className="ui right-top-count input admin">
                 <input 
                   type="text"
-                  placeholder="주제를 입력해주세요."
+                  placeholder="안내글을 입력해주세요."
                   value={selectedRow && selectedRow.surveyInformation}
                   name="surveyInformation"
                   onChange={changeValue}
@@ -254,11 +255,12 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
           <tr>
             <td colSpan={2}>
               <div>
-                <ReactQuill
-                  theme="snow"
-                  // value="12345"
+                <textarea
+                  style={{ height: 548, width: '100%' }}
                   value={selectedRow && selectedRow.html}
-                  onChange={handleChangeHtml}
+                  onChange={(e) => {
+                      handleChangeHtml(e);
+                  }}
                 />
               </div>
             </td>
@@ -273,7 +275,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={selectedRow?.groupId === null}
+                  checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
