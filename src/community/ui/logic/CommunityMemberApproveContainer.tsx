@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Comment, Checkbox } from "semantic-ui-react";
 import AvartarImage from '../../../style/media/img-profile-80-px.png';
 import AllSelect from '../../../style/media/icon-addinfo-24-px.png';
@@ -11,10 +11,10 @@ import { useHistory } from 'react-router-dom';
 import CommunityMemberHeader from '../view/CommunityMemberView/CommunityMemberHeader';
 
 interface Props {
-  currentCommunity:string
+  currentCommunity: string
 }
 
-const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => {
+const CommunityMemberApproveContainer: React.FC<Props> = ({ currentCommunity }) => {
   const [selectedList, setSelectedList] = useState<(any)>();
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const approveData = useCommunityMemberApprove();
@@ -22,29 +22,29 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-  
+
   const [activemenu, setActiveMenu] = useState<string>("approve");
   const history = useHistory();
-  
+
   const handleActiveMenu = useCallback((active: string) => {
-    
+
     setActiveMenu(active);
     switch (active) {
       case 'member': history.push(`/community/${currentCommunity}/member`)
-        break 
+        break
       case 'group': history.push(`/community/${currentCommunity}/member/group`)
-        break 
+        break
       case 'approve': history.push(`/community/${currentCommunity}/member/approve`)
         break
       default:
     }
 
-  },[activemenu])
+  }, [activemenu])
 
   useEffect(() => {
     getApproveMember(currentCommunity)
     checkAll();
-  },[currentCommunity])
+  }, [currentCommunity])
 
   const totalPages = () => {
     let totalPage = Math.ceil(approveData!.totalCount / 8)
@@ -53,32 +53,32 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
     }
     setTotalPage(totalPage)
   }
-  
+
   useEffect(() => {
-    if(approveData === undefined) {
+    if (approveData === undefined) {
       return
     }
     totalPages();
-    
+
   }, [approveData])
-  
-  const onPageChange = (data:any) => {
+
+  const onPageChange = (data: any) => {
     getApproveMember(currentCommunity, (data.activePage - 1) * 8)
     setActivePage(data.activePage)
   }
 
   const checkAll = useCallback(() => {
     setSelectAll(!selectAll)
-    if(selectAll) {
+    if (selectAll) {
       setSelectedList(AllData && AllData);
       setSelectAll(!selectAll)
     } else {
       setSelectedList([]);
       setSelectAll(!selectAll);
     }
-  },[selectAll])
-  
-  const checkOne = (groupMemberId:string) => {
+  }, [selectAll])
+
+  const checkOne = (groupMemberId: string) => {
     const copiedSelectedList: (string | undefined)[] = [...selectedList];
     const index = copiedSelectedList.indexOf(groupMemberId);
 
@@ -112,7 +112,7 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
         <div className="right-wrap board-down-title-right">
           <button className="ui icon button left post delete" onClick={checkAll}>
             <img src={AllSelect} />
-            {selectAll ? "전체해체" : "전체선택"}
+            {selectAll ? "전체해제" : "전체선택"}
           </button>
           <button className="ui icon button left post list2 complete" onClick={updateUser}>
             <img src={Approve} />
@@ -121,31 +121,31 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
         </div>
       </div>
       <div className="mycommunity-card-list">
-      {
-        approveData?.results.map((item, index) => (
-          <div className="member-card approval" key={index}>
-            <Comment>
-              <Checkbox 
-                style={{marginTop:"2rem",marginRight:"1rem",verticalAlign:"top"}}
-                checked={selectedList && selectedList.includes(item.memberId)} 
-                onChange={(e:any) => checkOne(item.memberId)}
-              />
-              <Comment.Avatar src={
-                item.profileImg === null ||
-                item.profileImg === "" ||
-                item.profileImg === undefined ?
-                `${AvartarImage}` : `/files/community/${item.profileImg}`
+        {
+          approveData?.results.map((item, index) => (
+            <div className="member-card approval" key={index}>
+              <Comment>
+                <Checkbox
+                  style={{ marginTop: "2rem", marginRight: "1rem", verticalAlign: "top" }}
+                  checked={selectedList && selectedList.includes(item.memberId)}
+                  onChange={(e: any) => checkOne(item.memberId)}
+                />
+                <Comment.Avatar src={
+                  item.profileImg === null ||
+                    item.profileImg === "" ||
+                    item.profileImg === undefined ?
+                    `${AvartarImage}` : `/files/community/${item.profileImg}`
                 }
-              />
-              <Comment.Content>
-                <Comment.Author as="a">
-                  <span className="lms-nick">{item.nickname || item.name}</span>
-                </Comment.Author>
-              </Comment.Content>
-            </Comment>
-          </div>
-        ))
-      }
+                />
+                <Comment.Content>
+                  <Comment.Author as="a">
+                    <span className="lms-nick">{item.nickname || item.name}</span>
+                  </Comment.Author>
+                </Comment.Content>
+              </Comment>
+            </div>
+          ))
+        }
       </div>
       {
         approveData && approveData.totalCount >= 8 ? (
@@ -159,9 +159,9 @@ const CommunityMemberApproveContainer:React.FC<Props> = ({currentCommunity}) => 
             />
           </div>
         ) : (
-          null
-        )
-      } 
+            null
+          )
+      }
     </>
   )
 }
