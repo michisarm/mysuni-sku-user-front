@@ -193,7 +193,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
               <div className="ui right-top-count input admin">
                 <input 
                   type="text"
-                  placeholder="주제를 입력해주세요."
+                  placeholder="안내글을 입력해주세요."
                   value={selectedRow && selectedRow.surveyInformation}
                   name="surveyInformation"
                   onChange={changeValue}
@@ -255,20 +255,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
           <tr>
             <td colSpan={2}>
               <div>
-                {/* <ReactQuill
-                  theme="snow"
-                  // value="12345"
-                  value={selectedRow && selectedRow.html}
-                  onChange={handleChangeHtml}
-                /> */}
-
                 <textarea
                   style={{ height: 548, width: '100%' }}
                   value={selectedRow && selectedRow.html}
                   onChange={(e) => {
-                    // if (onChange !== undefined) {
                       handleChangeHtml(e);
-                    // }
                   }}
                 />
               </div>
@@ -284,7 +275,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   label="커뮤니티 멤버"
                   name="radioGroup"
                   value="community"
-                  checked={selectedRow?.groupId === null}
+                  checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
