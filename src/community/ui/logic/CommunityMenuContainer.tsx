@@ -9,6 +9,13 @@ import _ from 'lodash';
 import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 import { reactAlert } from '@nara.platform/accent';
+import discussionIcon from '../../../style/media/icon-communtiy-menu-discussion.png';
+import htmlIcon from '../../../style/media/icon-community-menu-html.png';
+import storeIcon from '../../../style/media/icon-communtiy-menu-download.png';
+import surveyIcon from '../../../style/media/icon-communtiy-menu-survey.png';
+import linkIcon from '../../../style/media/icon-community-menu-link.png';
+import homeIcon from '../../../style/media/icon-communtiy-menu-home-on.png';
+import homeArrowIcon from '../../../style/media/icon-community-menu-open.png';
 
 interface RouteParams {
   communityId: string;
@@ -642,12 +649,37 @@ function CommunityMenuContainer() {
       } 
   },[selectedRow])
 
+  function imageHandle(type: string) {
+    let nextIcon = `${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`;
+    switch (type) {
+      case 'DISCUSSION':
+        nextIcon = discussionIcon;
+        break;
+      case 'STORE':
+        nextIcon = storeIcon;
+        break;
+      case 'SURVEY':
+        nextIcon = surveyIcon;
+        break;
+      case 'LINK':
+        nextIcon = linkIcon;
+        break;
+      case 'HTML':
+        nextIcon = htmlIcon;
+        break;
+      default:
+        break;
+    }
+    return nextIcon;
+  }
+
   function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any, parentIdx: number, childIdx: number) {
     if (menu) {
       return (
-        <li key={parentIdx+'_'+childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : 'ddd'}>
+        <li key={parentIdx+'_'+childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
           <a>
             <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
+            <img src={imageHandle(menu.type)} />
             {menu.name}
             <span>
               <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
@@ -663,7 +695,7 @@ function CommunityMenuContainer() {
         <Fragment key={index}>
           <li key={index+'_parent'} onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
             <a>
-              <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
+              <img src={imageHandle(menu.type)} />
               {menu.name}
               <span>
                 <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
