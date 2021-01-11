@@ -225,7 +225,7 @@ export function findCommunityView(
 }
 
 export function joinCommunity(communityId: string): Promise<void> {
-  const url = `${BASE_URL}/communities/${communityId}/members/join`;
+  const url = `${BASE_URL}/communities/${communityId}/members/flow/join`;
   return axiosApi.post<void>(url).then(AxiosReturn);
 }
 
