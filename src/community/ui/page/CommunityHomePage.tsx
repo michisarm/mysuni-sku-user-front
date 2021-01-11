@@ -157,7 +157,6 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
     }
     
   }, [approved]);
-  console.log('type', type);
   return (
     <div
       className="new-board-list"
