@@ -53,16 +53,18 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   // 저장 api 호출
   const onSave = useCallback(async () => {
 
-    if(communityHome.type === 'BASIC' && (communityHome.introduce && communityHome.introduce.length <= 0)) {
+    if(communityHome.type === 'BASIC' && (getCommunityHomeCreateItem() && getCommunityHomeCreateItem()!.introduce!.length <= 0)) {
       reactAlert({
         title: '',
         message: '환영 메세지를 입력해 주세요',
       });
-    }else if(communityHome.type === 'BASIC' && (communityHome.thumbnailId && communityHome.thumbnailId.length <= 0)) {
+      return;
+    } if(communityHome.type === 'BASIC' && (getCommunityHomeCreateItem() && getCommunityHomeCreateItem()!.thumbnailId!.length <= 0)) {
       reactAlert({
         title: '',
         message: '대표 이미지를 입력해 주세요',
       });
+      return;
     }
     setCommunityHomeCreateItem({ ...communityHome, draft:0 });
     await saveCommunityHome(communityId, communityHome.id);
@@ -168,6 +170,7 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
                     type="text"
                     placeholder="커뮤니티 환영 메시지를 입력해주세요."
                     value={communityHome.introduce}
+                    maxLength={50}
                     onChange={e => setCommunityHomeCreateItem({ ...communityHome, introduce : e.target.value })}
                   />
                   <Icon
