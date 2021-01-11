@@ -163,7 +163,7 @@ function renderSurveyRow(item: any, index: number) {
           </tbody>
         </table>
         {surveyData !== undefined && (
-          <>
+          <div className="scrolling-24vh">
             <table className="ui admin_table sub survey_popup_table">
               <thead>
                 <tr>
@@ -179,7 +179,7 @@ function renderSurveyRow(item: any, index: number) {
                 })}
               </tbody>
             </table>
-          </>
+          </div>
         )
         }
         <div className="lms-paging-holder">
