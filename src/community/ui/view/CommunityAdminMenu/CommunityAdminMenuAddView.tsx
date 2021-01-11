@@ -276,7 +276,12 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   name="radioGroup"
                   value="community"
                   checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
-                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
+                  onClick={(e: any, data: any) => {
+                    changeAuth(e, data.value)
+                  }}
+                  onChange={(e: any, data: any) => {
+                    changeAuth(e, data.value)
+                  }}
                 />
                 <Radio
                   className="base"
@@ -284,7 +289,9 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   name="radioGroup"
                   value="group"
                   checked={selectedRow?.groupId !== null}
-                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
+                  onChange={(e: any, data: any) => {
+                    changeAuth(e, data.value)
+                  }}
                 />
               </div>
               <Select

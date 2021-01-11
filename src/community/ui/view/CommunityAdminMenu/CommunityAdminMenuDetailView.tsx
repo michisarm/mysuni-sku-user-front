@@ -252,7 +252,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               <div>
                 <ReactQuill
                   theme="snow"
-                  // value="12345"
                   value={selectedRow && selectedRow.html}
                   onChange={handleChangeHtml}
                 />
@@ -270,6 +269,9 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   name="radioGroup"
                   value="community"
                   checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
+                  onClick={(e: any, data: any) => {
+                    changeAuth(e, data.value)
+                  }}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
