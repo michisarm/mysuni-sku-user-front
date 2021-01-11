@@ -37,7 +37,7 @@ export function modifyGroupMemberAdmin(
 ): Promise<string> {
   return axios
     .put<string>(
-      `${BASE_URL}/communities/${communityId}/${groupId}/members/${groupMemberId}`
+      `${BASE_URL}/communities/${communityId}/${groupId}/members/flow/${groupMemberId}`
     )
     .then((response) => response && response.data);
 }
