@@ -69,16 +69,24 @@ const RQDLearning: React.FC<Props> = Props => {
     */
     rqdLectureService!.clearLectures();
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const sessionRequiredLectures = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
+    const sessionRequiredLectures =
+      window.navigator.onLine &&
+      window.sessionStorage.getItem('RqdLearningList');
     if (sessionRequiredLectures && sessionRequiredLectures.length !== 0) {
       // session storage 의 json data 파싱.
-      const offsetRequiredLectures: OffsetElementList<LectureModel> = JSON.parse(sessionRequiredLectures);
+      const offsetRequiredLectures: OffsetElementList<LectureModel> = JSON.parse(
+        sessionRequiredLectures
+      );
       rqdLectureService!.setTitle(offsetRequiredLectures.title);
 
       if (offsetRequiredLectures.results.length >= PAGE_SIZE) {
         // session storage 의 권장과정 을 store 에 추가.
         rqdLectureService!.setPagingRqdLectures(offsetRequiredLectures);
-        if (!offsetRequiredLectures || !offsetRequiredLectures.title || offsetRequiredLectures.title.length < 1) {
+        if (
+          !offsetRequiredLectures ||
+          !offsetRequiredLectures.title ||
+          offsetRequiredLectures.title.length < 1
+        ) {
           setTitle(rqdLectureService!.Title);
         } else {
           setTitle(offsetRequiredLectures.title);
@@ -91,7 +99,11 @@ const RQDLearning: React.FC<Props> = Props => {
       가져온 데이터는 session storage 에도 저장됨.
       session storage 에 저장된 데이터가 8개 미만인 경우, 다시 서버로부터 데이터를 가져옴.
     */
-    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+    rqdLectureService!
+      .findPagingRqdLectures(
+        LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
+        true
+      )
       .then(response => {
         rqdLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
@@ -142,7 +154,9 @@ const RQDLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '권장 과정',
       action: 'Click',
-      label: `${model.name}`,
+      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+        model.name
+      }`,
     });
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
@@ -269,16 +283,15 @@ const RQDLearning: React.FC<Props> = Props => {
             }
           )}
         </Lecture.Group>
-      ) :
-        (
-          <NoSuchContentPanel
-            message="모든 과정을 이수하셨습니다."
-            link={{
-              text: '전체 권장과정 List를 확인하시겠습니까?',
-              path: myTrainingRoutes.learningRequired()
-            }}
-          />
-        )}
+      ) : (
+        <NoSuchContentPanel
+          message="모든 과정을 이수하셨습니다."
+          link={{
+            text: '전체 권장과정 List를 확인하시겠습니까?',
+            path: myTrainingRoutes.learningRequired(),
+          }}
+        />
+      )}
     </ContentWrapper>
   );
 };

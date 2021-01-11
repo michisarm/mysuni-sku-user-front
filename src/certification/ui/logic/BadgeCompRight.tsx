@@ -74,8 +74,10 @@ const BadgeCompRight: React.FC<Props> = Props => {
     ReactGA.event({
       category: '도전중인 Badge',
       action: 'Click',
-      label: `${data.name}`
-    })
+      label: `${data.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${
+        data.name
+      }`,
+    });
   };
 
   return (

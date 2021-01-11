@@ -15,7 +15,11 @@ import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
 import { POPLectureService } from 'lecture/stores';
 import { Lecture } from 'lecture';
-import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import {
+  MyTrainingModel,
+  InMyLectureCdoModel,
+  InMyLectureModel,
+} from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
@@ -24,18 +28,24 @@ import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
-  reviewService?: ReviewService,
-  popLectureService?: POPLectureService,
-  inMyLectureService?: InMyLectureService,
+  reviewService?: ReviewService;
+  popLectureService?: POPLectureService;
+  inMyLectureService?: InMyLectureService;
 
-  profileMemberName: string,
+  profileMemberName: string;
 }
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
 */
-const POPLearning: React.FC<Props> = (Props) => {
+const POPLearning: React.FC<Props> = Props => {
   //
-  const { reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
+  const {
+    reviewService,
+    popLectureService,
+    inMyLectureService,
+    profileMemberName,
+    history,
+  } = Props;
 
   const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
@@ -53,28 +63,38 @@ const POPLearning: React.FC<Props> = (Props) => {
     popLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
+    const savedPopularLearningList =
+      window.navigator.onLine &&
+      window.sessionStorage.getItem('PopLearningList');
     if (savedPopularLearningList && savedPopularLearningList.length > 0) {
-      const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
+      const popularMain: OffsetElementList<LectureModel> = JSON.parse(
+        savedPopularLearningList
+      );
       if (popularMain.results.length > PAGE_SIZE - 1) {
         popLectureService!.setPagingPopLectures(popularMain);
-        if (!popularMain || !popularMain.title || popularMain.title.length < 1) {
+        if (
+          !popularMain ||
+          !popularMain.title ||
+          popularMain.title.length < 1
+        ) {
           setTitle(popLectureService!.Title);
-        }
-        else {
+        } else {
           setTitle(popularMain.title);
         }
         return;
       }
     }
 
-    popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
-      .then((response) => {
+    popLectureService!
+      .findPagingPopLectures(
+        LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
+        true
+      )
+      .then(response => {
         popLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
           setTitle(popLectureService!.Title);
-        }
-        else {
+        } else {
           setTitle(response.title);
         }
       });
@@ -91,10 +111,15 @@ const POPLearning: React.FC<Props> = (Props) => {
     const { ratingMap } = reviewService!;
     let rating: number | undefined;
 
-    if (learning instanceof InMyLectureModel && learning.cubeType !== CubeType.Community) {
+    if (
+      learning instanceof InMyLectureModel &&
+      learning.cubeType !== CubeType.Community
+    ) {
       rating = ratingMap.get(learning.reviewId) || 0;
-    }
-    else if (learning instanceof LectureModel && learning.cubeType !== CubeType.Community) {
+    } else if (
+      learning instanceof LectureModel &&
+      learning.cubeType !== CubeType.Community
+    ) {
       rating = learning.rating;
     }
     return rating;
@@ -116,53 +141,77 @@ const POPLearning: React.FC<Props> = (Props) => {
     ReactGA.event({
       category: '인기 과정',
       action: 'Click',
-      label: `${model.name}`,
+      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+        model.name
+      }`,
     });
 
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutes.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutes.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
+    if (
+      model.serviceType === LectureServiceType.Program ||
+      model.serviceType === LectureServiceType.Course
+    ) {
+      history.push(
+        lectureRoutes.courseOverview(
+          cineroom.id,
+          model.category.college.id,
+          model.coursePlanId,
+          model.serviceType,
+          model.serviceId
+        )
+      );
+    } else if (model.serviceType === LectureServiceType.Card) {
+      history.push(
+        lectureRoutes.lectureCardOverview(
+          cineroom.id,
+          model.category.college.id,
+          model.cubeId,
+          model.serviceId
+        )
+      );
     }
   };
 
-  const onActionLecture = (training: MyTrainingModel | LectureModel | InMyLectureModel) => {
+  const onActionLecture = (
+    training: MyTrainingModel | LectureModel | InMyLectureModel
+  ) => {
     //
     // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
-    }
-    else {
+    } else {
       let servicePatronKeyString = training.patronKey.keyString;
 
       if (training instanceof MyTrainingModel) {
         servicePatronKeyString = training.servicePatronKeyString;
       }
-      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
-        serviceId: training.serviceId,
-        serviceType: training.serviceType,
-        category: training.category,
-        name: training.name,
-        description: training.description,
-        cubeType: training.cubeType,
-        learningTime: training.learningTime,
-        stampCount: training.stampCount,
-        coursePlanId: training.coursePlanId,
+      inMyLectureService!.addInMyLecture(
+        new InMyLectureCdoModel({
+          serviceId: training.serviceId,
+          serviceType: training.serviceType,
+          category: training.category,
+          name: training.name,
+          description: training.description,
+          cubeType: training.cubeType,
+          learningTime: training.learningTime,
+          stampCount: training.stampCount,
+          coursePlanId: training.coursePlanId,
 
-        requiredSubsidiaries: training.requiredSubsidiaries,
-        cubeId: training.cubeId,
-        courseSetJson: training.courseSetJson,
-        courseLectureUsids: training.courseLectureUsids,
-        lectureCardUsids: training.lectureCardUsids,
+          requiredSubsidiaries: training.requiredSubsidiaries,
+          cubeId: training.cubeId,
+          courseSetJson: training.courseSetJson,
+          courseLectureUsids: training.courseLectureUsids,
+          lectureCardUsids: training.lectureCardUsids,
 
-        reviewId: training.reviewId,
-        baseUrl: training.baseUrl,
-        servicePatronKeyString,
-      }));
+          reviewId: training.reviewId,
+          baseUrl: training.baseUrl,
+          servicePatronKeyString,
+        })
+      );
     }
   };
 
@@ -178,65 +227,80 @@ const POPLearning: React.FC<Props> = (Props) => {
       <div className="section-head">
         <strong>{title}</strong>
         <div className="right">
-          {
-            popLectures.length > 0 && (
-              <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink" />
-              </Button>
-            )
-          }
+          {popLectures.length > 0 && (
+            <Button icon className="right btn-blue" onClick={onViewAll}>
+              View all <Icon className="morelink" />
+            </Button>
+          )}
         </div>
       </div>
 
-      {popLectures.length > 0 && popLectures[0] ?
+      {popLectures.length > 0 && popLectures[0] ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {popLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
-            //
-            const inMyLecture = getInMyLecture(learning.serviceId);
+          {popLectures.map(
+            (
+              learning: LectureModel | MyTrainingModel | InMyLectureModel,
+              index: number
+            ) => {
+              //
+              const inMyLecture = getInMyLecture(learning.serviceId);
 
-            return (
-              <Lecture
-                key={`learning-${index}`}
-                model={learning}
-                rating={getRating(learning)}
-                thumbnailImage={learning.baseUrl || undefined}
-                action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                onAction={() => {
-                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
-                  onActionLecture(inMyLecture || learning);
-                }}
-                onViewDetail={onViewDetail}
-              />
-            );
-          })}
+              return (
+                <Lecture
+                  key={`learning-${index}`}
+                  model={learning}
+                  rating={getRating(learning)}
+                  thumbnailImage={learning.baseUrl || undefined}
+                  action={
+                    inMyLecture
+                      ? Lecture.ActionType.Remove
+                      : Lecture.ActionType.Add
+                  }
+                  onAction={() => {
+                    reactAlert({
+                      title: '알림',
+                      message: inMyLecture
+                        ? '본 과정이 관심목록에서 제외되었습니다.'
+                        : '본 과정이 관심목록에 추가되었습니다.',
+                    });
+                    onActionLecture(inMyLecture || learning);
+                  }}
+                  onViewDetail={onViewDetail}
+                />
+              );
+            }
+          )}
         </Lecture.Group>
-        :
-        <NoSuchContentPanel message={(
-          <>
-            <div className="text">진행중인 학습 과정이 없습니다.</div>
-            <Button
-              icon
-              as="a"
-              className="right btn-blue2"
-              onClick={routeToRecommend}
-            >
-              <span className="border">
-                <span className="ellipsis">{profileMemberName}</span>
-                님에게 추천하는 학습 과정 보기
-              </span>
-              <Icon className="morelink" />
-            </Button>
-          </>
-        )}
+      ) : (
+        <NoSuchContentPanel
+          message={
+            <>
+              <div className="text">진행중인 학습 과정이 없습니다.</div>
+              <Button
+                icon
+                as="a"
+                className="right btn-blue2"
+                onClick={routeToRecommend}
+              >
+                <span className="border">
+                  <span className="ellipsis">{profileMemberName}</span>
+                  님에게 추천하는 학습 과정 보기
+                </span>
+                <Icon className="morelink" />
+              </Button>
+            </>
+          }
         />
-      }
+      )}
     </ContentWrapper>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  // 'shared.actionLogService',
-  'shared.reviewService',
-  'popLecture.popLectureService',
-  'myTraining.inMyLectureService',
-))(withRouter(observer(POPLearning)));
+export default inject(
+  mobxHelper.injectFrom(
+    // 'shared.actionLogService',
+    'shared.reviewService',
+    'popLecture.popLectureService',
+    'myTraining.inMyLectureService'
+  )
+)(withRouter(observer(POPLearning)));
