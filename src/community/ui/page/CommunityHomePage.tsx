@@ -157,7 +157,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
     }
     
   }, [approved]);
-
+  console.log('type', type);
   return (
     <div
       className="new-board-list"
@@ -172,12 +172,18 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <strong>{title}</strong>
         {isNew && <span className="new-label">NEW</span>}
       </div>
-      <p>{text}</p>
+      <p>{text}</p>profileIcon
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
             {type !== 'ANONYMOUS' && (
-              <img src={`/files/community/${profileImg}`} />
+              <>
+                {profileImg ?
+                  <img src={`/files/community/${profileImg}`} />
+                  : 
+                  <img src={`${profileIcon}`} />
+                }
+              </>
             )}
             {type === 'ANONYMOUS' && <img src={profileIcon} />}
             <span>
