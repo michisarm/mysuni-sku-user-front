@@ -41,7 +41,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   useEffect(() => {
     if(selectedRow && selectedRow.type === 'SURVEY') {
       getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
-        setSelectedSurvey(result.data)
+        if(result.data === '') {
+          setSelectedSurvey({})
+        }else {
+          setSelectedSurvey(result.data)
+        }
       })
     }
   }, [selectedRow]);
@@ -184,7 +188,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               <div className="ui right-top-count input admin">
                 <input 
                   type="text"
-                  placeholder="주제를 입력해주세요."
+                  placeholder="안내글을 입력해주세요."
                   value={selectedRow && selectedRow.surveyInformation}
                   name="surveyInformation"
                   onChange={changeValue}
@@ -248,7 +252,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               <div>
                 <ReactQuill
                   theme="snow"
-                  // value="12345"
                   value={selectedRow && selectedRow.html}
                   onChange={handleChangeHtml}
                 />
@@ -266,6 +269,9 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   name="radioGroup"
                   value="community"
                   checked={selectedRow?.groupId === null || selectedRow?.accessType === 'COMMUNITY_GROUP'}
+                  onClick={(e: any, data: any) => {
+                    changeAuth(e, data.value)
+                  }}
                   onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio

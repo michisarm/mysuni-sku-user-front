@@ -7,7 +7,7 @@ import { getEmptySearchBox } from 'community/model/SearchBox';
 function CommunityMenuPage(communityId:string) {
 
   useEffect(() => {
-    setSearchBox(getEmptySearchBox(false, 'survey'));
+    setSearchBox(getEmptySearchBox(false));
     requestCommunityMenu(communityId);
   }, []);
 
