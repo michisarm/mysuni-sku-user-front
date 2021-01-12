@@ -31,7 +31,7 @@ function CommunityMainHeaderContainer() {
   useEffect(() => {
     requestFollowersModal();
     requestFollowingsModal();
-  }, []);
+  }, [open]);
 
   // const followModalContainerList = useFollowCommunityIntro();
   const profile = useMyProfile();
@@ -143,7 +143,7 @@ function CommunityMainHeaderContainer() {
         <div className="progress-info-wrap">
           <div className="cell">
             <div className="cell-inner">
-              <div className="profile">
+              <div className="profile" onClick={()=> history.push("/community/my-profile")} style={{cursor:'pointer'}}>
                 <div className="pic">
                   <img
                     src={
@@ -158,13 +158,15 @@ function CommunityMainHeaderContainer() {
               </div>
               <div className="text-info">
                 <div className="name">
-                  {profile?.nickname || profile?.name || ''}
+                    <div onClick={()=> history.push("/community/my-profile")} style={{cursor:'pointer', display: 'inline-block'}}>
+                      {profile?.nickname || profile?.name || ''}
+                    </div>
                   <Link
                     className="ui button orange-arrow2"
                     to="/community/my-profile"
                   >
                     <i aria-hidden="true" className="icon post" />
-                    프로필 수정
+                    프로필 상세
                   </Link>
                 </div>
               </div>
