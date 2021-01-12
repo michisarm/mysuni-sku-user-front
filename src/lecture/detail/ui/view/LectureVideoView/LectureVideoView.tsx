@@ -45,13 +45,14 @@ import {
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
 } from 'lecture/detail/viewModel/LectureStructure';
-import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import { Icon, Rating } from 'semantic-ui-react';
 import {
   videoClose,
   videoStart,
 } from '../../../service/useActionLog/cubeStudyEvent';
+import { MyTrainingService } from 'myTraining/stores';
+
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 //샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
@@ -86,6 +87,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const checkIntervalRef = useRef<any>(0);
   const transcriptIntervalRef = useRef<any>(0);
   const multiVideoIntervalRef = useRef<any>(0);
+  const myTrainingService = MyTrainingService.instance;
 
   useEffect(() => {
     // all cleare interval
@@ -238,6 +240,25 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+  // sesstionStorage 에 학습중, 완료 건 update
+  const fetchAllModelsForStorage = async () => {
+    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    if (inProgressTableViews && inProgressTableViews.length) {
+      sessionStorage.setItem(
+        'inProgressTableViews',
+        JSON.stringify(inProgressTableViews)
+      );
+    }
+
+    const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+    if (completedTableViews && completedTableViews.length) {
+      sessionStorage.setItem(
+        'completedTableViews',
+        JSON.stringify(completedTableViews)
+      );
+    }
+  };
+
   useEffect(() => {
     if (params) {
       setNextContentsView(false);
@@ -317,6 +338,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           20
         ) {
           setNextContentsView(true);
+          // sessionStorage update
+          fetchAllModelsForStorage();
         }
       }, 10000);
       // playIntervalRef.current = interval;
