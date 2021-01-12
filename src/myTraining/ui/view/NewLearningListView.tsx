@@ -5,7 +5,11 @@ import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { ActionLogService, PageService } from 'shared/stores';
-import { LRSLectureService, NEWLectureService, POPLectureService, } from 'lecture/stores';
+import {
+  LRSLectureService,
+  NEWLectureService,
+  POPLectureService,
+} from 'lecture/stores';
 import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
@@ -19,6 +23,7 @@ import { ContentType } from '../page/NewLearningPage';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -95,7 +100,7 @@ const NewLearningListView: React.FC<Props> = Props => {
       match.params.pageNo = '1';
       if (order === OrderByType.Popular) {
         setNewOrder(OrderByType.New);
-        return () => { };
+        return () => {};
       }
       curOrder.current = OrderByType.New;
     }
@@ -233,8 +238,13 @@ const NewLearningListView: React.FC<Props> = Props => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
-    const lectureOffsetList = await rqdLectureService!.findPagingRqdLectures(lectureFilterRdo);
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
+      page!.limit,
+      page!.nextOffset /*, orderBy*/
+    );
+    const lectureOffsetList = await rqdLectureService!.findPagingRqdLectures(
+      lectureFilterRdo
+    );
 
     rqdLectureService!.setTitle(lectureOffsetList.title);
     setPageTitle(ContentType.Required);
@@ -266,8 +276,13 @@ const NewLearningListView: React.FC<Props> = Props => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset /*, orderBy*/);
-    const lectureOffsetList = await newLectureService!.findPagingNewLectures(lectureFilterRdo);
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
+      page!.limit,
+      page!.nextOffset /*, orderBy*/
+    );
+    const lectureOffsetList = await newLectureService!.findPagingNewLectures(
+      lectureFilterRdo
+    );
 
     newLectureService!.setTitle(lectureOffsetList.title);
     setPageTitle(ContentType.New);
@@ -338,10 +353,12 @@ const NewLearningListView: React.FC<Props> = Props => {
     const lectureFilterRdo = LectureFilterRdoModel.lrsLectures(
       page!.limit,
       page!.nextOffset,
-      skProfileService!.skProfile.member.email,
+      skProfileService!.skProfile.member.email
       /*, orderBy*/
     );
-    const lectureOffsetList = await lrsLectureService!.findPagingLrsLectures(lectureFilterRdo);
+    const lectureOffsetList = await lrsLectureService!.findPagingLrsLectures(
+      lectureFilterRdo
+    );
 
     lrsLectureService!.setTitle(lectureOffsetList.title);
     setPageTitle(ContentType.Recommend);
@@ -384,10 +401,27 @@ const NewLearningListView: React.FC<Props> = Props => {
     setYPos(window.scrollY);
   };
 
+  // react-ga 카테고리 별 분기처리
+  const [state, setState] = useState<string>('');
+  useEffect(() => {
+    if (window.location.href.match('/New/')?.length) {
+      setState('신규과정');
+    }
+    if (window.location.href.match('/Popular/')?.length) {
+      setState('인기과정');
+    }
+    if (window.location.href.match('/Required/')?.length) {
+      setState('권장과정');
+    }
+    if (window.location.href.match('/Recommend/')?.length) {
+      setState('추천과정');
+    }
+  }, []);
+
   const onViewDetail = (e: any, data: any) => {
     //
-    console.log('data', data.name);
     const { model } = data;
+
     const collegeId = model.category.college.id;
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
@@ -416,6 +450,15 @@ const NewLearningListView: React.FC<Props> = Props => {
         )
       );
     }
+
+    // react-ga event
+    ReactGA.event({
+      category: `${state}`,
+      action: 'Click',
+      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+        model.name
+      }`,
+    });
 
     window.sessionStorage.setItem('y_pos', window.scrollY.toString());
   };
@@ -461,20 +504,21 @@ const NewLearningListView: React.FC<Props> = Props => {
           message="모든 과정을 이수하셨습니다."
           link={{
             text: '전체 권장과정 List를 확인하시겠습니까?',
-            path: myTrainingRoutePaths.learningRequired()
+            path: myTrainingRoutePaths.learningRequired(),
           }}
         />
       );
     }
     // default
-    return (
-      <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
-    );
+    return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
   };
 
   return (
     <div className="section">
-      {lectures && lectures.current && lectures.current.length > 0 && lectures.current[0] ? (
+      {lectures &&
+      lectures.current &&
+      lectures.current.length > 0 &&
+      lectures.current[0] ? (
         <>
           <Lecture.Group type={Lecture.GroupType.Box}>
             {lectures.current?.map((lecture: any, index: any) => {
@@ -508,7 +552,9 @@ const NewLearningListView: React.FC<Props> = Props => {
           {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
           {window.scrollTo(0, yPos)}
         </>
-      ) : renderNoSuchContentPanel(contentType)}
+      ) : (
+        renderNoSuchContentPanel(contentType)
+      )}
     </div>
   );
 };

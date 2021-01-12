@@ -45,13 +45,14 @@ import {
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
 } from 'lecture/detail/viewModel/LectureStructure';
-import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import { Icon, Rating } from 'semantic-ui-react';
 import {
   videoClose,
   videoStart,
 } from '../../../service/useActionLog/cubeStudyEvent';
+import { MyTrainingService } from 'myTraining/stores';
+
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
 //샘플 페이지 : http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
@@ -86,6 +87,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const checkIntervalRef = useRef<any>(0);
   const transcriptIntervalRef = useRef<any>(0);
   const multiVideoIntervalRef = useRef<any>(0);
+  const myTrainingService = MyTrainingService.instance;
 
   useEffect(() => {
     // all cleare interval
@@ -155,26 +157,28 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const history = useHistory();
-  function handleMultiVideo(viewState: string, usid: string) {
+  function handleMultiVideo(viewState: string, usid: string, show: boolean) {
     // 멀티시청 제한 param = patronKeyString, state, lectureId
     // state = start:시작, 중간 end:종료
     // lectureId = 시청중인 ID
     // return = false:중복시청, true:시청가능
     // alert(`retMultiVideoOverlap before: ${usid}`);
-    // retMultiVideoOverlap(viewState, usid).then(function(res) {
-    //   // alert(`retMultiVideoOverlap after: ${res}`);
-    //   setLiveLectureCardId(res);
-    //   if (viewState !== 'end')
-    //     if (!res || res === 'false') {
-    //       // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
-    //       reactAlert({
-    //         title: '알림',
-    //         message:
-    //           '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-    //         // onClose: () => history.goBack(),
-    //       });
-    //     }
-    // });
+    if (show) {
+      retMultiVideoOverlap(viewState, usid).then(function(res) {
+        // alert(`retMultiVideoOverlap after: ${res}`);
+        setLiveLectureCardId(res);
+        if (viewState !== 'end')
+          if (!res || res === 'false') {
+            // embedApi.pauseVideo(); // alert 만 띄우는 것으로... 급하게
+            reactAlert({
+              title: '알림',
+              message:
+                '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+              // onClose: () => history.goBack(),
+            });
+          }
+      });
+    }
   }
 
   const nextContents = useCallback((path: string) => {
@@ -224,21 +228,44 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     [params]
   );
 
+  const endMultiVideo = () => {
+    // alert(`동영상종료 세션에서 가져온 liveLectureId: ${liveLectureId}`);
+    const liveLectureId = JSON.parse(
+      sessionStorage.getItem('liveLectureCardId')!
+    );
+    if (liveLectureId) {
+      //중복 동영상 체크 종료 signal
+      handleMultiVideo('end', liveLectureId, true);
+      sessionStorage.removeItem('liveLectureCardId');
+    }
+  };
+
+  // sesstionStorage 에 학습중, 완료 건 update
+  const fetchAllModelsForStorage = async () => {
+    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    if (inProgressTableViews && inProgressTableViews.length) {
+      sessionStorage.setItem(
+        'inProgressTableViews',
+        JSON.stringify(inProgressTableViews)
+      );
+    }
+
+    const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+    if (completedTableViews && completedTableViews.length) {
+      sessionStorage.setItem(
+        'completedTableViews',
+        JSON.stringify(completedTableViews)
+      );
+    }
+  };
+
   useEffect(() => {
     if (params) {
       setNextContentsView(false);
     }
     // params 가 바뀌었을때 화면은 유지되면서 loading 만 한다.
     return () => {
-      const liveLectureId = JSON.parse(
-        sessionStorage.getItem('liveLectureCardId')!
-      );
-      // alert(`동영상종료 세션에서 가져온 liveLectureId: ${liveLectureId}`);
-      if (liveLectureId) {
-        //중복 동영상 체크 종료 signal
-        handleMultiVideo('end', liveLectureId);
-        sessionStorage.removeItem('liveLectureCardId');
-      }
+      endMultiVideo();
     };
   }, [params]);
 
@@ -257,8 +284,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         setNextContentsView(true);
       }
       // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
+      videoClose();
       //중복 동영상 체크 종료 signal
-      handleMultiVideo('end', liveLectureCardId);
+      handleMultiVideo('end', liveLectureCardId, true);
       sessionStorage.removeItem('liveLectureCardId');
     }
     //동영상 시작시 student 정보 확인 및 등록
@@ -266,11 +294,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       registCheckStudent(params);
       mediaCheckEvent(params);
       // alert(`동영상시작 liveLectureCardId: ${liveLectureCardId}`);
+      videoStart();
       //중복 동영상 체크 시작 signal
-      handleMultiVideo('start', params?.lectureId || 'start');
+      handleMultiVideo('start', params?.lectureId || 'start', true);
       sessionStorage.setItem(
         'liveLectureCardId',
-        JSON.stringify(liveLectureCardId)
+        JSON.stringify(params?.lectureId)
       );
     }
   }, [panoptoState]);
@@ -309,6 +338,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           20
         ) {
           setNextContentsView(true);
+          // sessionStorage update
+          fetchAllModelsForStorage();
         }
       }, 10000);
       // playIntervalRef.current = interval;
@@ -404,7 +435,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
       //중복 동영상 체크 중간 signal
       multiVideoInterval = setInterval(() => {
-        handleMultiVideo('start', params?.lectureId || 'start');
+        handleMultiVideo('start', params?.lectureId || 'start', false);
       }, 60000);
       multiVideoIntervalRef.current = multiVideoInterval;
     } else if (!isActive) {
@@ -421,6 +452,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setNextContentsView(false);
     // 화면 나갈때 event
     return () => {
+      endMultiVideo();
       mediaCheckEvent(params);
       setPanoptoState(10);
       setNextContentsPath('');
@@ -786,10 +818,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     return () => clearInterval(intervalFunc);
   }, [isActive]);
 
-  // sticky시 비디오명 표시
+  // sticky시 비디오명 표시 (cube)
   useEffect(() => {
     setCubeName(getLectureStructure()?.cube?.name);
-  }, [getLectureStructure()?.cube?.name]);
+  }, [getLectureStructure()]);
 
   return (
     <div
@@ -812,9 +844,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             nextContentsPath &&
             getLectureConfirmProgress()?.learningState == 'Passed' && (
               <>
-                <div id="video-overlay" className="video-overlay">
+                <div
+                  id="video-overlay"
+                  className="video-overlay"
+                  onClick={() => nextContents(nextContentsPath)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="video-overlay-btn">
-                    <button onClick={() => nextContents(nextContentsPath)}>
+                    <button>
                       <img src={playerBtn} />
                     </button>
                   </div>
@@ -823,7 +860,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                     <h3>{nextContentsName}</h3>
                   </div>
                 </div>
-                <div className="video-overlay-small">
+                <div
+                  className="video-overlay-small"
+                  onClick={() => nextContents(nextContentsPath)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <button>
                     <img src={playerBtn} />
                   </button>

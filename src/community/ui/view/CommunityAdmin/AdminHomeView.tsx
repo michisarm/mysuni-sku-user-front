@@ -49,17 +49,16 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
       }),
     []
   );
-
+  
   // 저장 api 호출
   const onSave = useCallback(async () => {
-
-    if(communityHome.type === 'BASIC' && (getCommunityHomeCreateItem() && getCommunityHomeCreateItem()!.introduce!.length <= 0)) {
+    if(communityHome.type === 'BASIC' && (communityHome?.introduce?.length === 0 || communityHome?.introduce?.length === undefined )) {
       reactAlert({
         title: '',
         message: '환영 메세지를 입력해 주세요',
       });
       return;
-    } if(communityHome.type === 'BASIC' && (getCommunityHomeCreateItem() && getCommunityHomeCreateItem()!.thumbnailId!.length <= 0)) {
+    } if(communityHome.type === 'BASIC' && (communityHome?.thumbnailId === null)) {
       reactAlert({
         title: '',
         message: '대표 이미지를 입력해 주세요',

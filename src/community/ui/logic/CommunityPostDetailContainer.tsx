@@ -92,10 +92,15 @@ function CommunityPostDetailContainer() {
     }
   }, [])
 
+  const commentCountEventHandler = useCallback(async () => {
+    await getCommunityPostDetail(communityId, postId);
+  }, [communityId, postId]);
+
   useEffect(() => {
-    window.addEventListener('commentCount', async (event: any) => {
-      getCommunityPostDetail(communityId, postId);
-    });
+    window.addEventListener('commentCount', commentCountEventHandler);
+    return () => {
+      window.removeEventListener('commentCount', commentCountEventHandler);
+    };    
   }, [])
 
   useEffect(() => {

@@ -64,7 +64,9 @@ const InProgressLearning: React.FC<Props> = Props => {
       window.sessionStorage.getItem('InProgressLearningList');
     /* 스토리지에 데이터가 있는 경우 & 데이터가 8개 이상인 경우 스토리지 데이터를 myTrainings 로 사용. 2020.11.20 김동구 */
     if (savedInProgressLearningList && savedInProgressLearningList.length > 0) {
-      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
+      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(
+        savedInProgressLearningList
+      );
 
       if (inProgressMain.totalCount > PAGE_SIZE - 1) {
         myTrainingService!.setMyTrainingsWithState(inProgressMain);
@@ -122,7 +124,9 @@ const InProgressLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '학습중인 과정',
       action: 'Click',
-      label: `${model.name}`,
+      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+        model.name
+      }`,
     });
 
     const cineroom =
@@ -210,7 +214,7 @@ const InProgressLearning: React.FC<Props> = Props => {
     <ContentWrapper>
       <div className="section-head">
         <strong>
-          <span className="ellipsis">{profileMemberName}</span>님의 학습중인 과정
+          <span className="ellipsis">{profileMemberName}</span>님이 학습중인 과정
         </strong>
         <div className="right">
           {myTrainings.length > 0 && (
@@ -258,26 +262,26 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-          <NoSuchContentPanel
-            message={
-              <>
-                <div className="text">진행중인 학습 과정이 없습니다.</div>
-                <Button
-                  icon
-                  as="a"
-                  className="right btn-blue2"
-                  onClick={routeToRecommend}
-                >
-                  <span className="border">
-                    <span className="ellipsis">{profileMemberName}</span> 님에게
+        <NoSuchContentPanel
+          message={
+            <>
+              <div className="text">진행중인 학습 과정이 없습니다.</div>
+              <Button
+                icon
+                as="a"
+                className="right btn-blue2"
+                onClick={routeToRecommend}
+              >
+                <span className="border">
+                  <span className="ellipsis">{profileMemberName}</span> 님에게
                   추천하는 학습 과정 보기
-                  </span>
-                  <Icon className="morelink" />
-                </Button>
-              </>
-            }
-          />
-        )}
+                </span>
+                <Icon className="morelink" />
+              </Button>
+            </>
+          }
+        />
+      )}
     </ContentWrapper>
   );
 };
