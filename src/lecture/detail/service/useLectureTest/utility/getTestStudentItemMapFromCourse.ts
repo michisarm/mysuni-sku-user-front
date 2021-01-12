@@ -34,12 +34,30 @@ export async function getTestStudentItemMapFromCourse(
 ): Promise<void> {
   // void : return이 없는 경우 undefined
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
-  if (coursePlanComplex.courseLecture.usid !== null) {
+  if (coursePlanComplex.courseLecture.usid !== null) {  // 코스
     const studentInfo = await studentInfoView({
       courseLectureIds: [],
       lectureCardIds: coursePlanComplex.courseLecture.lectureCardUsids,
       preLectureCardIds: [],
       serviceId: coursePlanComplex.courseLecture.usid,
+    });
+
+    if (studentInfo.own !== null) {
+      setLectureTestStudentItem({
+        studentId: studentInfo.own.id,
+        serviceType: studentInfo.own.serviceType,
+        learningState: studentInfo.own.learningState,
+        studentScore: studentInfo.own.studentScore,
+        examId: studentInfo.own.studentScore.examId,
+        paperId: studentInfo.own.studentScore.paperId,
+      });
+    }
+  } else if (coursePlanComplex.programLecture.usid !== null) { // 프로그램
+    const studentInfo = await studentInfoView({
+      courseLectureIds: coursePlanComplex.programLecture.courseLectureUsids,
+      lectureCardIds: [],
+      preLectureCardIds: [],
+      serviceId: coursePlanComplex.programLecture.usid,
     });
 
     if (studentInfo.own !== null) {
