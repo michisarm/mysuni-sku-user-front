@@ -132,7 +132,7 @@ function renderSurveyRow(item: any, index: number) {
           <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
         </button>
       </Modal.Header>
-      <Modal.Content className="admin_popup_add">
+      <Modal.Content className="admin_popup_add scrolling-60vh">
         <p className="menuAdd_title">Manager에서 등록한 Survey가 표시됩니다.</p>
         <table className="ui admin_table_search sub">
           <colgroup>
@@ -163,7 +163,7 @@ function renderSurveyRow(item: any, index: number) {
           </tbody>
         </table>
         {surveyData !== undefined && (
-          <div className="scrolling-24vh">
+          <div>
             <table className="ui admin_table sub survey_popup_table">
               <thead>
                 <tr>
