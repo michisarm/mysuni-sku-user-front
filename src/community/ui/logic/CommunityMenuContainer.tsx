@@ -8,14 +8,12 @@ import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommun
 import _ from 'lodash';
 import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import discussionIcon from '../../../style/media/icon-communtiy-menu-discussion.png';
 import htmlIcon from '../../../style/media/icon-community-menu-html.png';
 import storeIcon from '../../../style/media/icon-communtiy-menu-download.png';
 import surveyIcon from '../../../style/media/icon-communtiy-menu-survey.png';
 import linkIcon from '../../../style/media/icon-community-menu-link.png';
-import homeIcon from '../../../style/media/icon-communtiy-menu-home-on.png';
-import homeArrowIcon from '../../../style/media/icon-community-menu-open.png';
 
 interface RouteParams {
   communityId: string;
@@ -58,30 +56,37 @@ function CommunityMenuContainer() {
         setSelectedRow(param)
         setAddChildMenuFlag(false)
       } else if(type === 'delete') {
-        deleteValuesArr.push(param.id)
-        setDeleteValues(deleteValuesArr)
-        if (communityAdminMenu) {
-          communityAdminMenu.menu.map((item: MenuItem, index: number) => {
-            if(item.id === param.id) {
-              communityAdminMenu.menu.splice(index, 1)
-            }
-            if(item.child) {
-              item.child.map((item2: any, index2: number) => {
-                if(item2.id === param.id) {
-                  communityAdminMenu.menu[index].child.splice(index2, 1)
+
+        reactConfirm({
+          title: '알림',
+          message: '삭제하시겠습니까?',
+          onOk: async () => {
+            deleteValuesArr.push(param.id)
+            setDeleteValues(deleteValuesArr)
+            if (communityAdminMenu) {
+              communityAdminMenu.menu.map((item: MenuItem, index: number) => {
+                if(item.id === param.id) {
+                  communityAdminMenu.menu.splice(index, 1)
                 }
-              }) 
+                if(item.child) {
+                  item.child.map((item2: any, index2: number) => {
+                    if(item2.id === param.id) {
+                      communityAdminMenu.menu[index].child.splice(index2, 1)
+                    }
+                  }) 
+                }
+              })
             }
-          })
-        }
-        setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+            setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+          },
+        });
       }
     },
     [communityAdminMenu]
   );
 
   const handleAddMenu = useCallback(() => {
-    //선택된 row 초기화
+    // 선택된 row 초기화
     setSelectedRow({
       accessType: '',
       communityId: '',
