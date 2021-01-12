@@ -49,9 +49,9 @@ const ReadOnlyProfileTitleView: React.FC<ReadOnlyProfileTitleViewProps> = functi
               src={
                 (profile?.profileBgImg &&
                   '/files/community/' + profile.profileBgImg) ||
-                '/static/media/bg-community-profilettl@3x.6156083d.png'
+                '../media/bg-community-profilettl@3x.6156083d.png'
               }
-              alt="배경이미지"
+              alt=""
             />
           </p>
         </div>
