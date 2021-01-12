@@ -60,7 +60,7 @@ function CommunityMenuContainer() {
 
         reactConfirm({
           title: '알림',
-          message: '삭제하시겠습니까?',
+          message: '메뉴 삭제 시 메뉴에 등록된 게시물도 전체 삭제됩니다.',
           onOk: async () => {
             deleteValuesArr.push(param.id)
             setDeleteValues(deleteValuesArr)
