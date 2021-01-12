@@ -553,7 +553,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     // TODO : getNextOrderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
     const lectureStructure = getLectureStructure();
-    setNextContentsPath('');
+    // setNextContentsPath('');
     if (lectureStructure) {
       if (lectureStructure.course?.type == 'COURSE') {
         //일반 코스 로직
