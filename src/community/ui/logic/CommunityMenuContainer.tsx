@@ -255,7 +255,7 @@ function CommunityMenuContainer() {
               if(!item2.value){
                 return {
                   'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 "+ (item.type === 'BASIC' ? '메뉴명' : '카테고리명') +"을 지정해주세요."
+                  'text' : (item.order+3)+"번째 메뉴의 "+ (item.type === 'CATEGORY' ? '카테고리명' : '메뉴명') +"을 지정해주세요."
                 }
               }
             }
@@ -474,7 +474,6 @@ function CommunityMenuContainer() {
     })
     return menuArr
   }
-
 
   const handleDown = useCallback(() => {
     let nextValuesArr = {'id': '', 'name': '', 'value': 0}

@@ -28,11 +28,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   const searchBox = useSearchBox();
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
   const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
-    {
-      'key': 0,
-      'value': 0,
-      'text': '선택'
-    }
+    // {
+    //   'key': 0,
+    //   'value': 0,
+    //   'text': '선택'
+    // }
   ]
   communityAdminGroups && communityAdminGroups!.results.map((data:any, index: number) => {
     groupArr.push({
