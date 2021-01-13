@@ -116,8 +116,8 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     }
   }
 
-  function handleChangeHtml(html: any) {
-    selectedRow!.html = html
+  function handleChangeHtml(e: any) {
+    selectedRow!.html = e.target.value
     onChangeValue(selectedRow, 'html');
   }
 
@@ -250,10 +250,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
           <tr>
             <td colSpan={2}>
               <div>
-                <ReactQuill
-                  theme="snow"
+                <textarea
+                  style={{ height: 548, width: '100%' }}
                   value={selectedRow && selectedRow.html}
-                  onChange={handleChangeHtml}
+                  onChange={(e) => {
+                    handleChangeHtml(e);
+                  }}
                 />
               </div>
             </td>
