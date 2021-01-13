@@ -211,7 +211,7 @@ function CommunityMenuContainer() {
        }
     }
     if(obj.type === 'HTML') {
-      if(!obj.discussionTopic) {
+      if(!obj.html) {
         return "HTML를 입력해주세요."
       }
     }
