@@ -127,7 +127,6 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   }
 
   function handleChangeHtml(e: any) {
-    console.log('e', e)
     selectedRow!.html = e.target.value
     onChangeAddValue(selectedRow, 'html');
   }
