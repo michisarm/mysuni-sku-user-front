@@ -31,7 +31,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
                 as={Link}
                 to="/community/main/open-communities"
               >
-                Open Community
+                Community List
               </Menu.Item>
               <Menu.Item
                 name="MyFeed"
