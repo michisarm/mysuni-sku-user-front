@@ -12,6 +12,7 @@ import CommunityMyProfileMenuContainer from '../logic/CommunityMyProfileMenuCont
 import { requestProfileCommunities } from '../../service/useCommunityProfile/utility/requestProfileCommunities';
 import { requestProfileFeeds } from '../../service/useCommunityProfile/utility/requestProfileFeeds';
 import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
+import CommunityMenuPage from './CommunityMenuPage';
 
 const MyProfileRoutes: React.FC = function MyProfileRoutes() {
   //
@@ -44,6 +45,11 @@ const MyProfileRoutes: React.FC = function MyProfileRoutes() {
             exact
             path="/community/my-profile/bookmark"
             component={MyProfileBookmarkPage}
+          />
+          <Route
+            exact
+            path="/community/admin/:communityId/menuManagement"
+            component={CommunityMenuPage}
           />
           <Route component={NotFoundPage} />
         </Switch>

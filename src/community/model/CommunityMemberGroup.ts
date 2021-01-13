@@ -38,6 +38,7 @@ export interface GroupMemberList {
   replyCount: number;
   teamId: string;
   teamName: string;
+  admin: boolean;
 }
 
 export interface CommunityGroup {

@@ -1,6 +1,6 @@
 import { axiosApi as axios } from '@nara.platform/accent';
-import GroupCdoModel from '../model/GroupCdoModel';
-import { number } from '@storybook/addon-knobs';
+import { SearchBox } from 'community/model/SearchBox';
+import AdminGroupCreate from 'community/viewModel/AdminGroupCreate';
 
 
 const BASE_URL = '/api/community';
@@ -25,30 +25,53 @@ export function searchGroup(
   .get(`${BASE_URL_T}/${communityId}/groups?name=${searchTerm}&offset=0&limit=20&searchFilter=&communityId=${communityId}`)
 }
 
-export function registerGroup(groupCdoModel: GroupCdoModel): Promise<string> {
+export function findAdminGroups(
+  communityId: string,
+  searchBox : SearchBox
+):Promise<any> {
+  return axios
+  .get(`${BASE_URL_T}/${communityId}/groups`, {
+    params: searchBox,
+  })
+}
+
+export function findAdminGroup(
+  searchBox : SearchBox
+):Promise<any> {
+  return axios
+  .get(`${BASE_URL_T}/${searchBox.communityId}/groups/${searchBox.groupId}`, {
+    params: searchBox,
+  })
+}
+
+export function registerGroup(adminGroupCreate: AdminGroupCreate): Promise<string> {
   return axios
     .post<string>(
-      `${BASE_URL}/${groupCdoModel.communityId}/groups`,
-      groupCdoModel
+      `${BASE_URL}/communities/${adminGroupCreate.communityId}/groups`,
+      adminGroupCreate
     )
     .then((response) => response && response.data);
 }
 
 export function modifyGroup(
-  groupId: string,
-  groupCdoModel: GroupCdoModel
+  adminGroupCreate: AdminGroupCreate
 ): Promise<string> {
   return axios
     .put<string>(
-      `${BASE_URL}/${groupCdoModel.communityId}/groups/${groupId}`,
-      groupCdoModel
+      `${BASE_URL}/communities/${adminGroupCreate.communityId}/groups/${adminGroupCreate.groupId}`,
+      adminGroupCreate
     )
     .then((response) => response && response.data);
 }
 
 export function removeGroup(
-  communityId: string,
-  groupId: string
+  adminGroupCreate: AdminGroupCreate
 ): Promise<any> {
-  return axios.delete(`${BASE_URL}/${communityId}/groups/${groupId}`);
+  return axios.delete(`${BASE_URL}/communities/${adminGroupCreate.communityId}/groups/${adminGroupCreate.groupId}`);
+}
+
+export function existsByCommunityIdAndName(communityId: string, name: string): Promise<boolean> {
+  return axios
+    .get<boolean>(`${BASE_URL}/communities/${communityId}/groups/existsByCommunityIdAndName?communityId=${communityId}&name=${name}`)
+    .then((response) => response && response.data);
 }

@@ -87,6 +87,7 @@ function CommunityDiscussionContainer() {
           </div> */}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
+            menuType="DISCUSSION"
             hideCamera
             name=""
             email=""
