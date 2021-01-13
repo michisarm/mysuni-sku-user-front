@@ -32,7 +32,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               as={Link}
               to="/community/main/open-communities"
             >
-              Open Community
+              Community List
             </Menu.Item>
             <Menu.Item
               name="MyFeed"
@@ -65,7 +65,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
                 현재 가입된 커뮤니티가 없습니다.
               </div>
               <div className="sub-text">
-                다양한 분야로 만들어진 Open Community에서
+                다양한 분야로 만들어진 Community List에서
                 <br />
                 관심 있는 커뮤니티를 찾아 Social Learning을 할 수 있습니다.
               </div>
@@ -73,7 +73,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
                 to="/community/main/open-communities"
                 className="ui icon button right btn-blue2"
               >
-                Open Community 바로가기
+                Community List 바로가기
                 <i aria-hidden="true" className="icon morelink" />
               </Link>
             </div>
