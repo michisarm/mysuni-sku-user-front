@@ -174,6 +174,51 @@ function CommunityMenuContainer() {
     }
   }, [communityAdminMenu, selectedRow])
 
+  const confirmBlank = useCallback((obj) => {
+    if(!obj.name) {
+      if(obj.type === 'CATEGORY') {
+        return "카테고리명을 입력해주세요."
+      }else {
+        return "메뉴명을 입력해주세요."
+      }
+    }
+    if(obj.type === 'DISCUSSION') {
+      if(!obj.discussionTopic) {
+        return "주제를 입력해주세요."
+      }
+    }
+    if(obj.accessType !== 'COMMUNITY_ALL_MEMBER') {
+      if(obj.groupId === 0) {
+        return "그룹을 지정해주세요"
+      }
+    }
+    if(obj.type === 'LINK') {
+      if (!obj.url) {
+        return 'URL를 입력해주세요.'
+       }
+      if (
+        !obj.url.includes('http://') &&
+        !obj.url.includes('https://')
+      ) {
+       return '링크는 http:// 또는 https:// 으로 시작되어야 합니다.'
+      }
+    }
+    if(obj.type === 'SURVEY') {
+      if (!obj.surveyInformation) {
+       return '설문 안내글을 입력해주세요.'
+      }
+      if (!obj.surveyId) {
+        return 'survey를 추가해주세요.'
+       }
+    }
+    if(obj.type === 'HTML') {
+      if(!obj.html) {
+        return "HTML를 입력해주세요."
+      }
+    }
+    return 'success'
+  }, [])
+
   const handleSave = useCallback(async (nameValues?, deleteValues?, type?, obj?) => {
     const result = 
     _.chain(nameValues)
