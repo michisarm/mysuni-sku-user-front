@@ -35,7 +35,7 @@ const FollowView: React.FC = function FollowView() {
               as={Link}
               to="/community/main/open-communities"
             >
-              Open Community
+              Community List
             </Menu.Item>
             <Menu.Item
               name="MyFeed"
@@ -65,7 +65,7 @@ const FollowView: React.FC = function FollowView() {
                     <div className="sub-text">팔로우들은 어떤 활동을 하고 있을까요?<br />커뮤니티에서 만난 학습자들을 팔로우 해보세요!</div>
                     <Link to="/community/main/open-communities">
                       <Button icon className="right btn-blue2" >
-                        Open Community 바로가기<Icon className="morelink"/>
+                      Community List 바로가기<Icon className="morelink"/>
                       </Button>
                     </Link>
                   </div>
