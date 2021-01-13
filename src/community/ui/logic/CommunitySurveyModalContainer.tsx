@@ -105,6 +105,9 @@ const CommunitySurveyModalContainer: React.FC<Props> = function CommunitySurveyM
 
 function renderSurveyRow(item: any, index: number) {
   if(item !== undefined) {
+
+    const createTime = moment(item.time).format('YYYY.MM.DD');
+    
     return(
       <tr key={index}>
         <td>
@@ -116,10 +119,10 @@ function renderSurveyRow(item: any, index: number) {
           />
         </td>
         <td>
-          반도체 산업의 시작과 역사에 대해 개인 의견을 남겨주세요.
+          {item.titles.langStringMap[item.titles.defaultLanguage]}
         </td>
-        <td>김써니</td>
-        <td>2020.12.15</td>
+        <td>{item.formDesigner.names.langStringMap[item.formDesigner.names.defaultLanguage]}</td>
+        <td>{createTime}</td>
       </tr>
     )
   }

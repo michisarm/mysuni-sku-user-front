@@ -39,7 +39,6 @@ export function useCommunityGroups(): [GroupListItem] {
         return;
       }
       return onCommunityAdminGroupsStore(next => {
-        console.log('onCommunityAdminGroupsStore next', next)
         setGroupListItem(next)
       }, subscriberId);
     }, [subscriberId]);
