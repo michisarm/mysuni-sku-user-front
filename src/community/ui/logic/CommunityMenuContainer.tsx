@@ -46,7 +46,6 @@ function CommunityMenuContainer() {
     }
   }, [communityId]);
 
-
   const onHandleClickTaskRow = useCallback(
     (e, param, type) => {
       setAddMenuFlag(false)
@@ -220,12 +219,15 @@ function CommunityMenuContainer() {
   }, [])
 
   const handleSave = useCallback(async (nameValues?, deleteValues?, type?, obj?) => {
+    let successFlag = false
     const result = 
     _.chain(nameValues)
       .groupBy('id')
       .map((v, i) => {
         return {
           'id': _.get(_.find(v, 'id'), 'id'),
+          'order': _.get(_.find(v, 'order'), 'order'),
+          'type': _.get(_.find(v, 'type'), 'type'),
           'nameValues': 
           _.chain(v)
             .groupBy('name')
@@ -240,40 +242,124 @@ function CommunityMenuContainer() {
       .orderBy(['id'])
       .value()
 
-      console.log('result', result)
-
       // 삭제한 메뉴있을시
       if(deleteValues.length !== 0) {
         deleteCommunityMenu(communityId, deleteValues)
+        successFlag = true
       }
       if(result.length !== 0) {
-        saveCommunityMenu(communityId, result)
+        const editValidateCheck = result.map((item, index) => {
+          return item.nameValues.map((item2, index2) => {
+            
+            if(item2.name === 'name') {
+              if(!item2.value){
+                return {
+                  'state': false,
+                  'text' : (item.order+3)+"번째 메뉴의 "+ (item.type === 'CATEGORY' ? '카테고리명' : '메뉴명') +"을 지정해주세요."
+                }
+              }
+            }
+            if(item2.name === 'groupId') {
+              if(!item2.value){
+                return {
+                  'state': false,
+                  'text' : (item.order+3)+"번째 메뉴의 그룹을 지정해주세요."
+                }
+              }
+            }
+            if (item2.name === 'url') {
+              if(!item2.value){
+                return (item.order+3)+"번째 메뉴의 URL를 지정해주세요."
+              } else if (              
+                !item2.value.includes('http://') &&
+                !item2.value.includes('https://')
+              ) {
+                return {
+                  'state': false,
+                  'text' : (item.order+3)+"번째 메뉴의 링크는 http:// 또는 https:// 으로 시작되어야 합니다."
+                }
+              }
+            }
+            if(item2.name === 'discussionTopic') {
+              if(!item2.value){
+                return {
+                  'state': false,
+                  'text' : (item.order+3)+"번째 메뉴의 토론 주제를 입력해주세요."
+                }
+              }
+            }
+            if(item2.name === 'surveyInformation') {
+              if(!item2.value){
+                return {
+                  'state': false,
+                  'text' : (item.order+3)+"번째 메뉴의 설문 안내글을 입력해주세요"
+                }
+              }
+            }
+            if(item2.name === 'surveyId') {
+              if(!item2.value){
+                return {
+                  'state': false,
+                  'text' : (item.order+3)+"번째 메뉴의 survey를 추가해주세요."
+                }
+              }
+            }
+            return {
+              'state': true,
+              'text': ''
+            }
+          })
+        })
+        let text = ''
+        editValidateCheck.map((item) => {
+          item.map((item2: any) => {
+            if(item2.state === false) {
+              text += item2.text + '</br>'
+            }
+          })
+        })
+
+        if(text !== '') {
+          reactAlert({
+            title: '',
+            message: text,
+          });
+        } else {
+          saveCommunityMenu(communityId, result)
+          successFlag = true
+        }
       }
-      setNameValues([])
+
+      setNameValues([...nameValues, []])
+
       if(type === 'add') {
         if(communityAdminMenu!.menu.length === 0) {
           obj.order = 1
         }else {
           obj.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
         }
-        if(obj.type === 'DISCUSSION') {
-          addCommunityDiscussion(communityId, obj).then((result)=> {
-            requestCommunityMenu(communityId);
-          })
-        } else {
-          console.log('obj.type', obj.type)
-          if (obj && obj.type === 'LINK') {
-            if (
-              !obj.url.includes('http://') &&
-              !obj.url.includes('https://')
-            ) {
-             alert("정확한 url을 입력해주세요.")
-            }
+
+        const validateCheck = confirmBlank(obj)
+        if(validateCheck === 'success') {
+          if(obj.type === 'DISCUSSION') {
+            addCommunityDiscussion(communityId, obj).then((result)=> {
+              requestCommunityMenu(communityId);
+            })
+          } else {
+            addCommunityMenu(communityId, obj).then((result)=> {
+              requestCommunityMenu(communityId);
+            })
           }
-          return false
-          addCommunityMenu(communityId, obj).then((result)=> {
-            requestCommunityMenu(communityId);
-          })
+          reactAlert({
+            title: '',
+            message:
+              '저장되었습니다.',
+          });
+        } else {
+          reactAlert({
+            title: '',
+            message: validateCheck,
+          });
         }
       } else if(type === 'childAdd') {
         obj.parentId = selectedRow!.id
@@ -286,21 +372,37 @@ function CommunityMenuContainer() {
             }
           }
         })
-        if(obj.type === 'DISCUSSION') {
-          addCommunityDiscussion(communityId, obj).then((result)=> {
-            requestCommunityMenu(communityId);
-          })
+        const validateCheck = confirmBlank(obj)
+        if(validateCheck === 'success') {
+          if(obj.type === 'DISCUSSION') {
+            addCommunityDiscussion(communityId, obj).then((result)=> {
+              requestCommunityMenu(communityId);
+            })
+          } else {
+            addCommunityMenu(communityId, obj).then((result)=> {
+              requestCommunityMenu(communityId);
+            })
+          }
+          reactAlert({
+            title: '',
+            message:
+              '저장되었습니다.',
+          });
         } else {
-          addCommunityMenu(communityId, obj).then((result)=> {
-            requestCommunityMenu(communityId);
-          })
+          reactAlert({
+            title: '',
+            message: validateCheck,
+          });
+        }
+      } else {
+        if(successFlag) {
+          reactAlert({
+            title: '',
+            message:
+              '저장되었습니다.',
+          });
         }
       }
-      reactAlert({
-        title: '',
-        message:
-          '저장되었습니다.',
-      });
   }, [communityAdminMenu, selectedRow])
 
   const onChangeAddValue = useCallback((data, name, type?)=> {
@@ -324,14 +426,13 @@ function CommunityMenuContainer() {
         }
       })
     }
-    const ValuesArr = {'id': value.id, 'name': name, 'value': value[name]}
+    const ValuesArr = {'id': value.id, 'name': name, 'value': value[name], 'order': value.order, 'type': value.type}
 
     nameValues.map((item: any, index: any) => {
       if(item.id === value.id && item.name === name) {
         nameValues.splice(index,1)
       }
     })
-    setNameValues(nameValues)
     nameValuesArr.push(ValuesArr)
     setNameValues(nameValuesArr)
 
