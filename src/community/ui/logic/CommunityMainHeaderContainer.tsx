@@ -135,38 +135,6 @@ function CommunityMainHeaderContainer() {
     );
   }) : <p>팔로우가 없습니다.<br />커뮤니티에서 만난 학습자들을 팔로우 해보세요!</p>;
 
-  const followingsModal = followingsList?.followings.map((item, idx) => {
-    return (
-      <li style={{ cursor: 'pointer' }}>
-        <p
-          className="pic"
-          onClick={() => history.push(`/community/profile/${item.id}`)}
-        >
-          <img
-            src={
-              item.profileImg === null || item.profileImg === ''
-                ? `${DefaultImg}`
-                : `/files/community/${item.profileImg}`
-            }
-            alt=""
-          />
-        </p>
-        <p
-          className="nickname"
-          onClick={() => history.push(`/community/profile/${item.id}`)}
-        >
-          {item.nickname === '' ? item.name : item.nickname}
-        </p>
-        <label className="chk_follow">
-          <input type="checkbox" name="" />
-          <span onClick={() => followingsBtn(item.id, idx, item.follow)}>
-            {item.follow ? 'unfollow' : 'follow'}
-          </span>
-        </label>
-      </li>
-    );
-  });
-
   return (
     <>
       {/* <FollowerView /> */}
