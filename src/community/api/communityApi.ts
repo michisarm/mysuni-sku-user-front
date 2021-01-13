@@ -416,6 +416,7 @@ export function saveCommunityAdminMenu(communityId: string): Promise<any> {
 export function deleteCommunityAdminMenu(communityId: string, params: any): Promise<any> {
   // params: CommunityAdminMenu
   console.log('params', params)
+  const url = `${BASE_URL}/${communityId}/menus/${params}`;
   return axiosApi.delete(url).then(response => {
     return response && response.data
   }); 
