@@ -127,7 +127,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
     }
   };
 
-  const followersModal = followersList?.followers.map((item, idx) => {
+  const followersModal = followersList?.followers.length !== 0 ? followersList?.followers.map((item, idx) => {
     return (
       <li>
         <p
@@ -158,9 +158,9 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
         </label>
       </li>
     );
-  });
+  }) : <p>팔로워가 없습니다.<br />관심있는 커뮤니티를 찾아 활발한 활동을 해보세요!</p>;
 
-  const followingsModal = followingsList?.followings.map((item, idx) => {
+  const followingsModal = followingsList?.followings.length !== 0 ? followingsList?.followings.map((item, idx) => {
     return (
       <li>
         <p
@@ -191,7 +191,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
         </label>
       </li>
     );
-  });
+  }) : <p>팔로우가 없습니다.<br />커뮤니티에서 만난 학습자들을 팔로우 해보세요!</p>;
 
   return (
     //contextRef = createRef()
