@@ -16,6 +16,7 @@ interface Props {
   replyCount?: number;
   likeCount?: number;
   editAuth?: boolean;
+  menuType?: string;
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
@@ -38,6 +39,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       likeCount,
       postDetail,
       editAuth,
+      menuType,
       onClickList,
       onClickDelete,
       onClickModify,
@@ -75,10 +77,12 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                     <span className="header-span-first">댓글수</span>
                     <span>{replyCount}</span>
                   </div>
-                  <div className="ui label onlytext">
-                    <span className="header-span-first">작성자: </span>
-                    <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
-                  </div>
+                  {menuType !== 'ANONYMOUS' && (
+                    <div className="ui label onlytext">
+                      <span className="header-span-first">작성자: </span>
+                      <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
+                    </div>
+                  )}
                 </div>
                 <div className="right-area">
                 { postDetail.menuId !== 'NOTICE' && likeCount === 0 &&(
