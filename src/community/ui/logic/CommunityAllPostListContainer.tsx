@@ -46,18 +46,15 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
   const [menuType, setMenuType] = useState<string>('');
   const [menuName, setMenuName] = useState<string>('');
 
-  // const { pageMap } = SharedService;
   useEffect(() => {
     if (postItems === undefined) {
       return;
     }
-
     const menuData = findPostMenuName(communityId, menuId);
     menuData.then(result => {
       setMenuName(result.name);
       setMenuType(result.type)
     });
-    
     totalPages();
   }, [postItems]);
 
@@ -71,11 +68,15 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       history.push({
         pathname: `/community/${param.communityId}/ANONYMOUS/post/${param.postId}`,
       });
-    } else {
+    }else if (param.menuType === 'DISCUSSION'){
       history.push({
-        pathname: `/community/${param.communityId}/all/post/${param.postId}`,
+        pathname: `/community/${param.communityId}/discussion/${param.menuId}`,
       });
-    }          
+    }else {
+      history.push({
+        pathname: `/community/${param.communityId}/post/${param.postId}`,
+      });
+    }   
   };
 
   const onChangeSearchType = (name: string, value: SearchType) => {
@@ -119,7 +120,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     }
 
     getAllPostListMapFromCommunity(param);
-    // setSearch('searchText')
   };
 
   const onPageChange = (data: any) => {
@@ -155,7 +155,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       totalpage++;
     }
     setTotalPage(totalpage);
-    // return totalpage;
   };
 
   return (
@@ -183,14 +182,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
               />
             </div>
           </div>
-
-          {/* <div className="paging margin-none">
-            <div className="lms-paging-holder">
-              <a className="lms-num lms-on">1</a>
-            </div>
-          </div> */}
-
-          {/* <div className="center"> */}
           <div className="lms-paging-holder">
             <Pagination
               activePage={activePage}
@@ -200,8 +191,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
               onPageChange={(e, data) => onPageChange(data)}
             />
           </div>
-          {/* </div> */}
-
           <CommunityPostListSearchBox
             searchType={searchType}
             searchText={searchText}

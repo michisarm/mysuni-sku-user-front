@@ -570,7 +570,8 @@ function CommunityHomeTreeContainer() {
               {communtyHome.menus
                 .filter(c => c.parentId === null)
                 .sort((a, b) => a.order - b.order)
-                .map(menu => (
+                .map(menu => { 
+                  return (
                   <MenuItemView
                     key={menu.menuId}
                     {...menu}
@@ -578,7 +579,7 @@ function CommunityHomeTreeContainer() {
                       c => c.parentId === menu.id
                     )}
                   />
-                ))}
+                )})}
             </ul>
           )}
         </div>
