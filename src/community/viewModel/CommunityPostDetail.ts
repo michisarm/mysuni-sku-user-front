@@ -21,6 +21,7 @@ export interface CommunityPostDetail {
   modifierId: string,
   modifiedTime: number,
   nickName: string,
+  creatorCompanyName: string,
   introduce: string,
   profileImg: string,
   prevPost?: Post,

@@ -19,6 +19,7 @@ interface Props {
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
+  onClickLike: () => void;
 }
 
 @reactAutobind
@@ -40,6 +41,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       onClickList,
       onClickDelete,
       onClickModify,
+      onClickLike
     } = this.props;
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -73,10 +75,20 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                     <span className="header-span-first">댓글수</span>
                     <span>{replyCount}</span>
                   </div>
+                  <div className="ui label onlytext">
+                    <span className="header-span-first">작성자: </span>
+                    <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
+                  </div>
                 </div>
                 <div className="right-area">
-                { postDetail.menuId !== 'NOTICE' && (
-                  <div className="ui onlytext">
+                { postDetail.menuId !== 'NOTICE' && likeCount === 0 &&(
+                  <div className="ui onlytext" onClick={onClickLike}>
+                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />&nbsp;
+                    <span className="heartText">{likeCount}</span>
+                  </div>
+                )}
+                { postDetail.menuId !== 'NOTICE' && likeCount !== 0 &&(
+                  <div className="ui onlytext" onClick={onClickLike}>
                     <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
                     <span className="heartText">{likeCount}</span>
                   </div>

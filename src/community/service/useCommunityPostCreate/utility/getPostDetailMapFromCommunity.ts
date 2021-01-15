@@ -29,7 +29,8 @@ export async function getPostDetailMapFromCommunity(
         modifiedTime: 0,
         nickName: '',
         introduce: '',
-        profileImg: ''
+        profileImg: '',
+        creatorCompanyName: ''
 
     }
     if (postId !== undefined) {
@@ -55,6 +56,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.prevPost = post.prevPost;
             postDetailItem.nextPost = post.nextPost;
             postDetailItem.creatorName = post.creatorName!;
+            postDetailItem.creatorCompanyName = post.creatorCompanyName!;
         }
     }
     setCommunityPostDetailItem(postDetailItem);

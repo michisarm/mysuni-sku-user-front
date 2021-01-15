@@ -220,6 +220,7 @@ function CommunityPostDetailContainer() {
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
+            onClickLike={OnClickLike}
           />
           <div className="class-guide-txt fn-parents ql-snow">
             <div
@@ -283,7 +284,7 @@ function CommunityPostDetailContainer() {
               </div>
             </div>
           )}
-          {menuType !== 'ANONYMOUS' && (
+          {/* {menuType !== 'ANONYMOUS' && (
             <div
               className="community-board-card"
               style={{ cursor: 'pointer' }}
@@ -304,7 +305,7 @@ function CommunityPostDetailContainer() {
                 <h4>{postDetail.introduce}</h4>
               </div>
             </div>
-          )}
+          )} */}
           <div className="task-read-bottom">
             {postDetail.menuId !== 'NOTICE' && (
               <button
