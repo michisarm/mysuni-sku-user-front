@@ -6,7 +6,7 @@ import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunitydiscussionMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import discussionIcon from '../../../style/media/icon-communtiy-menu-discussion.png';
@@ -325,7 +325,7 @@ function CommunityMenuContainer() {
             message: text,
           });
         } else {
-          saveCommunityMenu(communityId, result)
+          saveCommunityMenu(communityId, result, selectedRow)
           successFlag = true
         }
       }
