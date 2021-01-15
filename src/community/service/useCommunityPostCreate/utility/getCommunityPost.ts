@@ -25,6 +25,7 @@ export async function getCommunityPost(
       visible: false,
       creatorId: '',
       creatorName: '',
+      creatorCompanyName: '',
       createdTime: 0,
       modifierId: '',
       modifiedTime: 0,
