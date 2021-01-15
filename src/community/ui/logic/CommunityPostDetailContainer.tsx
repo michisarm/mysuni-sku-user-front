@@ -217,6 +217,7 @@ function CommunityPostDetailContainer() {
             likeCount={likeCount}
             deletable={true}
             editAuth={editAuth}
+            menuType={menuType}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
