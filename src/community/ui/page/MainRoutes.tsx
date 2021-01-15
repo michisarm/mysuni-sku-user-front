@@ -22,10 +22,12 @@ import {
 } from '../../store/CommunityMainStore';
 import { getEmptyMyCommunityIntro } from '../../viewModel/MyCommunityIntro/MyCommunityIntro';
 import { getEmptyOpenCommunityIntro } from '../../viewModel/OpenCommunityIntro/OpenCommunityIntro';
+import { getCommunityProfile } from 'community/service/useCommunityProfile/utility/getCommunityProfile';
 
 function MainRoutes() {
   useEffect(() => {
     findProfile().then(setMyProfile);
+    getCommunityProfile();
     requestMyCommunityList();
     requestMyCommunityPostList();
     requestFieldList();
