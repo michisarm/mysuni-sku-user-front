@@ -86,9 +86,16 @@ export function requestCommunityGroups(communityId: string) {
   });
 }
 
-export async function saveCommunityMenu(communityId: string, params: any) {
+export async function saveCommunityMenu(communityId: string, params: any, selectedRow: any) {
   for await (const param of params) {
-    saveCommunityAdminMenu(communityId, param).then(result => {
+    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
+    });
+  }
+}
+
+export async function saveCommunitydiscussionMenu(communityId: string, params: any, selectedRow: any) {
+  for await (const param of params) {
+    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
     });
   }
 }
