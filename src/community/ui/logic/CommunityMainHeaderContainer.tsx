@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import { useMyProfile } from '../../store/MyProfileStore';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
@@ -22,6 +22,8 @@ import { useHistory } from 'react-router-dom';
 //default imgage
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import { render } from 'react-dom';
+import { reactConfirm } from '@nara.platform/accent';
+import { getCommunityProfileItem, setCommunityProfileItem } from 'community/store/CommunityProfileStore';
 
 function CommunityMainHeaderContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -35,6 +37,29 @@ function CommunityMainHeaderContainer() {
 
   // const followModalContainerList = useFollowCommunityIntro();
   const profile = useMyProfile();
+
+
+  const myProfileEdit = useCallback(async () => {
+    //
+    const profileItem = getCommunityProfileItem();
+    if (profileItem === undefined) {
+      return;
+    }
+    const nextProfileItem = { ...profileItem, editing: true };
+    await setCommunityProfileItem(nextProfileItem);
+    history.push("/community/my-profile");
+  }, []);
+
+  useEffect(() => {
+    if(profile && profile?.nickname === ''){
+      reactConfirm({
+        title: 'Community 방문을 환영합니다!',
+        message: '나만의 닉네임/프로필 사진을 등록해보세요!',
+        onOk: () => myProfileEdit(),
+      });
+    }
+  }, [profile]);
+  // profile
 
   const followersList = useFollowersModal();
   const followingsList = useFollowingsModal();
