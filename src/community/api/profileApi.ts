@@ -43,3 +43,12 @@ export function findCommunityProfile(
     .get<Profile>(url)
     .then(AxiosReturn);
 }
+
+export function existsByNickname(
+  nickname: string
+): Promise<boolean> {
+  const url = `${BASE_URL}/profiles/existsByNickname/${nickname}`;
+  return axiosApi
+    .get<boolean>(url)
+    .then((response) => response && response.data);
+}

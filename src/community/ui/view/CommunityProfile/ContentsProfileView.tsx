@@ -4,6 +4,7 @@ import {CommunityProfileItem} from "community/viewModel/CommunityProfile";
 import ContentsProfileEditView from "./ContentsProfileEditView";
 import { reactAlert, reactConfirm } from "@nara.platform/accent";
 import { saveCommunityProfile } from "community/service/useCommunityProfile/utility/saveCommunityProfile";
+import { getExistsByNickname } from "community/service/useCommunityProfile/utility/getExistsByNickname";
 
 
 interface ContentsProfileViewProps {
@@ -22,7 +23,7 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
         message:
           '인사말을 최대 100자까지만 입력해주세요.',
       });
-      return; 
+      return;
     }
 
     // 닉네임 필수
@@ -32,7 +33,7 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
         message:
           '닉네임을 입력해주세요.',
       });
-      return; 
+      return;
     }
 
     if ( profileItem.nickname.length > 20) {
@@ -41,7 +42,7 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
         message:
           '닉네임을 최대 20자까지만 입력해주세요.',
       });
-      return; 
+      return;
     }
 
     if (profileItem.hobby.length > 100) {
@@ -50,7 +51,7 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
         message:
           '취미를 최대 100자까지만 입력해주세요.',
       });
-      return; 
+      return;
     }
 
     reactConfirm({
@@ -59,6 +60,32 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
         '저장하시겠습니까?',
       onOk: () => saveCommunityProfile(),
     });
+    // 현재 닉네임은 제외
+    if (profileItem.oriNickname !== profileItem.nickname) {
+      getExistsByNickname(profileItem.nickname).then(response => {
+        if (response) {
+          reactAlert({
+            title: '알림',
+            message:
+              '중복된 닉네임입니다.',
+          });
+        } else {
+          reactConfirm({
+            title: '알림',
+            message:
+              '저장하시겠습니까?',
+            onOk: () => saveCommunityProfile(),
+          });
+        }
+      });
+    } else {
+      reactConfirm({
+        title: '알림',
+        message:
+          '저장하시겠습니까?',
+        onOk: () => saveCommunityProfile(),
+      });
+    }
   },[profileItem]);
 
   return (
