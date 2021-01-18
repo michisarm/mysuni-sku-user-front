@@ -5,15 +5,11 @@ import { Comment } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { findSkProfileByAudienceId } from '../../api/profileApi';
 import { useLectureDiscussion } from '../../service/useLectureDiscussion';
-import {
-  getLectureDiscussion,
-  setLectureDiscussion,
-} from '../../store/LectureDiscussionStore';
+import { getLectureDiscussion,setLectureDiscussion } from '../../store/LectureDiscussionStore';
 import defaultImage from '../../../../style/media/img-profile-80-px.png';
-​
+
 function LectureDiscussionContainer() {
   const [lectureDiscussion] = useLectureDiscussion();
-​
   useEffect(() => {
     if (lectureDiscussion === undefined) {
       return;
@@ -32,7 +28,7 @@ function LectureDiscussionContainer() {
       }
     );
   }, [lectureDiscussion?.creatorAudienceId]);
-​
+
   const {
     skProfile: {
       member: { company, department, email, name },
@@ -81,5 +77,5 @@ function LectureDiscussionContainer() {
     </>
   );
 }
-​
+
 export default LectureDiscussionContainer;
