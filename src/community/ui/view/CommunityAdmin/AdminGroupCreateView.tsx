@@ -70,6 +70,10 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
     history.push(`/community/admin/${communityId}/memberManagement/group`);
   }, [communityId]);
 
+  const routeToGroupMemberList = useCallback(() => {
+    history.push(`/community/admin/${communityId}/memberManagement/group/Detail/${groupId}`);
+  }, [communityId, groupId,managerId]);
+
   const saveGroupInformation = useCallback(async () => {
     if(!name || name.length === 0 ){
       reactAlert({ title: '필수 정보 입력 안내', message: '‘그룹명’은 필수 항목입니다.<br />해당 정보를 입력하신 후 저장해주세요.' });
@@ -176,6 +180,8 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
       setSelectedList([]);
       getAdminGroup();
       getAllGroupMemberByQuery();
+      routeToGroupMemberList();
+
       reactAlert({ title: '알림', message: '그룹장 지정 되었습니다.' });
     } else if (selectedList && selectedList.length == 0) {
       reactAlert({ title: '알림', message: '그룹장으로 지정할 멤버를 선택해주세요.' });

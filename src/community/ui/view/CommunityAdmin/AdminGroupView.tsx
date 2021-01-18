@@ -167,7 +167,7 @@ const AdminGroupViewView: React.FC<AdminGroupViewProps> = function AdminMemberVi
               <tr key={index} onClick={() => routeToGroupDetail(item.groupId)}>
                 <td>{communityGroups?.totalCount - index - (activePage - 1) * limit}</td>
                 <td>{item.name}</td>
-                <td>{item.memberCount}</td>
+                <td>{item.memberCount || 0}</td>
               </tr>
             ))
           }
