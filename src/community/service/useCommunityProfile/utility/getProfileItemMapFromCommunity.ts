@@ -10,6 +10,7 @@ export async function getProfileItemMapFromCommunity(): Promise<void> {
         profileImg: '',
         profileBgImg: '',
         nickname: '',
+        oriNickname: '',
         introduce: '',
         hobby: '',
         followerCount: 0,
@@ -23,6 +24,7 @@ export async function getProfileItemMapFromCommunity(): Promise<void> {
         profileItem.profileImg = myProfile.profileImg;
         profileItem.profileBgImg = myProfile.profileBgImg;
         profileItem.nickname = myProfile.nickname;
+        profileItem.oriNickname = myProfile.nickname;
         profileItem.introduce = myProfile.introduce;
         profileItem.hobby = myProfile.hobby;
         profileItem.followerCount = myProfile.followerCount;
