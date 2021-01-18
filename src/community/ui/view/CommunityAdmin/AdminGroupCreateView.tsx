@@ -70,9 +70,9 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
     history.push(`/community/admin/${communityId}/memberManagement/group`);
   }, [communityId]);
 
-  const routeToGroupMemberList = useCallback(() => {
+  const routeToGroupDetail = useCallback((groupId:string) => {
     history.push(`/community/admin/${communityId}/memberManagement/group/Detail/${groupId}`);
-  }, [communityId, groupId,managerId]);
+  }, [communityId]);
 
   const saveGroupInformation = useCallback(async () => {
     if(!name || name.length === 0 ){
@@ -180,7 +180,7 @@ const AdminGroupCreateView: React.FC<AdminGroupCreateViewProps> = function Admin
       setSelectedList([]);
       getAdminGroup();
       getAllGroupMemberByQuery();
-      routeToGroupMemberList();
+      routeToGroupDetail(groupId||'');
 
       reactAlert({ title: '알림', message: '그룹장 지정 되었습니다.' });
     } else if (selectedList && selectedList.length == 0) {
