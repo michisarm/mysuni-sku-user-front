@@ -5,27 +5,34 @@ import { Comment } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { findSkProfileByAudienceId } from '../../api/profileApi';
 import { useLectureDiscussion } from '../../service/useLectureDiscussion';
-import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
+import {
+  getLectureDiscussion,
+  setLectureDiscussion,
+} from '../../store/LectureDiscussionStore';
 import defaultImage from '../../../../style/media/img-profile-80-px.png';
-
+​
 function LectureDiscussionContainer() {
   const [lectureDiscussion] = useLectureDiscussion();
+​
   useEffect(() => {
     if (lectureDiscussion === undefined) {
       return;
     }
     findSkProfileByAudienceId(lectureDiscussion.creatorAudienceId).then(
       profile => {
-        if (profile !== undefined) {
-          setLectureDiscussion({
-            ...lectureDiscussion,
-            creatorImage: profile.photoImage,
-          });
+        const mLectureDiscussion = getLectureDiscussion();
+        if (profile !== undefined && mLectureDiscussion !== undefined) {
+          if (mLectureDiscussion.creatorImage != profile.photoImage) {
+            setLectureDiscussion({
+              ...lectureDiscussion,
+              creatorImage: profile.photoImage,
+            });
+          }
         }
       }
     );
-  }, [lectureDiscussion]);
-
+  }, [lectureDiscussion?.creatorAudienceId]);
+​
   const {
     skProfile: {
       member: { company, department, email, name },
@@ -74,5 +81,5 @@ function LectureDiscussionContainer() {
     </>
   );
 }
-
+​
 export default LectureDiscussionContainer;
