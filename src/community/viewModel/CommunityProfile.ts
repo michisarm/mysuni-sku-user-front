@@ -14,6 +14,7 @@ export interface CommunityProfileItem extends Item {
   profileImg: string;
   profileBgImg: string;
   nickname: string;
+  oriNickname: string;
   introduce: string;
   hobby: string;
   followerCount: number;
@@ -26,6 +27,7 @@ export interface CommunityProfile {
   profileImg: string;
   profileBgImg: string;
   nickname: string;
+  oriNickname: string;
   introduce: string;
   hobby: string;
   followerCount: number;

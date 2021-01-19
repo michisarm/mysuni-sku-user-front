@@ -55,7 +55,6 @@ class PostDetailViewContentHeaderView extends Component<Props> {
     const handelClickDelete = () => {
       onClickDelete(postDetail.id);
     };
-
     return (
       <>
         <div className="course-info-header">
@@ -80,7 +79,12 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                   {menuType !== 'ANONYMOUS' && (
                     <div className="ui label onlytext">
                       <span className="header-span-first">작성자: </span>
-                      <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
+                      {postDetail.nickName && (
+                        <span>{postDetail.nickName}</span>
+                      )}
+                      {postDetail.nickName === null || postDetail.nickName === '' && (
+                        <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
+                      )}
                     </div>
                   )}
                 </div>
