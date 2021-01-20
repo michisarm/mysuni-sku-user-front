@@ -179,16 +179,17 @@ function CommunityPostDetailContainer() {
   const OnClickLike = useCallback(() => {
     const memberId = patronInfo.getDenizenId();
     if (memberId != undefined && memberId != '') {
-      saveCommunityPostLike(postId, memberId).then(result => {});
-      if (like === true) {
-        setLike(false);
-        setLikeCount(likeCount - 1);
-      } else {
-        setLike(true);
-        setLikeCount(likeCount + 1);
-      }
+      saveCommunityPostLike(postId, memberId).then(result => {
+        if (like === true) {
+          setLike(false);
+          setLikeCount(likeCount - 1);
+        } else {
+          setLike(true);
+          setLikeCount(likeCount + 1);
+        }
+      });
     }
-  }, [like]);
+  }, [like, likeCount]);
 
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
