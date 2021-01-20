@@ -4,7 +4,7 @@ import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CommunityPostCreateItem } from '../../viewModel/CommunityPostCreate';
-import { getCommunityPostDetail } from "../useCommunityPostCreate/utility/getCommunityPostDetail";
+import { getCommunityPostDetailWithIncreaseReadCount } from "../useCommunityPostCreate/utility/getCommunityPostDetail";
 
 type PostDetailValue = CommunityPostDetail | undefined;
 
@@ -12,12 +12,12 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
     const subscriberIdRef = useRef<number>(0);
     const [subscriberId, setSubscriberId] = useState<string>();
     const [PostDetailValue, setPostDetailValue] = useState<CommunityPostDetail>();
-    
+
     useEffect(() => {
       if(communityId === undefined || postId === undefined) {
         return
       }
-      getCommunityPostDetail(communityId, postId);
+      getCommunityPostDetailWithIncreaseReadCount(communityId, postId);
     }, [communityId, postId]);
 
     useEffect(() => {
@@ -33,6 +33,6 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
         setPostDetailValue(next)
       }, subscriberId);
     }, [subscriberId]);
-  
+
     return [PostDetailValue];
 }
