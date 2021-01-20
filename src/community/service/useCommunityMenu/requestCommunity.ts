@@ -131,3 +131,10 @@ export function getCommunitySurvey(surveyId: string) {
     return result
   });
 }
+
+export function requestCommunityMenuOrder(surveyId: string) {
+  //api/community/{communityId}/menus/order
+  return getCommunitySurveyInfo(surveyId).then(result => {
+    return result
+  });
+}

@@ -343,10 +343,12 @@ function CommunityMenuContainer() {
         if(validateCheck === 'success') {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
+              //오더정리
               requestCommunityMenu(communityId);
             })
           } else {
             addCommunityMenu(communityId, obj).then((result)=> {
+              //오더정리
               requestCommunityMenu(communityId);
             })
           }
@@ -376,10 +378,12 @@ function CommunityMenuContainer() {
         if(validateCheck === 'success') {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
+              //오더정리
               requestCommunityMenu(communityId);
             })
           } else {
             addCommunityMenu(communityId, obj).then((result)=> {
+              //오더정리
               requestCommunityMenu(communityId);
             })
           }
@@ -396,6 +400,7 @@ function CommunityMenuContainer() {
         }
       } else {
         if(successFlag) {
+          //오더정리
           reactAlert({
             title: '',
             message:
