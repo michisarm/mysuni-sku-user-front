@@ -357,7 +357,7 @@ function JoinView() {
         } else {
           reactConfirm({
             title: '알림',
-            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.<br />Course를 학습하시겠습니까?',
+            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.<div className="">\n</div>Course를 학습하시겠습니까?',
             onOk: () => {
               history.push(linkUrl);
             },
