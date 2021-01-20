@@ -6,7 +6,7 @@ import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunitydiscussionMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, requestCommunityMenuOrder, saveCommunitydiscussionMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import discussionIcon from '../../../style/media/icon-communtiy-menu-discussion.png';
@@ -344,19 +344,30 @@ function CommunityMenuContainer() {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
               //오더정리
-              requestCommunityMenu(communityId);
+              requestCommunityMenuOrder(communityId).then((result) => {
+                console.log('result', result)
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           } else {
             addCommunityMenu(communityId, obj).then((result)=> {
               //오더정리
-              requestCommunityMenu(communityId);
+              requestCommunityMenuOrder(communityId).then((result) => {
+                console.log('result', result)
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           }
-          reactAlert({
-            title: '',
-            message:
-              '저장되었습니다.',
-          });
         } else {
           reactAlert({
             title: '',
@@ -379,14 +390,40 @@ function CommunityMenuContainer() {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
               //오더정리
-              requestCommunityMenu(communityId);
+              requestCommunityMenuOrder(communityId).then((result) => {
+                console.log('result', result)
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           } else {
             addCommunityMenu(communityId, obj).then((result)=> {
               //오더정리
-              requestCommunityMenu(communityId);
+              requestCommunityMenuOrder(communityId).then((result) => {
+                console.log('result', result)
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           }
+          //오더정리
+          requestCommunityMenuOrder(communityId).then((result) => {
+            console.log('result', result)
+            requestCommunityMenu(communityId);
+            reactAlert({
+              title: '',
+              message:
+                '저장되었습니다.',
+            });
+          })
           reactAlert({
             title: '',
             message:
@@ -401,6 +438,14 @@ function CommunityMenuContainer() {
       } else {
         if(successFlag) {
           //오더정리
+          requestCommunityMenuOrder(communityId).then((result) => {
+            console.log('result', result)
+            reactAlert({
+              title: '',
+              message:
+                '저장되었습니다.',
+            });
+          })
           reactAlert({
             title: '',
             message:
