@@ -127,6 +127,11 @@ export function findPostView(postId: string): Promise<Post> {
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
+export function findPostViewWithRead(postId: string): Promise<Post> {
+  const url = `${BASE_URL}/postviews/postWithIncreaseReadCount/${postId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
 //커뮤니티 - 전체글
 export function findAllPost(
   postRdo: any
