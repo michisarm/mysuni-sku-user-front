@@ -8,6 +8,7 @@ import {
   findCommunitySurvey,
   getCommunitySurveyInfo,
   addCommunityAdminDiscussion,
+  setCommunityMenuOrder,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -128,6 +129,12 @@ export function requestCommunitySurvey(params: any) {
 
 export function getCommunitySurvey(surveyId: string) {
   return getCommunitySurveyInfo(surveyId).then(result => {
+    return result
+  });
+}
+
+export function requestCommunityMenuOrder(communityId: string) {
+  return setCommunityMenuOrder(communityId).then(result => {
     return result
   });
 }
