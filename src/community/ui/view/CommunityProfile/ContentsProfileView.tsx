@@ -36,11 +36,11 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
       return;
     }
 
-    if ( profileItem.nickname.length > 20) {
+    if ( profileItem.nickname.length > 10) {
       reactAlert({
         title: '알림',
         message:
-          '닉네임을 최대 20자까지만 입력해주세요.',
+          '닉네임을 최대 10자까지만 입력해주세요.',
       });
       return;
     }
