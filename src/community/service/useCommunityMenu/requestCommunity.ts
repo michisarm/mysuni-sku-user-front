@@ -135,7 +135,6 @@ export function getCommunitySurvey(surveyId: string) {
 
 export function requestCommunityMenuOrder(communityId: string) {
   return setCommunityMenuOrder(communityId).then(result => {
-    console.log('result', result)
     return result
   });
 }
