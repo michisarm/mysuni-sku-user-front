@@ -112,6 +112,16 @@ export function findNoticePostViews(
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
+export function findHomeRecentPostViews(
+  communityId: string,
+  sort: string,
+  offset: number,
+  limit: number
+): Promise<OffsetElementList<Post> | undefined> {
+  const url = `${BASE_URL}/postviews/home/recent?communityId=${communityId}&sort=${sort}&offset=${offset}&limit=${limit}`;
+  return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
+}
+
 export function findAllPostViews(
   communityId: string,
   sort: string,
@@ -464,6 +474,13 @@ export function findCommunitySurvey(params: any): Promise<any> {
 export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
   const url = `/api/survey/surveyForms/${surveyId}`;
   return axiosApi.get(url).then(response => {
+    return response
+  }); 
+}
+
+export function setCommunityMenuOrder(communityId: string): Promise<any> {
+  const url = `/api/community/${communityId}/menus/order`;
+  return axiosApi.put(url).then(response => {
     return response
   }); 
 }
