@@ -16,6 +16,7 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { Console } from 'console';
+import { addNewBadge } from 'community/utility/communityHelper';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -26,7 +27,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = moment().format('YYYY.MM.DD') === createdDate;
+  const isNew = addNewBadge(createdTime);//moment().format('YYYY.MM.DD') === createdDate;
   const [text, setText] = useState<string>('');
   const communityHome = useCommunityHome();
   const history = useHistory();
@@ -109,7 +110,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = moment().format('YYYY.MM.DD') === createdDate;
+  const isNew = addNewBadge(createdTime);//moment().format('YYYY.MM.DD') === createdDate;
   const [text, setText] = useState<string>('');
   const history = useHistory();
   const communityHome = useCommunityHome();
@@ -153,9 +154,9 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`)
       } else {
         history.push(`/community/${communityId}/post/${postId}`)
-      } 
+      }
     }
-    
+
   }, [approved]);
   return (
     <div
@@ -179,7 +180,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
               <>
                 {profileImg ?
                   <img src={`/files/community/${profileImg}`} />
-                  : 
+                  :
                   <img src={`${profileIcon}`} />
                 }
               </>
