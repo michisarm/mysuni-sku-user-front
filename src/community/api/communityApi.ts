@@ -478,11 +478,9 @@ export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
   }); 
 }
 
-  //api/community/{communityId}/menus/order
-
-  export function setCommunityMenuOrder(communityId: string): Promise<any> {
-    const url = `/api/community/${communityId}/menus/order`;
-    return axiosApi.get(url).then(response => {
-      return response
-    }); 
-  }
+export function setCommunityMenuOrder(communityId: string): Promise<any> {
+  const url = `/api/community/${communityId}/menus/order`;
+  return axiosApi.put(url).then(response => {
+    return response
+  }); 
+}

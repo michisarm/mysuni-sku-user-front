@@ -244,13 +244,12 @@ function CommunityMenuContainer() {
 
       // 삭제한 메뉴있을시
       if(deleteValues.length !== 0) {
-        deleteCommunityMenu(communityId, deleteValues)
+        await deleteCommunityMenu(communityId, deleteValues)
         successFlag = true
       }
       if(result.length !== 0) {
         const editValidateCheck = result.map((item, index) => {
           return item.nameValues.map((item2, index2) => {
-            
             if(item2.name === 'name') {
               if(!item2.value){
                 return {
@@ -329,23 +328,19 @@ function CommunityMenuContainer() {
           successFlag = true
         }
       }
-
       setNameValues([...nameValues, []])
-
       if(type === 'add') {
         if(communityAdminMenu!.menu.length === 0) {
           obj.order = 1
         }else {
           obj.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
         }
-
         const validateCheck = confirmBlank(obj)
         if(validateCheck === 'success') {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
               //오더정리
               requestCommunityMenuOrder(communityId).then((result) => {
-                console.log('result', result)
                 requestCommunityMenu(communityId);
                 reactAlert({
                   title: '',
@@ -358,7 +353,6 @@ function CommunityMenuContainer() {
             addCommunityMenu(communityId, obj).then((result)=> {
               //오더정리
               requestCommunityMenuOrder(communityId).then((result) => {
-                console.log('result', result)
                 requestCommunityMenu(communityId);
                 reactAlert({
                   title: '',
@@ -391,7 +385,6 @@ function CommunityMenuContainer() {
             addCommunityDiscussion(communityId, obj).then((result)=> {
               //오더정리
               requestCommunityMenuOrder(communityId).then((result) => {
-                console.log('result', result)
                 requestCommunityMenu(communityId);
                 reactAlert({
                   title: '',
@@ -404,7 +397,6 @@ function CommunityMenuContainer() {
             addCommunityMenu(communityId, obj).then((result)=> {
               //오더정리
               requestCommunityMenuOrder(communityId).then((result) => {
-                console.log('result', result)
                 requestCommunityMenu(communityId);
                 reactAlert({
                   title: '',
@@ -414,21 +406,6 @@ function CommunityMenuContainer() {
               })
             })
           }
-          //오더정리
-          requestCommunityMenuOrder(communityId).then((result) => {
-            console.log('result', result)
-            requestCommunityMenu(communityId);
-            reactAlert({
-              title: '',
-              message:
-                '저장되었습니다.',
-            });
-          })
-          reactAlert({
-            title: '',
-            message:
-              '저장되었습니다.',
-          });
         } else {
           reactAlert({
             title: '',
@@ -439,18 +416,12 @@ function CommunityMenuContainer() {
         if(successFlag) {
           //오더정리
           requestCommunityMenuOrder(communityId).then((result) => {
-            console.log('result', result)
             reactAlert({
               title: '',
               message:
                 '저장되었습니다.',
             });
           })
-          reactAlert({
-            title: '',
-            message:
-              '저장되었습니다.',
-          });
         }
       }
   }, [communityAdminMenu, selectedRow])
