@@ -10,7 +10,8 @@ import { getCommunityHomeCreateItem, setCommunityHomeCreateItem } from 'communit
 export function requestNotice(communityId: string) {
   const offset = 0;
   const limit = 3;
-  findNoticePostViews(communityId, 'createdTime', offset, limit).then(posts => {
+  const orderNotContainPinned = true;
+  findNoticePostViews(communityId, 'createdTime', offset, limit, orderNotContainPinned).then(posts => {
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
       setCommunityHome({ ...communityHome, notice: [], noticeRequested: true, });
@@ -23,7 +24,8 @@ export function requestNotice(communityId: string) {
 export function requestRecent(communityId: string) {
   const offset = 0;
   const limit = 4;
-  findHomeRecentPostViews(communityId, 'createdTime', offset, limit).then(posts => {
+  const orderNotContainPinned = true;
+  findHomeRecentPostViews(communityId, 'createdTime', offset, limit, orderNotContainPinned).then(posts => {
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
       setCommunityHome({ ...communityHome, recent: [], recentRequested: true, });
