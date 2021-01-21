@@ -96,7 +96,8 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const commentCountEventHandler = useCallback(async () => {
-    await getCommunityPostDetail(communityId, postId);
+    const postIdArr = window.location.href.split('/')
+    await getCommunityPostDetail(communityId, postIdArr[postIdArr.length-1]);
   }, [communityId, postId]);
 
   useEffect(() => {
@@ -204,6 +205,22 @@ function CommunityPostDetailContainer() {
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
   }
+
+  const toUrl = useCallback((type, postDetail, menuType) => {
+    if(type == 'nextPost') {
+      if(menuType === 'ANONYMOUS') {
+        return `/community/${postDetail.nextPost!.communityId}/${menuType}/post/${postDetail.nextPost!.postId}`
+      } else {
+        return `/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`
+      }
+    } else {
+      if(menuType === 'ANONYMOUS') {
+        return `/community/${postDetail.prevPost!.communityId}/${menuType}/post/${postDetail.prevPost!.postId}`
+      } else {
+        return `/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`
+      }
+    }
+  }, [])
 
   return (
     <Fragment>
@@ -368,9 +385,7 @@ function CommunityPostDetailContainer() {
               <div className="paging-list">
                 {postDetail.prevPost && (
                   <Link
-                    to={`/community/${postDetail.prevPost!.communityId}/post/${
-                      postDetail.prevPost!.postId
-                    }`}
+                    to={toUrl('prevPost', postDetail, menuType)}
                   >
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
@@ -388,9 +403,7 @@ function CommunityPostDetailContainer() {
                 )}
                 {postDetail.nextPost && (
                   <Link
-                    to={`/community/${postDetail.nextPost!.communityId}/post/${
-                      postDetail.nextPost!.postId
-                    }`}
+                    to={toUrl('nextPost', postDetail, menuType)}
                   >
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
