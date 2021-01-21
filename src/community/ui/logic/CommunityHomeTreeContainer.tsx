@@ -352,12 +352,12 @@ function JoinView() {
         if (linkUrl === undefined) {
           reactAlert({
             title: '알림',
-            message: 'Course를 학습하셔야지 참가가 가능합니다.',
+            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.',
           });
         } else {
           reactConfirm({
             title: '알림',
-            message: 'Course를 학습하시겠습니까?',
+            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.<div className="">\n</div>Course를 학습하시겠습니까?',
             onOk: () => {
               history.push(linkUrl);
             },
@@ -545,7 +545,7 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              { 
+              {
                 communtyHome.community.communityId === "COMMUNITY-a" ? (
                   null
                 ) : (
@@ -570,7 +570,7 @@ function CommunityHomeTreeContainer() {
               {communtyHome.menus
                 .filter(c => c.parentId === null)
                 .sort((a, b) => a.order - b.order)
-                .map(menu => { 
+                .map(menu => {
                   return (
                   <MenuItemView
                     key={menu.menuId}

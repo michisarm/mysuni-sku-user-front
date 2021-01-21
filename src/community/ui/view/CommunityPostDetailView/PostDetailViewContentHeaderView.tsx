@@ -55,7 +55,6 @@ class PostDetailViewContentHeaderView extends Component<Props> {
     const handelClickDelete = () => {
       onClickDelete(postDetail.id);
     };
-
     return (
       <>
         <div className="course-info-header">
