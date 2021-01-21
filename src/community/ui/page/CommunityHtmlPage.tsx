@@ -1,13 +1,20 @@
-import React from 'react';
+import { requestCommunityMenus } from 'community/service/useCommunityHome/requestCommunity';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
 
 interface Params {
+  communityId: string;
   menuId: string;
 }
 
 function CommunityHtmlPage() {
-  const { menuId } = useParams<Params>();
+  const { communityId, menuId } = useParams<Params>();
+
+  useEffect(() => {
+    requestCommunityMenus(communityId);  // 메뉴 클릭시 재호출(관리자에서 수정된 html 바로 적용)
+  },[communityId]);
+
   const communityHome = useCommunityHome();
   return (
     <>
