@@ -1,4 +1,5 @@
 import PostRdo from 'community/model/PostRdo';
+import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { getCommunityPostList } from 'community/service/useCommunityPostCreate/utility/getCommunityPostList';
 import { getCommunityNoticePostList } from 'community/service/useCommunityPostList/getCommunityNoticePostList';
 import { getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
@@ -15,6 +16,8 @@ interface Params {
 function NoticePostsPage() {
   const { communityId, menuId } = useParams<Params>();
   useEffect(() => {
+    requestCommunity(communityId);  // 메뉴 클릭시 재호출
+
     const post: PostRdo = {
       title: '',
       html: '',
