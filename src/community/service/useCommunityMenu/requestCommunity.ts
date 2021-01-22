@@ -53,6 +53,10 @@ export function requestCommunityMenu(communityId: string) {
     })
 
     menuArr.map((item: any, index: number) => {
+      item.order = index+1
+    })
+
+    menuArr.map((item: any, index: number) => {
       if(item.child) {
         item.child.sort((a: any, b: any) => {
           if (a.order < b.order) {
@@ -62,6 +66,14 @@ export function requestCommunityMenu(communityId: string) {
           } else {
             return 0;
           }
+        })
+      }
+    })
+
+    menuArr.map((item: any, index: number) => {
+      if(item.child) {
+        item.child.map((item2: any, index: any) => {
+          item2.order = index+1
         })
       }
     })
