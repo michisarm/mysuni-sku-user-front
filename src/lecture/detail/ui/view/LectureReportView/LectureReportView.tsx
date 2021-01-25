@@ -17,7 +17,11 @@ import {
 } from 'lecture/detail/store/LectureReportStore';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
-import { getActiveStructureItem } from '../../../service/useLectureStructure/useLectureStructure';
+import {
+  getActiveCourseStructureItem,
+  getActiveProgramStructureItem,
+  getActiveStructureItem,
+} from '../../../service/useLectureStructure/useLectureStructure';
 import { getCourseLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCourseLectureReport';
 import { getCubeLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCubeLectureReport';
 
@@ -83,11 +87,21 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
               getCubeLectureReport(params);
             }
           }
-          reactAlert({
-            title: '알림',
-            message:
-              '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
-          });
+          const course = getActiveCourseStructureItem();
+          const program = getActiveProgramStructureItem();
+          if (course?.survey !== undefined || program?.survey !== undefined) {
+            reactAlert({
+              title: '알림',
+              message:
+                '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+            });
+          } else {
+            reactAlert({
+              title: '알림',
+              message:
+                '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+            });
+          }
         });
       },
     });
@@ -126,7 +140,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     });
   }, []);
 
-  {/*eslint-disable*/}
+  {
+    /*eslint-disable*/
+  }
   return (
     <>
       {/* Header */}
@@ -138,11 +154,15 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         <Form>
           <Form.Field>
             <label>작성 가이드</label>
-            <div className="ui editor-wrap"
+            <div
+              className="ui editor-wrap"
               dangerouslySetInnerHTML={{
-                __html: `${lectureReport?.reportFileBox?.reportQuestion?.replace(/(\n|\r\n)/g, '<br/>')}`,
+                __html: `${lectureReport?.reportFileBox?.reportQuestion?.replace(
+                  /(\n|\r\n)/g,
+                  '<br/>'
+                )}`,
               }}
-          />
+            />
           </Form.Field>
           <Form.Field>
             {lectureReport?.reportFileBox?.fileBoxId && (
@@ -304,5 +324,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     </>
   );
 };
-{/*eslint-enable*/}
+{
+  /*eslint-enable*/
+}
 export default LectureReportView;
