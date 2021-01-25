@@ -101,14 +101,27 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               params.pathname
             );
             const lectureTestStudentItem = getLectureTestStudentItem();
+            const course = getActiveCourseStructureItem();
+            const program = getActiveProgramStructureItem();
             switch (lectureTestStudentItem?.learningState) {
               case 'Waiting':
               case 'TestWaiting':
-                reactAlert({
-                  title: '알림',
-                  message:
-                    '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
-                });
+                if (
+                  course?.survey !== undefined ||
+                  program?.survey !== undefined
+                ) {
+                  reactAlert({
+                    title: '알림',
+                    message:
+                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+                  });
+                } else {
+                  reactAlert({
+                    title: '알림',
+                    message:
+                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+                  });
+                }
                 break;
               case 'Failed':
                 reactAlert({
@@ -119,13 +132,9 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 break;
               case 'Passed':
               case 'TestPassed':
-                const course = getActiveCourseStructureItem();
-                const program = getActiveProgramStructureItem();
                 if (
-                  (course?.state === 'Completed' &&
-                    course.survey !== undefined) ||
-                  (program?.state === 'Completed' &&
-                    program.survey !== undefined)
+                  course?.survey !== undefined ||
+                  program?.survey !== undefined
                 ) {
                   reactAlert({
                     title: '안내',
@@ -266,11 +275,20 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                     }
                   }
                   if (question.questionType === 'ShortAnswer') {
-                    const shortAnswers = question.answer && question.answer.split(',');
-                    if (shortAnswers != null && shortAnswers.length > 0 && shortAnswers[0] !== 'undefined' && submitAnswer) {
+                    const shortAnswers =
+                      question.answer && question.answer.split(',');
+                    if (
+                      shortAnswers != null &&
+                      shortAnswers.length > 0 &&
+                      shortAnswers[0] !== 'undefined' &&
+                      submitAnswer
+                    ) {
                       for (let j = 0; j < shortAnswers.length; j++) {
                         // 정답지 사용자 문제지 체크
-                        if (submitAnswer.trim().toLowerCase() === shortAnswers[j].trim().toLowerCase()) {
+                        if (
+                          submitAnswer.trim().toLowerCase() ===
+                          shortAnswers[j].trim().toLowerCase()
+                        ) {
                           answerResult = true;
                         }
                       }
