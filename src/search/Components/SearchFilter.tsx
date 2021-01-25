@@ -668,14 +668,28 @@ function toggle_cube_type_query(value: string) {
 }
 
 async function search(searchValue: string) {
-  await findCard(searchValue).then(response => {
+  const decodedSearchValue = searchValue
+    .replace(/'/g, ' ')
+    .replace(/&/g, ' ')
+    .replace(/%/g, ' ');
+  if (decodedSearchValue === '') {
+    return;
+  }
+  if (decodedSearchValue.replace(/ /g, '').length < 2) {
+    reactAlert({
+      title: '검색',
+      message: '두 글자 이상 입력 후 검색하셔야 합니다.',
+    });
+    return;
+  }
+  await findCard(decodedSearchValue).then(response => {
     if (response && response.result && response.result.rows) {
       setCard(response.result.rows);
     } else {
       setCard();
     }
   });
-  await findExpert(searchValue).then(response => {
+  await findExpert(decodedSearchValue).then(response => {
     if (response && response.result && response.result.rows) {
       setExpert(response.result.rows);
     } else {
