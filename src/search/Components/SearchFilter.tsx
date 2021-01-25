@@ -17,11 +17,14 @@ import {
 import { createStore } from '../../community/store/Store';
 import moment from 'moment';
 import { SkProfileService } from '../../profile/stores';
+import { reactAlert } from '@nara.platform/accent';
 
 interface Props {
   isOnFilter: boolean;
   searchValue: string;
 }
+
+const ESCAPE_CHAR = ["'", '&', '%'];
 
 const SELECT_ALL = 'Select All';
 const InitialConditions: FilterCondition = {
@@ -683,14 +686,25 @@ async function search(searchValue: string) {
 
 const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
   useEffect(() => {
-    if (searchValue === '') {
+    const decodedSearchValue = searchValue
+      .replace(/'/g, ' ')
+      .replace(/&/g, ' ')
+      .replace(/%/g, ' ');
+    if (decodedSearchValue === '') {
+      return;
+    }
+    if (decodedSearchValue.replace(/ /g, '').length < 2) {
+      reactAlert({
+        title: '검색',
+        message: '두 글자 이상 입력 후 검색하셔야 합니다.',
+      });
       return;
     }
     const companyCode = localStorage.getItem('nara.companyCode');
     if (companyCode === null) {
       return;
     }
-    findColleageGroup(searchValue, companyCode)
+    findColleageGroup(decodedSearchValue, companyCode)
       .then(searchResult => {
         if (searchResult === undefined) {
           setCollegeOptions([]);
@@ -705,22 +719,24 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         }
       })
       .then(() => {
-        return findCPGroup(searchValue, companyCode).then(searchResult => {
-          if (searchResult === undefined) {
-            setOrganizerOptions([]);
-          } else {
-            setOrganizerOptions(
-              searchResult.result.rows.map(({ fields }) => ({
-                key: fields['organizer'],
-                value: fields['organizer'],
-                text: `${fields['organizer']}(${fields['count(*)']})`,
-              }))
-            );
+        return findCPGroup(decodedSearchValue, companyCode).then(
+          searchResult => {
+            if (searchResult === undefined) {
+              setOrganizerOptions([]);
+            } else {
+              setOrganizerOptions(
+                searchResult.result.rows.map(({ fields }) => ({
+                  key: fields['organizer'],
+                  value: fields['organizer'],
+                  text: `${fields['organizer']}(${fields['count(*)']})`,
+                }))
+              );
+            }
           }
-        });
+        );
       })
       .then(() => {
-        return findCubeTypeGroup(searchValue, companyCode).then(
+        return findCubeTypeGroup(decodedSearchValue, companyCode).then(
           searchResult => {
             if (searchResult === undefined) {
               setCubeTypeOptions([]);
@@ -737,7 +753,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         );
       })
       .then(() => {
-        search(searchValue);
+        search(decodedSearchValue);
       });
 
     return () => {
