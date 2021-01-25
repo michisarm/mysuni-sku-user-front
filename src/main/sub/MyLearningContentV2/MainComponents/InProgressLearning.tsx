@@ -114,6 +114,13 @@ const InProgressLearning: React.FC<Props> = Props => {
     // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     history.push(myTrainingRoutes.learningTab(CONTENT_TYPE));
+    
+    // react-ga event
+    ReactGA.event({
+      category: '학습중인 과정',
+      action: 'Click',
+      label: '학습중인 과정 전체보기'
+    });
   };
 
   const onViewDetail = (e: any, data: any) => {

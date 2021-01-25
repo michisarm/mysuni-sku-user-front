@@ -9,12 +9,21 @@ import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFoll
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
 import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
 
+import ReactGA from 'react-ga';
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
 
   const followCommunityIntro = useFollowCommunityIntro();
 
+  const gaOnClick = (name: string) => {
+    // react-ga 
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `Community-${name}`,
+    });
+  }
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
@@ -25,6 +34,7 @@ const FollowView: React.FC = function FollowView() {
               active={false}
               as={Link}
               to="/community/main"
+              onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
               <span className="count" />
@@ -34,6 +44,7 @@ const FollowView: React.FC = function FollowView() {
               active={false}
               as={Link}
               to="/community/main/open-communities"
+              onClick={() => gaOnClick('CommunityList')}
             >
               Community List
             </Menu.Item>
@@ -42,6 +53,7 @@ const FollowView: React.FC = function FollowView() {
               active={true}
               as={Link}
               to="/community/main/follow"
+              onClick={() => gaOnClick('Follow')}
             >
               Follow
             </Menu.Item>

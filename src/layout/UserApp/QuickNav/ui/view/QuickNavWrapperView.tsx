@@ -15,7 +15,7 @@ class QuickNavWrapperView extends Component<Props> {
   render() {
     //
     const { active, children, onTop, onToggle } = this.props;
-
+    
     return (
       <section className="quick lms" onClick={(e: any) => e.stopPropagation()}>
         <div className="cont-inner">
@@ -23,7 +23,7 @@ class QuickNavWrapperView extends Component<Props> {
             <Button as="a" className="top" onClick={onTop}>
               TOP
             </Button>
-            <Button className="quick" active={active} onClick={onToggle} />
+            <Button className="quick" active={active} onClick={onToggle}/>
 
             {children}
           </div>

@@ -9,6 +9,8 @@ import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
+import ReactGA from 'react-ga';
+
 interface Props {
   actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
@@ -88,6 +90,13 @@ class ChannelsPanelContainer extends Component<Props, States> {
     onSelectChannel(e, {
       index,
       channel,
+    });
+
+    // react-ga event
+    ReactGA.event({
+      category: 'Recommend',
+      action: 'Click',
+      label: `Recommend-${channel.name}`,
     });
   }
 

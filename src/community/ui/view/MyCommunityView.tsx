@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
@@ -7,11 +7,33 @@ import MyCommunityListContainer from '../logic/MyCommunityIntro/MyCommunityListC
 import MyCommunityPostListContainer from '../logic/MyCommunityIntro/MyCommunityPostListContainer';
 import { useMyCommunityIntro } from '../../store/CommunityMainStore';
 
+import ReactGA from 'react-ga';
+
 interface MyCommunityViewProps {}
 
 const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView() {
   const contextRef = useRef(null);
   const myCommunityIntro = useMyCommunityIntro();
+
+  const gaOnClick = (name: string) => {
+    
+    // react-ga 
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `Community-${name}`,
+    });
+  }
+
+  useEffect(() => {
+    // react-ga (초기 진입 시)
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `Community-MyCommunity`,
+    });
+  },[]);
+
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
@@ -22,6 +44,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               active={true}
               as={Link}
               to="/community/main"
+              onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
               <span className="count" />
@@ -31,6 +54,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               active={false}
               as={Link}
               to="/community/main/open-communities"
+              onClick={() => gaOnClick('CommunityList')}
             >
               Community List
             </Menu.Item>
@@ -39,6 +63,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               active={false}
               as={Link}
               to="/community/main/follow"
+              onClick={() => gaOnClick('Follow')}
             >
               Follow
             </Menu.Item>

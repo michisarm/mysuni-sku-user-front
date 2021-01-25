@@ -3,6 +3,8 @@ import { Button, Image } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import classNames from 'classnames';
 
+import ReactGA from 'react-ga';
+
 enum CategoryImageURL {
   BDGCAT_AIDT = '/static/media/icon-ai.png',
   BDGCAT_JOB = '/static/media/icon-common.png',
@@ -28,16 +30,27 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
       ? window.location.protocol + '//' + window.location.host
       : 'http://10.178.66.114';
 
+  const gaOnClick = (category: any): void => {
+
+    // react-ga 
+    ReactGA.event({
+      category: 'Certification',
+      action: 'Click',
+      label: `Certification-${category.name}`,
+    });
+  }
+
   return (
     <div className="badge-category">
       <ul>
         {categories.map((category: any, index: number) => (
-          <li
+          <li 
             key={`badge-category-${index}`}
             className={classNames(
               'fn-parent',
               category.categoryId === categorySelection ? 'on' : ''
             )}
+            onClick={() => gaOnClick(category)}
           >
             <Button
               className="fn-click"

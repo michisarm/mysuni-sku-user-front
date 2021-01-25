@@ -125,6 +125,13 @@ const NEWLearning: React.FC<Props> = Props => {
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningNewLecture());
+
+    // react-ga event
+    ReactGA.event({
+      category: '신규 과정',
+      action: 'Click',
+      label: '신규 과정 전체보기'
+    });
   };
 
   const onViewDetail = (e: any, data: any) => {

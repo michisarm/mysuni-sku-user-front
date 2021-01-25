@@ -145,6 +145,13 @@ const RQDLearning: React.FC<Props> = Props => {
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningRqdLecture());
+
+    // react-ga event
+    ReactGA.event({
+      category: '권장 과정',
+      action: 'Click',
+      label: '권장 과정 전체보기'
+    });
   };
 
   const onViewDetail = (e: any, data: any) => {

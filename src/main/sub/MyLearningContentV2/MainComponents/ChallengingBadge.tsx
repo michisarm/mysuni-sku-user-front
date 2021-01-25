@@ -70,6 +70,12 @@ const ChallengingBadge: React.FC<Props> = Props => {
   const onClickLink = () => {
     //
     history.push(certificationRoutes.badgeAllBadgeList());
+
+    ReactGA.event({
+      category: '도전중인 Badge',
+      action: 'Click',
+      label: '도전중인 Badge 전체보기',
+    });
   };
 
   // react-ga event

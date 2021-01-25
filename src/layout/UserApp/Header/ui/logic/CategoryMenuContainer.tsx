@@ -115,7 +115,7 @@ class CategoryMenuContainer extends Component<Props, State> {
       });
       collegeLectureCountService!.setChannelCounts(college.channelCounts);
     })
-
+    
     // collegeService!.getBanner()
   }
 
@@ -124,7 +124,6 @@ class CategoryMenuContainer extends Component<Props, State> {
     const { activeCollege } = this.state;
     const { history, lectureCountService } = this.props;
     const active: CollegeLectureCountRdo = activeCollege as any;
-
     if (!channel) {
       lectureCountService!.setCategoryType('CollegeLectures');
       history.push(lectureRoutePaths.collegeLectures(active.collegeId));
@@ -192,6 +191,7 @@ class CategoryMenuContainer extends Component<Props, State> {
       studySummaryFavoriteChannels.map(
         channel => new ChannelModel({ ...channel, channelId: channel.id })
       ) || [];
+    // console.log('@@#@#@',collage)
     return (
       <>
         <div className="g-menu-detail">
