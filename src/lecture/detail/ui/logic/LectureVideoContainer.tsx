@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom';
 function LectureVideoContainer() {
   // useLectureMedia();
 
-  const [, , checkStudent] = useLectureMedia();
+  const [, lectureMedia, checkStudent] = useLectureMedia();
   const params = useLectureRouterParams();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
 
@@ -64,14 +64,18 @@ function LectureVideoContainer() {
   );
   return (
     <>
-      <LectureVideoView
-        params={params}
-        checkStudent={checkStudent}
-        getStickyPosition={getStickyPosition}
-        scroll={scroll}
-        videoPosition={videoPosition}
-        enabled={linkedInOpen}
-      />
+      {lectureMedia &&
+        (lectureMedia.mediaType == 'InternalMedia' ||
+          lectureMedia.mediaType == 'InternalMediaUpload') && (
+          <LectureVideoView
+            params={params}
+            checkStudent={checkStudent}
+            getStickyPosition={getStickyPosition}
+            scroll={scroll}
+            videoPosition={videoPosition}
+            enabled={linkedInOpen}
+          />
+        )}
       <LinkedInModal enabled={linkedInOpen} />
     </>
   );
