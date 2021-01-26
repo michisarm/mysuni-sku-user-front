@@ -16,7 +16,9 @@ class FooterContainer extends Component {
   renderNav() {
     //
     function onClick(name: string) {
-      ReactGA.pageview(window.location.pathname, [], `${name}`);
+      setTimeout(() => {
+        ReactGA.pageview(window.location.pathname, [], `${name}`);
+      },1000);
     }
     return (
       <>
