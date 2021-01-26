@@ -22,8 +22,26 @@ const ContentsHeader: React.FC = () => {
       window.location.search.indexOf('=') + 1,
       window.location.search.length
     );
+    if (queryId.endsWith('%')) {
+      let decodedQueryId = queryId;
+      while (decodedQueryId.endsWith('%')) {
+        decodedQueryId = decodedQueryId.substring(0, decodedQueryId.length - 1);
+      }
+      if (decodedQueryId.includes('%%')) {
+        while (decodedQueryId.includes('%%')) {
+          decodedQueryId = decodedQueryId.replace(/%%/, '%25%');
+        }
+        setSearchValue(decodeURI(decodedQueryId));
+        return;
+      }
+      setSearchValue(decodeURI(decodedQueryId));
+      return;
+    }
     if (queryId.includes('%%')) {
-      const decodedQueryId = queryId.replace(/%%/g, '%25%');
+      let decodedQueryId = queryId;
+      while (decodedQueryId.includes('%%')) {
+        decodedQueryId = decodedQueryId.replace(/%%/, '%25%');
+      }
       setSearchValue(decodeURI(decodedQueryId));
       return;
     }
