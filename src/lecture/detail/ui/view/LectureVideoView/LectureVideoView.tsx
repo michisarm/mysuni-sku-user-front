@@ -52,6 +52,10 @@ import {
   videoStart,
 } from '../../../service/useActionLog/cubeStudyEvent';
 import { MyTrainingService } from 'myTraining/stores';
+import {
+  getActiveCourseStructureItem,
+  getActiveProgramStructureItem,
+} from '../../../service/useLectureStructure/useLectureStructure';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -282,6 +286,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         Math.floor((embedApi.getDuration() as unknown) as number)
       ) {
         setNextContentsView(true);
+        const course = getActiveCourseStructureItem();
+        const program = getActiveProgramStructureItem();
+        if (
+          (course?.state === 'Completed' && course.survey !== undefined) ||
+          (program?.state === 'Completed' && program.survey !== undefined)
+        ) {
+          reactAlert({
+            title: '안내',
+            message: 'Survey 설문 참여를 해주세요.',
+          });
+        }
       }
       // alert(`동영상종료 liveLectureCardId: ${liveLectureCardId}`);
       videoClose();
