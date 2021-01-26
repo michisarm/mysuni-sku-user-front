@@ -23,6 +23,7 @@ import { reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
 import { findCommunityProfile } from 'community/api/profileApi';
+import { checkMember } from 'community/service/useMember/useMember';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -120,6 +121,23 @@ function CommunityPostDetailContainer() {
       setProfileOpen(true)
     })
   }, []);
+
+  useEffect(() => {
+    if (postDetail === undefined) {
+      return;
+    }
+    
+    const checkMemberfunction = async () => {
+      const joinFlag = await checkMember(communityId)
+      if(!joinFlag) {
+        history.push({
+          pathname: `/community/${communityId}`,
+        });
+      }
+    }
+
+    checkMemberfunction()
+  }, [postDetail]);
   
   useEffect(() => {
     window.addEventListener('commentCount', commentCountEventHandler);
