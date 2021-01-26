@@ -135,6 +135,13 @@ const LRSLearning: React.FC<Props> = Props => {
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningLrsLecture());
+
+    // react-ga event
+    ReactGA.event({
+      category: '추천 과정',
+      action: 'Click',
+      label: '추천 과정 전체보기'
+    });
   };
 
   const onViewDetail = (e: any, data: any) => {

@@ -9,6 +9,8 @@ import { ActionEventService } from 'shared/stores';
 import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
 
+import ReactGA from 'react-ga';
+
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
   tabs: TabItemModel[];
@@ -95,6 +97,13 @@ class TabContainer extends Component<Props, State> {
       (pageName && `tab_${pageName}_${tab.name}`) || `tab_${tab.name}`;
 
     this.setState({ activeName: tab.name });
+
+     // react-ga event
+     ReactGA.event({
+      category: 'Certification',
+      action: 'Click',
+      label: `Certification-${menu}`,
+    });
 
     const routePath = onChangeTab!(tab);
     if (routePath) {
@@ -191,7 +200,7 @@ class TabContainer extends Component<Props, State> {
         {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
         {topOfContents}
         <Segment className="full" key={`tab-content-${tab.name}`}>
-          <div
+          <div 
             className={classNames('ui tab', {
               active: tab.name === activeName,
             })}

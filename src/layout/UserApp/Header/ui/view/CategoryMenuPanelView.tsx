@@ -34,12 +34,19 @@ interface Props {
 class CategoryMenuPanelView extends Component<Props> {
 
   onClickChannelActionLog(text: string) {
-    const { actionLogService } = this.props;
+    const { actionLogService, activeCollege } = this.props;
     actionLogService?.registerClickActionLog({ subAction: text });
 
-    setTimeout(() => {
-      ReactGA.pageview(window.location.pathname, [], `${text}`);
-    }, 1000);
+    // react-ga event (전체보기, 각 item)
+    ReactGA.event({
+      category: 'Channel',
+      action: 'Click',
+      label: `${activeCollege?.name}-${text}`,
+    });
+    
+    // setTimeout(() => {
+    //   ReactGA.pageview(window.location.pathname, [], `${text}`);
+    // }, 1000);
   }
 
   onClickActionLog(text: string) {
@@ -98,6 +105,15 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege,
       onRouteChannel,
     } = this.props;
+
+    // react-ga event (카테고리 배너 이미지)
+    const gaClickEvent = (text: string) => {
+      ReactGA.event({
+        category: 'Banner',
+        action: 'Click',
+        label: text,
+      });
+    }
 
     return (
       <div className="layer lms-category">
@@ -223,7 +239,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 />
                                 <span className="check-type2-marker"/>
                               </label>
-                              <a 
+                              <a
                                 className="check-type2-text"
                                 onClick={e => {
                                   this.onClickChannelActionLog(channel.name);
@@ -245,7 +261,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 />
                                 <span className="check-type2-marker"/>
                               </label>
-                              <a 
+                              <a
                                 className="check-type2-text"
                                 onClick={e => {
                                   this.onClickChannelActionLog(channels[index+1].name);
@@ -272,7 +288,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 />
                                 <span className="check-type2-marker"/>
                               </label>
-                              <a 
+                              <a
                                 className="check-type2-text"
                                 onClick={e => {
                                   this.onClickChannelActionLog(channel.name);
@@ -293,13 +309,13 @@ class CategoryMenuPanelView extends Component<Props> {
                 <div className="category-banner">
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 && (
                     <span className="banner-holder">
-                      <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                      <img src={`${banner.collegeBannerContents[0].imageUrl}`} onClick={e => gaClickEvent(`${activeCollege.name}`)} alt=""/>
                     </span>
                   )}
                   { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 && (
                     <span className="banner-holder">
                       <a href={encodeURI(banner.collegeBannerContents[0].linkUrl)}>
-                        <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                        <img src={`${banner.collegeBannerContents[0].imageUrl}`} onClick={e => gaClickEvent(`${activeCollege.name}`)} alt=""/>
                       </a>
                     </span>
                   )}
@@ -311,13 +327,13 @@ class CategoryMenuPanelView extends Component<Props> {
 
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 0 && (
                     <span className="banner-holder">
-                      <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                      <img src={`${banner.collegeBannerContents[1].imageUrl}`} onClick={e => gaClickEvent(`${activeCollege.name}`)} alt=""/>
                     </span>
                   )}
                   { banner.collegeBannerContents[1].visible === 1 && banner.collegeBannerContents[1].useLink === 1 && (
                     <span className="banner-holder">
                       <a href={encodeURI(banner.collegeBannerContents[1].linkUrl)}>
-                        <img src={`${banner.collegeBannerContents[1].imageUrl}`} alt=""/>
+                        <img src={`${banner.collegeBannerContents[1].imageUrl}`} onClick={e => gaClickEvent(`${activeCollege.name}`)} alt=""/>
                       </a>
                     </span>
                   )}
@@ -335,11 +351,11 @@ class CategoryMenuPanelView extends Component<Props> {
                   <span style={{width:"244px", height:"80px", display:"inline-block"}} />
                 )}
                 { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 0 &&  (
-                  <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                  <img src={`${banner.collegeBannerContents[0].imageUrl}`} onClick={e => gaClickEvent(`${activeCollege.name}`)} alt=""/>
                 )}
                 { banner.collegeBannerContents[0].visible === 1 && banner.collegeBannerContents[0].useLink === 1 &&  (
                   <a href={encodeURI(banner.collegeBannerContents[0].linkUrl)}>
-                    <img src={`${banner.collegeBannerContents[0].imageUrl}`} alt=""/>
+                    <img src={`${banner.collegeBannerContents[0].imageUrl}`} onClick={e => gaClickEvent(`${activeCollege.name}`)} alt=""/>
                   </a>
                 )}
                 { banner.collegeBannerContents[0].visible === 0 &&  (

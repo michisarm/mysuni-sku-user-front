@@ -25,6 +25,8 @@ import MenuControlAuthService from '../../../../../approval/company/present/logi
 import SkProfileModel from '../../../../../profile/model/SkProfileModel';
 import {MenuControlAuth} from '../../../../../shared/model/MenuControlAuth';
 
+import ReactGA from 'react-ga';
+
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
   notieService?: NotieService;
@@ -102,15 +104,29 @@ class QuickNavContainer extends Component<Props, State> {
     });
   }
 
-  onClose() {
+  onClose(name: string) {
     //
     this.props.skProfileService!.findStudySummary();
     this.setState({ active: false });
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    })
   }
 
-  onClickLearning() {
+  onClickLearning(name: string) {
     //
     this.routeNav(myTrainingRoutePaths.learning());
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    });
   }
 
   onClickCommunity() {
@@ -118,28 +134,56 @@ class QuickNavContainer extends Component<Props, State> {
     this.routeNav(myTrainingRoutePaths.community());
   }
 
-  onClickSupport() {
+  onClickSupport(name: string) {
     //
     this.routeNav(boardRoutePaths.supportNotice());
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    });
   }
 
-  onClickIntroduction() {
+  onClickIntroduction(name: string) {
     //
     this.routeNav('/introduction');
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    })
   }
 
-  onClickApproval() {
+  onClickApproval(name: string) {
     // 승인관리 바로 가기
     this.routeNav('/approval');
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    })
   }
 
-  onClickApl() {
+  onClickApl(name: string) {
     // 개인학습 등록 바로 가기
     //this.routeNav('/learning/add-personal-learning-create');
     this.routeNav('/my-training/apl/create');
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    })
   }
 
-  onClickAdminSite() {
+  onClickAdminSite(name: string) {
     // localAdmin by gon
     if (window.location.hostname === 'localhost') {
       window.open('http://localhost:8090');
@@ -149,6 +193,13 @@ class QuickNavContainer extends Component<Props, State> {
         window.open(adminSiteUrl);
       }
     }
+
+    // react-ga event
+    ReactGA.event({
+      category: 'QuickNav',
+      action: 'Click',
+      label: `QuickNav-${name}`,
+    })
   }
 
   onConfirmFavorite() {
@@ -188,14 +239,14 @@ class QuickNavContainer extends Component<Props, State> {
                 iconName="learning32"
                 notieActive={this.props.notieService!.notieActive}
                 text="Learning"
-                onClick={this.onClickLearning}
+                onClick={() => this.onClickLearning('Learning')}
               />
               {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
               <TopMenuItemView
                 iconName="support32"
                 notieActive={this.props.notieService!.notieActive}
                 text="Support"
-                onClick={this.onClickSupport}
+                onClick={() => this.onClickSupport('Support')}
               />
             </>
           }
@@ -204,14 +255,14 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView
                 iconName="building"
                 text="mySUNI Introduction"
-                onClick={this.onClickIntroduction}
+                onClick={() => this.onClickIntroduction('mySUNI Introduction')}
               />
               <FavoriteChannelChangeModal
                 trigger={
                   <BottomMenuItemView
                     iconName="admin"
                     text="관심채널"
-                    onClick={this.onClose}
+                    onClick={() => this.onClose('관심채널')}
                   />
                 }
                 favorites={favoriteChannels}
@@ -222,7 +273,7 @@ class QuickNavContainer extends Component<Props, State> {
                   <BottomMenuItemView
                     iconName="sitemap"
                     text="Site Map"
-                    onClick={this.onClose}
+                    onClick={() => this.onClose('Site Map')}
                   />
                 }
               />
@@ -231,7 +282,7 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView
                 iconName="confirm"
                 text="승인관리"
-                onClick={this.onClickApproval}
+                onClick={() => this.onClickApproval('승인관리')}
               />
 
               {/*0907 개인학습 등록 메뉴 추가*/}
@@ -242,7 +293,7 @@ class QuickNavContainer extends Component<Props, State> {
                   <BottomMenuItemView
                     iconName="apl"
                     text="개인학습 등록"
-                    onClick={this.onClickApl}
+                    onClick={() => this.onClickApl('개인학습 등록')}
                   />
                 </>
                 )
@@ -258,7 +309,7 @@ class QuickNavContainer extends Component<Props, State> {
                 <BottomMenuItemView
                   iconName="admin24"
                   text="Admin Site"
-                  onClick={this.onClickAdminSite}
+                  onClick={() => this.onClickAdminSite('Admin Site')}
                 />
               )}
             </>
