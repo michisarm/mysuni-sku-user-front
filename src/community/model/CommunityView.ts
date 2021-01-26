@@ -10,6 +10,7 @@ export default interface CommunityView {
   createdTime: number;
   managerId: string;
   lastPostTime: number | null;
+  lastNoticePostTime: number | null;
   courseId: string;
 
   homeType: CommunityHomeType | null;

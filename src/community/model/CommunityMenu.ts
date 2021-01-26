@@ -17,4 +17,5 @@ export default interface CommunityMenu {
   accessType: CommunityAccessType;
   groupId: string;
   parentId: string;
+  lastPostTime: number;
 }

@@ -106,9 +106,13 @@ export function findNoticePostViews(
   communityId: string,
   sort: string,
   offset: number,
-  limit: number
+  limit: number,
+  orderNotContainPinned?: boolean,
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/notice/${communityId}?sort=${sort}&offset=${offset}&limit=${limit}`;
+  let url = `${BASE_URL}/postviews/notice/${communityId}?sort=${sort}&offset=${offset}&limit=${limit}`;
+  if (orderNotContainPinned !== undefined) {
+    url += `&orderNotContainPinned=${orderNotContainPinned}`;
+  }
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -116,9 +120,13 @@ export function findHomeRecentPostViews(
   communityId: string,
   sort: string,
   offset: number,
-  limit: number
+  limit: number,
+  orderNotContainPinned?: boolean,
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/home/recent?communityId=${communityId}&sort=${sort}&offset=${offset}&limit=${limit}`;
+  let url = `${BASE_URL}/postviews/home/recent?communityId=${communityId}&sort=${sort}&offset=${offset}&limit=${limit}`;
+  if (orderNotContainPinned !== undefined) {
+    url += `&orderNotContainPinned=${orderNotContainPinned}`;
+  }
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -134,6 +142,11 @@ export function findAllPostViews(
 
 export function findPostView(postId: string): Promise<Post> {
   const url = `${BASE_URL}/postviews/post/${postId}`;
+  return axiosApi.get<Post>(url).then(response => response && response.data);
+}
+
+export function findPostViewWithRead(postId: string): Promise<Post> {
+  const url = `${BASE_URL}/postviews/postWithIncreaseReadCount/${postId}`;
   return axiosApi.get<Post>(url).then(response => response && response.data);
 }
 
