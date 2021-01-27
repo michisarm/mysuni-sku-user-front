@@ -101,16 +101,13 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           <br />
           <br />
           Community
-          <br />
-          (서비스 예정)
         </span>
       ),
-      items: [],
-      // items: [
-      //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
-      //   { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
-      //   { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
-      // ],
+      items: [
+        { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
+        { name: 'Community List', path: myPageRoutePaths.communityList() },
+        { name: 'Follow', path: myPageRoutePaths.learningEnrolled() },
+      ],
     },
   ];
 
@@ -148,7 +145,13 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       ],
     },
     {
-      name: 'Support',
+      name: (
+        <span>
+          <br />
+          <br />
+          Support
+        </span>
+      ),
       items: [
         { name: 'Notice', path: boardRoutePaths.supportNotice() },
         { name: 'FAQ', path: boardRoutePaths.supportFAQ() },
