@@ -1,5 +1,3 @@
-
-
 enum CategoryColorType {
   Default = 'navy',
   AI = 'purple',
@@ -12,6 +10,7 @@ enum CategoryColorType {
   InnovationDesign = 'red',
   SemicondDesign = 'marine',
   EnergySolution = 'bluegreen',
+  BMDesign = 'bluegreen',
 }
 
 export default CategoryColorType;
