@@ -19,9 +19,33 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
       }
       getCommunityPostDetailWithIncreaseReadCount(communityId, postId);
     }, [communityId, postId]);
-
+    
     useEffect(() => {
       const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;
+      setCommunityPostDetailItem({
+        id: '',
+        postId: '',
+        communityId: '',
+        menuId: '',
+        title: '',
+        html: '',
+        likeCount: 0,
+        replyCount: 0,
+        fileBoxId: '',
+        commentFeedbackId: '',
+        pinned: false,
+        readCount: 0,
+        visible: false,
+        creatorId: '',
+        creatorName: '',
+        createdTime: 0,
+        modifierId: '',
+        modifiedTime: 0,
+        nickName: '',
+        introduce: '',
+        profileImg: '',
+        creatorCompanyName: ''
+    })
       setSubscriberId(next);
     }, []);
 
@@ -30,9 +54,18 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
         return;
       }
       return onCommunityPostDetailItem(next => {
-        setPostDetailValue(next)
+        if (next !== undefined) {
+         setPostDetailValue(next)
+        }
       }, subscriberId);
     }, [subscriberId]);
+
+    useEffect(() => {
+      if(communityId === undefined || postId === undefined) {
+        return
+      }
+      getCommunityPostDetailWithIncreaseReadCount(communityId, postId);
+    }, [communityId, postId]);
 
     return [PostDetailValue];
 }
