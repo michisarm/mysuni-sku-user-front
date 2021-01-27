@@ -23,6 +23,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   managementCollegeTime: number = 0;
   energySolutionCollegeTime: number = 0;
 
+  bmDesignerCollegeTime: number = 0;
   semiconductorCollegeTime: number = 0;
   skManagementCollegeTime: number = 0;
   skAcademyCollegeTime: number = 0;
@@ -61,10 +62,17 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
     */
     if (this.lectureTimeSummary) {
       /* lectureTimeSummary 는 object 이므로 null 처리를 꼭 해주도록 한다. */
-      return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime + this.lectureTimeSummary.totalCollegeTime;
+      return (
+        this.suniLearningTime +
+        this.myCompanyLearningTime +
+        this.aplAllowTime +
+        this.lectureTimeSummary.totalCollegeTime
+      );
     }
 
-    return this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime;
+    return (
+      this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime
+    );
   }
 
   /* 총 학습시간(누적) */
@@ -77,10 +85,19 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
     */
     if (this.lectureTimeSummary) {
       /* lectureTimeSummary 는 object 이므로 null 처리를 꼭 해주도록 한다. */
-      return this.totalSuniLearningTime + this.totalMyCompanyLearningTime + this.totalAplAllowTime + this.totalCollegeTime;
+      return (
+        this.totalSuniLearningTime +
+        this.totalMyCompanyLearningTime +
+        this.totalAplAllowTime +
+        this.totalCollegeTime
+      );
     }
 
-    return this.totalSuniLearningTime + this.totalMyCompanyLearningTime + this.totalAplAllowTime;
+    return (
+      this.totalSuniLearningTime +
+      this.totalMyCompanyLearningTime +
+      this.totalAplAllowTime
+    );
   }
 
   constructor(summary?: MyLearningSummaryModel) {
@@ -108,6 +125,7 @@ decorate(MyLearningSummaryModel, {
   leadershipCollegeTime: observable,
   managementCollegeTime: observable,
   energySolutionCollegeTime: observable,
+  bmDesignerCollegeTime: observable,
   semiconductorCollegeTime: observable,
   skManagementCollegeTime: observable,
   skAcademyCollegeTime: observable,

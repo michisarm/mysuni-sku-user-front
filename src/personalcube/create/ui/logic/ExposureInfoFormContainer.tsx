@@ -1,31 +1,40 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
-import { fileUtil, ImageBox, PatronType, ValidationType } from '@nara.drama/depot';
+import {
+  Button,
+  Checkbox,
+  Form,
+  Icon,
+  Image,
+  Radio,
+  Select,
+} from 'semantic-ui-react';
+import {
+  fileUtil,
+  ImageBox,
+  PatronType,
+  ValidationType,
+} from '@nara.drama/depot';
 import { IdName, IconType } from 'shared/model';
 import { SubsidiaryService } from 'college/stores';
 import { PersonalCubeModel } from 'personalcube/personalcube/model';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';
 
-
 interface Props {
-  subsidiaryService?: SubsidiaryService
-  personalCube: PersonalCubeModel
-  targetSubsidiaryId: string
-  onChangePersonalCubeProps: (name: string, value: string | {}) => void
+  subsidiaryService?: SubsidiaryService;
+  personalCube: PersonalCubeModel;
+  targetSubsidiaryId: string;
+  onChangePersonalCubeProps: (name: string, value: string | {}) => void;
 }
 
 interface State {
-  subsidiariesAllChecked: boolean
+  subsidiariesAllChecked: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'college.subsidiaryService',
-))
+@inject(mobxHelper.injectFrom('college.subsidiaryService'))
 @observer
 @reactAutobind
 class ExposureInfoFormContainer extends React.Component<Props, State> {
@@ -37,7 +46,6 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
   state = {
     subsidiariesAllChecked: false,
   };
-
 
   componentDidMount() {
     //
@@ -63,10 +71,11 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
       this.setState({ subsidiariesAllChecked: false });
       const subsidiaries = await subsidiaryService.findSubsidiariesByCompany();
 
-      const nextSubsidiaries = subsidiaries.map(subsidiary => subsidiary.subsidiary);
+      const nextSubsidiaries = subsidiaries.map(
+        subsidiary => subsidiary.subsidiary
+      );
       onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
-    }
-    else {
+    } else {
       subsidiaryService.findAllSubsidiaries();
       onChangePersonalCubeProps('subsidiaries', []);
     }
@@ -96,8 +105,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
     const hasNonPass = validations.some(validation => {
       if (typeof validation.validator === 'function') {
         return !validation.validator(file);
-      }
-      else {
+      } else {
         if (!validation.type || !validation.validValue) {
           return false;
         }
@@ -123,11 +131,18 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
     this.props.onChangePersonalCubeProps('iconBox.iconUrl', data.value);
   }
 
-  onSelectDefaultIcon(tinyAlbumId: string, selectedImageId: string, tinyImage?: string) {
+  onSelectDefaultIcon(
+    tinyAlbumId: string,
+    selectedImageId: string,
+    tinyImage?: string
+  ) {
     //
     const { onChangePersonalCubeProps } = this.props;
 
-    onChangePersonalCubeProps('iconBox.baseUrl', 'data:image/png;base64,' + tinyImage);
+    onChangePersonalCubeProps(
+      'iconBox.baseUrl',
+      'data:image/png;base64,' + tinyImage
+    );
     onChangePersonalCubeProps('iconBox.iconUrl', selectedImageId);
   }
 
@@ -166,9 +181,10 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
     if (checked) {
       const nextSubsidiaries = personalCube.subsidiaries.concat(subsidiary);
       onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
-    }
-    else {
-      const nextSubsidiaries = personalCube.subsidiaries.filter((prevSubsidiary) => prevSubsidiary.id !== subsidiary.id);
+    } else {
+      const nextSubsidiaries = personalCube.subsidiaries.filter(
+        prevSubsidiary => prevSubsidiary.id !== subsidiary.id
+      );
       onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
     }
   }
@@ -210,38 +226,57 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
             checked={personalCube.iconBox.iconType === IconType.Personal}
             onChange={this.onChangeIconType}
           />
-          { personalCube.iconBox.iconType === IconType.SKUniversity && (
+          {personalCube.iconBox.iconType === IconType.SKUniversity && (
             <div className="round-wrap filebox-icon">
               <div className="filter">
                 <Select
+                  style={{ width: 230 }}
                   className="small-border"
                   placeholder="선택하세요"
                   options={SelectOptions.colleges}
-                  value={personalCube.iconBox.iconUrl && personalCube.iconBox.iconUrl.substring(0, 3) || ''}
+                  value={
+                    (personalCube.iconBox.iconUrl &&
+                      personalCube.iconBox.iconUrl.substring(0, 3)) ||
+                    ''
+                  }
                   onChange={this.onChangeIconUrl}
                 />
               </div>
               <div className="h220">
-                { personalCube.iconBox.iconUrl && (
+                {personalCube.iconBox.iconUrl && (
                   <ImageBox
                     id={personalCube.iconBox.iconUrl.substring(0, 3) || ''}
                     defaultSelectId={personalCube.iconBox.iconUrl || ''}
-                    options={{ title: 'sk Icon', needTinyImage: true, width: '60px', height: '60px', selectable: true }}
-                    vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
-                    patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
-                    customSelector={(selectedId: string, imageId: string) => (<Radio checked={selectedId === imageId} />)}
+                    options={{
+                      title: 'sk Icon',
+                      needTinyImage: true,
+                      width: '60px',
+                      height: '60px',
+                      selectable: true,
+                    }}
+                    vaultKey={{
+                      keyString: 'sku-depot',
+                      patronType: PatronType.Pavilion,
+                    }}
+                    patronKey={{
+                      keyString: 'sku-denizen',
+                      patronType: PatronType.Denizen,
+                    }}
+                    customSelector={(selectedId: string, imageId: string) => (
+                      <Radio checked={selectedId === imageId} />
+                    )}
                     onSelect={this.onSelectDefaultIcon}
                   />
                 )}
               </div>
             </div>
           )}
-          { personalCube.iconBox.iconType === IconType.Personal && (
+          {personalCube.iconBox.iconType === IconType.Personal && (
             <div className="round-wrap2">
               <div className="top img">
                 <Image src={personalCube.iconBox.baseUrl} />
 
-                { personalCube.iconBox.baseUrl && (
+                {personalCube.iconBox.baseUrl && (
                   <Button onClick={this.onDetachIcon}>
                     <Icon className="clear" />
                     <span className="blind">delete</span>
@@ -252,7 +287,9 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                 <span className="text1">
                   <Icon className="info16" />
                   <span className="blind">infomation</span>
-                  JPG, PNG 파일을 등록하실 수 있습니다. / 최대 500Kbyte 용량의 파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를 추천합니다.
+                  JPG, PNG 파일을 등록하실 수 있습니다. / 최대 500Kbyte 용량의
+                  파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를
+                  추천합니다.
                 </span>
                 <div className="right-btn">
                   <div className="ui input file2">
@@ -280,7 +317,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
         <Form.Field>
           <label className="necessary">관계사 공개 범위 설정</label>
           <div className="round-wrap">
-            { !subsidiaryTargeted && (
+            {!subsidiaryTargeted && (
               <div className="filter">
                 <Checkbox
                   className="black"
@@ -293,16 +330,25 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
             )}
             <div className="h112">
               <ul>
-                { subsidiaries.map((subsidiary, index) => (
-                  <li key ={index}>
+                {subsidiaries.map((subsidiary, index) => (
+                  <li key={index}>
                     <Checkbox
                       key={index}
                       className="base"
-                      label={subsidiary.subsidiary && subsidiary.subsidiary.name || ''}
+                      label={
+                        (subsidiary.subsidiary && subsidiary.subsidiary.name) ||
+                        ''
+                      }
                       subsidiary={subsidiary.subsidiary}
-                      value={subsidiary.subsidiary && JSON.stringify(subsidiary.subsidiary)}
+                      value={
+                        subsidiary.subsidiary &&
+                        JSON.stringify(subsidiary.subsidiary)
+                      }
                       disabled={subsidiaryTargeted}
-                      checked={personalCube.subsidiaries.some((cubeSubsidiary) => cubeSubsidiary.id === subsidiary.subsidiary.id)}
+                      checked={personalCube.subsidiaries.some(
+                        cubeSubsidiary =>
+                          cubeSubsidiary.id === subsidiary.subsidiary.id
+                      )}
                       onChange={this.onCheckSubsidiary}
                     />
                   </li>
