@@ -225,7 +225,7 @@ class MyLearningSummaryModal extends Component<Props> {
             </span>
           </li>
           <li>
-            <span className="name b9">BM Design & Storytelling</span>
+            <span className="name b14">BM Design & Storytelling</span>
             <span className="time">
               {timeToHourMinutePaddingFormat(
                 myLearningSummary.bmDesignerCollegeTime
@@ -353,7 +353,7 @@ class MyLearningSummaryModal extends Component<Props> {
           </span>
         </li>
         <li>
-          <span className="name b9">BM Design & Storytelling</span>
+          <span className="name b14">BM Design & Storytelling</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
               (lectureTimeSummary &&
