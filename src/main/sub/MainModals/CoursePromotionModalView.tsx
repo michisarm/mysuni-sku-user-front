@@ -45,7 +45,7 @@ const CoursePromotionModalView = () => {
     <Modal
       open={modalOpen}
       className="base w1000 tutorials2 front scrolling"
-      style={{ position: 'relative' }}
+      style={{ position: 'relative', marginTop: '0px'}}
     >
       <Modal.Header className="header2">
         <div className="right-btn">
