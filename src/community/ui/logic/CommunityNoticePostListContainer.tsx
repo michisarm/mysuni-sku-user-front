@@ -135,7 +135,8 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
       creatorId: '',
       offset: (data.activePage - 1) * 10,
       limit: 10,
-      searchFilter: '', //얘 안쓰는거 같은데
+      searchGubun: searchType,
+      searchTitle: searchText,
       menuId,
       communityId,
       sort: sortType,
