@@ -38,11 +38,6 @@ const routePaths = {
   communityMyCreatedCommunity: () => routePaths.communityTab('MyCreatedCommunity'),
   communityMyFeed: () => routePaths.communityTab('MyFeed'),
 
-  communityTab2: (tab: string = 'MyCommunity') => `/community/${tab}`,
-  myCommunity: () => routePaths.communityTab2('/main'),
-  communityList: () => routePaths.communityTab2('/main/open-communities'),
-  follow: () => routePaths.communityTab2('/main/follow'),
-
   newLearningTab: (tab: string) => `/my-training/new-learning/${tab}/pages/1`,
   learningRqdLecture: () => routePaths.newLearningTab('Required'),
   learningNewLecture: () => routePaths.newLearningTab('New'),

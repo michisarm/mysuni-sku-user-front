@@ -9,6 +9,7 @@ import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
+import communityRoutePaths from 'community/routePaths'
 import { CollegeLectureCountService } from 'lecture/stores';
 // import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
@@ -143,9 +144,9 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
         </span>
       ),
       items: [
-        { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
-        { name: 'Community List', path: myPageRoutePaths.communityList() },
-        { name: 'Follow', path: myPageRoutePaths.learningEnrolled() },
+        { name: 'My Community', path: communityRoutePaths.myCommunity() },
+        { name: 'Community List', path: communityRoutePaths.communityList() },
+        { name: 'Follow', path: communityRoutePaths.follow() },
       ],
     },
   ];
