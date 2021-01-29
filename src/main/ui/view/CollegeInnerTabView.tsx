@@ -24,13 +24,13 @@ const panes = [
         </div>
         <div className="college-cont-map sub wrap01">
           <div className="belt">
-            <div className="label sub">Management College 체계도</div>
+            {/* <div className="label sub">Management College 체계도</div> */}
             <Image src={`${PUBLIC_URL}/images/all/main_01.jpg`} alt="" />
           </div>
         </div>
         <div className="college-cont-map sub">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/main_02.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/main_02.jpg`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -60,7 +60,7 @@ const panes = [
         </div>
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/con-01-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/sub_01.jpg`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -90,7 +90,7 @@ const panes = [
       </div>
       <div className="college-link-box">
         <div className="belt">
-        <Image src={`${PUBLIC_URL}/images/all/con-01-2.png`} alt="" />
+        <Image src={`${PUBLIC_URL}/images/all/sub_02.jpg`} alt="" />
         </div>
       </div>
     </Tab.Pane>,
@@ -116,7 +116,7 @@ const panes = [
       </div>
       <div className="college-link-box">
         <div className="belt">
-        <Image src={`${PUBLIC_URL}/images/all/con-01-3.png`} alt="" />
+        <Image src={`${PUBLIC_URL}/images/all/sub_03.jpg`} alt="" />
         </div>
       </div>
     </Tab.Pane>,
@@ -147,7 +147,7 @@ const panes = [
       </div>
       <div className="college-link-box">
         <div className="belt">
-        <Image src={`${PUBLIC_URL}/images/all/con-01-4.png`} alt="" />
+        <Image src={`${PUBLIC_URL}/images/all/sub_04.jpg`} alt="" />
         </div>
       </div>
     </Tab.Pane>,
@@ -173,7 +173,7 @@ const panes = [
       </div>
       <div className="college-link-box">
         <div className="belt">
-        <Image src={`${PUBLIC_URL}/images/all/con-01-5.png`} alt="" />
+        <Image src={`${PUBLIC_URL}/images/all/sub_05.jpg`} alt="" />
         </div>
       </div>
     </Tab.Pane>,
@@ -199,7 +199,7 @@ const panes = [
       </div>
       <div className="college-link-box">
         <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/con-01-6.png`} alt="" />
+          <Image src={`${PUBLIC_URL}/images/all/sub_06.jpg`} alt="" />
         </div>
       </div>
 
