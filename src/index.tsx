@@ -11,9 +11,9 @@ import { initializeBody } from './shared/helper/bodyHelper';
 import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
-//2020-12-18
-import './style/css/2.bf2d4321.chunk.css';
-import './style/css/main.390cafc1.chunk.css';
+//2021-01-28
+import './style/css/2.9ed52e06.chunk.css';
+import './style/css/main.f39b60df.chunk.css';
 
 initializeBody();
 
