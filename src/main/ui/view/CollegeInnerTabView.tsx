@@ -22,10 +22,15 @@ const panes = [
             공유하는 SK Exclusive Contents를 제공할 계획입니다.
           </p>
         </div>
-        <div className="college-cont-map sub">
+        <div className="college-cont-map sub wrap01">
           <div className="belt">
             <div className="label sub">Management College 체계도</div>
-            <Image src={`${PUBLIC_URL}/images/all/con-02.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/main_01.jpg`} alt="" />
+          </div>
+        </div>
+        <div className="college-cont-map sub">
+          <div className="belt">
+            <Image src={`${PUBLIC_URL}/images/all/main_02.png`} alt="" />
           </div>
         </div>
       </Tab.Pane>
