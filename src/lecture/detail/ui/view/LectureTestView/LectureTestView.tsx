@@ -132,6 +132,8 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 break;
               case 'Passed':
               case 'TestPassed':
+                const course = getActiveCourseStructureItem();
+                const program = getActiveProgramStructureItem();
                 if (
                   course?.survey !== undefined ||
                   program?.survey !== undefined
