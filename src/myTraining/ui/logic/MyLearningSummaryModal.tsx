@@ -333,7 +333,7 @@ class MyLearningSummaryModal extends Component<Props> {
           </span>
         </li>
         <li>
-          <span className="name b9">반도체</span>
+          <span className="name b9">미래반도체</span>
           <span className="time">
             {timeToHourMinutePaddingFormat(
               (lectureTimeSummary &&
