@@ -22,6 +22,7 @@ import CommunityMenuType from '../../model/CommunityMenuType';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
+import { addNewBadge } from 'community/utility/communityHelper';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -32,6 +33,7 @@ interface ApprovedProps {
   name: string;
   approved?: boolean | null;
   icon?: string;
+  lastPostTime: number;
 }
 
 const MenuItemView: React.FC<CommunityMenu &
@@ -42,6 +44,7 @@ const MenuItemView: React.FC<CommunityMenu &
   menuId,
   url,
   subMenus,
+  lastPostTime,
 }) {
   let path = 'board';
   let icon = boardIcon;
@@ -104,7 +107,7 @@ const MenuItemView: React.FC<CommunityMenu &
       <li>
         <Link to={`/community/${communityId}/${path}/${menuId}`}>
           <img src={icon} />
-          {name}
+          {name} {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
         </Link>
       </li>
       {subMenus.length > 0 && (
@@ -127,6 +130,7 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
   icon,
   approved,
   subMenus,
+  lastPostTime,
 }) {
   let path = 'board';
   let nextIcon = icon || boardIcon;
@@ -184,7 +188,7 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
       <li>
         <button onClick={Alert}>
           <img src={nextIcon} />
-          {name}
+          {name} {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
         </button>
       </li>
       {subMenus.length > 0 && (
@@ -197,6 +201,7 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
                 type={menu.type}
                 name={menu.name}
                 approved={approved}
+                lastPostTime={menu.lastPostTime}
               />
             ))}
         </ul>
@@ -209,6 +214,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   type,
   name,
   approved,
+  lastPostTime,
 }) {
   let path = 'board';
   let icon = boardIcon;
@@ -266,7 +272,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
       <button onClick={Alert}>
         <img src={subIcon} />
         <img src={icon} />
-        {name}
+        {name}  {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
       </button>
     </li>
   );
@@ -278,6 +284,7 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
   communityId,
   menuId,
   url,
+  lastPostTime,
 }) {
   let path = 'board';
   let icon = boardIcon;
@@ -331,7 +338,7 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
       <Link to={`/community/${communityId}/${path}/${menuId}`}>
         <img src={subIcon} />
         <img src={icon} />
-        {name}
+        {name}  {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
       </Link>
     </li>
   );
@@ -352,12 +359,12 @@ function JoinView() {
         if (linkUrl === undefined) {
           reactAlert({
             title: '알림',
-            message: 'Course를 학습하셔야지 참가가 가능합니다.',
+            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.',
           });
         } else {
           reactConfirm({
             title: '알림',
-            message: 'Course를 학습하시겠습니까?',
+            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.<div className="">\n</div>Course를 학습하시겠습니까?',
             onOk: () => {
               history.push(linkUrl);
             },
@@ -462,6 +469,10 @@ function CommunityHomeTreeContainer() {
   if (communtyHome === undefined || communtyHome.community === undefined) {
     return null;
   }
+  let lastNoticePostTime = 0;
+  if (communtyHome.community?.lastNoticePostTime !== null) {
+    lastNoticePostTime = communtyHome.community?.lastNoticePostTime;
+  }
   return (
     <div className="community-left community-home-left">
       <div className="sub-info-box">
@@ -511,6 +522,7 @@ function CommunityHomeTreeContainer() {
                     icon={boardIcon}
                     approved={communtyHome.community?.approved}
                     subMenus={[]}
+                    lastPostTime={0}
                   />
                 )
               }
@@ -520,6 +532,7 @@ function CommunityHomeTreeContainer() {
                 icon={boardIcon}
                 approved={communtyHome.community?.approved}
                 subMenus={[]}
+                lastPostTime={lastNoticePostTime}
               />
               {communtyHome.menus
                 .filter(c => c.parentId === null)
@@ -545,7 +558,7 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              { 
+              {
                 communtyHome.community.communityId === "COMMUNITY-a" ? (
                   null
                 ) : (
@@ -564,13 +577,14 @@ function CommunityHomeTreeContainer() {
                   to={`/community/${communtyHome.community.communityId}/notice`}
                 >
                   <img src={boardIcon} />
-                  공지사항
+                  공지사항 {addNewBadge(lastNoticePostTime) && <span className="new-label">NEW</span>}
                 </Link>
               </li>
               {communtyHome.menus
                 .filter(c => c.parentId === null)
                 .sort((a, b) => a.order - b.order)
-                .map(menu => (
+                .map(menu => {
+                  return (
                   <MenuItemView
                     key={menu.menuId}
                     {...menu}
@@ -578,7 +592,7 @@ function CommunityHomeTreeContainer() {
                       c => c.parentId === menu.id
                     )}
                   />
-                ))}
+                )})}
             </ul>
           )}
         </div>

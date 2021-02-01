@@ -10,63 +10,63 @@ export function findCommunityMenu(communityId: string): Promise<any> {
 }
 
 export function findMembers(
-  communityId:string,
+  communityId: string,
   // pageNum:number,
   // limit:number,
-  searchBox : SearchBox
-  ): Promise<any> { 
+  searchBox: SearchBox
+): Promise<any> {
   return (
     axios
-    // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
-    .get(`${BASE_URL}/memberviews/${communityId}`, {
-      params: searchBox,
-    })
+      // .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=${limit}`)
+      .get(`${BASE_URL}/memberviews/${communityId}`, {
+        params: searchBox,
+      })
 
     // http://university.sk.com/api/community/communities/COMMUNITY-1t/members
   );
 }
 
 export function findAllMemberByQuery(
-  communityId:string,
-  pageNum:number
-  ): Promise<any> { 
+  communityId: string,
+  pageNum: number
+): Promise<any> {
   return (
     axios
-    .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8`)
+      .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8`)
   );
 }
 
 export function findApprovedMember(
-  communityId:string,
-  pageNum:number
-  ): Promise<any> {
-  return(
+  communityId: string,
+  pageNum: number
+): Promise<any> {
+  return (
     axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&approved=false`)
   )
 }
 
 export function searchMember(
-  communityId:string,
-  nickName:any,
-):Promise<any>{
+  communityId: string,
+  nickName: any,
+): Promise<any> {
 
-  return(
+  return (
     axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8&nickName=${nickName}`)
   )
 }
 
 export function memberFollowAdd(
-  memberId:string
-):Promise<any> {
-  
+  memberId: string
+): Promise<any> {
+
   return (
     axios.post(`${BASE_URL}/follow/flow/${memberId}`)
   )
 }
 
-export function memberFollowDel (
-  memberId:string
-):Promise<any> {
+export function memberFollowDel(
+  memberId: string
+): Promise<any> {
 
   return (
     axios.delete(`${BASE_URL}/follow/flow/${memberId}/unfollow`).then(res => res && res.data)
@@ -89,15 +89,15 @@ export function modifyMembers(
   communityId: string,
   memberIdList: (string | undefined)[]
 ): Promise<string> {
-  
+
   return axios
     .put<string>(`${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`)
     .then((response) => response && response.data);
 }
 
 export function findMember(
-  communityId:string
-  ): Promise<Member> { 
+  communityId: string
+): Promise<Member> {
 
   const url = `${BASE_URL}/communities/${communityId}/members/findMember`
   return axiosApi.get<Member>(url).then((response) => response && response.data);

@@ -1,3 +1,4 @@
+import { requestCommunityMenus } from 'community/service/useCommunityHome/requestCommunity';
 import { getPostListMapFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostListMapFromCommunity';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -13,6 +14,8 @@ interface Params {
 function PostsPage() {
   const { communityId, menuId } = useParams<Params>();
   useEffect(() => {
+    requestCommunityMenus(communityId);  // 메뉴 클릭시 재호출
+
     const params: PostRdo = {
       title: '',
       html: '',
@@ -55,7 +58,7 @@ function PostsPage() {
   }
 
   return (
-    <CommunityPostListContainer 
+    <CommunityPostListContainer
       handelOnSearch={(sortType, pinned, searchType, searchText)=> onSearch(sortType, pinned, searchType, searchText)}
     />
   );

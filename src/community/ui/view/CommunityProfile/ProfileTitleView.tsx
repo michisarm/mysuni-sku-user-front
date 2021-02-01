@@ -129,7 +129,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
 
   const followersModal = followersList?.followers.length !== 0 ? followersList?.followers.map((item, idx) => {
     return (
-      <li>
+      <li style={{ cursor: 'pointer' }}>
         <p
           className="pic"
           onClick={() => history.push(`/community/profile/${item.id}`)}
@@ -146,7 +146,6 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
         <p
           className="nickname"
           onClick={() => history.push(`/community/profile/${item.id}`)}
-          style={{ cursor: 'pointer' }}
         >
           {item.nickname === '' ? item.name : item.nickname}
         </p>
@@ -162,7 +161,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
 
   const followingsModal = followingsList?.followings.length !== 0 ? followingsList?.followings.map((item, idx) => {
     return (
-      <li>
+      <li style={{ cursor: 'pointer' }}>
         <p
           className="pic"
           onClick={() => history.push(`/community/profile/${item.id}`)}
@@ -179,7 +178,6 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
         <p
           className="nickname"
           onClick={() => history.push(`/community/profile/${item.id}`)}
-          style={{ cursor: 'pointer' }}
         >
           {item.nickname === '' ? item.name : item.nickname}
         </p>
@@ -271,31 +269,31 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
               value={profileItem.introduce}
             />
           )) || (
-            <>
-              <p>{profileItem.introduce}</p>
-              <ul>
-                <li>
-                  <a onClick={() => modalOpen('followers')}>Followers</a>
-                  <em>{profileItem.followerCount}</em>
-                </li>
-                <li>
-                  <a onClick={() => modalOpen('following')}>Following</a>
-                  <em>{profileItem.followingCount}</em>
-                </li>
-                {menuType === 'myProfile' && (
+              <>
+                <p>{profileItem.introduce}</p>
+                <ul>
                   <li>
-                    <button
-                      type="button"
-                      className="btn_profile_edit"
-                      onClick={handleEditClick}
-                    >
-                      프로필 수정
-                    </button>
+                    <a onClick={() => modalOpen('followers')}>Followers</a>
+                    <em>{profileItem.followerCount}</em>
                   </li>
-                )}
-              </ul>
-            </>
-          )}
+                  <li>
+                    <a onClick={() => modalOpen('following')}>Following</a>
+                    <em>{profileItem.followingCount}</em>
+                  </li>
+                  {menuType === 'myProfile' && (
+                    <li>
+                      <button
+                        type="button"
+                        className="btn_profile_edit"
+                        onClick={handleEditClick}
+                      >
+                        프로필 수정
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              </>
+            )}
         </div>
       </div>
 

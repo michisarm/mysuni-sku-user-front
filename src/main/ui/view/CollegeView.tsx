@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
+import CollegeInnerTabView from './CollegeInnerTabView';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -521,29 +522,31 @@ const panes = [
           data-tab="colleges8"
         >
           <div className="college-cont-title management">
-            <div className="belt">
-              <div className="panopto">
+            <div className="belt sub">
+              <div className="label">Management College</div>
+              <div className="strong">
+                Deep Change를 위해 내가 하는 일은 어떻게 바뀌어야 할까요?
+                <br />
+                어떻게 성장할 수 있을까요?
+              </div>
+              <div className="normal">
+              Management College는 Deep Change를 위한 Biz. 실행 역량 제고를 위해 6개 Function Group, 
+              1개 Competency 영역의 직무 역량 학습을 제공합니다. Function Group별 지식/전문성 뿐 아니라 여러 Function간 결합을 통한 융합/통합 역량 확보도 계획하고 있습니다. 
+
+              </div>
+              <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
                   width="436"
                   height="245"
-                  style={{ padding: '0px', border: '0px' }}
+                  style={{ padding: "0px", border: "0px" }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"
                 />
               </div>
-              <div className="label">Management College</div>
-              <div className="strong">
-                “신입사원부터 리더까지 SK인이 꼭 알아야 할 경영지식!”
-              </div>
-              <div className="normal">
-                Mgmt. College는 전략/재무/마케팅/HR 등 공통 직무 Domain別
-                전문역량과 Deep Change를 위한 실행역량 향상을 위한 학습
-                Program을 제공합니다.
-              </div>
-              <ul className="tag-wrap">
+              {/* <ul className="tag-wrap">
                 <li># 전략</li>
                 <li># 재무</li>
                 <li># 마케팅</li>
@@ -555,23 +558,20 @@ const panes = [
                 <li># Financing</li>
                 <li># Digital Marketing</li>
                 <li># 조직설계</li>
-              </ul>
+              </ul> */}
             </div>
           </div>
-          <div className="college-free3">
-            <div className="belt">
+          <div className="college-free3 sub">
+            {/*<div className="belt">
               <div className="img">
                 <Image src={`${PUBLIC_URL}/images/all/img-co8-1.png`} alt="" />
               </div>
+            </div>*/}
+          <div className="college-cont-map sub wrap01">
+            <div className="tab-menu-wrap">
+              <CollegeInnerTabView />
             </div>
           </div>
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">전체 커리큘럼</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co8.png`} alt="" />
-              </div>
-            </div>
           </div>
         </div>
       </Tab.Pane>

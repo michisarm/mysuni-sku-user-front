@@ -2,6 +2,7 @@ import { findMember } from 'community/api/MemberApi';
 import { reactConfirm, reactAlert } from '@nara.platform/accent';
 import { joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from '../useCommunityHome/requestCommunity';
+import { useHistory } from 'react-router-dom';
 
 export function getMember(communityId:string) {
   return findMember(communityId);
@@ -9,6 +10,7 @@ export function getMember(communityId:string) {
 
 export async function checkMember(communityId:string): Promise<boolean> {
   const member = await findMember(communityId);
+
   if(member.memberId == null || member.memberId == ''){
     reactConfirm({
       title: '알림',
@@ -17,6 +19,9 @@ export async function checkMember(communityId:string): Promise<boolean> {
         await joinCommunity(communityId);
         requestCommunity(communityId);
       },
+      onCancel: () => {
+       return false
+      }
     });
     return false;
   }else if(!member.approved){

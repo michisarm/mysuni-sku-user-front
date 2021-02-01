@@ -6,11 +6,21 @@ import { Link } from 'react-router-dom';
 import OpenCommunityIntroFieldListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroFieldListContainer';
 import OpenCommunityIntroCommunityListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroCommunityListContainer';
 
+import ReactGA from 'react-ga';
+
 interface OpenCommunityViewProps {}
 
 const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommunityView() {
   const contextRef = useRef(null);
 
+  const gaOnClick = (name: string) => {
+    // react-ga 
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `Community-${name}`,
+    });
+  }
   return (
       <div ref={contextRef}>
         <Sticky context={contextRef} className="tab-menu offset0">
@@ -21,6 +31,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
                 active={false}
                 as={Link}
                 to="/community/main"
+                onClick={() => gaOnClick('MyCommunity')}
               >
                 My Community
                 <span className="count" />
@@ -30,6 +41,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
                 active={true}
                 as={Link}
                 to="/community/main/open-communities"
+                onClick={() => gaOnClick('CommunityList')}
               >
                 Community List
               </Menu.Item>
@@ -38,6 +50,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
                 active={false}
                 as={Link}
                 to="/community/main/follow"
+                onClick={() => gaOnClick('Follow')}
               >
                 Follow
               </Menu.Item>

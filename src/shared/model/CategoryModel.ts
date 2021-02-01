@@ -1,20 +1,19 @@
-import {decorate, observable} from 'mobx';
+import { decorate, observable } from 'mobx';
 import IdName from './IdName';
 import CategoryColorType from './CategoryColorType';
 
-
 export class CategoryModel {
-
   college: IdName = new IdName();
   channel: IdName = new IdName();
   color?: CategoryColorType = CategoryColorType.Default;
 
-
   constructor(category?: CategoryModel) {
     //
     if (category) {
-      const college = category.college && new IdName(category.college) || this.college;
-      const channel = category.channel && new IdName(category.channel) || this.channel;
+      const college =
+        (category.college && new IdName(category.college)) || this.college;
+      const channel =
+        (category.channel && new IdName(category.channel)) || this.channel;
       Object.assign(this, { college, channel });
 
       this.color = CategoryModel.getColor(college);
@@ -25,35 +24,38 @@ export class CategoryModel {
     //
     let color = CategoryColorType.Default;
 
-    switch (college.name) {
-      case 'AI':
+    switch (college.id) {
+      case 'CLG00001':
         color = CategoryColorType.AI;
         break;
-      case 'DT':
+      case 'CLG00002':
         color = CategoryColorType.DT;
         break;
-      case 'Global':
+      case 'CLG00006':
         color = CategoryColorType.Global;
         break;
-      case 'Leadership':
+      case 'CLG00007':
         color = CategoryColorType.Leadership;
         break;
-      case 'Management':
+      case 'CLG00008':
         color = CategoryColorType.Management;
         break;
-      case 'SV':
+      case 'CLG00004':
         color = CategoryColorType.SV;
         break;
-      case '행복':
+      case 'CLG00003':
         color = CategoryColorType.Happiness;
         break;
-      case '반도체':
+      case 'CLG00019':
         color = CategoryColorType.SemicondDesign;
         break;
-      case '혁신디자인':
+      case 'CLG00005':
         color = CategoryColorType.InnovationDesign;
         break;
-      case '에너지솔루션':
+      case 'CLG00020':
+        color = CategoryColorType.BMDesign;
+        break;
+      case 'CLG0001c':
         color = CategoryColorType.EnergySolution;
     }
     return color;

@@ -131,6 +131,13 @@ const POPLearning: React.FC<Props> = Props => {
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningPopLecture());
+
+    // react-ga event
+    ReactGA.event({
+      category: '인기 과정',
+      action: 'Click',
+      label: '인기 과정 전체보기'
+    });
   };
 
   const onViewDetail = (e: any, data: any) => {

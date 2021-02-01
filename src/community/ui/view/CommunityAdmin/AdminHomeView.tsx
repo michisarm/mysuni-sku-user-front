@@ -187,9 +187,15 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
           }
         </tbody>
       </table>
-      {communityHome.type === 'HTML' && 
-      // <HtmlEditor />}
-        <Editor contents={communityHome.html||''} />
+      {communityHome.type === 'HTML' &&  (
+        <textarea
+          style={{ height: 548, width: '100%' }}
+          value={communityHome.html || ''}
+          onChange={(e) => {
+            setCommunityHomeCreateItem({ ...communityHome, html : e.target.value })
+          }}
+        />
+        )
       }
 
       <div className="admin_bottom_button line none">

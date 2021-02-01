@@ -44,6 +44,7 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
           : ''
       }`}
       id="lms-content"
+      style={nowScroll > scrollValue ? {margin: '70px 0'} : {}}
     >
       <div className="course-info-list" ref={tabScrollRef}>
         <div className="course-header-list">

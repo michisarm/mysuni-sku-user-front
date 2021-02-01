@@ -1,28 +1,26 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 // import moment from 'moment';
 import ModalState from './model/ModalState';
-// import WelcomeModalView from './WelcomeModalView';
+import WelcomeModalView from './WelcomeModalView';
 import SystemGuideModalView from './SystemGuideModalView';
 import TrustedSiteModalView from './TrustedSiteModalView';
-//import TutorialModalView from './TutorialModalView';
-
+import TutorialModalView from './TutorialModalView';
 
 interface State {
-  // welcomeModalState: ModalState
-  //tutorialModalState: ModalState
-  systemGuideModalState: ModalState
-  //trustedSiteModalState: ModalState
+  // welcomeModalState: ModalState;
+  // tutorialModalState: ModalState;
+  // systemGuideModalState: ModalState;
+  trustedSiteModalState: ModalState;
 }
 
 enum PageType {
   // Welcome = 'welcome',
-  //Tutorial = 'tutorial',
-  SystemGuide = 'systemGuide'
-  //TrustedSite = 'trustedSite'
+  // Tutorial = 'tutorial',
+  // SystemGuide = 'systemGuide',
+  TrustedSite = 'trustedSite',
 }
 
 @reactAutobind
@@ -36,23 +34,23 @@ class MainModalsContainer extends Component<{}, State> {
 
   state = {
     // welcomeModalState: new ModalState(),
-    //tutorialModalState: new ModalState(),
-    systemGuideModalState: new ModalState()
-    //trustedSiteModalState: new ModalState()
+    // tutorialModalState: new ModalState(),
+    // systemGuideModalState: new ModalState(),
+    trustedSiteModalState: new ModalState(),
   };
 
-
   componentDidMount(): void {
-    //
     // this.initFromStorage(PageType.Welcome);
     // this.initFromStorage(PageType.Tutorial);
-    this.initFromStorage(PageType.SystemGuide);
-    //this.initFromStorage(PageType.TrustedSite);
+    // this.initFromStorage(PageType.SystemGuide);
+    this.initFromStorage(PageType.TrustedSite);
   }
 
   initFromStorage(pageType: PageType) {
     //
-    const disabledValue = window.localStorage.getItem(MainModalsContainer.getLocalStorageKey(pageType));
+    const disabledValue = window.localStorage.getItem(
+      MainModalsContainer.getLocalStorageKey(pageType)
+    );
     let disabled = false;
 
     if (disabledValue) {
@@ -70,8 +68,7 @@ class MainModalsContainer extends Component<{}, State> {
 
     if (disabled) {
       this.setModalStateProp(pageType, 'disabled', true);
-    }
-    else {
+    } else {
       this.setModalStateProp(pageType, 'open', true);
     }
   }
@@ -111,31 +108,32 @@ class MainModalsContainer extends Component<{}, State> {
       //   window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
       // }
       // else {
-      window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
+      window.localStorage.setItem(
+        MainModalsContainer.getLocalStorageKey(pageType),
+        'disabled'
+      );
       // }
     }
     this.setModalStateProp(pageType, 'open', false);
   }
 
   onCloseWelcome() {
-    //
     // this.onClose(PageType.Welcome);
     //this.initFromStorage(PageType.Tutorial);
   }
 
   onCloseTutorial() {
-    //
-    //this.onClose(PageType.Tutorial);
+    // this.onClose(PageType.Tutorial);
     // this.initFromStorage(PageType.SystemGuide);
   }
 
   onCloseSystemGuide() {
-    this.onClose(PageType.SystemGuide);
+    // this.onClose(PageType.SystemGuide);
     //this.initFromStorage(PageType.TrustedSite);
   }
 
   onCloseTrustedSite() {
-    //this.onClose(PageType.TrustedSite);
+    this.onClose(PageType.TrustedSite);
   }
 
   onCheckNoMoreSee(pageType: PageType, checked: boolean) {
@@ -148,8 +146,8 @@ class MainModalsContainer extends Component<{}, State> {
     const {
       // welcomeModalState,
       // tutorialModalState,
-      systemGuideModalState
-      //trustedSiteModalState
+      // systemGuideModalState,
+      trustedSiteModalState,
     } = this.state;
 
     // 20200604 팝업제거 요청 by 이의연 RF
@@ -163,53 +161,64 @@ class MainModalsContainer extends Component<{}, State> {
     //     <SystemGuideModalView
     //       modalState={systemGuideModalState}
     //       onClose={this.onCloseSystemGuide}
-    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+    //       onCheckDisable={(e: any, data: any) =>
+    //         this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)
+    //       }
     //     />
     //   );
     // }
-    /*else if (trustedSiteModalState.open) {
+    if (trustedSiteModalState.open) {
       return (
         <TrustedSiteModalView
           modalState={trustedSiteModalState}
           onClose={this.onCloseTrustedSite}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.TrustedSite, data.checked)}
+          onCheckDisable={(e: any, data: any) =>
+            this.onCheckNoMoreSee(PageType.TrustedSite, data.checked)
+          }
         />
       );
-    }*/
+    }
 
-    // if (tutorialModalState.disabled
-    // && welcomeModalState.disabled
-    // && systemGuideModalState.disabled
+    // if (
+    //   tutorialModalState.disabled &&
+    //   welcomeModalState.disabled &&
+    //   systemGuideModalState.disabled
     // ) {
     //   return null;
     // }
-    // 2012-02-21 요구사항 - MinJun, JeeSu
+    // // 2012-02-21 요구사항 - MinJun, JeeSu
     // else if (welcomeModalState.open) {
     //   return (
     //     <WelcomeModalView
     //       modalState={welcomeModalState}
     //       onClose={this.onCloseWelcome}
-    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Welcome, data.checked)}
+    //       onCheckDisable={(e: any, data: any) =>
+    //         this.onCheckNoMoreSee(PageType.Welcome, data.checked)
+    //       }
     //     />
     //   );
     // }
-    // 2020-04-08 김우성 - 사용방법 팝업 제거
+    // // 2020-04-08 김우성 - 사용방법 팝업 제거
     // else if (tutorialModalState.open) {
     //   return (
     //     <TutorialModalView
     //       modalState={tutorialModalState}
     //       onClose={this.onCloseTutorial}
-    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Tutorial, data.checked)}
+    //       onCheckDisable={(e: any, data: any) =>
+    //         this.onCheckNoMoreSee(PageType.Tutorial, data.checked)
+    //       }
     //     />
     //   );
     // }
-    // 2012-02-14 요구사항 - JuneHee
+    // // 2012-02-14 요구사항 - JuneHee
     // else if (systemGuideModalState.open) {
     //   return (
     //     <SystemGuideModalView
     //       modalState={systemGuideModalState}
     //       onClose={this.onCloseSystemGuide}
-    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+    //       onCheckDisable={(e: any, data: any) =>
+    //         this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)
+    //       }
     //     />
     //   );
     // }
@@ -219,4 +228,3 @@ class MainModalsContainer extends Component<{}, State> {
 }
 
 export default MainModalsContainer;
-

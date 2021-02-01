@@ -18,7 +18,11 @@ const Calendar: React.FC<CalendarProps> = function Calendar({searchBox, defaultS
         const [endDate, setEndDate] = useState<moment.Moment>();
      
         useEffect(() => {
-          onSetSearchYear(1);
+          if(defaultSearchType && defaultSearchType === 'years') {
+            onSetSearchYear(1);
+          } else {
+            onSetSearchWeek(1);
+          }
         }, [])
           
         useEffect(() => {

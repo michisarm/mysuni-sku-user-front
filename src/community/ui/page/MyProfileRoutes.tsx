@@ -13,12 +13,16 @@ import { requestProfileCommunities } from '../../service/useCommunityProfile/uti
 import { requestProfileFeeds } from '../../service/useCommunityProfile/utility/requestProfileFeeds';
 import { requestProfileBookmarks } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 import CommunityMenuPage from './CommunityMenuPage';
+import { getCommunityProfileItem } from 'community/store/CommunityProfileStore';
 
 const MyProfileRoutes: React.FC = function MyProfileRoutes() {
   //
 
   useEffect(() => {
-    getCommunityProfile();
+    const profileItem = getCommunityProfileItem();
+    if (profileItem === undefined || profileItem.nickname !== '') {
+      getCommunityProfile();
+    }    
     requestProfileCommunities();
     requestProfileFeeds('');
     requestProfileBookmarks();

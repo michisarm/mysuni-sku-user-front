@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Radio } from 'semantic-ui-react';
+import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
@@ -161,12 +161,35 @@ function OpenCommunityIntroCommunityListContainer() {
       <div className="course-detail-center community-containter padding-none">
         <div className="community-open-contants">
           {openCommunityIntro &&
+            openCommunityIntro.communities.length > 0 &&
             openCommunityIntro.communities.map(communityItem => (
               <OpenCommunityItemView
                 key={communityItem.communityId}
                 {...communityItem}
               />
             ))}
+          {openCommunityIntro && openCommunityIntro.communities.length === 0 && (
+            <section className="content community">
+              <Segment className="full">
+                <div className="no-cont-wrap">
+                  <Icon className="no-contents80" />
+                  <span className="blind">콘텐츠 없음</span>
+                  <div className="text lms-color-type1">
+                    모든 Community에 가입되었습니다.
+                  </div>
+                  <div className="sub-text">
+                    My Community 탭에서 커뮤니티 활동을 해보세요~!
+                  </div>
+                  <Link to="/community/main">
+                    <Button icon className="right btn-blue2">
+                      My Community 바로가기
+                      <Icon className="morelink" />
+                    </Button>
+                  </Link>
+                </div>
+              </Segment>
+            </section>
+          )}
         </div>
       </div>
       <div className="more-comments community-side">

@@ -8,6 +8,7 @@ import {
   findCommunitySurvey,
   getCommunitySurveyInfo,
   addCommunityAdminDiscussion,
+  setCommunityMenuOrder,
 } from '../../api/communityApi';
 import {
   getCommunityHome,
@@ -29,11 +30,11 @@ export function requestCommunityMenu(communityId: string) {
     community.data.map((item: any) => {
       if (item.parentId !== '' && item.parentId !== null) {
         menuArr.map((item2: any, index: number) => {
-          if(item.parentId === item2.id) {
-            if(menuArr[index].child === undefined) {
+          if (item.parentId === item2.id) {
+            if (menuArr[index].child === undefined) {
               menuArr[index].child = []
               menuArr[index].child.push(item)
-            }else {
+            } else {
               menuArr[index].child.push(item)
             }
           }
@@ -52,7 +53,11 @@ export function requestCommunityMenu(communityId: string) {
     })
 
     menuArr.map((item: any, index: number) => {
-      if(item.child) {
+      item.order = index + 1
+    })
+
+    menuArr.map((item: any, index: number) => {
+      if (item.child) {
         item.child.sort((a: any, b: any) => {
           if (a.order < b.order) {
             return -1;
@@ -65,8 +70,16 @@ export function requestCommunityMenu(communityId: string) {
       }
     })
 
+    menuArr.map((item: any, index: number) => {
+      if (item.child) {
+        item.child.map((item2: any, index: any) => {
+          item2.order = index + 1
+        })
+      }
+    })
+
     //여기서 트리구조 형태로 배열 만들어준다.
-    setCommunityAdminMenu({'menu' : menuArr});
+    setCommunityAdminMenu({ 'menu': menuArr });
   });
 }
 
@@ -86,9 +99,16 @@ export function requestCommunityGroups(communityId: string) {
   });
 }
 
-export async function saveCommunityMenu(communityId: string, params: any) {
+export async function saveCommunityMenu(communityId: string, params: any, selectedRow: any) {
   for await (const param of params) {
-    saveCommunityAdminMenu(communityId, param).then(result => {
+    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
+    });
+  }
+}
+
+export async function saveCommunitydiscussionMenu(communityId: string, params: any, selectedRow: any) {
+  for await (const param of params) {
+    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
     });
   }
 }
@@ -121,6 +141,12 @@ export function requestCommunitySurvey(params: any) {
 
 export function getCommunitySurvey(surveyId: string) {
   return getCommunitySurveyInfo(surveyId).then(result => {
+    return result
+  });
+}
+
+export function requestCommunityMenuOrder(communityId: string) {
+  return setCommunityMenuOrder(communityId).then(result => {
     return result
   });
 }

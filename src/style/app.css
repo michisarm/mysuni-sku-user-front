@@ -42,6 +42,11 @@
   width: 75rem !important;
 }
 
+/* mySUNI introduction 탭메뉴 깨짐 수정 2021-01-29 추가 */
+#root section.content .tab-menu-inner .sub-tab-menu .ui.menu {
+  width: 100% !important;
+}
+
 body.msie #root section.content .tab-menu-inner .ui.menu .item {
   flex: none;
   width: auto;
@@ -718,4 +723,12 @@ body.msie
 /* 2020-12-09 오픈커뮤니티 슬라이드 IE 수정 */
 .community-slide-inner {
   transition: 0.2s ease;
+}
+
+/* 2021-01-25 Overview 본문 font-size 변경 14px -> 15px */
+.ql-snow .ql-editor p,
+.ql-snow .ql-editor blockquote,
+.ql-snow .ql-editor ol li,
+.ql-snow .ql-editor ul li {
+  font-size: 15px;
 }

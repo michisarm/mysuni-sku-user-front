@@ -21,7 +21,6 @@ import { getPostMenuFromCommunity } from 'community/service/useCommunityPostCrea
 import depot from '@nara.drama/depot';
 import { saveCommunityAnonymousPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityAnonymousPost';
 
-
 interface CommunityPostCreateViewProps {
   postItem: CommunityPostCreateItem;
   communityId: string;
@@ -75,6 +74,10 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     }
     const nextPostCreateItem = { ...postCreateItem, fileBoxId: depotId };
     setCommunityPostCreateItem(nextPostCreateItem);
+    // 파일 모두 지웠을때 저장 process
+    if (depotId === undefined) {
+      handleSubmitClick();
+    }
   }, []);
 
   const handleVisibleChange = useCallback((e: any, data: any) => {
@@ -91,10 +94,9 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     setCommunityPostCreateItem(nextPostCreateItem);
   }, []);
 
-  const handleSubmitClick = useCallback( async () => {
-
+  const handleSubmitClick = useCallback(async () => {
     //멤버 가입 체크
-    if(!await checkMember(communityId)){
+    if (!(await checkMember(communityId))) {
       return;
     }
 
@@ -110,9 +112,13 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     }
 
     //자료실 타입 첨부파일 필수 체크
-    const menu = menuId && await getPostMenuFromCommunity(communityId, menuId);
-    if(menu && menu.type == "STORE" || getCommunityPostCreateItem()?.menuType == "STORE"){
-      const filesArr = await depot.getDepotFiles(postItem.fileBoxId||'');
+    const menu =
+      menuId && (await getPostMenuFromCommunity(communityId, menuId));
+    if (
+      (menu && menu.type == 'STORE') ||
+      getCommunityPostCreateItem()?.menuType == 'STORE'
+    ) {
+      const filesArr = await depot.getDepotFiles(postItem.fileBoxId || '');
       if (filesArr && Array.isArray(filesArr) && filesArr.length === 0) {
         reactAlert({ title: '알림', message: '첨부파일을 등록해 주세요' });
         return true;
@@ -124,27 +130,27 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       message: '저장하시겠습니까?',
       onOk: async () => {
         //공지 등록 인 경우
-        if(menuId === 'noticeCreate') {
-          saveCommunityNoticePost(communityId, menuId, postId).then((result) => {
-            if(result !== undefined) {
+        if (menuId === 'noticeCreate') {
+          saveCommunityNoticePost(communityId, menuId, postId).then(result => {
+            if (result !== undefined) {
               history.goBack();
             }
-          })
-        }
-        else if(menuType === 'ANONYMOUS') {
+          });
+        } else if (menuType === 'ANONYMOUS') {
           //익명 등록인 경우
-          saveCommunityAnonymousPost(communityId, menuId, postId).then((result) => {
-            if(result !== undefined) {
+          saveCommunityAnonymousPost(communityId, menuId, postId).then(
+            result => {
+              if (result !== undefined) {
+                history.goBack();
+              }
+            }
+          );
+        } else {
+          saveCommunityPost(communityId, menuId, postId).then(result => {
+            if (result !== undefined) {
               history.goBack();
             }
-          })
-        }
-        else {
-          saveCommunityPost(communityId, menuId, postId).then((result) => {
-            if(result !== undefined) {
-              history.goBack();
-            }
-          })
+          });
         }
       },
     });

@@ -6,7 +6,7 @@ import { setCommunityAdminMenu } from 'community/store/CommunityAdminMenuStore';
 import { useParams } from 'react-router-dom';
 import { useCommunityGroups } from 'community/service/useCommunityMenu/useCommunityGroups';
 import _ from 'lodash';
-import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
+import { addCommunityDiscussion, addCommunityMenu, deleteCommunityMenu, requestCommunityMenu, requestCommunityMenuOrder, saveCommunitydiscussionMenu, saveCommunityMenu } from 'community/service/useCommunityMenu/requestCommunity';
 import CommunityAdminMenuAddView from '../view/CommunityAdminMenu/CommunityAdminMenuAddView';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import discussionIcon from '../../../style/media/icon-communtiy-menu-discussion.png';
@@ -244,18 +244,17 @@ function CommunityMenuContainer() {
 
       // 삭제한 메뉴있을시
       if(deleteValues.length !== 0) {
-        deleteCommunityMenu(communityId, deleteValues)
+        await deleteCommunityMenu(communityId, deleteValues)
         successFlag = true
       }
       if(result.length !== 0) {
         const editValidateCheck = result.map((item, index) => {
           return item.nameValues.map((item2, index2) => {
-            
             if(item2.name === 'name') {
               if(!item2.value){
                 return {
                   'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 "+ (item.type === 'BASIC' ? '메뉴명' : '카테고리명') +"을 지정해주세요."
+                  'text' : (item.order+3)+"번째 메뉴의 "+ (item.type === 'CATEGORY' ? '카테고리명' : '메뉴명') +"을 지정해주세요."
                 }
               }
             }
@@ -325,36 +324,44 @@ function CommunityMenuContainer() {
             message: text,
           });
         } else {
-          saveCommunityMenu(communityId, result)
+          saveCommunityMenu(communityId, result, selectedRow)
           successFlag = true
         }
       }
-
       setNameValues([...nameValues, []])
-
       if(type === 'add') {
         if(communityAdminMenu!.menu.length === 0) {
           obj.order = 1
         }else {
           obj.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
         }
-
         const validateCheck = confirmBlank(obj)
         if(validateCheck === 'success') {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
-              requestCommunityMenu(communityId);
+              //오더정리
+              requestCommunityMenuOrder(communityId).then((result) => {
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           } else {
             addCommunityMenu(communityId, obj).then((result)=> {
-              requestCommunityMenu(communityId);
+              //오더정리
+              requestCommunityMenuOrder(communityId).then((result) => {
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           }
-          reactAlert({
-            title: '',
-            message:
-              '저장되었습니다.',
-          });
         } else {
           reactAlert({
             title: '',
@@ -376,18 +383,29 @@ function CommunityMenuContainer() {
         if(validateCheck === 'success') {
           if(obj.type === 'DISCUSSION') {
             addCommunityDiscussion(communityId, obj).then((result)=> {
-              requestCommunityMenu(communityId);
+              //오더정리
+              requestCommunityMenuOrder(communityId).then((result) => {
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           } else {
             addCommunityMenu(communityId, obj).then((result)=> {
-              requestCommunityMenu(communityId);
+              //오더정리
+              requestCommunityMenuOrder(communityId).then((result) => {
+                requestCommunityMenu(communityId);
+                reactAlert({
+                  title: '',
+                  message:
+                    '저장되었습니다.',
+                });
+              })
             })
           }
-          reactAlert({
-            title: '',
-            message:
-              '저장되었습니다.',
-          });
         } else {
           reactAlert({
             title: '',
@@ -396,11 +414,14 @@ function CommunityMenuContainer() {
         }
       } else {
         if(successFlag) {
-          reactAlert({
-            title: '',
-            message:
-              '저장되었습니다.',
-          });
+          //오더정리
+          requestCommunityMenuOrder(communityId).then((result) => {
+            reactAlert({
+              title: '',
+              message:
+                '저장되었습니다.',
+            });
+          })
         }
       }
   }, [communityAdminMenu, selectedRow])
@@ -504,7 +525,6 @@ function CommunityMenuContainer() {
           nextValuesArr = {'id': item.id, 'name': 'order', 'value': originOrder}
         }
       })
-
       selectedRow!.order = originOrder + 1
 
       const ValuesArr = {'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order}
@@ -514,7 +534,6 @@ function CommunityMenuContainer() {
           nameValuesArr.splice(index,1)
         }
       })
-
       nameValuesArr.map((item, index) => {
         if(item.id === nextValuesArr.id && item.name === 'order') {
           nameValuesArr.splice(index,1)
@@ -553,7 +572,6 @@ function CommunityMenuContainer() {
           nameValuesArr.splice(index,1)
         }
       })
-
       nameValuesArr.push(ValuesArr)
       nameValuesArr.push(nextValuesArr)
 

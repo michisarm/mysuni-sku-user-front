@@ -40,35 +40,38 @@ function copyUrl() {
 function getColor(college: IdName) {
   let color = CategoryColorType.Default;
 
-  switch (college.name) {
-    case 'AI':
+  switch (college.id) {
+    case 'CLG00001':
       color = CategoryColorType.AI;
       break;
-    case 'DT':
+    case 'CLG00002':
       color = CategoryColorType.DT;
       break;
-    case 'Global':
+    case 'CLG00006':
       color = CategoryColorType.Global;
       break;
-    case 'Leadership':
+    case 'CLG00007':
       color = CategoryColorType.Leadership;
       break;
-    case 'Management':
+    case 'CLG00008':
       color = CategoryColorType.Management;
       break;
-    case 'SV':
+    case 'CLG00004':
       color = CategoryColorType.SV;
       break;
-    case '행복':
+    case 'CLG00003':
       color = CategoryColorType.Happiness;
       break;
-    case '반도체':
+    case 'CLG00019':
       color = CategoryColorType.SemicondDesign;
       break;
-    case '혁신디자인':
+    case 'CLG00005':
       color = CategoryColorType.InnovationDesign;
       break;
-    case '에너지솔루션':
+    case 'CLG00020':
+      color = CategoryColorType.BMDesign;
+      break;
+    case 'CLG0001c':
       color = CategoryColorType.EnergySolution;
   }
   return color;
@@ -108,7 +111,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   const lectureStructure = getLectureStructure();
   let qnaUrl = '/board/support-qna';
   if (lectureStructure !== undefined && lectureStructure.course !== undefined) {
-    qnaUrl += '/course/'+lectureStructure.course.coursePlanId;
+    qnaUrl += '/course/' + lectureStructure.course.coursePlanId;
   }
 
   return (
@@ -133,8 +136,8 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               </Label>
               {lectureSummary.stampCount !== undefined && (
                 <Label className="bold onlytext">
-                  <Icon className="award" />
-                  <span>{lectureSummary.stampCount}</span>
+                  <Icon className="stamp" />
+                  <span>{lectureSummary.stampCount}개</span>
                 </Label>
               )}
               <Label className="bold onlytext">
@@ -159,10 +162,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   </i>
                 </span>
               </Label>
-              <Link
-                to={qnaUrl}
-                className="ui icon button left post-s"
-              >
+              <Link to={qnaUrl} className="ui icon button left post-s">
                 <Icon className="ask" />
                 문의하기
               </Link>

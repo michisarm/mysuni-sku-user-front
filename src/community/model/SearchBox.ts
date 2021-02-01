@@ -17,25 +17,26 @@ export interface SearchBox {
   groupMemberIdList?: (string | undefined)[];
 }
 
-export function getEmptySearchBox(approveMember?:boolean, groupId?:string): SearchBox {
+export function getEmptySearchBox(approveMember?: boolean, groupId?: string): SearchBox {
   return {
     startDate: moment().startOf('day').subtract(1, 'y').toDate().getTime(),
     endDate: moment().endOf('day').toDate().getTime(),
     limit: 20,
-    approved : approveMember||false
+    approved: approveMember || false
   };
 }
 
 export function getEmptyGroupSearchBox(): SearchBox {
   return {
     limit: 20,
-  };  
+  };
 }
 
-export function getEmptyGroupDetailSearchBox(communityId?:string, groupId?: string, ): SearchBox {
+export function getEmptyGroupDetailSearchBox(communityId?: string, groupId?: string,): SearchBox {
   return {
-    communityId: communityId||'',
-    groupId: groupId||'',
+    communityId: communityId || '',
+    groupId: groupId || '',
     limit: 20,
-  };  
+  };
 }
+

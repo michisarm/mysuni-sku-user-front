@@ -58,7 +58,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
         Certification
       </NavLink>
       <NavLink
-        to={communityPaths.openCommunity()}
+        to={communityPaths.community()}
         className="item"
         onClick={() => onClickMenu('Community')}
       >

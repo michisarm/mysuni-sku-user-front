@@ -24,11 +24,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   const searchBox = useSearchBox();
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
   const groupArr: DropdownItemProps[] | { key: any; value: any; text: any; }[] = [
-    {
-      'key': 0,
-      'value': 0,
-      'text': '선택'
-    }
+    // {
+    //   'key': 0,
+    //   'value': 0,
+    //   'text': '선택'
+    // }
   ]
   communityAdminGroups!.results.map((data:any, index: number) => {
     groupArr.push({
@@ -104,12 +104,16 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
       } else {
         selectedRow.groupId = groupArr[0].value
         selectedRow.accessType = 'COMMUNITY_GROUP'
+        console.log('value', value)
+        console.log('selectedRow?.groupId', selectedRow?.groupId)
+        handleChangeGroup('', selectedRow?.groupId)
       }
       onChangeValue(selectedRow, 'accessType');
     }
   }
 
-  function onChangeGroup(e: any, data: any) {
+  function handleChangeGroup(e: any, data: any) {
+    console.log('handleChangeGroup')
     if(selectedRow) {
       selectedRow.groupId = data.value
       onChangeValue(selectedRow, 'groupId');
@@ -291,7 +295,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                 value={selectedRow?.groupId}
                 // defaultValue={groupArr[0].value}
                 options={groupArr}
-                onChange={onChangeGroup}
+                onChange={handleChangeGroup}
                 disabled={selectedRow?.groupId === null}
               />
             </td>

@@ -9,12 +9,9 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import {
-  CommentList,
-  CommentService,
   CommunityCommentList,
 } from '@nara.drama/feedback';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
-import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
@@ -25,6 +22,8 @@ import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
+import { findCommunityProfile } from 'community/api/profileApi';
+import { checkMember } from 'community/service/useMember/useMember';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -34,9 +33,18 @@ interface Params {
   menuType?: string;
 }
 
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string
+}
+
 function CommunityPostDetailContainer() {
   const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -96,13 +104,47 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const commentCountEventHandler = useCallback(async () => {
-    await getCommunityPostDetail(communityId, postId);
+    const postIdArr = window.location.href.split('/')
+    await getCommunityPostDetail(communityId, postIdArr[postIdArr.length-1]);
   }, [communityId, postId]);
 
+  const clickProfileEventHandler = useCallback(async () => {
+    const id = document.body.getAttribute('selectedProfileId')
+    findCommunityProfile(id!).then((result) => {
+      setProfileInfo({
+        'id': result!.id,
+        'profileImg': result!.profileImg,
+        'introduce': result!.introduce,
+        'nickName': result!.nickname,
+        'creatorName': result!.name
+      })
+      setProfileOpen(true)
+    })
+  }, []);
+
+  useEffect(() => {
+    if (postDetail === undefined) {
+      return;
+    }
+    
+    const checkMemberfunction = async () => {
+      const joinFlag = await checkMember(communityId)
+      if(!joinFlag) {
+        history.push({
+          pathname: `/community/${communityId}`,
+        });
+      }
+    }
+
+    checkMemberfunction()
+  }, [postDetail]);
+  
   useEffect(() => {
     window.addEventListener('commentCount', commentCountEventHandler);
+    window.addEventListener('clickProfile', clickProfileEventHandler);
     return () => {
       window.removeEventListener('commentCount', commentCountEventHandler);
+      window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
 
@@ -179,16 +221,17 @@ function CommunityPostDetailContainer() {
   const OnClickLike = useCallback(() => {
     const memberId = patronInfo.getDenizenId();
     if (memberId != undefined && memberId != '') {
-      saveCommunityPostLike(postId, memberId).then(result => {});
-      if (like === true) {
-        setLike(false);
-        setLikeCount(likeCount - 1);
-      } else {
-        setLike(true);
-        setLikeCount(likeCount + 1);
-      }
+      saveCommunityPostLike(postId, memberId).then(result => {
+        if (like === true) {
+          setLike(false);
+          setLikeCount(likeCount - 1);
+        } else {
+          setLike(true);
+          setLikeCount(likeCount + 1);
+        }
+      });
     }
-  }, [like]);
+  }, [like, likeCount]);
 
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
@@ -204,6 +247,21 @@ function CommunityPostDetailContainer() {
     await deleteCommunityPostDetail(communityId, postId);
   }
 
+  const toUrl = useCallback((type, postDetail, menuType) => {
+    if(type == 'nextPost') {
+      if(menuType === 'ANONYMOUS') {
+        return `/community/${postDetail.nextPost!.communityId}/${menuType}/post/${postDetail.nextPost!.postId}`
+      } else {
+        return `/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`
+      }
+    } else {
+      if(menuType === 'ANONYMOUS') {
+        return `/community/${postDetail.prevPost!.communityId}/${menuType}/post/${postDetail.prevPost!.postId}`
+      } else {
+        return `/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`
+      }
+    }
+  }, [])
   return (
     <Fragment>
       {postDetail && (
@@ -217,9 +275,11 @@ function CommunityPostDetailContainer() {
             likeCount={likeCount}
             deletable={true}
             editAuth={editAuth}
+            menuType={menuType}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
+            onClickLike={OnClickLike}
           />
           <div className="class-guide-txt fn-parents ql-snow">
             <div
@@ -283,7 +343,7 @@ function CommunityPostDetailContainer() {
               </div>
             </div>
           )}
-          {menuType !== 'ANONYMOUS' && (
+          {/* {menuType !== 'ANONYMOUS' && (
             <div
               className="community-board-card"
               style={{ cursor: 'pointer' }}
@@ -304,7 +364,7 @@ function CommunityPostDetailContainer() {
                 <h4>{postDetail.introduce}</h4>
               </div>
             </div>
-          )}
+          )} */}
           <div className="task-read-bottom">
             {postDetail.menuId !== 'NOTICE' && (
               <button
@@ -365,9 +425,7 @@ function CommunityPostDetailContainer() {
               <div className="paging-list">
                 {postDetail.prevPost && (
                   <Link
-                    to={`/community/${postDetail.prevPost!.communityId}/post/${
-                      postDetail.prevPost!.postId
-                    }`}
+                    to={toUrl('prevPost', postDetail, menuType)}
                   >
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
@@ -385,9 +443,7 @@ function CommunityPostDetailContainer() {
                 )}
                 {postDetail.nextPost && (
                   <Link
-                    to={`/community/${postDetail.nextPost!.communityId}/post/${
-                      postDetail.nextPost!.postId
-                    }`}
+                    to={toUrl('nextPost', postDetail, menuType)}
                   >
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
@@ -414,15 +470,17 @@ function CommunityPostDetailContainer() {
         fileId={fileId || ''}
         fileName={fileName || ''}
       />
-      <CommunityProfileModal
-        open={profileOpen}
-        setOpen={setProfileOpen}
-        userProfile={postDetail && postDetail.profileImg}
-        memberId={postDetail && postDetail.creatorId}
-        introduce={postDetail && postDetail.introduce}
-        nickName={postDetail && postDetail.nickName}
-        name={postDetail && postDetail.creatorName}
-      />
+        <>
+        <CommunityProfileModal
+          open={profileOpen}
+          setOpen={setProfileOpen}
+          userProfile={profileInfo && profileInfo.profileImg}
+          memberId={profileInfo && profileInfo.id}
+          introduce={profileInfo && profileInfo.introduce}
+          nickName={profileInfo && profileInfo.nickName}
+          name={profileInfo && profileInfo.creatorName}
+        />
+        </>
     </Fragment>
   );
 }

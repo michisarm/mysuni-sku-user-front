@@ -1,5 +1,5 @@
 import { post } from 'jquery';
-import { findAllPostViews, findNoticePostViews,  findPreview, findHome } from '../../api/communityApi';
+import { findAllPostViews, findNoticePostViews, findPreview, findHome, findHomeRecentPostViews } from '../../api/communityApi';
 import {
   getCommunityHome,
   setCommunityHome,
@@ -10,7 +10,8 @@ import { getCommunityHomeCreateItem, setCommunityHomeCreateItem } from 'communit
 export function requestNotice(communityId: string) {
   const offset = 0;
   const limit = 3;
-  findNoticePostViews(communityId, 'createdTime', offset, limit).then(posts => {
+  const orderNotContainPinned = true;
+  findNoticePostViews(communityId, 'createdTime', offset, limit, orderNotContainPinned).then(posts => {
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
       setCommunityHome({ ...communityHome, notice: [], noticeRequested: true, });
@@ -23,7 +24,8 @@ export function requestNotice(communityId: string) {
 export function requestRecent(communityId: string) {
   const offset = 0;
   const limit = 4;
-  findAllPostViews(communityId, 'createdTime', offset, limit).then(posts => {
+  const orderNotContainPinned = true;
+  findHomeRecentPostViews(communityId, 'createdTime', offset, limit, orderNotContainPinned).then(posts => {
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
     if (posts === undefined) {
       setCommunityHome({ ...communityHome, recent: [], recentRequested: true, });
@@ -33,15 +35,15 @@ export function requestRecent(communityId: string) {
   });
 }
 
-export function findPreViewHome(communityId: string,draft: number) {
-  findPreview(communityId,1).then(preview =>{
+export function findPreViewHome(communityId: string, draft: number) {
+  findPreview(communityId, 1).then(preview => {
     const communityHome = getCommunityHome() || getEmptyCommunityHome();
     setCommunityHome({ ...communityHome, preview });
   });
 }
 
 export function findHomeContents(communityId: string) {
-  findHome(communityId).then(communityHome =>{
+  findHome(communityId).then(communityHome => {
     setCommunityHomeCreateItem(communityHome);
   });
 }
