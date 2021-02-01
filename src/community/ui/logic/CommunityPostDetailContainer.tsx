@@ -9,12 +9,9 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import {
-  CommentList,
-  CommentService,
   CommunityCommentList,
 } from '@nara.drama/feedback';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
-import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
@@ -25,6 +22,8 @@ import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
+import { findCommunityProfile } from 'community/api/profileApi';
+import { checkMember } from 'community/service/useMember/useMember';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -34,9 +33,18 @@ interface Params {
   menuType?: string;
 }
 
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string
+}
+
 function CommunityPostDetailContainer() {
   const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -100,10 +108,43 @@ function CommunityPostDetailContainer() {
     await getCommunityPostDetail(communityId, postIdArr[postIdArr.length-1]);
   }, [communityId, postId]);
 
+  const clickProfileEventHandler = useCallback(async () => {
+    const id = document.body.getAttribute('selectedProfileId')
+    findCommunityProfile(id!).then((result) => {
+      setProfileInfo({
+        'id': result!.id,
+        'profileImg': result!.profileImg,
+        'introduce': result!.introduce,
+        'nickName': result!.nickname,
+        'creatorName': result!.name
+      })
+      setProfileOpen(true)
+    })
+  }, []);
+
+  useEffect(() => {
+    if (postDetail === undefined) {
+      return;
+    }
+    
+    const checkMemberfunction = async () => {
+      const joinFlag = await checkMember(communityId)
+      if(!joinFlag) {
+        history.push({
+          pathname: `/community/${communityId}`,
+        });
+      }
+    }
+
+    checkMemberfunction()
+  }, [postDetail]);
+  
   useEffect(() => {
     window.addEventListener('commentCount', commentCountEventHandler);
+    window.addEventListener('clickProfile', clickProfileEventHandler);
     return () => {
       window.removeEventListener('commentCount', commentCountEventHandler);
+      window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
 
@@ -429,15 +470,17 @@ function CommunityPostDetailContainer() {
         fileId={fileId || ''}
         fileName={fileName || ''}
       />
-      <CommunityProfileModal
-        open={profileOpen}
-        setOpen={setProfileOpen}
-        userProfile={postDetail && postDetail.profileImg}
-        memberId={postDetail && postDetail.creatorId}
-        introduce={postDetail && postDetail.introduce}
-        nickName={postDetail && postDetail.nickName}
-        name={postDetail && postDetail.creatorName}
-      />
+        <>
+        <CommunityProfileModal
+          open={profileOpen}
+          setOpen={setProfileOpen}
+          userProfile={profileInfo && profileInfo.profileImg}
+          memberId={profileInfo && profileInfo.id}
+          introduce={profileInfo && profileInfo.introduce}
+          nickName={profileInfo && profileInfo.nickName}
+          name={profileInfo && profileInfo.creatorName}
+        />
+        </>
     </Fragment>
   );
 }

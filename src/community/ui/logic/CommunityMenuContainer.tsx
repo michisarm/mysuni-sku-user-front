@@ -525,7 +525,6 @@ function CommunityMenuContainer() {
           nextValuesArr = {'id': item.id, 'name': 'order', 'value': originOrder}
         }
       })
-
       selectedRow!.order = originOrder + 1
 
       const ValuesArr = {'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order}
@@ -535,7 +534,6 @@ function CommunityMenuContainer() {
           nameValuesArr.splice(index,1)
         }
       })
-
       nameValuesArr.map((item, index) => {
         if(item.id === nextValuesArr.id && item.name === 'order') {
           nameValuesArr.splice(index,1)
@@ -574,7 +572,6 @@ function CommunityMenuContainer() {
           nameValuesArr.splice(index,1)
         }
       })
-
       nameValuesArr.push(ValuesArr)
       nameValuesArr.push(nextValuesArr)
 

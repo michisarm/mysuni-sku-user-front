@@ -567,9 +567,11 @@ const panes = [
                 <Image src={`${PUBLIC_URL}/images/all/img-co8-1.png`} alt="" />
               </div>
             </div>*/}
-
-            <CollegeInnerTabView />
-
+          <div className="college-cont-map sub wrap01">
+            <div className="tab-menu-wrap">
+              <CollegeInnerTabView />
+            </div>
+          </div>
           </div>
         </div>
       </Tab.Pane>

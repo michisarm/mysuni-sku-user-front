@@ -9,6 +9,7 @@ import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
+import communityRoutePaths from 'community/routePaths'
 import { CollegeLectureCountService } from 'lecture/stores';
 // import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
@@ -33,34 +34,73 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
     name: 'Category',
     countable: true,
     items: [
-      { name: 'AI', path: lectureRoutePaths.collegeLectures('CLG00001') },
-      { name: 'DT', path: lectureRoutePaths.collegeLectures('CLG00002') },
-      { name: '행복', path: lectureRoutePaths.collegeLectures('CLG00003') },
-      { name: 'SV', path: lectureRoutePaths.collegeLectures('CLG00004') },
       {
+        collegeId: 'CLG00001',
+        name: 'AI',
+        path: lectureRoutePaths.collegeLectures('CLG00001'),
+      },
+      {
+        collegeId: 'CLG00002',
+        name: 'DT',
+        path: lectureRoutePaths.collegeLectures('CLG00002'),
+      },
+      {
+        collegeId: 'CLG00003',
+        name: '행복',
+        path: lectureRoutePaths.collegeLectures('CLG00003'),
+      },
+      {
+        collegeId: 'CLG00004',
+        name: 'SV',
+        path: lectureRoutePaths.collegeLectures('CLG00004'),
+      },
+      {
+        collegeId: 'CLG00005',
         name: '혁신디자인',
         path: lectureRoutePaths.collegeLectures('CLG00005'),
       },
-      { name: 'Global', path: lectureRoutePaths.collegeLectures('CLG00006') },
       {
+        collegeId: 'CLG00006',
+        name: 'Global',
+        path: lectureRoutePaths.collegeLectures('CLG00006'),
+      },
+      {
+        collegeId: 'CLG00007',
         name: 'Leadership',
         path: lectureRoutePaths.collegeLectures('CLG00007'),
       },
       {
+        collegeId: 'CLG00008',
         name: 'Management',
         path: lectureRoutePaths.collegeLectures('CLG00008'),
       },
-      { name: '반도체', path: lectureRoutePaths.collegeLectures('CLG00019') },
       {
+        collegeId: 'CLG00019',
+        name: '미래반도체',
+        path: lectureRoutePaths.collegeLectures('CLG00019'),
+      },
+      {
+        collegeId: 'CLG0001c',
         name: '에너지솔루션',
         path: lectureRoutePaths.collegeLectures('CLG0001c'),
       },
       {
+        collegeId: 'CLG00020',
+        name: 'BM Design & Storytelling',
+        path: lectureRoutePaths.collegeLectures('CLG00020'),
+      },
+      {
+        collegeId: 'CLG00018',
         name: 'SK아카데미',
         path: lectureRoutePaths.collegeLectures('CLG00018'),
       },
-      { name: 'SK경영', path: lectureRoutePaths.collegeLectures('CLG00017') },
       {
+        collegeId: 'CLG00017',
+        name: 'SK경영',
+        path: lectureRoutePaths.collegeLectures('CLG00017'),
+      },
+      {
+        collegeId: 'CLG0001a',
         name: 'Life Style',
         path: lectureRoutePaths.collegeLectures('CLG0001a'),
       },
@@ -101,16 +141,13 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           <br />
           <br />
           Community
-          <br />
-          (서비스 예정)
         </span>
       ),
-      items: [],
-      // items: [
-      //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
-      //   { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
-      //   { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
-      // ],
+      items: [
+        { name: 'My Community', path: communityRoutePaths.myCommunity() },
+        { name: 'Community List', path: communityRoutePaths.communityList() },
+        { name: 'Follow', path: communityRoutePaths.follow() },
+      ],
     },
   ];
 
@@ -148,7 +185,13 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       ],
     },
     {
-      name: 'Support',
+      name: (
+        <span>
+          <br />
+          <br />
+          Support
+        </span>
+      ),
       items: [
         { name: 'Notice', path: boardRoutePaths.supportNotice() },
         { name: 'FAQ', path: boardRoutePaths.supportFAQ() },
@@ -180,7 +223,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       items: baseCategoryItems.items.map(item => {
         //
         const college = colleges.find(
-          (college: any) => college.name === item.name
+          (college: any) => college.collegeId === item.collegeId
         );
 
         return {

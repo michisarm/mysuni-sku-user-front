@@ -15,56 +15,55 @@ function numberWithCommas(x: number | string | null | undefined) {
 
 export function timeToHourMinuteFormat(x: number | string | null | undefined) {
   //
-  const time = parseInt( (x||0).toString());
+  const time = parseInt((x || 0).toString());
   const hour = Math.floor(time / 60) || 0;
   const minute = time % 60 || 0;
 
   if (hour < 1 && minute < 1) {
     return '00h 00m';
-  }
-  else if (hour < 1) {
+  } else if (hour < 1) {
     return `${minute}m`;
-  }
-  else if (minute < 1) {
+  } else if (minute < 1) {
     return `${hour}h`;
-  }
-  else {
+  } else {
     return `${hour}h ${minute}m`;
   }
 }
 
-function getColor(college_name: string) {
+function getColor(college_id: string) {
   let color = CategoryColorType.Default;
-
-  switch (college_name) {
-    case 'AI':
+  switch (college_id) {
+    case 'CLG00001':
       color = CategoryColorType.AI;
       break;
-    case 'DT':
+    case 'CLG00002':
       color = CategoryColorType.DT;
       break;
-    case 'Global':
+    case 'CLG00006':
       color = CategoryColorType.Global;
       break;
-    case 'Leadership':
+    case 'CLG00007':
       color = CategoryColorType.Leadership;
       break;
-    case 'Management':
+    case 'CLG00008':
       color = CategoryColorType.Management;
       break;
-    case 'SV':
+    case 'CLG00004':
       color = CategoryColorType.SV;
       break;
-    case '행복':
+    case 'CLG00003':
       color = CategoryColorType.Happiness;
       break;
-    case '반도체':
+    case 'CLG00019':
       color = CategoryColorType.SemicondDesign;
       break;
-    case '혁신디자인':
+    case 'CLG00005':
       color = CategoryColorType.InnovationDesign;
       break;
-    case '에너지솔루션':
+    case 'CLG00020':
+      color = CategoryColorType.BMDesign;
+      break;
+    case 'CLG0001c':
       color = CategoryColorType.EnergySolution;
   }
   return color;
@@ -121,7 +120,7 @@ function Box({ item, index }: { item: any; index: number }) {
         </div>
 
         <div className="title-area">
-          <div className={`ui label ${getColor(item.fields.college_name)}`}>
+          <div className={`ui label ${getColor(item.fields.college_id)}`}>
             {item.fields.college_name}
           </div>
           <div className="header">{item.fields.card_name}</div>
@@ -162,9 +161,7 @@ function Box({ item, index }: { item: any; index: number }) {
       </div>
       <div className="hover-content">
         <div className="title-area">
-          <div
-            className={`ui color label ${getColor(item.fields.college_name)}`}
-          >
+          <div className={`ui color label ${getColor(item.fields.college_id)}`}>
             {item.fields.college_name}
           </div>
           <div className="header">{item.fields.card_name_uni}</div>

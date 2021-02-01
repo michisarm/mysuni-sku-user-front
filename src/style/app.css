@@ -724,3 +724,11 @@ body.msie
 .community-slide-inner {
   transition: 0.2s ease;
 }
+
+/* 2021-01-25 Overview 본문 font-size 변경 14px -> 15px */
+.ql-snow .ql-editor p,
+.ql-snow .ql-editor blockquote,
+.ql-snow .ql-editor ol li,
+.ql-snow .ql-editor ul li {
+  font-size: 15px;
+}

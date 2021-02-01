@@ -1,4 +1,4 @@
-import { decorate, observable } from "mobx";
+import { decorate, observable } from 'mobx';
 
 class LectureTimeSummary {
   //
@@ -12,6 +12,7 @@ class LectureTimeSummary {
   leadershipCollegeTime: number = 0;
   managementCollegeTime: number = 0;
   energySolutionCollegeTime: number = 0;
+  bmDesignerCollegeTime: number = 0;
   semiconductorCollegeTime: number = 0;
   skManagementCollegeTime: number = 0;
   skAcademyCollegeTime: number = 0;
@@ -37,8 +38,9 @@ decorate(LectureTimeSummary, {
   leadershipCollegeTime: observable,
   managementCollegeTime: observable,
   energySolutionCollegeTime: observable,
+  bmDesignerCollegeTime: observable,
   semiconductorCollegeTime: observable,
   skManagementCollegeTime: observable,
   skAcademyCollegeTime: observable,
-  lifeStyleCollegeTime: observable
+  lifeStyleCollegeTime: observable,
 });
