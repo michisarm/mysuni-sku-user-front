@@ -9,6 +9,11 @@ const panes = [
     render: () => (
       <Tab.Pane attached={false}>
         <div className="belt">
+          <div className="text-right-box">
+            <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channels/pages/1" className="item-button">과정 바로가기</a>
+          </div>
+        </div>
+        <div className="belt">
           <Image src={`${PUBLIC_URL}/images/all/con-01.png`} alt="" />
         </div>
         <div className="belt college-mana-text">
@@ -40,6 +45,11 @@ const panes = [
     menuItem: "기업 경영/전략",
     render: () => (
       <Tab.Pane attached={false}>
+        <div className="belt">
+          <div className="text-right-box">
+            <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00014" className="item-button">과정 바로가기</a>
+          </div>
+        </div>
         <div className="college-sub-txt">
           <strong>기업 경영/전략</strong>
           <div>
@@ -70,6 +80,11 @@ const panes = [
     menuItem: "재무/회계",
     render: () =>
     <Tab.Pane attached={false}>
+      <div className="belt">
+        <div className="text-right-box">
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0005w" className="item-button">과정 바로가기</a>
+        </div>
+      </div>
       <div className="college-sub-txt">
         <strong>재무/회계</strong>
         <div>
@@ -99,6 +114,11 @@ const panes = [
     menuItem: "마케팅/브랜드",
     render: () =>
     <Tab.Pane attached={false}>
+      <div className="belt">
+        <div className="text-right-box">
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00018" className="item-button">과정 바로가기</a>
+        </div>
+      </div>
       <div className="college-sub-txt">
         <strong>마케팅/브랜드</strong>
         <div>
@@ -125,6 +145,11 @@ const panes = [
     menuItem: "HR/조직 설계",
     render: () => 
     <Tab.Pane attached={false}>
+      <div className="belt">
+        <div className="text-right-box">
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00013" className="item-button">과정 바로가기</a>
+        </div>
+      </div>
       <div className="college-sub-txt">
         <strong>HR/조직 설계</strong>
         <div>
@@ -156,6 +181,11 @@ const panes = [
     menuItem: "SCM/Operation",
     render: () => 
     <Tab.Pane attached={false}>
+      <div className="belt">
+        <div className="text-right-box">
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m" className="item-button">과정 바로가기</a>
+        </div>
+      </div>
       <div className="college-sub-txt">
         <strong>SCM/Operation</strong>
         <div>
@@ -182,6 +212,11 @@ const panes = [
     menuItem: "법무/IP",
     render: () => 
     <Tab.Pane attached={false}>
+      <div className="belt">
+        <div className="text-right-box">
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007l" className="item-button">과정 바로가기</a>
+        </div>
+      </div>
       <div className="college-sub-txt">
         <strong>법무/IP</strong>
         <div>
