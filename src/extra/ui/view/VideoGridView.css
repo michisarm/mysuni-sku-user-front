@@ -1,0 +1,16 @@
+.video-gridview-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.video-gridview-row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.video-gridview-cell {
+  display: flex;
+  flex: 1;
+}
