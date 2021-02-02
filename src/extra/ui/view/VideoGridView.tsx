@@ -70,6 +70,10 @@ function VideoGridView(props: VideoGridViewProps) {
       'panopto-embed-player-8',
       '4f27e551-4e32-477e-a0c5-acbc0032a9e3'
     );
+    initializeEmbedApiPlayer(
+      'panopto-embed-player-9',
+      'fa546947-dd1a-4cf3-84e2-acbc0032aa0c'
+    );
   }, [javascriptLoaded]);
 
   return (
@@ -102,13 +106,6 @@ function VideoGridView(props: VideoGridViewProps) {
         </div>
         <div className="video-gridview-cell">
           <div className="panopto-embed-player" id="panopto-embed-player-8" />
-          {/* <span>sessionId: 465baa6b-2990-4057-8d06-acbf005e75c7</span>
-          <a
-            href="https://sku-demo.ap.panopto.com/Panopto/Pages/Embed.aspx?id=4f27e551-4e32-477e-a0c5-acbc0032a9e3"
-            target="_blank"
-          >
-            https://sku-demo.ap.panopto.com/Panopto/Pages/Embed.aspx?id=4f27e551-4e32-477e-a0c5-acbc0032a9e3
-          </a> */}
         </div>
         <div className="video-gridview-cell">
           <div className="panopto-embed-player" id="panopto-embed-player-9" />
