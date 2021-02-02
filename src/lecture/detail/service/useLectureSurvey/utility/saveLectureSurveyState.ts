@@ -154,10 +154,15 @@ async function coreSubmitLectureSurveyState() {
   const requiredMissAnswers = lectureSurvey.surveyItems.filter(c => c.isRequired)
     .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber))
   if (requiredMissAnswers.length > 0) {
+    
     reactAlert({
       title: '알림',
-      message: '필수 항목을 입력하세요.',
+      message: requiredMissAnswers.map(r=> ' ' + r.no + '번') + '은 필수 항목입니다',
     });
+
+    requiredMissAnswers.forEach(c=>{
+      console.log(c.no)
+    })
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Button } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyBooleanView from './LectureSurveyBooleanView';
 import LectureSurveyChoiceView from './LectureSurveyChoiceView';
@@ -12,6 +13,7 @@ import {
   submitLectureSurveyState,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
+
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -51,9 +53,11 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               )}
             {lectureSurveyState !== undefined &&
               lectureSurveyState.state === 'Completed' && (
-                <button className="ui button free complete p18">
-                  참여완료
-                </button>
+                <>
+                  <button className="ui button free complete p18">
+                    참여완료
+                  </button>
+                </>
               )}
           </div>
         </div>
@@ -69,6 +73,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   c => c.questionNumber === lectureSurveyItem.questionNumber
                 )
               }
+              lectureSurveyState={lectureSurveyState}
               key={lectureSurveyItem.id}
             />
           );
@@ -83,6 +88,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   c => c.questionNumber === lectureSurveyItem.questionNumber
                 )
               }
+              lectureSurveyState={lectureSurveyState}
               key={lectureSurveyItem.id}
             />
           );
@@ -97,6 +103,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   c => c.questionNumber === lectureSurveyItem.questionNumber
                 )
               }
+              lectureSurveyState={lectureSurveyState}
               key={lectureSurveyItem.id}
             />
           );
@@ -111,6 +118,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   c => c.questionNumber === lectureSurveyItem.questionNumber
                 )
               }
+              lectureSurveyState={lectureSurveyState}
               key={lectureSurveyItem.id}
             />
           );
@@ -125,6 +133,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   c => c.questionNumber === lectureSurveyItem.questionNumber
                 )
               }
+              lectureSurveyState={lectureSurveyState}
               key={lectureSurveyItem.id}
             />
           );
@@ -139,6 +148,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   c => c.questionNumber === lectureSurveyItem.questionNumber
                 )
               }
+              lectureSurveyState={lectureSurveyState}
               key={lectureSurveyItem.id}
             />
           );
