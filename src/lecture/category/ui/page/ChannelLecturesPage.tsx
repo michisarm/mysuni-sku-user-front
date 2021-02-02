@@ -45,7 +45,7 @@ class ChannelLecturesPage extends Component<Props> {
     //
     const { collegeService } = this.props;
     const { college, channel } = collegeService;
-
+    
     return (
       <ContentLayout
         breadcrumb={[
@@ -55,6 +55,7 @@ class ChannelLecturesPage extends Component<Props> {
       >
         <ChannelLecturesHeaderView
           channel={collegeService.channel}
+          college={collegeService.college}
         />
         <ChannelLecturesContainer />
       </ContentLayout>

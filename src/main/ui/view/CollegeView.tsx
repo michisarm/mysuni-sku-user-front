@@ -576,7 +576,7 @@ const panes = [
     ),
   },
   {
-    menuItem: '반도체',
+    menuItem: '미래반도체',
     render: () => (
       <Tab.Pane>
         <div
