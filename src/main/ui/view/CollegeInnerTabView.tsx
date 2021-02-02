@@ -10,7 +10,10 @@ const panes = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channels/pages/1" className="item-button">과정 바로가기</a>
+            <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channels/pages/1" className="item-button">
+              <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+              과정 바로가기
+            </a>
           </div>
         </div>
         <div className="belt">
@@ -35,7 +38,7 @@ const panes = [
         </div>
         <div className="college-cont-map sub">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/main_02.jpg`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/main_02.jpg`} alt="" style={{paddingBottom: '8rem'}}/>
           </div>
         </div>
       </Tab.Pane>
@@ -47,7 +50,10 @@ const panes = [
       <Tab.Pane attached={false}>
         <div className="belt">
           <div className="text-right-box">
-            <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00014" className="item-button">과정 바로가기</a>
+            <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00014" className="item-button">
+              <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+              과정 바로가기
+            </a>
           </div>
         </div>
         <div className="college-sub-txt">
@@ -82,7 +88,10 @@ const panes = [
     <Tab.Pane attached={false}>
       <div className="belt">
         <div className="text-right-box">
-          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0005w" className="item-button">과정 바로가기</a>
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0005w" className="item-button">
+            <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+            과정 바로가기
+          </a>
         </div>
       </div>
       <div className="college-sub-txt">
@@ -116,7 +125,10 @@ const panes = [
     <Tab.Pane attached={false}>
       <div className="belt">
         <div className="text-right-box">
-          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00018" className="item-button">과정 바로가기</a>
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00018" className="item-button">
+            <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+            과정 바로가기
+          </a>
         </div>
       </div>
       <div className="college-sub-txt">
@@ -147,7 +159,10 @@ const panes = [
     <Tab.Pane attached={false}>
       <div className="belt">
         <div className="text-right-box">
-          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00013" className="item-button">과정 바로가기</a>
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00013" className="item-button">
+            <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+            과정 바로가기
+          </a>
         </div>
       </div>
       <div className="college-sub-txt">
@@ -183,7 +198,10 @@ const panes = [
     <Tab.Pane attached={false}>
       <div className="belt">
         <div className="text-right-box">
-          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m" className="item-button">과정 바로가기</a>
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m" className="item-button">
+            <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+            과정 바로가기
+          </a>
         </div>
       </div>
       <div className="college-sub-txt">
@@ -214,7 +232,10 @@ const panes = [
     <Tab.Pane attached={false}>
       <div className="belt">
         <div className="text-right-box">
-          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007l" className="item-button">과정 바로가기</a>
+          <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007l" className="item-button">
+            <Image style={{display:'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" />
+            과정 바로가기
+          </a>
         </div>
       </div>
       <div className="college-sub-txt">
