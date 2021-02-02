@@ -468,7 +468,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // 화면 나갈때 event
     return () => {
       endMultiVideo();
-      mediaCheckEvent(params);
+      // video cube 클릭 후 video 이외의 탭으로 넘어가면 아래 이벤트 때문에 학습완료하지 않고 Test 나 Survay 등 가능함.
+      // 막으면 진도율에 영향이 있는지 확인필요.
+      // mediaCheckEvent(params);
       setPanoptoState(10);
       setNextContentsPath('');
       setNextContentsName('');
