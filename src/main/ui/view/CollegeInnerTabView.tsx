@@ -8,7 +8,7 @@ const emptyAlert = (e: any) => {
   e.preventDefault();
   reactAlert({
     title: '알림',
-    message: '준비중 입니다.',
+    message: '준비 중입니다.',
   });
 }
 
