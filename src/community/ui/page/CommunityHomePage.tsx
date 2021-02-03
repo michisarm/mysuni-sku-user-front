@@ -17,6 +17,7 @@ import { joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { Console } from 'console';
 import { addNewBadge } from 'community/utility/communityHelper';
+import ReactGA from 'react-ga';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -212,7 +213,8 @@ function CommunityHomePage() {
   const { pathname } = useLocation();
   const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
-  useEffect(() => {
+
+  useEffect(() => { 
     const match = matchPath<Params>(pathname, {
       path: '/community/:communityId',
       exact: true,
@@ -228,6 +230,14 @@ function CommunityHomePage() {
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
   }
+  else {
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `${communityHome!.community!.name}`
+    })
+  }
+
   return (
     <>
       <div className="community-home-contants">

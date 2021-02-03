@@ -138,7 +138,7 @@ class HeaderContainer extends Component<Props, State> {
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
           <CategoryMenuContainer />
-
+          
           <SearchBarView
             value={searchValue}
             focused={focused}
