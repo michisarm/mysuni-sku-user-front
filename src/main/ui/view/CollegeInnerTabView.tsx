@@ -14,7 +14,7 @@ const emptyAlert = (e: any) => {
 
 const panes = [
   {
-    menuItem: "Management College 소개",
+    menuItem: 'Management College 소개',
     render: () => (
       <Tab.Pane attached={false}>
         <div className="belt">
@@ -263,7 +263,7 @@ const panes = [
     ),
   },
   {
-    menuItem: "기업 경영/전략",
+    menuItem: '기업 경영/전략',
     render: () => (
       <Tab.Pane attached={false}>
         {/* 과정 바로가기 버튼t */}
@@ -440,7 +440,6 @@ const panes = [
             </a>
           </div>
         </div>
-
         <div className="college-sub-txt">
           <strong>재무/회계</strong>
           <div>
@@ -572,7 +571,6 @@ const panes = [
             </a>
           </div>
         </div>
-
         <div className="college-sub-txt">
           <strong>마케팅/브랜드</strong>
           <div>
