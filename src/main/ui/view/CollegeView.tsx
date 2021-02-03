@@ -728,6 +728,56 @@ const panes = [
     ),
   },
   {
+    menuItem: "BM Design & Storytelling",
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges8"
+        >
+          <div className="college-cont-title bmd">
+            <div className="belt sub">
+              <div className="label">BM Design & Storytelling College</div>
+              <div className="strong">Ideate and Accelerate Deep Change!</div>
+              <div className="normal">
+                BM Design 전문가 양성 및 Biz Story Design/ Telling 역량 강화를
+                적극 지원함으로써 <br />
+                그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+              </div>
+              <ul className="tag-wrap">
+                <li># Sustainable BM</li>
+                <li># BM Framework</li>
+                <li># Financial Story</li>
+                <li># Stakeholder Relationship</li>
+              </ul>
+              <div className="panopto sub">
+              <Image src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/bmd_con_01.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">전체 커리큘럼</div>
+              <div className="map">
+              <Image src={`${PUBLIC_URL}/images/all/bmd_con_02.png`} alt="" />
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
     menuItem: 'SK아카데미',
     render: () => (
       <Tab.Pane>
@@ -888,7 +938,7 @@ class CollegeView extends Component<Props, State> {
           }}
         />
         <Tab
-          className="tab-menu-inner"
+          className="tab-menu-inner sub"
           panes={panes}
           activeIndex={activeIndex}
           onTabChange={this.onTabChange}
