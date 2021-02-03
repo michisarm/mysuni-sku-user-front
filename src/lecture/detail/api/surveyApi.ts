@@ -3,6 +3,8 @@ import { AxiosResponse } from 'axios';
 import AnswerSheetCdo from '../model/AnswerSheetCdo';
 import AnswerSheet from '../model/SurveyAnswerSheet';
 import SurveyForm from '../model/SurveyForm';
+import SurveySumary from '../model/SurveySummary';
+import SurveySummary from '../model/SurveySummary';
 
 const BASE_URL = '/api/survey';
 
@@ -63,5 +65,19 @@ export function submitAnswerSheet(
   const url = `${BASE_URL}/response/complete/${surveyCaseId}/rounds/${round}`;
   return axiosApi
     .put(url, answerSheetCdo)
+    .then(response => response && response.data);
+}
+
+export function findSurveySummaryBySurveyCaseIdAndRound(surveyCaseId: string, round: number): Promise<SurveySummary> {
+  const url = `${BASE_URL}/surveySummaries/${surveyCaseId}/rounds/${round}`;
+  return axiosApi
+    .get<SurveySummary>(url)
+    .then(response => response && response.data);
+}
+
+export function findAnswerSummariesBySurveySummaryId(surveySummaryId: string): Promise<SurveySummary> {
+  const url = `${BASE_URL}/answerSummaries?surveySummaryId=${surveySummaryId}`;
+  return axiosApi
+    .get<SurveySummary>(url)
     .then(response => response && response.data);
 }
