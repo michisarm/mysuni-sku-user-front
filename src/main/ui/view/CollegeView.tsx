@@ -8,6 +8,8 @@ import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import CollegeInnerTabView from './CollegeInnerTabView';
+import CollegeInnerTabAi from './CollegeInnerTabAi';
+import CollegeInnerTabDt from './CollegeInnerTabDt';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -21,19 +23,8 @@ const panes = [
           data-tab="colleges1"
         >
           <div className="college-cont-title ai">
-            <div className="belt">
-              <div className="panopto">
-                <iframe
-                  title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7f027217-af12-4ce2-8216-ab42002e5be2%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
-                  width="436"
-                  height="245"
-                  style={{ padding: '0px', border: '0px' }}
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay"
-                />
-              </div>
+            <div className="belt sub">
+              
               <div className="label">AI College</div>
               <div className="strong">
                 AI 아싸(Outsider)에서 AI 핵인싸(Insider)로!
@@ -46,54 +37,26 @@ const panes = [
                 <br />
                 성장할 수 있는 기회를 제공합니다.
               </div>
-            </div>
-          </div>
-          <div className="college-tag">
-            <div className="belt">
-              <div className="label">AI Fundamentals</div>
-              <div className="strong">
-                AI의 용어와 기초 개념부터 차근차근 익히기 위한 컨텐츠
-              </div>
-              <ul className="tag-wrap">
-                <li># AI101</li>
-                <li># AI UX 기초</li>
-                <li># AI Biz Insight</li>
-                <li># AI독서토론</li>
-                <li># AI를 만나다</li>
-                <li># AI MOOC for Everyone</li>
-              </ul>
-              <div className="label chip1">AI Biz Track</div>
-              <div className="strong">
-                내 업무와 우리 Biz에 AI를 활용하기 위한 컨텐츠
-              </div>
-              <ul className="tag-wrap">
-                <li># Biz Problem Solving with AI</li>
-                <li># AI 서비스 기획 개발</li>
-                <li># AI 코딩 기초</li>
-                <li># AI MOOC for Biz Practitioner</li>
-              </ul>
-              <div className="label chip1">AI Tech Track</div>
-              <div className="strong">전문 AI개발자로의 도약을 위한 컨텐츠</div>
-              <ul className="tag-wrap">
-                <li># Fundamentals of AI Tech.</li>
-                <li># Machine Learning</li>
-                <li># Vision AI Tech.</li>
-                <li># Language AI Tech.</li>
-                <li># Speech AI Tech.</li>
-                <li># AI MOOC for Engineer</li>
-                <li># AI Expert 과정</li>
-                <li># AI 최신 기술 연구</li>
-              </ul>
-            </div>
-          </div>
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">전체 커리큘럼</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co1.png`} alt="" />
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7f027217-af12-4ce2-8216-ab42002e5be2%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
               </div>
             </div>
           </div>
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerTabAi />
+            </div>
+          </div>
+
         </div>
       </Tab.Pane>
     ),
@@ -107,8 +70,19 @@ const panes = [
           data-tab="colleges2"
         >
           <div className="college-cont-title dt">
-            <div className="belt">
-              <div className="panopto">
+            <div className="belt sub ">
+              
+              <div className="label">DT College</div>
+              <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
+              <div className="normal">
+                Digital Skill을 장착하고 고객과 업을 이해하여,
+                <br />
+                SK Deep Change를 맨 앞에서 이끌어 나가실 구성원들을 위한
+                과정들이,
+                <br />
+                여기 DT College에 마련되어 있습니다.
+              </div>
+              <div className="panopto sub">
                 <iframe
                   title="audio type"
                   src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D47d87f43-03b6-4559-97eb-ab420078ff59%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
@@ -119,16 +93,6 @@ const panes = [
                   allowFullScreen
                   allow="autoplay"
                 />
-              </div>
-              <div className="label">DT College</div>
-              <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
-              <div className="normal">
-                Digital Skill을 장착하고 고객과 업을 이해하여,
-                <br />
-                SK Deep Change를 맨 앞에서 이끌어 나가실 구성원들을 위한
-                과정들이,
-                <br />
-                여기 DT College에 마련되어 있습니다.
               </div>
             </div>
           </div>
@@ -165,12 +129,9 @@ const panes = [
               </ul>
             </div>
           </div>
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">전체 커리큘럼</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co2.png`} alt="" />
-              </div>
+          <div className="college-free3 sub">
+            <div className="tab-menu-wrap">
+              <CollegeInnerTabDt />
             </div>
           </div>
         </div>
@@ -241,36 +202,44 @@ const panes = [
     menuItem: 'SV',
     render: () => (
       <Tab.Pane>
-        <div
-          className="ui attached tab full segment active"
-          data-tab="colleges4"
-        >
-          <div className="college-cont-title sv">
-            <div className="belt">
-              <div className="img">
-                <Image src={`${PUBLIC_URL}/images/all/img-sv.png`} alt="" />
-              </div>
-              <div className="label">SV College</div>
-              <div className="strong">사회와 기업의 지속가능성을 위해!</div>
-              <div className="normal">
-                사회와 고객의 문제를 해결하기 위한 치열한 학습과 실행으로
-                <br />
-                BM 혁신과 이해관계자의 행복을 추구하여​
-                <br />
-                사회와 기업의 지속가능성을 높이고자 합니다.
-              </div>
+      <div
+        className="ui attached tab full segment active"
+        data-tab="colleges4"
+      >
+        <div className="college-cont-title sv">
+          <div className="belt sub">
+            <div className="label">SV College</div>
+            <div className="strong">
+              내일[Tomorrow+My Work]을 위한 SV, <br />
+              기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
             </div>
-          </div>
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">전체 커리큘럼</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co4.png`} alt="" />
-              </div>
+            <div className="normal">
+              Deep Change의 방향을 제시하는 ‘사회적 가치’ <br />
+              이해관계자들의 Painpoint를 공감하고 해결하는 역량을 함께
+              키워봅시다!
+            </div>
+            <ul className="tag-wrap">
+              <li># 사회문제</li>
+              <li># ESG</li>
+              <li># SV Biz</li>
+              <li># SV 측정</li>
+            </ul>
+            <div className="panopto sub">
+            <Image src={`${PUBLIC_URL}/images/all/sv-banner.png`} alt="" />
             </div>
           </div>
         </div>
-      </Tab.Pane>
+
+        <div className="college-cont-map">
+          <div className="belt">
+            <div className="label">전체 커리큘럼</div>
+            <div className="map">
+              <Image src="/images/all/img-co4.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </Tab.Pane>
     ),
   },
   {
@@ -467,19 +436,7 @@ const panes = [
           data-tab="colleges7"
         >
           <div className="college-cont-title leadership">
-            <div className="belt">
-              <div className="panopto">
-                <iframe
-                  title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
-                  width="436"
-                  height="245"
-                  style={{ padding: '0px', border: '0px' }}
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay"
-                />
-              </div>
+            <div className="belt sub">
               <div className="label">Leadership College</div>
               <div className="strong">Deep Change Leader로 성장!</div>
               <div className="normal">
@@ -499,16 +456,50 @@ const panes = [
                 <li># Leadership Clinic</li>
                 <li># Deep Change Leadership</li>
               </ul>
+
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  style={{ padding: "0px", border: "0px" }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
             </div>
           </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">21년 핵인싸 과정 개정</div>
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/leader_con_01.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">커뮤니티 기능 오픈 계획</div>
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/leader_con_02.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
           <div className="college-cont-map">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co7.svg`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/leader_con_03.png`} alt="" />
               </div>
             </div>
           </div>
+
+
         </div>
       </Tab.Pane>
     ),
@@ -584,28 +575,27 @@ const panes = [
           data-tab="colleges9"
         >
           <div className="college-cont-title semicond">
-            <div className="belt">
-              <div className="panopto">
+            <div className="belt sub">
+              <div className="label">미래 반도체 College</div>
+              <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
+              <div className="normal">
+                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{" "}
+                <br />
+                반도체 산업의 본질을 파악하고, 미래의 기술이 열어갈 세상을 전망
+                할 수 <br />
+                있도록 도와드립니다.
+              </div>
+              <div className="panopto sub">
                 <iframe
                   title="audio type"
                   src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dfbe4050a-7d9d-40bb-a819-ab89007cb3cd%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
-                  style={{ padding: '0px', border: '0px' }}
+                  style={{ padding: "0px", border: "0px" }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"
                 />
-              </div>
-              <div className="label">반도체 College</div>
-              <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
-              <div className="normal">
-                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라
-                <br />
-                반도체 산업의 본질을 파악하고, 미래의 기술이 열어갈 세상을 전망
-                할 수
-                <br />
-                있도록 도와드립니다.
               </div>
               <ul className="tag-wrap">
                 <li># 반도체 역사</li>
@@ -619,55 +609,24 @@ const panes = [
             </div>
           </div>
 
-          <div className="college-free4">
-            <div className="belt">
-              <div className="label">반도체 Basic Course</div>
-              <div className="title">
-                <strong>
-                  반도체 Biz.부터 Tech까지, 이것만 알면 누구나 ‘반.잘.알’
-                </strong>
-                <span>(반도체 잘 아는 사람)</span>
-              </div>
-              <div className="dot-list">
-                <dl>
-                  <dt>
-                    <span className="nbsp">대</span>상
-                  </dt>
-                  <dd>SK 구성원 누구나</dd>
-                </dl>
-                <dl>
-                  <dt>학습방법</dt>
-                  <dd>
-                    3가지 Channel을 통해 제공되는 컨텐츠를 순서대로 듣다 보면,
-                    반도체 Ecosystem을 이해할 수 있는 기본 다지기 완성!
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-
-          <div className="college-cont-map in">
+          <div className="college-cont-map">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co9.png`} alt="" />
+              <Image src={`${PUBLIC_URL}/images/all/semi_con_01.png`} alt="" />
               </div>
             </div>
           </div>
 
-          <div className="college-free4 bottom">
+          <div className="college-cont-map">
             <div className="belt">
-              <div className="label">반도체 Advanced Course</div>
-              <div className="con">
-                반도체 Advanced Track은 반도체 산업 구조 전반, Value Chain 및
-                미래 반도체 기술에 대한 In-depth한 지식을 습득할 수 있는
-                과정들로 구성될
-                <br />
-                예정이며, 최고의 강사진과 고품격 강의 제공을 위해 열심히 과정을
-                준비하고 있습니다. (20년 7월 Open 예정)
+              <div className="label">전체 커리큘럼</div>
+              <div className="map">
+              <Image src={`${PUBLIC_URL}/images/all/semi_con_02.png`} alt="" />
               </div>
             </div>
           </div>
+
         </div>
       </Tab.Pane>
     ),
@@ -723,6 +682,56 @@ const panes = [
               </div>
             </div>
           </div>
+        </div>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: "BM Design & Storytelling",
+    render: () => (
+      <Tab.Pane>
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges8"
+        >
+          <div className="college-cont-title bmd">
+            <div className="belt sub">
+              <div className="label">BM Design & Storytelling College</div>
+              <div className="strong">Ideate and Accelerate Deep Change!</div>
+              <div className="normal">
+                BM Design 전문가 양성 및 Biz Story Design/ Telling 역량 강화를
+                적극 지원함으로써 <br />
+                그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+              </div>
+              <ul className="tag-wrap">
+                <li># Sustainable BM</li>
+                <li># BM Framework</li>
+                <li># Financial Story</li>
+                <li># Stakeholder Relationship</li>
+              </ul>
+              <div className="panopto sub">
+              <Image src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/bmd_con_01.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">전체 커리큘럼</div>
+              <div className="map">
+              <Image src={`${PUBLIC_URL}/images/all/bmd_con_02.png`} alt="" />
+              </div>
+            </div>
+          </div>
+          
         </div>
       </Tab.Pane>
     ),
@@ -888,7 +897,7 @@ class CollegeView extends Component<Props, State> {
           }}
         />
         <Tab
-          className="tab-menu-inner"
+          className="tab-menu-inner sub"
           panes={panes}
           activeIndex={activeIndex}
           onTabChange={this.onTabChange}
