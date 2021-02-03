@@ -1,12 +1,15 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import { Image, Menu, Label, Tab } from "semantic-ui-react";
-import { Link } from 'react-router-dom';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 const emptyAlert = (e: any) => {
   e.preventDefault();
-  window.alert('준비중 입니다.');
+  reactAlert({
+    title: '알림',
+    message: '준비중 입니다.',
+  });
 }
 
 const panes = [
