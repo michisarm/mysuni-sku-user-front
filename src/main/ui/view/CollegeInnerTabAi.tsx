@@ -195,17 +195,15 @@ const panes = [
   {
     menuItem: 'AI/DT Literacy',
     render: () => (
-      <Tab.Pane attached={false}>
-        
-      </Tab.Pane>
+      window.location.href = "https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2t",
+      <Tab.Pane attached={false} />
     ),
   },
   {
     menuItem: 'ML Engineer Track',
     render: () => (
-      <Tab.Pane attached={false}>
-        
-      </Tab.Pane>
+      window.location.href = "https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3i",
+      <Tab.Pane attached={false} />
     ),
   },
 ];

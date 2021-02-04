@@ -287,11 +287,17 @@ const panes = [
   },
   {
     menuItem: 'CDS Track',
-    render: () => <Tab.Pane attached={false}></Tab.Pane>,
+    render: () => (
+      window.location.href = "https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2t",
+      <Tab.Pane attached={false} />
+    )
   },
   {
     menuItem: 'AI/DT Literacy',
-    render: () => <Tab.Pane attached={false}></Tab.Pane>,
+    render: () => (
+      window.location.href = "https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2v",
+      <Tab.Pane attached={false}></Tab.Pane>
+    )
   },
 ];
 
