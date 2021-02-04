@@ -1602,6 +1602,174 @@ const panes = [
       </Tab.Pane>
     ),
   },
+  {
+    menuItem: 'Competency',
+    render: () => (
+      <Tab.Pane attached={false}>
+        <div className="belt">
+          <div className="text-right-box">
+            <a
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0001a"
+              className="item-button"
+            >
+              <Image
+                style={{ display: 'inline' }}
+                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                alt=""
+              />
+              과정 바로가기
+            </a>
+          </div>
+        </div>
+
+
+        {/* 컬리지 텍스트 */}
+        <div className="college-sub-txt">
+          <strong>
+            Competency <br />
+            (Working Smart)
+          </strong>
+          <div>
+            <ul>
+              <li>
+                직무 영역과 상관없이 모든 구성원이 갖추어야 하는 공통역량
+                컨텐츠를 제공합니다.
+                <br />
+                Communication Skill, Problem Solving, Measurement, Negotiation,
+                Decision Making & Risk Management까지
+                Role Level별로 성공적인 업무수행을 위해 갖추어야 할 학습과정을
+                통해 좀더 나은 성과, Smart Working을 위한
+                일/잘/법을 배우고, Deep Change 실행력 제고를 위한 기초 체력을
+                단단히 만들어가시기 바랍니다.
+              </li>
+            </ul>
+            <p className="p_link hidden">
+              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+            </p>
+          </div>
+        </div>
+
+        <div className="college-link-box">
+          <div className="belt">
+          <Image src={`${PUBLIC_URL}/images/all/ing_30.png`} alt="" />
+            <div className="legal-wrap flex sub">
+              <div className="fundamental-topic">
+                <div className="con_wrap sub01">
+                  <h3>
+                    <a href="">Measurement</a>
+                  </h3>
+                  <div className="con_box">
+                    <div className="con_sub_box">
+                      <ul>
+                        <li>Customer Measure & Analytics</li>
+                        <li>- 고객 측정의 기본 개념</li>
+                        <li>- Customer Value 개념과 측정</li>
+                        <li>- 고객 측정 지표의 활용과 한계</li>
+                      </ul>
+                    </div>
+                    <div className="con_sub_box">
+                      <ul>
+                        <li>행복 지도의 이해</li>
+                        <li>- 행복 지도란?</li>
+                        <li>- 행복 지도 구축 Process</li>
+                        <li>- 행복 측정 주요 이슈와 해결방안</li>
+                      </ul>
+                    </div>
+                    <div className="con_sub_box">
+                      <ul>
+                        <li>SV 측정의 이해</li>
+                        <li>- SV 측정의 원칙 및 체계</li>
+                        <li>- SV 측정 사례 및 성과</li>
+                        <li>- SV 측정의 이슈와 확산</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="con_box">
+                    <div className="con_sub_box">
+                      <ul>
+                        <li>Deep Change의 시작, 측정</li>
+                        <li>- 경영 현장에서의 측정</li>
+                        <li>- 인간의 동기, 행동 측정</li>
+                        <li>- 사회 현상 / 문제 측정</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="combined-topic">
+                <div className="con_wrap sub01">
+                  <h3>
+                    <a href="">Negotiaion</a>
+                  </h3>
+                  <div className="con_box">
+                    <div className="con_sub_box">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b2/Course/C-LECTURE-17n">
+                        <ul>
+                          <li>Negotiation 101</li>
+                          <li>- 경영자에게 협상이란</li>
+                          <li>- 협상 준비전략</li>
+                          <li>- [Case Study] Sell Phones</li>
+                        </ul>
+                      </a>
+                    </div>
+                    <div className="con_sub_box">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b3/Course/C-LECTURE-16n">
+                        <ul>
+                          <li>Negotiation Essence Reading</li>
+                          <li>- 협상책을 읽어주는 남자</li>
+                          <li>- 협상 기본서</li>
+                          <li>- 준비와 설득의 기법</li>
+                        </ul>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="legal-wrap flex sub">
+              <div className="fundamental-topic">
+                <div className="con_wrap sub02">
+                  <h3>
+                    <a href="">Communication</a>
+                  </h3>
+                  <div className="con_box">
+                    <div className="con_sub_box">
+                      <ul className="ul_style">
+                        <li>엑셀 실무 Master 1 ~ 8</li>
+                        <li>검색해도 찾기 힘든 꼭 필요한 엑셀 함수</li>
+                        <li>부장님은 내 기획서가 쓰레기라고 말했지</li>
+                        <li>한국인이 많이 하는 이메일 영어실수 上 下 </li>
+                        <li>지나가는 팀장도 돌아보는 PPT 디자인</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="combined-topic">
+                <div className="con_wrap sub02">
+                  <h3>
+                    <a href="">Problem Solving</a>
+                  </h3>
+                  <div className="con_box">
+                    <div className="con_sub_box">
+                      <ul className="ul_style">
+                        <li>10가지 키워드로 배우는 창의적 사고력</li>
+                        <li>전략적 문제해결 스킬 (4월 오픈 예정)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+      
+      
+      </Tab.Pane>
+    ),
+  },
 ];
 
 const CollegeInnerTabView = () => (
