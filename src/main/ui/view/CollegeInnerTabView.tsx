@@ -401,9 +401,9 @@ const panes = [
                         </ul>
                       </a>
                       <ul>
-                        <li className="pd0">
+                        <li className="pd0" style={{borderBottom: "none"}}>
                           <Image
-                            src={`${PUBLIC_URL}/images/all/ing-13.png`}
+                            src={`${PUBLIC_URL}/images/all/ing-13.png` }
                             alt=""
                           />
                         </li>
@@ -992,9 +992,9 @@ const panes = [
             </div>
 
             <div className="legal-wrap">
-              <div className="fundamental-topic">
+              <div className="fundamental-topic" style={{float:"left",marginBottom:"0.5rem"}}>
                 <div className="level_icon">
-                  <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                  <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt=""/>
                   <p>개념 이해</p>
                 </div>
                 <div className="depth">
@@ -1552,7 +1552,7 @@ const panes = [
                   <h3>IP Mind-Set Essential</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ei/Program/P-LECTURE-2d">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fp/Course/C-LECTURE-19a">
                         <ul>
                           <li>지적 재산권 101</li>
                           <li>- 지식재산권의 개념과 종류</li>
@@ -1580,7 +1580,7 @@ const panes = [
                         </ul>
                       </a>
 
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>특허 분쟁 개론</li>
                           <li>- 특허분쟁의 종류</li>
