@@ -1,7 +1,16 @@
 import React from 'react';
 import { Image, Menu, Label, Tab } from 'semantic-ui-react';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+
+const emptyAlert = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '준비 중입니다.',
+  });
+};
 
 const panes = [
   {
@@ -57,6 +66,9 @@ const panes = [
             <strong>실행 지향적 학습방식</strong>을 적용합니다. <br />
             특히, 외부의 Top Expert 뿐 아니라 SK 리더/전문가의 Insight와 경험을
             공유하는 SK Exclusive Contents를 제공할 계획입니다.
+          </p>
+          <p className="p_link">
+            각 Badge를 클릭하면 해당 페이지로 이동합니다.
           </p>
         </div>
         <div className="college-cont-map sub wrap01">
@@ -128,7 +140,7 @@ const panes = [
                     <tr>
                       <td colSpan={2}>ㅤ</td>
                       <td className="badge-texts">
-                        <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4c">
+                        <a href="" onClick={emptyAlert}>
                           디지털 융합
                           <br />
                           마케팅
@@ -140,14 +152,16 @@ const panes = [
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="#">
+                        <a href="" onClick={emptyAlert}>
                           구매
                           <br />
                           Advanced
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="#">회사법</a>
+                        <a href="" onClick={emptyAlert}>
+                          회사법
+                        </a>
                         <br />
                         /<br />
                         <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4d">
@@ -193,21 +207,21 @@ const panes = [
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="#">
+                        <a href="" onClick={emptyAlert}>
                           구매
                           <br />
                           Essentials
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="#">
+                        <a href="" onClick={emptyAlert}>
                           IP Mindset
                           <br />
                           Essentials
                         </a>
                       </td>
                       <td className="badge-texts grey">
-                        <a href="#">
+                        <a href="" onClick={emptyAlert}>
                           협상
                           <br />
                           Essentials
@@ -271,7 +285,7 @@ const panes = [
                 사고력(Way of Thinking)을 강화하는 것을 목표로 합니다.{' '}
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -367,7 +381,7 @@ const panes = [
                           <li>- Strategy in SK</li>
                         </ul>
                       </a>
-                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ek/Course/C-LECTURE-186">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e7/Course/C-LECTURE-17w">
                         <ul>
                           <li>All about Portfolio Strategy</li>
                           <li>- Portfolio Mgmt의 Option</li>
@@ -378,7 +392,7 @@ const panes = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e7/Course/C-LECTURE-17w">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ek/Course/C-LECTURE-186">
                         <ul className="sub">
                           <li>전략 수립의 시작, 경영환경분석</li>
                           <li>- 외부환경분석 Tool & Framework</li>
@@ -443,7 +457,7 @@ const panes = [
                 합니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -579,7 +593,7 @@ const panes = [
                 컨텐츠를 제공합니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -688,14 +702,28 @@ const panes = [
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="">
-                        <ul>
-                          <li>마케팅 Framework & Tool</li>
-                          <li>- 마케팅 환경 분석</li>
-                          <li>- 마케팅 전략 수립</li>
-                          <li>- 마케팅 실행 전술</li>
-                        </ul>
-                      </a>
+                      <ul>
+                        <li>
+                          <a href="" onClick={emptyAlert}>
+                            마케팅 Framework & Tool
+                          </a>
+                        </li>
+                        <li>
+                          <a href="" onClick={emptyAlert}>
+                            - 마케팅 환경 분석
+                          </a>
+                        </li>
+                        <li>
+                          <a href="" onClick={emptyAlert}>
+                            - 마케팅 전략 수립
+                          </a>
+                        </li>
+                        <li>
+                          <a href="" onClick={emptyAlert}>
+                            - 마케팅 실행 전술
+                          </a>
+                        </li>
+                      </ul>
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1el/Course/C-LECTURE-187">
                         <ul>
                           <li>Global 마케팅 사례분석</li>
@@ -759,7 +787,7 @@ const panes = [
                         <ul>
                           <li>전략적 브랜드 관리의 Key insight</li>
                           <li>- 브랜드 관리에 대한 흔한 착각</li>
-                          <li>-- Value : 브랜드 관리의 핵심 개념</li>
+                          <li>- Value : 브랜드 관리의 핵심 개념</li>
                           <li>- Value Innovation</li>
                           <li>- Holistic Branding & HCEM</li>
                           <li>- 브랜드 관리의 전략적 Framework</li>
@@ -780,7 +808,7 @@ const panes = [
                           <li>- 소비자 정보처리와 기억</li>
                           <li>- 소비단계별 고객욕구</li>
                           <li>- 제품과 고객욕구의 연결</li>
-                          <li>- 소비자 조사 방법</li>
+                          <li>- 소비자 조사 방법론</li>
                         </ul>
                       </a>
                     </div>
@@ -860,7 +888,7 @@ const panes = [
                 고민들을 해결할 수 있는 장을 제공합니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -1101,7 +1129,7 @@ const panes = [
                 Change 실행력 제고를 위한 체계적인 컨텐츠를 제공합니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -1220,7 +1248,7 @@ const panes = [
                           <li>
                             나는 무엇을 구매하고 있나, 구매 품목의 이해 및 관리
                           </li>
-                          <li>- 구매 품복의 분류 및 관리</li>
+                          <li>- 구매 품목의 분류 및 관리</li>
                           <li>- 품목 분류에 따른 자재관리 전략</li>
                           <li>- 서비스/용역 품목의 이해</li>
                         </ul>
@@ -1329,7 +1357,7 @@ const panes = [
                 컨텐츠를 제공합니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -1505,7 +1533,7 @@ const panes = [
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b4/Course/C-LECTURE-16m">
                         <ul>
                           <li>특허 협상 및 라이선스</li>
-                          <li>- - 특허 Claim 단계</li>
+                          <li>- 특허 Claim 단계</li>
                           <li>- 특허기술 협상</li>
                           <li>- Royality 협상</li>
                         </ul>
@@ -1537,7 +1565,7 @@ const panes = [
                         <ul>
                           <li>AI 특허</li>
                           <li>- AI 특허 동향</li>
-                          <li>- AI 특허 장성 방법Z</li>
+                          <li>- AI 특허 장성 방법</li>
                           <li>- AI 특허 Case Study</li>
                         </ul>
                       </a>
@@ -1647,7 +1675,6 @@ const panes = [
           </div>
         </div>
 
-
         {/* 컬리지 텍스트 */}
         <div className="college-sub-txt">
           <strong>
@@ -1661,27 +1688,23 @@ const panes = [
                 컨텐츠를 제공합니다.
                 <br />
                 Communication Skill, Problem Solving, Measurement, Negotiation,
-                Decision Making & Risk Management까지
-                Role Level별로 성공적인 업무수행을 위해 갖추어야 할 학습과정을
-                통해 좀더 나은 성과, Smart Working을 위한
-                일/잘/법을 배우고, Deep Change 실행력 제고를 위한 기초 체력을
-                단단히 만들어가시기 바랍니다.
+                Decision Making & Risk Management까지 Role Level별로 성공적인
+                업무수행을 위해 갖추어야 할 학습과정을 통해 좀더 나은 성과,
+                Smart Working을 위한 일/잘/법을 배우고, Deep Change 실행력
+                제고를 위한 기초 체력을 단단히 만들어가시기 바랍니다.
               </li>
             </ul>
-            <p className="p_link hidden">
-              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-            </p>
           </div>
         </div>
 
         <div className="college-link-box">
           <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/ing_30.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/ing_30.png`} alt="" />
             <div className="legal-wrap flex sub">
               <div className="fundamental-topic">
                 <div className="con_wrap sub01">
                   <h3>
-                    <a href="">Measurement</a>
+                    <a href="">Measurement Essentials</a>
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
@@ -1724,7 +1747,7 @@ const panes = [
               <div className="combined-topic">
                 <div className="con_wrap sub01">
                   <h3>
-                    <a href="">Negotiaion</a>
+                    <a href="">Negotiaion Essentials</a>
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
@@ -1789,9 +1812,6 @@ const panes = [
             </div>
           </div>
         </div>
-     
-      
-      
       </Tab.Pane>
     ),
   },

@@ -113,7 +113,7 @@ const panes = [
           <div className="college-cont-title happiness">
             <div className="belt">
               <div className="label">행복 College</div>
-              <div className="strong">SK 구성원 전체의 행복을 위하여!</div>
+              <div className="strong">SK 구성원 전체의 행복을 키워갑니다.</div>
               <div className="normal">
                 행복에 대한 기본 개념과 SK경영철학의 이해를 기반으로 직장을
                 포함한 삶 전반에서
@@ -243,9 +243,9 @@ const panes = [
               고객을 이해하고 혁신을 디자인하라!
               </div>
               <div className="normal">
-              고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의 <br />
-문제를 해결하며, 끊임없이 일하는 방식을 혁신하는데 필요한 <br />
-구성원 및 조직의 혁신 디자인 역량 향상을 도와드립니다.
+              고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의 문제를 해결하며, <br />
+              끊임없이 일하는 방식을 혁신하는데 필요한 
+구성원 및 조직의<br /> 혁신 디자인 역량 향상을 도와드립니다.
               </div>
               <div className="panopto sub">
                 <iframe
