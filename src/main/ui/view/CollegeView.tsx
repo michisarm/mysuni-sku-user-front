@@ -156,7 +156,6 @@ const panes = [
 
           <div className="college-cont-map pbtom">
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
               <div className="map">
                 <Image
                   src={`${PUBLIC_URL}/images/all/happy_con_03.png`}
@@ -587,7 +586,7 @@ const panes = [
       <Tab.Pane>
         <div
           className="ui attached tab full segment active"
-          data-tab="colleges8"
+          data-tab="colleges14"
         >
           <div className="college-cont-title bmd">
             <div className="belt sub">
@@ -778,6 +777,7 @@ class CollegeView extends Component<Props, State> {
 
   onTabChange(e: any, { activeIndex }: any) {
     //
+    console.log('!!!', panes[activeIndex].menuItem)
     this.props.history.push(
       routePaths.introductionCollege(panes[activeIndex].menuItem)
     );

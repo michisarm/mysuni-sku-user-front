@@ -579,7 +579,7 @@ const panes = [
                 컨텐츠를 제공합니다.
               </li>
             </ul>
-            <p className="p_link">
+            <p className="p_link hidden">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -841,6 +841,31 @@ const panes = [
             </a>
           </div>
         </div>
+
+        <div className="college-sub-txt">
+          <strong>HR/조직 설계</strong>
+          <div>
+            <ul>
+              <li>
+                HR Function에서는 (1) HR 실무에 기반한 기초 이해 및 방법론,
+                Practice와 <br />
+                (2) 미래 기술 변화에 따른 HR Tech 관련 지식 등 HR 담당자들의
+                업무 실행력과 Insight 확대를 위한 <br />
+                체계적인 컨텐츠를 제공합니다.
+              </li>
+              <li>
+                조직 설계 Function에서는 (1) 조직 설계의 핵심 개념/원칙들과
+                Practical 한 방법론을 익히고, <br />
+                (2) Silo 해소/ 구성원 행복/ 신사업 추진 등 조직 설계상의 현실적
+                고민들을 해결할 수 있는 장을 제공합니다.
+              </li>
+            </ul>
+            <p className="p_link hidden">
+              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+            </p>
+          </div>
+        </div>
+
         <div className="college-link-box">
           <div className="belt">
             <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
