@@ -516,6 +516,7 @@ const panes = [
                  <Image
                   src={`${PUBLIC_URL}/images/all/semi_con_02.png`}
                   alt=""
+                  style={{marginTop: '3rem'}}
                 />
               </div>
             </div>
