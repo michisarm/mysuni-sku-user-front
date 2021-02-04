@@ -96,39 +96,6 @@ const panes = [
               </div>
             </div>
           </div>
-          <div className="college-tag">
-            <div className="belt">
-              <div className="label chip2">General Track</div>
-              <div className="strong">
-                Digital Mindset을 강화하고 Digital Tech./Biz. 전반을 이해하는
-                컨텐츠
-              </div>
-              <ul className="tag-wrap">
-                <li># DT Tech.이해</li>
-                <li># Basic Data Skills</li>
-                <li># DT Insight</li>
-              </ul>
-              <div className="label chip3">Tech. Track</div>
-              <div className="strong">
-                Skill 영역별 단계 학습을 통해 Digital Tech. 전문가로의 성장을
-                위한 컨텐츠
-              </div>
-              <ul className="tag-wrap">
-                <li># Data Analytics</li>
-                <li># Data Engineering</li>
-                <li># Cloud Engineering</li>
-              </ul>
-              <div className="label chip4">Biz. Track</div>
-              <div className="strong">
-                다른 산업/직무에서 Digital 기술을 적용하여, BM혁신을 준비하는
-                컨텐츠
-              </div>
-              <ul className="tag-wrap">
-                <li># Biz. Analytics</li>
-                <li># DT 기반 BM 혁신</li>
-              </ul>
-            </div>
-          </div>
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
               <CollegeInnerTabDt />
@@ -692,7 +659,7 @@ const panes = [
       <Tab.Pane>
         <div
           className="ui attached tab full segment active"
-          data-tab="colleges8"
+          data-tab="colleges14"
         >
           <div className="college-cont-title bmd">
             <div className="belt sub">
@@ -879,6 +846,7 @@ class CollegeView extends Component<Props, State> {
 
   onTabChange(e: any, { activeIndex }: any) {
     //
+    console.log('!!!', panes[activeIndex].menuItem)
     this.props.history.push(
       routePaths.introductionCollege(panes[activeIndex].menuItem)
     );

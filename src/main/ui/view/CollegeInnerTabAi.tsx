@@ -130,7 +130,7 @@ const panes = [
                 메일을 통해서도 새로운 컨텐츠 소식을 받아보실 수 있습니다.
               </li>
             </ul>
-            <p className="p_link">
+            <p className="p_link hidden">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -178,7 +178,7 @@ const panes = [
                 현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link">
+            <p className="p_link hidden">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -226,7 +226,7 @@ const panes = [
                 현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link">
+            <p className="p_link hidden">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -274,7 +274,7 @@ const panes = [
                 현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link">
+            <p className="p_link hidden">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
