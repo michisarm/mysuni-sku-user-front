@@ -41,14 +41,10 @@ class CategoryMenuPanelView extends Component<Props> {
 
     // react-ga event (전체보기, 각 item)
     ReactGA.event({
-      category: 'Channel',
+      category: `${this.props.activeCollege?.name}`,
       action: 'Click',
-      label: `${activeCollege?.name}-${text}`,
+      label: `${text}`,
     });
-
-    // setTimeout(() => {
-    //   ReactGA.pageview(window.location.pathname, [], `${text}`);
-    // }, 1000);
   }
 
   onClickActionLog(text: string) {
@@ -122,11 +118,11 @@ class CategoryMenuPanelView extends Component<Props> {
     } = this.props;
 
     // react-ga event (카테고리 배너 이미지)
-    const gaClickEvent = (text: string) => {
+    const gaClickEvent = (text: string, idx: number) => {
       ReactGA.event({
         category: 'Banner',
         action: 'Click',
-        label: text,
+        label: `${text}-${idx&&idx}번째`,
       });
     };
 
@@ -354,7 +350,7 @@ class CategoryMenuPanelView extends Component<Props> {
                               <img
                                 src={`${banner.collegeBannerContents[0].imageUrl}`}
                                 onClick={e =>
-                                  gaClickEvent(`${activeCollege.name}`)
+                                  gaClickEvent(`${activeCollege.name}`,1)
                                 }
                                 alt=""
                               />
@@ -371,7 +367,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 <img
                                   src={`${banner.collegeBannerContents[0].imageUrl}`}
                                   onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`)
+                                    gaClickEvent(`${activeCollege.name}`,1)
                                   }
                                   alt=""
                                 />
@@ -396,7 +392,7 @@ class CategoryMenuPanelView extends Component<Props> {
                               <img
                                 src={`${banner.collegeBannerContents[1].imageUrl}`}
                                 onClick={e =>
-                                  gaClickEvent(`${activeCollege.name}`)
+                                  gaClickEvent(`${activeCollege.name}`, 2)
                                 }
                                 alt=""
                               />
@@ -413,7 +409,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 <img
                                   src={`${banner.collegeBannerContents[1].imageUrl}`}
                                   onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`)
+                                    gaClickEvent(`${activeCollege.name}`, 2)
                                   }
                                   alt=""
                                 />
@@ -449,7 +445,7 @@ class CategoryMenuPanelView extends Component<Props> {
                         banner.collegeBannerContents[0].useLink === 0 && (
                           <img
                             src={`${banner.collegeBannerContents[0].imageUrl}`}
-                            onClick={e => gaClickEvent(`${activeCollege.name}`)}
+                            onClick={e => gaClickEvent(`${activeCollege.name}`, 1)}
                             alt=""
                           />
                         )}
@@ -463,7 +459,7 @@ class CategoryMenuPanelView extends Component<Props> {
                             <img
                               src={`${banner.collegeBannerContents[0].imageUrl}`}
                               onClick={e =>
-                                gaClickEvent(`${activeCollege.name}`)
+                                gaClickEvent(`${activeCollege.name}`, 1)
                               }
                               alt=""
                             />

@@ -17,6 +17,8 @@ import LectureCountService from 'lecture/category/present/logic/LectureCountServ
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 import { CollegeService } from 'college/stores';
 
+import ReactGA from 'react-ga';
+
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
   skProfileService?: SkProfileService;
@@ -161,6 +163,13 @@ class CategoryMenuContainer extends Component<Props, State> {
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: text });
+
+    // react-ga event
+    ReactGA.event({
+      category: 'Category-Button',
+      action: 'Click',
+      label: `GNB_Category-Button`,
+    })
   }
 
   renderMenuActions() {

@@ -91,18 +91,17 @@ class TabContainer extends Component<Props, State> {
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
-
+    
     const pageName = this.findPageName();
     const menu =
       (pageName && `tab_${pageName}_${tab.name}`) || `tab_${tab.name}`;
 
-    this.setState({ activeName: tab.name });
-
-     // react-ga event
-     ReactGA.event({
-      category: 'Certification',
-      action: 'Click',
-      label: `Certification-${menu}`,
+    this.setState({ activeName: tab.name }, () => {
+      ReactGA.event({
+        category: `${pageName ? pageName : 'Certification'}`,
+        action: 'Click',
+        label: `${menu}`,
+      });
     });
 
     const routePath = onChangeTab!(tab);
