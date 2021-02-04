@@ -24,7 +24,6 @@ const panes = [
         >
           <div className="college-cont-title ai">
             <div className="belt sub">
-              
               <div className="label">AI College</div>
               <div className="strong">
                 AI 아싸(Outsider)에서 AI 핵인싸(Insider)로!
@@ -56,7 +55,6 @@ const panes = [
               <CollegeInnerTabAi />
             </div>
           </div>
-
         </div>
       </Tab.Pane>
     ),
@@ -71,7 +69,6 @@ const panes = [
         >
           <div className="college-cont-title dt">
             <div className="belt sub ">
-              
               <div className="label">DT College</div>
               <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
               <div className="normal">
@@ -126,38 +123,44 @@ const panes = [
                 <br />
                 실질적으로 기여하는 것을 목표로 합니다.
               </div>
-            </div>
-          </div>
-
-          <div className="college-free1">
-            <div className="belt">
-              <div className="label">이렇게 학습하면 더욱 효과적입니다.</div>
-              <div className="img">
-                <Image src={`${PUBLIC_URL}/images/all/img-co3-1.png`} alt="" />
-              </div>
-              <div className="label">
-                SK만의 컨텐츠를 새롭게 만들어가고 있습니다.
-              </div>
-              <div className="normal">
-                2020년 1월 행복학개론, SK의 행복경영, 마음 근력 키우기, 긍정
-                습관 만들기 등 총 4개 과정이 개설되었습니다.
-                <br />
-                현재 운영 중인 4개의 과정에 추가하여 <strong>2020년 말</strong>
-                까지 행복 실천을 위한{' '}
-                <strong>
-                  나머지 공통 과정, SK 행복 리더십 과정, 전문가 과정
-                </strong>
-                을<br />
-                순차적으로 개설할 예정입니다.
+              <div className="panopto sub">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/happy-banner.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
 
           <div className="college-cont-map">
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co3.png`} alt="" />
+                <Image
+                  src={`${PUBLIC_URL}/images/all/happy_con_01.png`}
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/happy_con_02.png`}
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map pbtom">
+            <div className="belt">
+              <div className="map">
+                <Image
+                  src={`${PUBLIC_URL}/images/all/happy_con_03.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -169,44 +172,59 @@ const panes = [
     menuItem: 'SV',
     render: () => (
       <Tab.Pane>
-      <div
-        className="ui attached tab full segment active"
-        data-tab="colleges4"
-      >
-        <div className="college-cont-title sv">
-          <div className="belt sub">
-            <div className="label">SV College</div>
-            <div className="strong">
-              내일[Tomorrow+My Work]을 위한 SV, <br />
-              기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
-            </div>
-            <div className="normal">
-              Deep Change의 방향을 제시하는 ‘사회적 가치’ <br />
-              이해관계자들의 Painpoint를 공감하고 해결하는 역량을 함께
-              키워봅시다!
-            </div>
-            <ul className="tag-wrap">
-              <li># 사회문제</li>
-              <li># ESG</li>
-              <li># SV Biz</li>
-              <li># SV 측정</li>
-            </ul>
-            <div className="panopto sub">
-            <Image src={`${PUBLIC_URL}/images/all/sv-banner.png`} alt="" />
+        <div
+          className="ui attached tab full segment active"
+          data-tab="colleges4"
+        >
+          <div className="college-cont-title sv">
+            <div className="belt sub">
+              <div className="label">SV College</div>
+              <div className="strong">
+                내일[Tomorrow+My Work]을 위한 SV, <br />
+                기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
+              </div>
+              <div className="normal">
+                Deep Change의 방향을 제시하는 ‘사회적 가치’ <br />
+                이해관계자들의 Painpoint를 공감하고 해결하는 역량을 함께
+                키워봅시다!
+              </div>
+              <ul className="tag-wrap">
+                <li># 사회문제</li>
+                <li># ESG</li>
+                <li># SV Biz</li>
+                <li># SV 측정</li>
+              </ul>
+              <div className="panopto sub">
+                <Image src={`${PUBLIC_URL}/images/all/sv-banner.png`} alt="" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="college-cont-map">
-          <div className="belt">
-            <div className="label">전체 커리큘럼</div>
-            <div className="map">
-              <Image src="/images/all/img-co4.png" alt="" />
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/sv_con_01.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/sv_con_02.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map pbtom">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/sv_con_03.png`} alt="" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Tab.Pane>
+      </Tab.Pane>
     ),
   },
   {
@@ -218,8 +236,18 @@ const panes = [
           data-tab="colleges5"
         >
           <div className="college-cont-title design">
-            <div className="belt">
-              <div className="panopto">
+            <div className="belt sub">
+              
+              <div className="label">혁신디자인 College</div>
+              <div className="strong">
+              고객을 이해하고 혁신을 디자인하라!
+              </div>
+              <div className="normal">
+              고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의 <br />
+문제를 해결하며, 끊임없이 일하는 방식을 혁신하는데 필요한 <br />
+구성원 및 조직의 혁신 디자인 역량 향상을 도와드립니다.
+              </div>
+              <div className="panopto sub">
                 <iframe
                   title="audio type"
                   src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
@@ -231,110 +259,26 @@ const panes = [
                   allow="autoplay"
                 />
               </div>
-              <div className="label">혁신디자인 College</div>
-              <div className="strong">
-                Deep Change 필요한 “디자인 역량”을 키우는 곳!
-              </div>
-              <div className="normal">
-                SK 구성원, 디자인 씽킹 전문가, 혁신 Biz. 리더 등 고객 중심
-                BM혁신을
-                <br />
-                고민하는 다양한 사람들이 각자의 고민과 의견을 나누며 Deep
-                Change에 필요한
-                <br />
-                Biz. 디자인 역량을 함께 만들어가는 곳 입니다.
-                <br />
-                여러분의 디자인 사고, 디자인 역량을 높이는데 도움이 될 다양한
-                강의와 워크샵,
-                <br />
-                프로젝트에 도전해보세요!
-              </div>
-              <ul className="tag-wrap">
-                <li># Deep Change & Design</li>
-                <li># 고객 중심의 디자인 방법론</li>
-                <li># 일하는 방식의 혁신</li>
-                <li># 그룹 전략 Biz. 디자인</li>
-              </ul>
             </div>
           </div>
 
           <div className="college-cont-map">
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co5.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/design_con_01.png`} alt="" />
               </div>
-              <ol className="list">
-                <li>
-                  <div className="label chip1">
-                    <i className="numb-1 icon">
-                      <span className="blind">1</span>
-                    </i>
-                    Deep Change & Design
-                  </div>
-                  <div className="normal">
-                    Deep Change에 필요한 디자인 역량의 의미, 고객 중심 디자인의
-                    기초 개념을 학습합니다.
-                  </div>
-                  <ul className="tag-wrap">
-                    <li># Why Design</li>
-                    <li># SK 고객알기</li>
-                    <li># Trend & Insight</li>
-                  </ul>
-                </li>
-                <li>
-                  <div className="label chip2">
-                    <i className="numb-2 icon">
-                      <span className="blind">2</span>
-                    </i>
-                    고객중심의 디자인 방법론
-                  </div>
-                  <div className="normal">
-                    고객을 제대로 이해하는 법, 창의적 솔루션을 찾아내는 법 등을
-                    학습합니다.
-                  </div>
-                  <ul className="tag-wrap">
-                    <li># 디자인 씽킹</li>
-                    <li># 고객 Needs이해</li>
-                    <li># Biz Ideation</li>
-                  </ul>
-                </li>
-                <li>
-                  <div className="label chip3">
-                    <i className="numb-3 icon">
-                      <span className="blind">3</span>
-                    </i>
-                    일하는 방식의 혁신
-                  </div>
-                  <div className="normal">
-                    고객 중심으로 애자일하게 일하는 법, 협업을 잘하는 방법 등을
-                    학습합니다.
-                  </div>
-                  <ul className="tag-wrap">
-                    <li># Agile process</li>
-                    <li># Open Collaboration</li>
-                    <li># Working backward</li>
-                  </ul>
-                </li>
-                <li>
-                  <div className="label chip4">
-                    <i className="numb-4 icon">
-                      <span className="blind">4</span>
-                    </i>
-                    그룹 전략 Biz. 디자인
-                  </div>
-                  <div className="normal">
-                    SV, DT 등 그룹 전략 영역에 특화된, 고객중심 Biz. 디자인
-                    방법을 학습합니다
-                  </div>
-                  <ul className="tag-wrap">
-                    <li># Biz Design-SV</li>
-                    <li># Biz Design-DT</li>
-                  </ul>
-                </li>
-              </ol>
             </div>
           </div>
+
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/design_con_02.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </Tab.Pane>
     ),
@@ -430,7 +374,7 @@ const panes = [
                   src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
-                  style={{ padding: "0px", border: "0px" }}
+                  style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"
@@ -439,34 +383,18 @@ const panes = [
             </div>
           </div>
 
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">21년 핵인싸 과정 개정</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/leader_con_01.png`} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">커뮤니티 기능 오픈 계획</div>
-              <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/leader_con_02.png`} alt="" />
-              </div>
-            </div>
-          </div>
 
           <div className="college-cont-map">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/leader_con_03.png`} alt="" />
+                <Image
+                  src={`${PUBLIC_URL}/images/all/leader_con_01.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
-
-
         </div>
       </Tab.Pane>
     ),
@@ -488,9 +416,10 @@ const panes = [
                 어떻게 성장할 수 있을까요?
               </div>
               <div className="normal">
-              Management College는 Deep Change를 위한 Biz. 실행 역량 제고를 위해 6개 Function Group, 
-              1개 Competency 영역의 직무 역량 학습을 제공합니다. Function Group별 지식/전문성 뿐 아니라 여러 Function간 결합을 통한 융합/통합 역량 확보도 계획하고 있습니다. 
-
+                Management College는 Deep Change를 위한 Biz. 실행 역량 제고를
+                위해 6개 Function Group, 1개 Competency 영역의 직무 역량 학습을
+                제공합니다. Function Group별 지식/전문성 뿐 아니라 여러
+                Function간 결합을 통한 융합/통합 역량 확보도 계획하고 있습니다.
               </div>
               <div className="panopto sub">
                 <iframe
@@ -498,7 +427,7 @@ const panes = [
                   src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
                   width="436"
                   height="245"
-                  style={{ padding: "0px", border: "0px" }}
+                  style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"
@@ -546,7 +475,7 @@ const panes = [
               <div className="label">미래 반도체 College</div>
               <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
               <div className="normal">
-                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{" "}
+                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{' '}
                 <br />
                 반도체 산업의 본질을 파악하고, 미래의 기술이 열어갈 세상을 전망
                 할 수 <br />
@@ -558,7 +487,7 @@ const panes = [
                   src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dfbe4050a-7d9d-40bb-a819-ab89007cb3cd%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
-                  style={{ padding: "0px", border: "0px" }}
+                  style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"
@@ -576,20 +505,18 @@ const panes = [
             </div>
           </div>
 
-          <div className="college-cont-map">
+          <div className="college-cont-map pbtom">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-              <Image src={`${PUBLIC_URL}/images/all/semi_con_01.png`} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className="college-cont-map">
-            <div className="belt">
-              <div className="label">전체 커리큘럼</div>
-              <div className="map">
-              <Image src={`${PUBLIC_URL}/images/all/semi_con_02.png`} alt="" />
+                <Image
+                  src={`${PUBLIC_URL}/images/all/semi_con_01.png`}
+                  alt=""
+                />
+                 <Image
+                  src={`${PUBLIC_URL}/images/all/semi_con_02.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -654,7 +581,7 @@ const panes = [
     ),
   },
   {
-    menuItem: "BM Design & Storytelling",
+    menuItem: 'BM Design & Storytelling',
     render: () => (
       <Tab.Pane>
         <div
@@ -667,17 +594,22 @@ const panes = [
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
                 BM Design 전문가 양성 및 Biz Story Design/ Telling 역량 강화를
-                적극 지원함으로써 <br />
-                그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+                적극 지원함으로써 그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
               </div>
               <ul className="tag-wrap">
+                <li># BM혁신</li>
                 <li># Sustainable BM</li>
-                <li># BM Framework</li>
+                <li># BM Design</li>
+                <li># Portfolio Management</li>
                 <li># Financial Story</li>
-                <li># Stakeholder Relationship</li>
+                <li># Storytelling</li>
+                <li># Stakeholder</li>
               </ul>
               <div className="panopto sub">
-              <Image src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`} alt="" />
+                <Image
+                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -694,11 +626,10 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-              <Image src={`${PUBLIC_URL}/images/all/bmd_con_02.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/bmd_con_02.png`} alt="" />
               </div>
             </div>
           </div>
-          
         </div>
       </Tab.Pane>
     ),

@@ -11,7 +11,7 @@ const panes = [
         <div className="belt">
           <div className="text-right-box">
             <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00002/channels/pages/1"
               className="item-button"
             >
               <Image
@@ -56,7 +56,7 @@ const panes = [
         <div className="belt">
           <div className="text-right-box">
             <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00002/channel/CHN00008"
               className="item-button"
             >
               <Image
@@ -78,8 +78,8 @@ const panes = [
             <ul>
               <li>
                 본 채널은 Data Analyst로 성장하는데 필요한 기초 Programming,
-                통계/분석 지식과 전문적 분석 기술을 종합적으로 학습할 수 있는
-                채널입니다.
+                통계/분석 지식과 전문적 분석 기술을 종합적으로 <br />
+                학습할 수 있는 채널입니다.
               </li>
             </ul>
             <p className="p_link hidden">
@@ -90,7 +90,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/dt-con02-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/dt-con02-1.png`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -103,7 +103,7 @@ const panes = [
         <div className="belt">
           <div className="text-right-box">
             <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00002/channel/CHN0000a"
               className="item-button"
             >
               <Image
@@ -118,15 +118,16 @@ const panes = [
         {/* 컬리지 텍스트 */}
         <div className="college-sub-txt">
           <strong>
-            Data Analyst <br />
+            Cloud Engineer <br />
             Track
           </strong>
           <div>
             <ul>
               <li>
-                본 채널은 Data Analyst로 성장하는데 필요한 기초 Programming,
-                통계/분석 지식과 전문적 분석 기술을 종합적으로 학습할 수 있는
-                채널입니다.
+                본 채널은 Cloud Engineer로 성장하는 데 필요한 클라우드 전환 및
+                운영에 관한 기본 지식과 다양한 스킬을 학습하는 <br />
+                채널입니다. 또한 Market 인증 Certificate 취득을 위한 학습
+                컨텐츠도 제공하고 있습니다.
               </li>
             </ul>
             <p className="p_link hidden">
@@ -137,7 +138,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/dt-con03-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/dt-con03-1.png`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -150,7 +151,7 @@ const panes = [
         <div className="belt">
           <div className="text-right-box">
             <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00002/channel/CHN00009"
               className="item-button"
             >
               <Image
@@ -166,15 +167,15 @@ const panes = [
         {/* 컬리지 텍스트 */}
         <div className="college-sub-txt">
           <strong>
-            AI Biz. <br />
-            Implementation
+            Data Engineer <br />
+            Track
           </strong>
           <div>
             <ul>
               <li>
-                본 채널은 AI를 활용하여 고객 경험, Business, 운영 프로세스의
-                변화를 가져온 다양한 그룹 내/외의 AI 활용사례를 배우고, <br />
-                현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
+                본 채널은 Data Engineer로 성장하는데 필요한 Database 기초
+                지식부터 Big Data 처리를 위한 다양한 <br />
+                Engineering skill을 학습할 수 있는 채널입니다.
               </li>
             </ul>
             <p className="p_link hidden">
@@ -185,7 +186,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/ai-con04-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/dt-con04-1.png`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -198,7 +199,7 @@ const panes = [
         <div className="belt">
           <div className="text-right-box">
             <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00002/channel/CHN0000d"
               className="item-button"
             >
               <Image
@@ -213,16 +214,13 @@ const panes = [
 
         {/* 컬리지 텍스트 */}
         <div className="college-sub-txt">
-          <strong>
-            AI Biz. <br />
-            Implementation
-          </strong>
+          <strong>DT Technologies</strong>
           <div>
             <ul>
               <li>
-                본 채널은 AI를 활용하여 고객 경험, Business, 운영 프로세스의
-                변화를 가져온 다양한 그룹 내/외의 AI 활용사례를 배우고, <br />
-                현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
+                본 채널은 프로그래밍 언어, Cloud Computing, Blockchain, IoT, Big
+                Data 등 DT 실행에 요구되는 주요 핵심 <br />
+                기술들에 대해 학습하는 채널입니다.
               </li>
             </ul>
             <p className="p_link hidden">
@@ -233,7 +231,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/ai-con05-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/dt-con05-1.png`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -246,7 +244,7 @@ const panes = [
         <div className="belt">
           <div className="text-right-box">
             <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00002/channel/CHN0006o"
               className="item-button"
             >
               <Image
@@ -262,15 +260,15 @@ const panes = [
         {/* 컬리지 텍스트 */}
         <div className="college-sub-txt">
           <strong>
-            AI Biz. <br />
+            DT Biz. & <br />
             Implementation
           </strong>
           <div>
             <ul>
               <li>
-                본 채널은 AI를 활용하여 고객 경험, Business, 운영 프로세스의
-                변화를 가져온 다양한 그룹 내/외의 AI 활용사례를 배우고, <br />
-                현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
+                본 채널은 고객 경험과 BM, 운영 프로세스의 변화를 가져 온 그룹
+                내/외의 다양한 DT 사례와 적용 방안에 대해 학습할 수 <br />
+                있는 채널입니다.
               </li>
             </ul>
             <p className="p_link hidden">
@@ -281,7 +279,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/ai-con06-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/dt-con06-1.png`} alt="" />
           </div>
         </div>
       </Tab.Pane>
@@ -289,99 +287,11 @@ const panes = [
   },
   {
     menuItem: 'CDS Track',
-    render: () => (
-      <Tab.Pane attached={false}>
-        <div className="belt">
-          <div className="text-right-box">
-            <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
-              className="item-button"
-            >
-              <Image
-                style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
-                alt=""
-              />
-              과정 바로가기
-            </a>
-          </div>
-        </div>
-
-        {/* 컬리지 텍스트 */}
-        <div className="college-sub-txt">
-          <strong>
-            AI Biz. <br />
-            Implementation
-          </strong>
-          <div>
-            <ul>
-              <li>
-                본 채널은 AI를 활용하여 고객 경험, Business, 운영 프로세스의
-                변화를 가져온 다양한 그룹 내/외의 AI 활용사례를 배우고, <br />
-                현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
-              </li>
-            </ul>
-            <p className="p_link hidden">
-              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-            </p>
-          </div>
-        </div>
-
-        <div className="college-link-box">
-          <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/ai-con04-1.png`} alt="" />
-          </div>
-        </div>
-      </Tab.Pane>
-    ),
+    render: () => <Tab.Pane attached={false}></Tab.Pane>,
   },
   {
     menuItem: 'AI/DT Literacy',
-    render: () => (
-      <Tab.Pane attached={false}>
-        <div className="belt">
-          <div className="text-right-box">
-            <a
-              href="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
-              className="item-button"
-            >
-              <Image
-                style={{ display: 'inline' }}
-                src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
-                alt=""
-              />
-              과정 바로가기
-            </a>
-          </div>
-        </div>
-
-        {/* 컬리지 텍스트 */}
-        <div className="college-sub-txt">
-          <strong>
-            AI Biz. <br />
-            Implementation
-          </strong>
-          <div>
-            <ul>
-              <li>
-                본 채널은 AI를 활용하여 고객 경험, Business, 운영 프로세스의
-                변화를 가져온 다양한 그룹 내/외의 AI 활용사례를 배우고, <br />
-                현장에서 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
-              </li>
-            </ul>
-            <p className="p_link hidden">
-              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
-            </p>
-          </div>
-        </div>
-
-        <div className="college-link-box">
-          <div className="belt">
-          <Image src={`${PUBLIC_URL}/images/all/dt-con06-1.png`} alt="" />
-          </div>
-        </div>
-      </Tab.Pane>
-    ),
+    render: () => <Tab.Pane attached={false}></Tab.Pane>,
   },
 ];
 
