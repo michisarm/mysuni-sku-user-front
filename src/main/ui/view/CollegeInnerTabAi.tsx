@@ -44,7 +44,7 @@ const panes = [
             다양한 Biz Case를 통해 AI가 가져올 새로운 기회를 구체적으로 그려볼
             수 있을 것입니다.
           </div>
-          <Image src={`${PUBLIC_URL}/images/all/ai-con01-1.png`} alt="" />
+          <img src={Aisub01} />
         </div>
 
         <div className="college-cont-map sub pbtom">
@@ -60,29 +60,17 @@ const panes = [
                   <div className="ai-intro">
                     <h3>AI Technologies</h3>
                     <ul>
-                      <li>
-                        <a href="">딥러닝</a>
-                      </li>
-                      <li>
-                        <a href="">Meta Learner</a>
-                      </li>
+                      <li>딥러닝</li>
+                      <li>Meta Learner</li>
                     </ul>
                   </div>
 
                   <div className="ai-intro sub">
                     <ul>
-                      <li>
-                        <a href="">딥러닝</a>
-                      </li>
-                      <li>
-                        <a href="">머신러닝</a>
-                      </li>
-                      <li>
-                        <a href="">AI 기초 개념 및 동작원리</a>
-                      </li>
-                      <li>
-                        <a href="">AI 수학 기초</a>
-                      </li>
+                      <li>딥러닝</li>
+                      <li>머신러닝</li>
+                      <li>AI 기초 개념 및 동작원리</li>
+                      <li>AI 수학 기초</li>
                     </ul>
                   </div>
                 </div>
@@ -90,24 +78,16 @@ const panes = [
                 <div className="ai-belt-box">
                   <div className="ai-intro">
                     <h3>AI Trend Watch</h3>
-                    <ul className="ai-bottom">
-                      <li>
-                        <a href="">AI 최신 기술</a>
-                      </li>
+                    <ul class="ai-bottom">
+                      <li>AI 최신 기술</li>
                     </ul>
                   </div>
 
                   <div className="ai-intro sub">
                     <ul>
-                      <li>
-                        <a href="">AI Biz/Tech Conference</a>
-                      </li>
-                      <li>
-                        <a href="">ai.x Conference</a>
-                      </li>
-                      <li>
-                        <a href="">ICT Tech Summit</a>
-                      </li>
+                      <li>AI Biz/Tech Conference</li>
+                      <li>ai.x Conference</li>
+                      <li>ICT Tech Summit</li>
                     </ul>
                   </div>
                 </div>
@@ -115,21 +95,15 @@ const panes = [
                 <div className="ai-belt-box">
                   <div className="ai-intro">
                     <h3>AI Biz. Implementation</h3>
-                    <ul className="ai-bottom">
-                      <li>
-                        <a href="">AI Biz Case Study</a>
-                      </li>
+                    <ul class="ai-bottom">
+                      <li>AI Biz Case Study</li>
                     </ul>
                   </div>
 
                   <div className="ai-intro sub">
                     <ul>
-                      <li>
-                        <a href="">SK AI적용 Practice</a>
-                      </li>
-                      <li>
-                        <a href="">AI To Biz Methodology</a>
-                      </li>
+                      <li>SK AI적용 Practice</li>
+                      <li>AI To Biz Methodology</li>
                     </ul>
                   </div>
                 </div>
@@ -142,24 +116,12 @@ const panes = [
                   <h3>ML Engineer Track</h3>
                   <p>(Intensive Course, 9주)</p>
                   <ul>
-                    <li>
-                      <a href="">Tabular / NLP</a>
-                    </li>
-                    <li>
-                      <a href="">Deep Learning</a>
-                    </li>
-                    <li>
-                      <a href="">Computer Vision</a>
-                    </li>
-                    <li>
-                      <a href="">ML Model 및 History</a>
-                    </li>
-                    <li>
-                      <a href="">AI 수학</a>
-                    </li>
-                    <li>
-                      <a href="">ML 기초</a>
-                    </li>
+                    <li>Tabular / NLP</li>
+                    <li>Deep Learning</li>
+                    <li>Computer Vision</li>
+                    <li>ML Model 및 History</li>
+                    <li>AI 수학</li>
+                    <li>ML 기초</li>
                   </ul>
                 </div>
               </div>
@@ -172,18 +134,10 @@ const panes = [
                     </div>
                     <h3>AI/DT Literacy</h3>
                     <ul>
-                      <li>
-                        <a href="">Customer Empathy</a>
-                      </li>
-                      <li>
-                        <a href="">Data-Centric Approach</a>
-                      </li>
-                      <li>
-                        <a href="">ICT Tech 이해</a>
-                      </li>
-                      <li>
-                        <a href="">ICT Tech 이해</a>
-                      </li>
+                      <li>Customer Empathy</li>
+                      <li>Data-Centric Approach</li>
+                      <li>ICT Tech 이해</li>
+                      <li>Biz Insight</li>
                     </ul>
                   </div>
                 </div>
@@ -235,7 +189,7 @@ const panes = [
                 AI를 적용하는 방안을 고민해 볼 수 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link ai">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -252,31 +206,21 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-wf/Course/C-LECTURE-sd">
-                      AI Biz Case : 환경
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-wf/Course/C-LECTURE-sd">AI Biz Case : 환경</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-vm/Course/C-LECTURE-rj">
-                      AI Biz Case : 에너지/화학
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-vm/Course/C-LECTURE-rj">AI Biz Case : 에너지/화학</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-tu/Course/C-LECTURE-q2">
-                      AI Biz Case : 바이오/헬스
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-tu/Course/C-LECTURE-q2">AI Biz Case : 바이오/헬스</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-vq/Course/C-LECTURE-rn">
-                      AI Biz Case : 마케팅
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-vq/Course/C-LECTURE-rn">AI Biz Case : 마케팅</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-tz/Course/C-LECTURE-q6">
-                      AI Biz Case : 생산/공정
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-tz/Course/C-LECTURE-q6">AI Biz Case : 생산/공정</a>
                   </li>
                 </ul>
               </div>
@@ -340,21 +284,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-xb/Course/C-LECTURE-t3">
-                      The Road to AI – AI Biz 적용 프로세스
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-xb/Course/C-LECTURE-t3">The Road to AI – AI Biz 적용 프로세스</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/search?query=AI%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D/%EA%B0%9C%EB%B0%9C%20%EA%B8%B0%EC%B4%88">
-                      AI서비스 기획 개발 (입문/기획/기초)
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/search?query=AI%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D/%EA%B0%9C%EB%B0%9C%20%EA%B8%B0%EC%B4%88">AI서비스 기획 개발 (입문/기획/기초)</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-gk/Course/C-LECTURE-do">
-                      Industrial AI솔루션 동향과 도입 방안
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-gk/Course/C-LECTURE-do">Industrial AI솔루션 동향과 도입 방안</a>
                   </li>
                 </ul>
               </div>
@@ -398,7 +336,7 @@ const panes = [
                 소식을 받아보실 수 있습니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link ai">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -450,9 +388,7 @@ const panes = [
                     </a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-8w5/lecture-card/LECTURE-CARD-6m7">
-                      [AI최신기술동향] Mogrifier LSTM
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-8w5/lecture-card/LECTURE-CARD-6m7">[AI최신기술동향] Mogrifier LSTM</a>
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-8t0/lecture-card/LECTURE-CARD-6it">
@@ -473,26 +409,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zl/Course/C-LECTURE-v7">
-                      [ai.x2020] 1.인간과 AI의 공존
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zl/Course/C-LECTURE-v7">[ai.x2020] 1.인간과 AI의 공존</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zj/Course/C-LECTURE-v5">
-                      [ai.x2020] 3. AI 최신 연구와 적용 사례
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zj/Course/C-LECTURE-v5">[ai.x2020] 3. AI 최신 연구와 적용 사례</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zk/Course/C-LECTURE-v6">
-                      [ai.x2020] 2.뉴노멀과 AI Tech
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zk/Course/C-LECTURE-v6">[ai.x2020] 2.뉴노멀과 AI Tech</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zi/Course/C-LECTURE-v3">
-                      [ai.x2020] 4. Secret Talk (연사 인터뷰)
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zi/Course/C-LECTURE-v3">[ai.x2020] 4. Secret Talk (연사 인터뷰)</a>
                   </li>
                 </ul>
               </div>
@@ -508,21 +436,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19p/Course/C-LECTURE-141">
-                      [SK ICT Tech Summit] Industrial AI
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19p/Course/C-LECTURE-141">[SK ICT Tech Summit] Industrial AI</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19s/Course/C-LECTURE-13z">
-                      [SK ICT Tech Summit] AI 응용 기술 &#38; 솔루션
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19s/Course/C-LECTURE-13z">[SK ICT Tech Summit] AI 응용 기술 &#38; 솔루션</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19q/Course/C-LECTURE-140">
-                      [SK ICT Tech Summit] AI 적용 Platform
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19q/Course/C-LECTURE-140">[SK ICT Tech Summit] AI 적용 Platform</a>
                   </li>
                 </ul>
               </div>
@@ -537,9 +459,7 @@ const panes = [
                 </h4>
                 <ul className="float-left">
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-wi/Course/C-LECTURE-so">
-                      [Conference] AI의 현재와 미래
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-wi/Course/C-LECTURE-so">[Conference] AI의 현재와 미래</a>
                   </li>
                 </ul>
               </div>
@@ -579,7 +499,7 @@ const panes = [
                 기초를 학습하실 수 있습니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link ai">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -596,26 +516,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cn/Program/P-LECTURE-26">
-                      [딥러닝 기초] 1. 신경망, 경사하강, 역전파
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cn/Program/P-LECTURE-26">[딥러닝 기초] 1. 신경망, 경사하강, 역전파</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1ct/Program/P-LECTURE-24">
-                      [딥러닝 기초] 3. 주요 적용 기법
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1ct/Program/P-LECTURE-24">[딥러닝 기초] 3. 주요 적용 기법</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cq/Program/P-LECTURE-25">
-                      [딥러닝 기초] 2. CNN, RNN
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cq/Program/P-LECTURE-25">[딥러닝 기초] 2. CNN, RNN</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cx/Program/P-LECTURE-27">
-                      [딥러닝] Vision, GAN, NLP, Reinforcement 등
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cx/Program/P-LECTURE-27">[딥러닝] Vision, GAN, NLP, Reinforcement 등</a>
                   </li>
                 </ul>
               </div>
@@ -630,16 +542,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5n/Course/C-LECTURE-3t">
-                      AI Expert with Meta Learner 입문 (온라인)
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5n/Course/C-LECTURE-3t">AI Expert with Meta Learner 입문 (온라인)</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19b/Course/C-LECTURE-13s">
-                      Meta Learner 입문
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19b/Course/C-LECTURE-13s">Meta Learner 입문</a>
                   </li>
                 </ul>
               </div>
@@ -658,16 +566,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cd/Program/P-LECTURE-22">
-                      Tensorflow 2.0 와 Pytorch 프레임워크 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cd/Program/P-LECTURE-22">Tensorflow 2.0 와 Pytorch 프레임워크 기초</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1ci/Program/P-LECTURE-23">
-                      이미지 분석으로 배우는 Tensorflow와 Pytorch
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1ci/Program/P-LECTURE-23">이미지 분석으로 배우는 Tensorflow와 Pytorch</a>
                   </li>
                 </ul>
               </div>
@@ -682,16 +586,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5m/Course/C-LECTURE-3s">
-                      머신러닝 이해와 실습 上
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5m/Course/C-LECTURE-3s">머신러닝 이해와 실습 上</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5l/Course/C-LECTURE-3r">
-                      머신러닝 이해와 실습 下
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5l/Course/C-LECTURE-3r">머신러닝 이해와 실습 下</a>
                   </li>
                 </ul>
               </div>
@@ -706,21 +606,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5r/Course/C-LECTURE-3x">
-                      AI 101
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5r/Course/C-LECTURE-3x">AI 101</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-66/Course/C-LECTURE-4h">
-                      인공지능/머신러닝 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-66/Course/C-LECTURE-4h">인공지능/머신러닝 기초</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-64/Course/C-LECTURE-4i">
-                      비전공자를 위한 머신러닝
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-64/Course/C-LECTURE-4i">비전공자를 위한 머신러닝</a>
                   </li>
                 </ul>
               </div>
@@ -735,16 +629,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-yt/Course/C-LECTURE-ue">
-                      [AI수학 #1] 선형대수 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-yt/Course/C-LECTURE-ue">[AI수학 #1] 선형대수 기초</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-yu/Course/C-LECTURE-uf">
-                      [AI수학 #2] 확률통계 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-yu/Course/C-LECTURE-uf">[AI수학 #2] 확률통계 기초</a>
                   </li>
                 </ul>
               </div>

@@ -259,16 +259,18 @@ const panes = [
             <div className="belt">
               <div className="map">
                 <h1 className="inno-title">
-                  “ <strong>통합적 사고</strong>에 기반한
-                  <strong>고객중심</strong> 문제해결,
+                  “ <strong>통합적 사고</strong>에 기반한{' '}
+                  <strong>고객중심</strong> 문제해결,{' '}
                   <strong>일하는 방식</strong> 혁신 ”
                 </h1>
                 <div className="inno-top-btn">
                   <span>개설예정</span>
                 </div>
                 <div className="inno-wrap">
-                <Image src={`${PUBLIC_URL}/images/all/inno-level.png`} alt="" />
-
+                  <Image
+                    src={`${PUBLIC_URL}/images/all/inno-level.png`}
+                    alt=""
+                  />
 
                   <div className="inno-item fi-item">
                     <h3># 디자인씽킹</h3>
@@ -276,13 +278,12 @@ const panes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="dashed">
+                          <td className="two dashed">
                             <a href="">
                               디자인씽킹 <br />
                               코칭 스킬
                             </a>
                           </td>
-                          <td></td>
                         </tbody>
                       </table>
                       <table>
@@ -414,7 +415,8 @@ const panes = [
                           </td>
                           <td>
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-83/Course/C-LECTURE-6b">
-                              Biz. Ideation 첫걸음
+                              Biz. Ideation
+                              <br /> 첫걸음
                             </a>
                           </td>
                         </tbody>

@@ -37,12 +37,12 @@ const panes = [
             Certificate 취득을 지원할 수 있는 상시적인 프로그램들이 활발하게
             제공되고 있습니다.
           </div>
-          <Image src={`${PUBLIC_URL}/images/all/dt-con01-1.png`} alt="" />
+          <img src={Dtsub01} />
         </div>
 
         <div className="college-cont-map sub pbtom">
           <div className="belt">
-            <div className="label sub">전체 커리큘럼</div>
+            <div class="label sub">전체 커리큘럼</div>
             <div className="ai-top-btn">
               <span className="ai-btn01">Self-directive</span>
               <span className="ai-btn02 dt">Intensive</span>
@@ -55,18 +55,10 @@ const panes = [
                     <div className="dt-le-item">
                       <h3>Data Engineer Track</h3>
                       <ul>
-                        <li>
-                          <a href="">Scala 이해와 활용</a>
-                        </li>
-                        <li>
-                          <a href="">NoSQL 이해와 활용</a>
-                        </li>
-                        <li>
-                          <a href="">Hadoop 이해와 활용</a>
-                        </li>
-                        <li>
-                          <a href="">SQL</a>
-                        </li>
+                        <li>Scala 이해와 활용</li>
+                        <li>NoSQL 이해와 활용</li>
+                        <li>Hadoop 이해와 활용</li>
+                        <li>SQL</li>
                       </ul>
                     </div>
 
@@ -76,62 +68,34 @@ const panes = [
                       </div>
                       <h3>Cloud Engineer Track</h3>
                       <ul>
-                        <li>
-                          <a href="">Certification</a>
-                        </li>
-                        <li>
-                          <a href="">Cloud 기술</a>
-                        </li>
-                        <li>
-                          <a href="">Cloud 개발 기초</a>
-                        </li>
-                        <li>
-                          <a href="">Cloud 기본 (Azure)</a>
-                        </li>
+                        <li>Certification</li>
+                        <li>Cloud 기술</li>
+                        <li>Cloud 개발 기초</li>
+                        <li>Cloud 기본 (Azure)</li>
                       </ul>
                     </div>
 
                     <div className="dt-le-item">
                       <h3>Data Analyst Track</h3>
                       <ul>
-                        <li>
-                          <a href="">Machine Learning 활용</a>
-                        </li>
-                        <li>
-                          <a href="">Data Visualization</a>
-                        </li>
-                        <li>
-                          <a href="">Data 수집/가공</a>
-                        </li>
-                        <li>
-                          <a href="">Statistics &#38; Analytics</a>
-                        </li>
-                        <li>
-                          <a href="">코딩 For Big Data 분석</a>
-                        </li>
+                        <li>Machine Learning 활용</li>
+                        <li>Data Visualization</li>
+                        <li>Data 수집/가공</li>
+                        <li>Statistics & Analytics</li>
+                        <li>코딩 For Big Data 분석</li>
                       </ul>
                     </div>
                   </div>
 
                   <div className="dt-le-list two">
                     <div className="dt-le-item">
-                      <h3>DT Technologies</h3>
+                      <h3 className="dt_intro_h3">DT Technologies</h3>
                       <ul>
-                        <li>
-                          <a href="">프로그래밍 언어 (R, Python)</a>
-                        </li>
-                        <li>
-                          <a href="">Cloud Computing</a>
-                        </li>
-                        <li>
-                          <a href="">Block chain</a>
-                        </li>
-                        <li>
-                          <a href="">IoT</a>
-                        </li>
-                        <li>
-                          <a href="">Big Data</a>
-                        </li>
+                        <li>프로그래밍 언어 (R, Python)</li>
+                        <li>Cloud Computing</li>
+                        <li>Block chain</li>
+                        <li>IoT</li>
+                        <li>Big Data</li>
                       </ul>
                     </div>
 
@@ -142,24 +106,12 @@ const panes = [
                       <h3>CDS Track</h3>
                       <p>(Intensive Course, 2주)</p>
                       <ul>
-                        <li>
-                          <a href="">현업 활용 Project</a>
-                        </li>
-                        <li>
-                          <a href="">Machine Learning</a>
-                        </li>
-                        <li>
-                          <a href="">Data Visualization</a>
-                        </li>
-                        <li>
-                          <a href="">EDA 및 데이터 가공</a>
-                        </li>
-                        <li>
-                          <a href="">Data Pre-Processing</a>
-                        </li>
-                        <li>
-                          <a href="">Python 기본 문법</a>
-                        </li>
+                        <li>현업 활용 Project</li>
+                        <li>Machine Learning</li>
+                        <li>Data Visualization</li>
+                        <li>EDA 및 데이터 가공</li>
+                        <li>Data Pre-Processing</li>
+                        <li>Python 기본 문법</li>
                       </ul>
                     </div>
                   </div>
@@ -170,21 +122,11 @@ const panes = [
                     <div className="dt-le-item">
                       <h3>DT Biz. &#38; Implementation</h3>
                       <ul>
-                        <li>
-                          <a href="">Tech &#38; Biz Talk (미래Tech포럼)</a>
-                        </li>
-                        <li>
-                          <a href="">Zoom-in Mobility Biz</a>
-                        </li>
-                        <li>
-                          <a href="">DT &#38; BM혁신 Case Study</a>
-                        </li>
-                        <li>
-                          <a href="">글로벌 Tech 이벤트</a>
-                        </li>
-                        <li>
-                          <a href="">SK, DT를 만나다</a>
-                        </li>
+                        <li>Tech &#38; Biz Talk (미래Tech포럼)</li>
+                        <li>Zoom-in Mobility Biz</li>
+                        <li>DT &#38; BM혁신 Case Study</li>
+                        <li>글로벌 Tech 이벤트</li>
+                        <li>SK, DT를 만나다</li>
                       </ul>
                     </div>
                   </div>
@@ -198,18 +140,10 @@ const panes = [
                   </div>
                   <h3>AI/DT Literacy</h3>
                   <ul>
-                    <li>
-                      <a href="">Customer Empathy</a>
-                    </li>
-                    <li>
-                      <a href="">Data-Centric Approach</a>
-                    </li>
-                    <li>
-                      <a href="">ICT Tech 이해</a>
-                    </li>
-                    <li>
-                      <a href="">Biz Insight</a>
-                    </li>
+                    <li>Customer Empathy</li>
+                    <li>Data-Centric Approach</li>
+                    <li>ICT Tech 이해</li>
+                    <li>Biz Insight</li>
                   </ul>
                 </div>
               </div>
@@ -261,7 +195,7 @@ const panes = [
                 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link dt">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -390,7 +324,7 @@ const panes = [
                   </li>
                 </ul>
                 <ul>
-                  <li className="ai_sub_li">
+                  <li class="ai_sub_li">
                     <a href="">MWC 2021 (6/28~7/1) ※Upload 예정</a>
                   </li>
                 </ul>
@@ -422,7 +356,7 @@ const panes = [
                   </li>
                 </ul>
                 <ul>
-                  <li className="ai_sub_li">
+                  <li class="ai_sub_li">
                     <a href="">[이천포럼 2021] ※Upload 예정</a>
                   </li>
                   <li>
@@ -432,7 +366,7 @@ const panes = [
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-e3/Course/C-LECTURE-b9">
-                      [SK,DT를 만나다] SK(주) C&#38;C편
+                      [SK,DT를 만나다] SK(주) C&C편
                     </a>
                   </li>
                 </ul>
@@ -474,7 +408,7 @@ const panes = [
                 기술들에 대해 학습하는 채널입니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link dt">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -652,7 +586,7 @@ const panes = [
                 Engineering skill을 학습할 수 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link dt">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -675,7 +609,7 @@ const panes = [
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-193/Course/C-LECTURE-13m">
-                      3. Scala class &#38; object
+                      3. Scala class & object
                     </a>
                   </li>
                 </ul>
@@ -755,7 +689,7 @@ const panes = [
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a6/Course/C-LECTURE-7t">
-                      4. HiveQL, Pig Script, HUE &#38; Oozie, Security
+                      4. HiveQL, Pig Script, HUE & Oozie, Security
                     </a>
                   </li>
                 </ul>
@@ -825,7 +759,7 @@ const panes = [
                 컨텐츠도 제공하고 있습니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link dt">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
@@ -931,7 +865,7 @@ const panes = [
             <div className="ai_sub_table dt">
               <h3>Certification</h3>
               <div className="ai_box">
-                <h4>
+                <h4 className="cloud_h4">
                   Global Market에서 인정 받는 Certificate 취득을 위한
                   컨텐츠입니다. (LMS 內 Certification 메뉴를 참고하세요)
                 </h4>
@@ -975,7 +909,7 @@ const panes = [
                 학습할 수 있는 채널입니다.
               </li>
             </ul>
-            <p className="p_link hidden">
+            <p className="p_link dt">
               각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
