@@ -207,14 +207,14 @@ const panes = [
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="" onClick={emptyAlert}>
+                        <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4g">
                           구매
                           <br />
                           Essentials
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="" onClick={emptyAlert}>
+                        <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4e">
                           IP Mindset
                           <br />
                           Essentials
@@ -737,62 +737,32 @@ const panes = [
                         </ul>
                       </a>
 
-                      <ul>
-                        <li>키워드로 배우는 마케팅 101</li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
-                            - Marketing Principles / 패러다임의 이동
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
-                            - Smart Marketing VS Silly Marketing
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
-                            - 마케팅의 3W
-                          </a>
-                        </li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
+                        <ul>
+                          <li>키워드로 배우는 마케팅 101</li>
+                          <li>- Marketing Principles / 패러다임의 이동</li>
+                          <li>- Smart Marketing VS Silly Marketing</li>
+                          <li>- 마케팅의 3W</li>
+                        </ul>
+                      </a>
 
-                      <ul>
-                        <li>사례로 배우는 B2B 마케팅 101</li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
-                            - B2B 마케팅 개요
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
-                            - B2BC 마케팅 전략 수립 및 실행
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
-                            - B2B 시장의 디지털마케팅 커뮤니케이션
-                          </a>
-                        </li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
+                        <ul>
+                          <li>사례로 배우는 B2B 마케팅 101</li>
+                          <li>- B2B 마케팅 개요</li>
+                          <li>- B2BC 마케팅 전략 수립 및 실행</li>
+                          <li>- B2B 시장의 디지털마케팅 커뮤니케이션</li>
+                        </ul>
+                      </a>
 
-                      <ul>
-                        <li>사례로 배우는 상품기획 101</li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
-                            - 제품과 서비스
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
-                            - 제품 포트폴리오 비교
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
-                            - 제품 혁신전략 및 수명주기
-                          </a>
-                        </li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
+                        <ul>
+                          <li>사례로 배우는 상품기획 101</li>
+                          <li>- 제품과 서비스</li>
+                          <li>- 제품 포트폴리오 비교</li>
+                          <li>- 제품 혁신전략 및 수명주기</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1271,7 +1241,11 @@ const panes = [
                     <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
                     <p>개념 이해</p>
                   </div>
-                  <h3>구매 Essentials</h3>
+                  <h3>
+                    <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4g">
+                      구매 Essentials
+                    </a>
+                  </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bk/Course/C-LECTURE-15a">
@@ -1758,7 +1732,11 @@ const panes = [
             <div className="legal-wrap flex sub">
               <div className="fundamental-topic width50">
                 <div className="con_wrap sub01">
-                  <h3>Measurement Essentials</h3>
+                  <h3>
+                    <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
+                      Measurement Essentials
+                    </a>
+                  </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
                       <ul>
@@ -1805,43 +1783,51 @@ const panes = [
               </div>
               <div className="combined-topic width50">
                 <div className="con_wrap sub01">
-                  <h3>Negotiaion Essentials</h3>
+                  <h3>
+                    <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4f">
+                      Negotiaion Essentials
+                    </a>
+                  </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <ul>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1dz/Course/C-LECTURE-17o">
-                            Negotiation, 그 의미와 필요성
-                          </a>
-                        </li>
-                        <li>- Intro into Negotiation</li>
-                        <li>- Business 통합적 영역, Negotiation</li>
-                        <li>- Essential Course Framework Guide</li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1dz/Course/C-LECTURE-17o">
+                        <ul>
+                          <li>Negotiation, 그 의미와 필요성</li>
+                          <li>- Intro into Negotiation</li>
+                          <li>- Business 통합적 영역, Negotiation</li>
+                          <li>- Essential Course Framework Guide</li>
+                        </ul>
+                      </a>
                     </div>
                     <div className="con_sub_box">
-                      <ul>
-                        <li>[협상 준비 전략] 12가지 협상 Skill</li>
-                        <li>- 목표를 설정하라</li>
-                        <li>- 나만의 BATNA를 확보하라</li>
-                        <li>- 마지막 협상이 아님을 기억하라</li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f2/Course/C-LECTURE-18t">
+                        <ul>
+                          <li>[협상 준비 전략] 12가지 협상 Skill</li>
+                          <li>- 목표를 설정하라</li>
+                          <li>- 나만의 BATNA를 확보하라</li>
+                          <li>- 마지막 협상이 아님을 기억하라</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <ul>
-                        <li>협상 Essence Reading</li>
-                        <li>- Getting to Yes</li>
-                        <li>- FBI 행동의 심리학</li>
-                        <li>- 협상 레버리지</li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e3/Course/C-LECTURE-17s">
+                        <ul>
+                          <li>협상 Essence Reading</li>
+                          <li>- Getting to Yes</li>
+                          <li>- FBI 행동의 심리학</li>
+                          <li>- 협상 레버리지</li>
+                        </ul>
+                      </a>
                     </div>
                     <div className="con_sub_box flex">
-                      <ul>
-                        <li>협상 Essential Wrap up</li>
-                        <li>- 협상 Essential Wrap up</li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e2/Course/C-LECTURE-17r">
+                        <ul>
+                          <li>협상 Essential Wrap up</li>
+                          <li>- 협상 Essential Wrap up</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                 </div>
