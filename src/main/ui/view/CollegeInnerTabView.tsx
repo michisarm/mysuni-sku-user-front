@@ -225,6 +225,7 @@ const panes = [
                           협상
                           <br />
                           Essentials
+                        </a>
                           <br />
                           /<br />
                           <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
@@ -232,7 +233,6 @@ const panes = [
                             <br />
                             Essentials
                           </a>
-                        </a>
                       </td>
                     </tr>
                     <tr>
@@ -293,7 +293,7 @@ const panes = [
         {/* 컬리지 콘텐츠 */}
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
 
             {/* 컬리지 콘텐츠 전체 틀 */}
             <div className="legal-wrap">
@@ -401,9 +401,9 @@ const panes = [
                         </ul>
                       </a>
                       <ul>
-                        <li className="pd0">
+                        <li className="pd0" style={{borderBottom: "none"}}>
                           <Image
-                            src={`${PUBLIC_URL}/images/all/ing-13.png`}
+                            src={`${PUBLIC_URL}/images/all/ing-13.png` }
                             alt=""
                           />
                         </li>
@@ -464,7 +464,7 @@ const panes = [
         </div>
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
             <div className="legal-wrap">
               <div className="fundamental-topic">
                 <h2>Finance</h2>
@@ -490,7 +490,7 @@ const panes = [
                 <Image src={`${PUBLIC_URL}/images/all/ing-05.png`} alt="" />
               </div>
 
-              <div className="fundamental-topic">
+              <div className="fundamental-topic" style={{float:"left"}}>
                 <div className="con_wrap sub02">
                   <div className="level_icon">
                     <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
@@ -601,7 +601,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
 
             <div className="legal-wrap">
               <div className="fundamental-topic">
@@ -672,7 +672,7 @@ const panes = [
                         </li>
                       </ul>
 
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>AI 마케팅</li>
                           <li>1. Reach : AI 로 고객을 유인하라</li>
@@ -896,7 +896,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
 
             <div className="legal-wrap">
               <div className="fundamental-topic">
@@ -992,9 +992,9 @@ const panes = [
             </div>
 
             <div className="legal-wrap">
-              <div className="fundamental-topic">
+              <div className="fundamental-topic" style={{float:"left",marginBottom:"0.5rem"}}>
                 <div className="level_icon">
-                  <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
+                  <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt=""/>
                   <p>개념 이해</p>
                 </div>
                 <div className="depth">
@@ -1138,7 +1138,7 @@ const panes = [
         {/* 컬리지 콘텐츠 */}
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
 
             {/* 컬리지 콘텐츠 전체 틀 */}
             <div className="legal-wrap">
@@ -1365,7 +1365,7 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
 
             {/* 컬리지 콘텐츠 전체 틀 */}
             <div className="legal-wrap">
@@ -1464,7 +1464,7 @@ const panes = [
                   <h3>특허관리</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>한국 출원 제도와 법</li>
                           <li>- 특허요건사</li>
@@ -1474,7 +1474,7 @@ const panes = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>한국 출원 실무</li>
                           <li>- 국문명세서 작성</li>
@@ -1484,7 +1484,7 @@ const panes = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>특허활용과 매입</li>
                           <li>- 특허활용의 개요</li>
@@ -1552,7 +1552,7 @@ const panes = [
                   <h3>IP Mind-Set Essential</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ei/Program/P-LECTURE-2d">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fp/Course/C-LECTURE-19a">
                         <ul>
                           <li>지적 재산권 101</li>
                           <li>- 지식재산권의 개념과 종류</li>
@@ -1580,7 +1580,7 @@ const panes = [
                         </ul>
                       </a>
 
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>특허 분쟁 개론</li>
                           <li>- 특허분쟁의 종류</li>
@@ -1704,7 +1704,7 @@ const panes = [
               <div className="fundamental-topic">
                 <div className="con_wrap sub01">
                   <h3>
-                    <a href="">Measurement Essentials</a>
+                    Measurement Essentials
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
@@ -1747,28 +1747,24 @@ const panes = [
               <div className="combined-topic">
                 <div className="con_wrap sub01">
                   <h3>
-                    <a href="">Negotiaion Essentials</a>
+                    Negotiaion Essentials
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b2/Course/C-LECTURE-17n">
                         <ul>
                           <li>Negotiation 101</li>
                           <li>- 경영자에게 협상이란</li>
                           <li>- 협상 준비전략</li>
                           <li>- [Case Study] Sell Phones</li>
                         </ul>
-                      </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b3/Course/C-LECTURE-16n">
                         <ul>
                           <li>Negotiation Essence Reading</li>
                           <li>- 협상책을 읽어주는 남자</li>
                           <li>- 협상 기본서</li>
                           <li>- 준비와 설득의 기법</li>
                         </ul>
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -1779,7 +1775,7 @@ const panes = [
               <div className="fundamental-topic">
                 <div className="con_wrap sub02">
                   <h3>
-                    <a href="">Communication</a>
+                    Communication
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
@@ -1797,7 +1793,7 @@ const panes = [
               <div className="combined-topic">
                 <div className="con_wrap sub02">
                   <h3>
-                    <a href="">Problem Solving</a>
+                    Problem Solving
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
