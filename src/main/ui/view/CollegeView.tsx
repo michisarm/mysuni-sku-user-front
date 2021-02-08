@@ -37,19 +37,11 @@ const panes = [
                 성장할 수 있는 기회를 제공합니다.
               </div>
               <div className="panopto sub">
-                <iframe
-                  title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7f027217-af12-4ce2-8216-ab42002e5be2%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
-                  width="436"
-                  height="245"
-                  style={{ padding: '0px', border: '0px' }}
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay"
-                />
+                <Image src={`${PUBLIC_URL}/images/all/Ai-banner.png`} alt="" />
               </div>
             </div>
           </div>
+
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
               <CollegeInnerTabAi />
@@ -68,7 +60,7 @@ const panes = [
           data-tab="colleges2"
         >
           <div className="college-cont-title dt">
-            <div className="belt sub ">
+            <div className="belt sub">
               <div className="label">DT College</div>
               <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
               <div className="normal">
@@ -80,19 +72,11 @@ const panes = [
                 여기 DT College에 마련되어 있습니다.
               </div>
               <div className="panopto sub">
-                <iframe
-                  title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D47d87f43-03b6-4559-97eb-ab420078ff59%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
-                  width="436"
-                  height="245"
-                  style={{ padding: '0px', border: '0px' }}
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay"
-                />
+                <Image src={`${PUBLIC_URL}/images/all/Dt-banner.png`} alt="" />
               </div>
             </div>
           </div>
+
           <div className="college-free3 sub">
             <div className="tab-menu-wrap">
               <CollegeInnerTabDt />
@@ -237,20 +221,18 @@ const panes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              
               <div className="label">혁신디자인 College</div>
-              <div className="strong">
-              고객을 이해하고 혁신을 디자인하라!
-              </div>
+              <div className="strong">고객을 이해하고 혁신을 디자인하라!</div>
               <div className="normal">
-              고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의 문제를 해결하며, <br />
-              끊임없이 일하는 방식을 혁신하는데 필요한 
-구성원 및 조직의<br /> 혁신 디자인 역량 향상을 도와드립니다.
+                고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의{' '}
+                <br />
+                문제를 해결하며, 끊임없이 일하는 방식을 혁신하는데 필요한 <br />
+                구성원 및 조직의 혁신 디자인 역량 향상을 도와드립니다.
               </div>
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -265,7 +247,10 @@ const panes = [
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/design_con_01.png`} alt="" />
+                <Image
+                  src={`${PUBLIC_URL}/images/all/design_con_01.png`}
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -273,12 +258,553 @@ const panes = [
           <div className="college-cont-map">
             <div className="belt">
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/design_con_02.png`} alt="" />
+                <h1 className="inno-title">
+                  “ <strong>통합적 사고</strong>에 기반한
+                  <strong>고객중심</strong> 문제해결,
+                  <strong>일하는 방식</strong> 혁신 ”
+                </h1>
+                <div className="inno-top-btn">
+                  <span>개설예정</span>
+                </div>
+                <div className="inno-wrap">
+                <Image src={`${PUBLIC_URL}/images/all/inno-level.png`} alt="" />
+
+
+                  <div className="inno-item fi-item">
+                    <h3># 디자인씽킹</h3>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="dashed">
+                            <a href="">
+                              디자인씽킹 <br />
+                              코칭 스킬
+                            </a>
+                          </td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-3/lecture-card/LECTURE-CARD-2z">
+                              디자인씽킹 <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-tx/Course/C-LECTURE-q3">
+                              디자인씽킹
+                              <br />
+                              Team W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-16o/Course/C-LECTURE-119">
+                              디자인씽킹 <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yv/Course/C-LECTURE-ug">
+                              디자인씽킹 Self <br />
+                              실습 (SV사례)
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td className="dashed">
+                            <a href="">
+                              서비스 디자인 <br />
+                              Intensive
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-131/Course/C-LECTURE-19g">
+                              From Ideas to <br />
+                              Action - IDEO
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-133/Course/C-LECTURE-19i">
+                              Human-Centered <br />
+                              Service Design - IDEO
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="">
+                              기술에서 고객 중심 <br />
+                              Biz - Self 실습
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-ys/Course/C-LECTURE-ud">
+                              디자인씽킹 사례 <br />
+                              (SV)보며 익히기
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-q/Course/C-LECTURE-8">
+                              디자인씽킹 - <br />
+                              Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-1fv/Course/C-LECTURE-19j">
+                              Hello Design <br />
+                              Thinking - IDEO
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td className="dashed">
+                            <a href="">
+                              기술에서 고객 중심 <br />
+                              Biz 고민하기
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-124/Course/C-LECTURE-xa">
+                              디자인 사고 연습
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-89/Course/C-LECTURE-6e">
+                              처음 만나는 <br />
+                              디자인씽킹
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-q4/Course/C-LECTURE-m2">
+                              창의적 <br />
+                              IDEA 발상법
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-83/Course/C-LECTURE-6b">
+                              Biz. Ideation 첫걸음
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="inno-item">
+                    <h3># 로지컬씽킹</h3>
+                    <div className="logical-box">
+                      <div className="logical-list tab01">
+                        <ul>
+                          <li>
+                            <a href="">
+                              컨설턴트의 일하는 <br />
+                              스킬 익히기 <br />
+                              (Lv.2)
+                            </a>
+                          </li>
+                          <li>
+                            <a href="">
+                              컨설턴트의 일하는 <br />
+                              스킬 익히기 <br />
+                              (Lv.1)
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="inno-item">
+                    <h3># 고객알기</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-132/Course/C-LECTURE-19h">
+                              Insights for <br />
+                              Innovation - IDEO
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-im/Course/C-LECTURE-fi">
+                              고객 Research <br />
+                              방법
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-ik/Course/C-LECTURE-fg">
+                              고객 Needs <br />
+                              Finding
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-8e/Course/C-LECTURE-6d">
+                              고객 <br />
+                              Need란?
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="inno-item">
+                    <h3># 워킹백워드</h3>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-a2j/lecture-card/LECTURE-CARD-7tb">
+                              워킹백워드 <br />
+                              Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yr/Course/C-LECTURE-uk">
+                              워킹백워드 <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-je/Course/C-LECTURE-h3">
+                              워킹백워드 <br />
+                              Tools
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-7z/Course/C-LECTURE-66">
+                              처음 만나는 <br />
+                              워킹백워드
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="inno-item orange">
+                    <h3># 애자일</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="dashed">
+                            <a href="">
+                              애자일 코치 <br />
+                              Meetup
+                            </a>
+                          </td>
+                          <td className="dashed">
+                            <a href="">
+                              애자일 코치 <br />
+                              양성 과정
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-781/lecture-card/LECTURE-CARD-33u">
+                              애자일 Project
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-14x/Course/C-LECTURE-zn">
+                              애자일 리더십 <br />
+                              Workshop
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-7id/lecture-card/LECTURE-CARD-5da">
+                              애자일 Project
+                              <br />
+                              Management <br />
+                              W/S
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-w9/Course/C-LECTURE-s6">
+                              애자일 <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-x/Course/C-LECTURE-7">
+                              Agile Management <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-hl/Course/C-LECTURE-ei">
+                              애자일 방법론 <br />- Linkedin
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-u9/Course/C-LECTURE-qd">
+                              SK 네트웍스 구매팀 <br />
+                              애자일 사례
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="small">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yj/Course/C-LECTURE-u7">
+                              애자일 방법론 기초
+                            </a>
+                          </td>
+                          <td className="small">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-11u/Course/C-LECTURE-x3">
+                              애자일 에센셜
+                            </a>
+                          </td>
+                          <td className="small">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-fc/Course/C-LECTURE-ch">
+                              처음 만나는 애자일
+                            </a>
+                          </td>
+                          <td className="small">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-82/Course/C-LECTURE-6a">
+                              Why 애자일
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="inno-item orange">
+                    <h3># 오픈콜라보</h3>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td></td>
+                          <td></td>
+                          <td className="dashed">
+                            <a href="">오픈 이노베이션 Workshop</a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-oy/Course/C-LECTURE-kz">
+                              퓨처캐스팅 <br />
+                              Workshop
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-80/Course/C-LECTURE-67">
+                              Futurecasting
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-88/Course/C-LECTURE-68">
+                              All about <br />
+                              오픈 이노베이션
+                            </a>
+                          </td>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-y6/Course/C-LECTURE-u9">
+                              Creative Collabo <br />
+                              Skills - Linkedin
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="inno-li">
+                      <table>
+                        <tbody>
+                          <td className="two">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-81/Course/C-LECTURE-69">
+                              Open
+                              <br />
+                              Collaboration
+                              <br />
+                              Tips
+                            </a>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="inno-bottom-wrap">
+                  <div className="inno-bottom con01">
+                    <ul>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-8c/Course/C-LECTURE-6i">
+                          Deep Change와
+                          <br />
+                          Design 이해
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-8b/Course/C-LECTURE-6h">
+                          고객 이해의 중요성 <br />
+                          Remind!
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-3/Course/C-LECTURE-3">
+                          YouTube <br />
+                          디자인 사고 이해
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-rp/Course/C-LECTURE-nj">
+                          혁신의 비법
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-7x/Course/C-LECTURE-62">
+                          Leading with
+                          <br />
+                          Innovation
+                        </a>
+                      </li>
+                    </ul>
+                    <h3># Deep Change와 Design</h3>
+                  </div>
+
+                  <div className="inno-bottom con02">
+                    <ul>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00005/channel/CHN0000q">
+                          Trend &#38; Insight <br />
+                          Report
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-k3/Course/C-LECTURE-gx">
+                          도약을 위한 <br />
+                          미래 디자인
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-f5/Course/C-LECTURE-ca">
+                          효율적으로 <br />
+                          일하는 Tip
+                        </a>
+                      </li>
+                    </ul>
+                    <h3># 혁신 트렌드와 인사이트</h3>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-
         </div>
       </Tab.Pane>
     ),
@@ -383,7 +909,6 @@ const panes = [
             </div>
           </div>
 
-
           <div className="college-cont-map">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
@@ -433,27 +958,9 @@ const panes = [
                   allow="autoplay"
                 />
               </div>
-              {/* <ul className="tag-wrap">
-                <li># 전략</li>
-                <li># 재무</li>
-                <li># 마케팅</li>
-                <li># HR</li>
-                <li># M&A</li>
-                <li># Biz. Development</li>
-                <li># Biz. Trend & Insigh</li>
-                <li># Working Smart</li>
-                <li># Financing</li>
-                <li># Digital Marketing</li>
-                <li># 조직설계</li>
-              </ul> */}
             </div>
           </div>
           <div className="college-free3 sub">
-            {/*<div className="belt">
-              <div className="img">
-                <Image src={`${PUBLIC_URL}/images/all/img-co8-1.png`} alt="" />
-              </div>
-            </div>*/}
             <div className="tab-menu-wrap">
               <CollegeInnerTabView />
             </div>
@@ -513,15 +1020,14 @@ const panes = [
                   src={`${PUBLIC_URL}/images/all/semi_con_01.png`}
                   alt=""
                 />
-                 <Image
+                <Image
                   src={`${PUBLIC_URL}/images/all/semi_con_02.png`}
                   alt=""
-                  style={{marginTop: '3rem'}}
+                  style={{ marginTop: '3rem' }}
                 />
               </div>
             </div>
           </div>
-
         </div>
       </Tab.Pane>
     ),
@@ -595,7 +1101,8 @@ const panes = [
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
                 BM Design 전문가 양성 및 Biz Story Design/ Telling 역량 강화를
-                적극 지원함으로써 그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+                적극 지원함으로써 그룹/관계사 Deep Change 성과 창출에
+                기여하겠습니다.
               </div>
               <ul className="tag-wrap">
                 <li># BM혁신</li>
@@ -778,7 +1285,7 @@ class CollegeView extends Component<Props, State> {
 
   onTabChange(e: any, { activeIndex }: any) {
     //
-    console.log('!!!', panes[activeIndex].menuItem)
+    console.log('!!!', panes[activeIndex].menuItem);
     this.props.history.push(
       routePaths.introductionCollege(panes[activeIndex].menuItem)
     );
