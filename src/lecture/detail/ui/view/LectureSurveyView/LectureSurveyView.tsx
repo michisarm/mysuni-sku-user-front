@@ -15,18 +15,21 @@ import {
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
+import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
 
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
   lectureSurveySummary?: LectureSurveySummary;
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary
+  lectureSurveySummary,
+  lectureSurveyAnswerSummary
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;

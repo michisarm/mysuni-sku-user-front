@@ -43,11 +43,11 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
         <span>cube 완료상태</span>
       </span>
       <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
+        <span className="copy-title">Survey</span>
+        {/* <ul className="type-info">
           <li>Survey</li>
           <li>{`${questionCount}문항`}</li>
-        </ul>
+        </ul> */}
       </span>
     </StructureLink>
   );

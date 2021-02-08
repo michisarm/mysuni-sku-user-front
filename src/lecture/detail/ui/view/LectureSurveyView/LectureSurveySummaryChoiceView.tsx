@@ -31,7 +31,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         응답 {lectureSurveySummary?.respondentCount.respondentCount}개<br />
-        {console.log(lectureSurveySummary)}
         {!canMultipleAnswer &&
           choices &&
           choices.map(choice => (

@@ -10,7 +10,7 @@ import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
   findSurveySummaryBySurveyCaseIdAndRound,
-  findAnswerSummariesBySurveySummaryId
+  findAnswerSummariesBySurveySummaryId,
 } from '../../../api/surveyApi';
 import LangStrings from '../../../model/LangStrings';
 import StudentJoin from '../../../model/StudentJoin';
@@ -19,6 +19,8 @@ import {
   setLectureSurvey,
   setLectureSurveyState,
   setLectureSurveySummary,
+  setLectureSurveyAnswerSummary,
+  getLectureSurveySummary,
 } from '../../../store/LectureSurveyStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { State } from '../../../viewModel/LectureState';
@@ -32,6 +34,7 @@ import LectureSurveyState, {
 } from '../../../viewModel/LectureSurveyState';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 import { round } from 'lodash';
+import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
 
 function parseChoice(question: Question): LectureSurveyItem {
   const {
@@ -273,6 +276,14 @@ async function parseSurveySummaryBySurveyCaseIdAndRound(
   return surveySummary;
 }
 
+async function parseAnswerSummariesBySurveySummaryId(
+  surveySummaryId: string,
+): Promise<LectureSurveyAnswerSummary> {
+  const surveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(surveySummaryId);
+  
+  return surveyAnswerSummary;
+}
+
 async function getCubeLectureSurveyState(
   serviceId: string,
   surveyCaseId: string
@@ -465,12 +476,15 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       surveyCase.surveyId !== '' &&
       surveyCase.surveyCaseId !== ''
     ) {
-      const lectureSurvey = await parseSurveyForm(surveyCase.surveyId);      
+      const lectureSurvey = await parseSurveyForm(surveyCase.surveyId);
       setLectureSurvey(lectureSurvey);
       await getCourseLectureSurveyState(lectureId, surveyCase.surveyCaseId);
 
       const lectureSurveySummary = await parseSurveySummaryBySurveyCaseIdAndRound(surveyCase.surveyCaseId, 1);
       setLectureSurveySummary(lectureSurveySummary);
+
+      const lectureSurveyAnswerSummary = await parseAnswerSummariesBySurveySummaryId(lectureSurveySummary.id);
+      setLectureSurveyAnswerSummary(lectureSurveyAnswerSummary);
     }
   }
 }
