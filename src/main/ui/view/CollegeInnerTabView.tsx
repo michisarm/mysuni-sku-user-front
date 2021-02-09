@@ -1004,7 +1004,7 @@ const panes = [
               </div>
 
               <div className="combined-topic">
-                <Image src={`${PUBLIC_URL}/images/all/ing-10.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/ing-31.png`} alt="" />
               </div>
             </div>
 
