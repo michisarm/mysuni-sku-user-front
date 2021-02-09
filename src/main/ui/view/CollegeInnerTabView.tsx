@@ -207,14 +207,14 @@ const panes = [
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="" onClick={emptyAlert}>
+                        <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4g">
                           구매
                           <br />
                           Essentials
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="" onClick={emptyAlert}>
+                        <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4e">
                           IP Mindset
                           <br />
                           Essentials
@@ -226,13 +226,13 @@ const panes = [
                           <br />
                           Essentials
                         </a>
+                        <br />
+                        /<br />
+                        <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
+                          Measurement
                           <br />
-                          /<br />
-                          <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
-                            Measurement
-                            <br />
-                            Essentials
-                          </a>
+                          Essentials
+                        </a>
                       </td>
                     </tr>
                     <tr>
@@ -293,7 +293,11 @@ const panes = [
         {/* 컬리지 콘텐츠 */}
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
+            <Image
+              src={`${PUBLIC_URL}/images/all/enter-category.png`}
+              alt=""
+              style={{ float: 'right', marginBottom: '0.5rem' }}
+            />
 
             {/* 컬리지 콘텐츠 전체 틀 */}
             <div className="legal-wrap">
@@ -401,9 +405,9 @@ const panes = [
                         </ul>
                       </a>
                       <ul>
-                        <li className="pd0" style={{borderBottom: "none"}}>
+                        <li className="pd0" style={{ borderBottom: 'none' }}>
                           <Image
-                            src={`${PUBLIC_URL}/images/all/ing-13.png` }
+                            src={`${PUBLIC_URL}/images/all/ing-13.png`}
                             alt=""
                           />
                         </li>
@@ -464,7 +468,11 @@ const panes = [
         </div>
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
+            <Image
+              src={`${PUBLIC_URL}/images/all/enter-category.png`}
+              alt=""
+              style={{ float: 'right', marginBottom: '0.5rem' }}
+            />
             <div className="legal-wrap">
               <div className="fundamental-topic">
                 <h2>Finance</h2>
@@ -490,7 +498,7 @@ const panes = [
                 <Image src={`${PUBLIC_URL}/images/all/ing-05.png`} alt="" />
               </div>
 
-              <div className="fundamental-topic" style={{float:"left"}}>
+              <div className="fundamental-topic" style={{ float: 'left' }}>
                 <div className="con_wrap sub02">
                   <div className="level_icon">
                     <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
@@ -577,6 +585,7 @@ const panes = [
             </a>
           </div>
         </div>
+
         <div className="college-sub-txt">
           <strong>마케팅/브랜드</strong>
           <div>
@@ -601,8 +610,11 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
-
+            <Image
+              src={`${PUBLIC_URL}/images/all/enter-category.png`}
+              alt=""
+              style={{ float: 'right', marginBottom: '0.5rem' }}
+            />
             <div className="legal-wrap">
               <div className="fundamental-topic">
                 <div className="level_icon">
@@ -615,7 +627,6 @@ const panes = [
                     적용학습
                   </p>
                 </div>
-
                 <Image src={`${PUBLIC_URL}/images/all/ing-06.png`} alt="" />
               </div>
               <div className="combined-topic">
@@ -662,7 +673,7 @@ const panes = [
                         </li>
                         <li>
                           <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-2x/Course/C-LECTURE-1b">
-                            - 디지털마케팅 Trend & Case
+                            - 디지털마케팅 Trend &#38; Case
                           </a>
                         </li>
                         <li>
@@ -672,7 +683,7 @@ const panes = [
                         </li>
                       </ul>
 
-                      <a href="" onClick={emptyAlert}>
+                      <a href="">
                         <ul>
                           <li>AI 마케팅</li>
                           <li>1. Reach : AI 로 고객을 유인하라</li>
@@ -704,24 +715,16 @@ const panes = [
                     <div className="con_sub_box">
                       <ul>
                         <li>
-                          <a href="" onClick={emptyAlert}>
-                            마케팅 Framework & Tool
-                          </a>
+                          <a href="">마케팅 Framework &#38; Tool</a>
                         </li>
                         <li>
-                          <a href="" onClick={emptyAlert}>
-                            - 마케팅 환경 분석
-                          </a>
+                          <a href="">- 마케팅 환경 분석</a>
                         </li>
                         <li>
-                          <a href="" onClick={emptyAlert}>
-                            - 마케팅 전략 수립
-                          </a>
+                          <a href="">- 마케팅 전략 수립</a>
                         </li>
                         <li>
-                          <a href="" onClick={emptyAlert}>
-                            - 마케팅 실행 전술
-                          </a>
+                          <a href="">- 마케팅 실행 전술</a>
                         </li>
                       </ul>
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1el/Course/C-LECTURE-187">
@@ -734,24 +737,32 @@ const panes = [
                         </ul>
                       </a>
 
-                      <ul>
-                        <li>마케팅 101</li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
-                            - 키워드로 배우는 마케팅 101
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
-                            - 사례로 배우는 B2B 마케팅 101
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
-                            - 사례로 배우는 상품기획 관리 101
-                          </a>
-                        </li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
+                        <ul>
+                          <li>키워드로 배우는 마케팅 101</li>
+                          <li>- Marketing Principles / 패러다임의 이동</li>
+                          <li>- Smart Marketing VS Silly Marketing</li>
+                          <li>- 마케팅의 3W</li>
+                        </ul>
+                      </a>
+
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
+                        <ul>
+                          <li>사례로 배우는 B2B 마케팅 101</li>
+                          <li>- B2B 마케팅 개요</li>
+                          <li>- B2BC 마케팅 전략 수립 및 실행</li>
+                          <li>- B2B 시장의 디지털마케팅 커뮤니케이션</li>
+                        </ul>
+                      </a>
+
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
+                        <ul>
+                          <li>사례로 배우는 상품기획 101</li>
+                          <li>- 제품과 서비스</li>
+                          <li>- 제품 포트폴리오 비교</li>
+                          <li>- 제품 혁신전략 및 수명주기</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -769,7 +780,7 @@ const panes = [
                     <div className="con_sub_box">
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d2/Course/C-LECTURE-16z">
                         <ul>
-                          <li>Brand What & Why?</li>
+                          <li>Brand What &#38; Why?</li>
                           <li>- 브랜드의 중요성</li>
                           <li>- Brand vs. Branding</li>
                           <li>- 브랜드의 정의와 브랜드 Elements</li>
@@ -789,7 +800,7 @@ const panes = [
                           <li>- 브랜드 관리에 대한 흔한 착각</li>
                           <li>- Value : 브랜드 관리의 핵심 개념</li>
                           <li>- Value Innovation</li>
-                          <li>- Holistic Branding & HCEM</li>
+                          <li>- Holistic Branding &#38; HCEM</li>
                           <li>- 브랜드 관리의 전략적 Framework</li>
                         </ul>
                       </a>
@@ -835,7 +846,7 @@ const panes = [
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d9/Course/C-LECTURE-176">
                         <ul>
                           <li>Brand Architecture 디자인</li>
-                          <li>- 브랜드 아키텍쳐 : What & Why?</li>
+                          <li>- 브랜드 아키텍쳐 : What &#38; Why?</li>
                           <li>- Brand Hierarchy 이해 및 분석</li>
                           <li>- Key Decisions</li>
                         </ul>
@@ -896,7 +907,11 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
+            <Image
+              src={`${PUBLIC_URL}/images/all/enter-category.png`}
+              alt=""
+              style={{ float: 'right', marginBottom: '0.5rem' }}
+            />
 
             <div className="legal-wrap">
               <div className="fundamental-topic">
@@ -992,9 +1007,12 @@ const panes = [
             </div>
 
             <div className="legal-wrap">
-              <div className="fundamental-topic" style={{float:"left",marginBottom:"0.5rem"}}>
+              <div
+                className="fundamental-topic"
+                style={{ float: 'left', marginBottom: '0.5rem' }}
+              >
                 <div className="level_icon">
-                  <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt=""/>
+                  <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
                   <p>개념 이해</p>
                 </div>
                 <div className="depth">
@@ -1138,7 +1156,11 @@ const panes = [
         {/* 컬리지 콘텐츠 */}
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
+            <Image
+              src={`${PUBLIC_URL}/images/all/enter-category.png`}
+              alt=""
+              style={{ float: 'right', marginBottom: '0.5rem' }}
+            />
 
             {/* 컬리지 콘텐츠 전체 틀 */}
             <div className="legal-wrap">
@@ -1219,7 +1241,11 @@ const panes = [
                     <Image src={`${PUBLIC_URL}/images/all/lv-01.png`} alt="" />
                     <p>개념 이해</p>
                   </div>
-                  <h3>구매 Essentials</h3>
+                  <h3>
+                    <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4g">
+                      구매 Essentials
+                    </a>
+                  </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bk/Course/C-LECTURE-15a">
@@ -1365,7 +1391,11 @@ const panes = [
 
         <div className="college-link-box">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/enter-category.png`} alt="" style={{float:"right",marginBottom:"0.5rem"}}/>
+            <Image
+              src={`${PUBLIC_URL}/images/all/enter-category.png`}
+              alt=""
+              style={{ float: 'right', marginBottom: '0.5rem' }}
+            />
 
             {/* 컬리지 콘텐츠 전체 틀 */}
             <div className="legal-wrap">
@@ -1675,7 +1705,6 @@ const panes = [
           </div>
         </div>
 
-        {/* 컬리지 텍스트 */}
         <div className="college-sub-txt">
           <strong>
             Competency <br />
@@ -1688,9 +1717,9 @@ const panes = [
                 컨텐츠를 제공합니다.
                 <br />
                 Communication Skill, Problem Solving, Measurement, Negotiation,
-                Decision Making & Risk Management까지 Role Level별로 성공적인
-                업무수행을 위해 갖추어야 할 학습과정을 통해 좀더 나은 성과,
-                Smart Working을 위한 일/잘/법을 배우고, Deep Change 실행력
+                Decision Making &#38; Risk Management까지 Role Level별로
+                성공적인 업무수행을 위해 갖추어야 할 학습과정을 통해 좀더 나은
+                성과, Smart Working을 위한 일/잘/법을 배우고, Deep Change 실행력
                 제고를 위한 기초 체력을 단단히 만들어가시기 바랍니다.
               </li>
             </ul>
@@ -1701,70 +1730,104 @@ const panes = [
           <div className="belt">
             <Image src={`${PUBLIC_URL}/images/all/ing_30.png`} alt="" />
             <div className="legal-wrap flex sub">
-              <div className="fundamental-topic">
+              <div className="fundamental-topic width50">
                 <div className="con_wrap sub01">
                   <h3>
-                    Measurement Essentials
+                    <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
+                      Measurement Essentials
+                    </a>
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
                       <ul>
-                        <li>Customer Measure & Analytics</li>
+                        <li>Customer Measure &#38; Analytics</li>
                         <li>- 고객 측정의 기본 개념</li>
                         <li>- Customer Value 개념과 측정</li>
                         <li>- 고객 측정 지표의 활용과 한계</li>
                       </ul>
                     </div>
                     <div className="con_sub_box">
-                      <ul>
-                        <li>행복 지도의 이해</li>
-                        <li>- 행복 지도란?</li>
-                        <li>- 행복 지도 구축 Process</li>
-                        <li>- 행복 측정 주요 이슈와 해결방안</li>
-                      </ul>
-                    </div>
-                    <div className="con_sub_box">
-                      <ul>
-                        <li>SV 측정의 이해</li>
-                        <li>- SV 측정의 원칙 및 체계</li>
-                        <li>- SV 측정 사례 및 성과</li>
-                        <li>- SV 측정의 이슈와 확산</li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00003/course-plan/COURSE-PLAN-14o/Course/C-LECTURE-zr">
+                        <ul>
+                          <li>행복 지도의 이해</li>
+                          <li>- 행복 지도란?</li>
+                          <li>- 행복 지도 구축 Process</li>
+                          <li>- 행복 측정 주요 이슈와 해결방안</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <ul>
-                        <li>Deep Change의 시작, 측정</li>
-                        <li>- 경영 현장에서의 측정</li>
-                        <li>- 인간의 동기, 행동 측정</li>
-                        <li>- 사회 현상 / 문제 측정</li>
-                      </ul>
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00004/course-plan/COURSE-PLAN-f6/Course/C-LECTURE-cd">
+                        <ul>
+                          <li>SV 측정의 이해</li>
+                          <li>- SV 측정의 원칙 및 체계</li>
+                          <li>- SV 측정 사례 및 성과</li>
+                          <li>- SV 측정의 이슈와 확산</li>
+                        </ul>
+                      </a>
+                    </div>
+                    <div className="con_sub_box">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-v8/Course/C-LECTURE-r5">
+                        <ul>
+                          <li>Deep Change의 시작, 측정</li>
+                          <li>- 경영 현장에서의 측정</li>
+                          <li>- 인간의 동기, 행동 측정</li>
+                          <li>- 사회 현상 / 문제 측정</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="combined-topic">
+              <div className="combined-topic width50">
                 <div className="con_wrap sub01">
                   <h3>
-                    Negotiaion Essentials
+                    <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4f">
+                      Negotiaion Essentials
+                    </a>
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1dz/Course/C-LECTURE-17o">
                         <ul>
-                          <li>Negotiation 101</li>
-                          <li>- 경영자에게 협상이란</li>
-                          <li>- 협상 준비전략</li>
-                          <li>- [Case Study] Sell Phones</li>
+                          <li>Negotiation, 그 의미와 필요성</li>
+                          <li>- Intro into Negotiation</li>
+                          <li>- Business 통합적 영역, Negotiation</li>
+                          <li>- Essential Course Framework Guide</li>
                         </ul>
+                      </a>
                     </div>
                     <div className="con_sub_box">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f2/Course/C-LECTURE-18t">
                         <ul>
-                          <li>Negotiation Essence Reading</li>
-                          <li>- 협상책을 읽어주는 남자</li>
-                          <li>- 협상 기본서</li>
-                          <li>- 준비와 설득의 기법</li>
+                          <li>[협상 준비 전략] 12가지 협상 Skill</li>
+                          <li>- 목표를 설정하라</li>
+                          <li>- 나만의 BATNA를 확보하라</li>
+                          <li>- 마지막 협상이 아님을 기억하라</li>
                         </ul>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="con_box">
+                    <div className="con_sub_box">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e3/Course/C-LECTURE-17s">
+                        <ul>
+                          <li>협상 Essence Reading</li>
+                          <li>- Getting to Yes</li>
+                          <li>- FBI 행동의 심리학</li>
+                          <li>- 협상 레버리지</li>
+                        </ul>
+                      </a>
+                    </div>
+                    <div className="con_sub_box flex">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e2/Course/C-LECTURE-17r">
+                        <ul>
+                          <li>협상 Essential Wrap up</li>
+                          <li>- 협상 Essential Wrap up</li>
+                        </ul>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1772,33 +1835,53 @@ const panes = [
             </div>
 
             <div className="legal-wrap flex sub">
-              <div className="fundamental-topic">
+              <div className="fundamental-topic width50">
                 <div className="con_wrap sub02">
-                  <h3>
-                    Communication
-                  </h3>
+                  <h3>Communication</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
                       <ul className="ul_style">
-                        <li>엑셀 실무 Master 1 ~ 8</li>
-                        <li>검색해도 찾기 힘든 꼭 필요한 엑셀 함수</li>
-                        <li>부장님은 내 기획서가 쓰레기라고 말했지</li>
-                        <li>한국인이 많이 하는 이메일 영어실수 上 下 </li>
-                        <li>지나가는 팀장도 돌아보는 PPT 디자인</li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-4a/Course/C-LECTURE-2h">
+                            엑셀 실무 Master 1 ~ 8
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-4x/Course/C-LECTURE-2a">
+                            검색해도 찾기 힘든 꼭 필요한 엑셀 함수
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3n/Course/C-LECTURE-2l">
+                            부장님은 내 기획서가 쓰레기라고 말했지
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3u/Course/C-LECTURE-2j">
+                            한국인이 많이 하는 이메일 영어실수 上 下
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-50/Course/C-LECTURE-28">
+                            지나가는 팀장도 돌아보는 PPT 디자인
+                          </a>
+                        </li>
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="combined-topic">
+              <div className="combined-topic width50">
                 <div className="con_wrap sub02">
-                  <h3>
-                    Problem Solving
-                  </h3>
+                  <h3>Problem Solving</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
                       <ul className="ul_style">
-                        <li>10가지 키워드로 배우는 창의적 사고력</li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3o/Course/C-LECTURE-2k">
+                            10가지 키워드로 배우는 창의적 사고력
+                          </a>
+                        </li>
                         <li>전략적 문제해결 스킬 (4월 오픈 예정)</li>
                       </ul>
                     </div>
