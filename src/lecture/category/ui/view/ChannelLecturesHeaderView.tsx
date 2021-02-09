@@ -23,11 +23,11 @@ class CategoryLecturesHeaderView extends Component<Props> {
     // console.log('ch',this.props.channel.name);
     
     if(this.props.channel.name === 'AI/DT Literacy') {
-      window.history.replaceState('college', '', '/certification/badge/badge-detail/BADGE-2t');
+      window.history.replaceState('college', '', `${PUBLIC_URL}/certification/badge/badge-detail/BADGE-2t`);
     }
 
     else {
-      window.history.pushState('college', '', `/introduction/College?subTab=${this.props.college.name}`);
+      window.history.pushState('college', '', `${PUBLIC_URL}/introduction/College?subTab=${this.props.college.name}`);
     }
   }
 
