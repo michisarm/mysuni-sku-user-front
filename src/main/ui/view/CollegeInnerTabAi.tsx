@@ -1,7 +1,16 @@
 import React from 'react';
 import { Image, Menu, Label, Tab } from 'semantic-ui-react';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+
+const emptyAlert = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '준비 중입니다.',
+  });
+};
 
 const panes = [
   {
@@ -245,7 +254,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="">
+                    <a href="" onClick={emptyAlert}>
                       SK텔레콤의 AI업무 적용 사례 및 Lessons Learned
                     </a>
                   </li>

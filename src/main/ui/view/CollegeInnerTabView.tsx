@@ -1724,7 +1724,7 @@ const panes = [
               </li>
             </ul>
             <p className="p_link">
-              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+              각 Badge를 클릭하면 해당 페이지로 이동합니다.
             </p>
           </div>
         </div>
