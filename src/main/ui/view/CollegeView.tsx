@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { reactAlert } from '@nara.platform/accent';
 
 import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
@@ -10,6 +11,14 @@ import routePaths from '../../routePaths';
 import CollegeInnerTabView from './CollegeInnerTabView';
 import CollegeInnerTabAi from './CollegeInnerTabAi';
 import CollegeInnerTabDt from './CollegeInnerTabDt';
+
+const emptyAlert = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '준비 중입니다.',
+  });
+};
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -244,8 +253,23 @@ const panes = [
             </div>
           </div>
 
-          <div className="college-cont-map">
+          <div className="college-cont-map sub2">
             <div className="belt">
+              <div className="belt">
+                <div className="text-right-box">
+                  <a
+                    href="https://mysuni.sk.com/suni-main/lecture/college/CLG00005/channels/pages/1"
+                    className="item-button"
+                  >
+                    <Image
+                      style={{ display: 'inline' }}
+                      src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                      alt=""
+                    />
+                    과정 바로가기
+                  </a>
+                </div>
+              </div>
               <div className="map">
                 <Image
                   src={`${PUBLIC_URL}/images/all/design_con_01.png`}
@@ -279,7 +303,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               디자인씽킹 <br />
                               코칭 스킬
                             </a>
@@ -326,7 +350,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               서비스 디자인 <br />
                               Intensive
                             </a>
@@ -344,7 +368,7 @@ const panes = [
                             </a>
                           </td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz - Self 실습
                             </a>
@@ -380,7 +404,7 @@ const panes = [
                         <tbody>
                           <td></td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz 고민하기
                             </a>
@@ -430,14 +454,14 @@ const panes = [
                       <div className="logical-list tab01">
                         <ul>
                           <li>
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.2)
                             </a>
                           </li>
                           <li>
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.1)
@@ -533,7 +557,7 @@ const panes = [
                           <td>
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yr/Course/C-LECTURE-uk">
                               워킹백워드 <br />
-                              Workshop
+                              Workshop_online
                             </a>
                           </td>
                         </tbody>
@@ -575,13 +599,13 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               애자일 코치 <br />
                               Meetup
                             </a>
                           </td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               애자일 코치 <br />
                               양성 과정
                             </a>
@@ -688,7 +712,10 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td className="dashed">
-                            <a href="">오픈 이노베이션 Workshop</a>
+                            <a href="" onClick={emptyAlert}>
+                              오픈 이노베이션 <br />
+                              Workshop
+                            </a>
                           </td>
                           <td>
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-oy/Course/C-LECTURE-kz">
@@ -1021,11 +1048,6 @@ const panes = [
                 <Image
                   src={`${PUBLIC_URL}/images/all/semi_con_01.png`}
                   alt=""
-                />
-                <Image
-                  src={`${PUBLIC_URL}/images/all/semi_con_02.png`}
-                  alt=""
-                  style={{ marginTop: '3rem' }}
                 />
               </div>
             </div>

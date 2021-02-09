@@ -1,7 +1,16 @@
 import React from 'react';
 import { Image, Menu, Label, Tab } from 'semantic-ui-react';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+
+const emptyAlert = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '준비 중입니다.',
+  });
+};
 
 const panes = [
   {
@@ -81,7 +90,7 @@ const panes = [
                         <li>Machine Learning 활용</li>
                         <li>Data Visualization</li>
                         <li>Data 수집/가공</li>
-                        <li>Statistics & Analytics</li>
+                        <li>Statistics &#38; Analytics</li>
                         <li>코딩 For Big Data 분석</li>
                       </ul>
                     </div>
@@ -157,7 +166,7 @@ const panes = [
     menuItem: 'AI/DT Literacy',
     render: () => (
       (window.location.href =
-        'https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2v'),
+        'https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2t'),
       (<Tab.Pane attached={false}></Tab.Pane>)
     ),
   },
@@ -219,9 +228,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-ag2/lecture-card/LECTURE-CARD-863">
-                      엣지 컴퓨팅 기술의 Biz 활용 현황 및 향후 전망
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-ag2/lecture-card/LECTURE-CARD-863">엣지 컴퓨팅 기술의 Biz 활용 현황 및 향후 전망</a>
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-9fw/lecture-card/LECTURE-CARD-75r">
@@ -236,9 +243,7 @@ const panes = [
                     </a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-8qc/lecture-card/LECTURE-CARD-6ge">
-                      블록체인의 도전, 어디쯤 지나고 있나?
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-8qc/lecture-card/LECTURE-CARD-6ge">블록체인의 도전, 어디쯤 지나고 있나?</a>
                   </li>
                 </ul>
               </div>
@@ -254,21 +259,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-14z/Course/C-LECTURE-zo">
-                      Mobility Biz의 경쟁흐름을 읽어내는 즐거움
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-14z/Course/C-LECTURE-zo">Mobility Biz의 경쟁흐름을 읽어내는 즐거움</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-1a2/Course/C-LECTURE-14b">
-                      모빌리티 Biz 분야별 업데이트
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-1a2/Course/C-LECTURE-14b">모빌리티 Biz 분야별 업데이트</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-kt/Course/C-LECTURE-ho">
-                      테슬라를 통해 본 전기차 비즈니스 스토리
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-kt/Course/C-LECTURE-ho">테슬라를 통해 본 전기차 비즈니스 스토리</a>
                   </li>
                 </ul>
               </div>
@@ -283,21 +282,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-aws/lecture-card/LECTURE-CARD-8l2">
-                      고객을 사로잡는 법, 구독
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-aws/lecture-card/LECTURE-CARD-8l2">고객을 사로잡는 법, 구독</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-y5/Course/C-LECTURE-tw">
-                      데이터 3법, SK 구성원이 묻고 전문가가 말하다
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-y5/Course/C-LECTURE-tw">데이터 3법, SK 구성원이 묻고 전문가가 말하다</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-953/lecture-card/LECTURE-CARD-6ul">
-                      팩트 체크! 데이터 3법 개정, 무엇이 달라지나?
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/cube/CUBE-953/lecture-card/LECTURE-CARD-6ul">팩트 체크! 데이터 3법 개정, 무엇이 달라지나?</a>
                   </li>
                 </ul>
               </div>
@@ -318,9 +311,7 @@ const panes = [
                     </a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-13d/Course/C-LECTURE-y9">
-                      CES 2020 치트키
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-13d/Course/C-LECTURE-y9">CES 2020 치트키</a>
                   </li>
                 </ul>
                 <ul>
@@ -345,14 +336,10 @@ const panes = [
                     </a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5t/Course/C-LECTURE-4v">
-                      [SK,DT를 만나다] SK이노베이션편
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5t/Course/C-LECTURE-4v">[SK,DT를 만나다] SK이노베이션편</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5s/Course/C-LECTURE-4w">
-                      [SK,DT를 만나다] SK하이닉스편
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5s/Course/C-LECTURE-4w">[SK,DT를 만나다] SK하이닉스편</a>
                   </li>
                 </ul>
                 <ul>
@@ -360,14 +347,10 @@ const panes = [
                     <a href="">[이천포럼 2021] ※Upload 예정</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5u/Course/C-LECTURE-4u">
-                      [SK,DT를 만나다] SK브로드밴드편
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5u/Course/C-LECTURE-4u">[SK,DT를 만나다] SK브로드밴드편</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-e3/Course/C-LECTURE-b9">
-                      [SK,DT를 만나다] SK(주) C&C편
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-e3/Course/C-LECTURE-b9">[SK,DT를 만나다] SK(주) C&C편</a>
                   </li>
                 </ul>
               </div>
@@ -425,21 +408,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/search?query=%EB%8F%84%EB%A0%88%EB%AF%B8">
-                      도레미 파이썬 Vol. 1~2
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/search?query=%EB%8F%84%EB%A0%88%EB%AF%B8">도레미 파이썬 Vol. 1~2</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hb/Course/C-LECTURE-e5">
-                      [코세라] Programming for Everybody
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hb/Course/C-LECTURE-e5">[코세라] Programming for Everybody</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-67/Course/C-LECTURE-4g">
-                      R 프로그래밍 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-67/Course/C-LECTURE-4g">R 프로그래밍 기초</a>
                   </li>
                 </ul>
               </div>
@@ -454,14 +431,10 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5w/Course/C-LECTURE-4s">
-                      Cloud 입문 A to Z – What is the Cloud?
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5w/Course/C-LECTURE-4s">Cloud 입문 A to Z – What is the Cloud?</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-13j/Course/C-LECTURE-yf">
-                      엣지 컴퓨팅, 클라우드 컴퓨팅의 대체재인가?
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-13j/Course/C-LECTURE-yf">엣지 컴퓨팅, 클라우드 컴퓨팅의 대체재인가?</a>
                   </li>
                 </ul>
                 <ul>
@@ -490,9 +463,7 @@ const panes = [
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g5/Course/C-LECTURE-cz">
-                      [코세라] Blockchain Basics
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g5/Course/C-LECTURE-cz">[코세라] Blockchain Basics</a>
                   </li>
                 </ul>
               </div>
@@ -507,9 +478,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5y/Course/C-LECTURE-4q">
-                      IoT 입문 A to Z – What is the IoT?
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5y/Course/C-LECTURE-4q">IoT 입문 A to Z – What is the IoT?</a>
                   </li>
                 </ul>
                 <ul>
@@ -533,16 +502,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5v/Course/C-LECTURE-4t">
-                      Big Data입문 A to Z – What is the Big Data?
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5v/Course/C-LECTURE-4t">Big Data입문 A to Z – What is the Big Data?</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-jd/Course/C-LECTURE-gg">
-                      [코세라] Introduction to Big Data
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-jd/Course/C-LECTURE-gg">[코세라] Introduction to Big Data</a>
                   </li>
                 </ul>
               </div>
@@ -603,26 +568,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-191/Course/C-LECTURE-13o">
-                      1. Background of Scala ~ Control Structure
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-191/Course/C-LECTURE-13o">1. Background of Scala ~ Control Structure</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-193/Course/C-LECTURE-13m">
-                      3. Scala class & object
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-193/Course/C-LECTURE-13m">3. Scala class &#38; object</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-192/Course/C-LECTURE-13n">
-                      2. Functions ~ Collections
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-192/Course/C-LECTURE-13n">2. Functions ~ Collections</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-194/Course/C-LECTURE-13l">
-                      4. Function type, Programing
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-194/Course/C-LECTURE-13l">4. Function type, Programing</a>
                   </li>
                 </ul>
               </div>
@@ -637,26 +594,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-ll/Course/C-LECTURE-ia">
-                      1. What is NoSQL
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-ll/Course/C-LECTURE-ia">1. What is NoSQL</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-ln/Course/C-LECTURE-i8">
-                      3. Cassandra
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-ln/Course/C-LECTURE-i8">3. Cassandra</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-lm/Course/C-LECTURE-i9">
-                      2. HBase
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-lm/Course/C-LECTURE-i9">2. HBase</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-lo/Course/C-LECTURE-i7">
-                      4. MongoDB
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-lo/Course/C-LECTURE-i7">4. MongoDB</a>
                   </li>
                 </ul>
               </div>
@@ -671,26 +620,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a9/Course/C-LECTURE-7w">
-                      1. What is Hadoop, Hadoop
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a9/Course/C-LECTURE-7w">1. What is Hadoop, Hadoop</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a7/Course/C-LECTURE-7u">
-                      3. Configuration, Data Ingestion/Analytics
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a7/Course/C-LECTURE-7u">3. Configuration, Data Ingestion/Analytics</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a8/Course/C-LECTURE-7v">
-                      2. HDFS, YARN
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a8/Course/C-LECTURE-7v">2. HDFS, YARN</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a6/Course/C-LECTURE-7t">
-                      4. HiveQL, Pig Script, HUE & Oozie, Security
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a6/Course/C-LECTURE-7t">4. HiveQL, Pig Script, HUE & Oozie, Security</a>
                   </li>
                 </ul>
               </div>
@@ -705,16 +646,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-9z/Course/C-LECTURE-7n">
-                      SQL 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-9z/Course/C-LECTURE-7n">SQL 기초</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hc/Course/C-LECTURE-ea">
-                      [코세라] Databases and SQL for Data Science
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hc/Course/C-LECTURE-ea">[코세라] Databases and SQL for Data Science</a>
                   </li>
                 </ul>
               </div>
@@ -776,9 +713,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g7/Course/C-LECTURE-db">
-                      1: Azure 둘러보기, 가상서버 만들기
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g7/Course/C-LECTURE-db">1: Azure 둘러보기, 가상서버 만들기</a>
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g9/Course/C-LECTURE-d9">
@@ -818,9 +753,7 @@ const panes = [
                     </a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-jl/Course/C-LECTURE-g9">
-                      [코세라] Cloud Networking (UIUC)
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-jl/Course/C-LECTURE-g9">[코세라] Cloud Networking (UIUC)</a>
                   </li>
                 </ul>
                 <ul>
@@ -842,21 +775,15 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a1/Course/C-LECTURE-7p">
-                      Git을 사용한 버전 관리
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a1/Course/C-LECTURE-7p">Git을 사용한 버전 관리</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-9y/Course/C-LECTURE-7m">
-                      리눅스 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-9y/Course/C-LECTURE-7m">리눅스 기초</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a0/Course/C-LECTURE-7o">
-                      Spring 프레임워크 입문
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-a0/Course/C-LECTURE-7o">Spring 프레임워크 입문</a>
                   </li>
                 </ul>
               </div>
@@ -926,26 +853,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hi/Course/C-LECTURE-eg">
-                      [코세라] Applied Machine Learning in Python
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hi/Course/C-LECTURE-eg">[코세라] Applied Machine Learning in Python</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-64/Course/C-LECTURE-4i">
-                      비전공자를 위한 머신러닝
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-64/Course/C-LECTURE-4i">비전공자를 위한 머신러닝</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-jh/Course/C-LECTURE-gd">
-                      [코세라] Machine Learning with Big Data
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-jh/Course/C-LECTURE-gd">[코세라] Machine Learning with Big Data</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-66/Course/C-LECTURE-4h">
-                      인공지능/머신러닝 기초
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-66/Course/C-LECTURE-4h">인공지능/머신러닝 기초</a>
                   </li>
                 </ul>
               </div>
@@ -961,16 +880,12 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g0/Course/C-LECTURE-d2">
-                      [코세라] Data Visualization
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-g0/Course/C-LECTURE-d2">[코세라] Data Visualization</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-ji/Course/C-LECTURE-gc">
-                      [코세라] Graph Analytics for Big Data
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-ji/Course/C-LECTURE-gc">[코세라] Graph Analytics for Big Data</a>
                   </li>
                 </ul>
               </div>
@@ -985,26 +900,18 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-h9/Course/C-LECTURE-e8">
-                      [코세라] Using Database with Python
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-h9/Course/C-LECTURE-e8">[코세라] Using Database with Python</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hc/Course/C-LECTURE-ea">
-                      [코세라] Database and SQL for Data Science
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-hc/Course/C-LECTURE-ea">[코세라] Database and SQL for Data Science</a>
                   </li>
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-h7/Course/C-LECTURE-e7">
-                      [코세라] Using Python to Access Web Data
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-h7/Course/C-LECTURE-e7">[코세라] Using Python to Access Web Data</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-h8/Course/C-LECTURE-e6">
-                      [코세라] Python Data Structures
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-h8/Course/C-LECTURE-e6">[코세라] Python Data Structures</a>
                   </li>
                 </ul>
               </div>
@@ -1019,9 +926,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-63/Course/C-LECTURE-4j">
-                      파이썬으로 배우는 기초 통계
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-63/Course/C-LECTURE-4j">파이썬으로 배우는 기초 통계</a>
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-fy/Course/C-LECTURE-d3">
@@ -1032,14 +937,10 @@ const panes = [
                 </ul>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-62/Course/C-LECTURE-4k">
-                      파이썬으로 시작하는 데이터 분석
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-62/Course/C-LECTURE-4k">파이썬으로 시작하는 데이터 분석</a>
                   </li>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-68/Course/C-LECTURE-4f">
-                      R 패키지로 배우는 데이터 분석
-                    </a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-68/Course/C-LECTURE-4f">R 패키지로 배우는 데이터 분석</a>
                   </li>
                 </ul>
               </div>
@@ -1091,7 +992,7 @@ const panes = [
     menuItem: 'CDS Track',
     render: () => (
       (window.location.href =
-        'https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2t'),
+        'https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-2v'),
       (<Tab.Pane attached={false} />)
     ),
   },

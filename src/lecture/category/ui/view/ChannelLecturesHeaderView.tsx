@@ -4,7 +4,6 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { ChannelModel, CollegeModel } from 'college/model';
-import { Link } from 'react-router-dom';
 import { Image } from 'semantic-ui-react';
 
 
@@ -19,6 +18,19 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 @observer
 class CategoryLecturesHeaderView extends Component<Props> {
 
+
+  linkMove = () => {
+    // console.log('ch',this.props.channel.name);
+    
+    if(this.props.channel.name === 'AI/DT Literacy') {
+      window.history.replaceState('college', '', '/certification/badge/badge-detail/BADGE-2t');
+    }
+
+    else {
+      window.history.pushState('college', '', `/introduction/College?subTab=${this.props.college.name}`);
+    }
+  }
+
   render() {
     //
     const { channel, college } = this.props;
@@ -28,7 +40,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
           <div className="inner">
             <strong>{channel.name}</strong>의 학습 과정 입니다.
             { college.collegeId === 'CLG00020' ? null :
-              <Link to={`/introduction/College?subTab=${college.name}`} className="personal line round">
+              <a className="personal line round" onClick={this.linkMove}>
                 <a href="" className="personal line round">
                   <Image style={{display: 'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-view.png`} alt="" />
                   <span style={{
@@ -42,7 +54,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
                     커리큘럼 보기
                   </span>
                 </a>
-              </Link>
+              </a>
             }
           </div>
         </div>
