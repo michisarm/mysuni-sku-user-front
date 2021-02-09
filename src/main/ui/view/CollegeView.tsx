@@ -244,8 +244,23 @@ const panes = [
             </div>
           </div>
 
-          <div className="college-cont-map">
+          <div className="college-cont-map sub2">
             <div className="belt">
+              <div className="belt">
+                <div className="text-right-box">
+                  <a
+                    href="https://mysuni.sk.com/suni-main/lecture/college/CLG00005/channels/pages/1"
+                    className="item-button"
+                  >
+                    <Image
+                      style={{ display: 'inline' }}
+                      src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                      alt=""
+                    />
+                    과정 바로가기
+                  </a>
+                </div>
+              </div>
               <div className="map">
                 <Image
                   src={`${PUBLIC_URL}/images/all/design_con_01.png`}
@@ -533,7 +548,7 @@ const panes = [
                           <td>
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yr/Course/C-LECTURE-uk">
                               워킹백워드 <br />
-                              Workshop
+                              Workshop_online
                             </a>
                           </td>
                         </tbody>
@@ -688,7 +703,10 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td className="dashed">
-                            <a href="">오픈 이노베이션 Workshop</a>
+                            <a href="">
+                              오픈 이노베이션 <br />
+                              Workshop
+                            </a>
                           </td>
                           <td>
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-oy/Course/C-LECTURE-kz">
