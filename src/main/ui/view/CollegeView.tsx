@@ -1124,9 +1124,7 @@ const panes = [
               <div className="label">BM Design & Storytelling College</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
-                BM Design 전문가 양성 및 Biz Story Design/ Telling 역량 강화를
-                적극 지원함으로써 그룹/관계사 Deep Change 성과 창출에
-                기여하겠습니다.
+                BM Design 전문가 양성 및 Financial Story Design/ Telling 역량 강화를 적극 지원함<br />으로써 그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
               </div>
               <ul className="tag-wrap">
                 <li># BM혁신</li>

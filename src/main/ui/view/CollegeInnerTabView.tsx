@@ -76,7 +76,7 @@ const panes = [
 
         <div className="college-cont-map sub wrap01">
           <div className="belt">
-            <Image src={`${PUBLIC_URL}/images/all/main_01.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/main_01.jpg`} alt="" />
           </div>
         </div>
         <div className="college-cont-map sub pbtom">

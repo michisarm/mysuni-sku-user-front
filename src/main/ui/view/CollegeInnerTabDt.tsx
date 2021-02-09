@@ -316,7 +316,7 @@ const panes = [
                 </ul>
                 <ul>
                   <li className="ai_sub_li">
-                    <a href="">MWC 2021 (6/28~7/1) ※Upload 예정</a>
+                    <a href="" onClick={emptyAlert}>MWC 2021 (6/28~7/1) ※Upload 예정</a>
                   </li>
                 </ul>
               </div>
@@ -344,7 +344,7 @@ const panes = [
                 </ul>
                 <ul>
                   <li className="ai_sub_li">
-                    <a href="">[이천포럼 2021] ※Upload 예정</a>
+                    <a href="" onClick={emptyAlert}>[이천포럼 2021] ※Upload 예정</a>
                   </li>
                   <li>
                     <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00002/course-plan/COURSE-PLAN-5u/Course/C-LECTURE-4u">[SK,DT를 만나다] SK브로드밴드편</a>
