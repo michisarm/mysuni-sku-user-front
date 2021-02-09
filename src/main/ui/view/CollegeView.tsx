@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { reactAlert } from '@nara.platform/accent';
 
 import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
@@ -10,6 +11,14 @@ import routePaths from '../../routePaths';
 import CollegeInnerTabView from './CollegeInnerTabView';
 import CollegeInnerTabAi from './CollegeInnerTabAi';
 import CollegeInnerTabDt from './CollegeInnerTabDt';
+
+const emptyAlert = (e: any) => {
+  e.preventDefault();
+  reactAlert({
+    title: '알림',
+    message: '준비 중입니다.',
+  });
+};
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -294,7 +303,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               디자인씽킹 <br />
                               코칭 스킬
                             </a>
@@ -341,7 +350,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               서비스 디자인 <br />
                               Intensive
                             </a>
@@ -359,7 +368,7 @@ const panes = [
                             </a>
                           </td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz - Self 실습
                             </a>
@@ -395,7 +404,7 @@ const panes = [
                         <tbody>
                           <td></td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz 고민하기
                             </a>
@@ -445,14 +454,14 @@ const panes = [
                       <div className="logical-list tab01">
                         <ul>
                           <li>
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.2)
                             </a>
                           </li>
                           <li>
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.1)
@@ -590,13 +599,13 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               애자일 코치 <br />
                               Meetup
                             </a>
                           </td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               애자일 코치 <br />
                               양성 과정
                             </a>
@@ -703,7 +712,7 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td className="dashed">
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               오픈 이노베이션 <br />
                               Workshop
                             </a>
