@@ -44,7 +44,7 @@ const panes = [
             다양한 Biz Case를 통해 AI가 가져올 새로운 기회를 구체적으로 그려볼
             수 있을 것입니다.
           </div>
-          <img src={Aisub01} />
+          <Image src={`${PUBLIC_URL}/images/all/ai-con01-1.png`} alt=""/>
         </div>
 
         <div className="college-cont-map sub pbtom">
@@ -67,7 +67,7 @@ const panes = [
 
                   <div className="ai-intro sub">
                     <ul>
-                      <li>딥러닝</li>
+                      <li>TensorFlow/Pytorch 프레임워크</li>
                       <li>머신러닝</li>
                       <li>AI 기초 개념 및 동작원리</li>
                       <li>AI 수학 기초</li>
@@ -78,7 +78,7 @@ const panes = [
                 <div className="ai-belt-box">
                   <div className="ai-intro">
                     <h3>AI Trend Watch</h3>
-                    <ul class="ai-bottom">
+                    <ul className ="ai-bottom">
                       <li>AI 최신 기술</li>
                     </ul>
                   </div>
@@ -95,7 +95,7 @@ const panes = [
                 <div className="ai-belt-box">
                   <div className="ai-intro">
                     <h3>AI Biz. Implementation</h3>
-                    <ul class="ai-bottom">
+                    <ul className ="ai-bottom">
                       <li>AI Biz Case Study</li>
                     </ul>
                   </div>

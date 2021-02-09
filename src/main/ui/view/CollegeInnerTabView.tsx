@@ -1723,6 +1723,9 @@ const panes = [
                 제고를 위한 기초 체력을 단단히 만들어가시기 바랍니다.
               </li>
             </ul>
+            <p className="p_link">
+              각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.
+            </p>
           </div>
         </div>
 

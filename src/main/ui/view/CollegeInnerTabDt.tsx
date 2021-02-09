@@ -37,12 +37,13 @@ const panes = [
             Certificate 취득을 지원할 수 있는 상시적인 프로그램들이 활발하게
             제공되고 있습니다.
           </div>
-          <img src={Dtsub01} />
+          
+          <Image src={`${PUBLIC_URL}/images/all/dt-con01-1.png`} alt=""/>
         </div>
 
         <div className="college-cont-map sub pbtom">
           <div className="belt">
-            <div class="label sub">전체 커리큘럼</div>
+            <div className="label sub">전체 커리큘럼</div>
             <div className="ai-top-btn">
               <span className="ai-btn01">Self-directive</span>
               <span className="ai-btn02 dt">Intensive</span>
@@ -324,7 +325,7 @@ const panes = [
                   </li>
                 </ul>
                 <ul>
-                  <li class="ai_sub_li">
+                  <li className="ai_sub_li">
                     <a href="">MWC 2021 (6/28~7/1) ※Upload 예정</a>
                   </li>
                 </ul>
@@ -356,7 +357,7 @@ const panes = [
                   </li>
                 </ul>
                 <ul>
-                  <li class="ai_sub_li">
+                  <li className="ai_sub_li">
                     <a href="">[이천포럼 2021] ※Upload 예정</a>
                   </li>
                   <li>
