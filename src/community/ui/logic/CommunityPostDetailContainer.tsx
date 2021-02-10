@@ -25,6 +25,7 @@ import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
+import { SkProfileService } from 'profile/stores';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -57,6 +58,10 @@ function CommunityPostDetailContainer() {
 
   const originArr: string[] = [];
   let origin: string = '';
+
+  const skProfileService  = SkProfileService.instance;
+  const { skProfile } = skProfileService;
+  const { member } = skProfile;
 
   const fileDownload = (pdf: string, fileId: string) => {
     const PdfFile = pdf.includes('.pdf');
@@ -205,6 +210,8 @@ function CommunityPostDetailContainer() {
   async function deletePost(communityId: string, postId: string) {
     await deleteCommunityPostDetail(communityId, postId);
   }
+
+
 
   const toUrl = useCallback((type, postDetail, menuType) => {
     if(type == 'nextPost') {
@@ -374,10 +381,10 @@ function CommunityPostDetailContainer() {
             feedbackId={postDetail.commentFeedbackId}
             menuType={menuType}
             hideCamera
-            name=""
-            email=""
-            companyName=""
-            departmentName=""
+            name={member.name}
+            email={member.email}
+            companyName={member.company}
+            departmentName={member.department}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>

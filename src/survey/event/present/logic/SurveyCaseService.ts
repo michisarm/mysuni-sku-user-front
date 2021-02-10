@@ -33,6 +33,18 @@ export default class SurveyCaseService {
   }
 
   @action
+  async findSurveyCaseFeedBack(surveyCaseId: string) {
+    const surveyCase = await this.surveyCaseApi.findSurveyCaseByFeed(surveyCaseId);
+    //return surveyCase.commentFeedbackId;
+    //return surveyCase.surveyFormId;
+    return runInAction(() => {
+      this.surveyCase = surveyCase;
+      return surveyCase;
+    });
+
+  }
+
+  @action
   async findSurveyCase(surveyCaseId: string) {
     const surveyCase = await this.surveyCaseApi.findSurveyCase(surveyCaseId);
     return runInAction(() => {
