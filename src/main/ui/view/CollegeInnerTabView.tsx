@@ -142,7 +142,7 @@ const panes = [
                     <tr>
                       <td colSpan={2}>ㅤ</td>
                       <td className="badge-texts">
-                        <a href="">
+                        <a href="" onClick={emptyAlert}>
                           디지털 융합
                           <br />
                           마케팅
@@ -154,14 +154,14 @@ const panes = [
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="">
+                        <a href="" onClick={emptyAlert}>
                           구매
                           <br />
                           Advanced
                         </a>
                       </td>
                       <td className="badge-texts">
-                        <a href="">회사법</a>
+                        <a href="" onClick={emptyAlert}>회사법</a>
                         <br />
                         /<br />
                         <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4d">
@@ -686,7 +686,7 @@ const panes = [
                         </li>
                       </ul>
 
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>AI 마케팅</li>
                           <li>1. Reach : AI 로 고객을 유인하라</li>
@@ -716,7 +716,7 @@ const panes = [
                   </h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <ul>
+                      <ul onClick={emptyAlert}>
                         <li>
                           <a href="">마케팅 Framework &#38; Tool</a>
                         </li>
@@ -1492,7 +1492,7 @@ const panes = [
                   <h3>특허관리</h3>
                   <div className="con_box">
                     <div className="con_sub_box">
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>한국 출원 제도와 법</li>
                           <li>- 특허요건사</li>
@@ -1502,7 +1502,7 @@ const panes = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>한국 출원 실무</li>
                           <li>- 국문명세서 작성</li>
@@ -1512,7 +1512,7 @@ const panes = [
                       </a>
                     </div>
                     <div className="con_sub_box">
-                      <a href="">
+                      <a href="" onClick={emptyAlert}>
                         <ul>
                           <li>특허활용과 매입</li>
                           <li>- 특허활용의 개요</li>
@@ -1612,7 +1612,7 @@ const panes = [
                         </ul>
                       </a>
 
-                      <a href="">
+                      <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1at/Course/C-LECTURE-197">
                         <ul>
                           <li>특허 분쟁 개론</li>
                           <li>- 특허분쟁의 종류</li>

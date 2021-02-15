@@ -1307,7 +1307,7 @@ class CollegeView extends Component<Props, State> {
 
   onTabChange(e: any, { activeIndex }: any) {
     //
-    console.log('!!!', panes[activeIndex].menuItem);
+    console.log('asdf',panes[activeIndex].menuItem);
     this.props.history.push(
       routePaths.introductionCollege(panes[activeIndex].menuItem)
     );
