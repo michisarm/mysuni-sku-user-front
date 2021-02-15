@@ -38,7 +38,7 @@ const CoursePromotionModalView = () => {
 
   const handleClickImg = () => {
     ModalClose();
-    history.push(`/board/support/notice-detail/NTC-00004j`);
+    history.push(`/board/support/notice-detail/NTC-00004a`);
   };
 
   return (
