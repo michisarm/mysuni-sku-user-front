@@ -33,12 +33,12 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   const { title } = lectureSurvey;
   const surveyCaseId  = lectureSurveyState?.surveyCaseId;
   const [commentId, setCommentID] = useState('');
+
   useEffect(() => {
     const surveyCaseService  = SurveyCaseService.instance;
     if(surveyCaseId !== undefined){
       surveyCaseService.findSurveyCaseFeedBack(surveyCaseId)
       .then((result) => {
-        console.log("result======",result);
         if(result !== "" ){
           setCommentID(result.commentFeedbackId);
         }
