@@ -23,11 +23,11 @@ class CategoryLecturesHeaderView extends Component<Props> {
 
   linkMove = () => {
     if(this.props.channel.name === 'AI/DT Literacy') {
-      this.setState({linkUrl: `${PUBLIC_URL}/certification/badge/badge-detail/BADGE-2t`});
+      this.setState({linkUrl: `/certification/badge/badge-detail/BADGE-2t`});
     }
 
     else {
-      this.setState({linkUrl: `${PUBLIC_URL}/introduction/College?subTab=${this.props.college.name}`});
+      this.setState({linkUrl: `/introduction/College?subTab=${this.props.college.name}`});
     }
   }
 
