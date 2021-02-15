@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { ChannelModel, CollegeModel } from 'college/model';
 import { Image } from 'semantic-ui-react';
-
+import { Link } from "react-router-dom";
 
 interface Props {
   channel: ChannelModel,
@@ -17,17 +17,17 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 @reactAutobind
 @observer
 class CategoryLecturesHeaderView extends Component<Props> {
-
+  state = {
+    linkUrl: '',
+  }
 
   linkMove = () => {
-    // console.log('ch',this.props.channel.name);
-    
     if(this.props.channel.name === 'AI/DT Literacy') {
-      window.history.replaceState('college', '', `${PUBLIC_URL}/certification/badge/badge-detail/BADGE-2t`);
+      this.setState({linkUrl: `/certification/badge/badge-detail/BADGE-2t`});
     }
 
     else {
-      window.history.pushState('college', '', `${PUBLIC_URL}/introduction/College?subTab=${this.props.college.name}`);
+      this.setState({linkUrl: `/introduction/College?subTab=${this.props.college.name}`});
     }
   }
 
@@ -40,7 +40,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
           <div className="inner">
             <strong>{channel.name}</strong>의 학습 과정 입니다.
             { college.collegeId === 'CLG00020' ? null :
-              <a className="personal line round" onClick={this.linkMove}>
+              <Link to={this.state.linkUrl !== '' ? this.state.linkUrl : '#'} className="personal line round" onClick={this.linkMove}>
                 <a href="" className="personal line round">
                   <Image style={{display: 'inline'}} src={`${PUBLIC_URL}/images/all/icon-course-view.png`} alt="" />
                   <span style={{
@@ -54,7 +54,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
                     커리큘럼 보기
                   </span>
                 </a>
-              </a>
+              </Link>
             }
           </div>
         </div>

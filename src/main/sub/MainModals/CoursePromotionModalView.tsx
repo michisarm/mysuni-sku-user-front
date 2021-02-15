@@ -38,7 +38,7 @@ const CoursePromotionModalView = () => {
 
   const handleClickImg = () => {
     ModalClose();
-    history.push(`/introduction/College?subTab=Management`);
+    history.push(`/board/support/notice-detail/NTC-00004a`);
   };
 
   return (
@@ -65,7 +65,7 @@ const CoursePromotionModalView = () => {
             <div className="img" onClick={handleClickImg}>
               <a>
                 <img
-                  src={`${getPublicUrl()}/images/all/popup_img_management.png`}
+                  src={`${getPublicUrl()}/images/all/popup_image_aidt_0215.png`}
                   alt=""
                 />
               </a>
