@@ -946,7 +946,7 @@ const panes = [
               </div>
               <div className="text-right-box">
                 <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00007/channels/pages/1"
                   className="item-button"
                 >
                   <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
@@ -1048,17 +1048,17 @@ const panes = [
                   <div className="leadership_box bg2">
                     <h3>Leadership Foundation</h3>
                     <ul>
-                      <li className="leader_boxwrap margin_sm">
+                      <li className="leader_boxwrap margin_sm" onClick={emptyAlert}>
                         <p>
                           Global Leadership
                           <br />
                           Acceleration P/G
                         </p>
-                        <a href="#">Remote Performance Mgmt.</a>
-                        <a href="#">Impactful Conversation</a>
-                        <a href="#">Drives for Engagement</a> 
-                        <a href="#">Leveraging Conflict</a> 
-                        <a href="#">EQ Leadership</a>
+                        <a href="" onClick={emptyAlert}>Remote Performance Mgmt.</a>
+                        <a href="" onClick={emptyAlert}>Impactful Conversation</a>
+                        <a href="" onClick={emptyAlert}>Drives for Engagement</a> 
+                        <a href="" onClick={emptyAlert}>Leveraging Conflict</a> 
+                        <a href="" onClick={emptyAlert}>EQ Leadership</a>
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
@@ -1073,7 +1073,7 @@ const panes = [
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-16w/Course/C-LECTURE-11h" className="bg_blue">Motivation Designer</a>
                       </li>
                       <li>
-                        <a href="" onClick={emptyAlert} className="leader_blue">
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1gy/Course/C-LECTURE-1a1" className="leader_blue">
                           갈등의 재발견
                         </a>
                       </li>
