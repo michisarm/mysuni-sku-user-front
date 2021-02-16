@@ -493,7 +493,7 @@ class MyTrainingService {
   }
 
   @action
-  async findAllTableViews() {
+  async findAllTableViews(offset?: Offset) {
     /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
     /* 학습중 */
     if (this._myTrainingFilterRdo.contentType === 'InProgress') {
@@ -512,13 +512,21 @@ class MyTrainingService {
         /* 코스만보기 */
         if (this._myTrainingFilterRdo.viewType === 'Course') {
           const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
+          if (offset !== undefined) {
+            this._myTrainingTableViews = courseTableViews.slice(0, offset.limit);
+          } else {
+            this._myTrainingTableViews = courseTableViews.slice(0, 20);
+          }
           this._myTrainingTableViewCount = courseTableViews.length;
           return false;
         }
 
         /* 전체보기 */
-        this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
+        if (offset !== undefined) {
+          this._myTrainingTableViews = this.inProgressTableViews.slice(0, offset.limit);
+        } else {
+          this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
+        }
         this._myTrainingTableViewCount = this.inProgressTableCount;
         return false;
       }
@@ -570,7 +578,10 @@ class MyTrainingService {
   }
 
   @action
-  async findAllStampTableViews() {
+  async findAllStampTableViews(offset?: Offset) {
+    if (offset !== undefined) {
+      this._myTrainingFilterRdo.changeOffset(offset);
+    }
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(this._myTrainingFilterRdo);
 

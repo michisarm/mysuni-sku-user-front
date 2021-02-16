@@ -108,6 +108,20 @@ function MyLearningTableBody(props: Props) {
     /* URL 표현을 위한 변환. */
     const convertedServiceType = convertServiceType(serviceType);
 
+    const { pageXOffset, pageYOffset, location } = window;  // 스크롤 유지를 위해 현재 스크롤 위치 조회
+    const { state: prevState = {} } = window.history;  // 스크롤 유지를 위해 현재 스크롤 위치 저장
+    window.history.replaceState(
+      {
+        ...prevState,
+        scroll: {
+          x: pageXOffset,
+          y: pageYOffset,
+        },
+      },
+      '',
+      location.pathname,
+    );
+
     // Card
     if (model.isCardType()) {
       history.push(
