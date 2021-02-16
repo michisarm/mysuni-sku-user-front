@@ -902,6 +902,7 @@ const panes = [
           data-tab="colleges7"
         >
           <div className="college-cont-title leadership">
+            
             <div className="belt sub">
               <div className="label">Leadership College</div>
               <div className="strong">Deep Change Leader로 성장!</div>
@@ -939,6 +940,20 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
+          <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
@@ -960,7 +975,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1ae/Course/C-LECTURE-14n">
                               Leader as Coach<br/>Advanced P/G
                           </a>
                         </li>
@@ -968,7 +983,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="" onClick={emptyAlert}>
                             Organization
                             <br />
                             Transformation
@@ -978,7 +993,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac">
                             Leader as Coach P/G
                           </a>
                         </li>
@@ -986,7 +1001,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="" onClick={emptyAlert}>
                             Leadership
                             <br />
                             Transformation
@@ -1213,6 +1228,20 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="semi-topBackground"></div>
