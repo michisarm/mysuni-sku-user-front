@@ -150,11 +150,12 @@ const LRSLearning: React.FC<Props> = Props => {
 
     // react-ga event
     ReactGA.event({
-      category: '추천 과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_추천과정',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      label: `${model.name}`,
     });
 
     const cineroom =
