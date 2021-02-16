@@ -942,10 +942,181 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/leader_con_01.png`}
-                  alt=""
-                />
+                <div className="ai-top-btn leaderShip">
+                  <span className="ai-btn01 leader">
+                    VoD
+                  </span>
+                  <span className="ai-btn02 leader sub">
+                    Non-VoD
+                  </span>
+                </div>
+                <Image src={`${PUBLIC_URL}/images/all/leadership-level.png`} alt="" style={{float: 'left'}} />
+                <div className="link_wrapper leadership">
+                  <div className="leadership_box bg1">
+                    <h3>Deep change Leadership</h3>
+                    <div className="leadership_list">
+                      <ul>
+                        <li className="margin_25">
+                          <div className="badge_box1 left">
+                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`} alt="" />
+                          </div>
+                          <a href="#">
+                              Leader as Coach<br/>Advanced P/G
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
+                          </div>
+                          <a href="#">
+                            Organization
+                            <br />
+                            Transformation
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
+                          </div>
+                          <a href="#">
+                            Leader as Coach P/G
+                          </a>
+                        </li>
+                        <li>
+                          <div className="badge_box1 left">
+                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
+                          </div>
+                          <a href="#">
+                            Leadership
+                            <br />
+                            Transformation
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-uu/Course/C-LECTURE-qy" className="leader_blue">
+                            진정성이 이끄는 리더의 길
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-ox/Course/C-LECTURE-ky" className="leader_blue">
+                            Deep Change & 리더십?- 목적 기반의
+                            <br />
+                            딥체인지 실천 가이드
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="leadership_list bottom">
+                      <ul>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-lc/Course/C-LECTURE-hy" className="leader_blue">
+                            딥체인지와 기업문화 혁신
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-u0/Course/C-LECTURE-q5" className="leader_blue">
+                            영화로 만나는
+                            <br />
+                            Deep Change Leadership
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-9o/Course/C-LECTURE-7g" className="leader_blue">
+                            Deep Change Leadership 이해
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  {/* //leadership_box bg1 */}
+                  <div className="leadership_box bg2">
+                    <h3>Leadership Foundation</h3>
+                    <ul>
+                      <li className="leader_boxwrap margin_sm">
+                        <p>
+                          Global Leadership
+                          <br />
+                          Acceleration P/G
+                        </p>
+                        <a href="#">Remote Performance Mgmt.</a>
+                        <a href="#">Impactful Conversation</a>
+                        <a href="#">Drives for Engagement</a> 
+                        <a href="#">Leveraging Conflict</a> 
+                        <a href="#">EQ Leadership</a>
+                      </li>
+                      <li className="leader_boxwrap col-blue margin_sm">
+                        <div className="badge_box1 left">
+                          <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-1.png`} alt="" />
+                        </div>
+                        <p>Leadership Essentials</p>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-pe/Course/C-LECTURE-la" className="bg_blue">전략적 사고</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-m8/Course/C-LECTURE-ii" className="bg_blue">Remote Leadership</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-us/Course/C-LECTURE-qw" className="bg_blue">Coaching Leadership</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-ur/Course/C-LECTURE-qv" className="bg_blue">리더의 스토리텔링</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-wr/Course/C-LECTURE-sl" className="bg_blue">스마트한 리더의 위임</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-16w/Course/C-LECTURE-11h" className="bg_blue">Motivation Designer</a>
+                      </li>
+                      <li>
+                        <a href="#" className="leader_blue">
+                          갈등의 재발견
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-9n/Course/C-LECTURE-7h" className="leader_blue">
+                          Leadership Self-Assessment
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="leadership_box bg3">
+                    <h3>Leadership Clinic</h3>
+                    <ul>
+                      <li className="leader_boxwrap col-blue">
+                        <p>Leadership Pain Points</p>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8t/Course/C-LECTURE-6x" className="bg_blue">자기성장</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8w/Course/C-LECTURE-6z" className="bg_blue">Performance</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8v/Course/C-LECTURE-7i" className="bg_blue">시너지/협업</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8u/Course/C-LECTURE-6y" className="bg_blue">건강한 조직 운영</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8x/Course/C-LECTURE-70" className="bg_blue">구성원 육성</a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-o8/Course/C-LECTURE-ka" className="leader_blue">
+                          리더의 세계 Ⅰ, Ⅱ
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-ii/Course/C-LECTURE-ff" className="leader_blue">
+                          1on1 미팅
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="leadership_box bg4">
+                    <h3>Leadership Insight Cafe</h3>
+                    <ul>
+                      <li className="leader_boxwrap col-blue">
+                        <p>리더십, 인문학에 길을 묻다</p>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-mc/Course/C-LECTURE-ik" className="bg_blue">카르마 & 다르마</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-162/Course/C-LECTURE-10x" className="bg_blue">고난의 시대에 미래를 보는 리더십</a>
+                      </li>
+                      <li className="leader_boxwrap col-blue">
+                        <p>심리학으로 풀어보는 리더십 Talk</p>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-gy/Course/C-LECTURE-dx" className="bg_blue">I. 변화의 시작</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-kb/Course/C-LECTURE-h6" className="bg_blue">II. 이런 고민 있나요?</a>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-of/Course/C-LECTURE-kh" className="bg_blue">III. 리더라서 고민이다</a>
+                      </li>
+                      <li>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-y1/Course/C-LECTURE-ts" className="leader_blue">
+                          세대 이해 – 86, X, MZ
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                {/* //link_wrapper */}
               </div>
             </div>
           </div>
@@ -1117,14 +1288,16 @@ const panes = [
       <Tab.Pane>
         <div
           className="ui attached tab full segment active"
-          data-tab="colleges14"
+          data-tab="colleges8"
         >
           <div className="college-cont-title bmd">
             <div className="belt sub">
-              <div className="label">BM Design & Storytelling College</div>
+              <div className="label">BM Design &#38; Storytelling College</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
-                BM Design 전문가 양성 및 Financial Story Design/ Telling 역량 강화를 적극 지원함<br />으로써 그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
+                BM Design 전문가 양성 및 Biz Financial Story Design/ Telling 역량 강화를
+                적극 지원함으로써 <br />
+                그룹/관계사 Deep Change 성과 창출에 기여하겠습니다.
               </div>
               <ul className="tag-wrap">
                 <li># BM혁신</li>
@@ -1136,10 +1309,7 @@ const panes = [
                 <li># Stakeholder</li>
               </ul>
               <div className="panopto sub">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
-                  alt=""
-                />
+                <Image src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`} alt="" />
               </div>
             </div>
           </div>
@@ -1155,8 +1325,226 @@ const panes = [
           <div className="college-cont-map">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
+              <div className="bm-top-btn">
+                <span className="bm-btn01">On-Line</span>
+                <span className="bm-btn02">Blended</span>
+                <span className="bm-btn03">Off-Line</span>
+              </div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/bmd_con_02.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/bm-level-line.png`} alt="" style={{float: 'left'}} />
+                <div className="bm-wrap">
+                  <div className="bm-flex">
+                    <div className="bm-bg-box bg_type01">
+                      <h3>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN00081">BM Design @ Work</a>
+                      </h3>
+                      <p>( 사전 Becoming BM Designer 과정 이수 필수 )</p>
+                      <ul className="list_flex">
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fr/Course/C-LECTURE-19c">
+                            BM Design 실습 <br />
+                            (4주)
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1go/Course/C-LECTURE-19u">
+                            디커플링 Workshop <br />
+                            (2일)
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1gn/Course/C-LECTURE-19t">
+                            환경∙에너지 <br />
+                            BM Design 실습 <br />
+                            (4주)
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bm-bg-box bg_type02">
+                      <h3>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN0007o">
+                        Storytelling @ Work
+                          </a></h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm bg_white">
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crs/lecture-card/LECTURE-CARD-acl">CEO 1:1 과정</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-cru/lecture-card/LECTURE-CARD-acj">6R Storytelling Workshop</a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm bg_white">
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crt/lecture-card/LECTURE-CARD-ack">
+                              Leader Storytelling <br />
+                              Workshop
+                            </a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crv/lecture-card/LECTURE-CARD-aci">FS 전문가 심포지엄</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box bg_type01">
+                      <h3>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN00083">
+                        Becoming BM Designer
+                        </a>
+                      </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-12v/Course/C-LECTURE-xw">
+                            Ⅰ. As-Is BM <br />
+                            Sustainability
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fh/Course/C-LECTURE-191">Ⅱ. BM 환경 분석</a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-12x/Course/C-LECTURE-xy">
+                            Ⅲ. 신규 BM <br />
+                            발굴 전략
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN0007n">
+                        M&#38;A Design
+                        </a>
+                      </h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1da/Course/C-LECTURE-17d">Ⅰ. M&#38;A Overview</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dp/Course/C-LECTURE-17f">
+                              Ⅲ. 대상 선정 &#38; <br />
+                              Deal Structuring
+                            </a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dr/Course/C-LECTURE-17h">Ⅴ. Valuation</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dt/Course/C-LECTURE-17j">Ⅶ. Legal</a>
+                          </li>
+                          <li>
+                            <a href="">
+                              [심화Ⅰ] Deal Structuring <br />
+                              &#38; Financing
+                            </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dv/Course/C-LECTURE-17e">Ⅱ. M&#38;A Strategy</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dq/Course/C-LECTURE-17g">Ⅳ. Due Diligence</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1ds/Course/C-LECTURE-17i">Ⅵ. Negotiation</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1du/Course/C-LECTURE-17k">Ⅷ. PMI &#38; Value-up</a>
+                          </li>
+                          <li>
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dw/Course/C-LECTURE-17l">[심화Ⅱ] Legal</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="bm-bg-box line_type01 height100">
+                      <h3>Becoming Storyteller</h3>
+                      <div className="bm-flex">
+                        <ul className="list_bm">
+                          <li>
+                            <a href="">Stakeholder 이해</a>
+                          </li>
+                          <li>
+                            <a href="">
+                              Financial Storytelling <br />
+                              글로벌 사례 연구
+                            </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="">6R Comm. 전략</a>
+                          </li>
+                          <li>
+                            <a href="">
+                              [Focus] Financial <br />
+                              Society Partnership
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bm-flex">
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN00082">
+                        BM Design Take-off</a></h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fg/Course/C-LECTURE-190">
+                            Ⅰ . Sustainable BM <br />
+                            혁신 중요성
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fi/Course/C-LECTURE-192">
+                            Ⅱ. BM Framework <br />
+                            &#38; SK BM 혁신 노력
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fj/Course/C-LECTURE-193">
+                            Ⅲ. BM / Deep Change <br />
+                            Design과 실행
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bm-bg-box line_type01">
+                      <h3>
+                        <a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN00084">
+                        Defining Storytelling
+                        </a>
+                          </h3>
+                      <ul className="list_flex md">
+                        <li>
+                          <a href="">Ⅰ. Financial Story 이해</a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-u7/Course/C-LECTURE-qb">Ⅱ. Financial Acumen</a>
+                        </li>
+                        <li>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crx/lecture-card/LECTURE-CARD-acg">
+                            Ⅲ. 투자자 관점에서 본 <br />
+                            Financial Story
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
