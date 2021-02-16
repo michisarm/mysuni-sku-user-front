@@ -11,6 +11,7 @@ import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
   saveLectureSurveyState,
   submitLectureSurveyState,
+  finishLectureSurveyState
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
@@ -39,13 +40,15 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
       return;
     }
     saveLectureSurveyState(params.lectureParams, params.pathname);
-  }, [params]);
+  }, [params]); 
+
   const requestSubmitLectureSurveyState = useCallback(() => {
     if (params === undefined) {
       return;
     }
     submitLectureSurveyState(params.lectureParams, params.pathname);
   }, [params]);
+  
   return (
     <>
       <div className="course-info-header">
@@ -58,133 +61,138 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
                   진행중
                 </button>
               )}
-            {lectureSurveyState !== undefined &&
-              lectureSurveyState.state === 'Completed' && (
-                <>
-                  <button className="ui button free complete p18">
-                    참여완료
-                  </button>
-                  
-                  <LectureSurveyResultModalView 
-                    trigger={<Button icon className="ui button free complete p18">통계보기</Button>}
-                    lectureSurvey={lectureSurvey}
-                    lectureSurveySummary={lectureSurveySummary}
-                  />
-                </>
-              )}
           </div>
         </div>
       </div>
-      {lectureSurvey.surveyItems.map(lectureSurveyItem => {
-        if (lectureSurveyItem.type === 'Criterion') {
-          return (
-            <LectureSurveyCriterionView
-              lectureSurveyItem={lectureSurveyItem}
-              lectureSurveyAnswerItem={
-                lectureSurveyState &&
-                lectureSurveyState.answerItem.find(
-                  c => c.questionNumber === lectureSurveyItem.questionNumber
-                )
-              }
-              lectureSurveyState={lectureSurveyState}
-              key={lectureSurveyItem.id}
-            />
-          );
-        }
-        if (lectureSurveyItem.type === 'Choice') {
-          return (
-            <LectureSurveyChoiceView
-              lectureSurveyItem={lectureSurveyItem}
-              lectureSurveyAnswerItem={
-                lectureSurveyState &&
-                lectureSurveyState.answerItem.find(
-                  c => c.questionNumber === lectureSurveyItem.questionNumber
-                )
-              }
-              lectureSurveyState={lectureSurveyState}
-              key={lectureSurveyItem.id}
-            />
-          );
-        }
-        if (lectureSurveyItem.type === 'Essay') {
-          return (
-            <LectureSurveyEssayView
-              lectureSurveyItem={lectureSurveyItem}
-              lectureSurveyAnswerItem={
-                lectureSurveyState &&
-                lectureSurveyState.answerItem.find(
-                  c => c.questionNumber === lectureSurveyItem.questionNumber
-                )
-              }
-              lectureSurveyState={lectureSurveyState}
-              key={lectureSurveyItem.id}
-            />
-          );
-        }
-        if (lectureSurveyItem.type === 'Date') {
-          return (
-            <LectureSurveyDateView
-              lectureSurveyItem={lectureSurveyItem}
-              lectureSurveyAnswerItem={
-                lectureSurveyState &&
-                lectureSurveyState.answerItem.find(
-                  c => c.questionNumber === lectureSurveyItem.questionNumber
-                )
-              }
-              lectureSurveyState={lectureSurveyState}
-              key={lectureSurveyItem.id}
-            />
-          );
-        }
-        if (lectureSurveyItem.type === 'Boolean') {
-          return (
-            <LectureSurveyBooleanView
-              lectureSurveyItem={lectureSurveyItem}
-              lectureSurveyAnswerItem={
-                lectureSurveyState &&
-                lectureSurveyState.answerItem.find(
-                  c => c.questionNumber === lectureSurveyItem.questionNumber
-                )
-              }
-              lectureSurveyState={lectureSurveyState}
-              key={lectureSurveyItem.id}
-            />
-          );
-        }
-        if (lectureSurveyItem.type === 'Matrix') {
-          return (
-            <LectureSurveyMatrixView
-              lectureSurveyItem={lectureSurveyItem}
-              lectureSurveyAnswerItem={
-                lectureSurveyState &&
-                lectureSurveyState.answerItem.find(
-                  c => c.questionNumber === lectureSurveyItem.questionNumber
-                )
-              }
-              lectureSurveyState={lectureSurveyState}
-              key={lectureSurveyItem.id}
-            />
-          );
-        }
-        return null;
-      })}
-      {lectureSurveyState === undefined ||
-        (lectureSurveyState.state !== 'Completed' && (
-          <div className="survey-preview">
-            <button
-              className="ui button fix line"
-              onClick={requestSaveLectureSurveyState}
-            >
-              저장
-            </button>
-            <button
-              className="ui button fix bg"
-              onClick={requestSubmitLectureSurveyState}
-            >
-              제출
-            </button>
-          </div>
-        ))}
+
+      {lectureSurveyState !== undefined &&
+      (lectureSurveyState.state === 'Progress' || lectureSurveyState.state === 'Start') && (
+        lectureSurvey.surveyItems.map(lectureSurveyItem => {
+          if (lectureSurveyItem.type === 'Criterion') {
+            return (
+              <LectureSurveyCriterionView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                lectureSurveyState={lectureSurveyState}
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          if (lectureSurveyItem.type === 'Choice') {
+            return (
+              <LectureSurveyChoiceView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                lectureSurveyState={lectureSurveyState}
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          if (lectureSurveyItem.type === 'Essay') {
+            return (
+              <LectureSurveyEssayView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                lectureSurveyState={lectureSurveyState}
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          if (lectureSurveyItem.type === 'Date') {
+            return (
+              <LectureSurveyDateView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                lectureSurveyState={lectureSurveyState}
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          if (lectureSurveyItem.type === 'Boolean') {
+            return (
+              <LectureSurveyBooleanView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                lectureSurveyState={lectureSurveyState}
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          if (lectureSurveyItem.type === 'Matrix') {
+            return (
+              <LectureSurveyMatrixView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                lectureSurveyState={lectureSurveyState}
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          return null;
+        })
+      )}
+
+      
+    {lectureSurveyState !== undefined && lectureSurveyState.state == 'Finish' && (
+        <>
+          이미 Survey에 응답하였습니다.<br />
+          통계보기 버튼을 통해 Survey 통계를 확인해보세요.<br />
+          <LectureSurveyResultModalView 
+            trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
+            lectureSurvey={lectureSurvey}
+            lectureSurveySummary={lectureSurveySummary}
+          />
+
+          {/* {requestSubmitLectureSurveyState()} */}
+        </>
+      )}
+
+      {lectureSurveyState !== undefined && lectureSurveyState.state !== 'Finish' && (
+        <div className="survey-preview">
+          <button
+            className="ui button fix line"
+            onClick={requestSaveLectureSurveyState}
+          >
+            저장
+          </button>
+          <button
+            className="ui button fix bg"
+            onClick={requestSubmitLectureSurveyState}
+          >
+            제출
+          </button>
+        </div>
+     )}
     </>
   );
 };

@@ -28,6 +28,12 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
   path,
   can,
 }) {
+  console.log(path)
+  console.log(state)
+
+  // if(state !== 'Progress') {
+   
+  // }
   return (
     <StructureLink
       can={can}
