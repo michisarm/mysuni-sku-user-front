@@ -137,7 +137,7 @@ const panes = [
                 <Image src={`${PUBLIC_URL}/images/all/icon-chart.png`} alt="" />
               </div>
               <div className="chart-right">
-                <table>
+                <table style={{borderCollapse: 'separate'}}>
                   <tbody>
                     <tr>
                       <td colSpan={2}>ㅤ</td>
