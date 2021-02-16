@@ -902,6 +902,7 @@ const panes = [
           data-tab="colleges7"
         >
           <div className="college-cont-title leadership">
+            
             <div className="belt sub">
               <div className="label">Leadership College</div>
               <div className="strong">Deep Change Leader로 성장!</div>
@@ -939,6 +940,20 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
+          <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00007/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
@@ -960,7 +975,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1ae/Course/C-LECTURE-14n">
                               Leader as Coach<br/>Advanced P/G
                           </a>
                         </li>
@@ -968,7 +983,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="" onClick={emptyAlert}>
                             Organization
                             <br />
                             Transformation
@@ -978,7 +993,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac">
                             Leader as Coach P/G
                           </a>
                         </li>
@@ -986,7 +1001,7 @@ const panes = [
                           <div className="badge_box1 left">
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
                           </div>
-                          <a href="#">
+                          <a href="" onClick={emptyAlert}>
                             Leadership
                             <br />
                             Transformation
@@ -1033,17 +1048,17 @@ const panes = [
                   <div className="leadership_box bg2">
                     <h3>Leadership Foundation</h3>
                     <ul>
-                      <li className="leader_boxwrap margin_sm">
+                      <li className="leader_boxwrap margin_sm" onClick={emptyAlert}>
                         <p>
                           Global Leadership
                           <br />
                           Acceleration P/G
                         </p>
-                        <a href="#">Remote Performance Mgmt.</a>
-                        <a href="#">Impactful Conversation</a>
-                        <a href="#">Drives for Engagement</a> 
-                        <a href="#">Leveraging Conflict</a> 
-                        <a href="#">EQ Leadership</a>
+                        <a href="" onClick={emptyAlert}>Remote Performance Mgmt.</a>
+                        <a href="" onClick={emptyAlert}>Impactful Conversation</a>
+                        <a href="" onClick={emptyAlert}>Drives for Engagement</a> 
+                        <a href="" onClick={emptyAlert}>Leveraging Conflict</a> 
+                        <a href="" onClick={emptyAlert}>EQ Leadership</a>
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
@@ -1058,7 +1073,7 @@ const panes = [
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-16w/Course/C-LECTURE-11h" className="bg_blue">Motivation Designer</a>
                       </li>
                       <li>
-                        <a href="" onClick={emptyAlert} className="leader_blue">
+                        <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1gy/Course/C-LECTURE-1a1" className="leader_blue">
                           갈등의 재발견
                         </a>
                       </li>
@@ -1213,6 +1228,20 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="semi-topBackground"></div>
