@@ -214,7 +214,11 @@ class InMyLectureService {
   }
 
   @action
-  async findAllTableViews() {
+  async findAllTableViews(offset?: Offset) {
+    if (offset !== undefined) {
+      this._inMyLectureFilterRdo.changeOffset(offset);
+    }
+
     const offsetTableViews = await this.inMyLectureApi.findAllTableViews(this._inMyLectureFilterRdo);
 
     if (offsetTableViews &&
