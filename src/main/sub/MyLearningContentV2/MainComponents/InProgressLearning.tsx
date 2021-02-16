@@ -129,11 +129,12 @@ const InProgressLearning: React.FC<Props> = Props => {
 
     // react-ga event
     ReactGA.event({
-      category: '학습중인 과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_학습중',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      label: `${model.name}`,
     });
 
     const cineroom =

@@ -159,11 +159,12 @@ const RQDLearning: React.FC<Props> = Props => {
     const { model } = data;
 
     ReactGA.event({
-      category: '권장 과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_권장',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      label: `${model.name}`,
     });
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
