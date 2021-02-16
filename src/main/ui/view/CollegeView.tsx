@@ -1058,7 +1058,7 @@ const panes = [
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-16w/Course/C-LECTURE-11h" className="bg_blue">Motivation Designer</a>
                       </li>
                       <li>
-                        <a href="#" className="leader_blue">
+                        <a href="" onClick={emptyAlert} className="leader_blue">
                           갈등의 재발견
                         </a>
                       </li>
@@ -2068,7 +2068,7 @@ const panes = [
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dt/Course/C-LECTURE-17j">Ⅶ. Legal</a>
                           </li>
                           <li>
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               [심화Ⅰ] Deal Structuring <br />
                               &#38; Financing
                             </a>
@@ -2093,8 +2093,8 @@ const panes = [
                         </ul>
                       </div>
                     </div>
-                    <div className="bm-bg-box line_type01 height100">
-                      <h3>Becoming Storyteller</h3>
+                    <div className="bm-bg-box line_type01 height100" onClick={emptyAlert}>
+                      <h3 style={{cursor: 'pointer'}}>Becoming Storyteller</h3>
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
@@ -2156,7 +2156,7 @@ const panes = [
                           </h3>
                       <ul className="list_flex md">
                         <li>
-                          <a href="">Ⅰ. Financial Story 이해</a>
+                          <a href="" onClick={emptyAlert}>Ⅰ. Financial Story 이해</a>
                         </li>
                         <li>
                           <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-u7/Course/C-LECTURE-qb">Ⅱ. Financial Acumen</a>
