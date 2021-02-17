@@ -18,7 +18,6 @@ function LectureSurveyContainer() {
           lectureSurvey={lectureSurvey}
           lectureSurveyState={lectureSurveyState}
           lectureSurveySummary={lectureSurveySummary}
-          lectureSurveyAnswerSummary={lectureSurveyAnswerSummary}
         />
       )}
       {lectureSurvey && (lectureSurveyState?.state === 'None' || lectureSurveyState?.state === 'Completed') && (

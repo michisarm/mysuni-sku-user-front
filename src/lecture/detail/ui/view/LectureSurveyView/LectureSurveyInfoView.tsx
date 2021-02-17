@@ -44,13 +44,11 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 
   const requestFinishLectureSurveyState = (() => {
     finishLectureSurveyState();
-  });
-
-  
+  });  
   if(lectureSurveyState?.state === 'Finish') {
     requestFinishLectureSurveyState()
   }
-
+  
   return (
     <>
       <div className="course-info-header">
@@ -68,6 +66,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                   trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
                   lectureSurvey={lectureSurvey}
                   lectureSurveySummary={lectureSurveySummary}
+                  lectureSurveyAnswerSummary={lectureSurveyAnswerSummary}
                 />
               )}
           </div>

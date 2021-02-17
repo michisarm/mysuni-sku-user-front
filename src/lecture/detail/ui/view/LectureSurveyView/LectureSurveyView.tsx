@@ -10,8 +10,7 @@ import LectureSurveyCriterionView from './LectureSurveyCriterionView';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
   saveLectureSurveyState,
-  submitLectureSurveyState,
-  finishLectureSurveyState
+  submitLectureSurveyState
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
@@ -23,14 +22,12 @@ interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
   lectureSurveySummary?: LectureSurveySummary;
-  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary,
-  lectureSurveyAnswerSummary
+  lectureSurveySummary
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;

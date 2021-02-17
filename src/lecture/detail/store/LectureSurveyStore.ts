@@ -2,7 +2,7 @@ import LectureSurvey from '../viewModel/LectureSurvey';
 import LectureSurveyState from '../viewModel/LectureSurveyState';
 import { createStore } from './Store';
 import LectureSurveySummary from '../viewModel/LectureSurveySummary';
-import LectureSurveyAnswerSummary from '../viewModel/LectureSurveyAnswerSummary';
+import LectureSurveyAnswerSummary, { LectureSurveyAnswer } from '../viewModel/LectureSurveyAnswerSummary';
 
 const [setLectureSurvey, onLectureSurvey, getLectureSurvey] = createStore<
   LectureSurvey
@@ -26,6 +26,12 @@ const [
   getLectureSurveyAnswerSummary,
 ] = createStore<LectureSurveyAnswerSummary>();
 
+const [
+  setLectureSurveyAnswerList,
+  onLectureSurveyAnswerList,
+  getLectureSurveyAnswerList,
+] = createStore<LectureSurveyAnswer[]>();
+
 export {
   setLectureSurvey,
   onLectureSurvey,
@@ -39,4 +45,8 @@ export {
   setLectureSurveyAnswerSummary,
   onLectureSurveyAnswerSummary,
   getLectureSurveyAnswerSummary,
+  
+  setLectureSurveyAnswerList,
+  onLectureSurveyAnswerList,
+  getLectureSurveyAnswerList,
 };

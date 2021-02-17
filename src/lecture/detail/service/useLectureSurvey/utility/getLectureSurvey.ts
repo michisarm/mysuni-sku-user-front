@@ -21,6 +21,7 @@ import {
   setLectureSurveySummary,
   setLectureSurveyAnswerSummary,
   getLectureSurveySummary,
+  setLectureSurveyAnswerList
 } from '../../../store/LectureSurveyStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { State } from '../../../viewModel/LectureState';
@@ -34,7 +35,7 @@ import LectureSurveyState, {
 } from '../../../viewModel/LectureSurveyState';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 import { round } from 'lodash';
-import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
+import LectureSurveyAnswerSummaryList from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
 
 function parseChoice(question: Question): LectureSurveyItem {
   const {
@@ -276,13 +277,12 @@ async function parseSurveySummaryBySurveyCaseIdAndRound(
   return surveySummary;
 }
 
-async function parseAnswerSummariesBySurveySummaryId(
-  surveySummaryId: string,
-): Promise<LectureSurveyAnswerSummary> {
-  const surveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(surveySummaryId);
-  
-  return surveyAnswerSummary;
-}
+// async function parseAnswerSummariesBySurveySummaryId(
+//   surveySummaryId: string,
+// ): Promise<LectureSurveyAnswerSummary> {
+//   const surveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(surveySummaryId);
+//   return surveyAnswerSummary;
+// }
 
 async function getCubeLectureSurveyState(
   serviceId: string,
@@ -483,8 +483,8 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       const lectureSurveySummary = await parseSurveySummaryBySurveyCaseIdAndRound(surveyCase.surveyCaseId, 1);
       setLectureSurveySummary(lectureSurveySummary);
 
-      const lectureSurveyAnswerSummary = await parseAnswerSummariesBySurveySummaryId(lectureSurveySummary.id);
-      setLectureSurveyAnswerSummary(lectureSurveyAnswerSummary);
+      const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(lectureSurveySummary.id);
+      setLectureSurveyAnswerList(lectureSurveyAnswerSummary);
     }
   }
 }

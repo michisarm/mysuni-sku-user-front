@@ -3,19 +3,25 @@ import { Button, Modal } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
+import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
+import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
+import { getLectureSurveyAnswerList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface Props {
   trigger: React.ReactNode,
   lectureSurvey: LectureSurvey;
   lectureSurveySummary?: LectureSurveySummary;
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary;
 }
 
 const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResultModalView({
   trigger,
   lectureSurvey,
-  lectureSurveySummary
+  lectureSurveySummary,
+  lectureSurveyAnswerSummary
 }) {
   const { title } = lectureSurvey;
+  const answerList = getLectureSurveyAnswerList();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
     setOpen(true)
@@ -29,10 +35,20 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     onClose()
   }, []);
 
+
+  // useEffect(()=>{console.log('list',list);},[list]);
+  useEffect(() => {
+    console.log('list111',answerList);
+  }, [answerList]);
+
+
+  // console.log(lectureSurveyAnswerSummary?.surveyAnswers)
+
   return (
     <Modal className="base w1000 inner-scroll" open={open} trigger={trigger} onOpen={onOpen} onClose={onClose}>
       <Modal.Header>
-        <span>{title}</span>        
+        <span>{title}</span>
+        <span>응답 {lectureSurveySummary?.respondentCount.respondentCount}개</span>
       </Modal.Header>
       <Modal.Content className="scrolling-60vh">
       {lectureSurvey.surveyItems.map(lectureSurveyItem => {
@@ -46,6 +62,16 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
                 key={lectureSurveyItem.id}
               />
             </>
+          );
+        }
+        if (lectureSurveyItem.type === 'Essay') {
+          return (
+            <LectureSurveySummaryEssayView
+              lectureSurveyItem={lectureSurveyItem}              
+              lectureSurveySummary={lectureSurveySummary}
+              lectureSurveyAnswerSummary={lectureSurveyAnswerSummary}
+              key={lectureSurveyItem.id}
+            />
           );
         }
 

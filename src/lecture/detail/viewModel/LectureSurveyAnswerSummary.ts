@@ -24,6 +24,14 @@ export interface LectureSurveyAnswer {
   summaryItems: LectureSurveySummaryItem;
 }
 
-export default interface LectureSurveyAnswerSummary {
+export interface LectureSurveyAnswerSummary {
   surveyAnswers: LectureSurveyAnswer[];
+}
+
+
+export default interface LectureSurveyAnswerSummaryList {
+  id: string;
+  answerItemType: LectureSurveyItemType;
+  questionNumber: string;
+  summaryItems: LectureSurveySummaryItem;
 }
