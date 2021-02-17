@@ -8,7 +8,7 @@ import moment from 'moment';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { Icon, Image } from 'semantic-ui-react';
+import { Button, Icon, Image } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 // import { BadgeService } from 'certification/stores';
@@ -24,6 +24,7 @@ import supportRoutePaths from '../../../board/routePaths';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
 import SkProfileModel from "../../../profile/model/SkProfileModel";
+import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -33,8 +34,11 @@ interface Props extends RouteComponentProps {
   menuControlAuthService?: MenuControlAuthService;
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
-
   // badgeService?: BadgeService
+}
+
+interface States {
+  boardVisible: boolean;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -48,19 +52,25 @@ interface Props extends RouteComponentProps {
 ))
 @observer
 @reactAutobind
-class MyLearningSummaryContainer extends Component<Props> {
-  //
+class MyLearningSummaryContainer extends Component<Props, States> {
+
+  state = {
+    boardVisible: false
+  }
+  
   componentDidMount(): void {
     //
     this.init();
   }
 
   init() {
+    console.log('this.state', this.state)
     //
     const { skProfileService } = this.props;
     skProfileService!.findStudySummary();
     this.fetchLearningSummary();
     this.menuControlAuth();
+    // this.props.boardVisible = false;
   }
 
   fetchLearningSummary() {
@@ -73,6 +83,9 @@ class MyLearningSummaryContainer extends Component<Props> {
     myTrainingService!.countMyTrainingsWithStamp();
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
+    myLearningSummaryService!.findMyLearningSummary();
+    console.log('11111111111111111111')
+    myLearningSummaryService!.findTotalMyLearningSummary();
   }
 
   menuControlAuth() {
@@ -138,12 +151,25 @@ class MyLearningSummaryContainer extends Component<Props> {
     this.props.history.push('/my-training/apl/create');
   }
 
+  openBoard () {
+    console.log('openBoard')
+    console.log('boardVisible', this.state.boardVisible)
+    this.setState(prevState => {
+      console.log('prevState', prevState)
+      console.log('!prevState', !prevState)
+      return (
+        ({ boardVisible: !prevState.boardVisible})
+      )
+    })
+  }
+
   render() {
     //
+    const { boardVisible } = this.state;
     const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
-    const { myLearningSummary } = myLearningSummaryService!;
+    const { myLearningSummary, totalMyLearningSummary2 } = myLearningSummaryService!;
     const { myStampCount, thisYearMyStampCount } = myTrainingService!;
     const { earnedCount: myBadgeCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
@@ -157,7 +183,7 @@ class MyLearningSummaryContainer extends Component<Props> {
     let accrueTotal: any = null;
 
     const { menuControlAuth } = menuControlAuthService!;
-
+    console.log('totalMyLearningSummary2', totalMyLearningSummary2)
     if (hour < 1 && minute < 1) {
       total = (
         <>
@@ -237,10 +263,12 @@ class MyLearningSummaryContainer extends Component<Props> {
               </div>
             </div>
             <div className="user">
-              <div className="hello">안녕하세요</div>
+              <div className="hello">안녕하세요 test</div>
               <div className="user-name">
                 <strong className="ellipsis">{member.name}</strong>
                 <span>님</span>
+                <Button onClick={this.openBoard}>openBoard</Button>
+                <Button onClick={this.openBoard}>목표 설정</Button>
               </div>
             </div>
           </ItemWrapper>
@@ -300,6 +328,11 @@ class MyLearningSummaryContainer extends Component<Props> {
             />
           </ItemWrapper>
         </HeaderWrapperView>
+
+{/* 퍼스널보드 컴포넌트 생성 */}
+{ boardVisible && (
+        <PersonalBoardContainer myLearningSummary={myLearningSummary}/>
+)}
 
         <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA}>
           <FavoriteChannelChangeModal
