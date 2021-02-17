@@ -620,6 +620,7 @@ class MyTrainingService {
   @action
   async findAllTableViewsWithPage(offset: Offset) {
     /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
+    console.log("@@ Paging Logic", offset)
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
       /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
@@ -647,7 +648,6 @@ class MyTrainingService {
   /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
   private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
     const { contentType, viewType } = this._myTrainingFilterRdo;
-
     const startIndex = offset.offset;
     const endIndex = offset.offset + offset.limit;
 
@@ -657,7 +657,6 @@ class MyTrainingService {
 
         return courseTableViews.slice(startIndex, endIndex);
       }
-
       return this.inProgressTableViews.slice(startIndex, endIndex);
     }
 

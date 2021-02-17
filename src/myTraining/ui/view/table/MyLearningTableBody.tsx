@@ -408,7 +408,7 @@ function MyLearningTableBody(props: Props) {
         (models &&
           models.length &&
           (models as MyTableView[]).map((model: MyTableView, index: number) => (
-            <Table.Row key={`learning-body-${model.id}`}>
+            <Table.Row key={`learning-body-${model.id}-${index}`}>
               {contentType === MyLearningContentType.InProgress && (
                 <Table.Cell>
                   <Checkbox

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
@@ -226,11 +226,16 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const initPageInfo = () => {
-    pageInfo.current = { offset: 0, limit: 20 };
+    const prevOffset: any = sessionStorage.getItem('prevOffset');
+    console.log(prevOffset)
+    if (prevOffset !== null) {
+      pageInfo.current = JSON.parse(prevOffset)
+      findTableViewsPage(pageInfo.current);
+    }
   };
-
+  console.log("@@ Session Storage", sessionStorage.getItem('prevOffset'))
   const initPageNo = () => {
-    history.replace('./1');
+    // history.replace('./1');
   };
 
   const getPageNo = (): number => {
@@ -470,34 +475,39 @@ function MyLearningListContainerV2(props: Props) {
     [contentType]
   );
 
+  const findTableViewsPage = async (pageInfo: Offset) => {
+    switch (contentType) {
+      case MyPageContentType.EarnedStampList:
+        await myTrainingService!.findAllStampTableViewsWithPage(
+          pageInfo
+        );
+        break;
+      case MyLearningContentType.InMyList:
+        await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
+        break;
+      case MyLearningContentType.Required:
+        await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
+        break;
+      case MyLearningContentType.PersonalCompleted:
+        await aplService!.findAllAplsWithPage(pageInfo);
+        break;
+      default:
+        await myTrainingService!.findAllTableViewsWithPage(pageInfo);
+    }
+  }
+
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    pageInfo.current.offset += pageInfo.current.limit;
     pageInfo.current.limit = PAGE_SIZE;
-    switch (contentType) {
-      case MyPageContentType.EarnedStampList:
-        await myTrainingService!.findAllStampTableViewsWithPage(
-          pageInfo.current
-        );
-        break;
-      case MyLearningContentType.InMyList:
-        await inMyLectureService!.findAllTableViewsWithPage(pageInfo.current);
-        break;
-      case MyLearningContentType.Required:
-        await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
-        break;
-      case MyLearningContentType.PersonalCompleted:
-        await aplService!.findAllAplsWithPage(pageInfo.current);
-        break;
-      default:
-        await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
-    }
+    pageInfo.current.offset += pageInfo.current.limit
+
+    sessionStorage.setItem('prevOffset', JSON.stringify(pageInfo.current))
+    findTableViewsPage(pageInfo.current);
     checkShowSeeMore(contentType);
     history.replace(`./${getPageNo()}`);
-  }, [contentType, match.params.pageNo]);
+  }, [contentType, pageInfo.current]);
 
   /* Render Functions */
   const renderNoSuchContentPanel = (
