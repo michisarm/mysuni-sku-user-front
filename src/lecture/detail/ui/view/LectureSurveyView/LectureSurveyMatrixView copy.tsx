@@ -6,18 +6,18 @@ import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/sa
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyMatrixViewProps {
   lectureSurveyItem: LectureSurveyItem;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveyState?: LectureSurveyState;
 }
 
-const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = function LectureSurveySummaryMatrixView({
+const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> = function LectureSurveyMatrixView({
   lectureSurveyItem,
-  lectureSurveyAnswerItem
+  lectureSurveyAnswerItem,
+  lectureSurveyState
 }) {
-  const answerList = useLectureSurveyAnswerSummaryList();
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
       if (data.value === undefined) {
@@ -28,9 +28,6 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
     [lectureSurveyItem]
   );
   const { columns, rows } = lectureSurveyItem;
-
-  
-
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <Table celled fixed singleLine className="test-table">
@@ -70,16 +67,26 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                         }
                         onChange={onChangeValue}
                       />
-                      
-                      {/* 여기에 몇 개 선택했는지 나와야함 */}
                     </Table.Cell>
                   ))}
               </Table.Row>
             ))}
         </Table.Body>
       </Table>
+
+      {lectureSurveyState === undefined ||
+        lectureSurveyState.state === 'Progress' && 
+        lectureSurveyItem.isRequired === true && 
+        lectureSurveyAnswerItem === undefined && (
+          <>
+            <Icon className="icon listdel24" />
+            <span style={{margin: '0 0 0 7px'}}>필수문항 응답 후 제출해주세요.</span>
+          </>
+        )
+      }
+
     </LectureSurveyChoiceLayout>
   );
 };
 
-export default LectureSurveySummaryMatrixView;
+export default LectureSurveyMatrixView;

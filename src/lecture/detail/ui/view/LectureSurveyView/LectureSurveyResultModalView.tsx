@@ -8,6 +8,7 @@ import { useLectureSurveySummary, useLectureSurveyAnswerSummaryList } from 'lect
 import LectureSurveyState from 'lecture/detail/viewModel/LectureSurveyState';
 import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
+import LectureSurveySummaryMatrixView from './LectureSurveySummaryMatrixView';
 
 interface Props {
   trigger: React.ReactNode,
@@ -88,9 +89,24 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
               key={lectureSurveyItem.id}
             />
           );
-        }if (lectureSurveyItem.type === 'Boolean') {
+        }
+        if (lectureSurveyItem.type === 'Boolean') {
           return (
             <LectureSurveySummaryBooleanView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
+        }
+        if (lectureSurveyItem.type === 'Matrix') {
+          return (
+            <LectureSurveySummaryMatrixView
               lectureSurveyItem={lectureSurveyItem}
               lectureSurveyAnswerItem={
                 lectureSurveyState &&

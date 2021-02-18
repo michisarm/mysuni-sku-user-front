@@ -35,33 +35,41 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
           choices &&
           choices.map(choice => (
             <Fragment key={choice.no}>
-              <Input
-                maxLength={100}
-                label={choice.no}
-                labelPosition="left"
-                value={choice.title}
-                readOnly
+              <Radio
+                className="base"
+                label={choice.title}
+                value={choice.no}
+                checked={
+                  lectureSurveyAnswerItem !== undefined &&
+                  lectureSurveyAnswerItem.itemNumbers !== undefined &&
+                  lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
+                }
+                onChange={onChangeValue}
+                readOnly={false}
               />
-              2 (100%)<br />
-              {choice.image && <img src={choice.image} />}<br />
+              {choice.image && <img src={choice.image} />}
             </Fragment>
           ))}
         {canMultipleAnswer &&
           choices &&
           choices.map(choice => (
             <Fragment key={choice.no}>
-              <Input
-                maxLength={100}
-                label={choice.no}
-                labelPosition="left"
-                value={choice.title}
-                readOnly
-              /><br />
-              {choice.image && <img src={choice.image} />}<br />
+              <Checkbox
+                className="base"
+                label={choice.title}
+                value={choice.no}
+                checked={
+                  lectureSurveyAnswerItem !== undefined &&
+                  lectureSurveyAnswerItem.itemNumbers !== undefined &&
+                  lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
+                }
+                onChange={onChangeValue}
+                readOnly={false}
+              />
+              {choice.image && <img src={choice.image} />}
             </Fragment>
           ))}
       </div>
-
     </LectureSurveyChoiceLayout>
   );
 };
