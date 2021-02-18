@@ -65,8 +65,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                 <LectureSurveyResultModalView 
                   trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
                   lectureSurvey={lectureSurvey}
-                  lectureSurveySummary={lectureSurveySummary}
-                  lectureSurveyAnswerSummary={lectureSurveyAnswerSummary}
                 />
               )}
           </div>

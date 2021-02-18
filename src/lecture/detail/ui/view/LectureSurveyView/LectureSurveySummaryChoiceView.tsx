@@ -1,21 +1,22 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import { Checkbox, CheckboxProps, Radio, Icon, Input } from 'semantic-ui-react';
 import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
+import { getLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
-  lectureSurveySummary?: LectureSurveySummary;
+  lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
 }
 
 const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = function LectureSurveySummaryChoiceView({
   lectureSurveyItem,
-  lectureSurveySummary
+  lectureSurveyAnswerItem
 }) {
+  
+  const answerList = getLectureSurveyAnswerSummaryList();
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
       if (data.value === undefined) {

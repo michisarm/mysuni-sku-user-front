@@ -4,8 +4,7 @@ import AnswerSheetCdo from '../model/AnswerSheetCdo';
 import AnswerSheet from '../model/SurveyAnswerSheet';
 import SurveyForm from '../model/SurveyForm';
 import SurveySummary from '../model/SurveySummary';
-import SurveyAnswerSummary from '../model/SurveyAnswerSummary';
-import SuveyAnswer from '../model/SurveyAnswer';
+import SurveyAnswerSummaryList from '../model/SurveyAnswer';
 
 const BASE_URL = '/api/survey';
 
@@ -76,9 +75,9 @@ export function findSurveySummaryBySurveyCaseIdAndRound(surveyCaseId: string, ro
     .then(response => response && response.data);
 }
 
-export function findAnswerSummariesBySurveySummaryId(surveySummaryId: string): Promise<SuveyAnswer[]> {
+export function findAnswerSummariesBySurveySummaryId(surveySummaryId: string): Promise<SurveyAnswerSummaryList[]> {
   const url = `${BASE_URL}/answerSummaries?surveySummaryId=${surveySummaryId}`;
   return axiosApi
-    .get<SuveyAnswer[]>(url)
+    .get<SurveyAnswerSummaryList[]>(url)
     .then(response => response && response.data);
 }

@@ -2,26 +2,23 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
-import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
-import { getLectureSurveyAnswerList } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummaryDateView from './LectureSurveySummaryDateView';
+import { getLectureSurveySummary, getLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface Props {
   trigger: React.ReactNode,
   lectureSurvey: LectureSurvey;
-  lectureSurveySummary?: LectureSurveySummary;
-  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary;
+  
 }
 
 const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResultModalView({
   trigger,
   lectureSurvey,
-  lectureSurveySummary,
-  lectureSurveyAnswerSummary
 }) {
   const { title } = lectureSurvey;
-  const answerList = getLectureSurveyAnswerList();
+  const lectureSurveySummary  = getLectureSurveySummary();  
+  const answerList = getLectureSurveyAnswerSummaryList();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
     setOpen(true)
@@ -34,15 +31,6 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   const onCancel = useCallback(() => {
     onClose()
   }, []);
-
-
-  // useEffect(()=>{console.log('list',list);},[list]);
-  useEffect(() => {
-    console.log('list111',answerList);
-  }, [answerList]);
-
-
-  // console.log(lectureSurveyAnswerSummary?.surveyAnswers)
 
   return (
     <Modal className="base w1000 inner-scroll" open={open} trigger={trigger} onOpen={onOpen} onClose={onClose}>
@@ -58,7 +46,6 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
             <>
               <LectureSurveySummaryChoiceView
                 lectureSurveyItem={lectureSurveyItem}
-                lectureSurveySummary={lectureSurveySummary}
                 key={lectureSurveyItem.id}
               />
             </>
@@ -68,13 +55,18 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
           return (
             <LectureSurveySummaryEssayView
               lectureSurveyItem={lectureSurveyItem}              
-              lectureSurveySummary={lectureSurveySummary}
-              lectureSurveyAnswerSummary={lectureSurveyAnswerSummary}
               key={lectureSurveyItem.id}
             />
           );
         }
-
+        if (lectureSurveyItem.type === 'Date') {
+          return (
+            <LectureSurveySummaryDateView
+              lectureSurveyItem={lectureSurveyItem}              
+              key={lectureSurveyItem.id}
+            />
+          );
+        }
       })}
 
       </Modal.Content>

@@ -7,28 +7,15 @@ type LectureSurveyItemType =
   | 'Boolean'
   | 'Matrix';
 
-interface NumberCount {
-  questionNo: string;
-  answer: number;
+interface Sentences {
+  sentence: string;
 }
-
 export interface LectureSurveySummaryItem {  
   answerItemType: LectureSurveyItemType;
-  numberCountMap: NumberCount;
+  numberCountMap: Map<string, number>;
+  sentences: Sentences[];
+  sentencesMap: Map<string, number>;
 }
-
-export interface LectureSurveyAnswer {
-  id: string;
-  answerItemType: LectureSurveyItemType;
-  questionNumber: string;
-  summaryItems: LectureSurveySummaryItem;
-}
-
-export interface LectureSurveyAnswerSummary {
-  surveyAnswers: LectureSurveyAnswer[];
-}
-
-
 export default interface LectureSurveyAnswerSummaryList {
   id: string;
   answerItemType: LectureSurveyItemType;

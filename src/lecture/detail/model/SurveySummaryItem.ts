@@ -7,11 +7,12 @@ type LectureSurveyItemType =
   | 'Boolean'
   | 'Matrix';
 
-interface NumberCount {
-  questionNo: string;
-  answer: number;
+interface Sentences {
+  sentence: string;
 }
 export default interface SurveySummaryItem {  
   answerItemType: LectureSurveyItemType;
-  numberCountMap: NumberCount;
+  numberCountMap: Map<string, number>;
+  sentences: Sentences[];
+  sentencesMap: Map<string, number>;
 }

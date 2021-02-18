@@ -7,27 +7,25 @@ import LectureSurveyDateView from './LectureSurveyDateView';
 import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import {
   saveLectureSurveyState,
   submitLectureSurveyState
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
-import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
 
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
-  lectureSurveySummary?: LectureSurveySummary;
+  lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary
+  lectureSurveyAnswerItem
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
@@ -167,7 +165,6 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
           <LectureSurveyResultModalView 
             trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
             lectureSurvey={lectureSurvey}
-            lectureSurveySummary={lectureSurveySummary}
           />
 
           {/* {requestSubmitLectureSurveyState()} */}

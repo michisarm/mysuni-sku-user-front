@@ -7,16 +7,14 @@ import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
+import { getLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
-  lectureSurveySummary?: LectureSurveySummary;
-  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary;
 }
 
 const LectureSurveySummaryEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveySummaryEssayView({
   lectureSurveyItem,
-  lectureSurveyAnswerSummary
 }) {
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -25,16 +23,14 @@ const LectureSurveySummaryEssayView: React.FC<LectureSurveyEssayViewProps> = fun
     [lectureSurveyItem]
   );
   const { maxLength } = lectureSurveyItem;
-
+  const answerList = getLectureSurveyAnswerSummaryList();
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <Form>
         <Form.Field>
           <div className="ui right-top-count input">
-            dd
-            
-
+            {answerList?.map(answer=>answer.summaryItems.sentences)}
           </div>
         </Form.Field>
       </Form>

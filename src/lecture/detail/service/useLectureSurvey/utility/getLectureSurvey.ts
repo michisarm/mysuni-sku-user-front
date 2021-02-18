@@ -19,9 +19,7 @@ import {
   setLectureSurvey,
   setLectureSurveyState,
   setLectureSurveySummary,
-  setLectureSurveyAnswerSummary,
-  getLectureSurveySummary,
-  setLectureSurveyAnswerList
+  setLectureSurveyAnswerSummaryList
 } from '../../../store/LectureSurveyStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { State } from '../../../viewModel/LectureState';
@@ -484,7 +482,7 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       setLectureSurveySummary(lectureSurveySummary);
 
       const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(lectureSurveySummary.id);
-      setLectureSurveyAnswerList(lectureSurveyAnswerSummary);
+      setLectureSurveyAnswerSummaryList(lectureSurveyAnswerSummary);
     }
   }
 }

@@ -2,7 +2,8 @@ import LectureSurvey from '../viewModel/LectureSurvey';
 import LectureSurveyState from '../viewModel/LectureSurveyState';
 import { createStore } from './Store';
 import LectureSurveySummary from '../viewModel/LectureSurveySummary';
-import LectureSurveyAnswerSummary, { LectureSurveyAnswer } from '../viewModel/LectureSurveyAnswerSummary';
+import LectureSurveyAnswerSummary from '../viewModel/LectureSurveyAnswerSummary';
+import LectureSurveyAnswerSummaryList from '../viewModel/LectureSurveyAnswerSummary';
 
 const [setLectureSurvey, onLectureSurvey, getLectureSurvey] = createStore<
   LectureSurvey
@@ -21,16 +22,10 @@ const [
 ] = createStore<LectureSurveySummary>();
 
 const [
-  setLectureSurveyAnswerSummary,
-  onLectureSurveyAnswerSummary,
-  getLectureSurveyAnswerSummary,
-] = createStore<LectureSurveyAnswerSummary>();
-
-const [
-  setLectureSurveyAnswerList,
-  onLectureSurveyAnswerList,
-  getLectureSurveyAnswerList,
-] = createStore<LectureSurveyAnswer[]>();
+  setLectureSurveyAnswerSummaryList,
+  onLectureSurveyAnswerSummaryList,
+  getLectureSurveyAnswerSummaryList,
+] = createStore<LectureSurveyAnswerSummaryList[]>();
 
 export {
   setLectureSurvey,
@@ -42,11 +37,7 @@ export {
   setLectureSurveySummary,
   onLectureSurveySummary,
   getLectureSurveySummary,
-  setLectureSurveyAnswerSummary,
-  onLectureSurveyAnswerSummary,
-  getLectureSurveyAnswerSummary,
-  
-  setLectureSurveyAnswerList,
-  onLectureSurveyAnswerList,
-  getLectureSurveyAnswerList,
+  setLectureSurveyAnswerSummaryList,
+  onLectureSurveyAnswerSummaryList,
+  getLectureSurveyAnswerSummaryList,
 };

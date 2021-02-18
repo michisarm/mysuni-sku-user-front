@@ -10,7 +10,7 @@ type LectureSurveyItemType =
   | 'Boolean'
   | 'Matrix';
 // Answer
-export default interface SuveyAnswer {
+export default interface SurveyAnswerSummaryList {
   id: string;
   answerItemType: LectureSurveyItemType;
   questionNumber: string;
