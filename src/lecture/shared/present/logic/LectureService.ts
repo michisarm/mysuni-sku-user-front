@@ -153,9 +153,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -181,9 +181,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -204,9 +204,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -241,9 +241,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -261,9 +261,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -381,9 +381,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -503,9 +503,9 @@ class LectureService {
 
       runInAction(
         () =>
-          (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
-            recommendLecture.lectures.results
-          ))
+        (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
+          recommendLecture.lectures.results
+        ))
       );
       return recommendLecture.lectures;
     }
@@ -629,7 +629,8 @@ class LectureService {
       offsetTableViews.results.length) {
       const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
       runInAction(() => {
-        this._lectureTableViews = [...this._lectureTableViews, ...addedTableViews];
+        this._lectureTableViews = [...this.lectureTableViews, ...addedTableViews];
+        console.log(this._lectureTableViews.length)
       });
     }
   }

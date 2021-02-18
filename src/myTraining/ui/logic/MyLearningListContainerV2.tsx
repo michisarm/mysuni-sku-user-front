@@ -73,7 +73,7 @@ function MyLearningListContainerV2(props: Props) {
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
+  const location = useLocation();
   /* effects */
   useEffect(() => {
     /* 상위 컴포넌트에서 조회되는 colleges 가 없을 경우, MultiFilterBox 에 전달하기 위해 다시 조회함.*/
@@ -225,15 +225,18 @@ function MyLearningListContainerV2(props: Props) {
     initPageNo();
   };
 
+  useEffect(() => {
+    initPageInfo();
+  }, [match.params.pageNo])
+
   const initPageInfo = () => {
     const prevOffset: any = sessionStorage.getItem('prevOffset');
-    console.log(prevOffset)
-    if (prevOffset !== null) {
+    if (prevOffset) {
       pageInfo.current = JSON.parse(prevOffset)
       findTableViewsPage(pageInfo.current);
     }
   };
-  console.log("@@ Session Storage", sessionStorage.getItem('prevOffset'))
+
   const initPageNo = () => {
     // history.replace('./1');
   };
@@ -430,7 +433,9 @@ function MyLearningListContainerV2(props: Props) {
 
   const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
-  }, []);
+    sessionStorage.removeItem('prevOffset');
+    pageInfo.current = { offset: 0, limit: 20 };
+  }, [pageInfo.current]);
 
   const onClickDelete = useCallback(() => {
     setOpenModal(true);
