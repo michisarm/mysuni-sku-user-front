@@ -260,7 +260,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       {badgeCompList.length > 0 && badgeCompList[0] ?
         badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
-            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`} style={{border:'1px red solid'}} onClick={() => ClickCourseGA(badgeComp.course!)}>
+            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`} onClick={() => ClickCourseGA(badgeComp.course!)}>
               <div className="bar">
                 <span className="tit">
                   <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
@@ -290,7 +290,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             :
             <Fragment key={`cube-${index}`}>
               {/*cube: cube-box > bar.typeA(학습) / bar.typeB(TRS)*/}
-              <div className="cube-box" style={{border:'1px blue solid'}} onClick={() => ClickCubeGA(badgeComp.cube!)}>
+              <div className="cube-box" onClick={() => ClickCubeGA(badgeComp.cube!)}>
                 <div className="bar typeA">
                   <div className="tit">
                     {/*<a href="#" className="ellipsis">{(index + 1) + '. ' + badgeComp.cube!.name}</a>*/}
