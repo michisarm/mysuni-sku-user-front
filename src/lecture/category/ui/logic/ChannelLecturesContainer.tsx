@@ -20,6 +20,7 @@ import routePaths from '../../../routePaths';
 import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
 
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   actionLogService?: ActionLogService,
@@ -171,6 +172,14 @@ class ChannelLecturesContainer extends Component<Props, State> {
       // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
       history.push(routePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
+    // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
+
+    ReactGA.event({
+      
+      category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
+      action: 'Click Card',
+      label: `${data?.model?.name}`
+    })
   }
 
   onClickSeeMore() {
