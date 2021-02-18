@@ -5,16 +5,16 @@ import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
-import LectureSurveyAnswerSummary from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
-import { getLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
+  lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
 }
 
-const LectureSurveySummaryEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveySummaryEssayView({
+const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveyEssayView({
   lectureSurveyItem,
+  lectureSurveyAnswerItem
 }) {
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -23,19 +23,13 @@ const LectureSurveySummaryEssayView: React.FC<LectureSurveyEssayViewProps> = fun
     [lectureSurveyItem]
   );
   const { maxLength } = lectureSurveyItem;
-  const answerList = getLectureSurveyAnswerSummaryList();
-
+  const answerList = useLectureSurveyAnswerSummaryList();
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      <Form>
-        <Form.Field>
-          <div className="ui right-top-count input">
-            {answerList?.map(answer=>answer.summaryItems.sentences)}
-          </div>
-        </Form.Field>
-      </Form>
+      {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}<br /><br />
+      {answerList?.map(answer=>answer.summaryItems.sentences)}
     </LectureSurveyChoiceLayout>
   );
 };
 
-export default LectureSurveySummaryEssayView;
+export default LectureSurveyEssayView;

@@ -19,12 +19,14 @@ const [
   setLectureSurveySummary,
   onLectureSurveySummary,
   getLectureSurveySummary,
+  useLectureSurveySummary
 ] = createStore<LectureSurveySummary>();
 
 const [
   setLectureSurveyAnswerSummaryList,
   onLectureSurveyAnswerSummaryList,
   getLectureSurveyAnswerSummaryList,
+  useLectureSurveyAnswerSummaryList
 ] = createStore<LectureSurveyAnswerSummaryList[]>();
 
 export {
@@ -37,7 +39,9 @@ export {
   setLectureSurveySummary,
   onLectureSurveySummary,
   getLectureSurveySummary,
+  useLectureSurveySummary,
   setLectureSurveyAnswerSummaryList,
   onLectureSurveyAnswerSummaryList,
   getLectureSurveyAnswerSummaryList,
+  useLectureSurveyAnswerSummaryList
 };

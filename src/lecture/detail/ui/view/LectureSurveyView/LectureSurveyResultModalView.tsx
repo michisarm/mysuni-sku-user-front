@@ -4,21 +4,25 @@ import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
 import LectureSurveySummaryDateView from './LectureSurveySummaryDateView';
-import { getLectureSurveySummary, getLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurveySummary, useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveyState from 'lecture/detail/viewModel/LectureSurveyState';
+import LectureSurveyEssayView from './LectureSurveyEssayView';
+import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
 
 interface Props {
   trigger: React.ReactNode,
   lectureSurvey: LectureSurvey;
-  
+  lectureSurveyState?: LectureSurveyState;
 }
 
 const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResultModalView({
   trigger,
   lectureSurvey,
+  lectureSurveyState,
 }) {
   const { title } = lectureSurvey;
-  const lectureSurveySummary  = getLectureSurveySummary();  
-  const answerList = getLectureSurveyAnswerSummaryList();
+  const lectureSurveySummary  = useLectureSurveySummary();  
+  const answerList = useLectureSurveyAnswerSummaryList();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
     setOpen(true)
@@ -46,6 +50,12 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
             <>
               <LectureSurveySummaryChoiceView
                 lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
                 key={lectureSurveyItem.id}
               />
             </>
@@ -54,7 +64,13 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
         if (lectureSurveyItem.type === 'Essay') {
           return (
             <LectureSurveySummaryEssayView
-              lectureSurveyItem={lectureSurveyItem}              
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
               key={lectureSurveyItem.id}
             />
           );
@@ -62,7 +78,26 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
         if (lectureSurveyItem.type === 'Date') {
           return (
             <LectureSurveySummaryDateView
-              lectureSurveyItem={lectureSurveyItem}              
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
+        }if (lectureSurveyItem.type === 'Boolean') {
+          return (
+            <LectureSurveySummaryBooleanView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
               key={lectureSurveyItem.id}
             />
           );

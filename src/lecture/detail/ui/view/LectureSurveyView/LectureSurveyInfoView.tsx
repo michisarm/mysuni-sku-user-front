@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Button } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
@@ -15,15 +15,13 @@ import {
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
-  lectureSurveySummary?: LectureSurveySummary;
-  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary;
+  lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
 }
 
 const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function LectureSurveyInfoView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary,
-  lectureSurveyAnswerSummary
+  lectureSurveyAnswerItem
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
@@ -48,7 +46,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   if(lectureSurveyState?.state === 'Finish') {
     requestFinishLectureSurveyState()
   }
-  
   return (
     <>
       <div className="course-info-header">
@@ -65,6 +62,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                 <LectureSurveyResultModalView 
                   trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
                   lectureSurvey={lectureSurvey}
+                  lectureSurveyState={lectureSurveyState}
                 />
               )}
           </div>
