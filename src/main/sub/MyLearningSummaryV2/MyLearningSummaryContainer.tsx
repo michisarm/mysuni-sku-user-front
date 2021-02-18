@@ -84,8 +84,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
     myLearningSummaryService!.findMyLearningSummary();
-    console.log('11111111111111111111')
-    myLearningSummaryService!.findTotalMyLearningSummary();
+    myLearningSummaryService!.findTotalMyLearningSummary2();
   }
 
   menuControlAuth() {
@@ -329,10 +328,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           </ItemWrapper>
         </HeaderWrapperView>
 
-{/* 퍼스널보드 컴포넌트 생성 */}
-{ boardVisible && (
-        <PersonalBoardContainer myLearningSummary={myLearningSummary}/>
-)}
+      {/* 퍼스널보드 컴포넌트 생성 */}
+      { boardVisible && (
+        <PersonalBoardContainer/>
+      )}
 
         <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA}>
           <FavoriteChannelChangeModal

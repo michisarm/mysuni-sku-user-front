@@ -80,7 +80,7 @@ class MyLearningSummaryService {
   async findTotalMyLearningSummary2() {
     console.log('findTotalMyLearningSummary')
     const test = await this.myLearningSummaryApi.findTotalMyLearningSummary()
-
+    console.log('test', test)
     return runInAction(() => {
       this.totalMyLearningSummary2 = new MyLearningSummaryModel(test)
     })
