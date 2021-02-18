@@ -21,6 +21,7 @@ export interface LectureSurveyItem {
   rows?: LectureSurveyItemChoice[];
   columns?: LectureSurveyItemChoice[];
   questionNumber: string;
+  visible: boolean;
 }
 
 export interface LectureSurveyItemChoice {

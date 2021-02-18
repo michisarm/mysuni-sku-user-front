@@ -44,6 +44,7 @@ function parseChoice(question: Question): LectureSurveyItem {
     sentencesImageUrl,
     sequence,
     answerItems,
+    visible
   } = question;
   const title = sentences.langStringMap[sentences.defaultLanguage];
   const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
@@ -83,6 +84,7 @@ function parseChoice(question: Question): LectureSurveyItem {
     canMultipleAnswer,
     choices,
     questionNumber,
+    visible
   };
 }
 
@@ -129,6 +131,7 @@ function parseCriterion(
       };
     }) || [];
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  const visible = true;
   return {
     title,
     image,
@@ -139,6 +142,7 @@ function parseCriterion(
     canMultipleAnswer,
     choices,
     questionNumber,
+    visible
   };
 }
 
@@ -162,7 +166,7 @@ function parseEssay(question: Question): LectureSurveyItem {
   const isRequired = !optional;
   const maxLength = answerItems !== null ? answerItems.maxLength : undefined;
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
-
+  const visible = true;
   return {
     title,
     image,
@@ -172,6 +176,7 @@ function parseEssay(question: Question): LectureSurveyItem {
     isRequired,
     maxLength,
     questionNumber,
+    visible
   };
 }
 
@@ -222,6 +227,7 @@ function parseMatrix(question: Question): LectureSurveyItem {
       };
     }) || [];
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  const visible = true;
 
   return {
     title,
@@ -234,6 +240,7 @@ function parseMatrix(question: Question): LectureSurveyItem {
     columns,
     rows,
     questionNumber,
+    visible
   };
 }
 

@@ -24,10 +24,17 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
   );
   const { maxLength } = lectureSurveyItem;
   const answerList = useLectureSurveyAnswerSummaryList();
+
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveyChoiceLayout {...lectureSurveyItem}>     
+      
       {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}<br /><br />
-      {answerList?.map(answer=>answer.summaryItems.sentences)}
+      
+      {lectureSurveyItem.visible !== undefined &&
+      lectureSurveyItem.visible === true && (
+        answerList?.map(answer=>answer.summaryItems.sentences)
+      )||''}
+    
     </LectureSurveyChoiceLayout>
   );
 };
