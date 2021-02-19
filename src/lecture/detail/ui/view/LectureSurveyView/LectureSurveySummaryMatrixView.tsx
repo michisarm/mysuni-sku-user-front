@@ -27,7 +27,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
     },
     [lectureSurveyItem]
   );
-  const { columns, rows } = lectureSurveyItem;
+  const { columns, rows ,questionNumber} = lectureSurveyItem;
 
   
 
@@ -46,11 +46,11 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
 
         <Table.Body>
           {rows &&
-            rows.map(({ title, no: rowNumber }) => (
+            rows.map(({ title, no: rowNumber },rowIndex) => (
               <Table.Row key={rowNumber}>
                 <Table.Cell>{title}</Table.Cell>
                 {columns &&
-                  columns.map(({ no: columnSelectedNumber }) => (
+                  columns.map(({ no: columnSelectedNumber },index) => (
                     <Table.Cell key={columnSelectedNumber}>
                       <Radio
                         className="base"
@@ -70,6 +70,10 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                         }
                         onChange={onChangeValue}
                       />
+
+                        
+
+                      {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.matrixItems[rowIndex].numberCountMap)[index]}})}
                       
                       {/* 여기에 몇 개 선택했는지 나와야함 */}
                     </Table.Cell>
