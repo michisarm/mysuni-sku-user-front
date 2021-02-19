@@ -276,6 +276,9 @@ const panes = [
                   alt=""
                 />
               </div>
+              <div className="text-left-box">
+                <p className="p_link inno">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
             </div>
           </div>
 
@@ -973,7 +976,9 @@ const panes = [
                       <ul>
                         <li className="margin_25">
                           <div className="badge_box1 left">
-                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`} alt="" />
+                            <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-38" className="card-badge-link">
+                              <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-3.png`} alt="" />
+                            </a>
                           </div>
                           <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1ae/Course/C-LECTURE-14n">
                               Leader as Coach<br/>Advanced P/G
@@ -991,7 +996,9 @@ const panes = [
                         </li>
                         <li>
                           <div className="badge_box1 left">
-                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
+                            <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-37" className="card-badge-link">
+                              <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-2.png`} alt="" />
+                            </a>
                           </div>
                           <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac">
                             Leader as Coach P/G
@@ -1062,7 +1069,9 @@ const panes = [
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
-                          <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-1.png`} alt="" />
+                          <a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-36" className="card-badge-link">
+                            <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-1.png`} alt="" />
+                          </a>
                         </div>
                         <p>Leadership Essentials</p>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-pe/Course/C-LECTURE-la" className="bg_blue">전략적 사고</a>
@@ -1807,6 +1816,11 @@ const panes = [
                               </span>
                             </a>
                           </li>
+                          <li>
+                            <a href={`${semiconductorLinks['Covid-19이 반도체 Supply Chain에 미치는 영향']}`}>
+                            Covid-19이 반도체 Supply Chain에 <br />미치는 영향
+                            </a>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -1888,8 +1902,7 @@ const panes = [
       <Tab.Pane>
         <div
           className="ui attached tab full segment active"
-          data-tab="colleges11"
-        >
+          data-tab="colleges11">
           <div className="college-cont-title energy">
             <div className="belt">
               <div className="panopto">
@@ -1978,6 +1991,21 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link" style={{color: '#bd38a5'}}>각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
+
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="bm-top-btn">
@@ -2098,7 +2126,7 @@ const panes = [
                           </li>
                           <li>
                             <a href="" onClick={emptyAlert}>
-                              [심화Ⅰ] Deal Structuring <br />
+                              [심화I] Deal Structuring <br />
                               &#38; Financing
                             </a>
                           </li>
@@ -2122,15 +2150,12 @@ const panes = [
                         </ul>
                       </div>
                     </div>
-                    <div className="bm-bg-box line_type01 height100" onClick={emptyAlert}>
-                      <h3 style={{cursor: 'pointer'}}>Becoming Storyteller</h3>
+                    <div className="bm-bg-box line_type01 height100">
+                      <h3><a href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channel/CHN0007p">Becoming Storyteller</a></h3>
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <a href="">Stakeholder 이해</a>
-                          </li>
-                          <li>
-                            <a href="">
+                            <a href="" onClick={emptyAlert}>
                               Financial Storytelling <br />
                               글로벌 사례 연구
                             </a>
@@ -2138,10 +2163,10 @@ const panes = [
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <a href="">6R Comm. 전략</a>
+                            <a href="" onClick={emptyAlert}>6R 관점 Stakeholder 이해</a>
                           </li>
                           <li>
-                            <a href="">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1gs/Course/C-LECTURE-19y">
                               [Focus] Financial <br />
                               Society Partnership
                             </a>
@@ -2185,14 +2210,14 @@ const panes = [
                           </h3>
                       <ul className="list_flex md">
                         <li>
-                          <a href="" onClick={emptyAlert}>Ⅰ. Financial Story 이해</a>
+                          <a href="" onClick={emptyAlert}>Financial Story 이해</a>
                         </li>
                         <li>
-                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-u7/Course/C-LECTURE-qb">Ⅱ. Financial Acumen</a>
+                          <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-u7/Course/C-LECTURE-qb">Financial Acumen</a>
                         </li>
                         <li>
                           <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crx/lecture-card/LECTURE-CARD-acg">
-                            Ⅲ. 투자자 관점에서 본 <br />
+                            투자자 관점에서 본 <br />
                             Financial Story
                           </a>
                         </li>
@@ -2314,7 +2339,6 @@ interface Props extends RouteComponentProps {}
 interface State {
   activeIndex: number;
 }
-
 @reactAutobind
 class CollegeView extends Component<Props, State> {
   //
@@ -2325,6 +2349,10 @@ class CollegeView extends Component<Props, State> {
   componentDidMount() {
     //
     this.setActiveTab();
+
+    if(window.location.search === '?subTab=BM%20Design&Storytelling' || window.location.search === '?subTab=BM%2520Design%2520%2526%2520Storytelling') {
+      this.setState({activeIndex: 10})
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -2338,7 +2366,7 @@ class CollegeView extends Component<Props, State> {
     //
     const queryParams = queryString.parse(this.props.location.search);
     const subTab = queryParams.subTab as string;
-
+    
     if (subTab) {
       const activeIndex = panes.findIndex(pane => pane.menuItem === subTab);
 
@@ -2350,7 +2378,6 @@ class CollegeView extends Component<Props, State> {
 
   onTabChange(e: any, { activeIndex }: any) {
     //
-    console.log('asdf',panes[activeIndex].menuItem);
     this.props.history.push(
       routePaths.introductionCollege(panes[activeIndex].menuItem)
     );
@@ -2434,4 +2461,5 @@ const semiconductorLinks: any = {
   'Next Generation Semiconductor Packaging Technology': 'https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-12u/Course/C-LECTURE-xu',
   '반도체 FAB 생산 운영 전문가': 'https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-1ap/Course/C-LECTURE-14u',
   '반도체 FAB 최적화 전문가': 'https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-1aq/Course/C-LECTURE-14v',
+  'Covid-19이 반도체 Supply Chain에 미치는 영향': 'https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00017/course-plan/COURSE-PLAN-on/Course/C-LECTURE-kp',
 }
