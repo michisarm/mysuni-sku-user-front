@@ -13,9 +13,8 @@ interface LectureSurveyItemProps {
 
 const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = function LectureSurveySummaryChoiceView({
   lectureSurveyItem,
-  lectureSurveyAnswerItem
+  lectureSurveyAnswerItem,
 }) {
-  
   const answerList = getLectureSurveyAnswerSummaryList();
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
@@ -27,65 +26,71 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     [lectureSurveyItem]
   );
 
-  let choiceMap : string[] = [];
-  let countMap : number[] = [];
-
-  answerList?.map(answer => {
-    if(answer.summaryItems.answerItemType === 'Choice') {
-      choiceMap = Object.keys(answer.summaryItems.numberCountMap);
-      countMap = Object.values(answer.summaryItems.numberCountMap);
-    }
-  })
-
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
-          choices.map((choice,index) => (
-            <Fragment key={choice.no}>
-              <Radio
-                className="base"
-                label={choice.title}
-                value={choice.no}
-                checked={
-                  lectureSurveyAnswerItem !== undefined &&
-                  lectureSurveyAnswerItem.itemNumbers !== undefined &&
-                  lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
-                }
-                onChange={onChangeValue}
-                readOnly={false}
-              />
-              
-              {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.numberCountMap)[index]}})}
+          choices.map((choice, index) => {
+            const numberCountMap = answerList?.find(
+              f => f.questionNumber === questionNumber
+            )?.summaryItems.numberCountMap;
+            const count =
+              numberCountMap !== undefined
+                ? numberCountMap[choice.no.toString()]
+                : 0;
 
+            return (
+              <Fragment key={choice.no}>
+                <Radio
+                  className="base"
+                  label={choice.title}
+                  value={choice.no}
+                  checked={
+                    lectureSurveyAnswerItem !== undefined &&
+                    lectureSurveyAnswerItem.itemNumbers !== undefined &&
+                    lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
+                  }
+                  onChange={onChangeValue}
+                  readOnly={false}
+                />
+                {count}
+                {choice.image && <img src={choice.image} />}
+              </Fragment>
+            );
+          })}
 
-              {choice.image && <img src={choice.image} />}
-            </Fragment>
-          ))}
         {canMultipleAnswer &&
           choices &&
-          choices.map((choice,index) => (
-            <Fragment key={choice.no}>
-              <Checkbox
-                className="base"
-                label={choice.title}
-                value={choice.no}
-                checked={
-                  lectureSurveyAnswerItem !== undefined &&
-                  lectureSurveyAnswerItem.itemNumbers !== undefined &&
-                  lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
-                }
-                onChange={onChangeValue}
-                readOnly={false}
-              />
-              
-              {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.numberCountMap)[index]}})}
+          choices.map((choice, index) => {
+            const numberCountMap = answerList?.find(
+              f => f.questionNumber === questionNumber
+            )?.summaryItems.numberCountMap;
+            const count =
+              numberCountMap !== undefined
+                ? numberCountMap[choice.no.toString()]
+                : 0;
 
-              {choice.image && <img src={choice.image} />}
-            </Fragment>
-          ))}
+            return (
+              <Fragment key={choice.no}>
+                <Checkbox
+                  className="base"
+                  label={choice.title}
+                  value={choice.no}
+                  checked={
+                    lectureSurveyAnswerItem !== undefined &&
+                    lectureSurveyAnswerItem.itemNumbers !== undefined &&
+                    lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
+                  }
+                  onChange={onChangeValue}
+                  readOnly={false}
+                />
+                {count}
+                {choice.image && <img src={choice.image} />}
+              </Fragment>
+            );
+          })}
       </div>
     </LectureSurveyChoiceLayout>
   );

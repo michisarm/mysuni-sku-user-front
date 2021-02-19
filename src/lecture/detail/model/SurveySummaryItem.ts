@@ -1,4 +1,3 @@
-
 type LectureSurveyItemType =
   | 'Criterion'
   | 'Choice'
@@ -11,14 +10,14 @@ interface Sentences {
   sentence: string;
 }
 interface MatrixItem {
-  numberCountMap: Map<string, number>;
+  numberCountMap: Record<string, number>;
   rowNumber: number;
 }
-export default interface SurveySummaryItem {  
+export default interface SurveySummaryItem {
   answerItemType: LectureSurveyItemType;
-  numberCountMap: Map<string, number>;
+  numberCountMap: Record<string, number>;
   sentences: Sentences[];
-  sentencesMap: Map<string, number>;
+  sentencesMap: Record<string, number>;
   matrixItems: MatrixItem[];
-  criteriaItemCountMap: Map<string, number>;
+  criteriaItemCountMap: Record<string, number>;
 }

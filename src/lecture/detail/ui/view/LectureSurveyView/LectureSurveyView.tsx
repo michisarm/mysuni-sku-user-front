@@ -33,8 +33,6 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
   
-  console.log('lectureSurveySummary@@@@@@@@@@@@', lectureSurveySummary);
-  
   const requestSaveLectureSurveyState = useCallback(() => {
     if (params === undefined) {
       return;

@@ -19,7 +19,7 @@ import {
   setLectureSurvey,
   setLectureSurveyState,
   setLectureSurveySummary,
-  setLectureSurveyAnswerSummaryList
+  setLectureSurveyAnswerSummaryList,
 } from '../../../store/LectureSurveyStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { State } from '../../../viewModel/LectureState';
@@ -43,7 +43,7 @@ function parseChoice(question: Question): LectureSurveyItem {
     sentencesImageUrl,
     sequence,
     answerItems,
-    visible
+    visible,
   } = question;
   const title = sentences.langStringMap[sentences.defaultLanguage];
   const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
@@ -83,7 +83,7 @@ function parseChoice(question: Question): LectureSurveyItem {
     canMultipleAnswer,
     choices,
     questionNumber,
-    visible
+    visible,
   };
 }
 
@@ -141,7 +141,7 @@ function parseCriterion(
     canMultipleAnswer,
     choices,
     questionNumber,
-    visible
+    visible,
   };
 }
 
@@ -175,7 +175,7 @@ function parseEssay(question: Question): LectureSurveyItem {
     isRequired,
     maxLength,
     questionNumber,
-    visible
+    visible,
   };
 }
 
@@ -239,7 +239,7 @@ function parseMatrix(question: Question): LectureSurveyItem {
     columns,
     rows,
     questionNumber,
-    visible
+    visible,
   };
 }
 
@@ -438,7 +438,10 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       const lectureSurvey = await parseSurveyForm(contents.surveyId);
       setLectureSurvey(lectureSurvey);
       await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(contents.surveyCaseId, 1);
+      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
+        contents.surveyCaseId,
+        1
+      );
       setLectureSurveySummary(lectureSurveySummary);
     }
   }
@@ -452,7 +455,10 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId);
       setLectureSurvey(lectureSurvey);
       await getCourseLectureSurveyState(lectureId, surveyCase.id);
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(surveyCase.id, 1);
+      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
+        surveyCase.id,
+        1
+      );
       setLectureSurveySummary(lectureSurveySummary);
     }
   }
@@ -466,15 +472,22 @@ export async function getLectureSurvey(params: LectureRouterParams) {
     ) {
       const lectureSurvey = await parseSurveyForm(surveyCase.surveyId);
       setLectureSurvey(lectureSurvey);
-      
+
       await getCourseLectureSurveyState(lectureId, surveyCase.surveyCaseId);
 
-      const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCase.surveyCaseId);
+      const answerSheet = await findAnswerSheetBySurveyCaseId(
+        surveyCase.surveyCaseId
+      );
 
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(surveyCase.surveyCaseId, answerSheet?.round || 1);
+      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
+        surveyCase.surveyCaseId,
+        answerSheet?.round || 1
+      );
       setLectureSurveySummary(lectureSurveySummary);
 
-      const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(lectureSurveySummary.id);
+      const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(
+        lectureSurveySummary.id
+      );
       setLectureSurveyAnswerSummaryList(lectureSurveyAnswerSummary);
     }
   }
