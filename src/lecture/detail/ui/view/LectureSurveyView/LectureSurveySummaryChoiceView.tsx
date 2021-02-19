@@ -40,7 +40,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     }
   })
 
-  const { canMultipleAnswer, choices } = lectureSurveyItem;
+  const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -81,9 +81,8 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 onChange={onChangeValue}
                 readOnly={false}
               />
-
-              {/* {countMap[index]} */}
-              {answerList?.map((f)=>{if(f.id == '43485538-9e34-43f6-893e-ce947d385c74') {return Object.values(f.summaryItems.numberCountMap)[index]}})}
+              
+              {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.numberCountMap)[index]}})}
 
               {choice.image && <img src={choice.image} />}
             </Fragment>
