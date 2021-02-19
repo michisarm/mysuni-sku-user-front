@@ -61,6 +61,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 readOnly={false}
               />
               {countMap[index]}
+
               {choice.image && <img src={choice.image} />}
             </Fragment>
           ))}
@@ -81,7 +82,8 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 readOnly={false}
               />
 
-              {countMap[index]}
+              {/* {countMap[index]} */}
+              {answerList?.map((f)=>{if(f.id == '43485538-9e34-43f6-893e-ce947d385c74') {return Object.values(f.summaryItems.numberCountMap)[index]}})}
 
               {choice.image && <img src={choice.image} />}
             </Fragment>
