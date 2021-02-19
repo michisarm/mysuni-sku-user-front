@@ -75,7 +75,7 @@ function MyLearningListContainerV2(props: Props) {
   const [refresh, setRefesh] = useState<boolean>(false)
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-  const prevOffset: any = window.sessionStorage.getItem('prevOffset');
+  const prevOffset: any = sessionStorage.getItem('prevOffset');
 
   /* effects */
   useEffect(() => {

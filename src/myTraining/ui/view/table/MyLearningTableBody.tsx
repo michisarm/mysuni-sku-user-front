@@ -45,7 +45,9 @@ function MyLearningTableBody(props: Props) {
   */
 
   useEffect(() => {
-    scrollOnceMove();
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 200)
   }, [scrollOnceMove])
 
   const getApprovalTime = (model: AplModel): string => {

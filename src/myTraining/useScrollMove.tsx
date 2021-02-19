@@ -2,9 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 export const useScrollMove = () => {
-
-
-
   const history = useHistory();
   const [scrollPos, setScrollPos] = useState<any>(() => sessionStorage.getItem('SCROLL_POS'))
   const scrollTop = parseInt(scrollPos, 0) || 0;
@@ -21,7 +18,7 @@ export const useScrollMove = () => {
   const scrollOnceMove = useCallback(scrollMove, [scrollTop])
 
   const scrollSave = () => {
-    const scrollPos: any = window.pageYOffset; // window.scrollY
+    const scrollPos: any = window.scrollY;
     return sessionStorage.setItem('SCROLL_POS', scrollPos)
   }
 
