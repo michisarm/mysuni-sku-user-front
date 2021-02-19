@@ -43,7 +43,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     }
     submitLectureSurveyState(params.lectureParams, params.pathname);
   }, [params]);
-  
+
   return (
     <>
       <div className="course-info-header">
@@ -158,7 +158,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
       )}
 
       
-    {lectureSurveyState !== undefined && lectureSurveyState.state == 'Finish' && (
+    {lectureSurveyState !== undefined && lectureSurveyState.state == 'Completed' && (
         <>
           이미 Survey에 응답하였습니다.<br />
           통계보기 버튼을 통해 Survey 통계를 확인해보세요.<br />
@@ -172,7 +172,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         </>
       )}
 
-      {lectureSurveyState !== undefined && lectureSurveyState.state !== 'Finish' && (
+      {lectureSurveyState !== undefined && lectureSurveyState.state !== 'Completed' && (
         <div className="survey-preview">
           <button
             className="ui button fix line"

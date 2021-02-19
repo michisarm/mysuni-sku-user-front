@@ -16,7 +16,7 @@ function LectureSurveyContainer() {
       {lectureSurvey &&
         (lectureSurveyState?.state === 'Start' ||
           lectureSurveyState?.state === 'Progress' ||
-          lectureSurveyState?.state === 'Finish') && (
+          lectureSurveyState?.state === 'Completed') && (
           <LectureSurveyView
             lectureSurvey={lectureSurvey}
             lectureSurveyState={lectureSurveyState}
@@ -24,7 +24,7 @@ function LectureSurveyContainer() {
         )}
       {lectureSurvey &&
         (lectureSurveyState?.state === 'None' ||
-          lectureSurveyState?.state === 'Completed') && (
+          lectureSurveyState?.state === 'Finish') && (
           <LectureSurveyInfoView
             lectureSurvey={lectureSurvey}
             lectureSurveyState={lectureSurveyState}

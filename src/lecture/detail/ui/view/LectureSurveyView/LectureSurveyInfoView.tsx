@@ -42,10 +42,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 
   const requestFinishLectureSurveyState = (() => {
     finishLectureSurveyState();
-  });  
-  if(lectureSurveyState?.state === 'Finish') {
-    requestFinishLectureSurveyState()
-  }
+  });
   return (
     <>
       <div className="course-info-header">
@@ -58,7 +55,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                   응시하기
                 </button>
               )}
-              {lectureSurveyState !== undefined && lectureSurveyState.state === 'Completed' && (
+              {lectureSurveyState !== undefined && lectureSurveyState.state === 'Finish' && (
                 <LectureSurveyResultModalView 
                   trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
                   lectureSurvey={lectureSurvey}
@@ -76,7 +73,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           해당 Survey에 참여를 원하시면, 우측 상단 응시하기 버튼을 클릭해주세요.
         </>
       )}
-      {lectureSurveyState !== undefined && lectureSurveyState.state === 'Completed' && (
+      {lectureSurveyState !== undefined && lectureSurveyState.state === 'Finish' && (
         <>
           Survey 설명: {title}<br />
           문항개수: 총 {lectureSurvey.surveyItems.length}문항<br />
