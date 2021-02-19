@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -19,6 +19,7 @@ import { AplStateName } from 'myTraining/model/AplStateName';
 import { LectureServiceType } from 'lecture/model';
 import { MyLearningContentType, MyPageContentType } from '../../model';
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props {
   contentType: MyContentType | MyApprovalContentType;
@@ -34,7 +35,7 @@ function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
-
+  const { scrollOnceMove } = useScrollMove();
   /* functions */
   /* 
     아래의 두 함수는 나중에 AplModel 의 매서드로 변경하기.
@@ -42,6 +43,11 @@ function MyLearningTableBody(props: Props) {
     2. getLearningTime()
 
   */
+
+  useEffect(() => {
+    scrollOnceMove();
+  }, [scrollOnceMove])
+
   const getApprovalTime = (model: AplModel): string => {
     /* 승인 상태에 따라 승인시간을 다르게 보여줌. */
     if (model.state === AplState.Opened) {
@@ -107,7 +113,6 @@ function MyLearningTableBody(props: Props) {
     const cineroomId = patronInfo.getCineroomId() || '';
     /* URL 표현을 위한 변환. */
     const convertedServiceType = convertServiceType(serviceType);
-
     // Card
     if (model.isCardType()) {
       history.push(
@@ -131,14 +136,13 @@ function MyLearningTableBody(props: Props) {
         )
       );
     }
-    
+
     // react-ga event
     ReactGA.event({
       category: '학습중인 과정',
       action: 'Click',
-      label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${model.name
+        }`,
     });
   };
 

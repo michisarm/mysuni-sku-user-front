@@ -620,7 +620,8 @@ class LectureService {
 
   @action
   async findAllRqdTableViewsWithPage(offset: Offset) {
-    this._lectureFilterRdoV2.changeOffset(offset);
+    const newOffset: Offset = { offset: 0, limit: offset.offset + offset.limit }
+    this._lectureFilterRdoV2.changeOffset(newOffset);
     const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
 
     if (
@@ -630,8 +631,7 @@ class LectureService {
       const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
 
       runInAction(() => {
-        this._lectureTableViews = [...this.lectureTableViews, ...addedTableViews];
-        console.log("Required Data length", this._lectureTableViews.length)
+        this._lectureTableViews = [...addedTableViews];
       });
     }
   }

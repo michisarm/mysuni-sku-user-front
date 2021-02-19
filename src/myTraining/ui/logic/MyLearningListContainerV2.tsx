@@ -32,6 +32,7 @@ import {
 import MyApprovalContentType from '../model/MyApprovalContentType';
 import FilterCountViewModel from '../../model/FilterCountViewModel';
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;
@@ -72,9 +73,9 @@ function MyLearningListContainerV2(props: Props) {
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [refresh, setRefesh] = useState<boolean>(false)
+
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-  const location = useLocation();
-  const prevOffset: any = sessionStorage.getItem('prevOffset');
+  const prevOffset: any = window.sessionStorage.getItem('prevOffset');
 
   /* effects */
   useEffect(() => {
@@ -231,16 +232,24 @@ function MyLearningListContainerV2(props: Props) {
     }
   }, [refresh])
 
-  const getPageInfo = () => {
+  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry']
 
-    if (prevOffset !== null && contentType !== 'Required' && contentType !== 'InMyList' && refresh) {
-      console.log('@@ GET PAGEINFO 학습')
+  const getPageInfo = () => {
+    const matchesMenu = TableViewsMenu.includes(contentType);
+
+    if (prevOffset !== null && matchesMenu && refresh) {
+      // if (prevOffset !== null && matchesMenu && refresh) {
       pageInfo.current = JSON.parse(prevOffset)
       findTableViewsPage(pageInfo.current);
     } else if (prevOffset !== null && contentType === 'Required' && refresh) {
-      console.log('@@ GET PAGEINFO 권장과정')
       pageInfo.current = JSON.parse(prevOffset)
       findRequiredViewPage(pageInfo.current);
+    } else if (prevOffset !== null && contentType === 'InMyList' && refresh) {
+      pageInfo.current = JSON.parse(prevOffset)
+      findInMyListViewPage(pageInfo.current);
+    } else if (prevOffset !== null && contentType === 'PersonalCompleted' && refresh) {
+      pageInfo.current = JSON.parse(prevOffset)
+      findPersonalCompletedViewPage(pageInfo.current);
     }
   };
 
@@ -437,7 +446,9 @@ function MyLearningListContainerV2(props: Props) {
   const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
     sessionStorage.removeItem('prevOffset');
+    sessionStorage.removeItem('SCROLL_POS');
     pageInfo.current = { offset: 0, limit: 20 };
+    window.scrollTo(0, 0)
   }, [pageInfo.current]);
 
   const onClickDelete = useCallback(() => {
@@ -483,22 +494,24 @@ function MyLearningListContainerV2(props: Props) {
     [contentType]
   );
 
+  const findRequiredViewPage = async (pageInfo: Offset) => {
+    await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
+  }
+
+  const findInMyListViewPage = async (pageInfo: Offset) => {
+    await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
+  }
+
+  const findPersonalCompletedViewPage = async (pageInfo: Offset) => {
+    await aplService!.findAllAplsWithPage(pageInfo);
+  }
+
   const findTableViewsPage = async (pageInfo: Offset) => {
-    console.log('findTableViewsPage')
     switch (contentType) {
       case MyPageContentType.EarnedStampList:
         await myTrainingService!.findAllStampTableViewsWithPage(
           pageInfo
         );
-        break;
-      case MyLearningContentType.InMyList:
-        await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
-        break;
-      // case MyLearningContentType.Required:
-      //   await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
-      //   break;
-      case MyLearningContentType.PersonalCompleted:
-        await aplService!.findAllAplsWithPage(pageInfo);
         break;
       default:
         await myTrainingService!.findAllTableViewsWithPage(pageInfo);
@@ -511,9 +524,9 @@ function MyLearningListContainerV2(props: Props) {
     }, 1000);
     pageInfo.current.limit = PAGE_SIZE;
     pageInfo.current.offset += pageInfo.current.limit
-
     sessionStorage.setItem('prevOffset', JSON.stringify(pageInfo.current))
     if (contentType === 'Required') findRequiredViewPage(pageInfo.current)
+    if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current)
     if (contentType !== 'InMyList' && contentType !== 'Required') findTableViewsPage(pageInfo.current);
     checkShowSeeMore(contentType);
     history.replace(`./${getPageNo()}`);
@@ -538,10 +551,7 @@ function MyLearningListContainerV2(props: Props) {
     return <NoSuchContentPanel message={message} link={link} />;
   };
 
-  const findRequiredViewPage = async (pageInfo: Offset) => {
-    console.log('findRequired')
-    await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
-  }
+
 
   /* render */
   return (
