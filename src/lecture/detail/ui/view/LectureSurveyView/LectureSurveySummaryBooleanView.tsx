@@ -31,12 +31,12 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
   }, [lectureSurveyItem, lectureSurveyAnswerItem]);
   const { questionNumber } = lectureSurveyItem;
 
-  let BooleanMap : string[] = [];
+  let booleanMap : string[] = [];
   let countMap : number[] = [];
 
   answerList?.map(answer => {
     if(answer.summaryItems.answerItemType === 'Boolean') {
-      BooleanMap = Object.keys(answer.summaryItems.numberCountMap);
+      booleanMap = Object.keys(answer.summaryItems.numberCountMap);
       countMap = Object.values(answer.summaryItems.numberCountMap);
     }
   })

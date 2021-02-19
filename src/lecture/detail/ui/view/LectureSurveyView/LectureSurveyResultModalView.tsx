@@ -7,25 +7,29 @@ import LectureSurveySummaryDateView from './LectureSurveySummaryDateView';
 import {
   useLectureSurveySummary,
   useLectureSurveyAnswerSummaryList,
+  getLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
 import LectureSurveyState from 'lecture/detail/viewModel/LectureSurveyState';
 import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
+import LectureSurveySummaryCriterionView from './LectureSurveySummaryCriterionView';
 import LectureSurveySummaryMatrixView from './LectureSurveySummaryMatrixView';
+import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 
 interface Props {
   trigger: React.ReactNode;
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
+  lectureSurveySummary?: LectureSurveySummary;
 }
 
 const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResultModalView({
   trigger,
   lectureSurvey,
   lectureSurveyState,
+  lectureSurveySummary
 }) {
   const { title } = lectureSurvey;
-  const lectureSurveySummary = useLectureSurveySummary();
   const answerList = useLectureSurveyAnswerSummaryList();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
@@ -39,7 +43,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   const onCancel = useCallback(() => {
     onClose();
   }, []);
-
+  
   return (
     <Modal
       className="base w1000 inner-scroll"
@@ -117,6 +121,20 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
           if (lectureSurveyItem.type === 'Matrix') {
             return (
               <LectureSurveySummaryMatrixView
+                lectureSurveyItem={lectureSurveyItem}
+                lectureSurveyAnswerItem={
+                  lectureSurveyState &&
+                  lectureSurveyState.answerItem.find(
+                    c => c.questionNumber === lectureSurveyItem.questionNumber
+                  )
+                }
+                key={lectureSurveyItem.id}
+              />
+            );
+          }
+          if (lectureSurveyItem.type === 'Criterion') {
+            return (
+              <LectureSurveySummaryCriterionView
                 lectureSurveyItem={lectureSurveyItem}
                 lectureSurveyAnswerItem={
                   lectureSurveyState &&

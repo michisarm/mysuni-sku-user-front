@@ -34,9 +34,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     if(answer.summaryItems.answerItemType === 'Choice') {
       choiceMap = Object.keys(answer.summaryItems.numberCountMap);
       countMap = Object.values(answer.summaryItems.numberCountMap);
-
-      console.log('choiceMap',choiceMap)
-      console.log('countMap',countMap)
     }
   })
 
@@ -60,7 +57,9 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 onChange={onChangeValue}
                 readOnly={false}
               />
-              {countMap[index]}
+              
+              {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.numberCountMap)[index]}})}
+
 
               {choice.image && <img src={choice.image} />}
             </Fragment>

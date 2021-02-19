@@ -4,13 +4,16 @@ import { useLectureSurveyState } from '../../../service/useLectureSurvey/useLect
 import LectureSurveyView from '../../view/LectureSurveyView/LectureSurveyView';
 import LectureSurveyInfoView from '../../view/LectureSurveyView/LectureSurveyInfoView';
 import { useCurrentCommunitySurveyMenu } from '../../../../../community/utility/communityRouterParamsHelper';
+import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
 
 function LectureSurveyContainer() {
   const [lectureSurvey] = useLectureSurvey();
-  const [lectureSurveyState] = useLectureSurveyState();
+  const [lectureSurveyState] = useLectureSurveyState();  
+  const lectureSurveySummary = useLectureSurveySummary();
+
   useEffect(() => {}, []);
   const currentMenu = useCurrentCommunitySurveyMenu();
-  console.log('currentMenu', currentMenu);
+  //console.log('currentMenu', currentMenu);
   return (
     <>
       {lectureSurvey &&
@@ -20,6 +23,7 @@ function LectureSurveyContainer() {
           <LectureSurveyView
             lectureSurvey={lectureSurvey}
             lectureSurveyState={lectureSurveyState}
+            lectureSurveySummary={lectureSurveySummary}
           />
         )}
       {lectureSurvey &&
@@ -28,6 +32,7 @@ function LectureSurveyContainer() {
           <LectureSurveyInfoView
             lectureSurvey={lectureSurvey}
             lectureSurveyState={lectureSurveyState}
+            lectureSurveySummary={lectureSurveySummary}
           />
         )}
     </>

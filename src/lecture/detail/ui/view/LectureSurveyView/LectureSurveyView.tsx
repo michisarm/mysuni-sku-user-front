@@ -14,22 +14,27 @@ import {
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-
+import { getLectureSurveySummary, setLectureSurveySummary, useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveySummary?: LectureSurveySummary;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveyAnswerItem
+  lectureSurveyAnswerItem,
+  lectureSurveySummary
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
-
+  
+  console.log('lectureSurveySummary@@@@@@@@@@@@', lectureSurveySummary);
+  
   const requestSaveLectureSurveyState = useCallback(() => {
     if (params === undefined) {
       return;
@@ -166,6 +171,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
             trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
             lectureSurvey={lectureSurvey}
             lectureSurveyState={lectureSurveyState}
+            lectureSurveySummary={lectureSurveySummary}
           />
 
           {/* {requestSubmitLectureSurveyState()} */}

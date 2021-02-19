@@ -20,4 +20,5 @@ export default interface SurveySummaryItem {
   sentences: Sentences[];
   sentencesMap: Map<string, number>;
   matrixItems: MatrixItem[];
+  criteriaItemCountMap: Map<string, number>;
 }

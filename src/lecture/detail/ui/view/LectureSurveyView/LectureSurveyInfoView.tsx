@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -11,17 +11,20 @@ import {
   submitLectureSurveyState,
   finishLectureSurveyState
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import { getLectureSurveySummary, setLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveySummary?: LectureSurveySummary;
 }
 
 const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function LectureSurveyInfoView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveyAnswerItem
+  lectureSurveyAnswerItem,
+  lectureSurveySummary
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
@@ -38,7 +41,12 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
       return;
     }
     submitLectureSurveyState(params.lectureParams, params.pathname);
+    
   }, [params]);
+
+  useEffect(()=>{
+    setLectureSurveySummary(lectureSurveySummary);
+  }, [lectureSurveySummary])
 
   const requestFinishLectureSurveyState = (() => {
     finishLectureSurveyState();
@@ -60,6 +68,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                   trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
                   lectureSurvey={lectureSurvey}
                   lectureSurveyState={lectureSurveyState}
+                  lectureSurveySummary={lectureSurveySummary}
                 />
               )}
           </div>

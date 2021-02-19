@@ -20,6 +20,7 @@ export interface LectureSurveySummaryItem {
   sentences: Sentences[];
   sentencesMap: Map<string, number>;
   matrixItems: MatrixItem[];
+  criteriaItemCountMap: Map<string, number>;
 }
 export default interface LectureSurveyAnswerSummaryList {
   id: string;
