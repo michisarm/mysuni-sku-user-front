@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Button } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -11,9 +11,6 @@ import {
   submitLectureSurveyState,
   finishLectureSurveyState
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
-import { SurveyCaseService } from 'survey/stores';
-import { SkProfileService } from 'profile/stores';
-import { CommunityCommentList } from '@nara.drama/feedback';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
@@ -28,20 +25,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
-  const surveyCaseId  = lectureSurveyState?.surveyCaseId;
-  const [commentId, setCommentID] = useState('');
-
-  useEffect(() => {
-    const surveyCaseService  = SurveyCaseService.instance;
-    if(surveyCaseId !== undefined){
-      surveyCaseService.findSurveyCaseFeedBack(surveyCaseId)
-      .then((result) => {
-        if(result !== "" ){
-          setCommentID(result.commentFeedbackId);
-        }
-      });
-    }
-  }, [surveyCaseId]);
 
   const requestStartLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -63,10 +46,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   if(lectureSurveyState?.state === 'Finish') {
     requestFinishLectureSurveyState()
   }
-  const skProfileService  = SkProfileService.instance;
-  const { skProfile } = skProfileService;
-  const { member } = skProfile;
-
   return (
     <>
       <div className="course-info-header">
@@ -102,21 +81,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           Survey 설명: {title}<br />
           문항개수: 총 {lectureSurvey.surveyItems.length}문항<br />
           해당 Survey에 참여완료 하셨습니다. 통계보기 버튼을 클릭하면 Survey 통계화면이 조회됩니다.
-
-          {lectureSurveyState !== undefined &&
-          lectureSurveyState.state === 'Completed' && (
-              (commentId !== "" && (
-                <CommunityCommentList
-                  feedbackId={commentId}
-                  menuType=""
-                  hideCamera
-                  name={member.name}
-                  email={member.email}
-                  companyName={member.company}
-                  departmentName={member.department}
-                />
-          ))
-        )}
 
         </>
       )}
