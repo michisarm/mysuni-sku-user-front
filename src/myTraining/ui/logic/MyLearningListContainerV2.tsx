@@ -71,9 +71,11 @@ function MyLearningListContainerV2(props: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
-
+  const [refresh, setRefesh] = useState<boolean>(false)
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
   const location = useLocation();
+  const prevOffset: any = sessionStorage.getItem('prevOffset');
+
   /* effects */
   useEffect(() => {
     /* 상위 컴포넌트에서 조회되는 colleges 가 없을 경우, MultiFilterBox 에 전달하기 위해 다시 조회함.*/
@@ -83,7 +85,7 @@ function MyLearningListContainerV2(props: Props) {
   }, []);
 
   useEffect(() => {
-    initPage();
+    refeshPageInfo();
     fetchModelsByContentType(contentType);
   }, [contentType, viewType]);
 
@@ -220,25 +222,26 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const initPage = () => {
-    initPageInfo();
-    initPageNo();
-  };
+  const refeshPageInfo = () => setRefesh(() => !refresh);
 
   useEffect(() => {
-    initPageInfo();
-  }, [match.params.pageNo])
+    if (refresh) {
+      refeshPageInfo();
+      getPageInfo();
+    }
+  }, [refresh])
 
-  const initPageInfo = () => {
-    const prevOffset: any = sessionStorage.getItem('prevOffset');
-    if (prevOffset) {
+  const getPageInfo = () => {
+
+    if (prevOffset !== null && contentType !== 'Required' && contentType !== 'InMyList' && refresh) {
+      console.log('@@ GET PAGEINFO 학습')
       pageInfo.current = JSON.parse(prevOffset)
       findTableViewsPage(pageInfo.current);
+    } else if (prevOffset !== null && contentType === 'Required' && refresh) {
+      console.log('@@ GET PAGEINFO 권장과정')
+      pageInfo.current = JSON.parse(prevOffset)
+      findRequiredViewPage(pageInfo.current);
     }
-  };
-
-  const initPageNo = () => {
-    // history.replace('./1');
   };
 
   const getPageNo = (): number => {
@@ -420,7 +423,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const getModelsByConditions = (count: number) => {
     if (count > 0) {
-      initPage();
+      // initPage();
       fetchModelsByConditions(contentType, viewType);
     } else {
       fetchModelsByContentType(contentType);
@@ -481,6 +484,7 @@ function MyLearningListContainerV2(props: Props) {
   );
 
   const findTableViewsPage = async (pageInfo: Offset) => {
+    console.log('findTableViewsPage')
     switch (contentType) {
       case MyPageContentType.EarnedStampList:
         await myTrainingService!.findAllStampTableViewsWithPage(
@@ -490,9 +494,9 @@ function MyLearningListContainerV2(props: Props) {
       case MyLearningContentType.InMyList:
         await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
         break;
-      case MyLearningContentType.Required:
-        await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
-        break;
+      // case MyLearningContentType.Required:
+      //   await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
+      //   break;
       case MyLearningContentType.PersonalCompleted:
         await aplService!.findAllAplsWithPage(pageInfo);
         break;
@@ -509,7 +513,8 @@ function MyLearningListContainerV2(props: Props) {
     pageInfo.current.offset += pageInfo.current.limit
 
     sessionStorage.setItem('prevOffset', JSON.stringify(pageInfo.current))
-    findTableViewsPage(pageInfo.current);
+    if (contentType === 'Required') findRequiredViewPage(pageInfo.current)
+    if (contentType !== 'InMyList' && contentType !== 'Required') findTableViewsPage(pageInfo.current);
     checkShowSeeMore(contentType);
     history.replace(`./${getPageNo()}`);
   }, [contentType, pageInfo.current]);
@@ -532,6 +537,11 @@ function MyLearningListContainerV2(props: Props) {
 
     return <NoSuchContentPanel message={message} link={link} />;
   };
+
+  const findRequiredViewPage = async (pageInfo: Offset) => {
+    console.log('findRequired')
+    await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
+  }
 
   /* render */
   return (

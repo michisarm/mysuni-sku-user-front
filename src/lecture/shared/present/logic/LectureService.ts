@@ -628,9 +628,10 @@ class LectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length) {
       const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+
       runInAction(() => {
         this._lectureTableViews = [...this.lectureTableViews, ...addedTableViews];
-        console.log(this._lectureTableViews.length)
+        console.log("Required Data length", this._lectureTableViews.length)
       });
     }
   }

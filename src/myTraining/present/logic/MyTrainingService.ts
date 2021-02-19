@@ -624,10 +624,7 @@ class MyTrainingService {
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
       /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-
-      if (offset.offset) {
-        return this._myTrainingTableViews = [...addedTableViews];
-      }
+      return this._myTrainingTableViews = [...addedTableViews];
     }
 
     this._myTrainingFilterRdo.changeOffset(offset);
