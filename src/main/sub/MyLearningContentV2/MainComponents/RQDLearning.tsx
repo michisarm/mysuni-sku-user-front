@@ -59,9 +59,9 @@ const RQDLearning: React.FC<Props> = Props => {
   const findMyContent = async () => {
     /*
       1. session storage 에 권장과정이 있는 경우. 2020.09.28 by 김동구
-        1.1. && 8개 이상 
-          세션 스토리지에서 데이터를 불러옴. 
-        1.2. && 8개 미만 
+        1.1. && 8개 이상
+          세션 스토리지에서 데이터를 불러옴.
+        1.2. && 8개 미만
           서버에서 다시 데이터를 불러옴. (8개가 쌓일 때까지)
 
       2. session storage 에 권장과정이 없는 경우.
@@ -94,7 +94,7 @@ const RQDLearning: React.FC<Props> = Props => {
         return;
       }
     }
-    /* 
+    /*
       서버로부터 가져오기 (8개 미만인 경우)
       가져온 데이터는 session storage 에도 저장됨.
       session storage 에 저장된 데이터가 8개 미만인 경우, 다시 서버로부터 데이터를 가져옴.
@@ -293,7 +293,7 @@ const RQDLearning: React.FC<Props> = Props => {
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel
-          message="모든 과정을 이수하셨습니다."
+          message="모든 권장 과정의 학습을 시작하셨습니다."
           link={{
             text: '전체 권장과정 List를 확인하시겠습니까?',
             path: myTrainingRoutes.learningRequired(),
