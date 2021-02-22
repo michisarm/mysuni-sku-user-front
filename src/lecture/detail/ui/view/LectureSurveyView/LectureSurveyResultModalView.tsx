@@ -27,7 +27,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   trigger,
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary
+  lectureSurveySummary,
 }) {
   const { title } = lectureSurvey;
   const answerList = useLectureSurveyAnswerSummaryList();
@@ -43,7 +43,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   const onCancel = useCallback(() => {
     onClose();
   }, []);
-  
+
   return (
     <Modal
       className="base w1000 inner-scroll"
@@ -54,9 +54,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     >
       <Modal.Header>
         <span>{title}</span>
-        <span>
-          응답 {lectureSurveySummary?.respondentCount.respondentCount}개
-        </span>
+        <span>응답 개</span>
       </Modal.Header>
       <Modal.Content className="scrolling-60vh">
         {lectureSurvey.surveyItems.map(lectureSurveyItem => {

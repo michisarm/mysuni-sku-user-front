@@ -151,18 +151,19 @@ async function coreSubmitLectureSurveyState() {
       }),
     },
   };
-  const requiredMissAnswers = lectureSurvey.surveyItems.filter(c => c.isRequired)
-    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber))
+  const requiredMissAnswers = lectureSurvey.surveyItems
+    .filter(c => c.isRequired)
+    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber));
   if (requiredMissAnswers.length > 0) {
-    
     reactAlert({
       title: '알림',
-      message: requiredMissAnswers.map(r=> ' ' + r.no + '번') + '은 필수 항목입니다',
+      message:
+        requiredMissAnswers.map(r => ' ' + r.no + '번') + '은 필수 항목입니다',
     });
 
-    requiredMissAnswers.forEach(c=>{
-      console.log(c.no)
-    })
+    requiredMissAnswers.forEach(c => {
+      console.log(c.no);
+    });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
@@ -212,18 +213,19 @@ export async function coreLectureSurveyState() {
       }),
     },
   };
-  const requiredMissAnswers = lectureSurvey.surveyItems.filter(c => c.isRequired)
-    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber))
+  const requiredMissAnswers = lectureSurvey.surveyItems
+    .filter(c => c.isRequired)
+    .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber));
   if (requiredMissAnswers.length > 0) {
-    
     reactAlert({
       title: '알림',
-      message: requiredMissAnswers.map(r=> ' ' + r.no + '번') + '은 필수 항목입니다',
+      message:
+        requiredMissAnswers.map(r => ' ' + r.no + '번') + '은 필수 항목입니다',
     });
 
-    requiredMissAnswers.forEach(c=>{
-      console.log(c.no)
-    })
+    requiredMissAnswers.forEach(c => {
+      console.log(c.no);
+    });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
@@ -250,7 +252,6 @@ export async function finishLectureSurveyState() {
     return;
   }
   setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
-  
 }
 
 export async function saveLectureSurveyState(
@@ -276,7 +277,6 @@ export async function saveLectureSurveyState(
   });
 }
 
-
 export async function submitLectureSurveyState(
   lectureParams: LectureParams,
   pathname: string
@@ -293,7 +293,6 @@ export async function submitLectureSurveyState(
   }
   await coreSubmitLectureSurveyState();
   requestLectureStructure(lectureParams, pathname);
-
 }
 
 export function selectSentenceAnswer(

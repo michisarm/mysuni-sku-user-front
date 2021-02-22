@@ -45,12 +45,37 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="ui right-top-count input">
         {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
-        {/* {dateMap.map((key, idx) => {
+
+        {answerList
+          ?.filter(f => f.answerItemType === 'Date')
+          .map(answer => {
+            if (answer.summaryItems.sentencesMap === undefined) return;
+
+            const dateList = answer.summaryItems.sentencesMap;
+            const date = Object.keys(dateList);
+            const count = Object.values(dateList);
+            console.log(dateList);
+            console.log(date);
+            console.log(count);
+
+            return (
+              <>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: date + ' (' + count + ')',
+                  }}
+                />
+              </>
+            );
+          })}
+
+        {/* {answerList?.map((key, idx) => {
           return (
             <>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: key + '(' + countMap[idx] + ')',
+                  __html:
+                    Object.keys(key) + '(' + Object.values(key)[idx] + ')',
                 }}
               />
             </>

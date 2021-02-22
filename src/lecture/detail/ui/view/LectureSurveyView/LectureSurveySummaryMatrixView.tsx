@@ -31,6 +31,10 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
   );
   const { columns, rows, questionNumber } = lectureSurveyItem;
 
+  const numberCountMap = answerList?.find(
+    f => f.questionNumber === questionNumber
+  )?.summaryItems.matrixItems;
+
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <Table celled fixed singleLine className="test-table">
@@ -71,6 +75,9 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                         onChange={onChangeValue}
                       />
 
+                      {numberCountMap !== undefined
+                        ? numberCountMap[rowIndex].numberCountMap[index]
+                        : 0}
                       {/* 
                       {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.matrixItems[rowIndex].numberCountMap)[index]}})}
                        */}

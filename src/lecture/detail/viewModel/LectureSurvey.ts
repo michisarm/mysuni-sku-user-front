@@ -30,6 +30,7 @@ export interface LectureSurveyItemChoice {
   no: number;
   index?: number;
   names?: LangStrings;
+  count?: number;
 }
 
 export default interface LectureSurvey {

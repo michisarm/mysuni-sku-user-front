@@ -32,7 +32,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
-          choices.map((choice, index) => {
+          choices.map(choice => {
             const numberCountMap = answerList?.find(
               f => f.questionNumber === questionNumber
             )?.summaryItems.numberCountMap;
@@ -63,7 +63,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
         {canMultipleAnswer &&
           choices &&
-          choices.map((choice, index) => {
+          choices.map(choice => {
             const numberCountMap = answerList?.find(
               f => f.questionNumber === questionNumber
             )?.summaryItems.numberCountMap;

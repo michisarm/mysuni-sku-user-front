@@ -31,8 +31,6 @@ import LectureSurveyState, {
   CriteriaItem,
   LectureSurveyAnswerItem,
 } from '../../../viewModel/LectureSurveyState';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
-import LectureSurveyAnswerSummaryList from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
 
 function parseChoice(question: Question): LectureSurveyItem {
   const {
@@ -66,10 +64,13 @@ function parseChoice(question: Question): LectureSurveyItem {
       if (imageItem !== undefined) {
         mImage = imageItem.imageUrl;
       }
+      const mCount = 0;
+
       return {
         title: mTitle,
         no: mNo,
         image: mImage,
+        count: mCount,
       };
     }) || [];
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
@@ -438,15 +439,11 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       const lectureSurvey = await parseSurveyForm(contents.surveyId);
       setLectureSurvey(lectureSurvey);
       await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
-        contents.surveyCaseId,
-        1
-      );
-      setLectureSurveySummary(lectureSurveySummary);
     }
   }
   if (contentType === 'coures') {
     const { surveyCase } = await findCoursePlanContents(contentId, lectureId);
+
     if (
       surveyCase !== undefined &&
       surveyCase !== null &&
@@ -455,11 +452,6 @@ export async function getLectureSurvey(params: LectureRouterParams) {
       const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId);
       setLectureSurvey(lectureSurvey);
       await getCourseLectureSurveyState(lectureId, surveyCase.id);
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
-        surveyCase.id,
-        1
-      );
-      setLectureSurveySummary(lectureSurveySummary);
     }
   }
   if (contentType === 'community') {
