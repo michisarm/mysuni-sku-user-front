@@ -32,7 +32,6 @@ import {
 import MyApprovalContentType from '../model/MyApprovalContentType';
 import FilterCountViewModel from '../../model/FilterCountViewModel';
 import ReactGA from 'react-ga';
-import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;

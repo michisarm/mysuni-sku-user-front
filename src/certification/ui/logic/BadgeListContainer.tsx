@@ -2,8 +2,6 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Badge } from '../../shared/Badge';
 import BadgeModel from '../model/MyBadgeModel';
-import { useScrollMove } from 'myTraining/useScrollMove';
-
 
 interface BadgeListContainerProps {
   badges: BadgeModel[],
@@ -14,15 +12,6 @@ interface BadgeListContainerProps {
 const BadgeListContainer: FunctionComponent<BadgeListContainerProps> = (Props) => {
   //
   const { badges, badgeStyle, badgeSize } = Props;
-  const { scrollOnceMove } = useScrollMove();
-
-  useEffect(() => {
-    if (badges) {
-      setTimeout(() => {
-        scrollOnceMove();
-      }, 300)
-    }
-  }, [scrollOnceMove])
 
   return (
     <div className="badge-list">

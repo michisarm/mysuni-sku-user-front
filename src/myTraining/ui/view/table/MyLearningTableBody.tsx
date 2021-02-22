@@ -35,7 +35,7 @@ function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
-  const { scrollOnceMove } = useScrollMove();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
   /* functions */
   /* 
     아래의 두 함수는 나중에 AplModel 의 매서드로 변경하기.
@@ -146,6 +146,8 @@ function MyLearningTableBody(props: Props) {
       label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${model.name
         }`,
     });
+
+    scrollSave();
   };
 
   const onCheckOne = useCallback(

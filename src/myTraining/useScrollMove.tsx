@@ -18,13 +18,14 @@ export const useScrollMove = () => {
   const scrollOnceMove = useCallback(scrollMove, [scrollTop])
 
   const scrollSave = () => {
-    const scrollPos: any = window.scrollY;
-    return sessionStorage.setItem('SCROLL_POS', scrollPos)
+    const scrollPos: number = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+    return sessionStorage.setItem('SCROLL_POS', JSON.stringify(scrollPos))
   }
 
   useEffect(() => {
-    const listen = history.listen(scrollSave);
-    return () => listen();
+    // Pathname이 바뀔때 Save 하는영역
+    // const listen = history.listen(scrollSave);
+    // return () => listen();
   });
 
   return { scrollMove, scrollOnceMove, scrollSave };

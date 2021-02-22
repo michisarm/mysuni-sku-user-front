@@ -113,7 +113,6 @@ class TabContainer extends Component<Props, State> {
     if (sessionStorage.getItem('prevOffset') !== null) {
       sessionStorage.removeItem('prevOffset');
     }
-    sessionStorage.setItem('SCROLL_POS', '0')
   }
 
   findPageName() {
