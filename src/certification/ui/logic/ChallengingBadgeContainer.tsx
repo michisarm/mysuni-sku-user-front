@@ -1,28 +1,28 @@
-import React, {useEffect, useRef, useState, Fragment} from 'react';
-import {inject, observer} from 'mobx-react';
-import {mobxHelper} from '@nara.platform/accent';
-import {NoSuchContentPanel} from 'shared';
-import {Button, Icon} from 'semantic-ui-react';
-import {RouteComponentProps, withRouter} from 'react-router';
+import React, { useEffect, useRef, useState, Fragment } from 'react';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { NoSuchContentPanel } from 'shared';
+import { Button, Icon } from 'semantic-ui-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import routePaths from '../../../personalcube/routePaths';
 import BadgeRoutePaths from '../../routePaths';
 import BadgeService from '../../present/logic/BadgeService';
-import {PageService} from '../../../shared/stores';
+import { PageService } from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
 import ChallengeBoxContainer from './ChallengeBoxContainer';
-import {SeeMoreButton} from '../../shared/Badge';
+import { SeeMoreButton } from '../../shared/Badge';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
-import {OffsetElementList} from '../../../shared/model';
+import { OffsetElementList } from '../../../shared/model';
 import MyBadgeModel from '../model/MyBadgeModel';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   badgeService?: BadgeService,
   pageService?: PageService,
-
   badgeCount: number | undefined,
   countMessage?: string,
   resetTotBadgeCount: () => void;
@@ -42,6 +42,16 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
+  const { scrollOnceMove } = useScrollMove();
+
+  useEffect(() => {
+    if (myBadges.length > 0) {
+      setTimeout(() => {
+        scrollOnceMove();
+      }, 300)
+    }
+  }, [myBadges])
+  console.log(myBadges)
   useEffect(() => {
     //
     pageKey.current = PAGE_KEY;
@@ -134,11 +144,11 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     history.replace(routePaths.currentPage(1));
 
     // 페이지키 재설정 및 초기화
-    pageKey.current = pageKey.current + '.' +  difficultyLevel;
+    pageKey.current = pageKey.current + '.' + difficultyLevel;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
 
     //
-    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
+    setDifficultyLevel(diffLevel === '전체' ? '' : diffLevel);
   };
 
   const moveToBadgeList = () => {
@@ -155,7 +165,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
       />
 
       {badgeService!.myBadges.length > 0 ?
-        badgeService!.myBadges.map( (badge: MyBadgeModel, index: number) =>
+        badgeService!.myBadges.map((badge: MyBadgeModel, index: number) =>
           <Fragment key={`container-${index}`}>
             <ChallengeBoxContainer
               myBadge={badge}
@@ -167,21 +177,21 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
         ) : (
           <NoSuchContentPanel message={(
             <>
-              <div className="text">도전중인 Badge가 없습니다.<br/>새로운 Badge에 도전해보시겠습니까?</div>
+              <div className="text">도전중인 Badge가 없습니다.<br />새로운 Badge에 도전해보시겠습니까?</div>
               <Button
                 icon
                 as="a"
                 className="right btn-blue2"
                 onClick={moveToBadgeList}
               >
-                Badge List 바로가기 <Icon className="morelink"/>
+                Badge List 바로가기 <Icon className="morelink" />
               </Button>
             </>
           )}
           />
         )}
 
-      { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
+      { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
 
     </>
   );

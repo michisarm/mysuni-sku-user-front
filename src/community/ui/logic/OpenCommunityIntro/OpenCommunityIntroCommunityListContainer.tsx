@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
@@ -7,61 +7,75 @@ import {
 } from '../../../store/CommunityMainStore';
 import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
   requestAppendOpenCommunityList,
   requestOpenCommunityList,
 } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
-interface FieldItemViewProps {}
+interface FieldItemViewProps { }
 
 const OpenCommunityItemView: React.FC<OpenCommunityItem &
   FieldItemViewProps> = function OpenCommunityItemView({
-  communityId,
-  fieldName,
-  approvedState,
-  name,
-  description,
-  managerName,
-  memberCount,
-  thumbnailId,
-}) {
-  return (
-    <Link to={`/community/${communityId}`} className="community-open-card">
-      <div className="open-card-top">
-        <span className="label">{fieldName}</span>
-        {approvedState === 'Wait' && <span className="wait">가입대기</span>}
-      </div>
-      <div className="open-card-content">
-        <p>{name}</p>
-        <div className="thumbnail">
-          <img
-            src={thumbnailId}
-            style={{ height: 72, width: 72, borderRadius: 8 }}
-          />
+    communityId,
+    fieldName,
+    approvedState,
+    name,
+    description,
+    managerName,
+    memberCount,
+    thumbnailId,
+  }) {
+    const { pathname } = useLocation();
+    const history = useHistory();
+    const { scrollOnceMove, scrollSave } = useScrollMove();
+
+    useEffect(() => {
+      scrollOnceMove();
+    }, [scrollOnceMove])
+
+    useEffect(() => {
+      const listen = history.listen(scrollSave);
+      return () => listen();
+    }, [pathname])
+
+    return (
+      <Link to={`/community/${communityId}`} className="community-open-card">
+        <div className="open-card-top">
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
         </div>
-        <div className="community-main-left-list">
-          <div
-            className="community-main-left-h3"
-            dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
-          />
-        </div>
-      </div>
-      <div className="open-card-bottom">
-        <div className="title-area">
-          <div className="text-list">
-            <img src={managerIcon} />
-            <span>{managerName}</span>
+        <div className="open-card-content">
+          <p>{name}</p>
+          <div className="thumbnail">
+            <img
+              src={thumbnailId}
+              style={{ height: 72, width: 72, borderRadius: 8 }}
+            />
+          </div>
+          <div className="community-main-left-list">
+            <div
+              className="community-main-left-h3"
+              dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
+            />
           </div>
         </div>
-        <div className="right-area">
-          <span>멤버</span>
-          <span>{memberCount}</span>
+        <div className="open-card-bottom">
+          <div className="title-area">
+            <div className="text-list">
+              <img src={managerIcon} />
+              <span>{managerName}</span>
+            </div>
+          </div>
+          <div className="right-area">
+            <span>멤버</span>
+            <span>{memberCount}</span>
+          </div>
         </div>
-      </div>
-    </Link>
-  );
-};
+      </Link>
+    );
+  };
 
 function sortCreatedTime() {
   const openCommunityIntro = getOpenCommunityIntro();
@@ -195,22 +209,22 @@ function OpenCommunityIntroCommunityListContainer() {
       <div className="more-comments community-side">
         {openCommunityIntro.communitiesTotalCount >
           openCommunityIntro.communitiesOffset && (
-          <Button
-            icon
-            className="left moreview"
-            onClick={requestAppendOpenCommunityList}
-          >
-            <Icon className="moreview" /> list more
-          </Button>
-        )}
+            <Button
+              icon
+              className="left moreview"
+              onClick={requestAppendOpenCommunityList}
+            >
+              <Icon className="moreview" /> list more
+            </Button>
+          )}
         {openCommunityIntro.communitiesTotalCount <=
           openCommunityIntro.communitiesOffset && (
-          <Button
-            icon
-            className="left moreview"
-            style={{ cursor: 'default' }}
-          />
-        )}
+            <Button
+              icon
+              className="left moreview"
+              style={{ cursor: 'default' }}
+            />
+          )}
       </div>{' '}
     </>
   );
