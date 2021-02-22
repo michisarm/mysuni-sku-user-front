@@ -2,6 +2,7 @@ import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
 
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
+import { reactConfirm } from '@nara.platform/accent';
 
 interface Props {
   action?: () => void;
