@@ -1427,7 +1427,7 @@ const panes = [
 
                       <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d0/Course/C-LECTURE-16k">
                         <ul>
-                          <li>전략적 공급자 관리</li>
+                          <li>부당지원, 사익편취</li>
                           <li>- 부당 지원/사익 편취 이해하기</li>
                           <li>- 부당 지원의 법리와 사례 연구</li>
                           <li>- 공정위 최근 규제 동향 및 심결례 연구</li>
