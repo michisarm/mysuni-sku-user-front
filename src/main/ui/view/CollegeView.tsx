@@ -1206,7 +1206,7 @@ const panes = [
               <div className="label">미래 반도체 College</div>
               <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
               <div className="normal">
-                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{" "}
+                SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{' '}
                 <br />
                 반도체 산업의 본질을 파악하고, 미래의 기술이 열어갈 세상을 전망
                 할 수 <br />
@@ -1215,10 +1215,10 @@ const panes = [
               <div className="panopto sub">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dfbe4050a-7d9d-40bb-a819-ab89007cb3cd%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
                   width="436"
                   height="245"
-                  style={{ padding: "0px", border: "0px" }}
+                  style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"
@@ -1236,24 +1236,9 @@ const panes = [
             </div>
           </div>
 
-          <div className="college-cont-map">
-            <div className="belt fu">
-              <div className="text-left-box">
-                <p className="p_link ">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
-              </div>
-              <div className="text-right-box">
-                <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
-                  className="item-button"
-                >
-                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
-                  과정 바로가기
-                </a>
-              </div>
-            </div>
+          <div className="college-cont-map pbtom">
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
-              <div className="semi-topBackground"></div>
               <div className="map">
               <div className="semi-background">
 
