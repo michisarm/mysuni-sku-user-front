@@ -2,7 +2,7 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter, useHistory } from 'react-router-dom';
 import { reactAlert } from '@nara.platform/accent';
 
 import queryString from 'query-string';
@@ -1690,7 +1690,7 @@ const panes = [
                             종합 Test 통과 (80점 이상)
                         </dd>
                       </dl>
-                      <button type="button" className="cha_btn"><a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3y" style={{fontWeight: 'bold'}}>도전하기</a></button>
+                      <a className="cha_btn"><a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3y" style={{fontWeight: 'bold'}}><span style={{color: '#73a0e9'}}>도전하기</span></a></a>
                     </div>
                   </div>
                 </div>
@@ -1834,7 +1834,7 @@ const panes = [
                             (80점 이상)
                         </dd>
                       </dl>
-                      <button type="button" className="cha_btn"><a style={{fontWeight: 'bold'}} href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3x">도전하기</a></button>
+                      <a className="cha_btn"><a style={{fontWeight: 'bold'}} href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3x"><span style={{color: '#73a0e9'}}>도전하기</span></a></a>
                     </div>
                   </div>
                 </div>
