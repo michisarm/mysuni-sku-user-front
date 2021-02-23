@@ -13,6 +13,7 @@ import {
   getLectureSurveyAnswerSummaryList,
   useLectureSurveyAnswerSummaryList,
 } from 'lecture/detail/store/LectureSurveyStore';
+import { value } from 'numeral';
 
 interface LectureSurveyDateViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -33,12 +34,19 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
     [lectureSurveyItem]
   );
 
+  console.log('sentencesMap', sentencesMap);
+
+  if (sentencesMap !== undefined) {
+    const keys = Object.keys(sentencesMap);
+    const values = Object.values(sentencesMap);
+    console.log(keys);
+    console.log(values);
+  }
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="ui right-top-count input">
         {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
         <br />
-        {JSON.stringify(sentencesMap)}
       </div>
     </LectureSurveyChoiceLayout>
   );

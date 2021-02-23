@@ -80,9 +80,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   readOnly={false}
                 />
                 {choice.count || '0'}
-
                 <br />
-                {console.log(choice.count)}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
