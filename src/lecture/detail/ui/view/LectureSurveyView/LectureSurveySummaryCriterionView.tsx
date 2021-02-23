@@ -8,6 +8,7 @@ import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
   getLectureSurveyAnswerSummaryList,
   useLectureSurveyAnswerSummaryList,
+  useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveySummaryCriterionViewProps {
@@ -29,7 +30,8 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
     },
     [lectureSurveyItem]
   );
-
+  const lectureSurveySummary = useLectureSurveySummary();
+  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
@@ -52,6 +54,11 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                   readOnly={false}
                 />
                 {choice.count || '0'}
+                <br />
+
+                {choice.count !== undefined &&
+                  respondCount !== undefined &&
+                  ((choice.count / respondCount) * 100).toFixed(2)}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
@@ -74,6 +81,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                   readOnly={false}
                 />
                 {choice.count || '0'}
+                <br />
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );

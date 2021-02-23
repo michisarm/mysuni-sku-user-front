@@ -19,7 +19,6 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
-  const answerList = useLectureSurveyAnswerSummaryList();
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
       if (data.value === undefined) {
@@ -51,6 +50,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                 {columns &&
                   columns.map(({ no: columnSelectedNumber }) => {
                     let count: number | undefined;
+
                     if (matrixItems !== undefined) {
                       const matrixItem = matrixItems.find(
                         c => c.rowNumber === rowNumber.toString()

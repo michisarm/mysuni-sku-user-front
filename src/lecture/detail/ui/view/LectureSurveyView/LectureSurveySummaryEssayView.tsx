@@ -1,11 +1,13 @@
 import React, { ChangeEvent, useCallback } from 'react';
 import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
 import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
-import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
+import LectureSurvey, {
+  LectureSurveyItem,
+} from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -14,7 +16,7 @@ interface LectureSurveyEssayViewProps {
 
 const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveyEssayView({
   lectureSurveyItem,
-  lectureSurveyAnswerItem
+  lectureSurveyAnswerItem,
 }) {
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -22,19 +24,18 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
     },
     [lectureSurveyItem]
   );
-  const { maxLength } = lectureSurveyItem;
   const answerList = useLectureSurveyAnswerSummaryList();
 
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>     
-      
-      {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}<br /><br />
-      
-      {lectureSurveyItem.visible !== undefined &&
-      lectureSurveyItem.visible === true && (
-        answerList?.map(answer=>answer.summaryItems.sentences)
-      )||''}
-    
+    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+      {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
+      <br />
+      <br />
+
+      {(lectureSurveyItem.visible !== undefined &&
+        lectureSurveyItem.visible === true &&
+        answerList?.map(answer => answer.summaryItems.sentences)) ||
+        ''}
     </LectureSurveyChoiceLayout>
   );
 };

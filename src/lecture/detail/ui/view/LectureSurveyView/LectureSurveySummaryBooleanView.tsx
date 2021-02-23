@@ -13,6 +13,7 @@ import {
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
 import { toInteger, toNumber } from 'lodash';
+import { number } from '@storybook/addon-knobs';
 
 interface LectureSurveySummaryBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -35,23 +36,22 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
         : '1';
     selectBooleanAnswer(lectureSurveyItem, next);
   }, [lectureSurveyItem, lectureSurveyAnswerItem]);
-  const { questionNumber } = lectureSurveyItem;
+  const { questionNumber, numberCountMap } = lectureSurveyItem;
 
-  const numberCountMap = answerList?.find(
-    f => f.questionNumber === questionNumber
-  )?.summaryItems.numberCountMap;
-  const yesCount = numberCountMap !== undefined ? numberCountMap[1] : 0;
-  const noCount = numberCountMap !== undefined ? numberCountMap[2] : 0;
+  let yesCount = 0;
+  let noCount = 0;
+  let yesAvg = 0;
+  let noAvg = 0;
 
-  const totalCount = lectureSurveySummary?.respondentCount?.respondentCount;
-  const yesPercent =
-    totalCount !== undefined
-      ? toNumber(((yesCount / totalCount) * 100).toFixed(1))
-      : 0;
-  const noPercent =
-    totalCount !== undefined
-      ? toNumber(((noCount / totalCount) * 100).toFixed(1))
-      : 0;
+  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+
+  if (numberCountMap !== undefined && respondCount !== undefined) {
+    yesCount = numberCountMap[0];
+    noCount = numberCountMap[1];
+
+    yesAvg = (yesCount / respondCount) * 100;
+    noAvg = (noCount / respondCount) * 100;
+  }
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
@@ -85,11 +85,10 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             <span className="lms-radio-text" />
           </label>
         </div>
+        {yesCount || 0} {yesAvg || 0}
+        <br />
+        {noCount || 0} {noAvg || 0}
       </div>
-      {/* 추후 bar 차트로 변경해야 함 */}
-      yes: {yesCount || 0} 퍼센트: {yesPercent || 0}
-      <br />
-      no: {noCount || 0} 퍼센트: {noPercent || 0}
     </LectureSurveyChoiceLayout>
   );
 };

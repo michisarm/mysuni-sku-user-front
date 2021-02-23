@@ -212,6 +212,15 @@ function parseEssay(
       sentencesMap = answerSummary.summaryItems.sentencesMap;
     }
   }
+  let numberCountMap: Record<string, number> | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(
+      c => c.questionNumber === questionNumber
+    );
+    if (answerSummary?.summaryItems.numberCountMap !== undefined) {
+      numberCountMap = answerSummary.summaryItems.numberCountMap;
+    }
+  }
   const visible = true;
   return {
     title,
@@ -224,6 +233,7 @@ function parseEssay(
     questionNumber,
     sentencesMap,
     visible,
+    numberCountMap,
   };
 }
 
@@ -567,4 +577,6 @@ export async function requestLectureSurveySummary(
     surveyCaseId,
     lectureSurveyAnswerSummary
   );
+
+  setLectureSurveyAnswerSummaryList(lectureSurveyAnswerSummary);
 }

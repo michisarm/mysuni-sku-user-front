@@ -4,7 +4,7 @@ import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/sa
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { getLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -15,7 +15,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
-  const answerList = getLectureSurveyAnswerSummaryList();
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
       if (data.value === undefined) {
@@ -26,13 +25,21 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     [lectureSurveyItem]
   );
 
+  const lectureSurveySummary = useLectureSurveySummary();
+  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
+
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
           choices.map((choice, index) => {
+            const choiceAvg =
+              choice.count !== undefined &&
+              respondCount !== undefined &&
+              ((choice.count / respondCount) * 100).toFixed(2);
+
             return (
               <Fragment key={choice.no}>
                 <Radio
@@ -48,6 +55,8 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   readOnly={false}
                 />
                 {choice.count || '0'}
+                <br />
+                {choiceAvg}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
@@ -55,7 +64,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
         {canMultipleAnswer &&
           choices &&
-          choices.map((choice, index) => {
+          choices.map(choice => {
             return (
               <Fragment key={choice.no}>
                 <Checkbox
@@ -71,6 +80,9 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   readOnly={false}
                 />
                 {choice.count || '0'}
+
+                <br />
+                {console.log(choice.count)}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
