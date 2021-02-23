@@ -128,7 +128,7 @@ function parseCriterion(
         ((names.langStringMap as unknown) as Record<string, string>)[
         names.defaultLanguage
         ] || '';
-      let mNo = value ? value : 1;
+      let mNo = value !== undefined ? value : 1;
       if (isNaN(mNo)) {
         mNo = 1;
       }
