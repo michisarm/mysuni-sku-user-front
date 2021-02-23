@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { Segment, Sticky, Icon, Menu } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 // import "../../style.css"
 import ContentsMoreView from './ContentsMoreView';
 import { CommunityProfileMyCommunity } from 'community/viewModel/CommunityProfile';
@@ -10,6 +10,7 @@ import moment from 'moment';
 import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 import CommunityType from '../../../model/CommunityType';
 import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import { SkProfileService } from 'profile/stores';
 
 interface ContentsMyCommunityViewProps {
   communityProfileMyCommunity: CommunityProfileMyCommunity;
@@ -41,10 +42,10 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
   const handleOk = () => {
     reactConfirm({
       title: '확인',
-      message:
-        '커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.',
+      message: `${SkProfileService.instance.skProfile.id} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
     });
   };
+  const history = useHistory();
 
   return (
     <tr key={communityId}>
@@ -61,7 +62,15 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
       <td>{createdTime}</td>
       <td>
         {isManager && (
-          <button type="button" className="sece_btn">
+          <button
+            type="button"
+            className="sece_btn"
+            onClick={e =>
+              history.push(
+                `/community/admin/${communityId}/memberManagement/member`
+              )
+            }
+          >
             관리하기
           </button>
         )}
