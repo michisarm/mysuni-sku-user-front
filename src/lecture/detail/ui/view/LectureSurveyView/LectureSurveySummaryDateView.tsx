@@ -24,6 +24,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
   lectureSurveyAnswerItem,
 }) {
   const { sentencesMap } = lectureSurveyItem;
+  const sentence = lectureSurveyAnswerItem?.sentence;
 
   const onChangeValue = useCallback(
     (value: Date) => {
@@ -33,13 +34,25 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
     [lectureSurveyItem]
   );
 
+  if (sentencesMap === undefined) {
+    return null;
+  }
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      <div className="ui right-top-count input">
-        {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
-        <br />
-        {JSON.stringify(sentencesMap)}
-      </div>
+      {Object.keys(sentencesMap)
+        .sort((a, b) => (a > b ? 1 : -1))
+        .map(key => (
+          <div
+            className={`ui right-top-count input ${
+              key === sentence ? 'active' : ''
+            }`}
+          >
+            {key}
+            <br />
+            {sentencesMap[key]}
+            <br />
+          </div>
+        ))}
     </LectureSurveyChoiceLayout>
   );
 };
