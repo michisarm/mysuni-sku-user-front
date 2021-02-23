@@ -65,6 +65,8 @@ export function requestOpenCommunityList() {
       });
     } else {
       const next: OpenCommunityItem[] = [];
+      const prevCommunityOffset: any = sessionStorage.getItem('communityOffset');
+      const getCommunityOffset: number = JSON.parse(prevCommunityOffset);
       communities.results.forEach(community => {
         if (!next.some(c => c.communityId === community.communityId)) {
           next.push(communityToItem(community));
@@ -74,7 +76,7 @@ export function requestOpenCommunityList() {
         ...myOpenCommunityIntro,
         communities: next,
         communitiesTotalCount: communities.totalCount,
-        communitiesOffset: next.length,
+        communitiesOffset: getCommunityOffset || next.length,
       });
     }
   });
@@ -83,6 +85,7 @@ export function requestOpenCommunityList() {
 export function requestAppendOpenCommunityList() {
   const { fieldId, communitiesSort, communitiesOffset } =
     getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
+
   findAllOpenCommunities(communitiesSort, communitiesOffset, fieldId).then(
     communities => {
       const myOpenCommunityIntro =
@@ -96,11 +99,13 @@ export function requestAppendOpenCommunityList() {
         });
       } else {
         const next: OpenCommunityItem[] = [...myOpenCommunityIntro.communities];
+
         communities.results.forEach(community => {
           if (!next.some(c => c.communityId === community.communityId)) {
             next.push(communityToItem(community));
           }
         });
+        sessionStorage.setItem('communityOffset', JSON.stringify(next.length));
         setOpenCommunityIntro({
           ...myOpenCommunityIntro,
           communities: next,

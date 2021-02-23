@@ -98,7 +98,7 @@ export function findAllPostViewsFromMyCommunities(
   sort: string,
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=${offset}&limit=10`;
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset + 10}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 

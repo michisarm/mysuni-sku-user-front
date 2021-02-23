@@ -523,13 +523,13 @@ function MyLearningListContainerV2(props: Props) {
     }, 1000);
     pageInfo.current.limit = PAGE_SIZE;
     pageInfo.current.offset += pageInfo.current.limit
+    history.replace(`./${getPageNo()}`);
     sessionStorage.setItem('prevOffset', JSON.stringify(pageInfo.current))
     if (contentType === 'Required') findRequiredViewPage(pageInfo.current)
     if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current)
     if (contentType !== 'InMyList' && contentType !== 'Required') findTableViewsPage(pageInfo.current);
     checkShowSeeMore(contentType);
-    history.replace(`./${getPageNo()}`);
-  }, [contentType, pageInfo.current]);
+  }, [contentType, pageInfo.current, match.params.pageNo]);
 
   /* Render Functions */
   const renderNoSuchContentPanel = (

@@ -9,20 +9,21 @@ import { useMyCommunityIntro } from '../../store/CommunityMainStore';
 
 import ReactGA from 'react-ga';
 
-interface MyCommunityViewProps {}
+interface MyCommunityViewProps { }
 
 const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView() {
   const contextRef = useRef(null);
   const myCommunityIntro = useMyCommunityIntro();
 
   const gaOnClick = (name: string) => {
-    
+
     // react-ga 
     ReactGA.event({
       category: 'Community',
       action: 'Click',
       label: `Community-${name}`,
     });
+    sessionStorage.removeItem('communityOffset');
   }
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
       action: 'Click',
       label: `Community-MyCommunity`,
     });
-  },[]);
+  }, []);
 
   return (
     <div ref={contextRef}>

@@ -3,17 +3,16 @@ import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 // import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import { Link } from 'react-router-dom';
-import {Segment, Icon, Button} from "semantic-ui-react";
+import { Segment, Icon, Button } from "semantic-ui-react";
 
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
-import {useFollowCommunityIntro} from 'community/store/CommunityMainStore';
+import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
 
 import ReactGA from 'react-ga';
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
-
   const followCommunityIntro = useFollowCommunityIntro();
 
   const gaOnClick = (name: string) => {
@@ -23,7 +22,9 @@ const FollowView: React.FC = function FollowView() {
       action: 'Click',
       label: `Community-${name}`,
     });
+    sessionStorage.removeItem('communityOffset');
   }
+
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">

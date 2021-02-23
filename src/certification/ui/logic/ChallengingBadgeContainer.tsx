@@ -51,7 +51,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
       }, 300)
     }
   }, [myBadges])
-  console.log(myBadges)
   useEffect(() => {
     //
     pageKey.current = PAGE_KEY;
