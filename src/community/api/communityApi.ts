@@ -98,7 +98,8 @@ export function findAllPostViewsFromMyCommunities(
   sort: string,
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
-  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset + 10}`;
+  const initLimit = 10;
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset + initLimit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -234,8 +235,12 @@ export function findAllOpenCommunities(
   offset: number,
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
-  const url = `${BASE_URL}/communities/communityView/open?${
-    fieldId === undefined ? '' : `field=${fieldId}`
+  if (offset > 12) {
+    const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
+      }&sort=${sort}&offset=0&limit=${offset}`;
+    return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+  }
+  const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
     }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }

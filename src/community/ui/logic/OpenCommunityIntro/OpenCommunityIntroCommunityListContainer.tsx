@@ -77,6 +77,10 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
     );
   };
 
+function deleteOffset() {
+  sessionStorage.removeItem('communityOffset');
+}
+
 function sortCreatedTime() {
   const openCommunityIntro = getOpenCommunityIntro();
   if (openCommunityIntro === undefined) {
@@ -87,6 +91,7 @@ function sortCreatedTime() {
     communitiesSort: 'createdTime',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -100,6 +105,7 @@ function sortMemberCount() {
     communitiesSort: 'memberCount',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -113,6 +119,7 @@ function sortName() {
     communitiesSort: 'name',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -126,6 +133,7 @@ function sortApproved() {
     communitiesSort: 'approved',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 

@@ -51,9 +51,11 @@ function communityToItem(community: CommunityView): OpenCommunityItem {
 }
 
 export function requestOpenCommunityList() {
+  const prevCommunityOffset: any = sessionStorage.getItem('communityOffset');
+  const getCommunityOffset: number = JSON.parse(prevCommunityOffset);
   const { fieldId, communitiesSort } =
     getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
-  findAllOpenCommunities(communitiesSort, 0, fieldId).then(communities => {
+  findAllOpenCommunities(communitiesSort, getCommunityOffset || 0, fieldId).then(communities => {
     const myOpenCommunityIntro =
       getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
     if (communities === undefined || communities.results === undefined) {
@@ -65,8 +67,6 @@ export function requestOpenCommunityList() {
       });
     } else {
       const next: OpenCommunityItem[] = [];
-      const prevCommunityOffset: any = sessionStorage.getItem('communityOffset');
-      const getCommunityOffset: number = JSON.parse(prevCommunityOffset);
       communities.results.forEach(community => {
         if (!next.some(c => c.communityId === community.communityId)) {
           next.push(communityToItem(community));
@@ -85,7 +85,6 @@ export function requestOpenCommunityList() {
 export function requestAppendOpenCommunityList() {
   const { fieldId, communitiesSort, communitiesOffset } =
     getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
-
   findAllOpenCommunities(communitiesSort, communitiesOffset, fieldId).then(
     communities => {
       const myOpenCommunityIntro =
@@ -99,7 +98,6 @@ export function requestAppendOpenCommunityList() {
         });
       } else {
         const next: OpenCommunityItem[] = [...myOpenCommunityIntro.communities];
-
         communities.results.forEach(community => {
           if (!next.some(c => c.communityId === community.communityId)) {
             next.push(communityToItem(community));

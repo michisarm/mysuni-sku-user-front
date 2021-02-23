@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import OpenCommunityIntroFieldListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroFieldListContainer';
 import OpenCommunityIntroCommunityListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroCommunityListContainer';
 
@@ -20,6 +20,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
       action: 'Click',
       label: `Community-${name}`,
     });
+    window.scrollTo(0, 0);
     sessionStorage.removeItem('communityOffset');
   }
   return (
