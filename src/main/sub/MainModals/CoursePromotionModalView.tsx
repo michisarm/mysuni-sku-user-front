@@ -38,7 +38,7 @@ const CoursePromotionModalView = () => {
 
   const handleClickImg = () => {
     ModalClose();
-    history.push(`/board/support/notice-detail/NTC-00004a`);
+    history.push(`/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac/cube/CUBE-csq/LECTURE-CARD-aed`);
   };
 
   return (
@@ -65,7 +65,7 @@ const CoursePromotionModalView = () => {
             <div className="img" onClick={handleClickImg}>
               <a>
                 <img
-                  src={`${getPublicUrl()}/images/all/popup_image_aidt_0215.png`}
+                  src={`${getPublicUrl()}/images/all/lcp_banner_popup_2.png`}
                   alt=""
                 />
               </a>
