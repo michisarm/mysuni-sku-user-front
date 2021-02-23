@@ -28,6 +28,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   const lectureSurveySummary = useLectureSurveySummary();
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
+  const totalCount =
+    lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
+      return totalCount + (count || 0);
+    }, 0) || 0;
+
+  console.log('totalCount', totalCount);
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
