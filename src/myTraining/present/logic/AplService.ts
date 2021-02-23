@@ -86,13 +86,8 @@ export default class AplService {
   }
 
   @action
-  async findAllAplsByQuery(offset?: Offset) {
+  async findAllAplsByQuery() {
     //
-    if (offset !== undefined) {
-      this.aplQuery.offset = offset.offset;
-      this.aplQuery.limit = offset.limit;
-    }
-
     const apls = await this.aplApi.findAllAplsByQuery(
       AplQueryModel.asAplRdo(this.aplQuery)
     );

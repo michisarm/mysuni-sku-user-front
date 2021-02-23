@@ -85,19 +85,6 @@ function MyLearningListContainerV2(props: Props) {
   useEffect(() => {
     initPage();
     fetchModelsByContentType(contentType);
-
-    history.listen((location, action) => {
-      const { state } = window.history;
-      
-      if (action === 'PUSH') {
-        window.scrollTo(0, 0);
-      }
-      if (action === 'POP' && state && state.scroll) {
-        const { x, y } = state.scroll;
-        window.scrollTo(x, y);  // 스크롤을 최상단이 아닌 현재 위치로 조정
-      }
-    });
-
   }, [contentType, viewType]);
 
   useEffect(() => {
@@ -150,29 +137,19 @@ function MyLearningListContainerV2(props: Props) {
     //
     //clearStore(contentType);
     initStore(contentType);
-
-    const currentPageNo = match.params.pageNo;
-    if (currentPageNo === '1') {
-      pageInfo.current.offset = 0;
-      pageInfo.current.limit = PAGE_SIZE;
-    } else {
-      pageInfo.current.offset = 0;
-      pageInfo.current.limit = (getPageNo()-1) * PAGE_SIZE;
-    }
-
     switch (contentType) {
       /* 학습중 & mySUNI 학습완료 */
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
         myTrainingService!.changeFilterRdoWithViewType(viewType);
-        const isEmpty = await myTrainingService!.findAllTableViews(pageInfo.current);
+        const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       /* 개인학습 완료 & 승인관리 페이지 개인학습 */
       case MyLearningContentType.PersonalCompleted: {
-        const offsetApl = await aplService!.findAllAplsByQuery(pageInfo.current);
+        const offsetApl = await aplService!.findAllAplsByQuery();
         const isEmpty = offsetApl.results.length === 0 ? true : false;
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
@@ -180,27 +157,27 @@ function MyLearningListContainerV2(props: Props) {
       }
       /* 관심목록 & 권장과정 */
       case MyLearningContentType.InMyList: {
-        const isEmpty = await inMyLectureService!.findAllTableViews(pageInfo.current);
+        const isEmpty = await inMyLectureService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       case MyLearningContentType.Required: {
-        const isEmpty = await lectureService!.findAllRqdTableViews(pageInfo.current);
+        const isEmpty = await lectureService!.findAllRqdTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       /* My Page :: My Stamp */
       case MyPageContentType.EarnedStampList: {
-        const isEmpty = await myTrainingService!.findAllStampTableViews(pageInfo.current);
+        const isEmpty = await myTrainingService!.findAllStampTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       /* 학습예정 & 취소/미이수 */
       default: {
-        const isEmpty = await myTrainingService!.findAllTableViews(pageInfo.current);
+        const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
       }
@@ -245,6 +222,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const initPage = () => {
     initPageInfo();
+    initPageNo();
   };
 
   const initPageInfo = () => {
@@ -435,7 +413,6 @@ function MyLearningListContainerV2(props: Props) {
   const getModelsByConditions = (count: number) => {
     if (count > 0) {
       initPage();
-      initPageNo();
       fetchModelsByConditions(contentType, viewType);
     } else {
       fetchModelsByContentType(contentType);
@@ -498,17 +475,8 @@ function MyLearningListContainerV2(props: Props) {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
 
-    const { pageXOffset, pageYOffset, location } = window;  // 스크롤 유지를 위해 현재 스크롤 위치 조회
-
-    const currentPageNo = match.params.pageNo;
-    if (currentPageNo === '1') {
-      pageInfo.current.offset = 0;
-      pageInfo.current.limit = PAGE_SIZE;
-    } else {
-      pageInfo.current.offset = (getPageNo()-1) * PAGE_SIZE;
-      pageInfo.current.limit = PAGE_SIZE;
-    }
-
+    pageInfo.current.offset += pageInfo.current.limit;
+    pageInfo.current.limit = PAGE_SIZE;
     switch (contentType) {
       case MyPageContentType.EarnedStampList:
         await myTrainingService!.findAllStampTableViewsWithPage(
@@ -529,9 +497,6 @@ function MyLearningListContainerV2(props: Props) {
     }
     checkShowSeeMore(contentType);
     history.replace(`./${getPageNo()}`);
-
-    window.scrollTo(pageXOffset, pageYOffset);  // 스크롤을 최상단이 아닌 현재 위치로 조정
-
   }, [contentType, match.params.pageNo]);
 
   /* Render Functions */
