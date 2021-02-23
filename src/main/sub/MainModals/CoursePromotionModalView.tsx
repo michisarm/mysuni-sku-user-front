@@ -38,7 +38,7 @@ const CoursePromotionModalView = () => {
 
   const handleClickImg = () => {
     ModalClose();
-    history.push(`/board/support/notice-detail/NTC-00004a`);
+    history.push(`/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-17m/Course/C-LECTURE-10t`);
   };
 
   return (
