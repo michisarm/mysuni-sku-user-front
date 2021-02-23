@@ -32,15 +32,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
-          choices.map(choice => {
-            const numberCountMap = answerList?.find(
-              f => f.questionNumber === questionNumber
-            )?.summaryItems.numberCountMap;
-            const count =
-              numberCountMap !== undefined
-                ? numberCountMap[choice.no.toString()]
-                : 0;
-
+          choices.map((choice, index) => {
             return (
               <Fragment key={choice.no}>
                 <Radio
@@ -55,7 +47,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   onChange={onChangeValue}
                   readOnly={false}
                 />
-                {count}
+                {choice.count || '0'}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
@@ -63,15 +55,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
         {canMultipleAnswer &&
           choices &&
-          choices.map(choice => {
-            const numberCountMap = answerList?.find(
-              f => f.questionNumber === questionNumber
-            )?.summaryItems.numberCountMap;
-            const count =
-              numberCountMap !== undefined
-                ? numberCountMap[choice.no.toString()]
-                : 0;
-
+          choices.map((choice, index) => {
             return (
               <Fragment key={choice.no}>
                 <Checkbox
@@ -86,7 +70,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   onChange={onChangeValue}
                   readOnly={false}
                 />
-                {count}
+                {choice.count || '0'}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );

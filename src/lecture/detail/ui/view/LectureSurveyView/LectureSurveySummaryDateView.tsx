@@ -23,6 +23,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
+  const { sentencesMap } = lectureSurveyItem;
   const answerList = useLectureSurveyAnswerSummaryList();
   const onChangeValue = useCallback(
     (value: Date) => {
@@ -31,6 +32,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
     },
     [lectureSurveyItem]
   );
+  console.log('sentencesMap', sentencesMap);
   // let dateMap : string[] = [];
   // let countMap : number[] = [];
 
