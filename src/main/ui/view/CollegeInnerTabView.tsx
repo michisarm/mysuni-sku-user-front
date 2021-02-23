@@ -38,7 +38,7 @@ const panes = [
             <div className="belt sub">
               <Image src={`${PUBLIC_URL}/images/all/con-01.png`} alt="" />
             </div>
-            <div className="belt_texts">
+            {/* <div className="belt_texts">
               <p>“ Intergrative Perspective &#38; Decision ”</p>
               <span>
                 기업 경영 전반에 걸친 Perspective와 전략적 의사결정 역량 확보
@@ -55,7 +55,7 @@ const panes = [
               </span>
               <br />
               <span>- Competency 과정 : Deep Change를 위한 공통 역량 제고</span>
-            </div>
+            </div> */}
           </div>
         </div>
 
