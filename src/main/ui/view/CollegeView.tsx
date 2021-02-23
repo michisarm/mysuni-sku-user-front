@@ -2178,16 +2178,16 @@ const panes = [
                               글로벌 사례 연구
                             </a>
                           </li>
-                        </ul>
-                        <ul className="list_bm">
-                          <li>
-                            <a href="" onClick={emptyAlert}>6R 관점 Stakeholder 이해</a>
-                          </li>
                           <li>
                             <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1gs/Course/C-LECTURE-19y">
                               [Focus] Financial <br />
                               Society Partnership
                             </a>
+                          </li>
+                        </ul>
+                        <ul className="list_bm">
+                          <li>
+                            <a href="" onClick={emptyAlert}>6R 관점 Stakeholder 이해</a>
                           </li>
                         </ul>
                       </div>
