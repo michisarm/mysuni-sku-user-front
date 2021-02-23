@@ -16,14 +16,13 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
   const myCommunityIntro = useMyCommunityIntro();
 
   const gaOnClick = (name: string) => {
-    
-    // react-ga 
+    // react-ga
     ReactGA.event({
       category: 'Community',
       action: 'Click',
       label: `Community-${name}`,
     });
-  }
+  };
 
   useEffect(() => {
     // react-ga (초기 진입 시)
@@ -32,7 +31,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
       action: 'Click',
       label: `Community-MyCommunity`,
     });
-  },[]);
+  }, []);
 
   return (
     <div ref={contextRef}>
@@ -77,7 +76,9 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
           myCommunityIntro.communities.length > 0 && (
             <div className="course-detail-center community-containter">
               <MyCommunityListContainer />
-              <MyCommunityPostListContainer />
+              <div className="commu-home-scroll">
+                <MyCommunityPostListContainer />
+              </div>
             </div>
           )}
         {myCommunityIntro !== undefined &&
