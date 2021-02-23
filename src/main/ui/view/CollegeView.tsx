@@ -254,8 +254,11 @@ const panes = [
           </div>
 
           <div className="college-cont-map sub2">
-            <div className="belt">
+            <div className="belt inno">
               <div className="belt">
+                <div className="text-left-box">
+                  <p className="p_link inno">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+                </div>
                 <div className="text-right-box">
                   <a
                     href="https://mysuni.sk.com/suni-main/lecture/college/CLG00005/channels/pages/1"
@@ -275,9 +278,6 @@ const panes = [
                   src={`${PUBLIC_URL}/images/all/design_con_01.png`}
                   alt=""
                 />
-              </div>
-              <div className="text-left-box">
-                <p className="p_link inno">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
               </div>
             </div>
           </div>
@@ -1056,7 +1056,7 @@ const panes = [
                     <h3>Leadership Foundation</h3>
                     <ul>
                       <li className="leader_boxwrap margin_sm" onClick={emptyAlert}>
-                        <p>
+                        <p className="non-link">
                           Global Leadership
                           <br />
                           Acceleration P/G
@@ -1073,7 +1073,7 @@ const panes = [
                             <Image src={`${PUBLIC_URL}/images/all/img-card-badge-lv-1.png`} alt="" />
                           </a>
                         </div>
-                        <p>Leadership Essentials</p>
+                        <p className="non-link">Leadership Essentials</p>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-pe/Course/C-LECTURE-la" className="bg_blue">전략적 사고</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-m8/Course/C-LECTURE-ii" className="bg_blue">Remote Leadership</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-us/Course/C-LECTURE-qw" className="bg_blue">Coaching Leadership</a>
@@ -1098,7 +1098,7 @@ const panes = [
                     <h3>Leadership Clinic</h3>
                     <ul>
                       <li className="leader_boxwrap col-blue">
-                        <p>Leadership Pain Points</p>
+                        <p className="non-link">Leadership Pain Points</p>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8t/Course/C-LECTURE-6x" className="bg_blue">자기성장</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8w/Course/C-LECTURE-6z" className="bg_blue">Performance</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8v/Course/C-LECTURE-7i" className="bg_blue">시너지/협업</a>
@@ -1122,12 +1122,12 @@ const panes = [
                     <h3>Leadership Insight Cafe</h3>
                     <ul>
                       <li className="leader_boxwrap col-blue">
-                        <p>리더십, 인문학에 길을 묻다</p>
+                        <p className="non-link">리더십, 인문학에 길을 묻다</p>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-mc/Course/C-LECTURE-ik" className="bg_blue">카르마 & 다르마</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-162/Course/C-LECTURE-10x" className="bg_blue">고난의 시대에 미래를 보는 리더십</a>
                       </li>
                       <li className="leader_boxwrap col-blue">
-                        <p>심리학으로 풀어보는 리더십 Talk</p>
+                        <p className="non-link">심리학으로 풀어보는 리더십 Talk</p>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-gy/Course/C-LECTURE-dx" className="bg_blue">I. 변화의 시작</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-kb/Course/C-LECTURE-h6" className="bg_blue">II. 이런 고민 있나요?</a>
                         <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-of/Course/C-LECTURE-kh" className="bg_blue">III. 리더라서 고민이다</a>
@@ -1237,6 +1237,25 @@ const panes = [
           </div>
 
           <div className="college-cont-map pbtom">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link ">각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image
+                    style={{ display: 'inline' }}
+                    src={`${PUBLIC_URL}/images/all/icon-course-book.png`}
+                    alt=""
+                  />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
+            
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
@@ -1690,7 +1709,7 @@ const panes = [
                             종합 Test 통과 (80점 이상)
                         </dd>
                       </dl>
-                      <a className="cha_btn"><a href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3y" style={{fontWeight: 'bold'}}><span style={{color: '#73a0e9'}}>도전하기</span></a></a>
+                      <a className="cha_btn" href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3y" style={{fontWeight: 'bold'}}>도전하기</a>
                     </div>
                   </div>
                 </div>
@@ -1834,7 +1853,7 @@ const panes = [
                             (80점 이상)
                         </dd>
                       </dl>
-                      <a className="cha_btn"><a style={{fontWeight: 'bold'}} href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3x"><span style={{color: '#73a0e9'}}>도전하기</span></a></a>
+                      <a className="cha_btn" style={{fontWeight: 'bold'}} href="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-3x">도전하기</a>
                     </div>
                   </div>
                 </div>
@@ -1968,6 +1987,20 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
+            <div className="belt fu">
+              <div className="text-left-box">
+                <p className="p_link" style={{color: '#bd38a5'}}>각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
+              </div>
+              <div className="text-right-box">
+                <a
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channels/pages/1"
+                  className="item-button"
+                >
+                  <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
+                  과정 바로가기
+                </a>
+              </div>
+            </div>
             <div className="belt">
               <div className="map">
                 <Image src={`${PUBLIC_URL}/images/all/bmd_con_01.png`} alt="" />
@@ -1976,20 +2009,20 @@ const panes = [
           </div>
 
           <div className="college-cont-map">
-            <div className="belt fu">
+            {/* <div className="belt fu">
               <div className="text-left-box">
                 <p className="p_link" style={{color: '#bd38a5'}}>각 Badge와 코스를 클릭하면 해당 페이지로 이동합니다.</p>
               </div>
               <div className="text-right-box">
                 <a
-                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00019/channels/pages/1"
+                  href="https://mysuni.sk.com/suni-main/lecture/college/CLG00020/channels/pages/1"
                   className="item-button"
                 >
                   <Image src={`${PUBLIC_URL}/images/all/icon-course-book.png`} alt="" style={{display: 'inline-block'}} />
                   과정 바로가기
                 </a>
               </div>
-            </div>
+            </div> */}
 
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
@@ -2169,7 +2202,7 @@ const panes = [
                       <ul className="list_flex md">
                         <li>
                           <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fg/Course/C-LECTURE-190">
-                            Ⅰ . Sustainable BM <br />
+                            Ⅰ.Sustainable BM <br />
                             혁신 중요성
                           </a>
                         </li>
