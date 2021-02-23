@@ -13,6 +13,7 @@ import {
   getLectureSurveyAnswerSummaryList,
   useLectureSurveyAnswerSummaryList,
 } from 'lecture/detail/store/LectureSurveyStore';
+import { value } from 'numeral';
 
 interface LectureSurveyDateViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -25,14 +26,6 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
 }) {
   const { sentencesMap } = lectureSurveyItem;
   const sentence = lectureSurveyAnswerItem?.sentence;
-
-  const onChangeValue = useCallback(
-    (value: Date) => {
-      const next = moment(value).format('YYYY-MM-DD');
-      selectSentenceAnswer(lectureSurveyItem, next);
-    },
-    [lectureSurveyItem]
-  );
 
   if (sentencesMap === undefined) {
     return null;
