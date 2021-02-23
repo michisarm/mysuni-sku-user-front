@@ -1,4 +1,5 @@
 import LangStrings from '../model/LangStrings';
+import { MatrixItem } from './LectureSurveyAnswerSummary';
 
 export type LectureSurveyItemType =
   | 'Criterion'
@@ -20,6 +21,7 @@ export interface LectureSurveyItem {
   choices?: LectureSurveyItemChoice[];
   rows?: LectureSurveyItemChoice[];
   columns?: LectureSurveyItemChoice[];
+  matrixItems?: MatrixItem[];
   questionNumber: string;
   visible: boolean;
 }
@@ -30,10 +32,13 @@ export interface LectureSurveyItemChoice {
   no: number;
   index?: number;
   names?: LangStrings;
+  count?: number;
 }
 
 export default interface LectureSurvey {
   id: string;
   title: string;
   surveyItems: LectureSurveyItem[];
+  surveyId: string;
+  surveyCaseId: string;
 }

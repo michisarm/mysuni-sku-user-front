@@ -37,14 +37,6 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
         {!canMultipleAnswer &&
           choices &&
           choices.map((choice, index) => {
-            const criteriaItemCountMap = answerList?.find(
-              f => f.questionNumber === questionNumber
-            )?.summaryItems.criteriaItemCountMap;
-            const count =
-              criteriaItemCountMap !== undefined
-                ? criteriaItemCountMap[choice.no.toString()]
-                : 0;
-
             return (
               <Fragment key={choice.no}>
                 <Radio
@@ -59,7 +51,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                   onChange={onChangeValue}
                   readOnly={false}
                 />
-                {count || 0}
+                {choice.count || '0'}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
@@ -67,14 +59,6 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
         {canMultipleAnswer &&
           choices &&
           choices.map((choice, index) => {
-            const criteriaItemCountMap = answerList?.find(
-              f => f.questionNumber === questionNumber
-            )?.summaryItems.criteriaItemCountMap;
-            const count =
-              criteriaItemCountMap !== undefined
-                ? criteriaItemCountMap[choice.no.toString()]
-                : 0;
-
             return (
               <Fragment key={choice.no}>
                 <Checkbox
@@ -89,7 +73,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                   onChange={onChangeValue}
                   readOnly={false}
                 />
-                {count || 0}
+                {choice.count || '0'}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );

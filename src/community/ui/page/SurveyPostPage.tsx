@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import { useLectureRouterParams } from '../../../lecture/detail/service/useLectureRouterParams';
-import { getLectureSurvey } from '../../../lecture/detail/service/useLectureSurvey/utility/getLectureSurvey';
+import { requestLectureSurveyFromSurvey } from '../../../lecture/detail/service/useLectureSurvey/utility/getLectureSurvey';
 import LectureSurveyContainer from '../../../lecture/detail/ui/logic/LectureSurveyContainer/LectureSurveyContainer';
+import { useCurrentCommunitySurveyMenu } from '../../utility/communityRouterParamsHelper';
 
 function SurveyPostPage() {
-  const params = useLectureRouterParams();
+  const communitySurveyMenu = useCurrentCommunitySurveyMenu();
   useEffect(() => {
-    if (params !== undefined) {
-      getLectureSurvey(params);
+    if (communitySurveyMenu !== undefined) {
+      const { surveyId, surveyCaseId } = communitySurveyMenu;
+      requestLectureSurveyFromSurvey(surveyId, surveyCaseId);
     }
-  }, [params]);
+  }, [communitySurveyMenu]);
   return <LectureSurveyContainer />;
 }
 

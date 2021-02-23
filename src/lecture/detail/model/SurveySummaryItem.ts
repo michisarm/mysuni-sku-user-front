@@ -10,14 +10,14 @@ interface Sentences {
   sentence: string;
 }
 interface MatrixItem {
-  numberCountMap: Record<string, number>;
-  rowNumber: number;
+  numberCountMap: Record<number, number>;
+  rowNumber: string;
 }
 export default interface SurveySummaryItem {
   answerItemType: LectureSurveyItemType;
-  numberCountMap: Record<string, number>;
+  numberCountMap: Record<number, number>;
   sentences: Sentences[];
   sentencesMap: Record<string, number>;
   matrixItems: MatrixItem[];
-  criteriaItemCountMap: Record<string, number>;
+  criteriaItemCountMap: Record<number, number>;
 }

@@ -29,7 +29,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
     },
     [lectureSurveyItem]
   );
-  const { columns, rows, questionNumber } = lectureSurveyItem;
+  const { columns, rows, matrixItems } = lectureSurveyItem;
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
@@ -46,37 +46,48 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
 
         <Table.Body>
           {rows &&
-            rows.map(({ title, no: rowNumber }, rowIndex) => (
+            rows.map(({ title, no: rowNumber }) => (
               <Table.Row key={rowNumber}>
                 <Table.Cell>{title}</Table.Cell>
                 {columns &&
-                  columns.map(({ no: columnSelectedNumber }, index) => (
-                    <Table.Cell key={columnSelectedNumber}>
-                      <Radio
-                        className="base"
-                        value={JSON.stringify({
-                          rowNumber: `${rowNumber}`,
-                          columnSelectedNumber: `${columnSelectedNumber}`,
-                        })}
-                        checked={
-                          lectureSurveyAnswerItem !== undefined &&
-                          lectureSurveyAnswerItem.matrixItem !== undefined &&
-                          lectureSurveyAnswerItem.matrixItem.some(
-                            c =>
-                              c.rowNumber === `${rowNumber}` &&
-                              c.columnSelectedNumber ===
-                                `${columnSelectedNumber}`
-                          )
-                        }
-                        onChange={onChangeValue}
-                      />
+                  columns.map(({ no: columnSelectedNumber }) => {
+                    let count: number | undefined;
+                    if (matrixItems !== undefined) {
+                      const matrixItem = matrixItems.find(
+                        c => c.rowNumber === rowNumber.toString()
+                      );
+                      if (matrixItem?.numberCountMap !== undefined) {
+                        count = matrixItem.numberCountMap[columnSelectedNumber];
+                      }
+                    }
+                    return (
+                      <Table.Cell key={columnSelectedNumber}>
+                        <Radio
+                          className="base"
+                          value={JSON.stringify({
+                            rowNumber: `${rowNumber}`,
+                            columnSelectedNumber: `${columnSelectedNumber}`,
+                          })}
+                          checked={
+                            lectureSurveyAnswerItem !== undefined &&
+                            lectureSurveyAnswerItem.matrixItem !== undefined &&
+                            lectureSurveyAnswerItem.matrixItem.some(
+                              c =>
+                                c.rowNumber === `${rowNumber}` &&
+                                c.columnSelectedNumber ===
+                                  `${columnSelectedNumber}`
+                            )
+                          }
+                          onChange={onChangeValue}
+                        />
 
-                      {/* 
+                        {/* 
                       {answerList?.map((f)=>{if(f.questionNumber == questionNumber) {return Object.values(f.summaryItems.matrixItems[rowIndex].numberCountMap)[index]}})}
                        */}
-                      {/* 여기에 몇 개 선택했는지 나와야함 */}
-                    </Table.Cell>
-                  ))}
+                        {count || '0'}
+                      </Table.Cell>
+                    );
+                  })}
               </Table.Row>
             ))}
         </Table.Body>

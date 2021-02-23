@@ -9,9 +9,9 @@ type LectureSurveyItemType =
 interface Sentences {
   sentence: string;
 }
-interface MatrixItem {
-  numberCountMap: Record<string, number>;
-  rowNumber: number;
+export interface MatrixItem {
+  numberCountMap: Record<number, number>;
+  rowNumber: string;
 }
 export interface LectureSurveySummaryItem {
   answerItemType: LectureSurveyItemType;

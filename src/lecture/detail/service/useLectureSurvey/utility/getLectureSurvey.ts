@@ -1,5 +1,3 @@
-import { findPostMenuName } from 'community/api/communityApi';
-import { CriteriaItemModel } from '../../../../../survey/form/model/CriteriaItemModel';
 import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
 import {
   findCoursePlanContents,
@@ -20,6 +18,7 @@ import {
   setLectureSurveyState,
   setLectureSurveySummary,
   setLectureSurveyAnswerSummaryList,
+  getLectureSurvey,
 } from '../../../store/LectureSurveyStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { State } from '../../../viewModel/LectureState';
@@ -27,14 +26,13 @@ import LectureSurvey, {
   LectureSurveyItem,
   LectureSurveyItemChoice,
 } from '../../../viewModel/LectureSurvey';
-import LectureSurveyState, {
-  CriteriaItem,
+import {
   LectureSurveyAnswerItem,
 } from '../../../viewModel/LectureSurveyState';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
-import LectureSurveyAnswerSummaryList from 'lecture/detail/viewModel/LectureSurveyAnswerSummary';
+import SurveyAnswerSummaryList from '../../../model/SurveyAnswer';
+import LectureSurveyAnswerSummary, { MatrixItem } from '../../../viewModel/LectureSurveyAnswerSummary';
 
-function parseChoice(question: Question): LectureSurveyItem {
+function parseChoice(question: Question, lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]): LectureSurveyItem {
   const {
     id,
     questionItemType,
@@ -54,6 +52,7 @@ function parseChoice(question: Question): LectureSurveyItem {
   const type = questionItemType;
   const isRequired = !optional;
   const canMultipleAnswer = answerItems.multipleChoice;
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const choices: LectureSurveyItemChoice[] =
     answerItems.items?.map(({ number, values }) => {
       const mTitle = values.langStringMap[values.defaultLanguage];
@@ -66,13 +65,23 @@ function parseChoice(question: Question): LectureSurveyItem {
       if (imageItem !== undefined) {
         mImage = imageItem.imageUrl;
       }
+      let count: number | undefined;
+      if (lectureSurveyAnswerSummary !== undefined) {
+        const answerSummary = lectureSurveyAnswerSummary.find(c => c.questionNumber === questionNumber);
+        if (answerSummary !== undefined) {
+          const numberCountMap = answerSummary.summaryItems.numberCountMap
+          if (numberCountMap !== undefined && numberCountMap[mNo] !== undefined) {
+            count = numberCountMap[mNo]
+          }
+        }
+      }
       return {
         title: mTitle,
         no: mNo,
         image: mImage,
+        count
       };
     }) || [];
-  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   return {
     title,
     image,
@@ -90,7 +99,7 @@ function parseChoice(question: Question): LectureSurveyItem {
 function parseCriterion(
   question: Question,
   criterionList: CriterionModel[]
-): LectureSurveyItem {
+  , lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]): LectureSurveyItem {
   const {
     id,
     questionItemType,
@@ -112,24 +121,35 @@ function parseCriterion(
   const criterion = criterionList?.find(
     c => c.number === answerItems.criterionNumber
   );
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const choices: LectureSurveyItemChoice[] =
     criterion?.criteriaItems?.map(({ value, names, index }) => {
       const mTitle =
         ((names.langStringMap as unknown) as Record<string, string>)[
-          names.defaultLanguage
+        names.defaultLanguage
         ] || '';
       let mNo = value ? value : 1;
       if (isNaN(mNo)) {
         mNo = 1;
+      }
+      let count: number | undefined;
+      if (lectureSurveyAnswerSummary !== undefined) {
+        const answerSummary = lectureSurveyAnswerSummary.find(c => c.questionNumber === questionNumber);
+        if (answerSummary !== undefined) {
+          const criteriaItemCountMap = answerSummary.summaryItems.criteriaItemCountMap
+          if (criteriaItemCountMap !== undefined && criteriaItemCountMap[mNo] !== undefined) {
+            count = criteriaItemCountMap[mNo]
+          }
+        }
       }
       return {
         title: mTitle,
         no: mNo,
         index,
         names: (names as unknown) as LangStrings,
+        count
       };
     }) || [];
-  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const visible = true;
   return {
     title,
@@ -179,7 +199,7 @@ function parseEssay(question: Question): LectureSurveyItem {
   };
 }
 
-function parseMatrix(question: Question): LectureSurveyItem {
+function parseMatrix(question: Question, lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]): LectureSurveyItem {
   const {
     id,
     questionItemType,
@@ -198,6 +218,14 @@ function parseMatrix(question: Question): LectureSurveyItem {
   const type = questionItemType;
   const isRequired = !optional;
   const canMultipleAnswer = answerItems.multipleChoice;
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  let matrixItems: MatrixItem[] | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(c => c.questionNumber === questionNumber);
+    if (answerSummary?.summaryItems.matrixItems !== undefined) {
+      matrixItems = answerSummary.summaryItems.matrixItems
+    }
+  }
   const columns: LectureSurveyItemChoice[] =
     answerItems.columnItems?.map(({ number, values }) => {
       const mTitle = values.langStringMap[values.defaultLanguage];
@@ -225,7 +253,6 @@ function parseMatrix(question: Question): LectureSurveyItem {
         no: mNo,
       };
     }) || [];
-  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
   const visible = true;
 
   return {
@@ -238,29 +265,31 @@ function parseMatrix(question: Question): LectureSurveyItem {
     canMultipleAnswer,
     columns,
     rows,
+    matrixItems,
     questionNumber,
     visible,
   };
 }
 
 async function parseSurveyForm(
-  surveyId: string
-): Promise<LectureSurvey | undefined> {
+  surveyId: string,
+  surveyCaseId: string
+  , lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]): Promise<LectureSurvey | undefined> {
   const surveyForm = await findSurveyForm(surveyId);
   const { id, titles, questions: remoteQuestions } = surveyForm;
   const title = titles.langStringMap[titles.defaultLanguage];
   const surveyItems = remoteQuestions.map(question => {
     switch (question.questionItemType) {
       case 'Choice':
-        return parseChoice(question);
+        return parseChoice(question, lectureSurveyAnswerSummary);
       case 'Essay':
       case 'Date':
       case 'Boolean':
         return parseEssay(question);
       case 'Matrix':
-        return parseMatrix(question);
+        return parseMatrix(question, lectureSurveyAnswerSummary);
       case 'Criterion':
-        return parseCriterion(question, surveyForm.criterionList);
+        return parseCriterion(question, surveyForm.criterionList, lectureSurveyAnswerSummary);
       default:
         return parseEssay(question);
     }
@@ -269,6 +298,8 @@ async function parseSurveyForm(
     id,
     title,
     surveyItems,
+    surveyId,
+    surveyCaseId
   };
 }
 
@@ -307,10 +338,10 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
+              names: (criteriaItem.names as unknown) as LangStrings,
+              value: criteriaItem.value,
+              index: criteriaItem.index,
+            },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -399,10 +430,10 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
+              names: (criteriaItem.names as unknown) as LangStrings,
+              value: criteriaItem.value,
+              index: criteriaItem.index,
+            },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -430,19 +461,14 @@ export async function getCourseLectureSurveyState(
   setLectureSurveyState(lectureSurveyState);
 }
 
-export async function getLectureSurvey(params: LectureRouterParams) {
+export async function requestLectureSurvey(params: LectureRouterParams) {
   const { contentType, contentId, lectureId } = params;
   if (contentType === 'cube') {
     const { contents } = await cacheableFindPersonalCube(contentId);
-    if (contents !== undefined && contents.surveyId != '') {
-      const lectureSurvey = await parseSurveyForm(contents.surveyId);
+    if (contents !== undefined && contents.surveyId !== '' && contents.surveyCaseId !== '') {
+      const lectureSurvey = await parseSurveyForm(contents.surveyId, contents.surveyCaseId);
       setLectureSurvey(lectureSurvey);
       await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
-        contents.surveyCaseId,
-        1
-      );
-      setLectureSurveySummary(lectureSurveySummary);
     }
   }
   if (contentType === 'coures') {
@@ -450,45 +476,33 @@ export async function getLectureSurvey(params: LectureRouterParams) {
     if (
       surveyCase !== undefined &&
       surveyCase !== null &&
-      surveyCase.surveyFormId !== ''
+      surveyCase.surveyFormId !== '' &&
+      surveyCase.id !== ''
     ) {
-      const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId);
+      const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId, surveyCase.id);
       setLectureSurvey(lectureSurvey);
       await getCourseLectureSurveyState(lectureId, surveyCase.id);
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
-        surveyCase.id,
-        1
-      );
-      setLectureSurveySummary(lectureSurveySummary);
     }
   }
-  if (contentType === 'community') {
-    const surveyCase = await findPostMenuName(contentId, lectureId);
-    if (
-      surveyCase !== undefined &&
-      surveyCase !== null &&
-      surveyCase.surveyId !== '' &&
-      surveyCase.surveyCaseId !== ''
-    ) {
-      const lectureSurvey = await parseSurveyForm(surveyCase.surveyId);
-      setLectureSurvey(lectureSurvey);
+}
 
-      await getCourseLectureSurveyState(lectureId, surveyCase.surveyCaseId);
+export async function requestLectureSurveyFromSurvey(surveyId: string, surveyCaseId: string, lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]) {
+  const lectureSurvey = await parseSurveyForm(surveyId, surveyCaseId, lectureSurveyAnswerSummary);
+  setLectureSurvey(lectureSurvey);
+  await getCourseLectureSurveyState(surveyId, surveyCaseId);
+}
 
-      const answerSheet = await findAnswerSheetBySurveyCaseId(
-        surveyCase.surveyCaseId
-      );
 
-      const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
-        surveyCase.surveyCaseId,
-        answerSheet?.round || 1
-      );
-      setLectureSurveySummary(lectureSurveySummary);
-
-      const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(
-        lectureSurveySummary.id
-      );
-      setLectureSurveyAnswerSummaryList(lectureSurveyAnswerSummary);
-    }
-  }
+export async function requestLectureSurveySummary(surveyId: string, surveyCaseId: string) {
+  const answerSheet = await findAnswerSheetBySurveyCaseId(
+    surveyCaseId
+  );
+  const lectureSurveySummary = await findSurveySummaryBySurveyCaseIdAndRound(
+    surveyCaseId, answerSheet?.round || 1
+  );
+  setLectureSurveySummary(lectureSurveySummary);
+  const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(
+    lectureSurveySummary.id
+  );
+  await requestLectureSurveyFromSurvey(surveyId, surveyCaseId, lectureSurveyAnswerSummary);
 }

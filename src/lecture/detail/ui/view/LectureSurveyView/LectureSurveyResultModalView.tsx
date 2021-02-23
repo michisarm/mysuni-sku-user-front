@@ -1,20 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
 import LectureSurveySummaryDateView from './LectureSurveySummaryDateView';
-import {
-  useLectureSurveySummary,
-  useLectureSurveyAnswerSummaryList,
-  getLectureSurveySummary,
-} from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 import LectureSurveyState from 'lecture/detail/viewModel/LectureSurveyState';
-import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
 import LectureSurveySummaryCriterionView from './LectureSurveySummaryCriterionView';
 import LectureSurveySummaryMatrixView from './LectureSurveySummaryMatrixView';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
+import { requestLectureSurveySummary } from '../../../service/useLectureSurvey/utility/getLectureSurvey';
 
 interface Props {
   trigger: React.ReactNode;
@@ -27,14 +23,15 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   trigger,
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary
+  lectureSurveySummary,
 }) {
-  const { title } = lectureSurvey;
+  const { title, surveyId, surveyCaseId } = lectureSurvey;
   const answerList = useLectureSurveyAnswerSummaryList();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
     setOpen(true);
-  }, []);
+    requestLectureSurveySummary(surveyId, surveyCaseId);
+  }, [surveyId, surveyCaseId]);
 
   const onClose = useCallback(() => {
     setOpen(false);
@@ -43,7 +40,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   const onCancel = useCallback(() => {
     onClose();
   }, []);
-  
+
   return (
     <Modal
       className="base w1000 inner-scroll"

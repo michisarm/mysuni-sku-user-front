@@ -11,13 +11,16 @@ export function useLectureRouterParams(): LectureRouterParams | undefined {
 
   useEffect(() => {
     const next = parseLectureParams(params, pathname);
+    if (next === undefined) {
+      return;
+    }
     if (
       value === undefined ||
       value.contentId !== next.contentId ||
       value.lectureId !== next.lectureId ||
       value.contentType !== next.contentType
     ) {
-      setValue(parseLectureParams(params, pathname));
+      setValue(next);
     }
   }, [params, pathname]);
 
