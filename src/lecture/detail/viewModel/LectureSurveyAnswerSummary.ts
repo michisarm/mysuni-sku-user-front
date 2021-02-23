@@ -6,7 +6,7 @@ type LectureSurveyItemType =
   | 'Boolean'
   | 'Matrix';
 
-interface Sentences {
+export interface Sentences {
   sentence: string;
 }
 export interface MatrixItem {

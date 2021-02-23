@@ -7,38 +7,35 @@ import LectureSurveyDateView from './LectureSurveyDateView';
 import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
-import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState, {
+  LectureSurveyAnswerItem,
+} from '../../../viewModel/LectureSurveyState';
 import {
   saveLectureSurveyState,
-  submitLectureSurveyState
+  submitLectureSurveyState,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-import { getLectureSurveySummary, setLectureSurveySummary, useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
 import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
-  lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
-  lectureSurveySummary?: LectureSurveySummary;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveyAnswerItem,
-  lectureSurveySummary
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
-  
+
   const requestSaveLectureSurveyState = useCallback(() => {
     if (params === undefined) {
       return;
     }
     saveLectureSurveyState(params.lectureParams, params.pathname);
-  }, [params]); 
+  }, [params]);
 
   const requestSubmitLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -64,7 +61,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
       </div>
 
       {lectureSurveyState !== undefined &&
-      (lectureSurveyState.state === 'Progress' || lectureSurveyState.state === 'Start') && (
+        (lectureSurveyState.state === 'Progress' ||
+          lectureSurveyState.state === 'Start') &&
         lectureSurvey.surveyItems.map(lectureSurveyItem => {
           if (lectureSurveyItem.type === 'Criterion') {
             return (
@@ -157,41 +155,44 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
             );
           }
           return null;
-        })
-      )}
+        })}
 
-      
-    {lectureSurveyState !== undefined && lectureSurveyState.state == 'Completed' && (
-        <>
-          이미 Survey에 응답하였습니다.<br />
-          통계보기 버튼을 통해 Survey 통계를 확인해보세요.<br />
-          <LectureSurveyResultModalView 
-            trigger={<Button icon className="ui button free proceeding p18">통계보기</Button>}
-            lectureSurvey={lectureSurvey}
-            lectureSurveyState={lectureSurveyState}
-            lectureSurveySummary={lectureSurveySummary}
-          />
+      {lectureSurveyState !== undefined &&
+        lectureSurveyState.state === 'Completed' && (
+          <>
+            이미 Survey에 응답하였습니다.
+            <br />
+            통계보기 버튼을 통해 Survey 통계를 확인해보세요.
+            <br />
+            <LectureSurveyResultModalView
+              trigger={
+                <Button icon className="ui button free proceeding p18">
+                  통계보기
+                </Button>
+              }
+              lectureSurvey={lectureSurvey}
+              lectureSurveyState={lectureSurveyState}
+            />
+          </>
+        )}
 
-          {/* {requestSubmitLectureSurveyState()} */}
-        </>
-      )}
-
-      {lectureSurveyState !== undefined && lectureSurveyState.state !== 'Completed' && (
-        <div className="survey-preview">
-          <button
-            className="ui button fix line"
-            onClick={requestSaveLectureSurveyState}
-          >
-            저장
-          </button>
-          <button
-            className="ui button fix bg"
-            onClick={requestSubmitLectureSurveyState}
-          >
-            제출
-          </button>
-        </div>
-     )}
+      {lectureSurveyState !== undefined &&
+        lectureSurveyState.state !== 'Completed' && (
+          <div className="survey-preview">
+            <button
+              className="ui button fix line"
+              onClick={requestSaveLectureSurveyState}
+            >
+              저장
+            </button>
+            <button
+              className="ui button fix bg"
+              onClick={requestSubmitLectureSurveyState}
+            >
+              제출
+            </button>
+          </div>
+        )}
     </>
   );
 };

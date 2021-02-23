@@ -4,29 +4,26 @@ import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
 import LectureSurveySummaryDateView from './LectureSurveySummaryDateView';
-import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
 import LectureSurveyState from 'lecture/detail/viewModel/LectureSurveyState';
 import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
 import LectureSurveySummaryCriterionView from './LectureSurveySummaryCriterionView';
 import LectureSurveySummaryMatrixView from './LectureSurveySummaryMatrixView';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
 import { requestLectureSurveySummary } from '../../../service/useLectureSurvey/utility/getLectureSurvey';
 
 interface Props {
   trigger: React.ReactNode;
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
-  lectureSurveySummary?: LectureSurveySummary;
 }
 
 const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResultModalView({
   trigger,
   lectureSurvey,
   lectureSurveyState,
-  lectureSurveySummary,
 }) {
   const { title, surveyId, surveyCaseId } = lectureSurvey;
-  const answerList = useLectureSurveyAnswerSummaryList();
+  const lectureSurveySummary = useLectureSurveySummary();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
     setOpen(true);
@@ -41,6 +38,8 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     onClose();
   }, []);
 
+  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+
   return (
     <Modal
       className="base w1000 inner-scroll"
@@ -51,7 +50,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     >
       <Modal.Header>
         <span>{title}</span>
-        <span>응답 개</span>
+        <span>응답 {respondCount}개</span>
       </Modal.Header>
       <Modal.Content className="scrolling-60vh">
         {lectureSurvey.surveyItems.map(lectureSurveyItem => {

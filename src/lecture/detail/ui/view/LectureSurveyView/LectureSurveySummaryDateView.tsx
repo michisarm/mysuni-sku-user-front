@@ -32,57 +32,13 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
     },
     [lectureSurveyItem]
   );
-  console.log('sentencesMap', sentencesMap);
-  // let dateMap : string[] = [];
-  // let countMap : number[] = [];
-
-  // answerList?.map(answer => {
-  //   if(answer.summaryItems.answerItemType === 'Date') {
-  //     dateMap = Object.keys(answer.summaryItems.sentencesMap);
-  //     countMap = Object.values(answer.summaryItems.sentencesMap);
-  //   }
-  // })
+  let count: number | undefined;
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="ui right-top-count input">
         {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
-
-        {answerList
-          ?.filter(f => f.answerItemType === 'Date')
-          .map(answer => {
-            if (answer.summaryItems.sentencesMap === undefined) return;
-
-            const dateList = answer.summaryItems.sentencesMap;
-            const date = Object.keys(dateList);
-            const count = Object.values(dateList);
-            console.log(dateList);
-            console.log(date);
-            console.log(count);
-
-            return (
-              <>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: date + ' (' + count + ')',
-                  }}
-                />
-              </>
-            );
-          })}
-
-        {/* {answerList?.map((key, idx) => {
-          return (
-            <>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    Object.keys(key) + '(' + Object.values(key)[idx] + ')',
-                }}
-              />
-            </>
-          );
-        })} */}
+        <br />
       </div>
     </LectureSurveyChoiceLayout>
   );
