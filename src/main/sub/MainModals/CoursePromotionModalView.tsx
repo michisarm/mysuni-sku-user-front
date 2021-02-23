@@ -65,7 +65,7 @@ const CoursePromotionModalView = () => {
             <div className="img" onClick={handleClickImg}>
               <a>
                 <img
-                  src={`${getPublicUrl()}/images/all/lcp_banner_popup_2.png`}
+                  src={`${getPublicUrl()}/images/all/lcp_banner_popup_3.png`}
                   alt=""
                 />
               </a>
