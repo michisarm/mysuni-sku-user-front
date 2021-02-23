@@ -165,7 +165,7 @@ function parseCriterion(
   };
 }
 
-function parseEssay(question: Question): LectureSurveyItem {
+function parseEssay(question: Question, lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]): LectureSurveyItem {
   const {
     id,
     questionItemType,
@@ -185,6 +185,13 @@ function parseEssay(question: Question): LectureSurveyItem {
   const isRequired = !optional;
   const maxLength = answerItems !== null ? answerItems.maxLength : undefined;
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  let sentencesMap: Record<string, number> | undefined;
+  if (lectureSurveyAnswerSummary !== undefined) {
+    const answerSummary = lectureSurveyAnswerSummary.find(c => c.questionNumber === questionNumber);
+    if (answerSummary?.summaryItems.sentencesMap !== undefined) {
+      sentencesMap = answerSummary.summaryItems.sentencesMap
+    }
+  }
   const visible = true;
   return {
     title,
@@ -195,6 +202,7 @@ function parseEssay(question: Question): LectureSurveyItem {
     isRequired,
     maxLength,
     questionNumber,
+    sentencesMap,
     visible,
   };
 }
@@ -285,7 +293,7 @@ async function parseSurveyForm(
       case 'Essay':
       case 'Date':
       case 'Boolean':
-        return parseEssay(question);
+        return parseEssay(question, lectureSurveyAnswerSummary);
       case 'Matrix':
         return parseMatrix(question, lectureSurveyAnswerSummary);
       case 'Criterion':

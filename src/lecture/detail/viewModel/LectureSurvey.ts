@@ -22,6 +22,7 @@ export interface LectureSurveyItem {
   rows?: LectureSurveyItemChoice[];
   columns?: LectureSurveyItemChoice[];
   matrixItems?: MatrixItem[];
+  sentencesMap?: Record<string, number>;
   questionNumber: string;
   visible: boolean;
 }
