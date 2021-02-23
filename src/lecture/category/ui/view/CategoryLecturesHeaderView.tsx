@@ -75,6 +75,37 @@ class CategoryLecturesHeaderView extends Component<Props> {
     }
   }
 
+  collegeTabMove(name: string) {
+    switch (name) {
+      case 'AI':
+        return true;
+      case 'DT':
+        return true;
+      case '행복':
+        return true;
+      case 'SV':
+        return true;
+      case '혁신디자인':
+        return true;
+      case 'Global':
+        return true;
+      case 'Leadership':
+        return true;
+      case 'Management':
+        return true;
+      case '미래반도체':
+        return true;
+      case '에너지솔루션':
+        return true;
+      case 'BM Design & Storytelling':
+        return true;
+      case 'SK아카데미':
+        return true;
+      default: 
+        return false;
+    }
+  }
+
   render() {
     //
     const { actionLogService, college, onClickMySuni } = this.props;
@@ -91,9 +122,13 @@ class CategoryLecturesHeaderView extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
-          <Button className="personal line" onClick={() => { actionLogService?.registerClickActionLog({ subAction: 'mySUNI 전체 커리큘럼 보기' }); onClickMySuni(); }}>
-            <span>College 전체 커리큘럼 보기</span>
-          </Button>
+          { /*eslint-disable*/
+            this.collegeTabMove(college.name) === true && 
+            <Button className="personal line" onClick={() => { actionLogService?.registerClickActionLog({ subAction: 'mySUNI 전체 커리큘럼 보기' }); onClickMySuni(); }}>
+              <span>College 전체 커리큘럼 보기</span>
+            </Button>
+            /*eslint-enable */
+          }
         </ContentHeader.Cell>
       </ContentHeader>
     );
