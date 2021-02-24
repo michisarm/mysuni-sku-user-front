@@ -552,12 +552,10 @@ export async function requestLectureSurvey(
       // setLectureSurvey(lectureSurvey);
       // await getCourseLectureSurveyState(lectureId, surveyCase.id);
       requestLectureSurveyFromSurvey(
-        surveyCase.id,
         surveyCase.surveyFormId,
+        surveyCase.id,
         lectureSurveyAnswerSummary
       );
-
-      requestLectureSurveyFromSurvey(surveyCase.id, surveyCase.surveyFormId);
     }
   }
 }
