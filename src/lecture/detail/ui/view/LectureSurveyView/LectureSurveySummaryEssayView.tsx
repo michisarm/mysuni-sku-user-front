@@ -25,17 +25,17 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
     [lectureSurveyItem]
   );
   const answerList = useLectureSurveyAnswerSummaryList();
+  const sentenceList =
+    (lectureSurveyItem.visible !== undefined &&
+      lectureSurveyItem.visible === true &&
+      answerList?.map(answer => answer.summaryItems.sentences)) ||
+    '';
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
       <br />
-      <br />
-
-      {(lectureSurveyItem.visible !== undefined &&
-        lectureSurveyItem.visible === true &&
-        answerList?.map(answer => answer.summaryItems.sentences)) ||
-        ''}
+      {sentenceList}
     </LectureSurveyChoiceLayout>
   );
 };
