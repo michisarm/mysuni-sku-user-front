@@ -12,7 +12,7 @@ interface OpenCommunityViewProps { }
 
 const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommunityView() {
   const contextRef = useRef(null);
-
+  const history = useHistory();
   const gaOnClick = (name: string) => {
     // react-ga 
     ReactGA.event({
@@ -22,6 +22,9 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
     });
     window.scrollTo(0, 0);
     sessionStorage.removeItem('communityOffset');
+    if (name === 'MyCommunity') history.replace('/community/main');
+    if (name === 'CommunityList') history.replace('/community/main/open-communities');
+    if (name === 'Follow') history.replace('/community/main/follow');
   }
   return (
     <div ref={contextRef}>
@@ -32,7 +35,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyCommunity"
               active={false}
               as={Link}
-              to="/community/main"
+              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
@@ -42,7 +45,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyCreatedCommunity"
               active={true}
               as={Link}
-              to="/community/main/open-communities"
+              // to="/community/main/open-communities"
               onClick={() => gaOnClick('CommunityList')}
             >
               Community List
@@ -51,7 +54,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
               name="MyFeed"
               active={false}
               as={Link}
-              to="/community/main/follow"
+              // to="/community/main/follow"
               onClick={() => gaOnClick('Follow')}
             >
               Follow

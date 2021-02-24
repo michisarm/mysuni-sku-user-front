@@ -1,5 +1,5 @@
 
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
@@ -33,6 +33,7 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
   scrollSave?: () => void;
+  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 
 interface State {
@@ -52,17 +53,17 @@ const ChannelLecturesContainer: React.FC<Props> = ({
 }) => {
   const histroy = useHistory();
   const location = useLocation();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
 
   useEffect(() => {
-    setTimeout(() => {
+    if (loading) {
       scrollOnceMove();
-    }, 1500)
-  }, [scrollOnceMove])
+    }
+  }, [loading])
 
   return (
-    <ChannelLecturesInnterContainer
+    <ChannelLecturesInnerContainer
       actionLogService={actionLogService}
       pageService={pageService}
       collegeService={collegeService}
@@ -75,6 +76,7 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       location={location}
       match={match}
       scrollSave={scrollSave}
+      setLoading={setLoading}
     />
   )
 }
@@ -91,7 +93,7 @@ export default withRouter(ChannelLecturesContainer);
 ))
 @reactAutobind
 @observer
-class ChannelLecturesInnterContainer extends Component<Props, State> {
+class ChannelLecturesInnerContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.channel';
 
@@ -124,21 +126,37 @@ class ChannelLecturesInnterContainer extends Component<Props, State> {
 
   init() {
     //
-    const { pageService, lectureService } = this.props;
-
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    const { pageService, lectureService, setLoading } = this.props;
+    const prevLectureOffset: any = sessionStorage.getItem('lectureOffset');
+    const getLectureOffset: number = JSON.parse(prevLectureOffset);
+    setLoading && setLoading(false)
+    if (getLectureOffset > 0) {
+      const initLimit = 8;
+      pageService!.initPageMap(this.PAGE_KEY, 0, getLectureOffset + initLimit);
+    } else {
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    }
     lectureService!.clearLectures();
   }
 
   async findPagingChannelLectures() {
     //
-    const { match, pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const { match, pageService, lectureService, reviewService, inMyLectureService, setLoading } = this.props;
     const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
+    if (page!.nextOffset > 0) {
+      sessionStorage.setItem('lectureOffset', JSON.stringify(page?.nextOffset))
+    }
 
+    const prevLectureOffset: any = sessionStorage.getItem('lectureOffset');
+    const getLectureOffset: number = JSON.parse(prevLectureOffset);
     inMyLectureService!.findAllInMyLectures();
-
-    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, getLectureOffset || page!.nextOffset, sorting);
+    if (!lectureOffsetList.empty) {
+      setLoading && setLoading(true);
+    } else {
+      setLoading && setLoading(false);
+    }
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 

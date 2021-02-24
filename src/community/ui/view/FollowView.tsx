@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 // import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Segment, Icon, Button } from "semantic-ui-react";
 
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
@@ -14,7 +14,7 @@ import ReactGA from 'react-ga';
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
   const followCommunityIntro = useFollowCommunityIntro();
-
+  const history = useHistory();
   const gaOnClick = (name: string) => {
     // react-ga 
     ReactGA.event({
@@ -22,7 +22,11 @@ const FollowView: React.FC = function FollowView() {
       action: 'Click',
       label: `Community-${name}`,
     });
+    window.scrollTo(0, 0);
     sessionStorage.removeItem('communityOffset');
+    if (name === 'MyCommunity') history.replace('/community/main');
+    if (name === 'CommunityList') history.replace('/community/main/open-communities');
+    if (name === 'Follow') history.replace('/community/main/follow');
   }
 
   return (
@@ -34,7 +38,7 @@ const FollowView: React.FC = function FollowView() {
               name="MyCommunity"
               active={false}
               as={Link}
-              to="/community/main"
+              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
@@ -44,7 +48,7 @@ const FollowView: React.FC = function FollowView() {
               name="MyCreatedCommunity"
               active={false}
               as={Link}
-              to="/community/main/open-communities"
+              // to="/community/main/open-communities"
               onClick={() => gaOnClick('CommunityList')}
             >
               Community List
@@ -53,7 +57,7 @@ const FollowView: React.FC = function FollowView() {
               name="MyFeed"
               active={true}
               as={Link}
-              to="/community/main/follow"
+              // to="/community/main/follow"
               onClick={() => gaOnClick('Follow')}
             >
               Follow
@@ -67,18 +71,18 @@ const FollowView: React.FC = function FollowView() {
             <>
               <CommunityFollowPostListContainer />
               <CommunityFollowListContainer />
-            </> 
+            </>
             :
             <>
               <section className="content community">
                 <Segment className="full">
                   <div className="no-cont-wrap">
-                    <Icon className="no-contents80"/><span className="blind">콘텐츠 없음</span>
+                    <Icon className="no-contents80" /><span className="blind">콘텐츠 없음</span>
                     <div className="text lms-color-type1">팔로우가 없습니다.</div>
                     <div className="sub-text">팔로우들은 어떤 활동을 하고 있을까요?<br />커뮤니티에서 만난 학습자들을 팔로우 해보세요!</div>
                     <Link to="/community/main/open-communities">
                       <Button icon className="right btn-blue2" >
-                      Community List 바로가기<Icon className="morelink"/>
+                        Community List 바로가기<Icon className="morelink" />
                       </Button>
                     </Link>
                   </div>
@@ -87,7 +91,7 @@ const FollowView: React.FC = function FollowView() {
             </>
           }
         </div>
-      </Segment>    
+      </Segment>
     </div>
   );
 };

@@ -168,8 +168,11 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
+    const prevLectureOffset: any = sessionStorage.getItem('lectureOffset');
+    const getLectureOffset: number = JSON.parse(prevLectureOffset);
+    console.log(getLectureOffset)
     const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy)
+      LectureRdoModel.newWithChannel(channelId, limit, getLectureOffset || offset, orderBy)
     );
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(
       response
