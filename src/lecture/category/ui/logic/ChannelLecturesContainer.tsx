@@ -1,8 +1,8 @@
 
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
@@ -21,6 +21,7 @@ import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
 
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   actionLogService?: ActionLogService,
@@ -31,11 +32,54 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
   lectureCardService?: LectureCardService,
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
+  scrollSave?: () => void;
 }
 
 interface State {
   sorting: string,
 }
+
+const ChannelLecturesContainer: React.FC<Props> = ({
+  actionLogService,
+  pageService,
+  collegeService,
+  personalCubeService,
+  lectureService,
+  lectureCardService,
+  reviewService,
+  inMyLectureService,
+  match
+}) => {
+  const histroy = useHistory();
+  const location = useLocation();
+
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 1500)
+  }, [scrollOnceMove])
+
+  return (
+    <ChannelLecturesInnterContainer
+      actionLogService={actionLogService}
+      pageService={pageService}
+      collegeService={collegeService}
+      personalCubeService={personalCubeService}
+      lectureService={lectureService}
+      lectureCardService={lectureCardService}
+      reviewService={reviewService}
+      inMyLectureService={inMyLectureService}
+      history={histroy}
+      location={location}
+      match={match}
+      scrollSave={scrollSave}
+    />
+  )
+}
+
+export default withRouter(ChannelLecturesContainer);
 
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
@@ -47,7 +91,7 @@ interface State {
 ))
 @reactAutobind
 @observer
-class ChannelLecturesContainer extends Component<Props, State> {
+class ChannelLecturesInnterContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.channel';
 
@@ -160,7 +204,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
-    const { history } = this.props;
+    const { history, scrollSave } = this.props;
     const collegeId = model.category.college.id;
     const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
@@ -173,9 +217,9 @@ class ChannelLecturesContainer extends Component<Props, State> {
       history.push(routePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
     // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
-
+    scrollSave && scrollSave();
     ReactGA.event({
-      
+
       category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
       action: 'Click Card',
       label: `${data?.model?.name}`
@@ -195,7 +239,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
-    const { inMyLectureMap } =  inMyLectureService!;
+    const { inMyLectureMap } = inMyLectureService!;
 
     return (
       <ChannelLecturesContentWrapperView
@@ -234,7 +278,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
                 })}
               </Lecture.Group>
 
-              { this.isContentMore() && (
+              {this.isContentMore() && (
                 <SeeMoreButton
                   onClick={this.onClickSeeMore}
                 />
@@ -247,4 +291,4 @@ class ChannelLecturesContainer extends Component<Props, State> {
   }
 }
 
-export default withRouter(ChannelLecturesContainer);
+
