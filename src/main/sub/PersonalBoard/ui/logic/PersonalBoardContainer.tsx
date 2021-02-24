@@ -1,31 +1,63 @@
 import { mobxHelper } from '@nara.platform/accent';
+import BadgeService from 'certification/present/logic/BadgeService';
 import { inject, observer } from 'mobx-react';
-import MyLearningSummaryModel from 'myTraining/model/MyLearningSummaryModel';
 import { MyLearningSummaryService } from 'myTraining/stores';
-import React, { useEffect, useRef, useState } from 'react';
+import { SkProfileModel } from 'profile/model';
+import { SkProfileService } from 'profile/stores';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { getBadgeLearningCompanyAvg } from '../../api/personalBoardApi';
+import { requestBadgeLearningTime } from '../../service/getBadgeLearningTime';
+import { requestPopularCourse } from '../../service/getPopularCourse';
+import { requestLearningTimeDetail } from '../../service/useLearningTimeDetail';
+import BadgeLearningTimeView from '../view/BadgeLearningTimeView';
+import CollegeTopChartView from '../view/CollegeTopChartView';
+import LearningTimeDetailView from '../view/LearningTimeDetailView';
+import MyCompanyPopularCourseView from '../view/MyCompanyPopularCourseView';
 
 
 interface Props extends RouteComponentProps {
   myLearningSummaryService?: MyLearningSummaryService;
+  badgeService?: BadgeService;
+  skProfileService?: SkProfileService;
+  companyCode: string;
 }
 
 function PersonalBoardContainer(props: Props){
 
-  const { myLearningSummaryService } = props;
-  const { totalMyLearningSummary2 } = myLearningSummaryService!;
-  const history = useHistory();
+  const { myLearningSummaryService, skProfileService, companyCode } = props;
+  const { myLearningSummary } = myLearningSummaryService!;
 
-  console.log('totalMyLearningSummary2', totalMyLearningSummary2)
+  useEffect(() => {
+    requestBadgeLearningTime(companyCode)
+    requestLearningTimeDetail()
+    requestPopularCourse(companyCode, 7)
+  }, [])
+
+  const handlePopularCourseDate = useCallback((date: number) => {
+    requestPopularCourse(companyCode, date)
+  }, [])
+
+
+  const collegeInfo = {
+    '1': 1,
+    '2': 2,
+    '3': 3
+  }
+
+  // const courseData = {
+  //   channalRank: [],
+  // }
 
 return (
   <>
-    <span>1234</span>
-    뱃지<br/>
-    학습시간<br/>
-    학습시간상세<br/>
-    영역별 학습시간<br/>
-    우리회사 인기코스<br/>
+    <BadgeLearningTimeView/><br/>
+    <LearningTimeDetailView/><br/>
+    <CollegeTopChartView
+      myLearningSummary={myLearningSummary}
+      collegeInfo={collegeInfo}
+    /><br/>
+    <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate}/>
   </>
 )
 }
@@ -37,6 +69,7 @@ export default inject(
     'profile.skProfileService',
     'myTraining.myLearningSummaryService',
     'myTraining.myTrainingService',
-    'badge.badgeService'
+    'badge.badgeService',
+    'profile.skProfileService'
   )
 )(withRouter(observer(PersonalBoardContainer)));

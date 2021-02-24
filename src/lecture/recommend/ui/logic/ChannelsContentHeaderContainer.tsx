@@ -91,6 +91,9 @@ class ChannelsContentHeaderContainer extends Component<Props> {
             favoriteChannelCount={channels.length || 0}
           />
         </ContentHeader.Cell>
+        <ContentHeader.Cell inner>
+          <span>cell</span>
+        </ContentHeader.Cell>
       </ContentHeader>
     );
   }
