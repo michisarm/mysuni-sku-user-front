@@ -1,19 +1,12 @@
-import React, { ChangeEvent, useCallback } from 'react';
-import { Checkbox, Form, Icon, Radio, Input } from 'semantic-ui-react';
-import {
-  selectSentenceAnswer,
-  selectBooleanAnswer,
-} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import React, { useCallback } from 'react';
+import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
   useLectureSurveyAnswerSummaryList,
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
-import { toInteger, toNumber } from 'lodash';
-import { number } from '@storybook/addon-knobs';
 
 interface LectureSurveySummaryBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;

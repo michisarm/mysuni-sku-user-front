@@ -4,10 +4,7 @@ import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
 import LectureSurveySummaryDateView from './LectureSurveySummaryDateView';
-import {
-  useLectureSurveySummary,
-  useLectureSurveyAnswerSummaryList,
-} from 'lecture/detail/store/LectureSurveyStore';
+import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
 import LectureSurveyState from 'lecture/detail/viewModel/LectureSurveyState';
 import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
 import LectureSurveySummaryCriterionView from './LectureSurveySummaryCriterionView';

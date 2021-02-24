@@ -7,8 +7,6 @@ import LectureSurvey, {
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
-import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
-import { last } from 'lodash';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -19,12 +17,6 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
-  const onChangeValue = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      selectSentenceAnswer(lectureSurveyItem, e.target.value);
-    },
-    [lectureSurveyItem]
-  );
   const answerList = useLectureSurveyAnswerSummaryList();
 
   const [number, setNumber] = useState(9);

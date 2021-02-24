@@ -21,15 +21,6 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
   lectureSurveyAnswerItem,
 }) {
   const answerList = useLectureSurveyAnswerSummaryList();
-  const onChangeValue = useCallback(
-    (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-      if (data.value === undefined) {
-        return;
-      }
-      selectCriterionAnswer(lectureSurveyItem, data.value);
-    },
-    [lectureSurveyItem]
-  );
   const lectureSurveySummary = useLectureSurveySummary();
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
@@ -56,8 +47,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     lectureSurveyAnswerItem.criteriaItem !== undefined &&
                     lectureSurveyAnswerItem.criteriaItem.value === choice.no
                   }
-                  onChange={onChangeValue}
-                  readOnly={false}
+                  readOnly={true}
                 />
                 {choice.count || '0'}
                 <br />
@@ -84,8 +74,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     lectureSurveyAnswerItem.criteriaItem !== undefined &&
                     lectureSurveyAnswerItem.criteriaItem.value === choice.no
                   }
-                  onChange={onChangeValue}
-                  readOnly={false}
+                  readOnly={true}
                 />
                 {choice.count || '0'}
                 <br />

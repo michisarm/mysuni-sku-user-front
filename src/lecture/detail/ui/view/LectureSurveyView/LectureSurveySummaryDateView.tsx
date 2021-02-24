@@ -1,19 +1,8 @@
-import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
-import LectureSurveyState, {
-  LectureSurveyAnswerItem,
-} from '../../../viewModel/LectureSurveyState';
-
+import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { Icon, Form, Button } from 'semantic-ui-react';
-import {
-  getLectureSurveyAnswerSummaryList,
-  useLectureSurveyAnswerSummaryList,
-} from 'lecture/detail/store/LectureSurveyStore';
-import { value } from 'numeral';
+import { Icon, Button } from 'semantic-ui-react';
 
 interface LectureSurveyDateViewProps {
   lectureSurveyItem: LectureSurveyItem;

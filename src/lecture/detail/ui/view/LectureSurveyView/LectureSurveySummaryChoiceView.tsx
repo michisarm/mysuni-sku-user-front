@@ -1,5 +1,5 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
-import { Checkbox, CheckboxProps, Radio, Icon, Input } from 'semantic-ui-react';
+import React, { Fragment, useCallback } from 'react';
+import { Checkbox, CheckboxProps, Radio } from 'semantic-ui-react';
 import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -15,16 +15,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
-  const onChangeValue = useCallback(
-    (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-      if (data.value === undefined) {
-        return;
-      }
-      selectChoiceAnswer(lectureSurveyItem, data.value);
-    },
-    [lectureSurveyItem]
-  );
-
   const lectureSurveySummary = useLectureSurveySummary();
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
@@ -55,8 +45,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     lectureSurveyAnswerItem.itemNumbers !== undefined &&
                     lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
                   }
-                  onChange={onChangeValue}
-                  readOnly={false}
+                  readOnly={true}
                 />
                 {choice.count || '0'}
                 <br />
@@ -85,12 +74,10 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     lectureSurveyAnswerItem.itemNumbers !== undefined &&
                     lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
                   }
-                  onChange={onChangeValue}
-                  readOnly={false}
+                  readOnly={true}
                 />
                 {choice.image && <img src={choice.image} />}
                 <br />
-
                 {choice.count || '0'}
                 <br />
                 {choiceAvg || 0}

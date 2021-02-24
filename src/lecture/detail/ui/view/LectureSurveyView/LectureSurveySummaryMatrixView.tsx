@@ -4,11 +4,8 @@ import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 import Table from 'semantic-ui-react/dist/commonjs/collections/Table';
 import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
-import LectureSurveyState, {
-  LectureSurveyAnswerItem,
-} from '../../../viewModel/LectureSurveyState';
+import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 
 interface LectureSurveyMatrixViewProps {
   lectureSurveyItem: LectureSurveyItem;
