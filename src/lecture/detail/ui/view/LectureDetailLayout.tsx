@@ -21,8 +21,8 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
   // 실시간 스크롤 감시
   useEffect(() => {
     const onScroll = () => setNowScroll(window.pageYOffset);
+    window.scrollTo(0, 0)
     window.addEventListener('scroll', onScroll);
-
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
