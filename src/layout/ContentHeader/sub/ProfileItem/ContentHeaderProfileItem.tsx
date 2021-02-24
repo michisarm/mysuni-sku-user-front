@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Image } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import ProfilPhotoChangeModal from '../../../../myTraining/ui/logic/ProfilPhotoChangeModal';
+import DashBoardSentenceContainer from '../DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -60,10 +61,11 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
         </div>
         <div className="text-info">
           <div className="name">
-            {name}
+            {name}님,
           </div>
           <div className="part">
-            <span>{company}</span><br /><span>{department}</span>
+          <DashBoardSentenceContainer/>
+            {/* <span>{company}</span><br /><span>{department}</span> */}
           </div>
         </div>
       </>

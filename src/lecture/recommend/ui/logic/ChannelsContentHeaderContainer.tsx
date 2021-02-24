@@ -79,6 +79,9 @@ class ChannelsContentHeaderContainer extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
+          <span>cell</span>
+        </ContentHeader.Cell>
+        <ContentHeader.Cell inner>
           <ContentHeader.RecommendItem
             top={
               <FavoriteChannelChangeModal
@@ -90,9 +93,6 @@ class ChannelsContentHeaderContainer extends Component<Props> {
             totalChannelCount={collegeLectureCountService!.totalChannelCount}
             favoriteChannelCount={channels.length || 0}
           />
-        </ContentHeader.Cell>
-        <ContentHeader.Cell inner>
-          <span>cell</span>
         </ContentHeader.Cell>
       </ContentHeader>
     );
