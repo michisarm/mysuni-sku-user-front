@@ -33,12 +33,18 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
   const lectureSurveySummary = useLectureSurveySummary();
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
+
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
-          choices.map((choice, index) => {
+          choices.map(choice => {
+            const criterionAvg =
+              choice.count !== undefined &&
+              respondCount !== undefined &&
+              ((choice.count / respondCount) * 100).toFixed(1);
+
             return (
               <Fragment key={choice.no}>
                 <Radio
@@ -55,17 +61,18 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                 />
                 {choice.count || '0'}
                 <br />
-
-                {choice.count !== undefined &&
-                  respondCount !== undefined &&
-                  ((choice.count / respondCount) * 100).toFixed(2)}
+                {criterionAvg || 0}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
           })}
         {canMultipleAnswer &&
           choices &&
-          choices.map((choice, index) => {
+          choices.map(choice => {
+            const criterionAvg =
+              choice.count !== undefined &&
+              respondCount !== undefined &&
+              ((choice.count / respondCount) * 100).toFixed(1);
             return (
               <Fragment key={choice.no}>
                 <Checkbox
@@ -82,6 +89,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                 />
                 {choice.count || '0'}
                 <br />
+                {criterionAvg || 0}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );

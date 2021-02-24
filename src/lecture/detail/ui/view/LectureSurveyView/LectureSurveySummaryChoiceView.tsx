@@ -33,8 +33,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
       return totalCount + (count || 0);
     }, 0) || 0;
 
-  console.log('totalCount', totalCount);
-
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -44,7 +42,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const choiceAvg =
               choice.count !== undefined &&
               respondCount !== undefined &&
-              ((choice.count / respondCount) * 100).toFixed(2);
+              Math.round((choice.count / respondCount) * 100).toFixed(1);
 
             return (
               <Fragment key={choice.no}>
@@ -62,7 +60,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 />
                 {choice.count || '0'}
                 <br />
-                {choiceAvg}
+                {choiceAvg || 0}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
@@ -71,6 +69,11 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
         {canMultipleAnswer &&
           choices &&
           choices.map(choice => {
+            const choiceAvg =
+              choice.count !== undefined &&
+              respondCount !== undefined &&
+              Math.round((choice.count / totalCount) * 100).toFixed(1);
+
             return (
               <Fragment key={choice.no}>
                 <Checkbox
@@ -85,9 +88,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   onChange={onChangeValue}
                   readOnly={false}
                 />
+                {choice.image && <img src={choice.image} />}
+                <br />
+
                 {choice.count || '0'}
                 <br />
-                {choice.image && <img src={choice.image} />}
+                {choiceAvg || 0}
               </Fragment>
             );
           })}
