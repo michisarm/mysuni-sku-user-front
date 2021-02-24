@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useCallback } from 'react';
-import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
+import { Checkbox, Form, Icon, Radio, Button } from 'semantic-ui-react';
 import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurvey, {
   LectureSurveyItem,
@@ -8,6 +8,7 @@ import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
 import { useLectureSurvey } from 'lecture/detail/service/useLectureSurvey/useLectureSurvey';
+import { last } from 'lodash';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -25,19 +26,48 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
     [lectureSurveyItem]
   );
   const answerList = useLectureSurveyAnswerSummaryList();
-  const sentenceList =
-    (lectureSurveyItem.visible !== undefined &&
-      lectureSurveyItem.visible === true &&
-      answerList
-        ?.filter(f => f.answerItemType === 'Essay')
-        .map(answer => `${answer.summaryItems.sentences}`)) ||
-    '';
+
+  const [number, setNumber] = useState(9);
+
+  const setCheckNumber = () => {
+    setNumber(number + 9);
+  };
+
+  const lastIndex =
+    answerList?.find(f => f.answerItemType === 'Essay')?.summaryItems.sentences
+      ?.length || 0;
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
       <br />
-      {sentenceList}
+
+      {lectureSurveyItem.visible !== undefined &&
+        lectureSurveyItem.visible === true &&
+        answerList
+          ?.filter(f => f.answerItemType === 'Essay')
+          .map(answer =>
+            answer.summaryItems.sentences?.map((result, index) => (
+              <>{index >= 0 && index <= number ? <div>{result}</div> : ''}</>
+            ))
+          )}
+
+      {lectureSurveyItem.visible !== undefined &&
+      lectureSurveyItem.visible === true &&
+      lastIndex - 1 > number ? (
+        <div>
+          <Button icon className="left moreview" onClick={setCheckNumber}>
+            <Icon className="moreview" />
+            더보기
+          </Button>
+        </div>
+      ) : (
+        ''
+      )}
+
+      {lectureSurveyItem.visible !== undefined &&
+        lectureSurveyItem.visible !== true &&
+        '해당 문항은 비공개 처리되어 답변이 조회되지 않습니다.'}
     </LectureSurveyChoiceLayout>
   );
 };
