@@ -28,6 +28,7 @@ import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardConta
 import LearningObjectivesModal from '../PersonalBoard/ui/view/LearningObjectivesModal';
 import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
 import { getBadgeLearningTimeItem, getLearningObjectivesItem, setBadgeLearningTimeItem } from '../PersonalBoard/store/PersonalBoardStore';
+import DashBoardSentenceContainer from 'layout/ContentHeader/sub/DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -280,14 +281,18 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               </div>
             </div>
             <div className="user">
-              <div className="hello">안녕하세요 test</div>
+              {/* <div className="hello">안녕하세요</div> */}
               <div className="user-name">
                 <strong className="ellipsis">{member.name}</strong>
-                <span>님</span>
+                <span>님,</span>
                 <Button onClick={this.openBoard}>openBoard</Button>
                 <Button onClick={this.openLearningObjectives}>목표 설정</Button>
               </div>
             </div>
+            <div className="hello">
+              11111
+            </div>
+            <DashBoardSentenceContainer/>
           </ItemWrapper>
 
           <ItemWrapper>

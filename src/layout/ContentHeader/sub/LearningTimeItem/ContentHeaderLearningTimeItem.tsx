@@ -108,7 +108,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
         {
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-total-time">
+              <Button className="btn-total-time" style={{paddingLeft:'100px'}}>
                 <Label className="onlytext">
                   {/*<Icon className="total-time" /><span>총 학습시간</span>*/}
                   <div>

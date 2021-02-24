@@ -93,6 +93,19 @@ function MyContentHeaderContainer(props: Props) {
           department={skProfile.member.department}
         />
       </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderBadgeView
+          badgeCount={myBadgeCount}
+          onClickItem={onClickMyBadge}
+        />
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderStampView
+          stampCount={myStampCount}
+          onClickItem={onClickMyStamp}
+          thisYearStampCount={thisYearMyStampCount}
+        />
+      </ContentHeader.Cell>
       <ContentHeader.Cell inner>
         {myLearningSummary.displayTotalLearningTime !== 0 &&
           (
@@ -118,19 +131,6 @@ function MyContentHeaderContainer(props: Props) {
             options={getYearOptions()}
           />
           </div>*/}
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderStampView
-          stampCount={myStampCount}
-          onClickItem={onClickMyStamp}
-          thisYearStampCount={thisYearMyStampCount}
-        />
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderBadgeView
-          badgeCount={myBadgeCount}
-          onClickItem={onClickMyBadge}
-        />
       </ContentHeader.Cell>
     </ContentHeader>
   );
