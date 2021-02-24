@@ -7,28 +7,28 @@ import LectureSurveyDateView from './LectureSurveyDateView';
 import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
-import LectureSurveyState, {
-  LectureSurveyAnswerItem,
-} from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
   saveLectureSurveyState,
   submitLectureSurveyState,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-import LectureSurveySummary from 'lecture/detail/viewModel/LectureSurveySummary';
+import { useCurrentCommunitySurveyMenu } from 'community/utility/communityRouterParamsHelper';
+import CommunityMenu from 'community/model/CommunityMenu';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
+  currentMenu?: CommunityMenu;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
+  currentMenu,
 }) {
   const params = useLectureRouterParams();
-  const { title } = lectureSurvey;
 
   const requestSaveLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -44,11 +44,15 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     submitLectureSurveyState(params.lectureParams, params.pathname);
   }, [params]);
 
+  const surveyTitle = currentMenu?.surveyInformation;
+
   return (
     <>
       <div className="course-info-header">
         <div className="survey-header">
-          <div className="survey-header-left">{title}</div>
+          <div className="survey-header-left">
+            {surveyTitle} 코스/큐브명 과정 Survey
+          </div>
           <div className="survey-header-right">
             {lectureSurveyState !== undefined &&
               lectureSurveyState.state === 'Progress' && (

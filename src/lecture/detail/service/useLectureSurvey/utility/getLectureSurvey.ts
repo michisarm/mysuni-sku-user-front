@@ -509,7 +509,10 @@ export async function getCourseLectureSurveyState(
   setLectureSurveyState(lectureSurveyState);
 }
 
-export async function requestLectureSurvey(params: LectureRouterParams) {
+export async function requestLectureSurvey(
+  params: LectureRouterParams,
+  lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
+) {
   const { contentType, contentId, lectureId } = params;
   if (contentType === 'cube') {
     const { contents } = await cacheableFindPersonalCube(contentId);
@@ -518,12 +521,19 @@ export async function requestLectureSurvey(params: LectureRouterParams) {
       contents.surveyId !== '' &&
       contents.surveyCaseId !== ''
     ) {
-      const lectureSurvey = await parseSurveyForm(
+      // const lectureSurvey = await parseSurveyForm(
+      //   contents.surveyId,
+      //   contents.surveyCaseId
+      // );
+      // setLectureSurvey(lectureSurvey);
+      // await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
+      requestLectureSurveyFromSurvey(
         contents.surveyId,
-        contents.surveyCaseId
+        contents.surveyCaseId,
+        lectureSurveyAnswerSummary
       );
-      setLectureSurvey(lectureSurvey);
-      await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
+
+      requestLectureSurveyFromSurvey(contents.surveyId, contents.surveyCaseId);
     }
   }
   if (contentType === 'coures') {
@@ -535,12 +545,19 @@ export async function requestLectureSurvey(params: LectureRouterParams) {
       surveyCase.surveyFormId !== '' &&
       surveyCase.id !== ''
     ) {
-      const lectureSurvey = await parseSurveyForm(
+      // const lectureSurvey = await parseSurveyForm(
+      //   surveyCase.surveyFormId,
+      //   surveyCase.id
+      // );
+      // setLectureSurvey(lectureSurvey);
+      // await getCourseLectureSurveyState(lectureId, surveyCase.id);
+      requestLectureSurveyFromSurvey(
+        surveyCase.id,
         surveyCase.surveyFormId,
-        surveyCase.id
+        lectureSurveyAnswerSummary
       );
-      setLectureSurvey(lectureSurvey);
-      await getCourseLectureSurveyState(lectureId, surveyCase.id);
+
+      requestLectureSurveyFromSurvey(surveyCase.id, surveyCase.surveyFormId);
     }
   }
 }

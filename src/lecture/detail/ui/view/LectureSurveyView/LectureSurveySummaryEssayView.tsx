@@ -28,7 +28,9 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
   const sentenceList =
     (lectureSurveyItem.visible !== undefined &&
       lectureSurveyItem.visible === true &&
-      answerList?.map(answer => answer.summaryItems.sentences)) ||
+      answerList
+        ?.filter(f => f.answerItemType === 'Essay')
+        .map(answer => `${answer.summaryItems.sentences}`)) ||
     '';
 
   return (

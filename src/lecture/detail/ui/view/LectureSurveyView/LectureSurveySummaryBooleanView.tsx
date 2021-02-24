@@ -85,9 +85,9 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             <span className="lms-radio-text" />
           </label>
         </div>
-        {yesCount || 0} {yesAvg || 0}
+        {yesCount || 0} {yesAvg !== 'NaN' ? yesAvg : '0'}
         <br />
-        {noCount || 0} {noAvg || 0}
+        {noCount || 0} {noAvg !== 'NaN' ? noAvg : '0'}
       </div>
     </LectureSurveyChoiceLayout>
   );

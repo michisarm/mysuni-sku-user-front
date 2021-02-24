@@ -8,6 +8,8 @@ import {
   startLectureSurveyState,
   finishLectureSurveyState,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import { useCurrentCommunitySurveyMenu } from 'community/utility/communityRouterParamsHelper';
+import { getLectureCourseSummary } from 'lecture/detail/store/LectureOverviewStore';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
@@ -20,6 +22,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 }) {
   const params = useLectureRouterParams();
   const { title } = lectureSurvey;
+  const currentMenu = useCurrentCommunitySurveyMenu();
 
   const requestStartLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -28,9 +31,11 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
     startLectureSurveyState();
   }, [params]);
 
-  const requestFinishLectureSurveyState = () => {
-    finishLectureSurveyState();
-  };
+  // const requestFinishLectureSurveyState = () => {
+  //   finishLectureSurveyState();
+  // };
+
+  const surveyTitle = currentMenu?.surveyInformation;
 
   const questionCount = lectureSurvey.surveyItems.length;
   return (
@@ -63,7 +68,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           </div>
         </div>
       </div>
-      Survey 설명: {title}
+      Survey 설명: {surveyTitle} 코스/큐브명 과정의 Survey입니다.
       <br />
       문항개수: 총 {questionCount}문항
       <br />

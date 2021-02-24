@@ -8,10 +8,8 @@ import { useCurrentCommunitySurveyMenu } from '../../../../../community/utility/
 function LectureSurveyContainer() {
   const [lectureSurvey] = useLectureSurvey();
   const [lectureSurveyState] = useLectureSurveyState();
-
-  useEffect(() => {}, []);
   const currentMenu = useCurrentCommunitySurveyMenu();
-  //console.log('currentMenu', currentMenu);
+
   return (
     <>
       {lectureSurvey &&
@@ -21,6 +19,7 @@ function LectureSurveyContainer() {
           <LectureSurveyView
             lectureSurvey={lectureSurvey}
             lectureSurveyState={lectureSurveyState}
+            currentMenu={currentMenu}
           />
         )}
       {lectureSurvey &&

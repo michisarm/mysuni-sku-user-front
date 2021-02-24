@@ -33,6 +33,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <b>{sentence}</b>
+      <br />
       {Object.keys(sentencesMap)
         .sort((a, b) => (a > b ? 1 : -1))
         .map(key => (
@@ -41,7 +42,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
               key === sentence ? 'active' : ''
             }`}
           >
-            {key} ({sentencesMap[key]})
+            {key} ({sentencesMap[key]})&nbsp;
             <br />
           </div>
         ))}
