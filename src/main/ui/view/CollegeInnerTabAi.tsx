@@ -244,7 +244,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="">
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-11r/Course/C-LECTURE-x2">
                       SK텔레콤의 AI업무 적용 사례 및 Lessons Learned
                     </a>
                   </li>
@@ -595,7 +595,7 @@ const panes = [
                 </h4>
                 <ul>
                   <li>
-                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5m/Course/C-LECTURE-3s">머신러닝 이해와 실습 上</a>
+                    <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1fz/Course/C-LECTURE-1a6">머신러닝 이해와 실습 上</a>
                   </li>
                 </ul>
                 <ul>

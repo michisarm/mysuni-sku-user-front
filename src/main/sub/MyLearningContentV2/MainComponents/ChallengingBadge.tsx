@@ -81,9 +81,10 @@ const ChallengingBadge: React.FC<Props> = Props => {
   // react-ga event
   const onClick = (idx: number) => {
     ReactGA.event({
-      category: '도전중인 Badge',
-      action: 'Click',
-      label: `(Badge) - ${myBadges[idx].name}`,
+      category: '메인_도전중인-Badge',
+      action: 'Click Card',
+      // label: `(Badge) - ${myBadges[idx].name}`,
+      label: `${myBadges[idx].name}`,
     });
   };
 
