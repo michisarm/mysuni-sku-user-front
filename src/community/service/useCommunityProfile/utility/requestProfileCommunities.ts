@@ -1,6 +1,6 @@
 import { patronInfo } from '@nara.platform/dock';
 import moment from 'moment';
-import { findAllMyCommunities } from '../../../api/communityApi';
+import { findAllMyCommunities, deleteMember } from '../../../api/communityApi';
 import {
   getCommunityProfileMyCommunity,
   setCommunityProfileMyCommunity,
@@ -76,5 +76,12 @@ export async function requestAppendProfileCommunities() {
     communities: next,
     communitiesTotalCount: communityViews.totalCount,
     communitiesOffset: next.length,
+  });
+}
+
+export function delMember(communityId: string) {
+  deleteMember(communityId).then(response => {
+    getCommunityProfileMyCommunity();
+    //  searchQuery();
   });
 }

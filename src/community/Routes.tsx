@@ -10,6 +10,7 @@ import {
 import NotFoundPage from 'layout/NotFoundPage';
 import MainRoutes from './ui/page/MainRoutes';
 import CommunityHomePage from './ui/page/CommunityHomePage';
+import CommunityDetailPage from './ui/page/CommunityDetailPage';
 import AllPostsPage from './ui/page/AllPostsPage';
 import NoticePostsPage from './ui/page/NoticePostsPage';
 import PostsPage from './ui/page/PostsPage';
@@ -38,7 +39,7 @@ const Routes = function Routes() {
   }, [pathname]);
 
   return (
-    <Switch>   
+    <Switch>
       <Route path="/community/main" component={MainRoutes} />
       <Route path="/community/my-profile" component={MyProfileRoutes} />
       <Route path="/community/profile/:profileId" component={ProfileRoutes} />
@@ -50,11 +51,8 @@ const Routes = function Routes() {
       <Route
         path="/community/admin/:communityId"
         component={CommunityAdminRoutes}
-      />         
-      <Route
-        path="/community/:communityId"
-        component={CommunityRoutes}
       />
+      <Route path="/community/:communityId" component={CommunityRoutes} />
       <Route component={NotFoundPage} />
     </Switch>
   );

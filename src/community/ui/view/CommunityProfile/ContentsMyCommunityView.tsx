@@ -9,7 +9,10 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 import CommunityType from '../../../model/CommunityType';
-import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import {
+  requestAppendProfileCommunities,
+  delMember,
+} from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
 import { SkProfileService } from 'profile/stores';
 
 interface ContentsMyCommunityViewProps {
@@ -42,7 +45,10 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
   const handleOk = () => {
     reactConfirm({
       title: '확인',
-      message: `${SkProfileService.instance.skProfile.id} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
+      message: `${name} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
+      onOk: async () => {
+        delMember(communityId);
+      },
     });
   };
   const history = useHistory();

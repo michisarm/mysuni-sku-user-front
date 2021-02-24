@@ -7,4 +7,5 @@ export default interface CommunityItem {
   managerName: string;
   memberCount: number;
   hasNewPost: boolean;
+  type: string;
 }

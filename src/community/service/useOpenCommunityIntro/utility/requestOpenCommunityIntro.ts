@@ -35,6 +35,7 @@ function communityToItem(community: CommunityView): OpenCommunityItem {
     description,
     fieldName,
     approved,
+    type,
   } = community;
   return {
     communityId,
@@ -47,6 +48,7 @@ function communityToItem(community: CommunityView): OpenCommunityItem {
     fieldName: fieldName || '',
     description,
     approvedState: approved === null ? 'None' : approved ? 'Approved' : 'Wait',
+    type,
   };
 }
 

@@ -101,14 +101,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   // (react-ga) post pageTitle
   useEffect(() => {
     //
-    if(window.location.search === '?_source=newsletter') {
+    if (window.location.search === '?_source=newsletter') {
       ReactGA.event({
         category: 'External',
         action: 'Email',
-        label: 'Newsletter'
+        label: 'Newsletter',
       });
-    }
-    else {
+    } else {
       setTimeout(() => {
         ReactGA.pageview(
           window.location.pathname + window.location.search,
@@ -117,7 +116,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
         );
       }, 1000);
     }
-  },[]);
+  }, []);
   const lectureStructure = getLectureStructure();
   let qnaUrl = '/board/support-qna';
   if (lectureStructure !== undefined && lectureStructure.course !== undefined) {

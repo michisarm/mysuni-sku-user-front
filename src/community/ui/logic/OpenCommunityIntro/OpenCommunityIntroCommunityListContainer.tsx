@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
   useOpenCommunityIntro,
 } from '../../../store/CommunityMainStore';
+import CommunityType from '../../../model/CommunityType';
 import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
 import { Link } from 'react-router-dom';
@@ -25,8 +26,50 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   managerName,
   memberCount,
   thumbnailId,
+  type,
 }) {
-  return (
+  const passChek = (id: string, page: string) => {
+    alert('test' + id);
+  };
+
+  return type === 'CHORT' ? (
+    <div
+      className="community-open-card lock"
+      onClick={() => passChek(communityId, 'learning')}
+    >
+      <div className="open-card-top">
+        <span className="label">{fieldName}</span>
+        {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+      </div>
+      <div className="open-card-content">
+        <p>{name}1</p>
+        <div className="thumbnail">
+          <img
+            src={thumbnailId}
+            style={{ height: 72, width: 72, borderRadius: 8 }}
+          />
+        </div>
+        <div className="community-main-left-list">
+          <div
+            className="community-main-left-h3"
+            dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
+          />
+        </div>
+      </div>
+      <div className="open-card-bottom">
+        <div className="title-area">
+          <div className="text-list">
+            <img src={managerIcon} />
+            <span>{managerName}</span>
+          </div>
+        </div>
+        <div className="right-area">
+          <span>멤버</span>
+          <span>{memberCount}</span>
+        </div>
+      </div>
+    </div>
+  ) : (
     <Link to={`/community/${communityId}`} className="community-open-card">
       <div className="open-card-top">
         <span className="label">{fieldName}</span>

@@ -42,6 +42,7 @@ function communityToItem(community: CommunityView): CommunityItem {
     managerName,
     memberCount,
     lastPostTime,
+    type,
   } = community;
   return {
     communityId,
@@ -51,6 +52,7 @@ function communityToItem(community: CommunityView): CommunityItem {
       Date.now() - ONE_DAY < (lastPostTime === null ? 0 : lastPostTime),
     managerName: managerName || '',
     memberCount,
+    type,
   };
 }
 
