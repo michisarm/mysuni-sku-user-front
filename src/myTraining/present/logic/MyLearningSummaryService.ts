@@ -20,7 +20,7 @@ class MyLearningSummaryService {
   private _totalMyLearningSummary: MyLearningSummaryModel = new MyLearningSummaryModel();
 
   @observable
-  totalMyLearningSummary2: MyLearningSummaryModel = {} as MyLearningSummaryModel;
+  totalMyLearningSummaryDash: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
   myLearningSummaryCachingFetch: CachingFetch = new CachingFetch();
 
@@ -59,11 +59,9 @@ class MyLearningSummaryService {
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
   @action
   async findTotalMyLearningSummary() {
-    console.log('findTotalMyLearningSummary')
     this.myLearningSummaryCachingFetch.fetch(
       () => this.myLearningSummaryApi.findTotalMyLearningSummary(),
       (totalMyLearningSummary) => runInAction(() => {
-        console.log('totalMyLearningSummary', totalMyLearningSummary)
         return this._totalMyLearningSummary = new MyLearningSummaryModel(totalMyLearningSummary)
       })
     );
@@ -77,12 +75,10 @@ class MyLearningSummaryService {
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
 
   @action
-  async findTotalMyLearningSummary2() {
-    console.log('findTotalMyLearningSummary')
+  async findTotalMyLearningSummaryDash() {
     const test = await this.myLearningSummaryApi.findTotalMyLearningSummary()
-    console.log('test', test)
     return runInAction(() => {
-      this.totalMyLearningSummary2 = new MyLearningSummaryModel(test)
+      this.totalMyLearningSummaryDash = new MyLearningSummaryModel(test)
     })
   }
 }

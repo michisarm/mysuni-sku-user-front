@@ -25,6 +25,9 @@ import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
 import SkProfileModel from "../../../profile/model/SkProfileModel";
 import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardContainer';
+import LearningObjectivesModal from '../PersonalBoard/ui/view/LearningObjectivesModal';
+import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
+import { getBadgeLearningTimeItem, getLearningObjectivesItem, setBadgeLearningTimeItem } from '../PersonalBoard/store/PersonalBoardStore';
 
 
 interface Props extends RouteComponentProps {
@@ -39,6 +42,8 @@ interface Props extends RouteComponentProps {
 
 interface States {
   boardVisible: boolean;
+  learningObjectivesOpen: boolean;
+  companyCode: string;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -55,7 +60,9 @@ interface States {
 class MyLearningSummaryContainer extends Component<Props, States> {
 
   state = {
-    boardVisible: false
+    boardVisible: false,
+    learningObjectivesOpen: false,
+    companyCode: ''
   }
   
   componentDidMount(): void {
@@ -64,7 +71,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   init() {
-    console.log('this.state', this.state)
     //
     const { skProfileService } = this.props;
     skProfileService!.findStudySummary();
@@ -84,14 +90,17 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
     myLearningSummaryService!.findMyLearningSummary();
-    myLearningSummaryService!.findTotalMyLearningSummary2();
+    myLearningSummaryService!.findTotalMyLearningSummaryDash();
   }
 
   menuControlAuth() {
     //
     const { skProfileService, menuControlAuthService } = this.props;
     skProfileService!.findSkProfile()
-      .then((profile: SkProfileModel) => menuControlAuthService!.findMenuControlAuth(profile.member.companyCode))
+      .then((profile: SkProfileModel) => {
+        this.setState({companyCode: profile.member.companyCode})
+        menuControlAuthService!.findMenuControlAuth(profile.member.companyCode)
+      })
   }
 
   getHourMinute(minuteTime: number) {
@@ -151,24 +160,29 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   openBoard () {
-    console.log('openBoard')
-    console.log('boardVisible', this.state.boardVisible)
     this.setState(prevState => {
-      console.log('prevState', prevState)
-      console.log('!prevState', !prevState)
       return (
         ({ boardVisible: !prevState.boardVisible})
       )
     })
   }
 
+  // this.setState({'learningObjectivesOpen':value})
+  openLearningObjectives () {
+    this.setState(prevState => {
+      return (
+        ({ learningObjectivesOpen: !prevState.learningObjectivesOpen})
+      )
+    })
+  }
+
   render() {
     //
-    const { boardVisible } = this.state;
+    const { boardVisible, learningObjectivesOpen, companyCode } = this.state;
     const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
-    const { myLearningSummary, totalMyLearningSummary2 } = myLearningSummaryService!;
+    const { myLearningSummary, totalMyLearningSummaryDash } = myLearningSummaryService!;
     const { myStampCount, thisYearMyStampCount } = myTrainingService!;
     const { earnedCount: myBadgeCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
@@ -182,7 +196,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     let accrueTotal: any = null;
 
     const { menuControlAuth } = menuControlAuthService!;
-    console.log('totalMyLearningSummary2', totalMyLearningSummary2)
     if (hour < 1 && minute < 1) {
       total = (
         <>
@@ -249,6 +262,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       );
     }
 
+    const badgeLearningTime = getBadgeLearningTimeItem()
+    if(badgeLearningTime !== undefined) {
+      setBadgeLearningTimeItem({ ...badgeLearningTime, mylearningTimeHour: accrueHour, mylearningTimeMinute: accrueMinute})
+    }
+
     return (
       <>
         <HeaderWrapperView>
@@ -267,7 +285,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 <strong className="ellipsis">{member.name}</strong>
                 <span>님</span>
                 <Button onClick={this.openBoard}>openBoard</Button>
-                <Button onClick={this.openBoard}>목표 설정</Button>
+                <Button onClick={this.openLearningObjectives}>목표 설정</Button>
               </div>
             </div>
           </ItemWrapper>
@@ -329,8 +347,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         </HeaderWrapperView>
 
       {/* 퍼스널보드 컴포넌트 생성 */}
-      { boardVisible && (
-        <PersonalBoardContainer/>
+      { boardVisible && companyCode && (
+        <PersonalBoardContainer companyCode={companyCode}/>
       )}
 
         <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA}>
@@ -353,6 +371,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           )
           }
         </AdditionalToolsMyLearning>
+        <LearningObjectivesModalContainer
+          open={learningObjectivesOpen}
+          setOpen={(value)=> {
+            return this.setState({'learningObjectivesOpen':value})
+          }} 
+        />
       </>
     );
   }
