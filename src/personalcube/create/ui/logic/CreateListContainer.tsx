@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { CubeState } from 'shared/model';
 import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
@@ -15,13 +15,42 @@ import CreateListPanelTopLineView from '../view/CreateListPanelTopLineView';
 import CreateListView from '../view/CreateListView';
 
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   actionLogService?: ActionLogService;
   pageService?: PageService;
   personalCubeService?: PersonalCubeService;
   onChangeCreateCount: (createCount: number) => void;
+  scrollSave?: () => void;
 }
+
+const CreateListContainer: React.FC<Props> = ({ actionLogService, pageService, personalCubeService, onChangeCreateCount, match }) => {
+  const histroy = useHistory();
+  const location = useLocation();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 1000)
+  }, [scrollOnceMove])
+
+  return (
+    <CreateListInnerContainer
+      actionLogService={actionLogService}
+      pageService={pageService}
+      personalCubeService={personalCubeService}
+      onChangeCreateCount={onChangeCreateCount}
+      history={histroy}
+      match={match}
+      location={location}
+      scrollSave={scrollSave}
+    />
+  )
+}
+
+export default withRouter(CreateListContainer);
 
 @inject(
   mobxHelper.injectFrom(
@@ -32,7 +61,7 @@ interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
 )
 @observer
 @reactAutobind
-class CreateListContainer extends React.Component<Props> {
+class CreateListInnerContainer extends React.Component<Props> {
   //
   PAGE_KEY = 'create';
   PAGE_SIZE = 8;
@@ -155,12 +184,12 @@ class CreateListContainer extends React.Component<Props> {
   async onClickPersonalCubeRow(personalCubeId: string) {
     //
     const personalCubeService = this.props.personalCubeService!;
-    const { history } = this.props;
+    const { history, scrollSave } = this.props;
 
     const personalCube = await personalCubeService.findPersonalCube(
       personalCubeId
     );
-
+    scrollSave && scrollSave();
     const cubeType = personalCube!.contents.type;
     const cubeState = personalCube!.cubeState;
 
@@ -177,7 +206,7 @@ class CreateListContainer extends React.Component<Props> {
 
   onClickSeeMore() {
     //
-    const { actionLogService, history } = this.props;
+    const { actionLogService, history, scrollSave } = this.props;
 
     actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
@@ -227,4 +256,3 @@ class CreateListContainer extends React.Component<Props> {
   }
 }
 
-export default withRouter(CreateListContainer);
