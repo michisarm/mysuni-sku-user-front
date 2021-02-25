@@ -32,7 +32,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const choiceAvg =
               choice.count !== undefined &&
               respondCount !== undefined &&
-              Math.round((choice.count / respondCount) * 100).toFixed(1);
+              ((choice.count / respondCount) * 100).toFixed(1);
 
             return (
               <Fragment key={choice.no}>
@@ -61,7 +61,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const choiceAvg =
               choice.count !== undefined &&
               respondCount !== undefined &&
-              Math.round((choice.count / totalCount) * 100).toFixed(1);
+              ((choice.count / totalCount) * 100).toFixed(1);
 
             return (
               <Fragment key={choice.no}>

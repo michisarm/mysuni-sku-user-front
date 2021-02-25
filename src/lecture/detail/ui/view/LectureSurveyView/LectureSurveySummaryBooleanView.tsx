@@ -42,8 +42,8 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
     yesCount = numberCountMap[1];
     noCount = numberCountMap[0];
 
-    yesAvg = Math.round((yesCount / respondCount) * 100).toFixed(1);
-    noAvg = Math.round((noCount / respondCount) * 100).toFixed(1);
+    yesAvg = ((yesCount / respondCount) * 100).toFixed(1);
+    noAvg = ((noCount / respondCount) * 100).toFixed(1);
   }
 
   return (
