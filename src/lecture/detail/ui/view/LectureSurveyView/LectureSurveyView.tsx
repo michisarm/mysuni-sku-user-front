@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Button } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyBooleanView from './LectureSurveyBooleanView';
@@ -16,6 +16,9 @@ import { useLectureRouterParams } from '../../../service/useLectureRouterParams'
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
 import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
+import { SurveyCaseService } from 'survey/stores';
+import { SkProfileService } from 'profile/stores';
+import { CommunityCommentList } from '@nara.drama/feedback';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -31,6 +34,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   lectureStructure,
 }) {
   const params = useLectureRouterParams();
+  const surveyCaseId = lectureSurveyState?.surveyCaseId;
+  const [commentId, setCommentID] = useState('');
 
   const requestSaveLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -45,6 +50,21 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     }
     submitLectureSurveyState(params.lectureParams, params.pathname);
   }, [params]);
+
+  useEffect(() => {
+    const surveyCaseService = SurveyCaseService.instance;
+    if (surveyCaseId !== undefined) {
+      surveyCaseService.findSurveyCaseFeedBack(surveyCaseId).then(result => {
+        if (result !== '') {
+          setCommentID(result.commentFeedbackId);
+        }
+      });
+    }
+  }, [surveyCaseId]);
+
+  const skProfileService = SkProfileService.instance;
+  const { skProfile } = skProfileService;
+  const { member } = skProfile;
 
   const surveyCommunityTitle = currentMenu?.surveyInformation;
   const surveyCourseTitle = lectureStructure?.course?.name;
@@ -202,6 +222,20 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               제출
             </button>
           </div>
+        )}
+
+      {lectureSurveyState !== undefined &&
+        lectureSurveyState.state === 'Completed' &&
+        commentId !== '' && (
+          <CommunityCommentList
+            feedbackId={commentId}
+            menuType=""
+            hideCamera
+            name={member.name}
+            email={member.email}
+            companyName={member.company}
+            departmentName={member.department}
+          />
         )}
     </>
   );
