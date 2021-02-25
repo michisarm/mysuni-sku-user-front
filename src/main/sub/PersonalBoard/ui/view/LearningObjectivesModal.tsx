@@ -24,7 +24,6 @@ const LearningObjectivesModal:React.FC<Props> = ({
 
   const learningObjectivesItem = useLearningObjectivesItem()
 
-  console.log('learningObjectivesItem', learningObjectivesItem)
 
   useEffect(() => {
   },[])
