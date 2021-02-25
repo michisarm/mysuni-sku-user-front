@@ -4,7 +4,6 @@ import { useLectureSurveyState } from '../../../service/useLectureSurvey/useLect
 import LectureSurveyView from '../../view/LectureSurveyView/LectureSurveyView';
 import LectureSurveyInfoView from '../../view/LectureSurveyView/LectureSurveyInfoView';
 import { useCurrentCommunitySurveyMenu } from '../../../../../community/utility/communityRouterParamsHelper';
-import { useLectureCourseOverview } from 'lecture/detail/service/useLectureCourseOverview/useLectureCourseOverview';
 import { useLectureStructure } from 'lecture/detail/service/useLectureStructure/useLectureStructure';
 
 function LectureSurveyContainer() {
@@ -12,8 +11,6 @@ function LectureSurveyContainer() {
   const [lectureSurveyState] = useLectureSurveyState();
   const currentMenu = useCurrentCommunitySurveyMenu();
   const [lectureStructure] = useLectureStructure();
-
-  console.log(lectureStructure?.cube?.name);
 
   return (
     <>
