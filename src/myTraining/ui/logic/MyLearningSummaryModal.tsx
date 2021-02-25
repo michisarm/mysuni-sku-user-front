@@ -81,6 +81,7 @@ class MyLearningSummaryModal extends Component<Props> {
 
   /* handlers */
   onOpenModal() {
+    console.log('onOpenModal')
     this.setState({
       open: true,
     });
