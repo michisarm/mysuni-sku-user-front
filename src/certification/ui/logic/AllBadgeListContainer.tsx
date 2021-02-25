@@ -179,7 +179,7 @@ const AllBadgeListContainer: React.FC<Props> = Props => {
         scrollOnceMove();
       }, 800)
     }
-  }, [badges])
+  }, [badges.length])
 
   return (
     <>

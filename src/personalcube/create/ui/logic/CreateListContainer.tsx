@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -23,18 +23,20 @@ interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   personalCubeService?: PersonalCubeService;
   onChangeCreateCount: (createCount: number) => void;
   scrollSave?: () => void;
+  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 
 const CreateListContainer: React.FC<Props> = ({ actionLogService, pageService, personalCubeService, onChangeCreateCount, match }) => {
   const histroy = useHistory();
   const location = useLocation();
   const { scrollOnceMove, scrollSave } = useScrollMove();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (loading) {
       scrollOnceMove();
-    }, 1000)
-  }, [scrollOnceMove])
+    }
+  }, [loading])
 
   return (
     <CreateListInnerContainer
@@ -46,6 +48,7 @@ const CreateListContainer: React.FC<Props> = ({ actionLogService, pageService, p
       match={match}
       location={location}
       scrollSave={scrollSave}
+      setLoading={setLoading}
     />
   )
 }
@@ -84,7 +87,7 @@ class CreateListInnerContainer extends React.Component<Props> {
 
   // tab click 시 초기화 by gon
   init() {
-    const { pageService, personalCubeService } = this.props;
+    const { pageService, personalCubeService, setLoading } = this.props;
     const { searchState } = personalCubeService!;
     const currentPageNo = this.props.match.params.pageNo;
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
@@ -100,6 +103,7 @@ class CreateListInnerContainer extends React.Component<Props> {
     // tab click 시 초기화 by gon
     // 조회조건 = 전체
     personalCubeService!.changeSearchState(CubeState.ALL);
+    setLoading && setLoading(false);
   }
 
   // tab click 시 초기화 by gon
@@ -146,6 +150,7 @@ class CreateListInnerContainer extends React.Component<Props> {
       page!.limit,
       cubeState
     );
+
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       offsetList.totalCount,
@@ -222,7 +227,12 @@ class CreateListInnerContainer extends React.Component<Props> {
       personalCubeOffsetList,
       searchState,
     } = this.props.personalCubeService!;
+    const { setLoading } = this.props
     const { totalCount, results: personalCubes } = personalCubeOffsetList;
+
+    if (personalCubes.length > 0) {
+      setLoading && setLoading(true)
+    }
 
     if (personalCubes.length < 1) {
       return (
