@@ -79,6 +79,9 @@ class BreadcrumbView extends Component<Props, State> {
             ? cineroom.id
             : cineroomWorkspaces[cineroomWorkspaces.length - 1].id
         );
+
+        localStorage.setItem('dashBoardSentenceIndex', '0')
+
         // setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
 
         if (

@@ -37,9 +37,9 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
     const {
       image, imageEditable, name, myPageActive, company, department,
     } = this.props;
-
     return (
       <>
+        {/* <div className="personal-inner"> */}
         <div className="profile">
           <div className="pic">
             <Image src={image} alt="Profile" />
@@ -59,6 +59,7 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
             />
           )}
         </div>
+        {/* </div> */}
         <div className="text-info">
           <div className="name">
             {name}님,

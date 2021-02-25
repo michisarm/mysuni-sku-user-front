@@ -8,10 +8,6 @@ const [
     getDashBoardSentenceItem,
     useDashBoardSentenceItem
 ] = createStore<DashBoardSentence>(
-    {
-        dashboardSentence: [],
-        recentlyShowNumber: 0
-    }
 );
 
 export {

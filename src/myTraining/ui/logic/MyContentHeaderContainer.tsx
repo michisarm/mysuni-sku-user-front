@@ -83,15 +83,15 @@ function MyContentHeaderContainer(props: Props) {
     <ContentHeader
       bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
     >
-      <ContentHeader.Cell inner>
-        <ContentHeader.ProfileItem
-          myPageActive={!isFromMyPage(contentType)}
-          imageEditable={isFromMyPage(contentType)}
-          image={skProfile.photoFilePath || profileImg}
-          name={skProfile.member.name}
-          company={skProfile.member.company}
-          department={skProfile.member.department}
-        />
+      <ContentHeader.Cell inner className="personal-inner">
+          <ContentHeader.ProfileItem
+            myPageActive={!isFromMyPage(contentType)}
+            imageEditable={isFromMyPage(contentType)}
+            image={skProfile.photoFilePath || profileImg}
+            name={skProfile.member.name}
+            company={skProfile.member.company}
+            department={skProfile.member.department}
+          />
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeaderBadgeView
