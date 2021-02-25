@@ -521,19 +521,11 @@ export async function requestLectureSurvey(
       contents.surveyId !== '' &&
       contents.surveyCaseId !== ''
     ) {
-      // const lectureSurvey = await parseSurveyForm(
-      //   contents.surveyId,
-      //   contents.surveyCaseId
-      // );
-      // setLectureSurvey(lectureSurvey);
-      // await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
       requestLectureSurveyFromSurvey(
         contents.surveyId,
         contents.surveyCaseId,
         lectureSurveyAnswerSummary
       );
-
-      requestLectureSurveyFromSurvey(contents.surveyId, contents.surveyCaseId);
     }
   }
   if (contentType === 'coures') {
@@ -545,12 +537,6 @@ export async function requestLectureSurvey(
       surveyCase.surveyFormId !== '' &&
       surveyCase.id !== ''
     ) {
-      // const lectureSurvey = await parseSurveyForm(
-      //   surveyCase.surveyFormId,
-      //   surveyCase.id
-      // );
-      // setLectureSurvey(lectureSurvey);
-      // await getCourseLectureSurveyState(lectureId, surveyCase.id);
       requestLectureSurveyFromSurvey(
         surveyCase.surveyFormId,
         surveyCase.id,

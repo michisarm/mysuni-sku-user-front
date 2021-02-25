@@ -14,19 +14,21 @@ import {
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-import { useCurrentCommunitySurveyMenu } from 'community/utility/communityRouterParamsHelper';
 import CommunityMenu from 'community/model/CommunityMenu';
+import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
   currentMenu?: CommunityMenu;
+  lectureStructure?: LectureStructure;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
   lectureSurveyState,
   currentMenu,
+  lectureStructure,
 }) {
   const params = useLectureRouterParams();
 
@@ -44,15 +46,19 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     submitLectureSurveyState(params.lectureParams, params.pathname);
   }, [params]);
 
-  const surveyTitle = currentMenu?.surveyInformation;
+  const surveyCommunityTitle = currentMenu?.surveyInformation;
+  const surveyCourseTitle = lectureStructure?.course?.name;
+  const surveyCubeTitle = lectureStructure?.cube?.name;
+  const surveyTitle =
+    surveyCommunityTitle === undefined
+      ? `${surveyCourseTitle || surveyCubeTitle}과정의 Survey`
+      : surveyCommunityTitle;
 
   return (
     <>
       <div className="course-info-header">
         <div className="survey-header">
-          <div className="survey-header-left">
-            {surveyTitle} 코스/큐브명 과정 Survey
-          </div>
+          <div className="survey-header-left">{surveyTitle}</div>
           <div className="survey-header-right">
             {lectureSurveyState !== undefined &&
               lectureSurveyState.state === 'Progress' && (

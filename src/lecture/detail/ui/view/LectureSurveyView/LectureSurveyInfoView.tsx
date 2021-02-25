@@ -4,25 +4,25 @@ import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-import {
-  startLectureSurveyState,
-  finishLectureSurveyState,
-} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import { startLectureSurveyState } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { useCurrentCommunitySurveyMenu } from 'community/utility/communityRouterParamsHelper';
-import { getLectureCourseSummary } from 'lecture/detail/store/LectureOverviewStore';
+import CommunityMenu from 'community/model/CommunityMenu';
+import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
+  currentMenu?: CommunityMenu;
+  lectureStructure?: LectureStructure;
 }
 
 const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function LectureSurveyInfoView({
   lectureSurvey,
   lectureSurveyState,
+  currentMenu,
+  lectureStructure,
 }) {
   const params = useLectureRouterParams();
-  const { title } = lectureSurvey;
-  const currentMenu = useCurrentCommunitySurveyMenu();
 
   const requestStartLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -35,9 +35,15 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   //   finishLectureSurveyState();
   // };
 
-  const surveyTitle = currentMenu?.surveyInformation;
-
   const questionCount = lectureSurvey.surveyItems.length;
+  const surveyCommunityTitle = currentMenu?.surveyInformation;
+  const surveyCourseTitle = lectureStructure?.course?.name;
+  const surveyCubeTitle = lectureStructure?.cube?.name;
+  const surveyTitleInfo =
+    surveyCommunityTitle === undefined
+      ? `${surveyCourseTitle || surveyCubeTitle}과정의 Survey입니다.`
+      : `${surveyCommunityTitle}의 Survey입니다.`;
+
   return (
     <>
       <div className="course-info-header">
@@ -68,7 +74,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           </div>
         </div>
       </div>
-      Survey 설명: {surveyTitle} 코스/큐브명 과정의 Survey입니다.
+      Survey 설명: {surveyTitleInfo}
       <br />
       문항개수: 총 {questionCount}문항
       <br />
