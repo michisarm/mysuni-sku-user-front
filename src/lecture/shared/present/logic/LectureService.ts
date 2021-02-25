@@ -27,9 +27,6 @@ import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 
-
-
-
 @autobind
 class LectureService {
   //
@@ -168,11 +165,8 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
-    const prevLectureOffset: any = sessionStorage.getItem('lectureOffset');
-    const getLectureOffset: number = JSON.parse(prevLectureOffset);
-    console.log(getLectureOffset)
     const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannel(channelId, limit, getLectureOffset || offset, orderBy)
+      LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy)
     );
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(
       response

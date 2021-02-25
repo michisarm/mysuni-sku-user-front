@@ -48,9 +48,10 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     if (myBadges.length > 0) {
       setTimeout(() => {
         scrollOnceMove();
-      }, 300)
+      }, 800)
     }
   }, [myBadges])
+
   useEffect(() => {
     //
     pageKey.current = PAGE_KEY;

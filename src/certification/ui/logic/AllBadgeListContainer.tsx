@@ -21,7 +21,6 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   pageService?: PageService;
   badgeService?: BadgeService;
-
   categorySelection: string;
 }
 
@@ -178,7 +177,7 @@ const AllBadgeListContainer: React.FC<Props> = Props => {
     if (badges.length > 0) {
       setTimeout(() => {
         scrollOnceMove();
-      }, 1000)
+      }, 800)
     }
   }, [badges])
 

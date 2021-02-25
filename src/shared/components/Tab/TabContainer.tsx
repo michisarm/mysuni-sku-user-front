@@ -110,8 +110,8 @@ class TabContainer extends Component<Props, State> {
     } else {
       this.publishViewEvent(menu);
     }
-    if (sessionStorage.getItem('prevOffset') !== null) {
-      sessionStorage.removeItem('prevOffset');
+    if (sessionStorage.getItem('learningOffset') !== null) {
+      sessionStorage.removeItem('learningOffset');
     }
   }
 

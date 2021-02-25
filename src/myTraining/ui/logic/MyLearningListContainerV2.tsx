@@ -74,7 +74,7 @@ function MyLearningListContainerV2(props: Props) {
   const [refresh, setRefesh] = useState<boolean>(false)
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-  const prevOffset: any = sessionStorage.getItem('prevOffset');
+  const learningOffset: any = sessionStorage.getItem('learningOffset');
 
   /* effects */
   useEffect(() => {
@@ -236,18 +236,18 @@ function MyLearningListContainerV2(props: Props) {
   const getPageInfo = () => {
     const matchesMenu = TableViewsMenu.includes(contentType);
 
-    if (prevOffset !== null && matchesMenu && refresh) {
-      // if (prevOffset !== null && matchesMenu && refresh) {
-      pageInfo.current = JSON.parse(prevOffset)
+    if (learningOffset !== null && matchesMenu && refresh) {
+      // if (learningOffset !== null && matchesMenu && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
       findTableViewsPage(pageInfo.current);
-    } else if (prevOffset !== null && contentType === 'Required' && refresh) {
-      pageInfo.current = JSON.parse(prevOffset)
+    } else if (learningOffset !== null && contentType === 'Required' && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
       findRequiredViewPage(pageInfo.current);
-    } else if (prevOffset !== null && contentType === 'InMyList' && refresh) {
-      pageInfo.current = JSON.parse(prevOffset)
+    } else if (learningOffset !== null && contentType === 'InMyList' && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
       findInMyListViewPage(pageInfo.current);
-    } else if (prevOffset !== null && contentType === 'PersonalCompleted' && refresh) {
-      pageInfo.current = JSON.parse(prevOffset)
+    } else if (learningOffset !== null && contentType === 'PersonalCompleted' && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
       findPersonalCompletedViewPage(pageInfo.current);
     }
   };
@@ -444,7 +444,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
-    sessionStorage.removeItem('prevOffset');
+    sessionStorage.removeItem('learningOffset');
     sessionStorage.removeItem('SCROLL_POS');
     pageInfo.current = { offset: 0, limit: 20 };
     window.scrollTo(0, 0)
@@ -524,7 +524,7 @@ function MyLearningListContainerV2(props: Props) {
     pageInfo.current.limit = PAGE_SIZE;
     pageInfo.current.offset += pageInfo.current.limit
     history.replace(`./${getPageNo()}`);
-    sessionStorage.setItem('prevOffset', JSON.stringify(pageInfo.current))
+    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current))
     if (contentType === 'Required') findRequiredViewPage(pageInfo.current)
     if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current)
     if (contentType !== 'InMyList' && contentType !== 'Required') findTableViewsPage(pageInfo.current);
