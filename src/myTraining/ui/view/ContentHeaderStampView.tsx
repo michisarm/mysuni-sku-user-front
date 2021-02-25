@@ -23,13 +23,13 @@ class ContentHeaderStampView extends PureComponent<Props> {
       <div className="cell-inner">
         <div className="stamp-wrap">
           <Label className="stamp">
-            <a href="#" onClick={onClickItem}>
-              <span><span className="text1">My Stamp</span></span>
-              <span>
-                <Icon className="stamp35" /><span className="text2">x</span>
-                <span className="text3">{stampCount || 0}</span>
-              </span>
-            </a>
+              <div onClick={onClickItem}>
+                <span className="text1">Stamp</span>
+              </div>
+              <div>
+                <span className="text2">{stampCount || 0}</span>
+                <span className="text6">개</span>
+              </div>
             {/*<div style={{marginTop: '5px', textAlign: 'left'}}>
               <a href="#" className="main_sub_all" style={{color: 'gray'}}>
                 &#40;누적
