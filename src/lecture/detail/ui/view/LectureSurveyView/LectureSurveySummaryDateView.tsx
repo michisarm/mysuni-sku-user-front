@@ -54,7 +54,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
         <div>
           <Button icon className="left moreview" onClick={setCheckNumber}>
             <Icon className="moreview" />
-            더보기
+            더보기 ({lastIndex - number - 1}개)
           </Button>
         </div>
       ) : (
