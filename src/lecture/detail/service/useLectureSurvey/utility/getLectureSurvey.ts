@@ -135,7 +135,7 @@ function parseCriterion(
     criterion?.criteriaItems?.map(({ value, names, index }) => {
       const mTitle =
         ((names.langStringMap as unknown) as Record<string, string>)[
-          names.defaultLanguage
+        names.defaultLanguage
         ] || '';
       let mNo = value !== undefined ? value : 1;
       if (isNaN(mNo)) {
@@ -386,10 +386,10 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
+              names: (criteriaItem.names as unknown) as LangStrings,
+              value: criteriaItem.value,
+              index: criteriaItem.index,
+            },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -478,10 +478,10 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
+              names: (criteriaItem.names as unknown) as LangStrings,
+              value: criteriaItem.value,
+              index: criteriaItem.index,
+            },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -573,11 +573,13 @@ export async function requestLectureSurveySummary(
   const lectureSurveyAnswerSummary = await findAnswerSummariesBySurveySummaryId(
     lectureSurveySummary.id
   );
-  await requestLectureSurveyFromSurvey(
+
+  const lectureSurvey = await parseSurveyForm(
     surveyId,
     surveyCaseId,
     lectureSurveyAnswerSummary
   );
+  setLectureSurvey(lectureSurvey);
 
   setLectureSurveyAnswerSummaryList(lectureSurveyAnswerSummary);
 }
