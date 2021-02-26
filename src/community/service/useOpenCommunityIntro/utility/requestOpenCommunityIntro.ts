@@ -51,7 +51,7 @@ function communityToItem(community: CommunityView): OpenCommunityItem {
 }
 
 export function requestOpenCommunityList() {
-  const prevCommunityOffset: any = sessionStorage.getItem('communityOffset');
+  const prevCommunityOffset: any = sessionStorage.getItem('openCommunityOffset');
   const getCommunityOffset: number = JSON.parse(prevCommunityOffset);
   const getSortName: string | null = sessionStorage.getItem('sortName');
   const { fieldId, communitiesSort } =
@@ -104,7 +104,7 @@ export function requestAppendOpenCommunityList() {
             next.push(communityToItem(community));
           }
         });
-        sessionStorage.setItem('communityOffset', JSON.stringify(next.length));
+        sessionStorage.setItem('openCommunityOffset', JSON.stringify(next.length));
         setOpenCommunityIntro({
           ...myOpenCommunityIntro,
           communities: next,
