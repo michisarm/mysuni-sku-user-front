@@ -110,6 +110,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   readOnly={true}
                 />
                 {choice.image && <img src={choice.image} />}
+                내가 선택한 값 {lectureSurveyAnswerItem?.itemNumbers}
                 <br />
                 {choice.count || '0'}
                 <br />

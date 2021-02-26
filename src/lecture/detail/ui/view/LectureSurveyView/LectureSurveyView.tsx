@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyBooleanView from './LectureSurveyBooleanView';
 import LectureSurveyChoiceView from './LectureSurveyChoiceView';
@@ -78,13 +78,13 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     <>
       <div className="course-info-header">
         <div className="survey-header">
-          <div className="survey-header-left">{surveyTitle}</div>
+          <div className="survey-header-left test_ing width50">
+            {surveyTitle}
+          </div>
           <div className="survey-header-right">
             {lectureSurveyState !== undefined &&
-              lectureSurveyState.state === 'Progress' && (
-                <button className="ui button free proceeding p18">
-                  진행중
-                </button>
+              lectureSurveyState.state === 'Completed' && (
+                <button className="ui button free proceeding">참여완료</button>
               )}
           </div>
         </div>
@@ -189,21 +189,26 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
 
       {lectureSurveyState !== undefined &&
         lectureSurveyState.state === 'Completed' && (
-          <>
-            이미 Survey에 응답하였습니다.
-            <br />
-            통계보기 버튼을 통해 Survey 통계를 확인해보세요.
-            <br />
+          <div className="course-info-ing">
+            <Image
+              style={{ display: 'inline-block' }}
+              src={`${process.env.PUBLIC_URL}/images/all/icon-survey-done.png`}
+            />
+
+            <p className="survey-done-txt">이미 Survey에 응답하였습니다.</p>
+
             <LectureSurveyResultModalView
               trigger={
-                <Button icon className="ui button free proceeding p18">
-                  통계보기
-                </Button>
+                <button className="ui button free pop d">
+                  Survey결과 통계 보기
+                </button>
               }
               lectureSurvey={lectureSurvey}
               lectureSurveyState={lectureSurveyState}
+              currentMenu={currentMenu}
+              lectureStructure={lectureStructure}
             />
-          </>
+          </div>
         )}
 
       {lectureSurveyState !== undefined &&
@@ -227,15 +232,17 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
       {lectureSurveyState !== undefined &&
         lectureSurveyState.state === 'Completed' &&
         commentId !== '' && (
-          <CommunityCommentList
-            feedbackId={commentId}
-            menuType=""
-            hideCamera
-            name={member.name}
-            email={member.email}
-            companyName={member.company}
-            departmentName={member.department}
-          />
+          <div className="outline">
+            <CommunityCommentList
+              feedbackId={commentId}
+              menuType=""
+              hideCamera
+              name={member.name}
+              email={member.email}
+              companyName={member.company}
+              departmentName={member.department}
+            />
+          </div>
         )}
     </>
   );

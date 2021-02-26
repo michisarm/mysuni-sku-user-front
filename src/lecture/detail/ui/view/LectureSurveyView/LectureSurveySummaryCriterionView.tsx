@@ -49,9 +49,10 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                   }
                   readOnly={true}
                 />
-                {choice.count || '0'}
                 <br />
-                {criterionAvg || 0}
+                응답수 : {choice.count || '0'}
+                <br />
+                평균 : {criterionAvg || 0}
                 {choice.image && <img src={choice.image} />}
               </Fragment>
             );
