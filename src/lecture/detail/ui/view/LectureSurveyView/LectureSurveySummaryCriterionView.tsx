@@ -22,6 +22,16 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
 
+  /*eslint-disable*/
+  // 각 선택지 최댓값 구해서 파란색으로 표시
+  const maxNum: number = Math.max.apply(
+    Math,
+    lectureSurveyItem.choices!.map(o => {
+      return o.count!;
+    })
+  );
+  /*eslint-enable */
+
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -32,7 +42,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               choice.count !== undefined &&
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
-            
+
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
@@ -55,7 +65,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     <Progress
                       percent={criterionAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color={isChecked ? 'blue' : 'grey'}
+                      color={maxNum === choice.count! ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
@@ -78,7 +88,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               choice.count !== undefined &&
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
-            
+
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
@@ -117,7 +127,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     <Progress
                       percent={criterionAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color={isChecked ? 'blue' : 'grey'}
+                      color={maxNum === choice.count! ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">

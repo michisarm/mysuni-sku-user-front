@@ -25,7 +25,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
     [lectureSurveyItem]
   );
   const { columns, rows, matrixItems } = lectureSurveyItem;
-    
+
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -67,7 +67,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                             c.rowNumber === `${rowNumber}` &&
                             c.columnSelectedNumber === `${columnSelectedNumber}`
                         );
-                      
+
                       return (
                         <Table.Cell key={columnSelectedNumber}>
                           {/* <Radio
@@ -92,12 +92,12 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
 
                           <div className="course-survey-list">
                             <span className="course-survey-list-btnImg">
-                              {`${isChecked}` === 'true' ?
+                              {`${isChecked}` === 'true' ? (
                                 <Image
                                   style={{ display: 'inline-blick' }}
                                   src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                                 />
-                               : (
+                              ) : (
                                 <Image
                                   style={{ display: 'inline-blick' }}
                                   src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}

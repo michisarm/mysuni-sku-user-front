@@ -21,8 +21,17 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
       return totalCount + (count || 0);
     }, 0) || 0;
-  
-  
+
+  /*eslint-disable*/
+  // 각 선택지 최댓값 구해서 파란색으로 표시
+  const maxNum: number = Math.max.apply(
+    Math,
+    lectureSurveyItem.choices!.map(o => {
+      return o.count!;
+    })
+  );
+  /*eslint-enable */
+
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -56,10 +65,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     <Progress
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color={
-                        isChecked ? 'blue' : 'grey'
-                      }
-                      // color="red"
+                      color={maxNum === choice.count! ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
@@ -123,9 +129,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     <Progress
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color={
-                        isChecked ? 'blue' : 'grey'
-                      }
+                      color={maxNum === choice.count! ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
