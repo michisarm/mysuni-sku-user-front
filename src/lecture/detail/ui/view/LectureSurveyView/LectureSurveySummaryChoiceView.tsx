@@ -28,7 +28,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
       return totalCount + (count || 0);
     }, 0) || 0;
-  console.log('!@!@',lectureSurveyAnswerItem?.itemNumbers);
+  console.log('!@!@', lectureSurveyAnswerItem?.itemNumbers);
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -39,6 +39,10 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
               choice.count !== undefined &&
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
+
+            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+              `${choice.no}`
+            );
 
             return (
               <Fragment key={choice.no}>
@@ -60,12 +64,15 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {
-                      lectureSurveyAnswerItem?.itemNumbers ? 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
-                      : 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
-                    }
+                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
+                      />
+                    ) : (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}
+                      />
+                    )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress
@@ -77,7 +84,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       <span className="course-survey-list-persent-number">
                         {choice.count}
                       </span>
-                      {choiceAvg || 0}
+                      {choiceAvg || 0} {`내가 체크한 값 : ${isChecked}`}
                     </span>
                     <li className="course-survey-list-text active">
                       {choice.title}
@@ -96,6 +103,10 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
               respondCount !== undefined &&
               ((choice.count / totalCount) * 100).toFixed(1);
 
+            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+              `${choice.no}`
+            );
+
             return (
               <Fragment key={choice.no}>
                 <Checkbox
@@ -110,9 +121,8 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   readOnly={true}
                 />
                 {choice.image && <img src={choice.image} />}
-                내가 선택한 값 {lectureSurveyAnswerItem?.itemNumbers}
                 <br />
-                {choice.count || '0'}
+                {choice.count || '0'} {`내가 체크한 값 : ${isChecked}`}
                 <br />
                 {choiceAvg || 0}
               </Fragment>
