@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
-import { Checkbox, Form, Icon, Radio, Button } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Image } from 'semantic-ui-react';
 import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurvey, {
   LectureSurveyItem,
@@ -53,7 +53,8 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
               lectureSurveyItem.visible === true &&
               lastIndex - 1 > number ? (
                 <>
-                  <img
+                  <Image
+                    style={{ display: 'inline-block' }}
                     src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
                   />
                   <span onClick={setCheckNumber}>
