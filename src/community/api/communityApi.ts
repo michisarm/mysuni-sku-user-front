@@ -378,10 +378,10 @@ export function followModalDelete(id: string): Promise<FollowCommunityItem> {
 
 // *****************************************
 
-export function findPostMenuName(
+export function findMenu(
   communityId: string,
   menuId: string
-): Promise<any> {
+): Promise<CommunityMenu> {
   const url = `${BASE_URL}/${communityId}/menus/${menuId}`;
   return axiosApi.get(url).then(response => {
     return response && response.data;
@@ -434,29 +434,29 @@ export function getCommunityGroups(
 }
 
 export function saveCommunityAdminMenu(communityId: string, params: any, selectedRow: any): Promise<any> {
-  if(params.type === 'DISCUSSION') {
+  if (params.type === 'DISCUSSION') {
     let value = ''
     let name = ''
 
     params.nameValues.map((item: any) => {
-      if(item.name === 'discussionTopic') {
+      if (item.name === 'discussionTopic') {
         value = item.value
-      } else if(item.name === 'name') {
+      } else if (item.name === 'name') {
         name = item.value
       }
     })
     const url = `${BASE_URL}/${communityId}/menus/flow/${params.id}?name=${selectedRow.discussionTopic}&discussionTopic=${selectedRow.discussionTopic}&title=${name}`;
     return axiosApi.put(url).then(response => {
       const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-      return axiosApi.put(url, {'nameValues': params.nameValues}).then(response => {
+      return axiosApi.put(url, { 'nameValues': params.nameValues }).then(response => {
         return response && response.data
-      }); 
-   }); 
+      });
+    });
   }
   const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-  return axiosApi.put(url, {'nameValues': params.nameValues}).then(response => {
+  return axiosApi.put(url, { 'nameValues': params.nameValues }).then(response => {
     return response && response.data
-  }); 
+  });
 }
 
 export function deleteCommunityAdminMenu(communityId: string, params: any): Promise<any> {
@@ -464,7 +464,7 @@ export function deleteCommunityAdminMenu(communityId: string, params: any): Prom
   const url = `${BASE_URL}/${communityId}/menus/${params}`;
   return axiosApi.delete(url).then(response => {
     return response && response.data
-  }); 
+  });
 }
 
 export function addCommunityAdminMenu(communityId: string, addRow: any): Promise<any> {
@@ -472,33 +472,33 @@ export function addCommunityAdminMenu(communityId: string, addRow: any): Promise
   const url = `${BASE_URL}/${communityId}/menus`;
   return axiosApi.post(url, addRow).then(response => {
     return response && response.data
-  }); 
+  });
 }
 
 export function addCommunityAdminDiscussion(communityId: string, addRow: any): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
   return axiosApi.post(url, addRow).then(response => {
     return response && response.data
-  }); 
+  });
 }
 
 export function findCommunitySurvey(params: any): Promise<any> {
-    const url = `/api/survey/surveyForms/searchKey?`;
-    return axiosApi.get(url, {params}).then(response => {
-      return response
-    }); 
+  const url = `/api/survey/surveyForms/searchKey?`;
+  return axiosApi.get(url, { params }).then(response => {
+    return response
+  });
 }
 
 export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
   const url = `/api/survey/surveyForms/${surveyId}`;
   return axiosApi.get(url).then(response => {
     return response
-  }); 
+  });
 }
 
 export function setCommunityMenuOrder(communityId: string): Promise<any> {
   const url = `/api/community/${communityId}/menus/order`;
   return axiosApi.put(url).then(response => {
     return response
-  }); 
+  });
 }

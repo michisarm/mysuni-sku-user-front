@@ -4,15 +4,18 @@ import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
+import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveyState?: LectureSurveyState;
 }
 
 const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveyEssayView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -50,6 +53,16 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
           </div>
         </Form.Field>
       </Form>
+
+      {lectureSurveyState === undefined ||
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <>
+              <Icon className="icon exclamation circle" />
+              <span>필수문항 응답 후 제출해주세요.</span>
+            </>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };

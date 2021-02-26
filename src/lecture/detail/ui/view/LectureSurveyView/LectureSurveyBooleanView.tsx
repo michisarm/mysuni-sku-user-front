@@ -4,17 +4,22 @@ import {
   selectSentenceAnswer,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
-import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState, {
+  LectureSurveyAnswerItem,
+} from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
+import { Icon } from 'semantic-ui-react';
 
 interface LectureSurveyBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveyState?: LectureSurveyState;
 }
 
 const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = function LectureSurveyBooleanView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(() => {
     const next =
@@ -60,6 +65,16 @@ const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = functi
           </label>
         </div>
       </div>
+
+      {lectureSurveyState === undefined ||
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <>
+              <Icon className="icon exclamation circle " />
+              <span>필수문항 응답 후 제출해주세요.</span>
+            </>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };

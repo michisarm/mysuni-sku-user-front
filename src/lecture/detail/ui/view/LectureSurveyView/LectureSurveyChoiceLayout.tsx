@@ -1,19 +1,31 @@
 import React from 'react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
+import { Image } from 'semantic-ui-react';
 
 const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> = function LectureSurveyChoiceLayout({
   no,
   title,
   image,
   children,
+  isRequired,
 }) {
   return (
-    <div className="course-radio-survey">
+    <div className="course-radio-survey-new">
       <p>
-        <span>{no}</span>
-        {title}
+        <span>{no}.</span>
+        {isRequired === true && (
+          <>
+            <span>{title}</span>
+            <span className="importantBtn">
+              <Image
+                style={{ display: 'inline-block' }}
+                src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
+              />
+            </span>
+          </>
+        )}
+        {isRequired === false && { title }}
       </p>
-      {image && <img src={image} />}
       {children}
     </div>
   );

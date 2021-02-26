@@ -1,18 +1,21 @@
 import React, { Fragment, useCallback } from 'react';
-import { Checkbox, CheckboxProps, Radio } from 'semantic-ui-react';
+import { Checkbox, CheckboxProps, Radio, Icon } from 'semantic-ui-react';
 import { selectCriterionAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
+import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 
 interface LectureSurveyCriterionViewProps {
   lectureSurveyItem: LectureSurveyItem;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveyState?: LectureSurveyState;
 }
 
 const LectureSurveyCriterionView: React.FC<LectureSurveyCriterionViewProps> = function LectureSurveyCriterionView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(
     (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
@@ -67,6 +70,16 @@ const LectureSurveyCriterionView: React.FC<LectureSurveyCriterionViewProps> = fu
             </Fragment>
           ))}
       </div>
+
+      {lectureSurveyState === undefined ||
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <>
+              <Icon className="icon exclamation circle " />
+              <span>필수문항 응답 후 제출해주세요.</span>
+            </>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };
