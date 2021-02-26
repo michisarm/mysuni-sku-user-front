@@ -1,5 +1,12 @@
 import React, { Fragment, useCallback, useEffect } from 'react';
-import { Checkbox, CheckboxProps, Radio, Icon, Image, Progress } from 'semantic-ui-react';
+import {
+  Checkbox,
+  CheckboxProps,
+  Radio,
+  Icon,
+  Image,
+  Progress,
+} from 'semantic-ui-react';
 import { selectCriterionAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -36,31 +43,17 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
 
             return (
               <Fragment key={choice.no}>
-                {/* <Radio
-                  className="base"
-                  label={choice.title}
-                  value={choice.no}
-                  checked={
-                    lectureSurveyAnswerItem !== undefined &&
-                    lectureSurveyAnswerItem.criteriaItem !== undefined &&
-                    lectureSurveyAnswerItem.criteriaItem.value === choice.no
-                  }
-                  readOnly={true}
-                />
-                <br />
-                응답수 : {choice.count || '0'}
-                <br />
-                평균 : {criterionAvg || 0}
-                {choice.image && <img src={choice.image} />} */}
-
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {
-                      lectureSurveyAnswerItem?.itemNumbers ? 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
-                      : 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
-                    }
+                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
+                      />
+                    ) : (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}
+                      />
+                    )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress
@@ -70,9 +63,9 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count} 
+                        {choice.count}
                       </span>
-                      {`(${criterionAvg || 0}%)`}
+                      {` (${criterionAvg || 0}%)`}
                     </span>
                     <li className="course-survey-list-text active">
                       {choice.title}
@@ -109,12 +102,15 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
 
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {
-                      lectureSurveyAnswerItem?.itemNumbers ? 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
-                      : 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
-                    }
+                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
+                      />
+                    ) : (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}
+                      />
+                    )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress
