@@ -40,12 +40,16 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               choice.count !== undefined &&
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
+            
+            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+              `${choice.no}`
+            );
 
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                    {`${isChecked}` === 'true' ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                       />
@@ -59,7 +63,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     <Progress
                       percent={criterionAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color="blue"
+                      color={`${isChecked}` === 'true' ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
@@ -82,6 +86,11 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               choice.count !== undefined &&
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
+            
+            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+              `${choice.no}`
+            );
+
             return (
               <Fragment key={choice.no}>
                 {/* <Checkbox
@@ -102,7 +111,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
 
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                    {`${isChecked}` === 'true' ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                       />
@@ -116,7 +125,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     <Progress
                       percent={criterionAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color="blue"
+                      color={`${isChecked}` === 'true' ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">

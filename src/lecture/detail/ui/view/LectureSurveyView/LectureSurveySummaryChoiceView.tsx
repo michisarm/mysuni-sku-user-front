@@ -21,7 +21,8 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
       return totalCount + (count || 0);
     }, 0) || 0;
-
+  
+  
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -36,12 +37,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-
+            console.log('****', `${choice.no}, ${isChecked}, TYPE:: ${typeof `${isChecked}`}`)
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {isChecked === true ? (
+                    {`${isChecked}` === 'true' ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                       />
@@ -56,7 +57,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={
-                        `${isChecked && isChecked === true}` ? 'blue' : 'grey'
+                        `${isChecked}` === 'true' ? 'blue' : 'grey'
                       }
                       // color="red"
                     />
@@ -83,7 +84,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
               respondCount !== undefined &&
               ((choice.count / totalCount) * 100).toFixed(1);
 
-            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+            const isChecked: any = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
 
@@ -123,7 +124,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={
-                        `${isChecked && isChecked === true}` ? 'blue' : 'grey'
+                        `${isChecked}` === 'true' ? 'blue' : 'grey'
                       }
                     />
                     <span className="course-survey-list-persent-right">

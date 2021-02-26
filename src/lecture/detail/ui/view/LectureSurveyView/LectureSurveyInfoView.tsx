@@ -36,7 +36,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   const surveyCubeTitle = lectureStructure?.cube?.name;
   const surveyTitleInfo =
     surveyCommunityTitle === undefined
-      ? `${surveyCourseTitle || surveyCubeTitle}과정의`
+      ? `${surveyCourseTitle || surveyCubeTitle} ${<div style={{fontWeight: 500}}>과정의</div>}`
       : `${surveyCommunityTitle}의`;
 
   return (
