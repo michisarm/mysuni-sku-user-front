@@ -26,64 +26,72 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
     [lectureSurveyItem]
   );
   const { columns, rows, matrixItems } = lectureSurveyItem;
+
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      <Table celled fixed singleLine className="test-table">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            {columns &&
-              columns.map(({ no, title }) => (
-                <Table.HeaderCell key={no}>{title}</Table.HeaderCell>
-              ))}
-          </Table.Row>
-        </Table.Header>
+      <div className="course-survey-list">
+        <Table celled fixed singleLine className="test-table">
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              {columns &&
+                columns.map(({ no, title }) => (
+                  <Table.HeaderCell key={no}>{title}</Table.HeaderCell>
+                ))}
+            </Table.Row>
+          </Table.Header>
 
-        <Table.Body>
-          {rows &&
-            rows.map(({ title, no: rowNumber }) => (
-              <Table.Row key={rowNumber}>
-                <Table.Cell>{title}</Table.Cell>
-                {columns &&
-                  columns.map(({ no: columnSelectedNumber }) => {
-                    let count: number | undefined;
+          <Table.Body>
+            {rows &&
+              rows.map(({ title, no: rowNumber }) => (
+                <Table.Row key={rowNumber}>
+                  <Table.Cell>{title}</Table.Cell>
+                  {columns &&
+                    columns.map(({ no: columnSelectedNumber }) => {
+                      let count: number | undefined;
 
-                    if (matrixItems !== undefined) {
-                      const matrixItem = matrixItems.find(
-                        c => c.rowNumber === rowNumber.toString()
-                      );
-                      if (matrixItem?.numberCountMap !== undefined) {
-                        count = matrixItem.numberCountMap[columnSelectedNumber];
+                      if (matrixItems !== undefined) {
+                        const matrixItem = matrixItems.find(
+                          c => c.rowNumber === rowNumber.toString()
+                        );
+                        if (matrixItem?.numberCountMap !== undefined) {
+                          count = matrixItem.numberCountMap[columnSelectedNumber];
+                        }
                       }
-                    }
-                    return (
-                      <Table.Cell key={columnSelectedNumber}>
-                        <Radio
-                          className="base"
-                          value={JSON.stringify({
-                            rowNumber: `${rowNumber}`,
-                            columnSelectedNumber: `${columnSelectedNumber}`,
-                          })}
-                          checked={
-                            lectureSurveyAnswerItem !== undefined &&
-                            lectureSurveyAnswerItem.matrixItem !== undefined &&
-                            lectureSurveyAnswerItem.matrixItem.some(
-                              c =>
-                                c.rowNumber === `${rowNumber}` &&
-                                c.columnSelectedNumber ===
-                                  `${columnSelectedNumber}`
-                            )
-                          }
-                          onChange={onChangeValue}
-                        />
-                        {count || '0'}
-                      </Table.Cell>
-                    );
-                  })}
-              </Table.Row>
-            ))}
-        </Table.Body>
-      </Table>
+                      return (
+                        <Table.Cell key={columnSelectedNumber}>
+                          {/* <Radio
+                            className="base"
+                            value={JSON.stringify({
+                              rowNumber: `${rowNumber}`,
+                              columnSelectedNumber: `${columnSelectedNumber}`,
+                            })}
+                            checked={
+                              lectureSurveyAnswerItem !== undefined &&
+                              lectureSurveyAnswerItem.matrixItem !== undefined &&
+                              lectureSurveyAnswerItem.matrixItem.some(
+                                c =>
+                                  c.rowNumber === `${rowNumber}` &&
+                                  c.columnSelectedNumber ===
+                                    `${columnSelectedNumber}`
+                              )
+                            }
+                            onChange={onChangeValue}
+                          />
+                          {count || '0'} */}
+
+                          <div className="course-survey-list">
+                            <span className="course-survey-list-btnImg"><img src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} /></span>
+                            <span className="course-servey-list-boldNumber">{count || '0'}</span>
+                          </div>
+                        </Table.Cell>
+                      );
+                    })}
+                </Table.Row>
+              ))}
+          </Table.Body>
+        </Table>
+      </div>
     </LectureSurveyChoiceLayout>
   );
 };

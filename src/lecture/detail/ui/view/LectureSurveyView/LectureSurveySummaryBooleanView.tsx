@@ -7,6 +7,7 @@ import {
   useLectureSurveyAnswerSummaryList,
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
+import { Progress } from 'semantic-ui-react';
 
 interface LectureSurveySummaryBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -48,39 +49,53 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      <div className="preview">
-        <div
-          className="lms-toggle init"
-          style={{ position: 'relative', top: '0' }}
-        >
-          {/*처음 로딩시 className="lms-switch init"*/}
-          {/*클릭이후  className="lms-switch"*/}
-          <label
-            htmlFor={questionNumber}
-            className={`lms-switch ${
-              lectureSurveyAnswerItem === undefined ||
-              lectureSurveyAnswerItem.itemNumbers === undefined
-                ? 'init'
-                : ''
-            }`}
+      <div className="course-survey-list">
+        <div className="preview">
+          <div
+            className="lms-toggle init"
+            style={{ position: 'relative', top: '0' }}
           >
-            <input
-              type="checkbox"
-              id={questionNumber}
-              checked={
-                lectureSurveyAnswerItem !== undefined &&
-                lectureSurveyAnswerItem.itemNumbers !== undefined &&
-                lectureSurveyAnswerItem.itemNumbers[0] === '1'
-              }
-              onChange={onChangeValue}
-            />
-            <span className="slider" />
-            <span className="lms-radio-text" />
-          </label>
+            {/*처음 로딩시 className="lms-switch init"*/}
+            {/*클릭이후  className="lms-switch"*/}
+            <label
+              htmlFor={questionNumber}
+              className={`lms-switch ${
+                lectureSurveyAnswerItem === undefined ||
+                lectureSurveyAnswerItem.itemNumbers === undefined
+                  ? 'init'
+                  : ''
+              }`}
+            >
+              <input
+                type="checkbox"
+                id={questionNumber}
+                checked={
+                  lectureSurveyAnswerItem !== undefined &&
+                  lectureSurveyAnswerItem.itemNumbers !== undefined &&
+                  lectureSurveyAnswerItem.itemNumbers[0] === '1'
+                }
+                onChange={onChangeValue}
+              />
+              <span className="slider" />
+              <span className="lms-radio-text" />
+            </label>
+          </div>
+          <div className="course-survey-yesOrNoBar-wrapper">
+            <span className="course-survey-yesOrNoBar-text">
+              {yesCount || 0} {yesAvg !== 'NaN' ? yesAvg : '0'}
+            </span>
+
+            {/* progress bar */}
+            <div className="course-survey-list-backgrondBar yesOrNoBar">
+              <span className="course-survey-list-persent-left"><span className="course-survey-list-persent-number">20</span>(22.5%)</span>
+              <Progress percent={80} style={{opacity: 0.5, marginTop: 0}} color="blue" />
+              <span className="course-survey-list-persent-right"><span className="course-survey-list-persent-number">20</span>(22.5%)</span>
+            </div>
+            <span className="course-survey-yesOrNoBar-text">
+              {noCount || 0} {noAvg !== 'NaN' ? noAvg : '0'}  
+            </span>
+          </div>
         </div>
-        {yesCount || 0} {yesAvg !== 'NaN' ? yesAvg : '0'}
-        <br />
-        {noCount || 0} {noAvg !== 'NaN' ? noAvg : '0'}
       </div>
     </LectureSurveyChoiceLayout>
   );

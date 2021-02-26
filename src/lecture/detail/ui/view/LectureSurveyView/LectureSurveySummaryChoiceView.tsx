@@ -28,7 +28,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
       return totalCount + (count || 0);
     }, 0) || 0;
-
+  console.log('!@!@',lectureSurveyAnswerItem?.itemNumbers);
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -60,9 +60,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    <Image
-                      src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
-                    />
+                    {
+                      lectureSurveyAnswerItem?.itemNumbers ? 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
+                      : 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
+                    }
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress

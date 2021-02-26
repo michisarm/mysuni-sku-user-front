@@ -31,35 +31,36 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
-      <br />
+      <div className="course-survey-list">
+        {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}
 
-      {lectureSurveyItem.visible !== undefined &&
+        {lectureSurveyItem.visible !== undefined &&
+          lectureSurveyItem.visible === true &&
+          answerList
+            ?.filter(f => f.answerItemType === 'Essay')
+            .map(answer =>
+              answer.summaryItems.sentences?.map((result, index) => (
+                <>{index >= 0 && index <= number ? <div>{result}</div> : ''}</>
+              ))
+            )}
+
+        {lectureSurveyItem.visible !== undefined &&
         lectureSurveyItem.visible === true &&
-        answerList
-          ?.filter(f => f.answerItemType === 'Essay')
-          .map(answer =>
-            answer.summaryItems.sentences?.map((result, index) => (
-              <>{index >= 0 && index <= number ? <div>{result}</div> : ''}</>
-            ))
-          )}
+        lastIndex - 1 > number ? (
+          <div>
+            <Button icon className="left moreview" onClick={setCheckNumber}>
+              <Icon className="moreview" />
+              더보기 ({lastIndex - number - 1}개)
+            </Button>
+          </div>
+        ) : (
+          ''
+        )}
 
-      {lectureSurveyItem.visible !== undefined &&
-      lectureSurveyItem.visible === true &&
-      lastIndex - 1 > number ? (
-        <div>
-          <Button icon className="left moreview" onClick={setCheckNumber}>
-            <Icon className="moreview" />
-            더보기 ({lastIndex - number - 1}개)
-          </Button>
-        </div>
-      ) : (
-        ''
-      )}
-
-      {lectureSurveyItem.visible !== undefined &&
-        lectureSurveyItem.visible !== true &&
-        '해당 문항은 비공개 처리되어 답변이 조회되지 않습니다.'}
+        {lectureSurveyItem.visible !== undefined &&
+          lectureSurveyItem.visible !== true &&
+          '해당 문항은 비공개 처리되어 답변이 조회되지 않습니다.'}
+      </div>
     </LectureSurveyChoiceLayout>
   );
 };
