@@ -97,6 +97,7 @@ class HeaderContainer extends Component<Props, State> {
   cleanSessionStorage() {
     sessionStorage.removeItem('lectureOffset')
     sessionStorage.removeItem('communityOffset')
+    sessionStorage.removeItem('openCommunityOffset')
     sessionStorage.removeItem('postOffset')
     sessionStorage.removeItem('learningOffset')
     sessionStorage.removeItem('sortName')
