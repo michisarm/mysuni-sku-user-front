@@ -36,7 +36,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   // };
 
   const questionCount = lectureSurvey.surveyItems.length;
-  const surveyCommunityTitle = currentMenu?.surveyInformation;
+  const surveyCommunityTitle = currentMenu?.name;
   const surveyCourseTitle = lectureStructure?.course?.name;
   const surveyCubeTitle = lectureStructure?.cube?.name;
   const surveyTitleInfo =

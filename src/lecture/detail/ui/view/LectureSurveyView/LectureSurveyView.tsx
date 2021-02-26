@@ -66,7 +66,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   const { skProfile } = skProfileService;
   const { member } = skProfile;
 
-  const surveyCommunityTitle = currentMenu?.surveyInformation;
+  const surveyCommunityTitle = currentMenu?.name;
   const surveyCourseTitle = lectureStructure?.course?.name;
   const surveyCubeTitle = lectureStructure?.cube?.name;
   const surveyTitle =
