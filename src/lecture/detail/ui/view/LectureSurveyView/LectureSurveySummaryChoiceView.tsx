@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Checkbox, Progress, Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -23,7 +23,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     }, 0) || 0;
 
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
@@ -149,7 +149,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             );
           })}
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 

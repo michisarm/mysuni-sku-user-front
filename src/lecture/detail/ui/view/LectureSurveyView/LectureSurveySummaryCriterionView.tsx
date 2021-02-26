@@ -1,20 +1,12 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
-import {
-  Checkbox,
-  CheckboxProps,
-  Radio,
-  Icon,
-  Image,
-  Progress,
-} from 'semantic-ui-react';
-import { selectCriterionAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import React, { Fragment } from 'react';
+import { Image, Progress } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import {
   useLectureSurveyAnswerSummaryList,
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveySummaryCriterionViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -31,7 +23,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
 
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
@@ -133,7 +125,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
             );
           })}
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 

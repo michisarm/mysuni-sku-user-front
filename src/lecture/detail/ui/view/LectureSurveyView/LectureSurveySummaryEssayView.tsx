@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveyEssayViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -27,7 +27,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
       ?.length || 0;
 
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-radio-survey-new">
         <div className="course-survey-list">
           <p className="improve-text">
@@ -85,7 +85,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
             )}
         </div>
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 

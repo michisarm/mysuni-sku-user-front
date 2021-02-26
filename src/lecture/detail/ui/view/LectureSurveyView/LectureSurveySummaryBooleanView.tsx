@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import {
   useLectureSurveyAnswerSummaryList,
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
 import { Progress } from 'semantic-ui-react';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveySummaryBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -48,7 +48,7 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
   }
 
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         <div className="preview">
           <div
@@ -81,23 +81,33 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             </label>
           </div>
           <div className="course-survey-yesOrNoBar-wrapper">
-            <span className="course-survey-yesOrNoBar-text">
-              YES
-            </span>
+            <span className="course-survey-yesOrNoBar-text">YES</span>
 
             {/* progress bar */}
             <div className="course-survey-list-backgrondBar yesOrNoBar">
-              <span className="course-survey-list-persent-left"><span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)</span>
-              <Progress percent={80} style={{opacity: 0.5, marginTop: 0}} color="blue" />
-              <span className="course-survey-list-persent-right"><span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)</span>
+              <span className="course-survey-list-persent-left">
+                <span className="course-survey-list-persent-number">
+                  {yesCount || 0}
+                </span>
+                ({yesAvg !== 'NaN' ? yesAvg : '0'}%)
+              </span>
+              <Progress
+                percent={80}
+                style={{ opacity: 0.5, marginTop: 0 }}
+                color="blue"
+              />
+              <span className="course-survey-list-persent-right">
+                <span className="course-survey-list-persent-number">
+                  {noCount || 0}
+                </span>
+                ({noAvg !== 'NaN' ? noAvg : '0'}%)
+              </span>
             </div>
-            <span className="course-survey-yesOrNoBar-text">
-              NO
-            </span>
+            <span className="course-survey-yesOrNoBar-text">NO</span>
           </div>
         </div>
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 
