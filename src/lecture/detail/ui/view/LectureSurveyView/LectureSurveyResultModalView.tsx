@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Image } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';
@@ -10,17 +10,23 @@ import LectureSurveySummaryBooleanView from './LectureSurveySummaryBooleanView';
 import LectureSurveySummaryCriterionView from './LectureSurveySummaryCriterionView';
 import LectureSurveySummaryMatrixView from './LectureSurveySummaryMatrixView';
 import { requestLectureSurveySummary } from '../../../service/useLectureSurvey/utility/getLectureSurvey';
+import CommunityMenu from 'community/model/CommunityMenu';
+import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 
 interface Props {
   trigger: React.ReactNode;
   lectureSurvey: LectureSurvey;
   lectureSurveyState?: LectureSurveyState;
+  currentMenu?: CommunityMenu;
+  lectureStructure?: LectureStructure;
 }
 
 const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResultModalView({
   trigger,
   lectureSurvey,
   lectureSurveyState,
+  currentMenu,
+  lectureStructure,
 }) {
   const { title, surveyId, surveyCaseId, surveyItems } = lectureSurvey;
   const lectureSurveySummary = useLectureSurveySummary();
@@ -39,25 +45,73 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   }, []);
 
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+  const surveyCommunityTitle = currentMenu?.name;
+  const surveyCourseTitle = lectureStructure?.course?.name;
+  const surveyCubeTitle = lectureStructure?.cube?.name;
+  const surveyTitle =
+    surveyCommunityTitle === undefined
+      ? surveyCourseTitle || surveyCubeTitle
+      : surveyCommunityTitle;
 
   return (
-    <Modal
-      className="base w1000 inner-scroll"
-      open={open}
-      trigger={trigger}
-      onOpen={onOpen}
-      onClose={onClose}
-    >
-      <Modal.Header>
-        <span>{title}</span>
-        <span>응답 {respondCount}개</span>
-      </Modal.Header>
-      <Modal.Content className="scrolling-60vh">
-        {lectureSurvey.surveyItems.map(lectureSurveyItem => {
-          if (lectureSurveyItem.type === 'Choice') {
-            return (
-              <>
-                <LectureSurveySummaryChoiceView
+    <>
+      <Modal
+        open={open}
+        trigger={trigger}
+        onOpen={onOpen}
+        onClose={onClose}
+        style={{ height: '840px', width: '1010px' }}
+      >
+        <Modal.Header style={{ height: '61px', lineHeight: '1.2rem' }}>
+          <span className="course-survey-new-modal-header">{surveyTitle}</span>
+          <div className="course-survey-new-modal-header-img">
+            <Image
+              style={{ display: 'inline-block' }}
+              src={`${process.env.PUBLIC_URL}/images/all/survey-popup-title.png`}
+            />
+          </div>
+          <span className="course-survey-new-modal-header">
+            총{' '}
+            <span className="course-survey-new-modal-header-boldText">
+              {respondCount}
+            </span>{' '}
+            참여
+          </span>
+          <Modal.Actions style={{ display: 'inline' }}>
+            <button
+              className="course-survey-new-modal-header-closeBtn"
+              onClick={onCancel}
+            >
+              <Image
+                style={{ display: 'inline-block' }}
+                src={`${process.env.PUBLIC_URL}/images/all/icon-close-player-28-px.png`}
+              />
+              Close
+            </button>
+          </Modal.Actions>
+        </Modal.Header>
+        <Modal.Content scrolling={true} style={{ maxHeight: '80vh' }}>
+          {lectureSurvey.surveyItems.map(lectureSurveyItem => {
+            if (lectureSurveyItem.type === 'Choice') {
+              return (
+                <>
+                  <LectureSurveySummaryChoiceView
+                    lectureSurveyItem={lectureSurveyItem}
+                    lectureSurveyAnswerItem={
+                      lectureSurveyState &&
+                      lectureSurveyState.answerItem.find(
+                        c =>
+                          c.questionNumber === lectureSurveyItem.questionNumber
+                      )
+                    }
+                    key={lectureSurveyItem.id}
+                  />
+                </>
+              );
+            }
+            if (lectureSurveyItem.type === 'Essay') {
+              return (
+                <LectureSurveySummaryEssayView
                   lectureSurveyItem={lectureSurveyItem}
                   lectureSurveyAnswerItem={
                     lectureSurveyState &&
@@ -67,87 +121,68 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
                   }
                   key={lectureSurveyItem.id}
                 />
-              </>
-            );
-          }
-          if (lectureSurveyItem.type === 'Essay') {
-            return (
-              <LectureSurveySummaryEssayView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Date') {
-            return (
-              <LectureSurveySummaryDateView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Boolean') {
-            return (
-              <LectureSurveySummaryBooleanView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Matrix') {
-            return (
-              <LectureSurveySummaryMatrixView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-          if (lectureSurveyItem.type === 'Criterion') {
-            return (
-              <LectureSurveySummaryCriterionView
-                lectureSurveyItem={lectureSurveyItem}
-                lectureSurveyAnswerItem={
-                  lectureSurveyState &&
-                  lectureSurveyState.answerItem.find(
-                    c => c.questionNumber === lectureSurveyItem.questionNumber
-                  )
-                }
-                key={lectureSurveyItem.id}
-              />
-            );
-          }
-        })}
-      </Modal.Content>
-      <Modal.Actions>
-        <Button type="button" className="w190 pop d" onClick={onCancel}>
-          닫기
-        </Button>
-      </Modal.Actions>
-    </Modal>
+              );
+            }
+            if (lectureSurveyItem.type === 'Date') {
+              return (
+                <LectureSurveySummaryDateView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      c => c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Boolean') {
+              return (
+                <LectureSurveySummaryBooleanView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      c => c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Matrix') {
+              return (
+                <LectureSurveySummaryMatrixView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      c => c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+            if (lectureSurveyItem.type === 'Criterion') {
+              return (
+                <LectureSurveySummaryCriterionView
+                  lectureSurveyItem={lectureSurveyItem}
+                  lectureSurveyAnswerItem={
+                    lectureSurveyState &&
+                    lectureSurveyState.answerItem.find(
+                      c => c.questionNumber === lectureSurveyItem.questionNumber
+                    )
+                  }
+                  key={lectureSurveyItem.id}
+                />
+              );
+            }
+          })}
+        </Modal.Content>
+      </Modal>
+    </>
   );
 };
 

@@ -105,6 +105,8 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                   }
                   lectureSurvey={lectureSurvey}
                   lectureSurveyState={lectureSurveyState}
+                  currentMenu={currentMenu}
+                  lectureStructure={lectureStructure}
                 />
               </div>
             </div>

@@ -205,6 +205,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
               }
               lectureSurvey={lectureSurvey}
               lectureSurveyState={lectureSurveyState}
+              currentMenu={currentMenu}
+              lectureStructure={lectureStructure}
             />
           </div>
         )}
