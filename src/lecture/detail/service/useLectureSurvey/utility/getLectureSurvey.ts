@@ -165,7 +165,7 @@ function parseCriterion(
         count,
       };
     }) || [];
-  const visible = true;
+  const visible = question.visible;
   return {
     title,
     image,
@@ -296,7 +296,7 @@ function parseMatrix(
         no: mNo,
       };
     }) || [];
-  const visible = true;
+  const visible = question.visible;
 
   return {
     title,
