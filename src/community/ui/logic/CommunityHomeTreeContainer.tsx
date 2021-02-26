@@ -480,16 +480,29 @@ function CommunityHomeTreeContainer() {
   }
 
   const gaEvent = (arg: string): void => {
-    if(arg === "all") {
+    if (arg === "all") {
       ReactGA.pageview(`${`/community/${communtyHome?.community?.communityId}/all`}`, [], `(커뮤니티 하위메뉴)-전체글`)
     }
-    else if(arg === "notic") {
+    else if (arg === "notic") {
       ReactGA.pageview(`${`/community/${communtyHome?.community?.communityId}/notice`}`, [], `(커뮤니티 하위메뉴)-공지사항`)
     }
     else {
       throw new Error('not arg');
     }
-  } 
+  }
+
+  function deleteAllPostMenu(communityId: string) {
+    // 전체글 메뉴 삭제 Func => filteredCommunity 배열에 communityId 추가
+    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a']
+    if (
+      communityId !== '' &&
+      communityId !== null &&
+      communityId !== undefined
+    ) {
+      return filteredCommunity.includes(communityId);
+    }
+  }
+
   return (
     <div className="community-left community-home-left">
       <div className="sub-info-box">
@@ -529,9 +542,8 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              {
-                    communtyHome.community.communityId === "COMMUNITY-1q" ||
-                    communtyHome.community.communityId === "COMMUNITY-a" ? (
+              { communtyHome?.community &&
+                deleteAllPostMenu(communtyHome?.community.communityId) ? (
                   null
                 ) : (
                   <ReadonlyMenuItemView
@@ -576,12 +588,11 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              {
-                    communtyHome.community.communityId === "COMMUNITY-1q" ||
-                    communtyHome.community.communityId === "COMMUNITY-a" ? ( 
+              { communtyHome?.community &&
+                deleteAllPostMenu(communtyHome?.community.communityId) ? (
                   null
                 ) : (
-                  <li onClick={()=>gaEvent('all')}>
+                  <li onClick={() => gaEvent('all')}>
                     <Link
                       to={`/community/${communtyHome.community.communityId}/all`}
                     >
