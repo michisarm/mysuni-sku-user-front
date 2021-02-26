@@ -22,7 +22,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
       return totalCount + (count || 0);
     }, 0) || 0;
 
-  return (
+    return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
@@ -36,12 +36,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-
+            console.log('true@@@', isChecked);
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                    {isChecked === true ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                       />
@@ -53,15 +53,16 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress
-                      percent={80}
+                      percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color="blue"
+                      color={`${isChecked && isChecked === true}` ? "blue" : "grey"}
+                      // color="red"
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count}
                       </span>
-                      {choiceAvg || 0} {`내가 체크한 값 : ${isChecked}`}
+                      {choiceAvg || 0}
                     </span>
                     <li className="course-survey-list-text active">
                       {choice.title}
@@ -86,7 +87,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
             return (
               <Fragment key={choice.no}>
-                <Checkbox
+                {/* <Checkbox
                   className="base"
                   label={choice.title}
                   value={choice.no}
@@ -101,7 +102,34 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 <br />
                 {choice.count || '0'} {`내가 체크한 값 : ${isChecked}`}
                 <br />
-                {choiceAvg || 0}
+                {choiceAvg || 0} */}
+
+                <li className="course-survey-list-cont">
+                  <span className="course-survey-list-btnImg">
+                    {
+                      lectureSurveyAnswerItem?.itemNumbers ? 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-check-btn.png`} />
+                      : 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/empty-check-nomal.png`} />
+                    }
+                  </span>
+                  <div className="course-survey-list-backgrondBar">
+                    <Progress
+                      percent={choiceAvg || 0}
+                      style={{ opacity: 0.5 }}
+                      color={`${isChecked && isChecked === true}` ? "blue" : "grey"}
+                    />
+                    <span className="course-survey-list-persent-right">
+                      <span className="course-survey-list-persent-number">
+                        {choice.count}
+                      </span>
+                      ({choiceAvg || 0}%)
+                    </span>
+                    <li className="course-survey-list-text active">
+                      {choice.title}
+                    </li>
+                  </div>
+                </li>
               </Fragment>
             );
           })}

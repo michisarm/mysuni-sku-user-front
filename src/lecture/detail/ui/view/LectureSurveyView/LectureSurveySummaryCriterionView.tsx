@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
-import { Checkbox, Radio } from 'semantic-ui-react';
+import React, { Fragment, useCallback, useEffect } from 'react';
+import { Checkbox, CheckboxProps, Radio, Icon, Image, Progress } from 'semantic-ui-react';
+import { selectCriterionAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
@@ -35,7 +36,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
 
             return (
               <Fragment key={choice.no}>
-                <Radio
+                {/* <Radio
                   className="base"
                   label={choice.title}
                   value={choice.no}
@@ -50,7 +51,34 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                 응답수 : {choice.count || '0'}
                 <br />
                 평균 : {criterionAvg || 0}
-                {choice.image && <img src={choice.image} />}
+                {choice.image && <img src={choice.image} />} */}
+
+                <li className="course-survey-list-cont">
+                  <span className="course-survey-list-btnImg">
+                    {
+                      lectureSurveyAnswerItem?.itemNumbers ? 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
+                      : 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
+                    }
+                  </span>
+                  <div className="course-survey-list-backgrondBar">
+                    <Progress
+                      percent={criterionAvg || 0}
+                      style={{ opacity: 0.5 }}
+                      color="blue"
+                    />
+                    <span className="course-survey-list-persent-right">
+                      <span className="course-survey-list-persent-number">
+                        {choice.count} 
+                      </span>
+                      {`(${criterionAvg || 0}%)`}
+                    </span>
+                    <li className="course-survey-list-text active">
+                      {choice.title}
+                    </li>
+                  </div>
+                </li>
               </Fragment>
             );
           })}
@@ -63,7 +91,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               ((choice.count / respondCount) * 100).toFixed(1);
             return (
               <Fragment key={choice.no}>
-                <Checkbox
+                {/* <Checkbox
                   className="base"
                   label={choice.title}
                   value={choice.no}
@@ -77,7 +105,34 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                 {choice.count || '0'}
                 <br />
                 {criterionAvg || 0}
-                {choice.image && <img src={choice.image} />}
+                {choice.image && <img src={choice.image} />} */}
+
+                <li className="course-survey-list-cont">
+                  <span className="course-survey-list-btnImg">
+                    {
+                      lectureSurveyAnswerItem?.itemNumbers ? 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
+                      : 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
+                    }
+                  </span>
+                  <div className="course-survey-list-backgrondBar">
+                    <Progress
+                      percent={criterionAvg || 0}
+                      style={{ opacity: 0.5 }}
+                      color="blue"
+                    />
+                    <span className="course-survey-list-persent-right">
+                      <span className="course-survey-list-persent-number">
+                        {choice.count}
+                      </span>
+                      {criterionAvg || 0}
+                    </span>
+                    <li className="course-survey-list-text active">
+                      {choice.title}
+                    </li>
+                  </div>
+                </li>
               </Fragment>
             );
           })}
