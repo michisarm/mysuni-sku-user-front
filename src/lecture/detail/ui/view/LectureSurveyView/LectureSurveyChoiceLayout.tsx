@@ -1,51 +1,31 @@
 import React from 'react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
-
+import { Image } from 'semantic-ui-react';
 
 const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> = function LectureSurveyChoiceLayout({
   no,
   title,
   image,
   children,
-  isRequired
-})
- {
-  const BUTTON_STYLE: React.CSSProperties = {
-    'position': 'absolute',
-    'left': '25px',
-    'top': '50%',
-    'marginTop': '-.625rem',
-    'content': "필수",
-    'width': '2.25rem',
-    'height': '1.5rem',
-    'display': 'inline-block',
-    'lineHeight': '1.375rem',
-    'textAlign': 'center',
-    'border': '.0625rem solid #e1002a',
-    'boxSizing': 'border-box',
-    'color': '#e1002a',
-    'fontSize': '.75rem',
-    'fontWeight': 'bold',
-    'letterSpacing': '-.01875rem',
-    'borderRadius': '.25rem',
-  } 
+  isRequired,
+}) {
   return (
-    <div className="course-radio-survey">
+    <div className="course-radio-survey-new">
       <p>
         <span>{no}.</span>
         {isRequired === true && (
           <>
-            <span style={BUTTON_STYLE}>필수</span>
-            <span style={{margin: '0 0 0 35px'}}>{title}</span>
+            <span>{title}</span>
+            <span className="importantBtn">
+              <Image
+                style={{ display: 'inline-block' }}
+                src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
+              />
+            </span>
           </>
         )}
-        {isRequired === false && (
-          <>
-            {title}
-          </>
-        )}
+        {isRequired === false && { title }}
       </p>
-      {image && <img src={image} />}
       {children}
     </div>
   );

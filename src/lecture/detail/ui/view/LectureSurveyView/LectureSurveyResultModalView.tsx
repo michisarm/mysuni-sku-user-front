@@ -24,7 +24,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
 }) {
   const { title, surveyId, surveyCaseId, surveyItems } = lectureSurvey;
   const lectureSurveySummary = useLectureSurveySummary();
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
   const onOpen = useCallback(() => {
     setOpen(true);
     requestLectureSurveySummary(surveyId, surveyCaseId);

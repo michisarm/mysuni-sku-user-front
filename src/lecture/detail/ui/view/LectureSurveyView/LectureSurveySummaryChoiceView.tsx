@@ -1,5 +1,11 @@
 import React, { Fragment, useCallback } from 'react';
-import { Checkbox, CheckboxProps, Radio } from 'semantic-ui-react';
+import {
+  Checkbox,
+  CheckboxProps,
+  Radio,
+  Progress,
+  Image,
+} from 'semantic-ui-react';
 import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -36,7 +42,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
             return (
               <Fragment key={choice.no}>
-                <Radio
+                {/* <Radio
                   className="base"
                   label={choice.title}
                   value={choice.no}
@@ -50,7 +56,31 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 {choice.count || '0'}
                 <br />
                 {choiceAvg || 0}
-                {choice.image && <img src={choice.image} />}
+                {choice.image && <img src={choice.image} />} */}
+
+                <li className="course-survey-list-cont">
+                  <span className="course-survey-list-btnImg">
+                    <Image
+                      src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
+                    />
+                  </span>
+                  <div className="course-survey-list-backgrondBar">
+                    <Progress
+                      percent={80}
+                      style={{ opacity: 0.5 }}
+                      color="blue"
+                    />
+                    <span className="course-survey-list-persent-right">
+                      <span className="course-survey-list-persent-number">
+                        {choice.count}
+                      </span>
+                      {choiceAvg || 0}
+                    </span>
+                    <li className="course-survey-list-text active">
+                      {choice.title}
+                    </li>
+                  </div>
+                </li>
               </Fragment>
             );
           })}

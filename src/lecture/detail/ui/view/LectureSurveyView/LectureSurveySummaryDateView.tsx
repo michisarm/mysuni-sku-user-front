@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { Icon, Button } from 'semantic-ui-react';
+import { Icon, Button, Image } from 'semantic-ui-react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 interface LectureSurveyDateViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -17,6 +20,14 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
   const sentence = lectureSurveyAnswerItem?.sentence;
   const [number, setNumber] = useState(9);
 
+  const onChangeValue = useCallback(
+    (value: Date) => {
+      const next = moment(value).format('YYYY-MM-DD');
+      //  selectSentenceAnswer(lectureSurveyItem, next);
+    },
+    [lectureSurveyItem]
+  );
+
   const setCheckNumber = () => {
     setNumber(number + 9);
   };
@@ -29,10 +40,66 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
 
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
-      <br />
-      <b>{sentence}</b>
-      <br />
-      {Object.keys(sentencesMap)
+      <div className="course-radio-survey-new">
+        <div className="course-survey-list">
+          <div className="ui h40 calendar" id="rangestart">
+            <div className="ui input right icon">
+              <DatePicker
+                onChange={onChangeValue}
+                selectsStart
+                dateFormat="YYYY-MM-DD"
+                value={sentence}
+                readOnly={true}
+              />
+              <i className="calendar24 icon">
+                <span className="blind">date</span>
+              </i>
+            </div>
+            <ul className="improve-list">
+              {Object.keys(sentencesMap)
+                .sort((a, b) => (a > b ? 1 : -1))
+                .map((key, index) => (
+                  <>
+                    {index >= 0 && index <= number ? (
+                      <li>
+                        {key} ({sentencesMap[key]})
+                        <br />
+                      </li>
+                    ) : (
+                      ''
+                    )}
+                  </>
+                ))}
+              <li className="improve-list-more">
+                {lastIndex - 1 > number ? (
+                  // <div>
+                  //   <Button
+                  //     icon
+                  //     className="left moreview"
+                  //     onClick={setCheckNumber}
+                  //   >
+                  //     <Icon className="moreview" />
+                  //     더보기 ({lastIndex - number - 1}개)
+                  //   </Button>
+                  // </div>
+                  <>
+                    <Image
+                      src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
+                    />
+                    <span>더보기 ({lastIndex - number - 1}개)</span>
+                  </>
+                ) : (
+                  ''
+                )}
+
+                {/* <img src={ListmoreBtn} /> */}
+                {/* <span>더보기 (48개)</span> */}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {/* {Object.keys(sentencesMap)
         .sort((a, b) => (a > b ? 1 : -1))
         .map((key, index) => (
           <>
@@ -49,8 +116,8 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
               ''
             )}
           </>
-        ))}
-      {lastIndex - 1 > number ? (
+        ))} */}
+      {/* {lastIndex - 1 > number ? (
         <div>
           <Button icon className="left moreview" onClick={setCheckNumber}>
             <Icon className="moreview" />
@@ -59,7 +126,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
         </div>
       ) : (
         ''
-      )}
+      )} */}
     </LectureSurveyChoiceLayout>
   );
 };
