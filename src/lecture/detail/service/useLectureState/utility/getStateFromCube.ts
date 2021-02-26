@@ -611,17 +611,21 @@ async function complete(
     (course?.state === 'Completed' && course.survey !== undefined) ||
     (program?.state === 'Completed' && program.survey !== undefined)
   ) {
-    reactConfirm({
-      title: '알림',
-      message:
-        '학습이 완료되었습니다.<br />학습과정에 대한 의견을 Survey를 통해 남겨주세요.',
-      onOk: async () => {
-        window.location.href = params.pathname + '/survey';
-      },
-      onCancel: () => {
-        return false;
-      },
+    reactAlert({
+      title: '안내',
+      message: 'Survey 설문 참여를 해주세요.',
     });
+    // reactConfirm({
+    //   title: '알림',
+    //   message:
+    //     '학습이 완료되었습니다.<br />학습과정에 대한 의견을 Survey를 통해 남겨주세요.',
+    //   onOk: async () => {
+    //     window.location.href = params.pathname + '/survey';
+    //   },
+    //   onCancel: () => {
+    //     return false;
+    //   },
+    // });
   }
   const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
   sessionStorage.setItem(
