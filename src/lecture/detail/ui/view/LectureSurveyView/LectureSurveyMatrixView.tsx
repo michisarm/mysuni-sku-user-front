@@ -4,7 +4,9 @@ import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 import Table from 'semantic-ui-react/dist/commonjs/collections/Table';
 import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
-import LectureSurveyState, { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState, {
+  LectureSurveyAnswerItem,
+} from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 
 interface LectureSurveyMatrixViewProps {
@@ -16,7 +18,7 @@ interface LectureSurveyMatrixViewProps {
 const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> = function LectureSurveyMatrixView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
-  lectureSurveyState
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
@@ -75,16 +77,14 @@ const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> = function
       </Table>
 
       {lectureSurveyState === undefined ||
-        lectureSurveyState.state === 'Progress' && 
-        lectureSurveyItem.isRequired === true && 
-        lectureSurveyAnswerItem === undefined && (
-          <>
-            <Icon className="icon listdel24" />
-            <span style={{margin: '0 0 0 7px'}}>필수문항 응답 후 제출해주세요.</span>
-          </>
-        )
-      }
-
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <>
+              <Icon className="icon exclamation circle " />
+              <span>필수문항 응답 후 제출해주세요.</span>
+            </>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };

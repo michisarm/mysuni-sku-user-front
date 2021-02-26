@@ -15,7 +15,7 @@ interface LectureSurveyEssayViewProps {
 const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function LectureSurveyEssayView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
-  lectureSurveyState
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -55,16 +55,14 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
       </Form>
 
       {lectureSurveyState === undefined ||
-        lectureSurveyState.state === 'Progress' && 
-        lectureSurveyItem.isRequired === true && 
-        lectureSurveyAnswerItem === undefined && (
-          <>
-            <Icon className="icon listdel24" />
-            <span style={{margin: '0 0 0 7px'}}>필수문항 응답 후 제출해주세요.</span>
-          </>
-        )
-      }
-
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <>
+              <Icon className="icon exclamation circle" />
+              <span>필수문항 응답 후 제출해주세요.</span>
+            </>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };
