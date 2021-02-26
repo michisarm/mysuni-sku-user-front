@@ -19,10 +19,13 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
 }) {
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
-      selectSentenceAnswer(lectureSurveyItem, e.target.value);
+      if (e.target.value.length <= (maxLength || 0)) {
+        selectSentenceAnswer(lectureSurveyItem, e.target.value);
+      }
     },
     [lectureSurveyItem]
   );
+
   const { maxLength } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
