@@ -15,7 +15,7 @@ interface LectureSurveyItemProps {
 const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function LectureSurveyChoiceView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
-  lectureSurveyState
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(
     (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
@@ -72,16 +72,14 @@ const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function Lectu
       </div>
 
       {lectureSurveyState === undefined ||
-        lectureSurveyState.state === 'Progress' && 
-        lectureSurveyItem.isRequired === true && 
-        lectureSurveyAnswerItem === undefined && (
-          <>
-            <Icon className="icon listdel24" />
-            <span style={{margin: '0 0 0 7px'}}>필수문항 응답 후 제출해주세요.</span>
-          </>
-        )
-      }
-
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <>
+              <Icon className="icon exclamation circle " />
+              <span>필수문항 응답 후 제출해주세요.</span>
+            </>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };
