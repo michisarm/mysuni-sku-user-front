@@ -39,7 +39,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
               choice.count !== undefined &&
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
-
+              
             return (
               <Fragment key={choice.no}>
                 {/* <Radio
@@ -69,15 +69,14 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress
-                      percent={80}
+                      percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color="blue"
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count}
                       </span>
-                      {choiceAvg || 0}
+                      ({choiceAvg || 0}%)
                     </span>
                     <li className="course-survey-list-text active">
                       {choice.title}
@@ -98,7 +97,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
             return (
               <Fragment key={choice.no}>
-                <Checkbox
+                {/* <Checkbox
                   className="base"
                   label={choice.title}
                   value={choice.no}
@@ -114,7 +113,34 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                 <br />
                 {choice.count || '0'}
                 <br />
-                {choiceAvg || 0}
+                {choiceAvg || 0} */}
+
+                <li className="course-survey-list-cont">
+                  <span className="course-survey-list-btnImg">
+                    {
+                      lectureSurveyAnswerItem?.itemNumbers ? 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`} />
+                      : 
+                      <Image src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} />
+                    }
+                  </span>
+                  <div className="course-survey-list-backgrondBar">
+                    <Progress
+                      percent={choiceAvg || 0}
+                      style={{ opacity: 0.5 }}
+                      color="blue"
+                    />
+                    <span className="course-survey-list-persent-right">
+                      <span className="course-survey-list-persent-number">
+                        {choice.count}
+                      </span>
+                      ({choiceAvg || 0}%)
+                    </span>
+                    <li className="course-survey-list-text active">
+                      {choice.title}
+                    </li>
+                  </div>
+                </li>
               </Fragment>
             );
           })}

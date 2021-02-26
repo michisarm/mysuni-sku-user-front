@@ -82,17 +82,17 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
           </div>
           <div className="course-survey-yesOrNoBar-wrapper">
             <span className="course-survey-yesOrNoBar-text">
-              {yesCount || 0} {yesAvg !== 'NaN' ? yesAvg : '0'}
+              YES
             </span>
 
             {/* progress bar */}
             <div className="course-survey-list-backgrondBar yesOrNoBar">
-              <span className="course-survey-list-persent-left"><span className="course-survey-list-persent-number">20</span>(22.5%)</span>
+              <span className="course-survey-list-persent-left"><span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)</span>
               <Progress percent={80} style={{opacity: 0.5, marginTop: 0}} color="blue" />
-              <span className="course-survey-list-persent-right"><span className="course-survey-list-persent-number">20</span>(22.5%)</span>
+              <span className="course-survey-list-persent-right"><span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)</span>
             </div>
             <span className="course-survey-yesOrNoBar-text">
-              {noCount || 0} {noAvg !== 'NaN' ? noAvg : '0'}  
+              NO
             </span>
           </div>
         </div>
