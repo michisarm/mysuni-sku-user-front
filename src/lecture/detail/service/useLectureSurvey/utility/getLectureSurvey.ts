@@ -221,7 +221,7 @@ function parseEssay(
       numberCountMap = answerSummary.summaryItems.numberCountMap;
     }
   }
-  const visible = true;
+  const visible = question.visible;
   return {
     title,
     image,
