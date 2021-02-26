@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { CheckboxProps, Icon } from 'semantic-ui-react';
-import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 import Table from 'semantic-ui-react/dist/commonjs/collections/Table';
 import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';

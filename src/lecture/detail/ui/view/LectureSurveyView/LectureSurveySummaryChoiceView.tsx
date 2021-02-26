@@ -1,12 +1,5 @@
-import React, { Fragment, useCallback } from 'react';
-import {
-  Checkbox,
-  CheckboxProps,
-  Radio,
-  Progress,
-  Image,
-} from 'semantic-ui-react';
-import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import React, { Fragment } from 'react';
+import { Checkbox, Progress, Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
@@ -28,7 +21,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
       return totalCount + (count || 0);
     }, 0) || 0;
-  console.log('!@!@', lectureSurveyAnswerItem?.itemNumbers);
+
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -46,22 +39,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
             return (
               <Fragment key={choice.no}>
-                {/* <Radio
-                  className="base"
-                  label={choice.title}
-                  value={choice.no}
-                  checked={
-                    lectureSurveyAnswerItem !== undefined &&
-                    lectureSurveyAnswerItem.itemNumbers !== undefined &&
-                    lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
-                  }
-                  readOnly={true}
-                />
-                {choice.count || '0'}
-                <br />
-                {choiceAvg || 0}
-                {choice.image && <img src={choice.image} />} */}
-
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
                     {lectureSurveyAnswerItem?.itemNumbers ? (

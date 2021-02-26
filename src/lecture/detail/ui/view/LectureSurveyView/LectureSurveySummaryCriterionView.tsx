@@ -1,12 +1,9 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
-import { Checkbox, CheckboxProps, Radio, Icon } from 'semantic-ui-react';
-import { selectCriterionAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import React, { Fragment } from 'react';
+import { Checkbox, Radio } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
-  getLectureSurveyAnswerSummaryList,
   useLectureSurveyAnswerSummaryList,
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';
