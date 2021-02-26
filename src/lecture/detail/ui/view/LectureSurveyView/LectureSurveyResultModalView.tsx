@@ -68,7 +68,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
           <span className="course-survey-new-modal-header">{surveyTitle}</span>
           <div className="course-survey-new-modal-header-img">
             <Image
-              style={{ display: 'inline-block' }}
+              style={{ display: 'inline-block', verticalAlign: 'text-top' }}
               src={`${process.env.PUBLIC_URL}/images/all/survey-popup-title.png`}
             />
           </div>
