@@ -29,6 +29,7 @@ import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentW
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
+import { CoursePlanService } from 'course/stores';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService;
@@ -38,12 +39,14 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureCountService?: LectureCountService;
   reviewService?: ReviewService;
   inMyLectureService?: InMyLectureService;
+  coursePlanService?: CoursePlanService;
 }
 
 interface State {
   lectures: LectureModel[];
   sorting: string;
   totalCnt: number; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
+  collegeOrder:boolean;
 }
 
 interface RouteParams {
@@ -59,7 +62,8 @@ interface RouteParams {
     'lecture.lectureService',
     'lecture.lectureCountService',
     'shared.reviewService',
-    'myTraining.inMyLectureService'
+    'myTraining.inMyLectureService',
+    'course.coursePlanService',
   )
 )
 @reactAutobind
@@ -74,6 +78,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
     lectures: [],
     sorting: OrderByType.Time,
     totalCnt: 0, // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
+    collegeOrder: false,
   };
 
   constructor(props: Props) {
@@ -82,19 +87,21 @@ class CollegeLecturesContainer extends Component<Props, State> {
     this.init();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //
+    await this.findCollegeOrder();
     this.initialFindPagingCollegeLectures();
     this.findChannels();
     this.findInMyLectures();
   }
 
-  componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props) {
     //
     const { params: prevParams } = prevProps.match;
     const { params } = this.props.match;
 
     if (prevParams.collegeId !== params.collegeId) {
+      await this.findCollegeOrder();
       this.clearAndInit();
       this.initialFindPagingCollegeLectures();
       this.findInMyLectures();
@@ -192,6 +199,20 @@ class CollegeLecturesContainer extends Component<Props, State> {
       lectureOffsetList.totalCount,
       pageNo
     );
+  }
+
+  async findCollegeOrder() {
+    //
+    const { match, coursePlanService } = this.props;
+    const collegeSortOrderCount = await coursePlanService!.findCollegeSortOrder(
+      match.params.collegeId
+    );
+    
+    if(collegeSortOrderCount > 0 ){
+      this.setState({collegeOrder:true, sorting:OrderByType.collegeOrder})
+    }else{
+      this.setState({collegeOrder:false, sorting:OrderByType.Time})
+    }
   }
 
   isContentMore() {
@@ -337,7 +358,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
       reviewService,
       inMyLectureService,
     } = this.props;
-    const { lectures, sorting, totalCnt } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
+    const { lectures, sorting, totalCnt, collegeOrder } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const page = newPageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
@@ -353,7 +374,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
                 name={`${college.name} College`}
                 count={totalCnt}
               />
-              <CardSorting value={sorting} onChange={this.onChangeSorting} />
+              <CardSorting value={sorting} onChange={this.onChangeSorting} collegeOrder={collegeOrder}/>
             </>
           )
         }
