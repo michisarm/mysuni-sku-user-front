@@ -530,7 +530,8 @@ function CommunityHomeTreeContainer() {
                 </Link>
               </li>
               {
-                communtyHome.community.communityId === "COMMUNITY-a" ? (
+                    communtyHome.community.communityId === "COMMUNITY-1q" ||
+                    communtyHome.community.communityId === "COMMUNITY-a" ? (
                   null
                 ) : (
                   <ReadonlyMenuItemView
@@ -576,7 +577,8 @@ function CommunityHomeTreeContainer() {
                 </Link>
               </li>
               {
-                communtyHome.community.communityId === "COMMUNITY-a" ? (
+                    communtyHome.community.communityId === "COMMUNITY-1q" ||
+                    communtyHome.community.communityId === "COMMUNITY-a" ? ( 
                   null
                 ) : (
                   <li onClick={()=>gaEvent('all')}>

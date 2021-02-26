@@ -140,11 +140,12 @@ const NEWLearning: React.FC<Props> = Props => {
 
     // react-ga event
     ReactGA.event({
-      category: '신규 학습과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_신규',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      label: `${model.name}`,
     });
 
     const cineroom =

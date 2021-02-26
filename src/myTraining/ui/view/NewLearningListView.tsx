@@ -501,7 +501,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     if (contentType === ContentType.Required) {
       return (
         <NoSuchContentPanel
-          message="모든 과정을 이수하셨습니다."
+          message="모든 권장 과정의 학습을 시작하셨습니다."
           link={{
             text: '전체 권장과정 List를 확인하시겠습니까?',
             path: myTrainingRoutePaths.learningRequired(),

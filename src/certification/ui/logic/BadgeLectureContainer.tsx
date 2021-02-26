@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
@@ -24,6 +24,7 @@ import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
 import {ExaminationModel} from '../../../assistant/exam/model/ExaminationModel';
 import {ExamPaperModel} from '../../../assistant/paper/model/ExamPaperModel';
 import lectureRoutePaths from '../../../lecture/routePaths';
+import ReactGA from 'react-ga';
 
 
 enum StateDefault {
@@ -53,9 +54,10 @@ interface Props extends RouteComponentProps {
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
-  const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history, } = Props;
+  const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history } = Props;
 
   const [opened, setOpened] = useState(false);
+  const [splitUrl, setSplitUrl] = useState<string>('');
 
   // 코스를 구성하는 렉쳐(큐브)들의 정보 한번에 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
@@ -132,6 +134,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
   // 큐브 페이지로 이동
   const moveToCubePage = (cube: BadgeCubeData, e: any) => {
+    console.log('222', cube)
     if (e) {
       e.preventDefault();
     }
@@ -227,12 +230,37 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     );
   };
 
+
+  // Badge코드(이름) Url 잘라서 state관리
+  useEffect(() => {
+    const badgeName = window.location.pathname.split('/');
+    const splitUrlName = badgeName[badgeName.length - 1];
+    setSplitUrl(splitUrlName);
+  },[])
+
+  // 뱃지 내 각 learning path 으로 수집
+  const ClickCourseGA = (course: BadgeCourseData ): void => {
+    ReactGA.event({
+      category: `Badge_${splitUrl}`,
+      action: 'Click Card',
+      label: `${course.name}`
+    })
+  }
+
+  const ClickCubeGA = (cube: BadgeCubeData): void => {
+    ReactGA.event({
+      category: `Badge_${splitUrl}`,
+      action: 'Click Card',
+      label: `${cube.name}`
+    })
+  }
+ 
   return (
     <div className="course-cont">
       {badgeCompList.length > 0 && badgeCompList[0] ?
         badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
-            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>
+            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`} onClick={() => ClickCourseGA(badgeComp.course!)}>
               <div className="bar">
                 <span className="tit">
                   <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
@@ -262,7 +290,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             :
             <Fragment key={`cube-${index}`}>
               {/*cube: cube-box > bar.typeA(학습) / bar.typeB(TRS)*/}
-              <div className="cube-box">
+              <div className="cube-box" onClick={() => ClickCubeGA(badgeComp.cube!)}>
                 <div className="bar typeA">
                   <div className="tit">
                     {/*<a href="#" className="ellipsis">{(index + 1) + '. ' + badgeComp.cube!.name}</a>*/}

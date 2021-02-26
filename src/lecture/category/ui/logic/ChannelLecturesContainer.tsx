@@ -1,8 +1,8 @@
 
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
@@ -21,6 +21,8 @@ import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
 import { CoursePlanService } from 'course/stores';
 
+import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<{ collegeId: string,channelId: string }> {
   actionLogService?: ActionLogService,
@@ -32,12 +34,57 @@ interface Props extends RouteComponentProps<{ collegeId: string,channelId: strin
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
   coursePlanService?: CoursePlanService;
+  scrollSave?: () => void;
+  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 
 interface State {
   sorting: string;
   collegeOrder:boolean;
 }
+
+const ChannelLecturesContainer: React.FC<Props> = ({
+  actionLogService,
+  pageService,
+  collegeService,
+  personalCubeService,
+  lectureService,
+  lectureCardService,
+  reviewService,
+  inMyLectureService,
+  match
+}) => {
+  const histroy = useHistory();
+  const location = useLocation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    if (loading) {
+      scrollOnceMove();
+    }
+  }, [loading])
+
+  return (
+    <ChannelLecturesInnerContainer
+      actionLogService={actionLogService}
+      pageService={pageService}
+      collegeService={collegeService}
+      personalCubeService={personalCubeService}
+      lectureService={lectureService}
+      lectureCardService={lectureCardService}
+      reviewService={reviewService}
+      inMyLectureService={inMyLectureService}
+      history={histroy}
+      location={location}
+      match={match}
+      scrollSave={scrollSave}
+      setLoading={setLoading}
+    />
+  )
+}
+
+export default withRouter(ChannelLecturesContainer);
 
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
@@ -50,7 +97,7 @@ interface State {
 ))
 @reactAutobind
 @observer
-class ChannelLecturesContainer extends Component<Props, State> {
+class ChannelLecturesInnerContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.channel';
 
@@ -86,21 +133,27 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   init() {
     //
-    const { pageService, lectureService } = this.props;
-
+    const { pageService, lectureService, setLoading } = this.props;
+    setLoading && setLoading(false)
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     lectureService!.clearLectures();
   }
 
   async findPagingChannelLectures() {
     //
-    const { match, pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const { match, pageService, lectureService, reviewService, inMyLectureService, setLoading } = this.props;
     const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     inMyLectureService!.findAllInMyLectures();
 
     const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+
+    if (!lectureOffsetList.empty) {
+      setLoading && setLoading(true);
+    } else {
+      setLoading && setLoading(false);
+    }
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
@@ -180,7 +233,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
-    const { history } = this.props;
+    const { history, scrollSave } = this.props;
     const collegeId = model.category.college.id;
     const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
@@ -192,6 +245,14 @@ class ChannelLecturesContainer extends Component<Props, State> {
       // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
       history.push(routePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
+    // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
+    scrollSave && scrollSave();
+    ReactGA.event({
+
+      category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
+      action: 'Click Card',
+      label: `${data?.model?.name}`
+    })
   }
 
   onClickSeeMore() {
@@ -207,7 +268,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
-    const { inMyLectureMap } =  inMyLectureService!;
+    const { inMyLectureMap } = inMyLectureService!;
 
     return (
       <ChannelLecturesContentWrapperView
@@ -247,7 +308,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
                 })}
               </Lecture.Group>
 
-              { this.isContentMore() && (
+              {this.isContentMore() && (
                 <SeeMoreButton
                   onClick={this.onClickSeeMore}
                 />
@@ -260,4 +321,4 @@ class ChannelLecturesContainer extends Component<Props, State> {
   }
 }
 
-export default withRouter(ChannelLecturesContainer);
+

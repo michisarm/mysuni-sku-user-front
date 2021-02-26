@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
@@ -13,12 +13,26 @@ import { PersonalCubeModel, CubeTypeNameType, CubeType } from 'personalcube/pers
 interface Props {
   personalCubes: PersonalCubeModel[]
   totalCount: number
-  handleClickCubeRow:(cubeId: string) => void
+  handleClickCubeRow: (cubeId: string) => void
 }
+
+const CreateListView: React.FC<Props> = ({ personalCubes, totalCount, handleClickCubeRow }) => {
+
+  return (
+    <CreateListInnerView
+      personalCubes={personalCubes}
+      totalCount={totalCount}
+      handleClickCubeRow={handleClickCubeRow}
+    />
+  )
+}
+
+export default CreateListView;
+
 
 @reactAutobind
 @observer
-class CreateListView extends React.Component <Props> {
+class CreateListInnerView extends React.Component<Props> {
   //
   getCubeType(personalCube: PersonalCubeModel) {
     //
@@ -42,7 +56,7 @@ class CreateListView extends React.Component <Props> {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            { personalCubes.map((cube, index) => {
+            {personalCubes.map((cube, index) => {
               const newCube = new PersonalCubeModel(cube);
               return (
                 <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
@@ -56,7 +70,7 @@ class CreateListView extends React.Component <Props> {
                 </Table.Row>
               );
             })
-          }
+            }
           </Table.Body>
         </Table>
       </div>
@@ -65,4 +79,3 @@ class CreateListView extends React.Component <Props> {
   }
 }
 
-export default CreateListView;
