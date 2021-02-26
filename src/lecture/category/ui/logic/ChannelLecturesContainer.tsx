@@ -19,11 +19,12 @@ import { LectureCardService, LectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
 import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
+import { CoursePlanService } from 'course/stores';
 
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 
-interface Props extends RouteComponentProps<{ channelId: string }> {
+interface Props extends RouteComponentProps<{ collegeId: string,channelId: string }> {
   actionLogService?: ActionLogService,
   pageService?: PageService,
   collegeService?: CollegeService,
@@ -32,12 +33,14 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
   lectureCardService?: LectureCardService,
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
+  coursePlanService?: CoursePlanService;
   scrollSave?: () => void;
   setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 
 interface State {
-  sorting: string,
+  sorting: string;
+  collegeOrder:boolean;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -89,7 +92,8 @@ export default withRouter(ChannelLecturesContainer);
   'lecture.lectureService',
   'lecture.lectureCardService',
   'shared.reviewService',
-  'myTraining.inMyLectureService'
+  'myTraining.inMyLectureService',
+  'course.coursePlanService',
 ))
 @reactAutobind
 @observer
@@ -101,6 +105,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   state = {
     sorting: OrderByType.Time,
+    collegeOrder: false,
   };
 
 
@@ -111,15 +116,17 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
     //
+    await this.findCollegeOrder();
     this.findPagingChannelLectures();
   }
 
-  componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.match.params.channelId !== this.props.match.params.channelId) {
       this.init();
+      await this.findCollegeOrder();
       this.findPagingChannelLectures();
     }
   }
@@ -152,6 +159,20 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
+
+  async findCollegeOrder() {
+    //
+    const { match, coursePlanService } = this.props;
+    const collegeSortOrderCount = await coursePlanService!.findCollegeSortOrder(
+      match.params.collegeId
+    );
+    
+    if(collegeSortOrderCount > 0 ){
+      this.setState({collegeOrder:true, sorting:OrderByType.collegeOrder})
+    }else{
+      this.setState({collegeOrder:false, sorting:OrderByType.Time})
+    }
+  }  
 
   isContentMore() {
     //
@@ -243,7 +264,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   render() {
     //
     const { pageService, lectureService, reviewService, inMyLectureService } = this.props;
-    const { sorting } = this.state;
+    const { sorting, collegeOrder } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
@@ -261,6 +282,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             <CardSorting
               value={sorting}
               onChange={this.onChangeSorting}
+              collegeOrder={collegeOrder}
             />
 
             <div className="section">
