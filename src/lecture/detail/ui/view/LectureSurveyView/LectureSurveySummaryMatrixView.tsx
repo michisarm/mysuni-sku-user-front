@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { CheckboxProps, Icon } from 'semantic-ui-react';
+import { CheckboxProps, Icon, Image } from 'semantic-ui-react';
 import Table from 'semantic-ui-react/dist/commonjs/collections/Table';
 import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
@@ -25,7 +25,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
     [lectureSurveyItem]
   );
   const { columns, rows, matrixItems } = lectureSurveyItem;
-
+    console.log('ma',matrixItems)
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -67,7 +67,7 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                             c.rowNumber === `${rowNumber}` &&
                             c.columnSelectedNumber === `${columnSelectedNumber}`
                         );
-
+                      // console.log('행렬', isChecked)
                       return (
                         <Table.Cell key={columnSelectedNumber}>
                           {/* <Radio
@@ -92,12 +92,20 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
 
                           <div className="course-survey-list">
                             <span className="course-survey-list-btnImg">
-                              <img
-                                src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}
-                              />
+                              {isChecked === true ?
+                                <Image
+                                  style={{display: 'inline-blick'}}
+                                  src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
+                                />
+                                :
+                                <Image
+                                  style={{display: 'inline-blick'}}
+                                  src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}
+                                />
+                              }
                             </span>
                             <span className="course-servey-list-boldNumber">
-                              {count || '0'} {`${isChecked}`}
+                              {count || '0'}
                             </span>
                           </div>
                         </Table.Cell>

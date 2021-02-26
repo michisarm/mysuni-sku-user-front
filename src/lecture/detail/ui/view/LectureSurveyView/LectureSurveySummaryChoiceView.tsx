@@ -129,6 +129,9 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
+                  <div className="course-survey-list-img-selector">
+                    {choice.image && <Image style={{display: 'inline-block'}} src={choice.image} />}
+                  </div>
                 </li>
               </Fragment>
             );
