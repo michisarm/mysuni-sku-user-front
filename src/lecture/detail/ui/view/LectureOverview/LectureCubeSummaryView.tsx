@@ -200,13 +200,23 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   const instrutor = lectureInstructor?.instructors.find(c => c.represent === 1);
 
   useEffect(() => {
-    setTimeout(() => {
-      ReactGA.pageview(
-        window.location.pathname + window.location.search,
-        [],
-        `(Cube) - ${lectureSummary.name}`
-      );
-    }, 1000);
+    //
+    if(window.location.search === '?_source=newsletter') {
+      ReactGA.event({
+        category: 'External',
+        action: 'Email',
+        label: 'Newsletter'
+      });
+    }
+    else {
+      setTimeout(() => {
+        ReactGA.pageview(
+          window.location.pathname + window.location.search,
+          [],
+          `(Cube) - ${lectureSummary.name}`
+        );
+      }, 1000);
+    }
   }, []);
 
   return (

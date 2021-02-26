@@ -27,9 +27,6 @@ import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 
-
-
-
 @autobind
 class LectureService {
   //
@@ -153,9 +150,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -181,9 +178,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -204,9 +201,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -241,9 +238,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -261,9 +258,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -381,9 +378,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -503,9 +500,9 @@ class LectureService {
 
       runInAction(
         () =>
-          (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
-            recommendLecture.lectures.results
-          ))
+        (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
+          recommendLecture.lectures.results
+        ))
       );
       return recommendLecture.lectures;
     }
@@ -620,7 +617,8 @@ class LectureService {
 
   @action
   async findAllRqdTableViewsWithPage(offset: Offset) {
-    this._lectureFilterRdoV2.changeOffset(offset);
+    const newOffset: Offset = { offset: 0, limit: offset.offset + offset.limit }
+    this._lectureFilterRdoV2.changeOffset(newOffset);
     const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
 
     if (
@@ -628,8 +626,9 @@ class LectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length) {
       const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+
       runInAction(() => {
-        this._lectureTableViews = [...this._lectureTableViews, ...addedTableViews];
+        this._lectureTableViews = [...addedTableViews];
       });
     }
   }

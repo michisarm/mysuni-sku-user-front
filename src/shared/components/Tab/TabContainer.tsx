@@ -24,7 +24,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   renderContent?: (props: any) => React.ReactNode;
   onChangeTab?: (tab: TabItemModel) => any;
   topOfContents?: React.ReactNode;
-  renderStaticMenu?:() => React.ReactNode;
+  renderStaticMenu?: () => React.ReactNode;
 }
 
 interface RouteParams {
@@ -96,13 +96,12 @@ class TabContainer extends Component<Props, State> {
     const menu =
       (pageName && `tab_${pageName}_${tab.name}`) || `tab_${tab.name}`;
 
-    this.setState({ activeName: tab.name });
-
-     // react-ga event
-     ReactGA.event({
-      category: 'Certification',
-      action: 'Click',
-      label: `Certification-${menu}`,
+    this.setState({ activeName: tab.name }, () => {
+      ReactGA.event({
+        category: `${pageName ? pageName : 'Certification'}`,
+        action: 'Click',
+        label: `${menu}`,
+      });
     });
 
     const routePath = onChangeTab!(tab);
@@ -110,6 +109,9 @@ class TabContainer extends Component<Props, State> {
       this.publishViewEvent(menu, `${window.location.origin}${routePath}`);
     } else {
       this.publishViewEvent(menu);
+    }
+    if (sessionStorage.getItem('learningOffset') !== null) {
+      sessionStorage.removeItem('learningOffset');
     }
   }
 
@@ -200,7 +202,7 @@ class TabContainer extends Component<Props, State> {
         {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
         {topOfContents}
         <Segment className="full" key={`tab-content-${tab.name}`}>
-          <div 
+          <div
             className={classNames('ui tab', {
               active: tab.name === activeName,
             })}

@@ -23,6 +23,7 @@ import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
+import ReactGA from 'react-ga';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -102,9 +103,13 @@ const MenuItemView: React.FC<CommunityMenu &
       </>
     );
   }
+
+  const gaEvent = (): void => {
+    ReactGA.pageview(`${`/community/${communityId}/${path}/${menuId}`}`, [], `(커뮤니티 하위메뉴)-${name}`)
+  }
   return (
     <>
-      <li>
+      <li onClick={gaEvent}>
         <Link to={`/community/${communityId}/${path}/${menuId}`}>
           <img src={icon} />
           {name} {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
@@ -473,6 +478,31 @@ function CommunityHomeTreeContainer() {
   if (communtyHome.community?.lastNoticePostTime !== null) {
     lastNoticePostTime = communtyHome.community?.lastNoticePostTime;
   }
+
+  const gaEvent = (arg: string): void => {
+    if (arg === "all") {
+      ReactGA.pageview(`${`/community/${communtyHome?.community?.communityId}/all`}`, [], `(커뮤니티 하위메뉴)-전체글`)
+    }
+    else if (arg === "notic") {
+      ReactGA.pageview(`${`/community/${communtyHome?.community?.communityId}/notice`}`, [], `(커뮤니티 하위메뉴)-공지사항`)
+    }
+    else {
+      throw new Error('not arg');
+    }
+  }
+
+  function deleteAllPostMenu(communityId: string) {
+    // 전체글 메뉴 삭제 Func => filteredCommunity 배열에 communityId 추가
+    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a']
+    if (
+      communityId !== '' &&
+      communityId !== null &&
+      communityId !== undefined
+    ) {
+      return filteredCommunity.includes(communityId);
+    }
+  }
+
   return (
     <div className="community-left community-home-left">
       <div className="sub-info-box">
@@ -512,8 +542,8 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              {
-                communtyHome.community.communityId === "COMMUNITY-a" ? (
+              { communtyHome?.community &&
+                deleteAllPostMenu(communtyHome?.community.communityId) ? (
                   null
                 ) : (
                   <ReadonlyMenuItemView
@@ -558,11 +588,11 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              {
-                communtyHome.community.communityId === "COMMUNITY-a" ? (
+              { communtyHome?.community &&
+                deleteAllPostMenu(communtyHome?.community.communityId) ? (
                   null
                 ) : (
-                  <li>
+                  <li onClick={() => gaEvent('all')}>
                     <Link
                       to={`/community/${communtyHome.community.communityId}/all`}
                     >
@@ -572,7 +602,7 @@ function CommunityHomeTreeContainer() {
                   </li>
                 )
               }
-              <li>
+              <li onClick={()=>gaEvent('notic')}>
                 <Link
                   to={`/community/${communtyHome.community.communityId}/notice`}
                 >

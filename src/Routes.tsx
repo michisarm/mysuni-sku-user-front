@@ -19,6 +19,8 @@ const CertificationRoutes = lazy(() => import('./certification/Routes'));
 const PreviewRoutes = lazy(() => import('./preview/Routes'));
 const SearchRoutes = lazy(() => import('./search/Routes'));
 
+const ExtraRoutes = lazy(() => import('./extra/ExtraRoutes'));
+
 class Routes extends PureComponent {
   //
   render() {
@@ -26,44 +28,45 @@ class Routes extends PureComponent {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <ScrollToTop />
-          <UserApp>
-            <Suspense fallback="">
-              <Switch>
-                <Route path="/profile" component={ProfileRoutes} />
-                <Route path="/preview" component={PreviewRoutes} />
-                <Route
-                  path="/"
-                  render={() => (
-                    <AppLayout>
-                      <Switch>
-                        <Route
-                          path="/certification"
-                          component={CertificationRoutes}
-                        />
-                        <Route
-                          path="/personalcube"
-                          component={PersonalCubeRoutes}
-                        />
-                        <Route path="/lecture" component={LectureRoutes} />
-                        <Route path="/my-training" component={MyTrainingRoutes} />
-                        {/* <Route
+        <UserApp>
+          <Suspense fallback="">
+            <Switch>
+              <Route path="/profile" component={ProfileRoutes} />
+              <Route path="/preview" component={PreviewRoutes} />
+              <Route
+                path="/"
+                render={() => (
+                  <AppLayout>
+                    <Switch>
+                      <Route
+                        path="/certification"
+                        component={CertificationRoutes}
+                      />
+                      <Route
+                        path="/personalcube"
+                        component={PersonalCubeRoutes}
+                      />
+                      <Route path="/lecture" component={LectureRoutes} />
+                      <Route path="/my-training" component={MyTrainingRoutes} />
+                      {/* <Route
                           path="/my-training2"
                         // component={MyTrainingRoutes2}
                         /> */}
-                        <Route path="/approval" component={ApprovalRoutes} />
-                        <Route path="/board" component={BoardRoutes} />
-                        <Route path="/expert" component={ExpertRoutes} />
-                        <Route path="/community" component={CommunityRoutes} />
-                        <Route path="/search" component={SearchRoutes} />
+                      <Route path="/approval" component={ApprovalRoutes} />
+                      <Route path="/board" component={BoardRoutes} />
+                      <Route path="/expert" component={ExpertRoutes} />
+                      <Route path="/community" component={CommunityRoutes} />
+                      <Route path="/search" component={SearchRoutes} />
+                      <Route path="/extra" component={ExtraRoutes} />
 
-                        <Route path="/" component={MainRoutes} />
-                      </Switch>
-                    </AppLayout>
-                  )}
-                />
-              </Switch>
-            </Suspense>
-          </UserApp>
+                      <Route path="/" component={MainRoutes} />
+                    </Switch>
+                  </AppLayout>
+                )}
+              />
+            </Switch>
+          </Suspense>
+        </UserApp>
       </BrowserRouter>
     );
   }
