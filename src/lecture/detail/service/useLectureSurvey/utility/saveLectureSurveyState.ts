@@ -154,6 +154,22 @@ async function coreSubmitLectureSurveyState() {
   const requiredMissAnswers = lectureSurvey.surveyItems
     .filter(c => c.isRequired)
     .filter(c => !answerItem.some(d => d.questionNumber === c.questionNumber));
+
+  const a = requiredMissAnswers.map(r => r.rows);
+
+  console.log(answerSheetCdo.evaluationSheet.answers.length);
+  console.log(a);
+
+  if (
+    answerSheetCdo.evaluationSheet.answers.length !== 0 &&
+    a.length !== answerSheetCdo.evaluationSheet.answers
+  ) {
+    reactAlert({
+      title: '알림',
+      message: '행렬은 모든 항목을 입력해 주셔야 합니다.',
+    });
+    return;
+  }
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: '알림',
@@ -161,9 +177,9 @@ async function coreSubmitLectureSurveyState() {
         requiredMissAnswers.map(r => ' ' + r.no + '번') + '은 필수 항목입니다',
     });
 
-    requiredMissAnswers.forEach(c => {
-      console.log(c.no);
-    });
+    // requiredMissAnswers.forEach(c => {
+    //   console.log(c.no);
+    // });
     return;
   }
   await submitAnswerSheet(surveyCaseId, round, answerSheetCdo);
