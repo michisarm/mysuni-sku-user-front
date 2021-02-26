@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Modal, Image } from 'semantic-ui-react';
+import { Modal, Image } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
 import LectureSurveySummaryEssayView from './LectureSurveySummaryEssayView';

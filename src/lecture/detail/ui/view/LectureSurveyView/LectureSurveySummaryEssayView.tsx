@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Image } from 'semantic-ui-react';
-import { selectSentenceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
-import LectureSurvey, {
-  LectureSurveyItem,
-} from '../../../viewModel/LectureSurvey';
+import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveyAnswerSummaryList } from 'lecture/detail/store/LectureSurveyStore';

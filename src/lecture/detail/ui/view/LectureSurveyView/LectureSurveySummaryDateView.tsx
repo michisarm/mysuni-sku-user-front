@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { Icon, Button, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -23,7 +23,6 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
   const onChangeValue = useCallback(
     (value: Date) => {
       const next = moment(value).format('YYYY-MM-DD');
-      //  selectSentenceAnswer(lectureSurveyItem, next);
     },
     [lectureSurveyItem]
   );
@@ -73,11 +72,13 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
               <li className="improve-list-more">
                 {lastIndex - 1 > number ? (
                   <>
-                    <Image 
-                      style={{display: 'inline-block'}}
+                    <Image
+                      style={{ display: 'inline-block' }}
                       src={`${process.env.PUBLIC_URL}/images/all/survey-list-more.png`}
                     />
-                    <span>더보기 ({lastIndex - number - 1}개)</span>
+                    <span onClick={setCheckNumber}>
+                      더보기 ({lastIndex - number - 1}개)
+                    </span>
                   </>
                 ) : (
                   ''

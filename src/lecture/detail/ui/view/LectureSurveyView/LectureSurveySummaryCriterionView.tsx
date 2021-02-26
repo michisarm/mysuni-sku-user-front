@@ -4,9 +4,7 @@ import { selectCriterionAnswer } from '../../../service/useLectureSurvey/utility
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
-  getLectureSurveyAnswerSummaryList,
   useLectureSurveyAnswerSummaryList,
   useLectureSurveySummary,
 } from 'lecture/detail/store/LectureSurveyStore';

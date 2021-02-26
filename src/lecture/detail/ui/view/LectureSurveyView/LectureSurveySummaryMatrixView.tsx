@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { CheckboxProps, Icon } from 'semantic-ui-react';
-import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 import Table from 'semantic-ui-react/dist/commonjs/collections/Table';
 import { selectMatrixAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
@@ -55,9 +54,20 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                           c => c.rowNumber === rowNumber.toString()
                         );
                         if (matrixItem?.numberCountMap !== undefined) {
-                          count = matrixItem.numberCountMap[columnSelectedNumber];
+                          count =
+                            matrixItem.numberCountMap[columnSelectedNumber];
                         }
                       }
+
+                      const isChecked =
+                        lectureSurveyAnswerItem !== undefined &&
+                        lectureSurveyAnswerItem.matrixItem !== undefined &&
+                        lectureSurveyAnswerItem.matrixItem.some(
+                          c =>
+                            c.rowNumber === `${rowNumber}` &&
+                            c.columnSelectedNumber === `${columnSelectedNumber}`
+                        );
+
                       return (
                         <Table.Cell key={columnSelectedNumber}>
                           {/* <Radio
@@ -81,8 +91,14 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
                           {count || '0'} */}
 
                           <div className="course-survey-list">
-                            <span className="course-survey-list-btnImg"><img src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`} /></span>
-                            <span className="course-servey-list-boldNumber">{count || '0'}</span>
+                            <span className="course-survey-list-btnImg">
+                              <img
+                                src={`${process.env.PUBLIC_URL}/images/all/survey-empty-btn.png`}
+                              />
+                            </span>
+                            <span className="course-servey-list-boldNumber">
+                              {count || '0'} {`${isChecked}`}
+                            </span>
                           </div>
                         </Table.Cell>
                       );
