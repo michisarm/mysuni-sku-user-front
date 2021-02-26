@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Checkbox, Progress, Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -24,7 +24,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   
   
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
@@ -37,12 +37,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-            console.log('****', `${choice.no}, ${isChecked}, TYPE:: ${typeof `${isChecked}`}`)
+
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {`${isChecked}` === 'true' ? (
+                    {isChecked ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                       />
@@ -57,7 +57,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={
-                        `${isChecked}` === 'true' ? 'blue' : 'grey'
+                        isChecked ? 'blue' : 'grey'
                       }
                       // color="red"
                     />
@@ -109,7 +109,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {lectureSurveyAnswerItem?.itemNumbers ? (
+                    {isChecked ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-check-btn.png`}
                       />
@@ -124,7 +124,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={
-                        `${isChecked}` === 'true' ? 'blue' : 'grey'
+                        isChecked ? 'blue' : 'grey'
                       }
                     />
                     <span className="course-survey-list-persent-right">
@@ -150,7 +150,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             );
           })}
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 
