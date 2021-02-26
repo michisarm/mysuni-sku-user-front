@@ -12,6 +12,7 @@ import LectureSurveySummaryMatrixView from './LectureSurveySummaryMatrixView';
 import { requestLectureSurveySummary } from '../../../service/useLectureSurvey/utility/getLectureSurvey';
 import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
+import { finishLectureSurveyState } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
 
 interface Props {
   trigger: React.ReactNode;
@@ -38,6 +39,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
 
   const onClose = useCallback(() => {
     setOpen(false);
+    finishLectureSurveyState();
   }, []);
 
   const onCancel = useCallback(() => {

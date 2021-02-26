@@ -30,10 +30,6 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
     startLectureSurveyState();
   }, [params]);
 
-  // const requestFinishLectureSurveyState = () => {
-  //   finishLectureSurveyState();
-  // };
-
   const questionCount = lectureSurvey.surveyItems.length;
   const surveyCommunityTitle = currentMenu?.name;
   const surveyCourseTitle = lectureStructure?.course?.name;
