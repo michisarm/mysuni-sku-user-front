@@ -160,16 +160,16 @@ async function coreSubmitLectureSurveyState() {
   console.log(answerSheetCdo.evaluationSheet.answers.length);
   console.log(a);
 
-  if (
-    answerSheetCdo.evaluationSheet.answers.length !== 0 &&
-    a.length !== answerSheetCdo.evaluationSheet.answers
-  ) {
-    reactAlert({
-      title: '알림',
-      message: '행렬은 모든 항목을 입력해 주셔야 합니다.',
-    });
-    return;
-  }
+  // if (
+  //   answerSheetCdo.evaluationSheet.answers.length !== 0 &&
+  //   a.length !== answerSheetCdo.evaluationSheet.answers
+  // ) {
+  //   reactAlert({
+  //     title: '알림',
+  //     message: '행렬은 모든 항목을 입력해 주셔야 합니다.',
+  //   });
+  //   return;
+  // }
   if (requiredMissAnswers.length > 0) {
     reactAlert({
       title: '알림',
