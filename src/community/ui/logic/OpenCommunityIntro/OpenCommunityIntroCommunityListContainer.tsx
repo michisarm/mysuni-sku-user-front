@@ -86,6 +86,7 @@ function sortCreatedTime() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'createdTime')
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'createdTime',
@@ -100,6 +101,7 @@ function sortMemberCount() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'memberCount')
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'memberCount',
@@ -114,6 +116,7 @@ function sortName() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'name')
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'name',
@@ -128,6 +131,7 @@ function sortApproved() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'approved')
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'approved',
@@ -139,7 +143,7 @@ function sortApproved() {
 
 function OpenCommunityIntroCommunityListContainer() {
   const openCommunityIntro = useOpenCommunityIntro();
-
+  const sessionSortName = sessionStorage.getItem('sortName');
   if (openCommunityIntro === undefined) {
     return null;
   }
@@ -152,7 +156,7 @@ function OpenCommunityIntroCommunityListContainer() {
           label="최신순"
           name="sort"
           value="createdTime"
-          checked={openCommunityIntro.communitiesSort === 'createdTime'}
+          checked={sessionSortName === 'createdTime' || openCommunityIntro.communitiesSort === 'createdTime'}
           onClick={sortCreatedTime}
         />
         <Radio
@@ -160,7 +164,7 @@ function OpenCommunityIntroCommunityListContainer() {
           label="멤버순"
           name="sort"
           value="memberCount"
-          checked={openCommunityIntro.communitiesSort === 'memberCount'}
+          checked={sessionSortName === 'memberCount' || openCommunityIntro.communitiesSort === 'memberCount'}
           onClick={sortMemberCount}
         />
         <Radio
@@ -168,7 +172,7 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가나다순"
           name="sort"
           value="name"
-          checked={openCommunityIntro.communitiesSort === 'name'}
+          checked={sessionSortName === 'name' || openCommunityIntro.communitiesSort === 'name'}
           onClick={sortName}
         />
         <Radio
@@ -176,7 +180,7 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가입대기"
           name="sort"
           value="approved"
-          checked={openCommunityIntro.communitiesSort === 'approved'}
+          checked={sessionSortName === 'approved' || openCommunityIntro.communitiesSort === 'approved'}
           onClick={sortApproved}
         />
       </div>

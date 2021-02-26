@@ -94,6 +94,15 @@ class HeaderContainer extends Component<Props, State> {
     this.setState({ searchValue: '' });
   }
 
+  cleanSessionStorage() {
+    sessionStorage.removeItem('lectureOffset')
+    sessionStorage.removeItem('communityOffset')
+    sessionStorage.removeItem('postOffset')
+    sessionStorage.removeItem('learningOffset')
+    sessionStorage.removeItem('sortName')
+    sessionStorage.removeItem('SCROLL_POS')
+  }
+
   onClickMenu(menuName: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: menuName });
@@ -116,6 +125,7 @@ class HeaderContainer extends Component<Props, State> {
         );
       }, 1000);
     }
+    this.cleanSessionStorage();
   }
 
   render() {
@@ -138,7 +148,7 @@ class HeaderContainer extends Component<Props, State> {
           <LogoView onClickMenu={this.onClickMenu} />
           <MenuView onClickMenu={this.onClickMenu} />
           <CategoryMenuContainer />
-          
+
           <SearchBarView
             value={searchValue}
             focused={focused}
