@@ -64,9 +64,7 @@ const FollowView: React.FC = function FollowView() {
         <div className="course-detail-center community-containter">
           {followCommunityIntro?.postsTotalCount !== 0 ? (
             <>
-              <div className="commu-home-scroll">
-                <CommunityFollowPostListContainer />
-              </div>
+              <CommunityFollowPostListContainer />
               <CommunityFollowListContainer />
             </>
           ) : (

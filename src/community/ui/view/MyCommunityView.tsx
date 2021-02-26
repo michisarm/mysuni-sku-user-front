@@ -76,9 +76,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
           myCommunityIntro.communities.length > 0 && (
             <div className="course-detail-center community-containter">
               <MyCommunityListContainer />
-              <div className="commu-home-scroll">
-                <MyCommunityPostListContainer />
-              </div>
+              <MyCommunityPostListContainer />
             </div>
           )}
         {myCommunityIntro !== undefined &&
