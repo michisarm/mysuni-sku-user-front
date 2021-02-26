@@ -63,10 +63,27 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
               )}
             </li>
           </ul>
+
+          {lectureSurveyItem.visible !== undefined &&
+            lectureSurveyItem.visible !== true && (
+              <div style={{ marginTop: '10px' }}>
+                <Image
+                  style={{ display: 'inline-block', marginRight: '5px' }}
+                  src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+                />
+                <span
+                  style={{
+                    color: '#e1002a',
+                    fontSize: '14px',
+                    lineHeight: '16px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                >
+                  해당 문항은 비공개 처리되어 답변이 조회되지 않습니다.
+                </span>
+              </div>
+            )}
         </div>
-        {lectureSurveyItem.visible !== undefined &&
-          lectureSurveyItem.visible !== true &&
-          '해당 문항은 비공개 처리되어 답변이 조회되지 않습니다.'}
       </div>
     </LectureSurveyChoiceLayout>
   );
