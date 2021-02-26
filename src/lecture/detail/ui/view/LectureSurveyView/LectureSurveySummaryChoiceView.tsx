@@ -36,7 +36,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-            console.log('true@@@', isChecked);
+            
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -62,7 +62,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       <span className="course-survey-list-persent-number">
                         {choice.count}
                       </span>
-                      {choiceAvg || 0}
+                      ({choiceAvg || 0}%)
                     </span>
                     <li className="course-survey-list-text active">
                       {choice.title}
