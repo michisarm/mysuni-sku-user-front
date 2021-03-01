@@ -15,15 +15,6 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
-  const onChangeValue = useCallback(
-    (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-      if (data.value === undefined) {
-        return;
-      }
-      selectMatrixAnswer(lectureSurveyItem, data.value);
-    },
-    [lectureSurveyItem]
-  );
   const { columns, rows, matrixItems } = lectureSurveyItem;
 
   return (
@@ -70,26 +61,6 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
 
                       return (
                         <Table.Cell key={columnSelectedNumber}>
-                          {/* <Radio
-                            className="base"
-                            value={JSON.stringify({
-                              rowNumber: `${rowNumber}`,
-                              columnSelectedNumber: `${columnSelectedNumber}`,
-                            })}
-                            checked={
-                              lectureSurveyAnswerItem !== undefined &&
-                              lectureSurveyAnswerItem.matrixItem !== undefined &&
-                              lectureSurveyAnswerItem.matrixItem.some(
-                                c =>
-                                  c.rowNumber === `${rowNumber}` &&
-                                  c.columnSelectedNumber ===
-                                    `${columnSelectedNumber}`
-                              )
-                            }
-                            onChange={onChangeValue}
-                          />
-                          {count || '0'} */}
-
                           <div className="course-survey-list">
                             <span className="course-survey-list-btnImg">
                               {`${isChecked}` === 'true' ? (

@@ -96,23 +96,6 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
             return (
               <Fragment key={choice.no}>
-                {/* <Checkbox
-                  className="base"
-                  label={choice.title}
-                  value={choice.no}
-                  checked={
-                    lectureSurveyAnswerItem !== undefined &&
-                    lectureSurveyAnswerItem.itemNumbers !== undefined &&
-                    lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
-                  }
-                  readOnly={true}
-                />
-                {choice.image && <img src={choice.image} />}
-                <br />
-                {choice.count || '0'} {`내가 체크한 값 : ${isChecked}`}
-                <br />
-                {choiceAvg || 0} */}
-
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
                     {isChecked ? (

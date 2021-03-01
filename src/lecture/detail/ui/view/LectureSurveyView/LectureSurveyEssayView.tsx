@@ -17,6 +17,8 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
   lectureSurveyAnswerItem,
   lectureSurveyState,
 }) {
+  const { maxLength } = lectureSurveyItem;
+  
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
       if (e.target.value.length <= (maxLength || 0)) {
@@ -27,8 +29,6 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
     },
     [lectureSurveyItem]
   );
-
-  const { maxLength } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <Form>
