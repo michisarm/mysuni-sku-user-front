@@ -9,13 +9,14 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> = function LectureS
   children,
   isRequired,
 }) {
+  console.log(title)
   return (
     <div className="course-radio-survey">
       <p>
         <span>{no}.</span>
         {isRequired === true && (
           <>
-            <span>{title}</span>
+            <span>{ title }</span>
             <span className="importantBtn">
               <Image
                 style={{
@@ -28,7 +29,11 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> = function LectureS
             </span>
           </>
         )}
-        {isRequired === false && { title }}
+        {isRequired === true && (
+          <>
+            <span>{ title }</span>
+          </>
+        )}
       </p>
       {children}
     </div>

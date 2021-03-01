@@ -15,7 +15,7 @@ const LectureSurveySummaryChoiceLayout: React.FC<LectureSurveyItem> = function L
         <span>{no}.</span>
         {isRequired === true && (
           <>
-            <span>{title}</span>
+            <span>sss</span>
             <span className="importantBtn">
               <Image
                 style={{ display: 'inline-block' }}
@@ -24,7 +24,11 @@ const LectureSurveySummaryChoiceLayout: React.FC<LectureSurveyItem> = function L
             </span>
           </>
         )}
-        {isRequired === false && { title }}
+        {isRequired === true && (
+          <>
+            <span>{ title }</span>
+          </>
+        )}
       </p>
       {children}
     </div>
