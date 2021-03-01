@@ -29,7 +29,7 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> = function LectureS
             </span>
           </>
         )}
-        {isRequired === true && (
+        {isRequired === false && (
           <>
             <span>{ title }</span>
           </>
