@@ -60,7 +60,7 @@ const LectureSurveyDateView: React.FC<LectureSurveyDateViewProps> = function Lec
                   verticalAlign: 'text-bottom',
                 }}
               >
-                해당 문항은 비공개 처리되어 답변이 조회되지 않습니다.
+                해당 문항은 필수 항목 입니다.
               </span>
             </div>
           ))}
