@@ -86,7 +86,8 @@ export function requestOpenCommunityList() {
 export function requestAppendOpenCommunityList() {
   const { fieldId, communitiesSort, communitiesOffset } =
     getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
-  findAllOpenCommunities(communitiesSort, communitiesOffset, fieldId).then(
+  const initLimit = 12;
+  findAllOpenCommunities(communitiesSort, communitiesOffset + initLimit, fieldId).then(
     communities => {
       const myOpenCommunityIntro =
         getOpenCommunityIntro() || getEmptyOpenCommunityIntro();
