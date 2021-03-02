@@ -8,7 +8,7 @@ import moment from 'moment';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { Button, Icon, Image } from 'semantic-ui-react';
+import { Button, Icon, Image, Popup } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 // import { BadgeService } from 'certification/stores';
@@ -268,34 +268,127 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       setBadgeLearningTimeItem({ ...badgeLearningTime, mylearningTimeHour: accrueHour, mylearningTimeMinute: accrueMinute})
     }
 
+    const style1 = {
+      borderRadius: "0.375rem",
+      textAlign: "center",
+      fontSize: "0.875rem",
+      border: "1px solid #aaaaaa",
+      color: "#4c4c4c",
+    };
+
+    const style2 = {
+      borderRadius: "0.375rem",
+      textAlign: "center",
+      fontSize: "0.875rem",
+      border: "1px solid #aaaaaa",
+      color: "#4c4c4c",
+    };
+
+    const style3 = {
+      borderRadius: "0.375rem",
+      textAlign: "center",
+      fontSize: "0.875rem",
+      border: "1px solid #aaaaaa",
+      color: "#4c4c4c",
+    };
+    
+
     return (
       <>
         <HeaderWrapperView>
-          <ItemWrapper>
-            <div className="ui profile">
-              <div className="pic s80">
+          {/* <ItemWrapper> */}
+            <div className="ui profile inline">
+              <div className="pic s60">
                 <Image
                   src={skProfile.photoFilePath || profileImg}
                   alt="프로필사진"
                 />
               </div>
             </div>
-            <div className="user">
-              {/* <div className="hello">안녕하세요</div> */}
-              <div className="user-name">
-                <strong className="ellipsis">{member.name}</strong>
-                <span>님,</span>
-                <Button onClick={this.openBoard}>openBoard</Button>
-                <Button onClick={this.openLearningObjectives}>목표 설정</Button>
-              </div>
+            <div className="personal-header-title">
+                <h3>{member.name}님,</h3>
+                <DashBoardSentenceContainer/>
+                {/* <Button onClick={this.openBoard}>openBoard</Button>
+                <Button onClick={this.openLearningObjectives}>목표 설정</Button> */}
             </div>
-            <div className="hello">
-              11111
-            </div>
-            <DashBoardSentenceContainer/>
-          </ItemWrapper>
+          {/* </ItemWrapper> */}
+          <div className="main-gauge-box">
 
-          <ItemWrapper>
+            <div className="main-gauge">
+              <span className="gauge-badge">Badge</span>
+              <Popup
+                trigger={
+                  <div className="gauge-content gauge-bg55">
+                    <div className="gauge-content-box">
+                      <p className="top-num">9</p>
+                      <span className="bot-num">23</span>
+                    </div>
+                  </div>
+                }
+                style={style1}
+                position="bottom center"
+                wide
+              >
+                <span className="personal_pop_tit">
+                  도전중 Badge
+                </span>
+                <span>
+                  <strong>23</strong>개
+                </span>
+              </Popup>
+            </div>
+
+            <div className="main-gauge">
+              <span className="gauge-badge">2021년 완료학습</span>
+              <Popup
+                trigger={
+                  <div className="gauge-content gauge-com35">
+                    <div className="gauge-content-box">
+                      <p>228</p>
+                      <span>340</span>
+                    </div>
+                  </div>
+                }
+                style={style2}
+                position="bottom center"
+                wide
+              >
+                <span className="personal_pop_tit">
+                  누적 완료학습
+                </span>
+                <span>
+                  <strong>340</strong>개
+                </span>
+              </Popup>
+            </div>
+
+            <div className="main-gauge ">
+              <span className="gauge-badge">2021년 학습시간</span>
+              <Popup
+                trigger={
+                  <div className="gauge-content gauge-time75">
+                    <div className="gauge-content-box">
+                      {/* <p>63 58'</p>
+                      <span>209 30'</span> */}
+                    </div>
+                  </div>
+                }
+                style={style3}
+                position="bottom center"
+                wide
+              >
+                <span className="personal_pop_tit">
+                  누적 학습시간
+                </span>
+                <span>
+                  <strong>209</strong>h
+                  <strong className="personal_pop_sub">30</strong>m
+                </span>
+              </Popup>
+            </div>
+          </div>
+
+          {/* <ItemWrapper>
             <div className="title">{CURRENT_YEAR}년 학습시간</div>
             <MyLearningSummaryModal
               trigger={(
@@ -333,22 +426,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               count={myStampCount}
               onClick={this.onClickStamp}
             />
-            {/*<a className="main_sub_all">
-              &#40;누적
-              <span className="big2">{myStampCount}</span>
-              <span className="small2 h">개</span>
-              &#41;
-            </a>*/}
           </ItemWrapper>
 
-          {/*2차 My Badge 추가*/}
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Badge')}>
             <HeaderItemView
               label="My Badge"
               count={myBadgeCount}
               onClick={this.onClickBadge}
             />
-          </ItemWrapper>
+          </ItemWrapper> */}
         </HeaderWrapperView>
 
       {/* 퍼스널보드 컴포넌트 생성 */}

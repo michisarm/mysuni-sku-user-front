@@ -78,7 +78,7 @@ class UserMainPageV2 extends Component<Props> {
     //
     return (
       <ContentLayout className="main">
-        <div className="main-wrap">
+        <div className="main-wrap personal-wrap">
           <MyLearningSummary />
           <MyLearningContentContainer />
 
