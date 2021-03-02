@@ -100,11 +100,11 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       return;
     }
 
+    if (postItem.title === '') {
+      reactAlert({ title: '알림', message: '제목을 입력해 주세요' });
+      return;
+    }
     if (postItem.pinned) {
-      if (postItem.title === '') {
-        reactAlert({ title: '알림', message: '제목을 입력해 주세요' });
-        return;
-      }
       if (postItem.contents === '') {
         reactAlert({ title: '알림', message: '내용을 입력해 주세요' });
         return;
