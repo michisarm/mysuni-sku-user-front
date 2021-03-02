@@ -322,8 +322,6 @@ async function parseSurveyForm(
   const surveyForm = await findSurveyForm(surveyId);
   const { id, titles, questions: remoteQuestions } = surveyForm;
   const title = titles?.langStringMap[titles.defaultLanguage];
-  console.log(titles)
-  console.log(title)
   const surveyItems = remoteQuestions.map(question => {
     switch (question.questionItemType) {
       case 'Choice':
