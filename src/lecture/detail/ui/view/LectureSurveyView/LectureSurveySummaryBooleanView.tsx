@@ -38,15 +38,13 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
   let noAvg = '';
 
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
-
   if (numberCountMap !== undefined && respondCount !== undefined) {
     yesCount = numberCountMap[1];
     noCount = numberCountMap[0];
 
-    yesAvg = ((yesCount / respondCount) * 100).toFixed(1);
-    noAvg = ((noCount / respondCount) * 100).toFixed(1);
+    yesAvg = ((yesCount / respondCount ? respondCount : 0) * 100).toFixed(1);
+    noAvg = ((noCount / respondCount ? respondCount : 0) * 100).toFixed(1);
   }
-  
 
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
@@ -87,9 +85,10 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             {/* progress bar */}
             <div className="course-survey-list-backgrondBar yesOrNoBar">
               <span className="course-survey-list-persent-left"><span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)</span>
-              <Progress percent={80} style={{opacity: 0.5, marginTop: 0}} color= "blue" />
+              <Progress percent={yesAvg > noAvg ? yesAvg : noAvg} style={{opacity: 0.5, marginTop: 0}} color= "blue" />
               <span className="course-survey-list-persent-right"><span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)</span>
             </div>
+            
             <span className="course-survey-yesOrNoBar-text">NO</span>
           </div>
         </div>
