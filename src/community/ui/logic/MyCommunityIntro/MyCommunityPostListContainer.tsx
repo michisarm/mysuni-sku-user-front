@@ -173,7 +173,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                         </li>
                         <li>
                           {!bookmarked && (
-                            <a href="#" onClick={unbookmarkClick}>
+                            <a href="#" onClick={bookmarkClick}>
                               <i className="balloon icon popupBook" />
                               <span>북마크</span>
                             </a>
