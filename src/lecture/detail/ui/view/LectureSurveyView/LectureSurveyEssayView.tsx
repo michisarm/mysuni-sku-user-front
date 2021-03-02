@@ -18,12 +18,15 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
   lectureSurveyState,
 }) {
   const { maxLength } = lectureSurveyItem;
-  
+
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
       if (e.target.value.length <= (maxLength || 0)) {
         selectSentenceAnswer(lectureSurveyItem, e.target.value);
-      } else if ((maxLength || 0) === 0 && e.target.value.length >= (maxLength || 0)) {
+      } else if (
+        (maxLength || 0) === 0 &&
+        e.target.value.length >= (maxLength || 0)
+      ) {
         selectSentenceAnswer(lectureSurveyItem, e.target.value);
       }
     },
@@ -41,6 +44,7 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
                   ? lectureSurveyAnswerItem.sentence.length
                   : 0}
               </span>
+              &nbsp;&#47;&nbsp;
               <span className="max">{`${maxLength}`}</span>
             </span>
             <textarea
