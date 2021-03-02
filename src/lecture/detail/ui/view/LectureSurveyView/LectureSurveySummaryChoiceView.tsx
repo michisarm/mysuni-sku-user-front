@@ -27,11 +27,11 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   const maxNum: number = Math.max.apply(
     Math,
     lectureSurveyItem.choices!.map(o => {
-      return o.count!;
+      return o.count === undefined ? 0 : o.count;
     })
   );
   /*eslint-enable */
-
+  
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
