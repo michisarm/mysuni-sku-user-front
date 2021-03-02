@@ -95,7 +95,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
             onClickList={this.onClickList}
           />
 
-          {post.contents && (
+          {post.contents &&  (
             <div className="content-area">
               <div className="content-inner ql-snow">
                 <div
@@ -104,7 +104,6 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 />
               </div>
               <div className="file">
-                <span>첨부파일 : </span>
                 <br />
                 {(filesMap &&
                   filesMap.get('reference') &&
@@ -112,6 +111,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                     .get('reference')
                     .map((foundedFile: DepotFileViewModel, index: number) => (
                       <div>
+                        <span>첨부파일 : </span>
                         <a href="#" className="link" key={index}>
                           <span
                             className="ellipsis"
@@ -126,7 +126,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                         <br />
                       </div>
                     ))) ||
-                  '-'}
+                  ''}
               </div>
               <br />
             </div>
