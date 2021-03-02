@@ -79,6 +79,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
 
 function deleteOffset() {
   sessionStorage.removeItem('communityOffset');
+  sessionStorage.removeItem('openCommunityOffset');
 }
 
 function sortCreatedTime() {
