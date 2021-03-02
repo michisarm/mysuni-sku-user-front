@@ -110,45 +110,50 @@ class ClassroomModalView extends Component<Props, States> {
                     } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.endDateSub)!;
 
                     return (
-                      <Table.Row key={`overview-table-row-${index}`}>
-                        <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                          <Radio
-                            name="class-radioGroup"
-                            disabled={
-                              (joinRounds && joinRounds.includes(classroom.round))
-                              || new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
-                              || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()
-                              || classroom.studentCount >= classroom.capacity
-                            }
-                            checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
-                            onChange={() => this.setState({ selectedClassroom: classroom })}
-                          />
-                        </Table.Cell>
-                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.round}</Table.Cell>
-                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.instructor.name}</Table.Cell>
-                        <Table.Cell className="el"><Table.Cell verticalAlign="middle"></Table.Cell><span>{classroom.operation.location}</span></Table.Cell>
-                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
-                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
-                        <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
-                        <Table.Cell>
-                        <Table.Cell verticalAlign="middle"></Table.Cell>
-                          { classroom.enrolling.cancellationPenalty ?
-                            <Popup
-                              content={<span>{classroom.enrolling.cancellationPenalty}</span>}
-                              className="ui custom red"
-                              position="bottom right"
-                              trigger={
-                                <Button icon className="img-icon custom">
-                                  <Icon className="noti32" /><span className="blind">취소 패널티</span>
-                                </Button>
+                      <>
+                        { !(new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
+                            || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()) && (
+                          <Table.Row key={`overview-table-row-${index}`}>
+                            <Table.Cell>
+                            <Table.Cell verticalAlign="middle"></Table.Cell>
+                              <Radio
+                                name="class-radioGroup"
+                                disabled={
+                                  (joinRounds && joinRounds.includes(classroom.round))
+                                  || new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
+                                  || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()
+                                  || classroom.studentCount >= classroom.capacity
+                                }
+                                checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
+                                onChange={() => this.setState({ selectedClassroom: classroom })}
+                              />
+                            </Table.Cell>
+                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.round}</Table.Cell>
+                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.instructor.name}</Table.Cell>
+                            <Table.Cell className="el"><Table.Cell verticalAlign="middle"></Table.Cell><span>{classroom.operation.location}</span></Table.Cell>
+                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
+                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
+                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
+                            <Table.Cell>
+                            <Table.Cell verticalAlign="middle"></Table.Cell>
+                              { classroom.enrolling.cancellationPenalty ?
+                                <Popup
+                                  content={<span>{classroom.enrolling.cancellationPenalty}</span>}
+                                  className="ui custom red"
+                                  position="bottom right"
+                                  trigger={
+                                    <Button icon className="img-icon custom">
+                                      <Icon className="noti32" /><span className="blind">취소 패널티</span>
+                                    </Button>
+                                  }
+                                />
+                                :
+                                <span className="empty-dash" />
                               }
-                            />
-                            :
-                            <span className="empty-dash" />
-                          }
-                        </Table.Cell>
-                      </Table.Row>
+                            </Table.Cell>
+                          </Table.Row>
+                        )}
+                      </>
                     );
                   }) || null
                 }
