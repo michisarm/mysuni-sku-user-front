@@ -18,10 +18,10 @@ const DashBoardSentenceView: React.FC<Props> = function DashBoardSentenceView(
   return (
     <>
     {dashBoardTxt === undefined && (
-      <span>기본 값입니다.</span>
+      <p>기본 값입니다.</p>
     )}
     {dashBoardTxt && (
-      <span>{dashBoardTxt.dashBoardTxt}</span>
+      <p>{dashBoardTxt.dashBoardTxt}</p>
     )}
     </>
   );

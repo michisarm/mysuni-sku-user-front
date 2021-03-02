@@ -4,14 +4,16 @@ import { Table, Icon } from 'semantic-ui-react';
 
 
 export const HeaderWrapperView: FunctionComponent = ({ children }) => (
-  <div className="main-info-box">
-    <table>
-      <tbody>
-        <tr>
-          {children}
-        </tr>
-      </tbody>
-    </table>
+  <div className="main-personal-wrap">
+    <div className="main_personal">
+      {/* <table>
+        <tbody>
+          <tr> */}
+            {children}
+          {/* </tr>
+        </tbody>
+      </table> */}
+    </div>
   </div>
 );
 
