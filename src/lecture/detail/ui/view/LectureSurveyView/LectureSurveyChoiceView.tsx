@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback } from 'react';
-import { Checkbox, CheckboxProps, Radio, Icon } from 'semantic-ui-react';
+import { Checkbox, CheckboxProps, Radio, Image } from 'semantic-ui-react';
 import { selectChoiceAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -75,10 +75,22 @@ const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function Lectu
         (lectureSurveyState.state === 'Progress' &&
           lectureSurveyItem.isRequired === true &&
           lectureSurveyAnswerItem === undefined && (
-            <>
-              <Icon className="icon exclamation circle " />
-              <span>필수문항 응답 후 제출해주세요.</span>
-            </>
+            <div style={{ marginTop: '10px' }}>
+              <Image
+                style={{ display: 'inline-block', marginRight: '5px' }}
+                src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+              />
+              <span
+                style={{
+                  color: '#e1002a',
+                  fontSize: '14px',
+                  lineHeight: '16px',
+                  verticalAlign: 'text-bottom',
+                }}
+              >
+                해당 문항은 필수 항목 입니다.
+              </span>
+            </div>
           ))}
     </LectureSurveyChoiceLayout>
   );

@@ -36,8 +36,10 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   const surveyCubeTitle = lectureStructure?.cube?.name;
   const surveyTitleInfo =
     surveyCommunityTitle === undefined
-      ? `${surveyCourseTitle || surveyCubeTitle}과정의`
-      : `${surveyCommunityTitle}의`;
+      ? `${surveyCourseTitle || surveyCubeTitle}`
+      : `${surveyCommunityTitle}`;
+
+  const surveyInfoText = surveyCommunityTitle === undefined ? `과정의 ` : `의 `;
 
   return (
     <>
@@ -63,7 +65,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           <div className="course-info-ing">
             <h1>
               {surveyTitleInfo}
-              <span> Survey 입니다.</span>
+              <span>{surveyInfoText} Survey 입니다.</span>
             </h1>
             <h3>문항개수</h3>
             <p>
@@ -90,7 +92,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
                 src={`${process.env.PUBLIC_URL}/images/all/icon-survey-done.png`}
               />
 
-              <p className="survey-done-txt">이미 Survey에 응답하였습니다.</p>
+              <h1 className="survey_done">참여완료</h1>
 
               <div className="course-info-bottom">
                 <LectureSurveyResultModalView

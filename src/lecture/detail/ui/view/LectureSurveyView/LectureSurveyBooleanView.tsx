@@ -1,14 +1,11 @@
 import React, { useCallback } from 'react';
-import {
-  selectBooleanAnswer,
-  selectSentenceAnswer,
-} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import LectureSurveyState, {
   LectureSurveyAnswerItem,
 } from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
-import { Icon } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 
 interface LectureSurveyBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -70,10 +67,22 @@ const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = functi
         (lectureSurveyState.state === 'Progress' &&
           lectureSurveyItem.isRequired === true &&
           lectureSurveyAnswerItem === undefined && (
-            <>
-              <Icon className="icon exclamation circle " />
-              <span>필수문항 응답 후 제출해주세요.</span>
-            </>
+            <div style={{ marginTop: '10px' }}>
+              <Image
+                style={{ display: 'inline-block', marginRight: '5px' }}
+                src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+              />
+              <span
+                style={{
+                  color: '#e1002a',
+                  fontSize: '14px',
+                  lineHeight: '16px',
+                  verticalAlign: 'text-bottom',
+                }}
+              >
+                해당 문항은 필수 항목 입니다.
+              </span>
+            </div>
           ))}
     </LectureSurveyChoiceLayout>
   );

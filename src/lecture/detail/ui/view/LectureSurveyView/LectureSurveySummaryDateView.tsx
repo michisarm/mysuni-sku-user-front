@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { Image } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveyDateViewProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -38,7 +38,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
   const lastIndex = Object.keys(sentencesMap).length || 0;
 
   return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-radio-survey-new">
         <div className="course-survey-list">
           <div className="ui h40 calendar" id="rangestart">
@@ -88,7 +88,7 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
           </div>
         </div>
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 

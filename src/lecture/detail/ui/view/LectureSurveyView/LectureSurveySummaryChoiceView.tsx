@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Checkbox, Progress, Image } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
+import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveyItemProps {
   lectureSurveyItem: LectureSurveyItem;
@@ -22,8 +22,18 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
       return totalCount + (count || 0);
     }, 0) || 0;
 
-    return (
-    <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+  /*eslint-disable*/
+  // 각 선택지 최댓값 구해서 파란색으로 표시
+  const maxNum: number = Math.max.apply(
+    Math,
+    lectureSurveyItem.choices!.map(o => {
+      return o.count === undefined ? 0 : o.count;
+    })
+  );
+  /*eslint-enable */
+  
+  return (
+    <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
@@ -36,12 +46,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-            
+
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {isChecked === true ? (
+                    {isChecked ? (
                       <Image
                         src={`${process.env.PUBLIC_URL}/images/all/survay-radio-btn.png`}
                       />
@@ -55,14 +65,13 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     <Progress
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color={`${isChecked && isChecked === true}` ? "blue" : "grey"}
-                      // color="red"
+                      color={maxNum === choice.count! ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count}
                       </span>
-                      ({choiceAvg || 0}%)
+                      {` (${choiceAvg || 0}%)`}
                     </span>
                     <li className="course-survey-list-text active">
                       {choice.title}
@@ -81,43 +90,29 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
               respondCount !== undefined &&
               ((choice.count / totalCount) * 100).toFixed(1);
 
-            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+            const isChecked: any = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
 
             return (
               <Fragment key={choice.no}>
-                {/* <Checkbox
-                  className="base"
-                  label={choice.title}
-                  value={choice.no}
-                  checked={
-                    lectureSurveyAnswerItem !== undefined &&
-                    lectureSurveyAnswerItem.itemNumbers !== undefined &&
-                    lectureSurveyAnswerItem.itemNumbers.includes(`${choice.no}`)
-                  }
-                  readOnly={true}
-                />
-                {choice.image && <img src={choice.image} />}
-                <br />
-                {choice.count || '0'} {`내가 체크한 값 : ${isChecked}`}
-                <br />
-                {choiceAvg || 0} */}
-
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
-                    {
-                      lectureSurveyAnswerItem?.itemNumbers ? 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/survay-check-btn.png`} />
-                      : 
-                      <Image src={`${process.env.PUBLIC_URL}/images/all/empty-check-nomal.png`} />
-                    }
+                    {isChecked ? (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/survay-check-btn.png`}
+                      />
+                    ) : (
+                      <Image
+                        src={`${process.env.PUBLIC_URL}/images/all/empty-check-nomal.png`}
+                      />
+                    )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
                     <Progress
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
-                      color={`${isChecked && isChecked === true}` ? "blue" : "grey"}
+                      color={maxNum === choice.count! ? 'blue' : 'grey'}
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
@@ -130,14 +125,19 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     </li>
                   </div>
                   <div className="course-survey-list-img-selector">
-                    {choice.image && <Image style={{display: 'inline-block'}} src={choice.image} />}
+                    {choice.image && (
+                      <Image
+                        style={{ display: 'inline-block' }}
+                        src={choice.image}
+                      />
+                    )}
                   </div>
                 </li>
               </Fragment>
             );
           })}
       </div>
-    </LectureSurveyChoiceLayout>
+    </LectureSurveySummaryChoiceLayout>
   );
 };
 
