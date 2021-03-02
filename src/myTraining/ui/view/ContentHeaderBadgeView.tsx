@@ -25,7 +25,6 @@ class ContentHeaderBadgeView extends PureComponent<Props> {
                 <span className="text1">Badge</span>
               </div>
               <div>
-                {/* <Icon className="badge35" /> */}
                 <span className="text3">{badgeCount || 0}</span>
                 <span className="text5">개</span>
               </div>

@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { findTotalMyLearningSummary, getBadgeLearningCompanyAvg, getCountOfBadges } from '../api/personalBoardApi';
 import {  setBadgeLearningTimeItem, getBadgeLearningTimeItem, } from '../store/PersonalBoardStore';
-import { BadgeService } from 'lecture/stores';
 
 export async function requestBadgeLearningTime(companyCode: string) {
 
@@ -10,11 +9,12 @@ export async function requestBadgeLearningTime(companyCode: string) {
   const badgeLearningCompanyAvg = await getBadgeLearningCompanyAvg(companyCode)
 
   let mylearningTime = 0
+
   if(badgeLearningTime !== undefined) {
     mylearningTime =badgeLearningTime.mylearningTimeHour * 60 + badgeLearningTime.mylearningTimeMinute
   }
   
-  findTotalMyLearningSummary().then((test) => {
+  findTotalMyLearningSummary().then(() => {
     setBadgeLearningTimeItem({
       badgeMyCount: countInfo!.issuedCount,
       AllBadgeMyCount: countInfo!.totalCount,
