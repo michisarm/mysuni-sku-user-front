@@ -104,7 +104,6 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 />
               </div>
               <div className="file">
-                <br />
                 {(filesMap &&
                   filesMap.get('reference') &&
                   filesMap
@@ -112,6 +111,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                     .map((foundedFile: DepotFileViewModel, index: number) => (
                       <div>
                         <span>첨부파일 : </span>
+                        <br />
                         <a href="#" className="link" key={index}>
                           <span
                             className="ellipsis"
