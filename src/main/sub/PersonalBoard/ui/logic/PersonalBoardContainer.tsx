@@ -2,11 +2,9 @@ import { mobxHelper } from '@nara.platform/accent';
 import BadgeService from 'certification/present/logic/BadgeService';
 import { inject, observer } from 'mobx-react';
 import { MyLearningSummaryService } from 'myTraining/stores';
-import { SkProfileModel } from 'profile/model';
 import { SkProfileService } from 'profile/stores';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { getBadgeLearningCompanyAvg } from '../../api/personalBoardApi';
 import { requestBadgeLearningTime } from '../../service/getBadgeLearningTime';
 import { requestPopularCourse } from '../../service/getPopularCourse';
 import { requestLearningTimeDetail } from '../../service/useLearningTimeDetail';
@@ -38,24 +36,12 @@ function PersonalBoardContainer(props: Props){
     requestPopularCourse(companyCode, date)
   }, [])
 
-
-  const collegeInfo = {
-    '1': 1,
-    '2': 2,
-    '3': 3
-  }
-
-  // const courseData = {
-  //   channalRank: [],
-  // }
-
 return (
   <>
     <BadgeLearningTimeView/><br/>
     <LearningTimeDetailView/><br/>
     <CollegeTopChartView
       myLearningSummary={myLearningSummary}
-      collegeInfo={collegeInfo}
     /><br/>
     <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate}/>
   </>

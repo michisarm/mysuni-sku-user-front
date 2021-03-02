@@ -11,6 +11,7 @@ const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
     if(badgeLearningTimeItem === undefined) {
       return
     } 
+    console.log('badgeLearningTimeItem', badgeLearningTimeItem)
     if(badgeLearningTimeItem!.mylearningTimeHour !== 0) {
       setAllLearningTime(badgeLearningTimeItem!.mylearningTimeHour + 'h ' +  badgeLearningTimeItem!.mylearningTimeMinute + 'm')
     } else {

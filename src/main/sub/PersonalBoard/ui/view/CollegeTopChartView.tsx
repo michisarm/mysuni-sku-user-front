@@ -5,12 +5,10 @@ import BadgeLearningTime from '../../viewModel/BadgeLearningTime';
 import LearningTimeDetail from '../../viewModel/LearningTimeDetail';
 
 interface Props {
-  collegeInfo: any
   myLearningSummary: MyLearningSummaryModel
 }
 
 const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
-  collegeInfo,
   myLearningSummary
 }) {
   return (
