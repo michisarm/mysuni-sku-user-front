@@ -243,68 +243,64 @@ const RQDLearning: React.FC<Props> = Props => {
   }; */
 
   return (
-    <>
-      {rqdLectures.length > 0 && rqdLectures[0] ? (
-        <ContentWrapper>
-          <div className="section-head">
-            <strong>{title}</strong>
-            <div className="right">
-              {rqdLectures.length > 0 && (
-                <Button icon className="right btn-blue" onClick={onViewAll}>
-                  View all <Icon className="morelink" />
-                </Button>
-              )}
-            </div>
-          </div>
-
-          {rqdLectures.length > 0 && rqdLectures[0] ? (
-            <Lecture.Group type={Lecture.GroupType.Line}>
-              {rqdLectures.map(
-                (
-                  learning: LectureModel | MyTrainingModel | InMyLectureModel,
-                  index: number
-                ) => {
-                  //
-                  const inMyLecture = getInMyLecture(learning.serviceId);
-
-                  return (
-                    <Lecture
-                      key={`learning-${index}`}
-                      model={learning}
-                      rating={getRating(learning)}
-                      thumbnailImage={learning.baseUrl || undefined}
-                      action={
-                        inMyLecture
-                          ? Lecture.ActionType.Remove
-                          : Lecture.ActionType.Add
-                      }
-                      onAction={() => {
-                        reactAlert({
-                          title: '알림',
-                          message: inMyLecture
-                            ? '본 과정이 관심목록에서 제외되었습니다.'
-                            : '본 과정이 관심목록에 추가되었습니다.',
-                        });
-                        onActionLecture(inMyLecture || learning);
-                      }}
-                      onViewDetail={onViewDetail}
-                    />
-                  );
-                }
-              )}
-            </Lecture.Group>
-          ) : (
-            <NoSuchContentPanel
-              message="모든 권장 과정의 학습을 시작하셨습니다."
-              link={{
-                text: '전체 권장과정 List를 확인하시겠습니까?',
-                path: myTrainingRoutes.learningRequired(),
-              }}
-            />
+    <ContentWrapper>
+      <div className="section-head">
+        <strong>{title}</strong>
+        <div className="right">
+          {rqdLectures.length > 0 && (
+            <Button icon className="right btn-blue" onClick={onViewAll}>
+              View all <Icon className="morelink" />
+            </Button>
           )}
-        </ContentWrapper>
-      ) : '' }
-    </>
+        </div>
+      </div>
+
+      {rqdLectures.length > 0 && rqdLectures[0] ? (
+        <Lecture.Group type={Lecture.GroupType.Line}>
+          {rqdLectures.map(
+            (
+              learning: LectureModel | MyTrainingModel | InMyLectureModel,
+              index: number
+            ) => {
+              //
+              const inMyLecture = getInMyLecture(learning.serviceId);
+
+              return (
+                <Lecture
+                  key={`learning-${index}`}
+                  model={learning}
+                  rating={getRating(learning)}
+                  thumbnailImage={learning.baseUrl || undefined}
+                  action={
+                    inMyLecture
+                      ? Lecture.ActionType.Remove
+                      : Lecture.ActionType.Add
+                  }
+                  onAction={() => {
+                    reactAlert({
+                      title: '알림',
+                      message: inMyLecture
+                        ? '본 과정이 관심목록에서 제외되었습니다.'
+                        : '본 과정이 관심목록에 추가되었습니다.',
+                    });
+                    onActionLecture(inMyLecture || learning);
+                  }}
+                  onViewDetail={onViewDetail}
+                />
+              );
+            }
+          )}
+        </Lecture.Group>
+      ) : (
+        <NoSuchContentPanel
+          message="모든 권장 과정의 학습을 시작하셨습니다."
+          link={{
+            text: '전체 권장과정 List를 확인하시겠습니까?',
+            path: myTrainingRoutes.learningRequired(),
+          }}
+        />
+      )}
+    </ContentWrapper>
   );
 };
 
