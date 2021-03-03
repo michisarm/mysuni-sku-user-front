@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -36,15 +36,34 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
   let noCount = 0;
   let yesAvg = '';
   let noAvg = '';
-
+  
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   if (numberCountMap !== undefined && respondCount !== undefined) {
     yesCount = numberCountMap[1];
     noCount = numberCountMap[0];
 
-    yesAvg = ((yesCount / respondCount ? respondCount : 0) * 100).toFixed(1);
-    noAvg = ((noCount / respondCount ? respondCount : 0) * 100).toFixed(1);
+    yesAvg = ((yesCount / respondCount) * 100).toFixed(1);
+    noAvg = ((noCount / respondCount) * 100).toFixed(1);
   }
+
+  const persent = yesAvg !== 'NaN' ? yesAvg : 0 || noAvg !== 'NaN' ? noAvg : 0;
+
+  useEffect(() => {
+    if(yesAvg === 'NaN') yesAvg = "0";
+    if(noAvg === 'NaN') noAvg = "0";
+
+    const el = document.getElementById('yesOrNo');
+    const selectedBarEl = Array.from(document.getElementsByClassName('bar') as HTMLCollectionOf<HTMLElement>);
+
+    if(Number(yesAvg) > Number(noAvg)) {
+      selectedBarEl.forEach((element) => {
+        element.style.backgroundColor = "steelblue";
+      });
+    }
+    else if(Number(yesAvg) < Number(noAvg)) {
+      el!.style.backgroundColor = "steelblue";
+    }
+  },[yesAvg, noAvg]);
 
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
@@ -85,7 +104,7 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             {/* progress bar */}
             <div className="course-survey-list-backgrondBar yesOrNoBar">
               <span className="course-survey-list-persent-left"><span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)</span>
-              <Progress percent={yesAvg > noAvg ? yesAvg : noAvg} style={{opacity: 0.5, marginTop: 0}} color= "blue" />
+              <Progress id="yesOrNo" percent={persent} style={{opacity: 0.5, marginTop: 0}} color={Number(yesAvg) === 100 || Number(noAvg) === 100 ? "blue" : undefined} />
               <span className="course-survey-list-persent-right"><span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)</span>
             </div>
             
@@ -96,5 +115,5 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
     </LectureSurveySummaryChoiceLayout>
   );
 };
-
 export default LectureSurveySummaryBooleanView;
+

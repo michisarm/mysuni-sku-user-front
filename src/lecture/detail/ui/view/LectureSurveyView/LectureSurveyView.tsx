@@ -71,8 +71,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   const surveyCubeTitle = lectureStructure?.cube?.name;
   const surveyTitle =
     surveyCommunityTitle === undefined
-      ? `${surveyCourseTitle || surveyCubeTitle}과정의 Survey`
-      : `${surveyCommunityTitle}의 Survey`;
+      ? `${surveyCourseTitle || surveyCubeTitle}과정 Survey`
+      : `${surveyCommunityTitle}`;
 
   return (
     <>

@@ -157,9 +157,6 @@ async function coreSubmitLectureSurveyState() {
 
   const a = requiredMissAnswers.map(r => r.rows);
 
-  console.log(answerSheetCdo.evaluationSheet.answers.length);
-  console.log(a);
-
   // if (
   //   answerSheetCdo.evaluationSheet.answers.length !== 0 &&
   //   a.length !== answerSheetCdo.evaluationSheet.answers
