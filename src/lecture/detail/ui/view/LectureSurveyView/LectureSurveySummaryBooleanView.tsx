@@ -53,7 +53,6 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
     const selectedBarEl = Array.from(document.getElementsByClassName('bar') as HTMLCollectionOf<HTMLElement>);
 
     if(Number(yesAvg) > Number(noAvg)) {
-      console.log('yes > no', Number(yesAvg) < Number(noAvg))
       selectedBarEl.forEach((element) => {
         element.style.backgroundColor = "grey";
       });
