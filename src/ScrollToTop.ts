@@ -8,8 +8,6 @@ export default function ScrollToTop() {
   const currentPathName = pathname.split('/')[1];
   const machesPathName = menus.includes(currentPathName);
 
-
-
   useEffect(() => {
     if (!machesPathName) {
       window.scrollTo(0, 0);
