@@ -337,7 +337,7 @@ const panes = [
                             </a>
                           </td>
                           <td>
-                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-16o/Course/C-LECTURE-119">
+                            <a href="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-1i0/Course/C-LECTURE-1b3">
                               디자인씽킹 <br />
                               Workshop
                             </a>
@@ -601,13 +601,13 @@ const panes = [
                     <div className="inno-li">
                       <table>
                         <tbody>
-                          <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                          <td>
+                            <a href="https://mysuni.sk.com/suni-main/community/COMMUNITY-1n">
                               애자일 코치 <br />
                               Meetup
                             </a>
                           </td>
-                          <td className="dashed">
+                          <td className="dashed-or">
                             <a href="" onClick={emptyAlert}>
                               애자일 코치 <br />
                               양성 과정
@@ -714,7 +714,7 @@ const panes = [
                         <tbody>
                           <td></td>
                           <td></td>
-                          <td className="dashed">
+                          <td className="dashed-or">
                             <a href="" onClick={emptyAlert}>
                               오픈 이노베이션 <br />
                               Workshop
