@@ -11,6 +11,7 @@ import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCom
 import CommunityType from '../../../model/CommunityType';
 import {
   requestAppendProfileCommunities,
+  requestProfileCommunities,
   delMember,
 } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
 import { SkProfileService } from 'profile/stores';
@@ -47,7 +48,13 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
       title: '확인',
       message: `${name} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
       onOk: async () => {
-        delMember(communityId);
+        const result = await delMember(
+          communityId,
+          SkProfileService.instance.skProfile.id
+        );
+        if (result === 'success') {
+          requestProfileCommunities();
+        }
       },
     });
   };

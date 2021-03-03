@@ -1,14 +1,16 @@
 import React, { Fragment } from 'react';
-import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
+import { Button, Icon, Radio, Segment, Modal } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
   useOpenCommunityIntro,
 } from '../../../store/CommunityMainStore';
+import { reactConfirm, reactAlert } from '@nara.platform/accent';
 import CommunityType from '../../../model/CommunityType';
 import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
 import { Link } from 'react-router-dom';
+import OpenCommunityPassInputModal from './OpenCommunityPassInputModal';
 import {
   requestAppendOpenCommunityList,
   requestOpenCommunityList,
@@ -28,47 +30,77 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   thumbnailId,
   type,
 }) {
-  const passChek = (id: string, page: string) => {
-    alert('test' + id);
+  // const passChek = (id: string, page: string) => {
+  //   alert('test' + id);
+  // };
+  const [openModal, setModalWin] = React.useState<{
+    passInputModalWin: boolean;
+  }>({
+    passInputModalWin: false,
+  });
+  const handleClose = () => {
+    setModalWin({
+      passInputModalWin: false,
+    });
   };
-
+  function handleAlertPassInputWin() {
+    setModalWin({
+      passInputModalWin: true,
+    });
+  }
+  const handleOk = () => {
+    reactAlert({
+      title: '확인',
+      message:
+        '선택한 학습자를 가입 반려 처리하시겠습니까?  입력된 반려 사유는 E-mail과 알림을 통해 전달되며, 등록된 내용은 수정하실 수 없습니다.',
+    });
+  };
   return type === 'CHORT' ? (
-    <div
-      className="community-open-card lock"
-      onClick={() => passChek(communityId, 'learning')}
-    >
-      <div className="open-card-top">
-        <span className="label">{fieldName}</span>
-        {approvedState === 'Wait' && <span className="wait">가입대기</span>}
-      </div>
-      <div className="open-card-content">
-        <p>{name}1</p>
-        <div className="thumbnail">
-          <img
-            src={thumbnailId}
-            style={{ height: 72, width: 72, borderRadius: 8 }}
-          />
+    <>
+      <OpenCommunityPassInputModal
+        managerName={managerName}
+        open={openModal.passInputModalWin}
+        handleClose={handleClose}
+        handleOk={handleOk}
+      />
+      <div
+        className="community-open-card lock"
+        onClick={handleAlertPassInputWin}
+        // onClick={() => passChek(communityId, 'learning')}
+      >
+        <div className="open-card-top">
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
         </div>
-        <div className="community-main-left-list">
-          <div
-            className="community-main-left-h3"
-            dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
-          />
-        </div>
-      </div>
-      <div className="open-card-bottom">
-        <div className="title-area">
-          <div className="text-list">
-            <img src={managerIcon} />
-            <span>{managerName}</span>
+        <div className="open-card-content">
+          <p>{name}1</p>
+          <div className="thumbnail">
+            <img
+              src={thumbnailId}
+              style={{ height: 72, width: 72, borderRadius: 8 }}
+            />
+          </div>
+          <div className="community-main-left-list">
+            <div
+              className="community-main-left-h3"
+              dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
+            />
           </div>
         </div>
-        <div className="right-area">
-          <span>멤버</span>
-          <span>{memberCount}</span>
+        <div className="open-card-bottom">
+          <div className="title-area">
+            <div className="text-list">
+              <img src={managerIcon} />
+              <span>{managerName}</span>
+            </div>
+          </div>
+          <div className="right-area">
+            <span>멤버</span>
+            <span>{memberCount}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   ) : (
     <Link to={`/community/${communityId}`} className="community-open-card">
       <div className="open-card-top">

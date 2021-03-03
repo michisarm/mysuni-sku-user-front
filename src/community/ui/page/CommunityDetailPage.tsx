@@ -27,6 +27,8 @@ import { requestCommunity } from 'community/service/useCommunityHome/requestComm
 import { Console } from 'console';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
+import { SkProfileService } from 'profile/stores';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -261,8 +263,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
         ) {
           return;
         }
-        await joinCommunity(communtyHome.community.communityId);
-        requestCommunity(communtyHome.community.communityId);
+        await deleteMember(communityId, SkProfileService.instance.skProfile.id);
+        history.goBack();
       },
     });
     // reactConfirm({

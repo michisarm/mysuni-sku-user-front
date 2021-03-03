@@ -79,9 +79,9 @@ export async function requestAppendProfileCommunities() {
   });
 }
 
-export function delMember(communityId: string) {
-  deleteMember(communityId).then(response => {
-    getCommunityProfileMyCommunity();
-    //  searchQuery();
-  });
+export function delMember(
+  communityId: string,
+  memberId: string
+): Promise<string> {
+  return deleteMember(communityId, memberId);
 }

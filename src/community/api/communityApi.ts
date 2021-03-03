@@ -511,10 +511,29 @@ export function setCommunityMenuOrder(communityId: string): Promise<any> {
   });
 }
 
-export function deleteMember(communityId: string): Promise<any> {
+export function deleteMember(
+  communityId: string,
+  memberId: string
+): Promise<string> {
   return axiosApi
-    .delete(`${BASE_URL}/communities/${communityId}/members`)
-    .then(response => {
-      return response;
-    });
+    .put(
+      `${BASE_URL}/communities/${communityId}/members/flow/return/${memberId}`,
+      {
+        approvedType: 'Delete',
+      }
+    )
+    .then(response => response && 'success');
+}
+export function rejectMember(
+  communityId: string,
+  memberId: string
+): Promise<string> {
+  return axiosApi
+    .put(
+      `${BASE_URL}/communities/${communityId}/members/flow/return/${memberId}`,
+      {
+        approvedType: 'Return',
+      }
+    )
+    .then(response => response && 'success');
 }
