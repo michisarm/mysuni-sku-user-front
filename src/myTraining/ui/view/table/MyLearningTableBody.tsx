@@ -102,7 +102,10 @@ function MyLearningTableBody(props: Props) {
   };
 
   /* handlers */
-  const onClickLearn = (model: MyTableView) => {
+  const onClickLearn = (model: MyTableView, e: any) => {
+    // Pathname history가 2번 쌓이는 현상 발생하여 조치
+    e.preventDefault();
+
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
     const {
       category: { college },
@@ -182,7 +185,7 @@ function MyLearningTableBody(props: Props) {
           {model.displayCollegeName} {/* College */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#" onClick={() => onClickLearn(model)}>
+          <a href="#" onClick={(e) => onClickLearn(model, e)}>
             <span className="ellipsis">
               {model.name} {/* 과정명 */}
             </span>
@@ -432,7 +435,7 @@ function MyLearningTableBody(props: Props) {
                 <a
                   className="btn-blue"
                   href="#"
-                  onClick={() => onClickLearn(model)}
+                  onClick={(e) => onClickLearn(model, e)}
                 >
                   학습하기
                 </a>
