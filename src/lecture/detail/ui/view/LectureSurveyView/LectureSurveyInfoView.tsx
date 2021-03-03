@@ -39,7 +39,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
       ? `${surveyCourseTitle || surveyCubeTitle}`
       : `${surveyCommunityTitle}`;
 
-  const surveyInfoText = surveyCommunityTitle === undefined ? `과정의 ` : `의 `;
+  const surveyInfoText = surveyCommunityTitle === undefined ? `과정 ` : `의 `;
 
   return (
     <>
