@@ -37,9 +37,6 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
   let yesAvg = '';
   let noAvg = '';
   
-  const testRef = useRef<HTMLDivElement>(null);
-  // console.log('ref', testRef.current?.childNodes[1].firstChild)
-
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   if (numberCountMap !== undefined && respondCount !== undefined) {
     yesCount = numberCountMap[1];
@@ -52,27 +49,21 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
   const persent = yesAvg !== 'NaN' ? yesAvg : 0 || noAvg !== 'NaN' ? noAvg : 0;
 
   useEffect(() => {
-    if(yesAvg === undefined || noAvg === undefined) return;
+    if(yesAvg === 'NaN') yesAvg = "0";
+    if(noAvg === 'NaN') noAvg = "0";
 
     const el = document.getElementById('yesOrNo');
-
     const selectedBarEl = Array.from(document.getElementsByClassName('bar') as HTMLCollectionOf<HTMLElement>);
-    console.log('child', selectedBarEl)
 
     if(Number(yesAvg) > Number(noAvg)) {
-    
       selectedBarEl.forEach((element) => {
-        element.style.width = `${yesAvg}%`;
         element.style.backgroundColor = "steelblue";
       });
     }
     else if(Number(yesAvg) < Number(noAvg)) {
-      selectedBarEl.forEach((element) => {
-        element.style.width = `${yesAvg}%`;
-      });
       el!.style.backgroundColor = "steelblue";
     }
-  },[yesAvg]);
+  },[yesAvg, noAvg]);
 
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
