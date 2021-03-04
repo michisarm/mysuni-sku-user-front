@@ -231,6 +231,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
 
       {lectureSurveyState !== undefined &&
         lectureSurveyState.state === 'Completed' &&
+        commentId !== null &&
+        commentId !== undefined &&
         commentId !== '' && (
           <div className="outline">
             <CommunityCommentList
