@@ -25,28 +25,28 @@ return (
   <>
     <div className="recommend-info">
       <div className="personal-channel-list">
-        <span>최근 학습중인 채널</span>
-        <Button className="toggle toggle4" aria-pressed="false">
+        <h3>최근 학습중인 채널</h3>
+        <span className="toggle toggle4" aria-pressed="false">
           AI Manufacturing Press
-        </Button>
-        <Button className="toggle toggle4" aria-pressed="false">
+        </span>
+        <span className="toggle toggle4" aria-pressed="false">
           Culture &#38; Valueㄹㄹㄹㄹㄹㄹ
-        </Button>
-        <Button className="toggle toggle4" aria-pressed="false">
+        </span>
+        <span className="toggle toggle4" aria-pressed="false">
           CLX University
-        </Button>
+        </span>
       </div>
       <div className="personal-channel-list">
-        <span>우리 회사 인기 채널</span>
-        <Button className="toggle toggle4" aria-pressed="false">
+        <h3>우리 회사 인기 채널</h3>
+        <span className="toggle toggle4" aria-pressed="false">
           GC Green Channel
-        </Button>
-        <Button className="toggle toggle4" aria-pressed="false">
+        </span>
+        <span className="toggle toggle4" aria-pressed="false">
           SK C&#38;C 공통
-        </Button>
-        <Button className="toggle toggle4" aria-pressed="false">
+        </span>
+        <span className="toggle toggle4" aria-pressed="false">
           AI Manufacturing Press AI Manufacturing Press
-        </Button>
+        </span>
       </div>
     </div>
     {/* <BadgeLearningTimeView/><br/>

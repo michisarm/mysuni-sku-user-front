@@ -18,6 +18,7 @@ const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjec
   setOpen
 }){
   useEffect(() => {
+    console.log('((((((((((((((((((((((')
     requestLearningObjectives()
   }, [])
 

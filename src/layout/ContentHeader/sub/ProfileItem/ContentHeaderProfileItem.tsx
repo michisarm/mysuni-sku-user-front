@@ -62,7 +62,7 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
         {/* </div> */}
         <div className="text-info">
           <div className="name">
-            {name}님,11
+            {name}님,
           </div>
           <div className="part">
           <DashBoardSentenceContainer/>
