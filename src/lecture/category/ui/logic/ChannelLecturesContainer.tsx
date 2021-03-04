@@ -24,7 +24,7 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 
-interface Props extends RouteComponentProps<{ collegeId: string,channelId: string }> {
+interface Props extends RouteComponentProps<{ collegeId: string, channelId: string }> {
   actionLogService?: ActionLogService,
   pageService?: PageService,
   collegeService?: CollegeService,
@@ -40,7 +40,7 @@ interface Props extends RouteComponentProps<{ collegeId: string,channelId: strin
 
 interface State {
   sorting: string;
-  collegeOrder:boolean;
+  collegeOrder: boolean;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -147,7 +147,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
     inMyLectureService!.findAllInMyLectures();
 
-    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+    // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+    const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(match.params.collegeId, match.params.channelId, page!.limit, page!.nextOffset, sorting);
 
     if (!lectureOffsetList.empty) {
       setLoading && setLoading(true);
@@ -166,13 +167,13 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const collegeSortOrderCount = await coursePlanService!.findCollegeSortOrder(
       match.params.collegeId
     );
-    
-    if(collegeSortOrderCount > 0 ){
-      this.setState({collegeOrder:true, sorting:OrderByType.collegeOrder})
-    }else{
-      this.setState({collegeOrder:false, sorting:OrderByType.Time})
+
+    if (collegeSortOrderCount > 0) {
+      this.setState({ collegeOrder: true, sorting: OrderByType.collegeOrder })
+    } else {
+      this.setState({ collegeOrder: false, sorting: OrderByType.Time })
     }
-  }  
+  }
 
   isContentMore() {
     //
@@ -275,7 +276,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        { lectures.length < 1 ?
+        {lectures.length < 1 ?
           <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
           :
           <>
