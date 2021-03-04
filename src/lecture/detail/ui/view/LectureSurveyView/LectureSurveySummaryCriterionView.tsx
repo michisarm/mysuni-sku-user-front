@@ -43,8 +43,10 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
 
+            // const isChecked =
+            //   lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
             const isChecked =
-              lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
+              lectureSurveyAnswerItem?.criteriaItem?.index === choice.no - 1;
 
             return (
               <Fragment key={choice.no}>
