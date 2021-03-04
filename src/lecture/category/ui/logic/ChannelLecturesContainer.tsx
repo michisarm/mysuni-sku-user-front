@@ -100,7 +100,8 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
     inMyLectureService!.findAllInMyLectures();
 
-    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+    // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+    const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(match.params.collegeId, match.params.channelId, page!.limit, page!.nextOffset, sorting);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 

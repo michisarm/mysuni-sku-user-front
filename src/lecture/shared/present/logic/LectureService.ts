@@ -189,6 +189,36 @@ class LectureService {
   }
 
   @action
+  async findPagingChannelOrderLectures(
+    collegeId: string,
+    channelId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
+    //
+    const response = await this.lectureApi.findAllLectures(
+      LectureRdoModel.newWithChannelOrder(collegeId,channelId, limit, offset, orderBy)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
+
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
+    return lectureOffsetElementList;
+  }
+
+
+  @action
   async findPagingCommunityLectures(limit: number, offset: number) {
     //
     const response = await this.lectureApi.findAllCommunityLectures(
