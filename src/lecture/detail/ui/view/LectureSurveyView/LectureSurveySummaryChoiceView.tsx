@@ -31,7 +31,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     })
   );
   /*eslint-enable */
-  
+
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -41,7 +41,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const choiceAvg =
               choice.count !== undefined &&
               respondCount !== undefined &&
-              ((choice.count / respondCount) * 100).toFixed(1);
+              ((choice.count / totalCount) * 100).toFixed(1);
 
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
