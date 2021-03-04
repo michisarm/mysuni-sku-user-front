@@ -43,8 +43,10 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
 
+            // const isChecked =
+            //   lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
             const isChecked =
-              lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
+              lectureSurveyAnswerItem?.criteriaItem?.index === choice.no - 1;
 
             return (
               <Fragment key={choice.no}>
@@ -68,7 +70,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count}
+                        {choice.count || 0}
                       </span>
                       {` (${criterionAvg || 0}%)`}
                     </span>
@@ -113,7 +115,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count}
+                        {choice.count || 0}
                       </span>
                       {criterionAvg || 0}
                     </span>
