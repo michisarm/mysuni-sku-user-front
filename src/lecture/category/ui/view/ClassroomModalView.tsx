@@ -111,8 +111,7 @@ class ClassroomModalView extends Component<Props, States> {
 
                     return (
                       <>
-                        { !(new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
-                            || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()) && (
+                        { new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >= today.getTime() && (
                           <Table.Row key={`overview-table-row-${index}`}>
                             <Table.Cell>
                             <Table.Cell verticalAlign="middle"></Table.Cell>
