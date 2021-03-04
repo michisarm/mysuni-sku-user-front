@@ -40,6 +40,8 @@ import {
 } from '../../useActionLog/cubeStudyEvent';
 import { useHistory } from 'react-router-dom';
 
+import { getCurrentHistory } from 'shared/store/HistoryStore';
+
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
 const CANCEL = '취소하기';
@@ -607,13 +609,17 @@ async function complete(
   await requestLectureStructure(params.lectureParams, params.pathname);
   const course = getActiveCourseStructureItem();
   const program = getActiveProgramStructureItem();
-  if (
-    (course?.state === 'Completed' && course.survey !== undefined) ||
-    (program?.state === 'Completed' && program.survey !== undefined)
-  ) {
+  if (course?.state === 'Completed' && course.survey !== undefined) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
+      onClose: () => goToPath(course?.survey?.path),
+    });
+  } else if (program?.state === 'Completed' && program.survey !== undefined) {
+    reactAlert({
+      title: '안내',
+      message: 'Survey 설문 참여를 해주세요.',
+      onClose: () => goToPath(program?.survey?.path),
     });
     // reactConfirm({
     //   title: '알림',
@@ -644,6 +650,16 @@ async function complete(
     [],
     true
   );
+}
+
+function goToPath(path?: string) {
+  if (path !== undefined) {
+    const currentHistory = getCurrentHistory();
+    if (currentHistory === undefined) {
+      return;
+    }
+    currentHistory.push(path);
+  }
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
