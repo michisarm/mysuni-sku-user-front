@@ -35,7 +35,6 @@ class MyLearningSummaryApi {
     //
     return axiosApi.get<MyLearningSummaryModel>(this.baseUrl + `/${year}`)
       .then(response => {
-        console.log('response', response)
         return response && response.data
       });
   }

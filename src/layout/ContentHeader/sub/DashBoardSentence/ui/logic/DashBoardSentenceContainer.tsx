@@ -20,12 +20,10 @@ function DashBoardSentenceContainer(){
       setDashBoardTxt('기본값입니다.')
       return
     }
-    console.log('useEffect')
     const dashBoardTxt = dashBoardSentence.dashboardSentence[Number(localStorage.getItem('dashBoardSentenceIndex'))]
     if(dashBoardTxt === undefined) {
       localStorage.setItem('dashBoardSentenceIndex', '0')
     } else {
-      console.log('dashBoardTxt',dashBoardTxt)
       setDashBoardTxt(dashBoardTxt)
     }
   }, [dashBoardSentence])
