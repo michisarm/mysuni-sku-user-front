@@ -329,9 +329,9 @@ class MyTrainingService {
 
     runInAction(
       () =>
-        (this._myTrainings = this._myTrainings.concat(
-          trainingOffsetElementList.results
-        ))
+      (this._myTrainings = this._myTrainings.concat(
+        trainingOffsetElementList.results
+      ))
     );
 
     return trainingOffsetElementList;
@@ -351,9 +351,9 @@ class MyTrainingService {
 
     runInAction(
       () =>
-        (this._myTrainings = this._myTrainings.concat(
-          trainingOffsetElementList.results
-        ))
+      (this._myTrainings = this._myTrainings.concat(
+        trainingOffsetElementList.results
+      ))
     );
     return trainingOffsetElementList;
   }
@@ -612,6 +612,7 @@ class MyTrainingService {
       offsetTableViews.results &&
       offsetTableViews.results.length) {
       const addedTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+      console.log(addedTableViews)
       runInAction(() => this._myTrainingTableViews = [...this._myTrainingTableViews, ...addedTableViews]);
     }
   }
@@ -623,10 +624,7 @@ class MyTrainingService {
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
       /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-      if (addedTableViews && addedTableViews.length) {
-        this._myTrainingTableViews = [...this.myTrainingTableViews, ...addedTableViews];
-        return;
-      }
+      return this._myTrainingTableViews = [...addedTableViews];
     }
 
     this._myTrainingFilterRdo.changeOffset(offset);
@@ -647,28 +645,24 @@ class MyTrainingService {
   /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
   private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
     const { contentType, viewType } = this._myTrainingFilterRdo;
-
-    const startIndex = offset.offset;
     const endIndex = offset.offset + offset.limit;
 
     if (contentType === MyLearningContentType.InProgress) {
       if (viewType === 'Course') {
         const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
 
-        return courseTableViews.slice(startIndex, endIndex);
+        return courseTableViews.slice(0, endIndex)
       }
-
-      return this.inProgressTableViews.slice(startIndex, endIndex);
+      return this.inProgressTableViews.slice(0, endIndex);
     }
 
     if (contentType === MyLearningContentType.Completed) {
       if (viewType === 'Course') {
         const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
 
-        return courseTableViews.slice(startIndex, endIndex);
+        return courseTableViews.slice(0, endIndex)
       }
-
-      return this.completedTableViews.slice(startIndex, endIndex);
+      return this.completedTableViews.slice(0, endIndex);
     }
 
     return [];
@@ -676,6 +670,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithServiceType(serviceType: string) {
+    console.log(serviceType)
     this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
     this._myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
 

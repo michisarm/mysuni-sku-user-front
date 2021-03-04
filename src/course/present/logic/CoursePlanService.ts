@@ -253,6 +253,17 @@ class CoursePlanService {
     });
   }
 
+  
+  @action
+  async findCollegeSortOrder(collegeId: string) {
+    //
+    const courseData: number = await this.coursePlanApi.findCollegeSortOrder(collegeId);
+    return courseData;
+  }
+
+      // 작성중
+
+
   @action
   clearCoursePlan() {
     //
