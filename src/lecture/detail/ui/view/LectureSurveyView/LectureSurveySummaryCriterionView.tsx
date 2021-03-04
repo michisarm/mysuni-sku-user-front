@@ -68,7 +68,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count}
+                        {choice.count || 0}
                       </span>
                       {` (${criterionAvg || 0}%)`}
                     </span>
@@ -113,7 +113,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count}
+                        {choice.count || 0}
                       </span>
                       {criterionAvg || 0}
                     </span>

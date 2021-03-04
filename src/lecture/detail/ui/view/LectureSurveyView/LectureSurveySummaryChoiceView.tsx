@@ -69,7 +69,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count}
+                        {choice.count || 0}
                       </span>
                       {` (${choiceAvg || 0}%)`}
                     </span>
@@ -116,7 +116,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
-                        {choice.count}
+                        {choice.count || 0}
                       </span>
                       ({choiceAvg || 0}%)
                     </span>
