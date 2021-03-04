@@ -65,6 +65,6 @@ export function getRecentlyLearningChannel() {
 //목표설정
 export function findLearningObjectives() {
   console.log('findLearningObjectives')
-  return axiosApi.get<LearningObjectives>(flowURL)
+  return axiosApi.get<LearningObjectives>(`/api/profiles/profiles`)
     .then(response => response && response.data);
 }
