@@ -45,10 +45,6 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
 
     yesAvg = ((yesCount / booleanRespondCount) * 100).toFixed(1);
     noAvg = ((noCount / booleanRespondCount) * 100).toFixed(1);
-
-    console.log('yesCount', yesCount);
-    console.log('numberCountMap', booleanRespondCount);
-    console.log('noCount', noCount);
   }
 
   const persent = yesAvg !== 'NaN' ? yesAvg : 0 || noAvg !== 'NaN' ? noAvg : 0;
