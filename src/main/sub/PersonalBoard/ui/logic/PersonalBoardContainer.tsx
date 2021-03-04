@@ -38,17 +38,17 @@ function PersonalBoardContainer(props: Props){
 
 return (
   <>
-    <BadgeLearningTimeView/><br/>
-    <LearningTimeDetailView/><br/>
-    <CollegeTopChartView
-      myLearningSummary={myLearningSummary}
-    /><br/>
+    <div className="personal-contents">
+      <BadgeLearningTimeView/>
+      <LearningTimeDetailView/>
+      <CollegeTopChartView
+        myLearningSummary={myLearningSummary}
+      />
+    </div>
     <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate}/>
   </>
 )
 }
-
-// export default PersonalBoardContainer;
 
 export default inject(
   mobxHelper.injectFrom(

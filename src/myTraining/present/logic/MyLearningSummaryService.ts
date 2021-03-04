@@ -70,6 +70,7 @@ class MyLearningSummaryService {
   @action
   async findMyLearningSummaryByYear(year: number) {
     const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryByYear(year);
+    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6', learningSummary)
     runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary));
   }
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
