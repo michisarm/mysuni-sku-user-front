@@ -135,17 +135,19 @@ function parseCriterion(
     criterion?.criteriaItems?.map(({ value, names, index }) => {
       const mTitle =
         ((names.langStringMap as unknown) as Record<string, string>)[
-          names.defaultLanguage
+        names.defaultLanguage
         ] || '';
-      let mNo = value !== undefined ? value : 1;
+      let mNo = index !== undefined ? index : 0;
       if (isNaN(mNo)) {
-        mNo = 1;
+        mNo = 0;
       }
       let count: number | undefined;
+
       if (lectureSurveyAnswerSummary !== undefined) {
         const answerSummary = lectureSurveyAnswerSummary.find(
           c => c.questionNumber === questionNumber
         );
+        console.log('answerSummary : ', answerSummary);
         if (answerSummary !== undefined) {
           const criteriaItemCountMap =
             answerSummary.summaryItems.criteriaItemCountMap;
@@ -159,7 +161,7 @@ function parseCriterion(
       }
       return {
         title: mTitle,
-        no: mNo,
+        no: mNo + 1,
         index,
         names: (names as unknown) as LangStrings,
         count,
@@ -386,10 +388,10 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
+              names: (criteriaItem.names as unknown) as LangStrings,
+              value: criteriaItem.value,
+              index: criteriaItem.index,
+            },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -478,10 +480,10 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-                names: (criteriaItem.names as unknown) as LangStrings,
-                value: criteriaItem.value,
-                index: criteriaItem.index,
-              },
+              names: (criteriaItem.names as unknown) as LangStrings,
+              value: criteriaItem.value,
+              index: criteriaItem.index,
+            },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
