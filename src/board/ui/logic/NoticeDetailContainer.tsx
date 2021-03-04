@@ -94,8 +94,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
             time={post.time}
             onClickList={this.onClickList}
           />
-
-          {post.contents &&  (
+          {post.contents && (
             <div className="content-area">
               <div className="content-inner ql-snow">
                 <div
@@ -104,31 +103,33 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 />
               </div>
               <div className="file">
+                {filesMap && filesMap.get('reference') && (
+                  <span>첨부파일 : </span>
+                )}
+                <br />
                 {(filesMap &&
                   filesMap.get('reference') &&
                   filesMap
                     .get('reference')
                     .map((foundedFile: DepotFileViewModel, index: number) => (
-                      <div>
-                        <span>첨부파일 : </span>
+                      <>
+                        <div>
+                          <a href="#" className="link" key={index}>
+                            <span
+                              className="ellipsis"
+                              onClick={() =>
+                                depot.downloadDepotFile(foundedFile.id)
+                              }
+                            >
+                              {foundedFile.name}
+                            </span>
+                          </a>
+                        </div>
                         <br />
-                        <a href="#" className="link" key={index}>
-                          <span
-                            className="ellipsis"
-                            onClick={() =>
-                              depot.downloadDepotFile(foundedFile.id)
-                            }
-                          >
-                            {'    ' + foundedFile.name + '     '}
-                          </span>
-                          <br />
-                        </a>
-                        <br />
-                      </div>
+                      </>
                     ))) ||
-                  ''}
+                  null}
               </div>
-              <br />
             </div>
           )}
         </div>
