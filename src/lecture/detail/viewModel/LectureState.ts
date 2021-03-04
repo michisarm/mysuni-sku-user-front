@@ -4,7 +4,7 @@ import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 import ProposalState from '../model/ProposalState';
 
-export type State = 'None' | 'Progress' | 'Completed';
+export type State = 'None' | 'Start' | 'Progress' | 'Finish' | 'Completed';
 
 export default interface LectureState {
   state: State;
