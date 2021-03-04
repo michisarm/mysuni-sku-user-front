@@ -31,7 +31,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
     })
   );
   /*eslint-enable */
-
+  
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -90,11 +90,28 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
               respondCount !== undefined &&
               ((choice.count / respondCount) * 100).toFixed(1);
 
-            const isChecked =
-              lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
+            const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
+              `${choice.no}`
+            );
 
             return (
               <Fragment key={choice.no}>
+                {/* <Checkbox
+                  className="base"
+                  label={choice.title}
+                  value={choice.no}
+                  checked={
+                    lectureSurveyAnswerItem !== undefined &&
+                    lectureSurveyAnswerItem.criteriaItem !== undefined &&
+                    lectureSurveyAnswerItem.criteriaItem.value === choice.no
+                  }
+                  readOnly={true}
+                />
+                {choice.count || '0'}
+                <br />
+                {criterionAvg || 0}
+                {choice.image && <img src={choice.image} />} */}
+
                 <li className="course-survey-list-cont">
                   <span className="course-survey-list-btnImg">
                     {isChecked ? (
