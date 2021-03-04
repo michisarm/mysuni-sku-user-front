@@ -15,6 +15,7 @@ import { Pagination } from 'semantic-ui-react';
 import CommunityMemberTabmenu from '../view/CommunityMemberView/CommunityMemberTabmenu';
 import { useHistory } from 'react-router-dom';
 import CommunityMemberHeader from '../view/CommunityMemberView/CommunityMemberHeader';
+import { value } from 'numeral';
 
 interface Props {
   currentCommunity: string;
@@ -34,6 +35,7 @@ const CommunityMemberApproveContainer: React.FC<Props> = ({
   const [activemenu, setActiveMenu] = useState<string>('approve');
   const history = useHistory();
   const [remark, setRemark] = useState<string>('');
+
   const handleActiveMenu = useCallback(
     (active: string) => {
       setActiveMenu(active);
@@ -131,7 +133,8 @@ const CommunityMemberApproveContainer: React.FC<Props> = ({
   function onChangeCommunityCompanionProps(name: string, value: string) {
     //console.log(value);
     setRemark(value);
-    console.log(remark, 'test123');
+
+    // console.log(remark, 'test123');
   }
   const updateUser = useCallback(() => {
     if (selectedList.length === 0) {
@@ -147,6 +150,7 @@ const CommunityMemberApproveContainer: React.FC<Props> = ({
       });
     }
   }, [currentCommunity, activePage, selectedList]);
+
   const rejectUser = useCallback(() => {
     reactConfirm({
       title: '확인',
@@ -160,7 +164,7 @@ const CommunityMemberApproveContainer: React.FC<Props> = ({
     setModalWin({
       companionModalWin: false,
     });
-  }, [currentCommunity, activePage, selectedList]);
+  }, [currentCommunity, activePage, selectedList, remark]);
   return (
     <>
       <CommunityMemberHeader />

@@ -4,6 +4,7 @@ import Member from 'community/model/Member';
 import { SearchBox } from 'community/model/SearchBox';
 import { MemberTempModel } from 'community/model/MemberTempModel';
 import { MemberTempCdoModel } from 'community/model/MemberTempCdoModel';
+import { param } from 'jquery';
 
 const BASE_URL = '/api/community';
 
@@ -91,7 +92,7 @@ export function companionMembers(
       `${BASE_URL}/communities/${communityId}/members/flow/return/${memberIdList.join(
         ','
       )}`,
-      { remark: 'remark', approvedType: 'Retrun' }
+      { remark: { remark }, approveType: 'Return' }
     )
     .then(response => response && response.data);
 }
