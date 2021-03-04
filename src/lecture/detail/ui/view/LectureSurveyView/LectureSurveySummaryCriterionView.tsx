@@ -22,6 +22,11 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
   const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
 
+  const totalCount =
+    lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
+      return totalCount + (count || 0);
+    }, 0) || 0;
+
   /*eslint-disable*/
   // 각 선택지 최댓값 구해서 파란색으로 표시
   const maxNum: number = Math.max.apply(
@@ -41,10 +46,8 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
             const criterionAvg =
               choice.count !== undefined &&
               respondCount !== undefined &&
-              ((choice.count / respondCount) * 100).toFixed(1);
+              ((choice.count / totalCount) * 100).toFixed(1);
 
-            // const isChecked =
-            //   lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
             const isChecked =
               lectureSurveyAnswerItem?.criteriaItem?.index === choice.no - 1;
 
@@ -88,7 +91,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
             const criterionAvg =
               choice.count !== undefined &&
               respondCount !== undefined &&
-              ((choice.count / respondCount) * 100).toFixed(1);
+              ((choice.count / totalCount) * 100).toFixed(1);
 
             const isChecked =
               lectureSurveyAnswerItem?.criteriaItem?.value === choice.no;
