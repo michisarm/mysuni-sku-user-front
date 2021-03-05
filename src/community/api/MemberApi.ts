@@ -92,7 +92,7 @@ export function companionMembers(
       `${BASE_URL}/communities/${communityId}/members/flow/return/${memberIdList.join(
         ','
       )}`,
-      { remark: { remark }, approveType: 'Return' }
+      { remark: `${remark}`, approveType: 'Return' }
     )
     .then(response => response && response.data);
 }
