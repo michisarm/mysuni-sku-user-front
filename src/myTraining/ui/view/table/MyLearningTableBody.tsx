@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -19,6 +19,7 @@ import { AplStateName } from 'myTraining/model/AplStateName';
 import { LectureServiceType } from 'lecture/model';
 import { MyLearningContentType, MyPageContentType } from '../../model';
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props {
   contentType: MyContentType | MyApprovalContentType;
@@ -34,7 +35,7 @@ function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
-
+  const { scrollOnceMove, scrollSave } = useScrollMove();
   /* functions */
   /* 
     아래의 두 함수는 나중에 AplModel 의 매서드로 변경하기.
@@ -42,6 +43,13 @@ function MyLearningTableBody(props: Props) {
     2. getLearningTime()
 
   */
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 200)
+  }, [scrollOnceMove])
+
   const getApprovalTime = (model: AplModel): string => {
     /* 승인 상태에 따라 승인시간을 다르게 보여줌. */
     if (model.state === AplState.Opened) {
@@ -94,7 +102,10 @@ function MyLearningTableBody(props: Props) {
   };
 
   /* handlers */
-  const onClickLearn = (model: MyTableView) => {
+  const onClickLearn = (model: MyTableView, e: any) => {
+    // Pathname history가 2번 쌓이는 현상 발생하여 조치
+    e.preventDefault();
+
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
     const {
       category: { college },
@@ -107,7 +118,6 @@ function MyLearningTableBody(props: Props) {
     const cineroomId = patronInfo.getCineroomId() || '';
     /* URL 표현을 위한 변환. */
     const convertedServiceType = convertServiceType(serviceType);
-
     // Card
     if (model.isCardType()) {
       history.push(
@@ -131,15 +141,16 @@ function MyLearningTableBody(props: Props) {
         )
       );
     }
-    
+
     // react-ga event
     ReactGA.event({
       category: '학습중인 과정',
       action: 'Click',
-      label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${model.name
+        }`,
     });
+
+    scrollSave();
   };
 
   const onCheckOne = useCallback(
@@ -174,7 +185,7 @@ function MyLearningTableBody(props: Props) {
           {model.displayCollegeName} {/* College */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#" onClick={() => onClickLearn(model)}>
+          <a href="#" onClick={(e) => onClickLearn(model, e)}>
             <span className="ellipsis">
               {model.name} {/* 과정명 */}
             </span>
@@ -408,7 +419,7 @@ function MyLearningTableBody(props: Props) {
         (models &&
           models.length &&
           (models as MyTableView[]).map((model: MyTableView, index: number) => (
-            <Table.Row key={`learning-body-${model.id}`}>
+            <Table.Row key={`learning-body-${model.id}-${index}`}>
               {contentType === MyLearningContentType.InProgress && (
                 <Table.Cell>
                   <Checkbox
@@ -424,7 +435,7 @@ function MyLearningTableBody(props: Props) {
                 <a
                   className="btn-blue"
                   href="#"
-                  onClick={() => onClickLearn(model)}
+                  onClick={(e) => onClickLearn(model, e)}
                 >
                   학습하기
                 </a>

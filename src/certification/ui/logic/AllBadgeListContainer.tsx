@@ -16,11 +16,11 @@ import BadgeCountText from '../model/BadgeCountText';
 import { OffsetElementList } from '../../../shared/model';
 import BadgeModel from '../model/BadgeModel';
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   pageService?: PageService;
   badgeService?: BadgeService;
-
   categorySelection: string;
 }
 
@@ -171,6 +171,16 @@ const AllBadgeListContainer: React.FC<Props> = Props => {
     }, 1000);
   };
 
+  const { scrollOnceMove } = useScrollMove();
+
+  useEffect(() => {
+    if (badges.length > 0) {
+      setTimeout(() => {
+        scrollOnceMove();
+      }, 800)
+    }
+  }, [badges.length])
+
   return (
     <>
       <LineHeaderContainer
@@ -192,10 +202,10 @@ const AllBadgeListContainer: React.FC<Props> = Props => {
           {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
         </>
       ) : (
-        <>
-          <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
-        </>
-      )}
+          <>
+            <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
+          </>
+        )}
     </>
   );
 };

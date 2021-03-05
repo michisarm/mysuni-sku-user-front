@@ -9,9 +9,12 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import {
+  CommentList,
+  CommentService,
   CommunityCommentList,
 } from '@nara.drama/feedback';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
+import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import { patronInfo } from '@nara.platform/dock';
@@ -22,6 +25,7 @@ import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
+import { SkProfileService } from 'profile/stores';
 import { findCommunityProfile } from 'community/api/profileApi';
 import { checkMember } from 'community/service/useMember/useMember';
 
@@ -66,6 +70,10 @@ function CommunityPostDetailContainer() {
   const originArr: string[] = [];
   let origin: string = '';
 
+  const skProfileService = SkProfileService.instance;
+  const { skProfile } = skProfileService;
+  const { member } = skProfile;
+
   const fileDownload = (pdf: string, fileId: string) => {
     const PdfFile = pdf.includes('.pdf');
     if (PdfFile) {
@@ -104,8 +112,8 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const commentCountEventHandler = useCallback(async () => {
-    const postIdArr = window.location.href.split('/')
-    await getCommunityPostDetail(communityId, postIdArr[postIdArr.length-1]);
+    const postIdArr = window.location.href.split('/');
+    await getCommunityPostDetail(communityId, postIdArr[postIdArr.length - 1]);
   }, [communityId, postId]);
 
   const clickProfileEventHandler = useCallback(async () => {
@@ -147,6 +155,7 @@ function CommunityPostDetailContainer() {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
+
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -248,20 +257,28 @@ function CommunityPostDetailContainer() {
   }
 
   const toUrl = useCallback((type, postDetail, menuType) => {
-    if(type == 'nextPost') {
-      if(menuType === 'ANONYMOUS') {
-        return `/community/${postDetail.nextPost!.communityId}/${menuType}/post/${postDetail.nextPost!.postId}`
+    if (type == 'nextPost') {
+      if (menuType === 'ANONYMOUS') {
+        return `/community/${
+          postDetail.nextPost!.communityId
+        }/${menuType}/post/${postDetail.nextPost!.postId}`;
       } else {
-        return `/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`
+        return `/community/${postDetail.nextPost!.communityId}/post/${
+          postDetail.nextPost!.postId
+        }`;
       }
     } else {
-      if(menuType === 'ANONYMOUS') {
-        return `/community/${postDetail.prevPost!.communityId}/${menuType}/post/${postDetail.prevPost!.postId}`
+      if (menuType === 'ANONYMOUS') {
+        return `/community/${
+          postDetail.prevPost!.communityId
+        }/${menuType}/post/${postDetail.prevPost!.postId}`;
       } else {
-        return `/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`
+        return `/community/${postDetail.prevPost!.communityId}/post/${
+          postDetail.prevPost!.postId
+        }`;
       }
     }
-  }, [])
+  }, []);
   return (
     <Fragment>
       {postDetail && (
@@ -415,18 +432,16 @@ function CommunityPostDetailContainer() {
             feedbackId={postDetail.commentFeedbackId}
             menuType={menuType}
             hideCamera
-            name=""
-            email=""
-            companyName=""
-            departmentName=""
+            name={member.name}
+            email={member.email}
+            companyName={member.company}
+            departmentName={member.department}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>
               <div className="paging-list">
                 {postDetail.prevPost && (
-                  <Link
-                    to={toUrl('prevPost', postDetail, menuType)}
-                  >
+                  <Link to={toUrl('prevPost', postDetail, menuType)}>
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
                       <h2>이전글</h2>
@@ -442,9 +457,7 @@ function CommunityPostDetailContainer() {
                   </Link>
                 )}
                 {postDetail.nextPost && (
-                  <Link
-                    to={toUrl('nextPost', postDetail, menuType)}
-                  >
+                  <Link to={toUrl('nextPost', postDetail, menuType)}>
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
                       <h2>다음글</h2>
@@ -470,17 +483,15 @@ function CommunityPostDetailContainer() {
         fileId={fileId || ''}
         fileName={fileName || ''}
       />
-        <>
-        <CommunityProfileModal
-          open={profileOpen}
-          setOpen={setProfileOpen}
-          userProfile={profileInfo && profileInfo.profileImg}
-          memberId={profileInfo && profileInfo.id}
-          introduce={profileInfo && profileInfo.introduce}
-          nickName={profileInfo && profileInfo.nickName}
-          name={profileInfo && profileInfo.creatorName}
-        />
-        </>
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={postDetail && postDetail.profileImg}
+        memberId={postDetail && postDetail.creatorId}
+        introduce={postDetail && postDetail.introduce}
+        nickName={postDetail && postDetail.nickName}
+        name={postDetail && postDetail.creatorName}
+      />
     </Fragment>
   );
 }
