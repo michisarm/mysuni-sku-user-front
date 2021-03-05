@@ -1,33 +1,117 @@
 import React, { useEffect } from 'react';
-import { getPopularCourseItem, usePopularCourseItem } from '../../store/PersonalBoardStore';
-import BadgeLearningTime from '../../viewModel/BadgeLearningTime';
-import LearningTimeDetail from '../../viewModel/LearningTimeDetail';
-import MyCompanyPopularCourse from '../../viewModel/MyCompanyPopularCourse';
+import { Button, Tab } from 'semantic-ui-react';
+import { usePopularCourseItem } from '../../store/PersonalBoardStore';
 
 interface Props {
-  // channalRank: string[]
-  onTabClick: (date: number) => void;
+  onTabClick: (date: any) => void;
 }
 
 const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCourseView({
-  // channalRank
   onTabClick
 }) {
-  // console.log('channalRank', channalRank)
   const popularCourseItem = usePopularCourseItem()
-  console.log('popularCourseItem', popularCourseItem)
+  const panes = [
+    {
+      menuItem: "1주일",
+      render: () => (
+        <Tab.Pane>
+          <ul className="personal_list">
+            <li className="sv">
+              <span className="personal_list_number">1</span>
+              <p className="personal_list_txt">사회문제에 대한 이해 : 심화</p>
+            </li>
+            <li className="global">
+              <span className="personal_list_number">2</span>
+              <p className="personal_list_txt">
+                국제정세의 현상과 본질 (Series 2)
+              </p>
+            </li>
+            <li className="happy">
+              <span className="personal_list_number">3</span>
+              <p className="personal_list_txt">명상의 이해</p>
+            </li>
+            <li className="ai">
+              <span className="personal_list_number">4</span>
+              <p className="personal_list_txt">AI UX 기초 Essentials</p>
+            </li>
+            <li className="inno">
+              <span className="personal_list_number">5</span>
+              <p className="personal_list_txt">
+                고객 이해에 도움되는 &quot; 디자인 방법 &quot; 맛보기
+              </p>
+            </li>
+          </ul>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "1개월",
+      render: () => (
+        <Tab.Pane>
+          <ul className="personal_list">
+            <li className="sv">
+              <span className="personal_list_number">1</span>
+              <p className="personal_list_txt">AI UX 기초 Essentials</p>
+            </li>
+            <li className="global">
+              <span className="personal_list_number">2</span>
+              <p className="personal_list_txt">
+                고객 이해에 도움되는 &quot; 디자인 방법 &quot; 맛보기
+              </p>
+            </li>
+            <li className="happy">
+              <span className="personal_list_number">3</span>
+              <p className="personal_list_txt">명상의 이해</p>
+            </li>
+            <li className="ai">
+              <span className="personal_list_number">4</span>
+              <p className="personal_list_txt">국제정세의 현상과 본질 (Series 2)</p>
+            </li>
+            <li className="inno">
+              <span className="personal_list_number">5</span>
+              <p className="personal_list_txt">
+                사회문제에 대한 이해 : 심화
+              </p>
+            </li>
+          </ul>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "3개월",
+      render: () => (
+        <Tab.Pane>
+          <ul className="personal_list">
+            <li className="sv">
+              <span className="personal_list_number">1</span>
+              <p className="personal_list_txt">명상의 이해</p>
+            </li>
+            <li className="global">
+              <span className="personal_list_number">2</span>
+              <p className="personal_list_txt">
+                국제정세의 현상과 본질 (Series 2)
+              </p>
+            </li>
+            <li className="happy">
+              <span className="personal_list_number">3</span>
+              <p className="personal_list_txt">사회문제에 대한 이해 : 심화</p>
+            </li>
+            <li className="ai">
+              <span className="personal_list_number">4</span>
+              <p className="personal_list_txt">고객 이해에 도움되는 &quot; 디자인 방법 &quot; 맛보기</p>
+            </li>
+            <li className="inno">
+              <span className="personal_list_number">5</span>
+              <p className="personal_list_txt">
+                AI UX 기초 Essentials
+              </p>
+            </li>
+          </ul>
+        </Tab.Pane>
+      ),
+    },
+  ];
 
-  // useEffect(() => {
-  //   if(test === undefined) {
-  //     return
-  //   } 
-  //   console.log('test', test)
-  //   // if(badgeLearningTimeItem!.mylearningTimeHour !== 0) {
-  //   //   setAllLearningTime(badgeLearningTimeItem!.mylearningTimeHour + 'h ' +  badgeLearningTimeItem!.mylearningTimeMinute + 'm')
-  //   // } else {
-  //   //   setAllLearningTime(badgeLearningTimeItem!.mylearningTimeMinute + 'm')
-  //   // }
-  // }, [test])
   return (
     <>
       {popularCourseItem && ( 
@@ -51,7 +135,9 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
             <h3>우리 회사 인기 코스</h3>
             <span>2021.01.28~2021.02.03</span>
           </div>
-          <div className="card-item-con"/>
+          <div className="card-item-con">
+            <Tab panes={panes} onTabChange={(e, data) => onTabClick(data)}/>
+          </div>
         </div>
       )}
     </>

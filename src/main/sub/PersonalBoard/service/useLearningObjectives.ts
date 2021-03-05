@@ -1,18 +1,17 @@
-import { findLearningObjectives, findTotalMyLearningSummary } from '../api/personalBoardApi';
-import { setBadgeLearningTimeItem, setLearningObjectivesItem } from '../store/PersonalBoardStore';
+import { findLearningObjectives, findTotalMyLearningSummary, updateLearningObjectives } from '../api/personalBoardApi';
+import { getLearningObjectivesItem, setBadgeLearningTimeItem, setLearningObjectivesItem } from '../store/PersonalBoardStore';
 
 export function requestLearningObjectives() {
-  console.log('이거타야지')
-  findLearningObjectives().then((test) => {
-    console.log('test', test)
+  findLearningObjectives().then((learningObjectives) => {
     setLearningObjectivesItem({
-      AnnualLearningObjectives: 10,
-      WeekAttendanceGoal: 10,
-      DailyLearningTimeHour: 10,
-      DailyLearningTimeMinute: 10,
+      AnnualLearningObjectives: learningObjectives.goal.hour,
+      WeekAttendanceGoal: learningObjectives.goal.attendance,
+      DailyLearningTimeHour: learningObjectives.goal.dailyTime.hours,
+      DailyLearningTimeMinute: learningObjectives.goal.dailyTime.minutes,
     })
   })
 }
 export function saveLearningObjectives() {
-  console.log('목표 설정 api 호출')
+  const param = getLearningObjectivesItem()
+  updateLearningObjectives(param!)
 }

@@ -27,6 +27,9 @@ import { getBadgeLearningTimeItem, getLearningObjectivesItem, setBadgeLearningTi
 import DashBoardSentenceContainer from 'layout/ContentHeader/sub/DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 import { FavoriteChannelChangeModal } from 'shared';
 import { MenuControlAuth } from 'shared/model/MenuControlAuth';
+import LearningGoalContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
+import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
+import { saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
 
 
 interface Props extends RouteComponentProps {
@@ -68,9 +71,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     learningObjectivesOpen: false,
     companyCode: '',
     activeIndex: 0,
-    // badgeValue: 0,
-    // complateLearningValue: 0,
-    // complateLearningTimeValue: 0
   }
   
   componentDidMount(): void {
@@ -93,7 +93,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     skProfileService!.findStudySummary();
     this.fetchLearningSummary();
     this.menuControlAuth();
-    // this.props.boardVisible = false;
   }
 
   fetchLearningSummary() {
@@ -106,7 +105,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     myTrainingService!.countMyTrainingsWithStamp();
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
-    // myLearningSummaryService!.findMyLearningSummary();
     myLearningSummaryService!.findTotalMyLearningSummaryDash();
   }
 
@@ -184,8 +182,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     })
   }
 
-  // this.setState({'learningObjectivesOpen':value})
   openLearningObjectives () {
+    saveLearningObjectives()
+    
     this.setState(prevState => {
       return (
         ({ learningObjectivesOpen: !prevState.learningObjectivesOpen})
@@ -194,13 +193,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   convertProgressValue (value: number) {
-    console.log('convertProgressValue')
     //유효성 체크
     if(value === undefined || value === NaN || value === null ) {
       return 
     }
     const test = String(value).substr(0,1)+5
-    console.log('test', test)
     return Number(test)
   }
 
@@ -212,30 +209,18 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary, totalMyLearningSummaryDash } = myLearningSummaryService!;
-    const { myStampCount, thisYearMyStampCount } = myTrainingService!;
     const { earnedCount: myBadgeCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
-    console.log('myLearningSummary.displayTotalLearningTime', myLearningSummary.displayTotalLearningTime)
-    console.log('myLearningSummary.displayAccrueTotalLearningTime', myLearningSummary.displayAccrueTotalLearningTime)
     /* 총 학습시간 */
     const CURRENT_YEAR = moment().year();
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
 
-    // badgeValue: 0,
-    // complateLearningValue: 0,
-    // complateLearningTimeValue: 0
-
-    // <p>{myLearningSummary.completeLectureCount}</p>
-    // <span>{myLearningSummary.totalCompleteLectureCount}</span>
-    // {myLearningSummary.completeLectureCount}</p>
-    //                   <span>{myLearningSummary.totalCompleteLectureCount}</span>
     const badgeValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
     const complateLearningValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
     const complateLearningTimeValue = (myLearningSummary.displayTotalLearningTime / myLearningSummary.displayAccrueTotalLearningTime) * 100
-    console.log('badgeValue', badgeValue)
     let total: any = null;
     let accrueTotal: any = null;
 
@@ -334,56 +319,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       border: "1px solid #aaaaaa",
       color: "#4c4c4c",
     };
-    
-
-     {/* <ItemWrapper>
-            <div className="title">{CURRENT_YEAR}년 학습시간</div>
-            <MyLearningSummaryModal
-              trigger={(
-                <a>
-                  {total}
-                </a>
-              )}
-            />
-            <a className="main_sub_all">
-              &#40;누적
-              {accrueTotal}
-              &#41;
-            </a>
-          </ItemWrapper>
-
-          <ItemWrapper
-            onClick={() => this.onClickLearningSummary('완료된 학습')}
-          >
-            <HeaderItemView
-              label={CURRENT_YEAR + "년 완료학습"}
-              count={myLearningSummary.completeLectureCount}
-              onClick={this.onClickComplete}
-            />
-            <a className="main_sub_all">
-              &#40;누적
-              <span className="big2">{myLearningSummary.totalCompleteLectureCount}</span>
-              <span className="small2 h">개</span>
-              &#41;
-            </a>
-          </ItemWrapper>
-
-          <ItemWrapper onClick={() => this.onClickLearningSummary('My Stamp')}>
-            <HeaderItemView
-              label="My Stamp"
-              count={myStampCount}
-              onClick={this.onClickStamp}
-            />
-          </ItemWrapper>
-
-          <ItemWrapper onClick={() => this.onClickLearningSummary('My Badge')}>
-            <HeaderItemView
-              label="My Badge"
-              count={myBadgeCount}
-              onClick={this.onClickBadge}
-            />
-          </ItemWrapper> */}
-    
 
     return (
       <>
@@ -467,18 +402,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   누적 학습시간
                 </span>
                 <span>
-                  <strong>{total}</strong>
-                  {/* <strong className="personal_pop_sub">30</strong>m */}
+                  <strong>{accrueTotal}</strong>
                 </span>
               </Popup>
             </div>
           </div>
-          <div className="main-stu-time">
-            <span>
-              하루 <em>3시간 30분</em> 학습, 일주일 <em>5회</em> 출석
-            </span>
-            <button type="button" onClick={this.openLearningObjectives}/>
-          </div>
+          <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
         </HeaderWrapperView>
 
         {companyCode && (

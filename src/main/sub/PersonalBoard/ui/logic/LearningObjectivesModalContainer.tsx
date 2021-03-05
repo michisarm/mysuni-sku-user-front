@@ -2,7 +2,7 @@ import { mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { requestLearningObjectives } from '../../service/useLearningObjectives';
+import { requestLearningObjectives, saveLearningObjectives } from '../../service/useLearningObjectives';
 import { getLearningObjectivesItem, setLearningObjectivesItem } from '../../store/PersonalBoardStore';
 import LearningObjectives from '../../viewModel/LearningObjectives';
 import LearningObjectivesModal from '../view/LearningObjectivesModal';
@@ -18,20 +18,20 @@ const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjec
   setOpen
 }){
   useEffect(() => {
-    console.log('((((((((((((((((((((((')
     requestLearningObjectives()
   }, [])
 
   const handleInputChange = useCallback((name: string, value: any) => {
-    const test = getLearningObjectivesItem()
-    if(test === undefined) {
+    const learningObjectivesItem = getLearningObjectivesItem()
+    if(learningObjectivesItem === undefined) {
       return false
     }
-    const nextPostCreateItem = { ...test, [name]: Number(value) };
+    const nextPostCreateItem = { ...learningObjectivesItem, [name]: Number(value) };
     setLearningObjectivesItem(nextPostCreateItem)
   }, [])
 
   const handleSave = useCallback(() => {
+    saveLearningObjectives()
     setOpen(false)
   },[])
 
@@ -44,8 +44,6 @@ return (
   />
 )
 }
-
-// export default PersonalBoardContainer;
 
 export default inject(
   mobxHelper.injectFrom(

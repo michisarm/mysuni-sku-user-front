@@ -6,7 +6,9 @@ import { SkProfileService } from 'profile/stores';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { requestBadgeLearningTime } from '../../service/getBadgeLearningTime';
+import { requestCollegePercent } from '../../service/getCollegePercent';
 import { requestPopularCourse } from '../../service/getPopularCourse';
+import { requestLearningObjectives } from '../../service/useLearningObjectives';
 import { requestLearningTimeDetail } from '../../service/useLearningTimeDetail';
 import BadgeLearningTimeView from '../view/BadgeLearningTimeView';
 import CollegeTopChartView from '../view/CollegeTopChartView';
@@ -30,9 +32,19 @@ function PersonalBoardContainer(props: Props){
     requestBadgeLearningTime(companyCode)
     requestLearningTimeDetail()
     requestPopularCourse(companyCode, 7)
+    requestCollegePercent()
+    requestLearningObjectives()
   }, [])
 
-  const handlePopularCourseDate = useCallback((date: number) => {
+  const handlePopularCourseDate = useCallback((activeIndex: any) => {
+    let date = 0
+    if(activeIndex === 1) {
+      date = 7
+    } else if(activeIndex === 2) {
+      date = 30
+    } else if(activeIndex === 3) {
+      date = 90
+    }
     requestPopularCourse(companyCode, date)
   }, [])
 
