@@ -30,6 +30,7 @@ function communityToItem(community: CommunityView): OpenCommunityItem {
     thumbnailId,
     name,
     managerName,
+    managerEmail,
     memberCount,
     lastPostTime,
     description,
@@ -44,6 +45,7 @@ function communityToItem(community: CommunityView): OpenCommunityItem {
     hasNewPost:
       Date.now() - ONE_DAY < (lastPostTime === null ? 0 : lastPostTime),
     managerName: managerName || '',
+    managerEmail: managerEmail || '',
     memberCount,
     fieldName: fieldName || '',
     description,

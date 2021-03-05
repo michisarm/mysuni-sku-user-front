@@ -19,6 +19,7 @@ import {
 
 interface Props {
   managerName: string;
+  managerEmail: string;
   open: boolean;
   handleClose: () => void;
   handleOk: () => void;
@@ -27,7 +28,13 @@ interface Props {
 class OpenCommunityPassInputModal extends React.Component<Props> {
   //
   render() {
-    const { managerName, open, handleClose, handleOk } = this.props;
+    const {
+      managerName,
+      managerEmail,
+      open,
+      handleClose,
+      handleOk,
+    } = this.props;
 
     return (
       <>
@@ -46,9 +53,9 @@ class OpenCommunityPassInputModal extends React.Component<Props> {
                   <input type="password" className="commu_pw_form" />
                 </Form.Field>
               </Form>
-              <a href="mailto:bbonggu92@gmail.com">
+              <a href={`mailto:${managerEmail}`} target="_top">
                 {/*임시로 김동구과장 메일 주소 기입*/}
-                {managerName}관리자에게 문의하기
+                {managerName}관리자에게 문의하기{managerEmail}
               </a>
             </Modal.Content>
             <Modal.Actions className="actions2">

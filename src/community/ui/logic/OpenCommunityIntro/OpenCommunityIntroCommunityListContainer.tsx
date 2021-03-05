@@ -26,6 +26,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   name,
   description,
   managerName,
+  managerEmail,
   memberCount,
   thumbnailId,
   type,
@@ -55,10 +56,11 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         '선택한 학습자를 가입 반려 처리하시겠습니까?  입력된 반려 사유는 E-mail과 알림을 통해 전달되며, 등록된 내용은 수정하실 수 없습니다.',
     });
   };
-  return type === 'CHORT' ? (
+  return type === 'SECRET' ? (
     <>
       <OpenCommunityPassInputModal
         managerName={managerName}
+        managerEmail={managerEmail}
         open={openModal.passInputModalWin}
         handleClose={handleClose}
         handleOk={handleOk}
