@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -6,26 +5,23 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
-import { NoSuchContentPanel } from 'shared';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { PostModel } from '../../model';
 import { CategoryService, PostService } from '../../stores';
 import routePaths from '../../routePaths';
 
-
 interface Props extends RouteComponentProps {
-  postService?: PostService
-  categoryService?: CategoryService
+  postService?: PostService;
+  categoryService?: CategoryService;
 }
 
 interface State {
-  offset: number
-  categoryIndex: number
+  offset: number;
+  categoryIndex: number;
+  isLoading: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'board.postService',
-  'board.categoryService',
-))
+@inject(mobxHelper.injectFrom('board.postService', 'board.categoryService'))
 @observer
 @reactAutobind
 class FaqListContainer extends React.Component<Props, State> {
@@ -33,8 +29,8 @@ class FaqListContainer extends React.Component<Props, State> {
   state = {
     offset: 0,
     categoryIndex: 0,
+    isLoading: false,
   };
-
 
   componentDidMount() {
     //
@@ -65,20 +61,24 @@ class FaqListContainer extends React.Component<Props, State> {
     if (post.category.id) {
       const { categoryIndex } = this.state;
       this.setCagetory(categoryIndex, post.category.id);
-    }
-    else {
+    } else {
       this.findFaqPosts(categorys[0].categoryId, 10);
     }
   }
 
   async findFaqPosts(categoryId: string, offset: number) {
     //
+    this.setState({ isLoading: true });
+
     const postService = this.props.postService!;
 
     postService.clearPosts();
 
-    const posts = await postService.findPostsByCategoryId(categoryId, 0, offset);
-    const totalCount = posts.totalCount;
+    let totalCount = 0;
+    await postService.findPostsByCategoryId(categoryId, 0, offset).then(res => {
+      totalCount = res.totalCount;
+      this.setState({ isLoading: false });
+    });
 
     if (offset < totalCount) {
       this.setState({ offset: offset + 10 });
@@ -137,51 +137,50 @@ class FaqListContainer extends React.Component<Props, State> {
     //
     const { categorys } = this.props.categoryService!;
     const { posts } = this.props.postService!;
-    const { categoryIndex } = this.state;
+    const { categoryIndex, isLoading } = this.state;
     const result = posts.results;
     const totalCount = posts.totalCount;
 
-    if (result.length < 1) {
-      return (
-        <Segment className="full">
-          <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
-        </Segment>
-      );
-    }
-
     return (
-      <Segment className="full">
-        <div className="support-list-wrap">
-          <div className="list-top">
-            <div className="radio-wrap">
-              { categorys.length > 0 && categorys.map((category, index) => (
-                <Radio
-                  key={index}
-                  className="base"
-                  name="radioGroup"
-                  index={index}
-                  label={category.name}
-                  value={category.categoryId}
-                  checked={categoryIndex === index}
-                  onChange={this.onChangeCategory}
-                />
-              ))}
+      <>
+        {result.length === 0 ? (
+          <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
+        ) : (
+          <div className="support-list-wrap">
+            <div className="list-top">
+              <div className="radio-wrap">
+                {categorys.length > 0 &&
+                  categorys.map((category, index) => (
+                    <Radio
+                      key={index}
+                      className="base"
+                      name="radioGroup"
+                      index={index}
+                      label={category.name}
+                      value={category.categoryId}
+                      checked={categoryIndex === index}
+                      onChange={this.onChangeCategory}
+                    />
+                  ))}
+              </div>
             </div>
+            {!isLoading && (
+              <div className="su-list faq">
+                {result.map((post, index) => this.renderPostRow(post, index))}
+              </div>
+            )}
+            <Loadingpanel loading={isLoading} />
+            {result.length > 0 && result.length < totalCount && (
+              <div className="more-comments" onClick={this.onClickListMore}>
+                <Button icon className="left moreview">
+                  <Icon className="moreview" />
+                  list more
+                </Button>
+              </div>
+            )}
           </div>
-
-          <div className="su-list faq">
-            {result.map((post, index) => this.renderPostRow(post, index))}
-          </div>
-
-          { result.length > 0 && result.length < totalCount && (
-            <div className="more-comments" onClick={this.onClickListMore}>
-              <Button icon className="left moreview">
-                <Icon className="moreview" />list more
-              </Button>
-            </div>
-          )}
-        </div>
-      </Segment>
+        )}
+      </>
     );
   }
 }

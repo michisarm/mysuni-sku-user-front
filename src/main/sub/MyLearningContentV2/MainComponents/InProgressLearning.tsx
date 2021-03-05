@@ -8,7 +8,7 @@ import { Segment, Dimmer, Loader, Button, Icon } from 'semantic-ui-react';
 // import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { NoSuchContentPanel } from 'shared';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 
 import lectureRoutes from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
@@ -234,71 +234,65 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </div>
       </div>
-      {isLoading && (
-        <Segment style={{ height: '418px' }}>
-          <Dimmer active={isLoading} inverted>
-            <Loader size="medium" content="Waiting" />
-            <div className="no-cont-wrap" />
-          </Dimmer>
-        </Segment>
-      )}
-      {!isLoading && myTrainings.length > 0 ? (
-        <Lecture.Group type={Lecture.GroupType.Line}>
-          {myTrainings.map(
-            (
-              learning: MyTrainingModel | LectureModel | InMyLectureModel,
-              index: number
-            ) => {
-              //
-              const inMyLecture = getInMyLecture(learning.serviceId);
+      <Loadingpanel loading={isLoading} />
+      {!isLoading &&
+        (myTrainings.length > 0 ? (
+          <Lecture.Group type={Lecture.GroupType.Line}>
+            {myTrainings.map(
+              (
+                learning: MyTrainingModel | LectureModel | InMyLectureModel,
+                index: number
+              ) => {
+                //
+                const inMyLecture = getInMyLecture(learning.serviceId);
 
-              return (
-                <Lecture
-                  key={`learning-${index}`}
-                  model={learning}
-                  rating={getRating(learning)}
-                  thumbnailImage={learning.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: '알림',
-                      message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
-                    });
-                    onActionLecture(inMyLecture || learning);
-                  }}
-                  onViewDetail={onViewDetail}
-                />
-              );
+                return (
+                  <Lecture
+                    key={`learning-${index}`}
+                    model={learning}
+                    rating={getRating(learning)}
+                    thumbnailImage={learning.baseUrl || undefined}
+                    action={
+                      inMyLecture
+                        ? Lecture.ActionType.Remove
+                        : Lecture.ActionType.Add
+                    }
+                    onAction={() => {
+                      reactAlert({
+                        title: '알림',
+                        message: inMyLecture
+                          ? '본 과정이 관심목록에서 제외되었습니다.'
+                          : '본 과정이 관심목록에 추가되었습니다.',
+                      });
+                      onActionLecture(inMyLecture || learning);
+                    }}
+                    onViewDetail={onViewDetail}
+                  />
+                );
+              }
+            )}
+          </Lecture.Group>
+        ) : (
+          <NoSuchContentPanel
+            message={
+              <>
+                <div className="text">진행중인 학습 과정이 없습니다.</div>
+                <Button
+                  icon
+                  as="a"
+                  className="right btn-blue2"
+                  onClick={routeToRecommend}
+                >
+                  <span className="border">
+                    <span className="ellipsis">{profileMemberName}</span> 님에게
+                    추천하는 학습 과정 보기
+                  </span>
+                  <Icon className="morelink" />
+                </Button>
+              </>
             }
-          )}
-        </Lecture.Group>
-      ) : (
-        <NoSuchContentPanel
-          message={
-            <>
-              <div className="text">진행중인 학습 과정이 없습니다.</div>
-              <Button
-                icon
-                as="a"
-                className="right btn-blue2"
-                onClick={routeToRecommend}
-              >
-                <span className="border">
-                  <span className="ellipsis">{profileMemberName}</span> 님에게
-                  추천하는 학습 과정 보기
-                </span>
-                <Icon className="morelink" />
-              </Button>
-            </>
-          }
-        />
-      )}
+          />
+        ))}
     </ContentWrapper>
   );
 };
