@@ -52,7 +52,6 @@ export function getPopularCourse(companyCode: string, date: number) {
       return response && response.data
     });
 }
-// /api/lecture/courseStatistics//{companyCode}/{date}
 
 //최근학습중인 채널
 export function getRecentlyLearningChannel() {
@@ -60,11 +59,36 @@ export function getRecentlyLearningChannel() {
   return axiosApi.get<any>(`/api/mytraining/mytraining/mytrainings/channel`)
     .then(response => response && response.data);
 }
-// /api/mytraining/mytraining/mytrainings/channel?patronKey=r57s%40ne1-m2
 
 //목표설정
 export function findLearningObjectives() {
   console.log('findLearningObjectives')
-  return axiosApi.get<LearningObjectives>(`/api/profiles/profiles`)
+  return axiosApi.get<any>(`/api/profile/profiles`)
     .then(response => response && response.data);
+}
+
+//목표설정
+export function updateLearningObjectives(item: LearningObjectives) {
+  console.log('updateLearningObjectives')
+  return axiosApi.put<any>(`/api/profile/profiles`,{
+    goal: { 
+      attendance: item.WeekAttendanceGoal,
+      dailyTime: {
+        hours: item.DailyLearningTimeHour,
+        minutes: item.DailyLearningTimeMinute
+      },
+      hour: item.AnnualLearningObjectives
+    }
+  })
+    .then(response => response && response.data);
+}
+
+//college별 학습 비중
+export function getCollegePercent() {
+  const params = {
+    patronKeyString: BadgeFilterRdoModel.getPatonKey(),
+  };
+
+  return axiosApi.get<LearningObjectives>(`/api/mytraining/mytraining/mytrainings/learningTime?patronKey=${BadgeFilterRdoModel.getPatonKey()}`)
+  .then(response => response && response.data);
 }

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
 import React from 'react';
 import { Button } from 'semantic-ui-react';
@@ -6,10 +7,7 @@ import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
 
 const LearningTimeDetailView: React.FC = function LearningTimeDetailView({
 }) {
-
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem()
-  console.log('badgeLearningTimeDetailItem@@@@@@@@@@@2', badgeLearningTimeDetailItem)
-
   return (
     <>
     {/* {badgeLearningTimeDetailItem && (
@@ -24,28 +22,29 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({
     {badgeLearningTimeDetailItem && (
       <MyLearningSummaryModal
         trigger={(
-          <div className="personal-card-item">
-            <div className="card-item-tit mb23">
-              <h3>학습 시간 상세</h3>
-              <span>2021년 기준</span>
-            </div>
-            <div className="card-item-con sty2">
-              <div className="item-con-box">
-                <div className="item-con-left detail">
-                  {/* <img src={gr_img}/> */}
-                </div>
-                <div className="item-con-right detail">
-                  <div className="card-gauge-bar">
-                    ddd
+          <a>
+            <div className="personal-card-item">
+              <div className="card-item-tit mb23">
+                <h3>학습 시간 상세</h3>
+                <span>{moment().year()}년 기준</span>
+              </div>
+              <div className="card-item-con sty2">
+                <div className="item-con-box">
+                  <div className="item-con-left detail">
+                    {/* <img src={gr_img}/> */}
+                  </div>
+                  <div className="item-con-right detail">
+                    <div className="card-gauge-bar">
+                      파이 차트 들어가야한다.
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         )}
       />
     )}
-    {/* )} */}
     </>
   );
 };

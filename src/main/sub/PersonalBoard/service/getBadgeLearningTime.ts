@@ -13,8 +13,7 @@ export async function requestBadgeLearningTime(companyCode: string) {
   if(badgeLearningTime !== undefined) {
     mylearningTime =badgeLearningTime.mylearningTimeHour * 60 + badgeLearningTime.mylearningTimeMinute
   }
-  console.log('##############countInfo', countInfo)
-  findTotalMyLearningSummary().then(() => {
+  findTotalMyLearningSummary().then((test) => {
     setBadgeLearningTimeItem({
       badgeMyCount: countInfo!.issuedCount,
       AllBadgeMyCount: countInfo!.totalCount,

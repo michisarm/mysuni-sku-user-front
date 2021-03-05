@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect} from 'react'
-import { Button, Checkbox, Form, Image, Modal,} from 'semantic-ui-react'
+import { Button, Checkbox, Form, Image, Modal, Select,} from 'semantic-ui-react'
 import { useParams, useHistory } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 import Avartar from '../../../style/media/img-profile-80-px.png'
 import classNames from 'classnames';
 import { useLearningObjectivesItem } from '../../store/PersonalBoardStore';
+import SelectType from '../../model/SelectType';
 
 interface Props {
   open: boolean;
@@ -24,16 +25,7 @@ const LearningObjectivesModal:React.FC<Props> = ({
 
   const learningObjectivesItem = useLearningObjectivesItem()
 
-
-  useEffect(() => {
-  },[])
-
-  // const handleSave = useCallback(() => {
-  //   console.log('save')
-  // },[])
-  
   return (
-    // open={open}
     <>
       { learningObjectivesItem && (
         <Modal open={open} className="base w600">
@@ -47,11 +39,12 @@ const LearningObjectivesModal:React.FC<Props> = ({
             <Form>
               <Form.Field className="form-field1">
                 <input
-                  type="type"
+                  type="text"
                   className="chal-inp"
-                  placeholder="설문조사 제목을 입력해주세요.​"
-                  value={learningObjectivesItem.WeekAttendanceGoal}
-                  onChange={(e) => handleInputChange('WeekAttendanceGoal', e.target.value)}
+                  value={learningObjectivesItem.AnnualLearningObjectives}
+                  onChange={(e: any) => {
+                    handleInputChange('AnnualLearningObjectives', e.target.value)
+                  }}
                 />
                 <span>h</span>
               </Form.Field>
@@ -63,11 +56,12 @@ const LearningObjectivesModal:React.FC<Props> = ({
             <Form>
               <Form.Field className="form-field2">
                 <div className="preview" style={{overflow: 'visible'}}>
-                  <input
-                    type="text"
-                    placeholder="설문조사 제목을 입력해주세요.​"
+                  <Select className="dropdown selection personal-popup-select"
+                    options={SelectType.weekAttendanceGoalOptions}
                     value={learningObjectivesItem.WeekAttendanceGoal}
-                    onChange={(e) => handleInputChange('WeekAttendanceGoal', e.target.value)}
+                    onChange={(e: any, data: any) => {
+                      handleInputChange('WeekAttendanceGoal', data.value)}
+                    }
                   />
                   <span>번</span>
                 </div>
@@ -80,23 +74,19 @@ const LearningObjectivesModal:React.FC<Props> = ({
             <Form>
               <Form.Field className="form-field3">
                 <div className="preview" style={{overflow: 'visible'}}>
-                    {/* <Select className='dropdown selection personal-popup-select'
-                            options={selectOptions02}/>
+                    <Select
+                      className="dropdown selection personal-popup-select"
+                      options={SelectType.dailyLearningTimeHourOptions}
+                      value={learningObjectivesItem.DailyLearningTimeHour}
+                      onChange={(e: any, data: any) => handleInputChange('DailyLearningTimeHour', data.value)}
+                    />
                     <span>h</span>
-                    <Select className='dropdown selection personal-popup-select'
-                            options={selectOptions03}/> */}
-                  <input
-                    type="text"
-                    placeholder="설문조사 제목을 입력해주세요.​"
-                    value={learningObjectivesItem.DailyLearningTimeHour}
-                    onChange={(e) => handleInputChange('DailyLearningTimeHour', e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="설문조사 제목을 입력해주세요.​"
-                    value={learningObjectivesItem.DailyLearningTimeMinute}
-                    onChange={(e) => handleInputChange('DailyLearningTimeMinute', e.target.value)}
-                  />
+                    <Select
+                      className="dropdown selection personal-popup-select"
+                      options={SelectType.dailyLearningTimeMinuteOption}
+                      value={learningObjectivesItem.DailyLearningTimeMinute}
+                      onChange={(e: any, data: any) => handleInputChange('DailyLearningTimeMinute', data.value)}
+                    />
                   <span>m</span>
                 </div>
               </Form.Field>
