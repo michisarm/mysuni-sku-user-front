@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
-import { Button, Icon } from 'semantic-ui-react';
+import { Segment, Dimmer, Loader, Button, Icon } from 'semantic-ui-react';
 // import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
@@ -51,6 +51,8 @@ const InProgressLearning: React.FC<Props> = Props => {
 
   const { myTrainings } = myTrainingService!;
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // myTrainingService 변경  실행
   useEffect(() => {
     findMyContent();
@@ -75,13 +77,12 @@ const InProgressLearning: React.FC<Props> = Props => {
     }
 
     /* 스토리지에 데이터가 없는 경우 & 데이터가 8개 이상이 아닌 경우 API 호출. */
-    myTrainingService!.findAllMyTrainingsWithState(
-      CONTENT_TYPE,
-      PAGE_SIZE,
-      0,
-      [],
-      true
-    );
+    setIsLoading(true);
+    myTrainingService!
+      .findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE, 0, [], true)
+      .then(() => {
+        setIsLoading(false);
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -114,12 +115,12 @@ const InProgressLearning: React.FC<Props> = Props => {
     // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     history.push(myTrainingRoutes.learningTab(CONTENT_TYPE));
-    
+
     // react-ga event
     ReactGA.event({
       category: '학습중인 과정',
       action: 'Click',
-      label: '학습중인 과정 전체보기'
+      label: '학습중인 과정 전체보기',
     });
   };
 
@@ -222,7 +223,8 @@ const InProgressLearning: React.FC<Props> = Props => {
     <ContentWrapper>
       <div className="section-head">
         <strong>
-          <span className="ellipsis">{profileMemberName}</span>님이 학습중인 과정
+          <span className="ellipsis">{profileMemberName}</span>님이 학습중인
+          과정
         </strong>
         <div className="right">
           {myTrainings.length > 0 && (
@@ -232,8 +234,15 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </div>
       </div>
-
-      {myTrainings.length > 0 ? (
+      {isLoading && (
+        <Segment style={{ height: '418px' }}>
+          <Dimmer active={isLoading} inverted>
+            <Loader size="medium" content="Waiting" />
+            <div className="no-cont-wrap" />
+          </Dimmer>
+        </Segment>
+      )}
+      {!isLoading && myTrainings.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
           {myTrainings.map(
             (
