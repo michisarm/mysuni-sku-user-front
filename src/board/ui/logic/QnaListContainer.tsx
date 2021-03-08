@@ -46,9 +46,9 @@ class QnaListContainer extends React.Component<Props, State> {
   findQnaPosts(answered: any, offset: number) {
     //
     const postService = this.props.postService!;
+    this.setState({ isLoading: true });
 
     if (answered === 'all' || !String(answered).length) {
-      this.setState({ isLoading: true });
       postService.findQnaPosts(0, offset).then(() => {
         this.setState({
           answered,
@@ -63,6 +63,7 @@ class QnaListContainer extends React.Component<Props, State> {
           answered,
           offset: offset + 10,
         });
+        this.setState({ isLoading: false });
       });
     }
   }
@@ -153,6 +154,7 @@ class QnaListContainer extends React.Component<Props, State> {
                 </Button>
               </div>
             </div>
+            <Loadingpanel loading={isLoading} />
             <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
           </>
         ) : (

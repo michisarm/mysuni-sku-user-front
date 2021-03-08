@@ -39,6 +39,8 @@ class FaqListContainer extends React.Component<Props, State> {
 
   async findFaqCategoris() {
     //
+    this.setState({ isLoading: true });
+
     const categoryService = this.props.categoryService!;
     const postService = this.props.postService!;
 
@@ -68,8 +70,6 @@ class FaqListContainer extends React.Component<Props, State> {
 
   async findFaqPosts(categoryId: string, offset: number) {
     //
-    this.setState({ isLoading: true });
-
     const postService = this.props.postService!;
 
     postService.clearPosts();
@@ -88,6 +88,7 @@ class FaqListContainer extends React.Component<Props, State> {
   setCagetory(index: number, categoryId: string) {
     //
     const postService = this.props.postService!;
+    this.setState({ isLoading: true });
 
     this.setState({
       categoryIndex: index,
@@ -111,6 +112,7 @@ class FaqListContainer extends React.Component<Props, State> {
     //
     const { categorys } = this.props.categoryService!;
     const { offset, categoryIndex } = this.state;
+    this.setState({ isLoading: true });
 
     this.findFaqPosts(categorys[categoryIndex].categoryId, offset);
   }
@@ -144,7 +146,10 @@ class FaqListContainer extends React.Component<Props, State> {
     return (
       <>
         {result.length === 0 ? (
-          <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
+          <div>
+            <Loadingpanel loading={isLoading} />
+            <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
+          </div>
         ) : (
           <div className="support-list-wrap">
             <Loadingpanel loading={isLoading} />
