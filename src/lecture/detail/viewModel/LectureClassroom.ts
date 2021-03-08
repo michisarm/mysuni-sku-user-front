@@ -14,7 +14,7 @@ export interface Classroom {
   instructor: string;
   siteUrl: string;
   capacity: number;
-  freeOfCharge: { approvalProcess: boolean };
+  freeOfCharge: { approvalProcess: boolean, chargeAmount: number };
 }
 
 export default interface LectureClassroom {

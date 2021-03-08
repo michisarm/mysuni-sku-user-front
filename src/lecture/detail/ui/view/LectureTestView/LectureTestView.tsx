@@ -6,7 +6,7 @@ import {
   getLectureTestStudentItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
@@ -19,6 +19,7 @@ import {
   useLectureStructure,
 } from '../../../service/useLectureStructure/useLectureStructure';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
+import { useHistory } from 'react-router-dom';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -32,6 +33,21 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
   const [lectureStructure] = useLectureStructure();
+
+  useEffect(() => {
+    if (testStudentItem !== undefined &&
+      testStudentItem.learningState !== undefined &&
+      (testStudentItem.learningState === 'Passed' ||
+        testStudentItem.learningState === 'TestPassed')) {
+      if (answerItem !== undefined && !answerItem?.finished && !answerItem?.submitted && answerItem.submitAnswers.length < 1) {  // 이수처리하여 답안이 없는경우
+        reactAlert({
+          title: '알림',
+          message:
+            'Course 학습을 이미 완료하셔서 테스트를 응시하실 필요 없습니다.',
+        });
+      }
+    }
+  }, [testStudentItem, answerItem, params, lectureStructure]);
 
   let readOnly = false;
   if (
@@ -58,6 +74,18 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   }, [answerItem, params]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
+
+  const history = useHistory();
+  const goToPath = (path?: string) => {
+    if (path !== undefined) {
+      //const currentHistory = getCurrentHistory();
+      //if (currentHistory === undefined) {
+      //  return;
+      //}
+      //currentHistory.push(path);
+      history.push(path);
+    }
+  }
 
   const submitAnswerSheet = useCallback(() => {
     let answerItemId = '';
@@ -106,14 +134,19 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             switch (lectureTestStudentItem?.learningState) {
               case 'Waiting':
               case 'TestWaiting':
-                if (
-                  course?.survey !== undefined ||
-                  program?.survey !== undefined
-                ) {
+                if (course?.survey !== undefined) {
                   reactAlert({
                     title: '알림',
                     message:
                       '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+                    onClose: () => goToPath(course?.survey?.path),
+                  });
+                } else if (program?.survey !== undefined) {
+                  reactAlert({
+                    title: '알림',
+                    message:
+                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+                    onClose: () => goToPath(program?.survey?.path),
                   });
                 } else {
                   reactAlert({
@@ -132,14 +165,19 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 break;
               case 'Passed':
               case 'TestPassed':
-                if (
-                  course?.survey !== undefined ||
-                  program?.survey !== undefined
-                ) {
+                if (course?.survey !== undefined) {
                   reactAlert({
                     title: '안내',
                     message:
                       '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
+                    onClose: () => goToPath(course?.survey?.path),
+                  });
+                } else if (program?.survey !== undefined) {
+                  reactAlert({
+                    title: '안내',
+                    message:
+                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
+                    onClose: () => goToPath(program?.survey?.path),
                   });
                 } else {
                   reactAlert({
