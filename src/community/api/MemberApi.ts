@@ -87,12 +87,13 @@ export function companionMembers(
   memberIdList: (string | undefined)[],
   remark: string
 ): Promise<string> {
+  const params = { remark: `${remark}`, approvedType: 'Return' };
   return axios
     .put<string>(
       `${BASE_URL}/communities/${communityId}/members/flow/return/${memberIdList.join(
         ','
       )}`,
-      { remark: `${remark}`, approveType: 'Return' }
+      params
     )
     .then(response => response && response.data);
 }
