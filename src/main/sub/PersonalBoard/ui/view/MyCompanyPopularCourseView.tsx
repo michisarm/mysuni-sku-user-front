@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { Button, Tab } from 'semantic-ui-react';
 import { usePopularCourseItem } from '../../store/PersonalBoardStore';
 
@@ -10,6 +11,37 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
   onTabClick
 }) {
   const popularCourseItem = usePopularCourseItem()
+
+  const [searchPeriod, setSearchPeriod] = useState<string>('')
+
+  useEffect(() => {
+    const startDate = moment().subtract(8, 'day')
+    const endDate = moment().subtract(1, 'day')
+    setSearchPeriod(startDate.format('YYYY.MM.DD') + '~' + endDate.format('YYYY.MM.DD'))
+  },[])
+
+  useEffect(() => {
+    console.log('popularCourseItem', popularCourseItem)
+  },[popularCourseItem])
+
+  const handleTabClick = (data: any) => {
+    onTabClick(data)
+    
+    let startDate
+    let endDate
+
+    if(data.activeIndex === 0) {
+      startDate = moment().subtract(8, 'day')
+      endDate = moment().subtract(1, 'day')
+    } else if(data.activeIndex === 1) {
+      startDate = moment().subtract(30, 'day')
+      endDate = moment().subtract(1, 'day')
+    } else {
+      startDate = moment().subtract(90, 'day')
+      endDate = moment().subtract(1, 'day')
+    }
+    setSearchPeriod(startDate.format('YYYY.MM.DD') + '~' + endDate.format('YYYY.MM.DD'))
+  }
   const panes = [
     {
       menuItem: "1주일",
@@ -133,10 +165,11 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
         <div className="personal-card-item right-card">
           <div className="card-item-tit">
             <h3>우리 회사 인기 코스</h3>
-            <span>2021.01.28~2021.02.03</span>
+            {/* <span>2021.01.28~2021.02.03</span> */}
+            <span>{searchPeriod}</span>
           </div>
           <div className="card-item-con">
-            <Tab panes={panes} onTabChange={(e, data) => onTabClick(data)}/>
+            <Tab panes={panes} onTabChange={(e, data) => handleTabClick(data)}/>
           </div>
         </div>
       )}

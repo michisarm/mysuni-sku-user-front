@@ -21,7 +21,7 @@ class ContentHeaderBadgeView extends PureComponent<Props> {
         <div className="stamp-wrap">
           <Label className="stamp">
             {/* <a href="#" onClick={onClickItem}> */}
-              <div onClick={onClickItem}>
+              <div>
                 <span className="text1">Badge</span>
               </div>
               <div>

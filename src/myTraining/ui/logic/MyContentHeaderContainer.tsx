@@ -62,6 +62,7 @@ function MyContentHeaderContainer(props: Props) {
   }, []);
 
   const onClickMyBadge = useCallback(() => {
+    console.log('onClickMyBadge')
     history.push(badgeRoutePaths.badgeEarnedBadgeList());
   }, []);
 
@@ -80,9 +81,11 @@ function MyContentHeaderContainer(props: Props) {
 
   /* render */
   return (
-    <ContentHeader
-      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
-    >
+    // 요청사항으로 관심 Channel 주석처리
+    // <ContentHeader
+    //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
+    // >
+    <ContentHeader>
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
             myPageActive={!isFromMyPage(contentType)}
