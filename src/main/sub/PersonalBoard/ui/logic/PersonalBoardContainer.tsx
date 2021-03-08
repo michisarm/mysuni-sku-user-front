@@ -36,15 +36,18 @@ function PersonalBoardContainer(props: Props){
     requestLearningObjectives()
   }, [])
 
-  const handlePopularCourseDate = useCallback((activeIndex: any) => {
+  const handlePopularCourseDate = useCallback((data: any) => {
+    console.log('data.activeIndex', data.activeIndex)
     let date = 0
-    if(activeIndex === 1) {
+    if(data.activeIndex === 0) {
       date = 7
-    } else if(activeIndex === 2) {
+    } else if(data.activeIndex === 1) {
       date = 30
-    } else if(activeIndex === 3) {
+    } else if(data.activeIndex === 2) {
       date = 90
     }
+      console.log('date', date)
+
     requestPopularCourse(companyCode, date)
   }, [])
 
