@@ -67,11 +67,11 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
               <div className="title">
                 <h3 className="title-style">
                   <div className="ui label onlytext bold size24">
-                    <span>{(lectureClassroom.classrooms[0].freeOfCharge.approvalProcess && '무료과정') || '유료과정'}</span>
+                    <span>{(lectureClassroom.classrooms[0].freeOfCharge.freeOfCharge && '무료과정') || '유료과정'}</span>
                   </div>
                 </h3>
               </div>
-              {!lectureClassroom.classrooms[0].freeOfCharge.approvalProcess && (
+              {!lectureClassroom.classrooms[0].freeOfCharge.freeOfCharge && (
                 <div className="detail">
                   {numberWithCommas(lectureClassroom.classrooms[0].freeOfCharge.chargeAmount)}원
                   ※ 각 사 HR조직에 청구되며, 참여 인원에 따라 변경 가능합니다.
