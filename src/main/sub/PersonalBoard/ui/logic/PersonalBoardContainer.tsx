@@ -37,7 +37,6 @@ function PersonalBoardContainer(props: Props){
   }, [])
 
   const handlePopularCourseDate = useCallback((data: any) => {
-    console.log('data.activeIndex', data.activeIndex)
     let date = 0
     if(data.activeIndex === 0) {
       date = 7
