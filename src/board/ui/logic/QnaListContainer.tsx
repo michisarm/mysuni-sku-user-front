@@ -157,6 +157,7 @@ class QnaListContainer extends React.Component<Props, State> {
           </>
         ) : (
           <div className="support-list-wrap">
+            <Loadingpanel loading={isLoading} />
             <div className="list-top">
               <Button
                 icon
@@ -199,14 +200,12 @@ class QnaListContainer extends React.Component<Props, State> {
                 />
               </div>
             </div>
-            {!isLoading && (
-              <div className="su-list qna">
-                {posts.results.map((post, index) =>
-                  this.renderPostRow(post, index)
-                )}
-              </div>
-            )}
-            <Loadingpanel loading={isLoading} />
+            <div className="su-list qna">
+              {posts.results.map((post, index) =>
+                this.renderPostRow(post, index)
+              )}
+            </div>
+
             {posts.results.length < posts.totalCount && (
               <div
                 className="more-comments"

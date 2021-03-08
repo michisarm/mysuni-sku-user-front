@@ -147,6 +147,7 @@ class FaqListContainer extends React.Component<Props, State> {
           <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
         ) : (
           <div className="support-list-wrap">
+            <Loadingpanel loading={isLoading} />
             <div className="list-top">
               <div className="radio-wrap">
                 {categorys.length > 0 &&
@@ -164,12 +165,10 @@ class FaqListContainer extends React.Component<Props, State> {
                   ))}
               </div>
             </div>
-            {!isLoading && (
-              <div className="su-list faq">
-                {result.map((post, index) => this.renderPostRow(post, index))}
-              </div>
-            )}
-            <Loadingpanel loading={isLoading} />
+            <div className="su-list faq">
+              {result.map((post, index) => this.renderPostRow(post, index))}
+            </div>
+
             {result.length > 0 && result.length < totalCount && (
               <div className="more-comments" onClick={this.onClickListMore}>
                 <Button icon className="left moreview">

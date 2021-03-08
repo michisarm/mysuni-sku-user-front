@@ -72,6 +72,7 @@ class NoticeListContainer extends Component<Props, State> {
 
   async findNoticePosts(offset: number) {
     //
+    // this.setState({ isLoading: true });
     const postService = this.props.postService!;
     const commentService = this.props.commentService!;
     const posts = await postService.findNoticePosts(0, offset);
@@ -147,15 +148,13 @@ class NoticeListContainer extends Component<Props, State> {
           <NoSuchContentPanel message="등록된 Notice가 없습니다." />
         ) : (
           <div className="support-list-wrap">
+            <Loadingpanel loading={isLoading} />
             <div className="su-list notice">
               {pinnedPosts.map((pinnedPost, index) =>
                 this.renderPostRow(pinnedPost, index, true)
               )}
-              {!isLoading &&
-                posts.map((post, index) => this.renderPostRow(post, index))}
+              {posts.map((post, index) => this.renderPostRow(post, index))}
             </div>
-            <Loadingpanel loading={isLoading} />
-
             {(pinnedPosts.length > 0 || posts.length > 0) &&
               posts.length < postTotalCount && (
                 <div
