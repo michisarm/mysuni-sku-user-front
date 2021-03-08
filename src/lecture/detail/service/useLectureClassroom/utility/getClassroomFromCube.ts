@@ -30,7 +30,7 @@ export async function getClassroomFromCube(params: LectureRouterParams) {
           siteUrl,
           instructor: instructorName,
           capacity,
-          freeOfCharge: { approvalProcess: freeOfCharge.approvalProcess, chargeAmount: freeOfCharge.chargeAmount},
+          freeOfCharge: { approvalProcess: freeOfCharge.approvalProcess, chargeAmount: freeOfCharge.chargeAmount, freeOfCharge: freeOfCharge.freeOfCharge},
         })
       ),
       remote: classrooms.map(classroom => new ClassroomModel(classroom)),
