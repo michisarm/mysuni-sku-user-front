@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import { Button, Icon, Radio, Segment, Modal } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
   useOpenCommunityIntro,
 } from '../../../store/CommunityMainStore';
-import { reactConfirm, reactAlert } from '@nara.platform/accent';
+import { reactConfirm, reactAlert, axiosApi } from '@nara.platform/accent';
 import CommunityType from '../../../model/CommunityType';
 import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
@@ -15,6 +15,8 @@ import {
   requestAppendOpenCommunityList,
   requestOpenCommunityList,
 } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
+import { StreamUtils } from 'xlsx/types';
+import { useHistory } from 'react-router-dom';
 
 interface FieldItemViewProps {}
 
@@ -31,9 +33,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   thumbnailId,
   type,
 }) {
-  // const passChek = (id: string, page: string) => {
-  //   alert('test' + id);
-  // };
+  const history = useHistory();
   const [openModal, setModalWin] = React.useState<{
     passInputModalWin: boolean;
   }>({
@@ -56,6 +56,20 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         '선택한 학습자를 가입 반려 처리하시겠습니까?  입력된 반려 사유는 E-mail과 알림을 통해 전달되며, 등록된 내용은 수정하실 수 없습니다.',
     });
   };
+  const onConfirmSecret = async (secret: string) => {
+    const url = `/api/community/secretCommunities/existsByCommunity/${communityId}/${secret}`;
+    const res = await axiosApi.get(url).then(response => response.data);
+
+    if (res === true) {
+      // window.location.href = `/community/${communityId}`;
+      history.push(`/community/${communityId}`);
+    } else {
+      reactAlert({
+        title: '확인',
+        message: '비밀번호가 맞지 않습니다.',
+      });
+    }
+  };
   return type === 'SECRET' ? (
     <>
       <OpenCommunityPassInputModal
@@ -63,7 +77,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         managerEmail={managerEmail}
         open={openModal.passInputModalWin}
         handleClose={handleClose}
-        handleOk={handleOk}
+        onConfirmModal={onConfirmSecret}
       />
       <div
         className="community-open-card lock"

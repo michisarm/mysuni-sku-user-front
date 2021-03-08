@@ -1,76 +1,69 @@
-import React, { Fragment } from 'react';
-import {
-  Button,
-  Form,
-  Modal,
-  TextArea,
-  TextAreaProps,
-} from 'semantic-ui-react';
-import {
-  getOpenCommunityIntro,
-  setOpenCommunityIntro,
-  useOpenCommunityIntro,
-} from '../../../store/CommunityMainStore';
-import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
-import {
-  requestAppendOpenCommunityList,
-  requestOpenCommunityList,
-} from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
+import React, { useState, useCallback, memo } from 'react';
+import { Button, Form, Modal } from 'semantic-ui-react';
 
 interface Props {
   managerName: string;
   managerEmail: string;
   open: boolean;
   handleClose: () => void;
-  handleOk: () => void;
+  onConfirmModal: (secret: string) => void;
 }
-
-class OpenCommunityPassInputModal extends React.Component<Props> {
+function OpenCommunityPassInputModal(props: Props) {
   //
-  render() {
-    const {
-      managerName,
-      managerEmail,
-      open,
-      handleClose,
-      handleOk,
-    } = this.props;
 
-    return (
-      <>
-        <Fragment>
-          <Modal open={open} onClose={handleClose} className="base w380">
-            <Modal.Header>
-              <span>비밀번호</span>
-            </Modal.Header>
-            <Modal.Content className="admin_popup_reject">
-              <h4>
-                해당 커뮤니티에 입장하기 위해서는 <br />
-                비밀번호가 필요합니다.
-              </h4>
-              <Form>
-                <Form.Field>
-                  <input type="password" className="commu_pw_form" />
-                </Form.Field>
-              </Form>
-              <a href={`mailto:${managerEmail}`} target="_top">
-                {/*임시로 김동구과장 메일 주소 기입*/}
-                {managerName}관리자에게 문의하기{managerEmail}
-              </a>
-            </Modal.Content>
-            <Modal.Actions className="actions2">
-              <Button className="pop2 d" onClick={handleClose}>
-                취소
-              </Button>
-              <Button className="pop2 p" onClick={handleOk}>
-                확인
-              </Button>
-            </Modal.Actions>
-          </Modal>
-        </Fragment>
-      </>
-    );
-  }
+  const {
+    managerName,
+    managerEmail,
+    open,
+    handleClose,
+    onConfirmModal,
+  } = props;
+  const [secret, setSecret] = useState<string>('');
+  /* handlers */
+  const onChangeSecret = useCallback((e: any) => {
+    setSecret(e.target.value);
+  }, []);
+
+  return (
+    <>
+      <Modal open={open} onClose={handleClose} className="base w380">
+        <Modal.Header>
+          <span>비밀번호</span>
+        </Modal.Header>
+        <Modal.Content className="admin_popup_reject">
+          <h4>
+            해당 커뮤니티에 입장하기 위해서는 <br />
+            비밀번호가 필요합니다.
+          </h4>
+          <Form>
+            <Form.Field>
+              <input
+                type="number"
+                className="commu_pw_form"
+                placeholder={remarkPlaceholder}
+                onChange={onChangeSecret}
+                maxLength={4}
+              />
+            </Form.Field>
+          </Form>
+          <a href={`mailto:${managerEmail}`} target="_blank">
+            {/*임시로 김동구과장 메일 주소 기입*/}
+            {managerName}관리자에게 문의하기{managerEmail}
+          </a>
+        </Modal.Content>
+        <Modal.Actions className="actions2">
+          <Button className="pop2 d" onClick={handleClose}>
+            취소
+          </Button>
+          <Button className="pop2 p" onClick={() => onConfirmModal(secret)}>
+            확인
+          </Button>
+        </Modal.Actions>
+      </Modal>
+    </>
+  );
 }
 
 export default OpenCommunityPassInputModal;
+/* globals */
+const remarkPlaceholder = `비밀번호를 입력해주세요.`;
