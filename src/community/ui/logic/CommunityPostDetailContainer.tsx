@@ -486,11 +486,11 @@ function CommunityPostDetailContainer() {
       <CommunityProfileModal
         open={profileOpen}
         setOpen={setProfileOpen}
-        userProfile={postDetail && postDetail.profileImg}
-        memberId={postDetail && postDetail.creatorId}
-        introduce={postDetail && postDetail.introduce}
-        nickName={postDetail && postDetail.nickName}
-        name={postDetail && postDetail.creatorName}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
       />
     </Fragment>
   );
