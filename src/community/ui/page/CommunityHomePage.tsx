@@ -283,7 +283,14 @@ function CommunityHomePage() {
             <>
               <img src={defaultHeader} />
               <div className="community-banner-inner">
-                <div className="community-banner-title">
+                <div
+                  className="community-banner-title"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#000000',
+                  }}
+                >
                   {communityHome.community.name}
                 </div>
                 <div className="community-banner-copy" />

@@ -291,10 +291,24 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <img src={defaultHeader} />
               )}
               <div className="community-banner-inner">
-                <div className="community-banner-title">
-                  {communityHome.community.name}
+                <div
+                  className="community-banner-title"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#000000',
+                  }}
+                >
+                  {communityHome.community.name}123
                 </div>
-                <div className="community-banner-copy">
+                <div
+                  className="community-banner-copy"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#000000',
+                  }}
+                >
                   {communityHome.community.introduce}
                 </div>
               </div>
@@ -312,8 +326,15 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
             <>
               <img src={defaultHeader} />
               <div className="community-banner-inner">
-                <div className="community-banner-title">
-                  {communityHome.community.name}
+                <div
+                  className="community-banner-title"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#000000',
+                  }}
+                >
+                  {communityHome.community.name}456
                 </div>
                 <div className="community-banner-copy" />
               </div>
