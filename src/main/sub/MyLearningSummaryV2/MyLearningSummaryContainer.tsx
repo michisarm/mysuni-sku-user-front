@@ -8,28 +8,26 @@ import moment from 'moment';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { Button, Icon, Image, Popup } from 'semantic-ui-react';
+import { Icon, Image, Popup } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
-// import { BadgeService } from 'certification/stores';
 import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
 import { BadgeService } from 'lecture/stores';
-import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearning } from './MyLearningSummaryElementsView';
+import { HeaderWrapperView, AdditionalToolsMyLearning } from './MyLearningSummaryElementsView';
 import { ChannelModel } from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
 import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
 import SkProfileModel from "../../../profile/model/SkProfileModel";
-import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
-import { getBadgeLearningTimeItem, getLearningObjectivesItem, setBadgeLearningTimeItem } from '../PersonalBoard/store/PersonalBoardStore';
+import { getBadgeLearningTimeItem, onLearningObjectivesItem, setBadgeLearningTimeItem } from '../PersonalBoard/store/PersonalBoardStore';
 import DashBoardSentenceContainer from 'layout/ContentHeader/sub/DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 import { FavoriteChannelChangeModal } from 'shared';
 import { MenuControlAuth } from 'shared/model/MenuControlAuth';
-import LearningGoalContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
 import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
-import { saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
+import { requestLearningObjectives, saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
+import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 
 
 interface Props extends RouteComponentProps {
@@ -47,7 +45,7 @@ interface States {
   learningObjectivesOpen: boolean;
   companyCode: string;
   activeIndex: any;
-
+  learningObjectives?:LearningObjectives 
   // badgeValue: number;
   // complateLearningValue: number;
   // complateLearningTimeValue: number;
@@ -71,11 +69,19 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     learningObjectivesOpen: false,
     companyCode: '',
     activeIndex: 0,
+    learningObjectives: {
+      AnnualLearningObjectives: 0,
+      WeekAttendanceGoal: 0,
+      DailyLearningTimeHour: 0,
+      DailyLearningTimeMinute: 0,
+    }
   }
   
   componentDidMount(): void {
     //
     this.init();
+    /* eslint-disable react/no-unused-state */
+    onLearningObjectivesItem((next)=>this.setState({ learningObjectives: next }),'MyLearningSummaryContainer')
   }
 
   handleOpenBtnClick = (e:any, data:any) => {
@@ -105,7 +111,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     myTrainingService!.countMyTrainingsWithStamp();
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
-    myLearningSummaryService!.findTotalMyLearningSummaryDash();
   }
 
   menuControlAuth() {
@@ -204,11 +209,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   render() {
     //
-    const { boardVisible, learningObjectivesOpen, companyCode, activeIndex } = this.state;
+    const { boardVisible, learningObjectivesOpen, companyCode, activeIndex, learningObjectives } = this.state;
     const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
-    const { myLearningSummary, totalMyLearningSummaryDash } = myLearningSummaryService!;
+    const { myLearningSummary } = myLearningSummaryService!;
     const { earnedCount: myBadgeCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
@@ -220,10 +225,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
     const badgeValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
     const complateLearningValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
+    let LearningObjectivesPer = (myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100
+    if(LearningObjectivesPer> 100) {
+      LearningObjectivesPer = 100
+    }
     const complateLearningTimeValue = (myLearningSummary.displayTotalLearningTime / myLearningSummary.displayAccrueTotalLearningTime) * 100
     let total: any = null;
     let accrueTotal: any = null;
-
     const { menuControlAuth } = menuControlAuthService!;
     if (hour < 1 && minute < 1) {
       total = (
@@ -387,10 +395,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
               <Popup
                 trigger={
-                  <div className={`gauge-content gauge-time${this.convertProgressValue(complateLearningTimeValue)}`}>
+                  <div className={`gauge-content gauge-time${LearningObjectivesPer}`}>
                     <div className="gauge-content-box">
                       <p>{total}</p>
-                      <span>{accrueTotal}</span>
+                      <span>{learningObjectives!.AnnualLearningObjectives}h</span>
                     </div>
                   </div>
                 }
@@ -402,7 +410,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   누적 학습시간
                 </span>
                 <span>
-                  <strong>{accrueTotal}</strong>
+                  <strong>{learningObjectives!.AnnualLearningObjectives}h</strong>
                 </span>
               </Popup>
             </div>
@@ -471,6 +479,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         <LearningObjectivesModalContainer
           open={learningObjectivesOpen}
           setOpen={(value)=> {
+            if(!value) {
+              requestLearningObjectives()
+            }
             return this.setState({'learningObjectivesOpen':value})
           }} 
         />
