@@ -24,7 +24,7 @@ export const useScrollMove = () => {
 
   useEffect(() => {
     if(!params?.channelId){
-      sessionStorage.removeItem('channelOffset')
+      sessionStorage.removeItem('channelOffset');
       sessionStorage.removeItem('channelSort');
     }
   }, [params]);
