@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export const useScrollMove = () => {
-  const history = useHistory();
   const [scrollPos, setScrollPos] = useState<any>(() => sessionStorage.getItem('SCROLL_POS'))
   const scrollTop = parseInt(scrollPos, 0) || 0;
+  const params = useParams<{channelId: string}>();
 
   const scrollMove = () => {
     if (!scrollPos && scrollPos !== 0) {
@@ -23,10 +23,11 @@ export const useScrollMove = () => {
   }
 
   useEffect(() => {
-    // Pathname이 바뀔때 Save 하는영역
-    // const listen = history.listen(scrollSave);
-    // return () => listen();
-  });
+    if(!params?.channelId){
+      sessionStorage.removeItem('channelOffset')
+      sessionStorage.removeItem('channelSort');
+    }
+  }, [params]);
 
   return { scrollMove, scrollOnceMove, scrollSave };
 }
