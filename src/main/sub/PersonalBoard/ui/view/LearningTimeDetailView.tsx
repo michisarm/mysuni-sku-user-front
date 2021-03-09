@@ -1,13 +1,29 @@
 import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'semantic-ui-react';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
 
+interface propsType {
+  label: string,
+  value: number
+}
 const LearningTimeDetailView: React.FC = function LearningTimeDetailView({
 }) {
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem()
+  const [chartProps, setChartProps] = useState<propsType[]>()
+
+  useEffect(() => {
+    setChartProps(    
+      [
+      {label: 'mySUNI',  value: 1234},
+      {label: '관계사',  value: 1234},
+      {label: '강의시간',  value: 1234},
+      {label: '개인학습',  value: 1234}
+     ])
+
+  }, [badgeLearningTimeDetailItem])
   return (
     <>
     {/* {badgeLearningTimeDetailItem && (
@@ -31,11 +47,54 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({
               <div className="card-item-con sty2">
                 <div className="item-con-box">
                   <div className="item-con-left detail">
-                    {/* <img src={gr_img}/> */}
+                    파이 차트 들어가야한다.
                   </div>
                   <div className="item-con-right detail">
                     <div className="card-gauge-bar">
-                      파이 차트 들어가야한다.
+                      <div className="gauge-number sv">
+                        <em className="col-con">mySUNI</em>
+                        <div>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.suniLearningTime / 60)}<em>h</em>
+                          </strong>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.suniLearningTime % 60)}<em>m</em>
+                          </strong>
+                        </div>
+                      </div>
+                      <div className="gauge-number mana">
+                        <em className="col-con">관계사</em>
+                        <div>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.displayMyCompanyLearningTime / 60)}<em>h</em>
+                          </strong>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.displayMyCompanyLearningTime % 60)}<em>m</em>
+                          </strong>
+                        </div>
+                      </div>
+                      <div className="gauge-number semi">
+                        <em className="col-con">강의시간</em>
+                        <div>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.totalCollegeTime / 60)}<em>h</em>
+                          </strong>
+                          <strong>
+                          {Math.floor(badgeLearningTimeDetailItem.totalCollegeTime % 60)}<em>m</em>
+                          </strong>
+                        </div>
+                      </div>
+                      <div className="gauge-number stu">
+                        <em className="col-con">개인학습</em>
+                        <div>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.aplAllowTime / 60)}<em>h</em>
+                          </strong>
+                          <strong>
+                            {Math.floor(badgeLearningTimeDetailItem.aplAllowTime % 60)}<em>m</em>
+                          </strong>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

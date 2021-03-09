@@ -8,12 +8,8 @@ const DashBoardSentenceView: React.FC<Props> = function DashBoardSentenceView(
   dashBoardTxt
 ) {
 
-  useEffect(() => {
-    // if(dashBoardTxt === undefined) {
-    //   return
-    // }
-    console.log("dashBoardTxt", dashBoardTxt)
-  }, [dashBoardTxt])
+  // useEffect(() => {
+  // }, [dashBoardTxt])
 
   return (
     <>

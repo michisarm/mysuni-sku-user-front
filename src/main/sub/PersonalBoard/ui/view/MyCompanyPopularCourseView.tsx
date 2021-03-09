@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, Tab } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 import { usePopularCourseItem } from '../../store/PersonalBoardStore';
 
 interface Props {
@@ -20,10 +20,6 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
     setSearchPeriod(startDate.format('YYYY.MM.DD') + '~' + endDate.format('YYYY.MM.DD'))
   },[])
 
-  useEffect(() => {
-    console.log('popularCourseItem', popularCourseItem)
-  },[popularCourseItem])
-
   const handleTabClick = (data: any) => {
     onTabClick(data)
     
@@ -34,10 +30,10 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       startDate = moment().subtract(8, 'day')
       endDate = moment().subtract(1, 'day')
     } else if(data.activeIndex === 1) {
-      startDate = moment().subtract(30, 'day')
+      startDate = moment().subtract(1, 'months')
       endDate = moment().subtract(1, 'day')
     } else {
-      startDate = moment().subtract(90, 'day')
+      startDate = moment().subtract(3, 'months')
       endDate = moment().subtract(1, 'day')
     }
     setSearchPeriod(startDate.format('YYYY.MM.DD') + '~' + endDate.format('YYYY.MM.DD'))
@@ -147,25 +143,9 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
   return (
     <>
       {popularCourseItem && ( 
-        // <div style={{border: '2px solid', borderColor: 'green'}}>
-        //   <button onClick={() => onTabClick(7)}>7일</button>
-        //   <button onClick={() => onTabClick(30)}>1개월</button>
-        //   <button onClick={() => onTabClick(90)}>3개월</button>
-        //   <span>우리회사 인기코스</span><br/>
-        //   {popularCourseItem.map((item: any, key: number)=> {
-        //     return (
-        //       <div key={key}>
-        //         <span>{item.collegeName} - {item.lectureName}</span>
-        //         <br/>
-        //       </div>
-        //     )
-        //   })
-        //   }
-        // </div>
         <div className="personal-card-item right-card">
           <div className="card-item-tit">
             <h3>우리 회사 인기 코스</h3>
-            {/* <span>2021.01.28~2021.02.03</span> */}
             <span>{searchPeriod}</span>
           </div>
           <div className="card-item-con">

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { findTotalMyLearningSummary, getBadgeLearningCompanyAvg, getCountOfBadges } from '../api/personalBoardApi';
 import {  setBadgeLearningTimeItem, getBadgeLearningTimeItem, } from '../store/PersonalBoardStore';
 
