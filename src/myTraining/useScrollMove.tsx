@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 export const useScrollMove = () => {
   const [scrollPos, setScrollPos] = useState<any>(() => sessionStorage.getItem('SCROLL_POS'))
   const scrollTop = parseInt(scrollPos, 0) || 0;
-  const params = useParams<{channelId: string}>();
+  const {collegeId} = useParams<{collegeId: string}>();
 
   const scrollMove = () => {
     if (!scrollPos && scrollPos !== 0) {
@@ -23,11 +23,11 @@ export const useScrollMove = () => {
   }
 
   useEffect(() => {
-    if(!params?.channelId){
+    if(!collegeId){
       sessionStorage.removeItem('channelOffset');
       sessionStorage.removeItem('channelSort');
     }
-  }, [params]);
+  }, [collegeId]);
 
   return { scrollMove, scrollOnceMove, scrollSave };
 }
