@@ -296,7 +296,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                   style={{
                     color: communityHome.community.color
                       ? communityHome.community.color
-                      : '#000000',
+                      : '#FFFFFF',
                   }}
                 >
                   {communityHome.community.name}123
@@ -306,7 +306,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                   style={{
                     color: communityHome.community.color
                       ? communityHome.community.color
-                      : '#000000',
+                      : '#FFFFFF',
                   }}
                 >
                   {communityHome.community.introduce}
@@ -331,7 +331,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                   style={{
                     color: communityHome.community.color
                       ? communityHome.community.color
-                      : '#000000',
+                      : '#FFFFFF',
                   }}
                 >
                   {communityHome.community.name}456

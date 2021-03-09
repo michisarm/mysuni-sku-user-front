@@ -288,7 +288,7 @@ function CommunityHomePage() {
                   style={{
                     color: communityHome.community.color
                       ? communityHome.community.color
-                      : '#000000',
+                      : '#FFFFFF',
                   }}
                 >
                   {communityHome.community.name}
