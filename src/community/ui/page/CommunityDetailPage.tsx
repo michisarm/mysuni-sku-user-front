@@ -299,7 +299,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                       : '#FFFFFF',
                   }}
                 >
-                  {communityHome.community.name}123
+                  {communityHome.community.name}
                 </div>
                 <div
                   className="community-banner-copy"
@@ -334,7 +334,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                       : '#FFFFFF',
                   }}
                 >
-                  {communityHome.community.name}456
+                  {communityHome.community.name}
                 </div>
                 <div className="community-banner-copy" />
               </div>
