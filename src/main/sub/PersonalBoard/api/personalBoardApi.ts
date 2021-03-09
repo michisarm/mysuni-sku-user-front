@@ -3,6 +3,7 @@ import BadgeCountModel from "certification/ui/model/BadgeCountModel";
 import BadgeFilterRdoModel from "certification/ui/model/BadgeFilterRdoModel";
 import moment from "moment";
 import MyLearningSummaryModel from "myTraining/model/MyLearningSummaryModel";
+import { CollegePercentData } from "../model/CollegePercent";
 import { MyCompanyPopularCourseItem } from "../model/LectureMyCompanyPopularCourse";
 import LearningObjectives from "../viewModel/LearningObjectives";
 
@@ -78,10 +79,8 @@ export function updateLearningObjectives(item: LearningObjectives) {
 
 //college별 학습 비중
 export function getCollegePercent() {
-  const params = {
-    patronKeyString: BadgeFilterRdoModel.getPatonKey(),
-  };
-
-  return axiosApi.get<LearningObjectives>(`/api/mytraining/mytraining/mytrainings/learningTime?patronKey=${BadgeFilterRdoModel.getPatonKey()}`)
-  .then(response => response && response.data);
+  return axiosApi.get<CollegePercentData[]>(`/api/mytraining/mytraining/mytrainings/learningTime?patronKey=${BadgeFilterRdoModel.getPatonKey()}`)
+  .then(response => {
+    return response && response.data
+  });
 }
