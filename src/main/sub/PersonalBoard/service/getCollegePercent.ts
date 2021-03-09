@@ -19,8 +19,6 @@ export async function requestCollegePercent() {
       }
     })
 
-    console.log('resultcollegeArr', collegeArr)
-    console.log('resulttotalTime', totalTime)
     setCollegeTopChartItem([...collegeArr])
   })
 }
