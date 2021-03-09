@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
 
 import { UserApp, AppLayout } from './shared';
+import HistoryContainer from './shared/ui/logic/HistoryContainer';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -67,6 +68,7 @@ class Routes extends PureComponent {
             </Switch>
           </Suspense>
         </UserApp>
+        <HistoryContainer />
       </BrowserRouter>
     );
   }

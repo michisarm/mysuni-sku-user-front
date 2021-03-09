@@ -7,6 +7,7 @@ import { MainBannerWrapper } from '../MyLearningContentElementsView';
 import { BannerService } from '../../../../shared/stores';
 import MainBannerModal from './MainBannerModal';
 import { SkProfileService } from '../../../../profile/stores';
+import ReactGA from 'react-ga';
 
 enum AnchorTargetType {
   self = '_self',
@@ -68,7 +69,16 @@ const MainBanner: React.FC<Props> = Props => {
   });
 
   // 클릭한 배너 정보
-  const onClickBanner = (targetUrl: string, target: string, name: string) => {
+  const onClickBanner = (targetUrl: string, target: string, name: string, index: number) => {
+    console.log('hi', index);
+
+     // react-ga event
+    ReactGA.event({
+      category: 'Banner',
+      action: 'Banner Clicked',
+      label: `Banner${index + 1}`,
+    });
+
     const modalOpen =
       target === AnchorTargetType.popup || target === AnchorTargetType.video
         ? true
@@ -113,7 +123,7 @@ const MainBanner: React.FC<Props> = Props => {
                   : undefined
               }
               onClick={() =>
-                onClickBanner(banner.targetUrl, banner.target, banner.name)
+                onClickBanner(banner.targetUrl, banner.target, banner.name, index)
               }
             />
           </div>

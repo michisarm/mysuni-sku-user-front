@@ -23,7 +23,7 @@ export async function getTestStudentItemMapFromCube(
   params: LectureRouterParams
 ): Promise<void> {
   // void : return이 없는 경우 undefined
-
+  setLectureTestStudentItem(undefined); // 초기화
   const studentJoins = await findIsJsonStudentByCube(params.lectureId!);
   if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
     const student = await findStudent(studentJoins[0].studentId);
