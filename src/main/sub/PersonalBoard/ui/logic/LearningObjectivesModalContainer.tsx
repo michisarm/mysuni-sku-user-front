@@ -17,9 +17,9 @@ const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjec
   open,
   setOpen
 }){
-  useEffect(() => {
-    requestLearningObjectives()
-  }, [])
+  // useEffect(() => {
+  //   requestLearningObjectives()
+  // }, [])
 
   const handleInputChange = useCallback((name: string, value: any) => {
     const learningObjectivesItem = getLearningObjectivesItem()

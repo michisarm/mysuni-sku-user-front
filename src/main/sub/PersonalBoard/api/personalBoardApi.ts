@@ -51,7 +51,6 @@ export function getPopularCourse(companyCode: string, date: number) {
 
 //최근학습중인 채널
 export function getRecentlyLearningChannel() {
-  console.log('getRecentlyLearningChannel')
   return axiosApi.get<any>(`/api/mytraining/mytraining/mytrainings/channel`)
     .then(response => response && response.data);
 }

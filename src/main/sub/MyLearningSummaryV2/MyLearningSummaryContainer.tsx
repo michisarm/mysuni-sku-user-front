@@ -225,7 +225,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
     const badgeValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
     const complateLearningValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
-    let LearningObjectivesPer = (myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100
+    let LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
     if(LearningObjectivesPer> 100) {
       LearningObjectivesPer = 100
     }
@@ -395,7 +395,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
               <Popup
                 trigger={
-                  <div className={`gauge-content gauge-time${LearningObjectivesPer}`}>
+                  <div className={`gauge-content gauge-time${LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)}`}>
                     <div className="gauge-content-box">
                       <p>{total}</p>
                       <span>{learningObjectives!.AnnualLearningObjectives}h</span>
@@ -479,9 +479,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         <LearningObjectivesModalContainer
           open={learningObjectivesOpen}
           setOpen={(value)=> {
-            if(!value) {
-              requestLearningObjectives()
-            }
+            // if(!value) {
+            //   requestLearningObjectives()
+            // }
             return this.setState({'learningObjectivesOpen':value})
           }} 
         />
