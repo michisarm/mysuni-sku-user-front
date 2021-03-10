@@ -84,7 +84,7 @@ export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearn
         <img src={activeIndex !== 1 ? `${PUBLIC_URL}/images/all/btn-pboard-open.png` : `${PUBLIC_URL}/images/all/btn-pboard-close.png`} />
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 1}>
-        <PersonalBoardContainer companyCode={companyCode}/>
+        <PersonalBoardContainer companyCode={companyCode} activeIndex={activeIndex}/>
       </Accordion.Content>
     </Accordion>
   );

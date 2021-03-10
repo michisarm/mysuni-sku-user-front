@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
 
-const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
 
+interface Props {
+  activeIndex: number;
+}
+
+function BadgeLearningTimeView(props: Props) {
+
+  const { activeIndex } = props;
   const badgeLearningTimeItem = useBadgeLearningTimeItem()
   const [allLearningTime, setAllLearningTime] = useState(0);
 
@@ -34,9 +40,9 @@ const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
                 <div className="rangeBox">
                   <div className="range">
                     <div
-                      style={{
+                      style={activeIndex === -1 ? {width:0} : {
                         width: `${(badgeLearningTimeItem.badgeMyCount/badgeLearningTimeItem.AllBadgeMyCount)*100}%`,
-                      }}
+                      } }
                       className="percent"
                     />
                   </div>
@@ -52,7 +58,7 @@ const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
                 <div className="rangeBox">
                   <div className="range">
                     <div
-                      style={{
+                      style={activeIndex === -1 ? {width:0} : {
                         width: `${(badgeLearningTimeItem.companyAvgBadgeCount/badgeLearningTimeItem.allCompanyAvgBadgeCount)*100}%`,
                       }}
                       className="percent"
@@ -78,7 +84,7 @@ const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
                 <div className="rangeBox">
                   <div className="range">
                     <div
-                      style={{
+                      style={activeIndex === -1 ? {width:0} : {
                         width: `${allLearningTime > badgeLearningTimeItem.companyAvglearningTime ? (allLearningTime/(allLearningTime*1.1))*100 : (allLearningTime/(badgeLearningTimeItem.companyAvglearningTime*1.1))*100}%`,
                       }}
                       className="percent"
@@ -105,7 +111,7 @@ const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
                 <div className="rangeBox">
                   <div className="range">
                     <div
-                      style={{
+                      style={activeIndex === -1 ? {width:0} : {
                         width: `${allLearningTime > badgeLearningTimeItem.companyAvglearningTime ? (badgeLearningTimeItem.companyAvglearningTime/(allLearningTime*1.1))*100 : (badgeLearningTimeItem.companyAvglearningTime/(badgeLearningTimeItem.companyAvglearningTime*1.1))*100}%`,
                       }}
                       className="percent"
@@ -136,6 +142,6 @@ const BadgeLearningTimeView: React.FC = function BadgeLearningTimeView() {
     )}
     </>
   );
-};
+}
 
 export default BadgeLearningTimeView;
