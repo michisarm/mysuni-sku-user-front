@@ -75,11 +75,8 @@ export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearn
         active={activeIndex === 1}
         index={1}
         onClick={(e, data) => {
-          // console.log('activeIndex', activeIndex)
-          console.log('data', data)
           handleClick(e, data)
         }}
-        // onClick={handleClick(e, data)}
       >
         <img src={activeIndex !== 1 ? `${PUBLIC_URL}/images/all/btn-pboard-open.png` : `${PUBLIC_URL}/images/all/btn-pboard-close.png`} />
       </Accordion.Title>

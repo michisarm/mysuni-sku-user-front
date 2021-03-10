@@ -46,8 +46,6 @@ function PersonalBoardContainer(props: Props){
     } else if(data.activeIndex === 2) {
       date = 90
     }
-      console.log('date', date)
-
     requestPopularCourse(companyCode, date)
   }, [])
 

@@ -44,7 +44,6 @@ export function findMyLearningSummaryYear() {
 export function getPopularCourse(companyCode: string, date: number) {
   return axiosApi.get<MyCompanyPopularCourseItem[]>(`/api/lecture/courseStatistics/${companyCode}/${date}`)
     .then(response => {
-      console.log('response', response)
       return response && response.data
     });
 }

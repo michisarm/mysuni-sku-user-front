@@ -12,7 +12,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
 }) {
   const popularCourseItem = usePopularCourseItem()
   const [searchPeriod, setSearchPeriod] = useState<string>('')
-  
+
   useEffect(() => {
     const startDate = moment().subtract(8, 'day')
     const endDate = moment().subtract(1, 'day')
@@ -80,7 +80,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1개월",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && (
+          {popularCourseItem && popularCourseItem[1] && (
             <ul className="personal_list">
               <li className="sv">
                 <span className="personal_list_number">1</span>
@@ -118,7 +118,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "3개월",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && (
+          {popularCourseItem && popularCourseItem[1] && (
             <ul className="personal_list">
               <li className="sv">
                 <span className="personal_list_number">1</span>
