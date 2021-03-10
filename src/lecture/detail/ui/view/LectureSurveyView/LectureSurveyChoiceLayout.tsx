@@ -15,16 +15,18 @@ const LectureSurveyChoiceLayout: React.FC<LectureSurveyItem> = function LectureS
         <span>{no}.</span>
         {isRequired === true && (
           <>
-            <span>{title}</span>
-            <span className="importantBtn">
-              <Image
-                style={{
-                  display: 'inline-block',
-                  marginLeft: '7px',
-                  verticalAlign: 'text-bottom',
-                }}
-                src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
-              />
+            <span>
+              {title}
+              <span className="importantBtn">
+                <Image
+                  style={{
+                    display: 'inline-block',
+                    marginLeft: '7px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                  src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
+                />
+              </span>
             </span>
           </>
         )}
