@@ -4,7 +4,7 @@ import { MyCompanyPopularCourseItem } from '../model/LectureMyCompanyPopularCour
 
 export async function requestPopularCourse(companyCode: string, date: number) {
   getPopularCourse(companyCode, date).then((result: MyCompanyPopularCourseItem[]) => {
-    const channalArr: object[] = []
+    const channalArr: any = []
     result.map((item: any, index: number) => {
       channalArr.push({
         'collegeName' : item.category.college.name,

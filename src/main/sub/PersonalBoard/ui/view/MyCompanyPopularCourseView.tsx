@@ -11,7 +11,6 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
   onTabClick
 }) {
   const popularCourseItem = usePopularCourseItem()
-
   const [searchPeriod, setSearchPeriod] = useState<string>('')
 
   useEffect(() => {
@@ -43,32 +42,37 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1주일",
       render: () => (
         <Tab.Pane>
-          <ul className="personal_list">
-            <li className="sv">
-              <span className="personal_list_number">1</span>
-              <p className="personal_list_txt">사회문제에 대한 이해 : 심화</p>
-            </li>
-            <li className="global">
-              <span className="personal_list_number">2</span>
-              <p className="personal_list_txt">
-                국제정세의 현상과 본질 (Series 2)
-              </p>
-            </li>
-            <li className="happy">
-              <span className="personal_list_number">3</span>
-              <p className="personal_list_txt">명상의 이해</p>
-            </li>
-            <li className="ai">
-              <span className="personal_list_number">4</span>
-              <p className="personal_list_txt">AI UX 기초 Essentials</p>
-            </li>
-            <li className="inno">
-              <span className="personal_list_number">5</span>
-              <p className="personal_list_txt">
-                고객 이해에 도움되는 &quot; 디자인 방법 &quot; 맛보기
-              </p>
-            </li>
-          </ul>
+          {popularCourseItem && (
+            <ul className="personal_list">
+              <li className="sv">
+                <span className="personal_list_number">1</span>
+                {/* 
+                popularCourseItem[0].lectureName
+                */}
+                <p className="personal_list_txt">{popularCourseItem[0].lectureName}</p>
+              </li>
+              <li className="global">
+                <span className="personal_list_number">2</span>
+                <p className="personal_list_txt">
+                {popularCourseItem[1].lectureName}
+                </p>
+              </li>
+              <li className="happy">
+                <span className="personal_list_number">3</span>
+                <p className="personal_list_txt">{popularCourseItem[2].lectureName}</p>
+              </li>
+              <li className="ai">
+                <span className="personal_list_number">4</span>
+                <p className="personal_list_txt">{popularCourseItem[3].lectureName}</p>
+              </li>
+              <li className="inno">
+                <span className="personal_list_number">5</span>
+                <p className="personal_list_txt">
+                {popularCourseItem[4].lectureName}
+                </p>
+              </li>
+            </ul>
+          )}
         </Tab.Pane>
       ),
     },
@@ -76,32 +80,37 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1개월",
       render: () => (
         <Tab.Pane>
-          <ul className="personal_list">
-            <li className="sv">
-              <span className="personal_list_number">1</span>
-              <p className="personal_list_txt">AI UX 기초 Essentials</p>
-            </li>
-            <li className="global">
-              <span className="personal_list_number">2</span>
-              <p className="personal_list_txt">
-                고객 이해에 도움되는 &quot; 디자인 방법 &quot; 맛보기
-              </p>
-            </li>
-            <li className="happy">
-              <span className="personal_list_number">3</span>
-              <p className="personal_list_txt">명상의 이해</p>
-            </li>
-            <li className="ai">
-              <span className="personal_list_number">4</span>
-              <p className="personal_list_txt">국제정세의 현상과 본질 (Series 2)</p>
-            </li>
-            <li className="inno">
-              <span className="personal_list_number">5</span>
-              <p className="personal_list_txt">
-                사회문제에 대한 이해 : 심화
-              </p>
-            </li>
-          </ul>
+          {popularCourseItem && (
+            <ul className="personal_list">
+              <li className="sv">
+                <span className="personal_list_number">1</span>
+                {/* 
+                popularCourseItem[0].lectureName
+                */}
+                <p className="personal_list_txt">{popularCourseItem[0].lectureName}</p>
+              </li>
+              <li className="global">
+                <span className="personal_list_number">2</span>
+                <p className="personal_list_txt">
+                {popularCourseItem[1].lectureName}
+                </p>
+              </li>
+              <li className="happy">
+                <span className="personal_list_number">3</span>
+                <p className="personal_list_txt">{popularCourseItem[2].lectureName}</p>
+              </li>
+              <li className="ai">
+                <span className="personal_list_number">4</span>
+                <p className="personal_list_txt">{popularCourseItem[3].lectureName}</p>
+              </li>
+              <li className="inno">
+                <span className="personal_list_number">5</span>
+                <p className="personal_list_txt">
+                {popularCourseItem[4].lectureName}
+                </p>
+              </li>
+            </ul>
+          )}
         </Tab.Pane>
       ),
     },
@@ -109,32 +118,37 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "3개월",
       render: () => (
         <Tab.Pane>
-          <ul className="personal_list">
-            <li className="sv">
-              <span className="personal_list_number">1</span>
-              <p className="personal_list_txt">명상의 이해</p>
-            </li>
-            <li className="global">
-              <span className="personal_list_number">2</span>
-              <p className="personal_list_txt">
-                국제정세의 현상과 본질 (Series 2)
-              </p>
-            </li>
-            <li className="happy">
-              <span className="personal_list_number">3</span>
-              <p className="personal_list_txt">사회문제에 대한 이해 : 심화</p>
-            </li>
-            <li className="ai">
-              <span className="personal_list_number">4</span>
-              <p className="personal_list_txt">고객 이해에 도움되는 &quot; 디자인 방법 &quot; 맛보기</p>
-            </li>
-            <li className="inno">
-              <span className="personal_list_number">5</span>
-              <p className="personal_list_txt">
-                AI UX 기초 Essentials
-              </p>
-            </li>
-          </ul>
+          {popularCourseItem && (
+            <ul className="personal_list">
+              <li className="sv">
+                <span className="personal_list_number">1</span>
+                {/* 
+                popularCourseItem[0].lectureName
+                */}
+                <p className="personal_list_txt">{popularCourseItem[0].lectureName}</p>
+              </li>
+              <li className="global">
+                <span className="personal_list_number">2</span>
+                <p className="personal_list_txt">
+                {popularCourseItem[1].lectureName}
+                </p>
+              </li>
+              <li className="happy">
+                <span className="personal_list_number">3</span>
+                <p className="personal_list_txt">{popularCourseItem[2].lectureName}</p>
+              </li>
+              <li className="ai">
+                <span className="personal_list_number">4</span>
+                <p className="personal_list_txt">{popularCourseItem[3].lectureName}</p>
+              </li>
+              <li className="inno">
+                <span className="personal_list_number">5</span>
+                <p className="personal_list_txt">
+                {popularCourseItem[4].lectureName}
+                </p>
+              </li>
+            </ul>
+          )}
         </Tab.Pane>
       ),
     },
@@ -142,7 +156,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
 
   return (
     <>
-      {popularCourseItem && ( 
+      {popularCourseItem && popularCourseItem[0] && ( 
         <div className="personal-card-item right-card">
           <div className="card-item-tit">
             <h3>우리 회사 인기 코스</h3>

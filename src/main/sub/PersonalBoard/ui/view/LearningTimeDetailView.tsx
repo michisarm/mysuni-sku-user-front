@@ -20,11 +20,11 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({}) {
       },
       {
         label: '강의시간',
-        value: badgeLearningTimeDetailItem?.aplAllowTime || 0,
+        value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
       },
       {
         label: '개인학습',
-        value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
+        value: badgeLearningTimeDetailItem?.aplAllowTime || 0,
       },
     ],
     [badgeLearningTimeDetailItem]

@@ -13,5 +13,8 @@ export function requestLearningObjectives() {
 }
 export function saveLearningObjectives() {
   const param = getLearningObjectivesItem()
-  updateLearningObjectives(param!)
+  updateLearningObjectives(param!).then(() => {
+    requestLearningObjectives()
+  })
+
 }

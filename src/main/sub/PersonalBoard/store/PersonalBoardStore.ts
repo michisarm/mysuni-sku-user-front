@@ -74,7 +74,7 @@ const [
     onPopularCourseItem, 
     getPopularCourseItem,
     usePopularCourseItem
-] = createStore<object[]>([]);
+] = createStore<any[]>([]);
 
 export {
     setBadgeLearningTimeItem,
