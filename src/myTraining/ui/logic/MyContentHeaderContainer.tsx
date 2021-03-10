@@ -62,6 +62,7 @@ function MyContentHeaderContainer(props: Props) {
   }, []);
 
   const onClickMyBadge = useCallback(() => {
+    console.log('onClickMyBadge')
     history.push(badgeRoutePaths.badgeEarnedBadgeList());
   }, []);
 
@@ -80,17 +81,32 @@ function MyContentHeaderContainer(props: Props) {
 
   /* render */
   return (
-    <ContentHeader
-      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
-    >
-      <ContentHeader.Cell inner>
-        <ContentHeader.ProfileItem
-          myPageActive={!isFromMyPage(contentType)}
-          imageEditable={isFromMyPage(contentType)}
-          image={skProfile.photoFilePath || profileImg}
-          name={skProfile.member.name}
-          company={skProfile.member.company}
-          department={skProfile.member.department}
+    // 요청사항으로 관심 Channel 주석처리
+    // <ContentHeader
+    //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
+    // >
+    <ContentHeader>
+      <ContentHeader.Cell inner className="personal-inner">
+          <ContentHeader.ProfileItem
+            myPageActive={!isFromMyPage(contentType)}
+            imageEditable={isFromMyPage(contentType)}
+            image={skProfile.photoFilePath || profileImg}
+            name={skProfile.member.name}
+            company={skProfile.member.company}
+            department={skProfile.member.department}
+          />
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderBadgeView
+          badgeCount={myBadgeCount}
+          onClickItem={onClickMyBadge}
+        />
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderStampView
+          stampCount={myStampCount}
+          onClickItem={onClickMyStamp}
+          thisYearStampCount={thisYearMyStampCount}
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
@@ -118,19 +134,6 @@ function MyContentHeaderContainer(props: Props) {
             options={getYearOptions()}
           />
           </div>*/}
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderStampView
-          stampCount={myStampCount}
-          onClickItem={onClickMyStamp}
-          thisYearStampCount={thisYearMyStampCount}
-        />
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderBadgeView
-          badgeCount={myBadgeCount}
-          onClickItem={onClickMyBadge}
-        />
       </ContentHeader.Cell>
     </ContentHeader>
   );
