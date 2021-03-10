@@ -42,7 +42,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1주일",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && (
+          {popularCourseItem && popularCourseItem[0] && (
             <ul className="personal_list">
               <li className="sv">
                 <span className="personal_list_number">1</span>
