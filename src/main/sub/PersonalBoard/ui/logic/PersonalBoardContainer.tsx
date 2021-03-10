@@ -21,11 +21,12 @@ interface Props extends RouteComponentProps {
   badgeService?: BadgeService;
   skProfileService?: SkProfileService;
   companyCode: string;
+  activeIndex: number;
 }
 
 function PersonalBoardContainer(props: Props){
 
-  const { myLearningSummaryService, skProfileService, companyCode } = props;
+  const { myLearningSummaryService, skProfileService, companyCode, activeIndex } = props;
   const { myLearningSummary } = myLearningSummaryService!;
 
   useEffect(() => {
@@ -53,13 +54,14 @@ function PersonalBoardContainer(props: Props){
 return (
   <>
     <div className="personal-contents">
-      <BadgeLearningTimeView/>
+      <BadgeLearningTimeView activeIndex={activeIndex}/>
       <LearningTimeDetailView/>
       <CollegeTopChartView
         myLearningSummary={myLearningSummary}
+        activeIndex={activeIndex}
       />
     </div>
-    <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate}/>
+    <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate} />
   </>
 )
 }

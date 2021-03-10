@@ -5,10 +5,11 @@ import { useCollegeTopChartItem } from '../../store/PersonalBoardStore';
 
 interface Props {
   myLearningSummary: MyLearningSummaryModel
+  activeIndex: number
 }
 
 const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
-  myLearningSummary
+  activeIndex
 }) {
 
   const collegeTopChartItem = useCollegeTopChartItem()
@@ -32,7 +33,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                       <div className="rangeBox">
                         <div className="range">
                           <div
-                            style={{
+                            style={activeIndex === -1 ? {width:0} :{
                               width: `${collegeTopChartItem[0].percent}%`,
                             }}
                             className="percent"
@@ -44,7 +45,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                       <div className="rangeBox">
                         <div className="range">
                           <div
-                            style={{
+                            style={activeIndex === -1 ? {width:0} :{
                               width: `${collegeTopChartItem[1].percent}%`,
                             }}
                             className="percent"
@@ -56,7 +57,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                       <div className="rangeBox">
                         <div className="range">
                           <div
-                            style={{
+                            style={activeIndex === -1 ? {width:0} :{
                               width: `${collegeTopChartItem[2].percent}%`,
                             }}
                             className="percent"
@@ -68,7 +69,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                       <div className="rangeBox">
                         <div className="range">
                           <div
-                            style={{
+                            style={activeIndex === -1 ? {width:0} :{
                               width: `${collegeTopChartItem[3].percent}%`,
                             }}
                             className="percent"
@@ -80,7 +81,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                       <div className="rangeBox">
                         <div className="range">
                           <div
-                            style={{
+                            style={activeIndex === -1 ? {width:0} :{
                               width: `${collegeTopChartItem[4].percent}%`,
                             }}
                             className="percent"
