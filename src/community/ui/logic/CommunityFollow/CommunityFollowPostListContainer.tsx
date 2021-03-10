@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowPostItem from '../../../viewModel/CommunityFollowIntro/FollowPostItem';
 import { followList, removeBookmark } from '../../../api/communityApi';
@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -77,8 +78,21 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
 
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
-
   const { pathname } = useLocation();
+  const history = useHistory();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 100)
+  }, [scrollOnceMove])
+
+  useEffect(() => {
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, [pathname])
+
   const shareUrl = useCallback(() => {
     const hostLength = window.location.href.indexOf(pathname);
     if (hostLength === -1) {
@@ -113,7 +127,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
       .join('\n');
     setText(nextText);
   }, []);
-  
+
   return (
     <>
       <div className="sub-info-box">
@@ -220,8 +234,8 @@ function CommunityFollowPostListContainer() {
     return null;
   }
 
-  const addList = (offset:number) => {
-    
+  const addList = (offset: number) => {
+
     requestFollowCommunityPostList(offset, 5);
   }
 
@@ -236,7 +250,7 @@ function CommunityFollowPostListContainer() {
           <Button
             icon
             className="left moreview"
-            onClick={()=>addList(communityFollowPostList.postsOffset)}
+            onClick={() => addList(communityFollowPostList.postsOffset)}
           >
             <Icon className="moreview" /> list more
           </Button>

@@ -11,10 +11,13 @@ import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
-import { findPostMenuName } from 'community/api/communityApi';
 import { checkMember } from 'community/service/useMember/useMember';
-import { getNoticePostGroupManager, getNoticePostListMapFromCommunity } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
+import {
+  getNoticePostGroupManager,
+  getNoticePostListMapFromCommunity,
+} from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
 import { useCommunityGroup } from 'community/store/CommunityGroupStore';
+import { findMenu } from '../../api/communityApi';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -48,7 +51,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [menuType, setMenuType] = useState<string>('');
   const [menuName, setMenuName] = useState<string>('');
-  
+
   // const { pageMap } = SharedService;
   useEffect(() => {
     if (postItems === undefined) {
@@ -57,10 +60,10 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     totalPages();
     const denizenId = patronInfo.getDenizenId();
 
-    const menuData = findPostMenuName(communityId, menuId);
+    const menuData = findMenu(communityId, menuId);
     menuData.then(result => {
       setMenuName(result.name);
-      setMenuType(result.type)
+      setMenuType(result.type);
     });
 
     //managerId 가져와서 현재 로그인한 계정과 비교
@@ -76,7 +79,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   const handelClickCreatePost = () => {};
   const handleClickRow = async (param: any) => {
     //멤버 가입 체크
-    if(!await checkMember(communityId)){
+    if (!(await checkMember(communityId))) {
       return;
     }
     history.push({

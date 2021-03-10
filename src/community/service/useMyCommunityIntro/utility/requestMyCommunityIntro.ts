@@ -100,6 +100,8 @@ export function requestAppendMyCommunityList() {
             next.push(communityToItem(community));
           }
         });
+        const setPostOffset = (next: CommunityItem[]) => sessionStorage.setItem('postOffset', JSON.stringify(next.length));
+        setPostOffset(next);
         setMyCommunityIntro({
           ...myCommunityIntro,
           communities: next,
@@ -146,10 +148,13 @@ function postToItem(post: Post): PostItem {
 
 export function requestMyCommunityPostList() {
   const { postsSort } = getMyCommunityIntro() || getEmptyMyCommunityIntro();
+  const prevPostOffset: any = sessionStorage.getItem('communityOffset');
+  const getPostOffset: number = JSON.parse(prevPostOffset);
 
-  findAllPostViewsFromMyCommunities(postsSort, 0).then(posts => {
+  findAllPostViewsFromMyCommunities(postsSort, getPostOffset || 0).then(posts => {
     const myCommunityIntro =
       getMyCommunityIntro() || getEmptyMyCommunityIntro();
+
     if (posts === undefined) {
       setMyCommunityIntro({
         ...myCommunityIntro,
@@ -171,7 +176,7 @@ export function requestMyCommunityPostList() {
 export function requestAppendMyCommunityPostList() {
   const { postsSort, postsOffset } =
     getMyCommunityIntro() || getEmptyMyCommunityIntro();
-
+  sessionStorage.setItem('communityOffset', JSON.stringify(postsOffset));
   findAllPostViewsFromMyCommunities(postsSort, postsOffset).then(posts => {
     const myCommunityIntro =
       getMyCommunityIntro() || getEmptyMyCommunityIntro();
@@ -184,9 +189,9 @@ export function requestAppendMyCommunityPostList() {
       });
     } else {
       const next = [
-        ...myCommunityIntro.posts,
         ...posts.results.map(postToItem),
       ];
+
       setMyCommunityIntro({
         ...myCommunityIntro,
         posts: next,

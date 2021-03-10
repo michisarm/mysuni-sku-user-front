@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import { ClassroomModel } from '../../../../../personalcube/classroom/model';
@@ -38,6 +38,9 @@ import {
   experimetial,
   webPageLinked,
 } from '../../useActionLog/cubeStudyEvent';
+import { useHistory } from 'react-router-dom';
+
+import { getCurrentHistory } from 'shared/store/HistoryStore';
 
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
@@ -415,7 +418,7 @@ async function getDocumentsApprovedState(
         hideAction: false,
         canAction: true,
         actionText: DOWNLOAD,
-        action: () => { },
+        action: () => {},
         stateText,
       };
     }
@@ -427,7 +430,7 @@ async function getDocumentsApprovedState(
       hideAction: true,
       canAction: true,
       actionText: DOWNLOAD,
-      action: () => { },
+      action: () => {},
       stateText,
     };
   }
@@ -606,14 +609,29 @@ async function complete(
   await requestLectureStructure(params.lectureParams, params.pathname);
   const course = getActiveCourseStructureItem();
   const program = getActiveProgramStructureItem();
-  if (
-    (course?.state === 'Completed' && course.survey !== undefined) ||
-    (program?.state === 'Completed' && program.survey !== undefined)
-  ) {
+  if (course?.state === 'Completed' && course.survey !== undefined) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
+      onClose: () => goToPath(course?.survey?.path),
     });
+  } else if (program?.state === 'Completed' && program.survey !== undefined) {
+    reactAlert({
+      title: '안내',
+      message: 'Survey 설문 참여를 해주세요.',
+      onClose: () => goToPath(program?.survey?.path),
+    });
+    // reactConfirm({
+    //   title: '알림',
+    //   message:
+    //     '학습이 완료되었습니다.<br />학습과정에 대한 의견을 Survey를 통해 남겨주세요.',
+    //   onOk: async () => {
+    //     window.location.href = params.pathname + '/survey';
+    //   },
+    //   onCancel: () => {
+    //     return false;
+    //   },
+    // });
   }
   const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
   sessionStorage.setItem(
@@ -632,6 +650,16 @@ async function complete(
     [],
     true
   );
+}
+
+function goToPath(path?: string) {
+  if (path !== undefined) {
+    const currentHistory = getCurrentHistory();
+    if (currentHistory === undefined) {
+      return;
+    }
+    currentHistory.push(path);
+  }
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {

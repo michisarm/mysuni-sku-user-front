@@ -33,6 +33,7 @@ export async function getTestStudentItemMapFromCourse(
   params: LectureRouterParams
 ): Promise<void> {
   // void : return이 없는 경우 undefined
+  setLectureTestStudentItem(undefined); // 초기화
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
   if (coursePlanComplex.courseLecture.usid !== null) {  // 코스
     const studentInfo = await studentInfoView({

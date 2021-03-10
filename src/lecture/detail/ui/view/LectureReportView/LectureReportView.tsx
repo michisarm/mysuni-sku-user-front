@@ -24,6 +24,7 @@ import {
 } from '../../../service/useLectureStructure/useLectureStructure';
 import { getCourseLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCourseLectureReport';
 import { getCubeLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCubeLectureReport';
+import { useHistory } from 'react-router-dom';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report
@@ -43,6 +44,19 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   setCubeLectureReport,
 }) {
   const params = useLectureRouterParams();
+
+  const history = useHistory();
+  const goToPath = (path?: string) => {
+    if (path !== undefined) {
+      //const currentHistory = getCurrentHistory();
+      //if (currentHistory === undefined) {
+      //  return;
+      //}
+      //currentHistory.push(path);
+      history.push(path);
+    }
+  }
+
   const onSubmitClick = useCallback(() => {
     const lectureStructureItem = getActiveStructureItem();
     if (lectureStructureItem?.canSubmit !== true) {
@@ -89,11 +103,19 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
           }
           const course = getActiveCourseStructureItem();
           const program = getActiveProgramStructureItem();
-          if (course?.survey !== undefined || program?.survey !== undefined) {
+          if (course?.survey !== undefined) {
             reactAlert({
               title: '알림',
               message:
                 '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+              onClose: () => goToPath(course?.survey?.path),
+            });
+          } else if (program?.survey !== undefined) {
+            reactAlert({
+              title: '알림',
+              message:
+                '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+              onClose: () => goToPath(program?.survey?.path),
             });
           } else {
             reactAlert({

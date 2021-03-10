@@ -51,6 +51,7 @@ export async function getTestAnswerItemMapFromExam(
   questions: ExamQuestion[]
 ): Promise<void> {
   // void : return이 없는 경우 undefined
+  setLectureTestAnswerItem(undefined);  // 초기화
   if (examId) {
     const answerItem = await getTestAnswerItem(examId);
     if (answerItem !== undefined) {

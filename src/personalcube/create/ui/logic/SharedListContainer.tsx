@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { useHistory, useLocation } from 'react-router-dom'
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
@@ -18,6 +19,7 @@ import { InMyLectureService } from 'myTraining/stores';
 
 import routePaths from '../../../routePaths';
 import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -26,12 +28,49 @@ interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
   inMyLectureService?: InMyLectureService;
   reviewService?: ReviewService;
   onChangeSharedCount: (sharedCount: number) => void;
+  scrollSave?: () => void;
 }
 
 interface States {
   channels: ChannelModel[];
 }
 
+const SharedListContainer: React.FC<Props> = ({
+  actionLogService,
+  pageService,
+  lectureService,
+  inMyLectureService,
+  reviewService,
+  onChangeSharedCount,
+  match,
+}) => {
+  const histroy = useHistory();
+  const location = useLocation();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 1000)
+  }, [scrollOnceMove])
+
+  return (
+    <SharedListInnerContainer
+      actionLogService={actionLogService}
+      pageService={pageService}
+      lectureService={lectureService}
+      inMyLectureService={inMyLectureService}
+      reviewService={reviewService}
+      onChangeSharedCount={onChangeSharedCount}
+      match={match}
+      history={histroy}
+      location={location}
+      scrollSave={scrollSave}
+    />
+  )
+}
+
+export default withRouter(SharedListContainer);
 @inject(
   mobxHelper.injectFrom(
     'shared.actionLogService',
@@ -43,7 +82,7 @@ interface States {
 )
 @observer
 @reactAutobind
-class SharedListContainer extends React.Component<Props, States> {
+class SharedListInnerContainer extends React.Component<Props, States> {
   //
   PAGE_KEY = 'lecture.shared';
 
@@ -83,6 +122,7 @@ class SharedListContainer extends React.Component<Props, States> {
       this.findSharedLectures();
     });
   }
+
 
   // tab click 시 초기화 by gon
   getSearchInTab(prevProps: Readonly<Props>) {
@@ -196,7 +236,7 @@ class SharedListContainer extends React.Component<Props, States> {
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
-    const { history } = this.props;
+    const { history, scrollSave } = this.props;
     const collegeId = model.category.college.id;
     const cineroom =
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
@@ -225,6 +265,7 @@ class SharedListContainer extends React.Component<Props, States> {
         )
       );
     }
+    scrollSave && scrollSave();
   }
 
   onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
@@ -258,7 +299,6 @@ class SharedListContainer extends React.Component<Props, States> {
     const { lectures, totalLectureCount } = lectureService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
-
     if (lectures.length < 1) {
       return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
     }
@@ -311,4 +351,3 @@ class SharedListContainer extends React.Component<Props, States> {
   }
 }
 
-export default withRouter(SharedListContainer);

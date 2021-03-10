@@ -15,6 +15,7 @@ import {
 import BadgeModel from '../../../../ui/model/BadgeModel';
 import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 enum certiAdminCategoryIcon {
   //mySUNI = '/static/media/logo-badge.svg',
@@ -49,12 +50,15 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     certiAdminSubcategory,
   } = badge;
 
+  const { scrollSave } = useScrollMove();
+
   const domainPath =
     process.env.NODE_ENV !== 'development'
       ? window.location.protocol + '//' + window.location.host
       : 'http://10.178.66.114';
 
   const onViewDetail = () => {
+    scrollSave();
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));
     window.scrollTo(0, 0);
   };
@@ -108,8 +112,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
         iconUrl={
           iconUrl
             ? domainPath + iconUrl
-            : `${getPublicUrl()}${
-            CategoryImageURL[
+            : `${getPublicUrl()}${CategoryImageURL[
             badge.mainCategoryId as keyof typeof CategoryImageURL
             ]
             }`

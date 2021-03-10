@@ -1,7 +1,7 @@
 import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Icon, Button, Comment } from 'semantic-ui-react';
 import { registerBookmark } from '../../../api/communityApi';
 import { requestAppendMyCommunityPostList } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
@@ -12,6 +12,7 @@ import {
 } from '../../../store/CommunityMainStore';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -77,6 +78,17 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const { pathname } = useLocation();
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
+  const history = useHistory();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    scrollOnceMove();
+  }, [scrollOnceMove])
+
+  useEffect(() => {
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, [pathname])
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -117,6 +129,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const hideMore = useCallback(() => {
     setMore(false);
   }, []);
+
   return (
     <>
       <div className="sub-info-box">
@@ -128,9 +141,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar
                 src={
                   profileImage === undefined ||
-                  profileImage === null ||
-                  profileImage === '' ||
-                  type === 'ANONYMOUS'
+                    profileImage === null ||
+                    profileImage === '' ||
+                    type === 'ANONYMOUS'
                     ? DefaultImg
                     : `/files/community/${profileImage}`
                 }

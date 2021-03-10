@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
@@ -71,8 +71,10 @@ function MyLearningListContainerV2(props: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
+  const [refresh, setRefesh] = useState<boolean>(false)
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
+  const learningOffset: any = sessionStorage.getItem('learningOffset');
 
   /* effects */
   useEffect(() => {
@@ -83,7 +85,7 @@ function MyLearningListContainerV2(props: Props) {
   }, []);
 
   useEffect(() => {
-    initPage();
+    refeshPageInfo();
     fetchModelsByContentType(contentType);
   }, [contentType, viewType]);
 
@@ -220,17 +222,34 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const initPage = () => {
-    initPageInfo();
-    initPageNo();
-  };
+  const refeshPageInfo = () => setRefesh(() => !refresh);
 
-  const initPageInfo = () => {
-    pageInfo.current = { offset: 0, limit: 20 };
-  };
+  useEffect(() => {
+    if (refresh) {
+      refeshPageInfo();
+      getPageInfo();
+    }
+  }, [refresh])
 
-  const initPageNo = () => {
-    history.replace('./1');
+  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry']
+
+  const getPageInfo = () => {
+    const matchesMenu = TableViewsMenu.includes(contentType);
+
+    if (learningOffset !== null && matchesMenu && refresh) {
+      // if (learningOffset !== null && matchesMenu && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
+      findTableViewsPage(pageInfo.current);
+    } else if (learningOffset !== null && contentType === 'Required' && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
+      findRequiredViewPage(pageInfo.current);
+    } else if (learningOffset !== null && contentType === 'InMyList' && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
+      findInMyListViewPage(pageInfo.current);
+    } else if (learningOffset !== null && contentType === 'PersonalCompleted' && refresh) {
+      pageInfo.current = JSON.parse(learningOffset)
+      findPersonalCompletedViewPage(pageInfo.current);
+    }
   };
 
   const getPageNo = (): number => {
@@ -412,7 +431,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const getModelsByConditions = (count: number) => {
     if (count > 0) {
-      initPage();
+      // initPage();
       fetchModelsByConditions(contentType, viewType);
     } else {
       fetchModelsByContentType(contentType);
@@ -425,7 +444,11 @@ function MyLearningListContainerV2(props: Props) {
 
   const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
-  }, []);
+    sessionStorage.removeItem('learningOffset');
+    sessionStorage.removeItem('SCROLL_POS');
+    pageInfo.current = { offset: 0, limit: 20 };
+    window.scrollTo(0, 0)
+  }, [pageInfo.current]);
 
   const onClickDelete = useCallback(() => {
     setOpenModal(true);
@@ -470,34 +493,43 @@ function MyLearningListContainerV2(props: Props) {
     [contentType]
   );
 
+  const findRequiredViewPage = async (pageInfo: Offset) => {
+    await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
+  }
+
+  const findInMyListViewPage = async (pageInfo: Offset) => {
+    await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
+  }
+
+  const findPersonalCompletedViewPage = async (pageInfo: Offset) => {
+    await aplService!.findAllAplsWithPage(pageInfo);
+  }
+
+  const findTableViewsPage = async (pageInfo: Offset) => {
+    switch (contentType) {
+      case MyPageContentType.EarnedStampList:
+        await myTrainingService!.findAllStampTableViewsWithPage(
+          pageInfo
+        );
+        break;
+      default:
+        await myTrainingService!.findAllTableViewsWithPage(pageInfo);
+    }
+  }
+
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    pageInfo.current.offset += pageInfo.current.limit;
     pageInfo.current.limit = PAGE_SIZE;
-    switch (contentType) {
-      case MyPageContentType.EarnedStampList:
-        await myTrainingService!.findAllStampTableViewsWithPage(
-          pageInfo.current
-        );
-        break;
-      case MyLearningContentType.InMyList:
-        await inMyLectureService!.findAllTableViewsWithPage(pageInfo.current);
-        break;
-      case MyLearningContentType.Required:
-        await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
-        break;
-      case MyLearningContentType.PersonalCompleted:
-        await aplService!.findAllAplsWithPage(pageInfo.current);
-        break;
-      default:
-        await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
-    }
-    checkShowSeeMore(contentType);
+    pageInfo.current.offset += pageInfo.current.limit
     history.replace(`./${getPageNo()}`);
-  }, [contentType, match.params.pageNo]);
+    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current))
+    if (contentType === 'Required') findRequiredViewPage(pageInfo.current)
+    if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current)
+    if (contentType !== 'InMyList' && contentType !== 'Required') findTableViewsPage(pageInfo.current);
+    checkShowSeeMore(contentType);
+  }, [contentType, pageInfo.current, match.params.pageNo]);
 
   /* Render Functions */
   const renderNoSuchContentPanel = (
@@ -517,6 +549,8 @@ function MyLearningListContainerV2(props: Props) {
 
     return <NoSuchContentPanel message={message} link={link} />;
   };
+
+
 
   /* render */
   return (
