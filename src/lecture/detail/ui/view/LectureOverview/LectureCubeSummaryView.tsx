@@ -106,15 +106,9 @@ function getClassroom(classrooms: Classroom[]): Classroom | undefined {
         classroom = filteredClassrooms[0];
         // 오늘이 학습기간내인 차수가 여러개인 경우 시작일이 먼저인 것으로
         if (filteredClassrooms.length > 1) {
-          const compare = (classroom1: Classroom, classroom2: Classroom) => {
-            if (
-              moment(classroom1.learningStartDate).unix() >
-              moment(classroom2.learningEndDate).unix()
-            ) {
-              return -1;
-            }
-            return 1;
-          };
+          const compare = (classroom1: Classroom, classroom2: Classroom) =>
+            moment(classroom1.learningStartDate).unix() -
+            moment(classroom2.learningStartDate).unix();
           classroom = filteredClassrooms.sort(compare)[0];
         }
       }
@@ -135,15 +129,9 @@ function getClassroom(classrooms: Classroom[]): Classroom | undefined {
         if (filteredClassrooms.length > 0) {
           classroom = filteredClassrooms[0];
           if (filteredClassrooms.length > 1) {
-            const compare = (classroom1: Classroom, classroom2: Classroom) => {
-              if (
-                moment(classroom1.learningStartDate).unix() >
-                moment(classroom2.learningEndDate).unix()
-              ) {
-                return -1;
-              }
-              return 1;
-            };
+            const compare = (classroom1: Classroom, classroom2: Classroom) =>
+              moment(classroom1.learningStartDate).unix() -
+              moment(classroom2.learningStartDate).unix();
             classroom = filteredClassrooms.sort(compare)[0];
           }
         }
@@ -201,14 +189,13 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
 
   useEffect(() => {
     //
-    if(window.location.search === '?_source=newsletter') {
+    if (window.location.search === '?_source=newsletter') {
       ReactGA.event({
         category: 'External',
         action: 'Email',
-        label: 'Newsletter'
+        label: 'Newsletter',
       });
-    }
-    else {
+    } else {
       setTimeout(() => {
         ReactGA.pageview(
           window.location.pathname + window.location.search,

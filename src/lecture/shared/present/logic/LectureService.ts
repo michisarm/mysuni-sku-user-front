@@ -194,9 +194,17 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
+    if(offset >= 8) {
+      sessionStorage.setItem('channelOffset', JSON.stringify(offset));
+    }
+    const getChannelOffset:any = sessionStorage.getItem('channelOffset');
+    const prevSorting:any = sessionStorage.getItem('channelSort');
+    const prevChannelOffset = JSON.parse(getChannelOffset)
+
     const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannelOrder(collegeId,channelId, limit, offset, orderBy)
+      LectureRdoModel.newWithChannelOrder(collegeId, channelId, prevChannelOffset + limit, 0, prevSorting || orderBy)
     );
+    
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(
       response
     );
@@ -207,9 +215,7 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+        (this._lectures = lectureOffsetElementList.results)
     );
     return lectureOffsetElementList;
   }
