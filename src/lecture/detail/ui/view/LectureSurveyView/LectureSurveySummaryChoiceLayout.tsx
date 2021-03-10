@@ -15,12 +15,14 @@ const LectureSurveySummaryChoiceLayout: React.FC<LectureSurveyItem> = function L
         <span>{no}.</span>
         {isRequired === true && (
           <>
-            <span>{title}</span>
-            <span className="importantBtn">
-              <Image
-                style={{ display: 'inline-block' }}
-                src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
-              />
+            <span>
+              {title}
+              <span className="importantBtn">
+                <Image
+                  style={{ display: 'inline-block' }}
+                  src={`${process.env.PUBLIC_URL}/images/all/survey-important.png`}
+                />
+              </span>
             </span>
           </>
         )}
