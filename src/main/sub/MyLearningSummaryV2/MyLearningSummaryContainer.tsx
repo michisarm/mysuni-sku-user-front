@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
@@ -478,10 +478,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         </div>
         <LearningObjectivesModalContainer
           open={learningObjectivesOpen}
-          setOpen={(value)=> {
-            // if(!value) {
-            //   requestLearningObjectives()
-            // }
+          setOpen={(value, type?)=> {
+            if(type === undefined || type !== 'save') {
+              requestLearningObjectives()
+            } else {
+              reactAlert({
+                title: '',
+                message: `목표 설정이 완료됐습니다.`,
+              });
+            }
             return this.setState({'learningObjectivesOpen':value})
           }} 
         />

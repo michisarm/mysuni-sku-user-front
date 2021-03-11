@@ -62,7 +62,6 @@ function MyContentHeaderContainer(props: Props) {
   }, []);
 
   const onClickMyBadge = useCallback(() => {
-    console.log('onClickMyBadge')
     history.push(badgeRoutePaths.badgeEarnedBadgeList());
   }, []);
 

@@ -10,7 +10,7 @@ import LearningObjectivesModal from '../view/LearningObjectivesModal';
 
 interface Props extends RouteComponentProps {
   open: boolean;
-  setOpen: (state:boolean) => void,
+  setOpen: (state:boolean, type?:string) => void,
 }
 
 const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjectivesModalContainer({
@@ -32,7 +32,7 @@ const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjec
 
   const handleSave = useCallback(() => {
     saveLearningObjectives()
-    setOpen(false)
+    setOpen(false, 'save')
   },[])
 
 return (
