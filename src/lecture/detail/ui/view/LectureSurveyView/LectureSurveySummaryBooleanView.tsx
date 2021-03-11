@@ -117,15 +117,13 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
           </div>
           <div className="course-survey-yesOrNoBar-wrapper">
             <span className="course-survey-yesOrNoBar-text">YES</span>
-            {/* eslint-disable */}
             {/* progress bar */}
             <div className="course-survey-list-backgrondBar yesOrNoBar">
               <span className="course-survey-list-persent-left">
                 <span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)
               </span>
-              {/* prettier-ignore */}
-              <div style={yesAvg < noAvg ? {height: '100%', backgroundColor: 'steelblue'} : {height: '100%', backgroundColor: 'grey'} }>
-                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: 'grey', height: '100%' } : { width: yesAvg + '%', backgroundColor: 'steelblue', height: '100%' }} />
+              <div style={yesAvg < noAvg ? {height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px'} : {height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px'} }>
+                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: '#f4f7fd', height: '100%', borderRadius: '6px'} : { width: yesAvg + '%', backgroundColor: '#2185d0', height: '100%', borderRadius: '6px'}} />
               </div>
               <span className="course-survey-list-persent-right">
                 <span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)
