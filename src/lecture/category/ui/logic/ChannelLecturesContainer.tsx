@@ -58,7 +58,7 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
-
+  
   useEffect(() => {
     if (loading) {
       scrollOnceMove();
@@ -144,12 +144,17 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { match, pageService, lectureService, reviewService, inMyLectureService, setLoading } = this.props;
     const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-
     inMyLectureService!.findAllInMyLectures();
-
+    
     // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
-    const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(match.params.collegeId, match.params.channelId, page!.limit, page!.nextOffset, sorting);
-
+    const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
+      match.params.collegeId, 
+      match.params.channelId, 
+      page!.limit,
+      page!.nextOffset,
+      sorting
+    );
+    
     if (!lectureOffsetList.empty) {
       setLoading && setLoading(true);
     } else {
@@ -186,7 +191,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   onChangeSorting(e: any, data: any) {
     //
     this.props.actionLogService?.registerClickActionLog({ subAction: data.label });
-
+    sessionStorage.setItem('channelSort', data.value)
+    sessionStorage.removeItem('channelOffset');
     this.setState({
       sorting: data.value,
     }, () => {

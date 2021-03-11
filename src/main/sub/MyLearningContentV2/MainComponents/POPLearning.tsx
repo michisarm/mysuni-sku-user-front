@@ -136,7 +136,7 @@ const POPLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '인기 과정',
       action: 'Click',
-      label: '인기 과정 전체보기'
+      label: '인기 과정 전체보기',
     });
   };
 
