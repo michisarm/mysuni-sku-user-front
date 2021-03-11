@@ -11,6 +11,7 @@ function DashBoardSentenceContainer(){
 
   useEffect(() => {
     const index = localStorage.getItem('dashBoardSentenceIndex')
+    console.log('index', index)
     localStorage.setItem('dashBoardSentenceIndex', index === 'undefined' ? '0' : String(Number(index)+1))
     requestDashBoardSentence()
   }, [])
