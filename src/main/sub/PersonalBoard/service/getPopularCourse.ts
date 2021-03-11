@@ -8,7 +8,8 @@ export async function requestPopularCourse(companyCode: string, date: number) {
     result.map((item: any, index: number) => {
       channalArr.push({
         'collegeName' : item.category.college.name,
-        'lectureName' : item.lectureName
+        'lectureName' : item.lectureName,
+        'channelName' : item.category.channel.name
       })
     })
     setPopularCourseItem([...channalArr])

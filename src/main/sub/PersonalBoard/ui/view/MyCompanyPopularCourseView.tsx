@@ -42,33 +42,33 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1주일",
       render: () => (
         <Tab.Pane>
-          { popularCourseItem && popularCourseItem[1] && (
+          { popularCourseItem && (
             <ul className="personal_list">
               <li className="sv">
                 <span className="personal_list_number">1</span>
                 {/* 
                 popularCourseItem[0].lectureName
                 */}
-                <p className="personal_list_txt">{popularCourseItem[0].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[0]? popularCourseItem[0].lectureName : ''}</p>
               </li>
               <li className="global">
                 <span className="personal_list_number">2</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[1].lectureName}
+                {popularCourseItem[1] ? popularCourseItem[1].lectureName : ''}
                 </p>
               </li>
               <li className="happy">
                 <span className="personal_list_number">3</span>
-                <p className="personal_list_txt">{popularCourseItem[2].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[2] ? popularCourseItem[2].lectureName : ''}</p>
               </li>
               <li className="ai">
                 <span className="personal_list_number">4</span>
-                <p className="personal_list_txt">{popularCourseItem[3].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[3] ? popularCourseItem[3].lectureName : ''}</p>
               </li>
               <li className="inno">
                 <span className="personal_list_number">5</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[4].lectureName}
+                {popularCourseItem[4] ? popularCourseItem[4].lectureName : ''}
                 </p>
               </li>
             </ul>
@@ -80,33 +80,33 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1개월",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && popularCourseItem[1] && (
+          {popularCourseItem && (
             <ul className="personal_list">
               <li className="sv">
                 <span className="personal_list_number">1</span>
                 {/* 
                 popularCourseItem[0].lectureName
                 */}
-                <p className="personal_list_txt">{popularCourseItem[0].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[0] ? popularCourseItem[0].lectureName : ''}</p>
               </li>
               <li className="global">
                 <span className="personal_list_number">2</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[1].lectureName}
+                {popularCourseItem[1] ? popularCourseItem[1] : ''}
                 </p>
               </li>
               <li className="happy">
                 <span className="personal_list_number">3</span>
-                <p className="personal_list_txt">{popularCourseItem[2].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[2] ? popularCourseItem[2].lectureName : ''}</p>
               </li>
               <li className="ai">
                 <span className="personal_list_number">4</span>
-                <p className="personal_list_txt">{popularCourseItem[3].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[3] ? popularCourseItem[3].lectureName : ''}</p>
               </li>
               <li className="inno">
                 <span className="personal_list_number">5</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[4].lectureName}
+                {popularCourseItem[4] ? popularCourseItem[4].lectureName : ''}
                 </p>
               </li>
             </ul>
@@ -118,33 +118,33 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "3개월",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && popularCourseItem[1] && (
+          {popularCourseItem && (
             <ul className="personal_list">
               <li className="sv">
                 <span className="personal_list_number">1</span>
                 {/* 
                 popularCourseItem[0].lectureName
                 */}
-                <p className="personal_list_txt">{popularCourseItem[0].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[0] ? popularCourseItem[0].lectureName : ''}</p>
               </li>
               <li className="global">
                 <span className="personal_list_number">2</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[1].lectureName}
+                {popularCourseItem[1] ? popularCourseItem[1].lectureName : ''}
                 </p>
               </li>
               <li className="happy">
                 <span className="personal_list_number">3</span>
-                <p className="personal_list_txt">{popularCourseItem[2].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[2] ? popularCourseItem[2].lectureName : ''}</p>
               </li>
               <li className="ai">
                 <span className="personal_list_number">4</span>
-                <p className="personal_list_txt">{popularCourseItem[3].lectureName}</p>
+                <p className="personal_list_txt">{popularCourseItem[3] ? popularCourseItem[3].lectureName : ''}</p>
               </li>
               <li className="inno">
                 <span className="personal_list_number">5</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[4].lectureName}
+                {popularCourseItem[4] ? popularCourseItem[4].lectureName : ''}
                 </p>
               </li>
             </ul>
