@@ -92,7 +92,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
               <li className="global">
                 <span className="personal_list_number">2</span>
                 <p className="personal_list_txt">
-                {popularCourseItem[1] ? popularCourseItem[1] : ''}
+                {popularCourseItem[1] ? popularCourseItem[1].lectureName : ''}
                 </p>
               </li>
               <li className="happy">
