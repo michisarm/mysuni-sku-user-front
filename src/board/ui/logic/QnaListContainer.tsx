@@ -140,8 +140,9 @@ class QnaListContainer extends React.Component<Props, State> {
 
     return (
       <>
-        {!posts.results || posts.results.length < 1 ? (
-          <>
+        {posts.results.length === 0 ? (
+          <div style={{ marginTop: 95 }}>
+            <Loadingpanel loading={isLoading} />
             <div className="support-list-wrap">
               <div className="list-top">
                 <Button
@@ -154,9 +155,8 @@ class QnaListContainer extends React.Component<Props, State> {
                 </Button>
               </div>
             </div>
-            <Loadingpanel loading={isLoading} />
             <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
-          </>
+          </div>
         ) : (
           <div className="support-list-wrap">
             <Loadingpanel loading={isLoading} />
@@ -207,7 +207,6 @@ class QnaListContainer extends React.Component<Props, State> {
                 this.renderPostRow(post, index)
               )}
             </div>
-
             {posts.results.length < posts.totalCount && (
               <div
                 className="more-comments"

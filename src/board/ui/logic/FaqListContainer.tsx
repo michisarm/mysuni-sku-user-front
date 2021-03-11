@@ -146,7 +146,7 @@ class FaqListContainer extends React.Component<Props, State> {
     return (
       <>
         {result.length === 0 ? (
-          <div>
+          <div style={{ marginTop: 95 }}>
             <Loadingpanel loading={isLoading} />
             <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
           </div>
