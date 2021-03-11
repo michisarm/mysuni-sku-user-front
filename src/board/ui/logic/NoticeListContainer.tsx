@@ -145,7 +145,10 @@ class NoticeListContainer extends Component<Props, State> {
     return (
       <>
         {pinnedPosts.length === 0 && posts.length === 0 ? (
-          <NoSuchContentPanel message="등록된 Notice가 없습니다." />
+          <div>
+            <Loadingpanel loading={isLoading} />
+            <NoSuchContentPanel message="등록된 Notice가 없습니다." />
+          </div>
         ) : (
           <div className="support-list-wrap">
             <Loadingpanel loading={isLoading} />
