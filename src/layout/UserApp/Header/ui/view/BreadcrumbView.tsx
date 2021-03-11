@@ -31,7 +31,6 @@ class BreadcrumbView extends Component<Props, State> {
     id: 'myutopia@sk.com',
   };
 
-  // TODO: 삭제해야
   onLogin() {
     //
     const postData = new FormData();
