@@ -93,6 +93,7 @@ function MyContentHeaderContainer(props: Props) {
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}
+            type="Learning"
           />
       </ContentHeader.Cell>
       <ContentHeader.Cell>

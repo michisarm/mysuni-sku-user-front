@@ -57,6 +57,7 @@ class CreateProfileContainer extends React.Component<Props> {
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}
+            type="Create"
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="create-wrap">

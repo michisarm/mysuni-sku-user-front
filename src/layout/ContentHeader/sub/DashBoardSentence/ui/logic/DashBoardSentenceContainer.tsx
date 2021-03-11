@@ -8,9 +8,10 @@ function DashBoardSentenceContainer(){
   const [dashBoardTxt, setDashBoardTxt] = useState<any>()
 
   const dashBoardSentence = useDashBoardSentenceItem()
+
   useEffect(() => {
     const index = localStorage.getItem('dashBoardSentenceIndex')
-      localStorage.setItem('dashBoardSentenceIndex', index? String(Number(index)+1) : '0')
+    localStorage.setItem('dashBoardSentenceIndex', index === 'undefined' ? '0' : String(Number(index)+1))
     requestDashBoardSentence()
   }, [])
 
@@ -25,17 +26,12 @@ function DashBoardSentenceContainer(){
     } else {
       setDashBoardTxt(dashBoardTxt)
     }
+
   }, [dashBoardSentence])
 
 return (
   
   <>
-  {/* {dashBoardTxt && (
-    <span>{dashBoardTxt}</span>
-  )}
-  {dashBoardTxt === undefined && (
-    <span>기본값입니다.</span>
-  )} */}
   { dashBoardTxt && (
     <DashBoardSentenceView dashBoardTxt={dashBoardTxt}/>
   )}

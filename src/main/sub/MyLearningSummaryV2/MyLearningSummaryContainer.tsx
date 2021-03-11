@@ -236,32 +236,32 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     if (hour < 1 && minute < 1) {
       total = (
         <>
-          <span className="big">00</span>
-          <span className="small h">h</span> <span className="big">00</span>
-          <span className="small m">m</span>
+          00
+          <em>h</em> <em>00</em>
+          <em>m</em>
         </>
       );
     } else if (hour < 1) {
       total = (
         <>
-          <span className="big">{minute}</span>
-          <span className="small m">m</span>
+          {minute}
+          <em>m</em>
         </>
       );
     } else if (minute < 1) {
       total = (
         <>
-          <span className="big">{hour}</span>
-          <span className="small h">h</span>
+          {hour}
+          <em>h</em>
         </>
       );
     } else {
       total = (
         <>
-          <span className="big">{hour}</span>
-          <span className="small h">h</span>{' '}
-          <span className="big">{minute}</span>
-          <span className="small m">m</span>
+          {hour}
+          <em>h</em>{' '}
+          {minute}
+          <em>m</em>
         </>
       );
     }

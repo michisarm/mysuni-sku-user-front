@@ -96,6 +96,7 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
             department={member.department}
             imageEditable={false}
             myPageActive
+            type="Recommend"
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
