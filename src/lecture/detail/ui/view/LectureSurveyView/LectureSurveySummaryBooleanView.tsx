@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import { useLectureSurveyAnswerSummaryList, useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
-import { Progress } from 'semantic-ui-react';
 import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveySummaryBooleanViewProps {
@@ -43,50 +42,6 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
     yesAvg = ((yesCount / booleanRespondCount) * 100).toFixed(1);
     noAvg = ((noCount / booleanRespondCount) * 100).toFixed(1);
   }
-
-  const persent: any = yesAvg !== 'NaN' ? yesAvg : 0 || noAvg !== 'NaN' ? noAvg : 0;
-
-  // useEffect(() => {
-  //   if (yesAvg === 'NaN') {
-  //     yesAvg = '0';
-  //   }
-  //   if (noAvg === 'NaN') {
-  //     noAvg = '0';
-  //   }
-
-  //   const el = Array.from(document.getElementsByClassName('yesOrNo') as HTMLCollectionOf<HTMLElement>);
-  //   // const selectedBarEl = Array.from(document.getElementsByClassName('yesOrNoBar bar') as HTMLCollectionOf<HTMLElement>);
-  //   const selectedBarEl = document.querySelectorAll('.yesOrNo .bar'); // NodeList
-  //   const selectedBarEl_array = Array.prototype.slice.call(selectedBarEl); // NodeList to Array
-
-  //   if (Number(yesAvg) > Number(noAvg)) {
-  //     selectedBarEl_array.forEach((element, idx) => {
-  //       // noAvg가 0일때
-  //       if (Number(noAvg) === 0) {
-  //         element.style.backgroundColor = 'steelblue';
-  //         el[idx].style.backgroundColor = 'grey';
-  //       } else {
-  //         element.style.backgroundColor = 'grey';
-  //         el[idx].style.backgroundColor = 'grey';
-  //       }
-  //       console.log('yes > no', Number(yesAvg), Number(noAvg));
-  //     });
-  //   }
-  //   if (Number(yesAvg) < Number(noAvg)) {
-  //     el.forEach((element, idx) => {
-  //       // yesAvg가 0일때
-  //       if (Number(yesAvg) === 0) {
-  //         element.style.backgroundColor = 'steelblue';
-  //         el[idx].style.backgroundColor = 'grey';
-  //       } else {
-  //         console.log('else', el[idx]);
-  //         element.style.backgroundColor = 'grey';
-  //         el[idx].style.backgroundColor = 'steelblue';
-  //       }
-  //       console.log('yes < no', Number(yesAvg), Number(noAvg));
-  //     });
-  //   }
-  // }, [yesAvg, noAvg]);
 
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
