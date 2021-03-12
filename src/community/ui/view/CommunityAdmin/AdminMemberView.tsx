@@ -1,14 +1,21 @@
-
 import { reactConfirm, reactAlert } from '@nara.platform/accent';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Checkbox, Select, Pagination, Icon } from 'semantic-ui-react';
 import { removeMembers } from 'community/api/MemberApi';
 import classNames from 'classnames';
-import { getMembers, updateMembers, deleteMembers } from 'community/service/useMemberList/useMemberList';
+import {
+  getMembers,
+  updateMembers,
+  deleteMembers,
+} from 'community/service/useMemberList/useMemberList';
 import { CommunityMemberList } from 'community/model/CommunityMember';
 import moment from 'moment';
 import Calendar from './Calendar';
-import { getSearchBox, useSearchBox, setSearchBox } from 'community/store/SearchBoxStore';
+import {
+  getSearchBox,
+  useSearchBox,
+  setSearchBox,
+} from 'community/store/SearchBoxStore';
 import { SearchBox } from 'community/model/SearchBox';
 
 interface AdminMemberViewProps {
@@ -24,16 +31,15 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   managerAuth,
   managerId,
   communityMembers,
-  searchBox
+  searchBox,
 }) {
-
   const selectOptions = [
-    { key: "all", value: "", text: "전체" },
-    { key: "companyName", value: "companyName", text: "소속사" },
-    { key: "teamName", value: "teamName", text: "소속 조직(팀)" },
-    { key: "name", value: "name", text: "성명" },
-    { key: "nickname", value: "nickname", text: "닉네임" },
-    { key: "email", value: "email", text: "E-mail" },
+    { key: 'all', value: '', text: '전체' },
+    { key: 'companyName', value: 'companyName', text: '소속사' },
+    { key: 'teamName', value: 'teamName', text: '소속 조직(팀)' },
+    { key: 'name', value: 'name', text: '성명' },
+    { key: 'nickname', value: 'nickname', text: '닉네임' },
+    { key: 'email', value: 'email', text: 'E-mail' },
   ];
 
   const limitOptions = [
@@ -44,20 +50,20 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
 
   // const [focus, setFocus] = useState<boolean>(false);
   // const [write, setWrite] = useState<string>('');
-  const [selectedList, setSelectedList] = useState<((string | undefined)[])>([]);
+  const [selectedList, setSelectedList] = useState<(string | undefined)[]>([]);
   const [selectAll, setSelectAll] = useState<boolean>(true);
   const [limit, setLimit] = useState<number>(20);
   const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('');
 
   // const approveData = useCommunityMemberApprove();
-  const AllData = communityMembers && communityMembers.results.map(item => item.memberId)
+  const AllData =
+    communityMembers && communityMembers.results.map(item => item.memberId);
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
 
   const deleteMemberList = useCallback(() => {
-
     if (selectedList && selectedList.find(item => item === managerId)) {
       reactAlert({ title: '알림', message: '관리자는 삭제할수 없습니다.' });
       return;
@@ -79,7 +85,6 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   }, [communityId, selectedList, searchBox]);
 
   const approveMemberList = useCallback(() => {
-
     if (selectedList && selectedList.length === 0) {
       reactAlert({ title: '알림', message: '멤버를 선택해 주세요' });
       return;
@@ -96,35 +101,31 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     });
   }, [communityId, selectedList, searchBox]);
 
-
-
-
   const totalPages = useCallback(() => {
-    let totalPage = Math.ceil(communityMembers!.totalCount / limit)
+    let totalPage = Math.ceil(communityMembers!.totalCount / limit);
     if (communityMembers!.totalCount % limit < 0) {
-      totalPage++
+      totalPage++;
     }
-    setTotalPage(totalPage)
-  }, [communityMembers, limit])
+    setTotalPage(totalPage);
+  }, [communityMembers, limit]);
 
   useEffect(() => {
     if (communityMembers === undefined) {
-      return
+      return;
     }
     totalPages();
-  }, [communityMembers])
+  }, [communityMembers]);
 
   useEffect(() => {
     if (selectedList === undefined) {
-      return
+      return;
     }
     setSearchBox({
       ...searchBox,
       communityId,
-      groupMemberIdList: selectedList || []
+      groupMemberIdList: selectedList || [],
     });
-
-  }, [selectedList])
+  }, [selectedList]);
 
   useEffect(() => {
     //TODO : 차후 로직 개선 고민
@@ -183,7 +184,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
         nickname: '',
       });
     }
-  }, [searchType, searchText])
+  }, [searchType, searchText]);
 
   useEffect(() => {
     setSearchBox({
@@ -192,22 +193,27 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       offset: 0,
     });
     handleSubmitClick();
-  }, [limit])
+  }, [limit]);
 
-  const onPageChange = useCallback((data: any) => {
-    setSearchBox({
-      ...searchBox,
-      offset: (data.activePage - 1) * limit,
-    });
-    getMembers(communityId);
-    setActivePage(data.activePage);
-  }, [communityId, searchBox, limit]);
+  const onPageChange = useCallback(
+    (data: any) => {
+      setSearchBox({
+        ...searchBox,
+        offset: (data.activePage - 1) * limit,
+      });
+      getMembers(communityId);
+      setActivePage(data.activePage);
+    },
+    [communityId, searchBox, limit]
+  );
 
-  const handleSubmitClick = useCallback(async (limit?: number) => {
-    getMembers(communityId);
-    setActivePage(1);
-  }, [communityId, searchBox, limit]);
-
+  const handleSubmitClick = useCallback(
+    async (limit?: number) => {
+      getMembers(communityId);
+      setActivePage(1);
+    },
+    [communityId, searchBox, limit]
+  );
 
   const checkAll = useCallback(() => {
     if (selectAll) {
@@ -217,7 +223,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       setSelectedList([]);
       setSelectAll(!selectAll);
     }
-  }, [selectAll, communityMembers])
+  }, [selectAll, communityMembers]);
 
   const checkOne = (groupMemberId: string) => {
     const copiedSelectedList: (string | undefined)[] = [...selectedList];
@@ -232,8 +238,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       copiedSelectedList.push(groupMemberId);
       setSelectedList(copiedSelectedList);
     }
-  }
-
+  };
 
   return (
     <>
@@ -244,7 +249,6 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
             <col />
           </colgroup>
           <tbody>
-
             <tr>
               <th>가입일자</th>
               <td>
@@ -263,11 +267,9 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                   defaultValue={selectOptions[0].value}
                   options={selectOptions}
                   onChange={(e: any, data: any) => setSearchType(data.value)}
-                // setSearchType
+                  // setSearchType
                 />
-                <div
-                  className={classNames("ui input admin_text_input")}
-                >
+                <div className={classNames('ui input admin_text_input')}>
                   <input
                     type="text"
                     placeholder="검색어를 입력해주세요."
@@ -276,47 +278,55 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                     onChange={(e: any) => setSearchText(e.target.value)}
                     onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
                   />
-                  <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
+                  <button
+                    className="ui button admin_text_button"
+                    onClick={() => handleSubmitClick()}
+                  >
+                    검색
+                  </button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       ) : (
-          <table className="ui admin_table_search sub">
-            <colgroup>
-              <col width="100px" />
-              <col />
-            </colgroup>
-            <tbody>
-              <tr>
-                <th>검색어</th>
-                <td>
-                  <Select
-                    placeholder="전체"
-                    className="ui small-border admin_tab_select"
-                    defaultValue={selectOptions[0].value}
-                    options={selectOptions}
-                    onChange={(e: any, data: any) => setSearchType(data.value)}
+        <table className="ui admin_table_search sub">
+          <colgroup>
+            <col width="100px" />
+            <col />
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>검색어</th>
+              <td>
+                <Select
+                  placeholder="전체"
+                  className="ui small-border admin_tab_select"
+                  defaultValue={selectOptions[0].value}
+                  options={selectOptions}
+                  onChange={(e: any, data: any) => setSearchType(data.value)}
+                />
+                <div className={classNames('ui input admin_text_input add')}>
+                  <input
+                    type="text"
+                    placeholder="검색어를 입력해주세요."
+                    value={searchText}
+                    disabled={searchType === ''}
+                    onChange={(e: any) => setSearchText(e.target.value)}
+                    onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
                   />
-                  <div
-                    className={classNames("ui input admin_text_input add")}
+                  <button
+                    className="ui button admin_text_button"
+                    onClick={() => handleSubmitClick()}
                   >
-                    <input
-                      type="text"
-                      placeholder="검색어를 입력해주세요."
-                      value={searchText}
-                      disabled={searchType === ''}
-                      onChange={(e: any) => setSearchText(e.target.value)}
-                      onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
-                    />
-                    <button className="ui button admin_text_button" onClick={() => handleSubmitClick()}>검색</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        )}
+                    검색
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )}
       <div className="table-board-title">
         <div className="table_list_string">
           ㆍ전체 <strong>{communityMembers.totalCount}명</strong>멤버
@@ -329,12 +339,23 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
             onChange={(e: any, data: any) => setLimit(data.value)}
           />
 
-          {!searchBox.groupId && (<button className="ui button admin_table_button" onClick={e => deleteMemberList()} >멤버 삭제</button>)}
+          {!searchBox.groupId && (
+            <button
+              className="ui button admin_table_button"
+              onClick={e => deleteMemberList()}
+            >
+              멤버 삭제
+            </button>
+          )}
 
-          {!searchBox.approved && (<button className="ui button admin_table_button" onClick={e => approveMemberList()} >가입 승인</button>)}
-
-
-
+          {!searchBox.approved && (
+            <button
+              className="ui button admin_table_button"
+              onClick={e => approveMemberList()}
+            >
+              가입 승인
+            </button>
+          )}
         </div>
       </div>
       {communityMembers && communityMembers?.results.length > 0 ? (
@@ -352,10 +373,9 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                       selectedList.length > 0 &&
                       selectedList.length === communityMembers.results.length
                     }
-                    value={selectAll ? "Yes" : "No"}
+                    value={selectAll ? 'Yes' : 'No'}
                     onChange={(e: any, data: any) => checkAll()}
                   />
-
                 </th>
                 <th>No</th>
                 <th>소속사</th>
@@ -367,54 +387,61 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
               </tr>
             </thead>
             <tbody>
-              {
-                communityMembers?.results.map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <Checkbox
-                        className="base"
-                        label=""
-                        name="radioGroup"
-                        value={item.memberId}
-                        checked={selectedList && selectedList.includes(item.memberId)}
-                        onChange={(e: any) => checkOne(item.memberId)}
-                      />
-                    </td>
-                    <td>{communityMembers?.totalCount - index - (activePage - 1) * limit}</td>
-                    <td>{item.companyName}</td>
-                    <td>{item.teamName}</td>
-                    <td>{item.name}</td>
-                    <td>{item.nickname}</td>
-                    <td>{item.email}</td>
-                    <td>{item.createdTime && moment(item.createdTime).format('YYYY.MM.DD')}</td>
-                  </tr>
-                ))
-              }
+              {communityMembers?.results.map((item, index) => (
+                <tr key={index}>
+                  <td>
+                    <Checkbox
+                      className="base"
+                      label=""
+                      name="radioGroup"
+                      value={item.memberId}
+                      checked={
+                        selectedList && selectedList.includes(item.memberId)
+                      }
+                      onChange={(e: any) => checkOne(item.memberId)}
+                    />
+                  </td>
+                  <td>
+                    {communityMembers?.totalCount -
+                      index -
+                      (activePage - 1) * limit}
+                  </td>
+                  <td>{item.companyName}</td>
+                  <td>{item.teamName}</td>
+                  <td>{item.name}</td>
+                  <td>{item.nickname}</td>
+                  <td>{item.email}</td>
+                  <td>
+                    {item.createdTime &&
+                      moment(item.createdTime).format('YYYY.MM.DD')}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       ) : (
-          <div className="no-cont-wrap">
-            <Icon className="no-contents80" />
-            <span className="blind">콘텐츠 없음</span>
-            <div className="text">{searchBox.approved ? '커뮤니티 멤버가 없습니다.' : '가입 대기가 없습니다.'}</div>
+        <div className="no-cont-wrap">
+          <Icon className="no-contents80" />
+          <span className="blind">콘텐츠 없음</span>
+          <div className="text">
+            {searchBox.approved
+              ? '커뮤니티 멤버가 없습니다.'
+              : '가입 대기가 없습니다.'}
           </div>
-        )}
-      {
-        communityMembers && communityMembers.totalCount >= 20 ? (
-          <div className="lms-paging-holder">
-            <Pagination
-              activePage={activePage}
-              totalPages={totalPage}
-              firstItem={null}
-              lastItem={null}
-              onPageChange={(e, data) => onPageChange(data)}
-            />
-          </div>
-        ) : (
-            null
-          )
-      }
+        </div>
+      )}
+      {communityMembers && communityMembers.totalCount >= 20 ? (
+        <div className="lms-paging-holder">
+          <Pagination
+            activePage={activePage}
+            totalPages={totalPage}
+            firstItem={null}
+            lastItem={null}
+            onPageChange={(e, data) => onPageChange(data)}
+          />
+        </div>
+      ) : null}
     </>
   );
 };

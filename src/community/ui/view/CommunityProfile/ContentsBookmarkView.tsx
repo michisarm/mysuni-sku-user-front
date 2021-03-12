@@ -1,5 +1,19 @@
-import React, { Component, createRef, useState, useEffect, useCallback } from 'react';
-import { Segment, Sticky, Icon, Menu, Button ,Comment } from 'semantic-ui-react';
+import React, {
+  Component,
+  createRef,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
+import {
+  Segment,
+  Sticky,
+  Icon,
+  Menu,
+  Button,
+  Comment,
+  Popup,
+} from 'semantic-ui-react';
 import { Link, useLocation } from 'react-router-dom';
 // import "../../style.css"
 import ContentsMoreView from './ContentsMoreView';
@@ -16,7 +30,10 @@ import { reactAlert } from '@nara.platform/accent';
 import { registerBookmark, removeBookmark } from 'community/api/communityApi';
 import { getMyProfile } from 'community/store/MyProfileStore';
 import PostItem from 'community/viewModel/CommunityProfileBookmark/PostItem';
-import { getCommunityProfileBookmark, setCommunityProfileBookmark } from "community/store/CommunityProfileBookmarkStore";
+import {
+  getCommunityProfileBookmark,
+  setCommunityProfileBookmark,
+} from 'community/store/CommunityProfileBookmarkStore';
 import { requestAppendProfileBookmarkPostList } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 
@@ -27,23 +44,23 @@ interface ContentsBookmarkViewProps {
 const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function ContentsBookmarkView({
   communityProfileBookmark,
 }) {
-
-// 북마크 해제시 화면에서 제거
-const result = communityProfileBookmark.posts.filter(x => {
-  return x.bookmarked === true;
-})
+  // 북마크 해제시 화면에서 제거
+  const result = communityProfileBookmark.posts.filter(x => {
+    return x.bookmarked === true;
+  });
   /* eslint-disable */
   return (
     <Segment className="full">
-    <div className="course-detail-center community-containter">
-      <div className="community-main-contants">
-        {result !== undefined &&
-          result.map(postItem => (
-            <PostItemView key={postItem.postId} {...postItem} />
-        ))}
-      </div>
+      <div className="course-detail-center community-containter">
+        <div className="community-main-contants">
+          {result !== undefined &&
+            result.map(postItem => (
+              <PostItemView key={postItem.postId} {...postItem} />
+            ))}
+        </div>
         <div className="more-comments">
-          {communityProfileBookmark.postsTotalCount > communityProfileBookmark.postsOffset && (
+          {communityProfileBookmark.postsTotalCount >
+            communityProfileBookmark.postsOffset && (
             <Button
               icon
               className="left moreview"
@@ -52,16 +69,17 @@ const result = communityProfileBookmark.posts.filter(x => {
               <Icon className="moreview" /> list more
             </Button>
           )}
-          {communityProfileBookmark.postsTotalCount <= communityProfileBookmark.postsOffset && (
+          {communityProfileBookmark.postsTotalCount <=
+            communityProfileBookmark.postsOffset && (
             <Button
               icon
               className="left moreview"
               style={{ cursor: 'default' }}
             />
           )}
-        </div>   
-    </div>
-  </Segment>    
+        </div>
+      </div>
+    </Segment>
   );
 };
 
@@ -122,16 +140,18 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   }, []);
   return (
     <div className="sub-info-box">
-      <div className="comment-area community-main-card">
+      <div className="comment-area community-main-card commu-sub-card">
         {/* comments */}
         <Comment.Group className="base">
           {/*comment : 2줄이상 말줄임, 대댓글*/}
           <Comment>
-            {profileImage !== undefined && profileImage !== '' && profileImage !== null ? 
+            {profileImage !== undefined &&
+            profileImage !== '' &&
+            profileImage !== null ? (
               <Comment.Avatar src={`/files/community/${profileImage}`} />
-              :
+            ) : (
               <Comment.Avatar src={`${DefaultImg}`} />
-            }
+            )}
             <Comment.Content>
               <Comment.Author as="a">
                 <Link to={`/community/${communityId}`}>{communityName}</Link>
@@ -144,24 +164,44 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                 {/* <Button>+ View more</Button> */}
               </Comment.Text>
               <Comment.Actions>
-                <div className="right top">
-                  {!bookmarked && (
-                    <Button icon className="img-icon" onClick={bookmarkClick}>
-                      <Icon className="bookmark2" />
-                      <span className="blind">북마크</span>
-                    </Button>
-                  )}
-                  {bookmarked && (
-                    <Button icon className="img-icon" onClick={unbookmarkClick}>
-                      <Icon className="remove3" />
-                      <span className="blind">북마크</span>
-                    </Button>
-                  )}
-                  <Button icon className="img-icon" onClick={shareUrl}>
-                    <Icon className="share2" />
-                    <span className="blind">공유</span>
-                  </Button>
-                </div>
+                <Popup
+                  className="balloon-pop myCumu_btn"
+                  trigger={
+                    <div className="right top sub-menu">
+                      <Button icon className="img-icon">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAJKADAAQAAAABAAAAJAAAAAAqDuP8AAAAlUlEQVRYCWNgGAWjITAaAiMsBBgp9W9capXnP4a/s0DmMDEwpy2a3badEjOZKNEM0gtyzP//DDIgDHMYJWZS7CBKLMeml2IHgaKJkZHhCQiD2NgsGRUbDYERHQKjBSOh6Ke4HCJkAanyFDtotGAkNchH1Y+4EBgtGAlFOcXlECELSJWn2EGjBSOpQT6qfjQERkMALQQAIac5FltQmtUAAAAASUVORK5CYII=" />
+                        <span className="blind">북마크</span>
+                      </Button>
+                    </div>
+                  }
+                  position="bottom right"
+                  on="click"
+                >
+                  <Popup.Content>
+                    <ul>
+                      <li className="community-profile">
+                        <a href="#" onClick={shareUrl}>
+                          <i className="balloon icon popupUrl" />
+                          <span>URL 복사</span>
+                        </a>
+                      </li>
+                      <li>
+                        {!bookmarked && (
+                          <a href="#" onClick={bookmarkClick}>
+                            <i className="balloon icon popupBook" />
+                            <span>북마크</span>
+                          </a>
+                        )}
+                        {bookmarked && (
+                          <a href="#" onClick={unbookmarkClick}>
+                            <i className="balloon icon popupBookRemove" />
+                            <span>북마크</span>
+                          </a>
+                        )}
+                      </li>
+                    </ul>
+                  </Popup.Content>
+                </Popup>
               </Comment.Actions>
             </Comment.Content>
           </Comment>
@@ -169,7 +209,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             <h3>
               <span className={`ico_feed ${icon}`}>게시물</span>
               <Link to={`/community/${communityId}/post/${postId}`}>
-                  {name}
+                {name}
               </Link>
             </h3>
             {more && (
@@ -211,8 +251,6 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     </div>
   );
 };
-
-
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -260,6 +298,5 @@ async function unbookmark(postId: string) {
     }),
   });
 }
-
 
 export default ContentsBookmarkView;

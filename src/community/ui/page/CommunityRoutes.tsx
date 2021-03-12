@@ -10,6 +10,7 @@ import AllPostsPage from './AllPostsPage';
 import BasicPostEditPage from './BasicPostEditPage';
 import BasicPostPage from './BasicPostPage';
 import CommunityHomePage from './CommunityHomePage';
+import CommunityDetailPage from './CommunityDetailPage';
 import CommunityPreviewPage from './CommunityPreviewPage';
 import CommunityHtmlPage from './CommunityHtmlPage';
 import CreatePostPage from './CreatePostPage';
@@ -35,7 +36,6 @@ function CommunityRoutes() {
     <section className="content community">
       <Segment className="full">
         <div className="course-detail-center community-containter">
-              
           <CommunityHomeTreeContainer />
           <div className="community-home-contants">
             <Switch>
@@ -43,6 +43,11 @@ function CommunityRoutes() {
                 exact
                 path="/community/:communityId"
                 component={CommunityHomePage}
+              />
+              <Route
+                exact
+                path="/community/:communityId/detail"
+                component={CommunityDetailPage}
               />
               <Route
                 exact

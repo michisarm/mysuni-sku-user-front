@@ -1,14 +1,20 @@
 import React, { Component, createRef } from 'react';
 import { Segment, Sticky, Icon, Menu } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 // import "../../style.css"
 import ContentsMoreView from './ContentsMoreView';
 import { CommunityProfileMyCommunity } from 'community/viewModel/CommunityProfile';
 import MyCommunityIntro from '../../../viewModel/MyCommunityIntro/MyCommunityIntro';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 import CommunityType from '../../../model/CommunityType';
-import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import {
+  requestAppendProfileCommunities,
+  requestProfileCommunities,
+  delMember,
+} from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import { SkProfileService } from 'profile/stores';
 
 interface ContentsMyCommunityViewProps {
   communityProfileMyCommunity: CommunityProfileMyCommunity;
@@ -37,11 +43,28 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
   createdTime,
   isManager,
 }) {
+  const handleOk = () => {
+    reactConfirm({
+      title: '확인',
+      message: `${name} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
+      onOk: async () => {
+        const result = await delMember(
+          communityId,
+          SkProfileService.instance.skProfile.id
+        );
+        if (result === 'success') {
+          requestProfileCommunities();
+        }
+      },
+    });
+  };
+  const history = useHistory();
+
   return (
     <tr key={communityId}>
       <td>{CommunityTypeToString(type)}</td>
       <td className="title ellipsis">
-        {type === 'OPEN' && (<span className="label">{fieldName}</span>)}
+        {type === 'OPEN' && <span className="label">{fieldName}</span>}
         <Link to={`/community/${communityId}`}>{name}</Link>
       </td>
       <td>
@@ -50,6 +73,26 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
       </td>
       <td>{memberCount}</td>
       <td>{createdTime}</td>
+      <td>
+        {isManager && (
+          <button
+            type="button"
+            className="sece_btn"
+            onClick={e =>
+              history.push(
+                `/community/admin/${communityId}/memberManagement/member`
+              )
+            }
+          >
+            관리하기
+          </button>
+        )}
+        {!isManager && (
+          <button type="button" className="sece_btn" onClick={handleOk}>
+            탈퇴하기
+          </button>
+        )}
+      </td>
     </tr>
   );
 };
@@ -61,11 +104,12 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
     <Segment className="full">
       <div className="course-detail-center community-containter">
         <div className="community-main-contants">
-          <div className="community-list-wrap">
+          <div className="community-list-wrap mycomu_fi">
             <table className="ui table fixed">
               <colgroup>
                 <col width="130px" />
                 <col width="*" />
+                <col width="130px" />
                 <col width="130px" />
                 <col width="130px" />
                 <col width="130px" />
@@ -76,7 +120,8 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
                   <th scope="col">커뮤니티명</th>
                   <th scope="col">관리자</th>
                   <th scope="col">멤버</th>
-                  <th scope="col">생성일자</th>
+                  <th scope="col">가입일자</th>
+                  <th scope="col">관리</th>
                 </tr>
               </thead>
               <tbody>

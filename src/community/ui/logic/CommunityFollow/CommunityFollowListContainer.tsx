@@ -3,7 +3,11 @@ import { Icon, Button } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import FollowListItem from '../../../viewModel/CommunityFollowIntro/FollowCommunityItem';
-import { requestAppendFollowCommunityList, requestFollowCommunityList, requestFollowSearchList } from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
+import {
+  requestAppendFollowCommunityList,
+  requestFollowCommunityList,
+  requestFollowSearchList,
+} from '../../../service/useFollowCommunityIntro/utility/requestFollowCommunityIntro';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -15,20 +19,31 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
   profileImg,
   followerCount,
   followingCount,
-  name
+  name,
 }) {
-
   const history = useHistory();
   return (
     <>
       {/* Right */}
       {/* 프로필 카드 */}
-      <div className="community-main-left-contents" style={{cursor:"pointer"}} onClick={() => history.push(`/community/profile/${id}`)}>
+      <div
+        className="community-main-left-contents"
+        style={{ cursor: 'pointer' }}
+        onClick={() => history.push(`/community/profile/${id}`)}
+      >
         <div className="thumbnail">
-          <img src={profileImg === null || profileImg === '' ? `${DefaultImg}` : `/files/community/${profileImg}`} />
+          <img
+            src={
+              profileImg === null || profileImg === ''
+                ? `${DefaultImg}`
+                : `/files/community/${profileImg}`
+            }
+          />
         </div>
         <div className="community-main-left-list">
-          <div className="community-main-left-h3">{nickname === '' ? name : nickname}</div>
+          <div className="community-main-left-h3">
+            {nickname === '' ? name : nickname}
+          </div>
           <div className="community-main-left-span">
             Followers
             <span>{followerCount}</span>
@@ -41,8 +56,6 @@ const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView
 };
 
 const CommunityFollowListContainer: React.FC = () => {
-
-
   const [text, setText] = useState<string>('');
 
   const communityFollowList = useFollowCommunityIntro();
@@ -50,10 +63,10 @@ const CommunityFollowListContainer: React.FC = () => {
     return null;
   }
 
-  // 페이지네이션 
-  const addList = (offset:number) => {
+  // 페이지네이션
+  const addList = (offset: number) => {
     requestAppendFollowCommunityList(offset, 10, text);
-  }
+  };
 
   return (
     <>
@@ -68,35 +81,41 @@ const CommunityFollowListContainer: React.FC = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
               />
-              <button onClick={() => { requestFollowSearchList(0, 5, encodeURIComponent(text)) }}>
-
+              <button
+                onClick={() => {
+                  requestFollowSearchList(0, 5, encodeURIComponent(text));
+                }}
+              >
                 <Icon className="search link" />
               </button>
             </div>
           </div>
-          {communityFollowList !== undefined && (
-            <>
-              {communityFollowList.communities.map(communityItem => (
-                <FollowListItemView
-                  key={communityItem.email}
-                  {...communityItem}
-                />
-              ))}
-            </>
-          )}
-
-          <div className="more-comments community-side">
-            {communityFollowList.communitiesTotalCount > communityFollowList.communitiesOffset && (
-            <Button icon className="ui icon button left moreview" onClick={()=>addList(communityFollowList.communitiesOffset)}>
-              <Icon className="moreview" /> list more
-            </Button>
+          <div className="commu-home-scroll">
+            {communityFollowList !== undefined && (
+              <>
+                {communityFollowList.communities.map(communityItem => (
+                  <FollowListItemView
+                    key={communityItem.email}
+                    {...communityItem}
+                  />
+                ))}
+              </>
             )}
-            {communityFollowList.communitiesTotalCount <= communityFollowList.communitiesOffset && (
+          </div>
+          <div className="more-comments community-side">
+            {communityFollowList.communitiesTotalCount >
+              communityFollowList.communitiesOffset && (
               <Button
                 icon
-                className="moreview"
-                style={{ cursor: 'default' }}
-              />
+                className="ui icon button left moreview"
+                onClick={() => addList(communityFollowList.communitiesOffset)}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            )}
+            {communityFollowList.communitiesTotalCount <=
+              communityFollowList.communitiesOffset && (
+              <Button icon className="moreview" style={{ cursor: 'default' }} />
             )}
             {/* <div onClick={addList}>
               <Button icon className="ui icon button left moreview">

@@ -1,10 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link, matchPath, useHistory, useLocation, useParams } from 'react-router-dom';
+import {
+  Link,
+  matchPath,
+  useHistory,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import {
   requestNotice,
   requestRecent,
 } from '../../service/useCommunityHome/requestCommunityHome';
-import { getCommunityHome, useCommunityHome } from '../../store/CommunityHomeStore';
+import {
+  getCommunityHome,
+  useCommunityHome,
+} from '../../store/CommunityHomeStore';
 import commentIcon from '../../../style/media/icon-community-comment.png';
 import fileIcon from '../../../style/media/icon-community-file-copy-2.png';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
@@ -28,11 +37,11 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime);//moment().format('YYYY.MM.DD') === createdDate;
+  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
   const [text, setText] = useState<string>('');
   const communityHome = useCommunityHome();
   const history = useHistory();
-  const approved = communityHome?.community?.approved
+  const approved = communityHome?.community?.approved;
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -68,16 +77,15 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
         message: '지금 가입 승인을 기다리는 중입니다.',
       });
     } else if (approved === true) {
-      history.push(`/community/${communityId}/post/${postId}`)
+      history.push(`/community/${communityId}/post/${postId}`);
     }
-
   }, [approved]);
 
   return (
     <div className="community-home-card">
       <div
         className="ui comments base"
-        style={{ display: 'block', cursor:'pointer'}}
+        style={{ display: 'block', cursor: 'pointer' }}
         onClick={Alert}
       >
         <div className="home-card-top">
@@ -89,7 +97,8 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
         <div className="home-card-bottom">
           <span>{createdDate}</span>
           <span>
-            <img src={commentIcon} />{replyCount}
+            <img src={commentIcon} />
+            {replyCount}
           </span>
         </div>
       </div>
@@ -111,11 +120,11 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime);//moment().format('YYYY.MM.DD') === createdDate;
+  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
   const [text, setText] = useState<string>('');
   const history = useHistory();
   const communityHome = useCommunityHome();
-  const approved = communityHome?.community?.approved
+  const approved = communityHome?.community?.approved;
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -152,17 +161,16 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
       });
     } else if (approved === true) {
       if (type === 'ANONYMOUS') {
-        history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`)
+        history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`);
       } else {
-        history.push(`/community/${communityId}/post/${postId}`)
+        history.push(`/community/${communityId}/post/${postId}`);
       }
     }
-
   }, [approved]);
   return (
     <div
       className="new-board-list"
-      style={{ display: 'block', cursor:'pointer' }}
+      style={{ display: 'block', cursor: 'pointer' }}
       onClick={Alert}
     >
       <div className="new-board-list-top">
@@ -179,11 +187,11 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
           <div className="text-list">
             {type !== 'ANONYMOUS' && (
               <>
-                {profileImg ?
+                {profileImg ? (
                   <img src={`/files/community/${profileImg}`} />
-                  :
+                ) : (
                   <img src={`${profileIcon}`} />
-                }
+                )}
               </>
             )}
             {type === 'ANONYMOUS' && <img src={profileIcon} />}
@@ -197,7 +205,8 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         </div>
         <div className="right-area">
           <button>
-            <img src={commentIcon} />{replyCount}
+            <img src={commentIcon} />
+            {replyCount}
           </button>
         </div>
       </div>
@@ -214,7 +223,7 @@ function CommunityHomePage() {
   const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
 
-  useEffect(() => { 
+  useEffect(() => {
     const match = matchPath<Params>(pathname, {
       path: '/community/:communityId',
       exact: true,
@@ -229,13 +238,12 @@ function CommunityHomePage() {
   }, [pathname]);
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
-  }
-  else {
+  } else {
     ReactGA.event({
       category: 'Community',
       action: 'Click',
-      label: `${communityHome!.community!.name}`
-    })
+      label: `${communityHome!.community!.name}`,
+    });
   }
 
   return (
@@ -255,10 +263,10 @@ function CommunityHomePage() {
               )}
               <div className="community-banner-inner">
                 <div className="community-banner-title">
-                  {communityHome.community.name}
+                  {/* {communityHome.community.name} basic기본 유형일때는 커뮤니티 제목 삭제 */}
                 </div>
                 <div className="community-banner-copy">
-                  {communityHome.community.introduce}
+                  {/* {communityHome.community.introduce} basic기본 유형일때는 커뮤니티 제목 삭제 */}
                 </div>
               </div>
             </>
@@ -275,7 +283,14 @@ function CommunityHomePage() {
             <>
               <img src={defaultHeader} />
               <div className="community-banner-inner">
-                <div className="community-banner-title">
+                <div
+                  className="community-banner-title"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
                   {communityHome.community.name}
                 </div>
                 <div className="community-banner-copy" />

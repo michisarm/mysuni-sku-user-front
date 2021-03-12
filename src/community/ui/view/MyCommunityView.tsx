@@ -9,15 +9,14 @@ import { useMyCommunityIntro } from '../../store/CommunityMainStore';
 
 import ReactGA from 'react-ga';
 
-interface MyCommunityViewProps { }
+interface MyCommunityViewProps {}
 
 const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView() {
   const contextRef = useRef(null);
   const myCommunityIntro = useMyCommunityIntro();
   const history = useHistory();
   const gaOnClick = (name: string) => {
-
-    // react-ga 
+    // react-ga
     ReactGA.event({
       category: 'Community',
       action: 'Click',
@@ -27,9 +26,10 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
     sessionStorage.removeItem('communityOffset');
     sessionStorage.removeItem('openCommunityOffset');
     if (name === 'MyCommunity') history.replace('/community/main');
-    if (name === 'CommunityList') history.replace('/community/main/open-communities');
+    if (name === 'CommunityList')
+      history.replace('/community/main/open-communities');
     if (name === 'Follow') history.replace('/community/main/follow');
-  }
+  };
 
   useEffect(() => {
     // react-ga (초기 진입 시)
