@@ -25,10 +25,15 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
     window.scrollTo(0, 0);
     sessionStorage.removeItem('communityOffset');
     sessionStorage.removeItem('openCommunityOffset');
-    if (name === 'MyCommunity') history.replace('/community/main');
-    if (name === 'CommunityList')
+    if (name === 'MyCommunity') {
+      history.replace('/community/main');
+    }
+    if (name === 'CommunityList') {
       history.replace('/community/main/open-communities');
-    if (name === 'Follow') history.replace('/community/main/follow');
+    }
+    if (name === 'Follow') {
+      history.replace('/community/main/follow');
+    }
   };
 
   useEffect(() => {
