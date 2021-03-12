@@ -234,7 +234,6 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </div>
       </div>
-      <Loadingpanel loading={isLoading} />
       {myTrainings.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
           {myTrainings.map(
@@ -272,25 +271,30 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-        <NoSuchContentPanel
-          message={
-            <>
-              <div className="text">진행중인 학습 과정이 없습니다.</div>
-              <Button
-                icon
-                as="a"
-                className="right btn-blue2"
-                onClick={onViewAll}
-              >
-                <span className="border">
-                  <span className="ellipsis">{profileMemberName}</span> 님이
-                  학습 중인 과정 보기
-                </span>
-                <Icon className="morelink" />
-              </Button>
-            </>
-          }
-        />
+        <Segment style={{ height: '400px' }}>
+          <Loadingpanel loading={isLoading} />
+          {!isLoading && (
+            <NoSuchContentPanel
+              message={
+                <>
+                  <div className="text">진행중인 학습 과정이 없습니다.</div>
+                  <Button
+                    icon
+                    as="a"
+                    className="right btn-blue2"
+                    onClick={onViewAll}
+                  >
+                    <span className="border">
+                      <span className="ellipsis">{profileMemberName}</span> 님이
+                      학습 중인 과정 보기
+                    </span>
+                    <Icon className="morelink" />
+                  </Button>
+                </>
+              }
+            />
+          )}
+        </Segment>
       )}
     </ContentWrapper>
   );

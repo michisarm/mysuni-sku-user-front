@@ -140,68 +140,57 @@ class QnaListContainer extends React.Component<Props, State> {
 
     return (
       <>
-        {posts.results.length === 0 ? (
-          <div style={{ marginTop: 95 }}>
-            <Loadingpanel loading={isLoading} />
-            <div className="support-list-wrap">
-              <div className="list-top">
-                <Button
-                  icon
-                  className="left post ask"
-                  onClick={this.onClickNewQna}
-                >
-                  <Icon className="ask24" />
-                  &nbsp;&nbsp;Ask a Question
-                </Button>
-              </div>
-            </div>
-            <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
+        <div className="support-list-wrap">
+          <div className="list-top">
+            <Button icon className="left post ask" onClick={this.onClickNewQna}>
+              <Icon className="ask24" />
+              &nbsp;&nbsp;Ask a Question
+            </Button>
           </div>
-        ) : (
-          <div className="support-list-wrap">
-            <Loadingpanel loading={isLoading} />
-            <div className="list-top">
-              <Button
-                icon
-                className="left post ask"
-                onClick={this.onClickNewQna}
-              >
-                <Icon className="ask24" />
-                &nbsp;&nbsp;Ask a Question
-              </Button>
-              <div className="radio-wrap">
-                <Radio
-                  className="base"
-                  label="모두 보기"
-                  name="radioGroup"
-                  value="all"
-                  checked={answered === 'all'}
-                  onChange={(e: any, data: any) => {
-                    this.findQnaPosts(data.value, 10);
-                  }}
-                />
-                <Radio
-                  className="base"
-                  label="답변 완료"
-                  name="radioGroup"
-                  value="true"
-                  checked={answered === 'true'}
-                  onChange={(e: any, data: any) => {
-                    this.findQnaPosts(data.value, 10);
-                  }}
-                />
-                <Radio
-                  className="base"
-                  label="답변 대기"
-                  name="radioGroup"
-                  value="false"
-                  checked={answered === 'false'}
-                  onChange={(e: any, data: any) => {
-                    this.findQnaPosts(data.value, 10);
-                  }}
-                />
-              </div>
+          {posts.results.length > 0 && (
+            <div className="radio-wrap">
+              <Radio
+                className="base"
+                label="모두 보기"
+                name="radioGroup"
+                value="all"
+                checked={answered === 'all'}
+                onChange={(e: any, data: any) => {
+                  this.findQnaPosts(data.value, 10);
+                }}
+              />
+              <Radio
+                className="base"
+                label="답변 완료"
+                name="radioGroup"
+                value="true"
+                checked={answered === 'true'}
+                onChange={(e: any, data: any) => {
+                  this.findQnaPosts(data.value, 10);
+                }}
+              />
+              <Radio
+                className="base"
+                label="답변 대기"
+                name="radioGroup"
+                value="false"
+                checked={answered === 'false'}
+                onChange={(e: any, data: any) => {
+                  this.findQnaPosts(data.value, 10);
+                }}
+              />
             </div>
+          )}
+        </div>
+        {posts.results.length === 0 ? (
+          <Segment style={{ height: '400px' }}>
+            <Loadingpanel loading={isLoading} />
+            {!isLoading && (
+              <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
+            )}
+          </Segment>
+        ) : (
+          <>
             <div className="su-list qna">
               {posts.results.map((post, index) =>
                 this.renderPostRow(post, index)
@@ -218,7 +207,7 @@ class QnaListContainer extends React.Component<Props, State> {
                 </Button>
               </div>
             )}
-          </div>
+          </>
         )}
       </>
     );

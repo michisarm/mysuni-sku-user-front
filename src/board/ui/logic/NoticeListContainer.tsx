@@ -145,13 +145,14 @@ class NoticeListContainer extends Component<Props, State> {
     return (
       <>
         {pinnedPosts.length === 0 && posts.length === 0 ? (
-          <div style={{ marginTop: 50 }}>
+          <Segment style={{ marginTop: 50, height: '400px' }}>
             <Loadingpanel loading={isLoading} />
-            <NoSuchContentPanel message="등록된 Notice가 없습니다." />
-          </div>
+            {!isLoading && (
+              <NoSuchContentPanel message="등록된 Notice가 없습니다." />
+            )}
+          </Segment>
         ) : (
           <div className="support-list-wrap">
-            <Loadingpanel loading={isLoading} />
             <div className="su-list notice">
               {pinnedPosts.map((pinnedPost, index) =>
                 this.renderPostRow(pinnedPost, index, true)

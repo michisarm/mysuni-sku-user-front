@@ -146,13 +146,14 @@ class FaqListContainer extends React.Component<Props, State> {
     return (
       <>
         {result.length === 0 ? (
-          <div style={{ marginTop: 95 }}>
+          <Segment style={{ marginTop: 95, height: '400px' }}>
             <Loadingpanel loading={isLoading} />
-            <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
-          </div>
+            {!isLoading && (
+              <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
+            )}
+          </Segment>
         ) : (
           <div className="support-list-wrap">
-            <Loadingpanel loading={isLoading} />
             <div className="list-top">
               <div className="radio-wrap">
                 {categorys.length > 0 &&
