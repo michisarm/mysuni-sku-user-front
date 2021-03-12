@@ -73,21 +73,13 @@ export function parseLectureParams(
       pathname,
       lectureParams,
     };
-  } else if (lectureParams.coursePlanId !== undefined) {
-    return {
-      contentType: 'coures',
-      contentId: lectureParams.coursePlanId!,
-      lectureId: lectureParams.serviceId!,
-      pathname,
-      lectureParams,
-    };
-  } else {
-    return {
-      contentType: 'community',
-      contentId: lectureParams.communityId!,
-      lectureId: lectureParams.menuId!,
-      pathname,
-      lectureParams,
-    };
   }
+  return {
+    contentType: 'coures',
+    contentId: lectureParams.coursePlanId!,
+    lectureId: lectureParams.serviceId!,
+    pathname,
+    lectureParams,
+  };
+
 }

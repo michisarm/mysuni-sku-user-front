@@ -12,6 +12,7 @@ import BadgeCompModel from '../model/BadgeCompModel';
 import BadgeCourseData from '../model/BadgeCourseData';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService;
@@ -24,7 +25,7 @@ const BadgeCompRight: React.FC<Props> = Props => {
   //
   const { badgeService, badge, compLearnings, history } = Props;
   const { badgeId, mainCategoryName, name } = badge;
-
+  const { scrollSave } = useScrollMove();
   const domainPath =
     process.env.NODE_ENV !== 'development'
       ? window.location.protocol + '//' + window.location.host
@@ -74,10 +75,11 @@ const BadgeCompRight: React.FC<Props> = Props => {
     ReactGA.event({
       category: '도전중인 Badge',
       action: 'Click',
-      label: `${data.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${
-        data.name
-      }`,
+      label: `${data.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${data.name
+        }`,
     });
+
+    scrollSave();
   };
 
   return (

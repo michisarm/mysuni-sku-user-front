@@ -4,9 +4,9 @@ metadata:
   name: user-service
 spec:
   ports:
-  - name: "80"
-    port: 80
-    targetPort: 80
+    - name: '80'
+      port: 80
+      targetPort: 80
   selector:
     app: user
   type: ClusterIP
@@ -17,15 +17,23 @@ metadata:
   name: user-virtualservice
 spec:
   hosts:
-    - "*"
+    - '*'
   gateways:
     - skuniv-gateway
   http:
     - match:
         - uri:
+            prefix: /robots.txt
+      route:
+        - destination:
+            host: user-service
+            port:
+              number: 80
+    - match:
+        - uri:
             exact: /
-#      rewrite:
-#        uri: /suni-main
+      #      rewrite:
+      #        uri: /suni-main
       route:
         - destination:
             host: user-service

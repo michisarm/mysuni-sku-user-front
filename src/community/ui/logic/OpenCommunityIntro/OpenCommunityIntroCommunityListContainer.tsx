@@ -1,5 +1,5 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
-import { Button, Icon, Radio, Segment, Modal } from 'semantic-ui-react';
+import React, { useEffect } from 'react';
+import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
@@ -9,14 +9,14 @@ import { reactConfirm, reactAlert, axiosApi } from '@nara.platform/accent';
 import CommunityType from '../../../model/CommunityType';
 import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
-import { Link } from 'react-router-dom';
 import OpenCommunityPassInputModal from './OpenCommunityPassInputModal';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
   requestAppendOpenCommunityList,
   requestOpenCommunityList,
 } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
 import { StreamUtils } from 'xlsx/types';
-import { useHistory } from 'react-router-dom';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface FieldItemViewProps {}
 
@@ -137,33 +137,55 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
             dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
           />
         </div>
-      </div>
-      <div className="open-card-bottom">
-        <div className="title-area">
-          <div className="text-list">
-            <img src={managerIcon} />
-            <span>{managerName}</span>
+        <div className="open-card-content">
+          <p>{name}</p>
+          <div className="thumbnail">
+            <img
+              src={thumbnailId}
+              style={{ height: 72, width: 72, borderRadius: 8 }}
+            />
+          </div>
+          <div className="community-main-left-list">
+            <div
+              className="community-main-left-h3"
+              dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
+            />
           </div>
         </div>
-        <div className="right-area">
-          <span>멤버</span>
-          <span>{memberCount}</span>
+        <div className="open-card-bottom">
+          <div className="title-area">
+            <div className="text-list">
+              <img src={managerIcon} />
+              <span>{managerName}</span>
+            </div>
+          </div>
+          <div className="right-area">
+            <span>멤버</span>
+            <span>{memberCount}</span>
+          </div>
         </div>
       </div>
     </Link>
   );
 };
 
+function deleteOffset() {
+  sessionStorage.removeItem('communityOffset');
+  sessionStorage.removeItem('openCommunityOffset');
+}
+
 function sortCreatedTime() {
   const openCommunityIntro = getOpenCommunityIntro();
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'createdTime');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'createdTime',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -172,11 +194,13 @@ function sortMemberCount() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'memberCount');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'memberCount',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -185,11 +209,13 @@ function sortName() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'name');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'name',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -198,17 +224,19 @@ function sortApproved() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'approved');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'approved',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
 function OpenCommunityIntroCommunityListContainer() {
   const openCommunityIntro = useOpenCommunityIntro();
-
+  const sessionSortName = sessionStorage.getItem('sortName');
   if (openCommunityIntro === undefined) {
     return null;
   }
@@ -221,7 +249,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="최신순"
           name="sort"
           value="createdTime"
-          checked={openCommunityIntro.communitiesSort === 'createdTime'}
+          checked={
+            sessionSortName === 'createdTime' ||
+            openCommunityIntro.communitiesSort === 'createdTime'
+          }
           onClick={sortCreatedTime}
         />
         <Radio
@@ -229,7 +260,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="멤버순"
           name="sort"
           value="memberCount"
-          checked={openCommunityIntro.communitiesSort === 'memberCount'}
+          checked={
+            sessionSortName === 'memberCount' ||
+            openCommunityIntro.communitiesSort === 'memberCount'
+          }
           onClick={sortMemberCount}
         />
         <Radio
@@ -237,7 +271,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가나다순"
           name="sort"
           value="name"
-          checked={openCommunityIntro.communitiesSort === 'name'}
+          checked={
+            sessionSortName === 'name' ||
+            openCommunityIntro.communitiesSort === 'name'
+          }
           onClick={sortName}
         />
         <Radio
@@ -245,7 +282,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가입대기"
           name="sort"
           value="approved"
-          checked={openCommunityIntro.communitiesSort === 'approved'}
+          checked={
+            sessionSortName === 'approved' ||
+            openCommunityIntro.communitiesSort === 'approved'
+          }
           onClick={sortApproved}
         />
       </div>

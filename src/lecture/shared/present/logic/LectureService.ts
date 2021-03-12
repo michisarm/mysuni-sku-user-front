@@ -27,9 +27,6 @@ import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 
-
-
-
 @autobind
 class LectureService {
   //
@@ -153,9 +150,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -181,12 +178,48 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
+
+  @action
+  async findPagingChannelOrderLectures(
+    collegeId: string,
+    channelId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
+    //
+    if(offset >= 8) {
+      sessionStorage.setItem('channelOffset', JSON.stringify(offset));
+    }
+    const getChannelOffset:any = sessionStorage.getItem('channelOffset');
+    const prevSorting:any = sessionStorage.getItem('channelSort');
+    const prevChannelOffset = JSON.parse(getChannelOffset)
+
+    const response = await this.lectureApi.findAllLectures(
+      LectureRdoModel.newWithChannelOrder(collegeId, channelId, prevChannelOffset + limit, 0, prevSorting || orderBy)
+    );
+    
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
+
+    runInAction(
+      () =>
+        (this._lectures = lectureOffsetElementList.results)
+    );
+    return lectureOffsetElementList;
+  }
+
 
   @action
   async findPagingCommunityLectures(limit: number, offset: number) {
@@ -204,9 +237,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -241,9 +274,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -261,9 +294,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -381,9 +414,9 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
+      (this._lectures = this._lectures.concat(
+        lectureOffsetElementList.results
+      ))
     );
     return lectureOffsetElementList;
   }
@@ -503,9 +536,9 @@ class LectureService {
 
       runInAction(
         () =>
-          (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
-            recommendLecture.lectures.results
-          ))
+        (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
+          recommendLecture.lectures.results
+        ))
       );
       return recommendLecture.lectures;
     }
@@ -620,7 +653,8 @@ class LectureService {
 
   @action
   async findAllRqdTableViewsWithPage(offset: Offset) {
-    this._lectureFilterRdoV2.changeOffset(offset);
+    const newOffset: Offset = { offset: 0, limit: offset.offset + offset.limit }
+    this._lectureFilterRdoV2.changeOffset(newOffset);
     const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
 
     if (
@@ -628,8 +662,9 @@ class LectureService {
       offsetTableViews.results &&
       offsetTableViews.results.length) {
       const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+
       runInAction(() => {
-        this._lectureTableViews = [...this._lectureTableViews, ...addedTableViews];
+        this._lectureTableViews = [...addedTableViews];
       });
     }
   }

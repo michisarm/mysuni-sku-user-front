@@ -519,6 +519,19 @@ function CommunityHomeTreeContainer() {
       throw new Error('not arg');
     }
   };
+
+  function deleteAllPostMenu(communityId: string) {
+    // 전체글 메뉴 삭제 Func => filteredCommunity 배열에 communityId 추가
+    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a'];
+    if (
+      communityId !== '' &&
+      communityId !== null &&
+      communityId !== undefined
+    ) {
+      return filteredCommunity.includes(communityId);
+    }
+  }
+
   return (
     <div className="community-left community-home-left">
       <div className="sub-info-box">
@@ -563,7 +576,8 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              {communtyHome.community.communityId === 'COMMUNITY-a' ? null : (
+              {communtyHome?.community &&
+              deleteAllPostMenu(communtyHome?.community.communityId) ? null : (
                 <ReadonlyMenuItemView
                   type="NOTICE"
                   name="전체글"
@@ -605,7 +619,8 @@ function CommunityHomeTreeContainer() {
                   <img src={homeArrowIcon} className="right-menu-arrow" />
                 </Link>
               </li>
-              {communtyHome.community.communityId === 'COMMUNITY-a' ? null : (
+              {communtyHome?.community &&
+              deleteAllPostMenu(communtyHome?.community.communityId) ? null : (
                 <li onClick={() => gaEvent('all')}>
                   <Link
                     to={`/community/${communtyHome.community.communityId}/all`}

@@ -275,6 +275,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const lectureParams = useParams<LectureParams>();
 
+  const goToPath = (path?: string) => {
+    if (path !== undefined) {
+      //const currentHistory = getCurrentHistory();
+      //if (currentHistory === undefined) {
+      //  return;
+      //}
+      //currentHistory.push(path);
+      history.push(path);
+    }
+  }
+
   useEffect(() => {
     setNextContentsView(false);
     //동영상 종료
@@ -288,13 +299,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         setNextContentsView(true);
         const course = getActiveCourseStructureItem();
         const program = getActiveProgramStructureItem();
-        if (
-          (course?.state === 'Completed' && course.survey !== undefined) ||
-          (program?.state === 'Completed' && program.survey !== undefined)
-        ) {
+        if (course?.state === 'Completed' && course.survey !== undefined) {
           reactAlert({
             title: '안내',
             message: 'Survey 설문 참여를 해주세요.',
+            onClose: () => goToPath(course?.survey?.path),
+          });
+        } else if (program?.state === 'Completed' && program.survey !== undefined) {
+          reactAlert({
+            title: '안내',
+            message: 'Survey 설문 참여를 해주세요.',
+            onClose: () => goToPath(program?.survey?.path),
           });
         }
       }

@@ -208,10 +208,10 @@ const InProgressLearning: React.FC<Props> = Props => {
     }
   };
 
-  /* 
+  /*
     const onClickActionLog = (text: string) => {
       actionLogService?.registerClickActionLog({ subAction: text });
-    }; 
+    };
   */
 
   const routeToRecommend = () => {
@@ -279,11 +279,11 @@ const InProgressLearning: React.FC<Props> = Props => {
                 icon
                 as="a"
                 className="right btn-blue2"
-                onClick={routeToRecommend}
+                onClick={onViewAll}
               >
                 <span className="border">
-                  <span className="ellipsis">{profileMemberName}</span> 님에게
-                  추천하는 학습 과정 보기
+                  <span className="ellipsis">{profileMemberName}</span> 님이
+                  학습 중인 과정 보기
                 </span>
                 <Icon className="morelink" />
               </Button>
