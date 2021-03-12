@@ -1,12 +1,16 @@
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import React from 'react';
 import { Form, Icon } from 'semantic-ui-react';
+import { EssayScore } from 'lecture/detail/model/GradeSheet';
+
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
   setAnswer: (questionNo: string, value: string) => void;
   readOnly: boolean;
+  essayScore?: EssayScore;
+  showScore?: boolean;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
@@ -14,19 +18,36 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   answer,
   setAnswer,
   readOnly,
+  essayScore,
+  showScore,
 }) {
   const maxLength = 1000;
+
+
 
   return (
     <Form>
       <Form.Field>
         <div className="ui right-top-count input">
           <span className="count">
-            <span className="now">
-              {answer && answer.length}
-              {!answer && '0'}
-            </span>
-            /<span className="max">{maxLength}</span>
+            {
+              essayScore &&
+              showScore &&
+              (
+                <>
+                  <span className="score">평가점수</span>
+                  <span className="score_value">{essayScore.score}</span>
+                </>
+              ) || (
+                <>
+                  <span className="now">
+                    {answer && answer.length}
+                    {!answer && '0'}
+                  </span>
+                  /<span className="max">{maxLength}</span>
+                </>
+              )
+            }
           </span>
           <textarea
             placeholder="답변을 입력해주세요."
