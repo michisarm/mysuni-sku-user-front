@@ -26,7 +26,6 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                 <span>전체 College 중 Top5</span>
               </div>
               <div className="card-item-con sty2">
-
                 <div className="item-con-box">
                   <div className="item-con-left">
                     <div className="card-gauge-bar sty2 color-global">
@@ -34,7 +33,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                         <div className="range">
                           <div
                             style={activeIndex === -1 ? {width:0} :{
-                              width: `${collegeTopChartItem[0].percent}%`,
+                              width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[0].percent : 0}%`,
                             }}
                             className="percent"
                           />
@@ -46,7 +45,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                         <div className="range">
                           <div
                             style={activeIndex === -1 ? {width:0} :{
-                              width: `${collegeTopChartItem[1].percent}%`,
+                              width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[1].percent : 0}%`,
                             }}
                             className="percent"
                           />
@@ -58,7 +57,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                         <div className="range">
                           <div
                             style={activeIndex === -1 ? {width:0} :{
-                              width: `${collegeTopChartItem[2].percent}%`,
+                              width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[2].percent : 0}%`,
                             }}
                             className="percent"
                           />
@@ -70,7 +69,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                         <div className="range">
                           <div
                             style={activeIndex === -1 ? {width:0} :{
-                              width: `${collegeTopChartItem[3].percent}%`,
+                              width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[3].percent : 0}%`,
                             }}
                             className="percent"
                           />
@@ -82,7 +81,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                         <div className="range">
                           <div
                             style={activeIndex === -1 ? {width:0} :{
-                              width: `${collegeTopChartItem[4].percent}%`,
+                              width: `${collegeTopChartItem[4] ? collegeTopChartItem[4].percent : 0}%`,
                             }}
                             className="percent"
                           />
@@ -92,11 +91,11 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                   </div>
                   <div className="item-con-right">
                     <div className="card-gauge-bar">
-                      <div className="gauge-number glo"><em className="col-con">Global</em><strong>{collegeTopChartItem[0].percent}<em>%</em></strong></div>
-                      <div className="gauge-number sv"><em className="col-con">SV</em><strong>{collegeTopChartItem[1].percent}<em>%</em></strong></div>
-                      <div className="gauge-number semi"><em className="col-con">반도체</em><strong>{collegeTopChartItem[2].percent}<em>%</em></strong></div>
-                      <div className="gauge-number mana"><em className="col-con">Management</em><strong>{collegeTopChartItem[3].percent}<em>%</em></strong></div>
-                      <div className="gauge-number inno"><em className="col-con">혁신디자인</em><strong>{collegeTopChartItem[4].percent}<em>%</em></strong></div>
+                      <div className="gauge-number glo"><em className="col-con">Global</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[0].percent : 0}<em>%</em></strong></div>
+                      <div className="gauge-number sv"><em className="col-con">SV</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[1].percent : 0}<em>%</em></strong></div>
+                      <div className="gauge-number semi"><em className="col-con">반도체</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[2].percent : 0}<em>%</em></strong></div>
+                      <div className="gauge-number mana"><em className="col-con">Management</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[3].percent : 0}<em>%</em></strong></div>
+                      <div className="gauge-number inno"><em className="col-con">혁신디자인</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[4].percent : 0}<em>%</em></strong></div>
                     </div>
                   </div>
                 </div>

@@ -49,7 +49,7 @@ function BadgeLearningTimeView(props: Props) {
                 </div>
               </div>
               <span className="gauge-number">
-                <strong>{badgeLearningTimeItem.badgeMyCount}</strong>개
+                <strong>{badgeLearningTimeItem.badgeMyCount ? badgeLearningTimeItem.badgeMyCount : 0}</strong>개
               </span>
             </div>
             <div className="card-gauge-bar">
@@ -67,7 +67,7 @@ function BadgeLearningTimeView(props: Props) {
                 </div>
               </div>
               <span className="gauge-number">
-                <strong>{badgeLearningTimeItem.companyAvgBadgeCount}</strong>개
+                <strong>{badgeLearningTimeItem.companyAvgBadgeCount ? badgeLearningTimeItem.companyAvgBadgeCount : 0}</strong>개
               </span>
             </div>
           </div>
@@ -95,11 +95,11 @@ function BadgeLearningTimeView(props: Props) {
               <span className="gauge-number">
                 <div>
                   <strong>
-                    {badgeLearningTimeItem!.mylearningTimeHour}
+                    {badgeLearningTimeItem!.mylearningTimeHour ? badgeLearningTimeItem!.mylearningTimeHour : 0}
                   </strong>
                   h&nbsp;
                   <strong>
-                    {badgeLearningTimeItem!.mylearningTimeMinute}
+                    {badgeLearningTimeItem!.mylearningTimeMinute ? badgeLearningTimeItem!.mylearningTimeMinute : 0}
                   </strong>
                   m
                 </div>
@@ -120,7 +120,7 @@ function BadgeLearningTimeView(props: Props) {
                 </div>
               </div>
               <span className="gauge-number">
-                <strong>{Math.floor(badgeLearningTimeItem.companyAvglearningTime / 60)}</strong>h&nbsp;<strong>{badgeLearningTimeItem.companyAvglearningTime % 60}</strong>m
+                <strong>{badgeLearningTimeItem.companyAvglearningTime ? Math.floor(badgeLearningTimeItem.companyAvglearningTime / 60) : 0}</strong>h&nbsp;<strong>{badgeLearningTimeItem.companyAvglearningTime ? badgeLearningTimeItem.companyAvglearningTime % 60 : 0}</strong>m
               </span>
             </div>
           </div>
