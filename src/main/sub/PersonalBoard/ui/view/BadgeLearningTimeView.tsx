@@ -16,6 +16,7 @@ function BadgeLearningTimeView(props: Props) {
     if(badgeLearningTimeItem === undefined) {
       return
     } 
+    console.log('badgeLearningTimeItem', badgeLearningTimeItem)
     if(badgeLearningTimeItem!.mylearningTimeHour !== 0) {
       setAllLearningTime(badgeLearningTimeItem!.mylearningTimeHour*60 + badgeLearningTimeItem!.mylearningTimeMinute)
     } else {
@@ -25,7 +26,7 @@ function BadgeLearningTimeView(props: Props) {
 
   return (
     <>
-    {badgeLearningTimeItem && allLearningTime &&(
+    {badgeLearningTimeItem &&(
       <>
       <div className="personal-card">
         <div className="personal-card-item">
