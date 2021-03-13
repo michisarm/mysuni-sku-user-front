@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Image } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import ProfilPhotoChangeModal from '../../../../myTraining/ui/logic/ProfilPhotoChangeModal';
+import DashBoardSentenceContainer from '../DashBoardSentence/ui/logic/DashBoardSentenceContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -16,6 +17,7 @@ interface Props extends RouteComponentProps {
   imageEditable?: boolean,
   myPageActive?: boolean,
   onEditImage?: () => void,
+  type?: string
 }
 
 @reactAutobind
@@ -34,11 +36,11 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
   render() {
     //
     const {
-      image, imageEditable, name, myPageActive, company, department,
+      image, imageEditable, name, myPageActive, company, department, type
     } = this.props;
-
     return (
       <>
+        {/* <div className="personal-inner"> */}
         <div className="profile">
           <div className="pic">
             <Image src={image} alt="Profile" />
@@ -58,12 +60,33 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
             />
           )}
         </div>
+        {/* </div> */}
         <div className="text-info">
           <div className="name">
-            {name}
+            {name}님,
           </div>
           <div className="part">
-            <span>{company}</span><br /><span>{department}</span>
+            {
+              type === 'Recommend' && (
+                <p>우리 회사 인기 채널을 확인해 볼까요?</p>
+              )
+            }
+            {
+              type === 'Learning' && (
+                <p>오늘도 지식이 쑥쑥 자라나고 있어요!</p>
+              )
+            }
+            {
+              type === 'Create' && (
+                <p>나만의 학습 콘텐츠를 만들어 보세요.</p>
+              )
+            }
+            {
+              type !== 'Recommend' && type !== 'Learning' && type !== 'Create' && (
+                <DashBoardSentenceContainer/>
+              )
+            }
+            {/* <span>{company}</span><br /><span>{department}</span> */}
           </div>
         </div>
       </>

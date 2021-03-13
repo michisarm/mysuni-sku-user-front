@@ -117,7 +117,7 @@ class MyLearningSummaryModal extends Component<Props> {
     const { myLearningSummary } = myLearningSummaryService!;
     const { lectureTimeSummary } = myLearningSummary;
     const { checkedTab } = this.state;
-
+    
     /* MyCompany  */
     if (checkedTab === ModalTabType.MyCompany) {
       return (
