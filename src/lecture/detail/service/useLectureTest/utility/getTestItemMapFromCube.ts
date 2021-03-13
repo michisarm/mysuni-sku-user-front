@@ -2,6 +2,7 @@
 // report
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
+import { patronInfo } from '@nara.platform/dock';
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
@@ -12,7 +13,10 @@ import {
   findStudent,
   setCubeStudentExamId,
 } from 'lecture/detail/api/lectureApi';
+import { findGradeSheet } from 'lecture/detail/api/assistantApi';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import { getEssayScores } from 'lecture/detail/model/GradeSheet';
+
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -45,6 +49,11 @@ async function getTestItem(examId: string) {
       });
     }
 
+    const denizenId = patronInfo.getDenizenId() || '';
+    const gradeSheet = await findGradeSheet(examId, denizenId);
+    const graderComment = gradeSheet && gradeSheet.graderComment || '';
+    const essayScores = gradeSheet && getEssayScores(gradeSheet) || [];
+
     const item: LectureTestItem = {
       id: examination.id,
       name: examination.examPaperTitle,
@@ -52,6 +61,8 @@ async function getTestItem(examId: string) {
       questions: examPaperForm.questions,
       successPoint: examination.successPoint,
       totalPoint: examTotalPoint,
+      graderComment,
+      essayScores,
     };
     return item;
   }

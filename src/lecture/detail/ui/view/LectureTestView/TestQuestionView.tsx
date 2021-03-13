@@ -9,6 +9,7 @@ import {
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
 import LearningState from 'lecture/detail/model/LearningState';
+import { EssayScore } from 'lecture/detail/model/GradeSheet';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
@@ -20,6 +21,7 @@ interface TestQuestionViewProps {
   submitOk: boolean;
   setSubmitOk: (submitOk:boolean) => void;
   dataLoadTime?: Number;
+  essayScore?: EssayScore;
 }
 
 function setAnswer(questionNo: string, value: string) {
@@ -50,6 +52,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   submitOk,
   setSubmitOk,
   dataLoadTime,
+  essayScore,
 }) {
   let questionClassName = ' course-radio-survey ';
   if (
@@ -92,6 +95,13 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       }
     }
   }, [question.questionNo, submitted,learningState,submitOk, dataLoadTime]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
+
+  const showScore = learningState && (
+    learningState === 'Passed' || 
+    learningState === 'TestPassed' || 
+    learningState === 'Failed' ||
+    learningState === 'Missed'
+    ) ? true : false;
 
   return (
     <>
@@ -144,6 +154,8 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
             answer={answer}
             setAnswer={setAnswer}
             readOnly={readOnly}
+            essayScore={essayScore}
+            showScore={showScore}
           />
         )}
       </div>
