@@ -68,7 +68,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     boardVisible: false,
     learningObjectivesOpen: false,
     companyCode: '',
-    activeIndex: 0,
+    activeIndex: -1,
     learningObjectives: {
       AnnualLearningObjectives: 0,
       WeekAttendanceGoal: 0,

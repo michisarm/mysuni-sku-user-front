@@ -41,7 +41,6 @@ class MyLearningSummaryApi {
 
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
   findTotalMyLearningSummary() {
-    console.log('this.flowBaseURL', this.flowBaseURL)
     return axiosApi.get<MyLearningSummaryModel>(`${this.flowBaseURL}`)
       .then(response => response && response.data);
   }
