@@ -46,7 +46,10 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     onClose();
   }, []);
 
-  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+  const respondCount =
+    (lectureSurveySummary &&
+      lectureSurveySummary.respondentCount.respondentCount) ||
+    0;
   const surveyCommunityTitle = currentMenu?.name;
   const surveyCourseTitle = lectureStructure?.course?.name;
   const surveyCubeTitle = lectureStructure?.cube?.name;

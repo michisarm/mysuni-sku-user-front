@@ -15,7 +15,10 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   lectureSurveyAnswerItem,
 }) {
   const lectureSurveySummary = useLectureSurveySummary();
-  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+  const respondCount =
+    (lectureSurveySummary &&
+      lectureSurveySummary.respondentCount.respondentCount) ||
+    0;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
   const totalCount =
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
