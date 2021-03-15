@@ -27,6 +27,7 @@ export async function getTranscriptItem(
     } = transcript;
 
     const lectureTranscript: LectureTranscript = {
+      deliveryId,
       locale,
       idx : 'transcript'+key,
       text,

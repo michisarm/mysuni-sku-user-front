@@ -14,8 +14,8 @@ import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
 import LectureClassroomInfoView from './LectureClassroomInfoView';
 import './LectureCubeContentView.css';
-import LectureTranscriptContainer from '../../logic/LectureTranscriptContainer';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
+import LectureCubeTranscriptContainer from '../../logic/LectureCubeTranscriptContainer';
+import TranscriptCountModel from '../../../model/TranscriptCountModel';
 
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
@@ -24,6 +24,7 @@ interface LectureCubeContentViewProps {
   lectureFile?: LectureFile;
   lectureComment?: LectureComment;
   lectureClassroom?: LectureClassroom;
+  lectureTranscriptCount?: TranscriptCountModel;
 }
 
 // function hashLink(hash: string) {
@@ -40,6 +41,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureFile,
   lectureComment,
   lectureClassroom,
+  lectureTranscriptCount
 }) {
   const [fixed, setFixed] = useState<boolean>(false);
   // useEffect(() => {
@@ -78,8 +80,15 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
     setActivatedTab('transcript');
   }, []);
 
-  const params = useLectureRouterParams();
+  // 대본 관련 Props 세팅
+  const [ transLangVal, setTransLangVal ] = useState<string>('ko');
+
+  // const [ deliveryId, setDeliveryId ] = useState<string>('');
   
+  // useEffect(() => {
+  //   setDeliveryId(getlectureTranscriptCounts() ? getlectureTranscriptCounts);
+  // }, [getlectureTranscriptCounts()]);
+
   // 스티키 적용 시 필요한 코드
   // useEffect(() => {
   //   if (activatedTab === 'comment') {
@@ -91,7 +100,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   //     }, 0);
   //   }
   // }, [activatedTab]);
-
+  
   return (
     <>
       <div
@@ -113,12 +122,14 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               차수정보
             </a>
           )}
-          <a
-            onClick={transcriptHashClick}
-            className={activatedTab === 'transcript' ? 'lms-act' : ''}
-          >
-              Transcript
-          </a>
+          {lectureTranscriptCount !== undefined && lectureTranscriptCount.transcriptCount > 0 && (
+            <a
+              onClick={transcriptHashClick}
+              className={activatedTab === 'transcript' ? 'lms-act' : ''}
+            >
+                Transcript
+            </a>
+          )}          
           <a
             onClick={commentHashClick}
             className={
@@ -161,7 +172,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
         </>
       )}
       {activatedTab === 'comment' && <LectureCommentContainer />}
-      {activatedTab === 'transcript' && <LectureTranscriptContainer params={params}/>}
+      {activatedTab === 'transcript' && <LectureCubeTranscriptContainer transLangVal={transLangVal} setTransLangVal={setTransLangVal} />}
     </>
   );
 };
