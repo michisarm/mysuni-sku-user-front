@@ -613,13 +613,21 @@ async function complete(
   await requestLectureStructure(params.lectureParams, params.pathname);
   const course = getActiveCourseStructureItem();
   const program = getActiveProgramStructureItem();
-  if (course?.state === 'Completed' && course.survey !== undefined) {
+  if (
+    course?.state === 'Completed' &&
+    course?.survey !== undefined &&
+    course?.survey.state !== 'Completed'
+  ) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
       onClose: () => goToPath(course?.survey?.path),
     });
-  } else if (program?.state === 'Completed' && program.survey !== undefined) {
+  } else if (
+    program?.state === 'Completed' &&
+    program?.survey !== undefined &&
+    program?.survey.state !== 'Completed'
+  ) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
