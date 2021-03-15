@@ -7,17 +7,22 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps {
   loading?: boolean | false;
+  color?: string | '#f4f7fd';
 }
 
 @reactAutobind
 @observer
 class Loadingpanel extends Component<Props> {
   render() {
-    const { loading } = this.props;
+    const { loading, color } = this.props;
     //
     return (
       <>
-        <Dimmer active={loading} inverted>
+        <Dimmer
+          active={loading}
+          inverted
+          style={{ background: color === undefined ? '#f4f7fd' : color }}
+        >
           <Loader size="medium" content="Waiting" />
         </Dimmer>
       </>

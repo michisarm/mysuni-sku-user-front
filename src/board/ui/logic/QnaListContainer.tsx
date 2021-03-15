@@ -183,12 +183,7 @@ class QnaListContainer extends React.Component<Props, State> {
           )}
         </div>
         {posts.results.length === 0 ? (
-          <Segment style={{ height: '400px' }}>
-            <Loadingpanel loading={isLoading} />
-            {!isLoading && (
-              <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
-            )}
-          </Segment>
+          <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
         ) : (
           <>
             <div className="su-list qna">

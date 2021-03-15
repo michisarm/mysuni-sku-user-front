@@ -145,13 +145,31 @@ class FaqListContainer extends React.Component<Props, State> {
 
     return (
       <>
-        {result.length === 0 ? (
-          <Segment style={{ marginTop: 95, height: '400px' }}>
-            <Loadingpanel loading={isLoading} />
-            {!isLoading && (
-              <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
-            )}
-          </Segment>
+        {isLoading ? (
+          <div className="support-list-wrap">
+            <div className="list-top">
+              <div className="radio-wrap">
+                {categorys.length > 0 &&
+                  categorys.map((category, index) => (
+                    <Radio
+                      key={index}
+                      className="base"
+                      name="radioGroup"
+                      index={index}
+                      label={category.name}
+                      value={category.categoryId}
+                      checked={categoryIndex === index}
+                      onChange={this.onChangeCategory}
+                    />
+                  ))}
+              </div>
+            </div>
+            <Segment style={{ height: '400px' }}>
+              <Loadingpanel loading={isLoading} />
+            </Segment>
+          </div>
+        ) : result.length === 0 ? (
+          <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
         ) : (
           <div className="support-list-wrap">
             <div className="list-top">

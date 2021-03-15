@@ -272,7 +272,7 @@ const InProgressLearning: React.FC<Props> = Props => {
         </Lecture.Group>
       ) : (
         <Segment style={{ height: '400px' }}>
-          <Loadingpanel loading={isLoading} />
+          <Loadingpanel loading={isLoading} color="#eff0f1" />
           {!isLoading && (
             <NoSuchContentPanel
               message={
