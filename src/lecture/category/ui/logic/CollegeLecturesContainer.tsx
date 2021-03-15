@@ -1,13 +1,18 @@
 import React, { Component, useEffect, useState } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
+import {
+  RouteComponentProps,
+  useHistory,
+  useLocation,
+  withRouter,
+} from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { ActionLogService, NewPageService } from 'shared/stores';
-import { NoSuchContentPanel } from 'shared';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
@@ -31,6 +36,7 @@ import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Segment } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService;
@@ -42,22 +48,22 @@ interface Props extends RouteComponentProps<RouteParams> {
   inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
   setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   scrollSave?: () => void;
+  isLoading?: boolean | false;
 }
 
 interface State {
   lectures: LectureModel[];
   sorting: string;
   totalCnt: number; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
-  collegeOrder:boolean;
+  collegeOrder: boolean;
 }
 
 interface RouteParams {
   collegeId: string;
   pageNo: string;
 }
-
-
 
 const CollegeLecturesContainer: React.FC<Props> = ({
   actionLogService,
@@ -70,17 +76,17 @@ const CollegeLecturesContainer: React.FC<Props> = ({
   coursePlanService,
   match,
 }) => {
-
   const history = useHistory();
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
-  
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (loading) {
       scrollOnceMove();
     }
-  }, [loading])
+  }, [loading]);
 
   return (
     <CollegeLecturesContainerInner
@@ -97,9 +103,11 @@ const CollegeLecturesContainer: React.FC<Props> = ({
       match={match}
       setLoading={setLoading}
       scrollSave={scrollSave}
+      setIsLoading={setIsLoading}
+      isLoading={isLoading}
     />
-  )
-}
+  );
+};
 export default withRouter(CollegeLecturesContainer);
 
 @inject(
@@ -111,7 +119,7 @@ export default withRouter(CollegeLecturesContainer);
     'lecture.lectureCountService',
     'shared.reviewService',
     'myTraining.inMyLectureService',
-    'course.coursePlanService',
+    'course.coursePlanService'
   )
 )
 @reactAutobind
@@ -163,7 +171,7 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     //
     const { match, newPageService, lectureService, setLoading } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
-    setLoading && setLoading(false)
+    setLoading && setLoading(false);
     newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
     lectureService!.clearLectures();
   }
@@ -207,10 +215,18 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
 
   async findPagingCollegeLectures(limit: number, offset: number) {
     //
-    const { match, newPageService, lectureService, reviewService, setLoading } = this.props;
+    const {
+      match,
+      newPageService,
+      lectureService,
+      reviewService,
+      setLoading,
+      setIsLoading,
+    } = this.props;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
+    setIsLoading && setIsLoading(true);
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(
       match.params.collegeId,
       limit,
@@ -228,6 +244,7 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     this.setState(prevState => ({
       lectures: [...prevState.lectures, ...lectureOffsetList.results],
     }));
+    setIsLoading && setIsLoading(false);
 
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const category = JSON.parse(sessionStorage.getItem('category')!);
@@ -261,11 +278,11 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     const collegeSortOrderCount = await coursePlanService!.findCollegeSortOrder(
       match.params.collegeId
     );
-    
-    if(collegeSortOrderCount > 0 ){
-      this.setState({collegeOrder:true, sorting:OrderByType.collegeOrder})
-    }else{
-      this.setState({collegeOrder:false, sorting:OrderByType.Time})
+
+    if (collegeSortOrderCount > 0) {
+      this.setState({ collegeOrder: true, sorting: OrderByType.collegeOrder });
+    } else {
+      this.setState({ collegeOrder: false, sorting: OrderByType.Time });
     }
   }
 
@@ -412,13 +429,14 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
       collegeService,
       reviewService,
       inMyLectureService,
+      isLoading,
     } = this.props;
     const { lectures, sorting, totalCnt, collegeOrder } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const page = newPageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
     const { inMyLectureMap } = inMyLectureService!;
-    
+
     return (
       <CategoryLecturesWrapperView
         header={
@@ -429,12 +447,30 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
                 name={`${college.name} College`}
                 count={totalCnt}
               />
-              <CardSorting value={sorting} onChange={this.onChangeSorting} collegeOrder={collegeOrder}/>
+              <CardSorting
+                value={sorting}
+                onChange={this.onChangeSorting}
+                collegeOrder={collegeOrder}
+              />
             </>
           )
         }
       >
-        {lectures && lectures.length > 0 && lectures[0] ? (
+        {isLoading ? (
+          <Segment
+            style={{
+              paddingTop: 0,
+              paddingBottom: 0,
+              paddingLeft: 0,
+              paddingRight: 0,
+              height: 400,
+              boxShadow: '0 0 0 0',
+              border: 0,
+            }}
+          >
+            <Loadingpanel loading={isLoading} />
+          </Segment>
+        ) : lectures && lectures.length > 0 && lectures[0] ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
@@ -468,7 +504,6 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
                 );
               })}
             </Lecture.Group>
-
             {this.isContentMore() && (
               <SeeMoreButton onClick={this.onClickSeeMore} />
             )}
@@ -521,5 +556,3 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     );
   }
 }
-
-

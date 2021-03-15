@@ -278,6 +278,8 @@ const InProgressLearning: React.FC<Props> = Props => {
             paddingLeft: 0,
             paddingRight: 0,
             height: 400,
+            boxShadow: '0 0 0 0',
+            border: 0,
           }}
         >
           <Loadingpanel loading={isLoading} color="#eff0f1" />
