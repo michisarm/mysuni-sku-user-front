@@ -74,6 +74,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   
   componentDidMount(): void {
     this.init();
+    this.getAuth();
     /* eslint-disable react/no-unused-state */
     onLearningObjectivesItem((next)=>this.setState({ learningObjectives: next }),'MyLearningSummaryContainer')
   }
@@ -86,6 +87,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     this.setState({ activeIndex: newIndex });
   };
 
+  async getAuth() {
+    const { skProfileService, menuControlAuthService } = this.props;
+    const { skProfile } = skProfileService!;
+
+    if (!skProfile) {
+      const profile: SkProfileModel = await skProfileService!.findSkProfile();
+      menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
+    }
+  }
 
   init() {
     //
@@ -192,14 +202,22 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   convertProgressValue (value: number) {
-    //유효성 체크
+    //유효성 체크 - 후 리팩토링..
     if(value === undefined || value === NaN || value === null ) {
       return 
     }
-    const test = String(value).substr(0,1)+5
-    return Number(test)
+    let percent = ''
+    if(String(value).length === 1) {
+      if(value > 6 && value < 15){
+        percent = '15'
+      } else {
+        percent = '5'
+      }
+    } else if(String(value).length === 2) {
+      percent = String(value).substr(0,1)+5
+    }
+    return Number(percent)
   }
-
 
   render() {
     //
@@ -208,7 +226,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
-    const { earnedCount: myBadgeCount } = badgeService!;
+    const { myBadgeCount, _challengingCount, _earnedCount } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
@@ -216,9 +234,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const CURRENT_YEAR = moment().year();
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
-
-    const badgeValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
-    const complateLearningValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100
+    const badgeValue = Math.round((_earnedCount / _challengingCount + myBadgeCount) * 100)
+    const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100)
     let LearningObjectivesPer = 0 
     LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
     if( learningObjectives.AnnualLearningObjectives !== 0 && LearningObjectivesPer > 100) {
@@ -226,7 +243,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     } else if (LearningObjectivesPer === Infinity) {
       LearningObjectivesPer = 0
     }
-    const complateLearningTimeValue = (myLearningSummary.displayTotalLearningTime / myLearningSummary.displayAccrueTotalLearningTime) * 100
+    // const complateLearningTimeValue = (myLearningSummary.displayTotalLearningTime / myLearningSummary.displayAccrueTotalLearningTime) * 100
     let total: any = null;
     let accrueTotal: any = null;
     const { menuControlAuth } = menuControlAuthService!;
@@ -370,6 +387,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 trigger={
                   <div className={`gauge-content gauge-com${complateLearningValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
                     <div className="gauge-content-box">
+                      {/* myLearningSummary.totalCompleteLectureCount */}
+                      {/* <p>{myLearningSummary.completeLectureCount}</p>
+                      <span>{myLearningSummary.totalCompleteLectureCount}</span> */}
                       <p>{myLearningSummary.completeLectureCount}</p>
                       <span>{myLearningSummary.totalCompleteLectureCount}</span>
                     </div>

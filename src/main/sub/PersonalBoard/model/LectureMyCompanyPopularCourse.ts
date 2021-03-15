@@ -3,7 +3,7 @@ export interface MyCompanyPopularCourseItem {
   companyCode: string,
   companyName: string,
   count: number,
-  date: number,
+  date: string,
   id: string,
   lectureUsid: string
 }

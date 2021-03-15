@@ -4,9 +4,16 @@ import { PersonalBoardDoughnutChartView } from '@sku/chart';
 import React, { useMemo } from 'react';
 import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
 
+interface Props {
+  showApl: boolean
+}
+
 type ChartDataItem = { label: string; value: number };
 
-const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
+function LearningTimeDetailView(props: Props) {
+
+  const { showApl } = props;
+
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(
     () => [
@@ -29,6 +36,7 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
     ],
     [badgeLearningTimeDetailItem]
   );
+
   return (
     <>
       {/* {badgeLearningTimeDetailItem && (
@@ -113,23 +121,27 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
                             </strong>
                           </div>
                         </div>
-                        <div className="gauge-number stu">
-                          <em className="col-con">개인학습</em>
-                          <div>
-                            <strong>
-                              {Math.floor(
-                                badgeLearningTimeDetailItem.aplAllowTime / 60
-                              )}
-                              <em>h</em>
-                            </strong>
-                            <strong>
-                              {Math.floor(
-                                badgeLearningTimeDetailItem.aplAllowTime % 60
-                              )}
-                              <em>m</em>
-                            </strong>
+                        {
+                          showApl && (
+                          <div className="gauge-number stu">
+                            <em className="col-con">개인학습</em>
+                            <div>
+                              <strong>
+                                {Math.floor(
+                                  badgeLearningTimeDetailItem.aplAllowTime / 60
+                                )}
+                                <em>h</em>
+                              </strong>
+                              <strong>
+                                {Math.floor(
+                                  badgeLearningTimeDetailItem.aplAllowTime % 60
+                                )}
+                                <em>m</em>
+                              </strong>
+                            </div>
                           </div>
-                        </div>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
@@ -141,6 +153,6 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
       )}
     </>
   );
-};
+}
 
 export default LearningTimeDetailView;
