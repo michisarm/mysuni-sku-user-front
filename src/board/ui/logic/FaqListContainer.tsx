@@ -164,7 +164,17 @@ class FaqListContainer extends React.Component<Props, State> {
                   ))}
               </div>
             </div>
-            <Segment style={{ height: '400px' }}>
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
               <Loadingpanel loading={isLoading} />
             </Segment>
           </div>

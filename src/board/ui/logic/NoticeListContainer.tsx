@@ -146,18 +146,19 @@ class NoticeListContainer extends Component<Props, State> {
       <>
         {isLoading ? (
           <div className="support-list-wrap">
-            <div
-              className="ui segment"
+            <Segment
               style={{
                 paddingTop: 0,
                 paddingBottom: 0,
                 paddingLeft: 0,
                 paddingRight: 0,
                 height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
               }}
             >
               <Loadingpanel loading={isLoading} />
-            </div>
+            </Segment>
           </div>
         ) : pinnedPosts.length === 0 && posts.length === 0 ? (
           <NoSuchContentPanel message="등록된 Notice가 없습니다." />
