@@ -55,7 +55,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       //currentHistory.push(path);
       history.push(path);
     }
-  }
+  };
 
   const onSubmitClick = useCallback(() => {
     const lectureStructureItem = getActiveStructureItem();
@@ -103,14 +103,20 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
           }
           const course = getActiveCourseStructureItem();
           const program = getActiveProgramStructureItem();
-          if (course?.survey !== undefined) {
+          if (
+            course?.survey !== undefined &&
+            course?.survey.state !== 'Completed'
+          ) {
             reactAlert({
               title: '알림',
               message:
                 '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
               onClose: () => goToPath(course?.survey?.path),
             });
-          } else if (program?.survey !== undefined) {
+          } else if (
+            program?.survey !== undefined &&
+            program?.survey.state !== 'Completed'
+          ) {
             reactAlert({
               title: '알림',
               message:

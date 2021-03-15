@@ -144,14 +144,20 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             switch (lectureTestStudentItem?.learningState) {
               case 'Waiting':
               case 'TestWaiting':
-                if (course?.survey !== undefined) {
+                if (
+                  course?.survey !== undefined &&
+                  course?.survey.state !== 'Completed'
+                ) {
                   reactAlert({
                     title: '알림',
                     message:
                       '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
                     onClose: () => goToPath(course?.survey?.path),
                   });
-                } else if (program?.survey !== undefined) {
+                } else if (
+                  program?.survey !== undefined &&
+                  program?.survey.state !== 'Completed'
+                ) {
                   reactAlert({
                     title: '알림',
                     message:
@@ -175,14 +181,20 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 break;
               case 'Passed':
               case 'TestPassed':
-                if (course?.survey !== undefined) {
+                if (
+                  course?.survey !== undefined &&
+                  course?.survey.state !== 'Completed'
+                ) {
                   reactAlert({
                     title: '안내',
                     message:
                       '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
                     onClose: () => goToPath(course?.survey?.path),
                   });
-                } else if (program?.survey !== undefined) {
+                } else if (
+                  program?.survey !== undefined &&
+                  program?.survey.state !== 'Completed'
+                ) {
                   reactAlert({
                     title: '안내',
                     message:

@@ -84,7 +84,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         onClick={handleAlertPassInputWin}
         // onClick={() => passChek(communityId, 'learning')}
       >
-        <div className="open-card-top">
+        <div>
           <span className="label">{fieldName}</span>
           {approvedState === 'Wait' && <span className="wait">가입대기</span>}
         </div>
@@ -119,10 +119,18 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
     </>
   ) : (
     <Link to={`/community/${communityId}`} className="community-open-card">
-      <div className="open-card-top">
-        <span className="label">{fieldName}</span>
-        {approvedState === 'Wait' && <span className="wait">가입대기</span>}
-      </div>
+      {type === 'OPEN' && (
+        <div className="open-card-top">
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+      )}
+      {type === 'COHORT' && (
+        <div>
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+      )}
       <div className="open-card-content">
         <p>{name}</p>
         <div className="thumbnail">
@@ -137,32 +145,17 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
             dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
           />
         </div>
-        <div className="open-card-content">
-          <p>{name}</p>
-          <div className="thumbnail">
-            <img
-              src={thumbnailId}
-              style={{ height: 72, width: 72, borderRadius: 8 }}
-            />
-          </div>
-          <div className="community-main-left-list">
-            <div
-              className="community-main-left-h3"
-              dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
-            />
+      </div>
+      <div className="open-card-bottom">
+        <div className="title-area">
+          <div className="text-list">
+            <img src={managerIcon} />
+            <span>{managerName}</span>
           </div>
         </div>
-        <div className="open-card-bottom">
-          <div className="title-area">
-            <div className="text-list">
-              <img src={managerIcon} />
-              <span>{managerName}</span>
-            </div>
-          </div>
-          <div className="right-area">
-            <span>멤버</span>
-            <span>{memberCount}</span>
-          </div>
+        <div className="right-area">
+          <span>멤버</span>
+          <span>{memberCount}</span>
         </div>
       </div>
     </Link>
