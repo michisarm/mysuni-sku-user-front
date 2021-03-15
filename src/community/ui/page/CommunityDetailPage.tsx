@@ -7,6 +7,16 @@ import {
   useParams,
 } from 'react-router-dom';
 import {
+  Segment,
+  Sticky,
+  Icon,
+  Menu,
+  Button,
+  Comment,
+  Popup,
+} from 'semantic-ui-react';
+
+import {
   requestNotice,
   requestRecent,
 } from '../../service/useCommunityHome/requestCommunityHome';
@@ -29,7 +39,7 @@ import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
 import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
 import { SkProfileService } from 'profile/stores';
-
+import DefaultImg from '../../../style/media/img-profile-80-px.png';
 // interface Params {
 //   communityId: string;
 // }
@@ -48,10 +58,12 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   replyCount,
   managerProfileImg,
 }) {
-  console.log(createdTime);
-  const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const history = useHistory();
   const communityHome = useCommunityHome();
+  const managProfileImg = getCommunityHome()?.community?.managerProfileImg;
+  const createdDate = moment(getCommunityHome()?.community?.createdTime).format(
+    'YYYY.MM.DD'
+  );
+  const history = useHistory();
 
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
@@ -183,12 +195,16 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <td>
                   <div className="profile home-detail-profile">
                     <div className="pic">
-                      <img src={communityHome.community.profileImg} />
+                      <img
+                        src={
+                          managProfileImg
+                            ? `/files/community/${managProfileImg}`
+                            : `${DefaultImg}`
+                        }
+                      />
                     </div>
                     <span className="crown">
                       {communityHome.community.managerName}
-                      {managerProfileImg}
-                      {createdTime}
                     </span>
                   </div>
                 </td>
