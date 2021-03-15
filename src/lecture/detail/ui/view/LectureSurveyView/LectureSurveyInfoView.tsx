@@ -41,6 +41,14 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 
   const surveyInfoText = surveyCommunityTitle === undefined ? `과정 ` : `의 `;
 
+  if (
+    lectureSurveyState &&
+    lectureSurveyState.state === 'None' &&
+    (lectureStructure?.cube || lectureStructure?.course)
+  ) {
+    startLectureSurveyState();
+  }
+
   return (
     <>
       <div className="course-info-header">
