@@ -371,7 +371,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
               <Popup
                 trigger={
-                  <div className={`gauge-content gauge-com${badgeValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
+                  <div className={`gauge-content gauge-com${complateLearningValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
                     <div className="gauge-content-box">
                       <p>{myLearningSummary.completeLectureCount}</p>
                       <span>{myLearningSummary.totalCompleteLectureCount}</span>
@@ -395,7 +395,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
               <Popup
                 trigger={
-                  <div className={`gauge-content gauge-time${LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)}`}>
+                  <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
                     <div className="gauge-content-box">
                       <p>{total}</p>
                       <span>{learningObjectives!.AnnualLearningObjectives}h</span>
