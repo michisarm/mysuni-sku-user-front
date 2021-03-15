@@ -71,12 +71,12 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
       });
-    } else if (approved === true) {
+    } else if (approved === 'APPROVED') {
       history.push(`/community/${communityId}/post/${postId}`);
     }
   }, [approved]);
@@ -154,12 +154,12 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
       });
-    } else if (approved === true) {
+    } else if (approved === 'APPROVED') {
       if (type === 'ANONYMOUS') {
         history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`);
       } else {
@@ -303,7 +303,7 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>공지사항</p>
-            {communityHome.community.approved === true &&
+            {communityHome.community.approved === 'APPROVED' &&
               communityHome.notice.length > 0 && (
                 <Link
                   className="ui icon button right btn-blue btn-more"
@@ -330,7 +330,7 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
-            {communityHome.community.approved === true &&
+            {communityHome.community.approved === 'APPROVED' &&
               communityHome.recent.length > 0 && (
                 <Link
                   className="ui icon button right btn-blue btn-more"

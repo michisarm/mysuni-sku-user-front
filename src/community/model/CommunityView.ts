@@ -25,6 +25,6 @@ export default interface CommunityView {
   memberCount: number;
 
   fieldName: string | null;
-
-  approved: boolean | null;
+  profileImg: string;
+  approved: string | null;
 }
