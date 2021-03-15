@@ -84,7 +84,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         onClick={handleAlertPassInputWin}
         // onClick={() => passChek(communityId, 'learning')}
       >
-        <div className="open-card-top">
+        <div>
           <span className="label">{fieldName}</span>
           {approvedState === 'Wait' && <span className="wait">가입대기</span>}
         </div>
@@ -119,10 +119,18 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
     </>
   ) : (
     <Link to={`/community/${communityId}`} className="community-open-card">
-      <div className="open-card-top">
-        <span className="label">{fieldName}</span>
-        {approvedState === 'Wait' && <span className="wait">가입대기</span>}
-      </div>
+      {type === 'OPEN' && (
+        <div className="open-card-top">
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+      )}
+      {type === 'COHORT' && (
+        <div>
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+      )}
       <div className="open-card-content">
         <p>{name}</p>
         <div className="thumbnail">
