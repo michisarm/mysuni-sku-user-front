@@ -6,7 +6,6 @@ export async function requestBadgeLearningTime(companyCode: string) {
   const countInfo = await getCountOfBadges()
   const badgeLearningTime = await getBadgeLearningTimeItem()
   const badgeLearningCompanyAvg = await getBadgeLearningCompanyAvg(companyCode)
-
   let mylearningTime = 0
 
   if(badgeLearningTime !== undefined) {
@@ -17,12 +16,12 @@ export async function requestBadgeLearningTime(companyCode: string) {
       setBadgeLearningTimeItem({
         badgeMyCount: countInfo!.issuedCount,
         AllBadgeMyCount: countInfo!.totalCount,
-        companyAvgBadgeCount: badgeLearningCompanyAvg.badgeAverage,
+        companyAvgBadgeCount: badgeLearningCompanyAvg ? badgeLearningCompanyAvg.badgeAverage : 0,
         allCompanyAvgBadgeCount: countInfo!.totalCount,
         allMylearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
         mylearningTimeHour: badgeLearningTime!.mylearningTimeHour,
         mylearningTimeMinute: badgeLearningTime!.mylearningTimeMinute,
-        companyAvglearningTime: badgeLearningCompanyAvg.learningTimeAverage,
+        companyAvglearningTime: badgeLearningCompanyAvg ? badgeLearningCompanyAvg.learningTimeAverage : 0,
         allCompanyAvglearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
       })
     }
