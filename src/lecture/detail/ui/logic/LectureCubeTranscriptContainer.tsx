@@ -11,6 +11,7 @@ import { Select, Icon, Button, Popup } from "semantic-ui-react";
 import { findAllTranscript } from '../../api/mPersonalCubeApi';
 import { getTranscriptItem } from 'lecture/detail/service/useLectureMedia/utility/getTranscriptItemMapFromCube';
 import { getLectureMedia } from 'lecture/detail/store/LectureMediaStore';
+import { getEmbed } from 'lecture/detail/store/EmbedStore';
 
 // LectureTranscriptContainer --> LectureCourseContentView
 
@@ -46,36 +47,20 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     const transcriptIntervalRef = useRef<any>(0);
     const lectureParams = useParams<LectureParams>();
     const { pathname } = useLocation();
-    
-    const [embedApi, setEmbedApi] = useState<any | undefined>({
-        pauseVideo: () => {},
-        seekTo: (index: number) => {},
-        getCurrentTime: () => {},
-        getDuration: () => {},
-        currentPosition: () => {},
-        getPlaybackRate: () => {},
-    });
 
-    const scrollMove = (id: any) => {
-        const target = document.getElementById(id);
-        const parent = document.getElementById('tanscript-scroll');
-        //스크롤 높이 더해주면 된다
-        const scrollHeight = document.getElementById('tanscript-scroll')?.scrollTop;
-        const distanceBetweenParentAndChild =
-        target!.getBoundingClientRect().top -
-        parent!.getBoundingClientRect().top +
-        scrollHeight!;
-        document
-        .getElementById('tanscript-scroll')!
-        .scrollTo(0, distanceBetweenParentAndChild);
-    };
-
-    const seekByIndex = (index: number) => {
-        if (embedApi && index >= 0) {
-        //TODO current state 를 찾아서 Play 이
-        embedApi.seekTo(index);
-        }
-    };
+    // const scrollMove = (id: any) => {
+    //     const target = document.getElementById(id);
+    //     const parent = document.getElementById('tanscript-scroll');
+    //     //스크롤 높이 더해주면 된다
+    //     const scrollHeight = document.getElementById('tanscript-scroll')?.scrollTop;
+    //     const distanceBetweenParentAndChild =
+    //     target!.getBoundingClientRect().top -
+    //     parent!.getBoundingClientRect().top +
+    //     scrollHeight!;
+    //     document
+    //     .getElementById('tanscript-scroll')!
+    //     .scrollTo(0, distanceBetweenParentAndChild);
+    // };
 
     // useEffect(() => {
     //     let intervalTranscript: any = null;
@@ -131,45 +116,43 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     //     watchlogState,
     // ]);
 
+    const seekByIndex = (index: number) => {
+        if (getEmbed() && index >= 0) {
+          //TODO current state 를 찾아서 Play
+          getEmbed().seekTo(index);
+          getEmbed().playVideo();
+        }
+    };
+
+
     const selectTransLangObj = [
       { key: "ko", value: "ko", text: "KR" },
-      { key: "eng", value: "eng", text: "ENG" },
-      { key: "chn", value: "chn", text: "CHN" },
+      { key: "eng", value: "en", text: "ENG" },
+      { key: "chn", value: "cn", text: "CHN" },
     ];
 
     const [ transcriptList, setTranScriptList ] = useState<any>();
-    const [ deliveryId, setDeliveryId ] = useState<string>('');
-
-    // const transLangSelectBoxClick = (e : any, data : any) => {
-    //   setTransLangVal(data.value);
-
-    //   const getTranScriptsFunc = async () => {
-    //     const transcript = await findAllTranscript('d4bae4af-7e1a-4957-8e5f-ab89008c2100', data.value);
-        
-    //     setTranScriptList(transcript);
-
-    //     //조회 결과 viewmodel setting
-    //     setLectureTranscripts(await getTranscriptItem(transcript));
-    //   };
-
-    //   getTranScriptsFunc();
-    // };
 
     useEffect(() => {
       const getTranScriptsFunc = async () => {
         const lectureMedia = getLectureMedia();
 
         if(lectureMedia !== undefined) {
-            // setDeliveryId(lectureMedia.mediaContents.internalMedias[0].panoptoSessionId || '');
-            setDeliveryId('00603301-1681-44b1-a183-ab2b00a0a8ae');
-            const transcript = await findAllTranscript(deliveryId, transLangVal);
-            setTranScriptList(await getTranscriptItem(transcript));
+          const transcripts = await findAllTranscript('142ab685-27b1-4cda-8b34-ac3e0060cdc0', transLangVal);
+          // const transcripts = await findAllTranscript('142ab685-27b1-4cda-8b34-ac3e0060cdc0', transLangVal);
+          const transcriptsItem = await getTranscriptItem(transcripts);
+
+            transcriptsItem?.map((item : any) => {
+              item.active = false;
+            });
+
+            setTranScriptList(transcriptsItem);
         }        
       };
 
       getTranScriptsFunc();     
-    }, [transLangVal])
-    
+    }, [transLangVal]);
+
     return(
         <>
             <div className="transcript-box" id="tanscript-scroll">
@@ -197,9 +180,10 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                 </div>
               </div>
                {transcriptList?.map((lectureTranscript : any) => {
+                 
                  return (
                    <>
-                     {/* <strong        
+                    {/* <strong        
                        id={lectureTranscript.idx + ''}
                        style={{ cursor: 'pointer' }}
                        className={highlight(lectureTranscript.idx + '')}
@@ -230,10 +214,44 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                          .concat(lectureTranscript.startTime.substr(2, 2))
                          .concat(':')
                          .concat(lectureTranscript.startTime.substr(4, 2))}
-                     </strong> */}
-                     <p className="transcript-active">{lectureTranscript.text}</p>
+                    </strong> */}
+                      <p id={'tranScriptRow'+lectureTranscript.idx}
+                        key={lectureTranscript.idx}
+                        className={lectureTranscript.activate ? "transcript-active" : ""}
+                        onClick={() => {
+                          seekByIndex(
+                           parseInt(
+                              lectureTranscript.startTime.substr(0, 2),
+                              10
+                            ) *
+                             60 *
+                             60 +
+                             parseInt(
+                               lectureTranscript.startTime.substr(2, 2),
+                               10
+                             ) *
+                               60 +
+                             parseInt(
+                               lectureTranscript.startTime.substr(4, 2),
+                               10
+                             )
+                          );
+
+                          setTranScriptList(
+                            transcriptList.map((item : any) => { 
+                              return lectureTranscript.idx === item.idx ? 
+                                { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+                                : 
+                                { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+                            })
+                          );
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {lectureTranscript.text}
+                      </p>
                    </>      
-                 );  
+                 );
                })}
             </div>   
         </>
