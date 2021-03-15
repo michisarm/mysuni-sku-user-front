@@ -234,7 +234,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const CURRENT_YEAR = moment().year();
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
-    const badgeValue = Math.round((_earnedCount / _challengingCount + myBadgeCount) * 100)
+    const badgeValue = Math.round((_earnedCount / (_challengingCount + _earnedCount)) * 100)
     const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100)
     let LearningObjectivesPer = 0 
     LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
@@ -364,8 +364,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 trigger={
                   <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
                     <div className="gauge-content-box">
-                      <p className="top-num">{myBadgeCount}</p>
-                        <span className="bot-num">{badgeService?.challengingCount}</span>
+                      <p className="top-num">{_earnedCount}</p>
+                        <span className="bot-num">{Number(badgeService?.challengingCount)+_earnedCount}</span>
                     </div>
                   </div>
                 }
@@ -374,10 +374,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 wide
               >
                 <span className="personal_pop_tit">
-                  도전중 Badge
+                  도전중 Badge(누적)
                 </span>
                 <span>
-                  <strong>{badgeService?.challengingCount}</strong>개
+                  <strong>{Number(badgeService?.challengingCount)+_earnedCount}</strong>개
                 </span>
               </Popup>
             </div>
