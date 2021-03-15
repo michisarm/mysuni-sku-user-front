@@ -1,12 +1,20 @@
 import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
 import { PersonalBoardDoughnutChartView } from '@sku/chart';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useLearningTimeDetailItem } from '../../store/PersonalBoardStore';
+
+interface Props {
+  showApl: boolean
+}
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 type ChartDataItem = { label: string; value: number };
 
-const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
+function LearningTimeDetailView(props: Props) {
+
+  const { showApl } = props;
+
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(
     () => [
@@ -29,6 +37,17 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
     ],
     [badgeLearningTimeDetailItem]
   );
+
+  const timeDataBoolean: boolean[] = []
+  
+  datas.map((data) => {
+    if(data.value === 0) {
+      timeDataBoolean.push(false)
+    } else {
+      timeDataBoolean.push(true)
+    }
+  })
+
   return (
     <>
       {/* {badgeLearningTimeDetailItem && (
@@ -51,9 +70,18 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
                 </div>
                 <div className="card-item-con sty2">
                   <div className="item-con-box">
-                    <div className="item-con-left detail">
-                      <PersonalBoardDoughnutChartView datas={datas} />
-                    </div>
+                    { timeDataBoolean.indexOf(true) !== -1 && (
+                      <div className="item-con-left detail">
+                          <PersonalBoardDoughnutChartView datas={datas} />
+                      </div>
+                      )
+                    }
+                    { timeDataBoolean.indexOf(true) === -1 && (
+                      <div className="item-con-left detail">
+                        <img src={`${PUBLIC_URL}/images/all/gr-none.png`} />
+                      </div>
+                      )
+                    }
                     <div className="item-con-right detail">
                       <div className="card-gauge-bar">
                         <div className="gauge-number sv">
@@ -113,23 +141,27 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
                             </strong>
                           </div>
                         </div>
-                        <div className="gauge-number stu">
-                          <em className="col-con">개인학습</em>
-                          <div>
-                            <strong>
-                              {Math.floor(
-                                badgeLearningTimeDetailItem.aplAllowTime / 60
-                              )}
-                              <em>h</em>
-                            </strong>
-                            <strong>
-                              {Math.floor(
-                                badgeLearningTimeDetailItem.aplAllowTime % 60
-                              )}
-                              <em>m</em>
-                            </strong>
+                        {
+                          showApl && (
+                          <div className="gauge-number stu">
+                            <em className="col-con">개인학습</em>
+                            <div>
+                              <strong>
+                                {Math.floor(
+                                  badgeLearningTimeDetailItem.aplAllowTime / 60
+                                )}
+                                <em>h</em>
+                              </strong>
+                              <strong>
+                                {Math.floor(
+                                  badgeLearningTimeDetailItem.aplAllowTime % 60
+                                )}
+                                <em>m</em>
+                              </strong>
+                            </div>
                           </div>
-                        </div>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
@@ -141,6 +173,6 @@ const LearningTimeDetailView: React.FC = function LearningTimeDetailView({ }) {
       )}
     </>
   );
-};
+}
 
 export default LearningTimeDetailView;

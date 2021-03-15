@@ -67,7 +67,6 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     //
     return (
       <Label className="onlytext" onClick={() => this.onClickActionLog('관심 Channel')}>
-        {/* <Icon className="channel16" /><span><a>관심 Channel</a></span> */}
         <span className="personal-channel-tit">
           <a>관심채널</a>
         </span>

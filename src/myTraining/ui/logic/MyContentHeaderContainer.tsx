@@ -84,7 +84,7 @@ function MyContentHeaderContainer(props: Props) {
     // <ContentHeader
     //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
     // >
-    <ContentHeader>
+    <ContentHeader type="Learning">
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
             myPageActive={!isFromMyPage(contentType)}
