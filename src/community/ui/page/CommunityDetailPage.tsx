@@ -56,7 +56,6 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   creatorName,
   profileImg,
   replyCount,
-  managerProfileImg,
 }) {
   const communityHome = useCommunityHome();
   const managProfileImg = getCommunityHome()?.community?.managerProfileImg;
