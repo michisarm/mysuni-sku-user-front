@@ -37,7 +37,6 @@ interface Props extends RouteComponentProps {
   menuControlAuthService?: MenuControlAuthService;
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
-  // badgeService?: BadgeService
 }
 
 interface States {
@@ -46,9 +45,6 @@ interface States {
   companyCode: string;
   activeIndex: any;
   learningObjectives?:LearningObjectives 
-  // badgeValue: number;
-  // complateLearningValue: number;
-  // complateLearningTimeValue: number;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -58,7 +54,6 @@ interface States {
   'myTraining.myTrainingService',
   'badge.badgeService',
   'approval.menuControlAuthService',
-  // 'badge.badgeService'
 ))
 @observer
 @reactAutobind
@@ -78,7 +73,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
   
   componentDidMount(): void {
-    //
     this.init();
     /* eslint-disable react/no-unused-state */
     onLearningObjectivesItem((next)=>this.setState({ learningObjectives: next }),'MyLearningSummaryContainer')
@@ -224,10 +218,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
 
     const badgeValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
-    const complateLearningValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100 
-    let LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
-    if(LearningObjectivesPer> 100) {
+    const complateLearningValue = (myLearningSummary.completeLectureCount / myLearningSummary.totalCompleteLectureCount) * 100
+    let LearningObjectivesPer = 0 
+    LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
+    if( learningObjectives.AnnualLearningObjectives !== 0 && LearningObjectivesPer > 100) {
       LearningObjectivesPer = 100
+    } else if (LearningObjectivesPer === Infinity) {
+      LearningObjectivesPer = 0
     }
     const complateLearningTimeValue = (myLearningSummary.displayTotalLearningTime / myLearningSummary.displayAccrueTotalLearningTime) * 100
     let total: any = null;
@@ -392,7 +389,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
 
             <div className="main-gauge ">
-              <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
+            <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
               <Popup
                 trigger={
                   <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
@@ -407,7 +404,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 wide
               >
                 <span className="personal_pop_tit">
-                  누적 학습시간
+                누적 학습시간
                 </span>
                 <span>
                   <strong>{learningObjectives!.AnnualLearningObjectives}h</strong>
@@ -444,18 +441,16 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             <div className="inner">
                 <div className="left">
                     <div>
-                      {/* <a href="#"> */}
-                        <FavoriteChannelChangeModal
-                          trigger={
-                            <a>
-                              <Icon className="channel25"/>
-                              <span>관심 채널 설정</span>
-                            </a>
-                          }
-                          favorites={favoriteChannels}
-                          onConfirmCallback={this.onConfirmFavorite}
-                        />
-                      {/* </a> */}
+                      <FavoriteChannelChangeModal
+                        trigger={
+                          <a>
+                            <Icon className="channel25"/>
+                            <span>관심 채널 설정</span>
+                          </a>
+                        }
+                        favorites={favoriteChannels}
+                        onConfirmCallback={this.onConfirmFavorite}
+                      />
                     </div>
                     { (menuControlAuth.companyCode === '' || ( menuControlAuth.authCode === MenuControlAuth.User
                       && menuControlAuth.useYn === MenuControlAuth.Yes))

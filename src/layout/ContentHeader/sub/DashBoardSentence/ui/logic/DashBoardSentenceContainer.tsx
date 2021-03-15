@@ -5,7 +5,7 @@ import DashBoardSentenceView from '../view/DashBoardSentenceView';
 
 function DashBoardSentenceContainer(){
 
-  const [dashBoardTxt, setDashBoardTxt] = useState<any>()
+  const [dashBoardTxt, setDashBoardTxt] = useState<any>('')
 
   const dashBoardSentence = useDashBoardSentenceItem()
 
@@ -23,6 +23,7 @@ function DashBoardSentenceContainer(){
     const dashBoardTxt = dashBoardSentence.dashboardSentence[Number(localStorage.getItem('dashBoardSentenceIndex'))]
     if(dashBoardTxt === undefined) {
       localStorage.setItem('dashBoardSentenceIndex', '0')
+      setDashBoardTxt(dashBoardSentence.dashboardSentence[0])
     } else {
       setDashBoardTxt(dashBoardTxt)
     }
@@ -34,6 +35,9 @@ return (
   <>
   { dashBoardTxt && (
     <DashBoardSentenceView dashBoardTxt={dashBoardTxt}/>
+  )}
+  { dashBoardTxt === '' && (
+    <DashBoardSentenceView dashBoardTxt=""/>
   )}
   </>
 )
