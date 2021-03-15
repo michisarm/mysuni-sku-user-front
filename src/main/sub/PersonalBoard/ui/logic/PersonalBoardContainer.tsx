@@ -1,10 +1,13 @@
 import { mobxHelper } from '@nara.platform/accent';
+import MenuControlAuthService from 'approval/company/present/logic/MenuControlAuthService';
 import BadgeService from 'certification/present/logic/BadgeService';
 import { inject, observer } from 'mobx-react';
 import { MyLearningSummaryService } from 'myTraining/stores';
+import { SkProfileModel } from 'profile/model';
 import { SkProfileService } from 'profile/stores';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { MenuControlAuth } from 'shared/model/MenuControlAuth';
 import { requestBadgeLearningTime } from '../../service/getBadgeLearningTime';
 import { requestCollegePercent } from '../../service/getCollegePercent';
 import { requestPopularCourse } from '../../service/getPopularCourse';
@@ -15,9 +18,9 @@ import CollegeTopChartView from '../view/CollegeTopChartView';
 import LearningTimeDetailView from '../view/LearningTimeDetailView';
 import MyCompanyPopularCourseView from '../view/MyCompanyPopularCourseView';
 
-
 interface Props extends RouteComponentProps {
   myLearningSummaryService?: MyLearningSummaryService;
+  menuControlAuthService?: MenuControlAuthService;
   badgeService?: BadgeService;
   skProfileService?: SkProfileService;
   companyCode: string;
@@ -26,7 +29,7 @@ interface Props extends RouteComponentProps {
 
 function PersonalBoardContainer(props: Props){
 
-  const { myLearningSummaryService, skProfileService, companyCode, activeIndex } = props;
+  const { myLearningSummaryService, skProfileService, menuControlAuthService, companyCode, activeIndex } = props;
   const { myLearningSummary } = myLearningSummaryService!;
 
   useEffect(() => {
@@ -49,11 +52,20 @@ function PersonalBoardContainer(props: Props){
     requestPopularCourse(companyCode, date)
   }, [])
 
+  const showApl = (() => {
+    const { menuControlAuth } = menuControlAuthService!;
+    return menuControlAuth.companyCode === '' ||
+      (menuControlAuth.authCode === MenuControlAuth.User &&
+        menuControlAuth.useYn === MenuControlAuth.Yes)
+      ? true
+      : false;
+  })
+
 return (
   <>
     <div className="personal-contents">
       <BadgeLearningTimeView activeIndex={activeIndex}/>
-      <LearningTimeDetailView/>
+      <LearningTimeDetailView showApl={showApl()}/>
       <CollegeTopChartView
         myLearningSummary={myLearningSummary}
         activeIndex={activeIndex}
@@ -70,6 +82,7 @@ export default inject(
     'myTraining.myLearningSummaryService',
     'myTraining.myTrainingService',
     'badge.badgeService',
-    'profile.skProfileService'
+    'profile.skProfileService',
+    'approval.menuControlAuthService'
   )
 )(withRouter(observer(PersonalBoardContainer)));
