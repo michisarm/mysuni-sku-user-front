@@ -1,5 +1,5 @@
-import CommunityMenuType from "./CommunityMenuType";
-import PostType from "./PostType";
+import CommunityMenuType from './CommunityMenuType';
+import PostType from './PostType';
 
 export default interface Post {
   id?: string;
@@ -30,12 +30,12 @@ export default interface Post {
 
   nickName?: string;
   introduce?: string;
-  profileImg?: string
+  profileImg?: string;
 
-  creatorEmail?: string
-  creatorName?: string
-  creatorCompanyCode?: string
-  creatorCompanyName?: string
+  creatorEmail?: string;
+  creatorName?: string;
+  creatorCompanyCode?: string;
+  creatorCompanyName?: string;
 
   bookmarked: boolean;
   menuType: CommunityMenuType;

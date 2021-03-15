@@ -515,12 +515,7 @@ export function deleteMember(
   memberId: string
 ): Promise<string> {
   return axiosApi
-    .put(
-      `${BASE_URL}/communities/${communityId}/members/flow/return/${memberId}`,
-      {
-        approvedType: 'Delete',
-      }
-    )
+    .put(`${BASE_URL}/communities/${communityId}/members/flow/draw/${memberId}`)
     .then(response => response && 'success');
 }
 export function rejectMember(
@@ -529,10 +524,7 @@ export function rejectMember(
 ): Promise<string> {
   return axiosApi
     .put(
-      `${BASE_URL}/communities/${communityId}/members/flow/return/${memberId}`,
-      {
-        approvedType: 'Return',
-      }
+      `${BASE_URL}/communities/${communityId}/members/flow/reject/${memberId}`
     )
     .then(response => response && 'success');
 }

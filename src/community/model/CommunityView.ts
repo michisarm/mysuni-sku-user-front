@@ -10,6 +10,7 @@ export default interface CommunityView {
   createdTime: number;
   managerId: string;
   managerEmail: string;
+  managerProfileImg: string;
   color: string;
   lastPostTime: number | null;
   lastNoticePostTime: number | null;
@@ -25,6 +26,6 @@ export default interface CommunityView {
   memberCount: number;
 
   fieldName: string | null;
-
-  approved: boolean | null;
+  profileImg: string;
+  approved: string | null;
 }

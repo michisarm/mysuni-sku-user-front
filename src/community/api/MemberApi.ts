@@ -37,7 +37,7 @@ export function findApprovedMember(
   pageNum: number
 ): Promise<any> {
   return axios.get(
-    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&approved=false`
+    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&approved=WAITING`
   );
 }
 
@@ -87,10 +87,10 @@ export function companionMembers(
   memberIdList: (string | undefined)[],
   remark: string
 ): Promise<string> {
-  const params = { remark: `${remark}`, approvedType: 'Return' };
+  const params = { remark: `${remark}` };
   return axios
     .put<string>(
-      `${BASE_URL}/communities/${communityId}/members/flow/return/${memberIdList.join(
+      `${BASE_URL}/communities/${communityId}/members/flow/reject/${memberIdList.join(
         ','
       )}`,
       params

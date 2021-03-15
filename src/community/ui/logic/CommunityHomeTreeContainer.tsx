@@ -32,7 +32,7 @@ interface MenuItemViewProps {
 interface ApprovedProps {
   type?: CommunityMenuType;
   name: string;
-  approved?: boolean | null;
+  approved?: string | null;
   icon?: string;
   lastPostTime: number;
 }
@@ -185,7 +185,7 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
@@ -270,7 +270,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
@@ -559,15 +559,15 @@ function CommunityHomeTreeContainer() {
               </span>
             </div>
             {communtyHome.community.approved === null && <JoinView />}
-            {communtyHome.community.approved === false && <WaitView />}
-            {communtyHome.community.approved === true && <MemberView />}
+            {communtyHome.community.approved === 'WAITIING' && <WaitView />}
+            {communtyHome.community.approved === 'APPROVED' && <MemberView />}
             {communtyHome.community.managerId === patronInfo.getDenizenId() && (
               <AdminView />
             )}
           </div>
         </div>
         <div className="community-home-right-contents">
-          {communtyHome.community.approved !== true && (
+          {communtyHome.community.approved !== 'APPROVED' && (
             <ul>
               <li>
                 <Link to={`/community/${communtyHome.community.communityId}`}>
@@ -610,7 +610,7 @@ function CommunityHomeTreeContainer() {
                 ))}
             </ul>
           )}
-          {communtyHome.community.approved === true && (
+          {communtyHome.community.approved === 'APPROVED' && (
             <ul>
               <li>
                 <Link to={`/community/${communtyHome.community.communityId}`}>
@@ -635,7 +635,7 @@ function CommunityHomeTreeContainer() {
                   to={`/community/${communtyHome.community.communityId}/notice`}
                 >
                   <img src={boardIcon} />
-                  공지사항{' '}
+                  공지사항
                   {addNewBadge(lastNoticePostTime) && (
                     <span className="new-label">NEW</span>
                   )}
