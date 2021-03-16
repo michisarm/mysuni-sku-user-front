@@ -348,7 +348,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
             </button>
           )}
 
-          {!searchBox.approved && (
+          {searchBox.approved === 'WAITING' && (
             <button
               className="ui button admin_table_button"
               onClick={e => approveMemberList()}
