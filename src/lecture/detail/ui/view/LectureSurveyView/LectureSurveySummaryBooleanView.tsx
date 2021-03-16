@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { CSSProperties, useCallback } from 'react';
 import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -43,6 +43,33 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
     noAvg = ((noCount / booleanRespondCount) * 100).toFixed(1);
   }
 
+  // const childProgressElement = (): React.CSSProperties => {
+  //   console.log(Number(yesAvg), Number(noAvg))
+  //   if(Number(yesAvg) === 0 && Number(noAvg) === 0) {
+  //     console.log('0');
+  //     return {
+  //       backgroundColor: '#f4f7fd',
+  //     }
+  //   }
+  //   else if(yesAvg < noAvg){
+  //     console.log('yes < noAvg');
+  //     return {
+  //       width: `100 - ${Number(noAvg)+'%'}`,
+  //       backgroundColor: '#f4f7fd',
+  //       height: '100%', 
+  //       borderRadius: '6px',
+  //     }
+  //   }
+    
+  //   console.log('yes > noavg');
+  //   return {
+  //     width: `${yesAvg + '%'}`,
+  //     backgroundColor: '#2185d0', 
+  //     height: '100%', 
+  //     borderRadius: '60%',
+  //   }
+  // }
+  console.log('yes', Number(yesAvg), Number(noAvg))
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
@@ -78,7 +105,8 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
                 <span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)
               </span>
               <div style={yesAvg < noAvg ? {height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px'} : {height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px'} }>
-                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: '#f4f7fd', height: '100%', borderRadius: '6px'} : { width: yesAvg + '%', backgroundColor: '#2185d0', height: '100%', borderRadius: '6px'}} />
+                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: '#f4f7fd', height: '100%', borderRadius: '6px'} : { width: yesAvg + '%', backgroundColor: `${yesAvg === 'NaN' || noAvg === 'NaN' ? '#f4f7fd' : '#2185d0'}`, height: '100%', borderRadius: '6px'}} />
+                {/* <div style={childProgressElement()}/> */}
               </div>
               <span className="course-survey-list-persent-right">
                 <span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)
