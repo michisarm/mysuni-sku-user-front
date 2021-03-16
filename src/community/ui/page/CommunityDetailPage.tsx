@@ -7,6 +7,16 @@ import {
   useParams,
 } from 'react-router-dom';
 import {
+  Segment,
+  Sticky,
+  Icon,
+  Menu,
+  Button,
+  Comment,
+  Popup,
+} from 'semantic-ui-react';
+
+import {
   requestNotice,
   requestRecent,
 } from '../../service/useCommunityHome/requestCommunityHome';
@@ -21,7 +31,7 @@ import defaultHeader from '../../../style/media/bg-ttl-sample-02.png';
 import Post from '../../model/Post';
 import moment from 'moment';
 import { patronInfo } from '@nara.platform/dock';
-import { reactAlert, reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm, axiosApi } from '@nara.platform/accent';
 import { joinCommunity, deleteMember } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { Console } from 'console';
@@ -29,197 +39,11 @@ import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
 import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
 import { SkProfileService } from 'profile/stores';
+import DefaultImg from '../../../style/media/img-profile-80-px.png';
 
-const NoticeItemView: React.FC<Post> = function NoticeItemView({
-  communityId,
-  postId,
-  title,
-  html,
-  createdTime,
-  replyCount,
-}) {
-  const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
-  const [text, setText] = useState<string>('');
-  const communityHome = useCommunityHome();
-  const history = useHistory();
-  const approved = communityHome?.community?.approved;
-
-  useEffect(() => {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    let nextText = div.innerText;
-    nextText = nextText
-      .split('\n')
-      .filter(c => c !== '')
-      .join('\n');
-    setText(nextText);
-  }, []);
-
-  const Alert = useCallback(() => {
-    if (approved === null) {
-      reactConfirm({
-        title: '알림',
-        message: '커뮤니티에 가입하시겠습니까?',
-        onOk: async () => {
-          const communtyHome = getCommunityHome();
-          if (
-            communtyHome === undefined ||
-            communtyHome.community === undefined
-          ) {
-            return;
-          }
-          await joinCommunity(communtyHome.community.communityId);
-          requestCommunity(communtyHome.community.communityId);
-        },
-      });
-    } else if (approved === false) {
-      reactAlert({
-        title: '안내',
-        message: '지금 가입 승인을 기다리는 중입니다.',
-      });
-    } else if (approved === true) {
-      history.push(`/community/${communityId}/post/${postId}`);
-    }
-  }, [approved]);
-
-  return (
-    <div className="community-home-card">
-      <div
-        className="ui comments base"
-        style={{ display: 'block', cursor: 'pointer' }}
-        onClick={Alert}
-      >
-        <div className="home-card-top">
-          <h3>
-            {title} {isNew && <span className="new-label">NEW</span>}
-          </h3>
-          <p>{text}</p>
-        </div>
-        <div className="home-card-bottom">
-          <span>{createdDate}</span>
-          <span>
-            <img src={commentIcon} />
-            {replyCount}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const RecentItemView: React.FC<Post> = function RecentItemView({
-  communityId,
-  postId,
-  type,
-  title,
-  html,
-  fileBoxId,
-  nickName,
-  createdTime,
-  creatorName,
-  profileImg,
-  replyCount,
-}) {
-  const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
-  const [text, setText] = useState<string>('');
-  const history = useHistory();
-  const communityHome = useCommunityHome();
-  const approved = communityHome?.community?.approved;
-
-  useEffect(() => {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    let nextText = div.innerText;
-    nextText = nextText
-      .split('\n')
-      .filter(c => c !== '')
-      .join('\n');
-    setText(nextText);
-  }, []);
-
-  const Alert = useCallback(() => {
-    if (approved === null) {
-      reactConfirm({
-        title: '알림',
-        message: '커뮤니티에 가입하시겠습니까?',
-        onOk: async () => {
-          const communtyHome = getCommunityHome();
-          if (
-            communtyHome === undefined ||
-            communtyHome.community === undefined
-          ) {
-            return;
-          }
-          await joinCommunity(communtyHome.community.communityId);
-          requestCommunity(communtyHome.community.communityId);
-        },
-      });
-    } else if (approved === false) {
-      reactAlert({
-        title: '안내',
-        message: '지금 가입 승인을 기다리는 중입니다.',
-      });
-    } else if (approved === true) {
-      if (type === 'ANONYMOUS') {
-        history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`);
-      } else {
-        history.push(`/community/${communityId}/post/${postId}`);
-      }
-    }
-  }, [approved]);
-
-  return (
-    <div
-      className="new-board-list"
-      style={{ display: 'block', cursor: 'pointer' }}
-      onClick={Alert}
-    >
-      <div className="new-board-list-top">
-        {/* <img src={BadgeImportant} className="board-badge" /> */}
-        {fileBoxId !== undefined && fileBoxId !== null && fileBoxId !== '' && (
-          <img src={fileIcon} className="board-file" />
-        )}
-        <strong>{title}</strong>
-        {isNew && <span className="new-label">NEW</span>}
-      </div>
-      <p>{text}</p>
-      <div className="survey-read-side mb0">
-        <div className="title-area read-header-left">
-          <div className="text-list">
-            {type !== 'ANONYMOUS' && (
-              <>
-                {profileImg ? (
-                  <img src={`/files/community/${profileImg}`} />
-                ) : (
-                  <img src={`${profileIcon}`} />
-                )}
-              </>
-            )}
-            {type === 'ANONYMOUS' && <img src={profileIcon} />}
-            <span>
-              {type === 'ANONYMOUS' ? '익명' : nickName || creatorName}
-            </span>
-          </div>
-          <div className="text-list">
-            <span>{createdDate}</span>
-          </div>
-        </div>
-        <div className="right-area">
-          <button>
-            <img src={commentIcon} />
-            {replyCount}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface Params {
-  communityId: string;
-}
+// interface Params {
+//   communityId: string;
+// }
 
 const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   communityId,
@@ -234,12 +58,12 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   profileImg,
   replyCount,
 }) {
-  const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
-  const [text, setText] = useState<string>('');
-  const history = useHistory();
   const communityHome = useCommunityHome();
-  const approved = communityHome?.community?.approved;
+  const managProfileImg = getCommunityHome()?.community?.managerProfileImg;
+  const createdDate = moment(getCommunityHome()?.community?.createdTime).format(
+    'YYYY.MM.DD'
+  );
+  const history = useHistory();
 
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
@@ -250,6 +74,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
       label: `${communityHome!.community!.name}`,
     });
   }
+
   const drawCommunity = () => {
     reactConfirm({
       title: '알림',
@@ -263,7 +88,14 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
         ) {
           return;
         }
-        await deleteMember(communityId, SkProfileService.instance.skProfile.id);
+        console.log(
+          communtyHome.community.communityId,
+          SkProfileService.instance.skProfile.id
+        );
+        await deleteMember(
+          communtyHome.community.communityId,
+          SkProfileService.instance.skProfile.id
+        );
         history.goBack();
       },
     });
@@ -275,6 +107,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
     //   },
     // });
   };
+
   return (
     <>
       <div className="community-home-contants">
@@ -361,7 +194,15 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <th>관리자 정보</th>
                 <td>
                   <div className="profile home-detail-profile">
-                    <div className="pic">{/* <img src={profile} /> */}</div>
+                    <div className="pic">
+                      <img
+                        src={
+                          managProfileImg
+                            ? `/files/community/${managProfileImg}`
+                            : `${DefaultImg}`
+                        }
+                      />
+                    </div>
                     <span className="crown">
                       {communityHome.community.managerName}
                     </span>
