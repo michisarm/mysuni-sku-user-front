@@ -156,7 +156,7 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
 
   return (
     <>
-      {popularCourseItem && popularCourseItem[0] && ( 
+      {popularCourseItem && ( 
         <div className="personal-card-item right-card">
           <div className="card-item-tit">
             <h3>우리 회사 인기 코스</h3>
