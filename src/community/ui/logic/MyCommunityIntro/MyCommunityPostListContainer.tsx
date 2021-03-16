@@ -2,17 +2,19 @@ import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
-import { Icon, Button, Comment } from 'semantic-ui-react';
+import { Icon, Button, Comment, Segment } from 'semantic-ui-react';
 import { registerBookmark } from '../../../api/communityApi';
 import { requestAppendMyCommunityPostList } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 import {
   getMyCommunityIntro,
   setMyCommunityIntro,
   useMyCommunityIntro,
+  useIsLoadingState,
 } from '../../../store/CommunityMainStore';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Loadingpanel } from 'shared';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -83,12 +85,12 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
 
   useEffect(() => {
     scrollOnceMove();
-  }, [scrollOnceMove])
+  }, [scrollOnceMove]);
 
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, [pathname])
+  }, [pathname]);
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -141,9 +143,9 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
               <Comment.Avatar
                 src={
                   profileImage === undefined ||
-                    profileImage === null ||
-                    profileImage === '' ||
-                    type === 'ANONYMOUS'
+                  profileImage === null ||
+                  profileImage === '' ||
+                  type === 'ANONYMOUS'
                     ? DefaultImg
                     : `/files/community/${profileImage}`
                 }
@@ -237,37 +239,63 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
 
 function MyCommunityPostListContainer() {
   const myCommunityIntro = useMyCommunityIntro();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const loadingState = useIsLoadingState();
+  useEffect(() => {
+    setIsLoading(loadingState?.isLoading ? true : false);
+  }, [loadingState?.isLoading]);
+
   if (myCommunityIntro === undefined) {
     return null;
   }
-  return (
-    <>
-      <div className="community-main-contants">
-        {myCommunityIntro !== undefined &&
-          myCommunityIntro.posts.map(postItem => (
-            <PostItemView key={postItem.postId} {...postItem} />
-          ))}
 
-        <div className="more-comments community-side">
-          {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              onClick={requestAppendMyCommunityPostList}
-            >
-              <Icon className="moreview" /> list more
-            </Button>
-          )}
-          {myCommunityIntro.postsTotalCount <= myCommunityIntro.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              style={{ cursor: 'default' }}
-            />
-          )}
-        </div>
-      </div>
-    </>
+  return (
+    <div className="community-main-contants">
+      {isLoading ? (
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 550,
+            width: '48.5rem',
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
+          <Loadingpanel loading={isLoading} />
+        </Segment>
+      ) : (
+        <>
+          {myCommunityIntro !== undefined &&
+            myCommunityIntro.posts.map(postItem => (
+              <PostItemView key={postItem.postId} {...postItem} />
+            ))}
+          <div className="more-comments community-side">
+            {myCommunityIntro.postsTotalCount >
+              myCommunityIntro.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                onClick={requestAppendMyCommunityPostList}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            )}
+            {myCommunityIntro.postsTotalCount <=
+              myCommunityIntro.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                style={{ cursor: 'default' }}
+              />
+            )}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
