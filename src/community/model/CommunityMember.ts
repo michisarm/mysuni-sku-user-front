@@ -1,6 +1,8 @@
 
+export type CommunityMemberApprovedType = 'APPROVED' | 'WAITING' | 'REJECT' | 'DRAW'
+
 export interface MemberList {
-  approved: boolean;
+  approved: CommunityMemberApprovedType;
   communityId: string;
   companyId: string;
   companyName: string;
@@ -29,7 +31,7 @@ export interface MemberApproveList {
   creatorId: string;
   groupId: string;
   introduce: string;
-  nickname:string,
+  nickname: string,
   manager: boolean
   managerId: string;
   managerNickName: string
@@ -40,7 +42,7 @@ export interface MemberApproveList {
   name: string;
   teamId: string;
   teamName: string;
-  profileImg:string
+  profileImg: string
 }
 
 export interface CommunityMemberList {

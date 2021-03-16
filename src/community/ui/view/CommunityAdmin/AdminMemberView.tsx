@@ -425,7 +425,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           <Icon className="no-contents80" />
           <span className="blind">콘텐츠 없음</span>
           <div className="text">
-            {searchBox.approved
+            {searchBox.approved === 'APPROVED'
               ? '커뮤니티 멤버가 없습니다.'
               : '가입 대기가 없습니다.'}
           </div>
