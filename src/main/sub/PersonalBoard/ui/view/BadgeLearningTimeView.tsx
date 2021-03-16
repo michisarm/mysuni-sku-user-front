@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { inject, observer } from 'mobx-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
 
 
-interface Props {
+interface Props extends RouteComponentProps {
   activeIndex: number;
 }
 
-function BadgeLearningTimeView(props: Props) {
+const BadgeLearningTimeView: React.FC<Props> = Props => {
 
-  const { activeIndex } = props;
+  const { activeIndex, history } = Props;
   const badgeLearningTimeItem = useBadgeLearningTimeItem()
   const [allLearningTime, setAllLearningTime] = useState(0);
 
@@ -23,6 +25,10 @@ function BadgeLearningTimeView(props: Props) {
     }
   }, [badgeLearningTimeItem])
 
+  const goToBadge = useCallback(() => {
+    history.push('/certification/badge/EarnedBadgeList/pages/1')
+  }, [])
+
   return (
     <>
     {badgeLearningTimeItem &&(
@@ -35,7 +41,7 @@ function BadgeLearningTimeView(props: Props) {
           </div>
           <div className="card-item-con">
             <div className="card-gauge-bar color-sv">
-              <span className="gauge-tit">MY Badges</span>
+              <a className="gauge-tit" onClick={goToBadge}>MY Badges</a>
               <div className="card-gauge-bar sty2 color-sv">
                 <div className="rangeBox">
                   <div className="range">
@@ -144,4 +150,5 @@ function BadgeLearningTimeView(props: Props) {
   );
 }
 
-export default BadgeLearningTimeView;
+export default inject(
+)(withRouter(observer(BadgeLearningTimeView)));
