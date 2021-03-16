@@ -5,10 +5,12 @@ import moment from "moment";
 import MyLearningSummaryModel from "myTraining/model/MyLearningSummaryModel";
 import { CollegePercentData } from "../model/CollegePercent";
 import { MyCompanyPopularCourseItem } from "../model/LectureMyCompanyPopularCourse";
+import AttendEvent from "../viewModel/AttendEvent";
 import LearningObjectives from "../viewModel/LearningObjectives";
 
 const badgeURl = '/api/badge'
 const flowURL = '/api/mytraining/summaries/flow';
+const attendanceURL = '/api/event/attend';
 
 export function getCountOfBadges() {
   const params = {
@@ -79,6 +81,22 @@ export function updateLearningObjectives(item: LearningObjectives) {
 export function getCollegePercent() {
   return axiosApi.get<CollegePercentData[]>(`/api/mytraining/mytraining/mytrainings/learningTime?patronKey=${BadgeFilterRdoModel.getPatonKey()}`)
   .then(response => {
+    return response && response.data
+  });
+}
+
+export function findAttendEvent() {
+  return axiosApi.get<AttendEvent>(attendanceURL)
+  .then(response => {
+    console.log('response', response)
+    return response && response.data
+  });
+}
+
+export function getAttendCount(id: string) {
+  return axiosApi.get<any>(attendanceURL+`attendance/${id}/count`)
+  .then(response => {
+    console.log('response', response)
     return response && response.data
   });
 }
