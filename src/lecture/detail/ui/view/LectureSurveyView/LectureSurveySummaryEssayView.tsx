@@ -29,6 +29,9 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-radio-survey-new">
+        <div style={{ margin: '20px 0' }}>
+          {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+        </div>
         <div className="course-survey-list">
           <p className="improve-text">
             {lectureSurveyAnswerItem && lectureSurveyAnswerItem.sentence}

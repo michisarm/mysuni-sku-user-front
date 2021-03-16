@@ -42,6 +42,9 @@ const LectureSurveySummaryDateView: React.FC<LectureSurveyDateViewProps> = funct
       <div className="course-radio-survey-new">
         <div className="course-survey-list">
           <div className="ui h40 calendar" id="rangestart">
+            <div style={{ margin: '20px 0' }}>
+              {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+            </div>
             <div className="ui input right icon">
               <DatePicker
                 onChange={onChangeValue}

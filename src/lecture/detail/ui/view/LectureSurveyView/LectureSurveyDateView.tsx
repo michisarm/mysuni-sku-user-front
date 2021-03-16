@@ -30,6 +30,9 @@ const LectureSurveyDateView: React.FC<LectureSurveyDateViewProps> = function Lec
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="ui h40 calendar" id="rangestart">
+        <div style={{ margin: '20px 0' }}>
+          {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+        </div>
         <div className="ui input right icon">
           <DatePicker
             onChange={onChangeValue}

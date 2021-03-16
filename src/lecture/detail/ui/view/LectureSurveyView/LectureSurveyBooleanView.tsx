@@ -32,6 +32,9 @@ const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = functi
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="preview">
+        <div style={{ margin: '20px 0' }}>
+          {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+        </div>
         <div
           className="lms-toggle init"
           style={{ position: 'relative', top: '0' }}

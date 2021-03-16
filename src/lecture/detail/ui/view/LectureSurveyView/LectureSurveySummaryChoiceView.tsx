@@ -39,9 +39,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
     })
   );
   /*eslint-enable */
-  
+
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
+      <div>
+        {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+      </div>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
@@ -85,15 +88,16 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
-                  {choice.image !== "" ?
-                    <div className="course-survey-list-img-selector">  
+                  {choice.image !== '' ? (
+                    <div className="course-survey-list-img-selector">
                       <Image
                         style={{ display: 'inline-block' }}
                         src={`${domainPath + choice.image}`}
                       />
                     </div>
-                    : ""
-                  }
+                  ) : (
+                    ''
+                  )}
                 </li>
               </Fragment>
             );
@@ -110,7 +114,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked: any = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-          
+
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -141,15 +145,16 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
-                  {choice.image !== "" ?
-                    <div className="course-survey-list-img-selector">  
+                  {choice.image !== '' ? (
+                    <div className="course-survey-list-img-selector">
                       <Image
                         style={{ display: 'inline-block' }}
                         src={`${domainPath + choice.image}`}
                       />
                     </div>
-                    : ""
-                  }
+                  ) : (
+                    ''
+                  )}
                 </li>
               </Fragment>
             );
