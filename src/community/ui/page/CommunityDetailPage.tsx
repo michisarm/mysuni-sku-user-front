@@ -40,6 +40,7 @@ import ReactGA from 'react-ga';
 import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
 import { SkProfileService } from 'profile/stores';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
+
 // interface Params {
 //   communityId: string;
 // }
