@@ -20,6 +20,9 @@ const LectureSurveySummaryMatrixView: React.FC<LectureSurveyMatrixViewProps> = f
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
+        <div style={{ margin: '20px 0' }}>
+          {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+        </div>
         <Table celled fixed singleLine className="test-table">
           <Table.Header>
             <Table.Row>

@@ -36,6 +36,9 @@ const LectureSurveyEssayView: React.FC<LectureSurveyEssayViewProps> = function L
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <Form>
         <Form.Field>
+          <div style={{ margin: '20px 0' }}>
+            {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+          </div>
           <div className="ui right-top-count input">
             <span className="count">
               <span className="now">

@@ -32,6 +32,9 @@ const LectureSurveyMatrixView: React.FC<LectureSurveyMatrixViewProps> = function
   const { columns, rows } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+      <div style={{ margin: '20px 0' }}>
+        {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+      </div>
       <Table celled fixed singleLine className="test-table">
         <Table.Header>
           <Table.Row>

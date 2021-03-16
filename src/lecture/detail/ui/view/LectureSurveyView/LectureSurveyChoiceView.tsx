@@ -30,6 +30,9 @@ const LectureSurveyChoiceView: React.FC<LectureSurveyItemProps> = function Lectu
   const { canMultipleAnswer, choices } = lectureSurveyItem;
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
+      <div>
+        {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+      </div>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&

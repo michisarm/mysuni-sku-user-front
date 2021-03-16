@@ -2,7 +2,10 @@ import React, { CSSProperties, useCallback } from 'react';
 import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import { useLectureSurveyAnswerSummaryList, useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
+import {
+  useLectureSurveyAnswerSummaryList,
+  useLectureSurveySummary,
+} from 'lecture/detail/store/LectureSurveyStore';
 import LectureSurveySummaryChoiceLayout from './LectureSurveySummaryChoiceLayout';
 
 interface LectureSurveySummaryBooleanViewProps {
@@ -47,13 +50,22 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">
         <div className="preview">
-          <div className="lms-toggle init" style={{ position: 'relative', top: '0' }}>
+          <div>
+            {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+          </div>
+          <div
+            className="lms-toggle init"
+            style={{ position: 'relative', top: '0' }}
+          >
             {/*처음 로딩시 className="lms-switch init"*/}
             {/*클릭이후  className="lms-switch"*/}
             <label
               htmlFor={questionNumber}
               className={`lms-switch ${
-                lectureSurveyAnswerItem === undefined || lectureSurveyAnswerItem.itemNumbers === undefined ? 'init' : ''
+                lectureSurveyAnswerItem === undefined ||
+                lectureSurveyAnswerItem.itemNumbers === undefined
+                  ? 'init'
+                  : ''
               }`}
             >
               <input
@@ -75,13 +87,55 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             {/* progress bar */}
             <div className="course-survey-list-backgrondBar yesOrNoBar">
               <span className="course-survey-list-persent-left">
-                <span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)
+                <span className="course-survey-list-persent-number">
+                  {yesCount || 0}
+                </span>
+                ({yesAvg !== 'NaN' ? yesAvg : '0'}%)
               </span>
-              <div style={yesAvg < noAvg ? {height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px'} : {height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px'} }>
-                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: '#f4f7fd', height: '100%', borderRadius: '6px'} : { width: yesAvg + '%', backgroundColor: `${yesAvg === 'NaN' || noAvg === 'NaN' ? '#f4f7fd' : '#2185d0'}`, height: '100%', borderRadius: '6px'}} />
+              <div
+                style={
+                  yesAvg < noAvg
+                    ? {
+                        height: '100%',
+                        backgroundColor: '#2185d0',
+                        opacity: 0.5,
+                        borderRadius: '6px',
+                      }
+                    : {
+                        height: '100%',
+                        backgroundColor: '#f4f7fd',
+                        opacity: 0.5,
+                        borderRadius: '6px',
+                      }
+                }
+              >
+                <div
+                  style={
+                    yesAvg < noAvg
+                      ? {
+                          width: 100 - Number(noAvg) + '%',
+                          backgroundColor: '#f4f7fd',
+                          height: '100%',
+                          borderRadius: '6px',
+                        }
+                      : {
+                          width: yesAvg + '%',
+                          backgroundColor: `${
+                            yesAvg === 'NaN' || noAvg === 'NaN'
+                              ? '#f4f7fd'
+                              : '#2185d0'
+                          }`,
+                          height: '100%',
+                          borderRadius: '6px',
+                        }
+                  }
+                />
               </div>
               <span className="course-survey-list-persent-right">
-                <span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)
+                <span className="course-survey-list-persent-number">
+                  {noCount || 0}
+                </span>
+                ({noAvg !== 'NaN' ? noAvg : '0'}%)
               </span>
             </div>
 
