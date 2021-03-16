@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { CSSProperties, useCallback } from 'react';
 import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
@@ -78,7 +78,7 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
                 <span className="course-survey-list-persent-number">{yesCount || 0}</span>({yesAvg !== 'NaN' ? yesAvg : '0'}%)
               </span>
               <div style={yesAvg < noAvg ? {height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px'} : {height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px'} }>
-                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: '#f4f7fd', height: '100%', borderRadius: '6px'} : { width: yesAvg + '%', backgroundColor: '#2185d0', height: '100%', borderRadius: '6px'}} />
+                <div style={yesAvg < noAvg ? { width: 100 - Number(noAvg)+'%', backgroundColor: '#f4f7fd', height: '100%', borderRadius: '6px'} : { width: yesAvg + '%', backgroundColor: `${yesAvg === 'NaN' || noAvg === 'NaN' ? '#f4f7fd' : '#2185d0'}`, height: '100%', borderRadius: '6px'}} />
               </div>
               <span className="course-survey-list-persent-right">
                 <span className="course-survey-list-persent-number">{noCount || 0}</span>({noAvg !== 'NaN' ? noAvg : '0'}%)
