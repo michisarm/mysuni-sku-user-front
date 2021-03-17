@@ -561,7 +561,7 @@ function CommunityHomeTreeContainer() {
             {communtyHome.community.approved === null && <JoinView />}
             {communtyHome.community.approved === 'DRAW' && <JoinView />}
             {communtyHome.community.approved === 'REJECT' && <JoinView />}
-            {communtyHome.community.approved === 'WAITIING' && <WaitView />}
+            {communtyHome.community.approved === 'WAITING' && <WaitView />}
             {communtyHome.community.approved === 'APPROVED' && <MemberView />}
             {communtyHome.community.managerId === patronInfo.getDenizenId() && (
               <AdminView />
