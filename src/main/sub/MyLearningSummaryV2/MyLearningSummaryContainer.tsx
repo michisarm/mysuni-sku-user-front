@@ -73,6 +73,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
   
   componentDidMount(): void {
+    const { myTrainingService } = this.props;
+    myTrainingService!.findAllTabCount();
     this.init();
     this.getAuth();
     /* eslint-disable react/no-unused-state */
@@ -99,10 +101,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   init() {
     //
-    const { skProfileService } = this.props;
+    const { skProfileService, myTrainingService } = this.props;
     skProfileService!.findStudySummary();
     this.fetchLearningSummary();
     this.menuControlAuth();
+    // const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
   }
 
   fetchLearningSummary() {
@@ -111,10 +114,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     /* 메인 페이지에는 해당 년도의 LearningSummary 를 display 함. */
     const year = moment().year();
 
+    // myTrainingService!.findAllTabCount();
+    
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     myTrainingService!.countMyTrainingsWithStamp();
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
     badgeService!.getCountOfBadges();
+
+    const { inprogressCount } = myTrainingService!;
+    console.log('inprogressCount', inprogressCount)
   }
 
   menuControlAuth() {
@@ -246,6 +254,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     // const complateLearningTimeValue = (myLearningSummary.displayTotalLearningTime / myLearningSummary.displayAccrueTotalLearningTime) * 100
     let total: any = null;
     let accrueTotal: any = null;
+
     const { menuControlAuth } = menuControlAuthService!;
     if (hour < 1 && minute < 1) {
       total = (
@@ -360,12 +369,18 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           <div className="main-gauge-box">
             <div className="main-gauge">
               <span className="gauge-badge">Badge</span>
-              <Popup
+              <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
+                <div className="gauge-content-box">
+                  <p className="top-num">{_earnedCount}</p>
+                    <span className="bot-num">도전중 {Number(badgeService?.challengingCount)}</span>
+                </div>
+              </div>
+              {/* <Popup
                 trigger={
                   <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
                     <div className="gauge-content-box">
                       <p className="top-num">{_earnedCount}</p>
-                        <span className="bot-num">{Number(badgeService?.challengingCount)+_earnedCount}</span>
+                        <span className="bot-num">{Number(badgeService?.challengingCount)}</span>
                     </div>
                   </div>
                 }
@@ -377,9 +392,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   도전중 Badge(누적)
                 </span>
                 <span>
-                  <strong>{Number(badgeService?.challengingCount)+_earnedCount}</strong>개
+                  <strong>{Number(badgeService?.challengingCount)}</strong>개
                 </span>
-              </Popup>
+              </Popup> */}
             </div>
             <div className="main-gauge">
               <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
@@ -391,7 +406,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                       {/* <p>{myLearningSummary.completeLectureCount}</p>
                       <span>{myLearningSummary.totalCompleteLectureCount}</span> */}
                       <p>{myLearningSummary.completeLectureCount}</p>
-                      <span>{myLearningSummary.totalCompleteLectureCount}</span>
+                    <span>학습중 {myTrainingService?.inprogressCount}//{myTrainingService?.completedCount}</span>
                     </div>
                   </div>
                 }
@@ -415,7 +430,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
                     <div className="gauge-content-box">
                       <p>{total}</p>
-                      <span>{learningObjectives!.AnnualLearningObjectives}h</span>
+                      <span>목표 {learningObjectives!.AnnualLearningObjectives}h</span>
                     </div>
                   </div>
                 }
@@ -427,7 +442,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                 누적 학습시간
                 </span>
                 <span>
-                  <strong>{learningObjectives!.AnnualLearningObjectives}h</strong>
+                  <strong>{accrueTotal}</strong>
                 </span>
               </Popup>
             </div>
