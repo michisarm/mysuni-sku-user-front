@@ -1,5 +1,6 @@
 import CommunityHomeType from './CommunityHomeType';
 import CommunityType from './CommunityType';
+import { CommunityMemberApprovedType } from './CommunityMember';
 
 export default interface CommunityView {
   communityId: string;
@@ -27,5 +28,6 @@ export default interface CommunityView {
 
   fieldName: string | null;
   profileImg: string;
-  approved: string | null;
+  approved: CommunityMemberApprovedType;
+  allowSelfJoin: number;
 }
