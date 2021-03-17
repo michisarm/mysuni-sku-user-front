@@ -183,13 +183,13 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
             return;
           }
           await joinCommunity(communtyHome.community.communityId);
+          requestCommunity(communtyHome.community.communityId);
           if (communtyHome.community.allowSelfJoin === 1) {
             reactAlert({
               title: '알림',
               message: '커뮤니티에 가입이 완료되었습니다.',
             });
           }
-          requestCommunity(communtyHome.community.communityId);
         },
       });
     } else if (approved === 'WAITING') {
@@ -408,6 +408,12 @@ function JoinView() {
         }
         await joinCommunity(communtyHome.community.communityId);
         requestCommunity(communtyHome.community.communityId);
+        if (communtyHome.community.allowSelfJoin === 1) {
+          reactAlert({
+            title: '알림',
+            message: '커뮤니티에 가입이 완료되었습니다.',
+          });
+        }
       },
     });
   }, [history]);
