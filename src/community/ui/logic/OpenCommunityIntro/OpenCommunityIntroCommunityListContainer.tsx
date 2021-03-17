@@ -84,7 +84,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
         onClick={handleAlertPassInputWin}
         // onClick={() => passChek(communityId, 'learning')}
       >
-        <div>
+        <div className="open-card-top">
           <span className="label">{fieldName}</span>
           {approvedState === 'Wait' && <span className="wait">가입대기</span>}
         </div>
