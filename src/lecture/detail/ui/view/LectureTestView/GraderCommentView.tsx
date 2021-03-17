@@ -15,7 +15,7 @@ export function GraderCommentView({
         <div className="content-area">
           <div className="content-inner ql-snow">
             <div
-              className="ql-editor"
+              className="ql-editor text"
               dangerouslySetInnerHTML={{
                 __html: graderComment || '',
               }}
