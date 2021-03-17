@@ -40,6 +40,7 @@ import ReactGA from 'react-ga';
 import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
 import { SkProfileService } from 'profile/stores';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
+
 // interface Params {
 //   communityId: string;
 // }
@@ -123,15 +124,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 <img src={defaultHeader} />
               )}
               <div className="community-banner-inner">
-                <div
-                  className="community-banner-title"
-                  style={{
-                    color: communityHome.community.color
-                      ? communityHome.community.color
-                      : '#FFFFFF',
-                  }}
-                >
-                  {communityHome.community.name}
+                <div className="community-banner-title">
+                  {/* {communityHome.community.name} */}
                 </div>
                 <div
                   className="community-banner-copy"
@@ -168,7 +162,16 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                 >
                   {communityHome.community.name}
                 </div>
-                <div className="community-banner-copy" />
+                <div
+                  className="community-banner-copy"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
+                  {communityHome.community.introduce}
+                </div>
               </div>
             </>
           )}

@@ -169,7 +169,7 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
   }
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -254,7 +254,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   }
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -559,6 +559,8 @@ function CommunityHomeTreeContainer() {
               </span>
             </div>
             {communtyHome.community.approved === null && <JoinView />}
+            {communtyHome.community.approved === 'DRAW' && <JoinView />}
+            {communtyHome.community.approved === 'REJECT' && <JoinView />}
             {communtyHome.community.approved === 'WAITIING' && <WaitView />}
             {communtyHome.community.approved === 'APPROVED' && <MemberView />}
             {communtyHome.community.managerId === patronInfo.getDenizenId() && (

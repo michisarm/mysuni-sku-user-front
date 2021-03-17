@@ -42,6 +42,7 @@
     "query-string": "6.13.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.5",
+    "react-color": "^2.19.3",
     "react-datepicker": "^2.10.1",
     "react-dom": "^16.8.6",
     "react-ga": "^3.2.1",

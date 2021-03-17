@@ -7,8 +7,10 @@ import {
   getMembers,
   updateMembers,
   deleteMembers,
+  rejectMembers,
 } from 'community/service/useMemberList/useMemberList';
 import { CommunityMemberList } from 'community/model/CommunityMember';
+import CommunityMemberCompanionModal from './CommunityMemberCompanionModal';
 import moment from 'moment';
 import Calendar from './Calendar';
 import {
@@ -62,7 +64,17 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
 
   const [activePage, setActivePage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
-
+  const [openModal, setModalWin] = React.useState<{
+    companionModalWin: boolean;
+  }>({
+    companionModalWin: false,
+  });
+  const [remark, setRemark] = useState<string>('');
+  const handleClose = () => {
+    setModalWin({
+      companionModalWin: false,
+    });
+  };
   const deleteMemberList = useCallback(() => {
     if (selectedList && selectedList.find(item => item === managerId)) {
       reactAlert({ title: '알림', message: '관리자는 삭제할수 없습니다.' });
@@ -239,7 +251,37 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       setSelectedList(copiedSelectedList);
     }
   };
-
+  const handleOk = () => {
+    rejectUser();
+  };
+  function onChangeCommunityCompanionProps(name: string, value: string) {
+    //console.log(value);
+    setRemark(value);
+  }
+  function handleAlertCompanionWin() {
+    if (selectedList && selectedList.length === 0) {
+      reactAlert({ title: '알림', message: '가입 반려할 멤버를 선택하세요!' });
+    } else {
+      setModalWin({
+        companionModalWin: true,
+      });
+    }
+  }
+  const rejectUser = useCallback(() => {
+    reactConfirm({
+      title: '확인',
+      message:
+        '선택한 학습자를 가입 반려 처리하시겠습니까?  입력된 반려 사유는 E-mail과 알림을 통해 전달되며, 등록된 내용은 수정하실 수 없습니다.',
+      onOk: () => {
+        rejectMembers(communityId, selectedList, remark);
+        setSelectedList([]);
+        getMembers(communityId);
+      },
+    });
+    setModalWin({
+      companionModalWin: false,
+    });
+  }, [communityId, activePage, selectedList, remark]);
   return (
     <>
       {!searchBox.groupId ? (
@@ -348,13 +390,29 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
             </button>
           )}
 
-          {!searchBox.approved && (
-            <button
-              className="ui button admin_table_button"
-              onClick={e => approveMemberList()}
-            >
-              가입 승인
-            </button>
+          {searchBox.approved === 'WAITING' && (
+            <>
+              <button
+                className="ui button admin_table_button"
+                onClick={e => approveMemberList()}
+              >
+                가입 승인
+              </button>
+              <button
+                className="ui button admin_table_button"
+                onClick={handleAlertCompanionWin}
+              >
+                가입 반려
+              </button>
+              <CommunityMemberCompanionModal
+                open={openModal.companionModalWin}
+                handleClose={handleClose}
+                onChangeCommunityCompanionProps={
+                  onChangeCommunityCompanionProps
+                }
+                handleOk={handleOk}
+              />
+            </>
           )}
         </div>
       </div>
@@ -425,7 +483,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           <Icon className="no-contents80" />
           <span className="blind">콘텐츠 없음</span>
           <div className="text">
-            {searchBox.approved
+            {searchBox.approved === 'APPROVED'
               ? '커뮤니티 멤버가 없습니다.'
               : '가입 대기가 없습니다.'}
           </div>
