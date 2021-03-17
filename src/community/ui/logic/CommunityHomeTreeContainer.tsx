@@ -24,6 +24,7 @@ import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -32,7 +33,7 @@ interface MenuItemViewProps {
 interface ApprovedProps {
   type?: CommunityMenuType;
   name: string;
-  approved?: string | null;
+  approved?: CommunityMemberApprovedType;
   icon?: string;
   lastPostTime: number;
 }
@@ -182,6 +183,12 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
             return;
           }
           await joinCommunity(communtyHome.community.communityId);
+          if (communtyHome.community.allowSelfJoin === 1) {
+            reactAlert({
+              title: '알림',
+              message: '커뮤니티에 가입이 완료되었습니다.',
+            });
+          }
           requestCommunity(communtyHome.community.communityId);
         },
       });
@@ -561,7 +568,7 @@ function CommunityHomeTreeContainer() {
             {communtyHome.community.approved === null && <JoinView />}
             {communtyHome.community.approved === 'DRAW' && <JoinView />}
             {communtyHome.community.approved === 'REJECT' && <JoinView />}
-            {communtyHome.community.approved === 'WAITIING' && <WaitView />}
+            {communtyHome.community.approved === 'WAITING' && <WaitView />}
             {communtyHome.community.approved === 'APPROVED' && <MemberView />}
             {communtyHome.community.managerId === patronInfo.getDenizenId() && (
               <AdminView />

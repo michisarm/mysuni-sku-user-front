@@ -96,7 +96,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
           communtyHome.community.communityId,
           SkProfileService.instance.skProfile.id
         );
-        history.goBack();
+        requestCommunity(communtyHome.community.communityId);
       },
     });
     // reactConfirm({
