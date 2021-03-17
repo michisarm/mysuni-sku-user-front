@@ -54,20 +54,10 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
             {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
           </div>
           <div
-            className="lms-toggle init"
+            className="lms-toggle"
             style={{ position: 'relative', top: '0' }}
           >
-            {/*처음 로딩시 className="lms-switch init"*/}
-            {/*클릭이후  className="lms-switch"*/}
-            <label
-              htmlFor={questionNumber}
-              className={`lms-switch ${
-                lectureSurveyAnswerItem === undefined ||
-                lectureSurveyAnswerItem.itemNumbers === undefined
-                  ? 'init'
-                  : ''
-              }`}
-            >
+            <label htmlFor={questionNumber} className="lms-switch">
               <input
                 type="checkbox"
                 id={questionNumber}
@@ -76,7 +66,6 @@ const LectureSurveySummaryBooleanView: React.FC<LectureSurveySummaryBooleanViewP
                   lectureSurveyAnswerItem.itemNumbers !== undefined &&
                   lectureSurveyAnswerItem.itemNumbers[0] === '1'
                 }
-                onChange={onChangeValue}
               />
               <span className="slider" />
               <span className="lms-radio-text" />
