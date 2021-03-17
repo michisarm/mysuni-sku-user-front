@@ -48,7 +48,7 @@ function OpenCommunityPassInputModal(props: Props) {
           </Form>
           <a href={`mailto:${managerEmail}`} target="_blank">
             {/*임시로 김동구과장 메일 주소 기입*/}
-            {managerName}관리자에게 문의하기{managerEmail}
+            관리자에게 문의하기
           </a>
         </Modal.Content>
         <Modal.Actions className="actions2">
