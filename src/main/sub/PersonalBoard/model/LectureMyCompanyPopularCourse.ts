@@ -1,10 +1,11 @@
 export interface MyCompanyPopularCourseItem {
   category: CourseItemCategory,
   companyCode: string,
-  companyName: string,
   count: number,
+  coursePlanId: string,
   date: string,
   id: string,
+  lectureName: string,
   lectureUsid: string
 }
 

@@ -24,6 +24,7 @@ import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -32,7 +33,7 @@ interface MenuItemViewProps {
 interface ApprovedProps {
   type?: CommunityMenuType;
   name: string;
-  approved?: string | null;
+  approved?: CommunityMemberApprovedType;
   icon?: string;
   lastPostTime: number;
 }
@@ -169,7 +170,7 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
   }
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -183,6 +184,12 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
           }
           await joinCommunity(communtyHome.community.communityId);
           requestCommunity(communtyHome.community.communityId);
+          if (communtyHome.community.allowSelfJoin === 1) {
+            reactAlert({
+              title: '알림',
+              message: '커뮤니티에 가입이 완료되었습니다.',
+            });
+          }
         },
       });
     } else if (approved === 'WAITING') {
@@ -254,7 +261,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   }
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -401,6 +408,12 @@ function JoinView() {
         }
         await joinCommunity(communtyHome.community.communityId);
         requestCommunity(communtyHome.community.communityId);
+        if (communtyHome.community.allowSelfJoin === 1) {
+          reactAlert({
+            title: '알림',
+            message: '커뮤니티에 가입이 완료되었습니다.',
+          });
+        }
       },
     });
   }, [history]);
@@ -559,7 +572,9 @@ function CommunityHomeTreeContainer() {
               </span>
             </div>
             {communtyHome.community.approved === null && <JoinView />}
-            {communtyHome.community.approved === 'WAITIING' && <WaitView />}
+            {communtyHome.community.approved === 'DRAW' && <JoinView />}
+            {communtyHome.community.approved === 'REJECT' && <JoinView />}
+            {communtyHome.community.approved === 'WAITING' && <WaitView />}
             {communtyHome.community.approved === 'APPROVED' && <MemberView />}
             {communtyHome.community.managerId === patronInfo.getDenizenId() && (
               <AdminView />

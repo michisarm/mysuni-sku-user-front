@@ -46,6 +46,11 @@ class MyTrainingService {
   @observable
   thisYearMyStampCount: number = 0;
 
+  @observable
+  personalBoardInprogressCount: number = 0;
+
+  @observable
+  personalBoardCompletedCount: number = 0;
 
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
@@ -455,6 +460,17 @@ class MyTrainingService {
         this.completedCount = myTrainingTabModel.completedCount;
         this.enrolledCount = myTrainingTabModel.enrolledCount;
         this.retryCount = myTrainingTabModel.retryCount;
+      });
+    }
+  }
+
+  @action
+  async findLearningCount() {
+    const learningCount = await this.myTrainingApi.findLearningCount();
+    if (learningCount) {
+      runInAction(() => {
+        this.personalBoardInprogressCount = learningCount.inprogressCount;
+        this.personalBoardCompletedCount = learningCount.completedCount;
       });
     }
   }

@@ -27,7 +27,7 @@ export function getCountOfBadges() {
 
 //목표설정
 export function getBadgeLearningCompanyAvg(companyCode: string) {
-  return axiosApi.get<any>(`/api/mytraining/companyAverage/${companyCode}`)
+  return axiosApi.get<any>(`/api/mytraining/companyAverage/${companyCode}/${moment().year()}`)
     .then(response => response && response.data);
 }
 
