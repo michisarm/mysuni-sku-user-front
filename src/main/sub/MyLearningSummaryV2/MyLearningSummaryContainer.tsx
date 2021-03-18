@@ -405,7 +405,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <p>{myLearningSummary.completeLectureCount}</p>
                   <Popup
                     trigger={
-                        <span>학습중 {myTrainingService?.inprogressCount}</span>
+                        <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
                     }
                     style={style2}
                     position="bottom center"
