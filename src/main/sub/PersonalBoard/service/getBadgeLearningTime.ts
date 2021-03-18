@@ -21,7 +21,7 @@ export async function requestBadgeLearningTime(companyCode: string) {
         allMylearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
         mylearningTimeHour: badgeLearningTime!.mylearningTimeHour,
         mylearningTimeMinute: badgeLearningTime!.mylearningTimeMinute,
-        companyAvglearningTime: badgeLearningCompanyAvg ? badgeLearningCompanyAvg.learningTimeAverage : 0,
+        companyAvglearningTime: badgeLearningCompanyAvg ? Math.round(badgeLearningCompanyAvg.learningTimeAverage) : 0,
         allCompanyAvglearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
       })
     }
