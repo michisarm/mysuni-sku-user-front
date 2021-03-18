@@ -415,7 +415,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                       누적 완료학습
                     </span>
                     <span>
-                      <strong>{myLearningSummary.totalCompleteLectureCount}</strong>개
+                  <strong>{myTrainingService?.personalBoardCompletedCount}</strong>개
                     </span>
                   </Popup>
                 </div>
