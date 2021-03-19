@@ -221,7 +221,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       }
     } else if(String(value).length === 2) {
       percent = String(value).substr(0,1)+5
+    } else if(String(value).length === 3) {
+      percent = '100'
     }
+    
     return Number(percent)
   }
 
