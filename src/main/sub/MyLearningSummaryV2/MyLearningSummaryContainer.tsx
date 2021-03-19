@@ -246,7 +246,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
     const badgeValue = Math.round((_earnedCount / (_challengingCount + _earnedCount)) * 100)
-    const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / (myTrainingService!.personalBoardInprogressCount + myTrainingService!.personalBoardCompletedCount)) * 100)
+    const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / (myTrainingService!.personalBoardInprogressCount + myLearningSummary.completeLectureCount)) * 100)
     let LearningObjectivesPer = 0 
     LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
     if( learningObjectives.AnnualLearningObjectives !== 0 && LearningObjectivesPer > 100) {
@@ -405,7 +405,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <p>{myLearningSummary.completeLectureCount}</p>
                   <Popup
                     trigger={
-                        <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
+                      <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
                     }
                     style={style2}
                     position="bottom center"
