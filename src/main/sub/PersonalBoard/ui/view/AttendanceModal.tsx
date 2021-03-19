@@ -6,6 +6,7 @@ import Avartar from '../../../style/media/img-profile-80-px.png'
 import classNames from 'classnames';
 import { useLearningObjectivesItem } from '../../store/PersonalBoardStore';
 import SelectType from '../../model/SelectType';
+import { useAttendCountItem } from '../../store/EventStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -25,25 +26,21 @@ const AttendanceModal:React.FC<Props> = ({
   handleSave
 }) => {
   const history = useHistory();
-  const currentUser = patronInfo.getDenizenId();
 
-  const learningObjectivesItem = useLearningObjectivesItem()
+  const AttendCountItem = useAttendCountItem()
 
   const [attendItems, setAttendItems] = useState<any[]>([{
     className: ''
   }])
 
+  useEffect(() => {
+    console.log('AttendCountItem', AttendCountItem)
+  }, [AttendCountItem])
 
-  const test = (() => {
-    const test = `
-      <li className="done">
-        <button type="button" className="date">
-            DAY<strong>01</strong>
-        </button>                          
-      </li>`
-    console.log('test', test)
-    return test
-  })
+  const test = useCallback((index: number) => {
+    console.log('index', index)
+    return '123'
+  }, [AttendCountItem])
 
   return (
     <>
@@ -78,7 +75,7 @@ const AttendanceModal:React.FC<Props> = ({
                 {
                   Array(20).fill('').map((v, idx) => {
                     return (
-                      <li>
+                      <li className={test(idx)}>
                         {
                           (idx%5) === 4 && (
                             <li className="gift">

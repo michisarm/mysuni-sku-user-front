@@ -96,8 +96,8 @@ export function findAttendEvent() {
 }
 
 //출석횟수 조회
-export function getAttendCount(id: string) {
-  return axiosApi.get<any>(attendanceURL+`/attendance/${id}/count`)
+export function getAttend(id: string) {
+  return axiosApi.get<any>(attendanceURL+`/attendance/${id}`)
   .then(response => {
     console.log('response', response)
     return response && response.data
