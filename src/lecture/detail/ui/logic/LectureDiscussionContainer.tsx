@@ -1,6 +1,6 @@
 import { CommentList } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Checkbox, Comment, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { findSkProfileByAudienceId } from '../../api/profileApi';
@@ -8,10 +8,15 @@ import { useLectureDiscussion } from '../../service/useLectureDiscussion';
 import { getLectureDiscussion,setLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 
+const str = " 2019년 지구상에 새로 등장한 신종 바이러스 감염병인 코로나19는 세계 많은 국가에 서 1년째 대유행을 하고 있다.코로나19는 21세기 들어 가장 많은 인명 피해를 주고 있는 감염병이란 타이틀을 이미 거머쥐었다. 지금도 정치, 경제,사회, 문화, 보건의료, 과학기술 등 많은 분야를 이전과 다른 모습으로 바꿔놓고 있는 중이다. 따라서 코로나19가 바꾸었거나바꾸고 있는 우리 사회의 다양 한 모습을 살펴보고 또 앞으로 어디까지 어떻게 바꿀지를 분석하는 것은 인류의 지속가능성을위해 매우 중요한 과제라고 할 수 있다. 코로나 사태와 관련, 코로나 사태가 시작되었던 1월 말 당시의 예상 및 결과를 Review해보고,향후 사태 지속 시 사회가 어떤 모습으로 변할지에 대해 답변하면서 평소에 생각하지 못했던 부분까지 생각의 영역을 확장해봅니다.";
+
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 function LectureDiscussionContainer() {
   const [lectureDiscussion] = useLectureDiscussion();
+
+  const [more, setMore] = useState<boolean>(false);
+
   useEffect(() => {
     if (lectureDiscussion === undefined) {
       return;
@@ -63,7 +68,14 @@ function LectureDiscussionContainer() {
     //   }
     // }
   }, []);
-  console.log('id',lectureDiscussion?.id)
+
+  const viewMore = useCallback(() => {
+    setMore(true);
+  }, []);
+  const hideMore = useCallback(() => {
+    setMore(false);
+  }, []);
+
   return (
     <>
       {lectureDiscussion && (
@@ -81,21 +93,45 @@ function LectureDiscussionContainer() {
             {/* 본문 */}
             <div className="discuss-box2">
               {/* <img src={MaskImg} className="discuss-main-img" /> */}
-              <div className="discuss-text-wrap">
-                <span className="discuss-text-belt">
+              <div className="discuss-text-wrap" >
+                {/* <span className="discuss-text-belt">
                   2019년 지구상에 새로 등장한 신종 바이러스 감염병인 코로나19는 세계 많은 국가에 서 1년째 대유행을 하고 있다.
                   코로나19는 21세기 들어 가장 많은 인명 피해를 주고 있는 감염병이란 타이틀을 이미 거머쥐었다. 지금도 정치, 경제,
                   사회, 문화, 보건의료, 과학기술 등 많은 분야를 이전과 다른 모습으로 바꿔놓고 있는 중이다. 따라서 코로나19가 바꾸었거나
                   바꾸고 있는 우리 사회의 다양 한 모습을 살펴보고 또 앞으로 어디까지 어떻게 바꿀지를 분석하는 것은 인류의 지속가능성을
                   위해 매우 중요한 과제라고 할 수 있다. 코로나 사태와 관련, 코로나 사태가 시작되었던 1월 말 당시의 예상 및 결과를 Review해보고,
                   향후 사태 지속 시 사회가 어떤 모습으로 변할지에 대해 답변하면서 평소에 생각하지 못했던 부분까지 생각의 영역을 확장해봅니다.
-                </span>
-                <button className="ui icon button right btn-blue">
-                  more
-                  <i aria-hidden="true" className="icon icon morelink more2" />
-                </button>
+                </span> */}
+                {more && (
+                  <div className="ql-snow">
+                    <div
+                      className="ql-editor discuss-text-belt belt2"
+                      dangerouslySetInnerHTML={{ __html: str }}
+                    />
+                  </div>
+                )}
+                {!more && (
+                  <p className="discuss-text-belt belt2">{str}</p>
+                )}
+                {!more && (
+                  <button
+                    className="ui icon button right btn-blue"
+                    onClick={viewMore}
+                  >
+                    more
+                    <i aria-hidden="true" className="icon icon morelink more2" />
+                  </button>
+                )}
+                {more && (
+                  <button
+                    className="ui icon button right btn-blue"
+                    onClick={hideMore} 
+                  >
+                    hide
+                    <i aria-hidden="true" className="icon hide2" />
+                  </button>
+                )}
               </div>
-             
               {/* 관련 URL */}
               <div className="community-board-down discuss2">
                 <div className="board-down-title href">
@@ -153,7 +189,6 @@ function LectureDiscussionContainer() {
               </div>  
             {/* discuss-box2 */}
             </div>
-          {/* discuss-wrap */}
           </div>
 
           <CommentList
@@ -171,3 +206,11 @@ function LectureDiscussionContainer() {
 }
 
 export default LectureDiscussionContainer;
+
+const style: React.CSSProperties = {
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  width: '38rem',
+  whiteSpace: 'nowrap',
+  display: 'inline-block',
+} 
