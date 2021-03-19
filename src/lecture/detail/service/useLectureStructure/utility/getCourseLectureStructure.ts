@@ -49,7 +49,7 @@ function parseDiscussion(
     creatorAudienceId: coursePlanComplex.coursePlan.patronKey.keyString,
     params,
     routerParams,
-    path: `${toPath(params)}/discussion/${sequence}`,
+    path: `${toPath(params)}/discussion`,
     state,
     type: 'DISCUSSION',
     can: true,
@@ -212,14 +212,23 @@ function parseCoursePlanComplex(
       course.cubes = cubes;
     }
   });
+  let discusionParams: LectureParams;
   const programSets: ProgramSet =
     serviceType === 'Program'
       ? coursePlanComplex.coursePlanContents.courseSet.programSet
       : coursePlanComplex.coursePlanContents.courseSet.learningCardSet;
-  lectureStructure.discussions = (
-    programSets.discussions || []
-  ).map(idNameSequence =>
-    parseDiscussion(coursePlanComplex, params, idNameSequence)
+  lectureStructure.discussions = (programSets.discussions || []).map(
+    idNameSequence =>
+      parseDiscussion(
+        coursePlanComplex,
+        (discusionParams = {
+          ...params,
+          lectureType: 'cube',
+          contentId: String(idNameSequence.sequence),
+          lectureId: String(idNameSequence.sequence),
+        }),
+        idNameSequence
+      )
   );
   const idNameSequences = [
     ...(programSets.courses || []),
