@@ -1,10 +1,12 @@
 import { findAttendEvent, getAttendCount, getCollegePercent, getPopularCourse } from '../api/personalBoardApi';
 import { CollegePercentData } from '../model/CollegePercent';
-import { setAttendEventItem } from '../store/EventStore';
+import { setAttendCountItem, setAttendEventItem } from '../store/EventStore';
 import { setCollegeTopChartItem, setPopularCourseItem, } from '../store/PersonalBoardStore';
 import AttendEvent from '../viewModel/AttendEvent';
 
 export async function requestAttendCount(id: string) {
+  console.log('2222222222222222222')
+  console.log('id', id)
   getAttendCount(id).then((result: any) => {
     // const collegeArr: object[] = []
 
@@ -22,6 +24,6 @@ export async function requestAttendCount(id: string) {
     //   }
     // })
     console.log('get result', result)
-    setAttendEventItem({...result})
+    setAttendCountItem({...result})
   })
 }

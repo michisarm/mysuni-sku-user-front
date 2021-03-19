@@ -16,9 +16,22 @@ const [
     }
 );
 
+const [
+    setAttendCountItem, 
+    onAttendCountItem, 
+    getAttendCountItem,
+    useAttendCountItem
+] = createStore<any>({
+
+})
+
 export {
     setAttendEventItem, 
     onAttendEventItem, 
     getAttendEventItem,
-    useAttendEventItem
+    useAttendEventItem,
+    setAttendCountItem, 
+    onAttendCountItem, 
+    getAttendCountItem,
+    useAttendCountItem
 }

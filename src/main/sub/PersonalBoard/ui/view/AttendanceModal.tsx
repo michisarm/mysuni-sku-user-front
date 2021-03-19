@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { Button, Checkbox, Form, Image, Modal, Select,} from 'semantic-ui-react'
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
@@ -8,6 +8,8 @@ import { useLearningObjectivesItem } from '../../store/PersonalBoardStore';
 import SelectType from '../../model/SelectType';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+
+
 
 interface Props {
   open: boolean;
@@ -26,6 +28,22 @@ const AttendanceModal:React.FC<Props> = ({
   const currentUser = patronInfo.getDenizenId();
 
   const learningObjectivesItem = useLearningObjectivesItem()
+
+  const [attendItems, setAttendItems] = useState<any[]>([{
+    className: ''
+  }])
+
+
+  const test = (() => {
+    const test = `
+      <li className="done">
+        <button type="button" className="date">
+            DAY<strong>01</strong>
+        </button>                          
+      </li>`
+    console.log('test', test)
+    return test
+  })
 
   return (
     <>
@@ -57,7 +75,34 @@ const AttendanceModal:React.FC<Props> = ({
               <ul>
                 {/* 1. 오늘날짜 강조 할때 li에 today클래스 추가되면 텍스트 컬러 변경됩니다.  
                     2. 출석완료 했을 때 li에 done클래스 추가되면 출석완료이미지 노출됩니다. */}
-                <li className="done">
+                {
+                  Array(20).fill('').map((v, idx) => {
+                    return (
+                      <li>
+                        {
+                          (idx%5) === 4 && (
+                            <li className="gift">
+                                <button type="button"/>
+                            </li>
+                          )
+                        }
+                        {
+                          (idx%5) !== 4 && (
+                            <button type="button" className="date">
+                                DAY<strong>{idx+1}</strong>
+                            </button>
+                          )
+                        }
+                      </li>
+                    )
+                  })
+                }
+                {/* <li className="done">
+                  <button type="button" className="date">
+                      DAY<strong>01</strong>
+                  </button>                          
+                </li> */}
+                {/* <li className="done">
                   <button type="button" className="date">
                       DAY<strong>01</strong>
                   </button>                          
@@ -152,7 +197,7 @@ const AttendanceModal:React.FC<Props> = ({
                 </li>
                 <li className="gift">
                   <button type="button"/>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

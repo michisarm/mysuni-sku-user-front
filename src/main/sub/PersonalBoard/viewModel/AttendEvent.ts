@@ -5,3 +5,7 @@ export default interface AttendEvent {
   name: string;
   useYn: boolean;
 }
+
+// export default interface AttendItems {
+//   className: string;
+// }

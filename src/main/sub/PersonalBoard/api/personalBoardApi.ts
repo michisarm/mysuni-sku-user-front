@@ -85,6 +85,8 @@ export function getCollegePercent() {
   });
 }
 
+
+//이벤트 정보 조회
 export function findAttendEvent() {
   return axiosApi.get<AttendEvent>(attendanceURL)
   .then(response => {
@@ -93,8 +95,9 @@ export function findAttendEvent() {
   });
 }
 
+//출석횟수 조회
 export function getAttendCount(id: string) {
-  return axiosApi.get<any>(attendanceURL+`attendance/${id}/count`)
+  return axiosApi.get<any>(attendanceURL+`/attendance/${id}/count`)
   .then(response => {
     console.log('response', response)
     return response && response.data

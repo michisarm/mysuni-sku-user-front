@@ -30,10 +30,11 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
 
   useEffect(() => {
     console.log('AttendEventItem', AttendEventItem)
-    // if(AttendEventItem && AttendEventItem.id === "") {
-    //   return
-    // }
-    // requestAttendCount(AttendEventItem!.id)
+    if(AttendEventItem === undefined || AttendEventItem.id === "") {
+      return
+    }
+    console.log('111111111')
+    requestAttendCount(AttendEventItem.id)
   }, [AttendEventItem])
 
   const handleInputChange = useCallback((name: string, value: any) => {
