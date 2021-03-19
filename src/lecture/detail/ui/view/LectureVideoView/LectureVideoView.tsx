@@ -56,6 +56,7 @@ import {
   getActiveCourseStructureItem,
   getActiveProgramStructureItem,
 } from '../../../service/useLectureStructure/useLectureStructure';
+import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -880,6 +881,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       <div className="lms-video-sticky">
         <div className="video-container">
           <div id="panopto-embed-player"></div>
+          <VideoQuizContainer />
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
           {nextContentsView &&
             // !isActive &&
