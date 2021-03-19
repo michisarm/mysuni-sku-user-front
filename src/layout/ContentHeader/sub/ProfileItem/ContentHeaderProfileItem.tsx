@@ -73,7 +73,7 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
             }
             {
               type === 'Learning' && (
-                <p>오늘도 지식이 쑥쑥 자라나고 있어요!</p>
+                <p>나의 관심 채널을 확인해볼까요?</p>
               )
             }
             {
