@@ -88,6 +88,12 @@ class MyTrainingApi {
       .catch(error => error && null);
   }
 
+  findLearningCount() {
+    return axiosApi.get<MyTrainingTabModel>(`${this.baseUrl}/learningCount`)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
   findAllFilterCountViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
     return axiosApi.post(`${this.baseUrl}/table/filter/count`, myTrainingFilterRdo)
       .then(response => response.data || null)

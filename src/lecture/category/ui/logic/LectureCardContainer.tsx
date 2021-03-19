@@ -220,7 +220,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     // 알림 메시지
     const messageStr =
-      '본 과정은 과정담당자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+      '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
 
     const {
       rollBookService,

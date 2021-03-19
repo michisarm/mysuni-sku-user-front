@@ -19,7 +19,10 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
 }) {
   const answerList = useLectureSurveyAnswerSummaryList();
   const lectureSurveySummary = useLectureSurveySummary();
-  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+  const respondCount =
+    (lectureSurveySummary &&
+      lectureSurveySummary.respondentCount.respondentCount) ||
+    0;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
 
   const totalCount =
@@ -36,7 +39,7 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
     })
   );
   /*eslint-enable */
-  
+
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
       <div className="course-survey-list">

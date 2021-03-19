@@ -108,21 +108,14 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
         {
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-total-time">
+              <Button className="btn-total-time" style={{paddingLeft:'100px'}}>
                 <Label className="onlytext">
-                  {/*<Icon className="total-time" /><span>총 학습시간</span>*/}
-                  <div>
-                    <span style={{textDecoration: "none", color: "#ea644d"}}>{year}년</span> <span style={{textDecoration: "none"}}>학습시간</span>
-                  </div>
+                  <span>
+                    <strong>{year}년</strong>
+                    학습시간
+                  </span>
                 </Label>
-                {total}
-                <div style={{marginTop: '5px', textAlign: 'left'}}>
-                  <a href="#" className="main_sub_all" style={{color: 'gray'}}>
-                    &#40;누적 
-                    {accrueTotal}
-                    &#41;
-                  </a>
-                </div>
+                  {total}
               </Button>
             )}
             year={year}

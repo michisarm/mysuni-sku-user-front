@@ -49,7 +49,7 @@ class CreateProfileContainer extends React.Component<Props> {
     const { skProfile } = skProfileService!;
 
     return (
-      <ContentHeader>
+      <ContentHeader type="Create">
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             myPageActive
@@ -57,6 +57,7 @@ class CreateProfileContainer extends React.Component<Props> {
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}
+            type="Create"
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="create-wrap">

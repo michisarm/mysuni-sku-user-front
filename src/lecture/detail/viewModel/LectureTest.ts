@@ -4,6 +4,7 @@ import LearningState from '../model/LearningState';
 import StudentScore from '../model/StudentScore';
 import { State } from './LectureState';
 import { LectureType } from './LectureType';
+import { EssayScore } from '../model/GradeSheet';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
@@ -44,6 +45,8 @@ export interface LectureTestItem extends Item {
   questions: ExamQuestion[];
   successPoint: number;
   totalPoint: number;
+  graderComment: string;
+  essayScores: EssayScore[];
 }
 
 export interface LectureTestAnswerItem extends Item {

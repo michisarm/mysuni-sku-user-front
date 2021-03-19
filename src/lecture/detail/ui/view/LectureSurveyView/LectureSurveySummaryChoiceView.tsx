@@ -14,8 +14,16 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
   lectureSurveyItem,
   lectureSurveyAnswerItem,
 }) {
+  const domainPath =
+    process.env.NODE_ENV !== 'development'
+      ? window.location.protocol + '//' + window.location.host
+      : 'http://university.sk.com';
+
   const lectureSurveySummary = useLectureSurveySummary();
-  const respondCount = lectureSurveySummary?.respondentCount.respondentCount;
+  const respondCount =
+    (lectureSurveySummary &&
+      lectureSurveySummary.respondentCount.respondentCount) ||
+    0;
   const { canMultipleAnswer, choices, questionNumber } = lectureSurveyItem;
   const totalCount =
     lectureSurveyItem.choices?.reduce((totalCount, { count }) => {
@@ -34,6 +42,9 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
+      <div>
+        {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+      </div>
       <div className="course-survey-list">
         {!canMultipleAnswer &&
           choices &&
@@ -46,7 +57,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-
+            console.log('img', choice.image);
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -77,6 +88,16 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
+                  {choice.image !== '' ? (
+                    <div className="course-survey-list-img-selector">
+                      <Image
+                        style={{ display: 'inline-block' }}
+                        src={`${domainPath + choice.image}`}
+                      />
+                    </div>
+                  ) : (
+                    ''
+                  )}
                 </li>
               </Fragment>
             );
@@ -124,14 +145,16 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
-                  <div className="course-survey-list-img-selector">
-                    {choice.image && (
+                  {choice.image !== '' ? (
+                    <div className="course-survey-list-img-selector">
                       <Image
                         style={{ display: 'inline-block' }}
-                        src={choice.image}
+                        src={`${domainPath + choice.image}`}
                       />
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
                 </li>
               </Fragment>
             );

@@ -168,12 +168,16 @@ async function mClassroomSubmit(
     classroom.freeOfCharge.approvalProcess
   ) {
     const messageStr =
-      '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+      '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  } else if (!classroom.freeOfCharge.approvalProcess) {
+    const messageStr =
+      '본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
     reactAlert({ title: '알림', message: messageStr });
   } else {
-    const messageStr =
-      '본 과정은 과정담당자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
-    reactAlert({ title: '알림', message: messageStr });
+    //const messageStr =
+    //  '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    //reactAlert({ title: '알림', message: messageStr });
   }
 }
 
@@ -609,13 +613,21 @@ async function complete(
   await requestLectureStructure(params.lectureParams, params.pathname);
   const course = getActiveCourseStructureItem();
   const program = getActiveProgramStructureItem();
-  if (course?.state === 'Completed' && course.survey !== undefined) {
+  if (
+    course?.state === 'Completed' &&
+    course?.survey !== undefined &&
+    course?.survey.state !== 'Completed'
+  ) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
       onClose: () => goToPath(course?.survey?.path),
     });
-  } else if (program?.state === 'Completed' && program.survey !== undefined) {
+  } else if (
+    program?.state === 'Completed' &&
+    program?.survey !== undefined &&
+    program?.survey.state !== 'Completed'
+  ) {
     reactAlert({
       title: '안내',
       message: 'Survey 설문 참여를 해주세요.',
