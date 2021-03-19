@@ -68,7 +68,7 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
           <div className="part">
             {
               type === 'Recommend' && (
-                <p>나의 관심 채널을 확인해 볼까요?</p>
+                <p>우리 회사 인기 채널을 확인해 볼까요?</p>
               )
             }
             {
