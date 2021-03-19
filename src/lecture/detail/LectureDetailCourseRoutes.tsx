@@ -180,7 +180,7 @@ export default function LectureDetailCourseRoutes() {
         />
         <Route
           exact
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion/${sequence}"
           component={LectureDiscussionPage}
         />
         {/* Content */}
