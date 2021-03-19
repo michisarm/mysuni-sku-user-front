@@ -68,12 +68,12 @@ class ContentHeaderProfileItem extends PureComponent<Props> {
           <div className="part">
             {
               type === 'Recommend' && (
-                <p>나의 관심 채널을 확인해 볼까요?</p>
+                <p>나의 관심 채널을 확인해볼까요?</p>
               )
             }
             {
               type === 'Learning' && (
-                <p>나의 관심 채널을 확인해볼까요?</p>
+                <p>오늘도 지식이 쑥쑥 자라나고 있어요.</p>
               )
             }
             {
