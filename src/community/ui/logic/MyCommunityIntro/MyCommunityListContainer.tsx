@@ -74,7 +74,7 @@ function MyCommunityListContainer() {
   return (
     <div className="community-left community-main-left">
       <div className="sub-info-box">
-        <div className="commnuity-left-top">
+        <div className="commnuity-left-top scroll">
           <Select
             placeholder="선택해주세요"
             className="dropdown w302 selection"
