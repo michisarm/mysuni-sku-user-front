@@ -44,10 +44,12 @@ export async function getCubeLectureMedia(
         //setLectureTranscripts(await getTranscriptItem(transcript));
 
         //스크립트 카운트 api 조회
-        // const transcriptCount = await findTranscriptCount(panoptoSessionId);
-        const transcriptCount = {
-          transcriptCount : 54
-        };
+        const transcriptCount = await findTranscriptCount(panoptoSessionId);
+
+        // 테스트용
+        // const transcriptCount = {
+        //   transcriptCount : 54
+        // };
 
         setTranscriptCount(transcriptCount);
       }

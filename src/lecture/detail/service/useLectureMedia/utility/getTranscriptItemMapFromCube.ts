@@ -33,6 +33,7 @@ export async function getTranscriptItem(
       text,
       startTime,
       endTime,
+      active:false
     };
 
     lectureTranscripts.push(lectureTranscript);

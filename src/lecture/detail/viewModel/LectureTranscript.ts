@@ -5,4 +5,5 @@ export interface LectureTranscript {
   text: string;
   startTime: string;
   endTime: string;
+  active : boolean;
 }

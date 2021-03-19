@@ -64,7 +64,7 @@ export function findAllTranscript(deliveryId: string, locale: string) {
 
 export function findTranscriptCount(deliveryId: string) {
   return axiosApi
-    .get<TranscriptCountModel>(`${BASE_URL}/transcripts/${deliveryId}/`)
+    .get<TranscriptCountModel>(`${BASE_URL}/transcripts/${deliveryId}`)
     .then(response => response && response.data);
 }
 

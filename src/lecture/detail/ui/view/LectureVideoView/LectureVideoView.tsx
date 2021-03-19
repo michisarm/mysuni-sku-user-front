@@ -935,7 +935,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {getLectureTranscripts() &&
+        
+        {/* {getLectureTranscripts() &&
           getLectureMedia() &&
           (getLectureMedia()?.mediaType == 'InternalMedia' ||
             getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
@@ -1003,7 +1004,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             View Transcript
             <i aria-hidden="true" className="icon icon morelink" />
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
