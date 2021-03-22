@@ -5,7 +5,8 @@ import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { findAttendEvent } from '../../api/personalBoardApi';
 import { requestAttendCount } from '../../service/getAttendCount';
 import { requestAttendEvent } from '../../service/getAttendEvent';
-import { useAttendEventItem } from '../../store/EventStore';
+import { saveAttend } from '../../service/saveAttend';
+import { useAttendCountItem, useAttendEventItem } from '../../store/EventStore';
 import AttendanceModal from '../view/AttendanceModal';
 
 
@@ -19,6 +20,7 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
   setOpen
 }){
   const AttendEventItem = useAttendEventItem()
+  const AttendCountItem = useAttendCountItem()
 
   useEffect(() => {
     console.log('useEffect')
@@ -45,12 +47,29 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
 
   },[])
 
+  const attendClick = useCallback(() => {
+    console.log('attendClick')
+    console.log('AttendEventItem', AttendEventItem)
+    if(AttendEventItem === undefined || AttendEventItem.id === "") {
+      return
+    }
+    saveAttend(AttendEventItem.id).then((result) => {
+      console.log('result', result)
+      // if(result !== undefined) {
+        requestAttendCount(AttendEventItem.id)
+      // }
+    })
+  }, [AttendEventItem])
+
 return (
   <AttendanceModal
     open={open}
     setOpen={setOpen}
     handleInputChange={handleInputChange}
     handleSave={handleSave}
+    attendClick={attendClick}
+    AttendEventItem={AttendEventItem}
+    AttendCountItem={AttendCountItem}
   />
 )
 }

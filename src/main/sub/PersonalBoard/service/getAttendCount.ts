@@ -1,29 +1,53 @@
-import { findAttendEvent, getAttend, getCollegePercent, getPopularCourse } from '../api/personalBoardApi';
-import { CollegePercentData } from '../model/CollegePercent';
-import { setAttendCountItem, setAttendEventItem } from '../store/EventStore';
-import { setCollegeTopChartItem, setPopularCourseItem, } from '../store/PersonalBoardStore';
-import AttendEvent from '../viewModel/AttendEvent';
+import { getAttend } from '../api/personalBoardApi';
+import { setAttendCountItem } from '../store/EventStore';
 
 export async function requestAttendCount(id: string) {
-  console.log('2222222222222222222')
-  console.log('id', id)
   getAttend(id).then((result: any) => {
-    // const collegeArr: object[] = []
-
-    // let totalTime = 0
-    // result.map((item:CollegePercentData) => {
-    //   totalTime += item.learningTime
-    // })
-
-    // result.map((item:CollegePercentData, index: number) => {
-    //   if(index < 5) {
-    //     collegeArr.push({
-    //       'college': item.college,
-    //       'percent': Math.floor((item.learningTime/totalTime)*100)
-    //     })
-    //   }
-    // })
+    // result = [
+    //   {
+    //     'attendDate': "2021-03-17",
+    //     'eventId': "attend_2104",
+    //     'id': 7,
+    //     'patronKeyString': "2021-03-22",
+    //     'time': 1616374877069,
+    //   },
+      // {
+      //   'attendDate': "2021-03-18",
+      //   'eventId': "attend_2104",
+      //   'id': 8,
+      //   'patronKeyString': "2021-03-22",
+      //   'time': 1616374877069,
+      // },
+      // {
+      //   'attendDate': "2021-03-19",
+      //   'eventId': "attend_2104",
+      //   'id': 9,
+      //   'patronKeyString': "2021-03-22",
+      //   'time': 1616374877069,
+      // },
+      // {
+      //   'attendDate': "2021-03-20",
+      //   'eventId': "attend_2104",
+      //   'id': 10,
+      //   'patronKeyString': "2021-03-22",
+      //   'time': 1616374877069,
+      // },
+      // {
+      //   'attendDate': "2021-03-21",
+      //   'eventId': "attend_2104",
+      //   'id': 11,
+      //   'patronKeyString': "2021-03-22",
+      //   'time': 1616374877069,
+      // },
+      // {
+      //   'attendDate': "2021-03-22",
+      //   'eventId': "attend_2104",
+      //   'id': 12,
+      //   'patronKeyString': "2021-03-22",
+      //   'time': 1616374877069,
+      // },
+    // ]
     console.log('get result', result)
-    setAttendCountItem(result)
+    setAttendCountItem([...result])
   })
 }

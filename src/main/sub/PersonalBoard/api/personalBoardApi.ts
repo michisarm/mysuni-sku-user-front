@@ -103,3 +103,15 @@ export function getAttend(id: string) {
     return response && response.data
   });
 }
+
+//출석
+export function updateAttend(id: string) {
+  return axiosApi.post<any>(attendanceURL+`/attendance/${id}`)
+  .then(response => {
+    console.log('response', response)
+    return response && response.data
+  })
+  .catch(error => {
+    console.log('error', error)
+  });
+}

@@ -21,9 +21,7 @@ const [
     onAttendCountItem, 
     getAttendCountItem,
     useAttendCountItem
-] = createStore<any>({
-
-})
+] = createStore<any>([])
 
 export {
     setAttendEventItem, 
