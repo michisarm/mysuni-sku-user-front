@@ -57,8 +57,8 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
         if(lectureMedia !== undefined) {
           // 테스트용
-          const transcriptsItem = await findTranscript('0002939c-8307-4dd2-8f5c-abec0022d4fc', transLangVal);
-          // const transcriptsItem = await findTranscript(lectureMedia.mediaContents.internalMedias[0].panoptoSessionId, transLangVal);          
+          //const transcriptsItem = await findTranscript('0002939c-8307-4dd2-8f5c-abec0022d4fc', transLangVal);
+          const transcriptsItem = await findTranscript(lectureMedia.mediaContents.internalMedias[0].panoptoSessionId, transLangVal);          
 
           transcriptsItem?.map((item) => {
             item.active = false;
