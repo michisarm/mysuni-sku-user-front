@@ -109,7 +109,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
           communtyHome.community.communityId,
           SkProfileService.instance.skProfile.id
         );
-        requestCommunity(communtyHome.community.communityId);
+        // requestCommunity(communtyHome.community.communityId);
+        history.push('/board/support-qna');
       },
     });
     // reactConfirm({
