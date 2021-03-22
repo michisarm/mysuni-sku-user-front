@@ -54,7 +54,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
           </div>
           <div className="card-item-con">
             <div className="card-gauge-bar color-sv">
-              <a className="gauge-tit">MY Badges</a>
+              <div className="gauge-tit">MY Badges</div>
               <div className="card-gauge-bar sty2 color-sv">
                 <div className="rangeBox">
                   <div className="range">

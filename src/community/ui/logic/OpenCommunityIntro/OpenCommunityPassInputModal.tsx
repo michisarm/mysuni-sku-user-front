@@ -38,7 +38,7 @@ function OpenCommunityPassInputModal(props: Props) {
           <Form>
             <Form.Field>
               <input
-                type="number"
+                type="password"
                 className="commu_pw_form"
                 placeholder={remarkPlaceholder}
                 onChange={onChangeSecret}

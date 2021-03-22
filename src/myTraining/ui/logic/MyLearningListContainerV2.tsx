@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
-import { NoSuchContentPanel } from 'shared';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { CollegeService } from 'college/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -32,6 +32,7 @@ import {
 import MyApprovalContentType from '../model/MyApprovalContentType';
 import FilterCountViewModel from '../../model/FilterCountViewModel';
 import ReactGA from 'react-ga';
+import { Segment } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;
@@ -71,10 +72,11 @@ function MyLearningListContainerV2(props: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
-  const [refresh, setRefesh] = useState<boolean>(false)
+  const [refresh, setRefesh] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
   const learningOffset: any = sessionStorage.getItem('learningOffset');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   /* effects */
   useEffect(() => {
@@ -143,45 +145,57 @@ function MyLearningListContainerV2(props: Props) {
       /* 학습중 & mySUNI 학습완료 */
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
+        setIsLoading(true);
         myTrainingService!.changeFilterRdoWithViewType(viewType);
         const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       /* 개인학습 완료 & 승인관리 페이지 개인학습 */
       case MyLearningContentType.PersonalCompleted: {
+        setIsLoading(true);
         const offsetApl = await aplService!.findAllAplsByQuery();
         const isEmpty = offsetApl.results.length === 0 ? true : false;
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       /* 관심목록 & 권장과정 */
       case MyLearningContentType.InMyList: {
+        setIsLoading(true);
         const isEmpty = await inMyLectureService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       case MyLearningContentType.Required: {
+        setIsLoading(true);
         const isEmpty = await lectureService!.findAllRqdTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       /* My Page :: My Stamp */
       case MyPageContentType.EarnedStampList: {
+        setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllStampTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       /* 학습예정 & 취소/미이수 */
       default: {
+        setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
       }
     }
   };
@@ -192,25 +206,32 @@ function MyLearningListContainerV2(props: Props) {
   ) => {
     switch (contentType) {
       case MyPageContentType.EarnedStampList: {
+        setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       case MyLearningContentType.InMyList: {
+        setIsLoading(true);
         const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
       case MyLearningContentType.Required: {
+        setIsLoading(true);
         const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
         return;
       }
 
       default: {
+        setIsLoading(true);
         if (viewType) {
           viewType = changeViewType(contentType);
           myTrainingService!.changeFilterRdoWithViewType(viewType);
@@ -218,6 +239,7 @@ function MyLearningListContainerV2(props: Props) {
         const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
+        setIsLoading(false);
       }
     }
   };
@@ -229,26 +251,41 @@ function MyLearningListContainerV2(props: Props) {
       refeshPageInfo();
       getPageInfo();
     }
-  }, [refresh])
+  }, [refresh]);
 
-  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry']
+  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry'];
 
-  const getPageInfo = () => {
+  const getPageInfo = async () => {
     const matchesMenu = TableViewsMenu.includes(contentType);
-
     if (learningOffset !== null && matchesMenu && refresh) {
+      setIsLoading(true);
       // if (learningOffset !== null && matchesMenu && refresh) {
-      pageInfo.current = JSON.parse(learningOffset)
-      findTableViewsPage(pageInfo.current);
-    } else if (learningOffset !== null && contentType === 'Required' && refresh) {
-      pageInfo.current = JSON.parse(learningOffset)
-      findRequiredViewPage(pageInfo.current);
-    } else if (learningOffset !== null && contentType === 'InMyList' && refresh) {
-      pageInfo.current = JSON.parse(learningOffset)
-      findInMyListViewPage(pageInfo.current);
-    } else if (learningOffset !== null && contentType === 'PersonalCompleted' && refresh) {
-      pageInfo.current = JSON.parse(learningOffset)
-      findPersonalCompletedViewPage(pageInfo.current);
+      pageInfo.current = JSON.parse(learningOffset);
+      await findTableViewsPage(pageInfo.current);
+    } else if (
+      learningOffset !== null &&
+      contentType === 'Required' &&
+      refresh
+    ) {
+      setIsLoading(true);
+      pageInfo.current = JSON.parse(learningOffset);
+      await findRequiredViewPage(pageInfo.current);
+    } else if (
+      learningOffset !== null &&
+      contentType === 'InMyList' &&
+      refresh
+    ) {
+      setIsLoading(true);
+      pageInfo.current = JSON.parse(learningOffset);
+      await findInMyListViewPage(pageInfo.current);
+    } else if (
+      learningOffset !== null &&
+      contentType === 'PersonalCompleted' &&
+      refresh
+    ) {
+      setIsLoading(true);
+      pageInfo.current = JSON.parse(learningOffset);
+      await findPersonalCompletedViewPage(pageInfo.current);
     }
   };
 
@@ -442,13 +479,16 @@ function MyLearningListContainerV2(props: Props) {
     setOpenFilter(prev => !prev);
   }, []);
 
-  const onChangeViewType = useCallback((e: any, data: any) => {
-    setViewType(data.value);
-    sessionStorage.removeItem('learningOffset');
-    sessionStorage.removeItem('SCROLL_POS');
-    pageInfo.current = { offset: 0, limit: 20 };
-    window.scrollTo(0, 0)
-  }, [pageInfo.current]);
+  const onChangeViewType = useCallback(
+    (e: any, data: any) => {
+      setViewType(data.value);
+      sessionStorage.removeItem('learningOffset');
+      sessionStorage.removeItem('SCROLL_POS');
+      pageInfo.current = { offset: 0, limit: 20 };
+      window.scrollTo(0, 0);
+    },
+    [pageInfo.current]
+  );
 
   const onClickDelete = useCallback(() => {
     setOpenModal(true);
@@ -495,43 +535,66 @@ function MyLearningListContainerV2(props: Props) {
 
   const findRequiredViewPage = async (pageInfo: Offset) => {
     await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
-  }
+    setIsLoading(false);
+  };
 
   const findInMyListViewPage = async (pageInfo: Offset) => {
     await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
-  }
+    setIsLoading(false);
+  };
 
   const findPersonalCompletedViewPage = async (pageInfo: Offset) => {
     await aplService!.findAllAplsWithPage(pageInfo);
-  }
+    setIsLoading(false);
+  };
 
   const findTableViewsPage = async (pageInfo: Offset) => {
     switch (contentType) {
       case MyPageContentType.EarnedStampList:
-        await myTrainingService!.findAllStampTableViewsWithPage(
-          pageInfo
-        );
+        await myTrainingService!.findAllStampTableViewsWithPage(pageInfo);
         break;
       default:
         await myTrainingService!.findAllTableViewsWithPage(pageInfo);
     }
-  }
+    setIsLoading(false);
+  };
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
     pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit
+    pageInfo.current.offset += pageInfo.current.limit;
     history.replace(`./${getPageNo()}`);
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current))
-    if (contentType === 'Required') findRequiredViewPage(pageInfo.current)
-    if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current)
-    if (contentType !== 'InMyList' && contentType !== 'Required') findTableViewsPage(pageInfo.current);
+    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
+    if (contentType === 'Required') findRequiredViewPage(pageInfo.current);
+    if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current);
+    if (contentType !== 'InMyList' && contentType !== 'Required') {
+      findTableViewsPage(pageInfo.current);
+    }
     checkShowSeeMore(contentType);
   }, [contentType, pageInfo.current, match.params.pageNo]);
 
   /* Render Functions */
+  const noSuchMessage = (
+    contentType: MyContentType,
+    withFilter: boolean = false
+  ) => {
+    return (
+      (withFilter && '필터 조건에 해당하는 결과가 없습니다.') ||
+      NoSuchContentPanelMessages.getMessageByConentType(contentType)
+    );
+  };
+  const noSuchLink = (contentType: MyContentType) => {
+    return (
+      (contentType === MyLearningContentType.InProgress && {
+        text: `${profileMemberName} 님에게 추천하는 학습 과정 보기`,
+        path: '/lecture/recommend',
+      }) ||
+      undefined
+    );
+  };
+
   const renderNoSuchContentPanel = (
     contentType: MyContentType,
     withFilter: boolean = false
@@ -547,15 +610,28 @@ function MyLearningListContainerV2(props: Props) {
       }) ||
       undefined;
 
-    return <NoSuchContentPanel message={message} link={link} />;
+    return (
+      <Segment
+        style={{
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingLeft: 0,
+          paddingRight: 0,
+          height: 400,
+          boxShadow: '0 0 0 0',
+          border: 0,
+        }}
+      >
+        <Loadingpanel loading={isLoading} />
+        {!isLoading && <NoSuchContentPanel message={message} link={link} />}
+      </Segment>
+    );
   };
-
-
 
   /* render */
   return (
     <>
-      {(!resultEmpty || filterCount > 0) && (
+      {((!resultEmpty || filterCount > 0) && (
         <>
           <LineHeaderContainerV2
             contentType={contentType}
@@ -580,7 +656,7 @@ function MyLearningListContainerV2(props: Props) {
             filterCounts={getFilterCountViews(contentType)}
           />
         </>
-      )}
+      )) || <div style={{ marginTop: 50 }} />}
       {(isModelExist(contentType) && (
         <>
           {(!resultEmpty && (
@@ -605,11 +681,49 @@ function MyLearningListContainerV2(props: Props) {
                 />
               )}
             </>
-          )) ||
-            renderNoSuchContentPanel(contentType, true)}
+          )) || (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+              {!isLoading && (
+                <NoSuchContentPanel
+                  message={noSuchMessage(contentType, true)}
+                  link={noSuchLink(contentType)}
+                />
+              )}
+            </Segment>
+          )}
         </>
-      )) ||
-        renderNoSuchContentPanel(contentType)}
+      )) || (
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 400,
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
+          <Loadingpanel loading={isLoading} />
+          {!isLoading && (
+            <NoSuchContentPanel
+              message={noSuchMessage(contentType)}
+              link={noSuchLink(contentType)}
+            />
+          )}
+        </Segment>
+      )}
     </>
   );
 }

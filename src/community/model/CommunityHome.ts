@@ -8,4 +8,5 @@ export default interface CommunityHomeInfo {
   thumbnailId: string;
   html: string;
   draft: number;
+  color: string;
 }
