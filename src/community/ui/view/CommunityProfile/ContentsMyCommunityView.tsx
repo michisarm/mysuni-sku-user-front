@@ -20,22 +20,8 @@ interface ContentsMyCommunityViewProps {
   communityProfileMyCommunity: CommunityProfileMyCommunity;
 }
 
-function CommunityTypeToString(type: CommunityType) {
-  switch (type) {
-    case 'COHORT':
-      return 'Cohort';
-    case 'LEARNING':
-      return 'Learning';
-    case 'OPEN':
-      return 'Open';
-    default:
-      return '';
-  }
-}
-
 const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItemView({
   communityId,
-  type,
   fieldName,
   name,
   managerName,
@@ -62,9 +48,8 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
 
   return (
     <tr key={communityId}>
-      <td>{CommunityTypeToString(type)}</td>
       <td className="title ellipsis">
-        {type === 'OPEN' && <span className="label">{fieldName}</span>}
+        {<span className="label">{fieldName}</span>}
         <Link to={`/community/${communityId}`}>{name}</Link>
       </td>
       <td>
@@ -107,16 +92,14 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
           <div className="community-list-wrap mycomu_fi">
             <table className="ui table fixed">
               <colgroup>
-                <col width="130px" />
-                <col width="*" />
-                <col width="130px" />
-                <col width="130px" />
-                <col width="130px" />
-                <col width="130px" />
+                <col width="auto" />
+                <col width="100px" />
+                <col width="150px" />
+                <col width="100px" />
+                <col width="150px" />
               </colgroup>
               <thead>
                 <tr>
-                  <th scope="col">유형</th>
                   <th scope="col">커뮤니티명</th>
                   <th scope="col">관리자</th>
                   <th scope="col">멤버</th>

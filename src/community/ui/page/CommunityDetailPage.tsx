@@ -40,6 +40,7 @@ import ReactGA from 'react-ga';
 import SkProfileApi from 'profile/present/apiclient/SkProfileApi';
 import { SkProfileService } from 'profile/stores';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
+import { boolean } from '@storybook/addon-knobs';
 
 // interface Params {
 //   communityId: string;
@@ -60,6 +61,10 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
 }) {
   const communityHome = useCommunityHome();
   const managProfileImg = getCommunityHome()?.community?.managerProfileImg;
+  const managerId = getCommunityHome()?.community?.managerId;
+
+  //console.log(managerId == SkProfileService.instance.skProfile.id);
+
   const createdDate = moment(getCommunityHome()?.community?.createdTime).format(
     'YYYY.MM.DD'
   );
@@ -76,11 +81,18 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   }
 
   const drawCommunity = () => {
-    console.log('click', )
+    if (managerId == SkProfileService.instance.skProfile.id) {
+      reactAlert({
+        title: '확인',
+        message:
+          '관리자는 커뮤니티를 탈퇴하실 수 없습니다.Q&A를 통해 문의하시겠습니까?',
+      });
+      return;
+    }
     reactConfirm({
       title: '알림',
       message:
-        '관리자는 커뮤니티를 탈퇴하실 수 없습니다. FAQ를 통해 문의하시겠습니까?',
+        '관리자는 커뮤니티를 탈퇴하실 수 없습니다. Q&A를 통해 문의하시겠습니까?',
       onOk: async () => {
         const communtyHome = getCommunityHome();
         if (
@@ -97,7 +109,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
           communtyHome.community.communityId,
           SkProfileService.instance.skProfile.id
         );
-        requestCommunity(communtyHome.community.communityId);
+        // requestCommunity(communtyHome.community.communityId);
+        history.push('/board/support-qna');
       },
     });
     // reactConfirm({
@@ -224,6 +237,9 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
           type="button"
           className="ui button sece_btn"
           onClick={drawCommunity}
+          disabled={
+            communityHome.community.approved != 'APPROVED' ? true : false
+          }
         >
           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAGKADAAQAAAABAAAAGAAAAADiNXWtAAABdUlEQVRIDe2UMU7DQBBF568pECdAgYJbUBIKmiAOQMENEpN0WEIiBSJ0GOyKhoqWjtARuAQSBYcgQpFAiYe1hezs2uu1TMpESjQ7f/z+7qwzRMuPpQPQ9WPP354xHxKhAXCqM4NJ8F140XvSnylbr8yLHe9mZ8bRCIQfAn0wE2e65JPYyNbVIsUAFB0R8RetOptB3x1XQ5RXKQbMvC6b8h5WgHc8/1nW7wJOMxi4ryYbYRJseXknCZQpGsatNdXXNkiBzGtlJkqL0ofmgrbnPxJzay71F0ZZKjZBcpKW3i77CQrhGTuNDCexG6SECkGByWINCvawWANgAhLKPdgNgGHBxvKpAnhcZH2LwkF3P08jap9cnxFF/UQzwGPNfoKEUPJTAv+XgZy0yb9X77m+lXQcx4KcL7dygh6gIbYC1/3Wi+usFYPu6VVzOqURgLEc1G95oAiDS/c+nzdnlDvwz3svIGdPwh/kVP3Uv3B4YkYtlZod+AX115HSsSePVgAAAABJRU5ErkJggg==" />
           <span>탈퇴하기</span>

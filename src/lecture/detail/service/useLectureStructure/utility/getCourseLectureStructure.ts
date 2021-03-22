@@ -212,12 +212,23 @@ function parseCoursePlanComplex(
       course.cubes = cubes;
     }
   });
+  let discusionParams: LectureParams;
   const programSets: ProgramSet =
     serviceType === 'Program'
       ? coursePlanComplex.coursePlanContents.courseSet.programSet
       : coursePlanComplex.coursePlanContents.courseSet.learningCardSet;
-  lectureStructure.discussions = (programSets.discussions || []).map(idNameSequence =>
-    parseDiscussion(coursePlanComplex, params, idNameSequence)
+  lectureStructure.discussions = (programSets.discussions || []).map(
+    idNameSequence =>
+      parseDiscussion(
+        coursePlanComplex,
+        (discusionParams = {
+          ...params,
+          lectureType: 'cube',
+          contentId: String(idNameSequence.sequence),
+          lectureId: String(idNameSequence.sequence),
+        }),
+        idNameSequence
+      )
   );
   const idNameSequences = [
     ...(programSets.courses || []),
@@ -332,9 +343,12 @@ async function parseLectureStudentView(
 // Side Effect - Call by Ref
 function parseCoursesCan(lectureStructure: LectureStructure) {
   lectureStructure.courses.forEach(course => {
-    const can = (course.state === 'Progress' || course.state === 'Completed');
+    const can = course.state === 'Progress' || course.state === 'Completed';
     if (course.cubes !== undefined && course.cubes.length > 0) {
-      const canSubmit = course.cubes.reduce((r, c) => r && c.state === 'Completed', true)
+      const canSubmit = course.cubes.reduce(
+        (r, c) => r && c.state === 'Completed',
+        true
+      );
       course.canSubmit = canSubmit;
     }
     // Cube 순차 학습 요건
@@ -352,21 +366,22 @@ function parseCoursesCan(lectureStructure: LectureStructure) {
     // }
 
     if (course.report !== undefined) {
-      course.report = { ...course.report, can }
+      course.report = { ...course.report, can };
       // can = course.report.state === 'Completed';
     }
     if (course.survey !== undefined) {
-      course.survey = { ...course.survey, can }
+      course.survey = { ...course.survey, can };
       // can = course.survey.state === 'Completed';
     }
     if (course.test !== undefined) {
-      course.test = { ...course.test, can }
+      course.test = { ...course.test, can };
       // can = course.test.state === 'Completed';
     }
     if (course.cubes !== undefined && course.cubes.length > 0) {
       course.cubes.forEach(cube => {
-        cube.canSubmit = (cube.state === 'Progress' || cube.state === 'Completed')
-      })
+        cube.canSubmit =
+          cube.state === 'Progress' || cube.state === 'Completed';
+      });
     }
     course.can = can;
   });
@@ -522,19 +537,35 @@ export async function getCourseLectureStructure(
 
   parseCoursesCan(lectureStructure);
   if (lectureStructure.course !== undefined) {
-    const can = (lectureStructure.course.state === 'Progress' || lectureStructure.course.state === 'Completed');
-    const canSubmit = lectureStructure.cubes.reduce((r, c) => r && c.state === 'Completed', true) && lectureStructure.courses.reduce((r, c) => r && c.state === 'Completed', true)
+    const can =
+      lectureStructure.course.state === 'Progress' ||
+      lectureStructure.course.state === 'Completed';
+    const canSubmit =
+      lectureStructure.cubes.reduce(
+        (r, c) => r && c.state === 'Completed',
+        true
+      ) &&
+      lectureStructure.courses.reduce(
+        (r, c) => r && c.state === 'Completed',
+        true
+      );
     lectureStructure.course.canSubmit = canSubmit;
     if (lectureStructure.course.report !== undefined) {
-      lectureStructure.course.report = { ...lectureStructure.course.report, can }
+      lectureStructure.course.report = {
+        ...lectureStructure.course.report,
+        can,
+      };
       // can = lectureStructure.course.report.state === 'Completed';
     }
     if (lectureStructure.course.survey !== undefined) {
-      lectureStructure.course.survey = { ...lectureStructure.course.survey, can }
+      lectureStructure.course.survey = {
+        ...lectureStructure.course.survey,
+        can,
+      };
       // can = lectureStructure.course.survey.state === 'Completed';
     }
     if (lectureStructure.course.test !== undefined) {
-      lectureStructure.course.test = { ...lectureStructure.course.test, can }
+      lectureStructure.course.test = { ...lectureStructure.course.test, can };
       // can = lectureStructure.course.test.state === 'Completed';
     }
   }

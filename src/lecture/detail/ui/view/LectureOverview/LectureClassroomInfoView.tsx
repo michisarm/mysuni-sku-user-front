@@ -63,21 +63,16 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
                 </div>
               </>
             )}
-            <div role="listitem" className="item">
-              <div className="title">
-                <h3 className="title-style">
-                  <div className="ui label onlytext bold size24">
-                    <Icon className="paidcourse" />
-                    <span>
-                      {(lectureClassroom.classrooms[0].freeOfCharge
-                        .freeOfCharge &&
-                        '무료과정') ||
-                        '유료과정'}
-                    </span>
-                  </div>
-                </h3>
-              </div>
-              {!lectureClassroom.classrooms[0].freeOfCharge.freeOfCharge && (
+            {!lectureClassroom.classrooms[0].freeOfCharge.freeOfCharge && lectureClassroom.classrooms[0].freeOfCharge.chargeAmount > 0 && (
+              <div role="listitem" className="item">
+                <div className="title">
+                  <h3 className="title-style">
+                    <div className="ui label onlytext bold size24">
+                      <Icon className="paidcourse" />
+                      <span>유료과정</span>
+                    </div>
+                  </h3>
+                </div>
                 <div className="detail">
                   {numberWithCommas(
                     lectureClassroom.classrooms[0].freeOfCharge.chargeAmount
@@ -89,8 +84,8 @@ const LectureClassroomInfoView: React.FC<LectureClassroomInfoViewProps> = functi
                     가능합니다.
                   </p>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       )}

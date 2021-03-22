@@ -2,6 +2,8 @@ import {
   LectureStructure,
   LectureStructureItem,
 } from '../viewModel/LectureStructure';
+import CommunityIsLoadingState from '../viewModel/CommunityIsLoadingState';
+
 import { createStore } from './Store';
 
 const initialStore: LectureStructure = {
@@ -23,6 +25,13 @@ const [
   getCurentLectureStructureItem,
 ] = createStore<LectureStructureItem>();
 
+const [
+  setIsLoadingState,
+  onIsLoadingState,
+  getIsLoadingState,
+  useIsLoadingState,
+] = createStore<CommunityIsLoadingState>({ isLoading: false });
+
 export {
   setLectureStructure,
   onLectureStructure,
@@ -30,4 +39,8 @@ export {
   setCurentLectureStructureItem,
   onCurentLectureStructureItem,
   getCurentLectureStructureItem,
+  setIsLoadingState,
+  onIsLoadingState,
+  getIsLoadingState,
+  useIsLoadingState,
 };

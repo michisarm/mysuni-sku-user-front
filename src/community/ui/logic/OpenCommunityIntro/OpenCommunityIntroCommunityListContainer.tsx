@@ -90,7 +90,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
           {approvedState === 'Wait' && <span className="wait">가입대기</span>}
         </div>
         <div className="open-card-content">
-          <p>{name}1</p>
+          <p>{name}</p>
           <div className="thumbnail">
             <img
               src={thumbnailId}
