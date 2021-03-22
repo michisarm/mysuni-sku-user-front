@@ -66,7 +66,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
     } else {
       reactAlert({
         title: '확인',
-        message: '비밀번호가 맞지 않습니다.',
+        message: '잘못된 비밀번호 입니다. 커뮤니티 비밀번호를 다시 확인해주세요.',
       });
     }
   };
@@ -82,6 +82,7 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
       <div
         className="community-open-card lock"
         onClick={handleAlertPassInputWin}
+        style={{cursor: 'pointer'}}
         // onClick={() => passChek(communityId, 'learning')}
       >
         <div className="open-card-top">

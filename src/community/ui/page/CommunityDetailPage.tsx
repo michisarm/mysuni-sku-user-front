@@ -76,6 +76,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   }
 
   const drawCommunity = () => {
+    console.log('click', )
     reactConfirm({
       title: '알림',
       message:
@@ -198,6 +199,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
                   <div className="profile home-detail-profile">
                     <div className="pic">
                       <img
+                        style={{borderRadius: '36px', width: '56px'}}
                         src={
                           managProfileImg
                             ? `/files/community/${managProfileImg}`
