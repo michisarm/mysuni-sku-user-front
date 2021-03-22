@@ -28,7 +28,7 @@ interface State {
 class BreadcrumbView extends Component<Props, State> {
   //
   state = {
-    id: 'myutopia@sk.com',
+    id: 'ss.park@sk.com',
   };
 
   onLogin() {
@@ -78,7 +78,7 @@ class BreadcrumbView extends Component<Props, State> {
             ? cineroom.id
             : cineroomWorkspaces[cineroomWorkspaces.length - 1].id
         );
-        localStorage.setItem('dashBoardSentenceIndex', 'undefined')
+        localStorage.setItem('dashBoardSentenceIndex', 'undefined');
 
         // setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
 
