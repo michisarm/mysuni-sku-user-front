@@ -46,7 +46,7 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
   const handleOk = () => {
     reactConfirm({
       title: '확인',
-      message: `${name} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
+      message: `${name} 커뮤니티를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
       onOk: async () => {
         const result = await delMember(
           communityId,
