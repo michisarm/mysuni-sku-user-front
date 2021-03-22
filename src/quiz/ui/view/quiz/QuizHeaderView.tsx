@@ -28,9 +28,13 @@ const QuizHeaderView:React.FC<Props> = ({
       <h2>
         {title}
       </h2>
-      <button onClick={() => onImageZoomPopup(title!, titleImage!)} className="quiz-preview-img">
-        <img src={`/${titleImage}`} />
-      </button>
+      {
+        titleImage !== '' && titleImage !== null && titleImage !== undefined && (
+          <button onClick={() => onImageZoomPopup(title!, titleImage!)} className="quiz-preview-img">
+            <img src={`/${titleImage}`} />
+          </button>
+        )
+      }
       <p>다른 분들의 의견을 살펴보세요.</p>
       <p className="hint">( 초성힌트  : ㅅㅌㅂ )</p>
     </div>

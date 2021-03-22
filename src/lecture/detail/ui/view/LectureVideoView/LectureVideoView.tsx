@@ -57,6 +57,9 @@ import {
   getActiveProgramStructureItem,
 } from '../../../service/useLectureStructure/useLectureStructure';
 import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
+import { LectureMedia } from 'lecture/detail/viewModel/LectureMedia';
+import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
+import { findQuiz } from 'quiz/api/QuizApi';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -81,6 +84,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   scroll,
   videoPosition,
   enabled, // 링크드인 판별 state
+
 }) {
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
@@ -866,6 +870,41 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setCubeName(getLectureStructure()?.cube?.name);
   }, [getLectureStructure()]);
 
+  const [quizPop, setQuizPop] = useState<boolean>(false);
+  const [quizShowTime, setQuizShowTime] = useState<number>();
+  const [_, lectureMedia] = useLectureMedia();
+
+  const videoControll = {
+    play: () => embedApi.playVideo(),
+    stop: () => embedApi.pauseVideo()
+  }
+
+  useEffect(() => {
+    const matchesQuizTime: number = Math.floor(currentTime)
+    if(matchesQuizTime !== undefined && matchesQuizTime === quizShowTime) {
+      videoControll.stop();
+      setQuizPop(true)
+    }
+  }, [currentTime])
+
+  useEffect(() => {
+    if(lectureMedia?.mediaContents.internalMedias[0].quizIds) {
+      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0]
+      const getQuizTable = async() => {
+        await findQuiz(quizIds).then(res => setQuizShowTime(res.showTime))
+      }
+      getQuizTable();
+    }
+  }, [lectureMedia])
+
+  const onCompletedQuiz = useCallback(() => {
+    console.log('hit', quizPop)
+    videoControll.play();
+    if(quizPop) {
+      setQuizPop(false);
+    }
+  }, [quizPop])
+
   return (
     <div
       className={
@@ -881,7 +920,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       <div className="lms-video-sticky">
         <div className="video-container">
           <div id="panopto-embed-player"></div>
-          <VideoQuizContainer />
+          {
+            quizPop &&
+            <VideoQuizContainer
+              onCompletedQuiz={onCompletedQuiz}
+            />
+          }
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
           {nextContentsView &&
             // !isActive &&
