@@ -258,7 +258,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
                 alt="배경이미지"
               />
             </p>
-            {/* {profileItem.editing && (
+            {profileItem.editing && (
               <>
                 <button
                   type="button"
@@ -275,7 +275,7 @@ const ProfileTitleView: React.FC<ProfileTitleViewProps> = function ProfileTitleV
                   accept=".jpg,.jpeg,.png,.gif"
                 />
               </>
-            )} */}
+            )}
           </div>
         </div>
 
