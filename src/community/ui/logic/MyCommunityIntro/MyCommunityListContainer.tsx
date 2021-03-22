@@ -95,7 +95,7 @@ function MyCommunityListContainer() {
             </>
           )}
         </div>
-        {myCommunityIntro.communitiesTotalCount >
+        {/* {myCommunityIntro.communitiesTotalCount >
           myCommunityIntro.communitiesOffset && (
           <div className="more-comments community-side">
             <Button
@@ -106,7 +106,7 @@ function MyCommunityListContainer() {
               <Icon className="moreview" /> list more
             </Button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
