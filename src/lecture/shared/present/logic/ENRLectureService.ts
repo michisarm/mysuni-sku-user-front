@@ -63,9 +63,8 @@ class ENRLectureService {
   }
 
   @action
-  async findPagingNewLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
-    //
-    // 신규과정 학습정보 가져오기
+  async findEnrollingLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+    // 수강 신청 과정 조회
     const response = await this.EnrollingApi.findEnrollingLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 

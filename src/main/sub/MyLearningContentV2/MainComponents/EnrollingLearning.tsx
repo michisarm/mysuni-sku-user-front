@@ -80,8 +80,8 @@ const ENRLearning: React.FC<Props> = Props => {
     // }
 
     enrLectureService!
-      .findPagingNewLectures(
-        LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
+      .findEnrollingLectures(
+        LectureFilterRdoModel.enrLectures(PAGE_SIZE, 0),
         true
       )
       .then(response => {
