@@ -233,6 +233,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     history.push('/certification/badge/EarnedBadgeList/pages/1')
   }
 
+  goToQna () {
+    const { history } = this.props;
+    history.push('/board/support-qna')
+  }
+
   render() {
     //
     const { boardVisible, learningObjectivesOpen, companyCode, activeIndex, learningObjectives } = this.state;
@@ -500,7 +505,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     )}
                 </div>
                 <div className="right">
-                    <a href="/board/support-qna" className="contact-us wh">
+                    <a onClick={this.goToQna} className="contact-us wh">
                         <span>1:1 문의하기</span>
                         <Icon className="arrow-w-16"/>
                     </a>
