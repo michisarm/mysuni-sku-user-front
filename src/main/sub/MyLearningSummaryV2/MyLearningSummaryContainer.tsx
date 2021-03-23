@@ -232,7 +232,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   handlePopup () {
-    console.log('handlePopup attendanceOpen')
     this.setState(prevState => {
       return (
         ({ attendanceOpen: !prevState.attendanceOpen})

@@ -23,19 +23,15 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
   const AttendCountItem = useAttendCountItem()
 
   useEffect(() => {
-    console.log('useEffect')
-    console.log('open', open)
     if(open) {
       requestAttendEvent()
     }
   }, [open])
 
   useEffect(() => {
-    console.log('AttendEventItem', AttendEventItem)
     if(AttendEventItem === undefined || AttendEventItem.id === "") {
       return
     }
-    console.log('111111111')
     requestAttendCount(AttendEventItem.id)
   }, [AttendEventItem])
 
@@ -48,13 +44,10 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
   },[])
 
   const attendClick = useCallback(() => {
-    console.log('attendClick')
-    console.log('AttendEventItem', AttendEventItem)
     if(AttendEventItem === undefined || AttendEventItem.id === "") {
       return
     }
     saveAttend(AttendEventItem.id).then((result) => {
-      console.log('result', result)
       // if(result !== undefined) {
         requestAttendCount(AttendEventItem.id)
       // }

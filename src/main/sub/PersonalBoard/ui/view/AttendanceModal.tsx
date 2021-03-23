@@ -34,6 +34,16 @@ const AttendanceModal:React.FC<Props> = ({
 }) => {
 
   const history = useHistory();
+  const [attendFlag, setAttendFlag] = useState<boolean>()
+
+  useEffect(() => {
+    if(AttendCountItem === undefined) {
+      return
+    }
+    //출석 체크한 날이 오늘 날짜보다 이전의 날짜 여야 클릭 가능한 버튼 표시
+    const flag = AttendCountItem.find((element: { attendDate: any; }) => element.attendDate === moment().format('YYYY-MM-DD'))
+    setAttendFlag(flag)
+  }, [AttendCountItem])
 
   const className = useCallback((index: number) => {
     if (AttendCountItem === undefined) {
@@ -45,16 +55,12 @@ const AttendanceModal:React.FC<Props> = ({
       className += 'gift'
     }
 
-    //출석 체크한 날이 오늘 날짜보다 이전의 날짜 여야 클릭 가능한 버튼 표시
-    const attendFlag = AttendCountItem.find((element: { attendDate: any; }) => element.attendDate === moment().format('YYYY-MM-DD'))
-
     if (index+1 <= AttendCountItem.length) {
       if (className !== '') {
         className += ' '
       }
       className += 'done'
-    } else if (index+1 === AttendCountItem.length+1 && attendFlag == undefined && AttendEventItem.useYn) {
-      console.log('AttendEventItem.useYn', AttendEventItem.useYn)
+    } else if (index+1 === AttendCountItem.length+1 && attendFlag === undefined && AttendEventItem.useYn) {
       if (className !== '') {
         className += ' '
       }
@@ -62,9 +68,8 @@ const AttendanceModal:React.FC<Props> = ({
     } else {
       className += ''
     }
-
     return className
-  }, [AttendCountItem, AttendEventItem])
+  }, [AttendCountItem, AttendEventItem, attendFlag])
 
   const handleAttend = useCallback((className: string) => {
     // console.log('AttendCountItem', AttendCountItem)
@@ -72,6 +77,16 @@ const AttendanceModal:React.FC<Props> = ({
       attendClick()
     }
   }, [AttendCountItem])
+
+  const notiSentence = useCallback((attendFlag) => {
+    if (attendFlag === undefined) {
+      return 'notibox'
+    } else if(AttendCountItem.length === 20) {
+      return 'notibox alldone'
+    } else {
+      return 'notibox done'
+    }
+  }, [attendFlag, AttendCountItem])
 
   return (
     <>
@@ -93,7 +108,7 @@ const AttendanceModal:React.FC<Props> = ({
                 오늘 출석 완료시 notibox 에 done클래스 추가 시 텍스트 변경됩니다.
                 모든 출석 완료시 notibox 에 alldone클래스 추가 시 텍스트및 색상 변경됩니다.
             */}
-            <div className="notibox">
+            <div className={notiSentence(attendFlag)}>
               <strong className="notitxt"/>
               <dl>
                 <dt>

@@ -90,7 +90,6 @@ export function getCollegePercent() {
 export function findAttendEvent() {
   return axiosApi.get<AttendEvent>(attendanceURL)
   .then(response => {
-    console.log('response', response)
     return response && response.data
   });
 }
@@ -99,7 +98,6 @@ export function findAttendEvent() {
 export function getAttend(id: string) {
   return axiosApi.get<any>(attendanceURL+`/attendance/${id}`)
   .then(response => {
-    console.log('response', response)
     return response && response.data
   });
 }
@@ -108,7 +106,6 @@ export function getAttend(id: string) {
 export function updateAttend(id: string) {
   return axiosApi.post<any>(attendanceURL+`/attendance/${id}`)
   .then(response => {
-    console.log('response', response)
     return response && response.data
   })
   .catch(error => {
