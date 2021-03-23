@@ -6,15 +6,26 @@ import QuizQuestionView from '../view/quiz/QuizQuestionView';
 import QuizImagePopup from '../view/popup/QuizImagePopup';
 import { AnswerItem } from 'quiz/model/QuizAnswerItem';
 import {Icon,Button} from "semantic-ui-react";
+import { patronInfo } from '@nara.platform/dock';
+import { findAllAnswer, findAnswer, findQuiz, registerAnswer } from 'quiz/api/QuizApi';
+import QuizMessage from 'quiz/model/QuizMessage';
+import CompleteIcon from '../../../style/media/img-quiz-complete.png';
+import FailIcon from '../../../style/media/img-quiz-wrong.png';
+import FinishIcon from '../../../style/media/img-quiz-finish.png';
+import EmptyIcon from '../../../style/media/survey-empty-btn.png';
+import RadioIcon from '../../../style/media/survay-radio-btn.png';
 
 const VideoQuizContentContainer = ({
   questionData,
+  resultAlertMessage,
   onCompletedQuiz
 } : {
-  questionData: QuizQuestions[] | undefined
+  questionData: QuizQuestions[] | undefined,
+  resultAlertMessage: QuizMessage | undefined;
   onCompletedQuiz: () => void;
 }) => {
-  
+  const currentUser = patronInfo.getPatron();
+  const currentMemberId = patronInfo.getDenizenId()
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [quizStatus, setQuizStatus] = useState<{status: boolean, type: string}>({
     status: false,
@@ -31,9 +42,11 @@ const VideoQuizContentContainer = ({
     quizQuestionAnswerItems:[],
     quizQuestionId: ''
   })
-
+  
   useEffect(() => {
     if(questionData) {
+      const padding = '***'
+      const blindEmail = currentUser?.email?.split('@')[0].substr(0,3) + padding;
       const userAnswerField: any = questionData[currentIndex]?.quizQuestionItems?.map((_, index): AnswerItem[] => {
         const createAnswerField : AnswerItem[] = []
         const userAnswerRow = { number: index + 1, answerItem: false }
@@ -41,69 +54,73 @@ const VideoQuizContentContainer = ({
         return createAnswerField
       })
       setUserAnswer({
-        ...userAnswer,
+        email:blindEmail,
+        memberId:currentMemberId,
         quizQuestionId: questionData[currentIndex]?.id,
         quizQuestionAnswerItems: userAnswerField?.flat()
       });
     }
+    console.log(questionData && questionData[currentIndex]?.id)
   }, [questionData, currentIndex, quizStatus])
   
-  const onChangeNextQuestion = useCallback((type?: string) => {
+  const onChangeNextQuestion = useCallback(() => {
     if(questionData) {
-      console.log(type)
       const quizMaxIndex = questionData?.length - 1;
-      if(questionData[currentIndex].answer && currentIndex < quizMaxIndex) {
-        // 답안 체크
-        const questionAnswers = questionData[currentIndex].quizQuestionItems?.filter(questionRow => questionRow.answerItem === true)
-        const userAnswers = userAnswer?.quizQuestionAnswerItems.filter(userRow => userRow.answerItem === true)
-        questionAnswers?.forEach((questionRow, questionIndex) => {
-          userAnswers?.forEach((userRow, userIndex) => {
-            if(questionIndex === userIndex && questionRow?.answerItem === userRow.answerItem) {
-              setCurrentIndex(currentIndex + 1);
-              setQuizStatus({
-                status:true,
-                type:'success',
-              })
-            } else {
-              setQuizStatus({
-                status:true,
-                type:'fail',
-              })
-            }
-          })
-        })
-      } else if (type && type === 'next' && currentIndex < quizMaxIndex) {
+      if(currentIndex < quizMaxIndex) {
+        setQuizStatus({status:false, type:''})
         setCurrentIndex(currentIndex + 1);
-        setQuizStatus({
-          status:false,
-          type:'',
-        })
-      } else if (type && type === 'next' && currentIndex === quizMaxIndex) {
-        setQuizStatus({
-          status:true,
-          type:'finish',
-        })
-      } else if (!questionData[currentIndex].answer && currentIndex < quizMaxIndex) {
-        //
-        setQuizStatus({
-          ...quizStatus,
-          status: true,
-          type: 'success'
-        })
-      } else if (questionData[currentIndex].answer && currentIndex === quizMaxIndex) {
-        // 답안 체크
-        console.log('this 2')
-      } else if (!questionData[currentIndex].answer && currentIndex === quizMaxIndex) {
-        //
-        setQuizStatus({
-          ...quizStatus,
-          status: true,
-          type: 'success'
-        })
+      } else if (currentIndex === quizMaxIndex) {
+        setQuizStatus({status:true, type:'finish'})
       }
     }
   }, [questionData, currentIndex, quizStatus, userAnswer])
-  const onChangeUserAnswer = useCallback((rowIndex: number, userAnswerItem: boolean, text?: string) => {
+  
+  const onSubmitUserAnswer = useCallback(async () => {
+    if(questionData) {
+      if(questionData[currentIndex].answer) {
+        // 정답 체크의 경우
+        const questionAnswers = questionData[currentIndex].quizQuestionItems?.filter(questionRow => questionRow.answerItem === true)
+        const userAnswers = userAnswer?.quizQuestionAnswerItems.filter(userRow => userRow.answerItem === true);
+        const checkedAnswer = questionAnswers?.filter(answer=> {
+          if(userAnswers.find(f=>f.number===answer.number)){
+            return answer;
+          }}).length
+        if(checkedAnswer === questionAnswers?.length) {
+          // await registerAnswer(JSON.stringify({
+          //   email:currentUser?.email,
+          //   memberId:currentMemberId,
+          //   quizQuestionId: questionData[currentIndex]?.id,
+          //   quizQuestionAnswerItems: [userAnswers?.find(f => f.answerItem === true)]
+          // }))
+          setQuizStatus({status:true, type:'success'})
+        } else {
+          setQuizStatus({status:true, type:'fail'})
+        }
+      } else if (!questionData[currentIndex].answer) {
+        // 답안 제출의 경우
+        setQuizStatus({status:true, type:'success'})
+      }
+    }
+    console.log(userAnswer)
+  }, [questionData, currentIndex, quizStatus, userAnswer])
+
+  const onChangeResultAnswer = useCallback(() => {
+    setQuizStatus({status:true, type:'result'})
+  }, [currentIndex, quizStatus])
+
+  const onCloseQuizPanel = useCallback(() => {
+    setQuizStatus({status:false, type:''})
+  }, [currentIndex, quizStatus])
+
+  const onChangeUserAnswer = useCallback((rowIndex: number, userAnswerItem: boolean | string) => {
+    if(questionData && (questionData[currentIndex].type === 'ShortAnswer' || questionData[currentIndex].type === 'Essay')) {
+      setUserAnswer({
+        ...userAnswer,
+        quizQuestionId: questionData[currentIndex]?.id,
+        quizQuestionAnswerItems: [{number: rowIndex + 1, answerItem: userAnswerItem}]
+      })
+    }
+
     if(questionData && questionData[currentIndex].type === 'SingleChoice') {
       userAnswer?.quizQuestionAnswerItems.map((row, index) => {
         if(rowIndex === index) {
@@ -113,7 +130,6 @@ const VideoQuizContentContainer = ({
         }
         return row
       })
-      console.log(userAnswer)
     }
     
     if(questionData && questionData[currentIndex].type === 'MultipleChoice') {
@@ -123,15 +139,10 @@ const VideoQuizContentContainer = ({
         }
         return row
       })
-      // setUserAnswer({
-      //   ...userAnswer,
-      // })
-      console.log(userAnswer)
     }
 
-  }, [questionData, userAnswer])
+  }, [questionData, currentIndex, quizStatus, userAnswer])
 
-  console.log(userAnswer)
   const onImageZoomPopup = (titleValue:string, srcValue:string) => {
     setImagePopOpen(!imagePopOpen);
     setImageInfo({
@@ -139,6 +150,13 @@ const VideoQuizContentContainer = ({
       src: srcValue
     })
   }
+
+  useEffect(() => {
+    const test = async() => {
+      await findAnswer(userAnswer?.quizQuestionId, userAnswer?.memberId).then(res => res)
+    }
+    console.log(test())
+  }, [userAnswer])
 
   return (
     <>
@@ -161,105 +179,117 @@ const VideoQuizContentContainer = ({
             />
           </div>
           <div className="video-quiz-footer">
-            <button onClick={() => onChangeNextQuestion()} className="ui button fix bg">제출하기</button>
+            <button onClick={onSubmitUserAnswer} className="ui button fix bg">제출하기</button>
           </div>
         </div>
       )}
 
-      {/* 제출 후 영역 */}
-      {quizStatus.status && quizStatus.type === 'fail' && (
+      {/* 오답 패널 */}
+      {quizStatus.status && quizStatus.type === 'fail' && questionData && (
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img src="" />
+            <img src={questionData[currentIndex].alertMessage.img ? `/${questionData[currentIndex].alertMessage.img}` : FailIcon} />
             <span className="wro">오답 입니다.</span>
-            <span className="wro2">다시 확인하고 제출하세요.</span>
+            <span className="wro2">{questionData[currentIndex].alertMessage.message || '다시 확인하고 제출하세요.'}</span>
           </div>
           <div className="video-quiz-footer">
-            <button onClick={() => setQuizStatus({status: false, type: ''})} className="ui button fix bg">확인</button>
+            <button onClick={onCloseQuizPanel} className="ui button fix bg">확인</button>
           </div>
         </div>
       )}
-      {quizStatus.status && quizStatus.type === 'success' && (
+
+      {/* 답안제출 완료 */}
+      {quizStatus.status && quizStatus.type === 'success' && questionData && (
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img src=""/>
+            <img src={questionData[currentIndex].img ? `/${questionData[currentIndex].img}` : CompleteIcon} />
             <span className="wro">답안 제출이 완료됐습니다.</span>
-            <span className="wro2">다른 참여자의 의견을 확인할 수 있습니다.</span>
+            <span className="wro2">{questionData[currentIndex].subText || '다른 참여자의 의견을 확인할 수 있습니다.'}</span>
           </div>
           <div className="video-quiz-footer">
-            <button onClick={() => setQuizStatus({...quizStatus, type:"result"})} className="ui button fix bg grey">결과보기</button>
-            <button onClick={() => onChangeNextQuestion('next')} className="ui button fix bg">확인</button>
+            <button onClick={onChangeResultAnswer} className="ui button fix bg grey">결과보기</button>
+            <button onClick={onChangeNextQuestion} className="ui button fix bg">확인</button>
           </div>
         </div>
       )}
-      {quizStatus.status && quizStatus.type === 'finish' && (
+
+      {/* 퀴즈참여 완료 */}
+      {quizStatus.status && quizStatus.type === 'finish' && questionData && (
         <div className="video-quiz-wrap sty2">
           <div className="video-quiz-header">
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img src="" />
-            <span className="wro">퀴즈 참여가 완료됐습니다.</span>
+            <img src={resultAlertMessage?.img ? `/${resultAlertMessage?.img}` : FinishIcon} />
+            <span className="wro">{resultAlertMessage?.message || '퀴즈 참여가 완료됐습니다!'}</span>
             <span className="wro2">계속해서 영상을 이어보세요.</span>
           </div>
           <div className="video-quiz-footer">
-            <button onClick={onCompletedQuiz} className="ui button fix bg">확인</button>
+            <button className="ui button fix bg">확인</button>
           </div>
         </div>
       )}
 
-      {/* 결과보기 영역 */}
-      {
-        quizStatus.status &&
+      {/* 결과보기 객관식 */}
+      {quizStatus.status &&
         quizStatus.type === 'result' &&
         questionData && (questionData[currentIndex].type === 'SingleChoice' || questionData[currentIndex].type === 'MultipleChoice') && (
         <div className="quiz-content-wrap">
           <div className="video-quiz-content result-survey">
             <div className="quiz-header">
-              <h2>잘 만든 기획서에 대한 당신의 선택은?</h2>
-              <button className="quiz-preview-img">
-                <img src="" />
-              </button>
-              <p className="hint">다른 분들의 의견을 살펴보세요.</p>
+              <h2>{questionData[currentIndex].text}</h2>
+              {
+                questionData[currentIndex].img && (
+                  <button onClick={() => onImageZoomPopup(questionData[currentIndex].text, questionData[currentIndex].img)} className="quiz-preview-img">
+                    <img src={`/${questionData[currentIndex].img}`} />
+                  </button>
+                )
+              }
+              <p className="hint">{questionData[currentIndex].subText || '다른 분들의 의견을 살펴보세요!'}</p>
             </div>
             <div className="quiz-question">
-              {/* 타인이 선택한 항목 : color-others*/}
-              {/* 내가 선택한 항목 : color-mine */}
-              {/* <li className="mine"> */}
               <ul className="result-list">
-                <li>
-                  <span className="course-survey-list-btnImg">
-                    <img src=""/>
-                  </span>
-                  <p>스티브 잡스의 PT와 같은 핵심만 간결한 기획서 긴문장 말줄임 예시입니다.예시구요.예시랍니다</p>
-                  <div className="card-gauge-bar sty2 color-others">
-                    <div className="rangeBox">
-                      <div className="range">
-                        <div style={{ width: "22%" }} className="percent"/>
+                {
+                  questionData[currentIndex].quizQuestionItems?.map((row, index) => (
+                    <li key={index} className={row.answerItem === true ? 'mine' : ''}>
+                      <span className="course-survey-list-btnImg">
+                        <img src={row.answerItem === true ? RadioIcon : EmptyIcon}/>
+                      </span>
+                      <p>{row.text}</p>
+                      <div className="card-gauge-bar sty2 color-others">
+                        <div className="rangeBox">
+                          <div className="range">
+                            <div style={{ width: "22%" }} className="percent"/>
+                          </div>
+                          <span>22<em>%</em></span>
+                        </div> 
                       </div>
-                      <span>22<em>%</em></span>
-                    </div> 
-                  </div>
-                  <button className="quiz-preview-img">
-                    <img src="" />
-                  </button>
-                </li>
+                      {
+                        row.img && (
+                          <button onClick={() => onImageZoomPopup(row.text, row.img)} className="quiz-preview-img">
+                            <img src={`/${row.img}`} />
+                          </button>
+                        )
+                      }
+                    </li>
+                  ))
+                }
               </ul>
             </div>
             <div className="video-quiz-footer">
-              <button onClick={() => onChangeNextQuestion('next')} className="ui button fix bg">확인</button>
+              <button onClick={onChangeNextQuestion} className="ui button fix bg">확인</button>
             </div>
           </div>
         </div>
       )}
-      {
-        quizStatus.status &&
+      {/* 서술형 */}
+      {quizStatus.status &&
         quizStatus.type === 'result' &&
         questionData && (questionData[currentIndex].type === 'ShortAnswer' || questionData[currentIndex].type === 'Essay') && (
         <div className="quiz-content-wrap">
@@ -271,7 +301,7 @@ const VideoQuizContentContainer = ({
               <button className="quiz-preview-img">
                 <img src="" />
               </button>
-              <p>다른 분들의 의견을 살펴보세요.</p>
+              <p>{questionData[currentIndex].subText || '다른 분들의 의견을 살펴보세요!'}</p>
             </div>
             <div className="quiz-descriptive">
               <div className="descriptive-box">
@@ -289,7 +319,7 @@ const VideoQuizContentContainer = ({
             </div>
           </div>
           <div className="video-quiz-footer">
-            <button onClick={() => onChangeNextQuestion('next')} className="ui button fix bg">확인</button>
+            <button onClick={onChangeNextQuestion} className="ui button fix bg">확인</button>
           </div>
         </div>
       )}

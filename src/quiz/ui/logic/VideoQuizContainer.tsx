@@ -28,7 +28,7 @@ const VideoQuizContainer:React.FC<Props> = ({
       getQuizTable();
     }
   }, [lectureMedia, quizData])
-
+  
   return (
     <div className="video-quiz-wrap"> 
       <div className="video-quiz-header">
@@ -37,6 +37,7 @@ const VideoQuizContainer:React.FC<Props> = ({
       </div>
       <VideoQuizContentContainer
         questionData={quizData?.quizQuestions}
+        resultAlertMessage={quizData?.resultAlertMessage}
         onCompletedQuiz={onCompletedQuiz}
       />
     </div>

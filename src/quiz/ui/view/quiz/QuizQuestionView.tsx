@@ -62,17 +62,24 @@ function ShortAnswerType({
   row:QuizItem;
   rowIndex: number;
   userAnswer: UserAnswer;
-  onChange: (index: number) => void;
+  onChange: (index: number, text?:string) => void;
   onImageZoomPopup: (title: string, src: string) => void;
 }) {
+
+  const [input, setInput] = useState<string>('');
+  const onChangeInput = useCallback((e:any) => {
+    const {target:{value}} = e;
+    setInput(value);
+    onChange(rowIndex, value)
+  },[input])
 
   return (
     <div className="ui right-top-count input short" style={{width: '100%'}}>
       <input 
         type="text" 
         placeholder="답변을 입력해주세요. (최대 입력 글자 수 확인 필요)"
-        value=""
-        onChange={(e) => console.log(e)}
+        value={input}
+        onChange={(e) => onChangeInput(e)}
       />
       <Icon className="clear link" onClick={() => console.log('d')} />
       <span className="validation">You can enter up to 100 characters.</span>
@@ -229,8 +236,3 @@ const QuizQuestionView:React.FC<Props> = ({
 }
 
 export default QuizQuestionView;
-
-  // { value: 'SingleChoice', text: '단일 객관식' },
-  // { value: 'MultiChoice', text: '다중 객관식' },
-  // { value: 'ShortAnswer', text: '단답형' },
-  // { value: 'Essay', text: '서술형' },
