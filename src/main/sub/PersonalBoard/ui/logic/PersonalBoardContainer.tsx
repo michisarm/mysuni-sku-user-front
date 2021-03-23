@@ -29,7 +29,7 @@ interface Props extends RouteComponentProps {
 
 function PersonalBoardContainer(props: Props){
 
-  const { myLearningSummaryService, skProfileService, menuControlAuthService, companyCode, activeIndex } = props;
+  const { myLearningSummaryService, menuControlAuthService, companyCode, activeIndex } = props;
   const { myLearningSummary } = myLearningSummaryService!;
 
   useEffect(() => {
@@ -52,14 +52,14 @@ function PersonalBoardContainer(props: Props){
     requestPopularCourse(companyCode, date)
   }, [])
 
-  const showApl = (() => {
+  const showApl = useCallback(() => {
     const { menuControlAuth } = menuControlAuthService!;
     return menuControlAuth.companyCode === '' ||
       (menuControlAuth.authCode === MenuControlAuth.User &&
         menuControlAuth.useYn === MenuControlAuth.Yes)
       ? true
       : false;
-  })
+  }, [])
 
 return (
   <>

@@ -7,6 +7,7 @@ import OpenCommunityIntro, {
 } from '../viewModel/OpenCommunityIntro/OpenCommunityIntro';
 import CommunityFollowIntro from '../viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { createStore } from './Store';
+import CommunityIsLoadingState from '../viewModel/CommunityIsLoadingState';
 
 const [setCommunityIntro, onCommunityIntro, getCommunityIntro] = createStore<
   CommunityIntro
@@ -34,9 +35,14 @@ const [
   communitiesTotalCount: 0,
   communitiesOffset: 0,
   postsTotalCount: 0,
-  postsOffset:0,
-
+  postsOffset: 0,
 });
+const [
+  setIsLoadingState,
+  onIsLoadingState,
+  getIsLoadingState,
+  useIsLoadingState,
+] = createStore<CommunityIsLoadingState>({ isLoading: false });
 
 export {
   setCommunityIntro,
@@ -54,5 +60,8 @@ export {
   onFollowCommunityIntro,
   getFollowCommunityIntro,
   useFollowCommunityIntro,
+  setIsLoadingState,
+  onIsLoadingState,
+  getIsLoadingState,
+  useIsLoadingState,
 };
-

@@ -1,4 +1,4 @@
-import { mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
@@ -31,8 +31,17 @@ const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjec
   }, [])
 
   const handleSave = useCallback(() => {
-    saveLearningObjectives()
-    setOpen(false, 'save')
+    const learningObjectivesItem = getLearningObjectivesItem()
+    if(learningObjectivesItem && learningObjectivesItem?.AnnualLearningObjectives > 999) {
+      reactAlert({
+        title: '',
+        message: `연간 학습목표는 1시간 부터 999시간 까지만 입력 가능할 수 있습니다.`,
+      });
+      return false
+    } else {
+      saveLearningObjectives()
+      setOpen(false, 'save')
+    }
   },[])
 
 return (

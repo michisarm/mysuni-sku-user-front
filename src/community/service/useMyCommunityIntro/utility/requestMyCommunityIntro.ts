@@ -8,6 +8,7 @@ import Post from '../../../model/Post';
 import {
   getMyCommunityIntro,
   setMyCommunityIntro,
+  setIsLoadingState,
 } from '../../../store/CommunityMainStore';
 import CommunityItem from '../../../viewModel/MyCommunityIntro/CommunityItem';
 import { getEmptyMyCommunityIntro } from '../../../viewModel/MyCommunityIntro/MyCommunityIntro';
@@ -104,7 +105,8 @@ export function requestAppendMyCommunityList() {
             next.push(communityToItem(community));
           }
         });
-        const setPostOffset = (next: CommunityItem[]) => sessionStorage.setItem('postOffset', JSON.stringify(next.length));
+        const setPostOffset = (next: CommunityItem[]) =>
+          sessionStorage.setItem('postOffset', JSON.stringify(next.length));
         setPostOffset(next);
         setMyCommunityIntro({
           ...myCommunityIntro,
@@ -155,26 +157,30 @@ export function requestMyCommunityPostList() {
   const prevPostOffset: any = sessionStorage.getItem('communityOffset');
   const getPostOffset: number = JSON.parse(prevPostOffset);
 
-  findAllPostViewsFromMyCommunities(postsSort, getPostOffset || 0).then(posts => {
-    const myCommunityIntro =
-      getMyCommunityIntro() || getEmptyMyCommunityIntro();
+  setIsLoadingState({ isLoading: true });
+  findAllPostViewsFromMyCommunities(postsSort, getPostOffset || 0).then(
+    posts => {
+      const myCommunityIntro =
+        getMyCommunityIntro() || getEmptyMyCommunityIntro();
 
-    if (posts === undefined) {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
-        posts: [],
-        postsTotalCount: 0,
-        postsOffset: 0,
-      });
-    } else {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
-        posts: posts.results.map(postToItem),
-        postsTotalCount: posts.totalCount,
-        postsOffset: posts.results.length,
-      });
+      if (posts === undefined) {
+        setMyCommunityIntro({
+          ...myCommunityIntro,
+          posts: [],
+          postsTotalCount: 0,
+          postsOffset: 0,
+        });
+      } else {
+        setMyCommunityIntro({
+          ...myCommunityIntro,
+          posts: posts.results.map(postToItem),
+          postsTotalCount: posts.totalCount,
+          postsOffset: posts.results.length,
+        });
+      }
+      setIsLoadingState({ isLoading: false });
     }
-  });
+  );
 }
 
 export function requestAppendMyCommunityPostList() {
@@ -192,9 +198,7 @@ export function requestAppendMyCommunityPostList() {
         postsOffset: 0,
       });
     } else {
-      const next = [
-        ...posts.results.map(postToItem),
-      ];
+      const next = [...posts.results.map(postToItem)];
 
       setMyCommunityIntro({
         ...myCommunityIntro,

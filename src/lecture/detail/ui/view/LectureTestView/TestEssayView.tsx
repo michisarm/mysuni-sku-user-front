@@ -29,26 +29,24 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
     <Form>
       <Form.Field>
         <div className="ui right-top-count input">
-          <span className="count">
             {
               essayScore &&
               showScore &&
               (
-                <>
+                <span className="count count2">
                   <span className="score">평가점수</span>
                   <span className="score_value">{essayScore.score}</span>
-                </>
+                </span>
               ) || (
-                <>
+                <span className="count">
                   <span className="now">
                     {answer && answer.length}
                     {!answer && '0'}
                   </span>
                   /<span className="max">{maxLength}</span>
-                </>
+                </span>
               )
             }
-          </span>
           <textarea
             placeholder="답변을 입력해주세요."
             value={answer}

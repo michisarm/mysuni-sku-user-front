@@ -265,8 +265,15 @@ function CommunityHomePage() {
                 <div className="community-banner-title">
                   {/* {communityHome.community.name} basic기본 유형일때는 커뮤니티 제목 삭제 */}
                 </div>
-                <div className="community-banner-copy">
-                  {/* {communityHome.community.introduce} basic기본 유형일때는 커뮤니티 제목 삭제 */}
+                <div
+                  className="community-banner-copy"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
+                  {communityHome.community.introduce}
                 </div>
               </div>
             </>
@@ -293,7 +300,16 @@ function CommunityHomePage() {
                 >
                   {communityHome.community.name}
                 </div>
-                <div className="community-banner-copy" />
+                <div
+                  className="community-banner-copy"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
+                  {communityHome.community.introduce}
+                </div>
               </div>
             </>
           )}

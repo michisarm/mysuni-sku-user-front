@@ -1,15 +1,16 @@
+import { inject, observer } from 'mobx-react';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Tab } from 'semantic-ui-react';
 import { usePopularCourseItem } from '../../store/PersonalBoardStore';
 
-interface Props {
+interface Props extends RouteComponentProps {
   onTabClick: (date: any) => void;
 }
 
-const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCourseView({
-  onTabClick
-}) {
+const MyCompanyPopularCourseView: React.FC<Props> = Props => {
+  const { history, onTabClick } = Props
   const popularCourseItem = usePopularCourseItem()
   const [searchPeriod, setSearchPeriod] = useState<string>('')
 
@@ -21,10 +22,8 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
 
   const handleTabClick = (data: any) => {
     onTabClick(data)
-    
     let startDate
     let endDate
-
     if(data.activeIndex === 0) {
       startDate = moment().subtract(8, 'day')
       endDate = moment().subtract(1, 'day')
@@ -37,6 +36,17 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
     }
     setSearchPeriod(startDate.format('YYYY.MM.DD') + '~' + endDate.format('YYYY.MM.DD'))
   }
+
+  const goToLectureDetail = useCallback((index: number) => {
+    const cineroomId = localStorage.getItem('nara.cineroomId')
+    history.push(`/lecture/cineroom/${cineroomId}/college/${popularCourseItem![index].collegeId}/course-plan/${popularCourseItem![index].coursePlanId}/Course/${popularCourseItem![index].lectureUsid}`)
+  }, [popularCourseItem])
+
+  const popularCourseClass = useCallback((index) => {
+    const className = ['sv', 'global', 'happy', 'ai', 'inno']
+    return className[index]
+  }, [])
+
   const panes = [
     {
       menuItem: "1주일",
@@ -44,33 +54,14 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
         <Tab.Pane>
           { popularCourseItem && (
             <ul className="personal_list">
-              <li className="sv">
-                <span className="personal_list_number">1</span>
-                {/* 
-                popularCourseItem[0].lectureName
-                */}
-                <p className="personal_list_txt">{popularCourseItem[0]? popularCourseItem[0].lectureName : ''}</p>
-              </li>
-              <li className="global">
-                <span className="personal_list_number">2</span>
-                <p className="personal_list_txt">
-                {popularCourseItem[1] ? popularCourseItem[1].lectureName : ''}
-                </p>
-              </li>
-              <li className="happy">
-                <span className="personal_list_number">3</span>
-                <p className="personal_list_txt">{popularCourseItem[2] ? popularCourseItem[2].lectureName : ''}</p>
-              </li>
-              <li className="ai">
-                <span className="personal_list_number">4</span>
-                <p className="personal_list_txt">{popularCourseItem[3] ? popularCourseItem[3].lectureName : ''}</p>
-              </li>
-              <li className="inno">
-                <span className="personal_list_number">5</span>
-                <p className="personal_list_txt">
-                {popularCourseItem[4] ? popularCourseItem[4].lectureName : ''}
-                </p>
-              </li>
+              { popularCourseItem.map((item, index) => {
+                return (
+                  <li className={popularCourseClass(index)} key={index}>
+                    <span className="personal_list_number">{index+1}</span>
+                    <p className="personal_list_txt"><a onClick={() => goToLectureDetail(index)}>{popularCourseItem[index]? popularCourseItem[index].lectureName : ''}</a></p>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </Tab.Pane>
@@ -80,35 +71,16 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "1개월",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && (
+          { popularCourseItem && (
             <ul className="personal_list">
-              <li className="sv">
-                <span className="personal_list_number">1</span>
-                {/* 
-                popularCourseItem[0].lectureName
-                */}
-                <p className="personal_list_txt">{popularCourseItem[0] ? popularCourseItem[0].lectureName : ''}</p>
-              </li>
-              <li className="global">
-                <span className="personal_list_number">2</span>
-                <p className="personal_list_txt">
-                {popularCourseItem[1] ? popularCourseItem[1].lectureName : ''}
-                </p>
-              </li>
-              <li className="happy">
-                <span className="personal_list_number">3</span>
-                <p className="personal_list_txt">{popularCourseItem[2] ? popularCourseItem[2].lectureName : ''}</p>
-              </li>
-              <li className="ai">
-                <span className="personal_list_number">4</span>
-                <p className="personal_list_txt">{popularCourseItem[3] ? popularCourseItem[3].lectureName : ''}</p>
-              </li>
-              <li className="inno">
-                <span className="personal_list_number">5</span>
-                <p className="personal_list_txt">
-                {popularCourseItem[4] ? popularCourseItem[4].lectureName : ''}
-                </p>
-              </li>
+              { popularCourseItem.map((item, index) => {
+                return (
+                  <li className={popularCourseClass(index)} key={index}>
+                    <span className="personal_list_number">{index+1}</span>
+                    <p className="personal_list_txt"><a onClick={() => goToLectureDetail(index)}>{popularCourseItem[index]? popularCourseItem[index].lectureName : ''}</a></p>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </Tab.Pane>
@@ -118,35 +90,16 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
       menuItem: "3개월",
       render: () => (
         <Tab.Pane>
-          {popularCourseItem && (
+          { popularCourseItem && (
             <ul className="personal_list">
-              <li className="sv">
-                <span className="personal_list_number">1</span>
-                {/* 
-                popularCourseItem[0].lectureName
-                */}
-                <p className="personal_list_txt">{popularCourseItem[0] ? popularCourseItem[0].lectureName : ''}</p>
-              </li>
-              <li className="global">
-                <span className="personal_list_number">2</span>
-                <p className="personal_list_txt">
-                {popularCourseItem[1] ? popularCourseItem[1].lectureName : ''}
-                </p>
-              </li>
-              <li className="happy">
-                <span className="personal_list_number">3</span>
-                <p className="personal_list_txt">{popularCourseItem[2] ? popularCourseItem[2].lectureName : ''}</p>
-              </li>
-              <li className="ai">
-                <span className="personal_list_number">4</span>
-                <p className="personal_list_txt">{popularCourseItem[3] ? popularCourseItem[3].lectureName : ''}</p>
-              </li>
-              <li className="inno">
-                <span className="personal_list_number">5</span>
-                <p className="personal_list_txt">
-                {popularCourseItem[4] ? popularCourseItem[4].lectureName : ''}
-                </p>
-              </li>
+              { popularCourseItem.map((item, index) => {
+                return (
+                  <li className={popularCourseClass(index)} key={index}>
+                    <span className="personal_list_number">{index+1}</span>
+                    <p className="personal_list_txt"><a onClick={() => goToLectureDetail(index)}>{popularCourseItem[index]? popularCourseItem[index].lectureName : ''}</a></p>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </Tab.Pane>
@@ -171,4 +124,5 @@ const MyCompanyPopularCourseView: React.FC<Props> = function MyCompanyPopularCou
   );
 };
 
-export default MyCompanyPopularCourseView;
+export default inject(
+)(withRouter(observer(MyCompanyPopularCourseView)));

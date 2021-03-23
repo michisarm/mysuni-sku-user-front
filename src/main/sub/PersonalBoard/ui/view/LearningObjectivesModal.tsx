@@ -35,7 +35,7 @@ const LearningObjectivesModal:React.FC<Props> = ({
           </Modal.Header>
           <Modal.Content className="admin_popup_reject">
           <div className="personal-main-box">
-            <span className="personal-des">도전! 연간 학습 목표를 세워볼까요?</span>
+            <span className="personal-des">올해 학습 목표를 세워볼까요?</span>
             <Form>
               <Form.Field className="form-field1">
                 <input
@@ -52,7 +52,7 @@ const LearningObjectivesModal:React.FC<Props> = ({
           </div>
 
           <div className="personal-main-box">
-            <span className="personal-des">일주일 출석 목표는요?</span>
+            <span className="personal-des">일주일에 몇 일 학습하실 건가요?</span>
             <Form>
               <Form.Field className="form-field2">
                 <div className="preview" style={{overflow: 'visible'}}>
@@ -63,7 +63,7 @@ const LearningObjectivesModal:React.FC<Props> = ({
                       handleInputChange('WeekAttendanceGoal', data.value)}
                     }
                   />
-                  <span>번</span>
+                  <span>일</span>
                 </div>
               </Form.Field>
             </Form>
