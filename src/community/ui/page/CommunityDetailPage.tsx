@@ -90,8 +90,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
     }
     reactConfirm({
       title: '알림',
-      message:
-        '관리자는 커뮤니티를 탈퇴하실 수 없습니다. Q&A를 통해 문의하시겠습니까?',
+      message: '관리자는 커뮤니티를 탈퇴하실 수 없습니다.',
       onOk: async () => {
         const communtyHome = getCommunityHome();
         if (
