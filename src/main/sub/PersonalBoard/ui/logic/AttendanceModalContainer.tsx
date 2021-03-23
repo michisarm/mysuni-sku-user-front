@@ -48,9 +48,9 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
       return
     }
     saveAttend(AttendEventItem.id).then((result) => {
-      // if(result !== undefined) {
+      if(result !== undefined) {
         requestAttendCount(AttendEventItem.id)
-      // }
+      }
     })
   }, [AttendEventItem])
 

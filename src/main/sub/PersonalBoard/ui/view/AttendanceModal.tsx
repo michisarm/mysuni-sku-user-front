@@ -11,8 +11,6 @@ import moment from 'moment';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
-
-
 interface Props {
   open: boolean;
   AttendCountItem: any;
@@ -88,6 +86,25 @@ const AttendanceModal:React.FC<Props> = ({
     }
   }, [attendFlag, AttendCountItem])
 
+  const test = useCallback(() => {
+    console.log('test')
+    const frm = document.createElement('form')
+    frm.setAttribute('id','1234')
+    frm.setAttribute('action','http://www.naver.com')
+    frm.setAttribute('method','post')
+    frm.setAttribute('target','1234')
+    document.body.appendChild(frm)
+
+    window.open(
+      'about:blank',
+      '1234',
+      'width=300, height=300'
+    )
+
+    frm.submit()
+
+  }, [])
+
   return (
     <>
       <Modal open={open} className="base w640 attend">
@@ -128,7 +145,7 @@ const AttendanceModal:React.FC<Props> = ({
                 {
                   Array(20).fill('').map((v, idx) => {
                     return (
-                      <li className={className(idx)} onClick={() => handleAttend(className(idx))}>
+                      <li className={className(idx)} onClick={() => handleAttend(className(idx))} key={idx}>
                       {
                         (idx%5) !== 4? 
                         <button type="button" className="date">
@@ -145,7 +162,12 @@ const AttendanceModal:React.FC<Props> = ({
             </div>
           </div>
           <div className="linkbox">                    
-              <button className="go_study" onClick={() => setOpen(!open)}>학습하러 가기</button>
+            <a className="go_study" onClick={() => setOpen(!open)}>학습하러 가기</a>
+            {
+              AttendCountItem && AttendCountItem.length >= 5 && (
+                <a className="go_lotto show" onClick={() => test()}>복권 긁기</a>
+              )
+            }
           </div>
         </Modal.Content>
         {/* <Modal.Actions className="actions actions2">

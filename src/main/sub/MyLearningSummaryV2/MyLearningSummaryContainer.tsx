@@ -391,26 +391,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <span className="bot-num">도전중 {Number(badgeService?.challengingCount)}</span>
                 </div>
               </div>
-              {/* <Popup
-                trigger={
-                  <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
-                    <div className="gauge-content-box">
-                      <p className="top-num">{_earnedCount}</p>
-                        <span className="bot-num">{Number(badgeService?.challengingCount)}</span>
-                    </div>
-                  </div>
-                }
-                style={style1}
-                position="bottom center"
-                wide
-              >
-                <span className="personal_pop_tit">
-                  도전중 Badge(누적)
-                </span>
-                <span>
-                  <strong>{Number(badgeService?.challengingCount)}</strong>개
-                </span>
-              </Popup> */}
             </div>
             <div className="main-gauge">
               <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
@@ -535,6 +515,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             return this.setState({'learningObjectivesOpen':value})
           }} 
         />
+        {/* 4/5~ 4/30 일까지 노출되도록 수정 */}
         <AttendanceModalContainer
           open={attendanceOpen}
           setOpen={(value, type?)=> {
