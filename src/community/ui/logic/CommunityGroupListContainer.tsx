@@ -69,8 +69,16 @@ const CommunityGroupListContainer: React.FC<Props> = function GroupListContainer
           </div>
         </div>
       </div>
-      
-      <CommunityGroupView />
+      {
+        groupData && groupData.totalCount > 0 ?
+        <CommunityGroupView />
+        :
+        <div className="no-cont-wrap border-bottom">
+          <Icon className="no-contents80" />
+          <span className="blind">콘텐츠 없음</span>
+          <div className="text">생성된 그룹이 없습니다!</div>
+        </div>
+      }
     </>
   );
 };

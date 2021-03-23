@@ -221,13 +221,21 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       }
     } else if(String(value).length === 2) {
       percent = String(value).substr(0,1)+5
+    } else if(String(value).length === 3) {
+      percent = '100'
     }
+    
     return Number(percent)
   }
 
   goToBadge () {
     const { history } = this.props;
     history.push('/certification/badge/EarnedBadgeList/pages/1')
+  }
+
+  goToQna () {
+    const { history } = this.props;
+    history.push('/board/support-qna')
   }
 
   render() {
@@ -246,7 +254,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
     const badgeValue = Math.round((_earnedCount / (_challengingCount + _earnedCount)) * 100)
-    const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / (myTrainingService!.personalBoardInprogressCount + myTrainingService!.personalBoardCompletedCount)) * 100)
+    const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / (myTrainingService!.personalBoardInprogressCount + myLearningSummary.completeLectureCount)) * 100)
     let LearningObjectivesPer = 0 
     LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
     if( learningObjectives.AnnualLearningObjectives !== 0 && LearningObjectivesPer > 100) {
@@ -405,7 +413,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <p>{myLearningSummary.completeLectureCount}</p>
                   <Popup
                     trigger={
-                        <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
+                      <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
                     }
                     style={style2}
                     position="bottom center"
@@ -497,7 +505,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     )}
                 </div>
                 <div className="right">
-                    <a href="/board/support-qna" className="contact-us wh">
+                    <a onClick={this.goToQna} className="contact-us wh">
                         <span>1:1 문의하기</span>
                         <Icon className="arrow-w-16"/>
                     </a>

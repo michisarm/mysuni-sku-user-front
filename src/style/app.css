@@ -732,3 +732,14 @@ body.msie
 .ql-snow .ql-editor ul li {
   font-size: 15px;
 }
+
+/* loadingbar render 순서가 늦는 것 같다.. 안먹어.. 못씀 */
+.loading-bar {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  height: 400;
+  box-shadow: '0 0 0 0';
+  border: 0;
+}

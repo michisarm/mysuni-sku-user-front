@@ -1,3 +1,4 @@
+import { getFollowCommunityIntro } from 'community/store/CommunityMainStore';
 import React, { useEffect } from 'react';
 import {
   requestFollowCommunityList,
@@ -8,7 +9,7 @@ import FollowView from '../view/FollowView';
 function FollowPage() {
   useEffect(() => {
     requestFollowCommunityList();
-    requestFollowCommunityPostList();
+    getFollowCommunityIntro()?.posts.length! === 0 && requestFollowCommunityPostList();
   }, []);
   return <FollowView />;
 }

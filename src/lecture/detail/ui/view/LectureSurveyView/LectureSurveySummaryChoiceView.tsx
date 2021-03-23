@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Checkbox, Progress, Image } from 'semantic-ui-react';
+import { Checkbox, Progress, Image, Item } from 'semantic-ui-react';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
 import { useLectureSurveySummary } from 'lecture/detail/store/LectureSurveyStore';
@@ -57,7 +57,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-            console.log('img', choice.image);
+            console.log('객관식1', choiceAvg);
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -73,11 +73,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
-                    <Progress
+                    {/* <Progress
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={maxNum === choice.count! ? 'blue' : 'grey'}
-                    />
+                    /> */}
+                    <div style={choice.count === undefined || 0 ? { height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px',} : {width: `${choiceAvg}%`, height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px',}} />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count || 0}
@@ -114,7 +115,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked: any = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-
+            console.log('객관식2', choiceAvg);
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -130,11 +131,12 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                     )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
-                    <Progress
+                    {/* <Progress
                       percent={choiceAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={maxNum === choice.count! ? 'blue' : 'grey'}
-                    />
+                    /> */}
+                    <div style={choice.count === undefined || 0 ? { height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px',} : {width: `${choiceAvg}%`, height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px',}} />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count || 0}
