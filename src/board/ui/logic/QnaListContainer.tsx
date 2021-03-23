@@ -45,8 +45,8 @@ class QnaListContainer extends React.Component<Props, State> {
 
   findQnaPosts(answered: any, offset: number) {
     //
-    const postService = this.props.postService!;
     this.setState({ isLoading: true });
+    const postService = this.props.postService!;
 
     if (answered === 'all' || !String(answered).length) {
       postService.findQnaPosts(0, offset).then(() => {
@@ -54,7 +54,6 @@ class QnaListContainer extends React.Component<Props, State> {
           answered,
           offset: offset + 10,
         });
-        this.setState({ isLoading: false });
       });
     } else {
       postService.clearPosts();
@@ -63,9 +62,9 @@ class QnaListContainer extends React.Component<Props, State> {
           answered,
           offset: offset + 10,
         });
-        this.setState({ isLoading: false });
       });
     }
+    this.setState({ isLoading: false });
   }
 
   onClickNewQna() {
@@ -137,17 +136,17 @@ class QnaListContainer extends React.Component<Props, State> {
     //
     const { posts } = this.props.postService!;
     const { offset, answered, isLoading } = this.state;
+    const result = posts.results;
+    const totalCount = posts.totalCount;
 
     return (
-      <>
+      <div className="full">
         <div className="support-list-wrap">
           <div className="list-top">
             <Button icon className="left post ask" onClick={this.onClickNewQna}>
               <Icon className="ask24" />
               &nbsp;&nbsp;Ask a Question
             </Button>
-          </div>
-          {posts.results.length > 0 && (
             <div className="radio-wrap">
               <Radio
                 className="base"
@@ -180,31 +179,46 @@ class QnaListContainer extends React.Component<Props, State> {
                 }}
               />
             </div>
+          </div>
+          {isLoading ? (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+            </Segment>
+          ) : result.length === 0 ? (
+            <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
+          ) : (
+            <>
+              <div className="su-list qna">
+                {posts.results.map((post, index) =>
+                  this.renderPostRow(post, index)
+                )}
+              </div>
+
+              {posts.results.length < posts.totalCount && (
+                <div
+                  className="more-comments"
+                  onClick={() => this.findQnaPosts(answered, offset)}
+                >
+                  <Button icon className="left moreview">
+                    <Icon className="moreview" />
+                    list more
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
-        {posts.results.length === 0 ? (
-          <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
-        ) : (
-          <>
-            <div className="su-list qna">
-              {posts.results.map((post, index) =>
-                this.renderPostRow(post, index)
-              )}
-            </div>
-            {posts.results.length < posts.totalCount && (
-              <div
-                className="more-comments"
-                onClick={() => this.findQnaPosts(answered, offset)}
-              >
-                <Button icon className="left moreview">
-                  <Icon className="moreview" />
-                  list more
-                </Button>
-              </div>
-            )}
-          </>
-        )}
-      </>
+      </div>
     );
   }
 }
