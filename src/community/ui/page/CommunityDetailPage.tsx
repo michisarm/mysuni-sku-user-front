@@ -81,11 +81,10 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
   }
 
   const drawCommunity = () => {
-    if (managerId == SkProfileService.instance.skProfile.id) {
+    if (managerId === SkProfileService.instance.skProfile.id) {
       reactAlert({
         title: '확인',
-        message:
-          '관리자는 커뮤니티를 탈퇴하실 수 없습니다.FAQ를 통해 문의하시겠습니까?',
+        message: '관리자는 커뮤니티를 탈퇴하실 수 없습니다.',
       });
       return;
     }
@@ -109,8 +108,8 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
           communtyHome.community.communityId,
           SkProfileService.instance.skProfile.id
         );
-        // requestCommunity(communtyHome.community.communityId);
-        history.push('/board/support-qna');
+        requestCommunity(communtyHome.community.communityId);
+        //history.push('/board/support-qna');
       },
     });
     // reactConfirm({
