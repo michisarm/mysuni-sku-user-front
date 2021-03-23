@@ -51,7 +51,7 @@ const CommunityPreviewPage: React.FC = function CommunityPreviewPage({}) {
                   )}
                   <div className="community-banner-inner">
                     <div className="community-banner-title">
-                      {communityHome?.community?.name}
+                      {/* {communityHome?.community?.name} */}
                     </div>
                     <div
                       className="community-banner-copy"
