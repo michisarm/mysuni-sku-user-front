@@ -226,7 +226,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   <p className="summary">{text}</p>
                 </div>
               )}
-              <div className="text-right">
+              <div className="text-right" style={{float: 'none'}}>
                 {!more && (
                   <button
                     className="ui icon button right btn-blue btn-more"
