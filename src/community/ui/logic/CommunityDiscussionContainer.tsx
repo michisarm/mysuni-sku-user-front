@@ -40,7 +40,7 @@ function CommunityDiscussionContainer() {
   }, []);
 
   return (
-    <Fragment>
+    <div className="course-info-header">
       {postDetail && (
         <>
           <DiscussionViewContentHeaderView
@@ -96,7 +96,7 @@ function CommunityDiscussionContainer() {
           />
         </>
       )}
-    </Fragment>
+    </div>
   );
 }
 

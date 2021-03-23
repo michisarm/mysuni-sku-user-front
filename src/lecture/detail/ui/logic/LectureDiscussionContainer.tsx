@@ -94,24 +94,15 @@ function LectureDiscussionContainer() {
             <div className="discuss-box2">
               {/* <img src={MaskImg} className="discuss-main-img" /> */}
               <div className="discuss-text-wrap" >
-                {/* <span className="discuss-text-belt">
-                  2019년 지구상에 새로 등장한 신종 바이러스 감염병인 코로나19는 세계 많은 국가에 서 1년째 대유행을 하고 있다.
-                  코로나19는 21세기 들어 가장 많은 인명 피해를 주고 있는 감염병이란 타이틀을 이미 거머쥐었다. 지금도 정치, 경제,
-                  사회, 문화, 보건의료, 과학기술 등 많은 분야를 이전과 다른 모습으로 바꿔놓고 있는 중이다. 따라서 코로나19가 바꾸었거나
-                  바꾸고 있는 우리 사회의 다양 한 모습을 살펴보고 또 앞으로 어디까지 어떻게 바꿀지를 분석하는 것은 인류의 지속가능성을
-                  위해 매우 중요한 과제라고 할 수 있다. 코로나 사태와 관련, 코로나 사태가 시작되었던 1월 말 당시의 예상 및 결과를 Review해보고,
-                  향후 사태 지속 시 사회가 어떤 모습으로 변할지에 대해 답변하면서 평소에 생각하지 못했던 부분까지 생각의 영역을 확장해봅니다.
-                </span> */}
                 {more && (
                   <div className="ql-snow">
                     <div
-                      className="ql-editor discuss-text-belt belt2"
                       dangerouslySetInnerHTML={{ __html: str }}
                     />
                   </div>
                 )}
                 {!more && (
-                  <p className="discuss-text-belt belt2">{str}</p>
+                  <p className="discuss-text-belt">{str}</p>
                 )}
                 {!more && (
                   <button
@@ -213,4 +204,16 @@ const style: React.CSSProperties = {
   width: '38rem',
   whiteSpace: 'nowrap',
   display: 'inline-block',
+  lineHeight: '1.42',
+  textAlign: 'left',
+  // whiteSpace: 'pre-wrap',
+  wordWrap: 'break-word',
 } 
+
+    // line-height: 1.42;
+    // height: 100%;
+    // outline: none;
+    // overflow-y: auto;
+    // padding: 12px 15px;
+    // tab-size: 4;
+    // -moz-tab-size: 4;
