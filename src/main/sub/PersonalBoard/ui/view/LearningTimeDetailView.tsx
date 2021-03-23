@@ -61,7 +61,7 @@ function LearningTimeDetailView(props: Props) {
     },
     [badgeLearningTimeDetailItem]
   );
-  
+
   const timeDataBoolean: boolean[] = []
   
   datas.map((data) => {
