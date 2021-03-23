@@ -28,4 +28,5 @@ export default interface CoursePlan {
   hasPreCourse: string;
   instructor: Instructor[];
   patronKey?: any;
+  communityId: string | null;
 }

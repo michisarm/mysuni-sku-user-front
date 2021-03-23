@@ -1,4 +1,7 @@
-import { findCoursePlanContents, findMenuArrange } from '../../../api/lectureApi';
+import {
+  findCoursePlanContents,
+  findMenuArrange,
+} from '../../../api/lectureApi';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import {
   setInMyLectureCdo,
@@ -51,13 +54,16 @@ async function getLectureSummary(
   );
   const operator = coursePlanComplex.coursePlan.courseOperator;
 
-  const iconBox = coursePlanComplex.coursePlan.iconBox === null ? undefined : coursePlanComplex.coursePlan.iconBox;
+  const iconBox =
+    coursePlanComplex.coursePlan.iconBox === null
+      ? undefined
+      : coursePlanComplex.coursePlan.iconBox;
   const mylecture = await findInMyLecture(
     lectureId || serviceId!,
     lectureType !== undefined ? 'Course' : serviceType!
   );
   const { difficultyLevel } = coursePlanComplex.coursePlanContents;
-  const community = await findCommunityByCourseId(coursePlanComplex.coursePlan.coursePlanId);
+  const communityId = coursePlanComplex.coursePlan.communityId || '';
   return {
     name: coursePlanComplex.coursePlan.name,
     category: {
@@ -67,13 +73,22 @@ async function getLectureSummary(
     learningTime,
     operator,
     stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
-    passedCount: serviceType === 'Program' ? coursePlanComplex.programLecture.passedStudentCount : coursePlanComplex.courseLecture.passedStudentCount,
-    studentCount: serviceType === 'Program' ? coursePlanComplex.programLecture.studentCount : coursePlanComplex.courseLecture.studentCount,
+    passedCount:
+      serviceType === 'Program'
+        ? coursePlanComplex.programLecture.passedStudentCount
+        : coursePlanComplex.courseLecture.passedStudentCount,
+    studentCount:
+      serviceType === 'Program'
+        ? coursePlanComplex.programLecture.studentCount
+        : coursePlanComplex.courseLecture.studentCount,
     iconBox,
     mytrainingId: getEmpty(mylecture && mylecture.id),
-    difficultyLevel: difficultyLevel === null || difficultyLevel === undefined ? 'Basic' : difficultyLevel,
-    hasCommunity: community !== undefined,
-    communityId: community?.communityId,
+    difficultyLevel:
+      difficultyLevel === null || difficultyLevel === undefined
+        ? 'Basic'
+        : difficultyLevel,
+    hasCommunity: communityId !== '',
+    communityId,
   };
 }
 
@@ -161,12 +176,22 @@ function getLectureReview(coursePlanComplex: CoursePlanComplex): LectureReview {
   };
 }
 
-async function getLectureRelations(coursePlanComplex: CoursePlanComplex): Promise<LectureRelations | void> {
-  const { coursePlanContents: { relations } } = coursePlanComplex
+async function getLectureRelations(
+  coursePlanComplex: CoursePlanComplex
+): Promise<LectureRelations | void> {
+  const {
+    coursePlanContents: { relations },
+  } = coursePlanComplex;
   if (Array.isArray(relations) && relations.length > 0) {
     const serviceIds = relations.map(c => c.lectureCardId);
     const arrange = await findMenuArrange(serviceIds);
-    if (arrange !== null && arrange !== undefined && Array.isArray(arrange.results)) { return { lectures: arrange.results } }
+    if (
+      arrange !== null &&
+      arrange !== undefined &&
+      Array.isArray(arrange.results)
+    ) {
+      return { lectures: arrange.results };
+    }
   }
 }
 
@@ -180,7 +205,10 @@ function makeInMyLectureCdo(
       ? coursePlanComplex.courseLecture
       : coursePlanComplex.programLecture;
   return {
-    baseUrl: coursePlanComplex.coursePlan.iconBox === null ? "" : coursePlanComplex.coursePlan.iconBox.baseUrl,
+    baseUrl:
+      coursePlanComplex.coursePlan.iconBox === null
+        ? ''
+        : coursePlanComplex.coursePlan.iconBox.baseUrl,
     category: coursePlanComplex.coursePlan.category,
     courseLectureUsids: lecture.courseLectureUsids,
     lectureCardUsids: lecture.lectureCardUsids,
@@ -237,15 +265,21 @@ export async function getCourseLectureOverviewFromCoursePlanComplex(
       if (!instructors.some(c => c.usid === instructor.usid)) {
         instructors.push(instructor);
       }
-    })
+    });
     lectureInstructor.instructors = instructors;
   }
   setLectureInstructor(lectureInstructor);
   const lecturePrecourse = getLecturePrecourse(coursePlanComplex, path);
   setLecturePrecourse(lecturePrecourse);
   const lectureComment = getLectureComment(coursePlanComplex);
-  if (coursePlanComplex.coursePlanContents.fileBoxId !== '' && coursePlanComplex.coursePlanContents.fileBoxId !== null && coursePlanComplex.coursePlanContents.fileBoxId !== undefined) {
-    const lectureFile = await getLectureFile(coursePlanComplex.coursePlanContents.fileBoxId);
+  if (
+    coursePlanComplex.coursePlanContents.fileBoxId !== '' &&
+    coursePlanComplex.coursePlanContents.fileBoxId !== null &&
+    coursePlanComplex.coursePlanContents.fileBoxId !== undefined
+  ) {
+    const lectureFile = await getLectureFile(
+      coursePlanComplex.coursePlanContents.fileBoxId
+    );
     setLectureFile(lectureFile);
   } else {
     setLectureFile();
@@ -274,5 +308,10 @@ export async function getCourseLectureOverview(
     coursePlanId,
     serviceId
   );
-  getCourseLectureOverviewFromCoursePlanComplex(params, coursePlanComplex, collegeId, cineroomId)
+  getCourseLectureOverviewFromCoursePlanComplex(
+    params,
+    coursePlanComplex,
+    collegeId,
+    cineroomId
+  );
 }
