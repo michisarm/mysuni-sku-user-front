@@ -83,7 +83,7 @@ function MyCommunityListContainer() {
             onChange={changeSort}
           />
         </div>
-        <div className="commu-home-scroll">
+        <div className="commu-home-scroll" style={{overflow: 'visible', height: 'auto'}}>
           {myCommunityIntro !== undefined && (
             <>
               {myCommunityIntro.communities.map(communityItem => (
@@ -95,7 +95,7 @@ function MyCommunityListContainer() {
             </>
           )}
         </div>
-        {/* {myCommunityIntro.communitiesTotalCount >
+        {myCommunityIntro.communitiesTotalCount >
           myCommunityIntro.communitiesOffset && (
           <div className="more-comments community-side">
             <Button
@@ -106,7 +106,7 @@ function MyCommunityListContainer() {
               <Icon className="moreview" /> list more
             </Button>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
