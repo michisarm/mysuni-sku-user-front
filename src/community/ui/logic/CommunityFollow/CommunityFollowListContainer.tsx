@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, Button } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
@@ -68,6 +68,13 @@ const CommunityFollowListContainer: React.FC = () => {
     requestAppendFollowCommunityList(offset, 10, text);
   };
 
+  // 검색 엔터 이벤트
+  const serchEnterEvent = (e: React.KeyboardEvent) => {
+    if(e.key === "Enter") {
+      requestFollowSearchList(0, 5, encodeURIComponent(text));
+    }
+  }
+
   return (
     <>
       <div className="community-left community-main-left">
@@ -80,6 +87,7 @@ const CommunityFollowListContainer: React.FC = () => {
                 placeholder="닉네임을 입력하세요."
                 value={text}
                 onChange={e => setText(e.target.value)}
+                onKeyPress={serchEnterEvent}
               />
               <button
                 onClick={() => {
