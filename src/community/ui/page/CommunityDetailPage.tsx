@@ -91,7 +91,7 @@ const CommunityDetailPage: React.FC<Post> = function CommunityDetailPage({
     reactConfirm({
       title: '알림',
       message:
-        '커뮤니티를 탈퇴 하시겠습니까? 작성한신 게시글은 커뮤니티에 남겨 집니다.',
+        '커뮤니티를 탈퇴 하시겠습니까? 작성하신 게시글은 커뮤니티에 남겨 집니다.',
       onOk: async () => {
         const communtyHome = getCommunityHome();
         if (
