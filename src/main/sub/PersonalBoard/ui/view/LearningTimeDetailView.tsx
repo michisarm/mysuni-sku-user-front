@@ -16,28 +16,52 @@ function LearningTimeDetailView(props: Props) {
   const { showApl } = props;
 
   const badgeLearningTimeDetailItem = useLearningTimeDetailItem();
+  
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(
-    () => [
-      {
-        label: 'mySUNI',
-        value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
-      },
-      {
-        label: '관계사',
-        value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
-      },
-      {
-        label: '강의시간',
-        value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
-      },
-      {
-        label: '개인학습',
-        value: badgeLearningTimeDetailItem?.aplAllowTime || 0,
-      },
-    ],
+    () => {
+      if(showApl) {
+        return (
+          [
+            {
+              label: 'mySUNI',
+              value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
+            },
+            {
+              label: '관계사',
+              value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
+            },
+            {
+              label: '강의시간',
+              value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
+            },
+            {
+              label: '개인학습',
+              value: badgeLearningTimeDetailItem?.aplAllowTime || 0,
+            }
+          ]
+        )
+      } else {
+        return (
+          [
+            {
+              label: 'mySUNI',
+              value: badgeLearningTimeDetailItem?.suniLearningTime || 0,
+            },
+            {
+              label: '관계사',
+              value: badgeLearningTimeDetailItem?.displayMyCompanyLearningTime || 0,
+            },
+            {
+              label: '강의시간',
+              value: badgeLearningTimeDetailItem?.totalCollegeTime || 0,
+            }
+          ]
+        )
+      }
+    },
     [badgeLearningTimeDetailItem]
   );
-
+  
   const timeDataBoolean: boolean[] = []
   
   datas.map((data) => {
