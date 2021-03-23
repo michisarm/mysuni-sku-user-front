@@ -199,9 +199,10 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
 
   async initialFindPagingCollegeLectures() {
     //
-    const { newPageService } = this.props;
+    const { newPageService, setIsLoading } = this.props;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
 
+    setIsLoading && setIsLoading(true);
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
   }
 
@@ -226,7 +227,6 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
-    setIsLoading && setIsLoading(true);
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(
       match.params.collegeId,
       limit,
@@ -410,6 +410,7 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     const pageNo = parseInt(match.params.pageNo, 10);
     // this.findPagingCollegeLectures();
     actionLogService?.registerClickActionLog({ subAction: 'list more' });
+    // this.addFindPagingCollegeLectures();
     history.replace(routePaths.collegeLecturesPage(pageNo + 1));
   }
 
