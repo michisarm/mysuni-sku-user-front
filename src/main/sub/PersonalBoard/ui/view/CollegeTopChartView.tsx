@@ -13,7 +13,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
 }) {
 
   const collegeTopChartItem = useCollegeTopChartItem()
-
+  
   return (
     <>
     {collegeTopChartItem && (
@@ -49,7 +49,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="range">
                       <div
                         style={activeIndex === -1 ? {width:0} :{
-                          width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[1].percent : 0}%`,
+                          width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[1] ? collegeTopChartItem[1].percent : 0 : 0}%`,
                         }}
                         className="percent"
                       />
@@ -61,7 +61,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="range">
                       <div
                         style={activeIndex === -1 ? {width:0} :{
-                          width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[2].percent : 0}%`,
+                          width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[2] ? collegeTopChartItem[2].percent : 0  : 0}%`,
                         }}
                         className="percent"
                       />
@@ -73,7 +73,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="range">
                       <div
                         style={activeIndex === -1 ? {width:0} :{
-                          width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[3].percent : 0}%`,
+                          width: `${collegeTopChartItem.length !== 0 ? collegeTopChartItem[3] ? collegeTopChartItem[3].percent : 0  : 0}%`,
                         }}
                         className="percent"
                       />
@@ -85,7 +85,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
                     <div className="range">
                       <div
                         style={activeIndex === -1 ? {width:0} :{
-                          width: `${collegeTopChartItem[4] ? collegeTopChartItem[4].percent : 0}%`,
+                          width: `${collegeTopChartItem[4] ? collegeTopChartItem[4] ? collegeTopChartItem[4].percent : 0  : 0}%`,
                         }}
                         className="percent"
                       />
@@ -95,11 +95,11 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({
               </div>
               <div className="item-con-right">
                 <div className="card-gauge-bar">
-                  <div className="gauge-number glo"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[0].college : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[0].percent : 0}<em>%</em></strong></div>
-                  <div className="gauge-number sv"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[1].college : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[1].percent : 0}<em>%</em></strong></div>
-                  <div className="gauge-number semi"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[2].college : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[2].percent : 0}<em>%</em></strong></div>
-                  <div className="gauge-number mana"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[3].college : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[3].percent : 0}<em>%</em></strong></div>
-                  <div className="gauge-number inno"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[4].college : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[4].percent : 0}<em>%</em></strong></div>
+                  <div className="gauge-number glo"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[0].college : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[0] ? collegeTopChartItem[0].percent : 0 : 0}<em>%</em></strong></div>
+                  <div className="gauge-number sv"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[1] ? collegeTopChartItem[1].college : '' : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[1] ? collegeTopChartItem[1].percent : 0  : 0}<em>%</em></strong></div>
+                  <div className="gauge-number semi"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[2] ? collegeTopChartItem[2].college : '' : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[2] ? collegeTopChartItem[2].percent : 0  : 0}<em>%</em></strong></div>
+                  <div className="gauge-number mana"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[3] ? collegeTopChartItem[3].college : '' : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[3] ? collegeTopChartItem[3].percent : 0  : 0}<em>%</em></strong></div>
+                  <div className="gauge-number inno"><em className="col-con">{collegeTopChartItem.length !== 0 ? collegeTopChartItem[4] ? collegeTopChartItem[4].college : '' : ''}</em><strong>{collegeTopChartItem.length !== 0 ? collegeTopChartItem[4] ? collegeTopChartItem[4].percent : 0  : 0}<em>%</em></strong></div>
                 </div>
               </div>
             </div>
