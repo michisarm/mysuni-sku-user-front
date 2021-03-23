@@ -55,7 +55,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   }, []);
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -138,7 +138,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   }, []);
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
