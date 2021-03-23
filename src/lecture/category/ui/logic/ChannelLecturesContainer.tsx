@@ -363,12 +363,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        <CardSorting
-          value={sorting}
-          onChange={this.onChangeSorting}
-          collegeOrder={collegeOrder}
-        />
-
         {isLoading ? (
           <Segment
             style={{
@@ -384,44 +378,53 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             <Loadingpanel loading={isLoading} />
           </Segment>
         ) : lectures && lectures.length > 0 ? (
-          <div className="section">
-            <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel, index: number) => {
-                let rating: number | undefined =
-                  ratingMap.get(lecture.reviewId) || 0;
-                const inMyLecture =
-                  inMyLectureMap.get(lecture.serviceId) || undefined;
-                if (lecture.cubeType === CubeType.Community) rating = undefined;
-                return (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    model={lecture}
-                    rating={rating}
-                    thumbnailImage={lecture.baseUrl || undefined}
-                    action={
-                      inMyLecture
-                        ? Lecture.ActionType.Remove
-                        : Lecture.ActionType.Add
-                    }
-                    onAction={() => {
-                      reactAlert({
-                        title: '알림',
-                        message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
-                      });
-                      this.onActionLecture(inMyLecture || lecture);
-                    }}
-                    onViewDetail={this.onViewDetail}
-                  />
-                );
-              })}
-            </Lecture.Group>
+          <>
+            <CardSorting
+              value={sorting}
+              onChange={this.onChangeSorting}
+              collegeOrder={collegeOrder}
+            />
+            <div className="section">
+              <Lecture.Group type={Lecture.GroupType.Box}>
+                {lectures.map((lecture: LectureModel, index: number) => {
+                  let rating: number | undefined =
+                    ratingMap.get(lecture.reviewId) || 0;
+                  const inMyLecture =
+                    inMyLectureMap.get(lecture.serviceId) || undefined;
+                  if (lecture.cubeType === CubeType.Community) {
+                    rating = undefined;
+                  }
+                  return (
+                    <Lecture
+                      key={`lecture-${index}`}
+                      model={lecture}
+                      rating={rating}
+                      thumbnailImage={lecture.baseUrl || undefined}
+                      action={
+                        inMyLecture
+                          ? Lecture.ActionType.Remove
+                          : Lecture.ActionType.Add
+                      }
+                      onAction={() => {
+                        reactAlert({
+                          title: '알림',
+                          message: inMyLecture
+                            ? '본 과정이 관심목록에서 제외되었습니다.'
+                            : '본 과정이 관심목록에 추가되었습니다.',
+                        });
+                        this.onActionLecture(inMyLecture || lecture);
+                      }}
+                      onViewDetail={this.onViewDetail}
+                    />
+                  );
+                })}
+              </Lecture.Group>
 
-            {this.isContentMore() && (
-              <SeeMoreButton onClick={this.onClickSeeMore} />
-            )}
-          </div>
+              {this.isContentMore() && (
+                <SeeMoreButton onClick={this.onClickSeeMore} />
+              )}
+            </div>
+          </>
         ) : (
           <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
         )}
