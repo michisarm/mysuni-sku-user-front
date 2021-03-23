@@ -25,6 +25,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { ContentType } from 'myTraining/ui/page/NewLearningPage';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -128,9 +129,9 @@ const ENRLearning: React.FC<Props> = Props => {
 
     // react-ga event
     ReactGA.event({
-      category: '신규 과정',
+      category: '수강 신청 과정 모아보기',
       action: 'Click',
-      label: '신규 과정 전체보기'
+      label: '수강 신청 과정 전체보기'
     });
   };
 
@@ -140,7 +141,7 @@ const ENRLearning: React.FC<Props> = Props => {
 
     // react-ga event
     ReactGA.event({
-      category: '메인_신규',
+      category: '메인_수강신청',
       action: 'Click Card',
       // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
       //   model.name
@@ -265,6 +266,7 @@ const ENRLearning: React.FC<Props> = Props => {
                     onActionLecture(inMyLecture || learning);
                   }}
                   onViewDetail={onViewDetail}
+                  contentType={ContentType.Enrolling}
                 />
               );
             }

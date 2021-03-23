@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import {Radio, Segment} from 'semantic-ui-react';
+import React, {useState, Fragment} from 'react';
+import {Radio, Segment, Checkbox} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import NewLearningListView from '../view/NewLearningListView';
 import {OrderByType} from '../../../lecture/model';
 import {ContentType} from '../page/NewLearningPage';
-
 
 interface Props extends RouteComponentProps {
   contentType: string,

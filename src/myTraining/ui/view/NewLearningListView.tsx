@@ -233,7 +233,7 @@ const NewLearningListView: React.FC<Props> = Props => {
         if (clear) {
           enrLectureService!.clearLectures();
         }
-        findLrsLectures(pgNo);
+        findEnrLectures(pgNo);
         break;
     }
   };
@@ -397,11 +397,9 @@ const NewLearningListView: React.FC<Props> = Props => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.lrsLectures(
+    const lectureFilterRdo = LectureFilterRdoModel.enrLectures(
       page!.limit,
-      page!.nextOffset,
-      skProfileService!.skProfile.member.email
-      /*, orderBy*/
+      page!.nextOffset
     );
     const lectureOffsetList = await enrLectureService!.findEnrollingLectures(
       lectureFilterRdo
