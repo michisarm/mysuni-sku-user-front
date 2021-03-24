@@ -7,9 +7,28 @@ import { findSkProfileByAudienceId } from '../../api/profileApi';
 import { useLectureDiscussion } from '../../service/useLectureDiscussion';
 import { getLectureDiscussion,setLectureDiscussion } from '../../store/LectureDiscussionStore';
 import defaultImage from '../../../../style/media/img-profile-80-px.png';
+import { InMyLectureService } from 'myTraining/stores';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-function LectureDiscussionContainer() {
+interface Props extends RouteComponentProps<RouteParams> {
+  inMyLectureService?: InMyLectureService;
+}
+
+interface RouteParams {
+  coursePlanId?: string;
+}
+
+function LectureDiscussionContainer (props: Props) {
   const [lectureDiscussion] = useLectureDiscussion();
+
+  const { match } = props;
+
+  const { coursePlanId } = match.params;
+
+  console.log('coursePlanId', coursePlanId)
+  
   useEffect(() => {
     if (lectureDiscussion === undefined) {
       return;
@@ -71,6 +90,8 @@ function LectureDiscussionContainer() {
             email={email}
             companyName={company}
             departmentName={department}
+            coursePlanId={coursePlanId}
+            menuType="discussion"
           />
         </>
       )}
@@ -78,4 +99,8 @@ function LectureDiscussionContainer() {
   );
 }
 
-export default LectureDiscussionContainer;
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.inMyLectureService',
+  )
+)(withRouter(observer(LectureDiscussionContainer)));

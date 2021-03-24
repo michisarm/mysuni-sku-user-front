@@ -388,49 +388,49 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
             <div className="main-gauge">
               <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
-                  <Popup
-                    trigger={
-                      <div className={`gauge-content gauge-com${complateLearningValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
-                        <div className="gauge-content-box">
-                          <p>{myLearningSummary.completeLectureCount}</p>
-                          <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
-                        </div>
-                      </div>
-                    }
-                    style={style2}
-                    position="bottom center"
-                    wide
-                  >
-                    <span className="personal_pop_tit">
-                      누적 완료학습
-                    </span>
-                    <span>
-                  <strong>{myTrainingService?.personalBoardCompletedCount}</strong>개
-                    </span>
-                  </Popup>
-            </div>
-            <div className="main-gauge ">
-              <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
                 <Popup
                   trigger={
-                    <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
+                    <div className={`gauge-content gauge-com${complateLearningValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
                       <div className="gauge-content-box">
-                        <p>{total}</p>
-                        <span>목표 {learningObjectives!.AnnualLearningObjectives}h</span>
+                        <p>{myLearningSummary.completeLectureCount}</p>
+                        <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
                       </div>
                     </div>
                   }
-                  style={style3}
+                  style={style2}
                   position="bottom center"
                   wide
                 >
                   <span className="personal_pop_tit">
-                  누적 학습시간
+                    누적 완료학습
                   </span>
                   <span>
-                    <strong>{accrueTotal}</strong>
+                    <strong>{myTrainingService?.personalBoardCompletedCount}</strong>개
                   </span>
                 </Popup>
+            </div>
+            <div className="main-gauge ">
+              <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
+              <Popup
+                trigger={
+                  <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
+                    <div className="gauge-content-box">
+                      <p>{total}</p>
+                      <span>목표 {learningObjectives!.AnnualLearningObjectives}h</span>
+                    </div>
+                  </div>
+                }
+                style={style3}
+                position="bottom center"
+                wide
+              >
+                <span className="personal_pop_tit">
+                누적 학습시간
+                </span>
+                <span>
+                  <strong>{accrueTotal}</strong>
+                </span>
+              </Popup>
             </div>
           </div>
           <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
