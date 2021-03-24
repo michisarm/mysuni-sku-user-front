@@ -12,7 +12,7 @@ class EnrollingApi {
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
   process.env.REACT_APP_ARRANGE_API === undefined || process.env.REACT_APP_ARRANGE_API === '' ?
-    '/api/lectures' : process.env.REACT_APP_ENROLLING_API;
+    '/api/lecture/lectures' : process.env.REACT_APP_ENROLLING_API;
 
 
   // 수강 신청 임박한 학습과정 조회
