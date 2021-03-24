@@ -1,12 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import { Button, Checkbox, Form, Image, Modal, Select,} from 'semantic-ui-react'
-import { useParams, useHistory, Link } from 'react-router-dom';
-import { patronInfo } from '@nara.platform/dock';
-import Avartar from '../../../style/media/img-profile-80-px.png'
-import classNames from 'classnames';
-import { useLearningObjectivesItem } from '../../store/PersonalBoardStore';
-import SelectType from '../../model/SelectType';
-import { useAttendCountItem } from '../../store/EventStore';
+import { Modal } from 'semantic-ui-react'
+import { useHistory, Link } from 'react-router-dom';
+
 import moment from 'moment';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -15,6 +10,7 @@ interface Props {
   open: boolean;
   AttendCountItem: any;
   AttendEventItem: any;
+  EncryptEmail: string;
   setOpen: (state:boolean) => void,
   handleInputChange: (name: string, value: any) => void,
   handleSave: () => void,
@@ -25,6 +21,7 @@ const AttendanceModal:React.FC<Props> = ({
   open,
   AttendCountItem,
   AttendEventItem,
+  EncryptEmail,
   setOpen,
   handleInputChange,
   handleSave,
@@ -87,7 +84,7 @@ const AttendanceModal:React.FC<Props> = ({
   }, [attendFlag, AttendCountItem])
 
   const test = useCallback(() => {
-    console.log('test')
+    console.log('복권 띄우기', EncryptEmail)
     const frm = document.createElement('form')
     frm.setAttribute('id','1234')
     frm.setAttribute('action','http://www.naver.com')
@@ -103,7 +100,7 @@ const AttendanceModal:React.FC<Props> = ({
 
     frm.submit()
 
-  }, [])
+  }, [EncryptEmail])
 
   return (
     <>
@@ -121,10 +118,6 @@ const AttendanceModal:React.FC<Props> = ({
         </Modal.Header>
         <Modal.Content className="admin_popup_add">
           <div className="contentbox">
-            {/* 
-                오늘 출석 완료시 notibox 에 done클래스 추가 시 텍스트 변경됩니다.
-                모든 출석 완료시 notibox 에 alldone클래스 추가 시 텍스트및 색상 변경됩니다.
-            */}
             <div className={notiSentence(attendFlag)}>
               <strong className="notitxt"/>
               <dl>
@@ -140,8 +133,6 @@ const AttendanceModal:React.FC<Props> = ({
             </div>
             <div className="stampbox">
               <ul>
-                {/* 1. 오늘날짜 강조 할때 li에 today클래스 추가되면 텍스트 컬러 변경됩니다.  
-                    2. 출석완료 했을 때 li에 done클래스 추가되면 출석완료이미지 노출됩니다. */}
                 {
                   Array(20).fill('').map((v, idx) => {
                     return (
@@ -170,10 +161,6 @@ const AttendanceModal:React.FC<Props> = ({
             }
           </div>
         </Modal.Content>
-        {/* <Modal.Actions className="actions actions2">
-          <button className="ui button pop2 d" onClick={() => setOpen(!open)}>닫기</button>
-          <button className="ui button pop2 p" onClick={() => handleSave()}>확인</button>
-        </Modal.Actions> */}
       </Modal>
       )
     </>

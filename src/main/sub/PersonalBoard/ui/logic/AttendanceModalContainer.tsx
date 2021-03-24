@@ -1,12 +1,12 @@
 import { mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { findAttendEvent } from '../../api/personalBoardApi';
 import { requestAttendCount } from '../../service/getAttendCount';
 import { requestAttendEvent } from '../../service/getAttendEvent';
+import { requestEncryptEmail } from '../../service/getEncryptEmail';
 import { saveAttend } from '../../service/saveAttend';
-import { useAttendCountItem, useAttendEventItem } from '../../store/EventStore';
+import { useAttendCountItem, useAttendEventItem, useEncryptEmail } from '../../store/EventStore';
 import AttendanceModal from '../view/AttendanceModal';
 
 
@@ -21,10 +21,15 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
 }){
   const AttendEventItem = useAttendEventItem()
   const AttendCountItem = useAttendCountItem()
+  const EncryptEmail = useEncryptEmail()
 
   useEffect(() => {
     if(open) {
       requestAttendEvent()
+      requestEncryptEmail()
+    }
+    return () => {
+      console.log('cleanup')
     }
   }, [open])
 
@@ -55,15 +60,20 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
   }, [AttendEventItem])
 
 return (
-  <AttendanceModal
-    open={open}
-    setOpen={setOpen}
-    handleInputChange={handleInputChange}
-    handleSave={handleSave}
-    attendClick={attendClick}
-    AttendEventItem={AttendEventItem}
-    AttendCountItem={AttendCountItem}
-  />
+  <>
+  { EncryptEmail && (
+    <AttendanceModal
+      open={open}
+      setOpen={setOpen}
+      handleInputChange={handleInputChange}
+      handleSave={handleSave}
+      attendClick={attendClick}
+      AttendEventItem={AttendEventItem}
+      AttendCountItem={AttendCountItem}
+      EncryptEmail={EncryptEmail}
+    />
+  )}
+  </>
 )
 }
 

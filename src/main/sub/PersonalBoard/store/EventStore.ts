@@ -23,6 +23,13 @@ const [
     useAttendCountItem
 ] = createStore<any>([])
 
+const [
+    setEncryptEmail, 
+    onEncryptEmail, 
+    getEncryptEmail,
+    useEncryptEmail
+] = createStore<string>()
+
 export {
     setAttendEventItem, 
     onAttendEventItem, 
@@ -31,5 +38,9 @@ export {
     setAttendCountItem, 
     onAttendCountItem, 
     getAttendCountItem,
-    useAttendCountItem
+    useAttendCountItem,
+    setEncryptEmail, 
+    onEncryptEmail, 
+    getEncryptEmail,
+    useEncryptEmail
 }
