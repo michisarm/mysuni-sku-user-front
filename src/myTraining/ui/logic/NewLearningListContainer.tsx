@@ -1,9 +1,10 @@
 import React, {useState, Fragment} from 'react';
-import {Radio, Segment, Checkbox} from 'semantic-ui-react';
+import {Radio, Segment, Checkbox, Form} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import NewLearningListView from '../view/NewLearningListView';
 import {OrderByType} from '../../../lecture/model';
 import {ContentType} from '../page/NewLearningPage';
+import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 
 interface Props extends RouteComponentProps {
   contentType: string,
@@ -56,6 +57,46 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
         {/*onChange={onChangeSorting}*/}
         {/*/>*/}
         {/*</div>*/}
+
+        {/* <div className="comments-sort">
+          {CheckboxOptions.enrollingViewTypes.map((viewType, index) => (
+            <Fragment key={`view-type-${index}`}>
+              <Checkbox
+                className="base radio"
+                name={viewType.name}
+                label={viewType.label}
+                value={viewType.value}
+                // checked={viewType.value === checkedViewType}
+                // onChange={onChangeViewType}
+              />
+            </Fragment>
+          ))}
+        </div> */}
+
+        <div className="comments-sort">
+          <Form className="comments-sort">
+            <Form.Group inline>
+              <Form.Field>
+                <Radio
+                  className="base"
+                  label="전체 보기"
+                  name="sortRadioGroup"
+                  value={OrderByType.collegeOrder}                  
+                />
+              </Form.Field>
+              <Form.Field>
+                <Radio
+                  className="base"
+                  label="신청 가능 과정 모아보기"
+                  name="sortRadioGroup"
+                  value={OrderByType.collegeOrder}                  
+                />
+              </Form.Field>
+            </Form.Group>
+          </Form>
+        </div>
+        
+        
       </div>
 
       <NewLearningListView
