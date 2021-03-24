@@ -19,7 +19,7 @@ export async function requestCollegePercent() {
         })
       }
     })
-
+    
     setCollegeTopChartItem([...collegeArr])
   })
 }

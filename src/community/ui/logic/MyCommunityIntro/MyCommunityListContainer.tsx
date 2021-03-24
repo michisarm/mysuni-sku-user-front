@@ -83,7 +83,7 @@ function MyCommunityListContainer() {
             onChange={changeSort}
           />
         </div>
-        <div className="commu-home-scroll">
+        <div className="commu-home-scroll" style={{overflow: 'visible', height: 'auto'}}>
           {myCommunityIntro !== undefined && (
             <>
               {myCommunityIntro.communities.map(communityItem => (
