@@ -173,7 +173,7 @@ class LectureContainer extends Component<Props, States> {
             rating 은 표시되나 date 는 표시되지 않음.
       ]
     */
-    const { model, thumbnailImage, onAction } = this.props;
+    const { model, thumbnailImage, onAction, contentType } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
 
@@ -202,6 +202,7 @@ class LectureContainer extends Component<Props, States> {
         onViewDetail={this.onViewDetail}
         onHoverIn={this.onHoverIn}
         onHoverOut={this.onHoverOut}
+        contentType={contentType}
       />
     );
   }

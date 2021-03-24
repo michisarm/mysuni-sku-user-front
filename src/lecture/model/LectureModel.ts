@@ -13,6 +13,8 @@ import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import moment from 'moment';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
+//import LectrueRibbon from './LectrueRibbon';
+
 
 class LectureModel extends DramaEntityObservableModel {
   //
@@ -82,7 +84,15 @@ class LectureModel extends DramaEntityObservableModel {
 
       this.reviewSummary = lecture.reviewSummary;
 
-      this.studentCount >= this.capacity ? this.ribbonName = "정원 마감" : this.ribbonName = ("D-"+this.differDays);
+      if(this.studentCount >= this.capacity) {
+        this.ribbonName = "정원 마감"
+      } else {
+        if(this.differDays == 0) {
+          this.ribbonName = ("D-DAY");
+        } else {
+          this.ribbonName = ("D-"+this.differDays);
+        }
+      }
     }
   }
 

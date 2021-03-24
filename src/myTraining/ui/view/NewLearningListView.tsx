@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
@@ -25,6 +25,7 @@ import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
+import {Radio, Form} from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -40,10 +41,10 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
 
   contentType: string;
   order: string;
-  totalCount: number;
+  // totalCount: number;
 
   setNewOrder: (order: OrderByType) => void;
-  showTotalCount: (count: number) => void;
+  // showTotalCount: (count: number) => void;
   setPageTitle: (contentType: ContentType) => void;
 }
 
@@ -63,7 +64,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     actionLogService,
     enrLectureService,
     setNewOrder,
-    showTotalCount,
+    // showTotalCount,
     setPageTitle,
     match,
     history,
@@ -83,6 +84,11 @@ const NewLearningListView: React.FC<Props> = Props => {
   const refresh = useRef(false);
   const fromBack = useRef(false);
 
+  const [totalCount, setTotalCount] = useState(0);
+
+  const showTotalCount = (count: number) => {
+    setTotalCount(count);
+  };
   // 최초 렌더링 후 한번만 호출됨
   useEffect(() => {
     //
@@ -395,18 +401,22 @@ const NewLearningListView: React.FC<Props> = Props => {
   const findEnrLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
+    
+    let orderBy = OrderByType.Imminent;
 
-    // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
+    if(window.sessionStorage.getItem("order_type") === OrderByType.Available) orderBy = OrderByType.Available;
+
     const lectureFilterRdo = LectureFilterRdoModel.enrLectures(
       page!.limit,
-      page!.nextOffset
+      page!.nextOffset,
+      orderBy
     );
     const lectureOffsetList = await enrLectureService!.findEnrollingLectures(
       lectureFilterRdo
     );
 
     enrLectureService!.setTitle(lectureOffsetList.title);
-    setPageTitle(ContentType.Recommend);
+    setPageTitle(ContentType.Enrolling);
 
     lectures.current = enrLectureService!.enrLectures;
 
@@ -558,49 +568,92 @@ const NewLearningListView: React.FC<Props> = Props => {
     return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
   };
 
+  const onChangeFilter = (e: any, data: any) => {
+    window.sessionStorage.setItem('order_type', data.value);
+
+    // ORDER 타입 선택 시 첫 페이지로 조회 하게 초기화
+    pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
+
+    findLectures(true);
+  }  
+
   return (
-    <div className="section">
-      {lectures &&
-      lectures.current &&
-      lectures.current.length > 0 &&
-      lectures.current[0] ? (
-        <>
-          <Lecture.Group type={Lecture.GroupType.Box}>
-            {lectures.current?.map((lecture: any, index: any) => {
-              const inMyLecture =
-                inMyLectureMap.get(lecture.serviceId) || undefined;
-              return (
-                <Lecture
-                  key={`lecture-${index}`}
-                  model={lecture}
-                  rating={getRating(lecture)}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: '알림',
-                      message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
-                    });
-                    onToggleBookmarkLecture(inMyLecture || lecture);
-                  }}
-                  onViewDetail={onViewDetail}
-                />
-              );
-            })}
-          </Lecture.Group>
-          {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
-          {window.scrollTo(0, yPos)}
-        </>
-      ) : (
-        renderNoSuchContentPanel(contentType)
-      )}
-    </div>
+    <Fragment>
+      <div className="sort-reult">
+        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
+
+        {contentType == ContentType.Enrolling && (
+          <div className="comments-sort">
+            <Form className="comments-sort">
+              <Form.Group inline>
+                <Form.Field>
+                  <Radio
+                    className="base"
+                    label="전체 보기"
+                    name="sortRadioGroup"
+                    value={OrderByType.Imminent}      
+                    onChange={onChangeFilter}           
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Radio
+                    className="base"
+                    label="신청 가능 과정 모아보기"
+                    name="sortRadioGroup"
+                    value={OrderByType.Available}       
+                    onChange={onChangeFilter}                      
+                  />
+                </Form.Field>
+              </Form.Group>
+            </Form>
+          </div>
+        )}
+      </div>
+
+      <div className="section">
+        {lectures &&
+        lectures.current &&
+        lectures.current.length > 0 &&
+        lectures.current[0] ? (
+          <>
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              {lectures.current?.map((lecture: any, index: any) => {
+                const inMyLecture =
+                  inMyLectureMap.get(lecture.serviceId) || undefined;
+                return (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
+                    rating={getRating(lecture)}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    action={
+                      inMyLecture
+                        ? Lecture.ActionType.Remove
+                        : Lecture.ActionType.Add
+                    }
+                    onAction={() => {
+                      reactAlert({
+                        title: '알림',
+                        message: inMyLecture
+                          ? '본 과정이 관심목록에서 제외되었습니다.'
+                          : '본 과정이 관심목록에 추가되었습니다.',
+                      });
+                      onToggleBookmarkLecture(inMyLecture || lecture);
+                    }}
+                    onViewDetail={onViewDetail}
+                    contentType={contentType}
+                  />
+                );
+              })}
+            </Lecture.Group>
+            {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
+            {window.scrollTo(0, yPos)}
+          </>
+        ) : (
+          renderNoSuchContentPanel(contentType)
+        )}
+      </div>
+    </Fragment>
   );
 };
 

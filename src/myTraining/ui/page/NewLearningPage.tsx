@@ -40,6 +40,7 @@ const NewLearningPage: React.FC<Props> = Props => {
   const contentType = params.type as ContentType;
 
   const [title, setTitle] = useState<string | undefined>('');
+  const [subTitle, setSubTitle] = useState<string | undefined>('');
 
   // 페이지 타이틀 설정
   const setPageTitle = (contentType: ContentType) => {
@@ -58,6 +59,7 @@ const NewLearningPage: React.FC<Props> = Props => {
         break;
       case ContentType.Enrolling:
         setTitle(enrLectureService?.Title);
+        setSubTitle(enrLectureService?.SubTitle);
         break;
       default:
         setTitle('알 수 없는 학습과정입니다.');
@@ -73,6 +75,7 @@ const NewLearningPage: React.FC<Props> = Props => {
       <div className="ma-title">
         <div className="inner">
           <h2>{title}</h2>
+          <p className="txt">{subTitle}</p>
         </div>
       </div>
       <NewLearningListContainer

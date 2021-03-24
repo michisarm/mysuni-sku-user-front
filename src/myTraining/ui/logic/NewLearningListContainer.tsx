@@ -15,12 +15,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
   //
   const { contentType, setPageTitle } = Props;
 
-  const [totalCount, setTotalCount] = useState(0);
   const [order, setOrder] = useState(OrderByType.New);
-
-  const showTotalCount = (count: number) => {
-    setTotalCount(count);
-  };
 
   const onChangeSorting = (e: any, data: any) => {
     if (order === data.value) return;
@@ -36,8 +31,6 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 
   return (
     <Segment className="full">
-      <div className="sort-reult">
-        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
         {/*20.07.28 기능삭제*/}
         {/*<div className="comments-sort">*/}
         {/*<Radio*/}
@@ -73,38 +66,12 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
           ))}
         </div> */}
 
-        <div className="comments-sort">
-          <Form className="comments-sort">
-            <Form.Group inline>
-              <Form.Field>
-                <Radio
-                  className="base"
-                  label="전체 보기"
-                  name="sortRadioGroup"
-                  value={OrderByType.collegeOrder}                  
-                />
-              </Form.Field>
-              <Form.Field>
-                <Radio
-                  className="base"
-                  label="신청 가능 과정 모아보기"
-                  name="sortRadioGroup"
-                  value={OrderByType.collegeOrder}                  
-                />
-              </Form.Field>
-            </Form.Group>
-          </Form>
-        </div>
-        
-        
-      </div>
-
       <NewLearningListView
         setNewOrder={setNewOrder}
-        showTotalCount={showTotalCount}
+        // showTotalCount={showTotalCount}
         contentType={contentType}
         order={window.sessionStorage.getItem('order_type') === OrderByType.New ? OrderByType.New : OrderByType.Popular}
-        totalCount={totalCount}
+        // totalCount={totalCount}
         setPageTitle={setPageTitle}
       />
 

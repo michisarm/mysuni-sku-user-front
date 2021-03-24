@@ -101,7 +101,7 @@ interface EnrollingRibbonProps {
 
 export const EnrollingRibbon = ({ ribbonName }: EnrollingRibbonProps) => (
   <div className="card-ribbon-wrap">
-    <Label className="ribbon2">{ribbonName}</Label>
+    <Label className="day">{ribbonName}</Label>
   </div>
 );
 

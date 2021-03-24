@@ -6,6 +6,7 @@ enum OrderByType {
   New = 'NEW',
   Popular = 'POPULAR',
   collegeOrder = 'COLLEGE_ORDER',
+  Available = 'AVAILABLE',
   Imminent = 'IMMINENT'
 }
 

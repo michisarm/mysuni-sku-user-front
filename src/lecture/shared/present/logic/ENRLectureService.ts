@@ -21,6 +21,7 @@ class ENRLectureService {
   }
 
   _title: string | null = '';
+  _subTitle: string | null = '';
 
   @action
   setTitle(title: string | null) {
@@ -28,26 +29,23 @@ class ENRLectureService {
       this._title = title;
     }
     else {
-      const today = new Date();
-      const month = today.getMonth() + 1;
-      const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
-
-      this._title = `mySUNI ${month}월 ${week}주 신규 학습 과정`;
+      this._title = `수강 신청 과정 모아보기`;
     }
   }
 
   @computed
   get Title() {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
-
     if (this._title && this._title.length > 0) {
       return this._title;
     }
     else {
-      return `mySUNI ${month}월 ${week}주 신규 학습 과정`;
+      return `수강 신청 과정 모아보기`;
     }
+  }
+
+  @computed
+  get SubTitle() {
+    return `사전 수강 신청이 필요한 과정들을 조회할 수 있습니다.`;
   }
 
   @observable

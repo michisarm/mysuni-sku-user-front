@@ -125,7 +125,7 @@ const ENRLearning: React.FC<Props> = Props => {
     // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
-    history.push(myTrainingRoutes.learningNewLecture());
+    history.push(myTrainingRoutes.learningEnrLecture());
 
     // react-ga event
     ReactGA.event({
