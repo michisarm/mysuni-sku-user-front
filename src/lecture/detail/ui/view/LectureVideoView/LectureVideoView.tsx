@@ -56,6 +56,7 @@ import {
   getActiveCourseStructureItem,
   getActiveProgramStructureItem,
 } from '../../../service/useLectureStructure/useLectureStructure';
+import { setEmbed } from 'lecture/detail/store/EmbedStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -500,6 +501,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setIsActive(false);
       setNextContentsView(false);
       setEmbedApi('');
+      setEmbed('');
       setLectureConfirmProgress();
     };
   }, []);
@@ -808,6 +810,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
+        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -940,7 +943,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {getLectureTranscripts() &&
+        
+        {/* {getLectureTranscripts() &&
           getLectureMedia() &&
           (getLectureMedia()?.mediaType == 'InternalMedia' ||
             getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
@@ -1008,7 +1012,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             View Transcript
             <i aria-hidden="true" className="icon icon morelink" />
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
