@@ -25,6 +25,14 @@ Content-Type: application/json;charset=UTF-8
     "departmentName": "CV Digital그룹"
 }
 
+### 커뮤니티: 댓글: 갯수 조회
+GET http://{{host}}/comments/count
+    ?feedbackId={{feedbackId}}
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+
 ### 커뮤니티: 댓글: 목록 조회
 GET http://{{host}}/comments/
     ?feedbackId={{feedbackId}}
