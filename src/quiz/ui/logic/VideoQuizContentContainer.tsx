@@ -169,10 +169,13 @@ const VideoQuizContentContainer = ({
         questionData[currentIndex].type === 'SingleChoice' ||
         questionData[currentIndex].type === 'MultipleChoice'
       ) {
+        const emptySummary = { 1: 0, 2: 0, 3: 0, 4: 0 };
         const summary = await findAnswerSummary(questionData[currentIndex]?.id);
-        setSummaryCount(
-          Object.values(summary.quizQuestionAnswerItemMap.numberCountMap)
+        const combineSummary = Object.assign(
+          emptySummary,
+          summary.quizQuestionAnswerItemMap.numberCountMap
         );
+        setSummaryCount(Object.values(combineSummary));
       }
       const limit = 10;
       const result: any = await findAllAnswer(
