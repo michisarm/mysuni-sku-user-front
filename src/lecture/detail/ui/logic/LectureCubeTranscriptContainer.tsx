@@ -8,6 +8,8 @@ import { getEmbed } from 'lecture/detail/store/EmbedStore';
 // Service
 import { downloadTranscript } from '../../service/useTranscript/utility/useTranscript';
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
+import Transcript from 'lecture/detail/model/Transcript';
+import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
 
 // import WatchLog from 'lecture/detail/model/Watchlog';
 // import LectureParams from '../../viewModel/LectureParams';
@@ -33,16 +35,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
   transLangVal,
   setTransLangVal
 }) {
-    // 특정 위치로 재생 위치 이동
-    const seekByIndex = (index: number) => {
-        if (getEmbed() && index >= 0) {
-          //TODO current state 를 찾아서 Play
-          getEmbed().playVideo();
-          getEmbed().seekTo(index);
-        }
-    };
-
-
+    
     const selectTransLangObj = [
       { key: "ko", value: "ko", text: "KR" },
       { key: "eng", value: "en", text: "ENG" },
@@ -50,15 +43,105 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     ];
 
     const [ transcriptList, setTranScriptList ] = useState<any>();
+    const [ panoptoSessionId, setPanoptoSessionId ] = useState<string | undefined>(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
+    const [ isActive, setIsActive ] = useState<boolean>(false);
+    const [ selectedRow, setSelectedRow ] = useState<Transcript>();
+
+    const interval = useRef<any>(null);
+    const toggleScriptActiveFunc = useRef<any>(null);
+
+    // 특정 위치로 재생 위치 이동
+    const seekByIndex = (index: number) => {
+        getEmbed().isReady = true;
+        console.log(getEmbed());
+        if (getEmbed() && index >= 0) {
+          //TODO current state 를 찾아서 Play
+          getEmbed().playVideo();
+          getEmbed().seekTo(index);
+        }
+    };
+
+    // 동영상 플레이어 시간 형식으로 변환
+    const convertStringTimeToNumber = (time : string = "0") => {
+      return parseInt(time.substr(0, 2), 10) * 60 * 60 + parseInt(time.substr(2, 2), 10) * 60 + parseInt(time.substr(4, 2), 10);
+    }
+
+
+    // interval 안에서 현재 Transcript 객체를 참조 하기 위해서
+    toggleScriptActiveFunc.current = () => {
+       setTranScriptList(
+         transcriptList.map((item : any) => { 
+           return selectedRow?.idx === item.idx ? 
+             { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+             : 
+             { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+         })
+       );
+    }
+
+    // 동영상 상태 변경 시 callback
+    getEmbed().onStateChange = () => {
+      console.log("@@@@@@@@@ 동영상 상태 변경 후 active : " + isActive);
+      console.log("@@@@@@@@@ 동영상 상태 변경 후 isPaused : " + getEmbed().isPaused);
+      console.log("@@@@@@@@@ 동영상 상태 변경 후 isReady : " + getEmbed().isReady);
+
+      clearInterval(interval.current);
+
+      if(getEmbed().isPaused === true) {
+        clearInterval(interval.current);
+        console.log("@@@ interval stop");
+      } else {
+        // 동영상 멈췄다가 다시 재생
+        interval.current = setInterval(() => {
+          if(isActive) {
+            console.log("활성화");
+            console.log("동영상 시간 : " + getEmbed().getCurrentTime());
+            console.log("대본 끝나는 시간 : " + convertStringTimeToNumber(selectedRow?.endTime));
+
+            // 최초 Video 로드 후 직접 재생 버튼 누르기 전에는 동영상 재생이 안 돼서 interval 진행 안 되게 막음
+            if(getEmbed().getCurrentTime() === undefined) {
+              clearInterval(interval.current);
+              return;
+            }
+
+            if(getEmbed().getCurrentTime() >= convertStringTimeToNumber(selectedRow?.endTime)) {
+              console.log("지나감");
+              
+              setIsActive(false);
+              setSelectedRow(undefined);
+              toggleScriptActiveFunc.current();
+            
+              clearInterval(interval.current);
+            } 
+          } else {
+            console.log("비활성화");
+            clearInterval(interval.current);
+          }
+        }, 200);
+      }
+    }
 
     useEffect(() => {
-      const getTranScriptsFunc = async () => {
-        const lectureMedia = getLectureMedia();
+      return () => {
+        setSelectedRow(undefined);
+        setIsActive(false);
+        setPanoptoSessionId('');
+        clearInterval(interval.current);
+      }
+    }, [])
 
-        if(lectureMedia !== undefined) {
-          // 테스트용
-          //const transcriptsItem = await findTranscript('0002939c-8307-4dd2-8f5c-abec0022d4fc', transLangVal);
-          const transcriptsItem = await findTranscript(lectureMedia.mediaContents.internalMedias[0].panoptoSessionId, transLangVal);          
+    useEffect(() => {
+      setPanoptoSessionId(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
+    });
+
+    useEffect(() => {
+      clearInterval(interval.current);
+
+      const getTranScriptsFunc = async () => {
+        
+        if(panoptoSessionId !== undefined) {
+          // '0002939c-8307-4dd2-8f5c-abec0022d4fc'
+          const transcriptsItem = await findTranscript(panoptoSessionId, transLangVal);          
 
           transcriptsItem?.map((item) => {
             item.active = false;
@@ -69,7 +152,41 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       };
 
       getTranScriptsFunc();     
-    }, [transLangVal]);
+    }, [transLangVal, panoptoSessionId]);
+
+    // 대본 선택 여부에 따른 처리
+    useEffect(() => {
+      clearInterval(interval.current);
+
+      interval.current = setInterval(() => {
+        if(isActive) {
+          console.log("활성화");
+          console.log("동영상 시간 : " + getEmbed().getCurrentTime());
+          console.log("대본 끝나는 시간 : " + convertStringTimeToNumber(selectedRow?.endTime));
+
+          // 최초 Video 로드 후 직접 재생 버튼 누르기 전에는 동영상 재생이 안 돼서 interval 진행 안 되게 막음
+          if(getEmbed().getCurrentTime() === undefined) {
+            clearInterval(interval.current);
+            return;
+          }
+
+          if(getEmbed().getCurrentTime() >= convertStringTimeToNumber(selectedRow?.endTime)) {
+            console.log("지나감");
+            
+            setIsActive(false);
+            setSelectedRow(undefined);
+            toggleScriptActiveFunc.current();
+           
+            clearInterval(interval.current);
+          } 
+        } else {
+          console.log("비활성화");
+          clearInterval(interval.current);
+        }
+      }, 200);
+
+      return () => clearInterval(interval.current);
+    }, [selectedRow]);
 
     return(
         <>
@@ -111,32 +228,29 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                         key={lectureTranscript.idx}
                         className={lectureTranscript.activate ? "transcript-active" : ""}
                         onClick={() => {
-                          seekByIndex(
-                           parseInt(
-                              lectureTranscript.startTime.substr(0, 2),
-                              10
-                            ) *
-                             60 *
-                             60 +
-                             parseInt(
-                               lectureTranscript.startTime.substr(2, 2),
-                               10
-                             ) *
-                               60 +
-                             parseInt(
-                               lectureTranscript.startTime.substr(4, 2),
-                               10
-                             )
-                          );
+                          seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime));
 
-                          setTranScriptList(
-                            transcriptList.map((item : any) => { 
-                              return lectureTranscript.idx === item.idx ? 
-                                { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
-                                : 
-                                { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
-                            })
-                          );
+                          if(getEmbed().getCurrentTime() !== undefined) {
+                            // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
+                            if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
+                              setIsActive(true);
+                              setSelectedRow(lectureTranscript);
+                            } else if(selectedRow.idx === lectureTranscript.idx) {
+                              setIsActive(false);
+                              setSelectedRow(undefined);
+                            }
+                          
+                            // 대본 선택 시 해당 ROW CSS 변경
+                            setTranScriptList(
+                              transcriptList.map((item : any) => { 
+                                  return lectureTranscript.idx === item.idx ? 
+                                    { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+                                    : 
+                                    { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+                              })
+                            );
+                          }
+                          
                         }}
                         style={{ cursor: 'pointer' }}
                       >
