@@ -161,7 +161,6 @@ const AttendanceModal:React.FC<Props> = ({
           </div>
         </Modal.Content>
       </Modal>
-      )
     </>
   )
 }
