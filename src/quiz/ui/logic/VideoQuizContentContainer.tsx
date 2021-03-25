@@ -128,7 +128,6 @@ const VideoQuizContentContainer = ({
           questionData[currentIndex].type === 'MultipleChoice')
       ) {
         setQuizStatus({ status: true, type: 'success' });
-
         const params = {
           email: currentUser?.email,
           quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
@@ -136,7 +135,6 @@ const VideoQuizContentContainer = ({
             .map(row => row.number),
           quizQuestionId: questionData[currentIndex]?.id,
         };
-
         await registerAnswer(params);
       } else if (!questionData[currentIndex].answer) {
         // 단답형, 서술형 답안 제출의 경우
@@ -333,6 +331,7 @@ const VideoQuizContentContainer = ({
           </div>
         </div>
       )}
+
       {/* 퀴즈참여 완료 */}
       {quizStatus.status && quizStatus.type === 'finish' && questionData && (
         <div className="video-quiz-wrap sty2">
@@ -446,21 +445,24 @@ const VideoQuizContentContainer = ({
                                 <div
                                   style={{
                                     width: `${
-                                      summaryCount &&
                                       resultData &&
                                       quizStatus.type === 'result' &&
-                                      summaryCount![index] &&
+                                      summaryCount &&
+                                      summaryCount[index] &&
                                       questionData[currentIndex]?.type ===
                                         'SingleChoice'
-                                        ? Math.floor(
-                                            (summaryCount![index] /
-                                              resultData!.totalCount) *
+                                        ? Math.round(
+                                            (summaryCount[index] /
+                                              resultData.totalCount) *
                                               100
                                           )
-                                        : questionData[currentIndex]?.type ===
-                                            'MultipleChoice' && multipleTotal
-                                        ? Math.floor(
-                                            (summaryCount![index] /
+                                        : summaryCount &&
+                                          summaryCount[index] &&
+                                          questionData[currentIndex]?.type ===
+                                            'MultipleChoice' &&
+                                          multipleTotal
+                                        ? Math.round(
+                                            (summaryCount[index] /
                                               multipleTotal) *
                                               100
                                           )
@@ -471,21 +473,24 @@ const VideoQuizContentContainer = ({
                                 />
                               </div>
                               <span style={{ marginLeft: '1rem' }}>
-                                {summaryCount &&
-                                resultData &&
+                                {resultData &&
                                 quizStatus.type === 'result' &&
-                                summaryCount![index] &&
+                                summaryCount &&
+                                summaryCount[index] &&
                                 questionData[currentIndex]?.type ===
                                   'SingleChoice'
-                                  ? Math.floor(
-                                      (summaryCount![index] /
-                                        resultData!.totalCount) *
+                                  ? Math.round(
+                                      (summaryCount[index] /
+                                        resultData.totalCount) *
                                         100
                                     )
-                                  : questionData[currentIndex]?.type ===
-                                      'MultipleChoice' && multipleTotal
-                                  ? Math.floor(
-                                      (summaryCount![index] / multipleTotal) *
+                                  : summaryCount &&
+                                    summaryCount[index] &&
+                                    questionData[currentIndex]?.type ===
+                                      'MultipleChoice' &&
+                                    multipleTotal
+                                  ? Math.round(
+                                      (summaryCount[index] / multipleTotal) *
                                         100
                                     )
                                   : 0}
@@ -551,6 +556,7 @@ const VideoQuizContentContainer = ({
                   </button>
                 )}
                 <div
+                  style={{ fontSize: '.875rem', color: '#699793' }}
                   dangerouslySetInnerHTML={{
                     __html:
                       `${questionData[currentIndex].subText}` ||
