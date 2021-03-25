@@ -18,7 +18,7 @@ return (
   {learningObjectives && (
     <div className="main-stu-time">
       <span>
-  하루 <em>{learningObjectives.DailyLearningTimeHour}시간 {learningObjectives.DailyLearningTimeMinute}분</em> 학습, 일주일 <em>{learningObjectives.WeekAttendanceGoal}회</em> 출석
+  하루 <em>{learningObjectives.DailyLearningTimeHour}시간 {learningObjectives.DailyLearningTimeMinute}분</em> 학습, 일주일 <em>{learningObjectives.WeekAttendanceGoal}일</em> 출석
       </span>
       <button type="button" onClick={openLearningObjectives}/>
     </div>
