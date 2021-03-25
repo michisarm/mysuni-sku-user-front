@@ -6,22 +6,14 @@ import {
   getLectureTestStudentItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
-import {
-  getActiveCourseStructureItem,
-  getActiveProgramStructureItem,
-  getActiveStructureItem,
-  getActiveStructureItemAll,
-  useLectureStructure,
-} from '../../../service/useLectureStructure/useLectureStructure';
-import { requestLectureStructure } from '../../logic/LectureStructureContainer';
-import { EssayScore } from 'lecture/detail/model/GradeSheet';
-import { GraderCommentView } from './GraderCommentView';
-import { useHistory } from 'react-router-dom';
+import LectureTestIntroView from './LectureTestIntroView';
+import LectureTestResultView from './LectureTestResultView';
+import LectureTestPaperView from './LectureTestPaperView';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -34,7 +26,48 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
 }) {
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
-  const [lectureStructure] = useLectureStructure();
+
+  const [useTestIntroView, setUseTestIntroView] = useState<boolean>(true); // TEST 메인 화면
+  const [useTestView, setUseTestView] = useState<boolean>(false); // TEST 화면
+  const [useTestResultView, setUseTestResultView] = useState<boolean>(false); // TEST 결과 화면
+
+  const openView = (view: string) => {
+    if (view === 'intro') {
+      setUseTestIntroView(true);
+      setUseTestView(false);
+      setUseTestResultView(false);
+    } else if (view === 'test') {
+      setUseTestIntroView(false);
+      setUseTestView(true);
+      setUseTestResultView(false);
+    } else if (view === 'result') {
+      setUseTestIntroView(false);
+      setUseTestView(false);
+      setUseTestResultView(true);
+    } else {
+      setUseTestIntroView(true);
+      setUseTestView(false);
+      setUseTestResultView(false);
+    }
+  };
+
+  useEffect(() => {
+    if (testStudentItem !== undefined) {
+      if (
+        testStudentItem.learningState === 'Failed' ||
+        testStudentItem.learningState === 'Missed' ||
+        testStudentItem.learningState === 'TestWaiting' ||
+        testStudentItem.learningState === 'Passed' ||
+        testStudentItem.learningState === 'TestPassed'
+      ) {
+        openView('result');
+      } else {
+        openView('intro');
+      }
+    } else {
+      openView('intro');
+    }
+  }, [params, testStudentItem]);
 
   useEffect(() => {
     if (
@@ -57,356 +90,32 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         });
       }
     }
-  }, [testStudentItem, answerItem, params, lectureStructure]);
-
-  let readOnly = false;
-  if (
-    testStudentItem &&
-    testStudentItem.learningState &&
-    (testStudentItem.learningState === 'TestWaiting' ||
-      testStudentItem.learningState === 'Passed' ||
-      testStudentItem.learningState === 'TestPassed')
-  ) {
-    readOnly = true;
-  }
-
-  const saveAnswerSheet = useCallback(() => {
-    let answerItemId = '';
-    if (answerItem !== undefined) {
-      answerItemId = answerItem.id;
-    }
-
-    if (params.contentType === 'cube') {
-      saveTestAnswerSheet(params, answerItemId, false, false);
-    } else {
-      saveCourseTestAnswerSheet(params, answerItemId, false, false);
-    }
-  }, [answerItem, params]);
-
-  const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
-
-  const history = useHistory();
-  const goToPath = (path?: string) => {
-    if (path !== undefined) {
-      //const currentHistory = getCurrentHistory();
-      //if (currentHistory === undefined) {
-      //  return;
-      //}
-      //currentHistory.push(path);
-      history.push(path);
-    }
-  };
-
-  const submitAnswerSheet = useCallback(() => {
-    let answerItemId = '';
-    if (answerItem !== undefined) {
-      answerItemId = answerItem.id;
-    }
-
-    if (answerItem!.answers.some(element => element.answer === '')) {
-      reactAlert({
-        title: '알림',
-        message: '빈 항목을 입력하세요.',
-      });
-    } else {
-      const lectureStructureItem = getActiveStructureItem();
-      if (lectureStructureItem?.canSubmit !== true) {
-        reactAlert({
-          title: '알림',
-          message: '학습 완료 후 Test 제출이 가능합니다.',
-        });
-        return;
-      }
-
-      reactConfirm({
-        title: '알림',
-        message: 'Test를 최종 제출 하시겠습니까?',
-        onOk: async () => {
-          if (answerItem) {
-            const nextAnswerItem = {
-              ...answerItem,
-              submitAnswers: answerItem.answers,
-            };
-            setLectureTestAnswerItem(nextAnswerItem);
-            if (params.contentType === 'cube') {
-              await saveTestAnswerSheet(params, answerItemId, true, true);
-            } else {
-              await saveCourseTestAnswerSheet(params, answerItemId, true, true);
-            }
-
-            await requestLectureStructure(
-              params.lectureParams,
-              params.pathname
-            );
-            const lectureTestStudentItem = getLectureTestStudentItem();
-            const course = getActiveCourseStructureItem();
-            const program = getActiveProgramStructureItem();
-            switch (lectureTestStudentItem?.learningState) {
-              case 'Waiting':
-              case 'TestWaiting':
-                if (
-                  course?.survey !== undefined &&
-                  course?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(course?.survey?.path),
-                  });
-                } else if (
-                  program?.survey !== undefined &&
-                  program?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(program?.survey?.path),
-                  });
-                } else {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
-                  });
-                }
-                break;
-              case 'Failed':
-                reactAlert({
-                  title: '알림',
-                  message:
-                    '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.',
-                });
-                break;
-              case 'Passed':
-              case 'TestPassed':
-                if (
-                  course?.survey !== undefined &&
-                  course?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '안내',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(course?.survey?.path),
-                  });
-                } else if (
-                  program?.survey !== undefined &&
-                  program?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '안내',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(program?.survey?.path),
-                  });
-                } else {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.',
-                  });
-                }
-                break;
-              default:
-                break;
-            }
-          }
-
-          setSubmitOk(true);
-        },
-      });
-    }
-  }, [answerItem, params, lectureStructure]);
-
-  let testClassName = ' ui segment full ';
-  if (answerItem?.submitted) {
-    testClassName += ' test-complete ';
-  }
-
-  const essayScoreMap = new Map<string, EssayScore>();
-  testItem.essayScores.forEach(essayScore => {
-    essayScoreMap.set(essayScore.questionNo, essayScore);
-  });
+  }, [testStudentItem, answerItem, params]);
 
   return (
-    <div className={testClassName}>
-      {testItem && (
-        <>
-          <div className="course-info-header">
-            <div className="survey-header">
-              <div className="survey-header-left">{testItem.name}</div>
-              <div className="survey-header-right">
-                {!testStudentItem ||
-                  !testStudentItem.learningState ||
-                  (testStudentItem.learningState !== 'Failed' &&
-                    testStudentItem.learningState !== 'Missed' &&
-                    testStudentItem.learningState !== 'TestWaiting' &&
-                    testStudentItem.learningState !== 'Passed')}
-                {testStudentItem &&
-                  testStudentItem.learningState &&
-                  (testStudentItem.learningState === 'Failed' ||
-                    testStudentItem.learningState === 'Missed') && (
-                    <button className="ui button free proceeding p18">
-                      미이수
-                    </button>
-                  )}
-                {testStudentItem &&
-                  testStudentItem.learningState &&
-                  testStudentItem.learningState === 'TestWaiting' && (
-                    <button className="ui button free proceeding p18">
-                      검수중
-                    </button>
-                  )}
-                {testStudentItem &&
-                  testStudentItem.learningState &&
-                  (testStudentItem.learningState === 'Passed' ||
-                    testStudentItem.learningState === 'TestPassed') && (
-                    <button className="ui button free proceeding p18">
-                      이수
-                    </button>
-                  )}
-              </div>
-              <div className="test-text">
-                <div className="test-text-box">
-                  <span>합격점</span>
-                  <span>{testItem.successPoint}점</span>
-                </div>
-                <div className="test-text-box">
-                  <span>총점</span>
-                  <span>{testItem.totalPoint}점</span>
-                </div>
-                {testStudentItem &&
-                  testStudentItem.studentScore &&
-                  testStudentItem.studentScore.numberOfTrials > 0 && (
-                    <div className="test-text-box">
-                      <span>내점수</span>
-                      <span>{testStudentItem.studentScore.latestScore}점</span>
-                    </div>
-                  )}
-              </div>
-            </div>
-          </div>
-          {testItem &&
-            testItem.questions &&
-            testItem.questions.map(question => {
-              let answer: string = '';
-              let answerResult: boolean = false;
-              if (answerItem !== undefined) {
-                answerItem.answers.forEach(result => {
-                  if (result.questionNo === question.questionNo) {
-                    answer = result.answer;
-                  }
-                });
-
-                if (answerItem.submitted) {
-                  let submitAnswer = '';
-                  answerItem.submitAnswers.forEach(result => {
-                    if (result.questionNo === question.questionNo) {
-                      submitAnswer = result.answer;
-                    }
-                  });
-                  if (question.questionType === 'SingleChoice') {
-                    if (question.answer === submitAnswer) {
-                      answerResult = true;
-                    }
-                  }
-                  if (question.questionType === 'MultiChoice') {
-                    let answerChkArr = [];
-
-                    // 문제지 정답
-                    answerChkArr = JSON.parse(question.answer);
-                    // 사용자 정답
-                    const answerMultiJson = submitAnswer.split(',');
-                    let checkCnt = 0;
-
-                    // 자릿수 비교
-                    if (answerChkArr.length === answerMultiJson.length) {
-                      // 정답지
-                      for (let i = 0; i < answerChkArr.length; i++) {
-                        // 사용자문제지
-                        for (let j = 0; j < answerMultiJson.length; j++) {
-                          // 정답지 사용자 문제지 체크
-                          if (answerChkArr[i] === answerMultiJson[j]) {
-                            checkCnt++;
-                          }
-                        }
-                      }
-                    }
-
-                    // 정답지와 사용자 정답 갯수 체크
-                    if (answerChkArr.length === checkCnt) {
-                      answerResult = true;
-                    }
-                  }
-                  if (question.questionType === 'ShortAnswer') {
-                    const shortAnswers =
-                      question.answer && question.answer.split(',');
-                    if (
-                      shortAnswers != null &&
-                      shortAnswers.length > 0 &&
-                      shortAnswers[0] !== 'undefined' &&
-                      submitAnswer
-                    ) {
-                      for (let j = 0; j < shortAnswers.length; j++) {
-                        // 정답지 사용자 문제지 체크
-                        if (
-                          submitAnswer.trim().toLowerCase() ===
-                          shortAnswers[j].trim().toLowerCase()
-                        ) {
-                          answerResult = true;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-
-              const matchedEssayScore = essayScoreMap.get(question.questionNo);
-
-              return (
-                <>
-                  <TestQuestionView
-                    key={'question_' + question.questionNo}
-                    question={question}
-                    submitted={answerItem?.submitted}
-                    answer={answer}
-                    answerResult={answerResult}
-                    readOnly={readOnly}
-                    learningState={testStudentItem?.learningState}
-                    submitOk={submitOk}
-                    setSubmitOk={setSubmitOk}
-                    dataLoadTime={answerItem?.dataLoadTime}
-                    essayScore={matchedEssayScore}
-                  />
-                </>
-              );
-            })}
-          {testItem.graderComment && (
-            <GraderCommentView graderComment={testItem.graderComment} />
-          )}
-          {!readOnly && (
-            <div className="survey-preview">
-              <p>
-                <button
-                  className="ui button fix line"
-                  onClick={saveAnswerSheet}
-                >
-                  저장
-                </button>
-                <button
-                  className="ui button fix bg"
-                  onClick={submitAnswerSheet}
-                >
-                  제출
-                </button>
-              </p>
-            </div>
-          )}
-        </>
+    <>
+      {useTestIntroView && testItem && (
+        <LectureTestIntroView testItem={testItem} openView={openView} />
       )}
-    </div>
+      {useTestResultView && testItem && testStudentItem && (
+        <LectureTestResultView
+          params={params}
+          testItem={testItem}
+          answerItem={answerItem}
+          testStudentItem={testStudentItem}
+          openView={openView}
+        />
+      )}
+      {useTestView && testStudentItem && (
+        <LectureTestPaperView
+          params={params}
+          testItem={testItem}
+          answerItem={answerItem}
+          testStudentItem={testStudentItem}
+          openView={openView}
+        />
+      )}
+    </>
   );
 };
 
