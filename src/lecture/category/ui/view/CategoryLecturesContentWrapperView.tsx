@@ -1,11 +1,10 @@
-
 import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
-
+import { Type, AreaType } from 'tracker/model';
 
 interface Props {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
 class CategoryLecturesContentWrapperView extends Component<Props> {
@@ -16,7 +15,11 @@ class CategoryLecturesContentWrapperView extends Component<Props> {
 
     return (
       <Segment className="full">
-        <div className="college-detail">
+        <div
+          className="college-detail"
+          data-area={AreaType.COLLEGE_CARD}
+          data-type={Type.CLICK}
+        >
           {children}
         </div>
       </Segment>

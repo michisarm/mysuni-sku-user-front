@@ -1,0 +1,1 @@
+export { trackClick, trackView } from './ActionTrackApi';

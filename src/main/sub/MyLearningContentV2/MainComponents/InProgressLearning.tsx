@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
-import { Button, Icon } from 'semantic-ui-react';
+import { Segment, Dimmer, Loader, Button, Icon } from 'semantic-ui-react';
 // import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { NoSuchContentPanel } from 'shared';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 
 import lectureRoutes from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
@@ -23,6 +23,7 @@ import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -51,6 +52,8 @@ const InProgressLearning: React.FC<Props> = Props => {
 
   const { myTrainings } = myTrainingService!;
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // myTrainingService 변경  실행
   useEffect(() => {
     findMyContent();
@@ -75,13 +78,12 @@ const InProgressLearning: React.FC<Props> = Props => {
     }
 
     /* 스토리지에 데이터가 없는 경우 & 데이터가 8개 이상이 아닌 경우 API 호출. */
-    myTrainingService!.findAllMyTrainingsWithState(
-      CONTENT_TYPE,
-      PAGE_SIZE,
-      0,
-      [],
-      true
-    );
+    setIsLoading(true);
+    myTrainingService!
+      .findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE, 0, [], true)
+      .then(() => {
+        setIsLoading(false);
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -219,7 +221,7 @@ const InProgressLearning: React.FC<Props> = Props => {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={AreaType.MAIN_LEARNING} dataType={Type.CLICK}>
       <div className="section-head">
         <strong>
           <span className="ellipsis">{profileMemberName}</span>님이 학습중인
@@ -233,7 +235,6 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </div>
       </div>
-
       {myTrainings.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
           {myTrainings.map(
@@ -271,25 +272,40 @@ const InProgressLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-        <NoSuchContentPanel
-          message={
-            <>
-              <div className="text">진행중인 학습 과정이 없습니다.</div>
-              <Button
-                icon
-                as="a"
-                className="right btn-blue2"
-                onClick={onViewAll}
-              >
-                <span className="border">
-                  <span className="ellipsis">{profileMemberName}</span> 님이
-                  학습 중인 과정 보기
-                </span>
-                <Icon className="morelink" />
-              </Button>
-            </>
-          }
-        />
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 400,
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
+          <Loadingpanel loading={isLoading} color="#eff0f1" />
+          {!isLoading && (
+            <NoSuchContentPanel
+              message={
+                <>
+                  <div className="text">진행중인 학습 과정이 없습니다.</div>
+                  <Button
+                    icon
+                    as="a"
+                    className="right btn-blue2"
+                    onClick={onViewAll}
+                  >
+                    <span className="border">
+                      <span className="ellipsis">{profileMemberName}</span> 님이
+                      학습 중인 과정 보기
+                    </span>
+                    <Icon className="morelink" />
+                  </Button>
+                </>
+              }
+            />
+          )}
+        </Segment>
       )}
     </ContentWrapper>
   );

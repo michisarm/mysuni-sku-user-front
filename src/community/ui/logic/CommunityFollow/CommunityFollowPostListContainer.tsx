@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Icon, Button, Comment } from 'semantic-ui-react';
+import { Icon, Button, Comment, Popup } from 'semantic-ui-react';
 import { reactAlert } from '@nara.platform/accent';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useFollowCommunityIntro } from '../../../store/CommunityMainStore';
@@ -9,8 +9,12 @@ import { requestFollowCommunityPostList } from '../../../service/useFollowCommun
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { off } from 'process';
 import { registerBookmark } from '../../../api/communityApi';
-import { getFollowCommunityIntro, setFollowCommunityIntro } from '../../../store/CommunityMainStore';
+import {
+  getFollowCommunityIntro,
+  setFollowCommunityIntro,
+} from '../../../store/CommunityMainStore';
 import { Link } from 'react-router-dom';
+import { Type, AreaType } from 'tracker/model';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -73,9 +77,8 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   createdTime,
   name,
   contents,
-  bookmarked
+  bookmarked,
 }) {
-
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
   const { pathname } = useLocation();
@@ -85,13 +88,13 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   useEffect(() => {
     setTimeout(() => {
       scrollOnceMove();
-    }, 100)
-  }, [scrollOnceMove])
+    }, 100);
+  }, [scrollOnceMove]);
 
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, [pathname])
+  }, [pathname]);
 
   const shareUrl = useCallback(() => {
     const hostLength = window.location.href.indexOf(pathname);
@@ -133,18 +136,24 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
       <div className="sub-info-box">
         {/* 컨텐츠 영역 */}
         <div className="community-main-contants">
-          <div className="comment-area community-main-card">
+          <div className="comment-area community-main-card commu-sub-card">
             {/* comments */}
             <Comment.Group className="base">
               {/*comment : 2줄이상 말줄임, 대댓글*/}
               <Comment>
                 <Comment.Avatar
-                  src={profileImage === '' || profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
+                  src={
+                    profileImage === '' || profileImage === null
+                      ? `${DefaultImg}`
+                      : `/files/community/${profileImage}`
+                  }
                   alt="profile"
                 />
                 <Comment.Content>
                   <Comment.Author>
-                    <Link to={`/community/${communityId}`}>{communityName}</Link>
+                    <Link to={`/community/${communityId}`}>
+                      {communityName}
+                    </Link>
                   </Comment.Author>
                   <Comment.Text>
                     <div className="ellipsis">
@@ -154,24 +163,44 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                     {/* <Button>+ View more</Button> */}
                   </Comment.Text>
                   <Comment.Actions>
-                    <div className="right top">
-                      {!bookmarked && (
-                        <Button icon className="img-icon" onClick={bookmarkClick}>
-                          <Icon className="bookmark2" />
-                          <span className="blind">북마크</span>
-                        </Button>
-                      )}
-                      {bookmarked && (
-                        <Button icon className="img-icon" onClick={unbookmarkClick}>
-                          <Icon className="remove3" />
-                          <span className="blind">북마크</span>
-                        </Button>
-                      )}
-                      <Button icon className="img-icon" onClick={shareUrl}>
-                        <Icon className="share2" />
-                        <span className="blind">공유</span>
-                      </Button>
-                    </div>
+                    <Popup
+                      className="balloon-pop myCumu_btn"
+                      trigger={
+                        <div className="right top sub-menu">
+                          <Button icon className="img-icon">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAJKADAAQAAAABAAAAJAAAAAAqDuP8AAAAlUlEQVRYCWNgGAWjITAaAiMsBBgp9W9capXnP4a/s0DmMDEwpy2a3badEjOZKNEM0gtyzP//DDIgDHMYJWZS7CBKLMeml2IHgaKJkZHhCQiD2NgsGRUbDYERHQKjBSOh6Ke4HCJkAanyFDtotGAkNchH1Y+4EBgtGAlFOcXlECELSJWn2EGjBSOpQT6qfjQERkMALQQAIac5FltQmtUAAAAASUVORK5CYII=" />
+                            <span className="blind">북마크</span>
+                          </Button>
+                        </div>
+                      }
+                      position="bottom right"
+                      on="click"
+                    >
+                      <Popup.Content>
+                        <ul>
+                          <li className="community-profile">
+                            <a href="#" onClick={shareUrl}>
+                              <i className="balloon icon popupUrl" />
+                              <span>URL 복사</span>
+                            </a>
+                          </li>
+                          <li>
+                            {!bookmarked && (
+                              <a href="#" onClick={bookmarkClick}>
+                                <i className="balloon icon popupBook" />
+                                <span>북마크</span>
+                              </a>
+                            )}
+                            {bookmarked && (
+                              <a href="#" onClick={unbookmarkClick}>
+                                <i className="balloon icon popupBookRemove" />
+                                <span>북마크</span>
+                              </a>
+                            )}
+                          </li>
+                        </ul>
+                      </Popup.Content>
+                    </Popup>
                   </Comment.Actions>
                 </Comment.Content>
               </Comment>
@@ -192,10 +221,10 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                 )}
                 {!more && (
                   <div>
-                    <p>{text}</p>
+                    <p className="summary">{text}</p>
                   </div>
                 )}
-                <div className="text-right">
+                <div className="text-right" style={{float: 'none'}}>
                   {!more && (
                     <button
                       className="ui icon button right btn-blue btn-more"
@@ -224,7 +253,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
-
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
 
@@ -235,18 +263,22 @@ function CommunityFollowPostListContainer() {
   }
 
   const addList = (offset: number) => {
-
     requestFollowCommunityPostList(offset, 5);
-  }
+  };
 
   return (
-    <div className="community-main-contants">
+    <div
+      className="community-main-contants"
+      data-area={AreaType.COMMUNITY_FOLLOWPOST}
+      data-type={Type.CLICK}
+    >
       {communityFollowPostList !== undefined &&
         communityFollowPostList.posts.map(postItem => (
           <FollowPostItemView key={postItem.postId} {...postItem} />
         ))}
       <div className="more-comments">
-        {communityFollowPostList.postsTotalCount > communityFollowPostList.postsOffset && (
+        {communityFollowPostList.postsTotalCount >
+          communityFollowPostList.postsOffset && (
           <Button
             icon
             className="left moreview"
@@ -255,7 +287,8 @@ function CommunityFollowPostListContainer() {
             <Icon className="moreview" /> list more
           </Button>
         )}
-        {communityFollowPostList.postsTotalCount <= communityFollowPostList.postsOffset && (
+        {communityFollowPostList.postsTotalCount <=
+          communityFollowPostList.postsOffset && (
           <Button
             icon
             className="left moreview"

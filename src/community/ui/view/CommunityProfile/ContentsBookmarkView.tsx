@@ -36,6 +36,7 @@ import {
 } from 'community/store/CommunityProfileBookmarkStore';
 import { requestAppendProfileBookmarkPostList } from 'community/service/useCommunityProfile/utility/requestProfileBookmarks';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+import { Type, AreaType } from 'tracker/model';
 
 interface ContentsBookmarkViewProps {
   communityProfileBookmark: CommunityProfileBookmark;
@@ -51,7 +52,11 @@ const ContentsBookmarkView: React.FC<ContentsBookmarkViewProps> = function Conte
   /* eslint-disable */
   return (
     <Segment className="full">
-      <div className="course-detail-center community-containter">
+      <div
+        className="course-detail-center community-containter"
+        data-area={AreaType.COMMUNITY_BOOKMARK}
+        data-type={Type.CLICK}
+      >
         <div className="community-main-contants">
           {result !== undefined &&
             result.map(postItem => (
@@ -222,7 +227,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             )}
             {!more && (
               <div>
-                <p>{text}</p>
+                <p className="summary">{text}</p>
               </div>
             )}
             <div className="text-right">

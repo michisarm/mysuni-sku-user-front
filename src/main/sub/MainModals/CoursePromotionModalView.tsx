@@ -4,6 +4,7 @@ import { Modal, Checkbox, Button, Image } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import { getCookie, setCookie } from '@nara.platform/accent';
 import { useHistory } from 'react-router';
+import { Type, AreaType } from 'tracker/model';
 
 const CoursePromotionModalView = () => {
   //
@@ -38,14 +39,16 @@ const CoursePromotionModalView = () => {
 
   const handleClickImg = () => {
     ModalClose();
-    history.push(`/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac/cube/CUBE-csq/LECTURE-CARD-aed`);
+    history.push(
+      `/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac/cube/CUBE-csq/LECTURE-CARD-aed`
+    );
   };
 
   return (
     <Modal
       open={modalOpen}
       className="base w1000 tutorials2 front scrolling"
-      style={{ position: 'relative', marginTop: '0px'}}
+      style={{ position: 'relative', marginTop: '0px' }}
     >
       <Modal.Header className="header2">
         <div className="right-btn">
@@ -60,7 +63,11 @@ const CoursePromotionModalView = () => {
         </div>
       </Modal.Header>
       <Modal.Content>
-        <div className="scrolling-80vh">
+        <div
+          className="scrolling-80vh"
+          data-area={AreaType.MAIN_POPBANNER}
+          data-type={Type.CLICK}
+        >
           <div className="cont-wrap">
             <div className="img" onClick={handleClickImg}>
               <a>

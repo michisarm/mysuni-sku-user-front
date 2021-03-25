@@ -23,7 +23,7 @@ const nameValuesArr: any[] = []
 const deleteValuesArr: any[] = []
 
 function CommunityMenuContainer() {
-  const {communityId} = useParams<RouteParams>();
+  const { communityId } = useParams<RouteParams>();
   const [communityAdminMenu] = useCommunityAdminMenu();
   const [communityAdminGroups] = useCommunityGroups()
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
@@ -41,7 +41,7 @@ function CommunityMenuContainer() {
   const [deleteValues, setDeleteValues] = useState<any[]>([]);
 
   useEffect(() => {
-    if(communityId !== undefined) {
+    if (communityId !== undefined) {
       handleAddMenu()
     }
   }, [communityId]);
@@ -49,13 +49,13 @@ function CommunityMenuContainer() {
   const onHandleClickTaskRow = useCallback(
     (e, param, type) => {
       setAddMenuFlag(false)
-      e.persist(); 
+      e.persist();
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
-      if (type !== 'delete'){
+      if (type !== 'delete') {
         setSelectedRow(param)
         setAddChildMenuFlag(false)
-      } else if(type === 'delete') {
+      } else if (type === 'delete') {
 
         reactConfirm({
           title: '알림',
@@ -65,19 +65,19 @@ function CommunityMenuContainer() {
             setDeleteValues(deleteValuesArr)
             if (communityAdminMenu) {
               communityAdminMenu.menu.map((item: MenuItem, index: number) => {
-                if(item.id === param.id) {
+                if (item.id === param.id) {
                   communityAdminMenu.menu.splice(index, 1)
                 }
-                if(item.child) {
+                if (item.child) {
                   item.child.map((item2: any, index2: number) => {
-                    if(item2.id === param.id) {
+                    if (item2.id === param.id) {
                       communityAdminMenu.menu[index].child.splice(index2, 1)
                     }
-                  }) 
+                  })
                 }
               })
             }
-            setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+            setCommunityAdminMenu({ 'menu': communityAdminMenu?.menu! });
           },
         });
       }
@@ -86,6 +86,7 @@ function CommunityMenuContainer() {
   );
 
   const handleAddMenu = useCallback(() => {
+
     // 선택된 row 초기화
     setSelectedRow({
       accessType: '',
@@ -103,8 +104,8 @@ function CommunityMenuContainer() {
       surveyCaseId: '',
       surveyId: '',
       surveyInformation: '',
-      url:'',
-      html:'',
+      url: '',
+      html: '',
     })
     setAddMenuFlag(true);
     setAddChildMenuFlag(false);
@@ -115,7 +116,7 @@ function CommunityMenuContainer() {
       id: '',
       munuId: '',
       name: '',
-      order: communityAdminMenu ? (communityAdminMenu?.menu.length === 0 ? 1 : communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1) : 1,
+      order: communityAdminMenu ? (communityAdminMenu?.menu.length === 0 ? 1 : communityAdminMenu.menu.map(m => { return m.child ? m.child.length : 0 }).reduce((r, c) => r + c) + communityAdminMenu!.menu.length + 1) : 1,
       parentId: null,
       patronKey: '',
       type: 'BASIC',
@@ -124,14 +125,14 @@ function CommunityMenuContainer() {
       surveyCaseId: '',
       surveyId: '',
       surveyInformation: '',
-      url:'',
-      html:'',
+      url: '',
+      html: '',
     })
   }, [communityAdminMenu])
 
   const handleAddChildMenu = useCallback(() => {
-    if(selectedRow && selectedRow!.id) {
-      if(selectedRow.parentId) {
+    if (selectedRow && selectedRow!.id) {
+      if (selectedRow.parentId) {
         reactAlert({
           title: '',
           message:
@@ -148,7 +149,7 @@ function CommunityMenuContainer() {
         id: '',
         munuId: '',
         name: '',
-        order: communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1,
+        order: communityAdminMenu && communityAdminMenu.menu.map(m => { return m.child ? m.child.length : 0 }).reduce((r, c) => r + c) + communityAdminMenu!.menu.length + 1,
         parentId: null,
         patronKey: '',
         type: 'BASIC',
@@ -157,9 +158,9 @@ function CommunityMenuContainer() {
         surveyCaseId: '',
         surveyId: '',
         surveyInformation: '',
-        html:''
+        html: ''
       })
-    }else {
+    } else {
       reactAlert({
         title: '',
         message:
@@ -168,50 +169,50 @@ function CommunityMenuContainer() {
       return false
     }
 
-    if(!selectedRow!.child) {
+    if (!selectedRow!.child) {
       selectedRow!.child = []
     }
   }, [communityAdminMenu, selectedRow])
 
   const confirmBlank = useCallback((obj) => {
-    if(!obj.name) {
-      if(obj.type === 'CATEGORY') {
+    if (!obj.name) {
+      if (obj.type === 'CATEGORY') {
         return "카테고리명을 입력해주세요."
-      }else {
+      } else {
         return "메뉴명을 입력해주세요."
       }
     }
-    if(obj.type === 'DISCUSSION') {
-      if(!obj.discussionTopic) {
+    if (obj.type === 'DISCUSSION') {
+      if (!obj.discussionTopic) {
         return "주제를 입력해주세요."
       }
     }
-    if(obj.accessType !== 'COMMUNITY_ALL_MEMBER') {
-      if(obj.groupId === 0) {
+    if (obj.accessType !== 'COMMUNITY_ALL_MEMBER') {
+      if (obj.groupId === 0) {
         return "그룹을 지정해주세요"
       }
     }
-    if(obj.type === 'LINK') {
+    if (obj.type === 'LINK') {
       if (!obj.url) {
         return 'URL를 입력해주세요.'
-       }
+      }
       if (
         !obj.url.includes('http://') &&
         !obj.url.includes('https://')
       ) {
-       return '링크는 http:// 또는 https:// 으로 시작되어야 합니다.'
+        return '링크는 http:// 또는 https:// 으로 시작되어야 합니다.'
       }
     }
-    if(obj.type === 'SURVEY') {
+    if (obj.type === 'SURVEY') {
       if (!obj.surveyInformation) {
-       return '설문 안내글을 입력해주세요.'
+        return '설문 안내글을 입력해주세요.'
       }
       if (!obj.surveyId) {
         return 'survey를 추가해주세요.'
-       }
+      }
     }
-    if(obj.type === 'HTML') {
-      if(!obj.html) {
+    if (obj.type === 'HTML') {
+      if (!obj.html) {
         return "HTML를 입력해주세요."
       }
     }
@@ -220,250 +221,250 @@ function CommunityMenuContainer() {
 
   const handleSave = useCallback(async (nameValues?, deleteValues?, type?, obj?) => {
     let successFlag = false
-    const result = 
-    _.chain(nameValues)
-      .groupBy('id')
-      .map((v, i) => {
-        return {
-          'id': _.get(_.find(v, 'id'), 'id'),
-          'order': _.get(_.find(v, 'order'), 'order'),
-          'type': _.get(_.find(v, 'type'), 'type'),
-          'nameValues': 
-          _.chain(v)
-            .groupBy('name')
-            .map((v, i) => {
-              return{
-                name: i,
-                value: _.get(_.find(v, 'value'), 'value')
-              }
-            }).value()
-        }
-      })
-      .orderBy(['id'])
-      .value()
+    const result =
+      _.chain(nameValues)
+        .groupBy('id')
+        .map((v, i) => {
+          return {
+            'id': _.get(_.find(v, 'id'), 'id'),
+            'order': _.get(_.find(v, 'order'), 'order'),
+            'type': _.get(_.find(v, 'type'), 'type'),
+            'nameValues':
+              _.chain(v)
+                .groupBy('name')
+                .map((v, i) => {
+                  return {
+                    name: i,
+                    value: _.get(_.find(v, 'value'), 'value')
+                  }
+                }).value()
+          }
+        })
+        .orderBy(['id'])
+        .value()
 
-      // 삭제한 메뉴있을시
-      if(deleteValues.length !== 0) {
-        await deleteCommunityMenu(communityId, deleteValues)
+    // 삭제한 메뉴있을시
+    if (deleteValues.length !== 0) {
+      await deleteCommunityMenu(communityId, deleteValues)
+      successFlag = true
+    }
+    if (result.length !== 0) {
+      const editValidateCheck = result.map((item, index) => {
+        return item.nameValues.map((item2, index2) => {
+          if (item2.name === 'name') {
+            if (!item2.value) {
+              return {
+                'state': false,
+                'text': (item.order + 3) + "번째 메뉴의 " + (item.type === 'CATEGORY' ? '카테고리명' : '메뉴명') + "을 지정해주세요."
+              }
+            }
+          }
+          if (item2.name === 'groupId') {
+            if (!item2.value) {
+              return {
+                'state': false,
+                'text': (item.order + 3) + "번째 메뉴의 그룹을 지정해주세요."
+              }
+            }
+          }
+          if (item2.name === 'url') {
+            if (!item2.value) {
+              return (item.order + 3) + "번째 메뉴의 URL를 지정해주세요."
+            } else if (
+              !item2.value.includes('http://') &&
+              !item2.value.includes('https://')
+            ) {
+              return {
+                'state': false,
+                'text': (item.order + 3) + "번째 메뉴의 링크는 http:// 또는 https:// 으로 시작되어야 합니다."
+              }
+            }
+          }
+          if (item2.name === 'discussionTopic') {
+            if (!item2.value) {
+              return {
+                'state': false,
+                'text': (item.order + 3) + "번째 메뉴의 토론 주제를 입력해주세요."
+              }
+            }
+          }
+          if (item2.name === 'surveyInformation') {
+            if (!item2.value) {
+              return {
+                'state': false,
+                'text': (item.order + 3) + "번째 메뉴의 설문 안내글을 입력해주세요"
+              }
+            }
+          }
+          if (item2.name === 'surveyId') {
+            if (!item2.value) {
+              return {
+                'state': false,
+                'text': (item.order + 3) + "번째 메뉴의 survey를 추가해주세요."
+              }
+            }
+          }
+          return {
+            'state': true,
+            'text': ''
+          }
+        })
+      })
+      let text = ''
+      editValidateCheck.map((item) => {
+        item.map((item2: any) => {
+          if (item2.state === false) {
+            text += item2.text + '</br>'
+          }
+        })
+      })
+
+      if (text !== '') {
+        reactAlert({
+          title: '',
+          message: text,
+        });
+      } else {
+        saveCommunityMenu(communityId, result, selectedRow)
         successFlag = true
       }
-      if(result.length !== 0) {
-        const editValidateCheck = result.map((item, index) => {
-          return item.nameValues.map((item2, index2) => {
-            if(item2.name === 'name') {
-              if(!item2.value){
-                return {
-                  'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 "+ (item.type === 'CATEGORY' ? '카테고리명' : '메뉴명') +"을 지정해주세요."
-                }
-              }
-            }
-            if(item2.name === 'groupId') {
-              if(!item2.value){
-                return {
-                  'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 그룹을 지정해주세요."
-                }
-              }
-            }
-            if (item2.name === 'url') {
-              if(!item2.value){
-                return (item.order+3)+"번째 메뉴의 URL를 지정해주세요."
-              } else if (              
-                !item2.value.includes('http://') &&
-                !item2.value.includes('https://')
-              ) {
-                return {
-                  'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 링크는 http:// 또는 https:// 으로 시작되어야 합니다."
-                }
-              }
-            }
-            if(item2.name === 'discussionTopic') {
-              if(!item2.value){
-                return {
-                  'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 토론 주제를 입력해주세요."
-                }
-              }
-            }
-            if(item2.name === 'surveyInformation') {
-              if(!item2.value){
-                return {
-                  'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 설문 안내글을 입력해주세요"
-                }
-              }
-            }
-            if(item2.name === 'surveyId') {
-              if(!item2.value){
-                return {
-                  'state': false,
-                  'text' : (item.order+3)+"번째 메뉴의 survey를 추가해주세요."
-                }
-              }
-            }
-            return {
-              'state': true,
-              'text': ''
-            }
-          })
-        })
-        let text = ''
-        editValidateCheck.map((item) => {
-          item.map((item2: any) => {
-            if(item2.state === false) {
-              text += item2.text + '</br>'
-            }
-          })
-        })
-
-        if(text !== '') {
-          reactAlert({
-            title: '',
-            message: text,
-          });
-        } else {
-          saveCommunityMenu(communityId, result, selectedRow)
-          successFlag = true
-        }
+    }
+    setNameValues([...nameValues, []])
+    if (type === 'add') {
+      if (communityAdminMenu!.menu.length === 0) {
+        obj.order = 1
+      } else {
+        obj.order = communityAdminMenu && communityAdminMenu.menu.map(m => { return m.child ? m.child.length : 0 }).reduce((r, c) => r + c) + communityAdminMenu!.menu.length + 1
       }
-      setNameValues([...nameValues, []])
-      if(type === 'add') {
-        if(communityAdminMenu!.menu.length === 0) {
-          obj.order = 1
-        }else {
-          obj.order = communityAdminMenu!.menu[communityAdminMenu!.menu.length-1].order + 1
-        }
-        const validateCheck = confirmBlank(obj)
-        if(validateCheck === 'success') {
-          if(obj.type === 'DISCUSSION') {
-            addCommunityDiscussion(communityId, obj).then((result)=> {
-              //오더정리
-              requestCommunityMenuOrder(communityId).then((result) => {
-                requestCommunityMenu(communityId);
-                reactAlert({
-                  title: '',
-                  message:
-                    '저장되었습니다.',
-                });
-              })
+      const validateCheck = confirmBlank(obj)
+      if (validateCheck === 'success') {
+        if (obj.type === 'DISCUSSION') {
+          addCommunityDiscussion(communityId, obj).then((result) => {
+            //오더정리
+            requestCommunityMenuOrder(communityId).then((result) => {
+              requestCommunityMenu(communityId);
+              reactAlert({
+                title: '',
+                message:
+                  '저장되었습니다.',
+              });
             })
-          } else {
-            addCommunityMenu(communityId, obj).then((result)=> {
-              //오더정리
-              requestCommunityMenuOrder(communityId).then((result) => {
-                requestCommunityMenu(communityId);
-                reactAlert({
-                  title: '',
-                  message:
-                    '저장되었습니다.',
-                });
-              })
-            })
-          }
+          })
         } else {
-          reactAlert({
-            title: '',
-            message: validateCheck,
-          });
-        }
-      } else if(type === 'childAdd') {
-        obj.parentId = selectedRow!.id
-        communityAdminMenu!.menu.map((item, index) => {
-          if( selectedRow!.id === item.id) {
-            if(item.child.length === 0) {
-              obj.order = 1
-            } else {
-              obj.order = item.child.length + 1
-            }
-          }
-        })
-        const validateCheck = confirmBlank(obj)
-        if(validateCheck === 'success') {
-          if(obj.type === 'DISCUSSION') {
-            addCommunityDiscussion(communityId, obj).then((result)=> {
-              //오더정리
-              requestCommunityMenuOrder(communityId).then((result) => {
-                requestCommunityMenu(communityId);
-                reactAlert({
-                  title: '',
-                  message:
-                    '저장되었습니다.',
-                });
-              })
+          addCommunityMenu(communityId, obj).then((result) => {
+            //오더정리
+            requestCommunityMenuOrder(communityId).then((result) => {
+              requestCommunityMenu(communityId);
+              reactAlert({
+                title: '',
+                message:
+                  '저장되었습니다.',
+              });
             })
-          } else {
-            addCommunityMenu(communityId, obj).then((result)=> {
-              //오더정리
-              requestCommunityMenuOrder(communityId).then((result) => {
-                requestCommunityMenu(communityId);
-                reactAlert({
-                  title: '',
-                  message:
-                    '저장되었습니다.',
-                });
-              })
-            })
-          }
-        } else {
-          reactAlert({
-            title: '',
-            message: validateCheck,
-          });
+          })
         }
       } else {
-        if(successFlag) {
-          //오더정리
-          requestCommunityMenuOrder(communityId).then((result) => {
-            reactAlert({
-              title: '',
-              message:
-                '저장되었습니다.',
-            });
+        reactAlert({
+          title: '',
+          message: validateCheck,
+        });
+      }
+    } else if (type === 'childAdd') {
+      obj.parentId = selectedRow!.id
+      communityAdminMenu!.menu.map((item, index) => {
+        if (selectedRow!.id === item.id) {
+          if (item.child.length === 0) {
+            obj.order = 1
+          } else {
+            obj.order = communityAdminMenu && communityAdminMenu.menu.map(m => { return m.child ? m.child.length : 0 }).reduce((r, c) => r + c) + communityAdminMenu!.menu.length + 1
+          }
+        }
+      })
+      const validateCheck = confirmBlank(obj)
+      if (validateCheck === 'success') {
+        if (obj.type === 'DISCUSSION') {
+          addCommunityDiscussion(communityId, obj).then((result) => {
+            //오더정리
+            requestCommunityMenuOrder(communityId).then((result) => {
+              requestCommunityMenu(communityId);
+              reactAlert({
+                title: '',
+                message:
+                  '저장되었습니다.',
+              });
+            })
+          })
+        } else {
+          addCommunityMenu(communityId, obj).then((result) => {
+            //오더정리
+            requestCommunityMenuOrder(communityId).then((result) => {
+              requestCommunityMenu(communityId);
+              reactAlert({
+                title: '',
+                message:
+                  '저장되었습니다.',
+              });
+            })
           })
         }
+      } else {
+        reactAlert({
+          title: '',
+          message: validateCheck,
+        });
       }
+    } else {
+      if (successFlag) {
+        //오더정리
+        requestCommunityMenuOrder(communityId).then((result) => {
+          reactAlert({
+            title: '',
+            message:
+              '저장되었습니다.',
+          });
+        })
+      }
+    }
   }, [communityAdminMenu, selectedRow])
 
-  const onChangeAddValue = useCallback((data, name, type?)=> {
+  const onChangeAddValue = useCallback((data, name, type?) => {
     addRow[name] = data[name]
-    if(data[name] === 'COMMUNITY_GROUP' && name === 'accessType') {
+    if (data[name] === 'COMMUNITY_GROUP' && name === 'accessType') {
       addRow.groupId = 0
       addRow.accessType = 'COMMUNITY_GROUP'
     }
-    if(data[name] === 'COMMUNITY_ALL_MEMBER' && name === 'accessType') {
+    if (data[name] === 'COMMUNITY_ALL_MEMBER' && name === 'accessType') {
       addRow.groupId = null
       addRow.accessType = 'COMMUNITY_ALL_MEMBER'
     }
-    setAddRow({...data, [name]: data[name]})
+    setAddRow({ ...data, [name]: data[name] })
   }, [])
 
   const onChangeValue = useCallback((value: any, name: string) => {
     if (communityAdminMenu) {
       communityAdminMenu.menu.map((item: MenuItem) => {
-        if(item.id === value.id) {
+        if (item.id === value.id) {
           item = value
         }
       })
     }
-    const ValuesArr = {'id': value.id, 'name': name, 'value': value[name], 'order': value.order, 'type': value.type}
+    const ValuesArr = { 'id': value.id, 'name': name, 'value': value[name], 'order': value.order, 'type': value.type }
 
     nameValues.map((item: any, index: any) => {
-      if(item.id === value.id && item.name === name) {
-        nameValues.splice(index,1)
+      if (item.id === value.id && item.name === name) {
+        nameValues.splice(index, 1)
       }
     })
     nameValuesArr.push(ValuesArr)
     setNameValues(nameValuesArr)
 
-    setCommunityAdminMenu({'menu': communityAdminMenu?.menu!});
+    setCommunityAdminMenu({ 'menu': communityAdminMenu?.menu! });
 
   }, [communityAdminMenu]);
 
   function changeValue(e: any) {
     const value = e.target.value;
-    if(addRow) {
+    if (addRow) {
       addRow.name = value
     }
     onChangeAddValue(addRow, 'name')
@@ -481,7 +482,7 @@ function CommunityMenuContainer() {
     })
 
     menuArr.map((item: any, index: number) => {
-      if(item.child) {
+      if (item.child) {
         item.child.sort((a: any, b: any) => {
           if (a.order < b.order) {
             return -1;
@@ -497,21 +498,21 @@ function CommunityMenuContainer() {
   }
 
   const handleDown = useCallback(() => {
-    let nextValuesArr = {'id': '', 'name': '', 'value': 0}
+    let nextValuesArr = { 'id': '', 'name': '', 'value': 0 }
     let parentIdx = 0
     let childIdx = 0
 
     //부모메뉴, 자식메뉴 구분
-    if(selectedRow?.parentId){
-      communityAdminMenu?.menu.map((parent, index)=> {
-        if(parent.id === selectedRow?.parentId) {
+    if (selectedRow?.parentId) {
+      communityAdminMenu?.menu.map((parent, index) => {
+        if (parent.id === selectedRow?.parentId) {
           parentIdx = index
           //해당 부모메뉴
           parent.child.map((child: any, childIndex: number) => {
-            if(child.id === selectedRow?.id) {
+            if (child.id === selectedRow?.id) {
               childIdx = childIndex
               //최하위인경우 
-              if(selectedRow!.order === parent.child.length) {
+              if (selectedRow!.order === parent.child.length) {
                 return false
               }
             }
@@ -520,56 +521,56 @@ function CommunityMenuContainer() {
       })
       const originOrder = selectedRow!.order
       communityAdminMenu?.menu[parentIdx].child.map((item: any, index: number) => {
-        if(item.order === selectedRow!.order + 1) {
+        if (item.order === selectedRow!.order + 1) {
           item.order = originOrder
-          nextValuesArr = {'id': item.id, 'name': 'order', 'value': originOrder}
+          nextValuesArr = { 'id': item.id, 'name': 'order', 'value': originOrder }
         }
       })
       selectedRow!.order = originOrder + 1
 
-      const ValuesArr = {'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order}
+      const ValuesArr = { 'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order }
 
       nameValuesArr.map((item, index) => {
-        if(item.id === ValuesArr.id && item.name === 'order') {
-          nameValuesArr.splice(index,1)
+        if (item.id === ValuesArr.id && item.name === 'order') {
+          nameValuesArr.splice(index, 1)
         }
       })
       nameValuesArr.map((item, index) => {
-        if(item.id === nextValuesArr.id && item.name === 'order') {
-          nameValuesArr.splice(index,1)
+        if (item.id === nextValuesArr.id && item.name === 'order') {
+          nameValuesArr.splice(index, 1)
         }
       })
       nameValuesArr.push(ValuesArr)
       nameValuesArr.push(nextValuesArr)
       setNameValues(nameValuesArr)
       const sortedData = orderSort(communityAdminMenu?.menu!)
-      setCommunityAdminMenu({'menu': sortedData});
+      setCommunityAdminMenu({ 'menu': sortedData });
     } else {
       //최하위인경우 
-      if(selectedRow!.order === communityAdminMenu?.menu.length) {
+      if (selectedRow!.order === communityAdminMenu?.menu.length) {
         return false
       }
       const originOrder = selectedRow!.order
-      let nextValuesArr = {'id': '', 'name': '', 'value': 0}
+      let nextValuesArr = { 'id': '', 'name': '', 'value': 0 }
       communityAdminMenu?.menu.map((item, index) => {
-        if(item.order === selectedRow!.order + 1) {
+        if (item.order === selectedRow!.order + 1) {
           item.order = originOrder
-          nextValuesArr = {'id': item.id, 'name': 'order', 'value': originOrder}
+          nextValuesArr = { 'id': item.id, 'name': 'order', 'value': originOrder }
         }
       })
       selectedRow!.order = originOrder + 1
 
-      const ValuesArr = {'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order}
+      const ValuesArr = { 'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order }
 
       nameValuesArr.map((item, index) => {
-        if(item.id === ValuesArr.id && item.name === 'order') {
-          nameValuesArr.splice(index,1)
+        if (item.id === ValuesArr.id && item.name === 'order') {
+          nameValuesArr.splice(index, 1)
         }
       })
 
       nameValuesArr.map((item, index) => {
-        if(item.id === nextValuesArr.id && item.name === 'order') {
-          nameValuesArr.splice(index,1)
+        if (item.id === nextValuesArr.id && item.name === 'order') {
+          nameValuesArr.splice(index, 1)
         }
       })
       nameValuesArr.push(ValuesArr)
@@ -577,52 +578,52 @@ function CommunityMenuContainer() {
 
       setNameValues(nameValuesArr)
       const sortedData = orderSort(communityAdminMenu?.menu!)
-      setCommunityAdminMenu({'menu': sortedData});
+      setCommunityAdminMenu({ 'menu': sortedData });
     }
-  },[selectedRow])
+  }, [selectedRow])
 
   const handleUp = useCallback(() => {
-    let nextValuesArr = {'id': '', 'name': '', 'value': 0}
+    let nextValuesArr = { 'id': '', 'name': '', 'value': 0 }
     let parentIdx = 0
     let childIdx = 0
     let flag = true
     //부모메뉴, 자식메뉴 구분
-    if(selectedRow?.parentId){
-      communityAdminMenu?.menu.map((parent, index)=> {
-        if(parent.id === selectedRow?.parentId) {
+    if (selectedRow?.parentId) {
+      communityAdminMenu?.menu.map((parent, index) => {
+        if (parent.id === selectedRow?.parentId) {
           parentIdx = index
           //해당 부모메뉴
           parent.child.map((child: any, childIndex: number) => {
-            if(child.id === selectedRow?.id) {
+            if (child.id === selectedRow?.id) {
               childIdx = childIndex
               //최상위인경우 
-              if(selectedRow!.order <= 1) {
+              if (selectedRow!.order <= 1) {
                 flag = false
               }
             }
           })
         }
       })
-      if(flag === true) {
+      if (flag === true) {
         const originOrder = selectedRow!.order
         communityAdminMenu?.menu[parentIdx].child.map((item: any, index: number) => {
-          if(item.order === selectedRow!.order - 1) {
+          if (item.order === selectedRow!.order - 1) {
             item.order = originOrder
-            nextValuesArr = {'id': item.id, 'name': 'order', 'value': originOrder}
+            nextValuesArr = { 'id': item.id, 'name': 'order', 'value': originOrder }
           }
         })
         selectedRow!.order = originOrder - 1
-        const ValuesArr = {'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order}
+        const ValuesArr = { 'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order }
 
         nameValuesArr.map((item, index) => {
-          if(item.id === ValuesArr.id && item.name === 'order') {
-            nameValuesArr.splice(index,1)
+          if (item.id === ValuesArr.id && item.name === 'order') {
+            nameValuesArr.splice(index, 1)
           }
         })
 
         nameValuesArr.map((item, index) => {
-          if(item.id === nextValuesArr.id && item.name === 'order') {
-            nameValuesArr.splice(index,1)
+          if (item.id === nextValuesArr.id && item.name === 'order') {
+            nameValuesArr.splice(index, 1)
           }
         })
         nameValuesArr.push(ValuesArr)
@@ -630,47 +631,47 @@ function CommunityMenuContainer() {
 
         setNameValues(nameValuesArr)
         const sortedData = orderSort(communityAdminMenu?.menu!)
-        setCommunityAdminMenu({'menu': sortedData});
+        setCommunityAdminMenu({ 'menu': sortedData });
       }
     } else {
       //최상위인경우 
-      if(selectedRow!.order === 1) {
+      if (selectedRow!.order === 1) {
         return false
       }
       const originOrder = selectedRow!.order
 
       //수동적으로 움직이게된 item
-      let nextValuesObj = {'id': '', 'name': '', 'value': 0}
+      let nextValuesObj = { 'id': '', 'name': '', 'value': 0 }
       communityAdminMenu?.menu.map((item, index) => {
-        if(item.order === selectedRow!.order - 1) {
+        if (item.order === selectedRow!.order - 1) {
           item.order = originOrder
-          nextValuesObj = {'id': item.id, 'name': 'order', 'value': originOrder}
+          nextValuesObj = { 'id': item.id, 'name': 'order', 'value': originOrder }
         }
       })
       selectedRow!.order = originOrder - 1
 
-      const ValuesObj = {'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order}
+      const ValuesObj = { 'id': selectedRow!.id, 'name': 'order', 'value': selectedRow!.order }
 
       nameValuesArr.map((item, index) => {
-        if(item.id === ValuesObj.id && item.name === 'order') {
-          nameValuesArr.splice(index,1)
+        if (item.id === ValuesObj.id && item.name === 'order') {
+          nameValuesArr.splice(index, 1)
         }
       })
 
       nameValuesArr.map((item, index) => {
-        if(item.id === nextValuesObj.id && item.name === 'order') {
-          nameValuesArr.splice(index,1)
+        if (item.id === nextValuesObj.id && item.name === 'order') {
+          nameValuesArr.splice(index, 1)
         }
       })
 
       nameValuesArr.push(ValuesObj)
       nameValuesArr.push(nextValuesObj)
-      
+
       setNameValues(nameValuesArr)
       const sortedData = orderSort(communityAdminMenu?.menu!)
-      setCommunityAdminMenu({'menu': sortedData});
-      } 
-  },[selectedRow])
+      setCommunityAdminMenu({ 'menu': sortedData });
+    }
+  }, [selectedRow])
 
   function imageHandle(type: string) {
     let nextIcon = `${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`;
@@ -699,43 +700,44 @@ function CommunityMenuContainer() {
   function renderMenuRow2(menu: MenuItem, handleClickTaskRow: any, parentIdx: number, childIdx: number) {
     if (menu) {
       return (
-        <li key={parentIdx+'_'+childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
+        <li key={parentIdx + '_' + childIdx} onClick={(e) => handleClickTaskRow(e, menu)} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
           <a>
             <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
             <img src={imageHandle(menu.type)} />
             {menu.name}
             <span>
-              <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+              <img onClick={(e) => onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
             </span>
           </a>
         </li>
-      )}
+      )
+    }
   }
 
   function renderMenuRow(menu: MenuItem, handleClickTaskRow: any, index: number) {
     if (menu) {
       return (
         <Fragment key={index}>
-          <li key={index+'_parent'} onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
+          <li key={index + '_parent'} onClick={(e) => handleClickTaskRow(e, menu, 'detail')} className={selectedRow && (menu.id === selectedRow.id) ? 'active' : ''}>
             <a>
               <img src={imageHandle(menu.type)} />
               {menu.name}
               <span>
-                <img onClick={(e)=>onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
+                <img onClick={(e) => onHandleClickTaskRow(e, menu, 'delete')} src={`${process.env.PUBLIC_URL}/images/all/btn-clear-nomal.svg`} />
               </span>
             </a>
           </li>
           {menu.child !== undefined && (
-            <ul key={index+'child'}>
-              { menu.child.map((item2: any, index2: any) => {
-                  return renderMenuRow2(item2, onHandleClickTaskRow, index, index2);
-                })
+            <ul key={index + 'child'}>
+              {menu.child.map((item2: any, index2: any) => {
+                return renderMenuRow2(item2, onHandleClickTaskRow, index, index2);
+              })
               }
-              { addChildMenuFlag && selectedRow && (menu.id === selectedRow.id) && (
+              {addChildMenuFlag && selectedRow && (menu.id === selectedRow.id) && (
                 <li>
                   <a>
                     <img src={`${process.env.PUBLIC_URL}/images/all/icon-reply-16-px.svg`} />
-                    <input 
+                    <input
                       type="text"
                       placeholder="메뉴명을 입력하세요"
                       className="input_normal white width90"
@@ -753,105 +755,104 @@ function CommunityMenuContainer() {
   }
   return (
     <>
-    {communityAdminMenu !== undefined && ( 
-      <>
-      <div className="admin_menu_title">
-        <p>
-          ㆍ 메뉴를 편집한 후에 <strong>저장</strong> 버튼을 눌러야 반영됩니다.
-        </p>
-        <p>
-          ㆍ <strong>Home, 전체 글, 공지사항</strong> 메뉴는 편집 및 삭제가
-          불가합니다.
-        </p>
-      </div>
-      <div className="admin_menu_wrap">
-        <div className="admin_menu_left">
-          <div className="menu_left_contents">
-            <div className="menu_left_btn">
-              <button onClick={handleUp}>
-                <img src={`${process.env.PUBLIC_URL}/images/all/icon-arrow-up-20-px.png`}/>
-              </button>
-              <button onClick={handleDown}>
-                <img src={`${process.env.PUBLIC_URL}/images/all/icon-arrow-down-20-px.png`}/>
-              </button>
-              <button onClick={handleAddMenu}>메뉴 추가</button>
-              <button onClick={handleAddChildMenu}>하위 메뉴</button>
-            </div>
-            <ul>
-              <li>
-                <a>
-                  <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-home-off.png`} />
-                  Home
-                  <span>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-required.png`} />
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
-                  전체글
-                  <span>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-required.png`} />
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
-                  공지사항
-                  <span>
-                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-required.png`} />
-                  </span>
-                </a>
-              </li>
-              {communityAdminMenu.menu.map((item, index) => {
-                return renderMenuRow(item, onHandleClickTaskRow, index);
-              })}
-              { addMenuFlag && (
-                <li>
-                  <input 
-                    type="text"
-                    placeholder="제목을 입력해주세요."
-                    value={addRow && addRow.name}
-                    onChange={changeValue}
-                  />
-                </li>
-              )}
-            </ul>
+      {communityAdminMenu !== undefined && (
+        <>
+          <div className="admin_menu_title">
+            <p>
+              ㆍ 메뉴를 편집한 후에 <strong>저장</strong> 버튼을 눌러야 반영됩니다.
+            </p>
+            <p>
+              ㆍ <strong>Home, 전체 글, 공지사항</strong> 메뉴는 편집 및 삭제가 불가합니다.
+            </p>
           </div>
-        </div>
-        <div className="admin_menu_right">
-          {selectedRow && communityAdminGroups && !addMenuFlag && !addChildMenuFlag && (
-            <>
-              <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)}/>
-              <div className="admin_bottom_button line">
-                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues)}>저장</button>
+          <div className="admin_menu_wrap">
+            <div className="admin_menu_left">
+              <div className="menu_left_contents">
+                <div className="menu_left_btn">
+                  <button onClick={handleUp}>
+                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-arrow-up-20-px.png`} />
+                  </button>
+                  <button onClick={handleDown}>
+                    <img src={`${process.env.PUBLIC_URL}/images/all/icon-arrow-down-20-px.png`} />
+                  </button>
+                  <button onClick={handleAddMenu}>메뉴 추가</button>
+                  <button onClick={handleAddChildMenu}>하위 메뉴</button>
+                </div>
+                <ul>
+                  <li>
+                    <a>
+                      <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-home-off.png`} />
+                  Home
+                      <span>
+                        <img src={`${process.env.PUBLIC_URL}/images/all/icon-required.png`} />
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
+                  전체글
+                      <span>
+                        <img src={`${process.env.PUBLIC_URL}/images/all/icon-required.png`} />
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <img src={`${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`} />
+                  공지사항
+                      <span>
+                        <img src={`${process.env.PUBLIC_URL}/images/all/icon-required.png`} />
+                      </span>
+                    </a>
+                  </li>
+                  {communityAdminMenu.menu.map((item, index) => {
+                    return renderMenuRow(item, onHandleClickTaskRow, index);
+                  })}
+                  {addMenuFlag && (
+                    <li>
+                      <input
+                        type="text"
+                        placeholder="제목을 입력해주세요."
+                        value={addRow && addRow.name}
+                        onChange={changeValue}
+                      />
+                    </li>
+                  )}
+                </ul>
               </div>
-            </>
-          )}
-          {addMenuFlag && addRow && !addChildMenuFlag && (
-            <>
-              <CommunityAdminMenuAddView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name, 'parent')}/>
-              <div className="admin_bottom_button line">
-                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add', addRow)}>저장</button>
-              </div>
-            </>
-          )}
-          {addChildMenuFlag && addRow && !addMenuFlag && (
-            <>
-              <CommunityAdminMenuAddView addChildMenuFlag={addChildMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name, 'child')}/>
-              <div className="admin_bottom_button line">
-                <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'childAdd', addRow)}>저장</button>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-      </>
-    )}
+            </div>
+            <div className="admin_menu_right">
+              {selectedRow && communityAdminGroups && !addMenuFlag && !addChildMenuFlag && (
+                <>
+                  <CommunityAdminMenuDetailView addMenuFlag={addMenuFlag} selectedRow={selectedRow} communityAdminGroups={communityAdminGroups} onChangeValue={(data, name) => onChangeValue(data, name)} />
+                  <div className="admin_bottom_button line">
+                    <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues)}>저장</button>
+                  </div>
+                </>
+              )}
+              {addMenuFlag && addRow && !addChildMenuFlag && (
+                <>
+                  <CommunityAdminMenuAddView addMenuFlag={addMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name, 'parent')} />
+                  <div className="admin_bottom_button line">
+                    <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'add', addRow)}>저장</button>
+                  </div>
+                </>
+              )}
+              {addChildMenuFlag && addRow && !addMenuFlag && (
+                <>
+                  <CommunityAdminMenuAddView addChildMenuFlag={addChildMenuFlag} selectedRow={addRow} communityAdminGroups={communityAdminGroups} onChangeAddValue={(data, name) => onChangeAddValue(data, name, 'child')} />
+                  <div className="admin_bottom_button line">
+                    <button className="ui button admin_table_button" onClick={() => handleSave(nameValues, deleteValues, 'childAdd', addRow)}>저장</button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </>
-  );  
+  );
 }
 
 export default CommunityMenuContainer;

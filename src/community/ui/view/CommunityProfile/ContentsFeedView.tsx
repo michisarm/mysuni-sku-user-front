@@ -35,6 +35,7 @@ import {
 } from 'community/store/CommunityProfileFeedStore';
 import { requestAppendProfileFeedPostList } from 'community/service/useCommunityProfile/utility/requestProfileFeeds';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+import { Type, AreaType } from 'tracker/model';
 
 interface ContentsFeedViewProps {
   communityProfileFeed: CommunityProfileFeed;
@@ -48,7 +49,11 @@ const ContentsFeedView: React.FC<ContentsFeedViewProps> = function ContentsFeedV
   /* eslint-disable */
   return (
     <Segment className="full">
-      <div className="course-detail-center community-containter">
+      <div
+        className="course-detail-center community-containter"
+        data-area={AreaType.COMMUNITY_FEED}
+        data-type={Type.CLICK}
+      >
         <div className="community-main-contants">
           {communityProfileFeed !== undefined &&
             communityProfileFeed.posts.map(postItem => (
@@ -218,7 +223,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
             )}
             {!more && (
               <div>
-                <p>{text}</p>
+                <p className="summary">{text}</p>
               </div>
             )}
             <div className="text-right">

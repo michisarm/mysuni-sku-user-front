@@ -24,6 +24,7 @@ import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
 
 interface MenuItemViewProps {
@@ -535,7 +536,7 @@ function CommunityHomeTreeContainer() {
 
   function deleteAllPostMenu(communityId: string) {
     // 전체글 메뉴 삭제 Func => filteredCommunity 배열에 communityId 추가
-    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a'];
+    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a', 'COMMUNITY-25', 'COMMUNITY-1w'];
     if (
       communityId !== '' &&
       communityId !== null &&
@@ -546,7 +547,11 @@ function CommunityHomeTreeContainer() {
   }
 
   return (
-    <div className="community-left community-home-left">
+    <div
+      className="community-left community-home-left"
+      data-area={AreaType.COMMUNITY_LNB}
+      data-type={Type.CLICK}
+    >
       <div className="sub-info-box">
         <div className="commnuity-left-top">
           <div className="community-left-header">

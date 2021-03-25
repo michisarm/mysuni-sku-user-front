@@ -17,7 +17,7 @@ import ContentHeaderStampView from '../view/ContentHeaderStampView';
 import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 import { MyPageContentType } from '../model';
 import { Dropdown } from 'semantic-ui-react';
-
+import { Type, AreaType } from 'tracker/model';
 
 /*
   1. contentType ( 어떤 페이지에서 해당 컴포넌트가 사용되고 있는지 확인하고 조건을 분기하기 위함. 2020.10.28 by 김동구 )
@@ -33,7 +33,14 @@ interface Props extends RouteComponentProps {
 }
 
 function MyContentHeaderContainer(props: Props) {
-  const { contentType, skProfileService, myLearningSummaryService, badgeService, myTrainingService, history } = props;
+  const {
+    contentType,
+    skProfileService,
+    myLearningSummaryService,
+    badgeService,
+    myTrainingService,
+    history,
+  } = props;
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
   const { myStampCount, thisYearMyStampCount } = myTrainingService!;
@@ -44,17 +51,28 @@ function MyContentHeaderContainer(props: Props) {
 
   /* effects */
   useEffect(() => {
-    if (myStampCount === 0 && myBadgeCount === 0 && thisYearMyStampCount === 0) {
+    if (
+      myStampCount === 0 &&
+      myBadgeCount === 0 &&
+      thisYearMyStampCount === 0
+    ) {
       badgeService!.getCountOfBadges();
       myTrainingService!.countMyTrainingsWithStamp();
-      myTrainingService!.countMyTrainingsWithStamp([],moment([selectedYear,1-1,1]).toDate().getTime(),moment([selectedYear,12-1,31]).toDate().getTime());
+      myTrainingService!.countMyTrainingsWithStamp(
+        [],
+        moment([selectedYear, 1 - 1, 1])
+          .toDate()
+          .getTime(),
+        moment([selectedYear, 12 - 1, 31])
+          .toDate()
+          .getTime()
+      );
     }
   }, []);
 
   useEffect(() => {
     myLearningSummaryService!.findMyLearningSummaryByYear(selectedYear);
   }, [selectedYear]);
-
 
   /* handlers */
   const onChangeYear = useCallback((e: any, data: any) => {
@@ -84,7 +102,15 @@ function MyContentHeaderContainer(props: Props) {
     // <ContentHeader
     //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
     // >
-    <ContentHeader type="Learning">
+    <ContentHeader 
+      dataArea={
+          window.location.pathname.includes('/my-page/')
+            ? AreaType.MYPAGE_INFO
+            : AreaType.LEARNING_INFO
+        }
+      dataType={Type.CLICK}
+      type="Learning"
+    >
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
             myPageActive={!isFromMyPage(contentType)}
@@ -110,20 +136,18 @@ function MyContentHeaderContainer(props: Props) {
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {myLearningSummary.displayTotalLearningTime !== 0 &&
-          (
-            <ContentHeader.LearningTimeItem
-              minute={myLearningSummary.displayTotalLearningTime}
-              year={selectedYear}
-              accrueMinute={myLearningSummary.displayAccrueTotalLearningTime}
-            />
-          ) ||
-          (
-            <ContentHeader.WaitingItem
-              year={selectedYear}
-              onClickRecommend={routeToRecommend}
-            />
-          )}
+        {(myLearningSummary.displayTotalLearningTime !== 0 && (
+          <ContentHeader.LearningTimeItem
+            minute={myLearningSummary.displayTotalLearningTime}
+            year={selectedYear}
+            accrueMinute={myLearningSummary.displayAccrueTotalLearningTime}
+          />
+        )) || (
+          <ContentHeader.WaitingItem
+            year={selectedYear}
+            onClickRecommend={routeToRecommend}
+          />
+        )}
         {/* DropDown 포지션 변경으로 인한 부모컨테이너 변경 */}
         {/* DropDown options 프롭스는 퍼블리싱 테스트를 위해 임의의 데이터로 다시 변경. */}
         {/*<div className="year">
