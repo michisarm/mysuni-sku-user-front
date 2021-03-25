@@ -33,13 +33,13 @@ class PostApi {
 
   findPostsByBoardIdAndPinned(boardId: string, offset: number, limit: number) {
     //
-    return axios.get<OffsetElementList<PostModel>>(this.URL + '/pinned', { params: { boardId, offset, limit }})
+    return axios.get<OffsetElementList<PostModel>>(this.URL + '/rom/pinned', { params: { boardId, offset, limit }})
       .then((response: any) => apiHelper.responseToOffsetElementList(response, PostModel));
   }
 
   findNoticePosts(offset: number, limit: number) {
     //
-    return axios.get<OffsetElementList<PostModel>>(this.URL + '/notice-posts', { params: { offset, limit }})
+    return axios.get<OffsetElementList<PostModel>>(this.URL + '/rom/notice-posts', { params: { offset, limit }})
       .then((response: any) => response && response.data || { results: [], totalCount: 0 });
   }
 
