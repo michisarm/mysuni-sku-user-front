@@ -28,6 +28,7 @@ import { MenuControlAuth } from 'shared/model/MenuControlAuth';
 import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
 import { requestLearningObjectives, saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
 import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
+import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -42,6 +43,7 @@ interface Props extends RouteComponentProps {
 interface States {
   boardVisible: boolean;
   learningObjectivesOpen: boolean;
+  attendanceOpen: boolean;
   companyCode: string;
   activeIndex: any;
   learningObjectives?:LearningObjectives 
@@ -62,6 +64,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   state = {
     boardVisible: false,
     learningObjectivesOpen: false,
+    attendanceOpen: false,
     companyCode: '',
     activeIndex: -1,
     learningObjectives: {
@@ -228,6 +231,14 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     return Number(percent)
   }
 
+  handlePopup () {
+    this.setState(prevState => {
+      return (
+        ({ attendanceOpen: !prevState.attendanceOpen})
+      )
+    })
+  }
+  
   goToBadge () {
     const { history } = this.props;
     history.push('/certification/badge/EarnedBadgeList/pages/1')
@@ -240,7 +251,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   render() {
     //
-    const { boardVisible, learningObjectivesOpen, companyCode, activeIndex, learningObjectives } = this.state;
+    const { boardVisible, learningObjectivesOpen, attendanceOpen, companyCode, activeIndex, learningObjectives } = this.state;
     const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
@@ -385,26 +396,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <span className="bot-num">도전중 {Number(badgeService?.challengingCount)}</span>
                 </div>
               </div>
-              {/* <Popup
-                trigger={
-                  <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
-                    <div className="gauge-content-box">
-                      <p className="top-num">{_earnedCount}</p>
-                        <span className="bot-num">{Number(badgeService?.challengingCount)}</span>
-                    </div>
-                  </div>
-                }
-                style={style1}
-                position="bottom center"
-                wide
-              >
-                <span className="personal_pop_tit">
-                  도전중 Badge(누적)
-                </span>
-                <span>
-                  <strong>{Number(badgeService?.challengingCount)}</strong>개
-                </span>
-              </Popup> */}
             </div>
             <div className="main-gauge">
               <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
@@ -454,6 +445,9 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
           <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
+          <div className="main-event-btn">
+            <button type="button" onClick={this.handlePopup}/>
+          </div>
         </HeaderWrapperView>
 
         {companyCode && (
@@ -524,6 +518,21 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               });
             }
             return this.setState({'learningObjectivesOpen':value})
+          }} 
+        />
+        {/* 4/5~ 4/30 일까지 노출되도록 수정 */}
+        <AttendanceModalContainer
+          open={attendanceOpen}
+          setOpen={(value, type?)=> {
+            // if(type === undefined || type !== 'save') {
+            //   requestLearningObjectives()
+            // } else {
+              // reactAlert({
+              //   title: '',
+              //   message: `목표 설정이 완료됐습니다.`,
+              // });
+            // }
+            return this.setState({'attendanceOpen':value})
           }} 
         />
       </>

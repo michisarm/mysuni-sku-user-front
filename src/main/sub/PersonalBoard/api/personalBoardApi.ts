@@ -5,10 +5,12 @@ import moment from "moment";
 import MyLearningSummaryModel from "myTraining/model/MyLearningSummaryModel";
 import { CollegePercentData } from "../model/CollegePercent";
 import { MyCompanyPopularCourseItem } from "../model/LectureMyCompanyPopularCourse";
+import AttendEvent from "../viewModel/AttendEvent";
 import LearningObjectives from "../viewModel/LearningObjectives";
 
 const badgeURl = '/api/badge'
 const flowURL = '/api/mytraining/summaries/flow';
+const eventURL = '/api/event';
 
 export function getCountOfBadges() {
   const params = {
@@ -81,4 +83,40 @@ export function getCollegePercent() {
   .then(response => {
     return response && response.data
   });
+}
+
+
+//이벤트 정보 조회
+export function findAttendEvent() {
+  return axiosApi.get<AttendEvent>(eventURL+`/attend`)
+  .then(response => {
+    return response && response.data
+  });
+}
+
+//출석횟수 조회
+export function getAttend(id: string) {
+  return axiosApi.get<any>(eventURL+`/attend/attendance/${id}`)
+  .then(response => {
+    return response && response.data
+  });
+}
+
+//출석
+export function updateAttend(id: string) {
+  return axiosApi.post<any>(eventURL+`/attend/attendance/${id}`)
+  .then(response => {
+    return response && response.data
+  })
+  .catch(error => {
+    console.log('error', error)
+  });
+}
+
+//이메일 암호화
+export function encryptEmail() {
+  return axiosApi.get<string>(eventURL+`/cypher/encrypt/email/UNIVtomorrow`)
+  .then(response => {
+    return response && response.data
+  })
 }
