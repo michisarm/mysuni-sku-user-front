@@ -1,8 +1,6 @@
-
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Label } from 'semantic-ui-react';
-
 
 interface Props {
   stampCount: number;
@@ -24,7 +22,13 @@ class ContentHeaderStampView extends PureComponent<Props> {
         <div className="stamp-wrap">
           <Label className="stamp">
             <div>
-              <a href="#" onClick={onClickItem}>
+              <a
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  onClickItem && onClickItem();
+                }}
+              >
                 <span className="text1">Stamp</span>
                 <span className="text2">{stampCount || 0}</span>
                 <span className="text6">개</span>

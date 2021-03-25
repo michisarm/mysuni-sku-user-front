@@ -19,7 +19,7 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   return response.data;
 }
 
-function findCoursePlan(coursePlanId: string): Promise<CoursePlan | undefined> {
+export function findCoursePlan(coursePlanId: string): Promise<CoursePlan | undefined> {
   const url = `${BASE_URL}/coursePlans/${coursePlanId}`;
   return axiosApi.get<CoursePlan>(url).then(AxiosReturn);
 }

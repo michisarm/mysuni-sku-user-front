@@ -23,6 +23,7 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import RQDLectureService from '../../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -150,7 +151,7 @@ const RQDLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '권장 과정',
       action: 'Click',
-      label: '권장 과정 전체보기'
+      label: '권장 과정 전체보기',
     });
   };
 
@@ -245,7 +246,7 @@ const RQDLearning: React.FC<Props> = Props => {
   return (
     <>
       {rqdLectures.length > 0 && rqdLectures[0] ? (
-        <ContentWrapper>
+        <ContentWrapper dataArea={AreaType.MAIN_REQUIRED} dataType={Type.CLICK}>
           <div className="section-head">
             <strong>{title}</strong>
             <div className="right">
@@ -303,7 +304,9 @@ const RQDLearning: React.FC<Props> = Props => {
             />
           )}
         </ContentWrapper>
-      ) : '' }
+      ) : (
+        ''
+      )}
     </>
   );
 };

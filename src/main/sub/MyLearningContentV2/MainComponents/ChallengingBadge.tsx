@@ -14,6 +14,7 @@ import { Badge } from '../../../../certification/shared/Badge';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -89,7 +90,11 @@ const ChallengingBadge: React.FC<Props> = Props => {
   };
 
   return (
-    <ContentWrapper className="badge-scrolling">
+    <ContentWrapper
+      className="badge-scrolling"
+      dataArea={AreaType.MAIN_BADGE}
+      dataType={Type.CLICK}
+    >
       <div className="section-head">
         <strong>
           <span className="ellipsis">{profileMemberName}</span>님이 도전중인

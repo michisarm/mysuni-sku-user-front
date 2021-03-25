@@ -89,7 +89,6 @@
     "ts-loader": "^6.2.1",
     "@types/file-saver": "^2.0.1"
   },
-  "proxy": "http://university.sk.com",
   "eslintConfig": {
     "extends": [
       "react-app"

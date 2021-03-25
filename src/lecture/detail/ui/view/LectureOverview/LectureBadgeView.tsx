@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Label, List } from 'semantic-ui-react';
 import BadgeContainer from '../../../../../certification/shared/Badge/ui/logic/BadgeContainer';
 import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
+import { Type, AreaType } from 'tracker/model';
 
 interface LectureBadgeViewProps {
   lectureBadge: LectureBadge;
@@ -12,7 +13,12 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeV
 }) {
   return (
     <>
-      <div className="badge-detail" id="lms-related-badge">
+      <div
+        className="badge-detail"
+        id="lms-related-badge"
+        data-area={AreaType.LECTURE_BADGE}
+        data-type={Type.CLICK}
+      >
         <div className="ov-paragraph">
           <div className="section-head">
             <div className="title">

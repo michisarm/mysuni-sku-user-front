@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Tab } from 'semantic-ui-react';
 import { usePopularCourseItem } from '../../store/PersonalBoardStore';
+import { Type, AreaType } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   onTabClick: (date: any) => void;
@@ -110,7 +111,11 @@ const MyCompanyPopularCourseView: React.FC<Props> = Props => {
   return (
     <>
       {popularCourseItem && ( 
-        <div className="personal-card-item right-card">
+        <div
+          className="personal-card-item right-card"
+          data-area={AreaType.MAIN_INFO}
+          data-type={Type.CLICK}
+        >
           <div className="card-item-tit">
             <h3>우리 회사 인기 코스</h3>
             <span>{searchPeriod}</span>

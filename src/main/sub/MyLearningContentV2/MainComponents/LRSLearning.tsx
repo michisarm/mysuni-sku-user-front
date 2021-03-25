@@ -25,6 +25,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
@@ -140,7 +141,7 @@ const LRSLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '추천 과정',
       action: 'Click',
-      label: '추천 과정 전체보기'
+      label: '추천 과정 전체보기',
     });
   };
 
@@ -232,7 +233,7 @@ const LRSLearning: React.FC<Props> = Props => {
   }; */
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={AreaType.MAIN_RECOMMEND} dataType={Type.CLICK}>
       <div className="section-head">
         {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
         <strong>{title}</strong>
