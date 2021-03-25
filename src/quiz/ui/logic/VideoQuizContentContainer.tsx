@@ -34,6 +34,7 @@ const VideoQuizContentContainer = ({
   const currentUser = patronInfo.getPatron();
   const currentMemberId = patronInfo.getDenizenId();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [offset, setOffset] = useState<number>(0);
   const [resultData, setResultData] = useState<QuizResult>();
   const [summaryCount, setSummaryCount] = useState<number[]>();
   const [quizStatus, setQuizStatus] = useState<{
@@ -167,7 +168,7 @@ const VideoQuizContentContainer = ({
       const result: any = await findAllAnswer(
         questionData[currentIndex]?.id,
         limit,
-        0
+        offset // state = 0
       );
       setResultData(result);
     }
@@ -230,18 +231,26 @@ const VideoQuizContentContainer = ({
   const onLoadMore = useCallback(async () => {
     if (questionData && resultData) {
       const limit = 10;
+      const nextOffset =
+        limit + offset > resultData?.totalCount
+          ? resultData?.totalCount
+          : limit + offset;
+      if (nextOffset === resultData?.totalCount) {
+        return;
+      }
       const nextResult: any = await findAllAnswer(
         questionData[currentIndex]?.id,
         limit,
-        resultData?.results?.length
+        nextOffset
       );
-      const next = resultData?.results.concat(nextResult.results);
+      const next = resultData?.results.concat(nextResult?.results);
       setResultData({
         ...resultData,
         results: next,
       });
+      setOffset(nextOffset);
     }
-  }, [resultData]);
+  }, [offset, questionData, resultData]);
 
   return (
     <>
