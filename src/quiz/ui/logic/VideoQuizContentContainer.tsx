@@ -412,13 +412,6 @@ const VideoQuizContentContainer = ({
                       const multipleTotal = summaryCount?.reduce(
                         (prev, crr) => prev + crr
                       );
-
-                      console.log(
-                        multipleTotal &&
-                          Math.floor(
-                            (summaryCount![index] / multipleTotal) * 100
-                          )
-                      );
                       return (
                         <li
                           key={index}
