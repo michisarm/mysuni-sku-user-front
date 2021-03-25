@@ -42,10 +42,10 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
 
   return (
     <LectureSurveySummaryChoiceLayout {...lectureSurveyItem}>
-      <div>
-        {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
-      </div>
       <div className="course-survey-list">
+        <div>
+          {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+        </div>
         {!canMultipleAnswer &&
           choices &&
           choices.map((choice, index) => {
@@ -57,7 +57,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-            console.log('객관식1', choiceAvg);
+
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -89,7 +89,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
-                  {choice.image !== '' ? (
+                  {choice.image ? (
                     <div className="course-survey-list-img-selector">
                       <Image
                         style={{ display: 'inline-block' }}
@@ -115,7 +115,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
             const isChecked: any = lectureSurveyAnswerItem?.itemNumbers?.includes(
               `${choice.no}`
             );
-            console.log('객관식2', choiceAvg);
+
             return (
               <Fragment key={choice.no}>
                 <li className="course-survey-list-cont">
@@ -147,7 +147,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
-                  {choice.image !== '' ? (
+                  {choice.image? (
                     <div className="course-survey-list-img-selector">
                       <Image
                         style={{ display: 'inline-block' }}
