@@ -37,14 +37,10 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
   };
 
   const onChangeViewType = ((e: any, data: any, func?: any) => {
+    console.log("버튼 선택 : " + data.value);
     setViewType(data.value);
-    // history.push(myTrainingRoutes.learningEnrLecture());
   });
 
-
-  useEffect(() => {
-    console.log("렌더링..");
-  });
   // const onChangeViewType = (e: any, data: any) => {
   //   window.sessionStorage.setItem('order_type', data.value);
 
@@ -138,5 +134,5 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 export default withRouter(NewLearningListContainer);
 
 /* globals */
-export type NewLearningViewType = 'All' | 'Possible'; 
+export type NewLearningViewType = 'All' | 'Aailable'; 
 export type NewLearningContentType = ContentType;

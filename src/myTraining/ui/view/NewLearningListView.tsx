@@ -46,7 +46,7 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   setNewOrder: (order: OrderByType) => void;
   showTotalCount: (count: number) => void;
   setPageTitle: (contentType: ContentType) => void;
-  viewType: string;
+  viewType?: string;
 }
 
 const NewLearningListView: React.FC<Props> = Props => {
@@ -141,6 +141,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
 
     findLectures(true);
+    console.log("EFFECT : ", viewType);
 
     // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
     return () => {
@@ -148,17 +149,70 @@ const NewLearningListView: React.FC<Props> = Props => {
       window.sessionStorage.setItem('order_type', curOrder.current);
       window.sessionStorage.setItem('y_pos', window.scrollY.toString());
     };
-  }, []);
-
-
-  // 수강 신청 모아보기에서 정렬 버튼 사용
-  useEffect(() => {
-    switch(contentType) {
-      case ContentType.Enrolling:
-        findLectures(true);
-        break;
-    }
   }, [viewType]);
+
+  // // 최초 렌더링 후 한번만 호출됨
+  // useEffect(() => {
+  //   //
+  //   /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
+
+  //   fromMain.current =
+  //     window.sessionStorage.getItem('from_main') !== null &&
+  //     window.sessionStorage.getItem('from_main') === 'TRUE';
+  //   refresh.current =
+  //     window.sessionStorage.getItem('page_moved') !== null &&
+  //     window.sessionStorage.getItem('page_moved') !== 'TRUE';
+  //   fromBack.current = !fromMain.current && !refresh.current;
+
+  //   // 메인 페이지로부터 이동
+  //   if (fromMain.current) {
+  //     fromMain.current = true;
+  //     history.replace(routePaths.currentPage(1));
+  //     match.params.pageNo = '1';
+  //     if (order === OrderByType.Popular) {
+  //       setNewOrder(OrderByType.New);
+  //       return () => {};
+  //     }
+  //     curOrder.current = OrderByType.New;
+  //   }
+  //   // 리프레시 시 호출됨
+  //   else if (refresh.current) {
+  //     refresh.current = true;
+  //     curOrder.current = order;
+  //     setNewOrder(
+  //       order === OrderByType.New ? OrderByType.New : OrderByType.Popular
+  //     );
+  //   }
+  //   // (인기순) 상세보기 페이지로부터 이동
+  //   else {
+  //     // fromBack.current === true
+  //     fromBack.current = true;
+  //     // y Position 설정
+  //     const preOrder = window.sessionStorage.getItem('order_type');
+  //     setNewOrder(
+  //       preOrder === OrderByType.New ? OrderByType.New : OrderByType.Popular
+  //     );
+  //     curOrder.current = preOrder!;
+  //   }
+
+  //   window.sessionStorage.setItem('page_moved', '');
+
+  //   /****************************************************************************/
+
+  //   pageNo.current = getPageNo();
+
+  //   const initialLimit = pageNo.current * PAGE_SIZE;
+  //   pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
+
+  //   findLectures(true);
+
+  //   // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
+  //   return () => {
+  //     window.sessionStorage.setItem('page_moved', 'TRUE');
+  //     window.sessionStorage.setItem('order_type', curOrder.current);
+  //     window.sessionStorage.setItem('y_pos', window.scrollY.toString());
+  //   };
+  // }, []); 
 
   useEffect(() => {
     // 메인으로부터 이동
@@ -247,7 +301,8 @@ const NewLearningListView: React.FC<Props> = Props => {
         if (clear) {
           enrLectureService!.clearLectures();
         }
-        findEnrLectures(pgNo);
+        findEnrLectures(pgNo, viewType);
+
         break;
     }
   };
@@ -408,15 +463,16 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   const findEnrLectures = async (pageNo?: number, viewType: string = 'All') => {
     //
-    console.log("sdfdasfdsaf : ", viewType);
+    console.log("findEnrLectures : ", viewType);
     const page = pageService!.pageMap.get(PAGE_KEY);
     
     let orderBy = OrderByType.Imminent;
-
-    if(viewType === 'Possible') {
+    
+    if(viewType === "Available") {
       orderBy = OrderByType.Available;
     }
-    if(window.sessionStorage.getItem("order_type") === OrderByType.Available) orderBy = OrderByType.Available;
+
+    // if(window.sessionStorage.getItem("order_type") === OrderByType.Available) orderBy = OrderByType.Available;
 
     const lectureFilterRdo = LectureFilterRdoModel.enrLectures(
       page!.limit,
