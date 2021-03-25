@@ -83,11 +83,19 @@ export function findAllAnswer(
     .then(response => response?.data);
 }
 
-// 단검 정답 조회
+// 단건 정답 조회
 export function findAnswer(quizId: string): Promise<any> {
   // /quizQuestionAnswer/{quizQuestionId}/{memberId}
   // 리턴타입 변경하기
   return axios
     .get<any>(`${ANSWER_URL}/${quizId}`)
     .then(response => response?.data);
+}
+
+// 단건 정답 결과조회
+
+export function findAnswerSummary(questionId: string): Promise<any> {
+  return axios
+    .get<any>(`${ANSWER_URL}/summary/${questionId}`)
+    .then(res => res.data);
 }

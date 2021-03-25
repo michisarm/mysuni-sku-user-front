@@ -10,6 +10,7 @@ import { patronInfo } from '@nara.platform/dock';
 import {
   findAllAnswer,
   findAnswer,
+  findAnswerSummary,
   findQuiz,
   registerAnswer,
 } from 'quiz/api/QuizApi';
@@ -19,6 +20,7 @@ import FailIcon from '../../../style/media/img-quiz-wrong.png';
 import FinishIcon from '../../../style/media/img-quiz-finish.png';
 import EmptyIcon from '../../../style/media/survey-empty-btn.png';
 import RadioIcon from '../../../style/media/survay-radio-btn.png';
+import { QuizResult } from 'quiz/model/QuizResult';
 
 const VideoQuizContentContainer = ({
   questionData,
@@ -32,7 +34,8 @@ const VideoQuizContentContainer = ({
   const currentUser = patronInfo.getPatron();
   const currentMemberId = patronInfo.getDenizenId();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [resultData, setResultData] = useState<any>();
+  const [resultData, setResultData] = useState<QuizResult>();
+  const [summaryCount, setSummaryCount] = useState<number[]>();
   const [quizStatus, setQuizStatus] = useState<{
     status: boolean;
     type: string;
@@ -54,9 +57,6 @@ const VideoQuizContentContainer = ({
 
   useEffect(() => {
     if (questionData) {
-      const padding = '***';
-      const blindEmail =
-        currentUser?.email?.split('@')[0].substr(0, 3) + padding;
       const userAnswerField: any = questionData[
         currentIndex
       ]?.quizQuestionItems?.map((_, index): AnswerItem[] => {
@@ -65,8 +65,9 @@ const VideoQuizContentContainer = ({
         createAnswerField.push(userAnswerRow);
         return createAnswerField;
       });
+
       setUserAnswer({
-        email: blindEmail,
+        email: currentUser?.email,
         memberId: currentMemberId,
         quizQuestionId: questionData[currentIndex]?.id,
         quizQuestionAnswerItems: userAnswerField?.flat(),
@@ -102,24 +103,43 @@ const VideoQuizContentContainer = ({
           if (userAnswers.find(f => f.number === answer.number)) {
             return answer;
           }
-        }).length;
-
-        if (checkedAnswer === userAnswers?.length) {
+        });
+        if (
+          checkedAnswer?.length === userAnswers?.length &&
+          userAnswers?.length === questionAnswers?.length
+        ) {
+          setQuizStatus({ status: true, type: 'success' });
           const params = {
             email: currentUser?.email,
-            quizQuestionAnswerItems: [
-              userAnswers?.find(f => f.answerItem === true),
-            ],
+            quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
+              .filter(row => row.answerItem === true)
+              .map(row => row.number),
             quizQuestionId: questionData[currentIndex]?.id,
           };
-          console.log(resultData);
+
           await registerAnswer(params);
-          setQuizStatus({ status: true, type: 'success' });
         } else {
           setQuizStatus({ status: true, type: 'fail' });
         }
+      } else if (
+        // 단일 객관식, 다중 객관식 답안제출의 경우
+        !questionData[currentIndex].answer &&
+        (questionData[currentIndex].type === 'SingleChoice' ||
+          questionData[currentIndex].type === 'MultipleChoice')
+      ) {
+        setQuizStatus({ status: true, type: 'success' });
+
+        const params = {
+          email: currentUser?.email,
+          quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
+            .filter(row => row.answerItem === true)
+            .map(row => row.number),
+          quizQuestionId: questionData[currentIndex]?.id,
+        };
+
+        await registerAnswer(params);
       } else if (!questionData[currentIndex].answer) {
-        // 답안 제출의 경우
+        // 단답형, 서술형 답안 제출의 경우
         const params = {
           email: currentUser?.email,
           quizQuestionAnswerItems: [
@@ -127,19 +147,33 @@ const VideoQuizContentContainer = ({
           ],
           quizQuestionId: questionData[currentIndex]?.id,
         };
-        await registerAnswer(params);
         setQuizStatus({ status: true, type: 'success' });
+        await registerAnswer(params);
       }
     }
-  }, [questionData, currentIndex, quizStatus, userAnswer]);
+  }, [questionData, currentIndex, quizStatus, userAnswer, summaryCount]);
 
   const onChangeResultAnswer = useCallback(async () => {
     setQuizStatus({ status: true, type: 'result' });
     if (questionData) {
-      const result = await findAllAnswer(questionData[currentIndex]?.id, 0, 5);
+      if (
+        questionData[currentIndex].type === 'SingleChoice' ||
+        questionData[currentIndex].type === 'MultipleChoice'
+      ) {
+        const summary = await findAnswerSummary(questionData[currentIndex]?.id);
+        setSummaryCount(
+          Object.values(summary.quizQuestionAnswerItemMap.numberCountMap)
+        );
+      }
+      const limit = 10;
+      const result: any = await findAllAnswer(
+        questionData[currentIndex]?.id,
+        limit,
+        0
+      );
       setResultData(result);
     }
-  }, [currentIndex, quizStatus, resultData, currentIndex]);
+  }, [currentIndex, quizStatus, resultData, currentIndex, summaryCount]);
 
   const onCloseQuizPanel = useCallback(() => {
     setQuizStatus({ status: false, type: '' });
@@ -195,7 +229,22 @@ const VideoQuizContentContainer = ({
     });
   };
 
-  console.log('@@ result Data', resultData);
+  const onLoadMore = useCallback(async () => {
+    if (questionData && resultData) {
+      const limit = 10;
+      const nextResult: any = await findAllAnswer(
+        questionData[currentIndex]?.id,
+        limit,
+        resultData?.results?.length
+      );
+      const next = resultData?.results.concat(nextResult.results);
+      setResultData({
+        ...resultData,
+        results: next,
+      });
+    }
+  }, [resultData]);
+
   return (
     <>
       {/* 퀴즈영역 */}
@@ -216,14 +265,13 @@ const VideoQuizContentContainer = ({
               userAnswer={userAnswer}
             />
           </div>
-          <div className="video-quiz-footer">
+          <div className="video-quiz-footer" style={{ position: 'absolute' }}>
             <button onClick={onSubmitUserAnswer} className="ui button fix bg">
               제출하기
             </button>
           </div>
         </div>
       )}
-
       {/* 오답 패널 */}
       {quizStatus.status && quizStatus.type === 'fail' && questionData && (
         <div className="video-quiz-wrap sty2">
@@ -255,7 +303,6 @@ const VideoQuizContentContainer = ({
           </div>
         </div>
       )}
-
       {/* 답안제출 완료 */}
       {quizStatus.status && quizStatus.type === 'success' && questionData && (
         <div className="video-quiz-wrap sty2">
@@ -265,24 +312,27 @@ const VideoQuizContentContainer = ({
           <div className="quiz-content-wrap quiz-center-box">
             <img src={CompleteIcon} />
             <span className="wro">답안 제출이 완료됐습니다.</span>
-            <span className="wro2">
-              다른 참여자의 의견을 확인할 수 있습니다.
-            </span>
+            {!questionData[currentIndex].answer && (
+              <span className="wro2">
+                다른 참여자의 의견을 확인할 수 있습니다.
+              </span>
+            )}
           </div>
           <div className="video-quiz-footer">
-            <button
-              onClick={onChangeResultAnswer}
-              className="ui button fix bg grey"
-            >
-              결과보기
-            </button>
+            {!questionData[currentIndex].answer && (
+              <button
+                onClick={onChangeResultAnswer}
+                className="ui button fix bg grey"
+              >
+                결과보기
+              </button>
+            )}
             <button onClick={onChangeNextQuestion} className="ui button fix bg">
               확인
             </button>
           </div>
         </div>
       )}
-
       {/* 퀴즈참여 완료 */}
       {quizStatus.status && quizStatus.type === 'finish' && questionData && (
         <div className="video-quiz-wrap sty2">
@@ -354,51 +404,122 @@ const VideoQuizContentContainer = ({
               <div className="quiz-question">
                 <ul className="result-list">
                   {questionData[currentIndex].quizQuestionItems?.map(
-                    (row, index) => (
-                      <li
-                        key={index}
-                        className={row.answerItem === true ? 'mine' : ''}
-                      >
-                        <span className="course-survey-list-btnImg">
-                          <img
-                            src={
-                              row.answerItem === true ? RadioIcon : EmptyIcon
-                            }
+                    (row, index) => {
+                      const myAnswer = resultData?.results
+                        .filter(list => list.memberId === userAnswer?.memberId)
+                        .map(item => item.quizQuestionAnswerItems)
+                        .flat();
+                      const multipleTotal = summaryCount?.reduce(
+                        (prev, crr) => prev + crr
+                      );
+
+                      console.log(
+                        multipleTotal &&
+                          Math.floor(
+                            (summaryCount![index] / multipleTotal) * 100
+                          )
+                      );
+                      return (
+                        <li
+                          key={index}
+                          className={
+                            myAnswer?.includes((index + 1).toString()) === true
+                              ? 'mine'
+                              : ''
+                          }
+                        >
+                          <span className="course-survey-list-btnImg">
+                            <img
+                              src={
+                                myAnswer?.includes((index + 1).toString()) ===
+                                true
+                                  ? RadioIcon
+                                  : EmptyIcon
+                              }
+                            />
+                          </span>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: `${row.text}`,
+                            }}
+                            style={{
+                              display: 'inline-block',
+                              cursor: 'default',
+                            }}
                           />
-                        </span>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: `${row.text}`,
-                          }}
-                          style={{ display: 'inline-block' }}
-                        />
-                        <div className="card-gauge-bar sty2 color-others">
-                          <div className="rangeBox">
-                            <div className="range">
-                              <div
-                                style={{ width: '22%' }}
-                                className="percent"
-                              />
+                          <div className="card-gauge-bar sty2 color-others">
+                            <div className="rangeBox">
+                              <div className="range">
+                                <div
+                                  style={{
+                                    width: `${
+                                      summaryCount &&
+                                      resultData &&
+                                      quizStatus.type === 'result' &&
+                                      summaryCount![index] &&
+                                      questionData[currentIndex]?.type ===
+                                        'SingleChoice'
+                                        ? Math.floor(
+                                            (summaryCount![index] /
+                                              resultData!.totalCount) *
+                                              100
+                                          )
+                                        : questionData[currentIndex]?.type ===
+                                            'MultipleChoice' && multipleTotal
+                                        ? Math.floor(
+                                            (summaryCount![index] /
+                                              multipleTotal) *
+                                              100
+                                          )
+                                        : 0
+                                    }%`,
+                                  }}
+                                  className="percent"
+                                />
+                              </div>
+                              <span style={{ marginLeft: '1rem' }}>
+                                {summaryCount &&
+                                resultData &&
+                                quizStatus.type === 'result' &&
+                                summaryCount![index] &&
+                                questionData[currentIndex]?.type ===
+                                  'SingleChoice'
+                                  ? Math.floor(
+                                      (summaryCount![index] /
+                                        resultData!.totalCount) *
+                                        100
+                                    )
+                                  : questionData[currentIndex]?.type ===
+                                      'MultipleChoice' && multipleTotal
+                                  ? Math.floor(
+                                      (summaryCount![index] / multipleTotal) *
+                                        100
+                                    )
+                                  : 0}
+                                <em>%</em>
+                              </span>
                             </div>
-                            <span>
-                              22<em>%</em>
-                            </span>
                           </div>
-                        </div>
-                        {row.img && (
-                          <button
-                            onClick={() => onImageZoomPopup(row.text, row.img)}
-                            className="quiz-preview-img"
-                          >
-                            <img src={`/${row.img}`} />
-                          </button>
-                        )}
-                      </li>
-                    )
+                          {row.img && (
+                            <button
+                              onClick={() =>
+                                onImageZoomPopup(row.text, row.img)
+                              }
+                              className="quiz-preview-img"
+                            >
+                              <img src={`/${row.img}`} />
+                            </button>
+                          )}
+                        </li>
+                      );
+                    }
                   )}
                 </ul>
               </div>
-              <div className="video-quiz-footer">
+              <div
+                className="video-quiz-footer"
+                style={{ position: 'absolute' }}
+              >
                 <button
                   onClick={onChangeNextQuestion}
                   className="ui button fix bg"
@@ -409,8 +530,7 @@ const VideoQuizContentContainer = ({
             </div>
           </div>
         )}
-
-      {/* 서술형 */}
+      {/* 결과보기 서술형 */}
       {quizStatus.status &&
         quizStatus.type === 'result' &&
         questionData &&
@@ -450,21 +570,26 @@ const VideoQuizContentContainer = ({
                   ? resultData?.results.map((userList: any, index: number) => (
                       <div className="descriptive-box" key={index}>
                         <span>
-                          {userList.email?.split('@')[0].substr(0, 3) + '***'}
+                          {userList.email
+                            ?.split('@')[0]
+                            .substr(
+                              0,
+                              userList.email?.split('@')[0].length - 3
+                            ) + '***'}
                         </span>
-                        <p>{userList.quizQuestionAnswerItems[0]}</p>
+                        <p>{JSON.parse(userList.quizQuestionAnswerItems[0])}</p>
                       </div>
                     ))
                   : null}
                 <div className="more-comments">
-                  <Button icon className="left moreview">
+                  <Button onClick={onLoadMore} icon className="left moreview">
                     <Icon className="moreview" />
                     list more
                   </Button>
                 </div>
               </div>
             </div>
-            <div className="video-quiz-footer">
+            <div className="video-quiz-footer" style={{ position: 'absolute' }}>
               <button
                 onClick={onChangeNextQuestion}
                 className="ui button fix bg"
