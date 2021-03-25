@@ -26,7 +26,6 @@ import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureS
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
 import { Type, AreaType } from 'tracker/model';
-import {Radio, Form} from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -42,11 +41,12 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
 
   contentType: string;
   order: string;
-  // totalCount: number;
+  totalCount: number;
 
   setNewOrder: (order: OrderByType) => void;
-  // showTotalCount: (count: number) => void;
+  showTotalCount: (count: number) => void;
   setPageTitle: (contentType: ContentType) => void;
+  viewType: string;
 }
 
 const NewLearningListView: React.FC<Props> = Props => {
@@ -65,10 +65,11 @@ const NewLearningListView: React.FC<Props> = Props => {
     actionLogService,
     enrLectureService,
     setNewOrder,
-    // showTotalCount,
+    showTotalCount,
     setPageTitle,
     match,
     history,
+    viewType
   } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
@@ -86,11 +87,6 @@ const NewLearningListView: React.FC<Props> = Props => {
   const refresh = useRef(false);
   const fromBack = useRef(false);
 
-  const [totalCount, setTotalCount] = useState(0);
-
-  const showTotalCount = (count: number) => {
-    setTotalCount(count);
-  };
   // 최초 렌더링 후 한번만 호출됨
   useEffect(() => {
     //
@@ -153,6 +149,16 @@ const NewLearningListView: React.FC<Props> = Props => {
       window.sessionStorage.setItem('y_pos', window.scrollY.toString());
     };
   }, []);
+
+
+  // 수강 신청 모아보기에서 정렬 버튼 사용
+  useEffect(() => {
+    switch(contentType) {
+      case ContentType.Enrolling:
+        findLectures(true);
+        break;
+    }
+  }, [viewType]);
 
   useEffect(() => {
     // 메인으로부터 이동
@@ -400,12 +406,16 @@ const NewLearningListView: React.FC<Props> = Props => {
     showTotalCount(lectureOffsetList.totalCount);
   };
 
-  const findEnrLectures = async (pageNo?: number) => {
+  const findEnrLectures = async (pageNo?: number, viewType: string = 'All') => {
     //
+    console.log("sdfdasfdsaf : ", viewType);
     const page = pageService!.pageMap.get(PAGE_KEY);
     
     let orderBy = OrderByType.Imminent;
 
+    if(viewType === 'Possible') {
+      orderBy = OrderByType.Available;
+    }
     if(window.sessionStorage.getItem("order_type") === OrderByType.Available) orderBy = OrderByType.Available;
 
     const lectureFilterRdo = LectureFilterRdoModel.enrLectures(
@@ -549,7 +559,7 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
-    return page && page.pageNo < page.totalPages;
+  return page && page.pageNo < page.totalPages;
   };
 
   /* render functions by 김동구 */
@@ -593,48 +603,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     }
   }, [contentType]);
 
-  const onChangeFilter = (e: any, data: any) => {
-    window.sessionStorage.setItem('order_type', data.value);
-
-    // ORDER 타입 선택 시 첫 페이지로 조회 하게 초기화
-    pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
-
-    findLectures(true);
-  }
-
   return (
-    <Fragment>
-      <div className="sort-reult">
-        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
-
-        {contentType == ContentType.Enrolling && (
-          <div className="comments-sort">
-            <Form className="comments-sort">
-              <Form.Group inline>
-                <Form.Field>
-                  <Radio
-                    className="base"
-                    label="전체 보기"
-                    name="sortRadioGroup"
-                    value={OrderByType.Imminent}      
-                    onChange={onChangeFilter}           
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Radio
-                    className="base"
-                    label="신청 가능 과정 모아보기"
-                    name="sortRadioGroup"
-                    value={OrderByType.Available}       
-                    onChange={onChangeFilter}                      
-                  />
-                </Form.Field>
-              </Form.Group>
-            </Form>
-          </div>
-        )}
-      </div>
-
       <div className="section" data-area={dataArea} data-type={Type.CLICK}>
         {lectures &&
         lectures.current &&
@@ -677,7 +646,6 @@ const NewLearningListView: React.FC<Props> = Props => {
           renderNoSuchContentPanel(contentType)
         )}
       </div>
-    </Fragment>
   );
 };
 
@@ -695,3 +663,5 @@ export default inject(
     'enrLecture.enrLectureService'
   )
 )(withRouter(observer(NewLearningListView)));
+
+

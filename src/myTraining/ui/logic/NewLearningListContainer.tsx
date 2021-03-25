@@ -1,10 +1,11 @@
-import React, {useState, Fragment} from 'react';
-import {Radio, Segment, Checkbox, Form} from 'semantic-ui-react';
+import React, {useState, Fragment, useEffect} from 'react';
+import {Segment} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import NewLearningListView from '../view/NewLearningListView';
 import {OrderByType} from '../../../lecture/model';
 import {ContentType} from '../page/NewLearningPage';
-import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
+import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
+import myTrainingRoutes from 'myTraining/routePaths';
 
 interface Props extends RouteComponentProps {
   contentType: string,
@@ -13,9 +14,15 @@ interface Props extends RouteComponentProps {
 
 const NewLearningListContainer : React.FC<Props> = (Props) => {
   //
-  const { contentType, setPageTitle } = Props;
+  const { contentType, setPageTitle, history } = Props;
 
   const [order, setOrder] = useState(OrderByType.New);
+  const [totalCount, setTotalCount] = useState(0);
+  const [viewType, setViewType] = useState<string>('All');
+
+  const showTotalCount = (count: number) => {
+    setTotalCount(count);
+  };
 
   const onChangeSorting = (e: any, data: any) => {
     if (order === data.value) return;
@@ -28,6 +35,25 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
     window.sessionStorage.setItem('order_type', order);
     setOrder(order);
   };
+
+  const onChangeViewType = ((e: any, data: any, func?: any) => {
+    setViewType(data.value);
+    // history.push(myTrainingRoutes.learningEnrLecture());
+  });
+
+
+  useEffect(() => {
+    console.log("렌더링..");
+  });
+  // const onChangeViewType = (e: any, data: any) => {
+  //   window.sessionStorage.setItem('order_type', data.value);
+
+  //   // ORDER 타입 선택 시 첫 페이지로 조회 하게 초기화
+  //   pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
+
+  //   findLectures(true);
+  // }
+
 
   return (
     <Segment className="full">
@@ -51,28 +77,58 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
         {/*/>*/}
         {/*</div>*/}
 
-        {/* <div className="comments-sort">
-          {CheckboxOptions.enrollingViewTypes.map((viewType, index) => (
-            <Fragment key={`view-type-${index}`}>
-              <Checkbox
-                className="base radio"
-                name={viewType.name}
-                label={viewType.label}
-                value={viewType.value}
-                // checked={viewType.value === checkedViewType}
-                // onChange={onChangeViewType}
+        <div className="sort-reult">
+        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
+
+        {contentType == ContentType.Enrolling && (
+          <div className="comments-sort">
+            <ListTopPanelTemplate
+              className="right-wrap"
+              contentType={contentType}
+            >
+              <ListRightTopPanel
+                contentType={contentType}
+                checkedViewType="All"
+                resultEmpty={false}
+                onChangeViewType={onChangeViewType}
               />
-            </Fragment>
-          ))}
-        </div> */}
+            </ListTopPanelTemplate>
+          </div>
+          // <div className="comments-sort">
+          //   <Form className="comments-sort">
+          //     <Form.Group inline>
+          //       <Form.Field>
+          //         <Radio
+          //           className="base"
+          //           label="전체 보기"
+          //           name="sortRadioGroup"
+          //           value={OrderByType.Imminent}      
+          //           onChange={onChangeFilter}           
+          //         />
+          //       </Form.Field>
+          //       <Form.Field>
+          //         <Radio
+          //           className="base"
+          //           label="신청 가능 과정 모아보기"
+          //           name="sortRadioGroup"
+          //           value={OrderByType.Available}       
+          //           onChange={onChangeFilter}                      
+          //         />
+          //       </Form.Field>
+          //     </Form.Group>
+          //   </Form>
+          // </div>
+        )}
+        </div>
 
       <NewLearningListView
         setNewOrder={setNewOrder}
-        // showTotalCount={showTotalCount}
+        showTotalCount={showTotalCount}
         contentType={contentType}
         order={window.sessionStorage.getItem('order_type') === OrderByType.New ? OrderByType.New : OrderByType.Popular}
-        // totalCount={totalCount}
+        totalCount={totalCount}
         setPageTitle={setPageTitle}
+        viewType={viewType}
       />
 
     </Segment>
@@ -80,3 +136,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 };
 
 export default withRouter(NewLearningListContainer);
+
+/* globals */
+export type NewLearningViewType = 'All' | 'Possible'; 
+export type NewLearningContentType = ContentType;
