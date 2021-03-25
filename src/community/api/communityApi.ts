@@ -226,7 +226,7 @@ export function findAllMyOpenCommunities(
   sort: string,
   offset: number
 ): Promise<OffsetElementList<CommunityView> | undefined> {
-  const url = `${BASE_URL}/communities/communityView/open/my?sort=${sort}&offset=${offset}&limit=10`;
+  const url = `${BASE_URL}/communities/communityView/open/my?sort=${sort}`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -342,7 +342,7 @@ export function followList(
   limit: number,
   nickName: string
 ): Promise<OffsetElementList<FollowCommunityItem> | undefined> {
-  const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
+  const url = `${BASE_URL}/profileviews/following?nickName=${nickName}`;
   return axiosApi
     .get<OffsetElementList<FollowCommunityItem>>(url)
     .then(AxiosReturn);
