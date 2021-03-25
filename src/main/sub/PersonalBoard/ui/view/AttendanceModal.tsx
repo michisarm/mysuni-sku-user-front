@@ -23,8 +23,6 @@ const AttendanceModal:React.FC<Props> = ({
   AttendEventItem,
   EncryptEmail,
   setOpen,
-  handleInputChange,
-  handleSave,
   attendClick
 }) => {
 
@@ -83,8 +81,9 @@ const AttendanceModal:React.FC<Props> = ({
     }
   }, [attendFlag, AttendCountItem])
 
-  const test = useCallback(() => {
-    console.log('복권 띄우기', EncryptEmail)
+  const lotteryTicketModalOpen = useCallback(() => {
+    console.log('암호화 메일', EncryptEmail)
+    console.log('출석 count', AttendCountItem.length)
     const frm = document.createElement('form')
     frm.setAttribute('id','1234')
     frm.setAttribute('action','http://www.naver.com')
@@ -100,7 +99,7 @@ const AttendanceModal:React.FC<Props> = ({
 
     frm.submit()
 
-  }, [EncryptEmail])
+  }, [EncryptEmail, AttendCountItem])
 
   return (
     <>
@@ -126,7 +125,7 @@ const AttendanceModal:React.FC<Props> = ({
                 </dt>
                 <dd>5, 10, 15, 20회 당<strong>복권 1장씩!</strong></dd>
               </dl>
-              <Link to="/community/main/open-communities" className="go_event">
+              <Link to="/board/support/notice-detail/NTC-00004z" className="go_event">
                 이벤트 자세히 보러가기
               </Link>
               <span>*본 이벤트는 PC로만 참여 가능합니다.</span>
@@ -156,7 +155,7 @@ const AttendanceModal:React.FC<Props> = ({
             <a className="go_study" onClick={() => setOpen(!open)}>학습하러 가기</a>
             {
               AttendCountItem && AttendCountItem.length >= 5 && (
-                <a className="go_lotto show" onClick={() => test()}>복권 긁기</a>
+                <a className="go_lotto show" onClick={() => lotteryTicketModalOpen()}>복권 긁기</a>
               )
             }
           </div>

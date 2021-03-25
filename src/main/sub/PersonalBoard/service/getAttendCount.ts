@@ -47,7 +47,6 @@ export async function requestAttendCount(id: string) {
       //   'time': 1616374877069,
       // },
     // ]
-    console.log('get result', result)
     setAttendCountItem([...result])
   })
 }
