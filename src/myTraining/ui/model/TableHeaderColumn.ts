@@ -20,9 +20,9 @@ const TableHeaderColumn = {
     { key: 2, text: '과정명' },
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
-    { key: 5, text: '진행률' },
-    { key: 6, text: '학습시간', icon: true },
-    { key: 7, text: '최근학습일', icon: true },
+    { key: 5, text: '학습시간', icon: true },
+    { key: 6, text: '최근학습일', icon: true },
+    { key: 7, text: '진행률' },
   ],
 
   InMyList: [
@@ -32,8 +32,9 @@ const TableHeaderColumn = {
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
     { key: 5, text: '학습시간', icon: true },
-    { key: 6, text: '스탬프', icon: true },
-    { key: 7, text: '등록일', icon: true },
+    { key: 6, text: '최근학습일', icon: true },
+    { key: 7, text: '진행률' },
+    { key: 8, text: '학습상태' },
   ],
   Required: [
     { key: 0, text: 'No' },
@@ -42,8 +43,9 @@ const TableHeaderColumn = {
     { key: 3, text: '학습유형' },
     { key: 4, text: 'Level' },
     { key: 5, text: '학습시간', icon: true },
-    { key: 6, text: '스탬프', icon: true },
-    { key: 7, text: '등록일', icon: true },
+    { key: 6, text: '최근학습일', icon: true },
+    { key: 7, text: '진행률' },
+    { key: 8, text: '학습상태' },
   ],
   Enrolled: [
     { key: 0, text: 'No' },
@@ -89,7 +91,7 @@ const TableHeaderColumn = {
     { key: 1, text: 'College' },
     { key: 2, text: '과정명' },
     { key: 3, text: '스탬프', icon: true },
-    { key: 4, text: '획득일자', icon: true }
+    { key: 4, text: '획득일자', icon: true },
   ],
   PersonalLearning: [
     { key: 0, text: 'No' },
@@ -100,9 +102,11 @@ const TableHeaderColumn = {
     { key: 5, text: '생성자' },
     { key: 6, text: '생성자 E-mail' },
     { key: 7, text: '상태' },
-    { key: 8, text: '승인일자' }
+    { key: 8, text: '승인일자' },
   ],
-  getColumnsByContentType: (contentType: MyContentType): { key: number; text: string; icon?: boolean }[] => {
+  getColumnsByContentType: (
+    contentType: MyContentType
+  ): { key: number; text: string; icon?: boolean }[] => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
         return TableHeaderColumn.InProgress;

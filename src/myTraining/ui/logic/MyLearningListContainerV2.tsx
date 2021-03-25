@@ -163,7 +163,7 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
-      /* 관심목록 & 권장과정 */
+      /* 관심목록 */
       case MyLearningContentType.InMyList: {
         setIsLoading(true);
         const isEmpty = await inMyLectureService!.findAllTableViews();
@@ -172,6 +172,7 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
+      /* 권장과정 */
       case MyLearningContentType.Required: {
         setIsLoading(true);
         const isEmpty = await lectureService!.findAllRqdTableViews();
