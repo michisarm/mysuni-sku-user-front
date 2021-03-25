@@ -92,6 +92,13 @@ const AdminHomeView: React.FC<AdminHomeViewProps> = function AdminHomeView({
   }, [communityId]);
 
   const beforePreviewSave = useCallback(async () => {
+    if (communityHome.type === 'BASIC' && communityHome?.thumbnailId === null) {
+      reactAlert({
+        title: '',
+        message: '대표 이미지를 입력해 주세요',
+      });
+      return;
+    }
     setCommunityHomeCreateItem({ ...communityHome, draft: 1 });
     await previewSave(communityId);
     reactAlert({

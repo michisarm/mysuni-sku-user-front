@@ -25,6 +25,7 @@ import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 import {Radio, Form} from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
@@ -75,6 +76,7 @@ const NewLearningListView: React.FC<Props> = Props => {
   const PAGE_SIZE = 16;
 
   const [yPos, setYPos] = useState(0);
+  const [dataArea, setDataArea] = useState<AreaType | null>(null);
 
   const lectures = useRef<LectureModel[] | null>(null);
   const curOrder = useRef(''); // 컴포넌트 렌더링에 관여하지 않는다.
@@ -568,6 +570,29 @@ const NewLearningListView: React.FC<Props> = Props => {
     return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
   };
 
+  useEffect(() => {
+    let area = null;
+    switch (contentType) {
+      case ContentType.Required:
+        area = AreaType.NEWLEARNING_REQUIRED;
+        break;
+      case ContentType.New:
+        area = AreaType.NEWLEARNING_NEW;
+        break;
+      case ContentType.Popular:
+        area = AreaType.NEWLEARNING_POPULAR;
+        break;
+      case ContentType.Recommend:
+        area = AreaType.NEWLEARNING_RECOMMEND;
+        break;
+      default:
+        break;
+    }
+    if (area) {
+      setDataArea(area);
+    }
+  }, [contentType]);
+
   const onChangeFilter = (e: any, data: any) => {
     window.sessionStorage.setItem('order_type', data.value);
 
@@ -575,7 +600,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
 
     findLectures(true);
-  }  
+  }
 
   return (
     <Fragment>
@@ -610,7 +635,7 @@ const NewLearningListView: React.FC<Props> = Props => {
         )}
       </div>
 
-      <div className="section">
+      <div className="section" data-area={dataArea} data-type={Type.CLICK}>
         {lectures &&
         lectures.current &&
         lectures.current.length > 0 &&
@@ -641,7 +666,6 @@ const NewLearningListView: React.FC<Props> = Props => {
                       onToggleBookmarkLecture(inMyLecture || lecture);
                     }}
                     onViewDetail={onViewDetail}
-                    contentType={contentType}
                   />
                 );
               })}

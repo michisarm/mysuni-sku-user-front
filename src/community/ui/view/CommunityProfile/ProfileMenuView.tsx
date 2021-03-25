@@ -2,6 +2,7 @@ import React from 'react';
 import { Sticky, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { getProfileItemMapFromCommunity } from 'community/service/useCommunityProfile/utility/getProfileItemMapFromCommunity';
+import { Type, AreaType } from 'tracker/model';
 
 interface ProfileMenuViewProps {
   menuType: string;
@@ -13,7 +14,11 @@ const ProfileMenuView: React.FC<ProfileMenuViewProps> = function ProfileMenuView
   return (
     <>
       <Sticky className="tab-menu offset0">
-        <div className="cont-inner">
+        <div
+          className="cont-inner"
+          data-area={AreaType.COMMUNITY_PROFILEMENU}
+          data-type={Type.CLICK}
+        >
           <Menu className="sku">
             <Menu.Item
               name="Profile"

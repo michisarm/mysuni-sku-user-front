@@ -9,6 +9,7 @@ import moment from 'moment';
 import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 import CommunityType from '../../../model/CommunityType';
 import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import { Type, AreaType } from 'tracker/model';
 
 interface OtherCommunityViewProps {
   communityProfileCommunity: CommunityProfileMyCommunity;
@@ -41,7 +42,7 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
     <tr key={communityId}>
       <td>{CommunityTypeToString(type)}</td>
       <td className="title ellipsis">
-      {type === 'OPEN' && (<span className="label">{fieldName}</span>)}
+        {type === 'OPEN' && <span className="label">{fieldName}</span>}
         <Link to={`/community/${communityId}`}>{name}</Link>
       </td>
       <td>
@@ -58,7 +59,11 @@ const OtherCommunityView: React.FC<OtherCommunityViewProps> = function OtherComm
 }) {
   return (
     <Segment className="full">
-      <div className="course-detail-center community-containter">
+      <div
+        className="course-detail-center community-containter"
+        data-area={AreaType.COMMUNITY_COMMUNITY}
+        data-type={Type.CLICK}
+      >
         <div className="community-main-contants">
           <div className="community-list-wrap">
             <table className="ui table fixed">

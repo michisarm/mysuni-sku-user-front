@@ -15,6 +15,7 @@ import {
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Type, AreaType } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 
 function copyUrl(url: string) {
@@ -226,7 +227,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   <p className="summary">{text}</p>
                 </div>
               )}
-              <div className="text-right">
+              <div className="text-right" style={{float: 'none'}}>
                 {!more && (
                   <button
                     className="ui icon button right btn-blue btn-more"
@@ -268,7 +269,11 @@ function MyCommunityPostListContainer() {
   }
 
   return (
-    <div className="community-main-contants">
+    <div                                                                                                                                                                                                                                                                  
+      className="community-main-contants"                                                                                                                                                                                                                                 
+      data-area={AreaType.COMMUNITY_MYPOST}                                                                                                                                                                                                                               
+      data-type={Type.CLICK}                                                                                                                                                                                                                                              
+    >        
       {isLoading ? (
         <Segment
           style={{

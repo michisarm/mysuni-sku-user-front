@@ -1,9 +1,13 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { getCookie } from '@nara.platform/accent';
 import ScrollToTop from './ScrollToTop';
 
 import { UserApp, AppLayout } from './shared';
 import HistoryContainer from './shared/ui/logic/HistoryContainer';
+import { TrackerRoute } from 'ucomp-tracker-react';
+import { trackClick } from 'tracker/present/apiclient';
+import { actionTrackView } from 'tracker/present/logic/ActionTrackService';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -23,9 +27,15 @@ const SearchRoutes = lazy(() => import('./search/Routes'));
 const ExtraRoutes = lazy(() => import('./extra/ExtraRoutes'));
 
 class Routes extends PureComponent {
-  //
+  state = {
+    email:
+      getCookie('tryingLoginId') ||
+      (window.sessionStorage.getItem('email') as string) ||
+      (window.localStorage.getItem('nara.email') as string),
+  };
+
   render() {
-    //
+    const { email } = this.state;
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <ScrollToTop />
@@ -68,6 +78,9 @@ class Routes extends PureComponent {
             </Switch>
           </Suspense>
         </UserApp>
+        <TrackerRoute
+          value={{ userId: email, trackClick, trackView: actionTrackView }}
+        />
         <HistoryContainer />
       </BrowserRouter>
     );

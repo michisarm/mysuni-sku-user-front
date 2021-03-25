@@ -7,6 +7,7 @@ import {
   LectureStructureCourseItem,
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
+import { Type, AreaType } from 'tracker/model';
 
 interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
@@ -22,7 +23,7 @@ function findActiveCourseCubes(
 }
 
 const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = function LectureCubeNavigatorView({
-  lectureStructure
+  lectureStructure,
 }) {
   const [visible, setVisible] = useState<boolean>(true);
   const close = useCallback(() => {
@@ -51,7 +52,11 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
   return (
     <>
       {visible && (
-        <div className="course-info-banner">
+        <div
+          className="course-info-banner"
+          data-area={AreaType.LECTURE_MENU}
+          data-type={Type.CLICK}
+        >
           안녕하세요.<span>{name}</span>님, 학습 중인 강의가 있습니다.
           <h3>{progressingCube.name}</h3>
           <span

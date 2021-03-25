@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Label, List } from 'semantic-ui-react';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
+import { Type, AreaType } from 'tracker/model';
 
 interface LectureTagsViewProps {
   lectureTags: LectureTags;
@@ -11,7 +12,11 @@ const LectureTagsView: React.FC<LectureTagsViewProps> = function LectureTagsView
   lectureTags,
 }) {
   return (
-    <div className="ov-paragraph fn-parents">
+    <div
+      className="ov-paragraph fn-parents"
+      data-area={AreaType.CUBE_TAG}
+      data-type={Type.CLICK}
+    >
       <List>
         <List.Item>
           <div className="title">

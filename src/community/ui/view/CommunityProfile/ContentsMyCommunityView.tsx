@@ -9,6 +9,7 @@ import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 import CommunityType from '../../../model/CommunityType';
+import { Type, AreaType } from 'tracker/model';
 import {
   requestAppendProfileCommunities,
   requestProfileCommunities,
@@ -32,7 +33,7 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
   const handleOk = () => {
     reactConfirm({
       title: '확인',
-      message: `${name} 커뮤니트를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
+      message: `${name} 커뮤니티를 탈퇴하시겠습니까? 작성하신 게시글은 해당 커뮤니티에 남겨 집니다.`,
       onOk: async () => {
         const result = await delMember(
           communityId,
@@ -87,7 +88,11 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
 }) {
   return (
     <Segment className="full">
-      <div className="course-detail-center community-containter">
+      <div
+        className="course-detail-center community-containter"
+        data-area={AreaType.COMMUNITY_COMMUNITY}
+        data-type={Type.CLICK}
+      >
         <div className="community-main-contants">
           <div className="community-list-wrap mycomu_fi">
             <table className="ui table fixed">

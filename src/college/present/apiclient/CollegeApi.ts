@@ -2,6 +2,14 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 
+const BASE_URL = '/api/college/colleges';
+// const BASE_URL = '/local/colleges';
+
+export function findCollege(collegeId: string): Promise<CollegeModel | undefined> {
+  const url = `${BASE_URL}/${collegeId}`;
+  return axios.get<CollegeModel>(url).then(response => (response && response.data) || null);
+}
+
 export default class CollegeApi {
 
   URLCollege = '/api/college/colleges';

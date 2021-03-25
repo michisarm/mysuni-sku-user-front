@@ -69,11 +69,12 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
-                    <Progress
+                    {/* <Progress
                       percent={criterionAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={maxNum === choice.count! ? 'blue' : 'grey'}
-                    />
+                    /> */}
+                    <div style={choice.count === undefined || 0 ? { height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px',} : {width: `${criterionAvg}%`, height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px',}} />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count || 0}
@@ -131,11 +132,12 @@ const LectureSurveySummaryCriterionView: React.FC<LectureSurveySummaryCriterionV
                     )}
                   </span>
                   <div className="course-survey-list-backgrondBar">
-                    <Progress
+                    {/* <Progress
                       percent={criterionAvg || 0}
                       style={{ opacity: 0.5 }}
                       color={maxNum === choice.count! ? 'blue' : 'grey'}
-                    />
+                    /> */}
+                    <div style={choice.count === undefined || 0 ? { height: '100%', backgroundColor: '#f4f7fd', opacity: 0.5, borderRadius: '6px',} : {width: `${criterionAvg}%`, height: '100%', backgroundColor: '#2185d0', opacity: 0.5, borderRadius: '6px',}} />
                     <span className="course-survey-list-persent-right">
                       <span className="course-survey-list-persent-number">
                         {choice.count || 0}
