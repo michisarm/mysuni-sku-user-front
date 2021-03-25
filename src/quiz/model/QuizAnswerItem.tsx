@@ -1,4 +1,4 @@
 export interface AnswerItem {
-  answerItem: boolean,
+  answerItem: boolean | string | undefined,
   number: number;
 }

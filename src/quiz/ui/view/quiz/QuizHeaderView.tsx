@@ -4,20 +4,19 @@ import React from 'react';
 
 interface Props {
   title: string | undefined;
-  titleImage: string | undefined
+  titleImage: string | undefined;
   question: QuizQuestions[] | undefined;
   currentIndex: number;
   onImageZoomPopup: (title: string, src: string) => void;
 }
 
-const QuizHeaderView:React.FC<Props> = ({
+const QuizHeaderView: React.FC<Props> = ({
   title,
   titleImage,
   question,
   currentIndex,
-  onImageZoomPopup
+  onImageZoomPopup,
 }) => {
-
   return (
     <div className="quiz-header">
       <div className={`quiz-paging step0${currentIndex + 1}`}>
@@ -25,20 +24,21 @@ const QuizHeaderView:React.FC<Props> = ({
           <span key={index} />
         ))}
       </div>
-      <h2>
-        {title}
-      </h2>
-      {
-        titleImage !== '' && titleImage !== null && titleImage !== undefined && (
-          <button onClick={() => onImageZoomPopup(title!, titleImage!)} className="quiz-preview-img">
-            <img src={`/${titleImage}`} />
-          </button>
-        )
-      }
-      <p>다른 분들의 의견을 살펴보세요.</p>
-      <p className="hint">( 초성힌트  : ㅅㅌㅂ )</p>
+      <h2
+        dangerouslySetInnerHTML={{
+          __html: `${title}`,
+        }}
+      />
+      {titleImage !== '' && (
+        <button
+          onClick={() => onImageZoomPopup(title!, titleImage!)}
+          className="quiz-preview-img"
+        >
+          <img src={`/${titleImage}`} />
+        </button>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default QuizHeaderView;

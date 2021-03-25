@@ -5,32 +5,35 @@ import QuizTableList from 'quiz/model/QuizTableList';
 import VideoQuizContentContainer from './VideoQuizContentContainer';
 
 interface Props {
+  quizPop: boolean;
   onCompletedQuiz: () => void;
 }
 
-const VideoQuizContainer:React.FC<Props> = ({
-  onCompletedQuiz
-}) => {
+const VideoQuizContainer: React.FC<Props> = ({ onCompletedQuiz, quizPop }) => {
   const [_, lectureMedia] = useLectureMedia();
   const [quizData, setQuizData] = useState<QuizTableList>();
 
   useEffect(() => {
-    const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0]
-    if(
-      quizIds !== undefined && 
-      quizIds !== null && 
+    const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0];
+
+    if (
+      quizIds !== undefined &&
+      quizIds !== null &&
       quizIds.length > 0 &&
       quizData === undefined
     ) {
-      const getQuizTable = async() => {
-        await findQuiz(quizIds).then(res => setQuizData(res))
-      }
+      const getQuizTable = async () => {
+        await findQuiz(quizIds).then(res => setQuizData(res));
+      };
       getQuizTable();
     }
-  }, [lectureMedia, quizData])
-  
+  }, [lectureMedia]);
+
   return (
-    <div className="video-quiz-wrap"> 
+    <div
+      className="video-quiz-wrap"
+      style={quizPop ? { display: 'block' } : { display: 'none' }}
+    >
       <div className="video-quiz-header">
         <h1>Video QUIZ</h1>
         <p>답안을 제출해야 강의 이어보기가 가능합니다.</p>
@@ -41,7 +44,7 @@ const VideoQuizContainer:React.FC<Props> = ({
         onCompletedQuiz={onCompletedQuiz}
       />
     </div>
-  )
-}
+  );
+};
 
 export default VideoQuizContainer;

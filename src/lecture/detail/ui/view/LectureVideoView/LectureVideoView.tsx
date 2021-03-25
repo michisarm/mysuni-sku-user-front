@@ -84,7 +84,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   scroll,
   videoPosition,
   enabled, // 링크드인 판별 state
-
 }) {
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
@@ -128,6 +127,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
+  const [pauseVideoSticky, setPauseVideoSticky] = useState<boolean>(false);
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -145,6 +145,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [embedApi, setEmbedApi] = useState<any | undefined>({
     pauseVideo: () => {},
+    playVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
@@ -876,34 +877,59 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const videoControll = {
     play: () => embedApi.playVideo(),
-    stop: () => embedApi.pauseVideo()
-  }
+    stop: () => embedApi.pauseVideo(),
+  };
 
   useEffect(() => {
-    const matchesQuizTime: number = Math.floor(currentTime)
-    if(matchesQuizTime !== undefined && matchesQuizTime === quizShowTime) {
-      videoControll.stop();
-      setQuizPop(true)
-    }
-  }, [currentTime])
-
-  useEffect(() => {
-    if(lectureMedia?.mediaContents.internalMedias[0].quizIds) {
-      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0]
-      const getQuizTable = async() => {
-        await findQuiz(quizIds).then(res => setQuizShowTime(res.showTime))
+    const matchesQuizTime: number = Math.floor(currentTime);
+    if (matchesQuizTime !== undefined && matchesQuizTime === quizShowTime) {
+      if (scroll > videoPosition) {
+        setPauseVideoSticky(true);
+        // closeFullScreen();
+        setQuizPop(false);
+        videoControll.stop();
+        reactAlert({
+          title: '영상이 중지됐습니다.',
+          message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
+          // onClose: () => onScrollTop(),
+        });
+      } else {
+        setPauseVideoSticky(false);
+        setQuizPop(true);
+        videoControll.stop();
       }
+    }
+  }, [currentTime, scroll]);
+
+  useEffect(() => {
+    if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
+      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0];
+      const getQuizTable = async () => {
+        await findQuiz(quizIds).then(res => setQuizShowTime(res.showTime));
+      };
       getQuizTable();
     }
-  }, [lectureMedia])
+  }, [lectureMedia]);
 
   const onCompletedQuiz = useCallback(() => {
-    console.log('hit', quizPop)
-    videoControll.play();
-    if(quizPop) {
+    if (quizPop) {
       setQuizPop(false);
+      videoControll.play();
     }
-  }, [quizPop])
+  }, [quizPop]);
+
+  const onScrollTop = () => {
+    window.scrollTo(0, 110);
+    // window.requestAnimationFrame(onScrollTop);
+  };
+
+  const closeFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else {
+      return;
+    }
+  };
 
   return (
     <div
@@ -920,12 +946,17 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       <div className="lms-video-sticky">
         <div className="video-container">
           <div id="panopto-embed-player"></div>
-          {
-            quizPop &&
-            <VideoQuizContainer
-              onCompletedQuiz={onCompletedQuiz}
-            />
-          }
+          <VideoQuizContainer
+            quizPop={quizPop}
+            onCompletedQuiz={onCompletedQuiz}
+          />
+          {pauseVideoSticky && (
+            <div className="video-overlay-small art">
+              <button onClick={onScrollTop} type="button">
+                <span className="copy">퀴즈풀고 이어보기</span>
+              </button>
+            </div>
+          )}
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
           {nextContentsView &&
             // !isActive &&
