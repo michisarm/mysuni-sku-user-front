@@ -66,7 +66,6 @@ const VideoQuizContentContainer = ({
         createAnswerField.push(userAnswerRow);
         return createAnswerField;
       });
-
       setUserAnswer({
         email: currentUser?.email,
         memberId: currentMemberId,
@@ -117,7 +116,6 @@ const VideoQuizContentContainer = ({
               .map(row => row.number),
             quizQuestionId: questionData[currentIndex]?.id,
           };
-
           await registerAnswer(params);
         } else {
           setQuizStatus({ status: true, type: 'fail' });
@@ -128,6 +126,12 @@ const VideoQuizContentContainer = ({
         (questionData[currentIndex].type === 'SingleChoice' ||
           questionData[currentIndex].type === 'MultipleChoice')
       ) {
+        const noAnswerCheck = userAnswer?.quizQuestionAnswerItems.filter(
+          answer => answer.answerItem === true
+        ).length;
+        if (noAnswerCheck === 0) {
+          return;
+        }
         setQuizStatus({ status: true, type: 'success' });
         const params = {
           email: currentUser?.email,
@@ -139,6 +143,13 @@ const VideoQuizContentContainer = ({
         await registerAnswer(params);
       } else if (!questionData[currentIndex].answer) {
         // 단답형, 서술형 답안 제출의 경우
+        const noAnswerCheck = JSON.stringify(
+          userAnswer?.quizQuestionAnswerItems[0].answerItem
+        );
+        // if (noAnswerCheck === 0) {
+        //   return;
+        // }
+        setQuizStatus({ status: true, type: 'success' });
         const params = {
           email: currentUser?.email,
           quizQuestionAnswerItems: [
@@ -146,7 +157,6 @@ const VideoQuizContentContainer = ({
           ],
           quizQuestionId: questionData[currentIndex]?.id,
         };
-        setQuizStatus({ status: true, type: 'success' });
         await registerAnswer(params);
       }
     }
@@ -189,7 +199,7 @@ const VideoQuizContentContainer = ({
           ...userAnswer,
           quizQuestionId: questionData[currentIndex]?.id,
           quizQuestionAnswerItems: [
-            { number: rowIndex + 1, answerItem: userAnswerItem || '' },
+            { number: rowIndex + 1, answerItem: userAnswerItem },
           ],
         });
       }
@@ -279,6 +289,7 @@ const VideoQuizContentContainer = ({
           </div>
         </div>
       )}
+
       {/* 오답 패널 */}
       {quizStatus.status && quizStatus.type === 'fail' && questionData && (
         <div className="video-quiz-wrap sty2">
@@ -310,6 +321,7 @@ const VideoQuizContentContainer = ({
           </div>
         </div>
       )}
+
       {/* 답안제출 완료 */}
       {quizStatus.status && quizStatus.type === 'success' && questionData && (
         <div className="video-quiz-wrap sty2">
@@ -317,12 +329,23 @@ const VideoQuizContentContainer = ({
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img src={CompleteIcon} />
+            <img
+              src={
+                questionData[currentIndex].alertMessage.img
+                  ? `/${questionData[currentIndex].alertMessage.img}`
+                  : CompleteIcon
+              }
+            />
             <span className="wro">답안 제출이 완료됐습니다.</span>
             {!questionData[currentIndex].answer && (
-              <span className="wro2">
-                다른 참여자의 의견을 확인할 수 있습니다.
-              </span>
+              <div
+                className="wro2"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    `${questionData[currentIndex].alertMessage.message}` ||
+                    '다른 참여자의 의견을 확인할 수 있습니다.',
+                }}
+              />
             )}
           </div>
           <div className="video-quiz-footer">

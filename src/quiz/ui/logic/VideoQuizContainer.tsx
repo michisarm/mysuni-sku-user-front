@@ -28,7 +28,6 @@ const VideoQuizContainer: React.FC<Props> = ({ onCompletedQuiz, quizPop }) => {
       getQuizTable();
     }
   }, [lectureMedia]);
-
   return (
     <div
       className="video-quiz-wrap"
