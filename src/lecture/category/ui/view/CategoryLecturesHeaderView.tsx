@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -8,18 +7,15 @@ import { ContentHeader } from 'shared';
 import { ActionLogService } from 'shared/stores';
 import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
-
+import { Type, AreaType } from 'tracker/model';
 
 interface Props {
-  actionLogService?: ActionLogService,
-  college: CollegeModel,
-  onClickMySuni: () => void,
+  actionLogService?: ActionLogService;
+  college: CollegeModel;
+  onClickMySuni: () => void;
 }
 
-
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
+@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
 @observer
 class CategoryLecturesHeaderView extends Component<Props> {
@@ -101,7 +97,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
         return true;
       case 'SK아카데미':
         return true;
-      default: 
+      default:
         return false;
     }
   }
@@ -111,7 +107,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
     const { actionLogService, college, onClickMySuni } = this.props;
 
     return (
-      <ContentHeader>
+      <ContentHeader dataArea={AreaType.COLLEGE_INFO} dataType={Type.CLICK}>
         <ContentHeader.Cell className="thumb">
           <ThumbnailView icon={this.getThumbnailIcon(college.name)} />
         </ContentHeader.Cell>
@@ -122,12 +118,21 @@ class CategoryLecturesHeaderView extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
-          { /*eslint-disable*/
-            this.collegeTabMove(college.name) === true && 
-            <Button className="personal line" onClick={() => { actionLogService?.registerClickActionLog({ subAction: 'mySUNI 전체 커리큘럼 보기' }); onClickMySuni(); }}>
+          {/*eslint-disable*/
+          this.collegeTabMove(college.name) === true && (
+            <Button
+              className="personal line"
+              onClick={() => {
+                actionLogService?.registerClickActionLog({
+                  subAction: 'mySUNI 전체 커리큘럼 보기',
+                });
+                onClickMySuni();
+              }}
+            >
               <span>College 전체 커리큘럼 보기</span>
             </Button>
-            /*eslint-enable */
+          )
+          /*eslint-enable */
           }
         </ContentHeader.Cell>
       </ContentHeader>

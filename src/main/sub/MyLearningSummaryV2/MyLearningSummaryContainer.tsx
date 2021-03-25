@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -29,12 +28,12 @@ import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjec
 import { requestLearningObjectives, saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
 import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
-
+import { Type, AreaType } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  skProfileService?: SkProfileService,
-  myLearningSummaryService?: MyLearningSummaryService,
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  myLearningSummaryService?: MyLearningSummaryService;
   menuControlAuthService?: MenuControlAuthService;
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
@@ -111,7 +110,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   }
 
   fetchLearningSummary() {
-    const { myLearningSummaryService, myTrainingService, badgeService } = this.props;
+    const {
+      myLearningSummaryService,
+      myTrainingService,
+      badgeService,
+    } = this.props;
 
     /* 메인 페이지에는 해당 년도의 LearningSummary 를 display 함. */
     const year = moment().year();
@@ -120,7 +123,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     myTrainingService!.countMyTrainingsWithStamp();
-    myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
+    myTrainingService!.countMyTrainingsWithStamp(
+      [],
+      moment([year, 1 - 1, 1])
+        .toDate()
+        .getTime(),
+      moment([year, 12 - 1, 31])
+        .toDate()
+        .getTime()
+    );
     badgeService!.getCountOfBadges();
 
     const { inprogressCount } = myTrainingService!;
@@ -187,7 +198,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     history.push(supportRoutePaths.supportQnANewPost());
   }
 
-  onClickCreateApl() {
+  onClickCreateApl(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
     // 개인학습 등록 바로 가기
     this.props.history.push('/my-training/apl/create');
   }
@@ -449,7 +461,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             <button type="button" onClick={this.handlePopup}/>
           </div>
         </HeaderWrapperView>
-
         {companyCode && (
           <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA} handleClick={this.handleOpenBtnClick} activeIndex={activeIndex} companyCode={companyCode}>
             <FavoriteChannelChangeModal
@@ -472,7 +483,11 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             }
           </AdditionalToolsMyLearning>
         )}
-        <div className="main-learning-link sty2">
+        <div 
+          className="main-learning-link sty2"
+          data-area={AreaType.MAIN_INFO}
+          data-type={Type.CLICK}
+        >
             <div className="inner">
                 <div className="left">
                     <div>
@@ -480,7 +495,14 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                         trigger={
                           <a>
                             <Icon className="channel25"/>
-                            <span>관심 채널 설정</span>
+                            <span 
+                              data-area={AreaType.MAIN_INFO}
+                              data-type={Type.VIEW}
+                              data-pathname="관심 채널 설정"
+                              data-page="#attention-channel"
+                            >
+                              관심 채널 설정
+                            </span>
                           </a>
                         }
                         favorites={favoriteChannels}

@@ -8,8 +8,8 @@ import { Segment, Icon, Button } from 'semantic-ui-react';
 import CommunityFollowListContainer from '../logic/CommunityFollow/CommunityFollowListContainer';
 import CommunityFollowPostListContainer from '../logic/CommunityFollow/CommunityFollowPostListContainer';
 import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
-
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
@@ -81,7 +81,11 @@ const FollowView: React.FC = function FollowView() {
             </>
           ) : (
             <>
-              <section className="content community">
+              <section
+                className="content community"
+                data-area={AreaType.COMMUNITY_NOCONTENT}
+                data-type={Type.CLICK}
+              >
                 <Segment className="full">
                   <div className="no-cont-wrap">
                     <Icon className="no-contents80" />

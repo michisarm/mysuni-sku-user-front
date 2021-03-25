@@ -23,6 +23,7 @@ import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -220,7 +221,7 @@ const InProgressLearning: React.FC<Props> = Props => {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={AreaType.MAIN_LEARNING} dataType={Type.CLICK}>
       <div className="section-head">
         <strong>
           <span className="ellipsis">{profileMemberName}</span>님이 학습중인

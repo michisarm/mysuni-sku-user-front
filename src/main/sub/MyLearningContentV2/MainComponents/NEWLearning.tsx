@@ -25,6 +25,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -130,7 +131,7 @@ const NEWLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '신규 과정',
       action: 'Click',
-      label: '신규 과정 전체보기'
+      label: '신규 과정 전체보기',
     });
   };
 
@@ -222,7 +223,7 @@ const NEWLearning: React.FC<Props> = Props => {
   }; */
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={AreaType.MAIN_NEW} dataType={Type.CLICK}>
       <div className="section-head">
         <strong>{title}</strong>
         <div className="right">

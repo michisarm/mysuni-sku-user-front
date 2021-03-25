@@ -1,6 +1,14 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { ChannelModel } from '../../model/ChannelModel';
 
+const BASE_URL = '/api/college/channels';
+// const BASE_URL = '/local/channels';
+
+export function findChannel(channelId: string): Promise<ChannelModel | undefined> {
+  const url = `${BASE_URL}/${channelId}`;
+  return axios.get<ChannelModel>(url).then(response => (response && response.data) || null);
+}
+
 export default class ChannelApi {
   URL = '/api/college/channels';
 
