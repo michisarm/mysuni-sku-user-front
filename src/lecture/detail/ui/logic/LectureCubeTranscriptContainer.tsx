@@ -3,7 +3,7 @@ import { Select, Icon, Button, Popup } from "semantic-ui-react";
 
 // Store
 import { getLectureMedia } from 'lecture/detail/store/LectureMediaStore';
-import { getEmbed } from 'lecture/detail/store/EmbedStore';
+import { getEmbed, setEmbed } from 'lecture/detail/store/EmbedStore';
 
 // Service
 import { downloadTranscript } from '../../service/useTranscript/utility/useTranscript';
@@ -49,14 +49,15 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
     const interval = useRef<any>(null);
     const toggleScriptActiveFunc = useRef<any>(null);
+    const isValidate = useRef<boolean>(false);
 
     // 특정 위치로 재생 위치 이동
     const seekByIndex = (index: number) => {
         getEmbed().loadVideo();
         if (getEmbed() && index >= 0) {
           //TODO current state 를 찾아서 Play
-          getEmbed().playVideo();
           getEmbed().seekTo(index);
+          getEmbed().playVideo();        
         }
     };
 
@@ -82,12 +83,16 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       interval.current = setInterval(() => {
         if(getEmbed().isPaused === false) {
           if(isActive) {
-            if(getEmbed().getCurrentTime() >= convertStringTimeToNumber(selectedRow?.endTime)) {
-              
+            if(!isValidate.current) {
+              if(getEmbed().getCurrentTime() === convertStringTimeToNumber(selectedRow?.startTime)) {
+                isValidate.current = true;
+              }
+            } else if(getEmbed().getCurrentTime() >= convertStringTimeToNumber(selectedRow?.endTime)) {
               setIsActive(false);
               setSelectedRow(undefined);
               toggleScriptActiveFunc.current();
             
+              isValidate.current = false;
               clearInterval(interval.current);
             } 
           } else {
@@ -115,6 +120,8 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
         setPanoptoSessionId('');        
         clearInterval(interval.current);
         interval.current = null;
+        isValidate.current = false;
+        setEmbed('');
       }
     }, [])
 
