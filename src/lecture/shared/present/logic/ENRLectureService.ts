@@ -3,24 +3,25 @@ import {autobind} from '@nara.platform/accent';
 import {OffsetElementList} from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
-import ArrangeApi from '../apiclient/ArrangeApi';
+import EnrollingApi from '../apiclient/EnrollingApi';
 import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 
 @autobind
-class NEWLectureService {
+class ENRLectureService {
   //
-  static instance: NEWLectureService;
+  static instance: ENRLectureService;
 
-  private arrangeApi: ArrangeApi;
+  private EnrollingApi: EnrollingApi;
   private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
-    this.arrangeApi = arrangeApi;
+  constructor(EnrollingApi: EnrollingApi, inMyLectureApi: InMyLectureApi) {
+    this.EnrollingApi = EnrollingApi;
     this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
+  _subTitle: string | null = '';
 
   @action
   setTitle(title: string | null) {
@@ -28,26 +29,23 @@ class NEWLectureService {
       this._title = title;
     }
     else {
-      const today = new Date();
-      const month = today.getMonth() + 1;
-      const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
-
-      this._title = `mySUNI ${month}월 ${week}주 신규 학습 과정`;
+      this._title = `수강 신청 과정 모아보기`;
     }
   }
 
   @computed
   get Title() {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
-
     if (this._title && this._title.length > 0) {
       return this._title;
     }
     else {
-      return `mySUNI ${month}월 ${week}주 신규 학습 과정`;
+      return `수강 신청 과정 모아보기`;
     }
+  }
+
+  @computed
+  get SubTitle() {
+    return `사전 수강 신청이 필요한 과정들을 조회할 수 있습니다.`;
   }
 
   @observable
@@ -63,15 +61,13 @@ class NEWLectureService {
   }
 
   @action
-  async findPagingNewLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
-    //
-    // 신규과정 학습정보 가져오기
-    const response = await this.arrangeApi.findNewLectures(lectureFilterRdo);
-    console.log(response);
+  async findEnrollingLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+    // 수강 신청 과정 조회
+    const response = await this.EnrollingApi.findEnrollingLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     if (fromMain) {
-      window.sessionStorage.setItem('NewLearningList', JSON.stringify(lectureOffsetElementList));
+      window.sessionStorage.setItem('EnrLearningList', JSON.stringify(lectureOffsetElementList));
     }
 
     if (!lectureOffsetElementList.empty) {
@@ -80,11 +76,11 @@ class NEWLectureService {
     this._totalCount = lectureOffsetElementList.totalCount;
     if (lectureOffsetElementList.title !== this._title) {
       this._title = lectureOffsetElementList.title;
-      const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
-      if (savedNewLearningList && savedNewLearningList.length > 0) {
-        const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
+      const savedEnrLearningList = window.navigator.onLine && window.sessionStorage.getItem('EnrLearningList');
+      if (savedEnrLearningList && savedEnrLearningList.length > 0) {
+        const newMain: OffsetElementList<LectureModel> = JSON.parse(savedEnrLearningList);
         newMain.title = this._title;
-        window.sessionStorage.setItem('NewLearningList', JSON.stringify(newMain));
+        window.sessionStorage.setItem('EnrLearningList', JSON.stringify(newMain));
       }
     }
 
@@ -105,7 +101,7 @@ class NEWLectureService {
   }
 
   @computed
-  get newLectures() {
+  get enrLectures() {
     //
     return (this._lectures as IObservableArray).peek();
   }
@@ -117,9 +113,9 @@ class NEWLectureService {
 
   @action
   removeLectureFromStorage(serviceId: string) {
-    const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
-    if (savedNewLearningList && savedNewLearningList.length > 0) {
-      const NewMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
+    const savedEnrLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
+    if (savedEnrLearningList && savedEnrLearningList.length > 0) {
+      const NewMain: OffsetElementList<LectureModel> = JSON.parse(savedEnrLearningList);
       if (NewMain && NewMain.results && NewMain.results.length > 0) {
         NewMain.results = NewMain.results.filter((item) => item.serviceId !== serviceId);
         NewMain.totalCount = NewMain.results.length;
@@ -130,6 +126,6 @@ class NEWLectureService {
   }
 }
 
-NEWLectureService.instance = new NEWLectureService(ArrangeApi.instance, InMyLectureApi.instance);
+ENRLectureService.instance = new ENRLectureService(EnrollingApi.instance, InMyLectureApi.instance);
 
-export default NEWLectureService;
+export default ENRLectureService;

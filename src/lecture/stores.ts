@@ -17,7 +17,7 @@ import POPLectureService from './shared/present/logic/POPLectureService';
 import LRSLectureService from './shared/present/logic/LRSLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
 import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
-
+import ENRLectureService from './shared/present/logic/ENRLectureService';
 
 export default {
   lecture: {
@@ -51,6 +51,9 @@ export default {
   badgeDetail: {
     badgeDetailService: BadgeDetailService.instance,
   },
+  enrLecture: {
+    enrLectureService : ENRLectureService.instance,
+  }
 };
 
 export {
@@ -71,4 +74,5 @@ export {
   SurveyFormService,
   BadgeService,
   BadgeDetailService,
+  ENRLectureService,
 };

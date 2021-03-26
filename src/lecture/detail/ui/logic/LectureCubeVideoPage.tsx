@@ -22,6 +22,7 @@ import { MediaType } from '../../model/MediaType';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
+import { setTranscriptCount } from 'lecture/detail/store/TranscriptCountStore';
 
 function LectureCubeVideoPage() {
   const params = useLectureRouterParams();
@@ -44,6 +45,7 @@ function LectureCubeVideoPage() {
       setLectureReview();
       setInMyLectureCdo();
       setLectureState();
+      setTranscriptCount();
       modalTestRef.current = false;
     };
   }, [contentId, lectureId]);

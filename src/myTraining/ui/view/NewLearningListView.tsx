@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
@@ -6,6 +6,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { ActionLogService, PageService } from 'shared/stores';
 import {
+  ENRLectureService,
   LRSLectureService,
   NEWLectureService,
   POPLectureService,
@@ -25,6 +26,7 @@ import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureS
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
 import { Type, AreaType } from 'tracker/model';
+import { EnrollingViewType } from 'myTraining/ui/logic/NewLearningListContainer';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -36,6 +38,7 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   newLectureService?: NEWLectureService;
   popLectureService?: POPLectureService;
   lrsLectureService?: LRSLectureService;
+  enrLectureService?: ENRLectureService;
 
   contentType: string;
   order: string;
@@ -44,6 +47,7 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   setNewOrder: (order: OrderByType) => void;
   showTotalCount: (count: number) => void;
   setPageTitle: (contentType: ContentType) => void;
+  viewType?: EnrollingViewType;
 }
 
 const NewLearningListView: React.FC<Props> = Props => {
@@ -60,11 +64,13 @@ const NewLearningListView: React.FC<Props> = Props => {
     popLectureService,
     lrsLectureService,
     actionLogService,
+    enrLectureService,
     setNewOrder,
     showTotalCount,
     setPageTitle,
     match,
     history,
+    viewType
   } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
@@ -86,7 +92,6 @@ const NewLearningListView: React.FC<Props> = Props => {
   useEffect(() => {
     //
     /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
-
     fromMain.current =
       window.sessionStorage.getItem('from_main') !== null &&
       window.sessionStorage.getItem('from_main') === 'TRUE';
@@ -143,7 +148,70 @@ const NewLearningListView: React.FC<Props> = Props => {
       window.sessionStorage.setItem('order_type', curOrder.current);
       window.sessionStorage.setItem('y_pos', window.scrollY.toString());
     };
-  }, []);
+  }, [viewType]);
+
+  // // 최초 렌더링 후 한번만 호출됨
+  // useEffect(() => {
+  //   //
+  //   /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
+
+  //   fromMain.current =
+  //     window.sessionStorage.getItem('from_main') !== null &&
+  //     window.sessionStorage.getItem('from_main') === 'TRUE';
+  //   refresh.current =
+  //     window.sessionStorage.getItem('page_moved') !== null &&
+  //     window.sessionStorage.getItem('page_moved') !== 'TRUE';
+  //   fromBack.current = !fromMain.current && !refresh.current;
+
+  //   // 메인 페이지로부터 이동
+  //   if (fromMain.current) {
+  //     fromMain.current = true;
+  //     history.replace(routePaths.currentPage(1));
+  //     match.params.pageNo = '1';
+  //     if (order === OrderByType.Popular) {
+  //       setNewOrder(OrderByType.New);
+  //       return () => {};
+  //     }
+  //     curOrder.current = OrderByType.New;
+  //   }
+  //   // 리프레시 시 호출됨
+  //   else if (refresh.current) {
+  //     refresh.current = true;
+  //     curOrder.current = order;
+  //     setNewOrder(
+  //       order === OrderByType.New ? OrderByType.New : OrderByType.Popular
+  //     );
+  //   }
+  //   // (인기순) 상세보기 페이지로부터 이동
+  //   else {
+  //     // fromBack.current === true
+  //     fromBack.current = true;
+  //     // y Position 설정
+  //     const preOrder = window.sessionStorage.getItem('order_type');
+  //     setNewOrder(
+  //       preOrder === OrderByType.New ? OrderByType.New : OrderByType.Popular
+  //     );
+  //     curOrder.current = preOrder!;
+  //   }
+
+  //   window.sessionStorage.setItem('page_moved', '');
+
+  //   /****************************************************************************/
+
+  //   pageNo.current = getPageNo();
+
+  //   const initialLimit = pageNo.current * PAGE_SIZE;
+  //   pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
+
+  //   findLectures(true);
+
+  //   // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
+  //   return () => {
+  //     window.sessionStorage.setItem('page_moved', 'TRUE');
+  //     window.sessionStorage.setItem('order_type', curOrder.current);
+  //     window.sessionStorage.setItem('y_pos', window.scrollY.toString());
+  //   };
+  // }, []); 
 
   useEffect(() => {
     // 메인으로부터 이동
@@ -227,6 +295,13 @@ const NewLearningListView: React.FC<Props> = Props => {
           lrsLectureService!.clearLectures();
         }
         findLrsLectures(pgNo);
+        break;
+      case ContentType.Enrolling:
+        if (clear) {
+          enrLectureService!.clearLectures();
+        }
+        findEnrLectures(pgNo, viewType);
+
         break;
     }
   };
@@ -385,6 +460,50 @@ const NewLearningListView: React.FC<Props> = Props => {
     showTotalCount(lectureOffsetList.totalCount);
   };
 
+  const findEnrLectures = async (pageNo?: number, viewType: EnrollingViewType = 'All') => {
+    //
+    const page = pageService!.pageMap.get(PAGE_KEY);
+    
+    let orderBy = OrderByType.Imminent;
+    
+    if(viewType === 'Available') {
+      orderBy = OrderByType.Available;
+    }
+
+    // if(window.sessionStorage.getItem("order_type") === OrderByType.Available) orderBy = OrderByType.Available;
+
+    const lectureFilterRdo = LectureFilterRdoModel.enrLectures(
+      page!.limit,
+      page!.nextOffset,
+      orderBy
+    );
+    const lectureOffsetList = await enrLectureService!.findEnrollingLectures(
+      lectureFilterRdo
+    );
+
+    enrLectureService!.setTitle(lectureOffsetList.title);
+    setPageTitle(ContentType.Enrolling);
+
+    lectures.current = enrLectureService!.enrLectures;
+
+    let feedbackIds: string[] = [];
+
+    if (lectureOffsetList.results && lectureOffsetList.results.length > 0) {
+      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
+
+    inMyLectureService!.findAllInMyLectures();
+
+    pageService!.setTotalCountAndPageNo(
+      PAGE_KEY,
+      lectureOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
+
+    showTotalCount(lectureOffsetList.totalCount);
+  };
+
   const getRating = (lecture: LectureModel) => {
     //
     const { ratingMap } = reviewService!;
@@ -494,7 +613,7 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
-    return page && page.pageNo < page.totalPages;
+  return page && page.pageNo < page.totalPages;
   };
 
   /* render functions by 김동구 */
@@ -539,48 +658,49 @@ const NewLearningListView: React.FC<Props> = Props => {
   }, [contentType]);
 
   return (
-    <div className="section" data-area={dataArea} data-type={Type.CLICK}>
-      {lectures &&
-      lectures.current &&
-      lectures.current.length > 0 &&
-      lectures.current[0] ? (
-        <>
-          <Lecture.Group type={Lecture.GroupType.Box}>
-            {lectures.current?.map((lecture: any, index: any) => {
-              const inMyLecture =
-                inMyLectureMap.get(lecture.serviceId) || undefined;
-              return (
-                <Lecture
-                  key={`lecture-${index}`}
-                  model={lecture}
-                  rating={getRating(lecture)}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: '알림',
-                      message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
-                    });
-                    onToggleBookmarkLecture(inMyLecture || lecture);
-                  }}
-                  onViewDetail={onViewDetail}
-                />
-              );
-            })}
-          </Lecture.Group>
-          {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
-          {window.scrollTo(0, yPos)}
-        </>
-      ) : (
-        renderNoSuchContentPanel(contentType)
-      )}
-    </div>
+      <div className="section" data-area={dataArea} data-type={Type.CLICK}>
+        {lectures &&
+        lectures.current &&
+        lectures.current.length > 0 &&
+        lectures.current[0] ? (
+          <>
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              {lectures.current?.map((lecture: any, index: any) => {
+                const inMyLecture =
+                  inMyLectureMap.get(lecture.serviceId) || undefined;
+                return (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
+                    rating={getRating(lecture)}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    action={
+                      inMyLecture
+                        ? Lecture.ActionType.Remove
+                        : Lecture.ActionType.Add
+                    }
+                    onAction={() => {
+                      reactAlert({
+                        title: '알림',
+                        message: inMyLecture
+                          ? '본 과정이 관심목록에서 제외되었습니다.'
+                          : '본 과정이 관심목록에 추가되었습니다.',
+                      });
+                      onToggleBookmarkLecture(inMyLecture || lecture);
+                    }}
+                    onViewDetail={onViewDetail}
+                    contentType={contentType}
+                  />
+                );
+              })}
+            </Lecture.Group>
+            {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
+            {window.scrollTo(0, yPos)}
+          </>
+        ) : (
+          renderNoSuchContentPanel(contentType)
+        )}
+      </div>
   );
 };
 
@@ -594,6 +714,9 @@ export default inject(
     'rqdLecture.rqdLectureService',
     'newLecture.newLectureService',
     'popLecture.popLectureService',
-    'lrsLecture.lrsLectureService'
+    'lrsLecture.lrsLectureService',
+    'enrLecture.enrLectureService'
   )
 )(withRouter(observer(NewLearningListView)));
+
+
