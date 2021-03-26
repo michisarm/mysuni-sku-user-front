@@ -161,12 +161,12 @@ class ProfileContainer extends Component<Props, State> {
           </ul>
         </div>
 
-        {/* <HeaderAlarmView
+        <HeaderAlarmView
           myNotieMentions={myNotieMentions}
           myNotieNoReadMentionCount={myNotieNoReadMentionCount}
           routeToAlarmBackLink={this.routeToAlarmBackLink}
           handleClickAlarm={this.handleClickAlarm}
-        /> */}
+        />
       </div>
     );
   }
