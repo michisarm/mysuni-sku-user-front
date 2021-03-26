@@ -8,6 +8,8 @@ import { getEmbed } from 'lecture/detail/store/EmbedStore';
 // Service
 import { downloadTranscript } from '../../service/useTranscript/utility/useTranscript';
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
+import Transcript from 'lecture/detail/model/Transcript';
+import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
 
 // import WatchLog from 'lecture/detail/model/Watchlog';
 // import LectureParams from '../../viewModel/LectureParams';
@@ -33,16 +35,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
   transLangVal,
   setTransLangVal
 }) {
-    // 특정 위치로 재생 위치 이동
-    const seekByIndex = (index: number) => {
-        if (getEmbed() && index >= 0) {
-          //TODO current state 를 찾아서 Play
-          getEmbed().playVideo();
-          getEmbed().seekTo(index);
-        }
-    };
-
-
+    
     const selectTransLangObj = [
       { key: "ko", value: "ko", text: "KR" },
       { key: "eng", value: "en", text: "ENG" },
@@ -50,15 +43,93 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     ];
 
     const [ transcriptList, setTranScriptList ] = useState<any>();
+    const [ panoptoSessionId, setPanoptoSessionId ] = useState<string | undefined>(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
+    const [ isActive, setIsActive ] = useState<boolean>(false);
+    const [ selectedRow, setSelectedRow ] = useState<Transcript>();
+
+    const interval = useRef<any>(null);
+    const toggleScriptActiveFunc = useRef<any>(null);
+
+    // 특정 위치로 재생 위치 이동
+    const seekByIndex = (index: number) => {
+        getEmbed().loadVideo();
+        if (getEmbed() && index >= 0) {
+          //TODO current state 를 찾아서 Play
+          getEmbed().playVideo();
+          getEmbed().seekTo(index);
+        }
+    };
+
+    // 동영상 플레이어 시간 형식으로 변환
+    const convertStringTimeToNumber = (time : string = "0") => {
+      return parseInt(time.substr(0, 2), 10) * 60 * 60 + parseInt(time.substr(2, 2), 10) * 60 + parseInt(time.substr(4, 2), 10);
+    }
+
+
+    // interval 안에서 현재 Transcript 객체를 참조 하기 위해서
+    toggleScriptActiveFunc.current = () => {
+       setTranScriptList(
+         transcriptList.map((item : any) => { 
+           return selectedRow?.idx === item.idx ? 
+             { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+             : 
+             { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+         })
+       );
+    }
+
+    const intervalAction = () => {
+      interval.current = setInterval(() => {
+        if(getEmbed().isPaused === false) {
+          if(isActive) {
+            if(getEmbed().getCurrentTime() >= convertStringTimeToNumber(selectedRow?.endTime)) {
+              
+              setIsActive(false);
+              setSelectedRow(undefined);
+              toggleScriptActiveFunc.current();
+            
+              clearInterval(interval.current);
+            } 
+          } else {
+            clearInterval(interval.current);
+          }
+        }
+      }, 200);
+    }
+
+    // 동영상 상태 변경 시 callback
+    getEmbed().onStateChange = () => {
+      clearInterval(interval.current);
+
+      if(getEmbed().isPaused === true) {
+        clearInterval(interval.current);
+      } else {
+        intervalAction();
+      }
+    }
 
     useEffect(() => {
-      const getTranScriptsFunc = async () => {
-        const lectureMedia = getLectureMedia();
+      return () => {
+        setSelectedRow(undefined);
+        setIsActive(false);
+        setPanoptoSessionId('');        
+        clearInterval(interval.current);
+        interval.current = null;
+      }
+    }, [])
 
-        if(lectureMedia !== undefined) {
-          // 테스트용
-          const transcriptsItem = await findTranscript('0002939c-8307-4dd2-8f5c-abec0022d4fc', transLangVal);
-          // const transcriptsItem = await findTranscript(lectureMedia.mediaContents.internalMedias[0].panoptoSessionId, transLangVal);          
+    useEffect(() => {
+      setPanoptoSessionId(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
+    });
+
+    useEffect(() => {
+      clearInterval(interval.current);
+
+      const getTranScriptsFunc = async () => {
+        
+        if(panoptoSessionId !== undefined) {
+          // '0002939c-8307-4dd2-8f5c-abec0022d4fc'
+          const transcriptsItem = await findTranscript(panoptoSessionId, transLangVal);          
 
           transcriptsItem?.map((item) => {
             item.active = false;
@@ -69,7 +140,16 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       };
 
       getTranScriptsFunc();     
-    }, [transLangVal]);
+    }, [transLangVal, panoptoSessionId]);
+
+    // 대본 선택 여부에 따른 처리
+    useEffect(() => {
+      clearInterval(interval.current);
+
+      intervalAction();
+
+      return () => clearInterval(interval.current);
+    }, [selectedRow]);
 
     return(
         <>
@@ -111,30 +191,24 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                         key={lectureTranscript.idx}
                         className={lectureTranscript.activate ? "transcript-active" : ""}
                         onClick={() => {
-                          seekByIndex(
-                           parseInt(
-                              lectureTranscript.startTime.substr(0, 2),
-                              10
-                            ) *
-                             60 *
-                             60 +
-                             parseInt(
-                               lectureTranscript.startTime.substr(2, 2),
-                               10
-                             ) *
-                               60 +
-                             parseInt(
-                               lectureTranscript.startTime.substr(4, 2),
-                               10
-                             )
-                          );
+                          seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime));
 
+                          // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
+                          if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
+                            setIsActive(true);
+                            setSelectedRow(lectureTranscript);
+                          } else if(selectedRow.idx === lectureTranscript.idx) {
+                            setIsActive(false);
+                            setSelectedRow(undefined);
+                          }
+                        
+                          // 대본 선택 시 해당 ROW CSS 변경
                           setTranScriptList(
                             transcriptList.map((item : any) => { 
-                              return lectureTranscript.idx === item.idx ? 
-                                { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
-                                : 
-                                { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+                                return lectureTranscript.idx === item.idx ? 
+                                  { activate : !item.activate, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
+                                  : 
+                                  { activate : false, deliveryId : item.deliveryId, endTime : item.endTime, idx : item.idx, local : item.local, startTime : item.startTime, text : item.text } 
                             })
                           );
                         }}

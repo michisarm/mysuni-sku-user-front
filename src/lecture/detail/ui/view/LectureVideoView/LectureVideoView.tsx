@@ -152,6 +152,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     getDuration: () => {},
     currentPosition: () => {},
     getPlaybackRate: () => {},
+    loadVideo: () => {},
   });
 
   const [displayTranscript, setDisplayTranscript] = useState<boolean>(false);
@@ -159,7 +160,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
     // Load video will begin playback
-    //embedApi.loadVideo();//페이지 로드 시 자동 실행됩니다.
+    embedApi.loadVideo();//페이지 로드 시 자동 실행됩니다.
   };
 
   const onPanoptoLoginShown = () => {
@@ -806,7 +807,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             interactivity: 'none',
             showtitle: 'false',
             showBrand: 'false',
-            offerviewer: 'false',
+            offerviewer: 'false'
           },
           events: {
             onIframeReady: onPanoptoIframeReady,
