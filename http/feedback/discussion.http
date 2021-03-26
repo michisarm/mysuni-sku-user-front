@@ -22,12 +22,14 @@ Content-Type: application/json;charset=UTF-8
     "taggedUsers": [],
     "email": "ss.park@sk.com",
     "companyName": "SK주식회사 C&C",
-    "departmentName": "CV Digital그룹"
+    "departmentName": "CV Digital그룹",
+    "secreted": false
 }
 
 ### 커뮤니티: 댓글: 갯수 조회
 GET http://{{host}}/comments/count
     ?feedbackId={{feedbackId}}
+
 audienceId: r57s-r@ne1-m2-c2
 cineroomUsid: SKCC
 cineroomRoles: User
@@ -94,11 +96,14 @@ Content-Type: application/json;charset=UTF-8
     "message": "depth 1, 2nd",
     "base64AttachedImage": "",
     "embeddedSubComment": false,
-    "taggedUsers": []
+    "taggedUsers": [],
+    "secreted": false
 }
 
 ### 커뮤니티: 대댓글: 수정
-PUT http://{{host}}/comments/{{commentId}}/sub-comments
+@commentId = 8c2da669-a831-47a1-b5c8-31996cbf3d78
+@sub-commentID = e71addb4-254d-486f-9de1-a6c151489ccf
+PUT http://{{host}}/comments/{{commentId}}/sub-comments/{{sub-commentID}}
 audienceId: r57s-r@ne1-m2-c2
 cineroomUsid: SKCC
 cineroomRoles: User
@@ -109,7 +114,7 @@ Content-Type: application/json;charset=UTF-8
     "nameValues": [
         {
             "name": "message",
-            "value": "44 55 secreted 2222 updated"
+            "value": "sub comment update"
         },
         {
             "name": "base64AttachedImage",
@@ -125,3 +130,4 @@ Content-Type: application/json;charset=UTF-8
         }
     ]
 }
+
