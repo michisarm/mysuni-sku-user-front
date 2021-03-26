@@ -123,7 +123,7 @@ class BoxCardView extends Component<Props, States> {
         {contentType != 'Enrolling' ? (
           <Ribbon required={model!.required}/>
         ) : ( 
-          <EnrollingRibbon ribbonName={model!.ribbonName}/> 
+          <EnrollingRibbon model={model}/> 
         )}
         
         

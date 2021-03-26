@@ -6,7 +6,7 @@ import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { ApprovalViewType } from 'myTraining/ui/logic/MyApprovalListContainerV2';
-import { NewLearningContentType, NewLearningViewType } from 'myTraining/ui/logic/NewLearningListContainer';
+import { NewLearningContentType, EnrollingViewType } from 'myTraining/ui/logic/NewLearningListContainer';
 import { ContentType } from 'myTraining/ui/page/NewLearningPage';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
   openFilter?: boolean;
   activeFilter?: boolean;
   onClickFilter?: () => void;
-  checkedViewType: ViewType | ApprovalViewType | NewLearningViewType;
+  checkedViewType: ViewType | ApprovalViewType | EnrollingViewType;
   onChangeViewType: (e: any, data: any) => void;
 }
 

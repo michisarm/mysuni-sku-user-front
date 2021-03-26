@@ -96,12 +96,18 @@ export const Ribbon = ({ required, stampReady }: RibbonProps) => (
 );
 
 interface EnrollingRibbonProps {
-  ribbonName?: string
+  model: any
 }
 
-export const EnrollingRibbon = ({ ribbonName }: EnrollingRibbonProps) => (
+export const EnrollingRibbon = ({ model }: EnrollingRibbonProps) => (
   <div className="card-ribbon-wrap">
-    <Label className="day">{ribbonName}</Label>
+    { model.studentCount >= model.capacity && (
+      <Label className="done">정원 마감</Label>
+    )}
+
+    { model.studentCount < model.capacity && model.differDays === 0 ? <Label className="day">D-DAY</Label>
+     : <Label className="day">D-{model.differDays}</Label> }
+    
   </div>
 );
 

@@ -18,7 +18,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 
   const [order, setOrder] = useState(OrderByType.New);
   const [totalCount, setTotalCount] = useState(0);
-  const [viewType, setViewType] = useState<string>('All');
+  const [viewType, setViewType] = useState<EnrollingViewType>('All');
 
   const showTotalCount = (count: number) => {
     setTotalCount(count);
@@ -37,19 +37,8 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
   };
 
   const onChangeViewType = ((e: any, data: any, func?: any) => {
-    console.log("버튼 선택 : " + data.value);
     setViewType(data.value);
   });
-
-  // const onChangeViewType = (e: any, data: any) => {
-  //   window.sessionStorage.setItem('order_type', data.value);
-
-  //   // ORDER 타입 선택 시 첫 페이지로 조회 하게 초기화
-  //   pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
-
-  //   findLectures(true);
-  // }
-
 
   return (
     <Segment className="full">
@@ -84,36 +73,12 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
             >
               <ListRightTopPanel
                 contentType={contentType}
-                checkedViewType="All"
+                checkedViewType={viewType}
                 resultEmpty={false}
                 onChangeViewType={onChangeViewType}
               />
             </ListTopPanelTemplate>
           </div>
-          // <div className="comments-sort">
-          //   <Form className="comments-sort">
-          //     <Form.Group inline>
-          //       <Form.Field>
-          //         <Radio
-          //           className="base"
-          //           label="전체 보기"
-          //           name="sortRadioGroup"
-          //           value={OrderByType.Imminent}      
-          //           onChange={onChangeFilter}           
-          //         />
-          //       </Form.Field>
-          //       <Form.Field>
-          //         <Radio
-          //           className="base"
-          //           label="신청 가능 과정 모아보기"
-          //           name="sortRadioGroup"
-          //           value={OrderByType.Available}       
-          //           onChange={onChangeFilter}                      
-          //         />
-          //       </Form.Field>
-          //     </Form.Group>
-          //   </Form>
-          // </div>
         )}
         </div>
 
@@ -134,5 +99,5 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 export default withRouter(NewLearningListContainer);
 
 /* globals */
-export type NewLearningViewType = 'All' | 'Aailable'; 
+export type EnrollingViewType = 'All' | 'Available';  // 전체보기 | 수강 신청 가능 과정 모아보기
 export type NewLearningContentType = ContentType;

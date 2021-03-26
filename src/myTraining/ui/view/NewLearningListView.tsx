@@ -26,6 +26,7 @@ import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureS
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
 import { Type, AreaType } from 'tracker/model';
+import { EnrollingViewType } from 'myTraining/ui/logic/NewLearningListContainer';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -46,7 +47,7 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   setNewOrder: (order: OrderByType) => void;
   showTotalCount: (count: number) => void;
   setPageTitle: (contentType: ContentType) => void;
-  viewType?: string;
+  viewType?: EnrollingViewType;
 }
 
 const NewLearningListView: React.FC<Props> = Props => {
@@ -91,7 +92,6 @@ const NewLearningListView: React.FC<Props> = Props => {
   useEffect(() => {
     //
     /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
-
     fromMain.current =
       window.sessionStorage.getItem('from_main') !== null &&
       window.sessionStorage.getItem('from_main') === 'TRUE';
@@ -141,7 +141,6 @@ const NewLearningListView: React.FC<Props> = Props => {
     pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
 
     findLectures(true);
-    console.log("EFFECT : ", viewType);
 
     // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
     return () => {
@@ -461,14 +460,13 @@ const NewLearningListView: React.FC<Props> = Props => {
     showTotalCount(lectureOffsetList.totalCount);
   };
 
-  const findEnrLectures = async (pageNo?: number, viewType: string = 'All') => {
+  const findEnrLectures = async (pageNo?: number, viewType: EnrollingViewType = 'All') => {
     //
-    console.log("findEnrLectures : ", viewType);
     const page = pageService!.pageMap.get(PAGE_KEY);
     
     let orderBy = OrderByType.Imminent;
     
-    if(viewType === "Available") {
+    if(viewType === 'Available') {
       orderBy = OrderByType.Available;
     }
 
@@ -691,6 +689,7 @@ const NewLearningListView: React.FC<Props> = Props => {
                       onToggleBookmarkLecture(inMyLecture || lecture);
                     }}
                     onViewDetail={onViewDetail}
+                    contentType={contentType}
                   />
                 );
               })}
