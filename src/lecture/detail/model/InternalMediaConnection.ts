@@ -7,4 +7,5 @@ export class InternalMediaConnection {
   folderName: string = '';
   duration: number = 0;
   folderId: string = '';
+  quizIds: string[] = []
 }
