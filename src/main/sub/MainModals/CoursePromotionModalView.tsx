@@ -37,15 +37,17 @@ const CoursePromotionModalView = () => {
   };
 
   const handleClickImg = () => {
-    ModalClose();
-    history.push(`/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac/cube/CUBE-csq/LECTURE-CARD-aed`);
+    // ModalClose();
+    // history.push(
+    //   `/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac/cube/CUBE-csq/LECTURE-CARD-aed`
+    // );
   };
 
   return (
     <Modal
       open={modalOpen}
       className="base w1000 tutorials2 front scrolling"
-      style={{ position: 'relative', marginTop: '0px'}}
+      style={{ position: 'relative', marginTop: '0px' }}
     >
       <Modal.Header className="header2">
         <div className="right-btn">
@@ -63,12 +65,12 @@ const CoursePromotionModalView = () => {
         <div className="scrolling-80vh">
           <div className="cont-wrap">
             <div className="img" onClick={handleClickImg}>
-              <a>
-                <img
-                  src={`${getPublicUrl()}/images/all/lcp_banner_popup_3.png`}
-                  alt=""
-                />
-              </a>
+              {/* <a> */}
+              <img
+                src={`${getPublicUrl()}/images/all/img-personalboard-tutorial_0326.png`}
+                alt=""
+              />
+              {/* </a> */}
             </div>
           </div>
         </div>
