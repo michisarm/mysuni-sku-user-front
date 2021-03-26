@@ -52,6 +52,7 @@ function EssayType({
           <textarea
             placeholder="1,000자 이내로 입력하세요."
             ref={inputRef}
+            maxLength={1000}
             onChange={() => onChange(rowIndex, inputRef!.current!.value)}
           />
           <span className="validation">
@@ -97,7 +98,7 @@ function ShortAnswerType({
         value={input}
         onChange={e => onChangeInput(e)}
       />
-      <Icon className="clear link" onClick={() => console.log('d')} />
+      <Icon className="clear link" />
       <span className="validation">You can enter up to 100 characters.</span>
     </div>
   );
