@@ -41,8 +41,7 @@ GET http://{{host}}/comments/
     &offset=0
     &limit=10
     &ascending=false
-    &writer=박성수
-
+    &myComments=false
 audienceId: r57s-r@ne1-m2-c2
 cineroomUsid: SKCC
 cineroomRoles: User
