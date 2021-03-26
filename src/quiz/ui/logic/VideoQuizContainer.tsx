@@ -14,7 +14,7 @@ const VideoQuizContainer: React.FC<Props> = ({ onCompletedQuiz, quizPop }) => {
   const [quizData, setQuizData] = useState<QuizTableList>();
 
   useEffect(() => {
-    const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0];
+    const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
 
     if (
       quizIds !== undefined &&
@@ -23,7 +23,7 @@ const VideoQuizContainer: React.FC<Props> = ({ onCompletedQuiz, quizPop }) => {
       quizData === undefined
     ) {
       const getQuizTable = async () => {
-        await findQuiz(quizIds).then(res => setQuizData(res));
+        await findQuiz(quizIds[0]).then(res => setQuizData(res));
       };
       getQuizTable();
     }
