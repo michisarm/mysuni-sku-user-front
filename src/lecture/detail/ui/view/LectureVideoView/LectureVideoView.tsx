@@ -885,7 +885,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (matchesQuizTime !== undefined && matchesQuizTime === quizShowTime) {
       if (scroll > videoPosition) {
         setPauseVideoSticky(true);
-        // closeFullScreen();
         setQuizPop(false);
         videoControll.stop();
         reactAlert({
@@ -895,6 +894,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         });
       } else {
         setPauseVideoSticky(false);
+        closeFullScreen();
         setQuizPop(true);
         videoControll.stop();
       }
@@ -919,13 +919,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [quizPop]);
 
   const onScrollTop = () => {
-    window.scrollTo(0, 110);
-    // window.requestAnimationFrame(onScrollTop);
+    window.scrollTo(0, 124);
   };
 
   const closeFullScreen = () => {
-    if (document.exitFullscreen) {
+    if (document.fullscreenElement !== null) {
       document.exitFullscreen();
+      window.scrollTo(0, 124);
     } else {
       return;
     }
