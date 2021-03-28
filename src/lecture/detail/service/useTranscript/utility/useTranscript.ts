@@ -49,11 +49,11 @@ export function useTranscriptCount(): [Value] {
   return [value];
 }
 
-export function downloadTranscript(transcriptCdo : TranscriptCdo[]) {
+export function downloadTranscript(transcriptCdo : TranscriptCdo[], title: string = "transcript") {
   const str = transcriptCdosToString(transcriptCdo);
   const blob = new Blob([str], {type : "text/plain;charset=utf-8"});
 
-  saveAs(blob, "transcript.txt");
+  saveAs(blob, title + ".txt");
 }
 
 export async function findTranscript(deliveryId : string, locale : string) : Promise<LectureTranscript[]> {
