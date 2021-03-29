@@ -1,7 +1,7 @@
 @hostname = localhost
 @port = 8092
-@host = {{hostname}}:{{port}}
-# @host = university.sk.com/api/feedback
+# @host = {{hostname}}:{{port}}
+@host = university.sk.com/api/feedback
 
 @feedbackId = fbb93851-5c74-4a11-ad8b-ad5ee22c4980
 @commentId = 773b22d5-7c7e-4571-b837-7c3ec2440220

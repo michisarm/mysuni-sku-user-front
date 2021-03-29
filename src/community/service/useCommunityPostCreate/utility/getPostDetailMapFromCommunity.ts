@@ -30,7 +30,9 @@ export async function getPostDetailMapFromCommunity(
         nickName: '',
         introduce: '',
         profileImg: '',
-        creatorCompanyName: ''
+        creatorCompanyName: '',
+        content: '',
+        relatedUrlList: {title: '', url: ''}
 
     }
     if (postId !== undefined) {
@@ -57,6 +59,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.nextPost = post.nextPost;
             postDetailItem.creatorName = post.creatorName!;
             postDetailItem.creatorCompanyName = post.creatorCompanyName!;
+            postDetailItem.relatedUrlList = post.relatedUrlList;
         }
     }
     setCommunityPostDetailItem(postDetailItem);
@@ -88,7 +91,9 @@ export async function getPostDetailWithReadMapFromCommunity(
         nickName: '',
         introduce: '',
         profileImg: '',
-        creatorCompanyName: ''
+        creatorCompanyName: '',
+        content: '',
+        relatedUrlList: {title: '', url: ''}
 
     }
     if (postId !== undefined) {
@@ -115,6 +120,7 @@ export async function getPostDetailWithReadMapFromCommunity(
             postDetailItem.nextPost = post.nextPost;
             postDetailItem.creatorName = post.creatorName!;
             postDetailItem.creatorCompanyName = post.creatorCompanyName!;
+            postDetailItem.relatedUrlList = post.relatedUrlList;
         }
     }
     setCommunityPostDetailItem(postDetailItem);

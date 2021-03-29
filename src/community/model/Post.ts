@@ -1,6 +1,11 @@
 import CommunityMenuType from './CommunityMenuType';
 import PostType from './PostType';
 
+type relatedUrlList = {
+  title: string;
+  url: string;
+}
+
 export default interface Post {
   id?: string;
 
@@ -42,4 +47,7 @@ export default interface Post {
 
   prevPost: Post;
   nextPost: Post;
+
+  content: string;
+  relatedUrlList: relatedUrlList,
 }

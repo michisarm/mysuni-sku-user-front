@@ -44,7 +44,9 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
       nickName: '',
       introduce: '',
       profileImg: '',
-      creatorCompanyName: ''
+      creatorCompanyName: '',
+      content: '',
+      relatedUrlList: {title: '', url: ''}
     })
     setSubscriberId(next);
   }, []);

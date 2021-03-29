@@ -23,6 +23,7 @@ function CommunityDiscussionContainer() {
   
   const { communityId, menuId} = useParams<Params>();
   const [postDetail] = useCommunityDiscussionPostDetail(menuId);
+  console.log('ddd', postDetail)
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()

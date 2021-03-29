@@ -31,7 +31,10 @@ export async function getCommunityPost(
       modifiedTime: 0,
       nickName: '',
       introduce: '',
-      profileImg: ''
+      profileImg: '',
+      content: '',
+      relatedUrlList: {title: '', url: ''}
+      
 
   }
   if (menuId !== undefined) {
@@ -56,6 +59,8 @@ export async function getCommunityPost(
           postDetailItem.commentFeedbackId = post.commentFeedbackId;
           postDetailItem.prevPost = post.prevPost;
           postDetailItem.nextPost = post.nextPost;
+          postDetailItem.content = post.content;
+          postDetailItem.relatedUrlList = post.relatedUrlList;
       }
   }
   setCommunityPostDetailItem(postDetailItem);

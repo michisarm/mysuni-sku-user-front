@@ -17,6 +17,7 @@ interface Props {
   replyCount?: number;
   likeCount?: number;
   onClickList?: (e: any) => void;
+  // content: string;
 }
 
 interface State {
@@ -49,6 +50,7 @@ class DiscussionViewContentHeaderView extends Component<Props, State> {
       replyCount,
       likeCount,
       postDetail,
+      // content,
       onClickList,
     } = this.props;
 
@@ -63,8 +65,8 @@ class DiscussionViewContentHeaderView extends Component<Props, State> {
               <div className="discuss-box">
                 <Image src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`} alt="" style={{display: 'inline-block'}}/>
                 <h2>{title}</h2>
-                <span className="peo-opinion">전체 의견 <strong>638</strong></span>
-                <span><strong className="peo-date">2020.09.26</strong></span>
+                <span className="peo-opinion">전체 의견 <strong>{readCount}</strong></span>
+                <span><strong className="peo-date">{moment().format('YYYY.MM.DD')}</strong></span>
               </div>
             
               {/* 본문 */}
