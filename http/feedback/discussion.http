@@ -41,8 +41,8 @@ GET http://{{host}}/comments/
     &offset=0
     &limit=10
     &ascending=false
-    &myComments=false
-audienceId: r57s-r@ne1-m2-c2
+    &myComments=true
+audienceId: r5jo-r@ne1-m2-c2
 cineroomUsid: SKCC
 cineroomRoles: User
 dramaRoles: User
