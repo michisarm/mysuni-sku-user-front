@@ -27,6 +27,8 @@ class InMyLectureTableViewModel {
   createDate: number = 0; // 등록일
   stampCount: number = 0; // 스탬프
   lastStudyDate: number = 0; // 최근학습일
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   constructor(inMyLectureTableView?: InMyLectureTableViewModel) {
     if (inMyLectureTableView) {
@@ -67,6 +69,12 @@ class InMyLectureTableViewModel {
     if (this.learningState) {
       return LearningStateName[LearningState[this.learningState]];
     }
+  }
+
+  @computed get displayProgressRate(): string {
+    return this.isCardType()
+      ? '-'
+      : `${this.passedLearningCount}/${this.totalLearningCount}`;
   }
 
   /* functions */
