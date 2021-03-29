@@ -9,8 +9,12 @@ import { requestFollowCommunityPostList } from '../../../service/useFollowCommun
 import FollowCommunityIntro from 'community/viewModel/CommunityFollowIntro/FollowCommunityIntro';
 import { off } from 'process';
 import { registerBookmark } from '../../../api/communityApi';
-import { getFollowCommunityIntro, setFollowCommunityIntro } from '../../../store/CommunityMainStore';
+import {
+  getFollowCommunityIntro,
+  setFollowCommunityIntro,
+} from '../../../store/CommunityMainStore';
 import { Link } from 'react-router-dom';
+import { Type, AreaType } from 'tracker/model';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -73,9 +77,8 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   createdTime,
   name,
   contents,
-  bookmarked
+  bookmarked,
 }) {
-
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
   const { pathname } = useLocation();
@@ -85,13 +88,13 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   useEffect(() => {
     setTimeout(() => {
       scrollOnceMove();
-    }, 100)
-  }, [scrollOnceMove])
+    }, 100);
+  }, [scrollOnceMove]);
 
   useEffect(() => {
     const listen = history.listen(scrollSave);
     return () => listen();
-  }, [pathname])
+  }, [pathname]);
 
   const shareUrl = useCallback(() => {
     const hostLength = window.location.href.indexOf(pathname);
@@ -139,12 +142,18 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
               {/*comment : 2줄이상 말줄임, 대댓글*/}
               <Comment>
                 <Comment.Avatar
-                  src={profileImage === '' || profileImage === null ? `${DefaultImg}` : `/files/community/${profileImage}`}
+                  src={
+                    profileImage === '' || profileImage === null
+                      ? `${DefaultImg}`
+                      : `/files/community/${profileImage}`
+                  }
                   alt="profile"
                 />
                 <Comment.Content>
                   <Comment.Author>
-                    <Link to={`/community/${communityId}`}>{communityName}</Link>
+                    <Link to={`/community/${communityId}`}>
+                      {communityName}
+                    </Link>
                   </Comment.Author>
                   <Comment.Text>
                     <div className="ellipsis">
@@ -215,7 +224,7 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
                     <p className="summary">{text}</p>
                   </div>
                 )}
-                <div className="text-right">
+                <div className="text-right" style={{float: 'none'}}>
                   {!more && (
                     <button
                       className="ui icon button right btn-blue btn-more"
@@ -244,7 +253,6 @@ const FollowPostItemView: React.FC<FollowPostItem> = function CommunityFollowIte
   );
 };
 
-
 function CommunityFollowPostListContainer() {
   const communityFollowPostList = useFollowCommunityIntro();
 
@@ -255,18 +263,22 @@ function CommunityFollowPostListContainer() {
   }
 
   const addList = (offset: number) => {
-
     requestFollowCommunityPostList(offset, 5);
-  }
+  };
 
   return (
-    <div className="community-main-contants">
+    <div
+      className="community-main-contants"
+      data-area={AreaType.COMMUNITY_FOLLOWPOST}
+      data-type={Type.CLICK}
+    >
       {communityFollowPostList !== undefined &&
         communityFollowPostList.posts.map(postItem => (
           <FollowPostItemView key={postItem.postId} {...postItem} />
         ))}
       <div className="more-comments">
-        {communityFollowPostList.postsTotalCount > communityFollowPostList.postsOffset && (
+        {communityFollowPostList.postsTotalCount >
+          communityFollowPostList.postsOffset && (
           <Button
             icon
             className="left moreview"
@@ -275,7 +287,8 @@ function CommunityFollowPostListContainer() {
             <Icon className="moreview" /> list more
           </Button>
         )}
-        {communityFollowPostList.postsTotalCount <= communityFollowPostList.postsOffset && (
+        {communityFollowPostList.postsTotalCount <=
+          communityFollowPostList.postsOffset && (
           <Button
             icon
             className="left moreview"

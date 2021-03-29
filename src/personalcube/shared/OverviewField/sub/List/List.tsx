@@ -1,16 +1,14 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import classNames from 'classnames';
 import { List as SemanticList } from 'semantic-ui-react';
 
-
 interface Props {
-  icon?: boolean,
-  className?: string,
-  header?:  React.ReactNode,
-  children: React.ReactNode,
+  icon?: boolean;
+  className?: string;
+  header?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 @reactAutobind
@@ -24,7 +22,6 @@ class List extends Component<Props> {
 
   panelRef = React.createRef<HTMLDivElement>();
 
-
   getPanelRef() {
     return this.panelRef.current;
   }
@@ -34,14 +31,10 @@ class List extends Component<Props> {
     const { icon, className, header, children } = this.props;
 
     return (
-      <div
-        className={classNames('ov-paragraph', className)}
-      >
+      <div className={classNames('ov-paragraph', className)}>
         {header}
         <div ref={this.panelRef}>
-          <SemanticList bulleted={!icon}>
-            {children}
-          </SemanticList>
+          <SemanticList bulleted={!icon}>{children}</SemanticList>
         </div>
       </div>
     );

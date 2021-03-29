@@ -9,6 +9,7 @@ import myTrainingRoutePaths from 'myTraining/routePaths';
 import { Image } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import HeaderAlarmView from '../view/HeaderAlarmView';
+import { Type, AreaType } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -19,7 +20,7 @@ interface State {
   balloonShowClass: string;
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService','notie.notieService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
@@ -38,9 +39,9 @@ class ProfileContainer extends Component<Props, State> {
 
     this.findNoReadCount();
     setInterval(() => {
-      this.findNoReadCount();  // 5분마다 안 읽은 알림이 있는지 조회
+      this.findNoReadCount(); // 5분마다 안 읽은 알림이 있는지 조회
     }, 3000000);
-    
+
     document.addEventListener('mousedown', this.handleClickOutside);
   }
 
@@ -77,14 +78,16 @@ class ProfileContainer extends Component<Props, State> {
     //window.location.href = 'https://proxy.gdisso.sk.com/nsso-authweb/logoff.do?ssosite=mysuni.sk.com&returnURL=https://mysuni.sk.com';
   }
 
-  routeToAlarmBackLink(backLink:string) {
+  routeToAlarmBackLink(backLink: string) {
     this.props.history.push(backLink);
   }
 
   handleClickAlarm() {
     const { notieService } = this.props;
-    notieService!.findAllMyNotieMentions().then(() => { // 알림 목록 화면 오픈시 안읽은 알림 보여주고
-      notieService!.readAllMyNotieMentions().then(() => { // 보여준 이후에 읽음 처리
+    notieService!.findAllMyNotieMentions().then(() => {
+      // 알림 목록 화면 오픈시 안읽은 알림 보여주고
+      notieService!.readAllMyNotieMentions().then(() => {
+        // 보여준 이후에 읽음 처리
         this.findNoReadCount(); // 초기화
       });
     });
@@ -92,14 +95,17 @@ class ProfileContainer extends Component<Props, State> {
 
   findNoReadCount() {
     const { notieService } = this.props;
-    notieService!.findMyNotieNoReadMentionCount();  // 안 읽은 알림이 있는지 조회
+    notieService!.findMyNotieNoReadMentionCount(); // 안 읽은 알림이 있는지 조회
   }
 
   render() {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
-    const { myNotieMentions, myNotieNoReadMentionCount } = NotieService.instance;
+    const {
+      myNotieMentions,
+      myNotieNoReadMentionCount,
+    } = NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
 
@@ -116,14 +122,19 @@ class ProfileContainer extends Component<Props, State> {
           </span>
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
         </button>
-        <div className={`balloon-pop ${balloonShowClass}`}>
+        <div
+          className={`balloon-pop ${balloonShowClass}`}
+          data-area={AreaType.HEADER_PROFILE}
+          data-type={Type.CLICK}
+        >
           <ul>
             <li>
               <a
                 href="#"
-                onClick={() =>
-                  this.props.history.push(myTrainingRoutePaths.myPage())
-                }
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.history.push(myTrainingRoutePaths.myPage());
+                }}
               >
                 <i aria-hidden="true" className="balloon mypage icon" />
                 <span>My Page</span>
@@ -150,12 +161,12 @@ class ProfileContainer extends Component<Props, State> {
           </ul>
         </div>
 
-        {/* <HeaderAlarmView
+        <HeaderAlarmView
           myNotieMentions={myNotieMentions}
           myNotieNoReadMentionCount={myNotieNoReadMentionCount}
           routeToAlarmBackLink={this.routeToAlarmBackLink}
           handleClickAlarm={this.handleClickAlarm}
-        /> */}
+        />
       </div>
     );
   }

@@ -24,6 +24,7 @@ import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import { Type, AreaType } from 'tracker/model';
 import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
 
 interface MenuItemViewProps {
@@ -546,7 +547,11 @@ function CommunityHomeTreeContainer() {
   }
 
   return (
-    <div className="community-left community-home-left">
+    <div
+      className="community-left community-home-left"
+      data-area={AreaType.COMMUNITY_LNB}
+      data-type={Type.CLICK}
+    >
       <div className="sub-info-box">
         <div className="commnuity-left-top">
           <div className="community-left-header">

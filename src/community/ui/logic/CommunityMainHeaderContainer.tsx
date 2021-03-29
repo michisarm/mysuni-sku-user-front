@@ -23,7 +23,11 @@ import { useHistory } from 'react-router-dom';
 import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import { render } from 'react-dom';
 import { reactConfirm } from '@nara.platform/accent';
-import { getCommunityProfileItem, setCommunityProfileItem } from 'community/store/CommunityProfileStore';
+import {
+  getCommunityProfileItem,
+  setCommunityProfileItem,
+} from 'community/store/CommunityProfileStore';
+import { Type, AreaType } from 'tracker/model';
 
 function CommunityMainHeaderContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -38,7 +42,6 @@ function CommunityMainHeaderContainer() {
   // const followModalContainerList = useFollowCommunityIntro();
   const profile = useMyProfile();
 
-
   const myProfileEdit = useCallback(async () => {
     //
     const profileItem = getCommunityProfileItem();
@@ -47,11 +50,11 @@ function CommunityMainHeaderContainer() {
     }
     const nextProfileItem = { ...profileItem, editing: true };
     await setCommunityProfileItem(nextProfileItem);
-    history.push("/community/my-profile");
+    history.push('/community/my-profile');
   }, []);
 
   useEffect(() => {
-    if(profile && profile?.nickname === ''){
+    if (profile && profile?.nickname === '') {
       reactConfirm({
         title: 'Community 방문을 환영합니다!',
         message: '나만의 닉네임/프로필 사진을 등록해보세요!',
@@ -96,85 +99,111 @@ function CommunityMainHeaderContainer() {
     }
   };
 
-  const followersModal = followersList?.followers.length !== 0 ? followersList?.followers.map((item, idx) => {
-    return (
-      <li style={{ cursor: 'pointer' }}>
-        <p
-          className="pic"
-          onClick={() => history.push(`/community/profile/${item.id}`)}
-        >
-          <img
-            src={
-              item.profileImg === null || item.profileImg === ''
-                ? `${DefaultImg}`
-                : `/files/community/${item.profileImg}`
-            }
-            alt=""
-          />
-        </p>
-        <p
-          className="nickname"
-          onClick={() => history.push(`/community/profile/${item.id}`)}
-        >
-          {item.nickname === '' ? item.name : item.nickname}
-        </p>
-        <label className="chk_follow">
-          <input type="checkbox" name="" />
-          <span onClick={() => followersBtn(item.id, idx, item.follow)}>
-            {item.follow ? 'unfollow' : 'follow'}
-          </span>
-        </label>
-      </li>
+  const followersModal =
+    followersList?.followers.length !== 0 ? (
+      followersList?.followers.map((item, idx) => {
+        return (
+          <li style={{ cursor: 'pointer' }}>
+            <p
+              className="pic"
+              onClick={() => history.push(`/community/profile/${item.id}`)}
+            >
+              <img
+                src={
+                  item.profileImg === null || item.profileImg === ''
+                    ? `${DefaultImg}`
+                    : `/files/community/${item.profileImg}`
+                }
+                alt=""
+              />
+            </p>
+            <p
+              className="nickname"
+              onClick={() => history.push(`/community/profile/${item.id}`)}
+            >
+              {item.nickname === '' ? item.name : item.nickname}
+            </p>
+            <label className="chk_follow">
+              <input type="checkbox" name="" />
+              <span onClick={() => followersBtn(item.id, idx, item.follow)}>
+                {item.follow ? 'unfollow' : 'follow'}
+              </span>
+            </label>
+          </li>
+        );
+      })
+    ) : (
+      <p>
+        팔로워가 없습니다.
+        <br />
+        관심있는 커뮤니티를 찾아 활발한 활동을 해보세요!
+      </p>
     );
-  }) : <p>팔로워가 없습니다.<br />관심있는 커뮤니티를 찾아 활발한 활동을 해보세요!</p>;
 
-  const followingsModal = followingsList?.followings.length !== 0 ? followingsList?.followings.map((item, idx) => {
-    return (
-      <li style={{ cursor: 'pointer' }}>
-        <p
-          className="pic"
-          onClick={() => history.push(`/community/profile/${item.id}`)}
-        >
-          <img
-            src={
-              item.profileImg === null || item.profileImg === ''
-                ? `${DefaultImg}`
-                : `/files/community/${item.profileImg}`
-            }
-            alt=""
-          />
-        </p>
-        <p
-          className="nickname"
-          onClick={() => history.push(`/community/profile/${item.id}`)}
-        >
-          {item.nickname === '' ? item.name : item.nickname}
-        </p>
-        <label className="chk_follow">
-          <input type="checkbox" name="" />
-          <span onClick={() => followingsBtn(item.id, idx, item.follow)}>
-            {item.follow ? 'unfollow' : 'follow'}
-          </span>
-        </label>
-      </li>
+  const followingsModal =
+    followingsList?.followings.length !== 0 ? (
+      followingsList?.followings.map((item, idx) => {
+        return (
+          <li style={{ cursor: 'pointer' }}>
+            <p
+              className="pic"
+              onClick={() => history.push(`/community/profile/${item.id}`)}
+            >
+              <img
+                src={
+                  item.profileImg === null || item.profileImg === ''
+                    ? `${DefaultImg}`
+                    : `/files/community/${item.profileImg}`
+                }
+                alt=""
+              />
+            </p>
+            <p
+              className="nickname"
+              onClick={() => history.push(`/community/profile/${item.id}`)}
+            >
+              {item.nickname === '' ? item.name : item.nickname}
+            </p>
+            <label className="chk_follow">
+              <input type="checkbox" name="" />
+              <span onClick={() => followingsBtn(item.id, idx, item.follow)}>
+                {item.follow ? 'unfollow' : 'follow'}
+              </span>
+            </label>
+          </li>
+        );
+      })
+    ) : (
+      <p>
+        팔로우가 없습니다.
+        <br />
+        커뮤니티에서 만난 학습자들을 팔로우 해보세요!
+      </p>
     );
-  }) : <p>팔로우가 없습니다.<br />커뮤니티에서 만난 학습자들을 팔로우 해보세요!</p>;
 
   return (
     <>
       {/* <FollowerView /> */}
       {/* eslint-disable */}
-      <div className="main-info-area community-main-header">
+      <div
+        className="main-info-area community-main-header"
+        data-area={AreaType.COMMUNITY_INFO}
+        data-type={Type.CLICK}
+      >
         <div className="progress-info-wrap">
           <div className="cell">
             <div className="cell-inner">
-              <div className="profile" onClick={() => history.push("/community/my-profile")} style={{ cursor: 'pointer' }}>
+              <div
+                className="profile"
+                onClick={() => history.push('/community/my-profile')}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="pic">
                   <img
                     src={
                       profile?.profileImg === null ||
-                        profile?.profileImg === '' ||
-                        profile?.profileImg === undefined
+                      profile?.profileImg === '' ||
+                      profile?.profileImg === undefined
                         ? `${DefaultImg}`
                         : `/files/community/${profile?.profileImg}`
                     }
@@ -183,7 +212,10 @@ function CommunityMainHeaderContainer() {
               </div>
               <div className="text-info">
                 <div className="name">
-                  <div onClick={() => history.push("/community/my-profile")} style={{ cursor: 'pointer', display: 'inline-block' }}>
+                  <div
+                    onClick={() => history.push('/community/my-profile')}
+                    style={{ cursor: 'pointer', display: 'inline-block' }}
+                  >
                     {profile?.nickname || profile?.name || ''}
                   </div>
                   <Link

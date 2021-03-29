@@ -1,31 +1,30 @@
-import React, {useState, Fragment, useEffect} from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
-import {Button, Icon} from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
-import {dateTimeHelper} from 'shared';
+import { dateTimeHelper } from 'shared';
 import CubeType from 'myTraining/model/CubeType';
 import CubeTypeNameType from 'myTraining/model/CubeTypeNameType';
 import BadgeCompData from '../model/BadgeCompData';
-import {BadgeDetailService, StudentService} from '../../../lecture/stores';
+import { BadgeDetailService, StudentService } from '../../../lecture/stores';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
-import {LectureViewModel} from '../../../lecture/model';
-import {CoursePlanService} from '../../../course/stores';
-import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel';
+import { LectureViewModel } from '../../../lecture/model';
+import { CoursePlanService } from '../../../course/stores';
+import { CoursePlanCustomModel } from '../../../course/model/CoursePlanCustomModel';
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
-import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
-import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import { CubeIntroModel } from '../../../personalcube/cubeintro/model';
+import { PersonalCubeModel } from '../../../personalcube/personalcube/model';
 import RollBookModel from '../../../lecture/model/RollBookModel';
 import AnswerSheetModel from '../../../survey/answer/model/AnswerSheetModel';
-import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
-import {ExaminationModel} from '../../../assistant/exam/model/ExaminationModel';
-import {ExamPaperModel} from '../../../assistant/paper/model/ExamPaperModel';
+import { SurveyFormModel } from '../../../survey/form/model/SurveyFormModel';
+import { ExaminationModel } from '../../../assistant/exam/model/ExaminationModel';
+import { ExamPaperModel } from '../../../assistant/paper/model/ExamPaperModel';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import ReactGA from 'react-ga';
-
 
 enum StateDefault {
   Learning = 'Learning',
@@ -41,10 +40,9 @@ enum StateDefaultName {
   Survey = '설문참여',
 }
 
-
 interface Props extends RouteComponentProps {
   //
-  coursePlanService? : CoursePlanService;
+  coursePlanService?: CoursePlanService;
   badgeDetailService?: BadgeDetailService;
   studentService?: StudentService;
 
@@ -52,9 +50,15 @@ interface Props extends RouteComponentProps {
   badgeCompList: BadgeCompData[];
 }
 
-const BadgeLectureContainer: React.FC<Props> = (Props) => {
+const BadgeLectureContainer: React.FC<Props> = Props => {
   //
-  const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history } = Props;
+  const {
+    coursePlanService,
+    badgeDetailService,
+    badgeId,
+    badgeCompList,
+    history,
+  } = Props;
 
   const [opened, setOpened] = useState(false);
   const [splitUrl, setSplitUrl] = useState<string>('');
@@ -66,7 +70,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     course.cubeData = [];
 
     if (course.isOpened) {
-      coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
+      coursePlanService!
+        .findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
         .then((response: CoursePlanCustomModel | null) => {
           if (response && response.lectureViews) {
             response.lectureViews.map((lecture: LectureViewModel) => {
@@ -82,7 +87,10 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               cubeData.cubeType = lecture.cubeType;
               cubeData.learningTime = lecture.learningTime;
               // 진행율(%)
-              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
+              cubeData.sumViewSeconds =
+                lecture.sumViewSeconds === ''
+                  ? 0
+                  : parseInt(lecture.sumViewSeconds);
               // 진행상태
               cubeData.learningState = lecture.learningState;
 
@@ -90,7 +98,9 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
               // 코스 내 큐브에만 해당
               cubeData.cubeIntro = new CubeIntroModel(lecture.cubeIntro);
-              cubeData.personalCube = new PersonalCubeModel(lecture.personalCube);
+              cubeData.personalCube = new PersonalCubeModel(
+                lecture.personalCube
+              );
 
               cubeData.rollBooks = [];
               lecture.rollBooks.map((rollBook: RollBookModel) => {
@@ -107,10 +117,9 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             });
           }
         })
-        .catch((error) => {})
+        .catch(error => {})
         .finally(() => setOpened(!opened));
-    }
-    else {
+    } else {
       setOpened(!opened);
     }
   };
@@ -134,7 +143,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
   // 큐브 페이지로 이동
   const moveToCubePage = (cube: BadgeCubeData, e: any) => {
-    console.log('222', cube)
     if (e) {
       e.preventDefault();
     }
@@ -154,7 +162,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     //
     // 버튼 스타일
     let styleName = 'black';
-    switch( cube.learningState ) {
+    switch (cube.learningState) {
       case BadgeLectureState.Progress:
         styleName = 'orange';
         break;
@@ -167,37 +175,59 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
     // 버튼 네임
     let stateName = '';
-    if ( cube.learningState === null ) {
-      if ( StateDefaultName[cube.cubeType as StateDefault] === undefined ) {
-        stateName = StateDefaultName.Learning;  // 학습하기
+    if (cube.learningState === null) {
+      if (StateDefaultName[cube.cubeType as StateDefault] === undefined) {
+        stateName = StateDefaultName.Learning; // 학습하기
       } else {
         stateName = StateDefaultName[cube.cubeType as StateDefault];
       }
     } else {
-      stateName = BadgeLectureStateName[cube.learningState as BadgeLectureState];
+      stateName =
+        BadgeLectureStateName[cube.learningState as BadgeLectureState];
     }
 
     return (
-      <a href="#" className={classNames('btn-play', styleName)} onClick={(e) => moveToCubePage(cube!, e)}>
-        <span className={classNames('text', (cube.learningState === BadgeLectureState.Waiting || cube.learningState === BadgeLectureState.HomeworkWaiting || cube.learningState === BadgeLectureState.TestWaiting) ? 'no-link' : '')}>
-          {stateName}{
-            cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) ?
-              `(${cube.sumViewSeconds}%)` : ''
-          }
+      <a
+        href="#"
+        className={classNames('btn-play', styleName)}
+        onClick={e => moveToCubePage(cube!, e)}
+      >
+        <span
+          className={classNames(
+            'text',
+            cube.learningState === BadgeLectureState.Waiting ||
+              cube.learningState === BadgeLectureState.HomeworkWaiting ||
+              cube.learningState === BadgeLectureState.TestWaiting
+              ? 'no-link'
+              : ''
+          )}
+        >
+          {stateName}
+          {cube.learningState === BadgeLectureState.Progress &&
+          (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio)
+            ? `(${cube.sumViewSeconds}%)`
+            : ''}
         </span>
 
-        { (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) && cube.learningState === BadgeLectureState.Progress ? (
+        {(cube.cubeType === CubeType.Video ||
+          cube.cubeType === CubeType.Audio) &&
+        cube.learningState === BadgeLectureState.Progress ? (
           <span className={`pie-wrapper progress-${cube.sumViewSeconds}`}>
             <span className="pie">
-              <span className="left-side"/>
-              <span className="right-side"/>
+              <span className="left-side" />
+              <span className="right-side" />
             </span>
-            <div className="shadow"/>
+            <div className="shadow" />
           </span>
-        ):(
-          <Icon className={classNames(
-            (cube.learningState === BadgeLectureState.Waiting || cube.learningState === BadgeLectureState.HomeworkWaiting || cube.learningState === BadgeLectureState.TestWaiting)
-              ? 'play-black24-dim' : `play-${styleName}24` )}
+        ) : (
+          <Icon
+            className={classNames(
+              cube.learningState === BadgeLectureState.Waiting ||
+                cube.learningState === BadgeLectureState.HomeworkWaiting ||
+                cube.learningState === BadgeLectureState.TestWaiting
+                ? 'play-black24-dim'
+                : `play-${styleName}24`
+            )}
           />
         )}
       </a>
@@ -209,7 +239,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     const learningState = badgeComp.course!.learningState;
 
     let styleName = 'black';
-    switch( learningState ) {
+    switch (learningState) {
       case BadgeLectureState.Progress:
         styleName = 'orange';
         break;
@@ -221,56 +251,83 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     }
 
     return (
-      <a href="#" className={classNames('btn-play', styleName )} onClick={(e) => moveToCoursePage(badgeComp.course!, e)}>
+      <a
+        href="#"
+        className={classNames('btn-play', styleName)}
+        onClick={e => moveToCoursePage(badgeComp.course!, e)}
+      >
         <span className="text">
-          {(learningState === null) ? StateDefaultName.Learning : BadgeLectureStateName[badgeComp.course!.learningState as BadgeLectureState]}
+          {learningState === null
+            ? StateDefaultName.Learning
+            : BadgeLectureStateName[
+                badgeComp.course!.learningState as BadgeLectureState
+              ]}
         </span>
-        <Icon className={`play-${styleName}24`}/>
+        <Icon className={`play-${styleName}24`} />
       </a>
     );
   };
-
 
   // Badge코드(이름) Url 잘라서 state관리
   useEffect(() => {
     const badgeName = window.location.pathname.split('/');
     const splitUrlName = badgeName[badgeName.length - 1];
     setSplitUrl(splitUrlName);
-  },[])
+  }, []);
 
   // 뱃지 내 각 learning path 으로 수집
-  const ClickCourseGA = (course: BadgeCourseData ): void => {
+  const ClickCourseGA = (course: BadgeCourseData): void => {
     ReactGA.event({
       category: `Badge_${splitUrl}`,
       action: 'Click Card',
-      label: `${course.name}`
-    })
-  }
+      label: `${course.name}`,
+    });
+  };
 
   const ClickCubeGA = (cube: BadgeCubeData): void => {
     ReactGA.event({
       category: `Badge_${splitUrl}`,
       action: 'Click Card',
-      label: `${cube.name}`
-    })
-  }
- 
+      label: `${cube.name}`,
+    });
+  };
+
   return (
     <div className="course-cont">
-      {badgeCompList.length > 0 && badgeCompList[0] ?
-        badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
-          badgeComp.compType === 'COURSE' && badgeComp.course ?
-            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`} onClick={() => ClickCourseGA(badgeComp.course!)}>
+      {badgeCompList.length > 0 && badgeCompList[0] ? (
+        badgeCompList.map((badgeComp: BadgeCompData, index: number) =>
+          (badgeComp.compType === 'COURSE' && badgeComp.course ? (
+            <div
+              className={classNames(
+                'course-box',
+                'type2',
+                badgeComp.course.isOpened ? 'open' : ''
+              )}
+              key={`course-box-${index}`}
+              onClick={() => ClickCourseGA(badgeComp.course!)}
+            >
               <div className="bar">
                 <span className="tit">
-                  <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
+                  <a
+                    href="#"
+                    onClick={e => moveToCoursePage(badgeComp.course!, e)}
+                    className="ellipsis"
+                  >
+                    {index + 1 + '. ' + badgeComp.course!.name}
+                  </a>
                   {/*<span className="ellipsis">{(index + 1) + '. ' + badgeComp.course.name}</span>*/}
                 </span>
 
-                <span className="num" onClick={(e) => moveToCoursePage(badgeComp.course!, e)}>
-                  {badgeComp.course.cubeCount < 10 ? `0${badgeComp.course.cubeCount}` : badgeComp.course.cubeCount}개 강의 구성
-
-                  {badgeComp.course.learningState === BadgeLectureState.Passed && (
+                <span
+                  className="num"
+                  onClick={e => moveToCoursePage(badgeComp.course!, e)}
+                >
+                  {badgeComp.course.cubeCount < 10
+                    ? `0${badgeComp.course.cubeCount}`
+                    : badgeComp.course.cubeCount}
+                  개 강의 구성
+                  {badgeComp.course.learningState ===
+                    BadgeLectureState.Passed && (
                     <span className="completed">학습완료</span>
                   )}
                 </span>
@@ -280,42 +337,70 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
                 {/*Learning Path 기능 변경으로 사용안함*/}
                 <div className="toggle-btn">
-                  <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
-                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
-                    <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
+                  <Button
+                    icon
+                    className="img-icon fn-more-toggle"
+                    onClick={() => showCourseInfo(badgeComp.course!)}
+                  >
+                    <Icon
+                      className={classNames(
+                        's24',
+                        badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down'
+                      )}
+                    />
+                    <span className="blind">
+                      {badgeComp.course.isOpened ? 'open' : 'close'}
+                    </span>
                   </Button>
                 </div>
               </div>
             </div>
-            :
+          ) : (
             <Fragment key={`cube-${index}`}>
               {/*cube: cube-box > bar.typeA(학습) / bar.typeB(TRS)*/}
-              <div className="cube-box" onClick={() => ClickCubeGA(badgeComp.cube!)}>
+              <div
+                className="cube-box"
+                onClick={() => ClickCubeGA(badgeComp.cube!)}
+              >
                 <div className="bar typeA">
                   <div className="tit">
                     {/*<a href="#" className="ellipsis">{(index + 1) + '. ' + badgeComp.cube!.name}</a>*/}
-                    <a href="#" onClick={(e) => moveToCubePage(badgeComp.cube!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.cube!.name}</a>
+                    <a
+                      href="#"
+                      onClick={e => moveToCubePage(badgeComp.cube!, e)}
+                      className="ellipsis"
+                    >
+                      {index + 1 + '. ' + badgeComp.cube!.name}
+                    </a>
                   </div>
                   <div className="right">
-                    <span>{CubeTypeNameType[badgeComp.cube!.cubeType as CubeType]}</span>
-                    <span>{dateTimeHelper.timeToHourMinuteFormat(badgeComp.cube!.learningTime)}</span>
+                    <span>
+                      {CubeTypeNameType[badgeComp.cube!.cubeType as CubeType]}
+                    </span>
+                    <span>
+                      {dateTimeHelper.timeToHourMinuteFormat(
+                        badgeComp.cube!.learningTime
+                      )}
+                    </span>
                     {setLearningStateForMedia(badgeComp.cube!)}
                   </div>
                 </div>
                 {/*<TRSContainer parentType="CUBE" badgeCube={badgeComp.cube!} />*/}
               </div>
             </Fragment>
-        ))
-        :
-            <div>학습정보가 존재하지 않습니다.</div>
-      }
+          ))
+        )
+      ) : (
+        <div>학습정보가 존재하지 않습니다.</div>
+      )}
     </div>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'course.coursePlanService',
-  'badgeDetail.badgeDetailService',
-  'lecture.studentService',
-
-))(withRouter(observer(BadgeLectureContainer)));
+export default inject(
+  mobxHelper.injectFrom(
+    'course.coursePlanService',
+    'badgeDetail.badgeDetailService',
+    'lecture.studentService'
+  )
+)(withRouter(observer(BadgeLectureContainer)));

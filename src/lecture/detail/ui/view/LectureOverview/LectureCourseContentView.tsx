@@ -18,6 +18,7 @@ import LectureRelationsView from './LectureRelationsView';
 import './LectureCubeContentView.css';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureFileView from './LectureFileView';
+import { Type, AreaType } from 'tracker/model';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -136,7 +137,11 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               htmlContent={lectureDescription.description}
             />
           )}
-          <div className="badge-detail">
+          <div
+            className="badge-detail"
+            data-area={AreaType.LECTURE_TAG}
+            data-type={Type.CLICK}
+          >
             {lectureSubcategory && (
               <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
             )}
@@ -146,7 +151,12 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
             lectureInstructor.instructors.length > 0 && (
-              <div className="badge-detail" id="lms-instructor-Info">
+              <div
+                className="badge-detail"
+                id="lms-instructor-Info"
+                data-area={AreaType.LECTURE_EXPERT}
+                data-type={Type.CLICK}
+              >
                 <div className="ov-paragraph">
                   {lectureInstructor && (
                     <LectureInstructorView
