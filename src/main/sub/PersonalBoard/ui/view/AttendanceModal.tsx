@@ -107,12 +107,12 @@ const AttendanceModal:React.FC<Props> = ({
         <Modal.Header>
           <div className="imgbox">
             <span>
-              <img src={`${PUBLIC_URL}/images/all/event_txt1.png`} alt="2021.04.01~04.30" />
+              <img src={`${PUBLIC_URL}/images/all/event_txt1.svg`} alt="2021.04.05~04.30" />
             </span>
             <span>
-              <img src={`${PUBLIC_URL}/images/all/event_txt2.png`} alt="mySUNI 출석왕 도전!"/>
+              <img src={`${PUBLIC_URL}/images/all/event_txt2.svg`} alt="mySUNI 출석왕 도전!"/>
             </span>
-            <img src={`${PUBLIC_URL}/images/all/event_txt3.png`} alt="하루에 딱 한 번, 출석도장 꾹하기" />
+            <img src={`${PUBLIC_URL}/images/all/event_txt3.svg`} alt="하루에 딱 한 번, 출석도장 꾹하기" />
           </div>
         </Modal.Header>
         <Modal.Content className="admin_popup_add">
