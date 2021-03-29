@@ -229,6 +229,32 @@ function MyLearningTableBody(props: Props) {
         );
 
       case MyLearningContentType.InMyList:
+        return (
+          <>
+            <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayDifficultyLevel} {/* Level */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayLearningTime}
+              {/* 학습시간 */}
+            </Table.Cell>
+            <Table.Cell>
+              {formatDate(model.endDate)}
+              {/* 최근학습일 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayProgressRate} {/* 진행률 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.state}
+              {/* 학습상태 */}
+            </Table.Cell>
+          </>
+        );
       case MyLearningContentType.Required:
         return (
           <>
@@ -251,7 +277,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayProgressRate} {/* 진행률 */}
             </Table.Cell>
             <Table.Cell>
-              {model.learningState}
+              {model.state}
               {/* 학습상태 */}
             </Table.Cell>
           </>
@@ -474,7 +500,12 @@ export default inject(mobxHelper.injectFrom('myTraining.myTrainingService'))(
 
 /* globals */
 const formatDate = (time: number) => {
-  return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
+  if (time && Number(time) !== 0) {
+    return moment(Number(time)).format('YYYY.MM.DD');
+  } else {
+    return '-';
+  }
+  // return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
 };
 
 const convertServiceType = (serviceType: string): LectureServiceType => {
