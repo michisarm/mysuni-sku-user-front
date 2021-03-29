@@ -220,7 +220,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                    <>
                       <p id={'tranScriptRow'+lectureTranscript.idx}
                         key={lectureTranscript.idx}
-                        className={lectureTranscript.activate ? "transcript-active" : ""} 
+                        className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
                         onClick={() => {
                           // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
                           if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
@@ -238,7 +238,9 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                         }}
                         style={{ cursor: 'pointer' }}
                       >
+                        
                         {lectureTranscript.text}
+                        
                       </p>
                    </>      
                  );
