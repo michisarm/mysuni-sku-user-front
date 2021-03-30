@@ -28,11 +28,11 @@ export function modifyQuiz(
     .then(response => response?.data);
 }
 // 전체 퀴즈조회
-export function findAllQuiz(quizId: string): Promise<string> {
+export function findAllQuiz(quizId: string): Promise<any> {
   // /api/quiz/quiz?quizIds=0ed79011-0eea-41bf-8c3c-b58bf4867607,01fbf7ed-7bdf-4dda-a42d-2e62029335c2,1892fa45-9a1d-40c4-8c25-f3ebbb756cce
-
+  // 리턴타입 변경하기
   return axios
-    .get<any>(`${BASE_URL}/${quizId}`)
+    .get<any>(`${BASE_URL}?quizIds=${quizId}`)
     .then(response => response?.data);
 }
 
