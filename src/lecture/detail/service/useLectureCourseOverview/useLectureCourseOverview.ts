@@ -2,12 +2,30 @@
 
 import { useCallback, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { setInMyLectureCdo, setLectureComment, setLectureCourseSummary, setLectureDescription, setLectureFile, setLectureInstructor, setLecturePrecourse, setLectureRelations, setLectureReview, setLectureSubcategory, setLectureTags } from '../../store/LectureOverviewStore';
+import {
+  setInMyLectureCdo,
+  setLectureComment,
+  setLectureCourseSummary,
+  setLectureDescription,
+  setLectureFile,
+  setLectureInstructor,
+  setLecturePrecourse,
+  setLectureRelations,
+  setLectureReview,
+  setLectureSubcategory,
+  setLectureTags,
+} from '../../store/LectureOverviewStore';
 import { parseLectureParams } from '../../utility/lectureRouterParamsHelper';
 import LectureParams from '../../viewModel/LectureParams';
 import { LectureStructureCourseItem } from '../../viewModel/LectureStructure';
-import { getActiveStructureItem, useLectureStructure } from '../useLectureStructure/useLectureStructure';
-import { getCourseLectureOverview, getCourseLectureOverviewFromCoursePlanComplex } from './utility/getCourseLectureOverview';
+import {
+  getActiveStructureItem,
+  useLectureStructure,
+} from '../useLectureStructure/useLectureStructure';
+import {
+  getCourseLectureOverview,
+  getCourseLectureOverviewFromCoursePlanComplex,
+} from './utility/getCourseLectureOverview';
 
 export function useLectureCourseOverview() {
   const {
@@ -47,23 +65,25 @@ export function useLectureCourseOverview() {
         collegeId,
         cineroomId
       );
-
-      return () => {
-        setLectureCourseSummary();
-        setLectureDescription();
-        setLectureSubcategory();
-        setLectureTags();
-        setLectureInstructor();
-        setLecturePrecourse();
-        setLectureFile();
-        setLectureComment();
-        setLectureReview();
-        setInMyLectureCdo();
-        setLectureRelations();
-      }
     },
     []
   );
+
+  useEffect(() => {
+    return () => {
+      setLectureCourseSummary();
+      setLectureDescription();
+      setLectureSubcategory();
+      setLectureTags();
+      setLectureInstructor();
+      setLecturePrecourse();
+      setLectureFile();
+      setLectureComment();
+      setLectureReview();
+      setInMyLectureCdo();
+      setLectureRelations();
+    };
+  }, [coursePlanId]);
 
   useEffect(() => {
     if (lectureStructure === undefined) {
@@ -85,14 +105,22 @@ export function useLectureCourseOverview() {
     if (currentCourse === undefined) {
       return;
     }
-    const { coursePlanComplex } = currentCourse as LectureStructureCourseItem
+    const { coursePlanComplex } = currentCourse as LectureStructureCourseItem;
     if (coursePlanComplex !== undefined) {
       getCourseLectureOverviewFromCoursePlanComplex(
         params,
         coursePlanComplex,
         params.collegeId,
-        params.cineroomId,
+        params.cineroomId
       );
+    } else if (lectureType === 'cube') {
+      getCourseOverview({
+        params,
+        cineroomId: params.cineroomId,
+        collegeId: params.collegeId,
+        coursePlanId: params.coursePlanId!,
+        serviceId: params.serviceId!,
+      });
     } else {
       getCourseOverview({
         params,
@@ -102,7 +130,8 @@ export function useLectureCourseOverview() {
         serviceId: lectureId || params.serviceId!,
       });
     }
-  }, [cineroomId,
+  }, [
+    cineroomId,
     collegeId,
     cubeId,
     lectureCardId,
@@ -111,5 +140,9 @@ export function useLectureCourseOverview() {
     serviceId,
     lectureType,
     contentId,
-    lectureId, , pathname, lectureStructure]);
+    lectureId,
+    ,
+    pathname,
+    lectureStructure,
+  ]);
 }

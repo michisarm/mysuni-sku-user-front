@@ -1,5 +1,10 @@
-
-import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
+import {
+  IObservableArray,
+  observable,
+  action,
+  computed,
+  runInAction,
+} from 'mobx';
 import { autobind, CachingFetch, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
@@ -12,10 +17,6 @@ import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 import FilterCountViewModel from '../../model/FilterCountViewModel';
 
-
-
-
-
 @autobind
 class InMyLectureService {
   //
@@ -25,7 +26,6 @@ class InMyLectureService {
 
   @observable
   _inMyLectures: InMyLectureModel[] = [];
-
 
   @observable
   _inMyLectureAll: InMyLectureModel[] = [];
@@ -37,7 +37,6 @@ class InMyLectureService {
 
   constructor(inMyLectureApi: InMyLectureApi) {
     this.inMyLectureApi = inMyLectureApi;
-
   }
 
   @computed
@@ -83,30 +82,55 @@ class InMyLectureService {
 
   @action
   async addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
-    await this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel).then((response) => {
-      if (response && response.length > 0) {
-        runInAction(() => this.findAllInMyLectures());
-      }
-      return response;
-    }).catch((reason: any) => { return null; });
+    await this.inMyLectureApi
+      .addInMyLecture(inMyLectureCdoModel)
+      .then(response => {
+        if (response && response.length > 0) {
+          runInAction(() => this.findAllInMyLectures());
+        }
+        return response;
+      })
+      .catch((reason: any) => {
+        return null;
+      });
   }
 
   @action
   async removeInMyLecture(inMyLectureId: string) {
-    await this.inMyLectureApi.removeInMyLecture(inMyLectureId).then(() => {
-      return runInAction(() => this.findAllInMyLectures());
-    }).catch((reason: any) => { return null; });
+    await this.inMyLectureApi
+      .removeInMyLecture(inMyLectureId)
+      .then(() => {
+        return runInAction(() => this.findAllInMyLectures());
+      })
+      .catch((reason: any) => {
+        return null;
+      });
   }
 
   @action
-  async findInMyLectures(limit: number, offset: number, channelIds: string[] = []) {
+  async findInMyLectures(
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
-    const response = await this.inMyLectureApi.findInMyLectures(InMyLectureRdoModel.new(limit, offset, channelIds));
-    const lecturesOffsetElementList = new OffsetElementList<InMyLectureModel>(response);
+    const response = await this.inMyLectureApi.findInMyLectures(
+      InMyLectureRdoModel.new(limit, offset, channelIds)
+    );
+    const lecturesOffsetElementList = new OffsetElementList<InMyLectureModel>(
+      response
+    );
 
-    lecturesOffsetElementList.results = lecturesOffsetElementList.results.map((lecture) => new InMyLectureModel(lecture));
+    lecturesOffsetElementList.results = lecturesOffsetElementList.results.map(
+      lecture => new InMyLectureModel(lecture)
+    );
 
-    runInAction(() => this._inMyLectures = this._inMyLectures.concat(lecturesOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._inMyLectures = this._inMyLectures.concat(
+          lecturesOffsetElementList.results
+        ))
+    );
     return lecturesOffsetElementList;
   }
 
@@ -117,11 +141,19 @@ class InMyLectureService {
     //
     const fetched = this.inMyLectureAllCachingFetch.fetch(
       () => this.inMyLectureApi.findAllInMyLectures(),
-      (inMyLectures) =>
-        runInAction(() => this._inMyLectureAll = inMyLectures.map((inMyLecture: InMyLectureModel) => new InMyLectureModel(inMyLecture))),
+      inMyLectures =>
+        runInAction(
+          () =>
+            (this._inMyLectureAll = inMyLectures.map(
+              (inMyLecture: InMyLectureModel) =>
+                new InMyLectureModel(inMyLecture)
+            ))
+        )
     );
 
-    return fetched ? this.inMyLectureAllCachingFetch.inProgressFetching : this.inMyLectureAll;
+    return fetched
+      ? this.inMyLectureAllCachingFetch.inProgressFetching
+      : this.inMyLectureAll;
   }
 
   // In My Lecture -----------------------------------------------------------------------------------------------------
@@ -129,32 +161,43 @@ class InMyLectureService {
   @action
   async findInMyLecture(serviceId: string, serviceType: string) {
     //
-    const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
+    const inMyLecture = await this.inMyLectureApi.findInMyLecture(
+      InMyLectureRdoModel.newWithSingle(serviceId, serviceType)
+    );
 
-    runInAction(() => this.inMyLecture = new InMyLectureModel(inMyLecture));
+    runInAction(() => (this.inMyLecture = new InMyLectureModel(inMyLecture)));
     return inMyLecture;
   }
 
   @action
   async addInMyLectureInAllList(serviceId: string, serviceType: string) {
     //
-    const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
+    const inMyLecture = await this.inMyLectureApi.findInMyLecture(
+      InMyLectureRdoModel.newWithSingle(serviceId, serviceType)
+    );
 
-    runInAction(() => this._inMyLectureAll.push(new InMyLectureModel(inMyLecture)));
+    runInAction(() =>
+      this._inMyLectureAll.push(new InMyLectureModel(inMyLecture))
+    );
     return inMyLecture;
   }
 
   @action
   removeInMyLectureInAllList(serviceId: string, serviceType: string) {
     //
-    const index = this._inMyLectureAll.findIndex(inMyLecture => inMyLecture.serviceId === serviceId && inMyLecture.serviceType === serviceType);
+    const index = this._inMyLectureAll.findIndex(
+      inMyLecture =>
+        inMyLecture.serviceId === serviceId &&
+        inMyLecture.serviceType === serviceType
+    );
     if (index >= 0) {
-      this._inMyLectureAll = this._inMyLectureAll.slice(0, index).concat(this._inMyLectureAll.slice(index + 1));
+      this._inMyLectureAll = this._inMyLectureAll
+        .slice(0, index)
+        .concat(this._inMyLectureAll.slice(index + 1));
     }
   }
 
   /////////////////////////////////////// 개편 ///////////////////////////////////////
-
 
   @observable
   _inMyLectureTableViews: InMyLectureTableViewModel[] = [];
@@ -168,7 +211,7 @@ class InMyLectureService {
   _inMyListCount: number = 0;
 
   @observable
-  _filterCountViews: FilterCountViewModel[] = [];;
+  _filterCountViews: FilterCountViewModel[] = [];
 
   @observable
   _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
@@ -215,13 +258,19 @@ class InMyLectureService {
 
   @action
   async findAllTableViews() {
-    const offsetTableViews = await this.inMyLectureApi.findAllTableViews(this._inMyLectureFilterRdo);
+    const offsetTableViews = await this.inMyLectureApi.findAllTableViews(
+      this._inMyLectureFilterRdo
+    );
 
-    if (offsetTableViews &&
+    if (
+      offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length) {
+      offsetTableViews.results.length
+    ) {
       runInAction(() => {
-        this._inMyLectureTableViews = offsetTableViews.results.map(result => new InMyLectureTableViewModel(result));
+        this._inMyLectureTableViews = offsetTableViews.results.map(
+          result => new InMyLectureTableViewModel(result)
+        );
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -231,13 +280,19 @@ class InMyLectureService {
 
   @action
   async findAllTableViewsByConditions() {
-    const offsetTableViews = await this.inMyLectureApi.findAllTableViews(this._inMyLectureFilterRdo);
+    const offsetTableViews = await this.inMyLectureApi.findAllTableViews(
+      this._inMyLectureFilterRdo
+    );
 
-    if (offsetTableViews &&
+    if (
+      offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length) {
+      offsetTableViews.results.length
+    ) {
       runInAction(() => {
-        this._inMyLectureTableViews = offsetTableViews.results.map(result => new InMyLectureTableViewModel(result));
+        this._inMyLectureTableViews = offsetTableViews.results.map(
+          result => new InMyLectureTableViewModel(result)
+        );
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -249,15 +304,23 @@ class InMyLectureService {
   async findAllTableViewsWithPage(offset: Offset) {
     this._inMyLectureFilterRdo.changeOffset(offset);
 
-    const offsetTableViews = await this.inMyLectureApi.findAllTableViews(this._inMyLectureFilterRdo);
+    const offsetTableViews = await this.inMyLectureApi.findAllTableViews(
+      this._inMyLectureFilterRdo
+    );
 
     if (
       offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length) {
-      const addedTableViews = offsetTableViews.results.map(result => new InMyLectureTableViewModel(result));
+      offsetTableViews.results.length
+    ) {
+      const addedTableViews = offsetTableViews.results.map(
+        result => new InMyLectureTableViewModel(result)
+      );
       runInAction(() => {
-        this._inMyLectureTableViews = [...this._inMyLectureTableViews, ...addedTableViews];
+        this._inMyLectureTableViews = [
+          ...this._inMyLectureTableViews,
+          ...addedTableViews,
+        ];
       });
     }
   }
@@ -266,16 +329,22 @@ class InMyLectureService {
   async findAllTabCount() {
     const tabCount = await this.inMyLectureApi.countInMyLectures();
 
-    runInAction(() => this._inMyListCount = tabCount);
+    runInAction(() => (this._inMyListCount = tabCount));
   }
 
   @action
   async findAllFilterCountViews() {
-    const response = await this.inMyLectureApi.findAllFilterCountViews(this._inMyLectureFilterRdo);
+    const response = await this.inMyLectureApi.findAllFilterCountViews(
+      this._inMyLectureFilterRdo
+    );
 
     if (response) {
-      const filterCountViews = response.map((filterCountView: any) => new FilterCountViewModel(filterCountView));
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(filterCountViews);
+      const filterCountViews = response.map(
+        (filterCountView: any) => new FilterCountViewModel(filterCountView)
+      );
+      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
+        filterCountViews
+      );
 
       runInAction(() => {
         this._filterCountViews = filterCountViews;
@@ -297,16 +366,19 @@ class InMyLectureService {
 
   @action
   sortTableViews(column: string, direction: Direction) {
-
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
     const propKey = converToKey(column);
 
     if (direction === Direction.ASC) {
-      this._inMyLectureTableViews = this._inMyLectureTableViews.sort((a, b) => a[propKey] - b[propKey]);
+      this._inMyLectureTableViews = this._inMyLectureTableViews.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
       return;
     }
     if (direction === Direction.DESC) {
-      this._inMyLectureTableViews = this._inMyLectureTableViews.sort((a, b) => b[propKey] - a[propKey]);
+      this._inMyLectureTableViews = this._inMyLectureTableViews.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
     }
   }
   /////////////////////////////////////// 개편 ///////////////////////////////////////
@@ -321,6 +393,8 @@ const converToKey = (column: string): any => {
   switch (column) {
     case '학습시간':
       return 'learningTime';
+    case '최근학습일':
+      return 'endDate';
     case '스탬프':
       return 'stampCount';
     case '등록일':

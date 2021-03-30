@@ -37,6 +37,7 @@ const [
   postsTotalCount: 0,
   postsOffset: 0,
 });
+
 const [
   setIsLoadingState,
   onIsLoadingState,
@@ -63,5 +64,5 @@ export {
   setIsLoadingState,
   onIsLoadingState,
   getIsLoadingState,
-  useIsLoadingState,
+  useIsLoadingState
 };

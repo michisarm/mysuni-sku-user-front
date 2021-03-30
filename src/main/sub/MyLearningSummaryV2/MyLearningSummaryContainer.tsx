@@ -3,7 +3,6 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
-
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
@@ -360,6 +359,20 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       setBadgeLearningTimeItem({ ...badgeLearningTime, mylearningTimeHour: accrueHour, mylearningTimeMinute: accrueMinute})
     }
 
+    const eventBannerVisible = () => {
+      const afterFlag = moment('YYYY-MM-DD').isAfter(moment().format('2021-04-04'), 'day')
+      const beforeFlag = moment('YYYY-MM-DD').isBefore(moment().format('2021-05-01'), 'day')
+      //테스트 4월 1일 날짜만 예외로 오픈되도록
+      if(moment().format('YYYY-MM-DD') === '2021-03-31') {
+        return true
+      }
+      if(afterFlag && beforeFlag) {
+        return true
+      } else {
+        return false
+      }
+    }
+
     const style1 = {
       borderRadius: "0.375rem",
       textAlign: "center",
@@ -457,9 +470,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
           <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
-          <div className="main-event-btn">
-            <button type="button" onClick={this.handlePopup}/>
-          </div>
+          {
+            eventBannerVisible() && (
+              <div className="main-event-btn">
+                <button type="button" onClick={this.handlePopup}/>
+              </div>
+            )
+          }
         </HeaderWrapperView>
         {companyCode && (
           <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA} handleClick={this.handleOpenBtnClick} activeIndex={activeIndex} companyCode={companyCode}>
@@ -488,45 +505,45 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           data-area={AreaType.MAIN_INFO}
           data-type={Type.CLICK}
         >
-            <div className="inner">
-                <div className="left">
-                    <div>
-                      <FavoriteChannelChangeModal
-                        trigger={
-                          <a>
-                            <Icon className="channel25"/>
-                            <span 
-                              data-area={AreaType.MAIN_INFO}
-                              data-type={Type.VIEW}
-                              data-pathname="관심 채널 설정"
-                              data-page="#attention-channel"
-                            >
-                              관심 채널 설정
-                            </span>
-                          </a>
-                        }
-                        favorites={favoriteChannels}
-                        onConfirmCallback={this.onConfirmFavorite}
-                      />
+          <div className="inner">
+              <div className="left">
+                  <div>
+                    <FavoriteChannelChangeModal
+                      trigger={
+                        <a>
+                          <Icon className="channel25"/>
+                          <span 
+                            data-area={AreaType.MAIN_INFO}
+                            data-type={Type.VIEW}
+                            data-pathname="관심 채널 설정"
+                            data-page="#attention-channel"
+                          >
+                            관심 채널 설정
+                          </span>
+                        </a>
+                      }
+                      favorites={favoriteChannels}
+                      onConfirmCallback={this.onConfirmFavorite}
+                    />
+                  </div>
+                  { (menuControlAuth.companyCode === '' || ( menuControlAuth.authCode === MenuControlAuth.User
+                    && menuControlAuth.useYn === MenuControlAuth.Yes))
+                  && (
+                    <div onClick={this.onClickCreateApl}>
+                        <a href="#">
+                            <Icon className="card-main24"/>
+                            <span>개인학습</span>
+                        </a>
                     </div>
-                    { (menuControlAuth.companyCode === '' || ( menuControlAuth.authCode === MenuControlAuth.User
-                      && menuControlAuth.useYn === MenuControlAuth.Yes))
-                    && (
-                      <div onClick={this.onClickCreateApl}>
-                          <a href="#">
-                              <Icon className="card-main24"/>
-                              <span>개인학습</span>
-                          </a>
-                      </div>
-                    )}
-                </div>
-                <div className="right">
-                    <a onClick={this.goToQna} className="contact-us wh">
-                        <span>1:1 문의하기</span>
-                        <Icon className="arrow-w-16"/>
-                    </a>
-                </div>
-            </div>
+                  )}
+              </div>
+              <div className="right">
+                  <a onClick={this.goToQna} className="contact-us wh">
+                      <span>1:1 문의하기</span>
+                      <Icon className="arrow-w-16"/>
+                  </a>
+              </div>
+          </div>
         </div>
         <LearningObjectivesModalContainer
           open={learningObjectivesOpen}
@@ -546,14 +563,6 @@ class MyLearningSummaryContainer extends Component<Props, States> {
         <AttendanceModalContainer
           open={attendanceOpen}
           setOpen={(value, type?)=> {
-            // if(type === undefined || type !== 'save') {
-            //   requestLearningObjectives()
-            // } else {
-              // reactAlert({
-              //   title: '',
-              //   message: `목표 설정이 완료됐습니다.`,
-              // });
-            // }
             return this.setState({'attendanceOpen':value})
           }} 
         />
