@@ -95,6 +95,8 @@ async function submit(
     url: '',
     classroomId: '',
     approvalProcess: false,
+    enrollingAvailable: false,
+    sendmailFlag: false,
   };
   if (student !== undefined && student !== null) {
     const {
@@ -122,6 +124,8 @@ async function submit(
       enClosed: false,
       classroomId: '',
       approvalProcess: false,
+      enrollingAvailable: false,
+      sendmailFlag: false,
     };
   }
   await registerStudent(nextStudentCdo);
@@ -153,6 +157,8 @@ async function mClassroomSubmit(
       : '',
     classroomId: classroom.id,
     approvalProcess: classroom.freeOfCharge.approvalProcess,
+    enrollingAvailable: classroom.enrolling.enrollingAvailable,
+    sendmailFlag: classroom.freeOfCharge.sendmailFlag,
   };
   if (
     student?.proposalState === 'Canceled' ||
@@ -498,6 +504,8 @@ async function approve(
     url: '',
     classroomId: '',
     approvalProcess: false,
+    enrollingAvailable: false,
+    sendmailFlag: false,
   };
   if (student !== undefined && student !== null) {
     const {
@@ -525,6 +533,8 @@ async function approve(
       enClosed: false,
       classroomId: '',
       approvalProcess: false,
+      enrollingAvailable: false,
+      sendmailFlag: false,
     };
   }
   await registerStudent(nextStudentCdo);
@@ -567,6 +577,8 @@ async function join(
     url: '',
     classroomId: '',
     approvalProcess: false,
+    enrollingAvailable: false,
+    sendmailFlag: false,
   };
   if (student !== undefined && student !== null) {
     const {
@@ -594,6 +606,8 @@ async function join(
       enClosed: false,
       classroomId: '',
       approvalProcess: false,
+      enrollingAvailable: false,
+      sendmailFlag: false,
     };
   }
 
