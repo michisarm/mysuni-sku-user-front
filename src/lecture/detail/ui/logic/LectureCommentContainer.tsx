@@ -43,7 +43,6 @@ function LectureCommentContainer() {
   const url = currentUrl.split('/lecture');
   const lecture = getInMyLectureCdo();
   const creator = lecture?.servicePatronKeyString;
-  console.log(url);
 
   return (
     <>
