@@ -88,8 +88,8 @@ const AttendanceModal:React.FC<Props> = ({
 
     document.body.appendChild(frm)
 
-    frm.setAttribute('p',EncryptEmail)
-    frm.setAttribute('action','https://www.mysuniluckydrawevent.com/auth')
+    // frm.setAttribute('p',EncryptEmail)
+    frm.setAttribute('action',`https://www.mysuniluckydrawevent.com/auth?q=${EncryptEmail}`)
     frm.setAttribute('method','post')
     frm.setAttribute('target','luckydraw')
 

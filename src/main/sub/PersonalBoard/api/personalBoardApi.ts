@@ -115,7 +115,7 @@ export function updateAttend(id: string) {
 
 //이메일 암호화
 export function encryptEmail() {
-  return axiosApi.get<string>(eventURL+`/cypher/encrypt/email/UNIVtomorrow`)
+  return axiosApi.get<string>(eventURL+`/attend/attendance/attend_2104/encrypt/UNIVtomorrow`)
   .then(response => {
     return response && response.data
   })
