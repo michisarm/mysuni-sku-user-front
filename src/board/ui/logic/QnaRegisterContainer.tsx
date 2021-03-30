@@ -61,7 +61,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const name = patronInfo.getPatronName() || '';
     const email = patronInfo.getPatronEmail() || '';
     const { company } = skProfileService!.skProfile.member;
-    postService.clearPost();
+    // postService.clearPost();
     categoryService.findCategoriesByBoardId('QNA')
       .then(() => {
         postService.changePostProps('boardId', 'QNA');
@@ -182,7 +182,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     onBlur={() => this.setState({ focus: false })}
                     value={post && post.title || ''}
                     onChange={(e: any) => {
-                      if (e.target.value.length > 100 ) {
+                      if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
                       } else {
                         this.setState({ write: e.target.value, fieldName: '' });
@@ -191,7 +191,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     }}
                   />
                   <Icon className="clear link"
-                    onClick={(e:any) => {
+                    onClick={(e: any) => {
                       this.setState({ write: '' });
                       this.onChangePostProps('title', e.target.value);
                     }}
