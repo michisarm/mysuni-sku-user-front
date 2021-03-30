@@ -1,23 +1,17 @@
 import { axiosApi, OffsetElementList } from '@nara.platform/accent';
 import Axios, { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
-import PostList from 'community/model/PostList';
 import PostCdo from 'community/model/PostCdo';
-import PostUdo from 'community/model/PostUdo';
 import Community from '../model/Community';
 import CommunityHomeInfo from '../model/CommunityHome';
 import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
-import PostRdo from 'community/model/PostRdo';
 import CommunityView from '../model/CommunityView';
 import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/FollowCommunityItem';
 import { NameValueList } from 'shared/model';
-import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
-import { patronInfo } from '@nara.platform/dock';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
-import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 
 const BASE_URL = '/api/community';
 
@@ -354,7 +348,7 @@ export function followList(
 export function followingsModal(): Promise<
   OffsetElementList<FollowModalItem> | undefined
 > {
-  const url = `${BASE_URL}/profileviews/following?offset=0&limit=999`;
+  const url = `${BASE_URL}/profileviews/following`;
   return axiosApi
     .get<OffsetElementList<FollowModalItem>>(url)
     .then(AxiosReturn);

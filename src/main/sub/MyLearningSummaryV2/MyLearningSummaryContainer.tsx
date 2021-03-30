@@ -4,7 +4,6 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
-
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
@@ -445,9 +444,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             </div>
           </div>
           <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
-          <div className="main-event-btn">
-            <button type="button" onClick={this.handlePopup}/>
-          </div>
+          {
+            !moment('2021-04-04').isAfter(moment().format('YYYY-MM-DD'), 'day') && (
+              <div className="main-event-btn">
+                <button type="button" onClick={this.handlePopup}/>
+              </div>
+            )
+          }
         </HeaderWrapperView>
 
         {companyCode && (
