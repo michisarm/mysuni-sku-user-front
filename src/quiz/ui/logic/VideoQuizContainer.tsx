@@ -26,8 +26,13 @@ const VideoQuizContainer: React.FC<Props> = ({
         await findAllQuiz(quizId).then(res => {
           if (res) {
             const findQuizTable = res
-              .sort((a: any, b: any) => a.showTime > b.showTime)
-              .find((quiz: any, index: number) => index === quizCurrentIndex);
+              .sort(
+                (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
+              )
+              .find(
+                (quiz: QuizTableList, index: number) =>
+                  index === quizCurrentIndex
+              );
             setQuizData(findQuizTable);
           }
         });
