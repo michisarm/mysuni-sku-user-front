@@ -65,23 +65,25 @@ export function useLectureCourseOverview() {
         collegeId,
         cineroomId
       );
-
-      return () => {
-        setLectureCourseSummary();
-        setLectureDescription();
-        setLectureSubcategory();
-        setLectureTags();
-        setLectureInstructor();
-        setLecturePrecourse();
-        setLectureFile();
-        setLectureComment();
-        setLectureReview();
-        setInMyLectureCdo();
-        setLectureRelations();
-      };
     },
     []
   );
+
+  useEffect(() => {
+    return () => {
+      setLectureCourseSummary();
+      setLectureDescription();
+      setLectureSubcategory();
+      setLectureTags();
+      setLectureInstructor();
+      setLecturePrecourse();
+      setLectureFile();
+      setLectureComment();
+      setLectureReview();
+      setInMyLectureCdo();
+      setLectureRelations();
+    };
+  }, [coursePlanId]);
 
   useEffect(() => {
     if (lectureStructure === undefined) {
