@@ -3,9 +3,9 @@ import QuizTableList from 'quiz/model/QuizTableList';
 import React from 'react';
 
 interface Props {
-  title: string | undefined;
-  titleImage: string | undefined;
-  question: QuizQuestions[] | undefined;
+  title: string;
+  titleImage: string;
+  question: QuizQuestions[];
   currentIndex: number;
   onImageZoomPopup: (title: string, src: string) => void;
 }

@@ -5,7 +5,7 @@ import QuizItem from 'quiz/model/QuizItem';
 import { UserAnswer } from 'quiz/model/QuizAnswer';
 
 interface Props {
-  question: QuizQuestions | undefined;
+  question: QuizQuestions;
   onImageZoomPopup: (title: string, src: string) => void;
   userAnswer: UserAnswer;
   onChangeUserAnswer: (

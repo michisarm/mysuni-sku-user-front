@@ -27,9 +27,9 @@ const VideoQuizContentContainer = ({
   resultAlertMessage,
   onCompletedQuiz,
 }: {
-  questionData: QuizQuestions[] | undefined;
-  resultAlertMessage: QuizMessage | undefined;
-  onCompletedQuiz?: () => void;
+  questionData: QuizQuestions[];
+  resultAlertMessage: QuizMessage;
+  onCompletedQuiz: () => void;
 }) => {
   const currentUser = patronInfo.getPatron();
   const currentMemberId = patronInfo.getDenizenId();
@@ -265,6 +265,12 @@ const VideoQuizContentContainer = ({
     }
   }, [offset, questionData, resultData]);
 
+  const onCompleteCurrentQuiz = () => {
+    setQuizStatus({ status: false, type: '' });
+    setCurrentIndex(0);
+    onCompletedQuiz();
+  };
+
   return (
     <>
       {/* 퀴즈영역 */}
@@ -272,14 +278,14 @@ const VideoQuizContentContainer = ({
         <div className="quiz-content-wrap">
           <div className="video-quiz-content">
             <QuizHeaderView
-              title={questionData && questionData[currentIndex]?.text}
-              titleImage={questionData && questionData[currentIndex]?.img}
-              question={questionData && questionData}
+              title={questionData[currentIndex]?.text}
+              titleImage={questionData[currentIndex]?.img}
+              question={questionData}
               currentIndex={currentIndex}
               onImageZoomPopup={onImageZoomPopup}
             />
             <QuizQuestionView
-              question={questionData && questionData[currentIndex]}
+              question={questionData[currentIndex]}
               onImageZoomPopup={onImageZoomPopup}
               onChangeUserAnswer={onChangeUserAnswer}
               userAnswer={userAnswer}
@@ -392,7 +398,10 @@ const VideoQuizContentContainer = ({
             <span className="wro2">계속해서 영상을 이어보세요.</span>
           </div>
           <div className="video-quiz-footer">
-            <button onClick={onCompletedQuiz} className="ui button fix bg">
+            <button
+              onClick={onCompleteCurrentQuiz}
+              className="ui button fix bg"
+            >
               확인
             </button>
           </div>

@@ -59,7 +59,7 @@ import {
 import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
 import { LectureMedia } from 'lecture/detail/viewModel/LectureMedia';
 import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
-import { findQuiz } from 'quiz/api/QuizApi';
+import { findAllQuiz, findQuiz } from 'quiz/api/QuizApi';
 import { setEmbed } from 'lecture/detail/store/EmbedStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
@@ -160,7 +160,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
     // Load video will begin playback
-    embedApi.loadVideo();//페이지 로드 시 자동 실행됩니다.
+    embedApi.loadVideo(); //페이지 로드 시 자동 실행됩니다.
   };
 
   const onPanoptoLoginShown = () => {
@@ -807,7 +807,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             interactivity: 'none',
             showtitle: 'false',
             showBrand: 'false',
-            offerviewer: 'false'
+            offerviewer: 'false',
           },
           events: {
             onIframeReady: onPanoptoIframeReady,
@@ -876,7 +876,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [getLectureStructure()]);
 
   const [quizPop, setQuizPop] = useState<boolean>(false);
-  const [quizShowTime, setQuizShowTime] = useState<number>();
+  const [quizShowTime, setQuizShowTime] = useState<number[]>();
+  const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
   const [_, lectureMedia] = useLectureMedia();
 
   const videoControll = {
@@ -886,8 +887,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   useEffect(() => {
     const matchesQuizTime: number = Math.floor(currentTime);
-    if (matchesQuizTime !== undefined && matchesQuizTime === quizShowTime) {
-      if (scroll > videoPosition) {
+    if (
+      matchesQuizTime !== undefined &&
+      quizShowTime &&
+      matchesQuizTime === quizShowTime[quizCurrentIndex]
+    ) {
+      if (scroll > videoPosition && quizShowTime.includes(matchesQuizTime)) {
         setPauseVideoSticky(true);
         setQuizPop(false);
         videoControll.stop();
@@ -903,13 +908,20 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         videoControll.stop();
       }
     }
-  }, [currentTime, scroll]);
+  }, [currentTime, scroll, quizShowTime]);
 
   useEffect(() => {
     if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
-      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds[0];
+      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
+      const quizId = quizIds?.join(',');
       const getQuizTable = async () => {
-        await findQuiz(quizIds).then(res => setQuizShowTime(res.showTime));
+        await findAllQuiz(quizId).then(res => {
+          setQuizShowTime(
+            res
+              .sort((a: any, b: any) => a > b)
+              .map((quiz: any) => quiz.showTime)
+          );
+        });
       };
       getQuizTable();
     }
@@ -920,7 +932,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setQuizPop(false);
       videoControll.play();
     }
-  }, [quizPop]);
+    if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
+      setQuizCurrentIndex(quizCurrentIndex);
+    }
+    setQuizCurrentIndex(quizCurrentIndex + 1);
+  }, [quizPop, quizCurrentIndex]);
 
   const onScrollTop = () => {
     window.scrollTo(0, 124);
@@ -952,6 +968,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           <div id="panopto-embed-player"></div>
           <VideoQuizContainer
             quizPop={quizPop}
+            quizCurrentIndex={quizCurrentIndex}
             onCompletedQuiz={onCompletedQuiz}
           />
           {pauseVideoSticky && (
@@ -1021,7 +1038,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        
+
         {/* {getLectureTranscripts() &&
           getLectureMedia() &&
           (getLectureMedia()?.mediaType == 'InternalMedia' ||
