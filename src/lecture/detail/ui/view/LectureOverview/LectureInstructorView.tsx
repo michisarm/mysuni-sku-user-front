@@ -9,7 +9,6 @@ interface LectureInstructorViewProps {
   lectureInstructor: LectureInstructor;
 }
 
-
 function Represent() {
   return <img src={REPRESENT_IMAGE} className="p-label" />;
 }
@@ -17,15 +16,14 @@ function Represent() {
 const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps> = function LectureInstructorView({
   lectureInstructor,
 }) {
-
   const [photos, setPhotos] = useState<Array<string>>([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (lectureInstructor) {
-      const userIds = lectureInstructor.instructors.map((i) => i.usid);
-      LectureApi.instance.findPhotoUrls(userIds).then((data) => {
+      const userIds = lectureInstructor.instructors.map(i => i.usid);
+      LectureApi.instance.findPhotoUrls(userIds).then(data => {
         setPhotos(data);
-      });      
+      });
     }
   }, [lectureInstructor]);
 
@@ -44,23 +42,35 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
       <div className="scrolling course-profile">
         {lectureInstructor &&
           lectureInstructor.instructors &&
-          lectureInstructor.instructors.map(({ name, company, represent, usid, employeeId, photoId }, index) => (
-            <Link className="ui profile tool-tip" to={`/expert/instructor/${usid}/Introduce`}> 
-              {represent === 1 && <Represent />}
-              <div className="pic s80">
-                {/*employeeId && employeeId != '' &&
+          lectureInstructor.instructors.map(
+            (
+              { name, company, represent, usid, employeeId, photoId },
+              index
+            ) => (
+              <Link
+                className="ui profile tool-tip"
+                to={`/expert/instructor/${usid}/Introduce`}
+              >
+                {represent === 1 && <Represent />}
+                <div className="pic s80">
+                  {/*employeeId && employeeId != '' &&
                   <img alt="프로필사진" className="ui image" src={`https://mysuni.sk.com/profile/photo/skcc/${employeeId}.jpg`} />
           */}
-                {photos && photos[index] &&
-                  <img alt="프로필사진" className="ui image" src={photos[index]} />
-                }
-              </div>
-              <i>
-                <span className="tip-name">{name}</span>
-                <a className="tip-id">{company}</a>
-              </i>
-            </Link>
-          ))}
+                  {photos && photos[index] && (
+                    <img
+                      alt="프로필사진"
+                      className="ui image"
+                      src={photos[index]}
+                    />
+                  )}
+                </div>
+                <i>
+                  <span className="tip-name">{name}</span>
+                  <a className="tip-id">{company}</a>
+                </i>
+              </Link>
+            )
+          )}
       </div>
     </>
   );
