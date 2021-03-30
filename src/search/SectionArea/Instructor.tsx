@@ -3,6 +3,7 @@ import { Icon, Card, Segment, Button } from 'semantic-ui-react';
 import ExpertCards from '../Components/ExpertCards';
 import CommentsSort from 'search/Components/CommentsSort';
 import { useExpert } from '../Components/SearchFilter';
+import { Type, AreaType } from 'tracker/model';
 
 const Instructor: React.FC = () => {
   const [insertApi, getInsertApi] = useState<boolean>(true);
@@ -10,7 +11,11 @@ const Instructor: React.FC = () => {
 
   return (
     <Segment className="full">
-      <div className="sort-reult">
+      <div
+        className="sort-reult"
+        data-area={AreaType.SEARCH}
+        data-type={Type.CLICK}
+      >
         {/* <CommentsSort /> */}
         <div className="section">
           <div className="text01">강사({expert ? expert.length : 0})</div>

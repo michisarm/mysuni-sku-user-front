@@ -7,6 +7,7 @@ import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
 import personalCubePaths from 'personalcube/routePaths';
 import communityPaths from 'community/routePaths';
+import { Type, AreaType } from 'tracker/model';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -28,7 +29,7 @@ interface MenuViewProps {
 
 export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
   <div className="g-menu">
-    <div className="nav">
+    <div className="nav" data-area={AreaType.HEADER_GNB} data-type={Type.CLICK}>
       <NavLink
         to={myTrainingPaths.learning()}
         className="item"
@@ -87,25 +88,29 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onClick,
   onClear,
 }) => (
-    <div className="g-search">
-      <div
-        className={classNames('ui h38 search input', {
-          focus: focused,
-          write: value,
-        })}
-        style={{ display: 'block' }}
-      >
-        <input
-          type="text"
-          placeholder="Search"
-          value={value}
-          onChange={onChange}
-          onClick={onClick}
-          onBlur={onBlur}
-          onKeyPress={e => e.key === 'Enter' && onSearch()}
-        />
-        <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-        <i aria-hidden="true" className="search link icon" onClick={onSearch} />
-      </div>
+  <div
+    className="g-search"
+    data-area={AreaType.HEADER_SEARCH}
+    data-type={Type.CLICK}
+  >
+    <div
+      className={classNames('ui h38 search input', {
+        focus: focused,
+        write: value,
+      })}
+      style={{ display: 'block' }}
+    >
+      <input
+        type="text"
+        placeholder="Search"
+        value={value}
+        onChange={onChange}
+        onClick={onClick}
+        onBlur={onBlur}
+        onKeyPress={e => e.key === 'Enter' && onSearch()}
+      />
+      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
+      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
     </div>
-  );
+  </div>
+);

@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { findAllTranscript, findMedia } from '../../../api/mPersonalCubeApi';
+import { findTranscriptCount, findMedia } from '../../../api/mPersonalCubeApi';
 import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import { getTranscriptItem } from './getTranscriptItemMapFromCube';
@@ -7,6 +7,7 @@ import { setLectureTranscripts } from 'lecture/detail/store/LectureTranscriptSto
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { setLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { getMediaItem } from './getMediaItemMapFromCube';
+import { setTranscriptCount } from 'lecture/detail/store/TranscriptCountStore';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams
@@ -37,9 +38,20 @@ export async function getCubeLectureMedia(
           media.mediaContents.internalMedias[0].panoptoSessionId;
 
         //스크립트 api 조회: http://localhost:8090/api/personalCube/transcripts/0b24e458-bd52-408d-a18c-abd50023dde9/ko
-        const transcript = await findAllTranscript(panoptoSessionId, 'ko');
+        //const transcript = await findAllTranscript(panoptoSessionId, 'ko');
+        //const transcript = await findAllTranscript('3518be70-7c6e-46c9-9397-ab6c0081284c', 'ko');
         //조회 결과 viewmodel setting
-        setLectureTranscripts(await getTranscriptItem(transcript));
+        //setLectureTranscripts(await getTranscriptItem(transcript));
+
+        //스크립트 카운트 api 조회
+        const transcriptCount = await findTranscriptCount(panoptoSessionId);
+
+        // 테스트용
+        // const transcriptCount = {
+        //   transcriptCount : 54
+        // };
+
+        setTranscriptCount(transcriptCount);
       }
       setLectureMedia(await getMediaItem(media));
     }

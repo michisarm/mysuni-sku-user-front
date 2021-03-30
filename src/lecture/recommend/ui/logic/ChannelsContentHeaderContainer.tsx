@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -11,16 +10,16 @@ import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import { Type, AreaType } from 'tracker/model';
 import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand';
 import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
 import { SkProfileModel } from 'profile/model';
 
-
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService
-  skProfileService?: SkProfileService
-  collegeLectureCountService?: CollegeLectureCountService
-  channels: ChannelModel[]
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  collegeLectureCountService?: CollegeLectureCountService;
+  channels: ChannelModel[];
 }
 
 interface States {
@@ -81,12 +80,17 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
     const { member } = skProfile;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
-      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    const favoriteChannels = studySummaryFavoriteChannels.map(
+      channel =>
+        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
 
     return (
-      <ContentHeaderRecommand className="content-division">
+      <ContentHeaderRecommand
+        className="content-division"
+        dataArea={AreaType.RECOMMEND_INFO}
+        dataType={Type.CLICK}
+      >
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             image={skProfile.photoFilePath || profileImg}

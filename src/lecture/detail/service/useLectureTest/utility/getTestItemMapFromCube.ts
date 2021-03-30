@@ -17,7 +17,6 @@ import { findGradeSheet } from 'lecture/detail/api/assistantApi';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { getEssayScores } from 'lecture/detail/model/GradeSheet';
 
-
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
 // http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
@@ -51,8 +50,8 @@ async function getTestItem(examId: string) {
 
     const denizenId = patronInfo.getDenizenId() || '';
     const gradeSheet = await findGradeSheet(examId, denizenId);
-    const graderComment = gradeSheet && gradeSheet.graderComment || '';
-    const essayScores = gradeSheet && getEssayScores(gradeSheet) || [];
+    const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
+    const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
 
     const item: LectureTestItem = {
       id: examination.id,
@@ -63,6 +62,7 @@ async function getTestItem(examId: string) {
       totalPoint: examTotalPoint,
       graderComment,
       essayScores,
+      description: examPaperForm.description,
     };
     return item;
   }

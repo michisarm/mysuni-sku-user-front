@@ -17,6 +17,7 @@ import {
 } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
 import { StreamUtils } from 'xlsx/types';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Type, AreaType } from 'tracker/model';
 
 interface FieldItemViewProps {}
 
@@ -104,16 +105,12 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
             />
           </div>
         </div>
-        <div className="open-card-bottom">
-          <div className="title-area">
-            <div className="text-list">
-              <img src={managerIcon} />
-              <span>{managerName}</span>
-            </div>
-          </div>
-          <div className="right-area">
-            <span>멤버</span>
-            <span>{memberCount}</span>
+      </div>
+      <div className="open-card-bottom">
+        <div className="title-area">
+          <div className="text-list">
+            <img src={managerIcon} />
+            <span>{managerName}</span>
           </div>
         </div>
       </div>
@@ -283,7 +280,11 @@ function OpenCommunityIntroCommunityListContainer() {
           onClick={sortApproved}
         />
       </div>
-      <div className="course-detail-center community-containter padding-none">
+      <div
+        className="course-detail-center community-containter padding-none"
+        data-area={AreaType.COMMUNITY_LIST}
+        data-type={Type.CLICK}
+      >
         <div className="community-open-contants">
           {openCommunityIntro &&
             openCommunityIntro.communities.length > 0 &&

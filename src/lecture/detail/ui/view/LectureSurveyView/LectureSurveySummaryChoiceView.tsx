@@ -147,7 +147,7 @@ const LectureSurveySummaryChoiceView: React.FC<LectureSurveyItemProps> = functio
                       {choice.title}
                     </li>
                   </div>
-                  {choice.image? (
+                  {choice.image ? (
                     <div className="course-survey-list-img-selector">
                       <Image
                         style={{ display: 'inline-block' }}

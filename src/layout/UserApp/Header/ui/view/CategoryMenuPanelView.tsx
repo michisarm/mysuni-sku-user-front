@@ -12,6 +12,7 @@ import { SkProfileService } from 'profile/stores';
 import { StudySummaryModel } from 'profile/model';
 import { CollegeService } from 'college/stores';
 import classNames from 'classnames';
+import { Type, AreaType } from 'tracker/model';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -122,7 +123,7 @@ class CategoryMenuPanelView extends Component<Props> {
       ReactGA.event({
         category: 'Banner',
         action: 'Click',
-        label: `${text}-${idx&&idx}번째`,
+        label: `${text}-${idx && idx}번째`,
       });
     };
 
@@ -160,7 +161,11 @@ class CategoryMenuPanelView extends Component<Props> {
             <div className="category-channel-wrap">
               {activeCollege && (
                 <>
-                  <div className="category-title-bar">
+                  <div
+                    className="category-title-bar"
+                    data-area={AreaType.HEADER_CATEGORY}
+                    data-type={Type.CLICK}
+                  >
                     <span className="category-title">
                       {activeCollege.name} College
                       <span className="num"> ({activeCollege.totalCount})</span>
@@ -234,7 +239,11 @@ class CategoryMenuPanelView extends Component<Props> {
                   ))
                 }
               </div> */}
-                  <div className="category-body">
+                  <div
+                    className="category-body"
+                    data-area={AreaType.HEADER_CATEGORY}
+                    data-type={Type.CLICK}
+                  >
                     {Array.isArray(channels) &&
                       channels.map((channel, index) => {
                         if (index % 2 === 0) {
@@ -343,14 +352,18 @@ class CategoryMenuPanelView extends Component<Props> {
                   </div>
                   {banner.viewType === '2' && (
                     <>
-                      <div className="category-banner">
+                      <div
+                        className="category-banner"
+                        data-area={AreaType.HEADER_BANNER}
+                        data-type={Type.CLICK}
+                      >
                         {banner.collegeBannerContents[0].visible === 1 &&
                           banner.collegeBannerContents[0].useLink === 0 && (
                             <span className="banner-holder">
                               <img
                                 src={`${banner.collegeBannerContents[0].imageUrl}`}
                                 onClick={e =>
-                                  gaClickEvent(`${activeCollege.name}`,1)
+                                  gaClickEvent(`${activeCollege.name}`, 1)
                                 }
                                 alt=""
                               />
@@ -367,7 +380,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 <img
                                   src={`${banner.collegeBannerContents[0].imageUrl}`}
                                   onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`,1)
+                                    gaClickEvent(`${activeCollege.name}`, 1)
                                   }
                                   alt=""
                                 />
@@ -431,7 +444,11 @@ class CategoryMenuPanelView extends Component<Props> {
                     </>
                   )}
                   {banner.viewType === '1' && (
-                    <div className="category-banner-single">
+                    <div
+                      className="category-banner-single"
+                      data-area={AreaType.HEADER_BANNER}
+                      data-type={Type.CLICK}
+                    >
                       {banner.collegeBannerContents[0].visible === 0 && (
                         <span
                           style={{
@@ -445,7 +462,9 @@ class CategoryMenuPanelView extends Component<Props> {
                         banner.collegeBannerContents[0].useLink === 0 && (
                           <img
                             src={`${banner.collegeBannerContents[0].imageUrl}`}
-                            onClick={e => gaClickEvent(`${activeCollege.name}`, 1)}
+                            onClick={e =>
+                              gaClickEvent(`${activeCollege.name}`, 1)
+                            }
                             alt=""
                           />
                         )}

@@ -1,4 +1,3 @@
-
 export { default as DramaEntityObservableModel } from './DramaEntityObservableModel';
 export { default as IdName } from './IdName';
 export { default as IdNameCount } from './IdNameCount';
@@ -10,7 +9,7 @@ export { LangStrings } from './LangStrings';
 export { OrderedOffset } from './OrderedOffset';
 
 export { CategoryModel } from './CategoryModel';
-export { default as  SearchFilterType } from './SearchFilterType';
+export { default as SearchFilterType } from './SearchFilterType';
 export { CreatorModel } from './CreatorModel';
 export { QueryModel } from './QueryModel';
 export { NewQueryModel } from './NewQueryModel';
