@@ -26,10 +26,12 @@ import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeConten
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { setLectureState } from 'lecture/detail/store/LectureStateStore';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
+import { useLectureCourseOverview } from 'lecture/detail/service/useLectureCourseOverview/useLectureCourseOverview';
 
 function LectureCubeWebPagePage() {
   const params = useLectureRouterParams();
   const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
+  useLectureCourseOverview();
   useEffect(() => {
     if (params === undefined) {
       return;
