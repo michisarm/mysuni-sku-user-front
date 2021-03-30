@@ -25,6 +25,8 @@ class LectureTableViewModel {
   updateTime: number = 0;
   updateTimeForTest: number = 0;
   stampCount: number = 0; // 스탬프
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   // for make observable object from json data.
   constructor(lectureTableView?: LectureTableViewModel) {
@@ -65,6 +67,12 @@ class LectureTableViewModel {
     if (this.learningState) {
       return LearningStateName[LearningState[this.learningState]];
     }
+  }
+
+  @computed get displayProgressRate(): string {
+    return this.isCardType()
+      ? '-'
+      : `${this.passedLearningCount}/${this.totalLearningCount}`;
   }
 
   /* functions */
