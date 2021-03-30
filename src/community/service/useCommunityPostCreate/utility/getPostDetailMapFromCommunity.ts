@@ -32,7 +32,7 @@ export async function getPostDetailMapFromCommunity(
         profileImg: '',
         creatorCompanyName: '',
         content: '',
-        relatedUrlList: {title: '', url: ''}
+        relatedUrlList: [],
 
     }
     if (postId !== undefined) {
@@ -93,7 +93,7 @@ export async function getPostDetailWithReadMapFromCommunity(
         profileImg: '',
         creatorCompanyName: '',
         content: '',
-        relatedUrlList: {title: '', url: ''}
+        relatedUrlList: [],
 
     }
     if (postId !== undefined) {

@@ -33,7 +33,7 @@ export async function getCommunityPost(
       introduce: '',
       profileImg: '',
       content: '',
-      relatedUrlList: {title: '', url: ''}
+      relatedUrlList: [],
       
 
   }
