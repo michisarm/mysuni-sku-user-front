@@ -6,7 +6,10 @@ import { SkProfileService } from '../../../../profile/stores';
 import LectureCommentsContainer from '../../../category/ui/logic/LectureCommentsContainer';
 import { updateLectureReview } from '../../service/useLectuerCubeOverview/utility/updateLectureReview';
 import { useLectureComment } from '../../service/useLectureComments';
-import { setLectureComment } from '../../store/LectureOverviewStore';
+import {
+  setLectureComment,
+  getInMyLectureCdo,
+} from '../../store/LectureOverviewStore';
 
 function LectureCommentContainer() {
   const [lectureComment] = useLectureComment();
@@ -15,6 +18,7 @@ function LectureCommentContainer() {
       member: { company, department, email, name },
     },
   } = SkProfileService.instance;
+
   useEffect(() => {
     if (lectureComment === undefined) {
       return;
@@ -34,6 +38,13 @@ function LectureCommentContainer() {
       }
     });
   }, [ReviewService.instance.rating]);
+
+  const currentUrl = window.location.href;
+  const url = currentUrl.split('/lecture');
+  const lecture = getInMyLectureCdo();
+  const creator = lecture?.servicePatronKeyString;
+  console.log(url);
+
   return (
     <>
       {lectureComment && (
@@ -44,6 +55,8 @@ function LectureCommentContainer() {
           departmentName={department}
           email={email}
           name={name}
+          url={url[1]}
+          creator={creator}
         />
       )}
     </>

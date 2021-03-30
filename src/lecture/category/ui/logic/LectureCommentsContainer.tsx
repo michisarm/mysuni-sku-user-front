@@ -10,6 +10,8 @@ interface Props {
   email: string;
   companyName: string;
   departmentName: string;
+  creator?: string;
+  url?: string;
 }
 
 interface State {}
@@ -27,7 +29,13 @@ class LectureCommentsContainer extends Component<Props, State> {
       email,
       companyName,
       departmentName,
+      creator,
+      url,
     } = this.props;
+
+    console.log(url);
+
+    console.log(creator);
     return (
       <div className="contents comment">
         <Review feedbackId={reviewFeedbackId} />
@@ -38,6 +46,8 @@ class LectureCommentsContainer extends Component<Props, State> {
           email={email}
           companyName={companyName}
           departmentName={departmentName}
+          creator={creator}
+          url={url}
         />
       </div>
     );
