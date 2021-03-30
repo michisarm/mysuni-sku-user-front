@@ -84,7 +84,7 @@ const TableHeaderColumn = {
     { key: 4, text: 'Level' },
     { key: 5, text: '학습시간', icon: true },
     { key: 6, text: '스탬프', icon: true },
-    { key: 7, text: '취소/미일수일', icon: true },
+    { key: 7, text: '취소/미이수일', icon: true },
   ],
   EarnedStampCount: [
     { key: 0, text: 'No' },
