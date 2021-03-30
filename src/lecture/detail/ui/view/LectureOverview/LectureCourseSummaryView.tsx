@@ -12,6 +12,7 @@ import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
 import StampCompleted from '../../../../../style/media/stamp-completed.svg';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
+import { PostService } from 'board/stores';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -123,6 +124,17 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
     qnaUrl += '/course/' + lectureStructure.course.coursePlanId;
   }
 
+
+  useEffect(() => {
+
+    const postService = PostService.instance;
+
+    postService.post.alarmInfo.url = 'https://int.mysuni.sk.com/login?contentUrl=/suni-main/lecture/cineroom/ne1-m2-c2/college/' + window.location.href.split("college/")[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+
+  }, [lectureSummary]);
+
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -180,13 +192,13 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
         </div>
         <div className="right-area">
           {lectureLearningState &&
-          lectureLearningState.learningState === 'Passed' ? (
-            <img src={StampCompleted} />
-          ) : (
-            lectureSummary.iconBox !== undefined && (
-              <img src={lectureSummary.iconBox.baseUrl} />
-            )
-          )}
+            lectureLearningState.learningState === 'Passed' ? (
+              <img src={StampCompleted} />
+            ) : (
+              lectureSummary.iconBox !== undefined && (
+                <img src={lectureSummary.iconBox.baseUrl} />
+              )
+            )}
         </div>
       </div>
       <div className="contents-header-side">
