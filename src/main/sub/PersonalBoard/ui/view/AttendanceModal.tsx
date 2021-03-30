@@ -85,15 +85,17 @@ const AttendanceModal:React.FC<Props> = ({
     console.log('암호화 메일', EncryptEmail)
     console.log('출석 count', AttendCountItem.length)
     const frm = document.createElement('form')
-    frm.setAttribute('id','1234')
-    frm.setAttribute('action','http://www.naver.com')
-    frm.setAttribute('method','post')
-    frm.setAttribute('target','1234')
+
     document.body.appendChild(frm)
+
+    frm.setAttribute('p',EncryptEmail)
+    frm.setAttribute('action','https://www.mysuniluckydrawevent.com/auth')
+    frm.setAttribute('method','post')
+    frm.setAttribute('target','luckydraw')
 
     window.open(
       'about:blank',
-      '1234',
+      'luckydraw',
       'width=300, height=300'
     )
 

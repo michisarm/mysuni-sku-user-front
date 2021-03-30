@@ -359,6 +359,16 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       setBadgeLearningTimeItem({ ...badgeLearningTime, mylearningTimeHour: accrueHour, mylearningTimeMinute: accrueMinute})
     }
 
+    const eventBannerVisible = () => {
+      const afterFlag = moment('YYYY-MM-DD').isAfter(moment().format('2021-04-04'), 'day')
+      const beforeFlag = moment('YYYY-MM-DD').isBefore(moment().format('2021-05-01'), 'day')
+      if(afterFlag && beforeFlag) {
+        return true
+      } else {
+        return false
+      }
+    }
+
     const style1 = {
       borderRadius: "0.375rem",
       textAlign: "center",
@@ -457,7 +467,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
           </div>
           <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
           {
-            !moment('2021-04-04').isAfter(moment().format('YYYY-MM-DD'), 'day') && (
+            eventBannerVisible() && (
               <div className="main-event-btn">
                 <button type="button" onClick={this.handlePopup}/>
               </div>
