@@ -142,3 +142,10 @@ Content-Type: application/json;charset=UTF-8
     ]
 }
 
+### 코스: 토론: 메뉴 조회
+@feedbackId = 50955be7-02df-48dc-a1b0-1c407e38ea02
+GET http://{{host}}/feedback/{{feedbackId}}/discussion
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
