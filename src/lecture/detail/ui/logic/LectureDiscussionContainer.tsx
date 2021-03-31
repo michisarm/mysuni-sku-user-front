@@ -7,6 +7,11 @@ import { findSkProfileByAudienceId } from '../../api/profileApi';
 import { useLectureDiscussion } from '../../service/useLectureDiscussion';
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { getLectureDiscussion,setLectureDiscussion } from '../../store/LectureDiscussionStore';
+import defaultImage from '../../../../style/media/img-profile-80-px.png';
+import { InMyLectureService } from 'myTraining/stores';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import LectureFeedbackContent from '../../viewModel/LectureFeedbackContent';
 import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
@@ -17,8 +22,23 @@ const str = " 2019년 지구상에 새로 등장한 신종 바이러스 감염�
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
-function LectureDiscussionContainer() {
+interface Props extends RouteComponentProps<RouteParams> {
+  inMyLectureService?: InMyLectureService;
+}
+
+interface RouteParams {
+  coursePlanId?: string;
+}
+
+function LectureDiscussionContainer (props: Props) {
   const [lectureDiscussion] = useLectureDiscussion();
+
+  const { match } = props;
+
+  const { coursePlanId } = match.params;
+
+  console.log('coursePlanId', coursePlanId)
+  
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -272,6 +292,8 @@ function LectureDiscussionContainer() {
             email={email}
             companyName={company}
             departmentName={department}
+            coursePlanId={coursePlanId}
+            menuType="discussion"
           />
         </>
       )}
@@ -279,24 +301,8 @@ function LectureDiscussionContainer() {
   );
 }
 
-export default LectureDiscussionContainer;
-
-const style: React.CSSProperties = {
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  width: '38rem',
-  whiteSpace: 'nowrap',
-  display: 'inline-block',
-  lineHeight: '1.42',
-  textAlign: 'left',
-  // whiteSpace: 'pre-wrap',
-  wordWrap: 'break-word',
-} 
-
-    // line-height: 1.42;
-    // height: 100%;
-    // outline: none;
-    // overflow-y: auto;
-    // padding: 12px 15px;
-    // tab-size: 4;
-    // -moz-tab-size: 4;
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.inMyLectureService',
+  )
+)(withRouter(observer(LectureDiscussionContainer)));
