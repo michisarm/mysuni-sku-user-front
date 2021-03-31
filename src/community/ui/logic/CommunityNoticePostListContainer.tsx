@@ -59,13 +59,11 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     }
     totalPages();
     const denizenId = patronInfo.getDenizenId();
-
     const menuData = findMenu(communityId, menuId);
     menuData.then(result => {
       setMenuName(result.name);
       setMenuType(result.type);
     });
-
     //managerId 가져와서 현재 로그인한 계정과 비교
     if (
       getCommunityHome() &&

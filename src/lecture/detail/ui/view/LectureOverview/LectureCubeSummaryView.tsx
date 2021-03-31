@@ -16,6 +16,8 @@ import LectureClassroom, {
   Classroom,
 } from '../../../viewModel/LectureClassroom';
 import moment from 'moment';
+import LectureCourseSummary from 'lecture/detail/viewModel/LectureOverview/LectureCourseSummary';
+import { PostService } from 'board/stores';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -25,6 +27,7 @@ function numberWithCommas(x: number) {
 }
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
+  lectureCourseSummary?: LectureCourseSummary;
   lectureInstructor?: LectureInstructor;
   lectureReview?: LectureReview;
   lectureClassroom?: LectureClassroom;
@@ -169,6 +172,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   lectureInstructor,
   lectureReview,
   lectureClassroom,
+  lectureCourseSummary,
 }) {
   let difficultyLevelIcon = 'basic';
   switch (lectureSummary.difficultyLevel) {
@@ -205,6 +209,16 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
       }, 1000);
     }
   }, []);
+
+  useEffect(() => {
+    const postService = PostService.instance;
+
+    postService.post.alarmInfo.url =
+      'https://int.mysuni.sk.com/login?contentUrl=/suni-main/lecture/cineroom/ne1-m2-c2/college/' +
+      window.location.href.split('college/')[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+  }, [lectureSummary]);
 
   return (
     <div className="course-info-header">
@@ -358,6 +372,17 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         </div>
         <div className="right-area">
           <div className="header-right-link">
+            {lectureCourseSummary?.hasCommunity && (
+              <Link
+                to={`/community/${lectureCourseSummary.communityId}`}
+                target="_blank"
+              >
+                <span className="communityText">
+                  <Icon className="communityLink" />
+                  커뮤니티로 이동
+                </span>
+              </Link>
+            )}
             <a onClick={toggleCubeBookmark}>
               <span>
                 <Icon

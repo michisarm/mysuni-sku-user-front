@@ -67,6 +67,7 @@ class NEWLectureService {
     //
     // 신규과정 학습정보 가져오기
     const response = await this.arrangeApi.findNewLectures(lectureFilterRdo);
+    console.log(response);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     if (fromMain) {

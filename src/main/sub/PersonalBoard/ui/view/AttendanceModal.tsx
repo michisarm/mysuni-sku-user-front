@@ -84,17 +84,25 @@ const AttendanceModal:React.FC<Props> = ({
   const lotteryTicketModalOpen = useCallback(() => {
     console.log('암호화 메일', EncryptEmail)
     console.log('출석 count', AttendCountItem.length)
+
     const frm = document.createElement('form')
-    frm.setAttribute('id','1234')
-    frm.setAttribute('action','http://www.naver.com')
-    frm.setAttribute('method','post')
-    frm.setAttribute('target','1234')
+    const input = document.createElement('input')
+    input.type = "hidden"
+    input.name = 'q'
+    input.value = EncryptEmail
+
+    frm.appendChild(input)
     document.body.appendChild(frm)
+
+    frm.setAttribute('action',`https://www.mysuniluckydrawevent.com/auth`)
+    frm.setAttribute('method','post')
+    frm.setAttribute('target','luckydraw')
 
     window.open(
       'about:blank',
-      '1234',
-      'width=300, height=300'
+      'luckydraw',
+      //사이즈 무시하고 새창으로 열어달라고 요청옴
+      // 'width=300, height=300'
     )
 
     frm.submit()
@@ -107,12 +115,12 @@ const AttendanceModal:React.FC<Props> = ({
         <Modal.Header>
           <div className="imgbox">
             <span>
-              <img src={`${PUBLIC_URL}/images/all/event_txt1.png`} alt="2021.04.01~04.30" />
+              <img src={`${PUBLIC_URL}/images/all/event_txt1.svg`} alt="2021.04.05~04.30" />
             </span>
             <span>
-              <img src={`${PUBLIC_URL}/images/all/event_txt2.png`} alt="mySUNI 출석왕 도전!"/>
+              <img src={`${PUBLIC_URL}/images/all/event_txt2.svg`} alt="mySUNI 출석왕 도전!"/>
             </span>
-            <img src={`${PUBLIC_URL}/images/all/event_txt3.png`} alt="하루에 딱 한 번, 출석도장 꾹하기" />
+            <img src={`${PUBLIC_URL}/images/all/event_txt3.svg`} alt="하루에 딱 한 번, 출석도장 꾹하기" />
           </div>
         </Modal.Header>
         <Modal.Content className="admin_popup_add">
@@ -161,7 +169,6 @@ const AttendanceModal:React.FC<Props> = ({
           </div>
         </Modal.Content>
       </Modal>
-      )
     </>
   )
 }

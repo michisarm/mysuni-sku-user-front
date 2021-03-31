@@ -17,6 +17,7 @@ import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { findGradeSheet } from 'lecture/detail/api/assistantApi';
 import { getEssayScores } from 'lecture/detail/model/GradeSheet';
 
+import Description from 'personalcube/shared/OverviewField/sub/Description';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -34,7 +35,7 @@ function getCoursePlanComplexByParams(
   return findCoursePlanContents(contentId!, lectureId!);
 }
 
-async function getTestItem(examId: string) {
+async function getTestItem(examId: string, isStudent?: boolean) {
   if (examId !== '' && examId !== null) {
     let examination = null;
     {
@@ -53,9 +54,12 @@ async function getTestItem(examId: string) {
     }
 
     const denizenId = patronInfo.getDenizenId() || '';
-    const gradeSheet = await findGradeSheet(examId, denizenId);
-    const graderComment = gradeSheet && gradeSheet.graderComment || '';
-    const essayScores = gradeSheet && getEssayScores(gradeSheet) || [];
+    let gradeSheet;
+    if (isStudent) {
+      gradeSheet = await findGradeSheet(examId, denizenId);
+    }
+    const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
+    const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
 
     const item: LectureTestItem = {
       id: examination.id,
@@ -66,6 +70,7 @@ async function getTestItem(examId: string) {
       totalPoint: examTotalPoint,
       graderComment,
       essayScores,
+      description: examPaperForm.description,
     };
     return item;
   }
@@ -115,7 +120,10 @@ export async function getTestItemMapFromCourse(
   }
 
   if (examId !== undefined && examId !== null && examId !== '') {
-    const testItem = await getTestItem(examId);
+    const testItem = await getTestItem(
+      examId,
+      studentInfo?.own?.learningState !== 'Progress'
+    );
     if (testItem !== undefined) {
       setLectureTestItem(testItem);
     }

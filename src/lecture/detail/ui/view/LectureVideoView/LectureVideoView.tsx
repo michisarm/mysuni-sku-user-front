@@ -56,6 +56,12 @@ import {
   getActiveCourseStructureItem,
   getActiveProgramStructureItem,
 } from '../../../service/useLectureStructure/useLectureStructure';
+import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
+import { LectureMedia } from 'lecture/detail/viewModel/LectureMedia';
+import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
+import { findAllQuiz, findQuiz } from 'quiz/api/QuizApi';
+import { setEmbed } from 'lecture/detail/store/EmbedStore';
+import QuizTableList from 'quiz/model/QuizTableList';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -123,6 +129,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [panoptoState, setPanoptoState] = useState<number>(0);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
+  const [pauseVideoSticky, setPauseVideoSticky] = useState<boolean>(false);
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -140,11 +147,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   const [embedApi, setEmbedApi] = useState<any | undefined>({
     pauseVideo: () => {},
+    playVideo: () => {},
     seekTo: (index: number) => {},
     getCurrentTime: () => {},
     getDuration: () => {},
     currentPosition: () => {},
     getPlaybackRate: () => {},
+    loadVideo: () => {},
   });
 
   const [displayTranscript, setDisplayTranscript] = useState<boolean>(false);
@@ -152,7 +161,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
     // Load video will begin playback
-    //embedApi.loadVideo();//페이지 로드 시 자동 실행됩니다.
+    embedApi.loadVideo(); //페이지 로드 시 자동 실행됩니다.
   };
 
   const onPanoptoLoginShown = () => {
@@ -500,6 +509,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setIsActive(false);
       setNextContentsView(false);
       setEmbedApi('');
+      setEmbed('');
       setLectureConfirmProgress();
     };
   }, []);
@@ -808,6 +818,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
+        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -865,6 +876,84 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     setCubeName(getLectureStructure()?.cube?.name);
   }, [getLectureStructure()]);
 
+  const [quizPop, setQuizPop] = useState<boolean>(false);
+  const [quizShowTime, setQuizShowTime] = useState<number[]>();
+  const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
+  const [_, lectureMedia] = useLectureMedia();
+
+  const videoControll = {
+    play: () => embedApi.playVideo(),
+    stop: () => embedApi.pauseVideo(),
+  };
+
+  // useEffect(() => {
+  //   const matchesQuizTime: number = Math.floor(currentTime);
+  //   if (
+  //     matchesQuizTime !== undefined &&
+  //     quizShowTime &&
+  //     matchesQuizTime === quizShowTime[quizCurrentIndex]
+  //   ) {
+  //     if (scroll > videoPosition && quizShowTime.includes(matchesQuizTime)) {
+  //       setPauseVideoSticky(true);
+  //       setQuizPop(false);
+  //       videoControll.stop();
+  //       reactAlert({
+  //         title: '영상이 중지됐습니다.',
+  //         message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
+  //         onClose: () => onScrollTop(),
+  //       });
+  //     } else {
+  //       setPauseVideoSticky(false);
+  //       closeFullScreen();
+  //       setQuizPop(true);
+  //       videoControll.stop();
+  //     }
+  //   }
+  // }, [currentTime, scroll, quizShowTime]);
+
+  // useEffect(() => {
+  //   if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
+  //     const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
+  //     const quizId = quizIds?.join(',');
+  //     const getQuizTable = async () => {
+  //       await findAllQuiz(quizId).then(res => {
+  //         setQuizShowTime(
+  //           res
+  //             .sort(
+  //               (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
+  //             )
+  //             .map((quiz: QuizTableList) => quiz.showTime)
+  //         );
+  //       });
+  //     };
+  //     getQuizTable();
+  //   }
+  // }, [lectureMedia]);
+
+  // const onCompletedQuiz = useCallback(() => {
+  //   if (quizPop) {
+  //     setQuizPop(false);
+  //     videoControll.play();
+  //   }
+  //   if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
+  //     setQuizCurrentIndex(quizCurrentIndex);
+  //   }
+  //   setQuizCurrentIndex(quizCurrentIndex + 1);
+  // }, [quizPop, quizCurrentIndex]);
+
+  // const onScrollTop = () => {
+  //   window.scrollTo(0, 124);
+  // };
+
+  // const closeFullScreen = () => {
+  //   if (document.fullscreenElement !== null) {
+  //     document.exitFullscreen();
+  //     window.scrollTo(0, 124);
+  //   } else {
+  //     return;
+  //   }
+  // };
+
   return (
     <div
       className={
@@ -880,6 +969,18 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       <div className="lms-video-sticky">
         <div className="video-container">
           <div id="panopto-embed-player"></div>
+          {/* <VideoQuizContainer
+            quizPop={quizPop}
+            quizCurrentIndex={quizCurrentIndex}
+            onCompletedQuiz={onCompletedQuiz}
+          />
+          {pauseVideoSticky && (
+            <div className="video-overlay-small art">
+              <button onClick={onScrollTop} type="button">
+                <span className="copy">퀴즈풀고 이어보기</span>
+              </button>
+            </div>
+          )} */}
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
           {nextContentsView &&
             // !isActive &&
@@ -940,7 +1041,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {getLectureTranscripts() &&
+
+        {/* {getLectureTranscripts() &&
           getLectureMedia() &&
           (getLectureMedia()?.mediaType == 'InternalMedia' ||
             getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
@@ -1008,7 +1110,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             View Transcript
             <i aria-hidden="true" className="icon icon morelink" />
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import PostConfigModel from './PostConfigModel';
 import PostCdoModel from './PostCdoModel';
 import OpenState from './OpenState';
 import WriterModel from './WriterModel';
+import AlarmInfoModel from './AlarmInfoModel';
 
 
 class PostModel implements DomainEntity {
@@ -29,10 +30,12 @@ class PostModel implements DomainEntity {
   deleted: boolean = false;
   answered: boolean = false;
   answeredAt: string = '';
-  answerUpdatedAt: string  = '';
+  answerUpdatedAt: string = '';
   openState: OpenState = OpenState.Created;
   answer: IdName = new IdName();
   period: DatePeriod = new DatePeriod();
+  alarmInfo: AlarmInfoModel = new AlarmInfoModel();
+
 
   commentFeedbackId: string = '';
 
@@ -44,14 +47,15 @@ class PostModel implements DomainEntity {
       const config = post.config && new PostConfigModel(post.config) || this.config;
       const answer = post.answer && new IdName(post.answer) || this.answer;
       const period = post.period && new DatePeriod(post.period) || this.period;
+      const alarmInfo = post.alarmInfo && new AlarmInfoModel(post.alarmInfo) || this.alarmInfo;
 
-      Object.assign(this, { ...post, writer, category, contents, config, answer, period });
+      Object.assign(this, { ...post, writer, category, contents, config, answer, period, alarmInfo });
 
       this.openState = post.openState || post.openState;
     }
   }
 
-  static isBlank(post: PostModel) : string {
+  static isBlank(post: PostModel): string {
     if (!post.title) return '제목';
     if (!post.category.id) return '문의유형';
     if (!post.contents || !post.contents.contents) return '내용';
@@ -67,6 +71,7 @@ class PostModel implements DomainEntity {
       contents: post.contents && post.contents,
       config: post.config && post.config,
       category: post.category && post.category,
+      alarmInfo: post.alarmInfo && post.alarmInfo,
     };
   }
 
@@ -130,7 +135,8 @@ decorate(PostModel, {
   openState: observable,
   answer: observable,
   period: observable,
-  commentFeedbackId: observable
+  commentFeedbackId: observable,
+  alarmInfo: observable
 });
 
 export default PostModel;

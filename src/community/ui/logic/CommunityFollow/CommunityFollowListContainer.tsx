@@ -115,7 +115,7 @@ const CommunityFollowListContainer: React.FC = () => {
               </>
             )}
           </div>
-          <div className="more-comments community-side">
+          {/* <div className="more-comments community-side">
             {communityFollowList.communitiesTotalCount >
               communityFollowList.communitiesOffset && (
               <Button
@@ -130,12 +130,7 @@ const CommunityFollowListContainer: React.FC = () => {
               communityFollowList.communitiesOffset && (
               <Button icon className="moreview" style={{ cursor: 'default' }} />
             )}
-            {/* <div onClick={addList}>
-              <Button icon className="ui icon button left moreview">
-                <Icon className="moreview" /> list more
-              </Button>
-            </div> */}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

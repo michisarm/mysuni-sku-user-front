@@ -17,7 +17,6 @@ export function requestFollowersModal() {
       setFollowersModal({
         ...followMadalIntro,
         followers: [],
-        followings: [],
       });
     }
     else {
@@ -42,7 +41,6 @@ export function requestFollowingsModal() {
     if (lists === undefined) {
       setFollowingsModal({
         ...followMadalIntro,
-        followers: [],
         followings: [],
       });
     }
