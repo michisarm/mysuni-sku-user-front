@@ -91,6 +91,7 @@ function LectureDiscussionContainer (props: Props) {
             companyName={company}
             departmentName={department}
             coursePlanId={coursePlanId}
+            menuType="discussion"
           />
         </>
       )}
