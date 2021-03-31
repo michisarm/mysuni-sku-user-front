@@ -134,7 +134,9 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       photoFilePath =
         member &&
         member.photoFilename &&
-        `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${member.photoFilename}`;
+        `${
+          process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL
+        }/${member.companyCode.toLowerCase()}/${member.photoFilename}`;
     } else if (protoType === '1') {
       //depot 서비스의 파일 업로드 API이용해서 업로드 호출후 반환된 이미지 base64 문자열을 그대로 보여줌.(profile 재조회 안함.)
 
