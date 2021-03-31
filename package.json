@@ -22,7 +22,7 @@
     "@babel/polyfill": "7.0.0",
     "@nara.drama/approval": "0.3.9-2",
     "@nara.drama/depot": "1.4.1",
-    "@nara.drama/feedback": "0.3.23",
+    "@nara.drama/feedback": "0.3.32",
     "@nara.platform/accent": "0.2.0",
     "@nara.platform/dock": "0.1.4",
     "@sku/chart": "0.0.1",
