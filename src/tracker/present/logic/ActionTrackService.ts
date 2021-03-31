@@ -1,10 +1,12 @@
 // import StudyActionType from 'shared/model/StudyActionType';
-import moment from 'moment';
 import { trackView } from 'tracker/present/apiclient';
-import { findCoursePlan } from 'lecture/detail/api';
-import { findPersonalCube } from 'personalcube/personalcube/present/apiclient/PersonalCubeApi';
-import { findCollege } from 'college/present/apiclient/CollegeApi';
-import { findChannel } from 'college/present/apiclient/ChannelApi';
+import {
+  getPathValue,
+  getServiceType,
+  getPathKey,
+  getPathName,
+  setResultName,
+} from 'tracker/present/logic/common';
 import {
   ActionTrackParam,
   ViewContextModel,
@@ -12,129 +14,8 @@ import {
   FieldType,
   Field,
 } from 'tracker/model';
-import { LectureServiceType } from 'lecture/model';
-import { lsTest } from 'ucomp-tracker-react/utils';
 
-const FIELD_STORAGE_KEY = '_mysuni_field';
-
-const getServiceType = (path: string) => {
-  let serviceType = null;
-  if (path.includes('/Course/')) {
-    serviceType = LectureServiceType.Course.toUpperCase();
-  } else if (path.includes('/Program/')) {
-    serviceType = LectureServiceType.Program.toUpperCase();
-  } else if (path.includes('/lecture-card/')) {
-    serviceType = LectureServiceType.Card.toUpperCase();
-  }
-  return serviceType;
-};
-
-const getPathValue = (
-  path: string,
-  param: string,
-  type: FieldType
-): Field | null => {
-  if (!path.includes('/' + param + '/')) {
-    return null;
-  }
-  const reg = new RegExp('/' + param + '/([^/]+)(/|$)');
-  const matches = reg.exec(path);
-  if (matches && matches.length) {
-    return { type, id: matches[1] };
-  } else {
-    return null;
-  }
-};
-
-const getPathKey = (path: string, param: string) => {
-  if (!path.includes('/' + param)) {
-    return null;
-  }
-  const reg = new RegExp('/(' + param + '.*?)(/|$)');
-  const matches = reg.exec(path);
-  if (matches && matches.length) {
-    return matches[1];
-  } else {
-    return null;
-  }
-};
-
-// localstorage cached 처리
-const getFieldName = async (id: string, type: string) => {
-  let name;
-  let field;
-  if (lsTest()) {
-    const cachedFiled = localStorage.getItem(FIELD_STORAGE_KEY);
-    if (cachedFiled) {
-      field = JSON.parse(cachedFiled);
-      if (field && field[type]) {
-        name = field[type][id];
-      }
-    }
-  }
-  if (!name) {
-    if (type === FieldType.Course) {
-      const coursePlan = await findCoursePlan(id);
-      name = coursePlan?.name;
-    } else if (type === FieldType.Cube) {
-      const cube = await findPersonalCube(id);
-      name = cube?.name;
-    } else if (type === FieldType.College) {
-      const college = await findCollege(id);
-      name = college?.name;
-    } else if (type === FieldType.Channel) {
-      const channel = await findChannel(id);
-      name = channel?.name;
-    }
-    if (lsTest() && name) {
-      let tempObj;
-      if (field) {
-        tempObj = field[type];
-        if (tempObj) {
-          // 1달 단위 or 100개 단위 refresh
-          if (
-            moment(field.createDate).diff(moment(), 'months') < 0 ||
-            Object.keys(field[type]).length > 100
-          ) {
-            tempObj = {
-              [type]: { [id]: name },
-              createDate: moment().toISOString(true),
-            };
-          } else {
-            // add
-            field[type][id] = name;
-            tempObj = { ...field, ...{ [type]: field[type] } };
-          }
-        } else {
-          // type new
-          tempObj = { ...field, ...{ [type]: { [id]: name } } };
-        }
-      } else {
-        // new
-        tempObj = {
-          [type]: { [id]: name },
-          createDate: moment().toISOString(true),
-        };
-      }
-      localStorage.setItem(FIELD_STORAGE_KEY, JSON.stringify(tempObj));
-    }
-  }
-  return name;
-};
-
-const setResultName = async (field: Field) => {
-  const result: Field = {
-    type: field.type,
-    id: field.id,
-  };
-  const name = await getFieldName(field.id, field.type);
-  if (name) {
-    result.name = name;
-  }
-  return result;
-};
-
-export function actionTrackView({
+export async function actionTrackView({
   email,
   path,
   pathName,
@@ -147,20 +28,23 @@ export function actionTrackView({
   areaId,
   target,
 }: ActionTrackParam) {
-  /**
-   * TODO
-   * serviceType : path
-   * pathName/refererName : path
-   */
+  // search setting
+  search = search ? decodeURI(search) : '';
+  refererSearch = refererSearch ? decodeURI(refererSearch) : '';
+
+  // pathname setting
+  pathName = path && !pathName ? await getPathName(path, search) : pathName;
+  refererName =
+    referer && !refererName
+      ? await getPathName(referer, refererSearch)
+      : refererName;
+
   // field name setting
   const fields = [];
   fields.push(getPathValue(path, 'college', FieldType.College));
   fields.push(getPathValue(path, 'channel', FieldType.Channel));
   fields.push(getPathValue(path, 'course-plan', FieldType.Course));
   fields.push(getPathValue(path, 'cube', FieldType.Cube));
-
-  search = search ? decodeURI(search) : '';
-  refererSearch = refererSearch ? decodeURI(refererSearch) : '';
 
   const promises: any[] = [];
   fields
