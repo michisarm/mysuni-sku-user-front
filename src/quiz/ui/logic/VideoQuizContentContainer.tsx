@@ -339,6 +339,7 @@ const VideoQuizContentContainer = ({
           </div>
           <div className="quiz-content-wrap quiz-center-box">
             <img
+              style={{ maxWidth: '100%' }}
               src={
                 questionData[currentIndex].alertMessage.img
                   ? `/${questionData[currentIndex].alertMessage.img}`
@@ -381,6 +382,7 @@ const VideoQuizContentContainer = ({
           </div>
           <div className="quiz-content-wrap quiz-center-box">
             <img
+              style={{ maxWidth: '100%' }}
               src={
                 resultAlertMessage?.img
                   ? `/${resultAlertMessage?.img}`
@@ -432,7 +434,10 @@ const VideoQuizContentContainer = ({
                     }
                     className="quiz-preview-img"
                   >
-                    <img src={`/${questionData[currentIndex].img}`} />
+                    <img
+                      style={{ maxWidth: '100%' }}
+                      src={`/${questionData[currentIndex].img}`}
+                    />
                   </button>
                 )}
                 <div
@@ -466,6 +471,7 @@ const VideoQuizContentContainer = ({
                         >
                           <span className="course-survey-list-btnImg">
                             <img
+                              style={{ maxWidth: '100%' }}
                               src={
                                 myAnswer?.includes((index + 1).toString()) ===
                                 true
@@ -549,7 +555,10 @@ const VideoQuizContentContainer = ({
                               }
                               className="quiz-preview-img"
                             >
-                              <img src={`/${row.img}`} />
+                              <img
+                                style={{ maxWidth: '100%' }}
+                                src={`/${row.img}`}
+                              />
                             </button>
                           )}
                         </li>
@@ -596,7 +605,10 @@ const VideoQuizContentContainer = ({
                     }
                     className="quiz-preview-img"
                   >
-                    <img src={`/${questionData[currentIndex].img}`} />
+                    <img
+                      style={{ maxWidth: '100%' }}
+                      src={`/${questionData[currentIndex].img}`}
+                    />
                   </button>
                 )}
                 <div
@@ -625,10 +637,12 @@ const VideoQuizContentContainer = ({
                     ))
                   : null}
                 <div className="more-comments">
-                  <Button onClick={onLoadMore} icon className="left moreview">
-                    <Icon className="moreview" />
-                    list more
-                  </Button>
+                  {resultData && resultData?.totalCount > 10 && (
+                    <Button onClick={onLoadMore} icon className="left moreview">
+                      <Icon className="moreview" />
+                      list more
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

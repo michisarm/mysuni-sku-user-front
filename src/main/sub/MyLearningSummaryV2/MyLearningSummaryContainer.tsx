@@ -362,10 +362,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const eventBannerVisible = () => {
       const afterFlag = moment('YYYY-MM-DD').isAfter(moment().format('2021-04-04'), 'day')
       const beforeFlag = moment('YYYY-MM-DD').isBefore(moment().format('2021-05-01'), 'day')
-      //테스트 4월 1일 날짜만 예외로 오픈되도록
-      if(moment().format('YYYY-MM-DD') === '2021-03-31') {
-        return true
-      }
+
       if(afterFlag && beforeFlag) {
         return true
       } else {
