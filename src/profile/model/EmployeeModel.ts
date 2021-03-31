@@ -101,7 +101,9 @@ class EmployeeModel extends MemberModel {
     if (!this.photoFilename || !this.companyCode) {
       return undefined;
     } else {
-      return `/profile/photo/${this.photoFilename}`;
+      return `/profile/photo/${this.companyCode.toLowerCase()}/${
+        this.photoFilename
+      }`;
     }
   }
 }
