@@ -394,7 +394,7 @@ const converToKey = (column: string): any => {
     case '학습시간':
       return 'learningTime';
     case '최근학습일':
-      return 'endDate';
+      return 'lastStudyDate';
     case '스탬프':
       return 'stampCount';
     case '등록일':
