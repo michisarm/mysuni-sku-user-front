@@ -21,6 +21,31 @@ function LectureDiscussionContainer() {
   const [lectureDiscussion] = useLectureDiscussion();
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
+  const [filesMap, setFilesMap] = useState<Map<string, any>>(
+    new Map<string, any>()
+  );
+  const originArr: string[] = [];
+  let origin: string = '';
+  
+  useEffect(() => {
+    getFileIds();
+  },[lectureFeedbackContent])
+
+  const getFileIds = useCallback(() => {
+    const referenceFileBoxId = lectureFeedbackContent && lectureFeedbackContent.depotId;
+    // const referenceFileBoxId = '2h1';
+    Promise.resolve().then(() => {
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+    });
+  }, [lectureFeedbackContent]);
+
+  const findFiles = useCallback((type: string, fileBoxId: string) => {
+    depot.getDepotFiles(fileBoxId).then(files => {
+      filesMap.set(type, files);
+      const newMap = new Map(filesMap.set(type, files));
+      setFilesMap(newMap);
+    });
+  }, []);
 
   useEffect(() => {
     if (lectureDiscussion === undefined) {
@@ -58,30 +83,29 @@ function LectureDiscussionContainer() {
   } = SkProfileService.instance;
 
   const zipFileDownload = useCallback((type: string) => {
-    console.log('첨부파일');
-    // if (type === 'select') {
-    //   if (origin === '') {
-    //     // console.log('선택 첨부파일 없음 err')
-    //     return;
-    //   }
-    //   if (originArr!.length === 1) {
-    //     depot.downloadDepotFile(origin);
-    //     return;
-    //   }
-    //   depot.downloadDepotFiles(originArr);
-    // } else {
-    //   if (type === 'all') {
-    //     const idArr: string[] = [];
-    //     filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-    //       idArr.push(foundedFile.id);
-    //     });
-    //     if (idArr.length === 0) {
-    //       // console.log('전체 첨부파일 없음 err');
-    //       return;
-    //     }
-    //     depot.downloadDepotFiles(idArr);
-    //   }
-    // }
+    if (type === 'select') {
+      if (origin === '') {
+        // console.log('선택 첨부파일 없음 err')
+        return;
+      }
+      if (originArr!.length === 1) {
+        depot.downloadDepotFile(origin);
+        return;
+      }
+      depot.downloadDepotFiles(originArr);
+    } else {
+      if (type === 'all') {
+        const idArr: string[] = [];
+        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+          idArr.push(foundedFile.id);
+        });
+        if (idArr.length === 0) {
+          // console.log('전체 첨부파일 없음 err');
+          return;
+        }
+        depot.downloadDepotFiles(idArr);
+      }
+    }
   }, []);
 
   const viewMore = useCallback(() => {
@@ -90,6 +114,28 @@ function LectureDiscussionContainer() {
   const hideMore = useCallback(() => {
     setMore(false);
   }, []);
+
+
+  const checkOne = useCallback((e: any, value: any, depotData: any) => {
+    if (value.checked && depotData.id) {
+      originArr.push(depotData.id);
+      origin = depotData.id;
+    }
+    if (!(value.checked && depotData.id)) {
+      originArr.splice(originArr.indexOf(depotData.id), 1);
+    }
+  }, []);
+
+  const fileDownload = (pdf: string, fileId: string) => {
+    // const PdfFile = pdf.includes('.pdf');
+    // if (PdfFile) {
+    //   setPdfOpen(!pdfOpen);
+    //   setFileId(fileId);
+    //   setFileName(pdf);
+    // } else {
+      depot.downloadDepotFile(fileId);
+    // }
+  };
 
   return (
     <>
@@ -182,14 +228,36 @@ function LectureDiscussionContainer() {
                         </button>
                       </div>
                     </div>
-                    <div className="down">
+                  {filesMap.get('reference') &&
+                    filesMap
+                      .get('reference')
+                      .map((foundedFile: DepotFileViewModel) => (
+                        <div className="down">
+                          <Checkbox
+                            className="base"
+                            label={foundedFile.name}
+                            name={'depot' + foundedFile.id}
+                            onChange={(event, value) =>
+                              checkOne(event, value, foundedFile)
+                            }
+                          />
+                          <Icon
+                            className="icon-down-type4"
+                            onClick={() =>
+                              fileDownload(foundedFile.name, foundedFile.id)
+                            }
+                          />
+                        </div>
+                      ))}
+
+                    {/* <div className="down">
                       <Checkbox
                         className="base"
                       />
                       <Icon
                         className="icon-down-type4"
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>  
