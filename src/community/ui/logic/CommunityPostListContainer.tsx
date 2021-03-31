@@ -56,6 +56,9 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     }
     totalPages();
 
+    if (menuId === undefined || menuId === '' || menuId === null) {
+      return;
+    }
     const menuData = findMenu(communityId, menuId);
     const denizenId = patronInfo.getDenizenId();
 

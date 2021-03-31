@@ -50,8 +50,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     if (postItems === undefined) {
       return;
     }
-
-    if (menuId === undefined && menuId === '' && menuId === null) {
+    if (menuId === undefined || menuId === '' || menuId === null) {
       return;
     }
     const menuData = findMenu(communityId, menuId);
