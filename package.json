@@ -62,7 +62,6 @@
     "xlsx": "latest",
     "yaml": "^1.10.2"
   },
-  "proxy": "http://university.sk.com",
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/addon-docs": "^5.2.8",

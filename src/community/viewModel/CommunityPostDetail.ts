@@ -30,8 +30,8 @@ export interface CommunityPostDetail {
   profileImg: string,
   prevPost?: Post,
   nextPost?: Post,
-  relatedUrlList: RelatedUrlList[],
-  content: string,
+  relatedUrlList?: RelatedUrlList[],
+  content?: string,
 }
 
 export interface CommunityPostItem {
@@ -48,6 +48,4 @@ export interface CommunityPostItem {
   creatorName: string;
   createdTime: number;
   nick: string;
-  relatedUrlList: RelatedUrlList[];
-  content: string;
 }
