@@ -31,7 +31,7 @@ const QuizImagePopup = ({
       </Modal.Header>
       <Modal.Content className="admin_popup_add">
         <div style={{ height: '700px', overflowY: 'auto' }}>
-          <img src={`/${imageInfo.src}`} />
+          <img style={{ maxWidth: '100%' }} src={`/${imageInfo.src}`} />
         </div>
       </Modal.Content>
     </Modal>
