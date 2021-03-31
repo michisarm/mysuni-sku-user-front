@@ -6,6 +6,7 @@ import { CubeType, CubeTypeNameType } from 'myTraining/model';
 import { DifficultyLevel } from 'myTraining/model/DifficultyLevel';
 
 class LectureTableViewModel {
+  // 권장과정
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
@@ -70,9 +71,11 @@ class LectureTableViewModel {
   }
 
   @computed get displayProgressRate(): string {
-    return this.isCardType()
-      ? '-'
-      : `${this.passedLearningCount}/${this.totalLearningCount}`;
+    if (this.isCardType() || Number(this.totalLearningCount) === 0) {
+      return '-';
+    } else {
+      return `${this.passedLearningCount}/${this.totalLearningCount}`;
+    }
   }
 
   /* functions */
