@@ -68,7 +68,7 @@ class DiscussionViewContentHeaderView extends Component<Props, State> {
                 <Image src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`} alt="" style={{display: 'inline-block'}}/>
                 <h2>{title}</h2>
                 <span className="peo-opinion">전체 의견 <strong>{readCount}</strong></span>
-                <span><strong className="peo-date">{moment().format('YYYY.MM.DD')}</strong></span>
+                <span><strong className="peo-date">{moment(time).format('YYYY.MM.DD')}</strong></span>
               </div>
             
               {/* 본문 */}
