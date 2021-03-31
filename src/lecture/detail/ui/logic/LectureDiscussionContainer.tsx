@@ -7,13 +7,11 @@ import { findSkProfileByAudienceId } from '../../api/profileApi';
 import { useLectureDiscussion } from '../../service/useLectureDiscussion';
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { getLectureDiscussion,setLectureDiscussion } from '../../store/LectureDiscussionStore';
-<<<<<<< HEAD
 import defaultImage from '../../../../style/media/img-profile-80-px.png';
 import { InMyLectureService } from 'myTraining/stores';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-=======
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import LectureFeedbackContent from '../../viewModel/LectureFeedbackContent';
 import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
@@ -23,7 +21,6 @@ import { getLectureFeedbackContent, setLectureFeedbackContent } from '../../stor
 const str = " 2019년 지구상에 새로 등장한 신종 바이러스 감염병인 코로나19는 세계 많은 국가에 서 1년째 대유행을 하고 있다.코로나19는 21세기 들어 가장 많은 인명 피해를 주고 있는 감염병이란 타이틀을 이미 거머쥐었다. 지금도 정치, 경제,사회, 문화, 보건의료, 과학기술 등 많은 분야를 이전과 다른 모습으로 바꿔놓고 있는 중이다. 따라서 코로나19가 바꾸었거나바꾸고 있는 우리 사회의 다양 한 모습을 살펴보고 또 앞으로 어디까지 어떻게 바꿀지를 분석하는 것은 인류의 지속가능성을위해 매우 중요한 과제라고 할 수 있다. 코로나 사태와 관련, 코로나 사태가 시작되었던 1월 말 당시의 예상 및 결과를 Review해보고,향후 사태 지속 시 사회가 어떤 모습으로 변할지에 대해 답변하면서 평소에 생각하지 못했던 부분까지 생각의 영역을 확장해봅니다.";
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
->>>>>>> 6f3aba67ec4a590d4cbcab864f0b8a5266c8b3b2
 
 interface Props extends RouteComponentProps<RouteParams> {
   inMyLectureService?: InMyLectureService;
@@ -35,7 +32,6 @@ interface RouteParams {
 
 function LectureDiscussionContainer (props: Props) {
   const [lectureDiscussion] = useLectureDiscussion();
-<<<<<<< HEAD
 
   const { match } = props;
 
@@ -43,7 +39,6 @@ function LectureDiscussionContainer (props: Props) {
 
   console.log('coursePlanId', coursePlanId)
   
-=======
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -72,7 +67,6 @@ function LectureDiscussionContainer (props: Props) {
     });
   }, []);
 
->>>>>>> 6f3aba67ec4a590d4cbcab864f0b8a5266c8b3b2
   useEffect(() => {
     if (lectureDiscussion === undefined) {
       return;
