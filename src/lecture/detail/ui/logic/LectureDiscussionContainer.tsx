@@ -307,32 +307,8 @@ function LectureDiscussionContainer (props: Props) {
   );
 }
 
-<<<<<<< HEAD
 export default inject(
   mobxHelper.injectFrom(
     'myTraining.inMyLectureService',
   )
 )(withRouter(observer(LectureDiscussionContainer)));
-=======
-export default LectureDiscussionContainer;
-
-const style: React.CSSProperties = {
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  width: '38rem',
-  whiteSpace: 'nowrap',
-  display: 'inline-block',
-  lineHeight: '1.42',
-  textAlign: 'left',
-  // whiteSpace: 'pre-wrap',
-  wordWrap: 'break-word',
-} 
-
-    // line-height: 1.42;
-    // height: 100%;
-    // outline: none;
-    // overflow-y: auto;
-    // padding: 12px 15px;
-    // tab-size: 4;
-    // -moz-tab-size: 4;
->>>>>>> 6f3aba67ec4a590d4cbcab864f0b8a5266c8b3b2
