@@ -21,7 +21,10 @@ const QuizHeaderView: React.FC<Props> = ({
     <div className="quiz-header">
       <div className={`quiz-paging step0${currentIndex + 1}`}>
         {question?.map((_, index) => (
-          <span key={index} />
+          <span
+            key={index}
+            className={currentIndex === index ? 'active' : ''}
+          />
         ))}
       </div>
       <h2
