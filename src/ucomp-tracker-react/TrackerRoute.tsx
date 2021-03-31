@@ -81,22 +81,22 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     const queryParams = new URLSearchParams(window.location.search);
     let isReplace = false;
     if (queryParams.has('_source')) {
-      const sourceList: string[] | null = Object.values(Source);
-      if (
-        sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')
-      ) {
-        areaType = queryParams.get('_source');
-        queryParams.delete('_source');
-        isReplace = true;
-      }
+      // source 모두 허용 - 필요시 white list 방식 처리
+      // const sourceList: string[] | null = Object.values(Source);
+      // if ( sourceList.includes(queryParams.get('_source')?.toUpperCase() || '')) {
+      areaType = queryParams.get('_source');
+      queryParams.delete('_source');
+      isReplace = true;
+      // }
     }
     if (queryParams.has('_area')) {
-      const areaList: string[] | null = Object.values(AreaType);
-      if (areaList.includes(queryParams.get('_area')?.toUpperCase() || '')) {
-        area = queryParams.get('_area');
-        queryParams.delete('_area');
-        isReplace = true;
-      }
+      // area 모두 허용 - 필요시 white list 방식 처리
+      // const areaList: string[] | null = Object.values(AreaType);
+      // if (areaList.includes(queryParams.get('_area')?.toUpperCase() || '')) {
+      area = queryParams.get('_area');
+      queryParams.delete('_area');
+      isReplace = true;
+      // }
     }
     if (queryParams.has('_areaId')) {
       areaId = queryParams.get('_areaId');
@@ -147,7 +147,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
         // router에 잡히지 않는 page의 view event 수집 , ex) layer popup view event 로 수집
         const page = areaElement.dataset.page;
         const pathName = areaElement.dataset.pathname;
-        if(!page || !pathName){
+        if (!page || !pathName) {
           return false;
         }
         trackView({

@@ -17,6 +17,7 @@ import LectureClassroom, {
 } from '../../../viewModel/LectureClassroom';
 import moment from 'moment';
 import LectureCourseSummary from 'lecture/detail/viewModel/LectureOverview/LectureCourseSummary';
+import { PostService } from 'board/stores';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -208,6 +209,16 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
       }, 1000);
     }
   }, []);
+
+  useEffect(() => {
+    const postService = PostService.instance;
+
+    postService.post.alarmInfo.url =
+      'https://int.mysuni.sk.com/login?contentUrl=/suni-main/lecture/cineroom/ne1-m2-c2/college/' +
+      window.location.href.split('college/')[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+  }, [lectureSummary]);
 
   return (
     <div className="course-info-header">

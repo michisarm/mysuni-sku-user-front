@@ -102,4 +102,5 @@ export enum FieldType {
   Channel = 'channel',
   Course = 'course',
   Cube = 'cube',
+  Community = 'community',
 }

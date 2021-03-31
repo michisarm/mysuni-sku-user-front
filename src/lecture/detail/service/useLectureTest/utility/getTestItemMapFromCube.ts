@@ -30,7 +30,7 @@ function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
   return cacheableFindPersonalCube(cubeId);
 }
 
-async function getTestItem(examId: string) {
+async function getTestItem(examId: string, isStudent?: boolean) {
   if (examId !== '' && examId !== null) {
     let examination = null;
     {
@@ -49,7 +49,10 @@ async function getTestItem(examId: string) {
     }
 
     const denizenId = patronInfo.getDenizenId() || '';
-    const gradeSheet = await findGradeSheet(examId, denizenId);
+    let gradeSheet;
+    if (isStudent) {
+      gradeSheet = await findGradeSheet(examId, denizenId);
+    }
     const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
     const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
 
@@ -93,7 +96,10 @@ export async function getTestItemMapFromCube(
   }
 
   if (examId !== undefined && examId !== null && examId !== '') {
-    const testItem = await getTestItem(examId);
+    const testItem = await getTestItem(
+      examId,
+      studentJoins.length > 0 && studentJoins[0]?.learningState !== 'Progress'
+    );
     if (testItem !== undefined) {
       setLectureTestItem(testItem);
     }
