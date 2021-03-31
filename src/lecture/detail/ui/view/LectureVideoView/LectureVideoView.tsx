@@ -900,7 +900,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         reactAlert({
           title: '영상이 중지됐습니다.',
           message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
-          // onClose: () => onScrollTop(),
+          onClose: () => onScrollTop(),
         });
       } else {
         setPauseVideoSticky(false);
