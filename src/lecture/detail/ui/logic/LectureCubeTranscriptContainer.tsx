@@ -220,37 +220,43 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                   </button>
                 </div>
               </div>
-               {transcriptList?.map((lectureTranscript : any) => {
+               {
+                 transcriptList?.length > 0 ? (
+                   transcriptList?.map((lectureTranscript : any) => {
                  
-                 return (
-                   <>
-                      <p id={'tranScriptRow'+lectureTranscript.idx}
-                        key={lectureTranscript.idx}
-                        className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
-                        onClick={() => {
-                          // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
-                          if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
-                            setIsActive(true);
-                            setSelectedRow(lectureTranscript);
-                          } else if(selectedRow.idx === lectureTranscript.idx) {
-                            setIsActive(false);
-                            setSelectedRow(undefined);
-                          }
+                    return (
+                      <>
+                          <span id={'tranScriptRow'+lectureTranscript.idx}
+                            key={lectureTranscript.idx}
+                            className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
+                            onClick={() => {
+                              // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
+                              if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
+                                setIsActive(true);
+                                setSelectedRow(lectureTranscript);
+                              } else if(selectedRow.idx === lectureTranscript.idx) {
+                                setIsActive(false);
+                                setSelectedRow(undefined);
+                              }
 
-                          seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime), convertStringTimeToNumber(lectureTranscript.endTime));
-                          
-                          // 대본 선택 시 해당 ROW CSS 변경
-                          toggleScriptActiveFunc.current(lectureTranscript);
-                        }}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        
-                        {lectureTranscript.text}
-                        
-                      </p>
-                   </>      
-                 );
-               })}
+                              seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime), convertStringTimeToNumber(lectureTranscript.endTime));
+                              
+                              // 대본 선택 시 해당 ROW CSS 변경
+                              toggleScriptActiveFunc.current(lectureTranscript);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            
+                            {lectureTranscript.text}
+                            
+                          </span>
+                      </>      
+                    );
+                  })
+                 ) : (
+                   <span>저장 된 대본이 없습니다.</span>
+                 )
+               }
             </div>   
         </>
     );
