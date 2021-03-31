@@ -96,7 +96,8 @@ const AttendanceModal:React.FC<Props> = ({
     window.open(
       'about:blank',
       'luckydraw',
-      'width=300, height=300'
+      //사이즈 무시하고 새창으로 열어달라고 요청옴
+      // 'width=300, height=300'
     )
 
     frm.submit()
