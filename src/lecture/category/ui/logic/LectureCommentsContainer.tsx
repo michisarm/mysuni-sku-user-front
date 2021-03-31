@@ -33,9 +33,6 @@ class LectureCommentsContainer extends Component<Props, State> {
       url,
     } = this.props;
 
-    console.log(url);
-
-    console.log(creator);
     return (
       <div className="contents comment">
         <Review feedbackId={reviewFeedbackId} />

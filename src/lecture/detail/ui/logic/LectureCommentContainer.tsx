@@ -40,7 +40,7 @@ function LectureCommentContainer() {
   }, [ReviewService.instance.rating]);
 
   const currentUrl = window.location.href;
-  const url = currentUrl.split('/lecture');
+  const url = currentUrl.split('/suni-main');
   const lecture = getInMyLectureCdo();
   const creator = lecture?.servicePatronKeyString;
 
