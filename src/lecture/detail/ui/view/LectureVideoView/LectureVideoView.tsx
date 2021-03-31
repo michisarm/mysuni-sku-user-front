@@ -91,7 +91,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
   const [cubeName, setCubeName] = useState<any>('');
-
+  const document: any = window.document;
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
   const checkIntervalRef = useRef<any>(0);
@@ -946,11 +946,14 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const closeFullScreen = () => {
-    if (document.fullscreenElement !== null) {
-      document.exitFullscreen();
-      window.scrollTo(0, 124);
-    } else {
-      return;
+    if (document['exitFullscreen']) {
+      document['exitFullscreen']();
+    } else if (document['webkitFullscreenElement']) {
+      document['webkitEx']();
+    } else if (document['mozCancelFullScreen']) {
+      document['mozCancelFullScreen']();
+    } else if (document['msExitFullscreen']) {
+      document['msExitFullscreen']();
     }
   };
 
