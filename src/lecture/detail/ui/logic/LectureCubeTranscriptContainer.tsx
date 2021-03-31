@@ -56,6 +56,9 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
     // 특정 위치로 재생 위치 이동
     const seekByIndex = (startIndex: number, endIndex: number) => {
+        clearInterval(waitUntilPlayInterval.current); 
+        isValidate.current = false;
+
         getEmbed().loadVideo();
         if (getEmbed() && startIndex >= 0) {
           //TODO current state 를 찾아서 Play
@@ -247,7 +250,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                             style={{ cursor: 'pointer' }}
                           >
                             
-                            {lectureTranscript.text}
+                            {lectureTranscript.text}&nbsp;
                             
                           </span>
                       </>      
