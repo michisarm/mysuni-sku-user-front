@@ -84,12 +84,17 @@ const AttendanceModal:React.FC<Props> = ({
   const lotteryTicketModalOpen = useCallback(() => {
     console.log('암호화 메일', EncryptEmail)
     console.log('출석 count', AttendCountItem.length)
-    const frm = document.createElement('form')
 
+    const frm = document.createElement('form')
+    const input = document.createElement('input')
+    input.type = "hidden"
+    input.name = 'q'
+    input.value = EncryptEmail
+
+    frm.appendChild(input)
     document.body.appendChild(frm)
 
-    // frm.setAttribute('p',EncryptEmail)
-    frm.setAttribute('action',`https://www.mysuniluckydrawevent.com/auth?q=${EncryptEmail}`)
+    frm.setAttribute('action',`https://www.mysuniluckydrawevent.com/auth`)
     frm.setAttribute('method','post')
     frm.setAttribute('target','luckydraw')
 
