@@ -61,6 +61,7 @@ import { LectureMedia } from 'lecture/detail/viewModel/LectureMedia';
 import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
 import { findAllQuiz, findQuiz } from 'quiz/api/QuizApi';
 import { setEmbed } from 'lecture/detail/store/EmbedStore';
+import QuizTableList from 'quiz/model/QuizTableList';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -899,7 +900,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         reactAlert({
           title: '영상이 중지됐습니다.',
           message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
-          // onClose: () => onScrollTop(),
+          onClose: () => onScrollTop(),
         });
       } else {
         setPauseVideoSticky(false);
@@ -918,8 +919,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         await findAllQuiz(quizId).then(res => {
           setQuizShowTime(
             res
-              .sort((a: any, b: any) => a > b)
-              .map((quiz: any) => quiz.showTime)
+              .sort(
+                (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
+              )
+              .map((quiz: QuizTableList) => quiz.showTime)
           );
         });
       };
