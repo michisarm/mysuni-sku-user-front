@@ -82,6 +82,7 @@ const VideoQuizContentContainer = ({
         setQuizStatus({ status: false, type: '' });
         setCurrentIndex(currentIndex + 1);
       } else if (currentIndex === quizMaxIndex) {
+        setCurrentIndex(currentIndex);
         setQuizStatus({ status: true, type: 'finish' });
       }
     }
@@ -313,13 +314,12 @@ const VideoQuizContentContainer = ({
                   : FailIcon
               }
             />
-            <span className="wro">오답 입니다.</span>
             <div
               className="wro2"
               dangerouslySetInnerHTML={{
                 __html:
                   `${questionData[currentIndex].alertMessage.message}` ||
-                  '다시 확인하고 제출하세요.',
+                  '오답 입니다. 다시 확인하고 제출하세요.',
               }}
             />
           </div>
@@ -345,14 +345,14 @@ const VideoQuizContentContainer = ({
                   : CompleteIcon
               }
             />
-            <span className="wro">답안 제출이 완료됐습니다.</span>
+            {/* <span className="wro">답안 제출이 완료됐습니다.</span> */}
             {!questionData[currentIndex].answer && (
               <div
                 className="wro2"
                 dangerouslySetInnerHTML={{
                   __html:
                     `${questionData[currentIndex].alertMessage.message}` ||
-                    '다른 참여자의 의견을 확인할 수 있습니다.',
+                    '답안 제출이 완료됐습니다.',
                 }}
               />
             )}
@@ -395,7 +395,6 @@ const VideoQuizContentContainer = ({
                   '퀴즈 참여가 완료됐습니다!',
               }}
             />
-            <span className="wro2">계속해서 영상을 이어보세요.</span>
           </div>
           <div className="video-quiz-footer">
             <button
@@ -624,12 +623,14 @@ const VideoQuizContentContainer = ({
                       </div>
                     ))
                   : null}
-                <div className="more-comments">
-                  <Button onClick={onLoadMore} icon className="left moreview">
-                    <Icon className="moreview" />
-                    list more
-                  </Button>
-                </div>
+                {resultData && resultData.results.length > 10 && (
+                  <div className="more-comments">
+                    <Button onClick={onLoadMore} icon className="left moreview">
+                      <Icon className="moreview" />
+                      list more
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="video-quiz-footer" style={{ position: 'absolute' }}>
