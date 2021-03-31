@@ -42,6 +42,8 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       { key: "chn", value: "cn", text: "CHN" },
     ];
 
+    const ERROR_RANGE = 1.5;  // getCurrentTime으로 동영상 시간을 받을 때 0.n초의 오차가 발생 할 때가 있어서 오차 범위 지정
+
     const [ transcriptList, setTranScriptList ] = useState<any>();
     const [ panoptoSessionId, setPanoptoSessionId ] = useState<string | undefined>(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
     const [ isActive, setIsActive ] = useState<boolean>(false);
@@ -64,7 +66,11 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
             if(getEmbed().isPaused === false) {
               getEmbed().seekTo(startIndex);
 
-              if(getEmbed().getCurrentTime() < startIndex || getEmbed().getCurrentTime() > endIndex) { 
+              if(
+                    getEmbed().getCurrentTime() < startIndex  // 현재 동영상 시간이 대본 시작 시간보다 작은 경우
+                ||  (getEmbed().getCurrentTime() > (startIndex + ERROR_RANGE) && getEmbed().getCurrentTime() < endIndex)  // 현재 동영상 시간이 대본 시작 시간이 아닐 때
+                ||  getEmbed().getCurrentTime() > endIndex) {   // 현재 동영상 시간이 대본 종료 시간보다 클 때
+                  
                 // 잘못 된 동영상 시간을 가져오는 경우가 있어서 다시 seekTo
                 getEmbed().seekTo(startIndex); 
               } else {
@@ -108,7 +114,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
           if(!isValidate.current) { // 현재 동영상이 seekTo에 의해 선택 한 대본의 시작 지점으로 왔는지 체크
             if(
                   curVideoTime === curRowStTime
-              ||  (curRowStTime == 0 && getEmbed().getCurrentTime() <= 0.5)) {
+              ||  (curVideoTime <= (curRowStTime + ERROR_RANGE) && curVideoTime >= curRowStTime)) {
               isValidate.current = true;
             }
           } else if(getEmbed().getCurrentTime() >= curRowEdTime) {
