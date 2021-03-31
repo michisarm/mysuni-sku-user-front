@@ -58,13 +58,15 @@ export function useLectureCourseOverview() {
       collegeId: string;
       cineroomId?: string;
     }) => {
-      getCourseLectureOverview(
-        params,
-        coursePlanId,
-        serviceId,
-        collegeId,
-        cineroomId
-      );
+      if (coursePlanId !== undefined) {
+        getCourseLectureOverview(
+          params,
+          coursePlanId,
+          serviceId,
+          collegeId,
+          cineroomId
+        );
+      }
     },
     []
   );
