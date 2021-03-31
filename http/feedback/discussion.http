@@ -1,0 +1,158 @@
+@hostname = localhost
+@port = 8092
+# @host = {{hostname}}:{{port}}
+@host = university.sk.com/api/feedback
+
+# @feedbackId = fbb93851-5c74-4a11-ad8b-ad5ee22c4980
+@commentId = 773b22d5-7c7e-4571-b837-7c3ec2440220
+@feedbackId = fb715237-d7d1-4823-a14b-60f3005227f5
+
+
+### 커뮤니티: 댓글: 생성
+POST http://{{host}}/comments
+    ?feedbackId={{feedbackId}}
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Content-Type: application/json;charset=UTF-8
+
+{
+    "name": "박성수",
+    "message": "44 created",
+    "base64AttachedImage": "",
+    "taggedUsers": [],
+    "email": "ss.park@sk.com",
+    "companyName": "SK주식회사 C&C",
+    "departmentName": "CV Digital그룹",
+    "secreted": false
+}
+
+### 커뮤니티: 댓글: 갯수 조회
+GET http://{{host}}/comments/count
+    ?feedbackId={{feedbackId}}
+
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IjA1NTI2In0sImxvZ2luSWQiOiJzcy5wYXJrQHNrLmNvbSIsInVzZXJfbmFtZSI6InNzLnBhcmtAc2suY29tIiwiZGlzcGxheU5hbWUiOiLrsJXshLHsiJgiLCJzY29wZSI6WyJjbGllbnQiXSwid29ya3NwYWNlcyI6eyJzdGF0aW9uV29ya3NwYWNlcyI6bnVsbCwic3F1YXJlV29ya3NwYWNlcyI6bnVsbCwicGF2aWxpb25Xb3Jrc3BhY2VzIjpudWxsLCJjaW5lcm9vbVdvcmtzcGFjZXMiOlt7ImlkIjoibmUxLW0yLWMxNyIsIm5hbWUiOiJTSyjso7wpQyZDIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWMxNyIsInJvbGVzIjpbIlVzZXIiXX0seyJpZCI6Im5lMS1tMi1jMyIsIm5hbWUiOiJTS-ydtOuFuOuyoOydtOyFmCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMyIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfSx7ImlkIjoibmUxLW0yLWMxMCIsIm5hbWUiOiJTS-qxtOyEpCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMTAiLCJyb2xlcyI6WyJVc2VyIiwiQ29tcGFueU1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jMTQiLCJuYW1lIjoiU0vsooXtlantmZTtlZkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzE0Iiwicm9sZXMiOlsiVXNlciIsIkNvbXBhbnlNYW5hZ2VyIl19LHsiaWQiOiJuZTEtbTItYzQwIiwibmFtZSI6IuydtOuFuOuyoOydtOyFmCDqs7XthrUiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzQwIiwicm9sZXMiOlsiVXNlciJdfSx7ImlkIjoibmUxLW0yLWMyIiwibmFtZSI6IlNLIFVuaXZlcnNpdHkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzIiLCJyb2xlcyI6WyJVc2VyIiwiQ29sbGVnZU1hbmFnZXIiLCJTdXBlck1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jNDIiLCJuYW1lIjoi7Jq47IKw7KeA7ZS87JeQ7IqkIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWM0MiIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfV0sInN0dWRpb1dvcmtzcGFjZSI6bnVsbH0sImV4cCI6MTYxNzMzNzMyOCwiYXV0aG9yaXRpZXMiOlsiVXNlciJdLCJqdGkiOiI3M2U5M2FhYi02YzlhLTRiZDItYjVlZC03MTJlZTE4NmQxNWUiLCJjbGllbnRfaWQiOiJuYXJhIn0.JRl56rY4YrsSGaMRjsKSNLfTNzepEoMDMZS7mJuiwiY
+
+
+### 커뮤니티: 댓글: 목록 조회
+GET http://{{host}}/comments/
+    ?feedbackId={{feedbackId}}
+    &offset=0
+    &limit=10
+    &ascending=false
+    &myComments=true
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IjA1NTI2In0sImxvZ2luSWQiOiJzcy5wYXJrQHNrLmNvbSIsInVzZXJfbmFtZSI6InNzLnBhcmtAc2suY29tIiwiZGlzcGxheU5hbWUiOiLrsJXshLHsiJgiLCJzY29wZSI6WyJjbGllbnQiXSwid29ya3NwYWNlcyI6eyJzdGF0aW9uV29ya3NwYWNlcyI6bnVsbCwic3F1YXJlV29ya3NwYWNlcyI6bnVsbCwicGF2aWxpb25Xb3Jrc3BhY2VzIjpudWxsLCJjaW5lcm9vbVdvcmtzcGFjZXMiOlt7ImlkIjoibmUxLW0yLWMxNyIsIm5hbWUiOiJTSyjso7wpQyZDIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWMxNyIsInJvbGVzIjpbIlVzZXIiXX0seyJpZCI6Im5lMS1tMi1jMyIsIm5hbWUiOiJTS-ydtOuFuOuyoOydtOyFmCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMyIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfSx7ImlkIjoibmUxLW0yLWMxMCIsIm5hbWUiOiJTS-qxtOyEpCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMTAiLCJyb2xlcyI6WyJVc2VyIiwiQ29tcGFueU1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jMTQiLCJuYW1lIjoiU0vsooXtlantmZTtlZkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzE0Iiwicm9sZXMiOlsiVXNlciIsIkNvbXBhbnlNYW5hZ2VyIl19LHsiaWQiOiJuZTEtbTItYzQwIiwibmFtZSI6IuydtOuFuOuyoOydtOyFmCDqs7XthrUiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzQwIiwicm9sZXMiOlsiVXNlciJdfSx7ImlkIjoibmUxLW0yLWMyIiwibmFtZSI6IlNLIFVuaXZlcnNpdHkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzIiLCJyb2xlcyI6WyJVc2VyIiwiQ29sbGVnZU1hbmFnZXIiLCJTdXBlck1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jNDIiLCJuYW1lIjoi7Jq47IKw7KeA7ZS87JeQ7IqkIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWM0MiIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfV0sInN0dWRpb1dvcmtzcGFjZSI6bnVsbH0sImV4cCI6MTYxNzMzNzMyOCwiYXV0aG9yaXRpZXMiOlsiVXNlciJdLCJqdGkiOiI3M2U5M2FhYi02YzlhLTRiZDItYjVlZC03MTJlZTE4NmQxNWUiLCJjbGllbnRfaWQiOiJuYXJhIn0.JRl56rY4YrsSGaMRjsKSNLfTNzepEoMDMZS7mJuiwiY
+
+
+### 커뮤니티: 댓글: 관리자 목록 조회
+GET http://{{host}}/comments/byManager
+    ?feedbackId={{feedbackId}}
+    &offset=0
+    &limit=10
+    &ascending=false
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IjA1NTI2In0sImxvZ2luSWQiOiJzcy5wYXJrQHNrLmNvbSIsInVzZXJfbmFtZSI6InNzLnBhcmtAc2suY29tIiwiZGlzcGxheU5hbWUiOiLrsJXshLHsiJgiLCJzY29wZSI6WyJjbGllbnQiXSwid29ya3NwYWNlcyI6eyJzdGF0aW9uV29ya3NwYWNlcyI6bnVsbCwic3F1YXJlV29ya3NwYWNlcyI6bnVsbCwicGF2aWxpb25Xb3Jrc3BhY2VzIjpudWxsLCJjaW5lcm9vbVdvcmtzcGFjZXMiOlt7ImlkIjoibmUxLW0yLWMxNyIsIm5hbWUiOiJTSyjso7wpQyZDIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWMxNyIsInJvbGVzIjpbIlVzZXIiXX0seyJpZCI6Im5lMS1tMi1jMyIsIm5hbWUiOiJTS-ydtOuFuOuyoOydtOyFmCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMyIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfSx7ImlkIjoibmUxLW0yLWMxMCIsIm5hbWUiOiJTS-qxtOyEpCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMTAiLCJyb2xlcyI6WyJVc2VyIiwiQ29tcGFueU1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jMTQiLCJuYW1lIjoiU0vsooXtlantmZTtlZkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzE0Iiwicm9sZXMiOlsiVXNlciIsIkNvbXBhbnlNYW5hZ2VyIl19LHsiaWQiOiJuZTEtbTItYzQwIiwibmFtZSI6IuydtOuFuOuyoOydtOyFmCDqs7XthrUiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzQwIiwicm9sZXMiOlsiVXNlciJdfSx7ImlkIjoibmUxLW0yLWMyIiwibmFtZSI6IlNLIFVuaXZlcnNpdHkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzIiLCJyb2xlcyI6WyJVc2VyIiwiQ29sbGVnZU1hbmFnZXIiLCJTdXBlck1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jNDIiLCJuYW1lIjoi7Jq47IKw7KeA7ZS87JeQ7IqkIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWM0MiIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfV0sInN0dWRpb1dvcmtzcGFjZSI6bnVsbH0sImV4cCI6MTYxNzMzNzMyOCwiYXV0aG9yaXRpZXMiOlsiVXNlciJdLCJqdGkiOiI3M2U5M2FhYi02YzlhLTRiZDItYjVlZC03MTJlZTE4NmQxNWUiLCJjbGllbnRfaWQiOiJuYXJhIn0.JRl56rY4YrsSGaMRjsKSNLfTNzepEoMDMZS7mJuiwiY
+
+
+### 커뮤니티: 댓글: 수정
+@commentId = 5d06f612-bb5a-4435-8a6c-21b6c83f8dbb
+PUT http://{{host}}/comments/{{commentId}}
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Content-Type: application/json;charset=UTF-8
+
+{
+    "nameValues": [
+        {
+            "name": "message",
+            "value": "44 55 secreted 2222 updated"
+        },
+        {
+            "name": "base64AttachedImage",
+            "value": ""
+        },
+        {
+            "name": "taggedUsers",
+            "value": "[]"
+        },
+        {
+            "name": "secreted",
+            "value": "true"
+        }
+    ]
+}
+
+### 커뮤니티: 대댓글: 생성
+@commentId = 88600efd-4c9b-475a-af2c-87acebe2a142
+POST http://{{host}}/comments/{{commentId}}/sub-comments
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Content-Type: application/json;charset=UTF-8
+
+{
+    "name": "박성수",
+    "audienceKey": {
+        "keyString": "r57s-r@ne1-m2-c2",
+        "patronType": "Audience"
+    },
+    "message": "depth 1, 2nd",
+    "base64AttachedImage": "",
+    "embeddedSubComment": false,
+    "taggedUsers": [],
+    "secreted": false
+}
+
+### 커뮤니티: 대댓글: 수정
+@commentId = 8c2da669-a831-47a1-b5c8-31996cbf3d78
+@sub-commentID = e71addb4-254d-486f-9de1-a6c151489ccf
+PUT http://{{host}}/comments/{{commentId}}/sub-comments/{{sub-commentID}}
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Content-Type: application/json;charset=UTF-8
+
+{
+    "nameValues": [
+        {
+            "name": "message",
+            "value": "sub comment update"
+        },
+        {
+            "name": "base64AttachedImage",
+            "value": ""
+        },
+        {
+            "name": "taggedUsers",
+            "value": "[]"
+        },
+        {
+            "name": "secreted",
+            "value": "true"
+        }
+    ]
+}
+
+### 코스: 토론: 메뉴 조회
+GET http://{{host}}/feedback/{{feedbackId}}/discussion
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IjA1NTI2In0sImxvZ2luSWQiOiJzcy5wYXJrQHNrLmNvbSIsInVzZXJfbmFtZSI6InNzLnBhcmtAc2suY29tIiwiZGlzcGxheU5hbWUiOiLrsJXshLHsiJgiLCJzY29wZSI6WyJjbGllbnQiXSwid29ya3NwYWNlcyI6eyJzdGF0aW9uV29ya3NwYWNlcyI6bnVsbCwic3F1YXJlV29ya3NwYWNlcyI6bnVsbCwicGF2aWxpb25Xb3Jrc3BhY2VzIjpudWxsLCJjaW5lcm9vbVdvcmtzcGFjZXMiOlt7ImlkIjoibmUxLW0yLWMxNyIsIm5hbWUiOiJTSyjso7wpQyZDIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWMxNyIsInJvbGVzIjpbIlVzZXIiXX0seyJpZCI6Im5lMS1tMi1jMyIsIm5hbWUiOiJTS-ydtOuFuOuyoOydtOyFmCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMyIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfSx7ImlkIjoibmUxLW0yLWMxMCIsIm5hbWUiOiJTS-qxtOyEpCIsInRlbmFudElkIjoicjU3cy1yQG5lMS1tMi1jMTAiLCJyb2xlcyI6WyJVc2VyIiwiQ29tcGFueU1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jMTQiLCJuYW1lIjoiU0vsooXtlantmZTtlZkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzE0Iiwicm9sZXMiOlsiVXNlciIsIkNvbXBhbnlNYW5hZ2VyIl19LHsiaWQiOiJuZTEtbTItYzQwIiwibmFtZSI6IuydtOuFuOuyoOydtOyFmCDqs7XthrUiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzQwIiwicm9sZXMiOlsiVXNlciJdfSx7ImlkIjoibmUxLW0yLWMyIiwibmFtZSI6IlNLIFVuaXZlcnNpdHkiLCJ0ZW5hbnRJZCI6InI1N3MtckBuZTEtbTItYzIiLCJyb2xlcyI6WyJVc2VyIiwiQ29sbGVnZU1hbmFnZXIiLCJTdXBlck1hbmFnZXIiXX0seyJpZCI6Im5lMS1tMi1jNDIiLCJuYW1lIjoi7Jq47IKw7KeA7ZS87JeQ7IqkIiwidGVuYW50SWQiOiJyNTdzLXJAbmUxLW0yLWM0MiIsInJvbGVzIjpbIlVzZXIiLCJDb21wYW55TWFuYWdlciJdfV0sInN0dWRpb1dvcmtzcGFjZSI6bnVsbH0sImV4cCI6MTYxNzMzNzMyOCwiYXV0aG9yaXRpZXMiOlsiVXNlciJdLCJqdGkiOiI3M2U5M2FhYi02YzlhLTRiZDItYjVlZC03MTJlZTE4NmQxNWUiLCJjbGllbnRfaWQiOiJuYXJhIn0.JRl56rY4YrsSGaMRjsKSNLfTNzepEoMDMZS7mJuiwiY
