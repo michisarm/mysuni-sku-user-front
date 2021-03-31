@@ -60,6 +60,9 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     totalPages();
     const denizenId = patronInfo.getDenizenId();
 
+    if (menuId === undefined || menuId === '' || menuId === null) {
+      return;
+    }
     const menuData = findMenu(communityId, menuId);
     menuData.then(result => {
       setMenuName(result.name);
