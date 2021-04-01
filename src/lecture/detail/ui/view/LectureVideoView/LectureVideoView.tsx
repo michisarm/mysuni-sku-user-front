@@ -91,13 +91,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
   const [cubeName, setCubeName] = useState<any>('');
-  const document: any = window.document;
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
   const checkIntervalRef = useRef<any>(0);
   const transcriptIntervalRef = useRef<any>(0);
   const multiVideoIntervalRef = useRef<any>(0);
   const myTrainingService = MyTrainingService.instance;
+  const document: any = window.document;
 
   useEffect(() => {
     // all cleare interval
@@ -888,12 +888,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   useEffect(() => {
     const matchesQuizTime: number = Math.floor(currentTime);
+    if (getLectureConfirmProgress()?.learningState == 'Passed') {
+      setQuizPop(false);
+    }
+
     if (
       matchesQuizTime !== undefined &&
       quizShowTime &&
       matchesQuizTime === quizShowTime[quizCurrentIndex]
     ) {
-      if (scroll > videoPosition && quizShowTime.includes(matchesQuizTime)) {
+      if (
+        scroll > videoPosition &&
+        quizShowTime.indexOf(matchesQuizTime) !== -1
+      ) {
         setPauseVideoSticky(true);
         setQuizPop(false);
         videoControll.stop();
@@ -946,14 +953,15 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   };
 
   const closeFullScreen = () => {
-    if (document['exitFullscreen']) {
-      document['exitFullscreen']();
-    } else if (document['webkitFullscreenElement']) {
-      document['webkitEx']();
-    } else if (document['mozCancelFullScreen']) {
-      document['mozCancelFullScreen']();
-    } else if (document['msExitFullscreen']) {
-      document['msExitFullscreen']();
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
     }
   };
 
