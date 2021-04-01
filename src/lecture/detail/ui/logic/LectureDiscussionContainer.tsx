@@ -205,7 +205,7 @@ function LectureDiscussionContainer (props: Props) {
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {lectureFeedbackContent.relatedUrlList!.length > 1 &&
+              {/* {lectureFeedbackContent.relatedUrlList > 1 && */}
                 <div className="community-board-down discuss2">
                   <div className="board-down-title href">
                       <p>
@@ -218,7 +218,7 @@ function LectureDiscussionContainer (props: Props) {
                       ))}
                   </div>
                 </div>
-              } 
+              {/* }  */}
               {/* 관련 자료 */}
               {lectureFeedbackContent.depotId &&
                 <div className="community-board-down discuss2">
