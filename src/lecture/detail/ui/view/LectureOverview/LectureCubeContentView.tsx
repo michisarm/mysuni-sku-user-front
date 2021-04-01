@@ -88,6 +88,10 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
     }
   }, []);
 
+  // const trascriptScrollMove = () => {
+  //   window.scrollTo(0, 800);
+  // };
+
   // 대본 관련 Props 세팅
   const [transLangVal, setTransLangVal] = useState<string>('ko');
 
@@ -186,6 +190,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           transLangVal={transLangVal}
           setTransLangVal={setTransLangVal}
           lectureSummary={lectureSummary}
+          // trascriptScrollMove={trascriptScrollMove}
         />
       )}
     </>
