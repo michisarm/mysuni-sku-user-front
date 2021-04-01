@@ -183,7 +183,7 @@ function LectureDiscussionContainer (props: Props) {
                   <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
                   // <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
                 )}
-                {!more && lectureFeedbackContent.content!.length > 0 && (
+                {!more && (
                   <button
                     className="ui icon button right btn-blue"
                     onClick={viewMore}
@@ -192,6 +192,7 @@ function LectureDiscussionContainer (props: Props) {
                     <i aria-hidden="true" className="icon icon morelink more2" />
                   </button>
                 )}
+                {/*  */}
                 {more && (
                   <button
                     className="ui icon button right btn-blue"
@@ -204,7 +205,7 @@ function LectureDiscussionContainer (props: Props) {
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {lectureFeedbackContent.relatedUrlList!.length > 1 &&
+              {/* {lectureFeedbackContent.relatedUrlList > 1 && */}
                 <div className="community-board-down discuss2">
                   <div className="board-down-title href">
                       <p>
@@ -217,7 +218,7 @@ function LectureDiscussionContainer (props: Props) {
                       ))}
                   </div>
                 </div>
-              } 
+              {/* }  */}
               {/* 관련 자료 */}
               {lectureFeedbackContent.depotId &&
                 <div className="community-board-down discuss2">
