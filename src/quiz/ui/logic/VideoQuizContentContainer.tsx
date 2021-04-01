@@ -376,17 +376,13 @@ const VideoQuizContentContainer = ({
                   : CompleteIcon
               }
             />
-            {/* <span className="wro">답안 제출이 완료됐습니다.</span> */}
-            {!questionData[currentIndex].answer && (
-              <div
-                className="wro2"
-                dangerouslySetInnerHTML={{
-                  __html:
-                    `${questionData[currentIndex].alertMessage.message}` ||
-                    '답안 제출이 완료됐습니다.',
-                }}
-              />
-            )}
+            <span className="wro">
+              {(questionData[currentIndex].type === 'SingleChoice' ||
+                questionData[currentIndex].type === 'MultipleChoice') &&
+              !questionData[currentIndex].resultView
+                ? '정답 입니다.'
+                : '답안 제출이 완료됐습니다.'}
+            </span>
           </div>
           <div className="video-quiz-footer">
             {questionData[currentIndex].resultView && (
