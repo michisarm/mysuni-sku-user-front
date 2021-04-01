@@ -29,7 +29,7 @@ import {
   getLectureTaskCreateItem,
   setLectureTaskCreateItem,
 } from 'lecture/detail/store/LectureTaskCreateStore';
-import { reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility/updateLectureTask';
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -188,6 +188,11 @@ function LectureTaskContainer() {
               notice: false,
             });
             history.goBack();
+
+            reactAlert({
+              title: '안내',
+              message: '글이 등록되었습니다.'
+            });
           });
         } else {
           updateLectureTask(detailTaskId);
