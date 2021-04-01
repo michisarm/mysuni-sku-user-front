@@ -104,7 +104,7 @@ const VideoQuizContentContainer = ({
   const onSubmitUserAnswer = useCallback(async () => {
     if (questionData) {
       if (questionData[currentIndex].answer) {
-        // 정답 체크의 경우
+        // 정답체크의 경우
         const questionAnswers = questionData[
           currentIndex
         ].quizQuestionItems?.filter(
@@ -118,11 +118,12 @@ const VideoQuizContentContainer = ({
             return answer;
           }
         });
+
+        // 정답체크 => 정답체크 유효성 확인
         if (
           checkedAnswer?.length === userAnswers?.length &&
           userAnswers?.length === questionAnswers?.length
         ) {
-          setQuizStatus({ status: true, type: 'success' });
           const params = {
             email: currentUser?.email,
             quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
@@ -131,6 +132,7 @@ const VideoQuizContentContainer = ({
             quizQuestionId: questionData[currentIndex]?.id,
           };
           await registerAnswer(params);
+          setQuizStatus({ status: true, type: 'success' });
         } else {
           setQuizStatus({ status: true, type: 'fail' });
         }
@@ -140,17 +142,11 @@ const VideoQuizContentContainer = ({
         (questionData[currentIndex].type === 'SingleChoice' ||
           questionData[currentIndex].type === 'MultipleChoice')
       ) {
+        // 답변 Null Check
         const noAnswerCheck = userAnswer?.quizQuestionAnswerItems.filter(
           answer => answer.answerItem === true
         ).length;
-        if (noAnswerCheck === 0) {
-          reactAlert({
-            title: '안내',
-            message: '답변을 확인해주세요.',
-          });
-          return;
-        }
-        setQuizStatus({ status: true, type: 'success' });
+
         const params = {
           email: currentUser?.email,
           quizQuestionAnswerItems: userAnswer?.quizQuestionAnswerItems
@@ -158,11 +154,32 @@ const VideoQuizContentContainer = ({
             .map(row => row.number),
           quizQuestionId: questionData[currentIndex]?.id,
         };
+
+        if (noAnswerCheck === 0) {
+          reactAlert({
+            title: '안내',
+            message: '답변을 확인해주세요.',
+          });
+          return;
+        }
+
+        setQuizStatus({ status: true, type: 'success' });
+
         await registerAnswer(params);
-      } else if (!questionData[currentIndex].answer) {
+
         // 단답형, 서술형 답안 제출의 경우
+      } else if (!questionData[currentIndex].answer) {
         const noAnswerCheck =
           userAnswer?.quizQuestionAnswerItems[0].answerItem === '';
+
+        const params = {
+          email: currentUser?.email,
+          quizQuestionAnswerItems: [
+            JSON.stringify(userAnswer.quizQuestionAnswerItems[0].answerItem),
+          ],
+          quizQuestionId: questionData[currentIndex]?.id,
+        };
+
         if (noAnswerCheck) {
           reactAlert({
             title: '안내',
@@ -171,13 +188,6 @@ const VideoQuizContentContainer = ({
           return;
         }
         setQuizStatus({ status: true, type: 'success' });
-        const params = {
-          email: currentUser?.email,
-          quizQuestionAnswerItems: [
-            JSON.stringify(userAnswer.quizQuestionAnswerItems[0].answerItem),
-          ],
-          quizQuestionId: questionData[currentIndex]?.id,
-        };
         await registerAnswer(params);
       }
     }
@@ -379,7 +389,7 @@ const VideoQuizContentContainer = ({
             )}
           </div>
           <div className="video-quiz-footer">
-            {!questionData[currentIndex].answer && (
+            {questionData[currentIndex].resultView && (
               <button
                 onClick={onChangeResultAnswer}
                 className="ui button fix bg grey"

@@ -862,11 +862,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   useEffect(() => {
     const matchesQuizTime: number = Math.floor(currentTime);
-    if (getLectureConfirmProgress()?.learningState == 'Passed') {
-      setQuizPop(false);
-    }
-
+    const learningState = getLectureConfirmProgress()?.learningState;
     if (
+      learningState !== 'Passed' &&
       matchesQuizTime !== undefined &&
       quizShowTime &&
       matchesQuizTime === quizShowTime[quizCurrentIndex]
