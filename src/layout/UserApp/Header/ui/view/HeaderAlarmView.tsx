@@ -69,11 +69,11 @@ class HeaderAlarmView extends Component<Props, State> {
           onClick={this.onTogglePop}
           ref={this.alarmButtonRef}
         >
-          <span>알람</span>
+          <span>알림</span>
         </a>
         <div className={`lms-alarm-list ${alarmShowClass}`}>
           <div className="lms-alarm-header">
-            <span className="lms-alarm-title">알람</span>
+            <span className="lms-alarm-title">알림</span>
             <Button
               icon
               className="img-icon"
