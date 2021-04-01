@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import $ from 'jquery';
 import { debounce, useStateRef } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
@@ -129,8 +130,11 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     data.refererSearch = window.location.search;
 
     // AREA data attribute 있을때만 수집!
-    const areaElement = (target as Element).closest(DATA_TYPES.AREA);
-    // console.log('areaElement', areaElement);
+    const areaElement =
+      'closest' in document.documentElement
+        ? (target as Element).closest(DATA_TYPES.AREA)
+        : $(target as Element).closest(DATA_TYPES.AREA)[0];
+
     if (areaElement instanceof HTMLElement) {
       data.target = areaElement;
       data.area = areaElement.dataset.area;
