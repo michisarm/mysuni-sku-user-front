@@ -7,21 +7,21 @@ import moment from 'moment';
 
 
 interface Props {
-    myNotieMentions: MentionModel[],
-    myNotieNoReadMentionCount: number,
-    routeToAlarmBackLink: (backLink:string) => void,
-    handleClickAlarm: () => void,
+  myNotieMentions: MentionModel[],
+  myNotieNoReadMentionCount: number,
+  routeToAlarmBackLink: (backLink: string) => void,
+  handleClickAlarm: () => void,
 }
 
 interface State {
-    alarmShowClass: string;
+  alarmShowClass: string;
 }
 
 @reactAutobind
 class HeaderAlarmView extends Component<Props, State> {
   //
   alarmButtonRef: any = React.createRef();
-  
+
   state = {
     alarmShowClass: '',
   };
@@ -64,42 +64,47 @@ class HeaderAlarmView extends Component<Props, State> {
 
     return (
       <>
-        <a 
+        <a
           className={`lms-alarm ${existNoReadClass}`}
           onClick={this.onTogglePop}
           ref={this.alarmButtonRef}
         >
-            <span>알람</span>
+          <span>알람</span>
         </a>
         <div className={`lms-alarm-list ${alarmShowClass}`}>
-            <div className="lms-alarm-header">
-                <span className="lms-alarm-title">알람</span>
-                <Button 
-                  icon 
-                  className="img-icon" 
-                  onClick={this.onTogglePop}
-                >
-                    <Icon className="clear2 selected link"/>
-                </Button>
-            </div>
-            <div className="lms-alarm-body">
-                {myNotieMentions && myNotieMentions.map((result,index)=>{
-                  let notReadClass = '';
-                  if (!result.read) {
-                    notReadClass = 'not-read';
-                  }
+          <div className="lms-alarm-header">
+            <span className="lms-alarm-title">알람</span>
+            <Button
+              icon
+              className="img-icon"
+              onClick={this.onTogglePop}
+            >
+              <Icon className="clear2 selected link" />
+            </Button>
+          </div>
+          <div className="lms-alarm-body">
+            {myNotieMentions && myNotieMentions.map((result, index) => {
+              let notReadClass = '';
+              if (!result.read) {
+                notReadClass = 'not-read';
+              }
 
-                  return(
-                    <a 
-                      className={`lms-alarm-item ${notReadClass}`}
-                      onClick={() => routeToAlarmBackLink(result.backLink)}
-                    >
-                      <span className="lms-alarm-copy">{result.message}</span>
-                      <span className="lms-alarm-time">{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
-                    </a>
-                  );
-                })}
-            </div>
+              return (
+                <a
+                  className={`lms-alarm-item ${notReadClass}`}
+                  onClick={() => {
+                    routeToAlarmBackLink(result.backLink)
+
+                    this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
+
+                  }}
+                >
+                  <span className="lms-alarm-copy">{result.message}</span>
+                  <span className="lms-alarm-time">{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
+                </a>
+              );
+            })}
+          </div>
         </div>
       </>
     );
