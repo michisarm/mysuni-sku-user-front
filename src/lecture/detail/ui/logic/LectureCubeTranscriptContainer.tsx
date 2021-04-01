@@ -10,6 +10,7 @@ import { downloadTranscript } from '../../service/useTranscript/utility/useTrans
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
 import Transcript from 'lecture/detail/model/Transcript';
 import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
+import LectureCubeSummary from '../../viewModel/LectureOverview/LectureCubeSummary';
 
 // import WatchLog from 'lecture/detail/model/Watchlog';
 // import LectureParams from '../../viewModel/LectureParams';
@@ -28,12 +29,14 @@ const style = {
 
 interface LectureTranscriptContainerProps {
   transLangVal:string,
-  setTransLangVal:any
+  setTransLangVal:any,
+  lectureSummary?: LectureCubeSummary
 }
 
 const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
-  setTransLangVal
+  setTransLangVal,
+  lectureSummary
 }) {
     
     const selectTransLangObj = [
@@ -56,6 +59,9 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
     // 특정 위치로 재생 위치 이동
     const seekByIndex = (startIndex: number, endIndex: number) => {
+        clearInterval(waitUntilPlayInterval.current); 
+        isValidate.current = false;
+
         getEmbed().loadVideo();
         if (getEmbed() && startIndex >= 0) {
           //TODO current state 를 찾아서 Play
@@ -210,8 +216,9 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                   </Popup>
                   <button className="ui icon button left post delete-kr"
                     onClick={() => { 
-                      if(transcriptList !== undefined) {
-                       downloadTranscript(transcriptList, getLectureMedia()?.mediaContents.internalMedias[0].name);  
+                      if(transcriptList?.length > 0) {
+                        const langText = selectTransLangObj.find(lang => lang.value === transLangVal)?.text || "";
+                       downloadTranscript(transcriptList, (lectureSummary?.name || 'transcript').concat("_", langText));  
                       }                      
                     }}
                   >
@@ -220,37 +227,43 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                   </button>
                 </div>
               </div>
-               {transcriptList?.map((lectureTranscript : any) => {
+               {
+                 transcriptList?.length > 0 ? (
+                   transcriptList?.map((lectureTranscript : any) => {
                  
-                 return (
-                   <>
-                      <p id={'tranScriptRow'+lectureTranscript.idx}
-                        key={lectureTranscript.idx}
-                        className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
-                        onClick={() => {
-                          // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
-                          if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
-                            setIsActive(true);
-                            setSelectedRow(lectureTranscript);
-                          } else if(selectedRow.idx === lectureTranscript.idx) {
-                            setIsActive(false);
-                            setSelectedRow(undefined);
-                          }
+                    return (
+                      <>
+                          <span id={'tranScriptRow'+lectureTranscript.idx}
+                            key={lectureTranscript.idx}
+                            className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
+                            onClick={() => {
+                              // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
+                              if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
+                                setIsActive(true);
+                                setSelectedRow(lectureTranscript);
+                              } else if(selectedRow.idx === lectureTranscript.idx) {
+                                setIsActive(false);
+                                setSelectedRow(undefined);
+                              }
 
-                          seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime), convertStringTimeToNumber(lectureTranscript.endTime));
-                          
-                          // 대본 선택 시 해당 ROW CSS 변경
-                          toggleScriptActiveFunc.current(lectureTranscript);
-                        }}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        
-                        {lectureTranscript.text}
-                        
-                      </p>
-                   </>      
-                 );
-               })}
+                              seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime), convertStringTimeToNumber(lectureTranscript.endTime));
+                              
+                              // 대본 선택 시 해당 ROW CSS 변경
+                              toggleScriptActiveFunc.current(lectureTranscript);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            
+                            {lectureTranscript.text}&nbsp;
+                            
+                          </span>
+                      </>      
+                    );
+                  })
+                 ) : (
+                   <span>저장 된 대본이 없습니다.</span>
+                 )
+               }
             </div>   
         </>
     );
