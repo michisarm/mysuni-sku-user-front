@@ -1,24 +1,15 @@
 /*eslint-disable*/
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  reactAlert,
-  getCookie,
-  setCookie,
-  deleteCookie,
-} from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
 import {
   getLectureMedia,
   onLectureMedia,
 } from 'lecture/detail/store/LectureMediaStore';
 import { patronInfo } from '@nara.platform/dock';
-import { TIMEOUT } from 'dns';
 import { useLectureWatchLog } from 'lecture/detail/service/useLectureMedia/useLectureWatchLog';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import WatchLog from 'lecture/detail/model/Watchlog';
-import { getLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
-import { getLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
 import {
   setLectureConfirmProgress,
   getLectureConfirmProgress,
@@ -26,26 +17,11 @@ import {
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import moment from 'moment';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
-import {
-  Link,
-  matchPath,
-  useHistory,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
-import {
-  setLectureState,
-  getLectureState,
-} from 'lecture/detail/store/LectureStateStore';
-import {
-  LectureStructureCourseItem,
-  LectureStructureCubeItem,
-  LectureStructureDiscussionItem,
-} from 'lecture/detail/viewModel/LectureStructure';
-import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
+import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 import { Icon, Rating } from 'semantic-ui-react';
 import {
   videoClose,
@@ -56,12 +32,8 @@ import {
   getActiveCourseStructureItem,
   getActiveProgramStructureItem,
 } from '../../../service/useLectureStructure/useLectureStructure';
-import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
-import { LectureMedia } from 'lecture/detail/viewModel/LectureMedia';
 import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
-import { findAllQuiz, findQuiz } from 'quiz/api/QuizApi';
 import { setEmbed } from 'lecture/detail/store/EmbedStore';
-import QuizTableList from 'quiz/model/QuizTableList';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -407,59 +379,58 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // watchlogState,
   ]);
 
-  // useEffect(() => {
-  //   let intervalTranscript: any = null;
+  useEffect(() => {
+    let intervalTranscript: any = null;
 
-  //   if (isActive && params && watchlogState) {
-  //     clearInterval(intervalTranscript);
-  //     intervalTranscript = setInterval(() => {
-  //       const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    if (isActive && params && watchlogState) {
+      clearInterval(intervalTranscript);
+      intervalTranscript = setInterval(() => {
+        const currentTime = (embedApi.getCurrentTime() as unknown) as number;
 
-  //       if (!startTime) {
-  //         setStartTime(currentTime);
-  //       }
-
-  //       //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
-  //       let array: any = [];
-  //       getLectureTranscripts()?.map((lectureTranscript, key) => {
-  //         array.push({
-  //           startTime:
-  //             parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
-  //             parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
-  //             parseInt(lectureTranscript.startTime.substr(4, 2), 10),
-  //           endTime:
-  //             parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
-  //             parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
-  //             parseInt(lectureTranscript.endTime.substr(4, 2), 10),
-  //           idx: lectureTranscript.idx,
-  //         });
-  //       });
-  //       array.map((item: any, key: number) => {
-  //         if (item.startTime < currentTime) {
-  //           if (currentTime < item.endTime) {
-  //             const currentScript = document.getElementById(item.idx);
-  //             setTransciptHighlight(item.idx);
-  //             if (currentScript !== null) {
-  //               scrollMove(item.idx);
-  //             }
-  //           }
-  //         }
-  //       });
-  //     }, 2000);
-  //     transcriptIntervalRef.current = intervalTranscript;
-  //   }
-  //   return () => {
-  //     clearInterval(intervalTranscript);
-  //   };
-  // }, [
-  //   isActive,
-  //   lectureParams,
-  //   pathname,
-  //   params,
-  //   embedApi,
-  //   startTime,
-  //   watchlogState,
-  // ]);
+        if (!startTime) {
+          setStartTime(currentTime);
+        }
+        //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+        let array: any = [];
+        getLectureTranscripts()?.map((lectureTranscript, key) => {
+          array.push({
+            startTime:
+              parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
+              parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
+              parseInt(lectureTranscript.startTime.substr(4, 2), 10),
+            endTime:
+              parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
+              parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
+              parseInt(lectureTranscript.endTime.substr(4, 2), 10),
+            idx: lectureTranscript.idx,
+          });
+        });
+        array.map((item: any, key: number) => {
+          if (item.startTime < currentTime) {
+            if (currentTime < item.endTime) {
+              const currentScript = document.getElementById(item.idx);
+              setTransciptHighlight(item.idx);
+              if (currentScript !== null) {
+                scrollMove(item.idx);
+              }
+            }
+          }
+        });
+      }, 2000);
+      transcriptIntervalRef.current = intervalTranscript;
+    }
+    return () => {
+      clearInterval(intervalTranscript);
+    };
+  }, [
+    isActive,
+    lectureParams,
+    pathname,
+    params,
+    embedApi,
+    startTime,
+    watchlogState,
+  ]);
 
   useEffect(() => {
     // clearTimeout(progressInterval);
