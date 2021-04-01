@@ -18,15 +18,15 @@ import { useEffect, useState } from 'react';
 type Value = TranscriptCountModel | undefined;
 
 // Transcript 업로드 샘플 파일의 양식대로 String 타입으로 변환
-const transcriptCdosToString = (transcriptCdo : TranscriptCdo[]) : string => {
-  let str = "";
+const transcriptCdosToString = (transcriptCdo: TranscriptCdo[]): string => {
+  let str = '';
 
-  transcriptCdo?.map((item : any, idx) => {
-    str += (item.text+"\n\n");
+  transcriptCdo?.map((item: any, idx) => {
+    str += item.text + '\n\n';
   });
 
   return str;
-}
+};
 
 export function useTranscriptCount(): [Value] {
   const [subscriberId, setSubscriberId] = useState<string>();
@@ -49,14 +49,20 @@ export function useTranscriptCount(): [Value] {
   return [value];
 }
 
-export function downloadTranscript(transcriptCdo : TranscriptCdo[], title: string = "transcript") {
+export function downloadTranscript(
+  transcriptCdo: TranscriptCdo[],
+  title: string = 'transcript'
+) {
   const str = transcriptCdosToString(transcriptCdo);
-  const blob = new Blob([str], {type : "text/plain;charset=utf-8"});
+  const blob = new Blob([str], { type: 'text/plain;charset=utf-8' });
 
-  saveAs(blob, title + ".txt");
+  saveAs(blob, '1111111111111' + '.txt');
 }
 
-export async function findTranscript(deliveryId : string, locale : string) : Promise<LectureTranscript[]> {
+export async function findTranscript(
+  deliveryId: string,
+  locale: string
+): Promise<LectureTranscript[]> {
   const transcripts = await findAllTranscript(deliveryId, locale);
   const transcriptsItem = await getTranscriptItem(transcripts);
 

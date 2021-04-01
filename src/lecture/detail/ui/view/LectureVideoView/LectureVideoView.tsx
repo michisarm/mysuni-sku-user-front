@@ -407,62 +407,62 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // watchlogState,
   ]);
 
-  // useEffect(() => {
-  //   console.log('!!!')
-  //   let intervalTranscript: any = null;
+  useEffect(() => {
+    console.log('!!!');
+    let intervalTranscript: any = null;
 
-  //   if (isActive && params && watchlogState) {
-  //     clearInterval(intervalTranscript);
-  //     intervalTranscript = setInterval(() => {
-  //       console.log('1')
-  //       const currentTime = (embedApi.getCurrentTime() as unknown) as number;
+    if (isActive && params && watchlogState) {
+      clearInterval(intervalTranscript);
+      intervalTranscript = setInterval(() => {
+        console.log('1');
+        const currentTime = (embedApi.getCurrentTime() as unknown) as number;
 
-  //       if (!startTime) {
-  //         setStartTime(currentTime);
-  //       }
-  //       console.log('2')
-  //       //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
-  //       let array: any = [];
-  //       getLectureTranscripts()?.map((lectureTranscript, key) => {
-  //         array.push({
-  //           startTime:
-  //             parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
-  //             parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
-  //             parseInt(lectureTranscript.startTime.substr(4, 2), 10),
-  //           endTime:
-  //             parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
-  //             parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
-  //             parseInt(lectureTranscript.endTime.substr(4, 2), 10),
-  //           idx: lectureTranscript.idx,
-  //         });
-  //       });
-  //       console.log('3')
-  //       array.map((item: any, key: number) => {
-  //         if (item.startTime < currentTime) {
-  //           if (currentTime < item.endTime) {
-  //             const currentScript = document.getElementById(item.idx);
-  //             setTransciptHighlight(item.idx);
-  //             if (currentScript !== null) {
-  //               scrollMove(item.idx);
-  //             }
-  //           }
-  //         }
-  //       });
-  //     }, 2000);
-  //     transcriptIntervalRef.current = intervalTranscript;
-  //   }
-  //   return () => {
-  //     clearInterval(intervalTranscript);
-  //   };
-  // }, [
-  //   isActive,
-  //   lectureParams,
-  //   pathname,
-  //   params,
-  //   embedApi,
-  //   startTime,
-  //   watchlogState,
-  // ]);
+        if (!startTime) {
+          setStartTime(currentTime);
+        }
+        console.log('2');
+        //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+        let array: any = [];
+        getLectureTranscripts()?.map((lectureTranscript, key) => {
+          array.push({
+            startTime:
+              parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
+              parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
+              parseInt(lectureTranscript.startTime.substr(4, 2), 10),
+            endTime:
+              parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
+              parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
+              parseInt(lectureTranscript.endTime.substr(4, 2), 10),
+            idx: lectureTranscript.idx,
+          });
+        });
+        console.log('3');
+        array.map((item: any, key: number) => {
+          if (item.startTime < currentTime) {
+            if (currentTime < item.endTime) {
+              const currentScript = document.getElementById(item.idx);
+              setTransciptHighlight(item.idx);
+              if (currentScript !== null) {
+                scrollMove(item.idx);
+              }
+            }
+          }
+        });
+      }, 2000);
+      transcriptIntervalRef.current = intervalTranscript;
+    }
+    return () => {
+      clearInterval(intervalTranscript);
+    };
+  }, [
+    isActive,
+    lectureParams,
+    pathname,
+    params,
+    embedApi,
+    startTime,
+    watchlogState,
+  ]);
 
   useEffect(() => {
     // clearTimeout(progressInterval);
