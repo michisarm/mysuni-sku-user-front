@@ -92,6 +92,17 @@ function LectureDiscussionContainer (props: Props) {
       });
   },[lectureDiscussion?.id]);
 
+  // 전체의견 갯수 조회
+  useEffect(() => {
+    lectureDiscussion && countByFeedbackId(lectureDiscussion?.id).then(
+      res => {
+        setLectureFeedbackContent({
+          count: res.count,
+        })
+      }
+    )
+  },[lectureDiscussion?.id])
+
   const {
     skProfile: {
       member: { company, department, email, name },
@@ -156,7 +167,7 @@ function LectureDiscussionContainer (props: Props) {
             <div className="discuss-box">
               <Image src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`} alt="" style={{display: 'inline-block'}}/>
               <h2>{lectureDiscussion.name}</h2>
-              <span className="peo-opinion">전체 의견 <strong>638</strong></span>
+              <span className="peo-opinion">전체 의견 <strong>{lectureFeedbackContent?.count}</strong></span>
               <span><strong className="peo-date">{moment(lectureFeedbackContent?.time).format('YYYY.MM.DD')}</strong></span>
             </div>
             
