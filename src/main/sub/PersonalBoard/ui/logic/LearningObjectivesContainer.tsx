@@ -2,6 +2,7 @@ import { inject, observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { useLearningObjectivesItem } from '../../store/PersonalBoardStore';
+import { Icon, Image } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps {
   openLearningObjectives : () => void

@@ -30,17 +30,13 @@ const style = {
 interface LectureTranscriptContainerProps {
   transLangVal:string,
   setTransLangVal:any,
-  activatedTab: string
 }
 
 const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
   setTransLangVal,
-  activatedTab
 }) {
 
-  console.log('activatedTab', activatedTab)
-    
     const selectTransLangObj = [
       { key: "ko", value: "ko", text: "KR" },
       { key: "eng", value: "en", text: "ENG" },
@@ -51,13 +47,12 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
     const [ transcriptList, setTranScriptList ] = useState<any>();
     const [ panoptoSessionId, setPanoptoSessionId ] = useState<string | undefined>(getLectureMedia()?.mediaContents.internalMedias[0].panoptoSessionId);
-    const [ isActive, setIsActive ] = useState<boolean>(false);
-    const [ selectedRow, setSelectedRow ] = useState<Transcript>();
+    // const [ selectedRow, setSelectedRow ] = useState<Transcript>();
 
 
     const [autoHighlight, setAutoHighlight] = useState<boolean>();
     const [tttt, setTttt] = useState<boolean>(true);
-    const interval = useRef<any>(null);
+    // const interval = useRef<any>(null);
     const waitUntilPlayInterval = useRef<any>(null);
     const toggleScriptActiveFunc = useRef<any>(null);
     const isValidate = useRef<boolean>(false);
@@ -66,34 +61,53 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
     const intervalTranscript: any = useRef<any>(null);
 
+    const [transciptHighlight, setTransciptHighlight] = useState<string>();
+
 
     // 특정 위치로 재생 위치 이동
     const seekByIndex = (startIndex: number, endIndex: number) => {
       console.log('startIndex', startIndex)
       console.log('endIndex', endIndex)
-        getEmbed().loadVideo();
+        // getEmbed().loadVideo();
         if (getEmbed() && startIndex >= 0) {
           //TODO current state 를 찾아서 Play
-          getEmbed().playVideo();
+          // getEmbed().playVideo();
 
           // 동영상 로딩 후 seekTo 하기 위해
-          waitUntilPlayInterval.current = setInterval(() => {
-            console.log('1')
-            if(getEmbed().isPaused === false) {
-              getEmbed().seekTo(startIndex);
+          // waitUntilPlayInterval.current = setInterval(() => {
+          //   console.log('1')
+          //   if(getEmbed().isPaused === false) {
+          //     getEmbed().seekTo(startIndex);
 
-              if(
-                    getEmbed().getCurrentTime() < startIndex  // 현재 동영상 시간이 대본 시작 시간보다 작은 경우
-                ||  (getEmbed().getCurrentTime() > (startIndex + ERROR_RANGE) && getEmbed().getCurrentTime() < endIndex)  // 현재 동영상 시간이 대본 시작 시간이 아닐 때
-                ||  getEmbed().getCurrentTime() > endIndex) {   // 현재 동영상 시간이 대본 종료 시간보다 클 때
+          //     if(
+          //           getEmbed().getCurrentTime() < startIndex  // 현재 동영상 시간이 대본 시작 시간보다 작은 경우
+          //       ||  (getEmbed().getCurrentTime() > (startIndex + ERROR_RANGE) && getEmbed().getCurrentTime() < endIndex)  // 현재 동영상 시간이 대본 시작 시간이 아닐 때
+          //       ||  getEmbed().getCurrentTime() > endIndex) {   // 현재 동영상 시간이 대본 종료 시간보다 클 때
                   
-                // 잘못 된 동영상 시간을 가져오는 경우가 있어서 다시 seekTo
-                getEmbed().seekTo(startIndex); 
-              } else {
-                clearInterval(waitUntilPlayInterval.current); 
-              }              
-            }
-          }, 100);
+          //       // 잘못 된 동영상 시간을 가져오는 경우가 있어서 다시 seekTo
+          //       getEmbed().seekTo(startIndex); 
+          //     } else {
+          //       clearInterval(waitUntilPlayInterval.current); 
+          //     }              
+          //   }
+          // }, 100);
+
+          if(getEmbed().isPaused === false) {
+            getEmbed().seekTo(startIndex);
+
+            // if(
+            //       getEmbed().getCurrentTime() < startIndex  // 현재 동영상 시간이 대본 시작 시간보다 작은 경우
+            //   ||  (getEmbed().getCurrentTime() > (startIndex + ERROR_RANGE) && getEmbed().getCurrentTime() < endIndex)  // 현재 동영상 시간이 대본 시작 시간이 아닐 때
+            //   ||  getEmbed().getCurrentTime() > endIndex) {   // 현재 동영상 시간이 대본 종료 시간보다 클 때
+                
+            //   // 잘못 된 동영상 시간을 가져오는 경우가 있어서 다시 seekTo
+            //   getEmbed().seekTo(startIndex); 
+            // } 
+          }
+            // else {
+            //   clearInterval(waitUntilPlayInterval.current); 
+            // }              
+          // }
                             
         }
     };
@@ -116,45 +130,45 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
        );
     }
 
-    const intervalAction = () => {
-      let curVideoTime = 0;
-      let curRowStTime = 0;
-      let curRowEdTime = 0;
+    // const intervalAction = () => {
+    //   let curVideoTime = 0;
+    //   let curRowStTime = 0;
+    //   let curRowEdTime = 0;
 
-      interval.current = setInterval(() => {
-        curVideoTime = getEmbed().getCurrentTime(); // 현재 동영상 초
-        curRowStTime = convertStringTimeToNumber(selectedRow?.startTime); // 선택 한 대본 시작 초
-        curRowEdTime = convertStringTimeToNumber(selectedRow?.endTime);   // 선택 한 대본 종료 초
+    //   interval.current = setInterval(() => {
+    //     curVideoTime = getEmbed().getCurrentTime(); // 현재 동영상 초
+    //     curRowStTime = convertStringTimeToNumber(selectedRow?.startTime); // 선택 한 대본 시작 초
+    //     curRowEdTime = convertStringTimeToNumber(selectedRow?.endTime);   // 선택 한 대본 종료 초
 
-        if(isActive) {
-          if(!isValidate.current) { // 현재 동영상이 seekTo에 의해 선택 한 대본의 시작 지점으로 왔는지 체크
-            if(
-                  curVideoTime === curRowStTime
-              ||  (curVideoTime <= (curRowStTime + ERROR_RANGE) && curVideoTime >= curRowStTime)) {
-              isValidate.current = true;
-            }
-          } else if(getEmbed().getCurrentTime() >= curRowEdTime) {
-            toggleScriptActiveFunc.current(selectedRow);
-            initialize();
-          } 
-        } else {
-          initialize();
-        }
-      }, 200);
-    }
+    //     if(isActive) {
+    //       if(!isValidate.current) { // 현재 동영상이 seekTo에 의해 선택 한 대본의 시작 지점으로 왔는지 체크
+    //         if(
+    //               curVideoTime === curRowStTime
+    //           ||  (curVideoTime <= (curRowStTime + ERROR_RANGE) && curVideoTime >= curRowStTime)) {
+    //           isValidate.current = true;
+    //         }
+    //       } else if(getEmbed().getCurrentTime() >= curRowEdTime) {
+    //         toggleScriptActiveFunc.current(selectedRow);
+    //         initialize();
+    //       } 
+    //     } else {
+    //       // initialize();
+    //     }
+    //   }, 200);
+    // }
 
     // 동영상 상태 변경 시 callback
     getEmbed().onStateChange = () => {
       console.log('다시시작')
-      clearInterval(interval.current);
+      // clearInterval(interval.current);
 
       if(getEmbed().isPaused === true) {
         console.log('true')
-        clearInterval(interval.current);
+        // clearInterval(interval.current);
         // clearInterval(intervalTranscript);
       } else {
         console.log('false')
-        intervalAction();
+        // intervalAction();
         setAutoHighlight(true);
         // testAction();
       }
@@ -169,12 +183,10 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       }
 
       clearInterval(intervalTranscript)
-      setSelectedRow(undefined);
-      setIsActive(false);
-      clearInterval(interval.current);
-      clearInterval(waitUntilPlayInterval.current); 
-      interval.current = null;
-      isValidate.current = false;
+      // clearInterval(interval.current);
+      // clearInterval(waitUntilPlayInterval.current); 
+      // interval.current = null;
+      // isValidate.current = false;
     }
 
     const scrollMove = (id: any) => {
@@ -194,6 +206,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     useEffect(() => {
 
       return () => {
+        console.log('useEffect 나가기')
         clearInterval(intervalTranscript.current)
         initialize();
         setPanoptoSessionId(''); 
@@ -225,55 +238,45 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       getTranScriptsFunc();     
     }, [transLangVal, panoptoSessionId]);
 
-    // 대본 선택 여부에 따른 처리
-    useEffect(() => {
-      clearInterval(interval.current);
-      intervalAction();
+    // // 대본 선택 여부에 따른 처리
+    // useEffect(() => {
+    //   clearInterval(interval.current);
+    //   // intervalAction();
 
-      return () => clearInterval(interval.current);
-    }, [selectedRow]);
+    //   return () => clearInterval(interval.current);
+    // }, [selectedRow]);
 
     useEffect(() => {
       if(autoHighlight) {
-
         intervalTranscript.current = setInterval(() => {
-          if(getEmbed().isPaused === true) {
+          if (getEmbed().isPaused === true) {
             setAutoHighlight(false)
             clearInterval(intervalTranscript)
-          } else {
-          console.log(getEmbed().getCurrentTime())
-          console.log('transcriptList', transcriptList)
-              //         //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
-    //         const array: any = [];
-    //         getLectureTranscripts()?.map((lectureTranscript, key) => {
-    //         array.push({
-    //             startTime:
-    //             parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
-    //             parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
-    //             parseInt(lectureTranscript.startTime.substr(4, 2), 10),
-    //             endTime:
-    //             parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
-    //             parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
-    //             parseInt(lectureTranscript.endTime.substr(4, 2), 10),
-    //             idx: lectureTranscript.idx,
-    //         });
-    //         });
-            transcriptList.map((item: any, key: number) => {
-            if (item.startTime < getEmbed().getCurrentTime()) {
-                if (getEmbed().getCurrentTime() < item.endTime) {
-                const currentScript = document.getElementById(item.idx);
-                setTransciptHighlight(item.idx);
-                if (currentScript !== null) {
-                    scrollMove(item.idx);
+          } 
+          else {
+            if(transcriptList !== undefined) {
+              //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+              transcriptList.map((item: any, key: number) => {
+                if (convertStringTimeToNumber(item.startTime) < getEmbed().getCurrentTime()) {
+                  if (getEmbed().getCurrentTime() < convertStringTimeToNumber(item.endTime)) {
+                    // const currentScript = document.getElementById(item.idx);
+                    toggleScriptActiveFunc.current(item);
+                    setTransciptHighlight(item.idx);
+                    // setSelectedRow(item)
+                    // if (currentScript !== null) {
+                    //   console.log('currentScript', currentScript)
+                    // }
+                  }
                 }
-                }
+              })
             }
-    //         });
-    //     }, 2000);
           }
-        }, 2000);
+        }, 1000);
       }
-    }, [autoHighlight, isActive])
+      return () => {
+        clearInterval(intervalTranscript)
+      }
+    }, [autoHighlight, transcriptList])
 
 
 //     useEffect(() => {
@@ -312,6 +315,16 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     //   }, 2000);
     // },[params])
 
+
+  const highlight = (id: string) => {
+    if (transciptHighlight === id) {
+      return 'transcript-active';
+    } else {
+      return '';
+    }
+  };
+
+
     return(
         <>
             <div className="transcript-box" id="tanscript-scroll">
@@ -345,32 +358,30 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                 </div>
               </div>
                {transcriptList?.map((lectureTranscript : any) => {
-                 
                  return (
                    <>
-                      <p id={'tranScriptRow'+lectureTranscript.idx}
+                      <p id={lectureTranscript.idx + ''}
                         key={lectureTranscript.idx}
-                        className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
+                        className={highlight(lectureTranscript.idx + '')}
+                        // className={lectureTranscript.activate ? "transcript-active" : "transcript-hover"} 
                         onClick={() => {
-                          // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
-                          if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
-                            setIsActive(true);
-                            setSelectedRow(lectureTranscript);
-                          } else if(selectedRow.idx === lectureTranscript.idx) {
-                            setIsActive(false);
-                            setSelectedRow(undefined);
-                          }
+                          // // 대본 선택 시 해당 ROW 값 활성화 여부 toggle 및 값 저장
+                          // if(selectedRow === undefined || selectedRow.idx !== lectureTranscript.idx) {
+                          //   // setIsActive(true);
+                          //   // setSelectedRow(lectureTranscript);
+                          // } else if(selectedRow.idx === lectureTranscript.idx) {
+                          //   // setIsActive(false);
+                          //   // setSelectedRow(undefined);
+                          // }
 
                           seekByIndex(convertStringTimeToNumber(lectureTranscript.startTime), convertStringTimeToNumber(lectureTranscript.endTime));
                           
-                          // 대본 선택 시 해당 ROW CSS 변경
-                          toggleScriptActiveFunc.current(lectureTranscript);
+                          // // 대본 선택 시 해당 ROW CSS 변경
+                          // toggleScriptActiveFunc.current(lectureTranscript);
                         }}
                         style={{ cursor: 'pointer' }}
                       >
-                        
-                        {lectureTranscript.text}
-                        
+                        {lectureTranscript.text}{convertStringTimeToNumber(lectureTranscript.startTime)}
                       </p>
                    </>      
                  );

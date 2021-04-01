@@ -172,7 +172,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
         </>
       )}
       {activatedTab === 'comment' && <LectureCommentContainer />}
-      {activatedTab === 'transcript' && <LectureCubeTranscriptContainer transLangVal={transLangVal} activatedTab={activatedTab} setTransLangVal={setTransLangVal} />}
+      {activatedTab === 'transcript' && <LectureCubeTranscriptContainer transLangVal={transLangVal} setTransLangVal={setTransLangVal} />}
     </>
   );
 };
