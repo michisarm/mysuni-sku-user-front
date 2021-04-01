@@ -21,7 +21,25 @@ export const getPathValue = (
   const reg = new RegExp('/' + param + '/([^/]+)(/|$)');
   const matches = reg.exec(path);
   if (matches && matches.length) {
-    return { type, id: matches[1] };
+    let checkId;
+    switch (type) {
+      case FieldType.College:
+        checkId = 'CLG';
+        break;
+      case FieldType.Channel:
+        checkId = 'CHN';
+        break;
+      case FieldType.Course:
+        checkId = 'COURSE';
+        break;
+      case FieldType.Cube:
+        checkId = 'CUBE';
+        break;
+      case FieldType.Community:
+        checkId = 'COMMUNITY';
+        break;
+    }
+    return matches[1].includes(checkId) ? { type, id: matches[1] } : null;
   } else {
     return null;
   }
