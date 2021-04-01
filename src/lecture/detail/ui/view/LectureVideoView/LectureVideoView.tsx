@@ -34,6 +34,9 @@ import {
 } from '../../../service/useLectureStructure/useLectureStructure';
 import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
 import { setEmbed } from 'lecture/detail/store/EmbedStore';
+import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
+import { findAllQuiz } from 'quiz/api/QuizApi';
+import QuizTableList from 'quiz/model/QuizTableList';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
