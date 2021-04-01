@@ -22,14 +22,14 @@ interface LectureTranscriptContainerProps {
   transLangVal: string;
   setTransLangVal: any;
   lectureSummary?: LectureCubeSummary;
-  trascriptScrollMove: () => void;
+  // trascriptScrollMove: () => void;
 }
 
 const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
   setTransLangVal,
   lectureSummary,
-  trascriptScrollMove
+  // trascriptScrollMove
 }) {
   const selectTransLangObj = [
     { key: 'ko', value: 'ko', text: 'KR' },
@@ -112,7 +112,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
 
         setTranScriptList(transcriptsItem);
       }
-      trascriptScrollMove();
+      // trascriptScrollMove();
     };
 
     getTranScriptsFunc();
