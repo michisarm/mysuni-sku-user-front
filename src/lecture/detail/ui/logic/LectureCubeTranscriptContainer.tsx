@@ -79,13 +79,13 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
     if (getEmbed().isPaused === false) {
       setAutoHighlight(true);
     }
-    clearInterval(intervalTranscript);
+    clearInterval(intervalTranscript.current);
   };
 
   useEffect(() => {
     return () => {
       clearInterval(intervalTranscript.current);
-      initialize();
+      setAutoHighlight(false);
       setPanoptoSessionId('');
     };
   }, []);
@@ -116,6 +116,8 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
   }, [transLangVal, panoptoSessionId]);
 
   useEffect(() => {
+    clearInterval(intervalTranscript.current);
+
     if (autoHighlight) {
       intervalTranscript.current = setInterval(() => {
         if (getEmbed().isPaused === true) {
@@ -141,9 +143,9 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
         }
       }, 500);
     }
-    return () => {
-      clearInterval(intervalTranscript);
-    };
+    // return () => {
+    //   clearInterval(intervalTranscript);
+    // };
   }, [autoHighlight, transcriptList]);
 
   const highlight = (id: string) => {
