@@ -27,10 +27,12 @@ const VideoQuizContentContainer = ({
   questionData,
   resultAlertMessage,
   onCompletedQuiz,
+  setCheckQuizState,
 }: {
   questionData: QuizQuestions[];
   resultAlertMessage: QuizMessage;
   onCompletedQuiz: () => void;
+  setCheckQuizState: (state: any) => void;
 }) => {
   const currentUser = patronInfo.getPatron();
   const currentMemberId = patronInfo.getDenizenId();
@@ -82,6 +84,7 @@ const VideoQuizContentContainer = ({
         quizQuestionId: questionData[currentIndex]?.id,
         quizQuestionAnswerItems: userAnswerField?.flat(),
       });
+      setCheckQuizState(quizStatus.type === 'result' ? true : false);
     }
   }, [currentIndex, quizStatus]);
 
