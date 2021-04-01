@@ -27,12 +27,12 @@ interface LectureCubeContentViewProps {
   lectureTranscriptCount?: TranscriptCountModel;
 }
 
-// function hashLink(hash: string) {
-//   const element = document.getElementById(hash);
-//   if (element !== null) {
-//     element.scrollIntoView();
-//   }
-// }
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
 
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
   lectureDescription,
@@ -70,7 +70,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
     setActivatedTab('overview');
   }, []);
   const classroomHashClick = useCallback(() => {
-    // hashLink('lms-classroom');
+    hashLink('lms-classroom');
     setActivatedTab('classroom');
   }, []);
   const commentHashClick = useCallback(() => {

@@ -5,6 +5,9 @@ export default interface LectureFeedbackContent {
   depotId?: string;
   time?: string;
   relatedUrlList?: RelatedUrlList[];
+
+  //전체의견 갯수조회
+  count?: number
 }
 
 type RelatedUrlList = {

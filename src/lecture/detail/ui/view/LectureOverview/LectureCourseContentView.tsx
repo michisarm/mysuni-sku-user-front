@@ -52,7 +52,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
   const overviewHashClick = useCallback(() => {
-    hashLink('lms-overview');
+    // hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const instructorHashClick = useCallback(() => {
