@@ -192,6 +192,7 @@ function LectureDiscussionContainer (props: Props) {
                     <i aria-hidden="true" className="icon icon morelink more2" />
                   </button>
                 )}
+                {/*  */}
                 {more && (
                   <button
                     className="ui icon button right btn-blue"
