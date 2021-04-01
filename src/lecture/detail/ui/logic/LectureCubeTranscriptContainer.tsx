@@ -10,6 +10,7 @@ import { downloadTranscript } from '../../service/useTranscript/utility/useTrans
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
 import Transcript from 'lecture/detail/model/Transcript';
 import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
+import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 
 // import WatchLog from 'lecture/detail/model/Watchlog';
 // import LectureParams from '../../viewModel/LectureParams';
@@ -28,13 +29,17 @@ const style = {
 
 interface LectureTranscriptContainerProps {
   transLangVal:string,
-  setTransLangVal:any
+  setTransLangVal:any,
+  activatedTab: string
 }
 
 const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
-  setTransLangVal
+  setTransLangVal,
+  activatedTab
 }) {
+
+  console.log('activatedTab', activatedTab)
     
     const selectTransLangObj = [
       { key: "ko", value: "ko", text: "KR" },
@@ -49,13 +54,23 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
     const [ isActive, setIsActive ] = useState<boolean>(false);
     const [ selectedRow, setSelectedRow ] = useState<Transcript>();
 
+
+    const [autoHighlight, setAutoHighlight] = useState<boolean>();
+    const [tttt, setTttt] = useState<boolean>(true);
     const interval = useRef<any>(null);
     const waitUntilPlayInterval = useRef<any>(null);
     const toggleScriptActiveFunc = useRef<any>(null);
     const isValidate = useRef<boolean>(false);
 
+    const params = useLectureRouterParams();
+
+    const intervalTranscript: any = useRef<any>(null);
+
+
     // 특정 위치로 재생 위치 이동
     const seekByIndex = (startIndex: number, endIndex: number) => {
+      console.log('startIndex', startIndex)
+      console.log('endIndex', endIndex)
         getEmbed().loadVideo();
         if (getEmbed() && startIndex >= 0) {
           //TODO current state 를 찾아서 Play
@@ -63,6 +78,7 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
           // 동영상 로딩 후 seekTo 하기 위해
           waitUntilPlayInterval.current = setInterval(() => {
+            console.log('1')
             if(getEmbed().isPaused === false) {
               getEmbed().seekTo(startIndex);
 
@@ -129,17 +145,30 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
     // 동영상 상태 변경 시 callback
     getEmbed().onStateChange = () => {
+      console.log('다시시작')
       clearInterval(interval.current);
 
       if(getEmbed().isPaused === true) {
+        console.log('true')
         clearInterval(interval.current);
+        // clearInterval(intervalTranscript);
       } else {
+        console.log('false')
         intervalAction();
+        setAutoHighlight(true);
+        // testAction();
       }
     }
 
     // 대본 선택 관련 초기화
     const initialize = () => {
+      //자동 하이라이트 기능
+      // testAction();
+      if(getEmbed().isPaused === false) {
+        setAutoHighlight(true)
+      }
+
+      clearInterval(intervalTranscript)
       setSelectedRow(undefined);
       setIsActive(false);
       clearInterval(interval.current);
@@ -148,8 +177,24 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
       isValidate.current = false;
     }
 
+    const scrollMove = (id: any) => {
+      const target = document.getElementById(id);
+      const parent = document.getElementById('tanscript-scroll');
+      //스크롤 높이 더해주면 된다
+      const scrollHeight = document.getElementById('tanscript-scroll')?.scrollTop;
+      const distanceBetweenParentAndChild =
+        target!.getBoundingClientRect().top -
+        parent!.getBoundingClientRect().top +
+        scrollHeight!;
+      document
+        .getElementById('tanscript-scroll')!
+        .scrollTo(0, distanceBetweenParentAndChild);
+    };
+
     useEffect(() => {
+
       return () => {
+        clearInterval(intervalTranscript.current)
         initialize();
         setPanoptoSessionId(''); 
       }
@@ -187,6 +232,85 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
 
       return () => clearInterval(interval.current);
     }, [selectedRow]);
+
+    useEffect(() => {
+      if(autoHighlight) {
+
+        intervalTranscript.current = setInterval(() => {
+          if(getEmbed().isPaused === true) {
+            setAutoHighlight(false)
+            clearInterval(intervalTranscript)
+          } else {
+          console.log(getEmbed().getCurrentTime())
+          console.log('transcriptList', transcriptList)
+              //         //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+    //         const array: any = [];
+    //         getLectureTranscripts()?.map((lectureTranscript, key) => {
+    //         array.push({
+    //             startTime:
+    //             parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
+    //             parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
+    //             parseInt(lectureTranscript.startTime.substr(4, 2), 10),
+    //             endTime:
+    //             parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
+    //             parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
+    //             parseInt(lectureTranscript.endTime.substr(4, 2), 10),
+    //             idx: lectureTranscript.idx,
+    //         });
+    //         });
+            transcriptList.map((item: any, key: number) => {
+            if (item.startTime < getEmbed().getCurrentTime()) {
+                if (getEmbed().getCurrentTime() < item.endTime) {
+                const currentScript = document.getElementById(item.idx);
+                setTransciptHighlight(item.idx);
+                if (currentScript !== null) {
+                    scrollMove(item.idx);
+                }
+                }
+            }
+    //         });
+    //     }, 2000);
+          }
+        }, 2000);
+      }
+    }, [autoHighlight, isActive])
+
+
+//     useEffect(() => {
+//       console.log('params', params)
+//       let intervalTranscript: any = null;
+//       clearInterval(intervalTranscript);
+//       intervalTranscript = setInterval(() => {
+//         console.log('1')
+// console.log(getEmbed().getCurrentTime())
+        //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+        // let array: any = [];
+        // getLectureTranscripts()?.map((lectureTranscript, key) => {
+        //   array.push({
+        //     startTime:
+        //       parseInt(lectureTranscript.startTime.substr(0, 2), 10) * 60 * 60 +
+        //       parseInt(lectureTranscript.startTime.substr(2, 2), 10) * 60 +
+        //       parseInt(lectureTranscript.startTime.substr(4, 2), 10),
+        //     endTime:
+        //       parseInt(lectureTranscript.endTime.substr(0, 2), 10) * 60 * 60 +
+        //       parseInt(lectureTranscript.endTime.substr(2, 2), 10) * 60 +
+        //       parseInt(lectureTranscript.endTime.substr(4, 2), 10),
+        //     idx: lectureTranscript.idx,
+        //   });
+        // });
+        // array.map((item: any, key: number) => {
+        //   if (item.startTime < currentTime) {
+        //     if (currentTime < item.endTime) {
+        //       const currentScript = document.getElementById(item.idx);
+        //       setTransciptHighlight(item.idx);
+        //       if (currentScript !== null) {
+        //         scrollMove(item.idx);
+        //       }
+        //     }
+        //   }
+        // });
+    //   }, 2000);
+    // },[params])
 
     return(
         <>

@@ -408,17 +408,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   ]);
 
   // useEffect(() => {
+  //   console.log('!!!')
   //   let intervalTranscript: any = null;
 
   //   if (isActive && params && watchlogState) {
   //     clearInterval(intervalTranscript);
   //     intervalTranscript = setInterval(() => {
+  //       console.log('1')
   //       const currentTime = (embedApi.getCurrentTime() as unknown) as number;
 
   //       if (!startTime) {
   //         setStartTime(currentTime);
   //       }
-
+  //       console.log('2')
   //       //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
   //       let array: any = [];
   //       getLectureTranscripts()?.map((lectureTranscript, key) => {
@@ -434,6 +436,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   //           idx: lectureTranscript.idx,
   //         });
   //       });
+  //       console.log('3')
   //       array.map((item: any, key: number) => {
   //         if (item.startTime < currentTime) {
   //           if (currentTime < item.endTime) {
