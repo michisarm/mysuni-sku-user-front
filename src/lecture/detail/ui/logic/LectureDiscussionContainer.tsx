@@ -37,6 +37,7 @@ function LectureDiscussionContainer (props: Props) {
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
+  const [count, setCount] = useState<number>();
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -96,9 +97,7 @@ function LectureDiscussionContainer (props: Props) {
   useEffect(() => {
     lectureDiscussion && countByFeedbackId(lectureDiscussion?.id).then(
       res => {
-        setLectureFeedbackContent({
-          count: res.count,
-        })
+        setCount(res.count)
       }
     )
   },[lectureDiscussion?.id])
@@ -142,7 +141,6 @@ function LectureDiscussionContainer (props: Props) {
     setMore(false);
   }, []);
 
-
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
       originArr.push(depotData.id);
@@ -159,7 +157,7 @@ function LectureDiscussionContainer (props: Props) {
 
   return (
     <>
-      {lectureDiscussion && (
+      {lectureDiscussion && lectureFeedbackContent !== undefined && (
         <>
           <div className="discuss-wrap">
             
@@ -167,7 +165,7 @@ function LectureDiscussionContainer (props: Props) {
             <div className="discuss-box">
               <Image src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`} alt="" style={{display: 'inline-block'}}/>
               <h2>{lectureDiscussion.name}</h2>
-              <span className="peo-opinion">전체 의견 <strong>{lectureFeedbackContent?.count}</strong></span>
+              <span className="peo-opinion">전체 의견 <strong>{count}</strong></span>
               <span><strong className="peo-date">{moment(lectureFeedbackContent?.time).format('YYYY.MM.DD')}</strong></span>
             </div>
             
@@ -268,15 +266,6 @@ function LectureDiscussionContainer (props: Props) {
                           />
                         </div>
                       ))}
-
-                    {/* <div className="down">
-                      <Checkbox
-                        className="base"
-                      />
-                      <Icon
-                        className="icon-down-type4"
-                      />
-                    </div> */}
                   </div>
                 </div>
               </div>  
