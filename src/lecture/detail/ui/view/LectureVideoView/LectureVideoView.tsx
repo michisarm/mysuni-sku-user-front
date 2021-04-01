@@ -1,24 +1,15 @@
 /*eslint-disable*/
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  reactAlert,
-  getCookie,
-  setCookie,
-  deleteCookie,
-} from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
 import {
   getLectureMedia,
   onLectureMedia,
 } from 'lecture/detail/store/LectureMediaStore';
 import { patronInfo } from '@nara.platform/dock';
-import { TIMEOUT } from 'dns';
 import { useLectureWatchLog } from 'lecture/detail/service/useLectureMedia/useLectureWatchLog';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import WatchLog from 'lecture/detail/model/Watchlog';
-import { getLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
-import { getLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
 import {
   setLectureConfirmProgress,
   getLectureConfirmProgress,
@@ -26,26 +17,11 @@ import {
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import moment from 'moment';
 import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
-import {
-  Link,
-  matchPath,
-  useHistory,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestLectureStructure } from '../../logic/LectureStructureContainer';
-import {
-  setLectureState,
-  getLectureState,
-} from 'lecture/detail/store/LectureStateStore';
-import {
-  LectureStructureCourseItem,
-  LectureStructureCubeItem,
-  LectureStructureDiscussionItem,
-} from 'lecture/detail/viewModel/LectureStructure';
-import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
+import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 import { Icon, Rating } from 'semantic-ui-react';
 import {
   videoClose,
@@ -56,12 +32,8 @@ import {
   getActiveCourseStructureItem,
   getActiveProgramStructureItem,
 } from '../../../service/useLectureStructure/useLectureStructure';
-import VideoQuizContainer from 'quiz/ui/logic/VideoQuizContainer';
-import { LectureMedia } from 'lecture/detail/viewModel/LectureMedia';
 import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
-import { findAllQuiz, findQuiz } from 'quiz/api/QuizApi';
 import { setEmbed } from 'lecture/detail/store/EmbedStore';
-import QuizTableList from 'quiz/model/QuizTableList';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -408,19 +380,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   ]);
 
   useEffect(() => {
-    console.log('!!!');
     let intervalTranscript: any = null;
 
     if (isActive && params && watchlogState) {
       clearInterval(intervalTranscript);
       intervalTranscript = setInterval(() => {
-        console.log('1');
         const currentTime = (embedApi.getCurrentTime() as unknown) as number;
 
         if (!startTime) {
           setStartTime(currentTime);
         }
-        console.log('2');
         //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
         let array: any = [];
         getLectureTranscripts()?.map((lectureTranscript, key) => {
@@ -436,7 +405,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             idx: lectureTranscript.idx,
           });
         });
-        console.log('3');
         array.map((item: any, key: number) => {
           if (item.startTime < currentTime) {
             if (currentTime < item.endTime) {

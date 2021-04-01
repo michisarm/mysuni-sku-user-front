@@ -45,14 +45,6 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
   const [autoHighlight, setAutoHighlight] = useState<boolean>();
   const intervalTranscript: any = useRef<any>(null);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
-  useWhyDidYouUpdate('LectureTranscriptContainer', {
-    transLangVal,
-    setTransLangVal,
-    transcriptList,
-    panoptoSessionId,
-    autoHighlight,
-    transciptHighlight,
-  });
 
   // 특정 위치로 재생 위치 이동
   const seekByIndex = (startIndex: number, endIndex: number) => {
@@ -75,9 +67,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
   useEffect(() => {
     // 동영상 상태 변경 시 callback
     getEmbed().onStateChange = () => {
-      if (getEmbed().isPaused === true) {
-        console.log('1');
-      } else {
+      if (getEmbed().isPaused === false) {
         setAutoHighlight(true);
       }
     };
@@ -94,7 +84,6 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
 
   useEffect(() => {
     return () => {
-      console.log('useEffect 나가기');
       clearInterval(intervalTranscript.current);
       initialize();
       setPanoptoSessionId('');
@@ -150,7 +139,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
             });
           }
         }
-      }, 1000);
+      }, 500);
     }
     return () => {
       clearInterval(intervalTranscript);
@@ -236,37 +225,3 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
 };
 
 export default LectureTranscriptContainer;
-
-function useWhyDidYouUpdate(name: string, props: any) {
-  // Get a mutable ref object where we can store props ...
-  // ... for comparison next time this hook runs.
-  const previousProps = useRef<any>();
-
-  useEffect(() => {
-    if (previousProps.current) {
-      // Get all keys from previous and current props
-      const allKeys = Object.keys({ ...previousProps.current, ...props });
-      // Use this object to keep track of changed props
-      const changesObj: any = {};
-      // Iterate through keys
-      allKeys.forEach(key => {
-        // If previous is different from current
-        if (previousProps.current[key] !== props[key]) {
-          // Add to changesObj
-          changesObj[key] = {
-            from: previousProps.current[key],
-            to: props[key],
-          };
-        }
-      });
-
-      // If changesObj not empty then output to console
-      if (Object.keys(changesObj).length) {
-        console.log('[why-did-you-update]', name, changesObj);
-      }
-    }
-
-    // Finally update previousProps with current props for next hook call
-    previousProps.current = props;
-  });
-}
