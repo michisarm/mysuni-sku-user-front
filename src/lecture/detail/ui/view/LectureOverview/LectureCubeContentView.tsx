@@ -83,10 +83,14 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
     setActivatedTab('transcript');
     // 하드코딩하여 적용... 추후 필요시 체크해서 하는 부분이 필요할 듯
     const cont = document.getElementById('panopto-embed-player');
-    if(cont){
-      window.scrollTo(0, 800);
-    }
+    // if(cont){
+    //   window.scrollTo(0, 800);
+    // }
   }, []);
+
+  const trascriptScrollMove = () => {
+    window.scrollTo(0, 800);
+  };
 
   // 대본 관련 Props 세팅
   const [transLangVal, setTransLangVal] = useState<string>('ko');
@@ -186,6 +190,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           transLangVal={transLangVal}
           setTransLangVal={setTransLangVal}
           lectureSummary={lectureSummary}
+          trascriptScrollMove={trascriptScrollMove}
         />
       )}
     </>
