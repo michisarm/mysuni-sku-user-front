@@ -18,6 +18,8 @@ import {
   MyLearningTableBody,
 } from '../view/table';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
+import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
+import MyLearningNoChkModal from '../view/MyLearningNoChkModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 import {
   MyTrainingService,
@@ -77,6 +79,12 @@ function MyLearningListContainerV2(props: Props) {
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
   const learningOffset: any = sessionStorage.getItem('learningOffset');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // 선택한 과정 숨김 처리 된 후 완료 메세지 여부
+  const [openFinishModal, setOpenFinishModal] = useState<boolean>(false);
+
+  // 과정 선택 없이 Delete 버튼 선택 시 알림창 여부
+  const [openNoChkModal, setOpenNoChkModal] = useState<boolean>(false);
 
   /* effects */
   useEffect(() => {
@@ -492,7 +500,10 @@ function MyLearningListContainerV2(props: Props) {
   );
 
   const onClickDelete = useCallback(() => {
-    setOpenModal(true);
+    const { selectedServiceIds } = myTrainingService!;
+
+    // 선택 한 과정 없으면 알림창 띄움
+    selectedServiceIds.length === 0 ? setOpenNoChkModal(true) : setOpenModal(true);    
   }, []);
 
   const onCloseModal = useCallback(() => {
@@ -513,10 +524,22 @@ function MyLearningListContainerV2(props: Props) {
       myTrainingService!.findAllTabCount();
       myTrainingService!.findAllTableViews();
       myTrainingService!.clearAllSelectedServiceIds();
+
+      // 숨김 처리 된 후 완료 알림창 띄움
+      setOpenFinishModal(true);
     }
 
     setOpenModal(false);
   }, []);
+
+  // 숨김 처리 된 후 확인 창 클릭해서 close
+  const onConfirmFinishModal = useCallback(() => {
+    setOpenFinishModal(false);
+  }, [])
+
+  const onConfirmNoChkModal = useCallback(() => {
+    setOpenNoChkModal(false);
+  }, [])
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
@@ -679,6 +702,20 @@ function MyLearningListContainerV2(props: Props) {
                   open={openModal}
                   onClose={onCloseModal}
                   onConfirm={onConfirmModal}
+                />
+              )}
+              {/* 숨김 처리 후 완료 ALERT */}
+              {openFinishModal && ( 
+                <MyLearningDeleteFinishModal
+                  open={openFinishModal}
+                  onConfirm={onConfirmFinishModal}
+                />
+              )}
+              {/* 숨김 처리 시 선택한 과정 없을 때 ALERT */}
+              {openNoChkModal && (
+                <MyLearningNoChkModal
+                  open={openNoChkModal}
+                  onConfirm={onConfirmNoChkModal}
                 />
               )}
             </>
