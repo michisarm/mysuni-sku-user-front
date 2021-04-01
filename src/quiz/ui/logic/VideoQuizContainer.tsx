@@ -61,4 +61,4 @@ const VideoQuizContainer: React.FC<Props> = ({
   );
 };
 
-export default VideoQuizContainer;
+export default React.memo(VideoQuizContainer);
