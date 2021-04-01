@@ -183,7 +183,7 @@ function LectureDiscussionContainer (props: Props) {
                   <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
                   // <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
                 )}
-                {!more && lectureFeedbackContent.content!.length > 0 && (
+                {!more && (
                   <button
                     className="ui icon button right btn-blue"
                     onClick={viewMore}
