@@ -25,10 +25,8 @@ export function findReviewSummary(feedbackId: string): Promise<ReviewSummary> {
 }
 
 // LMS Feedback 콘텐츠
-export function findFeedbackMenu(feedbackId: string): Promise<FeedbackContent> {
-  // const url = `${BASE_URL}/feedback/${feedbackId}/discussion`;
-  const url = `${BASE_URL}/feedback/50955be7-02df-48dc-a1b0-1c407e38ea02/discussion`;
-  console.log('api호출');
+export function findFeedbackMenu(feedbackId: string | undefined): Promise<FeedbackContent> {
+  const url = `${BASE_URL}/feedback/${feedbackId}/discussion`;
   return axiosApi
     .get<FeedbackContent>(url)
     .then(response => response && response.data);
