@@ -100,7 +100,7 @@ function LectureDiscussionContainer (props: Props) {
         setCount(res.count)
       }
     )
-  },[lectureDiscussion?.id, lectureFeedbackContent])
+  },[lectureDiscussion?.id])
 
   const {
     skProfile: {
