@@ -16,6 +16,7 @@ import LectureClassroomInfoView from './LectureClassroomInfoView';
 import './LectureCubeContentView.css';
 import LectureCubeTranscriptContainer from '../../logic/LectureCubeTranscriptContainer';
 import TranscriptCountModel from '../../../model/TranscriptCountModel';
+import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
@@ -25,6 +26,7 @@ interface LectureCubeContentViewProps {
   lectureComment?: LectureComment;
   lectureClassroom?: LectureClassroom;
   lectureTranscriptCount?: TranscriptCountModel;
+  lectureSummary?: LectureCubeSummary;
 }
 
 // function hashLink(hash: string) {
@@ -41,7 +43,8 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureFile,
   lectureComment,
   lectureClassroom,
-  lectureTranscriptCount
+  lectureTranscriptCount,
+  lectureSummary
 }) {
   const [fixed, setFixed] = useState<boolean>(false);
   // useEffect(() => {
@@ -172,7 +175,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
         </>
       )}
       {activatedTab === 'comment' && <LectureCommentContainer />}
-      {activatedTab === 'transcript' && <LectureCubeTranscriptContainer transLangVal={transLangVal} setTransLangVal={setTransLangVal} />}
+      {activatedTab === 'transcript' && <LectureCubeTranscriptContainer transLangVal={transLangVal} setTransLangVal={setTransLangVal} lectureSummary={lectureSummary}/>}
     </>
   );
 };

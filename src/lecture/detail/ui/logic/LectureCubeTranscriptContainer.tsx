@@ -10,6 +10,7 @@ import { downloadTranscript } from '../../service/useTranscript/utility/useTrans
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
 import Transcript from 'lecture/detail/model/Transcript';
 import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
+import LectureCubeSummary from '../../viewModel/LectureOverview/LectureCubeSummary';
 
 // import WatchLog from 'lecture/detail/model/Watchlog';
 // import LectureParams from '../../viewModel/LectureParams';
@@ -28,12 +29,14 @@ const style = {
 
 interface LectureTranscriptContainerProps {
   transLangVal:string,
-  setTransLangVal:any
+  setTransLangVal:any,
+  lectureSummary?: LectureCubeSummary
 }
 
 const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
-  setTransLangVal
+  setTransLangVal,
+  lectureSummary
 }) {
     
     const selectTransLangObj = [
@@ -213,8 +216,9 @@ const LectureTranscriptContainer:React.FC<LectureTranscriptContainerProps> = fun
                   </Popup>
                   <button className="ui icon button left post delete-kr"
                     onClick={() => { 
-                      if(transcriptList !== undefined) {
-                       downloadTranscript(transcriptList, getLectureMedia()?.mediaContents.internalMedias[0].name);  
+                      if(transcriptList?.length > 0) {
+                        const langText = selectTransLangObj.find(lang => lang.value === transLangVal)?.text || "";
+                       downloadTranscript(transcriptList, (lectureSummary?.name || 'transcript').concat("_", langText));  
                       }                      
                     }}
                   >
