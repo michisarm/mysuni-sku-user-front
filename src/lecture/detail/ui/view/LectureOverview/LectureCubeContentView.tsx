@@ -16,7 +16,7 @@ import LectureClassroomInfoView from './LectureClassroomInfoView';
 import './LectureCubeContentView.css';
 import LectureCubeTranscriptContainer from '../../logic/LectureCubeTranscriptContainer';
 import TranscriptCountModel from '../../../model/TranscriptCountModel';
-import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/LectureCubeSummary';
+import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
@@ -29,12 +29,12 @@ interface LectureCubeContentViewProps {
   lectureSummary?: LectureCubeSummary;
 }
 
-// function hashLink(hash: string) {
-//   const element = document.getElementById(hash);
-//   if (element !== null) {
-//     element.scrollIntoView();
-//   }
-// }
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
 
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
   lectureDescription,
@@ -73,7 +73,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
     setActivatedTab('overview');
   }, []);
   const classroomHashClick = useCallback(() => {
-    // hashLink('lms-classroom');
+    hashLink('lms-classroom');
     setActivatedTab('classroom');
   }, []);
   const commentHashClick = useCallback(() => {

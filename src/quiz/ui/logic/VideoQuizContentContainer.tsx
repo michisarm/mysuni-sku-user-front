@@ -21,15 +21,18 @@ import FinishIcon from '../../../style/media/img-quiz-finish.png';
 import EmptyIcon from '../../../style/media/survey-empty-btn.png';
 import RadioIcon from '../../../style/media/survay-radio-btn.png';
 import { QuizResult } from 'quiz/model/QuizResult';
+import { reactAlert } from '@nara.platform/accent';
 
 const VideoQuizContentContainer = ({
   questionData,
   resultAlertMessage,
   onCompletedQuiz,
+  setCheckQuizState,
 }: {
   questionData: QuizQuestions[];
   resultAlertMessage: QuizMessage;
   onCompletedQuiz: () => void;
+  setCheckQuizState: (state: any) => void;
 }) => {
   const currentUser = patronInfo.getPatron();
   const currentMemberId = patronInfo.getDenizenId();
@@ -60,11 +63,20 @@ const VideoQuizContentContainer = ({
     if (questionData) {
       const userAnswerField: any = questionData[
         currentIndex
-      ]?.quizQuestionItems?.map((_, index): AnswerItem[] => {
+      ]?.quizQuestionItems?.map((row, index): AnswerItem[] => {
         const createAnswerField: AnswerItem[] = [];
-        const userAnswerRow = { number: index + 1, answerItem: false };
-        createAnswerField.push(userAnswerRow);
-        return createAnswerField;
+        if (
+          questionData[currentIndex].type === 'ShortAnswer' ||
+          questionData[currentIndex].type === 'Essay'
+        ) {
+          const userAnswerRow = { number: index + 1, answerItem: '' };
+          createAnswerField.push(userAnswerRow);
+          return createAnswerField;
+        } else {
+          const userAnswerRow = { number: index + 1, answerItem: false };
+          createAnswerField.push(userAnswerRow);
+          return createAnswerField;
+        }
       });
       setUserAnswer({
         email: currentUser?.email,
@@ -72,8 +84,9 @@ const VideoQuizContentContainer = ({
         quizQuestionId: questionData[currentIndex]?.id,
         quizQuestionAnswerItems: userAnswerField?.flat(),
       });
+      setCheckQuizState(quizStatus.type === 'result' ? true : false);
     }
-  }, [questionData, currentIndex, quizStatus]);
+  }, [currentIndex, quizStatus]);
 
   const onChangeNextQuestion = useCallback(() => {
     if (questionData) {
@@ -82,6 +95,7 @@ const VideoQuizContentContainer = ({
         setQuizStatus({ status: false, type: '' });
         setCurrentIndex(currentIndex + 1);
       } else if (currentIndex === quizMaxIndex) {
+        setCurrentIndex(currentIndex);
         setQuizStatus({ status: true, type: 'finish' });
       }
     }
@@ -130,6 +144,10 @@ const VideoQuizContentContainer = ({
           answer => answer.answerItem === true
         ).length;
         if (noAnswerCheck === 0) {
+          reactAlert({
+            title: '안내',
+            message: '답변을 확인해주세요.',
+          });
           return;
         }
         setQuizStatus({ status: true, type: 'success' });
@@ -143,12 +161,15 @@ const VideoQuizContentContainer = ({
         await registerAnswer(params);
       } else if (!questionData[currentIndex].answer) {
         // 단답형, 서술형 답안 제출의 경우
-        const noAnswerCheck = JSON.stringify(
-          userAnswer?.quizQuestionAnswerItems[0].answerItem
-        );
-        // if (noAnswerCheck === 0) {
-        //   return;
-        // }
+        const noAnswerCheck =
+          userAnswer?.quizQuestionAnswerItems[0].answerItem === '';
+        if (noAnswerCheck) {
+          reactAlert({
+            title: '안내',
+            message: '답변을 확인해주세요.',
+          });
+          return;
+        }
         setQuizStatus({ status: true, type: 'success' });
         const params = {
           email: currentUser?.email,
@@ -313,13 +334,12 @@ const VideoQuizContentContainer = ({
                   : FailIcon
               }
             />
-            <span className="wro">오답 입니다.</span>
             <div
               className="wro2"
               dangerouslySetInnerHTML={{
                 __html:
                   `${questionData[currentIndex].alertMessage.message}` ||
-                  '다시 확인하고 제출하세요.',
+                  '오답 입니다. 다시 확인하고 제출하세요.',
               }}
             />
           </div>
@@ -346,14 +366,14 @@ const VideoQuizContentContainer = ({
                   : CompleteIcon
               }
             />
-            <span className="wro">답안 제출이 완료됐습니다.</span>
+            {/* <span className="wro">답안 제출이 완료됐습니다.</span> */}
             {!questionData[currentIndex].answer && (
               <div
                 className="wro2"
                 dangerouslySetInnerHTML={{
                   __html:
                     `${questionData[currentIndex].alertMessage.message}` ||
-                    '다른 참여자의 의견을 확인할 수 있습니다.',
+                    '답안 제출이 완료됐습니다.',
                 }}
               />
             )}
@@ -397,7 +417,6 @@ const VideoQuizContentContainer = ({
                   '퀴즈 참여가 완료됐습니다!',
               }}
             />
-            <span className="wro2">계속해서 영상을 이어보세요.</span>
           </div>
           <div className="video-quiz-footer">
             <button
@@ -636,14 +655,14 @@ const VideoQuizContentContainer = ({
                       </div>
                     ))
                   : null}
-                <div className="more-comments">
-                  {resultData && resultData?.totalCount > 10 && (
+                {resultData && resultData.results.length > 10 && (
+                  <div className="more-comments">
                     <Button onClick={onLoadMore} icon className="left moreview">
                       <Icon className="moreview" />
                       list more
                     </Button>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="video-quiz-footer" style={{ position: 'absolute' }}>

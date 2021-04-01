@@ -63,13 +63,13 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [isUnmounted, setIsUnmounted] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
   const [cubeName, setCubeName] = useState<any>('');
-
   const { pathname } = useLocation();
   const playIntervalRef = useRef<any>(0);
   const checkIntervalRef = useRef<any>(0);
   const transcriptIntervalRef = useRef<any>(0);
   const multiVideoIntervalRef = useRef<any>(0);
   const myTrainingService = MyTrainingService.instance;
+  const document: any = window.document;
 
   useEffect(() => {
     // all cleare interval
@@ -857,73 +857,84 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     stop: () => embedApi.pauseVideo(),
   };
 
-  // useEffect(() => {
-  //   const matchesQuizTime: number = Math.floor(currentTime);
-  //   if (
-  //     matchesQuizTime !== undefined &&
-  //     quizShowTime &&
-  //     matchesQuizTime === quizShowTime[quizCurrentIndex]
-  //   ) {
-  //     if (scroll > videoPosition && quizShowTime.includes(matchesQuizTime)) {
-  //       setPauseVideoSticky(true);
-  //       setQuizPop(false);
-  //       videoControll.stop();
-  //       reactAlert({
-  //         title: '영상이 중지됐습니다.',
-  //         message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
-  //         onClose: () => onScrollTop(),
-  //       });
-  //     } else {
-  //       setPauseVideoSticky(false);
-  //       closeFullScreen();
-  //       setQuizPop(true);
-  //       videoControll.stop();
-  //     }
-  //   }
-  // }, [currentTime, scroll, quizShowTime]);
+  useEffect(() => {
+    const matchesQuizTime: number = Math.floor(currentTime);
+    if (getLectureConfirmProgress()?.learningState == 'Passed') {
+      setQuizPop(false);
+    }
 
-  // useEffect(() => {
-  //   if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
-  //     const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
-  //     const quizId = quizIds?.join(',');
-  //     const getQuizTable = async () => {
-  //       await findAllQuiz(quizId).then(res => {
-  //         setQuizShowTime(
-  //           res
-  //             .sort(
-  //               (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
-  //             )
-  //             .map((quiz: QuizTableList) => quiz.showTime)
-  //         );
-  //       });
-  //     };
-  //     getQuizTable();
-  //   }
-  // }, [lectureMedia]);
+    if (
+      matchesQuizTime !== undefined &&
+      quizShowTime &&
+      matchesQuizTime === quizShowTime[quizCurrentIndex]
+    ) {
+      if (
+        scroll > videoPosition &&
+        quizShowTime.indexOf(matchesQuizTime) !== -1
+      ) {
+        setPauseVideoSticky(true);
+        setQuizPop(false);
+        videoControll.stop();
+        reactAlert({
+          title: '영상이 중지됐습니다.',
+          message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
+          onClose: () => onScrollTop(),
+        });
+      } else {
+        setPauseVideoSticky(false);
+        closeFullScreen();
+        setQuizPop(true);
+        videoControll.stop();
+      }
+    }
+  }, [currentTime, scroll, quizShowTime]);
 
-  // const onCompletedQuiz = useCallback(() => {
-  //   if (quizPop) {
-  //     setQuizPop(false);
-  //     videoControll.play();
-  //   }
-  //   if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
-  //     setQuizCurrentIndex(quizCurrentIndex);
-  //   }
-  //   setQuizCurrentIndex(quizCurrentIndex + 1);
-  // }, [quizPop, quizCurrentIndex]);
+  useEffect(() => {
+    if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
+      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
+      const quizId = quizIds?.join(',');
+      const getQuizTable = async () => {
+        await findAllQuiz(quizId).then(res => {
+          setQuizShowTime(
+            res
+              .sort(
+                (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
+              )
+              .map((quiz: QuizTableList) => quiz.showTime)
+          );
+        });
+      };
+      getQuizTable();
+    }
+  }, [lectureMedia]);
 
-  // const onScrollTop = () => {
-  //   window.scrollTo(0, 124);
-  // };
+  const onCompletedQuiz = useCallback(() => {
+    if (quizPop) {
+      setQuizPop(false);
+      videoControll.play();
+    }
+    if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
+      setQuizCurrentIndex(quizCurrentIndex);
+    }
+    setQuizCurrentIndex(quizCurrentIndex + 1);
+  }, [quizPop, quizCurrentIndex]);
 
-  // const closeFullScreen = () => {
-  //   if (document.fullscreenElement !== null) {
-  //     document.exitFullscreen();
-  //     window.scrollTo(0, 124);
-  //   } else {
-  //     return;
-  //   }
-  // };
+  const onScrollTop = () => {
+    window.scrollTo(0, 124);
+  };
+
+  const closeFullScreen = () => {
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
 
   return (
     <div
@@ -940,7 +951,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       <div className="lms-video-sticky">
         <div className="video-container">
           <div id="panopto-embed-player"></div>
-          {/* <VideoQuizContainer
+          <VideoQuizContainer
             quizPop={quizPop}
             quizCurrentIndex={quizCurrentIndex}
             onCompletedQuiz={onCompletedQuiz}
@@ -951,7 +962,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                 <span className="copy">퀴즈풀고 이어보기</span>
               </button>
             </div>
-          )} */}
+          )}
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
           {nextContentsView &&
             // !isActive &&

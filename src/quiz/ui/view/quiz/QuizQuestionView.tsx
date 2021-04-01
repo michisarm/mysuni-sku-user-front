@@ -52,7 +52,8 @@ function EssayType({
           <textarea
             placeholder="1,000자 이내로 입력하세요."
             ref={inputRef}
-            maxLength={1000}
+            maxLength={999}
+            minLength={1}
             onChange={() => onChange(rowIndex, inputRef!.current!.value)}
           />
           <span className="validation">
@@ -94,8 +95,10 @@ function ShortAnswerType({
     <div className="ui right-top-count input short" style={{ width: '100%' }}>
       <input
         type="text"
-        placeholder="답변을 입력해주세요. (최대 입력 글자 수 확인 필요)"
+        placeholder="답변을 입력해주세요."
         value={input}
+        minLength={1}
+        maxLength={20}
         onChange={e => onChangeInput(e)}
       />
       <Icon className="clear link" />
