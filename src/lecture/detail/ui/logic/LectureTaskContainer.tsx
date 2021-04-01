@@ -29,7 +29,7 @@ import {
   getLectureTaskCreateItem,
   setLectureTaskCreateItem,
 } from 'lecture/detail/store/LectureTaskCreateStore';
-import { reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility/updateLectureTask';
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -111,8 +111,14 @@ function LectureTaskContainer() {
   const onClickReplies = useCallback(() => {}, []);
 
   const onClickDelete = useCallback((id: string, type: string) => {
-    deletePost(id, type);
-    history.goBack();
+    reactConfirm({
+      title: '알림',
+      message: '글을 삭제하시겠습니까?',
+      onOk: () => {
+        deletePost(id, type);
+        history.goBack();
+      }
+    });    
   }, []);
 
   const listHashLink = useCallback((hash: string) => {
@@ -188,10 +194,21 @@ function LectureTaskContainer() {
               notice: false,
             });
             history.goBack();
+
+            reactAlert({
+              title: '안내',
+              message: '글이 등록되었습니다.'
+            });
           });
         } else {
-          updateLectureTask(detailTaskId);
-          history.goBack();
+          updateLectureTask(detailTaskId).then(() => {
+            reactAlert({
+                title: '안내',
+                message: '글이 수정되었습니다.'
+            });
+          });
+          
+          history.goBack();          
         }
       },
     });
@@ -218,7 +235,12 @@ function LectureTaskContainer() {
   }, [create, edit]);
 
   async function deletePost(id: string, type: string) {
-    await deleteCubeLectureTaskPost(id, type);
+    await deleteCubeLectureTaskPost(id, type).then(() => {
+      reactAlert({
+        title: '안내',
+        message: '글이 삭제되었습니다.'
+      });
+    });
   }
 
   return (
