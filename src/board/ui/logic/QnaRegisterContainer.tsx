@@ -14,6 +14,7 @@ import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
+import { date } from '@storybook/addon-knobs';
 
 
 interface Props extends RouteComponentProps<{ sourceType: string, sourceId: string }> {
@@ -160,9 +161,20 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { focus, write, fieldName, alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
-    categorys.map((data, index) => {
-      questionType.push({ key: index, value: data.categoryId, text: data.name });
-    });
+
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('cube') || currentUrl.includes('course')) {
+      categorys.map((data, index) => {
+        if (data.name === 'Contents') {
+          questionType.push({ key: index, value: data.categoryId, text: data.name });
+        }
+      });
+    } else {
+      categorys.map((data, index) => {
+        questionType.push({ key: index, value: data.categoryId, text: data.name });
+      });
+    }
 
     return (
       <>

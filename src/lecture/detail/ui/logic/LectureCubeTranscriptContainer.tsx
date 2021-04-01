@@ -22,12 +22,14 @@ interface LectureTranscriptContainerProps {
   transLangVal: string;
   setTransLangVal: any;
   lectureSummary?: LectureCubeSummary;
+  // trascriptScrollMove: () => void;
 }
 
 const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
   setTransLangVal,
   lectureSummary,
+  // trascriptScrollMove
 }) {
   const selectTransLangObj = [
     { key: 'ko', value: 'ko', text: 'KR' },
@@ -79,13 +81,13 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
     if (getEmbed().isPaused === false) {
       setAutoHighlight(true);
     }
-    clearInterval(intervalTranscript);
+    clearInterval(intervalTranscript.current);
   };
 
   useEffect(() => {
     return () => {
       clearInterval(intervalTranscript.current);
-      initialize();
+      setAutoHighlight(false);
       setPanoptoSessionId('');
     };
   }, []);
@@ -110,12 +112,15 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
 
         setTranScriptList(transcriptsItem);
       }
+      // trascriptScrollMove();
     };
 
     getTranScriptsFunc();
   }, [transLangVal, panoptoSessionId]);
 
   useEffect(() => {
+    clearInterval(intervalTranscript.current);
+
     if (autoHighlight) {
       intervalTranscript.current = setInterval(() => {
         if (getEmbed().isPaused === true) {
@@ -141,9 +146,9 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
         }
       }, 500);
     }
-    return () => {
-      clearInterval(intervalTranscript);
-    };
+    // return () => {
+    //   clearInterval(intervalTranscript);
+    // };
   }, [autoHighlight, transcriptList]);
 
   const highlight = (id: string) => {
@@ -182,7 +187,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
             <button
               className="ui icon button left post delete-kr"
               onClick={() => {
-                if (transcriptList !== undefined) {
+                if (transcriptList?.length > 0) {
                   const langText =
                     selectTransLangObj.find(lang => lang.value === transLangVal)
                       ?.text || '';
@@ -199,26 +204,30 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
             </button>
           </div>
         </div>
-        {transcriptList?.map((lectureTranscript: any) => {
-          return (
-            <>
-              <span
-                id={lectureTranscript.idx + ''}
-                key={lectureTranscript.idx}
-                className={highlight(lectureTranscript.idx + '')}
-                onClick={() => {
-                  seekByIndex(
-                    convertStringTimeToNumber(lectureTranscript.startTime),
-                    convertStringTimeToNumber(lectureTranscript.endTime)
-                  );
-                }}
-                style={{ cursor: 'pointer' }}
-              >
-                {lectureTranscript.text}&nbsp;
-              </span>
-            </>
-          );
-        })}
+        {transcriptList?.length > 0 ? (
+          transcriptList?.map((lectureTranscript: any) => {
+            return (
+              <>
+                <span
+                  id={lectureTranscript.idx + ''}
+                  key={lectureTranscript.idx}
+                  className={highlight(lectureTranscript.idx + '')}
+                  onClick={() => {
+                    seekByIndex(
+                      convertStringTimeToNumber(lectureTranscript.startTime),
+                      convertStringTimeToNumber(lectureTranscript.endTime)
+                    );
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {lectureTranscript.text}&nbsp;
+                </span>
+              </>
+            );
+          })
+        ) : (
+          <span>저장 된 대본이 없습니다.</span>
+        )}
       </div>
     </>
   );

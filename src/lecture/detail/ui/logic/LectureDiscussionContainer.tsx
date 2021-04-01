@@ -37,6 +37,7 @@ function LectureDiscussionContainer (props: Props) {
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
+  const [count, setCount] = useState<number>();
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -96,9 +97,7 @@ function LectureDiscussionContainer (props: Props) {
   useEffect(() => {
     lectureDiscussion && countByFeedbackId(lectureDiscussion?.id).then(
       res => {
-        setLectureFeedbackContent({
-          count: res.count,
-        })
+        setCount(res.count)
       }
     )
   },[lectureDiscussion?.id])
@@ -142,7 +141,6 @@ function LectureDiscussionContainer (props: Props) {
     setMore(false);
   }, []);
 
-
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
       originArr.push(depotData.id);
@@ -159,7 +157,7 @@ function LectureDiscussionContainer (props: Props) {
 
   return (
     <>
-      {lectureDiscussion && (
+      {lectureDiscussion && lectureFeedbackContent !== undefined && (
         <>
           <div className="discuss-wrap">
             
@@ -167,7 +165,7 @@ function LectureDiscussionContainer (props: Props) {
             <div className="discuss-box">
               <Image src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`} alt="" style={{display: 'inline-block'}}/>
               <h2>{lectureDiscussion.name}</h2>
-              <span className="peo-opinion">전체 의견 <strong>{lectureFeedbackContent?.count}</strong></span>
+              <span className="peo-opinion">전체 의견 <strong>{count}</strong></span>
               <span><strong className="peo-date">{moment(lectureFeedbackContent?.time).format('YYYY.MM.DD')}</strong></span>
             </div>
             
@@ -177,14 +175,15 @@ function LectureDiscussionContainer (props: Props) {
               <div className="discuss-text-wrap" >
                 {more && (
                   <div className="ql-snow">
-                    {/* <div dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/> */}
-                    <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
+                    <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
+                    {/* <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p> */}
                   </div>
                 )}
                 {!more && (
-                  <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
+                  <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
+                  // <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
                 )}
-                {!more && (
+                {!more && lectureFeedbackContent.content!.length > 0 && (
                   <button
                     className="ui icon button right btn-blue"
                     onClick={viewMore}
@@ -203,84 +202,79 @@ function LectureDiscussionContainer (props: Props) {
                   </button>
                 )}
               </div>
+              {/* eslint-disable */}
               {/* 관련 URL */}
-              <div className="community-board-down discuss2">
-                <div className="board-down-title href">
-                    <p>
-                      {" "}
-                      <Image src={`${PUBLIC_URL}/images/all/icon-url.png`} alt="" style={{display: 'inline-block'}}/>
-                      관련 URL
-                    </p>
-                    {lectureFeedbackContent && lectureFeedbackContent.relatedUrlList?.map((item: any) => (
-                      <Link to={item.url}>{item.title}</Link>
-                    ))}
-                </div>
-              </div>
-
-              {/* 관련 자료 */}
-              <div className="community-board-down discuss2">
-                <div className="community-contants">
-                  <div className="community-board-down">
-                    <div className="board-down-title">
+              {lectureFeedbackContent.relatedUrlList!.length > 1 &&
+                <div className="community-board-down discuss2">
+                  <div className="board-down-title href">
                       <p>
-                        <img
-                          src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
-                        />
-                        첨부파일
+                        {" "}
+                        <Image src={`${PUBLIC_URL}/images/all/icon-url.png`} alt="" style={{display: 'inline-block'}}/>
+                        관련 URL
                       </p>
-                      <div className="board-down-title-right">
-                        <button
-                          className="ui icon button left post delete"
-                          onClick={() => zipFileDownload('select')}
-                        >
-                          <i aria-hidden="true" className="icon check icon" />
-                          선택 다운로드
-                        </button>
-                        <button
-                          className="ui icon button left post list2"
-                          onClick={() => zipFileDownload('all')}
-                        >
-                          <img
-                            src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
-                          />
-                          전체 다운로드
-                        </button>
-                      </div>
-                    </div>
-                  {filesMap.get('reference') &&
-                    filesMap
-                      .get('reference')
-                      .map((foundedFile: DepotFileViewModel) => (
-                        <div className="down">
-                          <Checkbox
-                            className="base"
-                            label={foundedFile.name}
-                            name={'depot' + foundedFile.id}
-                            onChange={(event, value) =>
-                              checkOne(event, value, foundedFile)
-                            }
-                          />
-                          <Icon
-                            className="icon-down-type4"
-                            onClick={() =>
-                              fileDownload(foundedFile.name, foundedFile.id)
-                            }
-                          />
-                        </div>
+                      {lectureFeedbackContent && lectureFeedbackContent.relatedUrlList?.map((item: any) => (
+                        <a href={item.url} target='blank'>{item.title}</a>
                       ))}
-
-                    {/* <div className="down">
-                      <Checkbox
-                        className="base"
-                      />
-                      <Icon
-                        className="icon-down-type4"
-                      />
-                    </div> */}
                   </div>
                 </div>
-              </div>  
-            {/* discuss-box2 */}
+              } 
+              {/* 관련 자료 */}
+              {lectureFeedbackContent.depotId &&
+                <div className="community-board-down discuss2">
+                  <div className="community-contants">
+                    <div className="community-board-down">
+                      <div className="board-down-title">
+                        <p>
+                          <img
+                            src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
+                          />
+                          첨부파일
+                        </p>
+                        <div className="board-down-title-right">
+                          <button
+                            className="ui icon button left post delete"
+                            onClick={() => zipFileDownload('select')}
+                          >
+                            <i aria-hidden="true" className="icon check icon" />
+                            선택 다운로드
+                          </button>
+                          <button
+                            className="ui icon button left post list2"
+                            onClick={() => zipFileDownload('all')}
+                          >
+                            <img
+                              src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                            />
+                            전체 다운로드
+                          </button>
+                        </div>
+                      </div>
+                    {filesMap.get('reference') &&
+                      filesMap
+                        .get('reference')
+                        .map((foundedFile: DepotFileViewModel) => (
+                          <div className="down">
+                            <Checkbox
+                              className="base"
+                              label={foundedFile.name}
+                              name={'depot' + foundedFile.id}
+                              onChange={(event, value) =>
+                                checkOne(event, value, foundedFile)
+                              }
+                            />
+                            <Icon
+                              className="icon-down-type4"
+                              onClick={() =>
+                                fileDownload(foundedFile.name, foundedFile.id)
+                              }
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </div>  
+              }
+            {/* eslint-enable */}
             </div>
           </div>
 
