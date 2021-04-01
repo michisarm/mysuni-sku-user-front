@@ -8,6 +8,7 @@ import { getEmbed, setEmbed } from 'lecture/detail/store/EmbedStore';
 // Service
 import { downloadTranscript } from '../../service/useTranscript/utility/useTranscript';
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
+import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/LectureCubeSummary';
 
 const style = {
   borderRadius: '0.375rem',
@@ -20,11 +21,13 @@ const style = {
 interface LectureTranscriptContainerProps {
   transLangVal: string;
   setTransLangVal: any;
+  lectureSummary?: LectureCubeSummary;
 }
 
 const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = function LectureTranscriptContainer({
   transLangVal,
   setTransLangVal,
+  lectureSummary,
 }) {
   const selectTransLangObj = [
     { key: 'ko', value: 'ko', text: 'KR' },
@@ -158,7 +161,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
     if (transciptHighlight === id) {
       return 'transcript-active';
     } else {
-      return '';
+      return 'transcript-hover';
     }
   };
 
@@ -191,9 +194,13 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
               className="ui icon button left post delete-kr"
               onClick={() => {
                 if (transcriptList !== undefined) {
+                  const langText =
+                    selectTransLangObj.find(lang => lang.value === transLangVal)
+                      ?.text || '';
+                  console.log('lectureSummary', lectureSummary);
                   downloadTranscript(
                     transcriptList,
-                    getLectureMedia()?.mediaContents.internalMedias[0].name
+                    (lectureSummary?.name || 'transcript').concat('_', langText)
                   );
                 }
               }}
@@ -218,7 +225,7 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
                 }}
                 style={{ cursor: 'pointer' }}
               >
-                {lectureTranscript.text}
+                {lectureTranscript.text}&nbsp;
               </span>
             </>
           );

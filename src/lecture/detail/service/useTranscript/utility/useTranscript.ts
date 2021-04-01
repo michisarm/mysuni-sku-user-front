@@ -55,8 +55,8 @@ export function downloadTranscript(
 ) {
   const str = transcriptCdosToString(transcriptCdo);
   const blob = new Blob([str], { type: 'text/plain;charset=utf-8' });
-
-  saveAs(blob, '1111111111111' + '.txt');
+  console.log('title', title);
+  saveAs(blob, title + '.txt');
 }
 
 export async function findTranscript(
