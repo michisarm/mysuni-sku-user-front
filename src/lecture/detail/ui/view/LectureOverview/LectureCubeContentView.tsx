@@ -68,6 +68,10 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
 
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
+    useEffect(() => {
+      setActivatedTab('overview');
+    }, [lectureSummary]);
+
   const overviewHashClick = useCallback(() => {
     // hashLink('lms-overview');
     setActivatedTab('overview');
