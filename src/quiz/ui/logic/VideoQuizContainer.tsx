@@ -17,7 +17,7 @@ const VideoQuizContainer: React.FC<Props> = ({
 }) => {
   const [_, lectureMedia] = useLectureMedia();
   const [quizData, setQuizData] = useState<QuizTableList>();
-
+  const [checkQuizState, setCheckQuizState] = useState<boolean>(false);
   useEffect(() => {
     if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
       const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
@@ -48,13 +48,14 @@ const VideoQuizContainer: React.FC<Props> = ({
     >
       <div className="video-quiz-header">
         <h1>Video QUIZ</h1>
-        <p>답안을 제출해야 강의 이어보기가 가능합니다.</p>
+        {!checkQuizState && <p>답안을 제출해야 강의 이어보기가 가능합니다.</p>}
       </div>
       {quizData && quizData.quizQuestions && quizData.resultAlertMessage && (
         <VideoQuizContentContainer
           questionData={quizData.quizQuestions}
           resultAlertMessage={quizData.resultAlertMessage}
           onCompletedQuiz={onCompletedQuiz}
+          setCheckQuizState={setCheckQuizState}
         />
       )}
     </div>
