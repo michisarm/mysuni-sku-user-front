@@ -105,12 +105,12 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
             />
           </div>
         </div>
-      </div>
-      <div className="open-card-bottom">
-        <div className="title-area">
-          <div className="text-list">
-            <img src={managerIcon} />
-            <span>{managerName}</span>
+        <div className="open-card-bottom">
+          <div className="title-area">
+            <div className="text-list">
+              <img src={managerIcon} />
+              <span>{managerName}</span>
+            </div>
           </div>
         </div>
       </div>
