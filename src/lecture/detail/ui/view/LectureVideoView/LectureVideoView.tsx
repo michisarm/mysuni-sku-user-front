@@ -891,6 +891,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   }, [currentTime, scroll, quizShowTime]);
 
   useEffect(() => {
+    setQuizPop(false);
     if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
       const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
       const quizId = quizIds?.join(',');
@@ -906,6 +907,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         });
       };
       getQuizTable();
+      return;
     }
   }, [lectureMedia]);
 

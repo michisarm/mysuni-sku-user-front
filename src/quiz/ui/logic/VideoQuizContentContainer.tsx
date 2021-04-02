@@ -337,13 +337,16 @@ const VideoQuizContentContainer = ({
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img
-              src={
-                questionData[currentIndex].alertMessage.img
-                  ? `/${questionData[currentIndex].alertMessage.img}`
-                  : FailIcon
-              }
-            />
+            <div className="imgbox">
+              <img
+                style={{ maxWidth: '100%' }}
+                src={
+                  questionData[currentIndex].alertMessage.img
+                    ? `/${questionData[currentIndex].alertMessage.img}`
+                    : FailIcon
+                }
+              />
+            </div>
             <div
               className="wro2"
               dangerouslySetInnerHTML={{
@@ -368,14 +371,16 @@ const VideoQuizContentContainer = ({
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img
-              style={{ maxWidth: '100%' }}
-              src={
-                questionData[currentIndex].alertMessage.img
-                  ? `/${questionData[currentIndex].alertMessage.img}`
-                  : CompleteIcon
-              }
-            />
+            <div className="imgbox">
+              <img
+                style={{ maxWidth: '100%' }}
+                src={
+                  questionData[currentIndex].alertMessage.img
+                    ? `/${questionData[currentIndex].alertMessage.img}`
+                    : CompleteIcon
+                }
+              />
+            </div>
             <span className="wro">
               {(questionData[currentIndex].type === 'SingleChoice' ||
                 questionData[currentIndex].type === 'MultipleChoice') &&
@@ -407,14 +412,16 @@ const VideoQuizContentContainer = ({
             <h1>Video QUIZ</h1>
           </div>
           <div className="quiz-content-wrap quiz-center-box">
-            <img
-              style={{ maxWidth: '100%' }}
-              src={
-                resultAlertMessage?.img
-                  ? `/${resultAlertMessage?.img}`
-                  : FinishIcon
-              }
-            />
+            <div className="imgbox">
+              <img
+                style={{ maxWidth: '100%' }}
+                src={
+                  resultAlertMessage?.img
+                    ? `/${resultAlertMessage?.img}`
+                    : FinishIcon
+                }
+              />
+            </div>
             <div
               className="wro"
               dangerouslySetInnerHTML={{
