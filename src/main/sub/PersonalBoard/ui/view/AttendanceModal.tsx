@@ -133,7 +133,7 @@ const AttendanceModal:React.FC<Props> = ({
                 </dt>
                 <dd>5, 10, 15, 20회 당<strong>복권 1장씩!</strong></dd>
               </dl>
-              <Link to="/board/support/notice-detail/NTC-00004z" className="go_event">
+              <Link to="/board/support/notice-detail/NTC-00004m" className="go_event">
                 이벤트 자세히 보러가기
               </Link>
               <span>*본 이벤트는 PC로만 참여 가능합니다.</span>
