@@ -173,13 +173,13 @@ function LectureDiscussionContainer (props: Props) {
             <div className="discuss-box2">
               {/* <img src={MaskImg} className="discuss-main-img" /> */}
               <div className="discuss-text-wrap" >
-                {more && (
+                {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
                     {/* <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p> */}
                   </div>
                 )}
-                {!more && (
+                {lectureFeedbackContent && !more && (
                   <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
                   // <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
                 )}
