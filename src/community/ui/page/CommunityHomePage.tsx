@@ -92,7 +92,9 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
           <h3>
             {title} {isNew && <span className="new-label">NEW</span>}
           </h3>
-          <p>{text}</p>
+          {
+            text && ( <p>{text}</p> )
+          }
         </div>
         <div className="home-card-bottom">
           <span>{createdDate}</span>
