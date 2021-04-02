@@ -131,7 +131,7 @@ const ENRLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '수강 신청 과정 모아보기',
       action: 'Click',
-      label: '수강 신청 과정 전체보기'
+      label: '수강 신청 과정 전체보기',
     });
   };
 
@@ -273,13 +273,7 @@ const ENRLearning: React.FC<Props> = Props => {
           )}
         </Lecture.Group>
       ) : (
-        <NoSuchContentPanel
-          message={
-            <div className="text">
-              {CONTENT_TYPE_NAME}이 임박한 학습 과정이 없습니다.
-            </div>
-          }
-        />
+        ''
       )}
     </ContentWrapper>
   );
