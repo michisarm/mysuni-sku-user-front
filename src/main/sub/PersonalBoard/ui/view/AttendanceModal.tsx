@@ -34,7 +34,7 @@ const AttendanceModal:React.FC<Props> = ({
     if(AttendCountItem === undefined) {
       return
     }
-    console.log('frontend time', momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD hh:mm:ss'))
+    console.log('frontend time', momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'))
     console.log('AttendCountItem', AttendCountItem)
     //출석 체크한 날이 오늘 날짜보다 이전의 날짜 여야 클릭 가능한 버튼 표시
     const flag = AttendCountItem.find((element: { attendDate: any; }) => element.attendDate === moment().format('YYYY-MM-DD'))

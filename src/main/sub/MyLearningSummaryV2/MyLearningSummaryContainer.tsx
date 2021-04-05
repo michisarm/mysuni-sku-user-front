@@ -404,7 +404,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
     const eventBannerVisible = () => {
 
-      console.log('frontend time', momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD hh:mm:ss'))
+      console.log('frontend time', momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'))
 
       const today = momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD')
       const afterFlag = moment(today).isAfter(
