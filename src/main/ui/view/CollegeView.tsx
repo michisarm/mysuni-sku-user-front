@@ -1434,6 +1434,7 @@ const panes = [
 
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
+              <div className="semi-topBackground"/>
               <div className="map">
                 <div className="semi-background">
                   <div className="semi_wrap">
@@ -1684,7 +1685,7 @@ const panes = [
                         <dl>
                           <dt>획득 요건</dt>
                           <dd>
-                            Course 이수 / Test 및<br /> 과제 수행
+                            Course 이수 / Test 및<br /> 실습과제 수행
                           </dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
