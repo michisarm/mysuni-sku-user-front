@@ -182,6 +182,7 @@ function SingleChoiceType({
       {
         <List.Item>
           <div
+            className="checkbox-wrap"
             style={{
               display: 'flex',
               alignItems: 'center',
