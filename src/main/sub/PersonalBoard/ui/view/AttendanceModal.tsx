@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import { Modal } from 'semantic-ui-react'
-import { useHistory, Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -26,7 +25,6 @@ const AttendanceModal:React.FC<Props> = ({
   attendClick
 }) => {
 
-  const history = useHistory();
   const [attendFlag, setAttendFlag] = useState<boolean>()
 
   useEffect(() => {

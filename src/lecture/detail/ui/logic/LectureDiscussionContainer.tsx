@@ -173,13 +173,13 @@ function LectureDiscussionContainer (props: Props) {
             <div className="discuss-box2">
               {/* <img src={MaskImg} className="discuss-main-img" /> */}
               <div className="discuss-text-wrap" >
-                {more && (
+                {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
                     {/* <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p> */}
                   </div>
                 )}
-                {!more && (
+                {lectureFeedbackContent && !more && (
                   <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
                   // <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
                 )}
@@ -205,7 +205,8 @@ function LectureDiscussionContainer (props: Props) {
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {/* {lectureFeedbackContent.relatedUrlList > 1 && */}
+              {lectureFeedbackContent && lectureFeedbackContent.relatedUrlList && lectureFeedbackContent.relatedUrlList.length > 0 &&  (lectureFeedbackContent.relatedUrlList[0].title !== ""
+              || lectureFeedbackContent.relatedUrlList[0].url !== "")  &&
                 <div className="community-board-down discuss2">
                   <div className="board-down-title href">
                       <p>
@@ -218,7 +219,7 @@ function LectureDiscussionContainer (props: Props) {
                       ))}
                   </div>
                 </div>
-              {/* }  */}
+              }
               {/* 관련 자료 */}
               {lectureFeedbackContent.depotId &&
                 <div className="community-board-down discuss2">

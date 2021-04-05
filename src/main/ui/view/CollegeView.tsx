@@ -860,19 +860,7 @@ const panes = [
           data-tab="colleges6"
         >
           <div className="college-cont-title global">
-            <div className="belt">
-              <div className="panopto">
-                <iframe
-                  title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
-                  width="436"
-                  height="245"
-                  style={{ padding: '0px', border: '0px' }}
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay"
-                />
-              </div>
+            <div className="belt sub">
               <div className="label">Global College</div>
               <div className="strong">Globalization을 위한 새로운 시작</div>
               <div className="normal">
@@ -892,13 +880,33 @@ const panes = [
                 <li># Glopedia</li>
                 <li># Global Leader's Table</li>
               </ul>
+              <div className="panopto sub">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
             </div>
           </div>
           <div className="college-cont-map">
             <div className="belt">
-              <div className="label">전체 커리큘럼</div>
+              <div className="label">Geopolitics & Biz / Managing Global Biz. 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co6.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co-6-1.png`} alt="" />
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map">
+            <div className="belt">
+              <div className="label">지역전문가 커리큘럼</div>
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/img-co-6-2.png`} alt="" />
               </div>
             </div>
           </div>
@@ -1426,6 +1434,7 @@ const panes = [
 
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
+              <div className="semi-topBackground"/>
               <div className="map">
                 <div className="semi-background">
                   <div className="semi_wrap">
@@ -1676,7 +1685,7 @@ const panes = [
                         <dl>
                           <dt>획득 요건</dt>
                           <dd>
-                            Course 이수 / Test 및<br /> 과제 수행
+                            Course 이수 / Test 및<br /> 실습과제 수행
                           </dd>
                         </dl>
                         <button type="button" onClick={emptyAlert}>
@@ -2704,7 +2713,7 @@ const panes = [
               </div>
               <ul className="tag-wrap">
                 <li># 신입사원</li>
-                <li># 영업구성원</li>
+                <li># 영입구성원</li>
                 <li># 신임팀장</li>
                 <li># 신임임원</li>
                 <li># 영입임원</li>

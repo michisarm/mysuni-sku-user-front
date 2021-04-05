@@ -467,12 +467,12 @@ const CollegeInnerTabAi = () => {
                 </div>
               </div>
 
-              <div className="ai_sub_table bk">
+              <div className="ai_sub_table">
                 <h3>AI Biz/Tech Conference</h3>
                 <div className="ai_box">
                   <h4>
                     국내외에서 진행되는 AI 특화 컨퍼런스 내용의 핵심을 전달해주는
-                    컨텐츠입니다. (예정)
+                    컨텐츠입니다.
                   </h4>
                   <ul className="float-left">
                     <li>
