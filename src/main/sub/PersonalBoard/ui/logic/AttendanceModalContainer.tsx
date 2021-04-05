@@ -28,9 +28,6 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
       requestAttendEvent()
       requestEncryptEmail()
     }
-    return () => {
-      console.log('cleanup')
-    }
   }, [open])
 
   useEffect(() => {

@@ -1,9 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import { Modal } from 'semantic-ui-react'
-import { useHistory, Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 import moment from 'moment';
-import momentTZ from 'moment-timezone';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -27,15 +25,12 @@ const AttendanceModal:React.FC<Props> = ({
   attendClick
 }) => {
 
-  const history = useHistory();
   const [attendFlag, setAttendFlag] = useState<boolean>()
 
   useEffect(() => {
     if(AttendCountItem === undefined) {
       return
     }
-    console.log('frontend time', momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD hh:mm:ss'))
-    console.log('AttendCountItem', AttendCountItem)
     //출석 체크한 날이 오늘 날짜보다 이전의 날짜 여야 클릭 가능한 버튼 표시
     const flag = AttendCountItem.find((element: { attendDate: any; }) => element.attendDate === moment().format('YYYY-MM-DD'))
     setAttendFlag(flag)
