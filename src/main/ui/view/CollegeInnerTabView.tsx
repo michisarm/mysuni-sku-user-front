@@ -29,7 +29,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channels/pages/1"
+                to="/lecture/college/CLG00008/channels/pages/1"
                 className="item-button"
               >
                 <Image
@@ -158,7 +158,7 @@ const CollegeInnerTabView = () => {
                           </a>
                         </td>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-30">
+                          <Link to="/certification/badge/badge-detail/BADGE-30">
                             조직 Design
                           </Link>
                         </td>
@@ -173,7 +173,7 @@ const CollegeInnerTabView = () => {
                           <a href="" onClick={emptyAlert}>회사법</a>
                           <br />
                           /<br />
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4d">
+                          <Link to="/certification/badge/badge-detail/BADGE-4d">
                             공정거래법
                           </Link>
                         </td>
@@ -181,63 +181,63 @@ const CollegeInnerTabView = () => {
                       </tr>
                       <tr>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-46">
+                          <Link to="/certification/badge/badge-detail/BADGE-46">
                             Strategy
                             <br />
                             Essentials
                           </Link>
                         </td>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-49">
+                          <Link to="/certification/badge/badge-detail/BADGE-49">
                             재무
                             <br />
                             Essentials
                           </Link>
                         </td>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4c">
+                          <Link to="/certification/badge/badge-detail/BADGE-4c">
                             브랜드
                             <br />
                             Essentials
                           </Link>
                           <br />
                           /<br />
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4a">
+                          <Link to="/certification/badge/badge-detail/BADGE-4a">
                             마케팅
                             <br />
                             Essentials
                           </Link>
                         </td>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4b">
+                          <Link to="/certification/badge/badge-detail/BADGE-4b">
                             HR
                             <br />
                             Essentials
                           </Link>
                         </td>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4g">
+                          <Link to="/certification/badge/badge-detail/BADGE-4g">
                             구매
                             <br />
                             Essentials
                           </Link>
                         </td>
                         <td className="badge-texts">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4e">
+                          <Link to="/certification/badge/badge-detail/BADGE-4e">
                             IP Mindset
                             <br />
                             Essentials
                           </Link>
                         </td>
                         <td className="badge-texts grey">
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4f">
+                          <Link to="/certification/badge/badge-detail/BADGE-4f">
                             협상
                             <br />
                             Essentials
                           </Link>
                           <br />
                           /<br />
-                          <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
+                          <Link to="/certification/badge/badge-detail/BADGE-44">
                             Measurement
                             <br />
                             Essentials
@@ -269,7 +269,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00014"
+                to="/lecture/college/CLG00008/channel/CHN00014"
                 className="item-button"
               >
                 <Image
@@ -331,7 +331,7 @@ const CollegeInnerTabView = () => {
                     <h3>AI/DT &#38; Strategy</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-9s/Course/C-LECTURE-7k">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-9s/Course/C-LECTURE-7k">
                           <ul>
                             <li>AI/DT 기반의 Deep Change 전략</li>
                             <li>- AI/DT 전략의 기본 개념</li>
@@ -352,7 +352,7 @@ const CollegeInnerTabView = () => {
                     <h3>ESG &#38; Strategy</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-9r/Course/C-LECTURE-7j">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-9r/Course/C-LECTURE-7j">
                           <ul>
                             <li>SV 기반의 Deep Change 전략</li>
                             <li>- SV 전략수립 Process</li>
@@ -380,13 +380,13 @@ const CollegeInnerTabView = () => {
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-46">
+                      <Link to="/certification/badge/badge-detail/BADGE-46">
                         Strategy Essentials
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1aj/Program/P-LECTURE-1z">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1aj/Program/P-LECTURE-1z">
                           <ul className="height_fixed">
                             <li>전략 101 : 어서 와, 전략은 처음이지?</li>
                             <li>- 전략이란 무엇인가?</li>
@@ -395,7 +395,7 @@ const CollegeInnerTabView = () => {
                             <li>- Strategy in SK</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e7/Course/C-LECTURE-17w">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e7/Course/C-LECTURE-17w">
                           <ul className="height_fixed">
                             <li>All about Portfolio Strategy</li>
                             <li>- Portfolio Mgmt의 Option</li>
@@ -406,7 +406,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ek/Course/C-LECTURE-186">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ek/Course/C-LECTURE-186">
                           <ul className="sub height_fixed">
                             <li>전략 수립의 시작, 경영환경분석</li>
                             <li>- 외부환경분석 Tool &#38; Framework</li>
@@ -443,7 +443,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0005w"
+                to="/lecture/college/CLG00008/channel/CHN0005w"
                 className="item-button"
               >
                 <Image
@@ -517,7 +517,7 @@ const CollegeInnerTabView = () => {
                       <p>개념 이해</p>
                     </div>
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-49">
+                      <Link to="/certification/badge/badge-detail/BADGE-49">
                         재무 Essentials
                       </Link>
                     </h3>
@@ -525,12 +525,12 @@ const CollegeInnerTabView = () => {
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1eo/Course/C-LECTURE-18a">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1eo/Course/C-LECTURE-18a">
                               재무관리 101
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1em/Course/C-LECTURE-188">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1em/Course/C-LECTURE-188">
                               기업가치, 무엇이고 어떻게 평가하는가?
                             </Link>
                           </li>
@@ -539,22 +539,22 @@ const CollegeInnerTabView = () => {
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1es/Course/C-LECTURE-18e">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1es/Course/C-LECTURE-18e">
                               궁금해요, 내부회계관리제도
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1eq/Course/C-LECTURE-18c">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1eq/Course/C-LECTURE-18c">
                               처음 만나는 원가/관리회계
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ep/Course/C-LECTURE-18b">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ep/Course/C-LECTURE-18b">
                               하나씩 쉽게, 계정과목 별 회계처리
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1eb/Course/C-LECTURE-17y">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1eb/Course/C-LECTURE-17y">
                               Fun-Fun한 회계
                             </Link>
                           </li>
@@ -563,7 +563,7 @@ const CollegeInnerTabView = () => {
                       <div className="con_sub_box">
                         <ul className="ul_one">
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ew/Course/C-LECTURE-18h">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ew/Course/C-LECTURE-18h">
                               세무회계 실무 첫걸음
                             </Link>
                           </li>
@@ -585,7 +585,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00018"
+                to="/lecture/college/CLG00008/channel/CHN00018"
                 className="item-button"
               >
                 <Image
@@ -650,27 +650,27 @@ const CollegeInnerTabView = () => {
                         <ul>
                           <li>디지털 고객 Data 마케팅</li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19m/Course/C-LECTURE-144">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19m/Course/C-LECTURE-144">
                               - Marketing DT Trend
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bd/Course/C-LECTURE-154">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bd/Course/C-LECTURE-154">
                               - 데이터 기반 고객 분석
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bc/Course/C-LECTURE-153">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bc/Course/C-LECTURE-153">
                               - 퍼포먼스 마케팅 분석
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19x/Course/C-LECTURE-148">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19x/Course/C-LECTURE-148">
                               - 디지털 채널 경쟁력 분석
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-31/Course/C-LECTURE-1a">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-31/Course/C-LECTURE-1a">
                               - Global Digital Marketing Trends
                             </Link>
                           </li>
@@ -679,17 +679,17 @@ const CollegeInnerTabView = () => {
                         <ul>
                           <li>디지털마케팅 사례</li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-rd/Course/C-LECTURE-n4">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-rd/Course/C-LECTURE-n4">
                               - Mastercard의 DT 성공전략
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-2x/Course/C-LECTURE-1b">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-2x/Course/C-LECTURE-1b">
                               - 디지털마케팅 Trend &#38; Case
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19t/Course/C-LECTURE-146">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19t/Course/C-LECTURE-146">
                               - SK의 고객 Data 기반 Deep Change
                             </Link>
                           </li>
@@ -719,7 +719,7 @@ const CollegeInnerTabView = () => {
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4a">
+                      <Link to="/certification/badge/badge-detail/BADGE-4a">
                         마케팅 Essentials
                       </Link>
                     </h3>
@@ -739,7 +739,7 @@ const CollegeInnerTabView = () => {
                             <a href="">- 마케팅 실행 전술</a>
                           </li>
                         </ul>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1el/Course/C-LECTURE-187">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1el/Course/C-LECTURE-187">
                           <ul>
                             <li>Global 마케팅 사례분석</li>
                             <li>- Fedex Case : 나의 고객은 누구인가</li>
@@ -748,7 +748,7 @@ const CollegeInnerTabView = () => {
                             <li>- Exxon Mobil Case : 영원한 것은 없다</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-19l/Course/C-LECTURE-143">
                           <ul>
                             <li>키워드로 배우는 마케팅 101</li>
                             <li>- Marketing Principles / 패러다임의 이동</li>
@@ -757,7 +757,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bf/Course/C-LECTURE-156">
                           <ul>
                             <li>사례로 배우는 B2B 마케팅 101</li>
                             <li>- B2B 마케팅 개요</li>
@@ -766,7 +766,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1be/Course/C-LECTURE-155">
                           <ul>
                             <li>사례로 배우는 상품기획 101</li>
                             <li>- 제품과 서비스</li>
@@ -783,13 +783,13 @@ const CollegeInnerTabView = () => {
                   <div className="con_wrap sub02">
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4c">
+                      <Link to="/certification/badge/badge-detail/BADGE-4c">
                         브랜드 Essentials{' '}
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d2/Course/C-LECTURE-16z">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d2/Course/C-LECTURE-16z">
                           <ul>
                             <li>Brand What &#38; Why?</li>
                             <li>- 브랜드의 중요성</li>
@@ -798,14 +798,14 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d3/Course/C-LECTURE-170">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d3/Course/C-LECTURE-170">
                           <ul>
                             <li>Source of Brand Equity</li>
                             <li>- Brand Equity Pyramid와 Brand Awareness</li>
                             <li>- Brand Association</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d4/Course/C-LECTURE-171">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d4/Course/C-LECTURE-171">
                           <ul>
                             <li>전략적 브랜드 관리의 Key insight</li>
                             <li>- 브랜드 관리에 대한 흔한 착각</li>
@@ -815,14 +815,14 @@ const CollegeInnerTabView = () => {
                             <li>- 브랜드 관리의 전략적 Framework</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d5/Course/C-LECTURE-172">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d5/Course/C-LECTURE-172">
                           <ul>
                             <li>Brand Identify System</li>
                             <li>- BIS의 기본요소</li>
                             <li>- Brand Personality</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d6/Course/C-LECTURE-173">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d6/Course/C-LECTURE-173">
                           <ul>
                             <li>
                               (효과적 브랜드 관리를 위한) 소비자 행동의 이해
@@ -835,7 +835,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d7/Course/C-LECTURE-174">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d7/Course/C-LECTURE-174">
                           <ul>
                             <li>브랜드 Communication</li>
                             <li>- Brand Comm.의 역할과 중요성</li>
@@ -846,7 +846,7 @@ const CollegeInnerTabView = () => {
                             <li>- Media Creative 전략</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d8/Course/C-LECTURE-175">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d8/Course/C-LECTURE-175">
                           <ul>
                             <li>DT시대 고객경험 브랜드전략</li>
                             <li>- DT 시대, Lifestyle의 변화</li>
@@ -854,7 +854,7 @@ const CollegeInnerTabView = () => {
                             <li>- SV 혹은 진정성 브랜드 전략</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d9/Course/C-LECTURE-176">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d9/Course/C-LECTURE-176">
                           <ul>
                             <li>Brand Architecture 디자인</li>
                             <li>- 브랜드 아키텍쳐 : What &#38; Why?</li>
@@ -879,7 +879,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN00013"
+                to="/lecture/college/CLG00008/channel/CHN00013"
                 className="item-button"
               >
                 <Image
@@ -947,26 +947,26 @@ const CollegeInnerTabView = () => {
                   <div className="depth">
                     <div className="con_wrap sub01 depth">
                       <h3>
-                        <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-30">
+                        <Link to="/certification/badge/badge-detail/BADGE-30">
                           조직 Design
                         </Link>
                       </h3>
                       <div className="con_box">
                         <div className="con_sub_box">
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11i/Course/C-LECTURE-wr">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11i/Course/C-LECTURE-wr">
                             <ul>
                               <li>조직 설계 Workshop</li>
                               <li>1. 조직 설계 Workshop</li>
                             </ul>
                           </Link>
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11b/Course/C-LECTURE-wv">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11b/Course/C-LECTURE-wv">
                             <ul>
                               <li>조직 설계 방법론</li>
                               <li>1. 조직 설계 방법론 : Star Model</li>
                               <li>2. 조직 설계 실무 Approach</li>
                             </ul>
                           </Link>
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11a/Course/C-LECTURE-ww">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11a/Course/C-LECTURE-ww">
                             <ul>
                               <li>조직 Self-Design</li>
                               <li>1. 조직 Self-Design : Why &#38; What</li>
@@ -978,32 +978,32 @@ const CollegeInnerTabView = () => {
                     </div>
                     <ul className="sub_ul">
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11g/Course/C-LECTURE-ws">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11g/Course/C-LECTURE-ws">
                           조직 설계 실무 Approach (중장기적)
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-bt7/lecture-card/LECTURE-CARD-9gn">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-bt7/lecture-card/LECTURE-CARD-9gn">
                           양손잡이 조직 설계 이해
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-98w/lecture-card/LECTURE-CARD-6zj">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-98w/lecture-card/LECTURE-CARD-6zj">
                           미래 Tech. 기업의 조직 설계 사례
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-sd/Course/C-LECTURE-nu">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-sd/Course/C-LECTURE-nu">
                           Agile 조직으로의 전환 사례
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-sc/Course/C-LECTURE-nv">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-sc/Course/C-LECTURE-nv">
                           SV 지향 조직 설계 방안
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-xg/lecture-card/LECTURE-CARD-167#">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-xg/lecture-card/LECTURE-CARD-167#">
                           Org. Culture &#38; Leader
                         </Link>
                       </li>
@@ -1026,34 +1026,34 @@ const CollegeInnerTabView = () => {
                   <div className="depth">
                     <div className="con_wrap sub02 depth">
                       <h3>
-                        <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4b">
+                        <Link to="/certification/badge/badge-detail/BADGE-4b">
                           HR Essentials
                         </Link>
                       </h3>
                       <div className="con_box">
                         <div className="con_sub_box">
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f0/Course/C-LECTURE-18q">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f0/Course/C-LECTURE-18q">
                             <ul>
                               <li>인력 확보</li>
                               <li>1. 인력 계획! 왜 해야 하는가?</li>
                               <li>2. 채용 프로세스 꼼꼼하게 확인하기</li>
                             </ul>
                           </Link>
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f1/Course/C-LECTURE-18p">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f1/Course/C-LECTURE-18p">
                             <ul>
                               <li>직무 관리</li>
                               <li>1. 직무란 무엇인가?</li>
                               <li>2. 직무분석과 직무평가 왜 필요한가?</li>
                             </ul>
                           </Link>
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f4/Course/C-LECTURE-18o">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f4/Course/C-LECTURE-18o">
                             <ul>
                               <li>보상</li>
                               <li>1. 보상 운영을 위해 꼭 알아야 할 것들</li>
                               <li>2. 보상 제도 어떻게 변화하였나</li>
                             </ul>
                           </Link>
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f3/Course/C-LECTURE-18n">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f3/Course/C-LECTURE-18n">
                             <ul>
                               <li>성과 관리</li>
                               <li>1. 성과 관리와 평가, 꼭 해야 하나요?</li>
@@ -1061,14 +1061,14 @@ const CollegeInnerTabView = () => {
                             </ul>
                           </Link>
 
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f5/Course/C-LECTURE-18l">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f5/Course/C-LECTURE-18l">
                             <ul>
                               <li>Global HR</li>
                               <li>1. 주재원 제도, 제대로 이해하기</li>
                               <li>2. 반드시 알아야 할 Global Staff 관리</li>
                             </ul>
                           </Link>
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f6/Course/C-LECTURE-18k">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f6/Course/C-LECTURE-18k">
                             <ul>
                               <li>노사관계</li>
                               <li>1. 개별적 근로 관계의 이해</li>
@@ -1083,13 +1083,13 @@ const CollegeInnerTabView = () => {
                   <div className="depth">
                     <div className="con_wrap sub02 depth">
                       <h3>
-                        <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-30">
+                        <Link to="/certification/badge/badge-detail/BADGE-30">
                           조직 Design
                         </Link>
                       </h3>
                       <div className="con_box">
                         <div className="con_sub_box">
-                          <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11k/Course/C-LECTURE-wx">
+                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-11k/Course/C-LECTURE-wx">
                             <ul>
                               <li>조직 설계의 기본 원칙과 사례</li>
                               <li>1. 조직 설계의 기본 원칙</li>
@@ -1102,17 +1102,17 @@ const CollegeInnerTabView = () => {
                     </div>
                     <ul className="sub_ul">
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-rx/Course/C-LECTURE-nn">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-rx/Course/C-LECTURE-nn">
                           조직 설계 길라잡이
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-8ut/lecture-card/LECTURE-CARD-6uk">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-8ut/lecture-card/LECTURE-CARD-6uk">
                           조직 설계 Tip : Smart Design
                         </Link>
                       </li>
                       <li>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-952/lecture-card/LECTURE-CARD-6uj">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-952/lecture-card/LECTURE-CARD-6uj">
                           조직 설계 효과성 측정
                         </Link>
                       </li>
@@ -1132,7 +1132,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007m"
+                to="/lecture/college/CLG00008/channel/CHN0007m"
                 className="item-button"
               >
                 <Image
@@ -1188,7 +1188,7 @@ const CollegeInnerTabView = () => {
                     <h3>구매 Advanced</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f8/Course/C-LECTURE-18r">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f8/Course/C-LECTURE-18r">
                           <ul>
                             <li>기업 성공을 위한 전략적 구매</li>
                             <li>- 기업 전략과 기업 경쟁력 이해</li>
@@ -1196,7 +1196,7 @@ const CollegeInnerTabView = () => {
                             <li>- 기업의 성공과 구매의 역할</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f9/Course/C-LECTURE-18s">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f9/Course/C-LECTURE-18s">
                           <ul>
                             <li>전략적 공급자 관리</li>
                             <li>- 공급자 관리의 두 방법 - 협력과 경쟁</li>
@@ -1204,7 +1204,7 @@ const CollegeInnerTabView = () => {
                             <li>- SRM &#38; 구매체스보드의 이해</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fa/Course/C-LECTURE-18u">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fa/Course/C-LECTURE-18u">
                           <ul>
                             <li>구매와 타 부서와의 협력과 연계</li>
                             <li>- 개발과 구매의 연계 - 개발 구매</li>
@@ -1213,7 +1213,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fb/Course/C-LECTURE-18v">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fb/Course/C-LECTURE-18v">
                           <ul>
                             <li>성공적인 구매 협상</li>
                             <li>- 협상이란 무엇인가?</li>
@@ -1251,13 +1251,13 @@ const CollegeInnerTabView = () => {
                       <p>개념 이해</p>
                     </div>
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4g">
+                      <Link to="/certification/badge/badge-detail/BADGE-4g">
                         구매 Essentials
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bk/Course/C-LECTURE-15a">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bk/Course/C-LECTURE-15a">
                           <ul>
                             <li>나는 진정한 구매인인가, 구매의 본질</li>
                             <li>- 구매 업무의 이해</li>
@@ -1266,7 +1266,7 @@ const CollegeInnerTabView = () => {
                             <li>- 발전하고 변화하는 구매관리</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bo/Course/C-LECTURE-15h">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bo/Course/C-LECTURE-15h">
                           <ul>
                             <li>
                               모르면 큰 코 다치는, 구매 계약/구매 관련 법규 이해
@@ -1278,7 +1278,7 @@ const CollegeInnerTabView = () => {
                             <li>- 기술자료제공 요구 금지, 무엇을 조심해야할까</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bm/Course/C-LECTURE-15c">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bm/Course/C-LECTURE-15c">
                           <ul>
                             <li>
                               나는 무엇을 구매하고 있나, 구매 품목의 이해 및 관리
@@ -1288,7 +1288,7 @@ const CollegeInnerTabView = () => {
                             <li>- 서비스/용역 품목의 이해</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bq/Course/C-LECTURE-15f">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bq/Course/C-LECTURE-15f">
                           <ul>
                             <li>방심은 금물, 구매 위험 관리</li>
                             <li>- Intro : 타이레놀 위험 관리</li>
@@ -1297,7 +1297,7 @@ const CollegeInnerTabView = () => {
                             <li>- 팬데믹 시대와 구매 위험관리</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1br/Course/C-LECTURE-15e">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1br/Course/C-LECTURE-15e">
                           <ul>
                             <li>디지털 구매 혁신</li>
                             <li>- 디지털 혁신의 핵심적 이해</li>
@@ -1306,7 +1306,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bl/Course/C-LECTURE-15b">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bl/Course/C-LECTURE-15b">
                           <ul>
                             <li>구매 업무 프로세스 이해 및 활용</li>
                             <li>- 구매업무프로세스의 이해와 활용</li>
@@ -1318,7 +1318,7 @@ const CollegeInnerTabView = () => {
                             <li>- 계약 후의 구매활동</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bp/Course/C-LECTURE-15g">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bp/Course/C-LECTURE-15g">
                           <ul>
                             <li>알수록 돈버는, 구매인을 위한 재무/회계/물류</li>
                             <li>- 계좌등록관리</li>
@@ -1328,7 +1328,7 @@ const CollegeInnerTabView = () => {
                             <li>- 수입통관, 관세와 부가세</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bn/Course/C-LECTURE-15i">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bn/Course/C-LECTURE-15i">
                           <ul>
                             <li>구매 원가 관리</li>
                             <li>- 구매 원가의 전략적 의미</li>
@@ -1339,7 +1339,7 @@ const CollegeInnerTabView = () => {
                             <li>- 목표원가 및 가치분석</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bs/Course/C-LECTURE-15d">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bs/Course/C-LECTURE-15d">
                           <ul>
                             <li>기업의 사회적 가치와 구매</li>
                             <li>- 구매와 ESG, SV 실천 (1)</li>
@@ -1367,7 +1367,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0007l"
+                to="/lecture/college/CLG00008/channel/CHN0007l"
                 className="item-button"
               >
                 <Image
@@ -1421,20 +1421,20 @@ const CollegeInnerTabView = () => {
                     </div>
                     {/* 콘텐츠 리스트 */}
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4d">
+                      <Link to="/certification/badge/badge-detail/BADGE-4d">
                         공정거래법
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-cb3/lecture-card/LECTURE-CARD-9sl">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/cube/CUBE-cb3/lecture-card/LECTURE-CARD-9sl">
                           <ul>
                             <li>공정거래법 Overview</li>
                             <li>- 공정거래법 이해 및 정책 방향</li>
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d0/Course/C-LECTURE-16k">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1d0/Course/C-LECTURE-16k">
                           <ul>
                             <li>부당지원, 사익편취</li>
                             <li>- 부당 지원/사익 편취 이해하기</li>
@@ -1443,7 +1443,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bz/Course/C-LECTURE-15o">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bz/Course/C-LECTURE-15o">
                           <ul>
                             <li>불공정 거래와 부당표시 광고</li>
                             <li>- 불공정 거래행위 이해하기</li>
@@ -1451,7 +1451,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c0/Course/C-LECTURE-15p">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c0/Course/C-LECTURE-15p">
                           <ul>
                             <li>경제력 집중 억제</li>
                             <li>- 공정거래법상 기업집단 규제 이해하기</li>
@@ -1460,7 +1460,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bw/Course/C-LECTURE-15n">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1bw/Course/C-LECTURE-15n">
                           <ul>
                             <li>기업결합의 제한</li>
                             <li>- M&#38;A, 기업결합신고 필요한가?</li>
@@ -1468,7 +1468,7 @@ const CollegeInnerTabView = () => {
                             <li>- 혼합결합이 왜 문제가 되는가?</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c1/Course/C-LECTURE-15q">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c1/Course/C-LECTURE-15q">
                           <ul>
                             <li>시장 지배적 지위 남용 행위</li>
                             <li>- 시장 지배적 지위 남용 행위 이해하기</li>
@@ -1477,7 +1477,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c2/Course/C-LECTURE-15r">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c2/Course/C-LECTURE-15r">
                           <ul>
                             <li>부당한 공동행위</li>
                             <li>- 부당한 공동행위 알아보기</li>
@@ -1485,7 +1485,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c3/Course/C-LECTURE-15s">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1c3/Course/C-LECTURE-15s">
                           <ul>
                             <li>하도급법</li>
                             <li>- 하도급법 알아보기</li>
@@ -1531,7 +1531,7 @@ const CollegeInnerTabView = () => {
                         </a>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b1/Course/C-LECTURE-17m">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b1/Course/C-LECTURE-17m">
                           <ul>
                             <li>M&#38;A와 IP Transaction</li>
                             <li>- M&#38;A와 IP 이슈</li>
@@ -1547,7 +1547,7 @@ const CollegeInnerTabView = () => {
                     <h3>특허 분쟁</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b2/Course/C-LECTURE-17n">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b2/Course/C-LECTURE-17n">
                           <ul>
                             <li>한국 특허분쟁 실무</li>
                             <li>- 특허 심판 제도의 이해</li>
@@ -1557,7 +1557,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b3/Course/C-LECTURE-16n">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b3/Course/C-LECTURE-16n">
                           <ul>
                             <li>미국 특허분쟁 Key Points</li>
                             <li>- Discovery 단계</li>
@@ -1567,7 +1567,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b4/Course/C-LECTURE-16m">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1b4/Course/C-LECTURE-16m">
                           <ul>
                             <li>특허 협상 및 라이선스</li>
                             <li>- 특허 Claim 단계</li>
@@ -1587,13 +1587,13 @@ const CollegeInnerTabView = () => {
                       <p>개념이해</p>
                     </div>
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4e">
+                      <Link to="/certification/badge/badge-detail/BADGE-4e">
                         IP Mind-Set Essential
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fp/Course/C-LECTURE-19a">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1fp/Course/C-LECTURE-19a">
                           <ul>
                             <li>지적 재산권 101</li>
                             <li>- 지식재산권의 개념과 종류</li>
@@ -1602,7 +1602,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ea/Course/C-LECTURE-17x">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ea/Course/C-LECTURE-17x">
                           <ul>
                             <li>AI 특허</li>
                             <li>- AI 특허 동향</li>
@@ -1612,7 +1612,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1am/Course/C-LECTURE-178">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1am/Course/C-LECTURE-178">
                           <ul>
                             <li>연구 개발과 지식재산</li>
                             <li>- R&#38;D에서의 특허개발의 필요성</li>
@@ -1621,7 +1621,7 @@ const CollegeInnerTabView = () => {
                           </ul>
                         </Link>
 
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1at/Course/C-LECTURE-197">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1at/Course/C-LECTURE-197">
                           <ul>
                             <li>특허 분쟁 개론</li>
                             <li>- 특허분쟁의 종류</li>
@@ -1631,7 +1631,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1as/Course/C-LECTURE-177">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1as/Course/C-LECTURE-177">
                           <ul>
                             <li>직무발명</li>
                             <li>- 직무발명의 이해</li>
@@ -1639,7 +1639,7 @@ const CollegeInnerTabView = () => {
                             <li>- 보상제도와 발명보상 사례</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1au/Course/C-LECTURE-16o">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1au/Course/C-LECTURE-16o">
                           <ul>
                             <li>분쟁대응 문서관리</li>
                             <li>- 문서 관리 정책</li>
@@ -1655,7 +1655,7 @@ const CollegeInnerTabView = () => {
                     <h3>오픈소스 Essentials</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1av/Course/C-LECTURE-179">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1av/Course/C-LECTURE-179">
                           <ul>
                             <li>오픈소스의 선형적 발전</li>
                             <li>- 오픈소스의 출현배경</li>
@@ -1663,7 +1663,7 @@ const CollegeInnerTabView = () => {
                             <li>- 폐쇄기업의 견제에 따른 오픈소스의 성장통</li>
                           </ul>
                         </Link>
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ax/Course/C-LECTURE-17b">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1ax/Course/C-LECTURE-17b">
                           <ul>
                             <li>오픈소스 라이선스</li>
                             <li>- 오픈소스의 정의 및 양면성</li>
@@ -1673,7 +1673,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1aw/Course/C-LECTURE-17a">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1aw/Course/C-LECTURE-17a">
                           <ul>
                             <li>Software, Copyright &#38; License</li>
                             <li>- 소프트웨어 저작권의 주요 쟁점</li>
@@ -1703,7 +1703,7 @@ const CollegeInnerTabView = () => {
           <div className="belt">
             <div className="text-right-box">
               <Link
-                to="https://mysuni.sk.com/suni-main/lecture/college/CLG00008/channel/CHN0001a"
+                to="/lecture/college/CLG00008/channel/CHN0001a"
                 className="item-button"
               >
                 <Image
@@ -1747,13 +1747,13 @@ const CollegeInnerTabView = () => {
                 <div className="fundamental-topic width50">
                   <div className="con_wrap sub01">
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-44">
+                      <Link to="/certification/badge/badge-detail/BADGE-44">
                         Measurement Essentials
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-15f/Course/C-LECTURE-102">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-15f/Course/C-LECTURE-102">
                           <ul>
                             <li>Customer Measure &#38; Analytics</li>
                             <li>- 고객 측정의 기본 개념</li>
@@ -1763,7 +1763,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00003/course-plan/COURSE-PLAN-14o/Course/C-LECTURE-zr">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00003/course-plan/COURSE-PLAN-14o/Course/C-LECTURE-zr">
                           <ul>
                             <li>행복 지도의 이해</li>
                             <li>- 행복 지도란?</li>
@@ -1775,7 +1775,7 @@ const CollegeInnerTabView = () => {
                     </div>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00004/course-plan/COURSE-PLAN-f6/Course/C-LECTURE-cd">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00004/course-plan/COURSE-PLAN-f6/Course/C-LECTURE-cd">
                           <ul>
                             <li>SV 측정의 이해</li>
                             <li>- SV 측정의 원칙 및 체계</li>
@@ -1785,7 +1785,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-v8/Course/C-LECTURE-r5">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-v8/Course/C-LECTURE-r5">
                           <ul>
                             <li>Deep Change의 시작, 측정</li>
                             <li>- 경영 현장에서의 측정</li>
@@ -1800,13 +1800,13 @@ const CollegeInnerTabView = () => {
                 <div className="combined-topic width50">
                   <div className="con_wrap sub01">
                     <h3>
-                      <Link to="https://mysuni.sk.com/suni-main/certification/badge/badge-detail/BADGE-4f">
+                      <Link to="/certification/badge/badge-detail/BADGE-4f">
                         Negotiaion Essentials
                       </Link>
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1dz/Course/C-LECTURE-17o">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1dz/Course/C-LECTURE-17o">
                           <ul>
                             <li>Negotiation, 그 의미와 필요성</li>
                             <li>- Intro into Negotiation</li>
@@ -1816,7 +1816,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f2/Course/C-LECTURE-18t">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1f2/Course/C-LECTURE-18t">
                           <ul>
                             <li>[협상 준비 전략] 12가지 협상 Skill</li>
                             <li>- 목표를 설정하라</li>
@@ -1828,7 +1828,7 @@ const CollegeInnerTabView = () => {
                     </div>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e3/Course/C-LECTURE-17s">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e3/Course/C-LECTURE-17s">
                           <ul>
                             <li>협상 Essence Reading</li>
                             <li>- Getting to Yes</li>
@@ -1838,7 +1838,7 @@ const CollegeInnerTabView = () => {
                         </Link>
                       </div>
                       <div className="con_sub_box flex">
-                        <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e2/Course/C-LECTURE-17r">
+                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-1e2/Course/C-LECTURE-17r">
                           <ul className="height100">
                             <li>협상 Essential Wrap up</li>
                             <li>- 협상 Essential Wrap up</li>
@@ -1858,27 +1858,27 @@ const CollegeInnerTabView = () => {
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-4a/Course/C-LECTURE-2h">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-4a/Course/C-LECTURE-2h">
                               엑셀 실무 Master 1 ~ 8
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-4x/Course/C-LECTURE-2a">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-4x/Course/C-LECTURE-2a">
                               검색해도 찾기 힘든 꼭 필요한 엑셀 함수
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3n/Course/C-LECTURE-2l">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3n/Course/C-LECTURE-2l">
                               부장님은 내 기획서가 쓰레기라고 말했지
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3u/Course/C-LECTURE-2j">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3u/Course/C-LECTURE-2j">
                               한국인이 많이 하는 이메일 영어실수 上 下
                             </Link>
                           </li>
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-50/Course/C-LECTURE-28">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-50/Course/C-LECTURE-28">
                               지나가는 팀장도 돌아보는 PPT 디자인
                             </Link>
                           </li>
@@ -1894,7 +1894,7 @@ const CollegeInnerTabView = () => {
                       <div className="con_sub_box">
                         <ul className="ul_style">
                           <li>
-                            <Link to="https://mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3o/Course/C-LECTURE-2k">
+                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00008/course-plan/COURSE-PLAN-3o/Course/C-LECTURE-2k">
                               10가지 키워드로 배우는 창의적 사고력
                             </Link>
                           </li>
