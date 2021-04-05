@@ -3,6 +3,7 @@ import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
+import momentTZ from 'moment-timezone';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
@@ -402,16 +403,21 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     }
 
     const eventBannerVisible = () => {
-      const afterFlag = moment('YYYY-MM-DD').isAfter(
-        moment().format('2021-04-04'),
+      const today = momentTZ().tz('Asia/Seoul').format('YYYY-MM-DD')
+      const afterFlag = moment(today).isAfter(
+        momentTZ().tz('Asia/Seoul').format('2021-04-04'),
         'day'
       );
-      const beforeFlag = moment('YYYY-MM-DD').isBefore(
-        moment().format('2021-05-01'),
+      const beforeFlag = moment(today).isBefore(
+        momentTZ().tz('Asia/Seoul').format('2021-05-01'),
         'day'
       );
 
-      return true;
+      if(afterFlag && beforeFlag) {
+        return true
+      } else {
+        return false
+      }
     };
 
     const style1 = {
