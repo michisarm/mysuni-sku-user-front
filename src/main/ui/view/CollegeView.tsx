@@ -2713,7 +2713,7 @@ const panes = [
               </div>
               <ul className="tag-wrap">
                 <li># 신입사원</li>
-                <li># 영업구성원</li>
+                <li># 영입구성원</li>
                 <li># 신임팀장</li>
                 <li># 신임임원</li>
                 <li># 영입임원</li>
