@@ -38,7 +38,6 @@
     "mobx": "^4.15.0",
     "mobx-react": "^6.1.4",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.33",
     "nara-react-scripts": "0.1.19",
     "numeral": "^2.0.6",
     "query-string": "6.13.1",
