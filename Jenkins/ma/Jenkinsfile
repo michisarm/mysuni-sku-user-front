@@ -5,6 +5,47 @@ def ZCP_USERID='deployserviceaccount'
 def DOCKER_IMAGE='sk-university/user-front'
 def K8S_NAMESPACE='gdi-skuniv-app-ma'
 def REPLICAS=1
+def podTemplateYaml = """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    jenkins: slave
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - preference:
+          matchExpressions:
+          - key: project
+            operator: In
+            values:
+            - user
+        weight: 100
+  containers:
+  - command:
+    - cat
+    name: node
+    image: node:10.16.3
+    tty: true
+  - command:
+    - cat
+    image: lachlanevenson/k8s-kubectl
+    name: kubectl
+    tty: true
+  - command:
+    - dockerd-entrypoint.sh
+    image: docker:17-dind
+    name: docker
+    securityContext:
+      privileged: true
+    tty: true
+  tolerations:
+  - effect: NoSchedule
+    key: user
+    operator: Equal
+    value: "true"
+"""
 timestamps {
     podTemplate(label:label,
         serviceAccount: "zcp-system-sa-${ZCP_USERID}",
