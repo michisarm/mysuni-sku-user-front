@@ -148,7 +148,6 @@ class LectureCardPage extends Component<Props, State> {
       cubeId,
       lectureCardId,
     } = this.props.match.params!;
-
   }
 
   componentDidMount() {
@@ -156,7 +155,6 @@ class LectureCardPage extends Component<Props, State> {
     this.setCineroom();
     this.init();
     this.publishViewEvent();
-
   }
 
   componentWillUnmount(): void {

@@ -124,7 +124,6 @@ class CoursePageV2 extends Component<Props, State> {
     props.coursePlanService.clearCoursePlan();
     props.coursePlanService.clearCoursePlanContents();
     props.lectureService.clearLectureViews();
-
   }
 
   componentDidMount() {
@@ -778,7 +777,6 @@ class CoursePageV2 extends Component<Props, State> {
   // }
 
   setExamState(studentData?: any) {
-
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
     }
@@ -830,7 +828,6 @@ class CoursePageV2 extends Component<Props, State> {
         this.setStateName('1', 'Test');
       }
     }
-
   }
 
   setStateName(type: string, name: string) {

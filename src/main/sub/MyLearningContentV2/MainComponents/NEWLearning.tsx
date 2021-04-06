@@ -32,7 +32,6 @@ import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
 */
@@ -49,9 +48,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
   inMyLectureService,
   history,
 }) {
-  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
-  useRequestCollege();
-
   const CONTENT_TYPE_NAME = '신규과정';
   // const PAGE_SIZE = 8;
   // const { newLectures } = newLectureService!;
@@ -294,17 +290,17 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
                     description={card.description}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
-                    iconName={inMyLecture ? 'remove2' : 'add-list'}
-                    onAction={() => {
-                      reactAlert({
-                        title: '알림',
-                        message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
-                      });
-                      onActionLecture(inMyLecture!);
-                    }}
-                    onViewDetail={onViewDetail}
+                    // iconName={inMyLecture ? 'remove2' : 'add-list'}
+                    // onAction={() => {
+                    //   reactAlert({
+                    //     title: '알림',
+                    //     message: inMyLecture
+                    //       ? '본 과정이 관심목록에서 제외되었습니다.'
+                    //       : '본 과정이 관심목록에 추가되었습니다.',
+                    //   });
+                    //   onActionLecture(inMyLecture!);
+                    // }}
+                    // onViewDetail={onViewDetail}
                   />
                 </CardGroup>
               </li>
