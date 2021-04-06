@@ -47,6 +47,7 @@ export interface LectureTestItem {
   totalPoint?: number;
   graderComment?: string;
   essayScores?: EssayScore[];
+  description: string;
 }
 
 export interface LectureTestAnswerItem extends Item {
