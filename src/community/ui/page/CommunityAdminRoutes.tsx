@@ -30,13 +30,8 @@ interface Params {
 
 const CommunityAdminRoutes: React.FC = function CommunityAdminRoutes() {
   //
-<<<<<<< HEAD
-  const { communityId  } = useParams<Params>();
-  
-=======
   const { communityId } = useParams<Params>();
 
->>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471
   useEffect(() => {
     requestCommunity(communityId);
     // requestCommunityMenus(communityId);

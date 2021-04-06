@@ -99,7 +99,8 @@ export function findAllPostViewsFromMyCommunities(
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const initLimit = 10;
-  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset + initLimit}`;
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset +
+    initLimit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -235,16 +236,17 @@ export function findAllOpenCommunities(
   offset: number,
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
-<<<<<<< HEAD
-=======
   if (offset > 12) {
-    const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-      }&sort=${sort}&offset=0&limit=${offset}`;
-    return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+    const url = `${BASE_URL}/communities/communityView/open?${
+      fieldId === undefined ? '' : `field=${fieldId}`
+    }&sort=${sort}&offset=0&limit=${offset}`;
+    return axiosApi
+      .get<OffsetElementList<CommunityView>>(url)
+      .then(AxiosReturn);
   }
->>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471
-  const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-    }&sort=${sort}&offset=${offset}&limit=12`;
+  const url = `${BASE_URL}/communities/communityView/open?${
+    fieldId === undefined ? '' : `field=${fieldId}`
+  }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -434,29 +436,35 @@ export function getCommunityGroups(communityId: string): Promise<any> {
   });
 }
 
-export function saveCommunityAdminMenu(communityId: string, params: any, selectedRow: any): Promise<any> {
+export function saveCommunityAdminMenu(
+  communityId: string,
+  params: any,
+  selectedRow: any
+): Promise<any> {
   if (params.type === 'DISCUSSION') {
-    let value = ''
-    let name = ''
+    let value = '';
+    let name = '';
 
     params.nameValues.map((item: any) => {
       if (item.name === 'discussionTopic') {
-        value = item.value
+        value = item.value;
       } else if (item.name === 'name') {
-        name = item.value
+        name = item.value;
       }
     });
     const url = `${BASE_URL}/${communityId}/menus/flow/${params.id}?name=${selectedRow.discussionTopic}&discussionTopic=${selectedRow.discussionTopic}&title=${name}`;
     return axiosApi.put(url).then(response => {
       const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-      return axiosApi.put(url, { 'nameValues': params.nameValues }).then(response => {
-        return response && response.data
-      });
+      return axiosApi
+        .put(url, { nameValues: params.nameValues })
+        .then(response => {
+          return response && response.data;
+        });
     });
   }
   const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-  return axiosApi.put(url, { 'nameValues': params.nameValues }).then(response => {
-    return response && response.data
+  return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
+    return response && response.data;
   });
 }
 
@@ -467,7 +475,7 @@ export function deleteCommunityAdminMenu(
   // params: CommunityAdminMenu
   const url = `${BASE_URL}/${communityId}/menus/${params}`;
   return axiosApi.delete(url).then(response => {
-    return response && response.data
+    return response && response.data;
   });
 }
 
@@ -478,7 +486,7 @@ export function addCommunityAdminMenu(
   // params: CommunityAdminMenu
   const url = `${BASE_URL}/${communityId}/menus`;
   return axiosApi.post(url, addRow).then(response => {
-    return response && response.data
+    return response && response.data;
   });
 }
 
@@ -488,32 +496,27 @@ export function addCommunityAdminDiscussion(
 ): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
   return axiosApi.post(url, addRow).then(response => {
-    return response && response.data
+    return response && response.data;
   });
 }
 
 export function findCommunitySurvey(params: any): Promise<any> {
   const url = `/api/survey/surveyForms/searchKey?`;
   return axiosApi.get(url, { params }).then(response => {
-    return response
+    return response;
   });
 }
 
 export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
   const url = `/api/survey/surveyForms/${surveyId}`;
   return axiosApi.get(url).then(response => {
-    return response
+    return response;
   });
 }
 
 export function setCommunityMenuOrder(communityId: string): Promise<any> {
   const url = `/api/community/${communityId}/menus/order`;
   return axiosApi.put(url).then(response => {
-<<<<<<< HEAD
-    return response
-  });
-}
-=======
     return response;
   });
 }
@@ -536,4 +539,3 @@ export function rejectMember(
     )
     .then(response => response && 'success');
 }
->>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471

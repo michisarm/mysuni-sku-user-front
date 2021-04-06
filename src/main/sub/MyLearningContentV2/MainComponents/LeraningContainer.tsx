@@ -76,7 +76,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
 
   useEffect(() => {
     fetchCards();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getInMyLecture = (serviceId: string) => {
