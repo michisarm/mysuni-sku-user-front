@@ -2,19 +2,33 @@ import {
   LectureStructure,
   LectureStructureItem,
 } from '../viewModel/LectureStructure';
+import CommunityIsLoadingState from '../viewModel/CommunityIsLoadingState';
+
 import { createStore } from './Store';
 
 const initialStore: LectureStructure = {
-  courses: [],
+  card: {
+    cardId: '',
+    name: '',
+    params: {
+      cardId: '',
+      viewType: 'view',
+    },
+    path: '',
+    can: false,
+    order: -1,
+    type: 'CARD',
+  },
+  chapters: [],
   cubes: [],
   discussions: [],
   items: [],
-  type: 'Cube',
 };
 const [
   setLectureStructure,
   onLectureStructure,
   getLectureStructure,
+  useLectureStructure,
 ] = createStore<LectureStructure>(initialStore);
 
 const [
@@ -23,11 +37,23 @@ const [
   getCurentLectureStructureItem,
 ] = createStore<LectureStructureItem>();
 
+const [
+  setIsLoadingState,
+  onIsLoadingState,
+  getIsLoadingState,
+  useIsLoadingState,
+] = createStore<CommunityIsLoadingState>({ isLoading: false });
+
 export {
   setLectureStructure,
   onLectureStructure,
   getLectureStructure,
+  useLectureStructure,
   setCurentLectureStructureItem,
   onCurentLectureStructureItem,
   getCurentLectureStructureItem,
+  setIsLoadingState,
+  onIsLoadingState,
+  getIsLoadingState,
+  useIsLoadingState,
 };

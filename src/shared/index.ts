@@ -15,7 +15,10 @@ export { default as ContentLayout } from '../layout/ContentLayout';
 export { default as ContentHeader } from '../layout/ContentHeader';
 export { default as ContentMenu } from '../layout/ContentMenu';
 
-export { default as NoSuchContentPanel } from './components/NoSuchContentPanel';
+export {
+  NoSuchContentPanel,
+  Loadingpanel,
+} from './components/NoSuchContentPanel';
 export { default as InputWrapper } from './components/InputWrapper';
 export { default as Tab, TabItemModel } from './components/Tab';
 export { default as ListPanelTopLine } from './components/ListPanelTopLine';

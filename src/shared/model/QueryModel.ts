@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { DatePeriod } from './DatePeriod';
+import { DatePeriod } from './ObservableDatePeriod';
 
 export class QueryModel {
   period: DatePeriod = new DatePeriod();

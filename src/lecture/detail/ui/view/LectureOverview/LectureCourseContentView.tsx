@@ -74,7 +74,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
 
   return (
     <>
-      {lecturePrecourse && lecturePrecourse.courses.length > 0 && (
+      {lecturePrecourse && lecturePrecourse.prerequisiteCards.length > 0 && (
         <LecturePrecourseView lecturePrecourse={lecturePrecourse} />
       )}
       <div className="lms-sticky-menu">
@@ -106,8 +106,8 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               </a>
             )}
           {lectureRelations &&
-            Array.isArray(lectureRelations.lectures) &&
-            lectureRelations.lectures.length > 0 && (
+            Array.isArray(lectureRelations.relatedCards) &&
+            lectureRelations.relatedCards.length > 0 && (
               <a
                 onClick={relatedHashClick}
                 className={activatedTab === 'related' ? 'lms-act' : ''}
@@ -162,8 +162,8 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <LectureBadgeView lectureBadge={lectureBadge} />
             )}
           {lectureRelations &&
-            Array.isArray(lectureRelations.lectures) &&
-            lectureRelations.lectures.length > 0 && (
+            Array.isArray(lectureRelations.relatedCards) &&
+            lectureRelations.relatedCards.length > 0 && (
               <LectureRelationsView lectureRelations={lectureRelations} />
             )}
         </>

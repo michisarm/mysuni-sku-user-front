@@ -8,7 +8,6 @@ interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
-  questionCount: number;
   path: string;
   can: boolean;
 }
@@ -24,7 +23,6 @@ const CourseSurveyView: React.FC<SurveyViewProps> = function CourseSurveyView({
   name,
   state = 'None',
   activated = false,
-  questionCount,
   path,
   can,
 }) {
@@ -43,11 +41,14 @@ const CourseSurveyView: React.FC<SurveyViewProps> = function CourseSurveyView({
         <span>cube 완료상태</span>
       </span>
       <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
+        <span className="copy-title">
+          {/* {name} */}
+          Survey
+        </span>
+        {/* <ul className="type-info">
           <li>Survey</li>
           <li>{`${questionCount}문항`}</li>
-        </ul>
+        </ul> */}
       </span>
     </StructureLink>
   );

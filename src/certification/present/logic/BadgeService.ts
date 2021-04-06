@@ -1,497 +1,311 @@
-import {
-  action,
-  computed,
-  IObservableArray,
-  observable,
-  runInAction,
-} from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { OffsetElementList } from 'shared/model';
 import BadgeApi from '../apiclient/BadgeApi';
-import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
-import BadgeModel from '../../ui/model/BadgeModel';
-import MyBadgeModel from '../../ui/model/MyBadgeModel';
-import CategoryModel from '../../ui/model/CategoryModel';
-import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
-import BadgeCompModel from '../../ui/model/BadgeCompModel';
-import BadgeStudentModel from '../../ui/model/BadgeStudentModel';
+import {
+  findBadgesWithStudentCount,
+  findAvailableBadgesByRdo,
+  findBadgesByBadgeIssueState,
+  findBadge,
+  findBadgesByIds,
+  challengeBadge,
+  cancelBadgeChallenges,
+  requestIssue,
+  cancelRequestIssue,
+} from '../../api/BadgeApi';
+import { Badge } from '../../model/Badge';
+import { MyBadgeRdo } from '../../model/MyBadgeRdo';
+import { MyBadge } from '../../model/MyBadge';
+import { BadgeRdo } from '../../model/BadgeRdo';
+import { AllBadgeCount } from '../../model/AllBadgeCount';
+import { BadgeLevel } from '../../model/BadgeLevel';
 
 @autobind
 class BadgeService {
   //
   static instance: BadgeService;
 
-  private badgeApi: BadgeApi;
+  // private badgeApi: BadgeApi;
 
-  constructor(badgeApi: BadgeApi) {
-    this.badgeApi = badgeApi;
+  // constructor(badgeApi: BadgeApi) {
+  //   this.badgeApi = badgeApi;
+  // }
+
+  @observable
+  _badge?: Badge;
+
+  @computed get badge() {
+    return this._badge;
+  }
+
+  @action
+  async findBadge(badgeId: string) {
+    const foundBadge = await findBadge(badgeId);
+
+    if (foundBadge !== undefined) {
+      runInAction(() => {
+        this._badge = foundBadge;
+      });
+    }
   }
 
   @observable
-  _category: CategoryModel[] = [];
+  _badges: Badge[] = [];
 
-  @observable
-  _categoryCount: number = 0;
-
-  @observable
-  _badge: BadgeModel[] = [];
-
-  @observable
-  _myBadge: MyBadgeModel[] = [];
-
-  @observable
-  _myBadgeCount: number = 0;
-
-  @observable
-  _badgeDetail: BadgeDetailModel = new BadgeDetailModel();
-
-  @observable
-  _badgeComposition: BadgeCompModel[] = [];
+  @computed get badges() {
+    return this._badges;
+  }
 
   @observable
   _badgeCount: number = 0;
 
-  @observable
-  _challengingCount: number = 0;
-
-  @observable
-  _earnedCount: number = 0;
-
-  @observable
-  _badgeStudent: BadgeStudentModel[] = [];
-
-  @action
-  clearCategories() {
-    //
-    this._categoryCount = 0;
-    return runInAction(() => (this._category = []));
+  @computed get badgeCount() {
+    return this._badgeCount;
   }
 
   @action
-  async findAllCategories() {
-    //
-    this.clearCategories();
+  async findAllBadges(badgeRdo: BadgeRdo) {
+    const offsetElementList = await findAvailableBadgesByRdo(badgeRdo);
 
-    // 모든 뱃지 정보 가져오기
-    const categoryList: CategoryModel[] = await this.badgeApi.findAllCategories();
-
-    runInAction(() => {
-      this._categoryCount = categoryList.length;
-      this._category = this._category.concat(categoryList);
-    });
-
-    return categoryList;
-  }
-
-  @computed
-  get categories() {
-    return (this._category as IObservableArray).peek();
-  }
-
-  @computed
-  get categoryCount() {
-    return this._categoryCount ? this._categoryCount : 0;
-  }
-
-  @computed
-  get badges() {
-    //
-    return (this._badge as IObservableArray).peek();
-  }
-
-  @computed
-  get badgeCount() {
-    return this._badgeCount ? this._badgeCount : 0;
-  }
-
-  @action
-  clearMyBadges() {
-    //
-    this._myBadgeCount = 0;
-    return runInAction(() => (this._myBadge = []));
-  }
-
-  @action
-  clearBadges() {
-    //
-    this._badgeCount = 0;
-    return runInAction(() => (this._badge = []));
-  }
-
-  @computed
-  get myBadges() {
-    //
-    return (this._myBadge as IObservableArray).peek();
-  }
-
-  @computed
-  get myBadgeCount() {
-    return this._myBadgeCount ? this._myBadgeCount : 0;
-  }
-
-  @action
-  clearChallengingBadges() {
-    //
-    this._challengingCount = 0;
-    return runInAction(() => (this._myBadge = []));
-  }
-
-  @computed
-  get challengingCount() {
-    return this._challengingCount ? this._challengingCount : 0;
-  }
-
-  @action
-  clearEarnedBadges() {
-    //
-    this._earnedCount = 0;
-    return runInAction(() => (this._myBadge = []));
-  }
-
-  @computed
-  get earnedCount() {
-    return this._earnedCount ? this._earnedCount : 0;
-  }
-
-  @action
-  clearBadgeComposition() {
-    //
-    return runInAction(() => (this._badgeComposition = []));
-  }
-
-  @computed
-  get badgeComposition() {
-    return (this._badgeComposition as IObservableArray).peek();
-  }
-
-  @computed
-  get badgeCompostionCount() {
-    return this._badgeComposition ? this._badgeComposition.length : 0;
-  }
-
-  @action
-  clearBadgeStudentInfo() {
-    //
-    return runInAction(() => (this._badgeStudent = []));
-  }
-
-  @action
-  async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
-    //
-    //this.clearBadges();
-
-    // 모든 뱃지 정보 가져오기
-    const badgeOffsetElementList: OffsetElementList<
-      BadgeModel
-    > | null = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
-
-    if (badgeOffsetElementList) {
+    if (
+      offsetElementList &&
+      offsetElementList.results &&
+      offsetElementList.results.length > 0
+    ) {
       runInAction(() => {
-        this._badgeCount = badgeOffsetElementList.totalCount;
-        this._badge = this._badge.concat(badgeOffsetElementList.results);
+        this._badgeCount = offsetElementList.totalCount;
+        this._badges = [...this._badges, ...offsetElementList.results];
       });
     }
-    // else {
-    //   this._badgeCount = 0;
-    // }
 
-    return badgeOffsetElementList;
+    return offsetElementList;
+  }
+
+  @observable
+  _myBadges: MyBadge[] = [];
+
+  @computed get myBadges() {
+    return this._myBadges;
+  }
+
+  @observable
+  _myBadgeCount: number = 0;
+
+  @computed get myBadgeCount() {
+    return this._myBadgeCount;
   }
 
   @action
-  async findPagingChallengingBadges(
-    badgeFilterRdo: BadgeFilterRdoModel,
+  async findAllMyBadges(myBadgeRdo: MyBadgeRdo) {
+    const offsetElementList = await findBadgesByBadgeIssueState(myBadgeRdo);
+
+    if (
+      offsetElementList &&
+      offsetElementList.results &&
+      offsetElementList.results.length > 0
+    ) {
+      runInAction(() => {
+        this._myBadgeCount = offsetElementList.totalCount;
+        this._myBadges = [...this._myBadges, ...offsetElementList.results];
+      });
+    }
+
+    return offsetElementList;
+  }
+
+  @observable
+  _challengeBadges: MyBadge[] = [];
+
+  @computed
+  get challengeBadges() {
+    return this._challengeBadges;
+  }
+
+  @observable
+  _challengeBadgeCount: number = 0;
+
+  @computed
+  get challengeBadgeCount() {
+    return this._challengeBadgeCount;
+  }
+
+  @action
+  async findAllChallengeBadges(
+    myBadgeRdo: MyBadgeRdo,
     fromMain: boolean = false
   ) {
-    //
-    //this.clearChallengingBadges();
-
-    // 도전 뱃지 정보 가져오기
-    const badgeOffsetElementList: OffsetElementList<
-      MyBadgeModel
-    > | null = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
+    const offsetElementList = await findBadgesByBadgeIssueState(myBadgeRdo);
 
     // // use session storage (사용할 거면 풀 것) : by JSM
     // if (fromMain) {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
 
-    if (badgeOffsetElementList) {
+    if (
+      offsetElementList &&
+      offsetElementList.results &&
+      offsetElementList.results.length > 0
+    ) {
       runInAction(() => {
-        this._challengingCount = badgeOffsetElementList.totalCount;
-        this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
-      });
-    }
-    // else {
-    //   this._challengingCount = 0;
-    // }
-
-    return badgeOffsetElementList;
-  }
-
-  @action
-  async setPagingChallengingBadges(badge: OffsetElementList<MyBadgeModel>) {
-    //
-    this.clearChallengingBadges();
-
-    const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(badge);
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map(
-      badge => new MyBadgeModel(badge)
-    );
-
-    runInAction(() => {
-      this._challengingCount = badgeOffsetElementList.totalCount;
-      this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
-    });
-
-    return badgeOffsetElementList;
-  }
-
-  @action
-  async findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
-    //
-    //this.clearEarnedBadges();
-
-    // 마이 뱃지 정보 가져오기
-    const badgeOffsetElementList: OffsetElementList<
-      MyBadgeModel
-    > | null = await this.badgeApi.findPagingEarnedBadges(badgeFilterRdo);
-
-    if (badgeOffsetElementList && badgeOffsetElementList.results) {
-      runInAction(() => {
-        this._earnedCount = badgeOffsetElementList.totalCount;
-        this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
+        this._challengeBadgeCount = offsetElementList.totalCount;
+        this._challengeBadges = [
+          ...this._challengeBadges,
+          ...offsetElementList.results,
+        ];
       });
     }
 
-    return badgeOffsetElementList;
+    return offsetElementList;
+  }
+
+  @observable
+  _linkedBadges: Badge[] = [];
+
+  @computed get linkedBadges(): Badge[] {
+    return this._linkedBadges;
   }
 
   @action
-  async getCountOfBadges() {
-    //
-    const countInfo = await this.badgeApi.getCountOfBadges();
+  async findAllLinkedBadges(badgeIds: string[]): Promise<void> {
+    const foundLinkedBadges = await findBadgesByIds(badgeIds);
+
+    if (foundLinkedBadges && foundLinkedBadges.length > 0) {
+      runInAction(() => {
+        this._linkedBadges = foundLinkedBadges;
+      });
+    }
+  }
+
+  @observable
+  _allBadgeCount: AllBadgeCount = {
+    totalCount: 0,
+    challengingCount: 0,
+    issuedCount: 0,
+  };
+
+  @computed get allBadgeCount(): AllBadgeCount {
+    return this._allBadgeCount;
+  }
+
+  @action
+  async findAllBadgeCount(): Promise<void> {
+    const allCount = await findBadgesWithStudentCount();
+
     runInAction(() => {
-      if (countInfo && countInfo !== null) {
-        this._badgeCount = countInfo.totalCount;
-        this._challengingCount = countInfo.challengedCount;
-        this._earnedCount = countInfo.issuedCount;
-      } else {
-        this._badgeCount = 0;
-        this._challengingCount = 0;
-        this._earnedCount = 0;
+      if (allCount) {
+        this._allBadgeCount = {
+          totalCount: allCount.badgeCount,
+          challengingCount: allCount.challengingCount,
+          issuedCount: allCount.issuedCount,
+        };
       }
     });
   }
 
-  // PSJ - 연관 뱃지 목록
-  @action
-  async findLinkedBadges(badgeId: string) {
-    //
-    this.clearMyBadges();
+  @observable
+  _selectedLevel: BadgeLevel = '';
 
-    const linkedBadges: MyBadgeModel[] = await this.badgeApi.findLikedBadges(
-      badgeId
-    );
-
-    if (linkedBadges && linkedBadges.length > 0) {
-      runInAction(() => {
-        this._myBadge = this._myBadge.concat(linkedBadges);
-      });
-    }
-
-    return linkedBadges;
-  }
-
-  @computed
-  get linkedBadges() {
-    return this.badges;
+  @computed get selectedLevel() {
+    return this._selectedLevel;
   }
 
   @action
-  async findBadgeDetailInfo(badgeId: string) {
-    //
-    const response: BadgeDetailModel | null = await this.badgeApi.findBadgeDetailInformation(
-      badgeId
-    );
-
-    runInAction(() => {
-      this._badgeDetail = new BadgeDetailModel(response);
-    });
-
-    return response;
+  setSelectedLevel(next: BadgeLevel) {
+    this._selectedLevel = next;
   }
 
   @action
-  async findBadgeInfo(badgeId: string) {
-    //
-    const response: BadgeDetailModel | null = await this.badgeApi.findBadgeInformation(
-      badgeId
-    );
-
-    runInAction(() => {
-      this._badgeDetail = new BadgeDetailModel(response);
-    });
-
-    return response;
+  clearBadge(): void {
+    this._badge = undefined;
   }
 
-  @computed
-  get badgeDetailInfo() {
-    return this._badgeDetail;
-  }
-
-  // 뱃지 구성 학습 목록
   @action
-  async findBadgeComposition(badgeId: string) {
-    //
-    this.clearBadgeComposition();
-
-    const badgeOffsetElementList: BadgeCompModel[] = await this.badgeApi.findBadgeComposition(
-      badgeId
-    );
-
-    if (badgeOffsetElementList && badgeOffsetElementList.length > 0) {
-      runInAction(() => {
-        this._badgeComposition = this._badgeComposition.concat(
-          badgeOffsetElementList
-        );
-      });
-    }
-
-    return badgeOffsetElementList;
+  clearBadges(): void {
+    this._badges = [];
+    this._badgeCount = 0;
   }
 
-  // 뱃지 수강정보
   @action
-  async findBadgeStudentInfo(badgeId: string) {
-    //
-    this.clearBadgeStudentInfo();
-
-    const studentOffsetElementList: OffsetElementList<
-      BadgeStudentModel
-    > | null = await this.badgeApi.findBadgeStudentInfo(badgeId);
-
-    if (studentOffsetElementList && studentOffsetElementList.results) {
-      runInAction(() => {
-        this._badgeStudent = this._badgeStudent.concat(
-          studentOffsetElementList.results
-        );
-      });
-    }
-
-    return !studentOffsetElementList || studentOffsetElementList.empty
-      ? null
-      : studentOffsetElementList.results[0];
+  clearMyBadges(): void {
+    this._myBadges = [];
+    this._myBadgeCount = 0;
   }
 
-  @computed
-  get badgeStudentInfo() {
-    return this._badgeStudent;
-  }
-
-  // 도전하기
   @action
-  async challengeBadge(
-    id: string | null,
-    studentInfo: {
-      name: string;
-      email: string;
-      company: string;
-      department: string;
-    },
-    badgeId: string,
-    challengeState: string
-  ) {
-    //
-    const response = await this.badgeApi.challengeBadge(
-      id,
-      studentInfo,
+  clearLinkedBadges(): void {
+    this._linkedBadges = [];
+  }
+
+  @action
+  clearChallengeBadges(): void {
+    this._challengeBadges = [];
+    this._challengeBadgeCount = 0;
+  }
+
+  async challengeBadge(badgeId: string): Promise<boolean> {
+    const badgeStudentCdo = {
       badgeId,
-      challengeState
-    );
-    return response;
+    };
+
+    return challengeBadge(badgeStudentCdo);
   }
 
-  // 도전취소
-  @action
-  async cancelChallengeBadge(badgeStudentId: string, challengeState: string) {
-    //
-    const response = await this.badgeApi.cancelChallengeBadge(
-      badgeStudentId,
-      challengeState
-    );
-    return response;
+  async cancelChallengeBadge(badgeStudentId: string): Promise<boolean> {
+    return cancelBadgeChallenges([badgeStudentId]);
   }
 
-  // 수동뱃지 발급 요청
-  @action
-  async requestManualIssued(badgeStudentId: string, issueState: string) {
-    //
-    const response = await this.badgeApi.requestManualIssued(
-      badgeStudentId,
-      issueState
-    );
-    return response;
+  async requestIssue(badgeId: string): Promise<boolean> {
+    return requestIssue(badgeId);
   }
 
-  // 수동뱃지 발급 요청취소
-  @action
-  async cancelManualIssued(badgeStudentId: string) {
-    //
-    const response = await this.badgeApi.cancelManualIssued(badgeStudentId);
-    return response;
+  async cancelRequestIssue(badgeId: string): Promise<boolean> {
+    return cancelRequestIssue(badgeId);
   }
 
-  // 자동뱃지 발급 요청
-  @action
-  async requestAutoIssued(List: any[]) {
-    //
-    const response: boolean = await this.badgeApi.requestAutoIssued(List);
+  /////////////////////////////////////////////////////
+  // @observable
+  // _challengingCount: number = 0;
 
-    return response;
-  }
+  // @observable
+  // _earnedCount: number = 0;
 
-  // 획득뱃지 개수
-  @action
-  async earnedBadgeCount(issueState: string) {
-    //
-    const response = await this.badgeApi.earnedBadgeCount(issueState);
-  }
+  // // 수동뱃지 발급 요청
+  // @action
+  // async requestManualIssued(badgeStudentId: string, issueState: string) {
+  //   //
+  //   const response = await this.badgeApi.requestManualIssued(
+  //     badgeStudentId,
+  //     issueState
+  //   );
+  //   return response;
+  // }
 
-  /*
-  @action
-  async countTotalBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
-    //
-    const count = await this.badgeApi.getTotalBadgeCount(badgeFilterRdo);
-    runInAction(() => { this._badgeCount = count && count !== null ? count : 0; });
+  // // 수동뱃지 발급 요청취소
+  // @action
+  // async cancelManualIssued(badgeStudentId: string) {
+  //   //
+  //   const response = await this.badgeApi.cancelManualIssued(badgeStudentId);
+  //   return response;
+  // }
 
-    return count;
-  }
+  // // 자동뱃지 발급 요청
+  // @action
+  // async requestAutoIssued(List: any[]) {
+  //   //
+  //   const response: boolean = await this.badgeApi.requestAutoIssued(List);
 
-  @action
-  async countChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
-    //
-    const count = await this.badgeApi.getChallengingBadgeCount(badgeFilterRdo);
-    runInAction(() => { this._challengingCount = count && count !== null ? count : 0; });
+  //   return response;
+  // }
 
-    return count;
-  }
-
-  @action
-  async countEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
-    //
-    const count = await this.badgeApi.getEarnedBadgeCount(badgeFilterRdo);
-    // @ts-ignore
-    runInAction(() => { this._earnedCount = count && count !== null ? count : 0; });
-
-    return count;
-  }
-  */
+  // // 획득뱃지 개수
+  // @action
+  // async earnedBadgeCount(issueState: string) {
+  //   //
+  //   const response = await this.badgeApi.earnedBadgeCount(issueState);
+  // }
 }
 
 Object.defineProperty(BadgeService, 'instance', {
-  value: new BadgeService(BadgeApi.instance),
+  value: new BadgeService(),
   writable: false,
   configurable: false,
 });

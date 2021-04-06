@@ -26,6 +26,18 @@ import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoMod
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
 
+import { getAxios } from '../../../../shared/api/Axios';
+
+import { find } from 'lodash';
+import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
+
+import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
+import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
+import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
+import CardGroup, {
+  GroupType,
+} from '../../../../lecture/shared/Lecture/sub/CardGroup';
+
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
   reviewService?: ReviewService;
@@ -51,13 +63,44 @@ const POPLearning: React.FC<Props> = Props => {
   const PAGE_SIZE = 8;
 
   const { popLectures } = popLectureService!;
+  const [popCard, setPopCard] = useState<CardBundle>();
+
+  // cardIds를 사용하여 card list를 불러온다.
+  const findCardData = (ids: string[]) => {
+    const axios = getAxios();
+    const url = '/api/lecture/cards/findCards';
+    const joinedIds = ids && ids.join();
+
+    return axios
+      .get<CardWithCardRealtedCount[]>(url, { params: { ids: joinedIds } })
+      .then(res => res.data);
+  };
+
+  const fetchPopCards = async () => {
+    const response = await findAvailableCardBundles();
+    // 인기이기 때문에 type이 Popular 인 부분을 가져옴
+    const findResponse = find(response, { type: 'Popular' });
+
+    // cards 값에 api로 받아온 cardList 값을 넣어줌
+    if (findResponse?.cardIds) {
+      const cardList = await findCardData(findResponse.cardIds);
+      findResponse.cards = cardList;
+    }
+
+    setPopCard(findResponse);
+  };
+
+  useEffect(() => {
+    fetchPopCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [title, setTitle] = useState<string | null>('');
 
   // // lectureService 변경  실행
-  useEffect(() => {
-    findMyContent();
-  }, []);
+  // useEffect(() => {
+  //   findMyContent();
+  // }, [findMyContent]);
 
   const findMyContent = async () => {
     popLectureService!.clearLectures();
@@ -136,50 +179,52 @@ const POPLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '인기 과정',
       action: 'Click',
-      label: '인기 과정 전체보기'
+      label: '인기 과정 전체보기',
     });
   };
 
   const onViewDetail = (e: any, data: any) => {
     //
-    const { model } = data;
-
+    //const { model } = data;
+    const { card } = data;
     // react-ga event
     ReactGA.event({
-      category: '인기 과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_인기',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      label: `${card.name}`,
     });
 
+    const patronKey = popCard?.patronKey && popCard.patronKey.keyString; // model.servicePatronKeyString
     const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+      patronInfo.getCineroomByPatronId(patronKey!) ||
+      patronInfo.getCineroomByDomain(card)!; // patronKey 값
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        lectureRoutes.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutes.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
-      );
-    }
+    // if (
+    //   model.serviceType === LectureServiceType.Program ||
+    //   model.serviceType === LectureServiceType.Course
+    // ) {
+    //   history.push(
+    //     lectureRoutes.courseOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.coursePlanId,
+    //       model.serviceType,
+    //       model.serviceId
+    //     )
+    //   );
+    // } else if (model.serviceType === LectureServiceType.Card) {
+    //   history.push(
+    //     lectureRoutes.lectureCardOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.cubeId,
+    //       model.serviceId
+    //     )
+    //   );
+    // }
   };
 
   const onActionLecture = (
@@ -232,9 +277,9 @@ const POPLearning: React.FC<Props> = Props => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>{title}</strong>
+        <strong>{popCard?.displayText}</strong>
         <div className="right">
-          {popLectures.length > 0 && (
+          {popCard?.cards && popCard.cards.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View all <Icon className="morelink" />
             </Button>
@@ -242,41 +287,41 @@ const POPLearning: React.FC<Props> = Props => {
         </div>
       </div>
 
-      {popLectures.length > 0 && popLectures[0] ? (
+      {popCard?.cards && popCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {popLectures.map(
-            (
-              learning: LectureModel | MyTrainingModel | InMyLectureModel,
-              index: number
-            ) => {
-              //
-              const inMyLecture = getInMyLecture(learning.serviceId);
+          {popCard.cards.map((item, i) => {
+            const { card, cardRelatedCount } = item;
+            const inMyLecture = getInMyLecture(card.id);
 
-              return (
-                <Lecture
-                  key={`learning-${index}`}
-                  model={learning}
-                  rating={getRating(learning)}
-                  thumbnailImage={learning.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: '알림',
-                      message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
-                    });
-                    onActionLecture(inMyLecture || learning);
-                  }}
-                  onViewDetail={onViewDetail}
-                />
-              );
-            }
-          )}
+            return (
+              <li>
+                <CardGroup type={GroupType.Box}>
+                  <CardView
+                    cardId={item.card.id}
+                    learningTime={card.learningTime}
+                    thumbImagePath={card.thumbImagePath}
+                    categories={card.categories}
+                    name={card.name}
+                    stampCount={card.stampCount}
+                    description={card.description}
+                    passedStudentCount={cardRelatedCount.passedStudentCount}
+                    starCount={cardRelatedCount.starCount}
+                    iconName={inMyLecture ? "Remove" : "Add"}
+                    onAction={() => {
+                      reactAlert({
+                        title: '알림',
+                        message: inMyLecture
+                          ? '본 과정이 관심목록에서 제외되었습니다.'
+                          : '본 과정이 관심목록에 추가되었습니다.',
+                      });
+                      onActionLecture(inMyLecture!);
+                    }}
+                    onViewDetail={onViewDetail}
+                  />
+                </CardGroup>
+              </li>
+            );
+          })}
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel

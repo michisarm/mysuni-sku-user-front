@@ -1,29 +1,16 @@
 /* eslint-disable consistent-return */
-// report
-// http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
-
 import {
-  cacheableFindPersonalCube,
   findTask,
   findTaskChild,
   findTaskCommentCount,
 } from 'lecture/detail/api/mPersonalCubeApi';
-import PersonalCube from '../../../model/PersonalCube';
-import Task from 'lecture/detail/model/Task';
 import {
   getLectureTaskItem,
-  // setLectureChildTaskItem,
   setLectureTaskItem,
 } from 'lecture/detail/store/LectureTaskStore';
-import {
-  LectureTask,
-  // LectureTaskChild,
-} from 'lecture/detail/viewModel/LectureTask';
+import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
 import { compareAscendingByTime } from '../../../utility/lectureTaskHelper';
-
-function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
-  return cacheableFindPersonalCube(cubeId);
-}
+import { findCubeDetailCache } from '../../../api/cubeApi';
 
 async function getTaskItem(
   boardId: string,
@@ -163,34 +150,23 @@ async function getTaskItem(
 
 export async function getTaskItemMapFromCube(
   cubeId: string,
-  lectureCardId: string,
   offset: number,
   limit: number,
   tabType: string
 ): Promise<void> {
-  // void : return이 없는 경우 undefined
-  if (cubeId) {
-    const addflag = !!getLectureTaskItem();
-    const personalCube = await getPersonalCubeByParams(cubeId);
-    const examId =
-      personalCube && personalCube.contents && personalCube.contents.examId;
-    const boardId =
-      personalCube &&
-      personalCube.contents &&
-      personalCube.contents.contents &&
-      personalCube.contents.contents.id;
-    if (lectureCardId !== undefined) {
-      if (boardId !== undefined) {
-        const taskItem = await getTaskItem(
-          boardId,
-          offset,
-          limit,
-          addflag,
-          tabType
-        );
-        if (taskItem !== undefined) {
-          setLectureTaskItem({ ...taskItem });
-        }
+  const cubeDetail = await findCubeDetailCache(cubeId);
+  if (cubeDetail !== undefined && cubeDetail.cubeMaterial.board !== null) {
+    if (cubeDetail.cubeMaterial.board.id !== null) {
+      const addflag = !!getLectureTaskItem();
+      const taskItem = await getTaskItem(
+        cubeDetail.cubeMaterial.board.id,
+        offset,
+        limit,
+        addflag,
+        tabType
+      );
+      if (taskItem !== undefined) {
+        setLectureTaskItem({ ...taskItem });
       }
     }
   }

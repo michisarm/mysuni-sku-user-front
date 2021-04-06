@@ -35,7 +35,7 @@ export default class CoursePlanApi {
       ? '/api/lecture'
       : process.env.REACT_APP_COURSE_LECTURE_CONTENT_API;
 
-  registerCoursePlan(coursePlan: CoursePlanModel) {
+      registerCoursePlan(coursePlan: CoursePlanModel) {
     //
     return axios
       .post<string>(this.URL, coursePlan)
@@ -130,6 +130,15 @@ export default class CoursePlanApi {
           `/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`
       )
       .then(response => (response && response.data) || null);
+  }
+
+  findCollegeSortOrder(collegeId: string) {
+    return axios
+      .get<number>(
+        this.lectureContentsURL +
+          `/lecturecards/orders/count?collegeId=${collegeId}`
+      )
+      .then(response => response && response.data);
   }
 }
 

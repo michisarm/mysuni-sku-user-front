@@ -12,6 +12,7 @@ import NewLearning from './MainComponents/NEWLearning';
 import PopularLearning from './MainComponents/POPLearning';
 import RecommendLearning from './MainComponents/LRSLearning';
 import { InMyLectureService } from '../../../myTraining/stores';
+import LeraningContainer from './MainComponents/LeraningContainer';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -34,7 +35,7 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
         setMemName(skProfileService!.skProfile.member.name);
       }, 200);
     }
-  }, []);
+  }, [inMyLectureService, memName.length, member.name, skProfileService]);
 
   return (
     <>
@@ -44,13 +45,17 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       <ChallengingBadge profileMemberName={member.name} />
 
       <MainBanner />
-      <RequiredLearning />
+      <LeraningContainer contentType="Normal" contentTypeName="일반 과정" />
+      <LeraningContainer contentType="New" contentTypeName="신규 과정" />
+      <LeraningContainer contentType="Popular" contentTypeName="인기 과정" />
+      <LeraningContainer contentType="Recommended" contentTypeName="추천 과정" />
+      {/* <RequiredLearning />
       <NewLearning />
       <PopularLearning profileMemberName={member.name} />
       <RecommendLearning
         profileMemberName={member.name}
         profileMemberEmail={member.email}
-      />
+      /> */}
     </>
   );
 };

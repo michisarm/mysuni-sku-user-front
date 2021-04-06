@@ -13,10 +13,12 @@ import { useLocation } from 'react-router-dom';
 import { Checkbox, Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import { SkProfileService } from '../../../../../profile/stores';
+import { useLectureParams } from '../../../store/LectureParamsStore';
 import {
+  getActiveCubeStructureItem,
   getActiveStructureItem,
   getActiveStructureItemAll,
-} from '../../../service/useLectureStructure/useLectureStructure';
+} from '../../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
@@ -39,41 +41,36 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   changeProps,
   handleSubmitClick,
 }) {
-  const { pathname } = useLocation();
+  const params = useLectureParams();
   let [taskDetail] = useLectureTaskCreate();
   const [canNotice, setCanNotice] = useState<boolean>(false);
   useEffect(() => {
-    if (
-      (getActiveStructureItem()! as LectureStructureCubeItem).cube === undefined
-    ) {
+    const lectureStructureCubeItem = getActiveCubeStructureItem();
+    if (lectureStructureCubeItem === undefined) {
       return;
     }
-    let denizenKey = (getActiveStructureItem()! as LectureStructureCubeItem)
-      .cube!.patronKey.keyString;
-    if (
-      (getActiveStructureItem()! as LectureStructureCubeItem).cube!.patronKey
-        .patronType !== 'Denizen'
-    ) {
-      /* eslint-disable prefer-const */
-      let [pre, last] = denizenKey.split('@');
-      if (pre === undefined || last === undefined) {
-        return;
-      }
-      [pre] = pre.split('-');
-      if (pre === undefined) {
-        return;
-      }
-      const [last1, last2] = last.split('-');
-      if (last1 === undefined || last2 === undefined) {
-        return;
-      }
-      denizenKey = `${pre}@${last1}-${last2}`;
+
+    const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
+    /* eslint-disable prefer-const */
+    let [pre, last] = audienceKey.split('@');
+    if (pre === undefined || last === undefined) {
+      return;
     }
+    [pre] = pre.split('-');
+    if (pre === undefined) {
+      return;
+    }
+    const [last1, last2] = last.split('-');
+    if (last1 === undefined || last2 === undefined) {
+      return;
+    }
+    const denizenKey = `${pre}@${last1}-${last2}`;
+
     if (SkProfileService.instance.skProfile.id === denizenKey) {
       setCanNotice(true);
     }
     return () => setCanNotice(false);
-  }, [pathname]);
+  }, [params?.cubeId]);
 
   //edit인경우
   if (taskEdit !== undefined) {

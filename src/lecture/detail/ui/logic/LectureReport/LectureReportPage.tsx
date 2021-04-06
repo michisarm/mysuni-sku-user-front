@@ -2,13 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import depot from '@nara.drama/depot';
 import { getCourseLectureReport } from '../../../service/useLectureReport/utility/getCourseLectureReport';
 import { getCubeLectureReport } from '../../../service/useLectureReport/utility/getCubeLectureReport';
-import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 
 import LectureReportContainer from './LectureReportContainer';
+import { useLectureParams } from '../../../store/LectureParamsStore';
 
 function LectureReportPage() {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
 
   useEffect(() => {
     return () => {
@@ -16,34 +15,28 @@ function LectureReportPage() {
     };
   }, [params]);
 
-  const getCubeReportItem = useCallback(
-    (params: LectureRouterParams) => {
-      if (params === undefined) {
-        return;
-      }
-      getCubeLectureReport(params);
-    },
-    [params]
-  );
+  const getCubeReportItem = useCallback(() => {
+    if (params === undefined) {
+      return;
+    }
+    getCubeLectureReport(params);
+  }, [params]);
 
-  const getCourseReportItem = useCallback(
-    (params: LectureRouterParams) => {
-      if (params === undefined) {
-        return;
-      }
-      getCourseLectureReport(params);
-    },
-    [params]
-  );
+  const getCourseReportItem = useCallback(() => {
+    if (params === undefined) {
+      return;
+    }
+    getCourseLectureReport(params);
+  }, [params]);
 
   useEffect(() => {
     if (params === undefined) {
       return;
     }
-    if (params.contentType === 'cube') {
-      getCubeReportItem(params);
+    if (params.cubeId === undefined) {
+      getCubeReportItem();
     } else {
-      getCourseReportItem(params);
+      getCourseReportItem();
     }
   }, [params]);
 

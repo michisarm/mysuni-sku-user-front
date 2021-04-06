@@ -102,12 +102,14 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
         </div>
         <div className="scrolling">
           <ul className="belt">
-            {lectureRelations.lectures.map(lecture => {
+            {lectureRelations.relatedCards.map(({ relatedCardId }) => {
               return (
-                <LectureView
-                  model={new LectureModel(lecture)}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                />
+                <p key={relatedCardId}>{relatedCardId}</p>
+                // jz - 여기 카드 그려야해
+                // <LectureView
+                //   model={new LectureModel(lecture)}
+                //   thumbnailImage={lecture.baseUrl || undefined}
+                // />
               );
             })}
           </ul>

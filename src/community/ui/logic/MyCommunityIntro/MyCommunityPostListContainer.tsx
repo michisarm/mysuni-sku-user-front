@@ -1,17 +1,21 @@
 import { reactAlert } from '@nara.platform/accent';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Icon, Button, Comment } from 'semantic-ui-react';
+import { Icon, Button, Comment, Popup, Segment } from 'semantic-ui-react';
+
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { registerBookmark } from '../../../api/communityApi';
 import { requestAppendMyCommunityPostList } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 import {
   getMyCommunityIntro,
   setMyCommunityIntro,
   useMyCommunityIntro,
+  useIsLoadingState,
 } from '../../../store/CommunityMainStore';
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
+import { useScrollMove } from 'myTraining/useScrollMove';
+import { Loadingpanel } from 'shared';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -77,6 +81,17 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const { pathname } = useLocation();
   const [text, setText] = useState<string>('');
   const [more, setMore] = useState<boolean>(false);
+  const history = useHistory();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    scrollOnceMove();
+  }, [scrollOnceMove]);
+
+  useEffect(() => {
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, [pathname]);
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -117,10 +132,11 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const hideMore = useCallback(() => {
     setMore(false);
   }, []);
+
   return (
     <>
       <div className="sub-info-box">
-        <div className="comment-area community-main-card">
+        <div className="comment-area community-main-card  commu-sub-card">
           {/* comments */}
           <Comment.Group className="base">
             {/*comment : 2줄이상 말줄임, 대댓글*/}
@@ -149,28 +165,44 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   {/* <Button>+ View more</Button> */}
                 </Comment.Text>
                 <Comment.Actions>
-                  <div className="right top">
-                    {!bookmarked && (
-                      <Button icon className="img-icon" onClick={bookmarkClick}>
-                        <Icon className="bookmark2" />
-                        <span className="blind">북마크</span>
-                      </Button>
-                    )}
-                    {bookmarked && (
-                      <Button
-                        icon
-                        className="img-icon"
-                        onClick={unbookmarkClick}
-                      >
-                        <Icon className="remove3" />
-                        <span className="blind">북마크</span>
-                      </Button>
-                    )}
-                    <Button icon className="img-icon" onClick={shareUrl}>
-                      <Icon className="share2" />
-                      <span className="blind">공유</span>
-                    </Button>
-                  </div>
+                  <Popup
+                    className="balloon-pop myCumu_btn"
+                    trigger={
+                      <div className="right top sub-menu">
+                        <Button icon className="img-icon">
+                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAJKADAAQAAAABAAAAJAAAAAAqDuP8AAAAlUlEQVRYCWNgGAWjITAaAiMsBBgp9W9capXnP4a/s0DmMDEwpy2a3badEjOZKNEM0gtyzP//DDIgDHMYJWZS7CBKLMeml2IHgaKJkZHhCQiD2NgsGRUbDYERHQKjBSOh6Ke4HCJkAanyFDtotGAkNchH1Y+4EBgtGAlFOcXlECELSJWn2EGjBSOpQT6qfjQERkMALQQAIac5FltQmtUAAAAASUVORK5CYII=" />
+                          <span className="blind">북마크</span>
+                        </Button>
+                      </div>
+                    }
+                    position="bottom right"
+                    on="click"
+                  >
+                    <Popup.Content>
+                      <ul>
+                        <li className="community-profile">
+                          <a href="#" onClick={shareUrl}>
+                            <i className="balloon icon popupUrl" />
+                            <span>URL 복사</span>
+                          </a>
+                        </li>
+                        <li>
+                          {!bookmarked && (
+                            <a href="#" onClick={bookmarkClick}>
+                              <i className="balloon icon popupBook" />
+                              <span>북마크</span>
+                            </a>
+                          )}
+                          {bookmarked && (
+                            <a href="#" onClick={unbookmarkClick}>
+                              <i className="balloon icon popupBookRemove" />
+                              <span>북마크</span>
+                            </a>
+                          )}
+                        </li>
+                      </ul>
+                    </Popup.Content>
+                  </Popup>
                 </Comment.Actions>
               </Comment.Content>
             </Comment>
@@ -194,7 +226,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   <p className="summary">{text}</p>
                 </div>
               )}
-              <div className="text-right">
+              <div className="text-right" style={{float: 'none'}}>
                 {!more && (
                   <button
                     className="ui icon button right btn-blue btn-more"
@@ -224,37 +256,63 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
 
 function MyCommunityPostListContainer() {
   const myCommunityIntro = useMyCommunityIntro();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const loadingState = useIsLoadingState();
+  useEffect(() => {
+    setIsLoading(loadingState?.isLoading ? true : false);
+  }, [loadingState?.isLoading]);
+
   if (myCommunityIntro === undefined) {
     return null;
   }
-  return (
-    <>
-      <div className="community-main-contants">
-        {myCommunityIntro !== undefined &&
-          myCommunityIntro.posts.map(postItem => (
-            <PostItemView key={postItem.postId} {...postItem} />
-          ))}
 
-        <div className="more-comments community-side">
-          {myCommunityIntro.postsTotalCount > myCommunityIntro.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              onClick={requestAppendMyCommunityPostList}
-            >
-              <Icon className="moreview" /> list more
-            </Button>
-          )}
-          {myCommunityIntro.postsTotalCount <= myCommunityIntro.postsOffset && (
-            <Button
-              icon
-              className="left moreview"
-              style={{ cursor: 'default' }}
-            />
-          )}
-        </div>
-      </div>
-    </>
+  return (
+    <div className="community-main-contants">
+      {isLoading ? (
+        <Segment
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            height: 550,
+            width: '48.5rem',
+            boxShadow: '0 0 0 0',
+            border: 0,
+          }}
+        >
+          <Loadingpanel loading={isLoading} />
+        </Segment>
+      ) : (
+        <>
+          {myCommunityIntro !== undefined &&
+            myCommunityIntro.posts.map(postItem => (
+              <PostItemView key={postItem.postId} {...postItem} />
+            ))}
+          <div className="more-comments community-side">
+            {myCommunityIntro.postsTotalCount >
+              myCommunityIntro.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                onClick={requestAppendMyCommunityPostList}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            )}
+            {myCommunityIntro.postsTotalCount <=
+              myCommunityIntro.postsOffset && (
+              <Button
+                icon
+                className="left moreview"
+                style={{ cursor: 'default' }}
+              />
+            )}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 

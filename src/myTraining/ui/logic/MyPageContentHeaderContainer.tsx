@@ -73,13 +73,10 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
   init() {
     //
     const { myLearningSummaryService, badgeService } = this.props;
-    const { earnedCount } = badgeService!;
+    const { allBadgeCount: {issuedCount} } = badgeService!;
     myLearningSummaryService!.findMyLearningSummary();
 
-    this.setState({ myBadgeCount: earnedCount });
-
-    //const { badgeService } = this.props;
-    //badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel.earned('', 'Issued'));
+    this.setState({ myBadgeCount: issuedCount });
   }
 
   onChangeYear(selectedYear: number) {

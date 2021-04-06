@@ -1,10 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link, matchPath, useHistory, useLocation, useParams } from 'react-router-dom';
+import {
+  Link,
+  matchPath,
+  useHistory,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import {
   requestNotice,
   requestRecent,
 } from '../../service/useCommunityHome/requestCommunityHome';
-import { getCommunityHome, useCommunityHome } from '../../store/CommunityHomeStore';
+import {
+  getCommunityHome,
+  useCommunityHome,
+} from '../../store/CommunityHomeStore';
 import commentIcon from '../../../style/media/icon-community-comment.png';
 import fileIcon from '../../../style/media/icon-community-file-copy-2.png';
 import profileIcon from '../../../style/media/img-profile-80-px.png';
@@ -17,6 +26,7 @@ import { joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { Console } from 'console';
 import { addNewBadge } from 'community/utility/communityHelper';
+import ReactGA from 'react-ga';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -27,11 +37,11 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime);//moment().format('YYYY.MM.DD') === createdDate;
+  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
   const [text, setText] = useState<string>('');
   const communityHome = useCommunityHome();
   const history = useHistory();
-  const approved = communityHome?.community?.approved
+  const approved = communityHome?.community?.approved;
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -45,7 +55,7 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
   }, []);
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -61,22 +71,21 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
       });
-    } else if (approved === true) {
-      history.push(`/community/${communityId}/post/${postId}`)
+    } else if (approved === 'APPROVED') {
+      history.push(`/community/${communityId}/post/${postId}`);
     }
-
   }, [approved]);
 
   return (
     <div className="community-home-card">
       <div
         className="ui comments base"
-        style={{ display: 'block', cursor:'pointer'}}
+        style={{ display: 'block', cursor: 'pointer' }}
         onClick={Alert}
       >
         <div className="home-card-top">
@@ -88,7 +97,8 @@ const NoticeItemView: React.FC<Post> = function NoticeItemView({
         <div className="home-card-bottom">
           <span>{createdDate}</span>
           <span>
-            <img src={commentIcon} />{replyCount}
+            <img src={commentIcon} />
+            {replyCount}
           </span>
         </div>
       </div>
@@ -110,11 +120,11 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   replyCount,
 }) {
   const createdDate = moment(createdTime).format('YYYY.MM.DD');
-  const isNew = addNewBadge(createdTime);//moment().format('YYYY.MM.DD') === createdDate;
+  const isNew = addNewBadge(createdTime); //moment().format('YYYY.MM.DD') === createdDate;
   const [text, setText] = useState<string>('');
   const history = useHistory();
   const communityHome = useCommunityHome();
-  const approved = communityHome?.community?.approved
+  const approved = communityHome?.community?.approved;
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -128,7 +138,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
   }, []);
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -144,23 +154,23 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
       });
-    } else if (approved === true) {
+    } else if (approved === 'APPROVED') {
       if (type === 'ANONYMOUS') {
-        history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`)
+        history.push(`/community/${communityId}/ANONYMOUS/post/${postId}`);
       } else {
-        history.push(`/community/${communityId}/post/${postId}`)
+        history.push(`/community/${communityId}/post/${postId}`);
       }
     }
   }, [approved]);
   return (
     <div
       className="new-board-list"
-      style={{ display: 'block', cursor:'pointer' }}
+      style={{ display: 'block', cursor: 'pointer' }}
       onClick={Alert}
     >
       <div className="new-board-list-top">
@@ -177,11 +187,11 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
           <div className="text-list">
             {type !== 'ANONYMOUS' && (
               <>
-                {profileImg ?
+                {profileImg ? (
                   <img src={`/files/community/${profileImg}`} />
-                  :
+                ) : (
                   <img src={`${profileIcon}`} />
-                }
+                )}
               </>
             )}
             {type === 'ANONYMOUS' && <img src={profileIcon} />}
@@ -195,7 +205,8 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         </div>
         <div className="right-area">
           <button>
-            <img src={commentIcon} />{replyCount}
+            <img src={commentIcon} />
+            {replyCount}
           </button>
         </div>
       </div>
@@ -211,6 +222,7 @@ function CommunityHomePage() {
   const { pathname } = useLocation();
   const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
+
   useEffect(() => {
     const match = matchPath<Params>(pathname, {
       path: '/community/:communityId',
@@ -226,7 +238,14 @@ function CommunityHomePage() {
   }, [pathname]);
   if (communityHome === undefined || communityHome.community === undefined) {
     return null;
+  } else {
+    ReactGA.event({
+      category: 'Community',
+      action: 'Click',
+      label: `${communityHome!.community!.name}`,
+    });
   }
+
   return (
     <>
       <div className="community-home-contants">
@@ -244,9 +263,16 @@ function CommunityHomePage() {
               )}
               <div className="community-banner-inner">
                 <div className="community-banner-title">
-                  {communityHome.community.name}
+                  {/* {communityHome.community.name} basic기본 유형일때는 커뮤니티 제목 삭제 */}
                 </div>
-                <div className="community-banner-copy">
+                <div
+                  className="community-banner-copy"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
                   {communityHome.community.introduce}
                 </div>
               </div>
@@ -264,10 +290,26 @@ function CommunityHomePage() {
             <>
               <img src={defaultHeader} />
               <div className="community-banner-inner">
-                <div className="community-banner-title">
+                <div
+                  className="community-banner-title"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
                   {communityHome.community.name}
                 </div>
-                <div className="community-banner-copy" />
+                <div
+                  className="community-banner-copy"
+                  style={{
+                    color: communityHome.community.color
+                      ? communityHome.community.color
+                      : '#FFFFFF',
+                  }}
+                >
+                  {communityHome.community.introduce}
+                </div>
               </div>
             </>
           )}
@@ -277,7 +319,7 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>공지사항</p>
-            {communityHome.community.approved === true &&
+            {communityHome.community.approved === 'APPROVED' &&
               communityHome.notice.length > 0 && (
                 <Link
                   className="ui icon button right btn-blue btn-more"
@@ -304,7 +346,7 @@ function CommunityHomePage() {
         <div className="home-card-container">
           <div className="home-card-title">
             <p>최근 게시글</p>
-            {communityHome.community.approved === true &&
+            {communityHome.community.approved === 'APPROVED' &&
               communityHome.recent.length > 0 && (
                 <Link
                   className="ui icon button right btn-blue btn-more"

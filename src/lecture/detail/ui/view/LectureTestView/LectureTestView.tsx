@@ -1,28 +1,31 @@
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
-import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
 import {
   getLectureTestStudentItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
-import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import {
+  saveCourseTestAnswerSheet,
+  saveCubeTestAnswerSheet,
+} from 'lecture/detail/service/useLectureTest/utility/saveLectureTest';
 import {
   getActiveCourseStructureItem,
-  getActiveProgramStructureItem,
   getActiveStructureItem,
-  getActiveStructureItemAll,
-  useLectureStructure,
-} from '../../../service/useLectureStructure/useLectureStructure';
-import { requestLectureStructure } from '../../logic/LectureStructureContainer';
+} from '../../../utility/lectureStructureHelper';
+import { EssayScore } from 'lecture/detail/model/GradeSheet';
+import { GraderCommentView } from './GraderCommentView';
+import { useHistory, useParams } from 'react-router-dom';
+import { useLectureStructure } from '../../../store/LectureStructureStore';
+import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import LectureParams from '../../../viewModel/LectureParams';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
-  params: LectureRouterParams;
+  params: LectureParams;
 }
 
 const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView({
@@ -31,7 +34,31 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
 }) {
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
-  const [lectureStructure] = useLectureStructure();
+  const lectureStructure = useLectureStructure();
+  const { cardId } = useParams<LectureParams>();
+
+  useEffect(() => {
+    if (
+      testStudentItem !== undefined &&
+      testStudentItem.learningState !== undefined &&
+      (testStudentItem.learningState === 'Passed' ||
+        testStudentItem.learningState === 'TestPassed')
+    ) {
+      if (
+        answerItem !== undefined &&
+        !answerItem?.finished &&
+        !answerItem?.submitted &&
+        answerItem.submitAnswers.length < 1
+      ) {
+        // 이수처리하여 답안이 없는경우
+        reactAlert({
+          title: '알림',
+          message:
+            'Course 학습을 이미 완료하셔서 테스트를 응시하실 필요 없습니다.',
+        });
+      }
+    }
+  }, [testStudentItem, answerItem, params, lectureStructure]);
 
   let readOnly = false;
   if (
@@ -50,14 +77,26 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       answerItemId = answerItem.id;
     }
 
-    if (params.contentType === 'cube') {
-      saveTestAnswerSheet(params, answerItemId, false, false);
+    if (params.cardId !== undefined) {
+      saveCubeTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
   }, [answerItem, params]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
+
+  const history = useHistory();
+  const goToPath = (path?: string) => {
+    if (path !== undefined) {
+      //const currentHistory = getCurrentHistory();
+      //if (currentHistory === undefined) {
+      //  return;
+      //}
+      //currentHistory.push(path);
+      history.push(path);
+    }
+  };
 
   const submitAnswerSheet = useCallback(() => {
     let answerItemId = '';
@@ -90,30 +129,27 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               submitAnswers: answerItem.answers,
             };
             setLectureTestAnswerItem(nextAnswerItem);
-            if (params.contentType === 'cube') {
-              await saveTestAnswerSheet(params, answerItemId, true, true);
+            if (params.cubeId !== undefined) {
+              await saveCubeTestAnswerSheet(params, answerItemId, true, true);
             } else {
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
+            await requestCardLectureStructure(cardId);
 
-            await requestLectureStructure(
-              params.lectureParams,
-              params.pathname
-            );
             const lectureTestStudentItem = getLectureTestStudentItem();
             const course = getActiveCourseStructureItem();
-            const program = getActiveProgramStructureItem();
             switch (lectureTestStudentItem?.learningState) {
               case 'Waiting':
               case 'TestWaiting':
                 if (
-                  course?.survey !== undefined ||
-                  program?.survey !== undefined
+                  course?.survey !== undefined &&
+                  course?.survey.state !== 'Completed'
                 ) {
                   reactAlert({
                     title: '알림',
                     message:
                       '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+                    onClose: () => goToPath(course?.survey?.path),
                   });
                 } else {
                   reactAlert({
@@ -133,13 +169,14 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               case 'Passed':
               case 'TestPassed':
                 if (
-                  course?.survey !== undefined ||
-                  program?.survey !== undefined
+                  course?.survey !== undefined &&
+                  course?.survey.state !== 'Completed'
                 ) {
                   reactAlert({
                     title: '안내',
                     message:
                       '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
+                    onClose: () => goToPath(course?.survey?.path),
                   });
                 } else {
                   reactAlert({
@@ -164,6 +201,12 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   if (answerItem?.submitted) {
     testClassName += ' test-complete ';
   }
+
+  const essayScoreMap = new Map<string, EssayScore>();
+  (testItem.essayScores || []).forEach(essayScore => {
+    essayScoreMap.set(essayScore.questionNo, essayScore);
+  });
+
   return (
     <div className={testClassName}>
       {testItem && (
@@ -297,21 +340,29 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                 }
               }
 
+              const matchedEssayScore = essayScoreMap.get(question.questionNo);
+
               return (
-                <TestQuestionView
-                  key={'question_' + question.questionNo}
-                  question={question}
-                  submitted={answerItem?.submitted}
-                  answer={answer}
-                  answerResult={answerResult}
-                  readOnly={readOnly}
-                  learningState={testStudentItem?.learningState}
-                  submitOk={submitOk}
-                  setSubmitOk={setSubmitOk}
-                  dataLoadTime={answerItem?.dataLoadTime}
-                />
+                <>
+                  <TestQuestionView
+                    key={'question_' + question.questionNo}
+                    question={question}
+                    submitted={answerItem?.submitted}
+                    answer={answer}
+                    answerResult={answerResult}
+                    readOnly={readOnly}
+                    learningState={testStudentItem?.learningState}
+                    submitOk={submitOk}
+                    setSubmitOk={setSubmitOk}
+                    dataLoadTime={answerItem?.dataLoadTime}
+                    essayScore={matchedEssayScore}
+                  />
+                </>
               );
             })}
+          {testItem.graderComment && (
+            <GraderCommentView graderComment={testItem.graderComment} />
+          )}
           {!readOnly && (
             <div className="survey-preview">
               <p>

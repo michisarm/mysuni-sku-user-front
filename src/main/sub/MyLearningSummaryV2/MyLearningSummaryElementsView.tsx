@@ -1,17 +1,21 @@
 
 import React, { FunctionComponent } from 'react';
-import { Table, Icon } from 'semantic-ui-react';
+import { Table, Icon, Accordion, Progress } from 'semantic-ui-react';
+import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
+const PUBLIC_URL = `${process.env.PUBLIC_URL}`
 
 export const HeaderWrapperView: FunctionComponent = ({ children }) => (
-  <div className="main-info-box">
-    <table>
-      <tbody>
-        <tr>
-          {children}
-        </tr>
-      </tbody>
-    </table>
+  <div className="main-personal-wrap">
+    <div className="main_personal">
+      {/* <table>
+        <tbody>
+          <tr> */}
+            {children}
+          {/* </tr>
+        </tbody>
+      </table> */}
+    </div>
   </div>
 );
 
@@ -58,30 +62,27 @@ export const SharedHeaderItemView: FunctionComponent<SharedHeaderItemViewProps> 
 
 interface AdditionalToolsMyLearningProps {
   children: React.ReactNode,
+  activeIndex: number,
+  companyCode: string,
   onClickQnA: () => void,
+  handleClick: (e: any, data:any) => void
 }
-export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearningProps> = ({ children, onClickQnA }) => (
-  <div className="main-learning-link">
-    <div className="inner">
-      <div className="left">
-        <div>
-          {children}
-        </div>
-        {/*APL 2차 개발*/}
-        {/*<div>*/}
-        {/*<a href="#">*/}
-        {/*<Icon className="add24"/>*/}
-        {/*<span>Add Personal Learning</span>*/}
-        {/*</a>*/}
-        {/*</div>*/}
-      </div>
-      <div className="right">
-        <a href="#" onClick={onClickQnA} className="contact-us">
 
-          <span>1:1 문의하기</span>
-          <Icon className="arrow-g-16"/>
-        </a>
-      </div>
-    </div>
-  </div>
-);
+export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearningProps> = function ({ children, activeIndex, companyCode, onClickQnA, handleClick }) {
+  return (
+    <Accordion>
+      <Accordion.Title
+        active={activeIndex === 1}
+        index={1}
+        onClick={(e, data) => {
+          handleClick(e, data)
+        }}
+      >
+        <img src={activeIndex !== 1 ? `${PUBLIC_URL}/images/all/btn-pboard-open.png` : `${PUBLIC_URL}/images/all/btn-pboard-close.png`} />
+      </Accordion.Title>
+      <Accordion.Content active={activeIndex === 1}>
+        <PersonalBoardContainer companyCode={companyCode} activeIndex={activeIndex}/>
+      </Accordion.Content>
+    </Accordion>
+  );
+} 

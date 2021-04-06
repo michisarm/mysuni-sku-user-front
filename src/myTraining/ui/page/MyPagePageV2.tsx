@@ -8,10 +8,10 @@ import { BadgeService } from 'lecture/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ContentLayout, TabItemModel } from 'shared';
 import Tab from 'shared/components/Tab';
-import EarnedBadgeListContainer from 'certification/ui/logic/EarnedBadgeListContainer';
 import { MyPageContentType, MyPageContentTypeName } from '../model';
 import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
+import MyBadgeListContainer from '../../../certification/ui/logic/MyBadgeListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -27,7 +27,7 @@ interface RouteParams {
 function MyPagePageV2(props: Props) {
   const { myTrainingService, badgeService, history, match } = props;
   const { myStampCount } = myTrainingService!;
-  const { earnedCount: myBadgeCount } = badgeService!;
+  const { allBadgeCount: { issuedCount: myBadgeCount } } = badgeService!;
   const currentTab = match.params.tab;
 
 
@@ -35,7 +35,7 @@ function MyPagePageV2(props: Props) {
     /* 탭의 뱃지 & 스탬프 카운트 호출. */
     if (myStampCount === 0 && myBadgeCount === 0) {
       myTrainingService!.countMyTrainingsWithStamp();
-      badgeService!.getCountOfBadges();
+      badgeService!.findAllBadgeCount();
     }
   }, []);
 
@@ -44,7 +44,7 @@ function MyPagePageV2(props: Props) {
       {
         name: MyPageContentType.EarnedBadgeList,
         item: getTabItem(MyPageContentType.EarnedBadgeList, myBadgeCount),
-        render: () => <EarnedBadgeListContainer />
+        render: () => <MyBadgeListContainer />
       },
       {
         name: MyPageContentType.EarnedStampList,

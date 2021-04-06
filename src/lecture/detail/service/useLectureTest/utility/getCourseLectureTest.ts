@@ -1,40 +1,24 @@
 /* eslint-disable consistent-return */
 
-/**
- * 
- export interface LectureStructureCubeItem extends Item {
-  id: string;
-  name: string;
-  cubeId: string;
-  cubeType: CubeType;
-  learningTime: number;
-  url: LectureStructureCubeItemUrl;
-  learningState?: LearningState;
-  state?: State;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-}
- */
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import LectureParams from '../../../viewModel/LectureParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
-import { getTestItemMapFromCourse } from './getTestItemMapFromCourse';
-import { getTestStudentItemMapFromCourse } from './getTestStudentItemMapFromCourse';
+import { getTestItemMapFromCourse } from './getTestItemMap';
+import { getTestStudentItemMapFromCourse } from './getTestStudentItemMap';
 
 export async function getCourseLectureTest(
-  params: LectureRouterParams
+  params: LectureParams
 ): Promise<void> {
   await getTestItemMapFromCourse(params);
 }
 
 export async function getCourseLectureTestStudent(
-  params: LectureRouterParams
+  params: LectureParams
 ): Promise<void> {
   await getTestStudentItemMapFromCourse(params);
 }
 
 export async function getCourseLectureTestAnswer(
-  params: LectureRouterParams
+  params: LectureParams
 ): Promise<void> {
   const testItem = await getTestItemMapFromCourse(params); // 다른 방법은?
   if (testItem) {

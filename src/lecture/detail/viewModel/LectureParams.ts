@@ -1,59 +1,71 @@
-import { comparer } from 'mobx';
-import { ContentType } from './LectureRouterParams';
-import { LectureType } from './LectureType';
+import CubeType from '../../model/CubeType';
+import { LectureViewType } from './LectureViewType';
 
 export default interface LectureParams {
-  cineroomId?: string;
-  collegeId: string;
+  cardId: string;
   cubeId?: string;
-  lectureCardId?: string;
-  coursePlanId?: string;
-  serviceType?: LectureType;
-  serviceId?: string;
-  lectureType?: ContentType;
-  contentId?: string;
-  lectureId?: string;
-  communityId?: string;
-  menuId?: string;
+  viewType: LectureViewType;
+  cubeType?: CubeType;
+  chapterId?: string;
+  discussionId?: string;
 }
 
 export function compareLectureParams(a: LectureParams, b: LectureParams) {
-  return (
-    a.cineroomId == b.cineroomId &&
-    a.collegeId == b.collegeId &&
-    a.cubeId == b.cubeId &&
-    a.lectureCardId == b.lectureCardId &&
-    a.coursePlanId == b.coursePlanId &&
-    a.serviceType == b.serviceType &&
-    a.serviceId == b.serviceId &&
-    a.lectureType == b.lectureType &&
-    a.contentId == b.contentId &&
-    a.lectureId == b.lectureId
-  );
+  return a.cubeId == b.cubeId && a.cardId == b.cardId;
 }
 
 export function toPath(params: LectureParams): string {
-  const {
-    cineroomId,
-    collegeId,
-    cubeId,
-    lectureCardId,
-    coursePlanId,
-    serviceType,
-    serviceId,
-    lectureType,
-    contentId,
-    lectureId,
-  } = params;
-  const cineroomIdPath = `${
-    cineroomId === undefined ? '' : `/cineroom/${cineroomId}`
-  }`;
+  const { viewType } = params;
+  switch (viewType) {
+    case 'view':
+      return toViewPath(params);
+    case 'chapter':
+      return toChapterPath(params);
+    case 'test':
+      return toTestPath(params);
+    case 'report':
+      return toReportPath(params);
+    case 'survey':
+      return toSurveyPath(params);
+    case 'discussion':
+      return toDiscussionPath(params);
+  }
+  return '';
+}
+
+export function toViewPath(params: LectureParams): string {
+  const { cubeId, cardId, cubeType } = params;
   if (cubeId !== undefined) {
-    return `/lecture${cineroomIdPath}/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}`;
+    return `/lecture/card/${cardId}/cube/${cubeId}/view/${cubeType}`;
   }
-  const servicePath = `/lecture${cineroomIdPath}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}`;
-  if (lectureType === undefined) {
-    return servicePath;
+  return `/lecture/card/${cardId}/view`;
+}
+export function toChapterPath(params: LectureParams): string {
+  const { chapterId, cardId } = params;
+  return `/lecture/card/${cardId}/chapter/${chapterId}`;
+}
+export function toTestPath(params: LectureParams): string {
+  const { cubeId, cardId, cubeType } = params;
+  if (cubeId !== undefined) {
+    return `/lecture/card/${cardId}/cube/${cubeId}/test/${cubeType}`;
   }
-  return `${servicePath}/${lectureType}/${contentId}/${lectureId}`;
+  return `/lecture/card/${cardId}/test`;
+}
+export function toReportPath(params: LectureParams): string {
+  const { cubeId, cardId, cubeType } = params;
+  if (cubeId !== undefined) {
+    return `/lecture/card/${cardId}/cube/${cubeId}/report/${cubeType}`;
+  }
+  return `/lecture/card/${cardId}/report`;
+}
+export function toSurveyPath(params: LectureParams): string {
+  const { cubeId, cardId, cubeType } = params;
+  if (cubeId !== undefined) {
+    return `/lecture/card/${cardId}/cube/${cubeId}/survey/${cubeType}`;
+  }
+  return `/lecture/card/${cardId}/survey`;
+}
+export function toDiscussionPath(params: LectureParams): string {
+  const { cardId, discussionId } = params;
+  return `/lecture/card/${cardId}/discussion/${discussionId}`;
 }

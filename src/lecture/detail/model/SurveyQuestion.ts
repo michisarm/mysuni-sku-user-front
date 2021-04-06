@@ -19,4 +19,5 @@ export default interface Question {
   answerItems: AnswerItems;
   optional?: boolean;
   sentencesImageUrl?: string;
+  visible: boolean;
 }

@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  RouteComponentProps,
+  useHistory,
+  useLocation,
+  withRouter,
+} from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { NoSuchContentPanel } from 'shared';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
@@ -15,21 +20,72 @@ import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';
 import ChannelsContentWrapperView from '../view/ChannelsContentWrapperView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
+import { Segment } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService;
   collegeService?: CollegeService;
   lectureService?: LectureService;
   reviewService?: ReviewService;
-
   channels: ChannelModel[];
   onViewAll: (e: any, data: any) => void;
+  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  scrollSave?: () => void;
+  isLoading?: boolean | false;
 }
 
 interface RouteParams {
   pageNo: string;
 }
 
+const ChannelsContainer: React.FC<Props> = ({
+  actionLogService,
+  collegeService,
+  lectureService,
+  reviewService,
+  channels,
+  onViewAll,
+  match,
+}) => {
+  const history = useHistory();
+  const location = useLocation();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (loading) {
+      scrollOnceMove();
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, [location.pathname]);
+
+  return (
+    <ChannelsInnerContainer
+      actionLogService={actionLogService}
+      collegeService={collegeService}
+      lectureService={lectureService}
+      reviewService={reviewService}
+      channels={channels}
+      onViewAll={onViewAll}
+      match={match}
+      history={history}
+      location={location}
+      scrollSave={scrollSave}
+      setLoading={setLoading}
+      setIsLoading={setIsLoading}
+      isLoading={isLoading}
+    />
+  );
+};
+
+export default withRouter(ChannelsContainer);
 @inject(
   mobxHelper.injectFrom(
     'shared.actionLogService',
@@ -40,7 +96,7 @@ interface RouteParams {
 )
 @reactAutobind
 @observer
-class ChannelsContainer extends Component<Props> {
+class ChannelsInnerContainer extends Component<Props> {
   //
   CHANNELS_SIZE = 5;
 
@@ -64,7 +120,7 @@ class ChannelsContainer extends Component<Props> {
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
     const { channels: prevChannels } = prevProps;
-    const { collegeService, channels } = this.props;
+    const { collegeService, channels, setLoading } = this.props;
 
     if (prevChannels !== channels) {
       const sameLength = prevChannels.length === channels.length;
@@ -90,17 +146,21 @@ class ChannelsContainer extends Component<Props> {
     if (prevPageNo !== pageNo && prevPageNo < pageNo) {
       this.addPagingRecommendLectures();
     }
+
+    setLoading && setLoading(false);
   }
 
-  findPagingRecommendLectures() {
+  async findPagingRecommendLectures() {
     //
-    const { lectureService } = this.props;
+    const { lectureService, setIsLoading } = this.props;
     const initialLimit = this.getPageNo() * this.CHANNELS_SIZE;
 
-    lectureService!.findPagingRecommendLectures(
-      initialLimit,
-      this.LECTURES_SIZE
-    );
+    setIsLoading && setIsLoading(true);
+    await lectureService!
+      .findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE)
+      .then(() => {
+        setIsLoading && setIsLoading(false);
+      });
   }
 
   async addPagingRecommendLectures() {
@@ -115,11 +175,15 @@ class ChannelsContainer extends Component<Props> {
     );
   }
 
-  findAllRecommendLectures() {
+  async findAllRecommendLectures() {
     //
-    const { lectureService } = this.props;
-
-    lectureService!.findPagingRecommendLectures(500, this.LECTURES_SIZE);
+    const { lectureService, setIsLoading } = this.props;
+    setIsLoading && setIsLoading(true);
+    await lectureService!
+      .findPagingRecommendLectures(500, this.LECTURES_SIZE)
+      .then(() => {
+        setIsLoading && setIsLoading(false);
+      });
   }
 
   getPageNo() {
@@ -141,6 +205,7 @@ class ChannelsContainer extends Component<Props> {
     //
     const { recommendLectures } = this.props.lectureService!;
     const { channels } = this.props.collegeService!;
+    const { setLoading } = this.props;
 
     const notChecked = channels.every(channel => !channel.checked);
     let displayableRecommendLectures: RecommendLectureRdo[] = [];
@@ -160,6 +225,9 @@ class ChannelsContainer extends Component<Props> {
       displayableRecommendLectures = recommendLectures.filter(lecture =>
         checkedChannelIds.includes(lecture.channel.id)
       );
+    }
+    if (displayableRecommendLectures.length > 0) {
+      setLoading && setLoading(true);
     }
 
     return displayableRecommendLectures;
@@ -230,7 +298,7 @@ class ChannelsContainer extends Component<Props> {
 
   render() {
     //
-    const { collegeService, onViewAll } = this.props;
+    const { collegeService, onViewAll, scrollSave, isLoading } = this.props;
     const { channels } = collegeService!;
     const displayableRecommendLectures = this.getDisplayableRecommendLectures();
 
@@ -241,28 +309,44 @@ class ChannelsContainer extends Component<Props> {
         onConfirmCallback={this.onConfirmChangeFavorite}
       >
         <div className="recommend-area">
-          {!displayableRecommendLectures ||
-          displayableRecommendLectures.length < 1 ? (
-            <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
+          {isLoading ? (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+            </Segment>
           ) : (
-            displayableRecommendLectures.map(
-              (lecture: RecommendLectureRdo, index: number) => (
-                <ChannelLecturesLineContainer
-                  key={`channel_cont_${index}`}
-                  channel={new ChannelModel(lecture.channel)}
-                  lectures={lecture.lectures}
-                  onViewAll={onViewAll}
-                />
-              )
-            )
-          )}
-          {this.isContentMore() && (
-            <SeeMoreButtonView onClick={this.onClickSeeMore} />
+            <>
+              {!displayableRecommendLectures ||
+              displayableRecommendLectures.length < 1 ? (
+                <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
+              ) : (
+                displayableRecommendLectures.map(
+                  (lecture: RecommendLectureRdo, index: number) => (
+                    <ChannelLecturesLineContainer
+                      key={`channel_cont_${index}`}
+                      channel={new ChannelModel(lecture.channel)}
+                      lectures={lecture.lectures}
+                      onViewAll={onViewAll}
+                    />
+                  )
+                )
+              )}
+              {this.isContentMore() && (
+                <SeeMoreButtonView onClick={this.onClickSeeMore} />
+              )}
+            </>
           )}
         </div>
       </ChannelsContentWrapperView>
     );
   }
 }
-
-export default withRouter(ChannelsContainer);

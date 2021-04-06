@@ -60,7 +60,7 @@ function changeSort(_: any, data: DropdownProps) {
   const communitiesSort = (data.value || 'memberCreatedTime').toString();
   setMyCommunityIntro({
     ...myCommunityIntro,
-    communitiesSort
+    communitiesSort,
   });
   requestMyCommunityList();
 }
@@ -74,7 +74,7 @@ function MyCommunityListContainer() {
   return (
     <div className="community-left community-main-left">
       <div className="sub-info-box">
-        <div className="commnuity-left-top">
+        <div className="commnuity-left-top scroll">
           <Select
             placeholder="선택해주세요"
             className="dropdown w302 selection"
@@ -83,17 +83,19 @@ function MyCommunityListContainer() {
             onChange={changeSort}
           />
         </div>
-        {myCommunityIntro !== undefined && (
-          <>
-            {myCommunityIntro.communities.map(communityItem => (
-              <CommunityItemView
-                key={communityItem.communityId}
-                {...communityItem}
-              />
-            ))}
-          </>
-        )}
-        {myCommunityIntro.communitiesTotalCount > 
+        <div className="commu-home-scroll" style={{overflow: 'visible', height: 'auto'}}>
+          {myCommunityIntro !== undefined && (
+            <>
+              {myCommunityIntro.communities.map(communityItem => (
+                <CommunityItemView
+                  key={communityItem.communityId}
+                  {...communityItem}
+                />
+              ))}
+            </>
+          )}
+        </div>
+        {myCommunityIntro.communitiesTotalCount >
           myCommunityIntro.communitiesOffset && (
           <div className="more-comments community-side">
             <Button
@@ -104,7 +106,7 @@ function MyCommunityListContainer() {
               <Icon className="moreview" /> list more
             </Button>
           </div>
-        ) }
+        )}
       </div>
     </div>
   );

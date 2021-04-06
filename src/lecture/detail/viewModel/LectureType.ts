@@ -1,1 +1,1 @@
-export type LectureType = 'Cube' | 'Card' | 'Course' | 'Program' | 'Lecture';
+export type LectureType = 'Cube' | 'Card';

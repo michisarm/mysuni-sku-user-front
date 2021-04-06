@@ -1,4 +1,4 @@
-import CommunityHomeType from "community/model/CommunityHomeType";
+import CommunityHomeType from 'community/model/CommunityHomeType';
 
 export interface CommunityHomeCreateItem {
   communityId: string;
@@ -8,12 +8,14 @@ export interface CommunityHomeCreateItem {
   thumbnailId?: string;
   html?: string;
   draft?: number;
+  color?: string;
 }
 
-
-export function getEmptyCommunityHomeCreateItem(communityId:string): CommunityHomeCreateItem {
+export function getEmptyCommunityHomeCreateItem(
+  communityId: string
+): CommunityHomeCreateItem {
   return {
     communityId,
-    type: 'BASIC'
+    type: 'BASIC',
   };
 }

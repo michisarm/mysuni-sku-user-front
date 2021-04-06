@@ -8,7 +8,6 @@ interface TestViewProps {
   name: string;
   state?: State;
   activated?: boolean;
-  questionCount: number;
   path: string;
   can: boolean;
 }
@@ -24,7 +23,6 @@ const CourseTestView: React.FC<TestViewProps> = function CourseTestView({
   name,
   state = 'None',
   activated = false,
-  questionCount,
   path,
   can,
 }) {

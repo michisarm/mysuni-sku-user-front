@@ -15,6 +15,7 @@ interface Props {
   className?: string,
   bottom?: React.ReactNode,
   children: React.ReactNode,
+  type?: string
 }
 
 @reactAutobind
@@ -34,13 +35,20 @@ class ContentHeader extends Component<Props> {
 
   static RecommendItem = RecommendItem;
 
+  typeClass(type?: string) {
+    let classNames = 'progress-info-wrap'
+    if(type === 'Learning' || type === 'Create') {
+      classNames += ' mypage personal-detail'
+    }
+    return classNames
+  }
+
   render() {
     //
-    const { className, bottom, children } = this.props;
-
+    const { className, bottom, children, type } = this.props;
     return (
       <div className={classNames('main-info-area', className)}>
-        <div className="progress-info-wrap mypage">
+        <div className={this.typeClass(type)}>
           {children}
         </div>
         {bottom}

@@ -20,13 +20,13 @@ class ContentHeaderBadgeView extends PureComponent<Props> {
       <div className="cell-inner">
         <div className="stamp-wrap">
           <Label className="stamp">
-            <a href="#" onClick={onClickItem}>
-              <span><span className="text1">My Badge</span></span>
-              <span>
-                <Icon className="badge35" /><span className="text2">x</span>
-                <span className="text3">{badgeCount || 0}</span>
-              </span>
-            </a>
+              <div>
+                <a href="#" onClick={onClickItem}>
+                  <span className="text1">Badge</span>
+                  <span className="text3">{badgeCount || 0}</span>
+                  <span className="text5">개</span>
+                </a>
+              </div>
           </Label>
         </div>
       </div>

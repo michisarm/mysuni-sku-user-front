@@ -3,7 +3,7 @@ import MemberCdo from '../model/MemberCdo';
 import Member from 'community/model/Member';
 import { SearchBox } from 'community/model/SearchBox';
 
-const BASE_URL = "/api/community";
+const BASE_URL = '/api/community';
 
 export function findCommunityMenu(communityId: string): Promise<any> {
   return axios.get(`${BASE_URL}/${communityId}/menus`);
@@ -30,9 +30,14 @@ export function findAllMemberByQuery(
   communityId: string,
   pageNum: number
 ): Promise<any> {
+<<<<<<< HEAD
   return (
     axios
       .get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8`)
+=======
+  return axios.get(
+    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8`
+>>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471
   );
 }
 
@@ -40,6 +45,7 @@ export function findApprovedMember(
   communityId: string,
   pageNum: number
 ): Promise<any> {
+<<<<<<< HEAD
   return (
     axios.get(`${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&approved=false`)
   )
@@ -71,6 +77,27 @@ export function memberFollowDel(
   return (
     axios.delete(`${BASE_URL}/follow/flow/${memberId}/unfollow`).then(res => res && res.data)
   )
+=======
+  return axios.get(
+    `${BASE_URL}/memberviews?communityId=${communityId}&offset=${pageNum}&limit=8&approved=WAITING`
+  );
+}
+
+export function searchMember(communityId: string, nickName: any): Promise<any> {
+  return axios.get(
+    `${BASE_URL}/memberviews?communityId=${communityId}&offset=0&limit=8&nickName=${nickName}`
+  );
+}
+
+export function memberFollowAdd(memberId: string): Promise<any> {
+  return axios.post(`${BASE_URL}/follow/flow/${memberId}`);
+}
+
+export function memberFollowDel(memberId: string): Promise<any> {
+  return axios
+    .delete(`${BASE_URL}/follow/flow/${memberId}/unfollow`)
+    .then(res => res && res.data);
+>>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471
 }
 
 export function modifyMember(
@@ -82,25 +109,38 @@ export function modifyMember(
       `${BASE_URL}/${memberCdoModel.communityId}/members/${memberId}`,
       memberCdoModel
     )
-    .then((response) => response && response.data);
+    .then(response => response && response.data);
 }
 
 export function modifyMembers(
   communityId: string,
   memberIdList: (string | undefined)[]
 ): Promise<string> {
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471
   return axios
-    .put<string>(`${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`)
-    .then((response) => response && response.data);
+    .put<string>(
+      `${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(
+        ','
+      )}`
+    )
+    .then(response => response && response.data);
 }
 
+<<<<<<< HEAD
 export function findMember(
   communityId: string
 ): Promise<Member> {
 
   const url = `${BASE_URL}/communities/${communityId}/members/findMember`
   return axiosApi.get<Member>(url).then((response) => response && response.data);
+=======
+export function findMember(communityId: string): Promise<Member> {
+  const url = `${BASE_URL}/communities/${communityId}/members/findMember`;
+  return axiosApi.get<Member>(url).then(response => response && response.data);
+>>>>>>> a6cd58a7ce9afd3a75d8379805c8e9ad0ae9f471
 }
 
 export function removeMembers(
@@ -108,6 +148,8 @@ export function removeMembers(
   memberIdList: (string | undefined)[]
 ): Promise<any> {
   return axios.delete(
-    `${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(',')}`
+    `${BASE_URL}/communities/${communityId}/members/flow/${memberIdList.join(
+      ','
+    )}`
   );
 }

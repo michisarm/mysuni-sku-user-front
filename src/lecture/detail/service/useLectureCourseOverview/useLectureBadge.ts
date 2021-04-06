@@ -1,12 +1,12 @@
 /* eslint-disable consistent-return */
 import { useEffect, useRef, useState } from 'react';
-import { useLectureRouterParams } from '../useLectureRouterParams';
 import {
   onLectureBadge,
   setLectureBadge,
 } from '../../store/LectureOverviewStore';
 import LectureBadge from '../../viewModel/LectureOverview/LectureBadge';
 import { findByLectureUsid } from '../../api/badgeApi';
+import { useLectureParams } from '../../store/LectureParamsStore';
 
 type Value = LectureBadge | undefined;
 
@@ -14,7 +14,7 @@ let subscriberIdRef = 0;
 export function useLectureBadge(): [Value] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
 
   useEffect(() => {
     const next = `useLectureBadge-${++subscriberIdRef}`;
@@ -31,17 +31,17 @@ export function useLectureBadge(): [Value] {
   }, [subscriberId]);
 
   useEffect(() => {
-    if (params === undefined) {
+    if (params?.cubeId === undefined) {
       return;
     }
-    findByLectureUsid(params.lectureId).then(badges => {
-      if(badges === undefined){
-        setLectureBadge()
+    findByLectureUsid(params.cubeId).then(badges => {
+      if (badges === undefined) {
+        setLectureBadge();
       } else {
-        setLectureBadge({ badges })
+        setLectureBadge({ badges });
       }
     });
-  }, [params]);
+  }, [params?.cubeId]);
 
   return [value];
 }

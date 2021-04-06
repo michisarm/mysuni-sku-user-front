@@ -8,7 +8,6 @@ interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
-  questionCount: number;
   path: string;
   can: boolean;
 }
@@ -21,13 +20,17 @@ function cannotAlert() {
 }
 
 const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
-  name,
   state = 'None',
   activated = false,
-  questionCount,
   path,
   can,
 }) {
+  console.log(path);
+  console.log(state);
+
+  // if(state !== 'Progress') {
+
+  // }
   return (
     <StructureLink
       can={can}
@@ -43,11 +46,11 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
         <span>cube 완료상태</span>
       </span>
       <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
+        <span className="copy-title">Survey</span>
+        {/* <ul className="type-info">
           <li>Survey</li>
           <li>{`${questionCount}문항`}</li>
-        </ul>
+        </ul> */}
       </span>
     </StructureLink>
   );

@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import {
   getOpenCommunityIntro,
   setOpenCommunityIntro,
   useOpenCommunityIntro,
 } from '../../../store/CommunityMainStore';
+import { reactConfirm, reactAlert, axiosApi } from '@nara.platform/accent';
+import CommunityType from '../../../model/CommunityType';
 import OpenCommunityItem from '../../../viewModel/OpenCommunityIntro/OpenCommunityItem';
 import managerIcon from '../../../../style/media/icon-community-manager.png';
-import { Link } from 'react-router-dom';
+import OpenCommunityPassInputModal from './OpenCommunityPassInputModal';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
   requestAppendOpenCommunityList,
   requestOpenCommunityList,
 } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
+import { StreamUtils } from 'xlsx/types';
+import { useScrollMove } from 'myTraining/useScrollMove';
 
 interface FieldItemViewProps {}
 
@@ -23,15 +28,110 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   name,
   description,
   managerName,
+  managerEmail,
   memberCount,
   thumbnailId,
+  type,
 }) {
-  return (
-    <Link to={`/community/${communityId}`} className="community-open-card">
-      <div className="open-card-top">
-        <span className="label">{fieldName}</span>
-        {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+  const history = useHistory();
+  const [openModal, setModalWin] = React.useState<{
+    passInputModalWin: boolean;
+  }>({
+    passInputModalWin: false,
+  });
+  const handleClose = () => {
+    setModalWin({
+      passInputModalWin: false,
+    });
+  };
+  function handleAlertPassInputWin() {
+    setModalWin({
+      passInputModalWin: true,
+    });
+  }
+  const handleOk = () => {
+    reactAlert({
+      title: '확인',
+      message:
+        '선택한 학습자를 가입 반려 처리하시겠습니까?  입력된 반려 사유는 E-mail과 알림을 통해 전달되며, 등록된 내용은 수정하실 수 없습니다.',
+    });
+  };
+  const onConfirmSecret = async (secret: string) => {
+    const url = `/api/community/secretCommunities/existsByCommunity/${communityId}/${secret}`;
+    const res = await axiosApi.get(url).then(response => response.data);
+
+    if (res === true) {
+      // window.location.href = `/community/${communityId}`;
+      history.push(`/community/${communityId}`);
+    } else {
+      reactAlert({
+        title: '확인',
+        message: '잘못된 비밀번호 입니다. 커뮤니티 비밀번호를 다시 확인해주세요.',
+      });
+    }
+  };
+  return type === 'SECRET' ? (
+    <>
+      <OpenCommunityPassInputModal
+        managerName={managerName}
+        managerEmail={managerEmail}
+        open={openModal.passInputModalWin}
+        handleClose={handleClose}
+        onConfirmModal={onConfirmSecret}
+      />
+      <div
+        className="community-open-card lock"
+        onClick={handleAlertPassInputWin}
+        style={{cursor: 'pointer'}}
+        // onClick={() => passChek(communityId, 'learning')}
+      >
+        <div className="open-card-top">
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+        <div className="open-card-content">
+          <p>{name}</p>
+          <div className="thumbnail">
+            <img
+              src={thumbnailId}
+              style={{ height: 72, width: 72, borderRadius: 8 }}
+            />
+          </div>
+          <div className="community-main-left-list">
+            <div
+              className="community-main-left-h3"
+              dangerouslySetInnerHTML={{ __html: description.substring(0, 60) }}
+            />
+          </div>
+        </div>
+        <div className="open-card-bottom">
+          <div className="title-area">
+            <div className="text-list">
+              <img src={managerIcon} />
+              <span>{managerName}</span>
+            </div>
+          </div>
+          <div className="right-area">
+            <span>멤버</span>
+            <span>{memberCount}</span>
+          </div>
+        </div>
       </div>
+    </>
+  ) : (
+    <Link to={`/community/${communityId}`} className="community-open-card">
+      {type === 'OPEN' && (
+        <div className="open-card-top">
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+      )}
+      {type === 'COHORT' && (
+        <div>
+          <span className="label">{fieldName}</span>
+          {approvedState === 'Wait' && <span className="wait">가입대기</span>}
+        </div>
+      )}
       <div className="open-card-content">
         <p>{name}</p>
         <div className="thumbnail">
@@ -63,16 +163,23 @@ const OpenCommunityItemView: React.FC<OpenCommunityItem &
   );
 };
 
+function deleteOffset() {
+  sessionStorage.removeItem('communityOffset');
+  sessionStorage.removeItem('openCommunityOffset');
+}
+
 function sortCreatedTime() {
   const openCommunityIntro = getOpenCommunityIntro();
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'createdTime');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'createdTime',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -81,11 +188,13 @@ function sortMemberCount() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'memberCount');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'memberCount',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -94,11 +203,13 @@ function sortName() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'name');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'name',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
@@ -107,17 +218,19 @@ function sortApproved() {
   if (openCommunityIntro === undefined) {
     return;
   }
+  sessionStorage.setItem('sortName', 'approved');
   setOpenCommunityIntro({
     ...openCommunityIntro,
     communitiesSort: 'approved',
     communitiesOffset: 0,
   });
+  deleteOffset();
   requestOpenCommunityList();
 }
 
 function OpenCommunityIntroCommunityListContainer() {
   const openCommunityIntro = useOpenCommunityIntro();
-
+  const sessionSortName = sessionStorage.getItem('sortName');
   if (openCommunityIntro === undefined) {
     return null;
   }
@@ -130,7 +243,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="최신순"
           name="sort"
           value="createdTime"
-          checked={openCommunityIntro.communitiesSort === 'createdTime'}
+          checked={
+            sessionSortName === 'createdTime' ||
+            openCommunityIntro.communitiesSort === 'createdTime'
+          }
           onClick={sortCreatedTime}
         />
         <Radio
@@ -138,7 +254,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="멤버순"
           name="sort"
           value="memberCount"
-          checked={openCommunityIntro.communitiesSort === 'memberCount'}
+          checked={
+            sessionSortName === 'memberCount' ||
+            openCommunityIntro.communitiesSort === 'memberCount'
+          }
           onClick={sortMemberCount}
         />
         <Radio
@@ -146,7 +265,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가나다순"
           name="sort"
           value="name"
-          checked={openCommunityIntro.communitiesSort === 'name'}
+          checked={
+            sessionSortName === 'name' ||
+            openCommunityIntro.communitiesSort === 'name'
+          }
           onClick={sortName}
         />
         <Radio
@@ -154,7 +276,10 @@ function OpenCommunityIntroCommunityListContainer() {
           label="가입대기"
           name="sort"
           value="approved"
-          checked={openCommunityIntro.communitiesSort === 'approved'}
+          checked={
+            sessionSortName === 'approved' ||
+            openCommunityIntro.communitiesSort === 'approved'
+          }
           onClick={sortApproved}
         />
       </div>

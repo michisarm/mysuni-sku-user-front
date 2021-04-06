@@ -65,7 +65,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                 <div className="title-area">
                   <div className="ui label onlytext">
                     <span>
-                      {time && moment(time).format('YYYY.MM.DD HH:MM')}
+                      {time && moment(time).format('YYYY.MM.DD HH:mm')}
                     </span>
                   </div>
                   <div className="ui label onlytext">

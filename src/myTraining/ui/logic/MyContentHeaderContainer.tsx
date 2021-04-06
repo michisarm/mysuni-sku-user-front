@@ -37,7 +37,7 @@ function MyContentHeaderContainer(props: Props) {
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
   const { myStampCount, thisYearMyStampCount } = myTrainingService!;
-  const { earnedCount: myBadgeCount } = badgeService!;
+  const { allBadgeCount: { issuedCount: myBadgeCount } } = badgeService!;
 
   /* states */
   const [selectedYear, setSelectedYear] = useState<number>(CURRENT_YEAR);
@@ -45,7 +45,7 @@ function MyContentHeaderContainer(props: Props) {
   /* effects */
   useEffect(() => {
     if (myStampCount === 0 && myBadgeCount === 0 && thisYearMyStampCount === 0) {
-      badgeService!.getCountOfBadges();
+      badgeService!.findAllBadgeCount();
       myTrainingService!.countMyTrainingsWithStamp();
       myTrainingService!.countMyTrainingsWithStamp([],moment([selectedYear,1-1,1]).toDate().getTime(),moment([selectedYear,12-1,31]).toDate().getTime());
     }
@@ -80,17 +80,33 @@ function MyContentHeaderContainer(props: Props) {
 
   /* render */
   return (
-    <ContentHeader
-      bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
-    >
-      <ContentHeader.Cell inner>
-        <ContentHeader.ProfileItem
-          myPageActive={!isFromMyPage(contentType)}
-          imageEditable={isFromMyPage(contentType)}
-          image={skProfile.photoFilePath || profileImg}
-          name={skProfile.member.name}
-          company={skProfile.member.company}
-          department={skProfile.member.department}
+    // 요청사항으로 관심 Channel 주석처리
+    // <ContentHeader
+    //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
+    // >
+    <ContentHeader type="Learning">
+      <ContentHeader.Cell inner className="personal-inner">
+          <ContentHeader.ProfileItem
+            myPageActive={!isFromMyPage(contentType)}
+            imageEditable={isFromMyPage(contentType)}
+            image={skProfile.photoFilePath || profileImg}
+            name={skProfile.member.name}
+            company={skProfile.member.company}
+            department={skProfile.member.department}
+            type="Learning"
+          />
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderBadgeView
+          badgeCount={myBadgeCount}
+          onClickItem={onClickMyBadge}
+        />
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeaderStampView
+          stampCount={myStampCount}
+          onClickItem={onClickMyStamp}
+          thisYearStampCount={thisYearMyStampCount}
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
@@ -118,19 +134,6 @@ function MyContentHeaderContainer(props: Props) {
             options={getYearOptions()}
           />
           </div>*/}
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderStampView
-          stampCount={myStampCount}
-          onClickItem={onClickMyStamp}
-          thisYearStampCount={thisYearMyStampCount}
-        />
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeaderBadgeView
-          badgeCount={myBadgeCount}
-          onClickItem={onClickMyBadge}
-        />
       </ContentHeader.Cell>
     </ContentHeader>
   );

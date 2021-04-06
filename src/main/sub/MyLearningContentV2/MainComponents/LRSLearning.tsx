@@ -3,6 +3,7 @@ import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
+import { find } from 'lodash';
 
 import { Button, Icon } from 'semantic-ui-react';
 // import { ActionLogService } from 'shared/stores';
@@ -26,6 +27,15 @@ import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoMod
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
 
+import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
+import { findCardList } from '../../../../lecture/detail/api/cardApi';
+import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
+import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
+import CardGroup, {
+  GroupType,
+} from '../../../../lecture/shared/Lecture/sub/CardGroup';
+import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
+
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
   reviewService?: ReviewService;
@@ -38,30 +48,54 @@ interface Props extends RouteComponentProps {
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
 */
-const LRSLearning: React.FC<Props> = Props => {
-  //
-  const {
-    reviewService,
-    lrsLectureService,
-    inMyLectureService,
-    profileMemberName,
-    profileMemberEmail,
-    history,
-  } = Props;
+const LRSLearning: React.FC<Props> = function LRSLearning({
+  reviewService,
+  lrsLectureService,
+  inMyLectureService,
+  profileMemberName,
+  profileMemberEmail,
+  history,
+}) {
+  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
+  useRequestCollege();
 
   const CONTENT_TYPE_NAME = '추천과정';
   const PAGE_SIZE = 8;
-
   const { lrsLectures } = lrsLectureService!;
-
   const [title, setTitle] = useState<string | null>('');
+
+  const [newCard, setNewCard] = useState<CardBundle>();
+
+  const fetchNewCards = async () => {
+    const response = await findAvailableCardBundles();
+    // 신규이기 때문에 type이 New 인 부분을 가져옴
+    const findResponse = find(response, { type: 'Recommended' });
+
+    // cards 값에 api로 받아온 cardList 값을 넣어줌
+    if (findResponse?.cardIds) {
+      const joinedIds = findResponse.cardIds.join();
+
+      const cardList = await findCardList(joinedIds);
+
+      if (cardList !== undefined) {
+        findResponse.cards = cardList;
+      }
+    }
+    console.log(findResponse);
+    setNewCard(findResponse);
+  };
+
+  useEffect(() => {
+    fetchNewCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   lrsLectureService?.setProfileName(profileMemberName);
 
   // // lectureService 변경  실행
-  useEffect(() => {
-    findMyContent();
-  }, []);
+  // useEffect(() => {
+  //   findMyContent();
+  // }, []);
 
   const findMyContent = async () => {
     lrsLectureService!.clearLectures();
@@ -140,7 +174,7 @@ const LRSLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '추천 과정',
       action: 'Click',
-      label: '추천 과정 전체보기'
+      label: '추천 과정 전체보기',
     });
   };
 
@@ -150,11 +184,12 @@ const LRSLearning: React.FC<Props> = Props => {
 
     // react-ga event
     ReactGA.event({
-      category: '추천 과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_추천과정',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      label: `${model.name}`,
     });
 
     const cineroom =
@@ -234,10 +269,11 @@ const LRSLearning: React.FC<Props> = Props => {
     <ContentWrapper>
       <div className="section-head">
         {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
+        <strong>{newCard?.displayText}</strong>
         <strong>{title}</strong>
         {/*<strong>{lrsLectureService?.Title}</strong>*/}
         <div className="right">
-          {lrsLectures.length > 0 && (
+          {newCard?.cards && newCard.cards.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View all <Icon className="morelink" />
             </Button>
@@ -245,14 +281,46 @@ const LRSLearning: React.FC<Props> = Props => {
         </div>
       </div>
 
-      {lrsLectures.length > 0 && lrsLectures[0] ? (
+      {newCard?.cards && newCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {lrsLectures.map(
+          {newCard.cards.map((item, i) => {
+            const { card, cardRelatedCount } = item;
+            const inMyLecture = getInMyLecture(card.id);
+            // const inMyLecture = getInMyLecture("");
+            return (
+              <li>
+                <CardGroup type={GroupType.Box}>
+                  <CardView
+                    cardId={item.card.id}
+                    learningTime={card.learningTime}
+                    thumbImagePath={card.thumbImagePath}
+                    categories={card.categories}
+                    name={card.name}
+                    stampCount={card.stampCount}
+                    description={card.description}
+                    passedStudentCount={cardRelatedCount.passedStudentCount}
+                    starCount={cardRelatedCount.starCount}
+                    iconName={inMyLecture ? 'remove2' : 'add-list'}
+                    onAction={() => {
+                      reactAlert({
+                        title: '알림',
+                        message: inMyLecture
+                          ? '본 과정이 관심목록에서 제외되었습니다.'
+                          : '본 과정이 관심목록에 추가되었습니다.',
+                      });
+                      onActionLecture(inMyLecture!);
+                    }}
+                    onViewDetail={onViewDetail}
+                  />
+                </CardGroup>
+              </li>
+            );
+          })}
+          {/* {newLectures.map(
             (
               learning: LectureModel | MyTrainingModel | InMyLectureModel,
               index: number
             ) => {
-              //
               const inMyLecture = getInMyLecture(learning.serviceId);
 
               return (
@@ -279,7 +347,7 @@ const LRSLearning: React.FC<Props> = Props => {
                 />
               );
             }
-          )}
+          )} */}
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel

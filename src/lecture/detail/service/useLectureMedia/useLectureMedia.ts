@@ -4,27 +4,31 @@ import { onLectureTranscripts } from '../../store/LectureTranscriptStore';
 import { LectureTranscript } from '../../viewModel/LectureTranscript';
 import { LectureMedia } from '../../viewModel/LectureMedia';
 import { getCubeLectureMedia } from './utility/getCubeLectureMedia';
-import { useLectureRouterParams } from '../useLectureRouterParams';
 import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
-import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { checkStudent } from './utility/checkStudent';
+import LectureParams from '../../viewModel/LectureParams';
+import { useLectureParams } from '../../store/LectureParamsStore';
 
 type TranscriptsValue = LectureTranscript[] | undefined;
 type MediaValue = LectureMedia | undefined;
 
 let subscriberIdRef = 0;
-export function useLectureMedia(): [TranscriptsValue, MediaValue, (params: LectureRouterParams) => void] {
+export function useLectureMedia(): [
+  TranscriptsValue,
+  MediaValue,
+  (params: LectureParams) => void
+] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [transcriptsValue, setTranscriptsValue] = useState<TranscriptsValue>();
   const [mediaValue, setMediaValue] = useState<MediaValue>();
 
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
 
-  const getCubeMediaItem = useCallback((params: LectureRouterParams) => {
+  const getCubeMediaItem = useCallback((params: LectureParams) => {
     getCubeLectureMedia(params);
   }, []);
 
-  const registerStudent = useCallback((params: LectureRouterParams) => {
+  const registerStudent = useCallback((params: LectureParams) => {
     checkStudent(params);
   }, []);
 

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Sticky from 'semantic-ui-react/dist/commonjs/modules/Sticky';
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import Segment from 'semantic-ui-react/dist/commonjs/elements/Segment';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import MyCommunityListContainer from '../logic/MyCommunityIntro/MyCommunityListContainer';
 import MyCommunityPostListContainer from '../logic/MyCommunityIntro/MyCommunityPostListContainer';
 import { useMyCommunityIntro } from '../../store/CommunityMainStore';
@@ -14,16 +14,27 @@ interface MyCommunityViewProps {}
 const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView() {
   const contextRef = useRef(null);
   const myCommunityIntro = useMyCommunityIntro();
-
+  const history = useHistory();
   const gaOnClick = (name: string) => {
-    
-    // react-ga 
+    // react-ga
     ReactGA.event({
       category: 'Community',
       action: 'Click',
       label: `Community-${name}`,
     });
-  }
+    window.scrollTo(0, 0);
+    sessionStorage.removeItem('communityOffset');
+    sessionStorage.removeItem('openCommunityOffset');
+    if (name === 'MyCommunity') {
+      history.replace('/community/main');
+    }
+    if (name === 'CommunityList') {
+      history.replace('/community/main/open-communities');
+    }
+    if (name === 'Follow') {
+      history.replace('/community/main/follow');
+    }
+  };
 
   useEffect(() => {
     // react-ga (초기 진입 시)
@@ -32,7 +43,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
       action: 'Click',
       label: `Community-MyCommunity`,
     });
-  },[]);
+  }, []);
 
   return (
     <div ref={contextRef}>
@@ -43,7 +54,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               name="MyCommunity"
               active={true}
               as={Link}
-              to="/community/main"
+              // to="/community/main"
               onClick={() => gaOnClick('MyCommunity')}
             >
               My Community
@@ -53,7 +64,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               name="MyCreatedCommunity"
               active={false}
               as={Link}
-              to="/community/main/open-communities"
+              // to="/community/main/open-communities"
               onClick={() => gaOnClick('CommunityList')}
             >
               Community List
@@ -62,7 +73,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
               name="MyFeed"
               active={false}
               as={Link}
-              to="/community/main/follow"
+              // to="/community/main/follow"
               onClick={() => gaOnClick('Follow')}
             >
               Follow

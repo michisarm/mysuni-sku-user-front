@@ -9,11 +9,11 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { findPostMenuName } from 'community/api/communityApi';
 import { getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { checkMember } from 'community/service/useMember/useMember';
 import { getNoticePostGroupManager } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
+import { findMenu } from '../../api/communityApi';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -56,24 +56,24 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     }
     totalPages();
 
-    const menuData = findPostMenuName(communityId, menuId);
+    const menuData = findMenu(communityId, menuId);
     const denizenId = patronInfo.getDenizenId();
 
     menuData.then(result => {
       setMenuName(result.name);
       setMenuType(result.type);
       //그룹장과 현재 로그인한 계정 비교
-      getNoticePostGroupManager(communityId).then((result2)=> {
+      getNoticePostGroupManager(communityId).then(result2 => {
         result2.results.map((value: any, index: any) => {
-          if(result.groupId === value.groupId) {
-            if(denizenId === value.managerId) {
+          if (result.groupId === value.groupId) {
+            if (denizenId === value.managerId) {
               setGroupAuth(true);
-            }else {
+            } else {
               setGroupAuth(false);
             }
           }
-        })
-      })
+        });
+      });
     });
     //managerId 가져와서 현재 로그인한 계정과 비교
     if (
@@ -83,23 +83,22 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     ) {
       setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId);
     }
-  
   }, [postItems, communityId]);
 
   const handelClickCreatePost = () => {};
   const handleClickRow = async (param: any, menuType: string) => {
     //멤버 가입 체크
-    if(!await checkMember(communityId)){
+    if (!(await checkMember(communityId))) {
       return;
-    }          
-    if(menuType === 'ANONYMOUS') {
+    }
+    if (menuType === 'ANONYMOUS') {
       history.push({
         pathname: `/community/${param.communityId}/${menuType}/post/${param.postId}`,
       });
-    } else{
+    } else {
       history.push({
         pathname: `/community/${param.communityId}/post/${param.postId}`,
-      });  
+      });
     }
   };
 
@@ -197,7 +196,9 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
               <CommunityPostListView
                 menuType={menuType}
                 postItems={postItems}
-                handleClickRow={(param, menuType) => handleClickRow(param, menuType)}
+                handleClickRow={(param, menuType) =>
+                  handleClickRow(param, menuType)
+                }
               />
             </div>
           </div>

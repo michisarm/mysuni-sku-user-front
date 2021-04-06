@@ -4,7 +4,6 @@ import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
   getLectureTaskDetail,
   setLectureTaskDetail,
-  setLectureTaskItem,
   setLectureTaskOffset,
   setLectureTaskTab,
   setLectureTaskViewType,
@@ -14,11 +13,7 @@ import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
-import {
-  deleteCubeLectureTaskPost,
-  getCubeLectureTaskLearningCardId,
-} from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
+import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import LectureTaskReplyView from '../view/LectureTaskView/LectureTaskReplyView';
 import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
 import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOverview/useLectureSubcategory';
@@ -34,7 +29,7 @@ import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskDetailCube';
-import { getActiveStructureItem } from '../../service/useLectureStructure/useLectureStructure';
+import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
 
 function LectureTaskContainer() {
@@ -65,7 +60,6 @@ function LectureTaskContainer() {
 
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
-  const params = useLectureRouterParams();
   const [lectureDescription] = useLectureDescription();
   const [lectureSubcategory] = useLectureSubcategory();
   const [lectureFile] = useLectureFile();
@@ -74,7 +68,6 @@ function LectureTaskContainer() {
   const [detailTaskId, setDetailTaskId] = useState<string>('');
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
-  const [edit, setEdit] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
 
   const moreView = useCallback((offset: number) => {
@@ -208,14 +201,14 @@ function LectureTaskContainer() {
 
       const structureItem = getActiveStructureItem();
       if (structureItem !== undefined) {
-        const { cube } = structureItem as LectureStructureCubeItem;
-        if (cube !== undefined) {
-          setBoardId(cube.contents.contents.id);
+        const { cubeId } = structureItem as LectureStructureCubeItem;
+        if (cubeId !== undefined) {
+          setBoardId(cubeId);
         }
       }
     }
     getContentId();
-  }, [create, edit]);
+  }, [create]);
 
   async function deletePost(id: string, type: string) {
     await deleteCubeLectureTaskPost(id, type);

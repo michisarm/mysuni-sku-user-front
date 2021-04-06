@@ -1,21 +1,16 @@
-/**
- * http://localhost:3000/api/action-log-collector/events/study
- * http://localhost:3000/api/lecture/students/flow
- */
-
 import { onLectureWebpage } from 'lecture/detail/store/LectureWebpageStore';
 import LectureWebpage from 'lecture/detail/viewModel/LectureWebpage';
 /* eslint-disable consistent-return */
 
-import { useEffect, useRef, useState } from 'react';
-import { useLectureRouterParams } from '../useLectureRouterParams';
+import { useEffect, useState } from 'react';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import { getWebpageFromCube } from './utility/getWebpageFromCube';
 
 type Value = LectureWebpage | undefined;
 
 let subscriberIdRef = 0;
 export function useLectureWebpage(): [Value] {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
@@ -38,7 +33,7 @@ export function useLectureWebpage(): [Value] {
       return;
     }
     getWebpageFromCube(params);
-  }, [params]);
+  }, [params?.cubeId]);
 
   return [value];
 }

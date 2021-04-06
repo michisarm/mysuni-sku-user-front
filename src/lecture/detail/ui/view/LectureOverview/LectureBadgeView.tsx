@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Label, List } from 'semantic-ui-react';
-import BadgeContainer from '../../../../../certification/shared/Badge/ui/logic/BadgeContainer';
+import React from 'react';
+import { Icon, Label } from 'semantic-ui-react';
+import BadgeView from '../../../../../certification/ui/view/BadgeView';
 import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
+import BadgeSize from '../../../../../certification/ui/model/BadgeSize';
+import BadgeStyle from '../../../../../certification/ui/model/BadgeStyle';
 
 interface LectureBadgeViewProps {
   lectureBadge: LectureBadge;
@@ -28,10 +30,14 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeV
             <ul className="belt">
               {lectureBadge.badges.map(badge => (
                 <li>
-                  <BadgeContainer
-                    badge={badge}
-                    badgeSize="Small"
-                    badgeStyle="List"
+                  <BadgeView
+                    id={badge.badgeId}
+                    name={badge.name}
+                    level="Level1"
+                    iconUrl={badge.iconUrl}
+                    categoryId={badge.mainCategoryId}
+                    badgeSize={BadgeSize.Small}
+                    badgeStyle={BadgeStyle.List}
                   />
                 </li>
               ))}

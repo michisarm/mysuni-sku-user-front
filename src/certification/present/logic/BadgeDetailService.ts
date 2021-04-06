@@ -1,14 +1,14 @@
-import {action, computed, IObservableArray, observable, runInAction} from 'mobx';
-import {autobind} from '@nara.platform/accent';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import { autobind } from '@nara.platform/accent';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
-import {CoursePlanContentsModel, CoursePlanModel} from '../../../course/model';
+import { CoursePlanContentsModel, CoursePlanModel } from '../../../course/model';
 import LectureApi from '../../../lecture/shared/present/apiclient/LectureApi';
 import LectureViewModel from '../../../lecture/model/LectureViewModel';
 import CourseLectureApi from '../../../lecture/shared/present/apiclient/CourseLectureApi';
-import {CourseLectureModel} from '../../../lecture/model';
+import { CourseLectureModel } from '../../../lecture/model';
 import CoursePlanApi from '../../../course/present/apiclient/CoursePlanApi';
 import PersonalCubeApi from '../../../personalcube/personalcube/present/apiclient/PersonalCubeApi';
-import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import { PersonalCubeModel } from '../../../personalcube/personalcube/model';
 import StudentApi from '../../../lecture/shared/present/apiclient/StudentApi';
 import StudentModel from '../../../lecture/model/StudentModel';
 import StudentJoinRdoModel from '../../../lecture/model/StudentJoinRdoModel';
@@ -63,7 +63,7 @@ class BadgeDetailService {
 
   // 뱃지 구성 학습(lecture) 리스트 리턴
   @computed
-  get BadgeCompList() {
+  get badgeCompList() {
     return (this._badgeCompList as IObservableArray).peek();
   }
 

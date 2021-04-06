@@ -8,7 +8,7 @@ import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
 // import MainModals from '../../sub/MainModals';
 // import MainModals from '../../sub/MainModals/TutorialModalViewV2';
-import MainModals from '../../sub/MainModals/CoursePromotionModalView';
+//import MainModals from '../../sub/MainModals/CoursePromotionModalView';
 
 interface Props {
   actionEventService: ActionEventService;
@@ -78,11 +78,11 @@ class UserMainPageV2 extends Component<Props> {
     //
     return (
       <ContentLayout className="main">
-        <div className="main-wrap">
+        <div className="main-wrap personal-wrap">
           <MyLearningSummary />
           <MyLearningContentContainer />
 
-          <MainModals />
+          {/*<MainModals />*/}
         </div>
       </ContentLayout>
     );

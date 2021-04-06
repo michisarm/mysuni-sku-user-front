@@ -1,13 +1,13 @@
 /* eslint-disable consistent-return */
 
 import { cacheableFindCoursePlan } from '../../../api/courseApi';
-import Student from '../../../model/Student';
 import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
   ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
+import Student from '../../../../model/Student';
 
 export async function getReportItem(
   coursePlanId: string,

@@ -1,68 +1,46 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import {
-  getLectureMedia,
-  onLectureMedia,
-} from 'lecture/detail/store/LectureMediaStore';
-import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { useLectureWatchLog } from 'lecture/detail/service/useLectureMedia/useLectureWatchLog';
+import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import WatchLog from 'lecture/detail/model/Watchlog';
 import { patronInfo } from '@nara.platform/dock';
-import { useLectureState } from 'lecture/detail/service/useLectureState/useLectureState';
-import ClassroomModalView from 'lecture/category/ui/view/ClassroomModalView';
-import { useLectureClassroom } from 'lecture/detail/service/useLectureClassroom/useLectureClassroom';
-import { requestLectureStructure } from '../logic/LectureStructureContainer';
 import LectureParams from '../../viewModel/LectureParams';
 import { useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
-import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 import {
   getLectureConfirmProgress,
   setLectureConfirmProgress,
 } from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useHistory } from 'react-router-dom';
-import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
 import {
   audioClose,
   audioStart,
 } from '../../service/useActionLog/cubeStudyEvent';
+import { requestCardLectureStructure } from '../../service/useLectureStructure/utility/requestCardLectureStructure';
+import { useNextContent } from '../../service/useNextContent';
+import {
+  LectureStructureCubeItem,
+  LectureStructureDiscussionItem,
+} from '../../viewModel/LectureStructure';
+import { confirmProgress } from '../../service/useLectureMedia/utility/confirmProgress';
+import { setWatchLog } from '../../service/useLectureMedia/useLectureWatchLog';
 
 interface LectureAudioViewProps {
-  params: LectureRouterParams | undefined;
-  checkStudent: (params: LectureRouterParams) => void;
+  checkStudent: (params: LectureParams, path: string) => void;
 }
 
-// http://local.mysuni.sk.com:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001v/cube/CUBE-2ld/lecture-card/LECTURE-CARD-28y
 const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioView({
-  params,
   checkStudent,
 }) {
+  const { pathname } = useLocation();
+  const params = useParams<LectureParams>();
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
-  const [
-    watchLogValue,
-    getCubeWatchLogItem,
-    setWatchLog,
-    getWatchLogSumViewCount,
-    confirmProgress,
-  ] = useLectureWatchLog();
+  const nextContent = useNextContent();
 
-  // const params = useLectureRouterParams();
-
-  // const [params, setParams] = useState<LectureRouterParams | undefined>(useLectureRouterParams());
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
-  const [nextContentsName, setNextContentsName] = useState<string>();
-  const [nextContentsPath, setNextContentsPath] = useState<string>();
   const [panoptoState, setPanoptoState] = useState<number>();
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
-  const [progressInterval, setProgressInterval] = useState<any>();
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
   const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
   const myInput: any = useRef();
-  const [dimensions, setDimensions] = React.useState({
-    height: window.innerHeight,
-    width: window.innerWidth,
-  });
 
   const updateDimesions = () => {
     if (document.getElementsByTagName('iframe')[0] === undefined) {
@@ -82,12 +60,11 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       patronKeyString: patronInfo.getDenizenId() || '',
       start: 0,
       end: 0,
-      lectureUsid: params?.lectureId || '',
+      lectureUsid: params?.cubeId || '',
     };
     setWatchlogState(watchlog);
   }, [params]);
 
-  const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
   const [embedApi, setEmbedApi] = useState({
@@ -131,24 +108,18 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   );
 
   const registCheckStudent = useCallback(
-    async (params: LectureRouterParams | undefined) => {
+    async (params: LectureParams | undefined) => {
       if (params) {
-        await checkStudent(params);
-        // useLectureState();
+        await checkStudent(params, pathname);
       }
     },
-    [params]
+    [params, pathname]
   );
 
-  const mediaCheckEvent = useCallback(
-    async (params: LectureRouterParams | undefined) => {
-      if (params) {
-        await confirmProgress(params);
-        requestLectureStructure(lectureParams, pathname);
-      }
-    },
-    [params]
-  );
+  const mediaCheckEvent = useCallback(async () => {
+    await confirmProgress();
+    requestCardLectureStructure(params.cardId);
+  }, [params.cardId]);
 
   useEffect(() => {
     if (params) {
@@ -156,14 +127,11 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     }
   }, [params]);
 
-  const lectureParams = useParams<LectureParams>();
-  const { pathname } = useLocation();
-
   useEffect(() => {
     setNextContentsView(false);
     //동영상 종료
     if (panoptoState == 0 || panoptoState == 2) {
-      mediaCheckEvent(params);
+      mediaCheckEvent();
       if (
         Math.floor((embedApi.getCurrentTime() as unknown) as number) ==
         Math.floor((embedApi.getDuration() as unknown) as number)
@@ -174,14 +142,9 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     //동영상 시작시 student 정보 확인 및 등록
     if (panoptoState == 1) {
       registCheckStudent(params);
-      mediaCheckEvent(params);
+      mediaCheckEvent();
     }
-  }, [panoptoState]);
-
-  useEffect(() => {
-    setCurrentTime((embedApi.getCurrentTime() as unknown) as number);
-    setDuration((embedApi.getDuration() as unknown) as number);
-  }, [isActive, seconds, lectureParams, pathname, params]);
+  }, [panoptoState, params]);
 
   useEffect(() => {
     let interval: any = null;
@@ -213,7 +176,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         /* eslint-enable */
 
         //TODO : WatchLog 호출시 불필요한 Cube 호출 제거 예정
-        setWatchLog(params, watchlogState);
+        setWatchLog(watchlogState);
         setStartTime((embedApi.getCurrentTime() as unknown) as number);
         // }, 10000));
         if (
@@ -253,7 +216,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     if (isActive && params) {
       // setCheckInterval(setInterval(() => {
       checkInterval = setInterval(() => {
-        mediaCheckEvent(params);
+        mediaCheckEvent();
         // }, 20000));
       }, confirmProgressTime);
       // checkIntervalRef.current = checkInterval;
@@ -275,124 +238,15 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   useEffect(() => {
     setNextContentsView(false);
     return () => {
-      mediaCheckEvent(params);
+      // video cube 클릭 후 video 이외의 탭으로 넘어가면 아래 이벤트 때문에 학습완료하지 않고 Test 나 Survay 등 가능함.
+      // 막으면 진도율에 영향이 있는지 확인필요.
+      // mediaCheckEvent(params);
       setPanoptoState(10);
-      setNextContentsPath('');
-      setNextContentsName('');
       setIsActive(false);
       setNextContentsView(false);
-      setProgressInterval('');
       setLectureConfirmProgress();
     };
   }, []);
-
-  useEffect(() => {
-    // TODO : getNextorderContent API 개발 후 다음 컨텐츠만 조회 해오도록 변경 필요함
-    const lectureStructure = getLectureStructure();
-    setNextContentsPath('');
-    if (lectureStructure) {
-      if (lectureStructure.course?.type == 'COURSE') {
-        //일반 코스 로직
-
-        lectureStructure.items.map(item => {
-          if (item.type === 'CUBE') {
-            if (lectureStructure.cubes) {
-              const currentCube = lectureStructure.cubes.find(
-                cube => cube.cubeId == params?.contentId
-              );
-
-              if (currentCube) {
-                const nextCubeOrder = currentCube.order + 1;
-
-                const nextCube = lectureStructure.cubes.find(
-                  cube => cube.order == nextCubeOrder
-                );
-
-                if (nextCube) {
-                  setNextContentsPath(nextCube.path);
-                  setNextContentsName(nextCube.name);
-                }
-
-                //토론하기 항목이 있는 경우
-                const nextDiscussion = lectureStructure.discussions.find(
-                  discussion => discussion.order == nextCubeOrder
-                );
-
-                if (nextDiscussion) {
-                  setNextContentsPath(nextDiscussion.path);
-                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
-                }
-              }
-            }
-          }
-          return null;
-        });
-      } else if (lectureStructure.course?.type == 'PROGRAM') {
-        lectureStructure.items.map(item => {
-          if (item.type === 'COURSE') {
-            const course = item as LectureStructureCourseItem;
-            if (course.cubes) {
-              const currentCube = course.cubes.find(
-                cube => cube.cubeId == params?.contentId
-              );
-
-              if (currentCube) {
-                const nextCubeOrder = currentCube.order + 1;
-
-                const nextCube = course.cubes.find(
-                  cube => cube.order == nextCubeOrder
-                );
-                if (nextCube) {
-                  setNextContentsPath(nextCube.path);
-                  setNextContentsName(nextCube.name);
-                }
-
-                //토론하기 항목이 있는 경우
-                const nextDiscussion = course.discussions?.find(
-                  discussion => discussion.order == nextCubeOrder
-                );
-
-                if (nextDiscussion) {
-                  setNextContentsPath(nextDiscussion.path);
-                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
-                }
-              }
-            }
-          }
-          if (item.type === 'CUBE') {
-            if (lectureStructure.cubes) {
-              const currentCube = lectureStructure.cubes.find(
-                cube => cube.cubeId == params?.contentId
-              );
-
-              if (currentCube) {
-                const nextCubeOrder = currentCube.order + 1;
-
-                const nextCube = lectureStructure.cubes.find(
-                  cube => cube.order == nextCubeOrder
-                );
-
-                if (nextCube) {
-                  setNextContentsPath(nextCube.path);
-                  setNextContentsName(nextCube.name);
-                }
-
-                //토론하기 항목이 있는 경우
-                const nextDiscussion = lectureStructure.discussions.find(
-                  discussion => discussion.order == nextCubeOrder
-                );
-                if (nextDiscussion) {
-                  setNextContentsPath(nextDiscussion.path);
-                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
-                }
-              }
-            }
-          }
-          return null;
-        });
-      }
-    }
-  }, [getLectureStructure(), getLectureConfirmProgress(), params]);
 
   const onPanoptoIframeReady = () => {
     // The iframe is ready and the video is not yet loaded (on the splash screen)
@@ -452,18 +306,23 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   return (
     <div className="audio-container" ref={myInput}>
       {nextContentsView &&
-        // !isActive &&
-        nextContentsPath &&
+        nextContent &&
         getLectureConfirmProgress()?.learningState == 'Passed' && (
           <div className="video-overlay">
             <div className="video-overlay-btn">
-              <button onClick={() => nextContents(nextContentsPath)}>
+              <button onClick={() => nextContents(nextContent.path)}>
                 <img src={playerBtn} />
               </button>
             </div>
             <div className="video-overlay-text">
               <p>다음 학습 이어하기</p>
-              <h3>{nextContentsName}</h3>
+              <h3>
+                {
+                  (nextContent as
+                    | LectureStructureCubeItem
+                    | LectureStructureDiscussionItem).name
+                }
+              </h3>
             </div>
           </div>
         )}

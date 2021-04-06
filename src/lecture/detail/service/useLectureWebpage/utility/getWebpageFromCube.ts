@@ -1,15 +1,20 @@
-import {
-  findOfficeWeb,
-  cacheableFindPersonalCube,
-} from '../../../api/mPersonalCubeApi';
+import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureWebpage } from '../../../store/LectureWebpageStore';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import LectureParams from '../../../viewModel/LectureParams';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 
-export async function getWebpageFromCube(params: LectureRouterParams) {
-  const { contentId } = params;
-  const cube = await cacheableFindPersonalCube(contentId);
-  const officeWeb = await findOfficeWeb(cube.contents.contents.id);
+export async function getWebpageFromCube(params: LectureParams) {
+  const { cubeId } = params;
+  if (cubeId === undefined) {
+    return;
+  }
+  const cubeDetail = await findCubeDetailCache(cubeId);
+  if (cubeDetail === undefined || cubeDetail.cubeMaterial.officeWeb === null) {
+    return;
+  }
+  const {
+    cubeMaterial: { officeWeb },
+  } = cubeDetail;
   const url = officeWeb.webPageUrl;
   if (
     officeWeb.webUrlInfo === null ||
