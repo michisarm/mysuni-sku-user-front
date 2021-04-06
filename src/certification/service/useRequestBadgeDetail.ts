@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import { BadgeDetailRouteParams } from "../../ui/model/BadgeRouteParams";
+import { BadgeDetailRouteParams } from "../ui/model/BadgeRouteParams";
 import { useEffect } from "react";
-import { BadgeService, BadgeStudentService, BadgeCardService } from "../../../lecture/stores";
-import CardStudentService from "../../present/logic/CardStudentService";
-import { LearningState } from "../../../shared/model";
+import { BadgeService, BadgeStudentService, BadgeCardService } from "../../lecture/stores";
+import CardStudentService from "../present/logic/CardStudentService";
+import { LearningState } from "../../shared/model";
 
 export function useRequestBadgeDetail() {
   const params = useParams<BadgeDetailRouteParams>();

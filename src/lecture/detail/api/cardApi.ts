@@ -36,7 +36,7 @@ export function findCardWithLearningContentCounts(
   cardIds: string[]
 ): Promise<CardWithLearningContentCountRom[] | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL}/findCardsWithLearningContentCounts`;
+  const url = `${BASE_URL}/cards/findCardsWithLearningContentCounts`;
   const splitedCardIds = (cardIds && cardIds.join(',')) || [];
 
   return axios

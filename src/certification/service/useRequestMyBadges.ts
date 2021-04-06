@@ -1,13 +1,13 @@
-import { BadgeLevel } from "../../model/BadgeLevel";
 import { useEffect } from "react";
-import { MyBadgeRdo } from "../../model/MyBadgeRdo";
-import { BadgeService } from "../../../lecture/stores";
+import { MyBadgeRdo } from "../model/MyBadgeRdo";
+import { BadgeService } from "../../lecture/stores";
 
-export function useRequestMyBadges(level: BadgeLevel) {
+export function useRequestMyBadges() {
+  const selectedLevel = BadgeService.instance.selectedLevel;
 
   useEffect(() => {
     const myBadgeRdo: MyBadgeRdo = {
-      level,
+      level: selectedLevel,
       issued: true,
       offset: 0,
       limit: 9999
@@ -19,5 +19,5 @@ export function useRequestMyBadges(level: BadgeLevel) {
       BadgeService.instance.clearMyBadges();
     }
 
-  }, [level]);
+  }, [selectedLevel]);
 }

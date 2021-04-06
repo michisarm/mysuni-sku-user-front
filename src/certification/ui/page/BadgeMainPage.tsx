@@ -11,9 +11,9 @@ import BadgeService from '../../present/logic/BadgeService';
 import MyBadgeListContainer from '../logic/MyBadgeListContainer';
 import MyBadgeContentTypeName from '../model/MyBadgeContentTypeName';
 import { BadgeRouteParams } from '../model/BadgeRouteParams';
-import ChallengeBadgeContainer from '../logic/ChallengeBadgeContainer';
-import { useRequestBadgeAllCount } from '../../service/useBadgeAllCount/useRequestBadgeAllCount';
 import BadgeCategoryContainer from '../logic/BadgeCategoryContainer';
+import ChallengeBadgeListContainer from '../logic/ChallengeBadgeListContainer';
+import { useRequestBadgeAllCount } from '../../service/useRequestBadgeAllCount';
 
 
 interface BadgeMainPageProps {
@@ -23,7 +23,7 @@ interface BadgeMainPageProps {
 function BadgeMainPage({ 
   badgeService
  }: BadgeMainPageProps) {
-  const { allBadgeCount } = badgeService!;
+  const { allBadgeCount, setSelectedLevel } = badgeService!;
 
   const history = useHistory();
   const params = useParams<BadgeRouteParams>();
@@ -31,6 +31,7 @@ function BadgeMainPage({
   useRequestBadgeAllCount();
 
   const onChangeTab = (tab: TabItemModel) => {
+    setSelectedLevel('');
     history.push(routePaths.badgeTab(tab.name));
   };
 
@@ -58,7 +59,7 @@ function BadgeMainPage({
             ) || <span className="count">0</span>}
           </>
         ),
-        render: () => <ChallengeBadgeContainer />,
+        render: () => <ChallengeBadgeListContainer />,
       },
       {
         name: MyBadgeContentType.EarnedBadgeList,

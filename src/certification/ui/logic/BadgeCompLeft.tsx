@@ -56,8 +56,6 @@ function BadgeCompLeft({
     setAlertModal(false);
   };
 
-  console.log('challengeState ::' , challengeState);
-
   return (
     <div className="left-area">
       <BadgeView

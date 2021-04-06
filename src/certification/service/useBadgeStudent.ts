@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { findBadgeStudent } from '../../api/BadgeStudentApi';
-import { BadgeStudent } from '../../model/BadgeStudent';
+import { findBadgeStudent } from '../api/BadgeStudentApi';
+import { BadgeStudent } from '../model/BadgeStudent';
 
 interface ReturnValue {
   badgeStudent: BadgeStudent | undefined;

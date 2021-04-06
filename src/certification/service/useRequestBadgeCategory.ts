@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { BadgeRouteParams } from '../../ui/model/BadgeRouteParams';
-import { BadgeCategoryService } from '../../../lecture/stores';
-import MyBadgeContentType from '../../ui/model/MyBadgeContentType';
+import { BadgeRouteParams } from '../ui/model/BadgeRouteParams';
+import { BadgeCategoryService } from '../../lecture/stores';
+import MyBadgeContentType from '../ui/model/MyBadgeContentType';
 
 export function useRequestBadgeCategory(): void {
   const params = useParams<BadgeRouteParams>();
