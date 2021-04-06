@@ -41,7 +41,7 @@ const MainBanner: React.FC<Props> = Props => {
   const getShowingBanners = async () => {
     //
     bannerService!.clear();
-    bannerService!.findShowingBanners(profileMemberCompanyCode);
+    bannerService!.findLatestBannerBundles();
   };
 
   const params = {
@@ -69,10 +69,15 @@ const MainBanner: React.FC<Props> = Props => {
   });
 
   // 클릭한 배너 정보
-  const onClickBanner = (targetUrl: string, target: string, name: string, index: number) => {
+  const onClickBanner = (
+    targetUrl: string,
+    target: string,
+    name: string,
+    index: number
+  ) => {
     console.log('hi', index);
 
-     // react-ga event
+    // react-ga event
     ReactGA.event({
       category: 'Banner',
       action: 'Banner Clicked',
@@ -123,7 +128,12 @@ const MainBanner: React.FC<Props> = Props => {
                   : undefined
               }
               onClick={() =>
-                onClickBanner(banner.targetUrl, banner.target, banner.name, index)
+                onClickBanner(
+                  banner.targetUrl,
+                  banner.target,
+                  banner.name,
+                  index
+                )
               }
             />
           </div>
