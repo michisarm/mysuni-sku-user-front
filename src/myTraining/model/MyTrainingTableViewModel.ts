@@ -10,7 +10,6 @@ import { CubeType } from '../../personalcube/personalcube/model';
 import { MyStampXlsxModel } from './MyStampXlsxModel';
 import CubeTypeNameType from './CubeTypeNameType';
 
-
 class MyTrainingTableViewModel {
   [key: string]: any;
   id: string = '';
@@ -59,8 +58,10 @@ class MyTrainingTableViewModel {
   }
 
   @computed get displayCollegeName(): string {
-    return this.category &&
-      this.category.college && this.category.college.name || '-';
+    return (
+      (this.category && this.category.college && this.category.college.name) ||
+      '-'
+    );
   }
 
   @computed get displayDifficultyLevel(): string {
@@ -68,23 +69,30 @@ class MyTrainingTableViewModel {
   }
 
   @computed get displayProgressRate(): string {
-    return this.isCardType() ? '-' : `${this.passedLearningCount}/${this.totalLearningCount}`;
+    return this.isCardType()
+      ? '-'
+      : `${this.passedLearningCount}/${this.totalLearningCount}`;
   }
 
   /* functions */
   isCardType() {
     // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
-    return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
+    return this.serviceType === LectureServiceType.Card.toUpperCase()
+      ? true
+      : false;
   }
 
   isCourseOrProgram(): boolean {
-    return this.serviceType === (LectureServiceType.Course.toUpperCase() || LectureServiceType.Program.toUpperCase()) ? true : false;
+    return this.serviceType ===
+      (LectureServiceType.Course.toUpperCase() ||
+        LectureServiceType.Program.toUpperCase())
+      ? true
+      : false;
   }
 
   isCollegeEmpty() {
-    return (this.category && this.category.college) ? false : true;
+    return this.category && this.category.college ? false : true;
   }
-
 
   toXlsxForInProgress(index: number): InProgressXlsxModel {
     /* CARD 가 아닌 PROGRAM & COURSE 는 'Course' 를 화면에 보여준다. */
@@ -94,10 +102,10 @@ class MyTrainingTableViewModel {
       No: String(index),
       College: this.isCollegeEmpty() ? '-' : this.category.college.name,
       과정명: this.name || '-',
-      학습유형: this.cubeType && this.cubeType || displayCourse,
+      학습유형: (this.cubeType && this.cubeType) || displayCourse,
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      최근학습일: moment(this.time).format('YYYY.MM.DD')
+      최근학습일: moment(this.time).format('YYYY.MM.DD'),
     };
   }
 
@@ -109,15 +117,14 @@ class MyTrainingTableViewModel {
       No: String(index),
       College: this.isCollegeEmpty() ? '-' : this.category.college.name,
       과정명: this.name || '-',
-      학습유형: this.cubeType && this.cubeType || displayCourse,
+      학습유형: (this.cubeType && this.cubeType) || displayCourse,
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD')
+      학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD'),
     };
   }
 
   toXlsxForMyStamp(index: number): MyStampXlsxModel {
-
     return {
       No: String(index),
       College: this.isCollegeEmpty() ? '-' : this.category.college.name,

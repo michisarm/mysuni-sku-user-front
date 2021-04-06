@@ -1,13 +1,12 @@
 import { observable, decorate, computed } from 'mobx';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
-import { CategoryModel, LearningState } from 'shared/model';
+import { CategoryModel, LearningState, LearningStateName } from 'shared/model';
 import { LectureServiceType } from 'lecture/model';
 import { CubeType, CubeTypeNameType } from 'myTraining/model';
 import { DifficultyLevel } from 'myTraining/model/DifficultyLevel';
 
-
 class LectureTableViewModel {
-
+  // 권장과정
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
@@ -27,6 +26,8 @@ class LectureTableViewModel {
   updateTime: number = 0;
   updateTimeForTest: number = 0;
   stampCount: number = 0; // 스탬프
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   // for make observable object from json data.
   constructor(lectureTableView?: LectureTableViewModel) {
@@ -52,18 +53,37 @@ class LectureTableViewModel {
   }
 
   @computed get displayCollegeName(): string {
-    return this.category &&
-      this.category.college && this.category.college.name || '-';
+    return (
+      (this.category && this.category.college && this.category.college.name) ||
+      '-'
+    );
   }
 
   @computed get displayDifficultyLevel(): string {
     return this.difficultyLevel || '-';
   }
 
+  @computed
+  get state() {
+    if (this.learningState) {
+      return LearningStateName[LearningState[this.learningState]];
+    }
+  }
+
+  @computed get displayProgressRate(): string {
+    if (this.isCardType() || Number(this.totalLearningCount) === 0) {
+      return '-';
+    } else {
+      return `${this.passedLearningCount}/${this.totalLearningCount}`;
+    }
+  }
+
   /* functions */
   isCardType() {
     // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
-    return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
+    return this.serviceType === LectureServiceType.Card.toUpperCase()
+      ? true
+      : false;
   }
 }
 
