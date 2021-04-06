@@ -23,6 +23,7 @@ import {
   getCollgeName,
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
+import { find } from 'lodash';
 
 interface Props {
   cardId: string;
@@ -59,12 +60,51 @@ function CardView({
   const [hovered, setHovered] = useState(false);
   const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
   const collegeId = categories[0].collegeId;
+
   const onHoverIn = () => {
     setHovered(true);
   };
 
   const onHoverOut = () => {
     setHovered(false);
+  };
+
+  const renderBottom = () => {
+    const progressList = sessionStorage.getItem('inProgressTableViews');
+    const completeList = sessionStorage.getItem('completedTableViews');
+
+    const parserProgressList = progressList && JSON.parse(progressList);
+    const parserCompleteList = completeList && JSON.parse(completeList);
+
+    if (find(parserProgressList, { serviceId: cardId })) {
+      return (
+        <Label className="onlytext bold">
+          <Icon className="state" />
+          <span>학습중</span>
+        </Label>
+      );
+    }
+
+    if (find(parserCompleteList, { serviceId: cardId })) {
+      return (
+        <Label className="onlytext bold">
+          <Icon className="state" />
+          <span>학습 완료</span>
+        </Label>
+      );
+    }
+
+    return (
+      <div className="fixed-rating">
+        <Rating
+          className="rating-num"
+          size="small"
+          disabled
+          rating={starCount}
+          maxRating={5}
+        />
+      </div>
+    );
   };
 
   return (
@@ -134,29 +174,7 @@ function CardView({
             text={`이수 ${numeral(passedStudentCount).format('0,0')}명`}
           />
         </Fields>
-        <div className="foot-area">
-          <div className="fixed-rating">
-            <Rating
-              className="rating-num"
-              size="small"
-              disabled
-              rating={starCount}
-              maxRating={5}
-            />
-          </div>
-          {/* {typeof state === 'string' && (
-              <Label className="onlytext bold">
-                <Icon className="state" />
-                <span>{state}</span>
-              </Label>
-            )} */}
-          {/* {typeof date === 'string' && <div className="study-date">{date}</div>} */}
-          {/* Todo: 기획, 도메인 확인 후 속성명 정의하여 props에 추가 */}
-          {/*<Label className="bold onlytext">*/}
-          {/*  <Icon className="state" /><span>Required</span> // In Progress, Enrolled, Completed, Cancelled */}
-          {/*</Label>*/}
-          {/*<div className="study-date">19.10.10 필수 학습 등록</div>*/}
-        </div>
+        <div className="foot-area">{renderBottom()}</div>
       </div>
 
       {/* hover 시 컨텐츠 */}
@@ -174,8 +192,6 @@ function CardView({
           dangerouslySetInnerHTML={{ __html: description }}
         />
         <div className="btn-area">
-          {/* {action && (
-            <> */}
           <Button icon className="icon-line" onClick={onAction}>
             <Icon className={iconName} />
           </Button>
@@ -186,22 +202,6 @@ function CardView({
           >
             상세보기
           </Button>
-          {/* </>
-          )}
-          {!action && (
-            <Button
-              className="ui button fix bg"
-              style={{
-                display: 'inline-flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '13.75rem',
-              }}
-              onClick={onViewDetail}
-            >
-              상세보기
-            </Button>
-          )} */}
         </div>
       </div>
     </Card>
