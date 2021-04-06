@@ -20,6 +20,7 @@ import { LectureServiceType } from 'lecture/model';
 import { MyLearningContentType, MyPageContentType } from '../../model';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import LectureParams, { toPath } from '../../../../lecture/detail/viewModel/LectureParams';
 
 interface Props {
   contentType: MyContentType | MyApprovalContentType;
@@ -106,41 +107,14 @@ function MyLearningTableBody(props: Props) {
     // Pathname history가 2번 쌓이는 현상 발생하여 조치
     e.preventDefault();
 
-    // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
-    const {
-      category: { college },
-      serviceId,
-      serviceType,
-      coursePlanId,
-      cubeId,
-    } = model;
-    const { id: collegeId } = college;
-    const cineroomId = patronInfo.getCineroomId() || '';
-    /* URL 표현을 위한 변환. */
-    const convertedServiceType = convertServiceType(serviceType);
-    // Card
-    if (model.isCardType()) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroomId,
-          collegeId,
-          cubeId,
-          serviceId
-        )
-      );
-    }
-    // Program 또는 Course
-    else {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroomId,
-          collegeId,
-          coursePlanId,
-          convertedServiceType,
-          serviceId
-        )
-      );
-    }
+   const { serviceId } = model;
+
+    const params: LectureParams = {
+      cardId: serviceId,
+      viewType: 'view',
+    };
+
+    history.push(toPath(params));
 
     // react-ga event
     ReactGA.event({
