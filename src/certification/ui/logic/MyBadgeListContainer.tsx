@@ -12,8 +12,7 @@ import LineHeaderContainer from './LineHeaderContainer';
 import BadgeRoutePaths from '../../routePaths';
 import { BadgeLevel } from '../../model/BadgeLevel';
 import BadgeView from '../view/BadgeView';
-import { useScrollTop } from '../../service/useScrollTop';
-import { useRequestMyBadges } from '../../service/useMyBadges/useRequestMyBadges';
+import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
 
 
@@ -24,13 +23,10 @@ interface MyBadgeListContainerProps {
 function MyBadgeListContainer({ 
   badgeService,
  }: MyBadgeListContainerProps) {
-  const { myBadges, myBadgeCount } = badgeService!;
-  const [selectedLevel, setSelectedLevel] = useState<BadgeLevel>('');
+  const { myBadges, myBadgeCount, selectedLevel, setSelectedLevel } = badgeService!;
 
   const history = useHistory();
-
-  useScrollTop();
-  useRequestMyBadges(selectedLevel);
+  useRequestMyBadges();
 
   const onSelectLevel = useCallback((level: BadgeLevel) => {
     setSelectedLevel(level);
@@ -46,6 +42,7 @@ function MyBadgeListContainer({
       <LineHeaderContainer
         totalCount={myBadgeCount}
         countMessage={BadgeCountText.EarnedBadgeList}
+        selectedLevel={selectedLevel}
         onSelectLevel={onSelectLevel}
       />
       <div className="badge-list">
