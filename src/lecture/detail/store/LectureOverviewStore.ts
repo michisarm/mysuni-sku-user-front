@@ -1,7 +1,7 @@
 import InMyLectureCdo from '../model/InMyLectureCdo';
 import LectureComment from '../viewModel/LectureComment/LectureComment';
 import LectureBadge from '../viewModel/LectureOverview/LectureBadge';
-import LectureCourseSummary from '../viewModel/LectureOverview/LectureCourseSummary';
+import LectureCardSummary from '../viewModel/LectureOverview/LectureCardSummary';
 import LectureCubeSummary from '../viewModel/LectureOverview/LectureCubeSummary';
 import LectureDescription from '../viewModel/LectureOverview/LectureDescription';
 import LectureFile from '../viewModel/LectureOverview/LectureFile';
@@ -20,17 +20,18 @@ const [
 ] = createStore<LectureCubeSummary>();
 
 const [
-  setLectureCourseSummary,
-  onLectureCourseSummary,
-  getLectureCourseSummary,
-] = createStore<LectureCourseSummary>();
+  setLectureCardSummary,
+  onLectureCardSummary,
+  getLectureCardSummary,
+  useLectureCardSummary,
+] = createStore<LectureCardSummary>();
 
 // course 학습완료표시 learningState 보기 위한 store
 const [
-  setLectureCourseSummaryLearningState,
-  onLectureCourseSummaryLearningState,
-  getLectureCourseSummaryLearningState,
-] = createStore<LectureCourseSummary>();
+  setLectureCardSummaryLearningState,
+  onLectureCardSummaryLearningState,
+  getLectureCardSummaryLearningState,
+] = createStore<LectureCardSummary>();
 
 const [
   setLectureDescription,
@@ -77,17 +78,20 @@ const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] = createStore<
   InMyLectureCdo
 >();
 
-const [setLectureRelations, onLectureRelations, getLectureRelations] = createStore<
-  LectureRelations
->();
+const [
+  setLectureRelations,
+  onLectureRelations,
+  getLectureRelations,
+] = createStore<LectureRelations>();
 
 export {
   setLectureCubeSummary,
   onLectureCubeSummary,
   getLectureCubeSummary,
-  setLectureCourseSummary,
-  onLectureCourseSummary,
-  getLectureCourseSummary,
+  setLectureCardSummary,
+  onLectureCardSummary,
+  getLectureCardSummary,
+  useLectureCardSummary,
   setLectureDescription,
   onLectureDescription,
   getLectureDescription,
@@ -118,9 +122,10 @@ export {
   setInMyLectureCdo,
   onInMyLectureCdo,
   getInMyLectureCdo,
-  setLectureRelations, onLectureRelations, getLectureRelations,
-
-  setLectureCourseSummaryLearningState,
-  onLectureCourseSummaryLearningState,
-  getLectureCourseSummaryLearningState,
+  setLectureRelations,
+  onLectureRelations,
+  getLectureRelations,
+  setLectureCardSummaryLearningState,
+  onLectureCardSummaryLearningState,
+  getLectureCardSummaryLearningState,
 };

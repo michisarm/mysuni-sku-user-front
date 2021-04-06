@@ -6,5 +6,5 @@ import LectureSummary from './LectureSummary';
 export default interface LectureCubeSummary extends LectureSummary {
   difficultyLevel: DifficultyLevel;
   cubeType: CubeType;
-  learningCard: IdName;
+  cubeId: string;
 }

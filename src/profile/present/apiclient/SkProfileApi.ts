@@ -13,7 +13,7 @@ export default class SkProfileApi {
   // User 본인 상세보기
   findSkProfile() {
     return axios
-      .get<SkProfileModel>(`${this.URL}/currentUser`)
+      .get<SkProfileModel>(`${this.URL}`)
       .then(response => (response && response.data) || null);
   }
 

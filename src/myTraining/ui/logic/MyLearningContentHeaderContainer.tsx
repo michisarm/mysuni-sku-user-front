@@ -18,6 +18,7 @@ import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 import BadgeRoutePaths from '../../../certification/routePaths';
 import MyTrainingRoutePaths from '../../routePaths';
 import BadgeFilterRdoModel from '../../../certification/ui/model/BadgeFilterRdoModel';
+import { MyBadgeRdo } from '../../../certification/model/MyBadgeRdo';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -41,7 +42,14 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     this.init();
 
     const { badgeService } = this.props;
-    badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel.earned('', 'Issued'));
+
+    const myBadgeRdo: MyBadgeRdo = {
+      issued: true,
+      offset: 0,
+      limit: 20
+    };
+
+    badgeService!.findAllMyBadges(myBadgeRdo);
   }
 
   init() {
@@ -71,7 +79,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
-    const myBadgeCount = badgeService!.earnedCount;
+    const myBadgeCount = badgeService!.allBadgeCount.issuedCount;
 
     return (
       <ContentHeader>

@@ -8,7 +8,6 @@ interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
-  questionCount: number;
   path: string;
   can: boolean;
 }
@@ -21,18 +20,16 @@ function cannotAlert() {
 }
 
 const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
-  name,
   state = 'None',
   activated = false,
-  questionCount,
   path,
   can,
 }) {
-  console.log(path)
-  console.log(state)
+  console.log(path);
+  console.log(state);
 
   // if(state !== 'Progress') {
-   
+
   // }
   return (
     <StructureLink

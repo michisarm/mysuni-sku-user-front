@@ -1,7 +1,6 @@
-import MediaContents from '../model/MediaContents';
-import { MediaType } from '../model/MediaType';
+import { MediaContents } from '../../model/MediaContents';
+import { MediaType } from '../../model/MediaType';
 import LectureParams from './LectureParams';
-import LectureRouterParams from './LectureRouterParams';
 
 export type State = 'None' | 'Progress' | 'Completed';
 
@@ -15,7 +14,7 @@ export interface LectureMedia {
 interface Item {
   activated?: boolean;
   params: LectureParams;
-  routerParams: LectureRouterParams;
+  routerParams: LectureParams;
   path: string;
   state?: State;
 }

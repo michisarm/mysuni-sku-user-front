@@ -37,7 +37,7 @@ function MyContentHeaderContainer(props: Props) {
   const { skProfile } = skProfileService!;
   const { myLearningSummary } = myLearningSummaryService!;
   const { myStampCount, thisYearMyStampCount } = myTrainingService!;
-  const { earnedCount: myBadgeCount } = badgeService!;
+  const { allBadgeCount: { issuedCount: myBadgeCount } } = badgeService!;
 
   /* states */
   const [selectedYear, setSelectedYear] = useState<number>(CURRENT_YEAR);
@@ -45,7 +45,7 @@ function MyContentHeaderContainer(props: Props) {
   /* effects */
   useEffect(() => {
     if (myStampCount === 0 && myBadgeCount === 0 && thisYearMyStampCount === 0) {
-      badgeService!.getCountOfBadges();
+      badgeService!.findAllBadgeCount();
       myTrainingService!.countMyTrainingsWithStamp();
       myTrainingService!.countMyTrainingsWithStamp([],moment([selectedYear,1-1,1]).toDate().getTime(),moment([selectedYear,12-1,31]).toDate().getTime());
     }

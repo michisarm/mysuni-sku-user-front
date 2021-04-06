@@ -1,14 +1,10 @@
 /* eslint-disable consistent-return */
 
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import { onLectureTestItem } from '../../store/LectureTestStore';
-import LectureRouterParams from '../../viewModel/LectureRouterParams';
 import { LectureTestItem } from '../../viewModel/LectureTest';
-import { useLectureRouterParams } from '../useLectureRouterParams';
 import { getCourseLectureTest } from './utility/getCourseLectureTest';
-//import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTest } from './utility/getCubeLectureTest';
 
 type TestValue = LectureTestItem | undefined;
@@ -17,24 +13,28 @@ let subscriberIdRef = 0;
 export function useLectureTest(): [TestValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [testValue, setTestValue] = useState<TestValue>();
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
 
-  const getCubeTestItem = useCallback((params: LectureRouterParams) => {
-    getCubeLectureTest(params);
-  }, []);
+  const getCubeTestItem = useCallback(() => {
+    if (params !== undefined) {
+      getCubeLectureTest(params);
+    }
+  }, [params]);
 
-  const getCourseTestItem = useCallback((params: LectureRouterParams) => {
-    getCourseLectureTest(params);
-  }, []);
+  const getCourseTestItem = useCallback(() => {
+    if (params !== undefined) {
+      getCourseLectureTest(params);
+    }
+  }, [params]);
 
   useEffect(() => {
     if (params === undefined) {
       return;
     }
-    if (params.contentType === 'cube') {
-      getCubeTestItem(params);
+    if (params.cubeId !== undefined) {
+      getCubeTestItem();
     } else {
-      getCourseTestItem(params);
+      getCourseTestItem();
     }
   }, [params]);
 

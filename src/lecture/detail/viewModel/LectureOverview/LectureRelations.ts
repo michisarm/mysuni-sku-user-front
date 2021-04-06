@@ -1,5 +1,5 @@
-import { LectureModel } from "../../../model";
+import { RelatedCard } from '../../../model/RelatedCard';
 
 export default interface LectureRelations {
-  lectures: LectureModel[]
+  relatedCards: RelatedCard[];
 }

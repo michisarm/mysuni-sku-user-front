@@ -1,8 +1,9 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import {Button, Icon, Image, Label} from 'semantic-ui-react';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import { CategoryModel } from 'shared/model';
+import Image from '../../../../shared/components/Image';
 
 interface TitleProps {
   title: string | React.ReactNode,
@@ -103,7 +104,6 @@ export const Thumbnail = ({ image }: ThumbnailProps) => (
     {image && (
       <Image
         alt="card-thumbnail"
-        size="small"
         src={image}
       />
     )}

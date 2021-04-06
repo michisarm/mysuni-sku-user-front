@@ -1,5 +1,5 @@
+import Student from '../../model/Student';
 import CourseStudentView from './CourseStudentView';
-import Student from './Student';
 
 export default interface LectureStudentView {
   courses: CourseStudentView[];

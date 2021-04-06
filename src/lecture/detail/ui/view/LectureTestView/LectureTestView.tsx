@@ -1,7 +1,6 @@
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
-import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
 import {
   getLectureTestStudentItem,
   setLectureTestAnswerItem,
@@ -9,23 +8,24 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
-import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import {
+  saveCourseTestAnswerSheet,
+  saveCubeTestAnswerSheet,
+} from 'lecture/detail/service/useLectureTest/utility/saveLectureTest';
 import {
   getActiveCourseStructureItem,
-  getActiveProgramStructureItem,
   getActiveStructureItem,
-  getActiveStructureItemAll,
-  useLectureStructure,
-} from '../../../service/useLectureStructure/useLectureStructure';
-import { requestLectureStructure } from '../../logic/LectureStructureContainer';
+} from '../../../utility/lectureStructureHelper';
 import { EssayScore } from 'lecture/detail/model/GradeSheet';
 import { GraderCommentView } from './GraderCommentView';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { useLectureStructure } from '../../../store/LectureStructureStore';
+import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import LectureParams from '../../../viewModel/LectureParams';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
-  params: LectureRouterParams;
+  params: LectureParams;
 }
 
 const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView({
@@ -34,7 +34,8 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
 }) {
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
-  const [lectureStructure] = useLectureStructure();
+  const lectureStructure = useLectureStructure();
+  const { cardId } = useParams<LectureParams>();
 
   useEffect(() => {
     if (
@@ -76,8 +77,8 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       answerItemId = answerItem.id;
     }
 
-    if (params.contentType === 'cube') {
-      saveTestAnswerSheet(params, answerItemId, false, false);
+    if (params.cardId !== undefined) {
+      saveCubeTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
@@ -128,19 +129,15 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               submitAnswers: answerItem.answers,
             };
             setLectureTestAnswerItem(nextAnswerItem);
-            if (params.contentType === 'cube') {
-              await saveTestAnswerSheet(params, answerItemId, true, true);
+            if (params.cubeId !== undefined) {
+              await saveCubeTestAnswerSheet(params, answerItemId, true, true);
             } else {
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
+            await requestCardLectureStructure(cardId);
 
-            await requestLectureStructure(
-              params.lectureParams,
-              params.pathname
-            );
             const lectureTestStudentItem = getLectureTestStudentItem();
             const course = getActiveCourseStructureItem();
-            const program = getActiveProgramStructureItem();
             switch (lectureTestStudentItem?.learningState) {
               case 'Waiting':
               case 'TestWaiting':
@@ -153,16 +150,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                     message:
                       '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
                     onClose: () => goToPath(course?.survey?.path),
-                  });
-                } else if (
-                  program?.survey !== undefined &&
-                  program?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(program?.survey?.path),
                   });
                 } else {
                   reactAlert({
@@ -191,16 +178,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                       '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
                     onClose: () => goToPath(course?.survey?.path),
                   });
-                } else if (
-                  program?.survey !== undefined &&
-                  program?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '안내',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(program?.survey?.path),
-                  });
                 } else {
                   reactAlert({
                     title: '알림',
@@ -226,7 +203,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   }
 
   const essayScoreMap = new Map<string, EssayScore>();
-  testItem.essayScores.forEach(essayScore => {
+  (testItem.essayScores || []).forEach(essayScore => {
     essayScoreMap.set(essayScore.questionNo, essayScore);
   });
 

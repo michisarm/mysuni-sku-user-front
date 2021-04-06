@@ -8,12 +8,13 @@ import certificationRoutes from 'certification/routePaths';
 import { BadgeService } from 'certification/stores';
 import { ActionLogService } from '../../../../shared/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
-import BadgeModel from '../../../../certification/ui/model/MyBadgeModel';
-import BadgeFilterRdoModel from '../../../../certification/ui/model/BadgeFilterRdoModel';
-import { Badge } from '../../../../certification/shared/Badge';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
+import { Badge } from '../../../../certification/model/Badge';
+import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
+import { MyBadge } from '../../../../certification/model/MyBadge';
+import BadgeView from '../../../../certification/ui/view/BadgeView';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -52,8 +53,15 @@ const ChallengingBadge: React.FC<Props> = Props => {
     // }
 
     badgeService!.clearMyBadges();
-    badgeService!.findPagingChallengingBadges(
-      BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0),
+
+    const myBadgeRdo: MyBadgeRdo = {
+      level: 'Level3',
+      offset: 1,
+      limit: 20,
+    };
+
+    badgeService!.findAllChallengeBadges(
+      myBadgeRdo,
       true
     );
   };
@@ -107,11 +115,15 @@ const ChallengingBadge: React.FC<Props> = Props => {
       {myBadges.length > 0 && myBadges[0] ? (
         <div className="scrolling">
           <ul className="belt">
-            {myBadges.map((badge: BadgeModel, index: number) => {
+            {myBadges.map((badge: MyBadge, index: number) => {
               return (
                 <li key={index} onClick={() => onClick(index)}>
-                  <Badge
-                    badge={badge}
+                  <BadgeView
+                    id={badge.id}
+                    name={badge.name}
+                    level={badge.level}
+                    iconUrl={badge.iconUrl}
+                    categoryId={badge.categoryId}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
                   />

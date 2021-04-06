@@ -8,7 +8,6 @@ interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
-  questionCount: number;
   path: string;
   can: boolean;
 }
@@ -24,7 +23,6 @@ const CourseSurveyView: React.FC<SurveyViewProps> = function CourseSurveyView({
   name,
   state = 'None',
   activated = false,
-  questionCount,
   path,
   can,
 }) {

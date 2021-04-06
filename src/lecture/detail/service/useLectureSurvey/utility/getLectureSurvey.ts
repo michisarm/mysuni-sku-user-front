@@ -1,9 +1,5 @@
 import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
-import {
-  findCoursePlanContents,
-  findIsJsonStudentByCube,
-} from '../../../api/lectureApi';
-import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
+import { findIsJsonStudentByCube } from '../../../api/lectureApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
@@ -18,19 +14,19 @@ import {
   setLectureSurveyState,
   setLectureSurveySummary,
   setLectureSurveyAnswerSummaryList,
-  getLectureSurvey,
 } from '../../../store/LectureSurveyStore';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import { State } from '../../../viewModel/LectureState';
 import LectureSurvey, {
   LectureSurveyItem,
   LectureSurveyItemChoice,
 } from '../../../viewModel/LectureSurvey';
 import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
-import SurveyAnswerSummaryList from '../../../model/SurveyAnswer';
 import LectureSurveyAnswerSummary, {
   MatrixItem,
 } from '../../../viewModel/LectureSurveyAnswerSummary';
+import { getLectureParams } from '../../../store/LectureParamsStore';
+import { findCardCache } from '../../../api/cardApi';
+import { findCubeDetailCache } from '../../../api/cubeApi';
 
 function parseChoice(
   question: Question,
@@ -135,7 +131,7 @@ function parseCriterion(
     criterion?.criteriaItems?.map(({ value, names, index }) => {
       const mTitle =
         ((names.langStringMap as unknown) as Record<string, string>)[
-        names.defaultLanguage
+          names.defaultLanguage
         ] || '';
       let mNo = index !== undefined ? index : 0;
       if (isNaN(mNo)) {
@@ -388,10 +384,10 @@ async function getCubeLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-              names: (criteriaItem.names as unknown) as LangStrings,
-              value: criteriaItem.value,
-              index: criteriaItem.index,
-            },
+                names: (criteriaItem.names as unknown) as LangStrings,
+                value: criteriaItem.value,
+                index: criteriaItem.index,
+              },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -480,10 +476,10 @@ export async function getCourseLectureSurveyState(
           criteriaItem === null
             ? undefined
             : {
-              names: (criteriaItem.names as unknown) as LangStrings,
-              value: criteriaItem.value,
-              index: criteriaItem.index,
-            },
+                names: (criteriaItem.names as unknown) as LangStrings,
+                value: criteriaItem.value,
+                index: criteriaItem.index,
+              },
         itemNumbers: itemNumbers === null ? undefined : itemNumbers,
         sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
@@ -512,38 +508,40 @@ export async function getCourseLectureSurveyState(
 }
 
 export async function requestLectureSurvey(
-  params: LectureRouterParams,
   lectureSurveyAnswerSummary?: LectureSurveyAnswerSummary[]
 ) {
-  const { contentType, contentId, lectureId } = params;
-  if (contentType === 'cube') {
-    const { contents } = await cacheableFindPersonalCube(contentId);
-    if (
-      contents !== undefined &&
-      contents.surveyId !== '' &&
-      contents.surveyCaseId !== ''
-    ) {
-      requestLectureSurveyFromSurvey(
-        contents.surveyId,
-        contents.surveyCaseId,
-        lectureSurveyAnswerSummary
-      );
-    }
-  }
-  if (contentType === 'coures') {
-    const { surveyCase } = await findCoursePlanContents(contentId, lectureId);
-
-    if (
-      surveyCase !== undefined &&
-      surveyCase !== null &&
-      surveyCase.surveyFormId !== '' &&
-      surveyCase.id !== ''
-    ) {
-      requestLectureSurveyFromSurvey(
-        surveyCase.surveyFormId,
-        surveyCase.id,
-        lectureSurveyAnswerSummary
-      );
+  const params = getLectureParams();
+  if (params !== undefined) {
+    const { cardId, cubeId } = params;
+    if (cubeId !== undefined) {
+      const cubeDetail = await findCubeDetailCache(cubeId);
+      if (cubeDetail === undefined) {
+        return;
+      }
+      const {
+        cube: { surveyCaseId },
+        cubeContents: { surveyId },
+      } = cubeDetail;
+      if (surveyCaseId !== null && surveyId !== null) {
+        requestLectureSurveyFromSurvey(
+          surveyId,
+          surveyCaseId,
+          lectureSurveyAnswerSummary
+        );
+      }
+    } else {
+      const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+      if (
+        cardWithContentsAndRelatedCountRom?.cardContents.surveyCaseId !==
+          undefined &&
+        cardWithContentsAndRelatedCountRom?.cardContents.surveyId
+      ) {
+        requestLectureSurveyFromSurvey(
+          cardWithContentsAndRelatedCountRom?.cardContents.surveyId,
+          cardWithContentsAndRelatedCountRom?.cardContents.surveyCaseId,
+          lectureSurveyAnswerSummary
+        );
+      }
     }
   }
 }

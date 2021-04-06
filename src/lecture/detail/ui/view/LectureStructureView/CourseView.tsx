@@ -84,7 +84,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             if (item.type === 'CUBE') {
               const cube = item as LectureStructureCubeItem;
               return (
-                <Fragment key={cube.id}>
+                <Fragment key={cube.cubeId}>
                   {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
                     <CubeView
                       name={cube.name}
@@ -115,7 +115,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       activated={cube.test.activated}
                       name={cube.test.name}
                       state={cube.test.state}
-                      questionCount={cube.test.questionCount}
                       path={cube.test.path}
                       can={cube.test.can}
                     />
@@ -125,7 +124,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       name={cube.survey.name}
                       activated={cube.survey.activated}
                       state={cube.survey.state}
-                      questionCount={cube.survey.questionCount}
                       path={cube.survey.path}
                       can={cube.survey.can}
                     />
@@ -162,7 +160,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
               <>
                 {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
                   <CubeView
-                    key={cube.id}
+                    key={cube.cubeId}
                     name={cube.name}
                     state={cube.state}
                     activated={cube.activated}
@@ -174,7 +172,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                 )}
                 {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
                   <DurationableCubeView
-                    key={cube.id}
+                    key={cube.cubeId}
                     name={cube.name}
                     state={cube.state}
                     activated={cube.activated}
@@ -191,7 +189,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   <TestView
                     name={cube.test.name}
                     state={cube.test.state}
-                    questionCount={cube.test.questionCount}
                     path={cube.test.path}
                     can={cube.test.can}
                     activated={cube.test.activated}
@@ -201,7 +198,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   <SurveyView
                     name={cube.survey.name}
                     state={cube.survey.state}
-                    questionCount={cube.survey.questionCount}
                     path={cube.survey.path}
                     can={cube.survey.can}
                     activated={cube.survey.activated}
@@ -224,7 +220,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             name={test.name}
             state={test.state}
             activated={test.activated}
-            questionCount={test.questionCount}
             path={test.path}
             can={test.can}
           />
@@ -234,7 +229,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             name={survey.name}
             state={survey.state}
             activated={survey.activated}
-            questionCount={survey.questionCount}
             path={survey.path}
             can={survey.can}
           />

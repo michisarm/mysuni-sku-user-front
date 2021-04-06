@@ -1,5 +1,5 @@
-interface ClearCache {
-  (): void;
+interface ClearCache<P> {
+  (args?: P): void;
 }
 
 interface Api {
@@ -17,12 +17,15 @@ function getCancelablePromise(promise: Promise<any>): CancelablePromise {
       promise
         .then(response => {
           if (isCancelled) {
-            reject();
+            resolve(undefined);
           } else {
             resolve(response);
           }
         })
-        .catch(err => reject(err));
+        .catch(err => {
+          console.error('getCancelablePromise', err);
+          reject(err);
+        });
     }
   );
   cancelablePromise.cancel = function cancel() {
@@ -32,11 +35,19 @@ function getCancelablePromise(promise: Promise<any>): CancelablePromise {
   return cancelablePromise;
 }
 
-export function createCacheApi<T extends Api>(api: T): [T, ClearCache] {
+export function createCacheApi<T extends Api>(
+  api: T
+): [T, ClearCache<ThisParameterType<T>>] {
   const currentPromiseMap: Map<string, CancelablePromise> = new Map();
   const cacheDataMap: Map<string, any> = new Map();
 
-  const clearCache: ClearCache = function() {
+  const clearCache: ClearCache<ThisParameterType<T>> = function(
+    args?: ThisParameterType<T>
+  ) {
+    if (args !== undefined) {
+      const key = JSON.stringify(args);
+      currentPromiseMap.delete(key);
+    }
     currentPromiseMap.forEach(currentPromise => {
       if (currentPromise.cancel !== undefined) {
         currentPromise.cancel();

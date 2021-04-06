@@ -15,6 +15,11 @@ export default class CollegeApi {
       .catch(() => {});
   }
 
+  findAllCollege() {
+    return axios.get<CollegeModel[]>(this.URLCollege)
+      .then(response => response.data)
+  }
+
   findCollege(collegeId: string) {
     //
     return axios.get<CollegeModel>(this.URLCollege + `/${collegeId}`)

@@ -1,24 +1,22 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button, Radio } from 'semantic-ui-react';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import { ClassroomModel } from 'personalcube/classroom/model';
-
+import { Classroom } from '../../../detail/viewModel/LectureClassroom';
 
 interface Props {
-  classrooms: ClassroomModel[]
-  joinRounds?: number[]
-  trigger?: React.ReactNode
-  onOk?: (classroom: ClassroomModel) => void
+  classrooms: Classroom[];
+  joinRounds?: number[];
+  trigger?: React.ReactNode;
+  onOk?: (classroom: Classroom) => void;
 }
 
 interface States {
-  open: boolean
-  selectedClassroom: ClassroomModel | null
-  scrollEnded: boolean
+  open: boolean;
+  selectedClassroom: Classroom | null;
+  scrollEnded: boolean;
 }
 
 @reactAutobind
@@ -38,7 +36,7 @@ class ClassroomModalView extends Component<Props, States> {
     this.setState({ open: false });
   }
 
-  compare(classroom1: ClassroomModel, classroom2: ClassroomModel) {
+  compare(classroom1: Classroom, classroom2: Classroom) {
     if (classroom1.round > classroom2.round) return 1;
     return -1;
   }
@@ -61,8 +59,7 @@ class ClassroomModalView extends Component<Props, States> {
       this.setState({
         scrollEnded: true,
       });
-    }
-    else if (scrollEnded) {
+    } else if (scrollEnded) {
       this.setState({
         scrollEnded: false,
       });
@@ -77,8 +74,13 @@ class ClassroomModalView extends Component<Props, States> {
     const today = new Date();
 
     return (
-      <Modal className={classNames('base w1000', { 'inner-scroll': scrollEnded })} trigger={trigger} open={open} onClose={this.close} onOpen={this.show}>
-
+      <Modal
+        className={classNames('base w1000', { 'inner-scroll': scrollEnded })}
+        trigger={trigger}
+        open={open}
+        onClose={this.close}
+        onOpen={this.show}
+      >
         <Modal.Header className="res">
           차수세부내용
           <span className="sub f12">차수를 선택해주세요.</span>
@@ -100,69 +102,136 @@ class ClassroomModalView extends Component<Props, States> {
               </Table.Header>
 
               <Table.Body>
-                {
-                  classrooms.sort(this.compare).map((classroom: ClassroomModel, index) => {
+                {classrooms
+                  .sort(this.compare)
+                  .map((classroom: Classroom, index) => {
                     const {
-                      year: startYear, month: startMonth, date: startDate,
-                    } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.startDateSub)!;
+                      year: startYear,
+                      month: startMonth,
+                      date: startDate,
+                    } = getYearMonthDateHourMinuteSecond(
+                      new Date(classroom.applyingStartDate)
+                    )!;
                     const {
-                      year: endYear, month: endMonth, date: endDate,
-                    } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.endDateSub)!;
+                      year: endYear,
+                      month: endMonth,
+                      date: endDate,
+                    } = getYearMonthDateHourMinuteSecond(
+                      new Date(classroom.applyingEndDate)
+                    )!;
 
                     return (
                       <>
-                        { new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >= today.getTime() && (
+                        {new Date(
+                          endYear,
+                          endMonth,
+                          endDate,
+                          23,
+                          59,
+                          59
+                        ).getTime() >= today.getTime() && (
                           <Table.Row key={`overview-table-row-${index}`}>
                             <Table.Cell>
-                            <Table.Cell verticalAlign="middle"></Table.Cell>
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
                               <Radio
                                 name="class-radioGroup"
                                 disabled={
-                                  (joinRounds && joinRounds.includes(classroom.round))
-                                  || new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
-                                  || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()
-                                  || classroom.studentCount >= classroom.capacity
+                                  (joinRounds &&
+                                    joinRounds.includes(classroom.round)) ||
+                                  new Date(
+                                    startYear,
+                                    startMonth,
+                                    startDate,
+                                    0,
+                                    0,
+                                    0
+                                  ).getTime() > today.getTime() ||
+                                  new Date(
+                                    endYear,
+                                    endMonth,
+                                    endDate,
+                                    23,
+                                    59,
+                                    59
+                                  ).getTime() < today.getTime() ||
+                                  classroom.capacityClosed
                                 }
-                                checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
-                                onChange={() => this.setState({ selectedClassroom: classroom })}
+                                checked={
+                                  (selectedClassroom &&
+                                    selectedClassroom!.id === classroom.id) ||
+                                  false
+                                }
+                                onChange={() =>
+                                  this.setState({
+                                    selectedClassroom: classroom,
+                                  })
+                                }
                               />
                             </Table.Cell>
-                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.round}</Table.Cell>
-                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.instructor.name}</Table.Cell>
-                            <Table.Cell className="el"><Table.Cell verticalAlign="middle"></Table.Cell><span>{classroom.operation.location}</span></Table.Cell>
-                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
-                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
-                            <Table.Cell><Table.Cell verticalAlign="middle"></Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
                             <Table.Cell>
-                            <Table.Cell verticalAlign="middle"></Table.Cell>
-                              { classroom.enrolling.cancellationPenalty ?
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              {classroom.round}
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              {classroom.instructor}
+                            </Table.Cell>
+                            <Table.Cell className="el">
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              <span>{classroom.location}</span>
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              {classroom.studentCount} / {classroom.capacity}
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              {classroom.applyingStartDate} ~
+                              <br />
+                              {classroom.applyingEndDate}
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              {classroom.learningStartDate} ~
+                              <br />
+                              {classroom.learningEndDate}
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Table.Cell verticalAlign="middle"></Table.Cell>
+                              {classroom.cancellationPenalty ? (
                                 <Popup
-                                  content={<span>{classroom.enrolling.cancellationPenalty}</span>}
+                                  content={
+                                    <span>{classroom.cancellationPenalty}</span>
+                                  }
                                   className="ui custom red"
                                   position="bottom right"
                                   trigger={
                                     <Button icon className="img-icon custom">
-                                      <Icon className="noti32" /><span className="blind">취소 패널티</span>
+                                      <Icon className="noti32" />
+                                      <span className="blind">취소 패널티</span>
                                     </Button>
                                   }
                                 />
-                                :
+                              ) : (
                                 <span className="empty-dash" />
-                              }
+                              )}
                             </Table.Cell>
                           </Table.Row>
                         )}
                       </>
                     );
-                  }) || null
-                }
+                  }) || null}
               </Table.Body>
             </Table>
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.close}>Cancel</Button>
-          <Button className="w190 pop p" onClick={this.onOk}>OK</Button>
+          <Button className="w190 pop d" onClick={this.close}>
+            Cancel
+          </Button>
+          <Button className="w190 pop p" onClick={this.onOk}>
+            OK
+          </Button>
         </Modal.Actions>
       </Modal>
     );

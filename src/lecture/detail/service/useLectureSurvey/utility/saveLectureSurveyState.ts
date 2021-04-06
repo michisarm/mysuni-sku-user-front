@@ -10,10 +10,10 @@ import {
   getLectureSurveyState,
   setLectureSurveyState,
 } from '../../../store/LectureSurveyStore';
-import { requestLectureStructure } from '../../../ui/logic/LectureStructureContainer';
 import LectureParams from '../../../viewModel/LectureParams';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
+import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
 
 async function openLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -282,7 +282,7 @@ export async function saveLectureSurveyState(
     await openLectureSurveyState();
   }
   await coreSaveLectureSurveyState();
-  requestLectureStructure(lectureParams, pathname);
+  requestCardLectureStructure(lectureParams.cardId);
 
   reactAlert({
     title: '알림',
@@ -305,7 +305,7 @@ export async function submitLectureSurveyState(
     await openLectureSurveyState();
   }
   await coreSubmitLectureSurveyState();
-  requestLectureStructure(lectureParams, pathname);
+  requestCardLectureStructure(lectureParams.cardId);
 }
 
 export function selectSentenceAnswer(

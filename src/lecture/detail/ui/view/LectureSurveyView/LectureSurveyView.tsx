@@ -12,13 +12,18 @@ import {
   saveLectureSurveyState,
   submitLectureSurveyState,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
-import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
 import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import { SurveyCaseService } from 'survey/stores';
 import { SkProfileService } from 'profile/stores';
 import { CommunityCommentList } from '@nara.drama/feedback';
+import { useLectureParams } from '../../../store/LectureParamsStore';
+import { useLocation } from 'react-router';
+import {
+  getActiveCourseStructureItem,
+  getActiveCubeStructureItem,
+} from '../../../utility/lectureStructureHelper';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -33,7 +38,8 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   currentMenu,
   lectureStructure,
 }) {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
+  const { pathname } = useLocation();
   const surveyCaseId = lectureSurveyState?.surveyCaseId;
   const [commentId, setCommentID] = useState('');
 
@@ -41,14 +47,14 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     if (params === undefined) {
       return;
     }
-    saveLectureSurveyState(params.lectureParams, params.pathname);
+    saveLectureSurveyState(params, pathname);
   }, [params]);
 
   const requestSubmitLectureSurveyState = useCallback(() => {
     if (params === undefined) {
       return;
     }
-    submitLectureSurveyState(params.lectureParams, params.pathname);
+    submitLectureSurveyState(params, pathname);
   }, [params]);
 
   useEffect(() => {
@@ -65,14 +71,18 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   const skProfileService = SkProfileService.instance;
   const { skProfile } = skProfileService;
   const { member } = skProfile;
-
-  const surveyCommunityTitle = currentMenu?.name;
-  const surveyCourseTitle = lectureStructure?.course?.name;
-  const surveyCubeTitle = lectureStructure?.cube?.name;
-  const surveyTitle =
-    surveyCommunityTitle === undefined
-      ? `${surveyCourseTitle || surveyCubeTitle}과정 Survey`
-      : `${surveyCommunityTitle}`;
+  const [surveyTitle, setSurveyTitle] = useState<string>();
+  useEffect(() => {
+    if (currentMenu?.name !== undefined) {
+      setSurveyTitle(currentMenu?.name);
+    } else {
+      const name =
+        getActiveCubeStructureItem()?.name ||
+        getActiveCourseStructureItem()?.name ||
+        '';
+      setSurveyTitle(`${name}과정 Survey`);
+    }
+  }, [lectureStructure, currentMenu?.name]);
 
   return (
     <>

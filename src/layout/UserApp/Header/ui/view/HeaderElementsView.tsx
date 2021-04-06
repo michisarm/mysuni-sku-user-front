@@ -1,5 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { getAxios } from 'shared/api/Axios';
+import { AxiosReturn } from 'shared/api/AxiosReturn';
+
+import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
 
 import classNames from 'classnames';
 import lecturePaths from 'lecture/routePaths';
@@ -7,6 +11,8 @@ import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';
 import personalCubePaths from 'personalcube/routePaths';
 import communityPaths from 'community/routePaths';
+import { PageElement } from '../../../../../lecture/shared/model/PageElement';
+import CategoryMenuContainer from '../logic/CategoryMenuContainer';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
@@ -26,47 +32,96 @@ interface MenuViewProps {
   onClickMenu: (menuName: string) => void;
 }
 
-export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
-  <div className="g-menu">
-    <div className="nav">
-      <NavLink
-        to={myTrainingPaths.learning()}
-        className="item"
-        onClick={() => onClickMenu('Learning')}
-      >
-        Learning
-      </NavLink>
-      <NavLink
-        to={lecturePaths.recommend()}
-        className="item"
-        onClick={() => onClickMenu('Recommend')}
-      >
-        Recommend
-      </NavLink>
-      <NavLink
-        to={personalCubePaths.create()}
-        className="item"
-        onClick={() => onClickMenu('Create')}
-      >
-        Create
-      </NavLink>
-      <NavLink
-        to={certificationPaths.badge()}
-        className="item"
-        onClick={() => onClickMenu('Certification')}
-      >
-        Certification
-      </NavLink>
-      <NavLink
-        to={communityPaths.community()}
-        className="item"
-        onClick={() => onClickMenu('Community')}
-      >
-        Community
-      </NavLink>
-    </div>
-  </div>
-);
+export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
+  const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
+  useEffect(() => {
+    const axios = getAxios();
+    const fetchMenu = async () => {
+      const response = await findAvailablePageElements();
+      setMenuAuth(response);
+    };
+    fetchMenu();
+  }, []);
+
+  return (
+    <>
+      {menuAuth.some(
+        pagemElement =>
+          pagemElement.position === 'TopMenu' &&
+          pagemElement.type === 'Category'
+      ) && <CategoryMenuContainer />}
+      <div className="g-menu">
+        <div className="nav">
+          {menuAuth.some(
+            pagemElement =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Learning'
+          ) && (
+            <NavLink
+              to={myTrainingPaths.learning()}
+              className="item"
+              onClick={() => onClickMenu('Learning')}
+            >
+              Learning
+            </NavLink>
+          )}
+          {menuAuth.some(
+            pagemElement =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Recommend'
+          ) && (
+            <NavLink
+              to={lecturePaths.recommend()}
+              className="item"
+              onClick={() => onClickMenu('Recommend')}
+            >
+              Recommend
+            </NavLink>
+          )}
+          {menuAuth.some(
+            pagemElement =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Create'
+          ) && (
+            <NavLink
+              to={personalCubePaths.create()}
+              className="item"
+              onClick={() => onClickMenu('Create')}
+            >
+              Create
+            </NavLink>
+          )}
+          {menuAuth.some(
+            pagemElement =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Certification'
+          ) && (
+            <NavLink
+              to={certificationPaths.badge()}
+              className="item"
+              onClick={() => onClickMenu('Certification')}
+            >
+              Certification
+            </NavLink>
+          )}
+          {menuAuth.some(
+            pagemElement =>
+              pagemElement.position === 'TopMenu' &&
+              pagemElement.type === 'Community'
+          ) && (
+            <NavLink
+              to={communityPaths.community()}
+              className="item"
+              onClick={() => onClickMenu('Community')}
+            >
+              Community
+            </NavLink>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
 
 interface SearchBarViewProps {
   value: string;
@@ -87,25 +142,25 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onClick,
   onClear,
 }) => (
-    <div className="g-search">
-      <div
-        className={classNames('ui h38 search input', {
-          focus: focused,
-          write: value,
-        })}
-        style={{ display: 'block' }}
-      >
-        <input
-          type="text"
-          placeholder="Search"
-          value={value}
-          onChange={onChange}
-          onClick={onClick}
-          onBlur={onBlur}
-          onKeyPress={e => e.key === 'Enter' && onSearch()}
-        />
-        <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-        <i aria-hidden="true" className="search link icon" onClick={onSearch} />
-      </div>
+  <div className="g-search">
+    <div
+      className={classNames('ui h38 search input', {
+        focus: focused,
+        write: value,
+      })}
+      style={{ display: 'block' }}
+    >
+      <input
+        type="text"
+        placeholder="Search"
+        value={value}
+        onChange={onChange}
+        onClick={onClick}
+        onBlur={onBlur}
+        onKeyPress={e => e.key === 'Enter' && onSearch()}
+      />
+      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
+      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
     </div>
-  );
+  </div>
+);

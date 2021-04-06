@@ -1322,12 +1322,12 @@ class LectureCardContainer extends Component<Props, State> {
           />
         )}
         {/* 차수세부내용 */}
-        <ClassroomModalView
+        {/* <ClassroomModalView
           ref={classroomModal => (this.classroomModal = classroomModal)}
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
-        />
-        {(cubeType === CubeType.ClassRoomLecture ||
+        /> */}
+        {/* {(cubeType === CubeType.ClassRoomLecture ||
           cubeType === CubeType.ELearning) && (
           <ApplyReferenceModal
             ref={applyReferenceModel =>
@@ -1337,7 +1337,7 @@ class LectureCardContainer extends Component<Props, State> {
             selectedClassRoom={this.state.selectedClassRoom}
             handleOk={this.onClickApplyReferentOk}
           />
-        )}
+        )} */}
         {viewObject && viewObject.examId && (
           <AnswerSheetModal
             examId={viewObject.examId}

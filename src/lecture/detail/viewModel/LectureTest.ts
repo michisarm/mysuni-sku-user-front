@@ -1,10 +1,10 @@
 import Answer from '../model/Answer';
 import ExamQuestion from '../model/ExamQuestion';
 import LearningState from '../model/LearningState';
-import StudentScore from '../model/StudentScore';
 import { State } from './LectureState';
 import { LectureType } from './LectureType';
 import { EssayScore } from '../model/GradeSheet';
+import { StudentScore } from '../../model/StudentScore';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
@@ -38,15 +38,15 @@ export interface LectureStructureCubeItemParams extends Params {
   examId: string;
 }
 
-export interface LectureTestItem extends Item {
+export interface LectureTestItem {
   id: string;
-  name: string;
+  name?: string;
   questionCount: number;
   questions: ExamQuestion[];
-  successPoint: number;
-  totalPoint: number;
-  graderComment: string;
-  essayScores: EssayScore[];
+  successPoint?: number;
+  totalPoint?: number;
+  graderComment?: string;
+  essayScores?: EssayScore[];
 }
 
 export interface LectureTestAnswerItem extends Item {
@@ -63,8 +63,8 @@ export interface LectureTestStudentItem extends Item {
   serviceType: LectureType;
   learningState: LearningState;
   studentScore: StudentScore;
-  examId?: string;
-  paperId?: string;
+  examId: string | null;
+  paperId: string | null;
 }
 
 export interface LectureTest {

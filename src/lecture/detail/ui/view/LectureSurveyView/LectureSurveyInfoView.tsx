@@ -1,12 +1,20 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
-import { useLectureRouterParams } from '../../../service/useLectureRouterParams';
 import { startLectureSurveyState } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import CommunityMenu from 'community/model/CommunityMenu';
-import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
+import {
+  LectureStructure,
+  LectureStructureCubeItem,
+} from 'lecture/detail/viewModel/LectureStructure';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
+import { useLectureParams } from '../../../store/LectureParamsStore';
+import {
+  getActiveCourseStructureItem,
+  getActiveCubeStructureItem,
+  getActiveStructureItem,
+} from '../../../utility/lectureStructureHelper';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
@@ -21,7 +29,9 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   currentMenu,
   lectureStructure,
 }) {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
+  const [surveyTitleInfo, setSurveyTitleInfo] = useState<string>();
+  const [surveyInfoText, setSurveyInfoText] = useState<string>();
 
   const requestStartLectureSurveyState = useCallback(() => {
     if (params === undefined) {
@@ -31,21 +41,22 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   }, [params]);
 
   const questionCount = lectureSurvey.surveyItems.length;
-  const surveyCommunityTitle = currentMenu?.name;
-  const surveyCourseTitle = lectureStructure?.course?.name;
-  const surveyCubeTitle = lectureStructure?.cube?.name;
-  const surveyTitleInfo =
-    surveyCommunityTitle === undefined
-      ? `${surveyCourseTitle || surveyCubeTitle}`
-      : `${surveyCommunityTitle}`;
 
-  const surveyInfoText = surveyCommunityTitle === undefined ? `과정 ` : `의 `;
+  useEffect(() => {
+    if (currentMenu?.name !== undefined) {
+      setSurveyTitleInfo(currentMenu?.name);
+      setSurveyInfoText('의 ');
+    } else {
+      const name =
+        getActiveCourseStructureItem()?.name ||
+        getActiveCubeStructureItem()?.name ||
+        '';
+      setSurveyTitleInfo(name);
+      setSurveyInfoText('과정');
+    }
+  }, [lectureStructure, currentMenu?.name]);
 
-  if (
-    lectureSurveyState &&
-    lectureSurveyState.state === 'None' &&
-    (lectureStructure?.cube || lectureStructure?.course)
-  ) {
+  if (lectureSurveyState) {
     startLectureSurveyState();
   }
 

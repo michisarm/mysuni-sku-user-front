@@ -16,7 +16,11 @@ import NEWLectureService from './shared/present/logic/NEWLectureService';
 import POPLectureService from './shared/present/logic/POPLectureService';
 import LRSLectureService from './shared/present/logic/LRSLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
+import BadgeCardService from '../certification/present/logic/BadgeCardService';
+import BadgeCategoryService from '../certification/present/logic/BadgeCategoryService';
+import BadgeStudentService from '../certification/present/logic/BadgeStudentService';
 import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
+import CardStudentService from '../certification/present/logic/CardStudentService';
 
 
 export default {
@@ -32,6 +36,7 @@ export default {
     answerSheetService: AnswerSheetService.instance,
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
+    cardStudentService: CardStudentService.instance,
   },
   rqdLecture: {
     rqdLectureService: RQDLectureService.instance,
@@ -47,6 +52,9 @@ export default {
   },
   badge: {
     badgeService: BadgeService.instance,
+    badgeCardService: BadgeCardService.instance,
+    badgeCategoryService: BadgeCategoryService.instance,
+    badgeStudentService: BadgeStudentService.instance,
   },
   badgeDetail: {
     badgeDetailService: BadgeDetailService.instance,
@@ -70,5 +78,9 @@ export {
   SurveyCaseService,
   SurveyFormService,
   BadgeService,
+  BadgeCardService,
   BadgeDetailService,
+  BadgeCategoryService,
+  BadgeStudentService,
+  CardStudentService,
 };

@@ -121,25 +121,15 @@ class Routes extends Component {
           path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
           component={LectureCardPage}
         />
-
         <Route
-          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailCourseRoutes}
-        />
-        <Route
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailCourseRoutes}
-        />
-
-        <Route
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailCubeRoutes}
-        />
-        <Route
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          path="/lecture/card/:cardId/cube/:cubeId/:viewType/:cubeType"
           component={LectureDetailCubeRoutes}
         />
 
+        <Route
+          path="/lecture/card/:cardId/:viewType"
+          component={LectureDetailCourseRoutes}
+        />
         {/* recommend */}
         <Redirect
           exact
@@ -164,7 +154,6 @@ class Routes extends Component {
         />
 
         {/* community  */}
-
         <Route component={NotFoundPage} />
       </Switch>
     );

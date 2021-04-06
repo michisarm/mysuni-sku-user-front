@@ -4,7 +4,6 @@ import { SkProfileService } from '../../../../../profile/stores';
 import { Cube } from '../../../../shared/ui/view/LectureElementsView2';
 import {
   LectureStructure,
-  LectureStructureCourseItem,
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
 
@@ -12,26 +11,14 @@ interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
 }
 
-function findActiveCourseCubes(
-  lectureStructure: LectureStructure
-): LectureStructureCubeItem[] | void {
-  if (lectureStructure.course?.activated === true) {
-    return lectureStructure.cubes;
-  }
-  return lectureStructure.courses.find(c => c.activated === true)?.cubes;
-}
-
 const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = function LectureCubeNavigatorView({
-  lectureStructure
+  lectureStructure,
 }) {
   const [visible, setVisible] = useState<boolean>(true);
   const close = useCallback(() => {
     setVisible(false);
   }, []);
-  const cubes = findActiveCourseCubes(lectureStructure);
-  if (cubes === undefined) {
-    return null;
-  }
+  const cubes = lectureStructure.cubes;
   let progressingCube: LectureStructureCubeItem | undefined;
   for (let i = 0; i < cubes.length; i++) {
     const cube = cubes[i];

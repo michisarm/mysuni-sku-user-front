@@ -1,20 +1,18 @@
 import React from 'react';
 import LectureWebpage from '../../viewModel/LectureWebpage';
-
 import DefaultImg from '../../../../style/media/default-thumbnail.png';
 
-interface Props {
-  action?: () => void;
+interface Props {}
+
+function action() {
+  const action = document.getElementById('ACTION');
+  if (action !== null) {
+    action.click();
+  }
 }
 
 const LectureWebpageView: React.FC<LectureWebpage &
-  Props> = function LectureWebpageView({
-  title,
-  description,
-  image,
-  url,
-  action,
-}) {
+  Props> = function LectureWebpageView({ title, description, image, url }) {
   return (
     <div className="lms-open-graph">
       <img src={image ? image : DefaultImg} className="lms-open-image" />

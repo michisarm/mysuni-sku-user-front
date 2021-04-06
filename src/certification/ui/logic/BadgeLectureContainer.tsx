@@ -43,18 +43,15 @@ enum StateDefaultName {
 
 
 interface Props extends RouteComponentProps {
-  //
   coursePlanService? : CoursePlanService;
   badgeDetailService?: BadgeDetailService;
   studentService?: StudentService;
-
-  badgeId: string;
-  badgeCompList: BadgeCompData[];
 }
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
-  const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history } = Props;
+  const { coursePlanService, badgeDetailService, history } = Props;
+  const { badgeCompList } = badgeDetailService!;
 
   const [opened, setOpened] = useState(false);
   const [splitUrl, setSplitUrl] = useState<string>('');

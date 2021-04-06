@@ -118,7 +118,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     myLearningSummaryService!.findMyLearningSummaryByYear(year);
     myTrainingService!.countMyTrainingsWithStamp();
     myTrainingService!.countMyTrainingsWithStamp([],moment([year,1-1,1]).toDate().getTime(),moment([year,12-1,31]).toDate().getTime());
-    badgeService!.getCountOfBadges();
+    badgeService!.findAllBadgeCount();
 
     const { inprogressCount } = myTrainingService!;
   }
@@ -245,7 +245,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
-    const { myBadgeCount, _challengingCount, _earnedCount } = badgeService!;
+    const { allBadgeCount: { issuedCount, challengingCount } } = badgeService!;
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
@@ -253,7 +253,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     const CURRENT_YEAR = moment().year();
     const { hour, minute } = this.getHourMinute(myLearningSummary.displayTotalLearningTime);
     const { hour:accrueHour, minute:accrueMinute } = this.getHourMinute(myLearningSummary.displayAccrueTotalLearningTime);
-    const badgeValue = Math.round((_earnedCount / (_challengingCount + _earnedCount)) * 100)
+    const badgeValue = Math.round((issuedCount / (challengingCount + issuedCount)) * 100)
     const complateLearningValue = Math.round((myLearningSummary.completeLectureCount / (myTrainingService!.personalBoardInprogressCount + myLearningSummary.completeLectureCount)) * 100)
     let LearningObjectivesPer = 0 
     LearningObjectivesPer = Math.floor((myLearningSummary.displayTotalLearningTime / (learningObjectives!.AnnualLearningObjectives*60)) * 100)
@@ -381,8 +381,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
               <span className="gauge-badge">Badge</span>
               <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
                 <div className="gauge-content-box">
-                  <p className="top-num">{_earnedCount}</p>
-                  <span className="bot-num">도전중 {Number(badgeService?.challengingCount)}</span>
+                  <p className="top-num">{issuedCount}</p>
+                  <span className="bot-num">도전중 {Number(badgeService?.allBadgeCount.challengingCount)}</span>
                 </div>
               </div>
               {/* <Popup

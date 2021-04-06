@@ -2,7 +2,6 @@ import React from 'react';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import CourseLectureStructureView from './CourseLectureStructureView';
 import CubeLectureStructureView from './CubeLectureStructureView';
-import ProgramLectureStructureView from './ProgramLectureStructureView';
 
 interface LectureStructureViewProps {
   lectureStructure: LectureStructure;
@@ -13,16 +12,10 @@ const LectureStructureView: React.FC<LectureStructureViewProps> = function Lectu
 }) {
   return (
     <div className="course-info-wrapper">
-      {lectureStructure.type === 'Program' && (
-        <ProgramLectureStructureView lectureStructure={lectureStructure} />
-      )}
-      {lectureStructure.type === 'Card' && (
+      {lectureStructure.cubes.length !== 1 && (
         <CourseLectureStructureView lectureStructure={lectureStructure} />
       )}
-      {lectureStructure.type === 'Course' && (
-        <CourseLectureStructureView lectureStructure={lectureStructure} />
-      )}
-      {lectureStructure.type === 'Cube' && (
+      {lectureStructure.cubes.length === 1 && (
         <CubeLectureStructureView lectureStructure={lectureStructure} />
       )}
       <div className="lms-fixed-holder" />

@@ -1,4 +1,4 @@
-import { IdName, reactAlert } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
@@ -43,10 +43,10 @@ function copyUrl() {
   reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
 }
 
-function getColor(college: IdName) {
+function getColor(collegeId: string) {
   let color = CategoryColorType.Default;
 
-  switch (college.id) {
+  switch (collegeId) {
     case 'CLG00001':
       color = CategoryColorType.AI;
       break;
@@ -185,7 +185,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
     default:
       break;
   }
-  const instrutor = lectureInstructor?.instructors.find(c => c.represent === 1);
+  const instrutor = lectureInstructor?.instructors.find(
+    c => c.representative === true
+  );
 
   useEffect(() => {
     //
@@ -211,9 +213,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
       <div className="contents-header">
         <div className="title-area">
           <div
-            className={`ui label ${getColor(lectureSummary.category.college)}`}
+            className={`ui label ${getColor(
+              lectureSummary.category.collegeId
+            )}`}
           >
-            {lectureSummary.category.college.name}
+            {lectureSummary.category.collegeId}
           </div>
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">
@@ -254,17 +258,17 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   <Label className="bold onlytext">
                     <span className="header-span-first">강사</span>
                     <span className="tool-tip">
-                      {instrutor.name}
+                      {instrutor.instructorId}
                       <i>
                         <Link
-                          to={`/expert/instructor/${instrutor.usid}/Introduce`}
+                          to={`/expert/instructor/${instrutor.instructorId}/Introduce`}
                           className="tip-mail"
                           style={{ whiteSpace: 'nowrap', display: 'block' }}
                           target="_blank"
                         >
-                          {instrutor.name}
+                          {instrutor.instructorId}
                         </Link>
-                        <span className="tip-id">{instrutor.company}</span>
+                        <span className="tip-id">{instrutor.instructorId}</span>
                       </i>
                     </span>
                   </Label>
@@ -286,7 +290,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 lectureSummary.cubeType !== 'Task' && (
                   <Label className="bold onlytext">
                     <span className="header-span-first">이수</span>
-                    <span>{numberWithCommas(lectureSummary.passedCount)}</span>
+                    <span>
+                      {numberWithCommas(lectureSummary.passedStudentCount)}
+                    </span>
                     <span>명</span>
                   </Label>
                 )}
@@ -307,7 +313,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   {lectureSummary.operator.name}
                   <i>
                     <span className="tip-name">
-                      {lectureSummary.operator.company}
+                      {lectureSummary.operator.companyName}
                     </span>
                     <a
                       className="tip-mail"
@@ -319,7 +325,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                 </span>
               </Label>
               <Link
-                to={`/board/support-qna/cube/${lectureSummary.learningCard.id}`}
+                to={`/board/support-qna/cube/${lectureSummary.cubeId}`}
                 className="ui icon button left post-s"
               >
                 <Icon className="ask" />

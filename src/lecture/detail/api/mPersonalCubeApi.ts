@@ -1,7 +1,7 @@
 import { axiosApi } from '@nara.platform/accent';
 import RemoteClassroom from '../model/RemoteClassroom';
 import CubeIntro from '../model/CubeIntro';
-import Media from '../model/Media';
+import Media from '../../model/Media';
 import OfficeWeb from '../model/OfficeWeb';
 import PersonalCube from '../model/PersonalCube';
 import Transcript from '../model/Transcript';
@@ -15,7 +15,7 @@ import TaskCdo from '../model/TaskCdo';
 import { AxiosResponse } from 'axios';
 import { createCacheApi } from './cacheableApi';
 
-const BASE_URL = '/api/personalCube';
+const BASE_URL = '/api/cube';
 const FEEDBACK_URL = '/api/feedback';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
@@ -30,31 +30,6 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   }
   return response.data;
 }
-
-function findPersonalCube(personalCubeId: string): Promise<PersonalCube> {
-  const url = `${BASE_URL}/personalcubes/${personalCubeId}`;
-  return axiosApi
-    .get<PersonalCube>(url)
-    .then(response => response && response.data);
-}
-
-const [cacheableFindPersonalCube, clearFindPersonalCubeCache] = createCacheApi(
-  findPersonalCube
-);
-
-export { cacheableFindPersonalCube, clearFindPersonalCubeCache };
-
-function findCubeIntro(cubeIntroId: string): Promise<CubeIntro | undefined> {
-  const url = `${BASE_URL}/cubeintros/${cubeIntroId}`;
-  return axiosApi.get<CubeIntro>(url).then(AxiosReturn);
-}
-
-const [cacheableFindCubeIntro, clearFindCubeIntroCache] = createCacheApi(
-  findCubeIntro
-);
-
-export { cacheableFindCubeIntro, clearFindCubeIntroCache };
-
 export function findAllTranscript(deliveryId: string, locale: string) {
   return axiosApi
     .get<Transcript[]>(`${BASE_URL}/transcripts/${deliveryId}/${locale}`)

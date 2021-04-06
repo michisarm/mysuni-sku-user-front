@@ -9,35 +9,24 @@ import {
   setLectureTaskItem,
   setLectureTaskOffset,
   setLectureTaskTab,
-  setLectureTaskViewType,
 } from 'lecture/detail/store/LectureTaskStore';
-import {
-  LectureTask,
-  // LectureTaskParams,
-} from 'lecture/detail/viewModel/LectureTask';
-/* eslint-disable consistent-return */
+import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
 import { useEffect, useState } from 'react';
-import { useLocation, } from 'react-router-dom';
-import { parseLectureParamsFromPathname } from '../../utility/lectureRouterParamsHelper';
+import { useLectureParams } from '../../store/LectureParamsStore';
 
-import { useLectureRouterParams } from '../useLectureRouterParams';
-//import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTask } from './utility/getCubeLectureTask';
 import { getCubeLectureTaskDetail } from './utility/getCubeLectureTaskDetail';
 
 type TaskValue = LectureTask | undefined;
 
 let subscriberIdRef = 0;
+const limit = 10;
 export function useLectureTask(): [TaskValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [taskValue, setTaskValue] = useState<TaskValue>();
-  const [limit, setLimit] = useState<number>(10);
 
-  const { pathname } = useLocation();
-  const [viewFlag, setViewFlag] = useState<string>('list');
-  // const [tabFlag, setTabFlag] = useState<string>('Posts');
-
-  const param = useLectureRouterParams();
+  const params = useLectureParams();
+  // const { pathname } = useLocation();
 
   useEffect(() => {
     setLectureTaskItem({
@@ -49,7 +38,7 @@ export function useLectureTask(): [TaskValue] {
     });
     setLectureTaskTab('Overview');
     setLectureTaskOffset(0);
-  }, [pathname]);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     const next = `useLectureTask-${++subscriberIdRef}`;
@@ -70,23 +59,17 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskOffset(next => {
-      const params = parseLectureParamsFromPathname(pathname);
-      if (params === undefined) {
-        return;
-      }
-      const { contentId, lectureId } = params
-      if (getLectureTaskTab() === 'Overview') {
+      if (params?.cubeId === undefined || getLectureTaskTab() === 'Overview') {
         return;
       }
       getCubeLectureTask(
-        contentId,
-        lectureId,
+        params?.cubeId,
         getLectureTaskOffset() || 0,
         limit,
         getLectureTaskTab() || 'post'
       );
     }, subscriberId);
-  }, [subscriberId, pathname]);
+  }, [subscriberId, params?.cubeId]);
 
   useEffect(() => {
     if (subscriberId === undefined) {
@@ -94,9 +77,8 @@ export function useLectureTask(): [TaskValue] {
     }
     return onLectureTaskViewType(next => {
       if (next === 'edit') {
-        return
+        return;
       }
-      setViewFlag(next!);
       getCubeLectureTaskDetail(next!);
       if (next === 'create') {
         setLectureTaskDetail();
@@ -119,7 +101,6 @@ export function useLectureTask(): [TaskValue] {
 
       setLectureTaskItem();
       setLectureTaskOffset(0);
-
     }, subscriberId);
   }, [subscriberId]);
 

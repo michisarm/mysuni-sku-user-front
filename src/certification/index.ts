@@ -1,4 +1,4 @@
 
 export * from './shared/Badge';
 
-export { default as MyBadgePage } from './ui/page/MyBadgePage';
+export { default as BadgeMainPage } from './ui/page/BadgeMainPage';

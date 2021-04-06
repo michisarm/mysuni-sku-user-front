@@ -1,0 +1,924 @@
+/* eslint-disable consistent-return */
+
+import { reactAlert } from '@nara.platform/accent';
+import moment from 'moment';
+import { ClassroomModel } from '../../../../../personalcube/classroom/model';
+import { SkProfileService } from '../../../../../profile/stores';
+import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
+import {
+  deleteStudentByRollBookId,
+  joinCommunity,
+  markComplete,
+  registerStudent,
+} from '../../../api/lectureApi';
+import CubeType from '../../../model/CubeType';
+import StudentCdo from '../../../model/StudentCdo';
+import { setLectureState } from '../../../store/LectureStateStore';
+import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
+import LectureState, { State } from '../../../viewModel/LectureState';
+import { getActiveCourseStructureItem } from '../../../utility/lectureStructureHelper';
+import {
+  cPLinked,
+  experimetial,
+  webPageLinked,
+} from '../../useActionLog/cubeStudyEvent';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
+import Student from '../../../../model/Student';
+import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
+import LectureParams from '../../../viewModel/LectureParams';
+import { getLectureParams } from '../../../store/LectureParamsStore';
+import { MediaType } from '../../../../model/MediaType';
+import { findCubeDetailCache } from '../../../api/cubeApi';
+import { CubeDetail } from '../../../../model/CubeDetail';
+import { findByCubeId } from '../../../api/cardApi';
+
+const APPROVE = '학습하기';
+const SUBMIT = '신청하기';
+const CANCEL = '취소하기';
+const DOWNLOAD = '다운로드';
+const PROGRESS = '학습중';
+const COMPLETE = '학습완료';
+const JOINED = '가입완료';
+const SUBMITED = '승인대기';
+const REJECTED = '반려됨';
+const WAIT = '학습예정';
+const JOIN = '작성하기';
+
+function isEmpty(text: string) {
+  return text === null || text === '';
+}
+
+interface ChangeStateOption {
+  cubeId: string;
+  cubeType: CubeType;
+  cubeDetail: CubeDetail;
+  student?: Student;
+  hasTest: boolean;
+  hasReport: boolean;
+  hasSurvey: boolean;
+  lectureState: LectureState;
+}
+
+async function submit(params: LectureParams, round: number, student?: Student) {
+  const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+
+  let nextStudentCdo: StudentCdo = {
+    round,
+    name: member.name,
+    proposalState: 'Submitted',
+    classroomId: '',
+    approvalProcess: false,
+  };
+  if (student !== undefined && student !== null) {
+    const { round, name } = student;
+    nextStudentCdo = {
+      round,
+      name,
+      proposalState: 'Submitted',
+      enClosed: false,
+      classroomId: '',
+      approvalProcess: false,
+    };
+  }
+  await registerStudent(nextStudentCdo);
+  await getStateFromCube();
+  requestCardLectureStructure(params.cardId);
+}
+
+async function mClassroomSubmit(
+  params: LectureParams,
+  round: number,
+  classroom: ClassroomModel,
+  student?: Student
+) {
+  const { skProfile } = SkProfileService.instance;
+  const nextStudentCdo: StudentCdo = {
+    round,
+    name: skProfile.member.name,
+    proposalState: 'Submitted',
+    classroomId: classroom.id,
+    approvalProcess: classroom.freeOfCharge.approvalProcess,
+  };
+  if (
+    student?.proposalState === 'Canceled' ||
+    student?.proposalState === 'Rejected'
+  ) {
+    nextStudentCdo.proposalState = student.proposalState;
+  }
+  await registerStudent(nextStudentCdo);
+  await getStateFromCube();
+  requestCardLectureStructure(params.cardId);
+  if (
+    classroom.enrolling.enrollingAvailable &&
+    classroom.freeOfCharge.approvalProcess
+  ) {
+    const messageStr =
+      '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  } else if (!classroom.freeOfCharge.approvalProcess) {
+    const messageStr =
+      '본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  } else {
+    //const messageStr =
+    //  '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    //reactAlert({ title: '알림', message: messageStr });
+  }
+}
+
+async function cancel(params: LectureParams, student: Student) {
+  const { round } = student;
+  await deleteStudentByRollBookId(round);
+  await getStateFromCube();
+
+  requestCardLectureStructure(params.cardId);
+}
+
+async function getVideoCanceledState(
+  option: ChangeStateOption
+): Promise<LectureState> {
+  const {
+    cubeId,
+    cubeType,
+    cubeDetail,
+    student,
+    hasTest,
+    hasReport,
+    hasSurvey,
+    lectureState,
+  } = option;
+
+  if (cubeId !== undefined) {
+    const cubeDetail = await findCubeDetailCache(cubeId);
+    if (cubeDetail !== undefined && cubeDetail.cubeMaterial.media !== null) {
+      const {
+        cubeMaterial: {
+          media: { mediaType },
+        },
+      } = cubeDetail;
+      if (
+        mediaType === MediaType.InternalMedia ||
+        mediaType === MediaType.InternalMediaUpload
+      ) {
+        return {
+          ...lectureState,
+          hideAction: true,
+          canAction: false,
+          hideState: true,
+        };
+      }
+    }
+  }
+
+  return {
+    ...lectureState,
+    canAction: true,
+    actionText: APPROVE,
+    action: () => videoApprove(cubeDetail, student),
+    hideState: true,
+  };
+}
+
+async function videoApprove(cubeDetail: CubeDetail, student?: Student) {
+  if (cubeDetail.cubeMaterial.media === null) {
+    return;
+  }
+  const {
+    cubeMaterial: {
+      media: { mediaType, mediaContents },
+    },
+  } = cubeDetail;
+  if (mediaType === MediaType.ContentsProviderMedia) {
+    const {
+      contentsProvider: { expiryDate, url },
+    } = mediaContents;
+    if (
+      moment(expiryDate)
+        .endOf('day')
+        .valueOf() < Date.now()
+    ) {
+      reactAlert({
+        title: '안내',
+        message:
+          '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+      });
+      return;
+    }
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('target', '_blank');
+    link.click();
+    cPLinked();
+  }
+  if (mediaType === MediaType.LinkMedia) {
+    const { linkMediaUrl } = mediaContents;
+    const link = document.createElement('a');
+    link.setAttribute('href', linkMediaUrl);
+    link.setAttribute('target', '_blank');
+    link.click();
+  }
+
+  return approve(params, round, student);
+}
+
+async function getVideoApprovedState(
+  option: ChangeStateOption,
+  stateText: string
+): Promise<LectureState> {
+  const {
+    lectureState,
+    hasTest,
+    studentJoin: { round },
+    params,
+    hasSurvey,
+  } = option;
+
+  const { cubeId } = params;
+
+  if (cubeId !== undefined) {
+    const cubeDetail = await findCubeDetailCache(cubeId);
+    if (cubeDetail !== undefined) {
+      const {
+        cubeMaterial: {
+          media: { mediaType, mediaContents },
+        },
+        cubeContents: { reportFileBox },
+      } = cubeDetail;
+      if (mediaType === MediaType.ContentsProviderMedia) {
+        const {
+          contentsProvider: { expiryDate, url },
+        } = mediaContents;
+        return {
+          ...lectureState,
+          hideAction: false,
+          canAction: true,
+          actionText: APPROVE,
+          action: () => cpVideoOpen(expiryDate, url),
+          stateText,
+        };
+      }
+      if (mediaType === MediaType.LinkMedia) {
+        const { linkMediaUrl } = mediaContents;
+        if (stateText === PROGRESS) {
+          if (reportFileBox.report === true) {
+            if (!hasTest) {
+              return {
+                ...lectureState,
+                hideAction: false,
+                canAction: true,
+                actionText: COMPLETE,
+                action: () => {
+                  linkVideoOpen(linkMediaUrl);
+                  complete(params, round, hasSurvey);
+                },
+                actionClassName: 'bg2',
+                stateText,
+              };
+            }
+          }
+          return {
+            ...lectureState,
+            hideAction: false,
+            canAction: true,
+            actionText: APPROVE,
+            action: () => linkVideoOpen(linkMediaUrl),
+            actionClassName: 'bg',
+            stateText,
+          };
+        }
+        if (stateText === COMPLETE) {
+          return {
+            ...lectureState,
+            hideAction: false,
+            canAction: true,
+            actionText: COMPLETE,
+            action: () => {
+              linkVideoOpen(linkMediaUrl);
+            },
+            actionClassName: 'bg2',
+            stateText,
+          };
+        }
+      }
+    }
+  }
+
+  return {
+    ...lectureState,
+    hideAction: true,
+    canAction: false,
+    actionText: APPROVE,
+    stateText,
+  };
+}
+
+async function getDocumentsApprovedState(
+  option: ChangeStateOption,
+  stateText: string
+): Promise<LectureState> {
+  const {
+    lectureState,
+    hasTest,
+    hasSurvey,
+    studentJoin: { round },
+    params,
+  } = option;
+
+  if (stateText === PROGRESS) {
+    const { cubeId } = params;
+
+    if (cubeId !== undefined) {
+      const cubeDetail = await findCubeDetailCache(cubeId);
+      if (cubeDetail !== undefined) {
+        const {
+          cubeMaterial: {
+            media: { mediaType },
+          },
+          cubeContents: {
+            reportFileBox: { report },
+          },
+        } = cubeDetail;
+        if (report === true) {
+          if (!hasTest) {
+            return {
+              ...lectureState,
+              action: () => complete(params, round, hasSurvey),
+              canAction: true,
+              actionText: COMPLETE,
+              stateText,
+            };
+          }
+        } else {
+          return {
+            ...lectureState,
+            actionClassName: 'bg',
+            hideAction: false,
+            canAction: true,
+            actionText: DOWNLOAD,
+            action: () => {},
+            stateText,
+          };
+        }
+      }
+    }
+  }
+  if (stateText === COMPLETE) {
+    return {
+      ...lectureState,
+      actionClassName: 'bg2',
+      hideAction: true,
+      canAction: true,
+      actionText: DOWNLOAD,
+      action: () => {},
+      stateText,
+    };
+  }
+
+  return {
+    ...lectureState,
+    hideAction: true,
+    canAction: false,
+    actionText: APPROVE,
+    stateText,
+  };
+}
+
+async function cpVideoOpen(expiryDate: string, url: string) {
+  if (
+    moment(expiryDate)
+      .endOf('day')
+      .valueOf() < Date.now()
+  ) {
+    reactAlert({
+      title: '안내',
+      message: '해당 컨텐츠는 서비스 기간 만료로 더 이상 이용하실 수 없습니다.',
+    });
+    return;
+  }
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('target', '_blank');
+  link.click();
+
+  cPLinked();
+}
+
+async function linkVideoOpen(url: string) {
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('target', '_blank');
+  link.click();
+}
+
+async function approve(
+  cardId: string,
+  cubeId: string,
+  round: number,
+  student?: Student
+) {
+  const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  const myTrainingService = MyTrainingService.instance;
+  // classroomModal.show
+  let nextStudentCdo: StudentCdo = {
+    round,
+    name: member.name,
+    proposalState: 'Approved',
+    classroomId: '',
+    approvalProcess: false,
+  };
+  if (student !== undefined && student !== null) {
+    const { round, name } = student;
+    nextStudentCdo = {
+      round,
+      name,
+      proposalState: 'Approved',
+      enClosed: false,
+      classroomId: '',
+      approvalProcess: false,
+    };
+  }
+  await registerStudent(nextStudentCdo);
+  await getStateFromCube();
+  requestCardLectureStructure(params.cardId);
+
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem(
+    'inProgressTableViews',
+    JSON.stringify(inProgressTableViews)
+  );
+  await myTrainingService!.findAllMyTrainingsWithState(
+    'InProgress',
+    8,
+    0,
+    [],
+    true
+  );
+}
+
+async function join(params: LectureParams, round: number, student?: Student) {
+  const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  // classroomModal.show
+  let nextStudentCdo: StudentCdo = {
+    round,
+    name: member.name,
+    proposalState: 'Submitted',
+    classroomId: '',
+    approvalProcess: false,
+  };
+  if (student !== undefined && student !== null) {
+    const { round, name } = student;
+    nextStudentCdo = {
+      round,
+      name,
+      proposalState: 'Submitted',
+      enClosed: false,
+      classroomId: '',
+      approvalProcess: false,
+    };
+  }
+
+  await joinCommunity(nextStudentCdo);
+  await getStateFromCube();
+  requestCardLectureStructure(params.cardId);
+}
+
+async function complete(
+  params: LectureParams,
+  round: number,
+  hasSurvey: boolean
+) {
+  const myTrainingService = MyTrainingService.instance;
+  await markComplete({ round });
+  await getStateFromCube();
+  await requestCardLectureStructure(params.cardId);
+  const course = getActiveCourseStructureItem();
+  if (
+    course?.state === 'Completed' &&
+    course?.survey !== undefined &&
+    course?.survey.state !== 'Completed'
+  ) {
+    reactAlert({
+      title: '안내',
+      message: 'Survey 설문 참여를 해주세요.',
+      onClose: () => goToPath(course?.survey?.path),
+    });
+  }
+  const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+  sessionStorage.setItem(
+    'inProgressTableViews',
+    JSON.stringify(inProgressTableViews)
+  );
+  const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+  sessionStorage.setItem(
+    'completedTableViews',
+    JSON.stringify(completedTableViews)
+  );
+  await myTrainingService!.findAllMyTrainingsWithState(
+    'InProgress',
+    8,
+    0,
+    [],
+    true
+  );
+}
+
+function goToPath(path?: string) {
+  if (path !== undefined) {
+    const currentHistory = getCurrentHistory();
+    if (currentHistory === undefined) {
+      return;
+    }
+    currentHistory.push(path);
+  }
+}
+
+function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
+  const { params, lectureState, cubeType, student } = option;
+  if (student !== undefined && student !== null) {
+    switch (cubeType) {
+      case 'ClassRoomLecture':
+      case 'ELearning':
+        return {
+          ...lectureState,
+          canAction: true,
+          action: () => cancel(params, student),
+          actionText: CANCEL,
+          stateText: SUBMITED,
+        };
+    }
+  }
+}
+
+async function getStateWhenApproved(
+  option: ChangeStateOption
+): Promise<LectureState | void> {
+  const {
+    lectureState,
+    cubeType,
+    student,
+    hasTest,
+    hasSurvey,
+    studentJoin: { round },
+    params,
+  } = option;
+
+  if (student !== undefined && student !== null) {
+    let stateText = PROGRESS;
+
+    switch (student.learningState) {
+      case 'Passed':
+        stateText = COMPLETE;
+        break;
+      default:
+        break;
+    }
+
+    switch (cubeType) {
+      case 'Audio':
+      case 'Video':
+        break;
+      case 'Documents':
+        break;
+      case 'WebPage':
+      case 'Cohort':
+      case 'Experiential':
+        if (stateText === PROGRESS) {
+          const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
+          if (
+            cubeIntro === undefined ||
+            cubeIntro.reportFileBox === null ||
+            (isEmpty(cubeIntro.reportFileBox.reportName) &&
+              isEmpty(cubeIntro.reportFileBox.reportQuestion) &&
+              isEmpty(cubeIntro.reportFileBox.fileBoxId))
+          ) {
+            if (!hasTest) {
+              return {
+                ...lectureState,
+                action: () => complete(params, round, hasSurvey),
+                coreAction: () => {
+                  if (cubeType === 'WebPage') {
+                    webPageLinked();
+                  }
+                  if (cubeType === 'Experiential') {
+                    experimetial();
+                  }
+                },
+                canAction: true,
+                actionText: COMPLETE,
+                stateText,
+              };
+            }
+          }
+        } else {
+          return {
+            ...lectureState,
+            hideAction: true,
+            coreAction: () => {
+              if (cubeType === 'WebPage') {
+                webPageLinked();
+              }
+              if (cubeType === 'Experiential') {
+                experimetial();
+              }
+            },
+            stateText: student.learningState === null ? WAIT : stateText,
+          };
+        }
+      case 'ClassRoomLecture':
+        return {
+          ...lectureState,
+          hideAction: true,
+          stateText: student.learningState === null ? WAIT : stateText,
+        };
+      case 'ELearning':
+        return {
+          ...lectureState,
+          actionClassName: 'bg',
+          hideAction: student.learningState === null,
+          canAction: student.learningState !== null,
+          action: () => {
+            if (document.getElementById('webpage-link') !== null) {
+              document.getElementById('webpage-link')?.click();
+            }
+          },
+          actionText: APPROVE,
+          stateText: student.learningState === null ? WAIT : stateText,
+        };
+        {
+          /* Community => Task 데이터 현행화 후 수정 예정*/
+        }
+      case 'Task':
+      case 'Community':
+        if (stateText === PROGRESS) {
+          return {
+            ...lectureState,
+            actionClassName: 'bg',
+            hideAction: false,
+            canAction: true,
+            href: '#create',
+            actionText: JOIN,
+            stateText: PROGRESS,
+          };
+        }
+        if (stateText === COMPLETE) {
+          return {
+            ...lectureState,
+            hideAction: true,
+            stateText: COMPLETE,
+          };
+        }
+    }
+    if (cubeType === 'Video' || cubeType === 'Audio') {
+      const mLectureState = await getVideoApprovedState(option, stateText);
+      return mLectureState;
+    }
+    if (cubeType === 'Documents') {
+      const mLectureState = await getDocumentsApprovedState(option, stateText);
+      return mLectureState;
+    }
+  }
+}
+
+function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
+  const { params, lectureState, cubeType, student, studentJoin } = option;
+
+  if (student !== undefined && student !== null) {
+    switch (cubeType) {
+      case 'ClassRoomLecture':
+      case 'ELearning':
+        return {
+          ...lectureState,
+          canAction: true,
+          action: () => cancel(params, student),
+          actionText: CANCEL,
+          stateText: REJECTED,
+        };
+    }
+  }
+}
+
+async function getStateWhenCanceled(
+  option: ChangeStateOption
+): Promise<LectureState | undefined> {
+  const {
+    params,
+    lectureState,
+    cubeType,
+    student,
+    studentJoins,
+    studentJoin: { round },
+    contentsId,
+  } = option;
+  switch (cubeType) {
+    case 'Video':
+    case 'Audio':
+      break;
+    case 'WebPage':
+    case 'Cohort':
+    case 'Experiential':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: APPROVE,
+        action: () => {
+          if (document.getElementById('webpage-link') !== null) {
+            document.getElementById('webpage-link')?.click();
+            if (cubeType === 'WebPage') {
+              webPageLinked();
+            }
+            if (cubeType === 'Experiential') {
+              experimetial();
+            }
+          }
+          approve(params, round, student);
+        },
+        coreAction: () => {
+          if (cubeType === 'WebPage') {
+            webPageLinked();
+          }
+          if (cubeType === 'Experiential') {
+            experimetial();
+          }
+          approve(params, round, student);
+        },
+        hideState: true,
+      };
+    case 'Documents':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: DOWNLOAD,
+        action: () => approve(params, round, student),
+        hideState: true,
+      };
+    case 'ClassRoomLecture':
+    case 'ELearning':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: SUBMIT,
+        action: () => submit(params, round, student),
+        hideState: true,
+        classroomSubmit: classroom => {
+          if (studentJoins !== undefined) {
+            const rollbook = studentJoins.find(c => c.round == classroom.round);
+            if (rollbook !== undefined) {
+              mClassroomSubmit(params, round, classroom, student);
+            }
+          }
+        },
+      };
+      {
+        /* Community => Task 데이터 현행화 후 수정 예정*/
+      }
+    case 'Task':
+    case 'Community':
+      return {
+        ...lectureState,
+        canAction: true,
+        actionText: JOIN,
+        action: () => join(params, round, student),
+        href: '#create',
+        hideState: true,
+      };
+  }
+  if (cubeType === 'Video' || cubeType === 'Audio') {
+    const mLectureState = await getVideoCanceledState(option);
+    return mLectureState;
+  }
+}
+
+export async function getStateFromCube() {
+  const params = getLectureParams();
+  if (params?.cubeId === undefined || params?.cubeType === undefined) {
+    return;
+  }
+  const { cubeId, cubeType } = params;
+  const cubeDetail = await findCubeDetailCache(cubeId);
+  if (cubeDetail === undefined) {
+    return;
+  }
+  const {
+    cube: { surveyCaseId, hasTest, reportName },
+  } = cubeDetail;
+  const hasSurvey = surveyCaseId !== null;
+  const hasReport = reportName !== null;
+  const student = await findByCubeId(cubeId);
+  let actionClassName = 'bg';
+  let stateClassName = 'line';
+  if (student === undefined) {
+    return;
+  }
+  const { learningState, proposalState } = student;
+  let state: State = 'None';
+  if (proposalState === 'Approved') {
+    switch (learningState) {
+      case 'Passed':
+        state = 'Completed';
+        stateClassName = 'complete';
+        break;
+      default:
+        state = 'Progress';
+        actionClassName = 'bg2';
+        break;
+    }
+  }
+  if (cubeType === 'Documents' && proposalState !== 'Approved') {
+    await approve(params, student.round);
+    getStateFromCube();
+    return;
+  }
+  const lectureState = {
+    state,
+    learningState,
+    proposalState,
+    type: cubeType,
+    actionClassName,
+    stateClassName,
+  };
+  updateCubeItemState(cubeId, state, learningState);
+  switch (proposalState) {
+    case 'Approved':
+      {
+        const next = await getStateWhenApproved({
+          cubeId,
+          cubeDetail,
+          lectureState,
+          student,
+          cubeType,
+          hasTest,
+          hasSurvey,
+          hasReport,
+        });
+        if (next === undefined) {
+          setLectureState();
+        } else {
+          setLectureState(next);
+        }
+      }
+      break;
+    case 'Submitted':
+      {
+        const next = getStateWhenSummited({
+          cubeId,
+          cubeDetail,
+          lectureState,
+          student,
+          cubeType,
+          hasTest,
+          hasSurvey,
+          hasReport,
+        });
+        if (next === undefined) {
+          setLectureState();
+        } else {
+          setLectureState(next);
+        }
+      }
+      break;
+    case 'Rejected':
+      {
+        const next = getStateWhenRejected({
+          cubeId,
+          cubeDetail,
+          lectureState,
+          student,
+          cubeType,
+          hasTest,
+          hasSurvey,
+          hasReport,
+        });
+        if (next === undefined) {
+          setLectureState();
+        } else {
+          setLectureState(next);
+        }
+      }
+      break;
+    default:
+      {
+        const next = await getStateWhenCanceled({
+          cubeId,
+          cubeDetail,
+          lectureState,
+          student,
+          cubeType,
+          hasTest,
+          hasSurvey,
+          hasReport,
+        });
+        if (next === undefined) {
+          setLectureState();
+        } else {
+          setLectureState(next);
+        }
+      }
+      break;
+  }
+}

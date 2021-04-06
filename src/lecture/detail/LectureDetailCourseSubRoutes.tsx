@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
-import { useLectureRouterParams } from './service/useLectureRouterParams';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
+import LectureParams from './viewModel/LectureParams';
 
 function LectureDetailCourseSubRoutes() {
-  const params = useLectureRouterParams();
+  const params = useParams<LectureParams>();
   return (
     <>
-      {params && params.contentType === 'coures' && (
-        <LectureCourseOverviewPage />
-      )}
-      {params && params.contentType === 'cube' && (
-        <LectureDetailCubeSubRoutes />
-      )}
+      {params.cubeId === undefined && <LectureCourseOverviewPage />}
+      {params.cubeId !== undefined && <LectureDetailCubeSubRoutes />}
     </>
   );
 }

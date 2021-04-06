@@ -1,4 +1,4 @@
-import Instructor from 'lecture/detail/model/Instructor';
+import { Instructor } from '../../../model/Instructor';
 
 export default interface LectureInstructor {
   instructors: Instructor[];

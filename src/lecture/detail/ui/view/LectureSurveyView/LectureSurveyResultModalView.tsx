@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Modal, Image } from 'semantic-ui-react';
 import LectureSurvey from 'lecture/detail/viewModel/LectureSurvey';
 import LectureSurveySummaryChoiceView from './LectureSurveySummaryChoiceView';
@@ -13,6 +13,10 @@ import { requestLectureSurveySummary } from '../../../service/useLectureSurvey/u
 import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import { finishLectureSurveyState } from 'lecture/detail/service/useLectureSurvey/utility/saveLectureSurveyState';
+import {
+  getActiveCourseStructureItem,
+  getActiveCubeStructureItem,
+} from '../../../utility/lectureStructureHelper';
 
 interface Props {
   trigger: React.ReactNode;
@@ -29,7 +33,7 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   currentMenu,
   lectureStructure,
 }) {
-  const { title, surveyId, surveyCaseId, surveyItems } = lectureSurvey;
+  const { surveyId, surveyCaseId } = lectureSurvey;
   const lectureSurveySummary = useLectureSurveySummary();
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = useCallback(() => {
@@ -46,17 +50,19 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     onClose();
   }, []);
 
+  const surveyTitle = useMemo(
+    () =>
+      currentMenu?.name ||
+      getActiveCubeStructureItem()?.name ||
+      getActiveCourseStructureItem()?.name ||
+      '',
+    [currentMenu?.name, lectureStructure]
+  );
+
   const respondCount =
     (lectureSurveySummary &&
       lectureSurveySummary.respondentCount.respondentCount) ||
     0;
-  const surveyCommunityTitle = currentMenu?.name;
-  const surveyCourseTitle = lectureStructure?.course?.name;
-  const surveyCubeTitle = lectureStructure?.cube?.name;
-  const surveyTitle =
-    surveyCommunityTitle === undefined
-      ? surveyCourseTitle || surveyCubeTitle
-      : surveyCommunityTitle;
 
   return (
     <>

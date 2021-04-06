@@ -1,28 +1,12 @@
+// jz - 여기 코드 정말 이상 시간나면 살펴 보자
+
 import {
-  getLectureTaskOffset,
   onLectureTaskDetail,
   onLectureTaskItem,
-  onLectureTaskOffset,
   onLectureTaskViewType,
-  setLectureTaskItem,
-  setLectureTaskOffset,
 } from 'lecture/detail/store/LectureTaskStore';
-import {
-  LectureTask,
-  // LectureTaskParams,
-} from 'lecture/detail/viewModel/LectureTask';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-/* eslint-disable consistent-return */
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import {
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-} from '../../viewModel/LectureTest';
-import { useLectureRouterParams } from '../useLectureRouterParams';
-//import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
-import { getCubeLectureTask } from './utility/getCubeLectureTask';
+import { useEffect, useState } from 'react';
 import { getCubeLectureTaskDetail } from './utility/getCubeLectureTaskDetail';
 
 type TaskDetailValue = LectureTaskDetail | undefined;
@@ -41,9 +25,7 @@ export function useLectureTaskDetail(): [TaskDetailValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTaskItem(next => {
-      // setTaskDetailValue();
-    }, subscriberId);
+    return onLectureTaskItem(next => {}, subscriberId);
   }, [subscriberId]);
 
   useEffect(() => {

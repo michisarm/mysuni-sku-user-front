@@ -1,27 +1,21 @@
 /* eslint-disable consistent-return */
-import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
-
 import { getReportItem } from './getReportItemMapFromCube';
 import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
-import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { cacheableFindPersonalCube } from '../../../api/mPersonalCubeApi';
+import LectureParams from '../../../viewModel/LectureParams';
+import { findByCubeId } from '../../../api/cardApi';
+import { findCubeDetailCache } from '../../../api/cubeApi';
 
 export async function getCubeLectureReport(
-  params: LectureRouterParams
+  params: LectureParams
 ): Promise<void> {
-  const { contentId, lectureId } = params;
-  const {
-    cubeIntro: { id: cubeIntroId },
-  } = await cacheableFindPersonalCube(contentId);
-  const studentJoins = await findIsJsonStudentByCube(lectureId);
-  if (!Array.isArray(studentJoins)) {
-    return;
+  const { cubeId } = params;
+  if (cubeId !== undefined) {
+    const cubeDetail = await findCubeDetailCache(cubeId);
+    if (cubeDetail !== undefined) {
+      const { cubeContents } = cubeDetail;
+      const student = await findByCubeId(cubeId);
+      const next = await getReportItem(cubeContents, student);
+      setLectureReport(next);
+    }
   }
-  const sortedStudentJoins = studentJoins.sort(
-    (a, b) => b.updateTime - a.updateTime
-  );
-  const studentId = sortedStudentJoins[0].studentId;
-  const student = await findStudent(studentId);
-  const next = await getReportItem(cubeIntroId, studentId, student);
-  setLectureReport(next);
 }

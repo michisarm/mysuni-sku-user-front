@@ -3,14 +3,14 @@ import LectureWebpage from 'lecture/detail/viewModel/LectureWebpage';
 /* eslint-disable consistent-return */
 
 import { useEffect, useRef, useState } from 'react';
-import { useLectureRouterParams } from '../useLectureRouterParams';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import { getCohortFromCube } from './utility/getCohortFromCube';
 
 type Value = LectureWebpage | undefined;
 
 let subscriberIdRef = 0;
 export function useLectureCohort(): [Value] {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
@@ -29,11 +29,11 @@ export function useLectureCohort(): [Value] {
   }, [subscriberId]);
 
   useEffect(() => {
-    if (params?.contentId === undefined) {
+    if (params?.cubeId === undefined) {
       return;
     }
-    getCohortFromCube(params?.contentId);
-  }, [params?.contentId]);
+    getCohortFromCube(params?.cubeId);
+  }, [params?.cubeId]);
 
   return [value];
 }

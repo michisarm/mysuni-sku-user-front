@@ -4,13 +4,13 @@ import { useLectureSurveyState } from '../../../service/useLectureSurvey/useLect
 import LectureSurveyView from '../../view/LectureSurveyView/LectureSurveyView';
 import LectureSurveyInfoView from '../../view/LectureSurveyView/LectureSurveyInfoView';
 import { useCurrentCommunitySurveyMenu } from '../../../../../community/utility/communityRouterParamsHelper';
-import { useLectureStructure } from 'lecture/detail/service/useLectureStructure/useLectureStructure';
+import { useLectureStructure } from '../../../store/LectureStructureStore';
 
 function LectureSurveyContainer() {
   const [lectureSurvey] = useLectureSurvey();
   const [lectureSurveyState] = useLectureSurveyState();
   const currentMenu = useCurrentCommunitySurveyMenu();
-  const [lectureStructure] = useLectureStructure();
+  const lectureStructure = useLectureStructure();
 
   return (
     <>

@@ -10,11 +10,10 @@
 
 import { axiosApi } from '@nara.platform/accent';
 import { LectureModel } from '../../model';
-import { Lecture } from '../../shared';
+import Student from '../../model/Student';
 import CoursePlanComplex from '../model/CoursePlanComplex';
 import LectureCard from '../model/LectureCard';
 import LectureStudentView from '../model/LectureStudentView';
-import Student from '../model/Student';
 import StudentCdo from '../model/StudentCdo';
 import StudentJoin from '../model/StudentJoin';
 import Test from '../model/Test';
@@ -54,19 +53,18 @@ export function studentInfoView(
     .then(response => response && response.data);
 }
 
-export function markComplete(
-  body: { rollBookId: string }
-): Promise<void> {
+export function markComplete(body: { round: number }): Promise<void> {
   const url = `${BASE_URL}/students/flow/markComplete`;
   return axiosApi
     .put<void>(url, body)
     .then(response => response && response.data);
 }
 
-
 export function findStudent(studentId: string): Promise<Student> {
   const url = `${BASE_URL}/students/${studentId}`;
-  return axiosApi.get<Student>(url, { headers: { 'Pragma': 'no-cache' } }).then(response => response && response.data);
+  return axiosApi
+    .get<Student>(url, { headers: { Pragma: 'no-cache' } })
+    .then(response => response && response.data);
 }
 
 export function findIsJsonStudentByCube(
@@ -74,7 +72,7 @@ export function findIsJsonStudentByCube(
 ): Promise<StudentJoin[]> {
   const url = `${BASE_URL}/students/flow/isJsonByCube?lectureCardId=${lectureCardId}`;
   return axiosApi
-    .get<StudentJoin[]>(url, { headers: { 'Pragma': 'no-cache' } })
+    .get<StudentJoin[]>(url, { headers: { Pragma: 'no-cache' } })
     .then(response => response && response.data);
 }
 
@@ -92,8 +90,9 @@ export function joinCommunity(studentCdo: StudentCdo): Promise<string> {
     .then(response => response && response.data);
 }
 
-export function deleteStudentByRollBookId(roolbookId: string) {
-  const url = `${BASE_URL}/students/flow/byRollBookId?rollBookId=${roolbookId}`;
+// jz - API 확인 필요
+export function deleteStudentByRollBookId(round: number) {
+  const url = `${BASE_URL}/students/flow/byRollBookId?round=${round}`;
   return axiosApi.delete(url);
 }
 
@@ -104,7 +103,7 @@ export function modifyStudent(
 ): Promise<void> {
   const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}`;
   return axiosApi
-    .put<void>(url, { 'homeworkContent': homework })
+    .put<void>(url, { homeworkContent: homework })
     .then(response => response && response.data);
 }
 
@@ -141,8 +140,14 @@ export function setCourseStudentExamId(
 }
 
 export function findMenuArrange(
-  serviceIds: string[],
+  serviceIds: string[]
 ): Promise<{ results: LectureModel[] }> {
   const url = `${BASE_URL}/lectures/flow/arranges/menus`;
-  return axiosApi.post<{ results: LectureModel[] }>(url, { serviceIds, arrangeType: "", limit: 100 }).then(response => response && response.data);
+  return axiosApi
+    .post<{ results: LectureModel[] }>(url, {
+      serviceIds,
+      arrangeType: '',
+      limit: 100,
+    })
+    .then(response => response && response.data);
 }
