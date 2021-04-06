@@ -1,5 +1,6 @@
-import { BadgeService } from "../../../lecture/stores";
 import { useEffect } from "react";
+import { BadgeService } from "../../lecture/stores";
+
 
 export function useRequestLinkedBadges() {
   const badge = BadgeService.instance.badge;

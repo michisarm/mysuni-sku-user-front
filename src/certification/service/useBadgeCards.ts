@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-import { CardWithLearningContentCountRom } from '../../../lecture/model/CardWithLearningContentCountRom';
-import { findCardWithLearningContentCounts } from '../../../lecture/detail/api/cardApi';
+import { CardWithLearningContentCountRom } from '../../lecture/model/CardWithLearningContentCountRom';
+import { findCardWithLearningContentCounts } from '../../lecture/detail/api/cardApi';
 
 
 interface ReturnValue {
