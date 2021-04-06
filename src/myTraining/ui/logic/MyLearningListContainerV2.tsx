@@ -68,7 +68,6 @@ function MyLearningListContainerV2(props: Props) {
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [viewType, setViewType] = useState<ViewType>('Course');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
@@ -89,7 +88,7 @@ function MyLearningListContainerV2(props: Props) {
   useEffect(() => {
     refeshPageInfo();
     fetchModelsByContentType(contentType);
-  }, [contentType, viewType]);
+  }, [contentType]);
 
   useEffect(() => {
     /* just for clean up */
@@ -104,7 +103,7 @@ function MyLearningListContainerV2(props: Props) {
     fetchFilterCountViews(contentType);
 
     return () => clearFilterCountViews(contentType);
-  }, [contentType, viewType]);
+  }, [contentType]);
 
   /* functions */
 
@@ -146,7 +145,6 @@ function MyLearningListContainerV2(props: Props) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
         setIsLoading(true);
-        myTrainingService!.changeFilterRdoWithViewType(viewType);
         const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
@@ -202,7 +200,6 @@ function MyLearningListContainerV2(props: Props) {
 
   const fetchModelsByConditions = async (
     contentType: MyContentType,
-    viewType: ViewType
   ) => {
     switch (contentType) {
       case MyPageContentType.EarnedStampList: {
@@ -232,10 +229,6 @@ function MyLearningListContainerV2(props: Props) {
 
       default: {
         setIsLoading(true);
-        if (viewType) {
-          viewType = changeViewType(contentType);
-          myTrainingService!.changeFilterRdoWithViewType(viewType);
-        }
         const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
@@ -412,16 +405,6 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const changeViewType = (contentType: MyContentType): ViewType => {
-    switch (contentType) {
-      case MyLearningContentType.InProgress:
-      case MyLearningContentType.Completed:
-        return viewType;
-      default:
-        return '';
-    }
-  };
-
   const checkShowSeeMore = (contentType: MyContentType): void => {
     const models = getModels(contentType);
     const totalCount = getTotalCount(contentType);
@@ -469,7 +452,7 @@ function MyLearningListContainerV2(props: Props) {
   const getModelsByConditions = (count: number) => {
     if (count > 0) {
       // initPage();
-      fetchModelsByConditions(contentType, viewType);
+      fetchModelsByConditions(contentType);
     } else {
       fetchModelsByContentType(contentType);
     }
@@ -481,7 +464,6 @@ function MyLearningListContainerV2(props: Props) {
 
   const onChangeViewType = useCallback(
     (e: any, data: any) => {
-      setViewType(data.value);
       sessionStorage.removeItem('learningOffset');
       sessionStorage.removeItem('SCROLL_POS');
       pageInfo.current = { offset: 0, limit: 20 };
@@ -635,8 +617,6 @@ function MyLearningListContainerV2(props: Props) {
         <>
           <LineHeaderContainerV2
             contentType={contentType}
-            viewType={viewType}
-            onChangeViewType={onChangeViewType}
             resultEmpty={resultEmpty}
             totalCount={getTotalCount(contentType)}
             filterCount={filterCount}
@@ -646,7 +626,6 @@ function MyLearningListContainerV2(props: Props) {
           />
           <MultiFilterBox
             contentType={contentType}
-            viewType={viewType}
             openFilter={openFilter}
             onClickFilter={onClickFilter}
             onChangeFilterCount={onChangeFilterCount}
@@ -744,7 +723,6 @@ export default inject(
 const PAGE_SIZE = 20;
 
 /* types */
-export type ViewType = 'Course' | 'All' | ''; // 코스만보기 | 전체보기
 export type ApprovalViewType = 'All' | 'Waiting' | 'Approval' | 'Reject';
 export type MyContentType =
   | MyLearningContentType

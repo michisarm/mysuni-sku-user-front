@@ -2,10 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
 import { Checkbox, Table } from 'semantic-ui-react';
 import moment from 'moment';
-import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { MyTrainingService } from 'myTraining/stores';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
@@ -37,13 +35,7 @@ function MyLearningTableBody(props: Props) {
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
   const history = useHistory();
   const { scrollOnceMove, scrollSave } = useScrollMove();
-  /* functions */
-  /* 
-    아래의 두 함수는 나중에 AplModel 의 매서드로 변경하기.
-    1. getApprovalTime()
-    2. getLearningTime()
-
-  */
+ 
 
   useEffect(() => {
     setTimeout(() => {
@@ -142,14 +134,7 @@ function MyLearningTableBody(props: Props) {
 
   /* render functions */
   const renderWithBaseContent = (model: MyTableView, index: number) => {
-    /*
-      ContentType 에 상관없이 공통으로 보여지는 컬럼들.
-        1. No
-        2. College
-        3. 과정명
-        4. 학습유형
-        5. Level
-    */
+    
     return (
       <>
         <Table.Cell>

@@ -6,7 +6,7 @@ import { mobxHelper } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
-import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import { CollegeModel } from 'college/model';
@@ -16,7 +16,6 @@ import CheckboxOptions from '../../model/CheckboxOptions';
 
 interface Props {
   contentType: MyContentType;
-  viewType: ViewType;
   openFilter: boolean;
   onClickFilter: () => void;
   onChangeFilterCount: (count: number) => void;
@@ -59,7 +58,7 @@ export enum FilterConditionName {
   'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
 */
 function MultiFilterBox(props: Props) {
-  const { contentType, viewType, openFilter, onClickFilter, onChangeFilterCount, getModels, colleges, myTrainingService, inMyLectureService, lectureService } = props;
+  const { contentType, openFilter, onClickFilter, onChangeFilterCount, getModels, colleges, myTrainingService, inMyLectureService, lectureService } = props;
   const { totalFilterCount: totalFilterCountView, filterCounts: filterCountViews } = props;
 
   /* states */
@@ -111,7 +110,7 @@ function MultiFilterBox(props: Props) {
   useEffect(() => {
     onChangeFilterCount(0);
     setConditions(InitialConditions);
-  }, [viewType, contentType]);
+  }, [contentType]);
 
 
   const changeFilterRdo = (contentType: MyContentType) => {
@@ -335,12 +334,10 @@ function MultiFilterBox(props: Props) {
   }
 
   /* render functions */
-  const displayRow = (contentType: MyContentType, viewType: ViewType, filterConditionName: FilterConditionName) => {
+  const displayRow = (contentType: MyContentType, filterConditionName: FilterConditionName) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
-        /* viewType = 코스만 보기 */
-        if (viewType === 'Course') {
           switch (filterConditionName) {
             case FilterConditionName.Required:
             case FilterConditionName.LearningTime:
@@ -351,9 +348,6 @@ function MultiFilterBox(props: Props) {
             default:
               return false;
           }
-        }
-        /* viewType = 전체보기 */
-        return true;
       }
       case MyLearningContentType.Required: {
         /* viewType = 코스만보기 & 전체보기 */
@@ -393,7 +387,7 @@ function MultiFilterBox(props: Props) {
           <table className="">
             <tbody>
 
-              {displayRow(contentType, viewType, FilterConditionName.LearningType) && (
+              {displayRow(contentType, FilterConditionName.LearningType) && (
                 <tr>
                   {/* 학습유형 */}
                   <th>{FilterConditionName.LearningType}</th>
@@ -449,7 +443,7 @@ function MultiFilterBox(props: Props) {
                     ))}
                 </td>
               </tr>
-              {displayRow(contentType, viewType, FilterConditionName.DifficultyLevel) && (
+              {displayRow(contentType, FilterConditionName.DifficultyLevel) && (
                 <tr>
                   {/* 난이도 */}
                   <th>{FilterConditionName.DifficultyLevel}</th>
@@ -477,7 +471,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType, FilterConditionName.LearningTime) && (
+              {displayRow(contentType, FilterConditionName.LearningTime) && (
                 <tr>
                   {/* 학습시간 */}
                   <th>{FilterConditionName.LearningTime}</th>
@@ -505,7 +499,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType, FilterConditionName.Organizer) && (
+              {displayRow(contentType, FilterConditionName.Organizer) && (
                 <tr>
                   {/* 교육기관 */}
                   <th>{FilterConditionName.Organizer}</th>
@@ -533,7 +527,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType, FilterConditionName.Required) && (
+              {displayRow(contentType, FilterConditionName.Required) && (
                 <tr>
                   {/* 핵인싸 */}
                   <th>{FilterConditionName.Required}</th>
@@ -553,7 +547,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType, FilterConditionName.Certification) && (
+              {displayRow(contentType, FilterConditionName.Certification) && (
                 <tr>
                   {/* 교육기관 */}
                   <th>{FilterConditionName.Certification}</th>
@@ -581,7 +575,7 @@ function MultiFilterBox(props: Props) {
                   </td>
                 </tr>
               )}
-              {displayRow(contentType, viewType, FilterConditionName.LearningSchedule) && (
+              {displayRow(contentType, FilterConditionName.LearningSchedule) && (
                 <tr>
                   {/* 교육기관 */}
                   <th>{FilterConditionName.LearningSchedule}</th>

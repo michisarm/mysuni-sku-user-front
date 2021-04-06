@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
-import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { ApprovalViewType } from 'myTraining/ui/logic/MyApprovalListContainerV2';
 
@@ -14,8 +14,8 @@ interface Props {
   openFilter?: boolean;
   activeFilter?: boolean;
   onClickFilter?: () => void;
-  checkedViewType: ViewType | ApprovalViewType;
-  onChangeViewType: (e: any, data: any) => void;
+  checkedViewType?: ApprovalViewType;
+  onChangeViewType?: (e: any, data: any) => void;
 }
 
 function ListRightTopPanel(props: Props) {
@@ -24,24 +24,6 @@ function ListRightTopPanel(props: Props) {
   /* render functions */
   const renderRadiobox = (contentType: MyContentType) => {
     switch (contentType) {
-      case MyLearningContentType.InProgress:
-      case MyLearningContentType.Completed:
-        return !resultEmpty && (
-          <div className="view-all">
-            {CheckboxOptions.viewTypes.map((viewType, index) => (
-              <Fragment key={`view-type-${index}`}>
-                <Checkbox
-                  className="base radio"
-                  name={viewType.name}
-                  label={viewType.label}
-                  value={viewType.value}
-                  checked={viewType.value === checkedViewType}
-                  onChange={onChangeViewType}
-                />
-              </Fragment>
-            ))}
-          </div>
-        );
       case MyApprovalContentType.PersonalLearning:
         return (
           <div className="radio-wrap">

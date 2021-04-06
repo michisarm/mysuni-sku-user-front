@@ -6,7 +6,7 @@ import XLSX from 'xlsx';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
 import { MyStampXlsxModel } from 'myTraining/model/MyStampXlsxModel';
-import { MyContentType, ViewType } from './MyLearningListContainerV2';
+import { MyContentType } from './MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from '../model';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { AplService, MyTrainingService } from '../../stores';
@@ -14,8 +14,6 @@ import { MyTrainingTableViewModel } from 'myTraining/model';
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;
-  viewType: ViewType;
-  onChangeViewType: (e: any, data: any) => void;
   resultEmpty: boolean;
   totalCount: number;
   filterCount: number;
@@ -30,7 +28,6 @@ interface Props extends RouteComponentProps {
 function LineHeaderContainerV2(props: Props) {
   const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService, aplService } = props;
   const { aplCount } = aplService!;
-  const { viewType, onChangeViewType } = props;
 
   /* functions */
   const getModelsForExcel = async (contentType: MyContentType) => {
@@ -116,8 +113,6 @@ function LineHeaderContainerV2(props: Props) {
             openFilter={openFilter}
             activeFilter={isFilterActive()}
             onClickFilter={onClickFilter}
-            checkedViewType={viewType}
-            onChangeViewType={onChangeViewType}
           />
         </ListTopPanelTemplate>
       </div>

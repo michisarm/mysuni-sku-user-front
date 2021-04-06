@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 
@@ -25,7 +25,6 @@ class LectureFilterRdoModelV2 {
     MultiFilterBox 에서 선택되는 검색 조건들.
   */
   serviceType: string = ''; // Course || Card
-  viewType: ViewType = '';  // 코스만보기 || 전체보기
   collegeIds: string[] = []; // 컬리지
   cubeTypes: string[] = []; // 교육유형
   difficultyLevels: string[] = []; // 난이도
@@ -86,10 +85,6 @@ class LectureFilterRdoModelV2 {
 
   changeServiceType(serviceType: string) {
     this.serviceType = serviceType;
-  }
-
-  changeViewType(viewType: ViewType) {
-    this.viewType = viewType;
   }
 
   changeConditions(conditions: FilterCondition) {

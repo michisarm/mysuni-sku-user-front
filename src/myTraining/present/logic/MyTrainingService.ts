@@ -4,7 +4,7 @@ import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
 import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
@@ -334,9 +334,9 @@ class MyTrainingService {
 
     runInAction(
       () =>
-      (this._myTrainings = this._myTrainings.concat(
-        trainingOffsetElementList.results
-      ))
+        (this._myTrainings = this._myTrainings.concat(
+          trainingOffsetElementList.results
+        ))
     );
 
     return trainingOffsetElementList;
@@ -356,9 +356,9 @@ class MyTrainingService {
 
     runInAction(
       () =>
-      (this._myTrainings = this._myTrainings.concat(
-        trainingOffsetElementList.results
-      ))
+        (this._myTrainings = this._myTrainings.concat(
+          trainingOffsetElementList.results
+        ))
     );
     return trainingOffsetElementList;
   }
@@ -485,12 +485,7 @@ class MyTrainingService {
     this._myTrainingFilterRdo = MyTrainingFilterRdoModel.create(contentType);
   }
 
-  changeFilterRdoWithViewType(viewType: ViewType) {
-    if (viewType === 'All') {
-      viewType = '';
-    }
-
-    this._myTrainingFilterRdo.changeViewType(viewType);
+  changeFilterRdoWithViewType() {
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
@@ -525,15 +520,6 @@ class MyTrainingService {
       }
 
       if (this.inProgressTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
-          return false;
-        }
-
-        /* 전체보기 */
         this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.inProgressTableCount;
         return false;
@@ -555,14 +541,6 @@ class MyTrainingService {
       }
 
       if (this.completedTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
-          return false;
-        }
-
         /* 전체보기 */
         this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.completedTableCount;
@@ -660,24 +638,14 @@ class MyTrainingService {
 
   /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
   private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
-    const { contentType, viewType } = this._myTrainingFilterRdo;
+    const { contentType } = this._myTrainingFilterRdo;
     const endIndex = offset.offset + offset.limit;
 
     if (contentType === MyLearningContentType.InProgress) {
-      if (viewType === 'Course') {
-        const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-
-        return courseTableViews.slice(0, endIndex)
-      }
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
     if (contentType === MyLearningContentType.Completed) {
-      if (viewType === 'Course') {
-        const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(tableView => tableView.serviceType !== 'CARD');
-
-        return courseTableViews.slice(0, endIndex)
-      }
       return this.completedTableViews.slice(0, endIndex);
     }
 
@@ -686,9 +654,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithServiceType(serviceType: string) {
-    console.log(serviceType)
     this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
-    this._myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 

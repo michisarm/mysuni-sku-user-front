@@ -15,15 +15,12 @@ class MyTrainingTableViewModel {
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
-  serviceType: string = ''; // 카드 코스 구분을 위해
+  serviceType: string = '';
   cineroomId: string = '';
-  coursePlanId: string = '';
-  cubeId: string = '';
   category: CategoryModel = new CategoryModel(); // College & channel
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic; // Level
   name: string = ''; // 과정명
   organizer: string = ''; // 교육기관
-  cubeType: CubeType = CubeType.None; // 학습유형
   learningState?: LearningState; // 학습 상태
   learningTime: number = 0; // 학습시간
   startDate: number = 0; // 학습시작일
@@ -52,15 +49,6 @@ class MyTrainingTableViewModel {
       return '-';
     }
     return this.stampCount;
-  }
-
-  @computed get displayCubeType(): string {
-    return CubeTypeNameType[this.cubeType];
-  }
-
-  @computed get displayCollegeName(): string {
-    return this.category &&
-      this.category.college && this.category.college.name || '-';
   }
 
   @computed get displayDifficultyLevel(): string {

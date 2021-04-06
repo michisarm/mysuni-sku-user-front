@@ -17,6 +17,7 @@ import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
+import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 
 
 
@@ -42,6 +43,8 @@ function MyLearningPageV2(props: Props) {
   const { skProfile } = skProfileService!;
   const { menuControlAuth } = menuControlAuthService!;
   const currentTab = match.params.tab;
+
+  useRequestCollege();
 
   /* effects */
   useEffect(() => {
