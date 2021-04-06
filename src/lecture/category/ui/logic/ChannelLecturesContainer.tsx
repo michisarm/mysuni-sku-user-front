@@ -128,7 +128,11 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   async componentDidMount() {
     //
-    await this.findCollegeOrder();
+    try {
+      await this.findCollegeOrder();
+    } catch (error) {
+      console.error('TODO', error);
+    }
     this.findPagingChannelLectures();
   }
 
@@ -138,7 +142,11 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       prevProps.match.params.channelId !== this.props.match.params.channelId
     ) {
       this.init();
-      await this.findCollegeOrder();
+      try {
+        await this.findCollegeOrder();
+      } catch (error) {
+        console.error('TODO', error);
+      }
       this.findPagingChannelLectures();
     }
   }

@@ -365,7 +365,9 @@ class CoursePage extends Component<Props, State> {
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
-    reportFileBoxId = coursePlan.reportFileBox ? coursePlan.reportFileBox.fileBoxId : '';
+    reportFileBoxId = coursePlan.reportFileBox
+      ? coursePlan.reportFileBox.fileBoxId
+      : '';
     tabState = this.state.tabState || '';
 
     if (student && student.id) {
@@ -665,7 +667,7 @@ class CoursePage extends Component<Props, State> {
         init={this.init}
         loaded={this.state.loaded}
         onPageRefresh={this.onPageRefresh}
-        studentId=''
+        studentId=""
       >
         {courseContent}
       </LectureCardContainer>

@@ -58,7 +58,7 @@ export async function startLearning() {
   const studentCdo: StudentCdo = {
     cardId,
     cubeId,
-    round: 0,
+    round: 1,
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();

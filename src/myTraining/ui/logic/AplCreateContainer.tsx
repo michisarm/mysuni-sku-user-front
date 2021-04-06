@@ -2,12 +2,20 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
-import {Button, TextArea, Form, Modal, Table, Segment, Select, Icon, Image, Grid, Ref} from 'semantic-ui-react';
 import {
-  FileBox2,
-  PatronType,
-  ValidationType
-} from '@nara.drama/depot';
+  Button,
+  TextArea,
+  Form,
+  Modal,
+  Table,
+  Segment,
+  Select,
+  Icon,
+  Image,
+  Grid,
+  Ref,
+} from 'semantic-ui-react';
+import { FileBox2, PatronType, ValidationType } from '@nara.drama/depot';
 import { MemberViewModel } from '@nara.drama/approval';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
@@ -15,11 +23,15 @@ import AplService from '../../present/logic/AplService';
 import SelectType from '../../model/SelectType';
 import { CollegeService } from '../../../college/stores';
 
-import {depotHelper} from '../../../shared';
+import { depotHelper } from '../../../shared';
 import ManagerListModalContainer from '../../../approval/member/ui/logic/ManagerListModalContainer';
 import { ApprovalMemberModel } from '../../../approval/member/model/ApprovalMemberModel';
 import { SkProfileService } from '../../../profile/stores';
-import { CompanyApproverService, DepartmentService, MemberService } from '../../../approval/stores';
+import {
+  CompanyApproverService,
+  DepartmentService,
+  MemberService,
+} from '../../../approval/stores';
 import SkProfileModel from '../../../profile/model/SkProfileModel';
 import { DepartmentModel } from '../../../approval/department/model/DepartmentModel';
 import { CompanyApproverModel } from '../../../approval/company/model/CompanyApproverModel';
@@ -30,42 +42,50 @@ import { AplModel } from '../../model';
 import { CollegeLectureCountRdo } from '../../../lecture/model';
 import { CollegeLectureCountService } from '../../../lecture/stores';
 
-interface Props extends RouteComponentProps<{ cineroomId: string, studentId: string, cubeType: string, cubeState: string }> {
-  skProfileService?: SkProfileService
-  memberService?: MemberService
-  companyApproverService?: CompanyApproverService
-  departmentService?: DepartmentService
+interface Props
+  extends RouteComponentProps<{
+    cineroomId: string;
+    studentId: string;
+    cubeType: string;
+    cubeState: string;
+  }> {
+  skProfileService?: SkProfileService;
+  memberService?: MemberService;
+  companyApproverService?: CompanyApproverService;
+  departmentService?: DepartmentService;
   aplService: AplService;
   onChangeAplPropsValid: (name: string, value: string) => void;
   onChangeAplTimePropsValid: (name: string, value: string | number) => void;
-  apl?:AplModel;
+  apl?: AplModel;
   focusControlName?: string;
   onResetFocusControl?: () => void;
   collegeService?: CollegeService;
   queryModel?: AplQueryModel;
-  handleOk: (member: MemberViewModel) => void
-  handleSave: (mode: string) => void
-  handleCancel: (mode?: string) => void
-  collegeLectureCountService?: CollegeLectureCountService,
+  handleOk: (member: MemberViewModel) => void;
+  handleSave: (mode: string) => void;
+  handleCancel: (mode?: string) => void;
+  collegeLectureCountService?: CollegeLectureCountService;
 }
 
 interface States {
   collegeSelect: any;
 }
 
-@inject(mobxHelper.injectFrom(
-  'myTraining.aplService'
-  , 'shared.sharedService'
-  , 'college.collegeService'
-  , 'approval.memberService'
-  , 'approval.companyApproverService'
-  , 'approval.departmentService'
-  , 'profile.skProfileService'
-  , 'lecture.collegeLectureCountService',))
+@inject(
+  mobxHelper.injectFrom(
+    'myTraining.aplService',
+    'shared.sharedService',
+    'college.collegeService',
+    'approval.memberService',
+    'approval.companyApproverService',
+    'approval.departmentService',
+    'profile.skProfileService',
+    'lecture.collegeLectureCountService'
+  )
+)
 @observer
 @reactAutobind
 class AplCreateContainer extends React.Component<Props, States> {
-
   managerModal: any = null;
 
   private focusInputRefs: any = {
@@ -84,16 +104,14 @@ class AplCreateContainer extends React.Component<Props, States> {
 
   constructor(props: Props) {
     super(props);
-    this.state =
-      {
-        //open :  false,
-        //titleWrite: '',
-        //typeNameWrite: '',
-        //instituteWrite: ''
-        collegeSelect:[],
-      };
+    this.state = {
+      //open :  false,
+      //titleWrite: '',
+      //typeNameWrite: '',
+      //instituteWrite: ''
+      collegeSelect: [],
+    };
   }
-
 
   //
   componentDidMount() {
@@ -136,36 +154,54 @@ class AplCreateContainer extends React.Component<Props, States> {
 
   init() {
     //
-    const { skProfileService, departmentService, memberService, companyApproverService } = this.props;
-    skProfileService!.findSkProfile()
-      .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
-      .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
+    const {
+      skProfileService,
+      departmentService,
+      memberService,
+      companyApproverService,
+    } = this.props;
+    skProfileService!
+      .findSkProfile()
+      .then((profile: SkProfileModel) =>
+        departmentService!.findDepartmentByCode(profile.departmentCode)
+      )
+      .then((department: DepartmentModel) =>
+        memberService!.findApprovalMemberByEmployeeId(department.manager.id)
+      )
       .then(() => companyApproverService!.findCompanyAplApprover())
-      .then((companyAplApprover) => memberService!.findApprovalMemberByEmployeeId(companyAplApprover.employeeId))
-      .then((companyApprover) => {
+      .then(companyAplApprover =>
+        memberService!.findApprovalMemberByEmployeeId(
+          companyAplApprover.employeeId
+        )
+      )
+      .then(companyApprover => {
         this.onChangeAplProps('approvalId', companyApprover.id);
         this.onChangeAplProps('approvalEmail', companyApprover.email);
         this.onChangeAplProps('approvalName', companyApprover.name);
         this.onChangeAplProps('approvalCompany', companyApprover.companyName);
-        this.onChangeAplProps('approvalDepartment', companyApprover.departmentName);
+        this.onChangeAplProps(
+          'approvalDepartment',
+          companyApprover.departmentName
+        );
       });
   }
-
 
   async findAllColleges() {
     //
     const { collegeLectureCountService } = this.props;
     //const { collegeService } = this.props;
     //if (collegeService) collegeService.findCollegesForCurrentCineroom();
-    if(window.navigator.onLine){
+    if (window.navigator.onLine) {
       const category = sessionStorage.getItem('category');
-      if (category !== null && collegeLectureCountService!.collegeLectureCounts.length > 0) {
+      if (
+        category !== null &&
+        collegeLectureCountService!.collegeLectureCounts.length > 0
+      ) {
         const collegeLectureCounts = JSON.parse(category);
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
         }
-      }
-      else {
+      } else {
         const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
         if (collegeLectureCounts.length > 0) {
           this.setCollege(collegeLectureCounts);
@@ -181,16 +217,16 @@ class AplCreateContainer extends React.Component<Props, States> {
     if (colleges) {
       collegeSelect.push({ key: 'Select', text: 'Select', value: 'Select' });
       colleges.map((college, index) => {
-        if (college.collegeType === 'Company'){
+        if (college.collegeType === 'Company') {
           collegeSelect.push({
             key: index + 1,
             text: college.name,
-            value: college.collegeId,
+            value: college.id,
           });
         }
       });
     }
-    this.setState({collegeSelect});
+    this.setState({ collegeSelect });
     //return collegeSelect;
   }
 
@@ -233,10 +269,13 @@ class AplCreateContainer extends React.Component<Props, States> {
     );
   }
 
-  onChangeAplProps(name: string, value: string | {} | string[] | boolean | undefined | Moment) {
+  onChangeAplProps(
+    name: string,
+    value: string | {} | string[] | boolean | undefined | Moment
+  ) {
     //
     const { changeAplProps } = this.props.aplService || ({} as AplService);
-    if ( changeAplProps ) changeAplProps(name, value);
+    if (changeAplProps) changeAplProps(name, value);
   }
 
   setInputFocus() {
@@ -250,7 +289,20 @@ class AplCreateContainer extends React.Component<Props, States> {
     }
     //this.focusInputRefs[focusControlName].current.focus();
 
-    if (['title','type','typeName','collegeId','channelId','institute','requestHour','requestMinute','content','approvalId'].includes(focusControlName)) {
+    if (
+      [
+        'title',
+        'type',
+        'typeName',
+        'collegeId',
+        'channelId',
+        'institute',
+        'requestHour',
+        'requestMinute',
+        'content',
+        'approvalId',
+      ].includes(focusControlName)
+    ) {
       // input focus
       this.focusInputRefs[focusControlName].current.focus();
     } else if (['startDate', 'endDate'].includes(focusControlName)) {
@@ -268,10 +320,10 @@ class AplCreateContainer extends React.Component<Props, States> {
 
   onClear(name: string) {
     //
-    const {onChangeAplTimePropsValid} = this.props;
-    if(name === 'requestHour' || name === 'requestMinute'){
+    const { onChangeAplTimePropsValid } = this.props;
+    if (name === 'requestHour' || name === 'requestMinute') {
       onChangeAplTimePropsValid(name, 0);
-    } else{
+    } else {
       this.onChangeAplProps(name, '');
     }
   }
@@ -306,7 +358,15 @@ class AplCreateContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { memberService, companyApproverService, aplService, onChangeAplPropsValid, onChangeAplTimePropsValid, handleSave, handleCancel } = this.props;
+    const {
+      memberService,
+      companyApproverService,
+      aplService,
+      onChangeAplPropsValid,
+      onChangeAplTimePropsValid,
+      handleSave,
+      handleCancel,
+    } = this.props;
     const { apl } = aplService;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
@@ -319,10 +379,13 @@ class AplCreateContainer extends React.Component<Props, States> {
     const typeNameCount = (apl && apl.typeName && apl.typeName.length) || 0;
     const instituteCount = (apl && apl.institute && apl.institute.length) || 0;
     const contentCount = (apl && apl.content && apl.content.length) || 0;
-    const requestHourCount = (apl && apl.requestHour && apl.requestHour.toString().length) || 0;
-    const requestMinuteCount = (apl && apl.requestMinute && apl.requestMinute.toString().length) || 0;
+    const requestHourCount =
+      (apl && apl.requestHour && apl.requestHour.toString().length) || 0;
+    const requestMinuteCount =
+      (apl && apl.requestMinute && apl.requestMinute.toString().length) || 0;
     // 승인자 변경하기 활성, 비활성처리
-    const approvalShow = originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
+    const approvalShow =
+      originCompanyApprover.aplApproverType === AplApprovalType.Leader_Approve;
 
     return (
       /*<div className="ui full segment">*/
@@ -332,10 +395,14 @@ class AplCreateContainer extends React.Component<Props, States> {
           <Form>
             <Form.Field>
               <label className="necessary">교육명</label>
-              <div className={
-                titleCount === 0 ? 'ui right-top-count input'
-                  : (titleCount >= 100 ? 'ui right-top-count write input error' : 'ui right-top-count write input')
-              }
+              <div
+                className={
+                  titleCount === 0
+                    ? 'ui right-top-count input'
+                    : titleCount >= 100
+                    ? 'ui right-top-count write input error'
+                    : 'ui right-top-count write input'
+                }
               >
                 <span className="count">
                   <span className="now">{titleCount}</span>/
@@ -348,11 +415,14 @@ class AplCreateContainer extends React.Component<Props, States> {
                   value={(apl && apl.title) || ''}
                   onChange={(e: any) => {
                     onChangeAplPropsValid('title', e.target.value);
-                  }
-                  }
+                  }}
                   ref={this.focusInputRefs.title}
                 />
-                <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('title')}/>
+                <Icon
+                  aria-hidden="true"
+                  className="clear link"
+                  onClick={() => this.onClear('title')}
+                />
                 <span className="validation">
                   최대 100자까지 입력 가능합니다.{' '}
                 </span>
@@ -373,20 +443,25 @@ class AplCreateContainer extends React.Component<Props, States> {
                         const selectedIndex = data.options.findIndex(
                           (option: any) => option.value === data.value
                         );
-                        this.onChangeAplProps('typeName', data.options[selectedIndex].text);
-                      } else{
+                        this.onChangeAplProps(
+                          'typeName',
+                          data.options[selectedIndex].text
+                        );
+                      } else {
                         this.onChangeAplProps('typeName', '');
                       }
-                    }
-                    }
+                    }}
                   />
                 </Ref>
                 {apl && apl.type === AplType.Etc ? (
                   <div className="w878">
                     <div
                       className={
-                        typeNameCount === 0 ? 'ui h48 input ml18'
-                          : (typeNameCount >= 100 ? 'ui h48 input ml18 write error' : 'ui h48 input ml18 write input')
+                        typeNameCount === 0
+                          ? 'ui h48 input ml18'
+                          : typeNameCount >= 100
+                          ? 'ui h48 input ml18 write error'
+                          : 'ui h48 input ml18 write input'
                       }
                     >
                       <input
@@ -396,12 +471,15 @@ class AplCreateContainer extends React.Component<Props, States> {
                         value={(apl && apl.typeName) || ''}
                         onChange={(e: any) => {
                           onChangeAplPropsValid('typeName', e.target.value);
-                        }
-                        }
+                        }}
                         ref={this.focusInputRefs.typeName}
                       />
                       {/*<Icon aria-hidden="true" className="clear link" onClick={this.onClear('typeName')} />*/}
-                      <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('typeName')}/>
+                      <Icon
+                        aria-hidden="true"
+                        className="clear link"
+                        onClick={() => this.onClear('typeName')}
+                      />
                     </div>
                   </div>
                 ) : null}
@@ -422,9 +500,11 @@ class AplCreateContainer extends React.Component<Props, States> {
                       (option: any) => option.value === data.value
                     );
                     this.selectCollege('collegeId', data.value);
-                    this.onChangeAplProps('collegeName', data.options[selectedIndex].text);
-                  }
-                  }
+                    this.onChangeAplProps(
+                      'collegeName',
+                      data.options[selectedIndex].text
+                    );
+                  }}
                 />
               </Ref>
               {apl && apl.collegeId ? (
@@ -440,9 +520,11 @@ class AplCreateContainer extends React.Component<Props, States> {
                         (option: any) => option.value === data.value
                       );
                       this.onChangeAplProps('channelId', data.value);
-                      this.onChangeAplProps('channelName', data.options[selectedIndex].text);
-                    }
-                    }
+                      this.onChangeAplProps(
+                        'channelName',
+                        data.options[selectedIndex].text
+                      );
+                    }}
                   />
                 </Ref>
               ) : null}
@@ -463,10 +545,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <DatePicker
                       placeholderText="시작날짜를 선택해주세요."
                       selected={
-                        (apl &&
-                          apl.period &&
-                          apl.period.startDateObj) ||
-                        ''
+                        (apl && apl.period && apl.period.startDateObj) || ''
                       }
                       onChange={(date: Date) =>
                         this.onChangeAplProps(
@@ -482,7 +561,6 @@ class AplCreateContainer extends React.Component<Props, States> {
                       <span className="blind">date</span>
                     </Icon>
                   </div>
-
                 </div>
                 <span className="dash">-</span>
                 <div className="ui calendar" id="rangeend">
@@ -491,10 +569,7 @@ class AplCreateContainer extends React.Component<Props, States> {
                     <DatePicker
                       placeholderText="시작날짜를 선택해주세요."
                       selected={
-                        (apl &&
-                          apl.period &&
-                          apl.period.endDateObj) ||
-                        ''
+                        (apl && apl.period && apl.period.endDateObj) || ''
                       }
                       onChange={(date: Date) =>
                         this.onChangeAplProps(
@@ -523,10 +598,14 @@ class AplCreateContainer extends React.Component<Props, States> {
             </Form.Field>
             <Form.Field>
               <label className="necessary">교육기관</label>
-              <div className={
-                instituteCount === 0 ? 'ui right-top-count input'
-                  : (instituteCount >= 100 ? 'ui right-top-count write input error' : 'ui right-top-count write input')
-              }
+              <div
+                className={
+                  instituteCount === 0
+                    ? 'ui right-top-count input'
+                    : instituteCount >= 100
+                    ? 'ui right-top-count write input error'
+                    : 'ui right-top-count write input'
+                }
               >
                 <span className="count">
                   <span className="now">{instituteCount}</span>/
@@ -542,7 +621,11 @@ class AplCreateContainer extends React.Component<Props, States> {
                   }
                   ref={this.focusInputRefs.institute}
                 />
-                <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('institute')}/>
+                <Icon
+                  aria-hidden="true"
+                  className="clear link"
+                  onClick={() => this.onClear('institute')}
+                />
                 <span className="validation">
                   최대 100자까지 입력 가능합니다.{' '}
                 </span>
@@ -553,15 +636,21 @@ class AplCreateContainer extends React.Component<Props, States> {
               <label className="necessary">교육시간</label>
               <div className="time-wrap">
                 <div className="time">
-                  <div className={
-                    requestHourCount === 0 ? 'ui h48 input time'
-                      : 'ui h48 input time write'
-                  }
+                  <div
+                    className={
+                      requestHourCount === 0
+                        ? 'ui h48 input time'
+                        : 'ui h48 input time write'
+                    }
                   >
                     <input
                       id="requestHour"
                       type="text"
-                      value={isNaN(apl && apl.requestHour) ? 0 : parseInt(String(apl && apl.requestHour))}
+                      value={
+                        isNaN(apl && apl.requestHour)
+                          ? 0
+                          : parseInt(String(apl && apl.requestHour))
+                      }
                       min="0"
                       onChange={(e: any) =>
                         onChangeAplTimePropsValid('requestHour', e.target.value)
@@ -572,41 +661,63 @@ class AplCreateContainer extends React.Component<Props, States> {
                       ref={this.focusInputRefs.requestHour}
                     />
                     <label>시간</label>
-                    <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestHour')}/>
+                    <Icon
+                      aria-hidden="true"
+                      className="clear link"
+                      onClick={() => this.onClear('requestHour')}
+                    />
                   </div>
                 </div>
                 <div className="time">
-                  <div className={
-                    requestMinuteCount === 0 ? 'ui h48 input time'
-                      : 'ui h48 input time write'
-                  }
+                  <div
+                    className={
+                      requestMinuteCount === 0
+                        ? 'ui h48 input time'
+                        : 'ui h48 input time write'
+                    }
                   >
                     <input
                       id="requestMinute"
                       type="text"
-                      value={isNaN(apl && apl.requestMinute) ? 0 : parseInt(String(apl && apl.requestMinute))}
+                      value={
+                        isNaN(apl && apl.requestMinute)
+                          ? 0
+                          : parseInt(String(apl && apl.requestMinute))
+                      }
                       min="0"
                       onChange={(e: any) =>
-                        onChangeAplTimePropsValid('requestMinute', e.target.value)
+                        onChangeAplTimePropsValid(
+                          'requestMinute',
+                          e.target.value
+                        )
                       }
                       onBlur={(e: any) =>
-                        onChangeAplTimePropsValid('requestMinute', e.target.value)
+                        onChangeAplTimePropsValid(
+                          'requestMinute',
+                          e.target.value
+                        )
                       }
                       ref={this.focusInputRefs.requestMinute}
                     />
                     <label>분</label>
-                    <Icon aria-hidden="true" className="clear link" onClick={() => this.onClear('requestMinute')}/>
+                    <Icon
+                      aria-hidden="true"
+                      className="clear link"
+                      onClick={() => this.onClear('requestMinute')}
+                    />
                   </div>
                 </div>
                 <div className="info-text">
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  학습시간으로 인정되는 교육시간을 입력해주세요.<br />
+                  학습시간으로 인정되는 교육시간을 입력해주세요.
+                  <br />
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
-                  교육시간은 100시간 이상, 1분 이내는 등록할 수 없습니다.<br />
+                  교육시간은 100시간 이상, 1분 이내는 등록할 수 없습니다.
+                  <br />
                   <Icon className="info16">
                     <span className="blind">infomation</span>
                   </Icon>
@@ -618,9 +729,12 @@ class AplCreateContainer extends React.Component<Props, States> {
             <Form.Field>
               <label className="necessary">교육내용</label>
               <div className="ui form">
-                <div className={
-                  contentCount >= 1000 ? 'ui right-top-count write input error' : 'ui right-top-count write input'
-                }
+                <div
+                  className={
+                    contentCount >= 1000
+                      ? 'ui right-top-count write input error'
+                      : 'ui right-top-count write input'
+                  }
                 >
                   <span className="count">
                     <span className="now">{contentCount}</span>/
@@ -647,16 +761,29 @@ class AplCreateContainer extends React.Component<Props, States> {
               <div className="lg-attach">
                 <div className="attach-inner">
                   <FileBox2
-                    vaultKey={{keyString: 'sku-depot', patronType: PatronType.Audience}}
-                    patronKey={{keyString: 'sku-denizen', patronType: PatronType.Audience}}
+                    vaultKey={{
+                      keyString: 'sku-depot',
+                      patronType: PatronType.Audience,
+                    }}
+                    patronKey={{
+                      keyString: 'sku-denizen',
+                      patronType: PatronType.Audience,
+                    }}
                     /*validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator },{ type: ValidationType.Extension, validator: depotHelper.extensionValidator }]}*/
-                    validations={[{type: ValidationType.Duplication, validator: depotHelper.duplicationValidator}]}
+                    validations={[
+                      {
+                        type: ValidationType.Duplication,
+                        validator: depotHelper.duplicationValidator,
+                      },
+                    ]}
                     onChange={this.getFileBoxIdForReference}
                   />
                   <div className="bottom">
-                    <span className="text1"><Icon className="info16"/>
+                    <span className="text1">
+                      <Icon className="info16" />
                       <span className="blind">information</span>
-                      DOC,PPT,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.
+                      DOC,PPT,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의
+                      첨부파일을 등록하실 수 있습니다.
                       {/*파일 확장자가 exe를 제외한 모든 첨부파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.*/}
                     </span>
                   </div>
@@ -670,23 +797,34 @@ class AplCreateContainer extends React.Component<Props, States> {
                 </Grid.Column>
                 <Grid.Column>
                   <Modal.Actions>
-                    {approvalShow &&
-                    <Button className="post change-admin btn" onClick={this.onClickChangeApplyReference}>승인자 변경</Button>}
+                    {approvalShow && (
+                      <Button
+                        className="post change-admin btn"
+                        onClick={this.onClickChangeApplyReference}
+                      >
+                        승인자 변경
+                      </Button>
+                    )}
                     <ManagerListModalContainer
-                      ref={managerModal => this.managerModal = managerModal}
+                      ref={managerModal => (this.managerModal = managerModal)}
                       handleOk={this.onClickManagerListOk}
                       multiSelect={false}
                     />
                     <span className="text1">
-                      <b>{apl && apl.approvalName|| ''}</b>
-                      <span className="ml40">{apl && apl.approvalCompany || ''}</span>
-                      <span className="line">{apl && apl.approvalDepartment || ''}</span>
+                      <b>{(apl && apl.approvalName) || ''}</b>
+                      <span className="ml40">
+                        {(apl && apl.approvalCompany) || ''}
+                      </span>
+                      <span className="line">
+                        {(apl && apl.approvalDepartment) || ''}
+                      </span>
                       {approvalShow && (
                         <div className="info-text">
                           <Icon className="info16">
                             <span className="blind">infomation</span>
                           </Icon>
-                          본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정 해주세요.{' '}
+                          본인 조직의 리더가 아닐 경우 [승인자변경]을 눌러 수정
+                          해주세요.{' '}
                         </div>
                       )}
                     </span>
@@ -695,14 +833,10 @@ class AplCreateContainer extends React.Component<Props, States> {
               </Grid>
             </Form.Field>
             <div className="buttons">
-              <Button className="fix2 line"
-                onClick={() => handleCancel()}
-              >
+              <Button className="fix2 line" onClick={() => handleCancel()}>
                 취소
               </Button>
-              <Button className="fix2 bg"
-                onClick={() => handleSave('save')}
-              >
+              <Button className="fix2 bg" onClick={() => handleSave('save')}>
                 승인요청
               </Button>
             </div>

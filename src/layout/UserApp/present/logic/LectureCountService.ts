@@ -1,11 +1,15 @@
-
-import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
+import {
+  IObservableArray,
+  observable,
+  action,
+  computed,
+  runInAction,
+} from 'mobx';
 import _ from 'lodash';
 import { CollegeModel, ChannelModel } from 'college/model';
 import LectureApi from '../apiclient/LectureApi';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 import CollegeCountModel from '../../model/CollegeCountModel';
-
 
 class LectureCountService {
   //
@@ -18,7 +22,6 @@ class LectureCountService {
 
   @observable
   _collegeCountList: CollegeCountModel[] = [];
-
 
   constructor(lectureApi: LectureApi = LectureApi.instance) {
     this.lectureApi = lectureApi;
@@ -35,9 +38,11 @@ class LectureCountService {
   get collegeLectureCount() {
     //
     if (this._channels.length > 0) {
-      return this._channels.reduce((prev, current) => prev + current.lectureCount, 0);
-    }
-    else {
+      return this._channels.reduce(
+        (prev, current) => prev + current.lectureCount,
+        0
+      );
+    } else {
       return 0;
     }
   }
@@ -49,7 +54,6 @@ class LectureCountService {
     return collegeCountList.peek();
   }
 
-
   @action
   clear() {
     //
@@ -57,14 +61,21 @@ class LectureCountService {
   }
 
   @action
-  async findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
+  async findLectureCountByCollegeId(
+    collegeId: string,
+    channels: ChannelModel[]
+  ) {
     //
-    const lectureCountList = await this.lectureApi.findLectureCountByChannels(collegeId, channels);
+    const lectureCountList = await this.lectureApi.findLectureCountByChannels(
+      collegeId,
+      channels
+    );
 
-    const filteredChannels = lectureCountList
-      .map((lectureCount) => new ChannelCountRdo(lectureCount));
+    const filteredChannels = lectureCountList.map(
+      lectureCount => new ChannelCountRdo(lectureCount)
+    );
 
-    runInAction(() => this._channels = filteredChannels);
+    runInAction(() => (this._channels = filteredChannels));
     return filteredChannels;
   }
 
@@ -73,31 +84,39 @@ class LectureCountService {
     this._channels[index] = _.set(this._channels[index], name, value);
   }
 
-
   @action
   async findCollegesCount(colleges: CollegeModel[]) {
     //
-    const promises = colleges.map((college) =>
-      this.lectureApi.findLectureCountByChannels(college.collegeId, college.channels)
+    const promises = colleges.map(college =>
+      this.lectureApi.findLectureCountByChannels(
+        college.collegeId,
+        college.channels
+      )
     );
     const responseCollegeCountList = await Promise.all(promises);
 
-    const collegeCountList = responseCollegeCountList.map((channelCountList, index) => (
-      new CollegeCountModel({
-        collegeId: colleges[index].collegeId,
-        name: colleges[index].name,
-        lectureCount: channelCountList.reduce((prev, channelCount) => prev + channelCount.lectureCount, 0),
-        channelCountList,
-      })
-    ));
+    const collegeCountList = responseCollegeCountList.map(
+      (channelCountList, index) =>
+        new CollegeCountModel({
+          collegeId: colleges[index].collegeId,
+          name: colleges[index].name,
+          lectureCount: channelCountList.reduce(
+            (prev, channelCount) => prev + channelCount.lectureCount,
+            0
+          ),
+          channelCountList,
+        })
+    );
 
-    runInAction(() => this._collegeCountList = collegeCountList);
+    runInAction(() => (this._collegeCountList = collegeCountList));
     return collegeCountList;
   }
 
   getCollegeCount(collegeId: string) {
     //
-    const collegeCount = this._collegeCountList.find((collegeCount) => collegeCount.collegeId === collegeId);
+    const collegeCount = this._collegeCountList.find(
+      collegeCount => collegeCount.collegeId === collegeId
+    );
 
     if (!collegeCount) {
       return 0;
