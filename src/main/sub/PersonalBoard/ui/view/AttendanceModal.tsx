@@ -86,7 +86,7 @@ const AttendanceModal:React.FC<Props> = ({
     input.type = "hidden"
     input.name = 'q'
     input.value = EncryptEmail
-    console.log('EncryptEmail', EncryptEmail)
+    
     const env = document.createElement('input')
     input.type = "hidden"
     input.name = 'env'
