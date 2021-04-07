@@ -92,7 +92,7 @@ const AttendanceModal:React.FC<Props> = ({
     console.log('env', window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development')
     console.log('q', input)
     env.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
-
+    console.log('env', env)
     frm.appendChild(input)
     frm.appendChild(env)
     document.body.appendChild(frm)
