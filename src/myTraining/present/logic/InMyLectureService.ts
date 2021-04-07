@@ -393,6 +393,8 @@ const converToKey = (column: string): any => {
   switch (column) {
     case '학습시간':
       return 'learningTime';
+    case '최근학습일':
+      return 'lastStudyDate';
     case '스탬프':
       return 'stampCount';
     case '등록일':
