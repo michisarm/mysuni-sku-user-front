@@ -81,7 +81,6 @@ const AttendanceModal:React.FC<Props> = ({
 
   const lotteryTicketModalOpen = useCallback(() => {
     const frm = document.createElement('form')
-
     const input = document.createElement('input')
     input.type = "hidden"
     input.name = 'q'
@@ -91,6 +90,7 @@ const AttendanceModal:React.FC<Props> = ({
     env.type = "hidden"
     env.name = 'env'
     console.log('env', window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development')
+    console.log('q', input)
     env.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
 
     frm.appendChild(input)
