@@ -16,6 +16,7 @@ import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 import FilterCountViewModel from '../../model/FilterCountViewModel';
+import InMyLectureCdo from '../../../lecture/detail/model/InMyLectureCdo';
 
 @autobind
 class InMyLectureService {
@@ -65,11 +66,9 @@ class InMyLectureService {
   @computed
   get inMyLectureMap() {
     const map = new Map<string, InMyLectureModel>();
-
     this._inMyLectureAll.forEach(inMyLecture => {
       map.set(inMyLecture.serviceId, inMyLecture);
     });
-
     return map;
   }
 
@@ -96,6 +95,17 @@ class InMyLectureService {
   }
 
   @action
+  async addInMyLectureCard(inMyLectureCdo: InMyLectureCdo) {
+    await this.inMyLectureApi
+      .addInMyLectureCard(inMyLectureCdo)
+      .then(response => {
+        if (response && response.length > 0) {
+          runInAction(() => this.findAllInMyLectures());
+        }
+      });
+  }
+
+  @action
   async removeInMyLecture(inMyLectureId: string) {
     await this.inMyLectureApi
       .removeInMyLecture(inMyLectureId)
@@ -107,6 +117,18 @@ class InMyLectureService {
       });
   }
 
+  @action 
+  async removeInMyLectureCard(cardId: string, serviceId: string) {
+    await this.inMyLectureApi
+      .removeInMyLectureCard(cardId, serviceId)
+      .then(() => {
+        return runInAction(() => this.findAllInMyLectures());
+      })
+      .catch((reason: any) => {
+        return reason;
+      });
+  }
+  
   @action
   async findInMyLectures(
     limit: number,

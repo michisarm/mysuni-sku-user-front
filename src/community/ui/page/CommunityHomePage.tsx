@@ -183,7 +183,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <strong>{title}</strong>
         {isNew && <span className="new-label">NEW</span>}
       </div>
-      <p>{text}</p>
+      <p>{text}</p>profileIcon
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">

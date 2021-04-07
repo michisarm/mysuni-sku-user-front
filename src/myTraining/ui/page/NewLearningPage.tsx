@@ -1,12 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import NewLearningListContainer from '../logic/NewLearningListContainer';
+import LearningListContainer from '../logic/LearningListContainer';
 import { SkProfileService } from '../../../profile/stores';
-import { RQDLectureService, POPLectureService,NEWLectureService, LRSLectureService } from '../../../lecture/stores';
-
+import {
+  RQDLectureService,
+  POPLectureService,
+  NEWLectureService,
+  LRSLectureService,
+} from '../../../lecture/stores';
 
 export enum ContentType {
   Required = 'Required',
@@ -31,7 +36,12 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
 }
 
 const NewLearningPage: React.FC<Props> = Props => {
-  const { rqdLectureService, newLectureService, popLectureService, lrsLectureService } = Props;
+  const {
+    rqdLectureService,
+    newLectureService,
+    popLectureService,
+    lrsLectureService,
+  } = Props;
 
   const { params } = Props.match;
   const contentType = params.type as ContentType;
@@ -64,23 +74,26 @@ const NewLearningPage: React.FC<Props> = Props => {
 
   return (
     <ContentLayout breadcrumb={[{ text: `${contentTypeText}` }]}>
-      <div className="ma-title">
+      {/* <div className="ma-title">
         <div className="inner">
           <h2>{title}</h2>
         </div>
-      </div>
-      <NewLearningListContainer
+      </div> */}
+      {/* <NewLearningListContainer
         contentType={contentType}
         setPageTitle={setPageTitle}
-      />
+      /> */}
+      <LearningListContainer />
     </ContentLayout>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'rqdLecture.rqdLectureService',
-  'newLecture.newLectureService',
-  'popLecture.popLectureService',
-  'lrsLecture.lrsLectureService',
-))(withRouter(NewLearningPage));
+export default inject(
+  mobxHelper.injectFrom(
+    'profile.skProfileService',
+    'rqdLecture.rqdLectureService',
+    'newLecture.newLectureService',
+    'popLecture.popLectureService',
+    'lrsLecture.lrsLectureService'
+  )
+)(withRouter(NewLearningPage));

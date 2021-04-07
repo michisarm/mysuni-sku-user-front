@@ -3,7 +3,6 @@ import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
-import { find } from 'lodash';
 
 import { Button, Icon } from 'semantic-ui-react';
 // import { ActionLogService } from 'shared/stores';
@@ -11,9 +10,10 @@ import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
 
-import lectureRoutePaths from 'lecture/routePaths';
-import { LRSLectureService } from 'lecture/stores';
+import lectureRoutes from 'lecture/routePaths';
+import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
+import { POPLectureService } from 'lecture/stores';
 import { Lecture } from 'lecture';
 import {
   MyTrainingModel,
@@ -21,15 +21,18 @@ import {
   InMyLectureModel,
 } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
-import myTrainingRoutes from '../../../../myTraining/routePaths';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
 
+import { getAxios } from '../../../../shared/api/Axios';
+
+import { find } from 'lodash';
 import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
-import { findCardList } from '../../../../lecture/detail/api/cardApi';
+
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
+import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
@@ -38,96 +41,102 @@ import CardGroup, {
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
   reviewService?: ReviewService;
-  lrsLectureService?: LRSLectureService;
+  popLectureService?: POPLectureService;
   inMyLectureService?: InMyLectureService;
 
   profileMemberName: string;
-  profileMemberEmail: string;
 }
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
 */
-const LRSLearning: React.FC<Props> = function LRSLearning({
-  reviewService,
-  lrsLectureService,
-  inMyLectureService,
-  profileMemberName,
-  profileMemberEmail,
-  history,
-}) {
-  const CONTENT_TYPE_NAME = '추천과정';
+const POPLearning: React.FC<Props> = Props => {
+  //
+  const {
+    reviewService,
+    popLectureService,
+    inMyLectureService,
+    profileMemberName,
+    history,
+  } = Props;
+
+  const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
-  const { lrsLectures } = lrsLectureService!;
-  const [title, setTitle] = useState<string | null>('');
 
-  const [newCard, setNewCard] = useState<CardBundle>();
+  const { popLectures } = popLectureService!;
+  const [popCard, setPopCard] = useState<CardBundle>();
 
-  const fetchNewCards = async () => {
+  // cardIds를 사용하여 card list를 불러온다.
+  const findCardData = (ids: string[]) => {
+    const axios = getAxios();
+    const url = '/api/lecture/cards/findCards';
+    const joinedIds = ids && ids.join();
+
+    return axios
+      .get<CardWithCardRealtedCount[]>(url, { params: { ids: joinedIds } })
+      .then(res => res.data);
+  };
+
+  const fetchPopCards = async () => {
     const response = await findAvailableCardBundles();
-    // 신규이기 때문에 type이 New 인 부분을 가져옴
-    const findResponse = find(response, { type: 'Recommended' });
+    // 인기이기 때문에 type이 Popular 인 부분을 가져옴
+    const findResponse = find(response, { type: 'Popular' });
 
     // cards 값에 api로 받아온 cardList 값을 넣어줌
     if (findResponse?.cardIds) {
-      const joinedIds = findResponse.cardIds.join();
-
-      const cardList = await findCardList(joinedIds);
-
-      if (cardList !== undefined) {
-        findResponse.cards = cardList;
-      }
+      const cardList = await findCardData(findResponse.cardIds);
+      findResponse.cards = cardList;
     }
-    console.log(findResponse);
-    setNewCard(findResponse);
+
+    setPopCard(findResponse);
   };
 
   useEffect(() => {
-    fetchNewCards();
+    fetchPopCards();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  lrsLectureService?.setProfileName(profileMemberName);
+  const [title, setTitle] = useState<string | null>('');
 
   // // lectureService 변경  실행
   // useEffect(() => {
   //   findMyContent();
-  // }, []);
+  // }, [findMyContent]);
 
   const findMyContent = async () => {
-    lrsLectureService!.clearLectures();
+    popLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRecommendLearningList =
+    const savedPopularLearningList =
       window.navigator.onLine &&
-      window.sessionStorage.getItem('LrsLearningList');
-    if (savedRecommendLearningList && savedRecommendLearningList.length > 0) {
-      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(
-        savedRecommendLearningList
+      window.sessionStorage.getItem('PopLearningList');
+    if (savedPopularLearningList && savedPopularLearningList.length > 0) {
+      const popularMain: OffsetElementList<LectureModel> = JSON.parse(
+        savedPopularLearningList
       );
-      if (recommendMain.results.length > PAGE_SIZE - 1) {
-        lrsLectureService!.setPagingLrsLectures(recommendMain);
+      if (popularMain.results.length > PAGE_SIZE - 1) {
+        popLectureService!.setPagingPopLectures(popularMain);
         if (
-          !recommendMain ||
-          !recommendMain.title ||
-          recommendMain.title.length < 1
+          !popularMain ||
+          !popularMain.title ||
+          popularMain.title.length < 1
         ) {
-          setTitle(lrsLectureService!.Title);
+          setTitle(popLectureService!.Title);
         } else {
-          setTitle(recommendMain.title);
+          setTitle(popularMain.title);
         }
         return;
       }
     }
 
-    lrsLectureService!
-      .findPagingLrsLectures(
-        LectureFilterRdoModel.lrsLectures(PAGE_SIZE, 0, profileMemberEmail),
+    popLectureService!
+      .findPagingPopLectures(
+        LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
         true
       )
       .then(response => {
-        lrsLectureService!.setTitle(response.title);
+        popLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
-          setTitle(lrsLectureService!.Title);
+          setTitle(popLectureService!.Title);
         } else {
           setTitle(response.title);
         }
@@ -164,41 +173,58 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
     // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
-    history.push(myTrainingRoutes.learningLrsLecture());
+    history.push(myTrainingRoutes.learningPopLecture());
 
     // react-ga event
     ReactGA.event({
-      category: '추천 과정',
+      category: '인기 과정',
       action: 'Click',
-      label: '추천 과정 전체보기',
+      label: '인기 과정 전체보기',
     });
   };
 
   const onViewDetail = (e: any, data: any) => {
     //
-    const { model } = data;
-
+    //const { model } = data;
+    const { card } = data;
     // react-ga event
     ReactGA.event({
-      category: '메인_추천과정',
+      category: '메인_인기',
       action: 'Click Card',
       // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
       //   model.name
       // }`,
-      label: `${model.name}`,
+      label: `${card.name}`,
     });
 
+    const patronKey = popCard?.patronKey && popCard.patronKey.keyString; // model.servicePatronKeyString
     const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+      patronInfo.getCineroomByPatronId(patronKey!) ||
+      patronInfo.getCineroomByDomain(card)!; // patronKey 값
 
-    if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.courseOverview(model.serviceId));
-    } else {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
-      );
-    }
+    // if (
+    //   model.serviceType === LectureServiceType.Program ||
+    //   model.serviceType === LectureServiceType.Course
+    // ) {
+    //   history.push(
+    //     lectureRoutes.courseOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.coursePlanId,
+    //       model.serviceType,
+    //       model.serviceId
+    //     )
+    //   );
+    // } else if (model.serviceType === LectureServiceType.Card) {
+    //   history.push(
+    //     lectureRoutes.lectureCardOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.cubeId,
+    //       model.serviceId
+    //     )
+    //   );
+    // }
   };
 
   const onActionLecture = (
@@ -244,16 +270,16 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
   /* const onClickActionLog = (text: string) => {
     actionLogService?.registerClickActionLog({ subAction: text });
   }; */
+  const routeToRecommend = () => {
+    history.push(lectureRoutes.recommend());
+  };
 
   return (
     <ContentWrapper>
       <div className="section-head">
-        {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
-        <strong>{newCard?.displayText}</strong>
-        <strong>{title}</strong>
-        {/*<strong>{lrsLectureService?.Title}</strong>*/}
+        <strong>{popCard?.displayText}</strong>
         <div className="right">
-          {newCard?.cards && newCard.cards.length > 0 && (
+          {popCard?.cards && popCard.cards.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View all <Icon className="morelink" />
             </Button>
@@ -261,12 +287,12 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
         </div>
       </div>
 
-      {newCard?.cards && newCard.cards.length > 0 ? (
+      {popCard?.cards && popCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {newCard.cards.map((item, i) => {
+          {popCard.cards.map((item, i) => {
             const { card, cardRelatedCount } = item;
             const inMyLecture = getInMyLecture(card.id);
-            // const inMyLecture = getInMyLecture("");
+
             return (
               <li>
                 {/* <CardGroup type={GroupType.Box}>
@@ -286,45 +312,25 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
               </li>
             );
           })}
-          {/* {newLectures.map(
-            (
-              learning: LectureModel | MyTrainingModel | InMyLectureModel,
-              index: number
-            ) => {
-              const inMyLecture = getInMyLecture(learning.serviceId);
-
-              return (
-                <Lecture
-                  key={`learning-${index}`}
-                  model={learning}
-                  rating={getRating(learning)}
-                  thumbnailImage={learning.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: '알림',
-                      message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
-                    });
-                    onActionLecture(inMyLecture || learning);
-                  }}
-                  onViewDetail={onViewDetail}
-                />
-              );
-            }
-          )} */}
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel
           message={
-            <div className="text">
-              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
-            </div>
+            <>
+              <div className="text">진행중인 학습 과정이 없습니다.</div>
+              <Button
+                icon
+                as="a"
+                className="right btn-blue2"
+                onClick={routeToRecommend}
+              >
+                <span className="border">
+                  <span className="ellipsis">{profileMemberName}</span>
+                  님에게 추천하는 학습 과정 보기
+                </span>
+                <Icon className="morelink" />
+              </Button>
+            </>
           }
         />
       )}
@@ -336,7 +342,7 @@ export default inject(
   mobxHelper.injectFrom(
     // 'shared.actionLogService',
     'shared.reviewService',
-    'lrsLecture.lrsLectureService',
+    'popLecture.popLectureService',
     'myTraining.inMyLectureService'
   )
-)(withRouter(observer(LRSLearning)));
+)(withRouter(observer(POPLearning)));

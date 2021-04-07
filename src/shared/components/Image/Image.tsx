@@ -1,10 +1,8 @@
 import React from 'react';
 import { includes } from 'lodash';
 
-interface Props {
+interface Props extends Record<string, any> {
   src: string;
-  alt?: string;
-  className?: string;
 }
 
 function Image({ src, alt, className }: Props) {

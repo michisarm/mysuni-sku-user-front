@@ -10,17 +10,29 @@ import MainBanner from './MainComponents/MainBanner';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
 
+import { CardBundle } from '../../../lecture/shared/model/CardBundle';
+import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
+
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
   inMyLectureService?: InMyLectureService;
 }
 
 const MyLearningContentContainer: React.FC<Props> = Props => {
+  const [cardBundles, setCardBundles] = useState<CardBundle[]>();
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
   const { member } = skProfile;
-
   const [memName, setMemName] = useState('');
+
+  const fetchCardBundles = async () => {
+    const response = await findAvailableCardBundles();
+    setCardBundles(response);
+  };
+
+  useEffect(() => {
+    fetchCardBundles();
+  }, []);
 
   useEffect(() => {
     inMyLectureService!.findAllInMyLectures();
@@ -41,20 +53,9 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       <ChallengingBadge profileMemberName={member.name} />
 
       <MainBanner />
-      <LeraningContainer contentType="Normal" contentTypeName="일반 과정" />
-      <LeraningContainer contentType="New" contentTypeName="신규 과정" />
-      <LeraningContainer contentType="Popular" contentTypeName="인기 과정" />
-      <LeraningContainer
-        contentType="Recommended"
-        contentTypeName="추천 과정"
-      />
-      {/* <RequiredLearning />
-      <NewLearning />
-      <PopularLearning profileMemberName={member.name} />
-      <RecommendLearning
-        profileMemberName={member.name}
-        profileMemberEmail={member.email}
-      /> */}
+      {cardBundles?.map((cardBundle, i) => (
+        <LeraningContainer key={i} cardBundle={cardBundle} />
+      ))}
     </>
   );
 };

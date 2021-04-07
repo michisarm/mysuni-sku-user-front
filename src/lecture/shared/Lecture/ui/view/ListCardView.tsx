@@ -141,13 +141,12 @@ class ListCardView extends Component<Props> {
               </div>
             )) ||
               null}
-            {(model.cubeTypeName !== 'Card' && (
+            {model.cubeTypeName !== 'Card' && (
               <div className="time">
                 <strong>&nbsp;</strong>
                 {this.getHourMinuteFormat(hour, minute)}
               </div>
-            )) ||
-              null}
+            )}
           </div>
         </div>
       </Card>
