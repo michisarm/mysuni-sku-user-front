@@ -28,6 +28,7 @@ import { MenuControlAuth } from 'shared/model/MenuControlAuth';
 import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
 import { requestLearningObjectives, saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
 import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
+import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -42,6 +43,7 @@ interface Props extends RouteComponentProps {
 interface States {
   boardVisible: boolean;
   learningObjectivesOpen: boolean;
+  attendanceOpen: boolean;
   companyCode: string;
   activeIndex: any;
   learningObjectives?:LearningObjectives 
@@ -62,6 +64,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
   state = {
     boardVisible: false,
     learningObjectivesOpen: false,
+    attendanceOpen: false,
     companyCode: '',
     activeIndex: -1,
     learningObjectives: {
@@ -228,6 +231,12 @@ class MyLearningSummaryContainer extends Component<Props, States> {
     return Number(percent)
   }
 
+  handlePopup() {
+    this.setState(prevState => {
+      return { attendanceOpen: !prevState.attendanceOpen };
+    });
+  }
+
   goToBadge () {
     const { history } = this.props;
     history.push('/certification/badge/EarnedBadgeList/pages/1')
@@ -240,7 +249,7 @@ class MyLearningSummaryContainer extends Component<Props, States> {
 
   render() {
     //
-    const { boardVisible, learningObjectivesOpen, companyCode, activeIndex, learningObjectives } = this.state;
+    const { boardVisible, learningObjectivesOpen, attendanceOpen, companyCode, activeIndex, learningObjectives } = this.state;
     const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
@@ -337,6 +346,24 @@ class MyLearningSummaryContainer extends Component<Props, States> {
       setBadgeLearningTimeItem({ ...badgeLearningTime, mylearningTimeHour: accrueHour, mylearningTimeMinute: accrueMinute})
     }
 
+    const eventBannerVisible = () => {
+      const today = moment().format('YYYY-MM-DD')
+      const afterFlag = moment(today).isAfter(
+        moment().format('2021-04-04'),
+        'day'
+      );
+      const beforeFlag = moment(today).isBefore(
+        moment().format('2021-05-01'),
+        'day'
+      );
+
+      if(afterFlag && beforeFlag) {
+        return true
+      } else {
+        return false
+      }
+    };
+
     const style1 = {
       borderRadius: "0.375rem",
       textAlign: "center",
@@ -385,75 +412,60 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                   <span className="bot-num">도전중 {Number(badgeService?.allBadgeCount.challengingCount)}</span>
                 </div>
               </div>
-              {/* <Popup
+            </div>
+            <div className="main-gauge">
+              <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
+                <Popup
+                  trigger={
+                    <div className={`gauge-content gauge-com${complateLearningValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
+                      <div className="gauge-content-box">
+                        <p>{myLearningSummary.completeLectureCount}</p>
+                        <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
+                      </div>
+                    </div>
+                  }
+                  style={style2}
+                  position="bottom center"
+                  wide
+                >
+                  <span className="personal_pop_tit">
+                    누적 완료학습
+                  </span>
+                  <span>
+                    <strong>{myTrainingService?.personalBoardCompletedCount}</strong>개
+                  </span>
+                </Popup>
+            </div>
+            <div className="main-gauge ">
+              <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
+              <Popup
                 trigger={
-                  <div className={`gauge-content gauge-bg${badgeValue ? this.convertProgressValue(badgeValue) : 5}`}>
+                  <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
                     <div className="gauge-content-box">
-                      <p className="top-num">{_earnedCount}</p>
-                        <span className="bot-num">{Number(badgeService?.challengingCount)}</span>
+                      <p>{total}</p>
+                      <span>목표 {learningObjectives!.AnnualLearningObjectives}h</span>
                     </div>
                   </div>
                 }
-                style={style1}
+                style={style3}
                 position="bottom center"
                 wide
               >
                 <span className="personal_pop_tit">
-                  도전중 Badge(누적)
+                누적 학습시간
                 </span>
                 <span>
-                  <strong>{Number(badgeService?.challengingCount)}</strong>개
+                  <strong>{accrueTotal}</strong>
                 </span>
-              </Popup> */}
-            </div>
-            <div className="main-gauge">
-              <span className="gauge-badge">{CURRENT_YEAR + "년 완료학습"}</span>
-              <div className={`gauge-content gauge-com${complateLearningValue ? this.convertProgressValue(complateLearningValue) : 5}`}>
-                <div className="gauge-content-box">
-                  <p>{myLearningSummary.completeLectureCount}</p>
-                  <Popup
-                    trigger={
-                      <span>학습중 {myTrainingService?.personalBoardInprogressCount}</span>
-                    }
-                    style={style2}
-                    position="bottom center"
-                    wide
-                  >
-                    <span className="personal_pop_tit">
-                      누적 완료학습
-                    </span>
-                    <span>
-                  <strong>{myTrainingService?.personalBoardCompletedCount}</strong>개
-                    </span>
-                  </Popup>
-                </div>
-              </div>
-            </div>
-            <div className="main-gauge ">
-              <span className="gauge-badge">{CURRENT_YEAR + "년 학습시간"}</span>
-              <div className={`gauge-content gauge-time${LearningObjectivesPer ? (LearningObjectivesPer === 100 ? 100 : this.convertProgressValue(LearningObjectivesPer)) : 5}`}>
-                <div className="gauge-content-box">
-                  <p>{total}</p>
-                  <Popup
-                    trigger={
-                      <span>목표 {learningObjectives!.AnnualLearningObjectives}h</span>
-                    }
-                    style={style3}
-                    position="bottom center"
-                    wide
-                  >
-                    <span className="personal_pop_tit">
-                    누적 학습시간
-                    </span>
-                    <span>
-                      <strong>{accrueTotal}</strong>
-                    </span>
-                  </Popup>
-                </div>
-              </div>
+              </Popup>
             </div>
           </div>
           <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
+          {eventBannerVisible() && (
+            <div className="main-event-btn">
+              <button type="button" onClick={this.handlePopup} />
+            </div>
+          )}
         </HeaderWrapperView>
 
         {companyCode && (
@@ -525,6 +537,13 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             }
             return this.setState({'learningObjectivesOpen':value})
           }} 
+        />
+        {/* 4/5~ 4/30 일까지 노출되도록 수정 */}
+        <AttendanceModalContainer
+          open={attendanceOpen}
+          setOpen={(value, type?) => {
+            return this.setState({ attendanceOpen: value });
+          }}
         />
       </>
     );
