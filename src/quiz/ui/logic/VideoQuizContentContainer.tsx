@@ -366,12 +366,14 @@ const VideoQuizContentContainer = ({
                 }
               />
             </div>
+            <span className="wro">오답 입니다.</span>
             <div
               className="wro2"
               dangerouslySetInnerHTML={{
                 __html:
-                  `${questionData[currentIndex].alertMessage.message}` ||
-                  '오답 입니다. 다시 확인하고 제출하세요.',
+                  questionData[currentIndex].alertMessage.message !== ''
+                    ? `${questionData[currentIndex].alertMessage.message}`
+                    : '다시 확인하고 제출하세요.',
               }}
             />
           </div>
