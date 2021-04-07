@@ -640,7 +640,7 @@ function MyLearningListContainerV2(props: Props) {
         <>
           {(!resultEmpty && (
             <>
-              <MyLearningTableTemplate contentType={contentType}>
+              <MyLearningTableTemplate>
                 <MyLearningTableHeader
                   contentType={contentType}
                   onClickSort={onClickSort}

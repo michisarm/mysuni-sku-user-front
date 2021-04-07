@@ -33,28 +33,7 @@ function CheckedFilterView(props: Props) {
         ))
       );
     }
-
-    if (conditions.serviceType) {
-      buttons.push(
-        <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningType, conditions.serviceType)}>
-          {conditions.serviceType}
-        </Button>
-      );
-    }
-
-    if (conditions.learningTypes &&
-      conditions.learningTypes.length) {
-      buttons.push(
-        conditions.learningTypes.map((learningType, index) => (
-          <Fragment key={`checked-learningType-${index}`}>
-            <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningType, learningType)}>
-              {learningType}
-            </Button>
-          </Fragment >
-        ))
-      );
-    }
-
+    
     if (conditions.learningTimes &&
       conditions.learningTimes.length) {
       buttons.push(

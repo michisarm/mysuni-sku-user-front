@@ -10,25 +10,21 @@ import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../vi
 import { MyLearningTableBody, MyLearningTableHeader, MyLearningTableTemplate } from '../view/table';
 import { NoSuchContentPanelMessages } from '../model';
 import { NoSuchContentPanel } from 'shared';
+import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 
 
-interface Props {
-  contentType: MyApprovalContentType;
+interface MyApprovalListContainerV2Props {
   aplService?: AplService;
 }
 
-interface RouteParams {
-  tab: string;
-  pageNo?: string;
-}
 
-function MyApprovalListContainerV2(props: Props) {
-  /* props */
-  const { contentType, aplService } = props;
+function MyApprovalListContainerV2({
+  aplService,
+}: MyApprovalListContainerV2Props) {
   const { aplCount } = aplService!;
 
   const history = useHistory();
-  const { pageNo } = useParams<RouteParams>();
+  const params = useParams<MyApprovalRouteParams>();
 
   /* states */
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
@@ -60,7 +56,7 @@ function MyApprovalListContainerV2(props: Props) {
   };
 
   const getPageNo = (): number => {
-    const currentPageNo = pageNo;
+    const currentPageNo = params.pageNo;
     if (currentPageNo) {
       const nextPageNo = parseInt(currentPageNo) + 1;
       return nextPageNo;
@@ -145,32 +141,30 @@ function MyApprovalListContainerV2(props: Props) {
         {isModelExist() &&
           (
             <ListLeftTopPanel
-              contentType={contentType}
+              contentType={params.tab}
               countModel={aplCount}
             />
           )
         }
         <ListRightTopPanel
-          contentType={contentType}
+          contentType={params.tab}
           checkedViewType={viewType}
           onChangeViewType={onChangeViewType}
         />
       </ListTopPanelTemplate>
       {isModelExist() &&
         (
-          <MyLearningTableTemplate
-            contentType={contentType}
-          >
+          <MyLearningTableTemplate>
             <MyLearningTableHeader
-              contentType={contentType}
+              contentType={params.tab}
             />
             <MyLearningTableBody
-              contentType={contentType}
+              contentType={params.tab}
               totalCount={getTotalCount()}
               models={getModels()}
             />
           </MyLearningTableTemplate>
-        ) || renderNoSuchContentPanel(contentType)
+        ) || renderNoSuchContentPanel(params.tab)
       }
       {showSeeMore &&
         (

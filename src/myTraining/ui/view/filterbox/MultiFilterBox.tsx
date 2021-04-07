@@ -30,12 +30,10 @@ interface Props {
 
 export type FilterCondition = {
   collegeIds: string[];                 // 컬리지
-  learningTypes: string[];              // 학습유형
   difficultyLevels: string[];           // 난이도
   learningTimes: string[];              // 교육기간
   organizers: string[];                 // 교육기관
   required: string;                     // 권장과정
-  serviceType: string;                  // 학습유형에 포함되어 있는 'Course'
   certifications: string[];             // 뱃지 & 스탬프 유무
   startDate: Date | null;               // 교육일정 startDate
   endDate: Date | null;                 // 교육일정 endDate
@@ -44,7 +42,6 @@ export type FilterCondition = {
 
 export enum FilterConditionName {
   College = '컬리지',
-  LearningType = '교육유형',
   DifficultyLevel = '난이도',
   LearningTime = '학습시간',
   Organizer = '교육기관',
@@ -64,12 +61,10 @@ function MultiFilterBox(props: Props) {
   /* states */
   const [conditions, setConditions] = useState<FilterCondition>({
     collegeIds: [],
-    learningTypes: [],
     difficultyLevels: [],
     learningTimes: [],
     organizers: [],
     required: '',
-    serviceType: '',
     certifications: [],
     startDate: null,
     endDate: null,
@@ -166,17 +161,6 @@ function MultiFilterBox(props: Props) {
         /* 전체 선택 */
         setConditions({ ...conditions, collegeIds: [...colleges.map(college => college.collegeId)] });
         break;
-      case FilterConditionName.LearningType:
-        if (conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType) {
-          setConditions({ ...conditions, learningTypes: [], serviceType: '' });
-          break;
-        }
-        setConditions({
-          ...conditions,
-          learningTypes: [...CheckboxOptions.learningTypes.map(learningType => learningType.value).filter(value => value !== 'Course')],
-          serviceType: 'Course'
-        });
-        break;
       case FilterConditionName.DifficultyLevel:
         if (conditions.difficultyLevels.length === CheckboxOptions.difficultyLevels.length) {
           setConditions({ ...conditions, difficultyLevels: [] });
@@ -220,27 +204,6 @@ function MultiFilterBox(props: Props) {
         /* 선택 */
         setConditions({ ...conditions, collegeIds: conditions.collegeIds.concat(data.value) });
         break;
-      case FilterConditionName.LearningType:
-        /* 'Course' 를 제외한 모든 학습 유형에 대한 선택 해제 */
-        if (conditions.learningTypes.includes(data.value)) {
-          setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== data.value) });
-          break;
-        }
-
-        /* 'Course' 선택 해제 */
-        if (conditions.serviceType === 'Course' && data.value === 'Course') {
-          setConditions({ ...conditions, serviceType: '' });
-          break;
-        }
-        /* 학습유형 중 'Course' 를 선택할 시, learningTypes 가 아닌 serviceType 에 값이 바인딩됨. */
-        if (data.value === 'Course') {
-          setConditions({ ...conditions, serviceType: data.value });
-          break;
-        }
-
-        /* 'Course' 를 제외한 모든 학습 유형에 대한 선택 */
-        setConditions({ ...conditions, learningTypes: conditions.learningTypes.concat(data.value) });
-        break;
       case FilterConditionName.DifficultyLevel:
         if (conditions.difficultyLevels.includes(data.value)) {
           setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.filter(difficultyLevel => difficultyLevel !== data.value) });
@@ -283,12 +246,6 @@ function MultiFilterBox(props: Props) {
     switch (type) {
       case FilterConditionName.College:
         setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== getCollegeId(condition)) });
-        break;
-      case FilterConditionName.LearningType:
-        setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== condition) });
-        if (condition === 'Course') {
-          setConditions({ ...conditions, serviceType: '' });
-        }
         break;
       case FilterConditionName.DifficultyLevel:
         setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.filter(difficultyLevel => difficultyLevel !== condition) });
@@ -337,7 +294,8 @@ function MultiFilterBox(props: Props) {
   const displayRow = (contentType: MyContentType, filterConditionName: FilterConditionName) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
-      case MyLearningContentType.Completed: {
+      case MyLearningContentType.Completed:
+      case MyLearningContentType.InMyList: {
           switch (filterConditionName) {
             case FilterConditionName.Required:
             case FilterConditionName.LearningTime:
@@ -386,35 +344,6 @@ function MultiFilterBox(props: Props) {
           </div>
           <table className="">
             <tbody>
-
-              {displayRow(contentType, FilterConditionName.LearningType) && (
-                <tr>
-                  {/* 학습유형 */}
-                  <th>{FilterConditionName.LearningType}</th>
-                  <td>
-                    {/* select All 체크박스 */}
-                    <Checkbox
-                      className="base"
-                      name={FilterConditionName.LearningType}
-                      label={`${SELECT_ALL} (${totalFilterCountView.totalCount})`}
-                      checked={(conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType.length !== 0)}
-                      onChange={onCheckAll}
-                    />
-                    {CheckboxOptions.learningTypes.map((learningType, index) => (
-                      <Fragment key={`checkbox-learningType-${index}`}>
-                        <Checkbox
-                          className="base"
-                          name={FilterConditionName.LearningType}
-                          label={`${learningType.text} (${totalFilterCountView.getCountFromLearningType(learningType.text)})`}
-                          value={learningType.value}
-                          checked={conditions.learningTypes.includes(learningType.value) || conditions.serviceType === learningType.value}
-                          onChange={onCheckOne}
-                        />
-                      </Fragment>
-                    ))}
-                  </td>
-                </tr>
-              )}
               <tr>
                 {/* 컬리지 */}
                 <th>{FilterConditionName.College}</th>
@@ -645,12 +574,10 @@ export default inject(mobxHelper.injectFrom(
 const SELECT_ALL = 'Select All';
 const InitialConditions = {
   collegeIds: [],
-  learningTypes: [],
   difficultyLevels: [],
   learningTimes: [],
   organizers: [],
   required: '',
-  serviceType: '',
   certifications: [],
   startDate: null,
   endDate: null,

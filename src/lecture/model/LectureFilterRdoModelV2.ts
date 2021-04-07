@@ -21,12 +21,7 @@ class LectureFilterRdoModelV2 {
 
   contentType: MyContentType = MyLearningContentType.Required; // 탭 전환될 때마다 전달되는 contentType
 
-  /*
-    MultiFilterBox 에서 선택되는 검색 조건들.
-  */
-  serviceType: string = ''; // Course || Card
   collegeIds: string[] = []; // 컬리지
-  cubeTypes: string[] = []; // 교육유형
   difficultyLevels: string[] = []; // 난이도
   learningTimes: string[] = [];
   organizers: string[] = []; // 교육기관
@@ -44,35 +39,28 @@ class LectureFilterRdoModelV2 {
   }
 
   // offset, denizenKey, contentType 만을 검색 조건으로 함.
-  static create(contentType: MyContentType, serviceType?: string) {
-    if (serviceType) {
-      return new LectureFilterRdoModelV2({ contentType, serviceType } as LectureFilterRdoModelV2);
-    }
+  static create(contentType: MyContentType) {
     return new LectureFilterRdoModelV2({ contentType } as LectureFilterRdoModelV2);
   }
 
   static createWithConditions(
     collegeIds: string[],
-    cubeTypes: string[],
     difficultyLevels: string[],
     learningTimes: string[],
     organizers: string[],
     required: string,
     certifications: string[],
-    serviceType: string,
     startDate: string,
     endDate: string,
     applying: boolean
   ) {
     return new LectureFilterRdoModelV2({
       collegeIds,
-      cubeTypes,
       difficultyLevels,
       learningTimes,
       organizers,
       required,
       certifications,
-      serviceType,
       startDate,
       endDate,
       applying
@@ -83,12 +71,7 @@ class LectureFilterRdoModelV2 {
     this.contentType = contentType;
   }
 
-  changeServiceType(serviceType: string) {
-    this.serviceType = serviceType;
-  }
-
   changeConditions(conditions: FilterCondition) {
-    this.setCubeTypeAndServiceType(conditions);
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -108,33 +91,18 @@ class LectureFilterRdoModelV2 {
     this.offset = { offset: 0, limit: 20 };
   }
 
-  setCubeTypeAndServiceType(conditions: FilterCondition) {
-    /*
-      learningTypes 에 'Course' 가 포함될 경우,
-      cubeTypes 에는 'Course'를 제외하며 ServiceType 에 'Course'를 바인딩함.
-    */
-    if (conditions.learningTypes.includes('Course')) {
-      this.cubeTypes = conditions.learningTypes.filter(learningType => learningType !== 'Course');
-      this.serviceType = 'Course';
-    } else {
-      this.cubeTypes = conditions.learningTypes;
-      this.serviceType = conditions.serviceType;
-    }
-  }
 
   getFilterCount() {
     const requiredCount = this.required && 1 || 0;
-    const serviceTypeCount = this.serviceType && 1 || 0;
     const learningScheduleCount = this.startDate && this.endDate && 1 || 0;
     const applyingCount = this.applying && 1 || 0;
 
     return this.collegeIds.length +
-      this.cubeTypes.length +
       this.difficultyLevels.length +
       this.learningTimes.length +
       this.organizers.length +
       this.certifications.length +
-      requiredCount + serviceTypeCount + learningScheduleCount + applyingCount;
+      requiredCount + learningScheduleCount + applyingCount;
   }
 }
 

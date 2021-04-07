@@ -26,6 +26,7 @@ import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
+import { countRequiredCards } from '../../../detail/api/cardApi';
 
 @autobind
 class LectureService {
@@ -150,9 +151,9 @@ class LectureService {
 
     runInAction(
       () =>
-      (this._lectures = this._lectures.concat(
-        lectureOffsetElementList.results
-      ))
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
     );
     return lectureOffsetElementList;
   }
@@ -178,9 +179,9 @@ class LectureService {
 
     runInAction(
       () =>
-      (this._lectures = this._lectures.concat(
-        lectureOffsetElementList.results
-      ))
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
     );
     return lectureOffsetElementList;
   }
@@ -194,17 +195,17 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
-    if(offset >= 8) {
+    if (offset >= 8) {
       sessionStorage.setItem('channelOffset', JSON.stringify(offset));
     }
-    const getChannelOffset:any = sessionStorage.getItem('channelOffset');
-    const prevSorting:any = sessionStorage.getItem('channelSort');
+    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
+    const prevSorting: any = sessionStorage.getItem('channelSort');
     const prevChannelOffset = JSON.parse(getChannelOffset)
 
     const response = await this.lectureApi.findAllLectures(
       LectureRdoModel.newWithChannelOrder(collegeId, channelId, prevChannelOffset + limit, 0, prevSorting || orderBy)
     );
-    
+
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(
       response
     );
@@ -237,9 +238,9 @@ class LectureService {
 
     runInAction(
       () =>
-      (this._lectures = this._lectures.concat(
-        lectureOffsetElementList.results
-      ))
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
     );
     return lectureOffsetElementList;
   }
@@ -274,9 +275,9 @@ class LectureService {
 
     runInAction(
       () =>
-      (this._lectures = this._lectures.concat(
-        lectureOffsetElementList.results
-      ))
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
     );
     return lectureOffsetElementList;
   }
@@ -294,9 +295,9 @@ class LectureService {
 
     runInAction(
       () =>
-      (this._lectures = this._lectures.concat(
-        lectureOffsetElementList.results
-      ))
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
     );
     return lectureOffsetElementList;
   }
@@ -414,9 +415,9 @@ class LectureService {
 
     runInAction(
       () =>
-      (this._lectures = this._lectures.concat(
-        lectureOffsetElementList.results
-      ))
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
     );
     return lectureOffsetElementList;
   }
@@ -536,9 +537,9 @@ class LectureService {
 
       runInAction(
         () =>
-        (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
-          recommendLecture.lectures.results
-        ))
+          (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
+            recommendLecture.lectures.results
+          ))
       );
       return recommendLecture.lectures;
     }
@@ -556,16 +557,15 @@ class LectureService {
     return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
   }
 
-  /**
-   * 권장과정 갯수 조회
-   */
   @action
   async countRequiredLectures() {
-    const count = await this.lectureFlowApi.countRequiredLectures(this._lectureFilterRdoV2);
+    const count = await countRequiredCards();
 
-    runInAction(() => {
-      this.requiredLecturesCount = count;
-    });
+    if (count !== undefined) {
+      runInAction(() => {
+        this.requiredLecturesCount = count;
+      })
+    }
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////

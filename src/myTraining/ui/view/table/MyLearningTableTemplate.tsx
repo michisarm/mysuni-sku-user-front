@@ -1,21 +1,23 @@
 import React, { memo } from 'react';
 import { Table } from 'semantic-ui-react';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { useParams } from 'react-router-dom';
+import { MyTrainingRouteParams } from '../../../model/MyTrainingRouteParams';
+import { MyPageRouteParams } from '../../../model/MyPageRouteParams';
 
 interface Props {
-  contentType: MyContentType;
   children: React.ReactNode;
 }
 
 function MyLearningTableTemplate(props: Props) {
-  const { contentType, children } = props;
+  const { children } = props;
+  const params = useParams<MyTrainingRouteParams | MyPageRouteParams>();
 
   return (
-    <div className={getWrapperStyle(contentType)}>
-      <Table className={getTableStyle(contentType)}>
-        {contentType === MyLearningContentType.PersonalCompleted && (
+    <div className={getWrapperStyle(params.tab)}>
+      <Table className={getTableStyle(params.tab)}>
+        {params.tab === MyLearningContentType.PersonalCompleted && (
           <colgroup>
             <col width="10%" />
             <col width="25%" />
@@ -36,7 +38,7 @@ function MyLearningTableTemplate(props: Props) {
 export default memo(MyLearningTableTemplate);
 
 /* globals */
-const getWrapperStyle = (contentType: MyContentType): string => {
+const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
   switch (contentType) {
     case MyPageContentType.EarnedStampList: /* My Stamp */
       return 'mystamp-list-wrap';
@@ -45,7 +47,7 @@ const getWrapperStyle = (contentType: MyContentType): string => {
   }
 };
 
-const getTableStyle = (contentType: MyContentType): string => {
+const getTableStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
   switch (contentType) {
     case MyLearningContentType.InProgress: /* 학습중 */
       return 'ml-02-02';

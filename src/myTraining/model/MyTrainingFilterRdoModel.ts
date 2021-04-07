@@ -13,13 +13,7 @@ class MyTrainingFilterRdoModel {
     limit: 20
   };
 
-  // student 정보를 조회하는 것은 denizenType 의 keyString을 기본적으로 사용함.
-  denizenKey: DenizenKey = {
-    keyString: patronInfo.getDenizenId() || '',
-    patronType: PatronType.Denizen,
-  };
-
-  contentType: MyContentType = MyLearningContentType.InProgress; // 탭 전환될 때마다 전달되는 contentType
+  myTrainingState: MyContentType = MyLearningContentType.InProgress; // 탭 전환될 때마다 전달되는 contentType
 
   /*
     MultiFilterBox 에서 선택되는 검색 조건들.
@@ -45,11 +39,11 @@ class MyTrainingFilterRdoModel {
 
   // offset, denizenKey, contentType 만을 검색 조건으로 함.
   static create(contentType: MyContentType, serviceType?: string) {
-    return new MyTrainingFilterRdoModel({ contentType } as MyTrainingFilterRdoModel);
+    return new MyTrainingFilterRdoModel({ myTrainingState: contentType } as MyTrainingFilterRdoModel);
   }
 
   public static createForStorage(contentType: MyContentType, offset: Offset) {
-    return new MyTrainingFilterRdoModel({ contentType, offset } as MyTrainingFilterRdoModel);
+    return new MyTrainingFilterRdoModel({ myTrainingState: contentType, offset } as MyTrainingFilterRdoModel);
   }
 
   static createWithConditions(
@@ -80,7 +74,7 @@ class MyTrainingFilterRdoModel {
   }
 
   changeContentType(contentType: MyContentType) {
-    this.contentType = contentType;
+    this.myTrainingState = contentType;
   }
 
   changeColumnDirection(column: string, direction: string) {
