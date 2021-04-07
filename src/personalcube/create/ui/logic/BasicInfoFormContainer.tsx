@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -15,23 +14,20 @@ import MainChannelModalContainer from './MainChannelModalContainer';
 import SubChannelModalContainer from './SubChannelModalContainer';
 import { ChannelFieldRow } from '../view/DetailElementsView';
 
-
 interface Props {
-  collegeService?: CollegeService
-  contentNew: boolean
-  personalCube: PersonalCubeModel
-  onChangePersonalCubeProps: (name: string, value: string | {}) => void
-  onChangeCollege: (college: CollegeModel) => void
+  collegeService?: CollegeService;
+  contentNew: boolean;
+  personalCube: PersonalCubeModel;
+  onChangePersonalCubeProps: (name: string, value: string | {}) => void;
+  onChangeCollege: (college: CollegeModel) => void;
 }
 
 interface State {
-  selectedCollegeId: string
-  collegeType?: CollegeType
+  selectedCollegeId: string;
+  collegeType?: CollegeType;
 }
 
-@inject(mobxHelper.injectFrom(
-  'college.collegeService',
-))
+@inject(mobxHelper.injectFrom('college.collegeService'))
 @observer
 @reactAutobind
 class BasicInfoFormContainer extends Component<Props, State> {
@@ -41,8 +37,11 @@ class BasicInfoFormContainer extends Component<Props, State> {
     collegeType: undefined,
   };
 
-
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
+  componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<{}>,
+    snapshot?: any
+  ): void {
     //
     const { personalCube: prevPersonalCube } = prevProps;
     const { personalCube } = this.props;
@@ -106,11 +105,11 @@ class BasicInfoFormContainer extends Component<Props, State> {
 
   render() {
     //
-    const {
-      contentNew, personalCube,
-    } = this.props;
+    const { contentNew, personalCube } = this.props;
     const { selectedCollegeId, collegeType } = this.state;
-    const subCategoriesGroupByCollege = PersonalCubeModel.getSubCategoriesGroupByCollege(personalCube);
+    const subCategoriesGroupByCollege = PersonalCubeModel.getSubCategoriesGroupByCollege(
+      personalCube
+    );
 
     return (
       <>
@@ -136,17 +135,24 @@ class BasicInfoFormContainer extends Component<Props, State> {
                 <span className="text1">메인채널</span>
 
                 <MainChannelModalContainer
-                  trigger={<Button icon className="left post delete">채널선택</Button>}
+                  trigger={
+                    <Button icon className="left post delete">
+                      채널선택
+                    </Button>
+                  }
                   defaultSelectedChannel={personalCube.category.channel}
                   onConfirmChannel={this.onConfirmMainChannel}
                 />
               </div>
               <div className="cell v-middle">
-                { !personalCube.category.channel.id ?
+                {!personalCube.category.channel.id ? (
                   <span className="text1">메인채널을 선택해주세요.</span>
-                  :
-                  <span className="text2">{personalCube.category.college.name} &gt; {personalCube.category.channel.name}</span>
-                }
+                ) : (
+                  <span className="text2">
+                    {personalCube.category.college.name} &gt;{' '}
+                    {personalCube.category.channel.name}
+                  </span>
+                )}
               </div>
             </ChannelFieldRow>
             <ChannelFieldRow>
@@ -154,7 +160,11 @@ class BasicInfoFormContainer extends Component<Props, State> {
                 <span className="text1">서브채널</span>
 
                 <SubChannelModalContainer
-                  trigger={<Button icon className="left post delete">채널선택</Button>}
+                  trigger={
+                    <Button icon className="left post delete">
+                      채널선택
+                    </Button>
+                  }
                   collegeType={collegeType}
                   targetCollegeId={selectedCollegeId}
                   defaultSelectedCategoryChannels={personalCube.subCategories}
@@ -162,16 +172,21 @@ class BasicInfoFormContainer extends Component<Props, State> {
                 />
               </div>
               <div className="cell v-middle">
-                { subCategoriesGroupByCollege.length < 1 ?
-                  <span key="select-sub-category" className="text1">서브채널을 선택해주세요.</span>
-                  :
+                {subCategoriesGroupByCollege.length < 1 ? (
+                  <span key="select-sub-category" className="text1">
+                    서브채널을 선택해주세요.
+                  </span>
+                ) : (
                   subCategoriesGroupByCollege.map((categoryChannels, index) => (
                     <span className="text2" key={`channels-${index}`}>
-                      {categoryChannels[0].college.name}{` > `}
-                      {categoryChannels.map((categoryChannel) => categoryChannel.channel.name).join(', ')}
+                      {categoryChannels[0].college.name}
+                      {` > `}
+                      {categoryChannels
+                        .map(categoryChannel => categoryChannel.channel.name)
+                        .join(', ')}
                     </span>
                   ))
-                }
+                )}
               </div>
             </ChannelFieldRow>
           </div>
@@ -180,19 +195,16 @@ class BasicInfoFormContainer extends Component<Props, State> {
         <Form.Field>
           <label className="necessary">교육형태</label>
           <div className="select-box">
-            { contentNew ?
+            {contentNew ? (
               <Select
                 className="dropdown selection"
                 value={personalCube.contents.type || 'None'}
                 options={SelectOptions.cubeType}
                 onChange={this.onChangeContentsType}
               />
-              :
-              <input
-                readOnly
-                value={personalCube.contents.type || ''}
-              />
-            }
+            ) : (
+              <input readOnly value={personalCube.contents.type || ''} />
+            )}
           </div>
         </Form.Field>
       </>

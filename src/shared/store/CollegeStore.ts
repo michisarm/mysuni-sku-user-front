@@ -16,3 +16,17 @@ const [
 ] = createStore<College[]>([initialStore]);
 
 export { setCollegeStore, onCollegeStore, getCollegeStore, useCollegeStore };
+
+const [
+  setCollegeModelStore,
+  onCollegeModelStore,
+  getCollegeModelStore,
+  useCollegeModelStore,
+] = createStore<CollegeModel[]>([]);
+
+export {
+  setCollegeModelStore,
+  onCollegeModelStore,
+  getCollegeModelStore,
+  useCollegeModelStore,
+};

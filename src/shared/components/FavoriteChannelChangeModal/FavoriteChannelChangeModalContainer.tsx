@@ -1,6 +1,5 @@
-
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, IdName } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { Button, Modal } from 'semantic-ui-react';
 import { IdNameCount } from 'shared/model';
@@ -15,31 +14,32 @@ import HeaderContainer from './HeaderContainer';
 import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 
-
 interface Props {
-  actionLogService?: ActionLogService
-  skProfileService?: SkProfileService
-  collegeService?: CollegeService
-  collegeLectureCountService?: CollegeLectureCountService
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  collegeService?: CollegeService;
+  collegeLectureCountService?: CollegeLectureCountService;
 
-  trigger?: React.ReactNode
-  favorites: ChannelModel[]
-  onConfirmCallback: () => void
+  trigger?: React.ReactNode;
+  favorites: ChannelModel[];
+  onConfirmCallback: () => void;
 }
 
 interface State {
-  open: boolean
-  selectedCollegeIds: string[]
+  open: boolean;
+  selectedCollegeIds: string[];
   favoriteChannels: ChannelModel[];
   favoriteCompanyChannels: ChannelModel[];
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'profile.skProfileService',
-  'shared.collegeService',
-  'lecture.collegeLectureCountService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'profile.skProfileService',
+    'shared.collegeService',
+    'lecture.collegeLectureCountService'
+  )
+)
 @observer
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {
@@ -51,18 +51,26 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     favoriteCompanyChannels: [],
   };
 
-
-  setDefaultFavorites(favoriteChannels: ChannelModel[], colleges: CollegeLectureCountRdo[]) {
+  setDefaultFavorites(
+    favoriteChannels: ChannelModel[],
+    colleges: CollegeLectureCountRdo[]
+  ) {
     //
     const companyChannels = colleges
       .filter(college => college.collegeType === CollegeType.Company)
       .map(college =>
-        college.channelCounts.map(channel => new ChannelModel({ channelId: channel.id, name: channel.name }))
+        college.channels.map(
+          channel =>
+            new ChannelModel({ channelId: channel.id, name: channel.name })
+        )
       )
       .flat();
 
-    const favoriteChannelsWithoutCompany = favoriteChannels.filter(channel =>
-      !companyChannels.some(companyChannel => companyChannel.channelId === channel.channelId)
+    const favoriteChannelsWithoutCompany = favoriteChannels.filter(
+      channel =>
+        !companyChannels.some(
+          companyChannel => companyChannel.channelId === channel.channelId
+        )
     );
 
     this.setState({
@@ -73,7 +81,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   async onOpenModal() {
     //
-    const { collegeService, collegeLectureCountService, favorites } = this.props;
+    const {
+      collegeService,
+      collegeLectureCountService,
+      favorites,
+    } = this.props;
     const favoriteChannels = [...favorites];
 
     this.setState({
@@ -102,11 +114,19 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     //
     const { skProfileService, onConfirmCallback } = this.props;
     const { favoriteChannels, favoriteCompanyChannels } = this.state;
-    const nextFavoriteChannels = [...favoriteChannels, ...favoriteCompanyChannels];
+    const nextFavoriteChannels = [
+      ...favoriteChannels,
+      ...favoriteCompanyChannels,
+    ];
 
     this.onClickActionLog('Confirm');
-    skProfileService!.setStudySummaryProp('favoriteChannels', { idNames: nextFavoriteChannels });
-    skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary))
+    skProfileService!.setStudySummaryProp('favoriteChannels', {
+      idNames: nextFavoriteChannels,
+    });
+    skProfileService!
+      .modifyStudySummary(
+        StudySummaryModel.asNameValues(skProfileService!.studySummary)
+      )
       .then(() => {
         if (typeof onConfirmCallback === 'function') {
           onConfirmCallback();
@@ -127,10 +147,12 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       this.setState({ selectedCollegeIds: [] });
       colleges
         .filter(college => {
-          const searchedChannels = college.channelCounts.filter(channel => channelIds.includes(channel.id));
+          const searchedChannels = college.channels.filter(channel =>
+            channelIds.includes(channel.id)
+          );
           return searchedChannels.length > 0 ? college : null;
         })
-        .map(college => college.collegeId)
+        .map(college => college.id)
         .forEach(collegeId => this.onToggleCollege(collegeId));
     }
   }
@@ -150,24 +172,30 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     // this.onClickActionLog(college.name);
 
     if (selectedCollegeIds.includes(collegeId)) {
-      selectedCollegeIds = selectedCollegeIds.filter(selectedCollegeId => selectedCollegeId !== collegeId);
-    }
-    else {
+      selectedCollegeIds = selectedCollegeIds.filter(
+        selectedCollegeId => selectedCollegeId !== collegeId
+      );
+    } else {
       selectedCollegeIds.push(collegeId);
     }
     this.setState({ selectedCollegeIds: [...selectedCollegeIds] });
   }
 
-  onToggleChannel(channel: IdNameCount | ChannelModel) {
+  onToggleChannel(channel: IdName | ChannelModel) {
     //
     let { favoriteChannels }: State = this.state;
 
     this.onClickActionLog(channel.name);
 
-    if (favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
-      favoriteChannels = favoriteChannels.filter(favoriteChannel => favoriteChannel.id !== channel.id);
-    }
-    else {
+    if (
+      favoriteChannels
+        .map(favoriteChannel => favoriteChannel.id)
+        .includes(channel.id)
+    ) {
+      favoriteChannels = favoriteChannels.filter(
+        favoriteChannel => favoriteChannel.id !== channel.id
+      );
+    } else {
       favoriteChannels.push(new ChannelModel(channel));
     }
     this.setState({ favoriteChannels: [...favoriteChannels] });
@@ -181,9 +209,17 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   render() {
     //
     const { collegeService, collegeLectureCountService, trigger } = this.props;
-    const { open, favoriteChannels, favoriteCompanyChannels, selectedCollegeIds }: State = this.state;
+    const {
+      open,
+      favoriteChannels,
+      favoriteCompanyChannels,
+      selectedCollegeIds,
+    }: State = this.state;
     const { channelIds } = collegeService!;
-    const { collegeLectureCounts, totalChannelCount } = collegeLectureCountService!;
+    const {
+      collegeLectureCounts,
+      totalChannelCount,
+    } = collegeLectureCountService!;
 
     return (
       <Modal
@@ -195,12 +231,16 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       >
         <Modal.Header className="res">
           관심 Channel 변경
-          <span className="sub f12">맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요.</span>
+          <span className="sub f12">
+            맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요.
+          </span>
         </Modal.Header>
         <Modal.Content>
           <ContentWrapper>
             <HeaderContainer
-              selectedChannelCount={favoriteChannels.length + favoriteCompanyChannels.length}
+              selectedChannelCount={
+                favoriteChannels.length + favoriteCompanyChannels.length
+              }
               totalChannelCount={totalChannelCount}
               onSearch={this.onSearch}
               onResetSelected={this.onReset}
@@ -218,8 +258,12 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
           </ContentWrapper>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.onCloseModal}>Cancel</Button>
-          <Button className="w190 pop p" onClick={this.onConfirm}>Confirm</Button>
+          <Button className="w190 pop d" onClick={this.onCloseModal}>
+            Cancel
+          </Button>
+          <Button className="w190 pop p" onClick={this.onConfirm}>
+            Confirm
+          </Button>
         </Modal.Actions>
       </Modal>
     );

@@ -10,7 +10,7 @@ export async function checkStudent(params: LectureParams): Promise<void> {
     const studentCdo: StudentCdo = {
       cardId,
       cubeId,
-      round: 0,
+      round: 1,
     };
     const studentId = await registerStudent(studentCdo);
     if (studentId !== undefined) {

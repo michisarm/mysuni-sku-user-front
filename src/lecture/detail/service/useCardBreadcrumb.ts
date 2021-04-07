@@ -30,7 +30,7 @@ export function useCardBreadcrumb() {
         text: `${getChannelName(lectureSummary.category.channelId)} Channel`,
         path: routePaths.channelLectures(
           lectureSummary.category.collegeId,
-          lectureSummary.category.collegeId
+          lectureSummary.category.channelId
         ),
       },
     ];
