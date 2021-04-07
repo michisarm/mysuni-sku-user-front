@@ -185,14 +185,14 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
       patronInfo.getCineroomByPatronId(patronKey!) ||
       patronInfo.getCineroomByDomain(card)!; // patronKey 값
 
-    history.push(
-      lectureRoutePaths.lectureCardOverview(
-        cineroom.id,
-        card.categories[0].college.id, //model.category.college.id,
-        card.id, //model.cubeId,
-        '' // model.serviceId
-      )
-    );
+    // history.push(
+    //   lectureRoutePaths.lectureCardOverview(
+    //     cineroom.id,
+    //     card.categories[0].college.id, //model.category.college.id,
+    //     card.id, //model.cubeId,
+    //     '' // model.serviceId
+    //   )
+    // );
     // if (
     //   model.serviceType === LectureServiceType.Program ||
     //   model.serviceType === LectureServiceType.Course

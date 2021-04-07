@@ -34,7 +34,7 @@ import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
 
 interface Props {
-  isRequired: boolean;
+  isRequired?: boolean;
   cardId: string;
   learningTime: number;
   thumbImagePath: string;
@@ -45,7 +45,6 @@ interface Props {
   starCount: number;
   description: string;
   inMyLectureService?: InMyLectureService;
-  onViewDetail?: (_: React.MouseEvent, data: ButtonProps) => void;
 }
 
 function CardView({
@@ -60,7 +59,6 @@ function CardView({
   thumbImagePath,
   passedStudentCount,
   inMyLectureService,
-  onViewDetail,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
