@@ -9,6 +9,7 @@ import CardGroup, {
 import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
+import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -94,14 +95,17 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
         </div>
         <div className="scrolling">
           <ul className="belt">
-            {lectureRelations.relatedCards.map(({ relatedCardId }) => {
+            {lectureRelations.cards.map(({ card, cardRelatedCount }) => {
               return (
-                <p key={relatedCardId}>{relatedCardId}</p>
-                // jz - 여기 카드 그려야해
-                // <LectureView
-                //   model={new LectureModel(lecture)}
-                //   thumbnailImage={lecture.baseUrl || undefined}
-                // />
+                <li key={card.id}>
+                  <div className="ui cards box-cards">
+                    <CardView
+                      cardId={card.id}
+                      {...card}
+                      {...cardRelatedCount}
+                    />
+                  </div>
+                </li>
               );
             })}
           </ul>

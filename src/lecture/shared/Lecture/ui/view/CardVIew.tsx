@@ -85,6 +85,8 @@ function CardView({
     setHovered(false);
   }, []);
 
+  const action = useCallback(() => {}, [inMyLectureModel]);
+
   return (
     <Card
       className={classNames({
