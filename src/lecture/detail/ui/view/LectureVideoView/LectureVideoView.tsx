@@ -585,7 +585,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   }, [lectureMedia]);
 
-  console.log(lectureMedia?.mediaContents.internalMedias[0].quizIds);
   const onCompletedQuiz = useCallback(() => {
     if (quizPop) {
       setQuizPop(false);
