@@ -1,4 +1,3 @@
-
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
@@ -6,8 +5,7 @@ import InMyLectureFilterRdoModel from 'myTraining/model/InMyLectureFilterRdoMode
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
-
-
+import InMyLectureCdo from '../../../lecture/detail/model/InMyLectureCdo';
 
 class InMyLectureApi {
   //
@@ -17,15 +15,29 @@ class InMyLectureApi {
   // baseUrl = this.devUrl + '/api/mytraining/mytraining/inmylecture';
 
   serverUrl = '/api/mytraining/mytraining/inmylecture';
-  devUrl = process.env.REACT_APP_IN_MY_LECTURE_API === undefined || process.env.REACT_APP_IN_MY_LECTURE_API === '' ?
-    this.serverUrl : process.env.REACT_APP_IN_MY_LECTURE_API;
+  devUrl =
+    process.env.REACT_APP_IN_MY_LECTURE_API === undefined ||
+    process.env.REACT_APP_IN_MY_LECTURE_API === ''
+      ? this.serverUrl
+      : process.env.REACT_APP_IN_MY_LECTURE_API;
 
-  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl;
+  baseUrl =
+    process.env.REACT_APP_ENVIRONMENT === undefined ||
+    process.env.REACT_APP_ENVIRONMENT === 'server'
+      ? this.serverUrl
+      : this.devUrl;
 
   // 관심목록에 추가
   addInMyLecture(inMyLectureCdo: InMyLectureCdoModel) {
-    return axiosApi.post<string>(this.baseUrl, inMyLectureCdo)
+    return axiosApi
+      .post<string>(this.baseUrl, inMyLectureCdo)
+      .then(response => response && response.data);
+  }
+
+  // 모델 변경으로 InMyLectureCdo model 을 받는 api 추가
+  addInMyLectureCard(inMyLectureCdo: InMyLectureCdo) {
+    return axiosApi
+      .post<string>(this.baseUrl, inMyLectureCdo)
       .then(response => response && response.data);
   }
 
@@ -34,43 +46,69 @@ class InMyLectureApi {
     return axiosApi.delete(this.baseUrl + `/${inMyLectureId}`);
   }
 
+  removeInMyLectureCard(cardId: string, serviceId: string) {
+    return axiosApi.delete(this.baseUrl, {
+      params: { cardId, serviceId },
+    });
+  }
+
   findInMyLecture(inMyLectureRdo: InMyLectureRdoModel) {
     //
     const params = inMyLectureRdo;
 
-    return axiosApi.get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
+    return axiosApi
+      .get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
       .then(response => response && response.data);
   }
 
   findInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
     //
-    return axiosApi.post<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures/filterWithJoinedValue', inMyLectureRdo)
+    return axiosApi
+      .post<OffsetElementList<InMyLectureModel>>(
+        this.baseUrl + '/myLectures/filterWithJoinedValue',
+        inMyLectureRdo
+      )
       .then(response => response && response.data);
   }
 
   findAllInMyLectures() {
-    return axiosApi.get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
-      .then(response => response && Array.isArray(response.data) && response.data || []);
+    return axiosApi
+      .get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
+      .then(
+        response =>
+          (response && Array.isArray(response.data) && response.data) || []
+      );
   }
 
   /**
    * 관심목록 갯수 조회 API
    */
   countInMyLectures() {
-    return axiosApi.post<number>(this.baseUrl + '/myLecturesCount')
-      .then((response: any) => response.data && response.data.myStateCount && response.data.myStateCount.valueOf()); //myStateCount
+    return axiosApi
+      .post<number>(this.baseUrl + '/myLecturesCount')
+      .then(
+        (response: any) =>
+          response.data &&
+          response.data.myStateCount &&
+          response.data.myStateCount.valueOf()
+      ); //myStateCount
   }
 
   ////////////////////////////// 개편 //////////////////////////////
   findAllTableViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
-    return axiosApi.post<OffsetElementList<InMyLectureTableViewModel>>(`${this.baseUrl}/table/views`, inMyLectureFilterRdo)
-      .then(response => response && response.data || null)
+    return axiosApi
+      .post<OffsetElementList<InMyLectureTableViewModel>>(
+        `${this.baseUrl}/table/views`,
+        inMyLectureFilterRdo
+      )
+      .then(response => (response && response.data) || null)
       .catch(error => error && null);
   }
 
   findAllFilterCountViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
-    return axiosApi.post(`${this.baseUrl}/table/filter/count`, inMyLectureFilterRdo)
-      .then(response => response && response.data || null)
+    return axiosApi
+      .post(`${this.baseUrl}/table/filter/count`, inMyLectureFilterRdo)
+      .then(response => (response && response.data) || null)
       .catch(error => error && null);
   }
 

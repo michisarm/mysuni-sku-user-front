@@ -295,7 +295,7 @@ const POPLearning: React.FC<Props> = Props => {
 
             return (
               <li>
-                <CardGroup type={GroupType.Box}>
+                {/* <CardGroup type={GroupType.Box}>
                   <CardView
                     cardId={item.card.id}
                     learningTime={card.learningTime}
@@ -306,19 +306,9 @@ const POPLearning: React.FC<Props> = Props => {
                     description={card.description}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
-                    iconName={inMyLecture ? "Remove" : "Add"}
-                    onAction={() => {
-                      reactAlert({
-                        title: '알림',
-                        message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
-                      });
-                      onActionLecture(inMyLecture!);
-                    }}
                     onViewDetail={onViewDetail}
                   />
-                </CardGroup>
+                </CardGroup> */}
               </li>
             );
           })}

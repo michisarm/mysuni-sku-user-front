@@ -20,6 +20,6 @@ export interface Card {
   learningTime: number;
   cardState?: CardState;
   cardStateUpdatedTime: number;
-  mainCategory?: CardCategory;
+  mainCategory: CardCategory;
   groupBasedAccessRule?: GroupBasedAccessRule;
 }

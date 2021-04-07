@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import {
   Button,
@@ -17,6 +17,9 @@ import {
   Title,
 } from '../../../ui/view/LectureElementsView';
 import numeral from 'numeral';
+import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
@@ -24,42 +27,41 @@ import {
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { find } from 'lodash';
+import moment from 'moment';
 
 interface Props {
+  isRequired: boolean;
   cardId: string;
   learningTime: number;
   thumbImagePath: string;
-  categories: CardCategory[];
+  mainCategory: CardCategory;
   name: string;
   stampCount: number;
   passedStudentCount: number;
   starCount: number;
   description: string;
-  iconName: string;
-  // state?: string;
-  // date?: string;
-  // action?: Action;
-  onAction?: () => void;
+  inMyLectureService?: InMyLectureService;
   onViewDetail?: (_: React.MouseEvent, data: ButtonProps) => void;
 }
 
 function CardView({
+  isRequired,
   cardId,
   name,
-  iconName,
   starCount,
   stampCount,
-  categories,
+  mainCategory,
   description,
   learningTime,
   thumbImagePath,
   passedStudentCount,
-  onAction,
+  inMyLectureService,
   onViewDetail,
 }: Props) {
   const [hovered, setHovered] = useState(false);
+  const [isInMyLecture, setIsInMyLecture] = useState(false);
   const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
-  const collegeId = categories[0].collegeId;
+  const collegeId = mainCategory.collegeId;
 
   const onHoverIn = () => {
     setHovered(true);
@@ -76,21 +78,37 @@ function CardView({
     const parserProgressList = progressList && JSON.parse(progressList);
     const parserCompleteList = completeList && JSON.parse(completeList);
 
-    if (find(parserProgressList, { serviceId: cardId })) {
+    const filterProgress = find(parserProgressList, { serviceId: cardId });
+    const filterComplete = find(parserCompleteList, { serviceId: cardId });
+
+    if (filterProgress) {
+      const startDate = moment(Number(filterProgress.startDate)).format(
+        'YYYY.MM.DD'
+      );
       return (
-        <Label className="onlytext bold">
-          <Icon className="state" />
-          <span>학습중</span>
-        </Label>
+        <>
+          <Label className="onlytext bold">
+            <Icon className="state" />
+            <span>학습중</span>
+          </Label>
+          <div className="study-date">{`${startDate} 학습 시작`}</div>
+        </>
       );
     }
 
-    if (find(parserCompleteList, { serviceId: cardId })) {
+    if (filterComplete) {
+      const endDate = moment(Number(filterComplete.endDate)).format(
+        'YYYY.MM.DD'
+      );
+
       return (
-        <Label className="onlytext bold">
-          <Icon className="state" />
-          <span>학습 완료</span>
-        </Label>
+        <>
+          <Label className="onlytext bold">
+            <Icon className="state" />
+            <span>학습 완료</span>
+          </Label>
+          <div className="study-date">{`${endDate} 학습 완료`}</div>
+        </>
       );
     }
 
@@ -107,6 +125,51 @@ function CardView({
     );
   };
 
+  useEffect(() => {
+    handleIsInMyLecture();
+  }, [inMyLectureService!.inMyLectureMap]);
+
+  const handleIsInMyLecture = () => {
+    const { inMyLectureMap } = inMyLectureService!;
+
+    if (inMyLectureMap.get(cardId)) {
+      setIsInMyLecture(true);
+    } else {
+      setIsInMyLecture(false);
+    }
+  };
+
+  const handleAlert = (isInMyLecture: boolean) => {
+    reactAlert({
+      title: '알림',
+      message: isInMyLecture
+        ? '본 과정이 관심목록에서 제외되었습니다.'
+        : '본 과정이 관심목록에 추가되었습니다.',
+    });
+  };
+
+  const handleInMyLecture = () => {
+    if (isInMyLecture) {
+      inMyLectureService!.removeInMyLectureCard(cardId, cardId);
+    } else {
+      inMyLectureService!.addInMyLectureCard({
+        cardId,
+        serviceId: cardId,
+        serviceType: 'Card',
+        category: {
+          channelId: mainCategory.channelId,
+          collegeId: mainCategory.collegeId,
+          mainCategory: mainCategory.mainCategory,
+        },
+        name,
+        learningTime,
+        stampCount,
+      });
+    }
+
+    handleAlert(isInMyLecture);
+  };
+
   return (
     <Card
       className={classNames({
@@ -117,8 +180,10 @@ function CardView({
       onMouseLeave={onHoverOut}
     >
       {/* Todo: stampReady */}
-      {/* <Ribbon required={model!.required} /> */}
-
+      <div className="card-ribbon-wrap">
+        {isRequired && <Label className="ribbon2">핵인싸과정</Label>}
+        {/* { stampReady && <Label className="ribbon2">Stamp</Label>} */}
+      </div>
       <div className="card-inner">
         <Thumbnail image={thumbImagePath} />
         <div className="title-area">
@@ -180,7 +245,7 @@ function CardView({
       {/* hover 시 컨텐츠 */}
       <div className="hover-content">
         <div className="title-area">
-          {categories && (
+          {mainCategory && (
             <Label className={getColor(collegeId)}>
               {getCollgeName(collegeId)}
             </Label>
@@ -192,8 +257,8 @@ function CardView({
           dangerouslySetInnerHTML={{ __html: description }}
         />
         <div className="btn-area">
-          <Button icon className="icon-line" onClick={onAction}>
-            <Icon className={iconName} />
+          <Button icon className="icon-line" onClick={handleInMyLecture}>
+            <Icon className={isInMyLecture ? 'remove2' : 'add-list'} />
           </Button>
           <Button
             className="ui button fix bg"
@@ -208,4 +273,6 @@ function CardView({
   );
 }
 
-export default CardView;
+export default inject(mobxHelper.injectFrom('myTraining.inMyLectureService'))(
+  observer(CardView)
+);

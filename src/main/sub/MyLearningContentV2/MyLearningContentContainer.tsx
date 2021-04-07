@@ -5,14 +5,13 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { SkProfileService } from 'profile/stores';
 import InProgressLearning from './MainComponents/InProgressLearning';
-import RequiredLearning from './MainComponents/RQDLearning';
 import ChallengingBadge from './MainComponents/ChallengingBadge';
 import MainBanner from './MainComponents/MainBanner';
-import NewLearning from './MainComponents/NEWLearning';
-import PopularLearning from './MainComponents/POPLearning';
-import RecommendLearning from './MainComponents/LRSLearning';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
+
+import { CardBundle } from '../../../lecture/shared/model/CardBundle';
+import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -20,11 +19,20 @@ interface Props extends RouteComponentProps {
 }
 
 const MyLearningContentContainer: React.FC<Props> = Props => {
+  const [cardBundles, setCardBundles] = useState<CardBundle[]>();
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
   const { member } = skProfile;
-
   const [memName, setMemName] = useState('');
+
+  const fetchCardBundles = async () => {
+    const response = await findAvailableCardBundles();
+    setCardBundles(response);
+  };
+
+  useEffect(() => {
+    fetchCardBundles();
+  }, []);
 
   useEffect(() => {
     inMyLectureService!.findAllInMyLectures();
@@ -45,17 +53,9 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       <ChallengingBadge profileMemberName={member.name} />
 
       <MainBanner />
-      <LeraningContainer contentType="Normal" contentTypeName="일반 과정" />
-      <LeraningContainer contentType="New" contentTypeName="신규 과정" />
-      <LeraningContainer contentType="Popular" contentTypeName="인기 과정" />
-      <LeraningContainer contentType="Recommended" contentTypeName="추천 과정" />
-      {/* <RequiredLearning />
-      <NewLearning />
-      <PopularLearning profileMemberName={member.name} />
-      <RecommendLearning
-        profileMemberName={member.name}
-        profileMemberEmail={member.email}
-      /> */}
+      {cardBundles?.map((cardBundle, i) => (
+        <LeraningContainer key={i} cardBundle={cardBundle} />
+      ))}
     </>
   );
 };
