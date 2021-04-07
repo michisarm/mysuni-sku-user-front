@@ -863,11 +863,21 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   useEffect(() => {
     const matchesQuizTime: number = Math.floor(currentTime);
     const learningState = getLectureConfirmProgress()?.learningState;
+    const pathnameChangeCheck = sessionStorage.getItem('lectureVideoView');
+
+    if (pathnameChangeCheck && panoptoState === 1) {
+      setTimeout(() => {
+        sessionStorage.removeItem('lectureVideoView');
+      }, 1000);
+    }
+
     if (
-      learningState !== 'Passed' &&
-      matchesQuizTime !== undefined &&
-      quizShowTime &&
-      matchesQuizTime === quizShowTime[quizCurrentIndex]
+      learningState !== 'Passed' && // 학습이수 체크
+      matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
+      quizShowTime && // 퀴즈 등장 시간
+      matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
+      lectureMedia?.mediaContents.internalMedias[0].quizIds && // quizIds 체크
+      pathnameChangeCheck !== 'true'
     ) {
       if (
         scroll > videoPosition &&
@@ -910,6 +920,10 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       return;
     }
   }, [lectureMedia]);
+
+  useEffect(() => {
+    sessionStorage.setItem('lectureVideoView', JSON.stringify(true));
+  }, [pathname]);
 
   const onCompletedQuiz = useCallback(() => {
     if (quizPop) {

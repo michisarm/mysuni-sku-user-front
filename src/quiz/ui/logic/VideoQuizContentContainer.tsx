@@ -302,6 +302,25 @@ const VideoQuizContentContainer = ({
     onCompletedQuiz();
   };
 
+  const successComment = () => {
+    if (
+      !questionData[currentIndex].resultView &&
+      questionData[currentIndex].answer &&
+      (questionData[currentIndex].type === 'SingleChoice' ||
+        questionData[currentIndex].type === 'MultipleChoice')
+    ) {
+      return '정답 입니다.';
+    } else if (
+      questionData[currentIndex].resultView &&
+      (questionData[currentIndex].type === 'SingleChoice' ||
+        questionData[currentIndex].type === 'MultipleChoice')
+    ) {
+      return '답안 제출이 완료됐습니다.';
+    } else {
+      return '답안 제출이 완료됐습니다.';
+    }
+  };
+
   return (
     <>
       {/* 퀴즈영역 */}
@@ -347,12 +366,14 @@ const VideoQuizContentContainer = ({
                 }
               />
             </div>
+            <span className="wro">오답 입니다.</span>
             <div
               className="wro2"
               dangerouslySetInnerHTML={{
                 __html:
-                  `${questionData[currentIndex].alertMessage.message}` ||
-                  '오답 입니다. 다시 확인하고 제출하세요.',
+                  questionData[currentIndex].alertMessage.message !== ''
+                    ? `${questionData[currentIndex].alertMessage.message}`
+                    : '다시 확인하고 제출하세요.',
               }}
             />
           </div>
@@ -381,13 +402,7 @@ const VideoQuizContentContainer = ({
                 }
               />
             </div>
-            <span className="wro">
-              {(questionData[currentIndex].type === 'SingleChoice' ||
-                questionData[currentIndex].type === 'MultipleChoice') &&
-              !questionData[currentIndex].resultView
-                ? '정답 입니다.'
-                : '답안 제출이 완료됐습니다.'}
-            </span>
+            <span className="wro">{successComment()}</span>
           </div>
           <div className="video-quiz-footer">
             {questionData[currentIndex].resultView && (
