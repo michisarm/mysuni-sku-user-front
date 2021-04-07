@@ -12,6 +12,7 @@ import StampCompleted from '../../../../../style/media/stamp-completed.svg';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import { State } from '../../../viewModel/LectureState';
 import { toggleCardBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import { PostService } from '../../../../../board/stores';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -126,6 +127,19 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   }, []);
   const qnaUrl = `/board/support-qna/course/${lectureSummary.cardId}`;
 
+  useEffect(() => {
+
+    const postService = PostService.instance;
+    const currentUrl = window.location.href;
+    const hostUrl = window.location.host;
+    const alarmUrl = currentUrl.split(hostUrl);
+
+    postService.post.alarmInfo.url = 'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+
+  }, [lectureSummary]);
+
   return (
     <div className="course-info-header">
       <div className="contents-header">
@@ -189,10 +203,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           {state === 'Completed' ? (
             <img src={StampCompleted} />
           ) : (
-            lectureSummary.thumbImagePath !== undefined && (
-              <img src={lectureSummary.thumbImagePath} />
-            )
-          )}
+              lectureSummary.thumbImagePath !== undefined && (
+                <img src={lectureSummary.thumbImagePath} />
+              )
+            )}
         </div>
       </div>
       <div className="contents-header-side">

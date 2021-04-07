@@ -144,18 +144,18 @@ class ProfileContainer extends Component<Props, State> {
               (menuAuth: PageElement) =>
                 menuAuth.position === 'TopMenu' && menuAuth.type === 'MyPage'
             ) && (
-              <li>
-                <a
-                  href="#"
-                  onClick={() =>
-                    this.props.history.push(myTrainingRoutePaths.myPage())
-                  }
-                >
-                  <i aria-hidden="true" className="balloon mypage icon" />
-                  <span>My Page</span>
-                </a>
-              </li>
-            )}
+                <li>
+                  <a
+                    href="#"
+                    onClick={() =>
+                      this.props.history.push(myTrainingRoutePaths.myPage())
+                    }
+                  >
+                    <i aria-hidden="true" className="balloon mypage icon" />
+                    <span>My Page</span>
+                  </a>
+                </li>
+              )}
             {/* <li>
               <a
                 href="#"
@@ -178,12 +178,12 @@ class ProfileContainer extends Component<Props, State> {
           </ul>
         </div>
 
-        {/* <HeaderAlarmView
+        <HeaderAlarmView
           myNotieMentions={myNotieMentions}
           myNotieNoReadMentionCount={myNotieNoReadMentionCount}
           routeToAlarmBackLink={this.routeToAlarmBackLink}
           handleClickAlarm={this.handleClickAlarm}
-        /> */}
+        />
       </div>
     );
   }
