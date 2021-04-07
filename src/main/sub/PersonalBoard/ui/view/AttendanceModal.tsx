@@ -86,7 +86,7 @@ const AttendanceModal:React.FC<Props> = ({
     input.type = "hidden"
     input.name = 'q'
     input.value = EncryptEmail
-
+    console.log('EncryptEmail', EncryptEmail)
     const env = document.createElement('input')
     input.type = "hidden"
     input.name = 'env'
@@ -135,6 +135,10 @@ const AttendanceModal:React.FC<Props> = ({
                 </dt>
                 <dd>5, 10, 15, 20회 당<strong>복권 1장씩!</strong></dd>
               </dl>
+              <div className="stamp_sample">
+                  <em><img src={`${PUBLIC_URL}/images/all/event_stampattend.svg`} alt="출석"/></em>
+                  <em><img src={`${PUBLIC_URL}/images/all/event_stamplotto.svg`} alt="복권"/></em>
+              </div>
               <Link to="/board/support/notice-detail/NTC-00004m" className="go_event">
                 이벤트 자세히 보러가기
               </Link>
