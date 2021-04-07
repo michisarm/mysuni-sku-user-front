@@ -4,7 +4,13 @@ import { setLectureTags } from '../../../store/LectureOverviewStore';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 
 function parseLectureTags(card: Card): LectureTags {
-  const { tags = [] } = card;
+  const { tags } = card;
+
+  if (tags === undefined || tags === null) {
+    return {
+      tags: [],
+    };
+  }
 
   return {
     tags,

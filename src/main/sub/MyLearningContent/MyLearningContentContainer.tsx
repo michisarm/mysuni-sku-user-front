@@ -326,14 +326,14 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   renderRequiredList() {
     //
-    const { lectures } = this.props.lectureService!;
+    const { requiredLectures } = this.props.lectureService!;
     const noSuchElement = (
       <NoSuchContentPanel
         message={`${ContentTypeName.Required}에 해당하는 학습 과정이 없습니다.`}
       />
     );
 
-    return this.renderList(lectures, noSuchElement);
+    return this.renderList(requiredLectures, noSuchElement);
   }
 
   renderInMyList() {

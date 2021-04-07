@@ -89,6 +89,11 @@ function getLectureTags(cubeDetail: CubeDetail): LectureTags {
   const {
     cubeContents: { tags },
   } = cubeDetail;
+  if (tags === null || tags === undefined) {
+    return {
+      tags: [],
+    };
+  }
   return {
     tags,
   };

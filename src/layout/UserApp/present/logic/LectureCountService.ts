@@ -65,18 +65,17 @@ class LectureCountService {
     collegeId: string,
     channels: ChannelModel[]
   ) {
-    //
-    const lectureCountList = await this.lectureApi.findLectureCountByChannels(
-      collegeId,
-      channels
-    );
-
-    const filteredChannels = lectureCountList.map(
-      lectureCount => new ChannelCountRdo(lectureCount)
-    );
-
-    runInAction(() => (this._channels = filteredChannels));
-    return filteredChannels;
+    // jz - 이상함
+    // //
+    // const lectureCountList = await this.lectureApi.findLectureCountByChannels(
+    //   collegeId,
+    //   channels
+    // );
+    // const filteredChannels = lectureCountList.map(
+    //   lectureCount => new ChannelCountRdo(lectureCount)
+    // );
+    // runInAction(() => (this._channels = filteredChannels));
+    // return filteredChannels;
   }
 
   @action

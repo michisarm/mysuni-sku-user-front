@@ -377,7 +377,7 @@ class MyLearningPage extends Component<Props, State> {
         noSuchContentPanel = '관심목록에 추가한 학습 과정이 없습니다.';
         break;
       case MyLearningContentType.Required:
-        list = lectureService!.lectures;
+        list = lectureService!.requiredLectures;
         noSuchContentPanel = '권장과정에 해당하는 학습 과정이 없습니다.';
         break;
       case MyLearningContentType.Completed:

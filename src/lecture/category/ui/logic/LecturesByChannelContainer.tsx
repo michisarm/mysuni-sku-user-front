@@ -15,6 +15,8 @@ import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared';
 import { Segment } from 'semantic-ui-react';
+import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
+import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 
 interface Props extends RouteComponentProps {
   lectureService?: LectureService;
@@ -25,7 +27,7 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
-  lectures: LectureModel[];
+  cardWithCardRealtedCounts: CardWithCardRealtedCount[];
   totalCount: number;
   isLoading: boolean;
 }
@@ -43,11 +45,14 @@ class LecturesByChannelContainer extends Component<Props, State> {
   //
   PAGE_SIZE = 8;
 
-  state = {
-    lectures: [],
-    totalCount: 0,
-    isLoading: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      cardWithCardRealtedCounts: [],
+      totalCount: 0,
+      isLoading: false,
+    };
+  }
 
   componentDidMount() {
     //
@@ -72,7 +77,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
     this.setState({ isLoading: true });
     const {
-      results: lectures,
+      results: cardWithCardRealtedCounts,
       totalCount,
     } = await lectureService!.findPagingChannelLectures(
       channel.id,
@@ -87,15 +92,9 @@ class LecturesByChannelContainer extends Component<Props, State> {
     });
 
     this.setState({
-      lectures,
+      cardWithCardRealtedCounts,
       totalCount,
     });
-    const feedbackIds = (lectures || []).map(
-      (lecture: LectureModel) => lecture.reviewId
-    );
-    if (feedbackIds && feedbackIds.length) {
-      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-    }
   }
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
@@ -173,7 +172,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
   render() {
     //
     const { channel, reviewService, inMyLectureService } = this.props;
-    const { lectures, totalCount, isLoading } = this.state;
+    const { cardWithCardRealtedCounts, totalCount, isLoading } = this.state;
     const { ratingMap } = reviewService as ReviewService;
     const { inMyLectureMap } = inMyLectureService as InMyLectureService;
 
@@ -204,30 +203,19 @@ class LecturesByChannelContainer extends Component<Props, State> {
             <Loadingpanel loading={isLoading} />
           </Segment>
         ) : (
-          (lectures && lectures.length && (
+          (cardWithCardRealtedCounts.length && (
             <Lecture.Group type={Lecture.GroupType.Line}>
-              {lectures.map((lecture: LectureModel, index: number) => {
-                let rating: number | undefined =
-                  ratingMap.get(lecture.reviewId) || 0;
-                const inMyLecture =
-                  inMyLectureMap.get(lecture.serviceId) || undefined;
-                if (lecture.cubeType === CubeType.Community) rating = undefined;
+              {cardWithCardRealtedCounts.map(({ card, cardRelatedCount }) => {
                 return (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    model={lecture}
-                    rating={rating}
-                    thumbnailImage={lecture.baseUrl || undefined}
-                    action={
-                      inMyLecture
-                        ? Lecture.ActionType.Remove
-                        : Lecture.ActionType.Add
-                    }
-                    onAction={() =>
-                      this.onActionLecture(inMyLecture || lecture)
-                    }
-                    onViewDetail={this.onViewDetail}
-                  />
+                  <li key={card.id}>
+                    <div className="ui cards box-cards">
+                      <CardView
+                        cardId={card.id}
+                        {...card}
+                        {...cardRelatedCount}
+                      />
+                    </div>
+                  </li>
                 );
               })}
             </Lecture.Group>

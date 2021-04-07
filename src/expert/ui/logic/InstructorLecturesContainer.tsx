@@ -70,7 +70,7 @@ class InstructorLecturesContainer extends Component<Props> {
       page!.limit,
       page!.nextOffset
     );
-    const feedbackIds = (lectureService!.lectures || []).map(
+    const feedbackIds = (lectureService!.requiredLectures || []).map(
       (lecture: LectureModel) => lecture.reviewId
     );
     if (feedbackIds && feedbackIds.length) {
@@ -131,15 +131,15 @@ class InstructorLecturesContainer extends Component<Props> {
     const { lectureService, reviewService } = this.props;
     // const { pageService, lectureService, reviewService } = this.props;
     // const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { lectures } = lectureService!;
+    const { requiredLectures } = lectureService!;
     const { ratingMap } = reviewService!;
 
     return (
       <div className="expert-cont">
-        {lectures.length > 0 ? (
+        {requiredLectures.length > 0 ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel, index: number) => {
+              {requiredLectures.map((lecture: LectureModel, index: number) => {
                 const rating = ratingMap.get(lecture.reviewId) || 0;
                 return (
                   <Lecture

@@ -26,6 +26,8 @@ import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
+import { findByRdo } from '../../../detail/api/cardApi';
+import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 
 @autobind
 class LectureService {
@@ -39,7 +41,10 @@ class LectureService {
   private studentFlowApi: StudentFlowApi;
 
   @observable
-  _lectures: LectureModel[] = [];
+  _lectures: CardWithCardRealtedCount[] = [];
+
+  @observable
+  _requiredLectures: LectureModel[] = [];
 
   @observable
   totalLectureCount: number = 0;
@@ -90,9 +95,16 @@ class LectureService {
   }
 
   @computed
-  get lectures(): LectureModel[] {
+  get lectures(): CardWithCardRealtedCount[] {
     //
     const lectures = this._lectures as IObservableArray;
+    return lectures.peek();
+  }
+
+  @computed
+  get requiredLectures(): LectureModel[] {
+    //
+    const lectures = this._requiredLectures as IObservableArray;
     return lectures.peek();
   }
 
@@ -136,16 +148,17 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
-    const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithCollege(collegeId, limit, offset, orderBy)
-    );
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
+    const response =
+      (await findByRdo({
+        collegeIds: collegeId,
+        limit,
+        offset,
+        orderBy,
+      })) || new OffsetElementList<CardWithCardRealtedCount>();
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
+    const lectureOffsetElementList = new OffsetElementList<
+      CardWithCardRealtedCount
+    >(response);
 
     runInAction(
       () =>
@@ -163,17 +176,16 @@ class LectureService {
     offset: number,
     orderBy: OrderByType
   ) {
-    //
-    const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy)
-    );
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
+    const response =
+      (await findByRdo({
+        channelIds: channelId,
+        limit,
+        offset,
+        orderBy,
+      })) || new OffsetElementList<CardWithCardRealtedCount>();
+    const lectureOffsetElementList = new OffsetElementList<
+      CardWithCardRealtedCount
+    >(response);
 
     runInAction(
       () =>
@@ -200,48 +212,20 @@ class LectureService {
     const prevSorting: any = sessionStorage.getItem('channelSort');
     const prevChannelOffset = JSON.parse(getChannelOffset);
 
-    const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannelOrder(
-        collegeId,
-        channelId,
-        prevChannelOffset + limit,
-        0,
-        prevSorting || orderBy
-      )
-    );
+    const response =
+      (await findByRdo({
+        collegeIds: collegeId,
+        channelIds: channelId,
+        limit,
+        offset,
+        orderBy,
+      })) || new OffsetElementList<CardWithCardRealtedCount>();
 
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
+    const lectureOffsetElementList = new OffsetElementList<
+      CardWithCardRealtedCount
+    >(response);
 
     runInAction(() => (this._lectures = lectureOffsetElementList.results));
-    return lectureOffsetElementList;
-  }
-
-  @action
-  async findPagingCommunityLectures(limit: number, offset: number) {
-    //
-    const response = await this.lectureApi.findAllCommunityLectures(
-      CommunityLectureRdoModel.new(limit, offset)
-    );
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
-
-    runInAction(
-      () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
-    );
     return lectureOffsetElementList;
   }
 
@@ -275,27 +259,7 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
-    );
-    return lectureOffsetElementList;
-  }
-
-  @action
-  async setPagingRequiredLectures(lectures: OffsetElementList<LectureModel>) {
-    //
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      lectures
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
-
-    runInAction(
-      () =>
-        (this._lectures = this._lectures.concat(
+        (this._requiredLectures = this._requiredLectures.concat(
           lectureOffsetElementList.results
         ))
     );
@@ -413,12 +377,13 @@ class LectureService {
       lecture => new LectureModel(lecture)
     );
 
-    runInAction(
-      () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
-    );
+    // jz - 강사 상세 페이지
+    // runInAction(
+    //   () =>
+    //     (this._lectures = this._lectures.concat(
+    //       lectureOffsetElementList.results
+    //     ))
+    // );
     return lectureOffsetElementList;
   }
 
@@ -442,10 +407,11 @@ class LectureService {
     );
 
     // add totalLectureCount by gon
-    runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      this.totalLectureCount = lectureOffsetElementList.totalCount;
-    });
+    // jz - shared
+    // runInAction(() => {
+    //   this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+    //   this.totalLectureCount = lectureOffsetElementList.totalCount;
+    // });
     return lectureOffsetElementList;
   }
 

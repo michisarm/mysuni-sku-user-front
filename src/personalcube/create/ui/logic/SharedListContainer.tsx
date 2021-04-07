@@ -281,10 +281,10 @@ class SharedListInnerContainer extends React.Component<Props, States> {
   render() {
     //
     const { lectureService, inMyLectureService } = this.props;
-    const { lectures, totalLectureCount } = lectureService!;
+    const { requiredLectures, totalLectureCount } = lectureService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
-    if (lectures.length < 1) {
+    if (requiredLectures.length < 1) {
       return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
     }
 
@@ -298,7 +298,7 @@ class SharedListInnerContainer extends React.Component<Props, States> {
 
         <div className="section">
           <Lecture.Group type={Lecture.GroupType.Box}>
-            {lectures.map((lecture, index) => {
+            {requiredLectures.map((lecture, index) => {
               const inMyLecture =
                 inMyLectureMap.get(lecture.serviceId) || undefined;
               return (

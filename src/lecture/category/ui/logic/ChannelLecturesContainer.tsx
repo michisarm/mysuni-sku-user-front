@@ -27,6 +27,7 @@ import { CoursePlanService } from 'course/stores';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
+import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 
 interface Props
   extends RouteComponentProps<{ collegeId: string; channelId: string }> {
@@ -196,13 +197,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       setLoading && setLoading(false);
     }
     setIsLoading && setIsLoading(false);
-
-    const feedbackIds = (lectureService!.lectures || []).map(
-      (lecture: LectureModel) => lecture.reviewId
-    );
-    if (feedbackIds && feedbackIds.length) {
-      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-    }
 
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
@@ -376,35 +370,13 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel, index: number) => {
-                  let rating: number | undefined =
-                    ratingMap.get(lecture.reviewId) || 0;
-                  const inMyLecture =
-                    inMyLectureMap.get(lecture.serviceId) || undefined;
-                  if (lecture.cubeType === CubeType.Community) {
-                    rating = undefined;
-                  }
+                {lectures.map(({ card, cardRelatedCount }) => {
                   return (
-                    <Lecture
-                      key={`lecture-${index}`}
-                      model={lecture}
-                      rating={rating}
-                      thumbnailImage={lecture.baseUrl || undefined}
-                      action={
-                        inMyLecture
-                          ? Lecture.ActionType.Remove
-                          : Lecture.ActionType.Add
-                      }
-                      onAction={() => {
-                        reactAlert({
-                          title: '알림',
-                          message: inMyLecture
-                            ? '본 과정이 관심목록에서 제외되었습니다.'
-                            : '본 과정이 관심목록에 추가되었습니다.',
-                        });
-                        this.onActionLecture(inMyLecture || lecture);
-                      }}
-                      onViewDetail={this.onViewDetail}
+                    <CardView
+                      key={card.id}
+                      cardId={card.id}
+                      {...card}
+                      {...cardRelatedCount}
                     />
                   );
                 })}
