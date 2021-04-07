@@ -13,6 +13,8 @@ import { LectureStructure } from '../../../viewModel/LectureStructure';
 import { State } from '../../../viewModel/LectureState';
 import { toggleCardBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import { PostService } from '../../../../../board/stores';
+import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
+import { Thumbnail } from '../../../../shared/ui/view/LectureElementsView';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -149,7 +151,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               lectureSummary.category.collegeId
             )}`}
           >
-            {lectureSummary.category.collegeId}
+            {getCollgeName(lectureSummary.category.collegeId)}
           </div>
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">
@@ -204,7 +206,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
             <img src={StampCompleted} />
           ) : (
               lectureSummary.thumbImagePath !== undefined && (
-                <img src={lectureSummary.thumbImagePath} />
+                <Thumbnail image={lectureSummary.thumbImagePath} />
               )
             )}
         </div>

@@ -8,6 +8,7 @@ import { createCacheApi } from './cacheableApi';
 import { CardWithLearningContentCountRom } from '../../model/CardWithLearningContentCountRom';
 import { StudentCdo } from '../../model/StudentCdo';
 import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
+import { Card } from '../../model/Card';
 
 const BASE_URL = '/api/lecture';
 
@@ -57,6 +58,17 @@ export const [
   findMyCardRelatedStudentsCache,
   clearFindMyCardRelatedStudentsCache,
 ] = createCacheApi(findMyCardRelatedStudents);
+
+function findRelatedCards(cardId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/card/findRelatedCards/${cardId}`;
+  return axios.get<Card[]>(url).then(AxiosReturn);
+}
+
+export const [
+  findRelatedCardsCache,
+  clearFindRelatedCardsCache,
+] = createCacheApi(findRelatedCards);
 
 export function findByCardId(cardId: string) {
   const axios = getAxios();

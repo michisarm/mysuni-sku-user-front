@@ -19,6 +19,8 @@ import moment from 'moment';
 import { useLectureCardSummary } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import { Lecture2, Lecture } from '../../../../shared';
 import { PostService } from '../../../../../board/stores';
+import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
+
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -233,7 +235,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
               lectureSummary.category.collegeId
             )}`}
           >
-            {lectureSummary.category.collegeId}
+            {getCollgeName(lectureSummary.category.collegeId)}
           </div>
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -7,17 +6,14 @@ import { ReviewService } from '@nara.drama/feedback';
 import { CoursePlanModel } from 'course/model';
 import LectureContentHeader from '../../../shared/LectureContentHeader';
 
-
 interface Props {
-  reviewService?: ReviewService
-  coursePlan: CoursePlanModel
-  reviewId: string
-  typeViewObject: any
+  reviewService?: ReviewService;
+  coursePlan: CoursePlanModel;
+  reviewId: string;
+  typeViewObject: any;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.reviewService',
-))
+@inject(mobxHelper.injectFrom('shared.reviewService'))
 @reactAutobind
 @observer
 class CourseContentHeaderContainer extends Component<Props> {
@@ -58,26 +54,31 @@ class CourseContentHeaderContainer extends Component<Props> {
     return (
       <LectureContentHeader>
         <LectureContentHeader.ThumbnailCell
-          image={coursePlan.iconBox.baseUrl || `${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
+          image={
+            coursePlan.iconBox.baseUrl ||
+            `${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`
+          }
         />
         <LectureContentHeader.TitleCell
           category={coursePlan.category}
-          type="Course"
-          typeName="Course"
+          type="Card"
+          typeName="Card"
           title={coursePlan.name}
           creationTime={coursePlan.time}
           learningPeriod={typeViewObject.learningPeriod}
         />
         <LectureContentHeader.RightCell>
-          <LectureContentHeader.StampItem value={coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0} />
-          {
-            (reviewSummary && reviewSummary.average != null) && (
-              <LectureContentHeader.StarRatingItem
-                value={reviewSummary.average}
-                max={reviewSummary.maxStarCount}
-              />
-            )
-          }
+          <LectureContentHeader.StampItem
+            value={
+              (coursePlan.stamp.stampReady && coursePlan.stamp.stampCount) || 0
+            }
+          />
+          {reviewSummary && reviewSummary.average != null && (
+            <LectureContentHeader.StarRatingItem
+              value={reviewSummary.average}
+              max={reviewSummary.maxStarCount}
+            />
+          )}
         </LectureContentHeader.RightCell>
       </LectureContentHeader>
     );

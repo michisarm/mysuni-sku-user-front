@@ -99,28 +99,10 @@ class ChannelLecturesLineContainer extends Component<Props> {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        routePaths.courseOverview(
-          cineroom.id,
-          collegeId,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        routePaths.lectureCardOverview(
-          cineroom.id,
-          collegeId,
-          model.cubeId,
-          model.serviceId
-        )
-      );
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.courseOverview(model.cardId));
+    } else {
+      history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
   }
 

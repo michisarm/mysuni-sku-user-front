@@ -50,6 +50,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     if (postItems === undefined) {
       return;
     }
+
     const menuData = findMenu(communityId, menuId);
     menuData.then(result => {
       setMenuName(result.name);
