@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import Swiper from 'react-id-swiper';
-import { Image } from 'semantic-ui-react';
+// import { Image } from 'semantic-ui-react';
 import { MainBannerWrapper } from '../MyLearningContentElementsView';
 import { BannerService } from '../../../../shared/stores';
 import MainBannerModal from './MainBannerModal';
 import { SkProfileService } from '../../../../profile/stores';
+import Image from '../../../../shared/components/Image/Image';
 import ReactGA from 'react-ga';
 
 enum AnchorTargetType {

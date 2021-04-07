@@ -556,7 +556,7 @@ class MyTrainingService {
   async findAllTableViews() {
     /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
     /* 학습중 */
-    if (this._myTrainingFilterRdo.contentType === 'InProgress') {
+    if (this._myTrainingFilterRdo.myTrainingState === 'InProgress') {
       if (!this.inProgressTableViews.length) {
         const inProgressJson = sessionStorage.getItem('inProgressTableViews');
         if (inProgressJson) {
@@ -592,7 +592,7 @@ class MyTrainingService {
     }
 
     /* 학습완료 */
-    if (this._myTrainingFilterRdo.contentType === 'Completed') {
+    if (this._myTrainingFilterRdo.myTrainingState === 'Completed') {
       if (!this.completedTableViews.length) {
         const completedJson = sessionStorage.getItem('completedTableViews');
         if (completedJson) {
@@ -752,10 +752,10 @@ class MyTrainingService {
   private getAddedTableViewsFromStorage(
     offset: Offset
   ): MyTrainingTableViewModel[] {
-    const { contentType, viewType } = this._myTrainingFilterRdo;
+    const { myTrainingState, viewType } = this._myTrainingFilterRdo;
     const endIndex = offset.offset + offset.limit;
 
-    if (contentType === MyLearningContentType.InProgress) {
+    if (myTrainingState === MyLearningContentType.InProgress) {
       if (viewType === 'Course') {
         const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(
           tableView => tableView.serviceType !== 'CARD'
@@ -766,7 +766,7 @@ class MyTrainingService {
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
-    if (contentType === MyLearningContentType.Completed) {
+    if (myTrainingState === MyLearningContentType.Completed) {
       if (viewType === 'Course') {
         const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(
           tableView => tableView.serviceType !== 'CARD'
