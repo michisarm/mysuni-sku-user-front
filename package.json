@@ -31,6 +31,7 @@
     "axios": "^0.19.0",
     "babel-polyfill": "6.26.0",
     "classnames": "^2.2.6",
+    "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
     "json-server": "^0.15.0",
     "lodash": "^4.17.21",
@@ -86,7 +87,8 @@
     "@types/wavesurfer.js": "^3.3.2",
     "awesome-ts-loader": "^1.3.1",
     "react-docgen-typescript-loader": "^3.6.0",
-    "ts-loader": "^6.2.1"
+    "ts-loader": "^6.2.1",
+    "@types/file-saver": "^2.0.1"
   },
   "proxy": "http://ma.university.sk.com",
   "eslintConfig": {
