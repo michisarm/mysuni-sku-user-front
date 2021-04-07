@@ -90,6 +90,7 @@ const AttendanceModal:React.FC<Props> = ({
     const env = document.createElement('input')
     input.type = "hidden"
     input.name = 'env'
+    console.log('env', window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development')
     input.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
 
     frm.appendChild(input)
