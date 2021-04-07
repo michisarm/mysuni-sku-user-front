@@ -192,27 +192,11 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
+    } else {
       history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
       );
     }
   };

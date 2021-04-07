@@ -1,5 +1,5 @@
-export interface CardCategory {
-  collegeId: string;
-  channelId: string;
+import { Category } from './Category';
+
+export interface CardCategory extends Category {
   mainCategory: boolean;
 }

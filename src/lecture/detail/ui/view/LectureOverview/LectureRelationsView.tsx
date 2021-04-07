@@ -40,15 +40,7 @@ const LectureView: React.FC<LectureViewProps> = function LectureView({
     (_: any) => {
       const cineroom = patronInfo.getCineroomByDomain(model)!;
 
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
+      history.push(lectureRoutePaths.courseOverview(model.cardId));
     },
     [history, model]
   );

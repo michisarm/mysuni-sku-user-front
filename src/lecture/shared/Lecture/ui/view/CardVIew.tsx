@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import {
   Button,
@@ -71,15 +71,19 @@ function CardView({
   useEffect(() => {
     setInMyLectureModel(inMyLectureMap?.get(cardId));
   }, [inMyLectureMap, cardId]);
-  const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
-  const collegeId = categories[0].collegeId;
-  const onHoverIn = () => {
-    setHovered(true);
-  };
+  const hourMinuteFormat = useMemo(
+    () => dateTimeHelper.timeToHourMinuteFormat(learningTime),
+    [learningTime]
+  );
+  const collegeId = useMemo(() => categories[0].collegeId, [categories]);
 
-  const onHoverOut = () => {
+  const onHoverIn = useCallback(() => {
+    setHovered(true);
+  }, []);
+
+  const onHoverOut = useCallback(() => {
     setHovered(false);
-  };
+  }, []);
 
   return (
     <Card

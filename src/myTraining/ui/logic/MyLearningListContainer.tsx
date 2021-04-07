@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -25,31 +24,32 @@ import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 import MyLearningContentType from '../model/MyLearningContentType';
 import LineHeaderContainer from '../logic/LineHeaderContainer';
 
-
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
-  pageService?: PageService,
-  reviewService?: ReviewService,
-  skProfileService?: SkProfileService,
-  lectureService?: LectureService,
-  myTrainingService?: MyTrainingService,
-  inMyLectureService?: InMyLectureService,
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  actionLogService?: ActionLogService;
+  pageService?: PageService;
+  reviewService?: ReviewService;
+  skProfileService?: SkProfileService;
+  lectureService?: LectureService;
+  myTrainingService?: MyTrainingService;
+  inMyLectureService?: InMyLectureService;
 }
 
 interface State {
-  type: string
-  channels: ChannelModel[]
+  type: string;
+  channels: ChannelModel[];
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.pageService',
-  'shared.reviewService',
-  'profile.skProfileService',
-  'lecture.lectureService',
-  'myTraining.myTrainingService',
-  'myTraining.inMyLectureService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.pageService',
+    'shared.reviewService',
+    'profile.skProfileService',
+    'lecture.lectureService',
+    'myTraining.myTrainingService',
+    'myTraining.inMyLectureService'
+  )
+)
 @observer
 @reactAutobind
 class MyLearningPage extends Component<Props, State> {
@@ -69,16 +69,26 @@ class MyLearningPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
+    const {
+      pageService,
+      inMyLectureService,
+      lectureService,
+      myTrainingService,
+    } = this.props;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
     if (prevProps.match.params.tab !== currentTab) {
       this.selectMenu(currentTab);
-    }
-    else if (prevProps.match.params.tab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+    } else if (
+      prevProps.match.params.tab === currentTab &&
+      prevProps.match.params.pageNo !== currentPageNo
+    ) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
-      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > this.PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + this.PAGE_SIZE
+          : page!.nextOffset;
       if (currentPageNo === '1') {
         if (currentTab === MyLearningContentType.InMyList) {
           inMyLectureService!.clearInMyLectures();
@@ -89,8 +99,7 @@ class MyLearningPage extends Component<Props, State> {
           myTrainingService!.clear();
         }
         pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      }
-      else {
+      } else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
       this.findPagingList(this.getPageNo() - 1);
@@ -109,7 +118,12 @@ class MyLearningPage extends Component<Props, State> {
     const { type: prevType } = this.state;
 
     if (type !== prevType) {
-      const { pageService, lectureService, inMyLectureService, myTrainingService } = this.props;
+      const {
+        pageService,
+        lectureService,
+        inMyLectureService,
+        myTrainingService,
+      } = this.props;
 
       if (type === MyLearningContentType.InMyList) {
         inMyLectureService!.clearInMyLectures();
@@ -127,9 +141,17 @@ class MyLearningPage extends Component<Props, State> {
   }
 
   async findPagingList(pageNo?: number) {
-    const { inMyLectureService, myTrainingService, lectureService, pageService, reviewService } = this.props;
+    const {
+      inMyLectureService,
+      myTrainingService,
+      lectureService,
+      pageService,
+      reviewService,
+    } = this.props;
     const { channels } = this.state;
-    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
+    const channelIds = channels.map(
+      (channel: ChannelModel) => channel.channelId
+    );
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { type } = this.state;
     let offsetList: any = null;
@@ -138,18 +160,35 @@ class MyLearningPage extends Component<Props, State> {
     inMyLectureService!.findAllInMyLectures();
 
     if (type === MyLearningContentType.InMyList) {
-      offsetList = await inMyLectureService!.findInMyLectures(page!.limit, page!.nextOffset, channelIds);
-      feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
+      offsetList = await inMyLectureService!.findInMyLectures(
+        page!.limit,
+        page!.nextOffset,
+        channelIds
+      );
+      feedbackIds = (offsetList.results || []).map(
+        (lecture: InMyLectureModel) => lecture.reviewId
+      );
       await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-    }
-    else if (type === MyLearningContentType.Required) {
-      offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
-    }
-    else {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
+    } else if (type === MyLearningContentType.Required) {
+      offsetList = await lectureService!.findPagingRequiredLectures(
+        page!.limit,
+        page!.nextOffset,
+        channelIds
+      );
+    } else {
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(
+        type,
+        page!.limit,
+        page!.nextOffset,
+        channelIds
+      );
     }
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      offsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
   }
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
@@ -157,54 +196,65 @@ class MyLearningPage extends Component<Props, State> {
     const { type } = this.state;
     const { actionLogService, inMyLectureService, pageService } = this.props;
 
-    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+    actionLogService?.registerSeenActionLog({
+      lecture: training,
+      subAction: '아이콘',
+    });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id)
+      inMyLectureService!.removeInMyLecture(training.id).then(() => {
+        if (type === MyLearningContentType.InMyList) {
+          inMyLectureService!.clearInMyLectures();
+          pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+          this.findPagingList();
+        } else {
+          inMyLectureService!.removeInMyLectureInAllList(
+            training.serviceId,
+            training.serviceType
+          );
+        }
+      });
+    } else {
+      let servicePatronKeyString = training.patronKey.keyString;
+      if (training instanceof MyTrainingModel) {
+        servicePatronKeyString = training.servicePatronKeyString;
+      }
+      inMyLectureService!
+        .addInMyLecture(
+          new InMyLectureCdoModel({
+            serviceId: training.serviceId,
+            serviceType: training.serviceType,
+            category: training.category,
+            name: training.name,
+            description: training.description,
+            cubeType: training.cubeType,
+            learningTime: training.learningTime,
+            stampCount: training.stampCount,
+            coursePlanId: training.coursePlanId,
+
+            requiredSubsidiaries: training.requiredSubsidiaries,
+            cubeId: training.cubeId,
+            courseSetJson: training.courseSetJson,
+            courseLectureUsids: training.courseLectureUsids,
+            lectureCardUsids: training.lectureCardUsids,
+
+            reviewId: training.reviewId,
+            baseUrl: training.baseUrl,
+            servicePatronKeyString,
+          })
+        )
         .then(() => {
           if (type === MyLearningContentType.InMyList) {
             inMyLectureService!.clearInMyLectures();
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
-          }
-          else {
-            inMyLectureService!.removeInMyLectureInAllList(training.serviceId, training.serviceType);
+          } else {
+            inMyLectureService!.addInMyLectureInAllList(
+              training.serviceId,
+              training.serviceType
+            );
           }
         });
-    }
-    else {
-      let servicePatronKeyString = training.patronKey.keyString;
-      if (training instanceof MyTrainingModel) servicePatronKeyString = training.servicePatronKeyString;
-      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
-        serviceId: training.serviceId,
-        serviceType: training.serviceType,
-        category: training.category,
-        name: training.name,
-        description: training.description,
-        cubeType: training.cubeType,
-        learningTime: training.learningTime,
-        stampCount: training.stampCount,
-        coursePlanId: training.coursePlanId,
-
-        requiredSubsidiaries: training.requiredSubsidiaries,
-        cubeId: training.cubeId,
-        courseSetJson: training.courseSetJson,
-        courseLectureUsids: training.courseLectureUsids,
-        lectureCardUsids: training.lectureCardUsids,
-
-        reviewId: training.reviewId,
-        baseUrl: training.baseUrl,
-        servicePatronKeyString,
-      })).then(() => {
-        if (type === MyLearningContentType.InMyList) {
-          inMyLectureService!.clearInMyLectures();
-          pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-          this.findPagingList();
-        }
-        else {
-          inMyLectureService!.addInMyLectureInAllList(training.serviceId, training.serviceType);
-        }
-      });
     }
   }
 
@@ -212,15 +262,16 @@ class MyLearningPage extends Component<Props, State> {
     //
     const { model } = data;
     const { history } = this.props;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      // history.push(lectureRoutePaths.courseOverviewPrev(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      // history.push(lectureRoutePaths.lectureCardOverviewPrev(model.category.college.id, model.cubeId, model.serviceId));
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
+    } else if (model.serviceType === LectureServiceType.Cube) {
+      history.push(
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
+      );
     }
   }
 
@@ -254,7 +305,12 @@ class MyLearningPage extends Component<Props, State> {
   }
 
   onFilter(channels: ChannelModel[]) {
-    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
+    const {
+      pageService,
+      inMyLectureService,
+      lectureService,
+      myTrainingService,
+    } = this.props;
     const { type } = this.state;
     this.setState({ channels }, () => {
       if (type === MyLearningContentType.InMyList) {
@@ -275,27 +331,37 @@ class MyLearningPage extends Component<Props, State> {
     const { profileMemberName } = skProfileService!;
 
     return (
-      <NoSuchContentPanel message={(
-        <>
-          <div className="text">{noSuchContentPanel}</div>
-          <a
-            className="ui icon right button btn-blue2"
-            onClick={() => {
-              this.onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
-              history.push('/lecture/recommend');
-            }}
-          >
-            {profileMemberName}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
-          </a>
-        </>
-      )}
+      <NoSuchContentPanel
+        message={
+          <>
+            <div className="text">{noSuchContentPanel}</div>
+            <a
+              className="ui icon right button btn-blue2"
+              onClick={() => {
+                this.onClickActionLog(
+                  `${profileMemberName}님에게 추천하는 학습 과정 보기`
+                );
+                history.push('/lecture/recommend');
+              }}
+            >
+              {profileMemberName}님에게 추천하는 학습 과정 보기
+              <i className="icon morelink" />
+            </a>
+          </>
+        }
       />
     );
   }
 
   render() {
     //
-    const { inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
+    const {
+      inMyLectureService,
+      lectureService,
+      myTrainingService,
+      reviewService,
+      pageService,
+    } = this.props;
     const { ratingMap } = reviewService!;
     const { type, channels } = this.state;
     const { inMyLectureMap } = inMyLectureService!;
@@ -340,40 +406,57 @@ class MyLearningPage extends Component<Props, State> {
     return (
       <>
         <LineHeaderContainer
-          count={page && page.totalCount || 0}
+          count={(page && page.totalCount) || 0}
           channels={channels}
           onFilter={this.onFilter}
           currentTab={this.props.match.params.tab}
         />
 
         <Lecture.Group type={cardType}>
-          {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
-            let rating: number | undefined;
-            if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
-              rating = ratingMap.get(value.reviewId) || 0;
+          {list.map(
+            (
+              value: MyTrainingModel | LectureModel | InMyLectureModel,
+              index: number
+            ) => {
+              let rating: number | undefined;
+              if (
+                (value instanceof InMyLectureModel ||
+                  value instanceof LectureModel) &&
+                value.cubeType !== CubeType.Community
+              ) {
+                rating = ratingMap.get(value.reviewId) || 0;
+              }
+              const inMyLecture =
+                inMyLectureMap.get(value.serviceId) || undefined;
+              return (
+                <Lecture
+                  key={`training-${index}`}
+                  model={value}
+                  rating={rating}
+                  thumbnailImage={value.baseUrl || undefined}
+                  action={
+                    inMyLecture
+                      ? Lecture.ActionType.Remove
+                      : Lecture.ActionType.Add
+                  }
+                  onAction={() => {
+                    reactAlert({
+                      title: '알림',
+                      message: inMyLecture
+                        ? '본 과정이 관심목록에서 제외되었습니다.'
+                        : '본 과정이 관심목록에 추가되었습니다.',
+                    });
+                    this.onActionLecture(inMyLecture || value);
+                  }}
+                  onViewDetail={this.onViewDetail}
+                />
+              );
             }
-            const inMyLecture = inMyLectureMap.get(value.serviceId) || undefined;
-            return (
-              <Lecture
-                key={`training-${index}`}
-                model={value}
-                rating={rating}
-                thumbnailImage={value.baseUrl || undefined}
-                action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                onAction={() => {
-                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
-                  this.onActionLecture(inMyLecture || value);
-                }}
-                onViewDetail={this.onViewDetail}
-              />
-            );
-          })}
+          )}
         </Lecture.Group>
 
-        { this.isContentMore() && (
-          <SeeMoreButton
-            onClick={this.onClickSeeMore}
-          />
+        {this.isContentMore() && (
+          <SeeMoreButton onClick={this.onClickSeeMore} />
         )}
       </>
     );
