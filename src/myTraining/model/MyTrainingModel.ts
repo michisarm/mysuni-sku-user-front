@@ -75,6 +75,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   }
 
   toXlsxForInProgress(index: number): InProgressXlsxModel {
+    //
     return {
       No: String(index),
       College: this.category.college.name,
