@@ -77,15 +77,13 @@ class MyTrainingTableViewModel {
   /* functions */
   isCardType() {
     // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
-    return this.serviceType === LectureServiceType.Card.toUpperCase()
+    return this.serviceType === LectureServiceType.Cube.toUpperCase()
       ? true
       : false;
   }
 
   isCourseOrProgram(): boolean {
-    return this.serviceType ===
-      (LectureServiceType.Course.toUpperCase() ||
-        LectureServiceType.Program.toUpperCase())
+    return this.serviceType === LectureServiceType.Card.toUpperCase()
       ? true
       : false;
   }

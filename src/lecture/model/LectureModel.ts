@@ -24,6 +24,7 @@ class LectureModel extends DramaEntityObservableModel {
   category: CategoryModel = new CategoryModel();
   name: string = '';
   cubeType: CubeType = CubeType.None;
+  cardId: string = '';
   cubeId: string = '';
   courseSetJson: CourseSetModel = new CourseSetModel();
   courseLectureUsids: string[] = [];
@@ -84,21 +85,17 @@ class LectureModel extends DramaEntityObservableModel {
     //
     const serviceType = lecture.serviceType as string;
 
-    if (serviceType === 'PROGRAM') {
-      return LectureServiceType.Program;
-    } else if (serviceType === 'COURSE') {
-      return LectureServiceType.Course;
-    } else {
+    if (serviceType === 'Card') {
       return LectureServiceType.Card;
+    } else {
+      return LectureServiceType.Cube;
     }
   }
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
-    if (serviceType === LectureServiceType.Program) {
-      return CubeTypeNameType.Program;
-    } else if (serviceType === LectureServiceType.Course) {
-      return CubeTypeNameType.Course;
+    if (serviceType === 'Card') {
+      return CubeTypeNameType.Card;
     } else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
@@ -188,6 +185,7 @@ decorate(LectureModel, {
   name: observable,
   cubeType: observable,
   cubeId: observable,
+  cardId: observable,
   courseSetJson: observable,
   learningTime: observable,
   courseLectureUsids: observable,

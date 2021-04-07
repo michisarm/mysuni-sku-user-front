@@ -376,30 +376,12 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
       // history.push(routePaths.courseOverviewPrev(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-      history.push(
-        routePaths.courseOverview(
-          cineroom.id,
-          college.collegeId,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.courseOverview(model.cardId));
+    } else if (model.serviceType === LectureServiceType.Cube) {
       // history.push(routePaths.lectureCardOverviewPrev(college.collegeId, model.cubeId, model.serviceId));
-      history.push(
-        routePaths.lectureCardOverview(
-          cineroom.id,
-          college.collegeId,
-          model.cubeId,
-          model.serviceId
-        )
-      );
+      history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
     scrollSave && scrollSave();
   }

@@ -112,22 +112,17 @@ class MyTrainingModel extends DramaEntityObservableModel {
     */
     const serviceType = myTraining.serviceType as string;
 
-    if (serviceType.toUpperCase() === 'PROGRAM') {
-      return LectureServiceType.Program;
-    }
-    if (serviceType.toUpperCase() === 'COURSE') {
-      return LectureServiceType.Course;
+    if (serviceType.toUpperCase() === 'CARD') {
+      return LectureServiceType.Card;
     }
 
-    return LectureServiceType.Card;
+    return LectureServiceType.Cube;
   }
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
-    if (serviceType === LectureServiceType.Program) {
-      return CubeTypeNameType.Program;
-    } else if (serviceType === LectureServiceType.Course) {
-      return CubeTypeNameType.Course;
+    if (serviceType === LectureServiceType.Card) {
+      return CubeTypeNameType.Card;
     } else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
@@ -151,7 +146,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
       if (this.learningState) {
         return LearningStateName[LearningState[this.learningState]];
       }
-      if (this.cubeType === CubeType.Community) return '가입완료';
+      if (this.cubeType === CubeType.Community) {
+        return '가입완료';
+      }
       return '학습예정';
     } else {
       return ProposalStateName[ProposalState[this.proposalState]];

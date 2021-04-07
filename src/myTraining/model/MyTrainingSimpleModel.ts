@@ -1,8 +1,4 @@
-import {
-  CategoryModel,
-  LearningState,
-  ProposalState,
-} from 'shared/model';
+import { CategoryModel, LearningState, ProposalState } from 'shared/model';
 import { CubeType } from 'personalcube/personalcube/model';
 import { LectureServiceType } from 'lecture/model';
 
@@ -42,14 +38,10 @@ class MyTrainingSimpleModel {
     //
     const serviceType = myTraining.serviceType as string;
 
-    if (serviceType === 'PROGRAM') {
-      return LectureServiceType.Program;
-    }
-    else if (serviceType === 'COURSE') {
-      return LectureServiceType.Course;
-    }
-    else {
+    if (serviceType.toUpperCase() === 'CARD') {
       return LectureServiceType.Card;
+    } else {
+      return LectureServiceType.Cube;
     }
   }
 }

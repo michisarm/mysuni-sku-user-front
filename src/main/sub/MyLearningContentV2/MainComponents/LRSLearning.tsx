@@ -34,7 +34,6 @@ import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props extends RouteComponentProps {
   // actionLogService?: ActionLogService,
@@ -56,9 +55,6 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
   profileMemberEmail,
   history,
 }) {
-  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
-  useRequestCollege();
-
   const CONTENT_TYPE_NAME = '추천과정';
   const PAGE_SIZE = 8;
   const { lrsLectures } = lrsLectureService!;
@@ -196,27 +192,11 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
+    } else {
       history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
       );
     }
   };
@@ -300,17 +280,17 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
                     description={card.description}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
-                    iconName={inMyLecture ? 'remove2' : 'add-list'}
-                    onAction={() => {
-                      reactAlert({
-                        title: '알림',
-                        message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
-                      });
-                      onActionLecture(inMyLecture!);
-                    }}
-                    onViewDetail={onViewDetail}
+                    // iconName={inMyLecture ? 'remove2' : 'add-list'}
+                    // onAction={() => {
+                    //   reactAlert({
+                    //     title: '알림',
+                    //     message: inMyLecture
+                    //       ? '본 과정이 관심목록에서 제외되었습니다.'
+                    //       : '본 과정이 관심목록에 추가되었습니다.',
+                    //   });
+                    //   onActionLecture(inMyLecture!);
+                    // }}
+                    // onViewDetail={onViewDetail}
                   />
                 </CardGroup>
               </li>

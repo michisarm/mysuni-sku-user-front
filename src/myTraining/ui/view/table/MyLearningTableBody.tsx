@@ -120,26 +120,11 @@ function MyLearningTableBody(props: Props) {
     const convertedServiceType = convertServiceType(serviceType);
     // Card
     if (model.isCardType()) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroomId,
-          collegeId,
-          cubeId,
-          serviceId
-        )
-      );
+      history.push(lectureRoutePaths.lectureCardOverview(serviceId, cubeId));
     }
     // Program 또는 Course
     else {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroomId,
-          collegeId,
-          coursePlanId,
-          convertedServiceType,
-          serviceId
-        )
-      );
+      history.push(lectureRoutePaths.courseOverview(serviceId));
     }
 
     // react-ga event
@@ -510,12 +495,10 @@ const formatDate = (time: number) => {
 
 const convertServiceType = (serviceType: string): LectureServiceType => {
   switch (serviceType.toUpperCase()) {
-    case 'COURSE':
-      return LectureServiceType.Course;
-    case 'PROGRAM':
-      return LectureServiceType.Program;
-    default:
+    case 'CARD':
       return LectureServiceType.Card;
+    default:
+      return LectureServiceType.Cube;
   }
 };
 

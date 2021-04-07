@@ -1,11 +1,13 @@
-
 import { decorate, observable } from 'mobx';
 import { CategoryModel, IdName } from 'shared/model';
 import { CubeType, PersonalCubeModel } from 'personalcube/personalcube/model';
 import { CubeIntroModel } from 'personalcube/cubeintro/model';
 import { CourseSetModel } from 'course/model';
-import { LectureServiceType, LectureCardModel, LectureModel } from 'lecture/model';
-
+import {
+  LectureServiceType,
+  LectureCardModel,
+  LectureModel,
+} from 'lecture/model';
 
 class InMyLectureCdoModel {
   //
@@ -29,7 +31,6 @@ class InMyLectureCdoModel {
   baseUrl: string = '';
   servicePatronKeyString: string = '';
 
-
   constructor(inMyLecture?: InMyLectureCdoModel) {
     //
     if (inMyLecture) {
@@ -37,8 +38,11 @@ class InMyLectureCdoModel {
     }
   }
 
-
-  static fromLectureCard(personalCube: PersonalCubeModel, cubeIntro: CubeIntroModel, lectureCard: LectureCardModel) {
+  static fromLectureCard(
+    personalCube: PersonalCubeModel,
+    cubeIntro: CubeIntroModel,
+    lectureCard: LectureCardModel
+  ) {
     //
     return new InMyLectureCdoModel({
       serviceType: LectureServiceType.Card,

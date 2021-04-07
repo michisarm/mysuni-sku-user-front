@@ -16,6 +16,7 @@ import LectureClassroom, {
   Classroom,
 } from '../../../viewModel/LectureClassroom';
 import moment from 'moment';
+import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -217,7 +218,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
               lectureSummary.category.collegeId
             )}`}
           >
-            {lectureSummary.category.collegeId}
+            {getCollgeName(lectureSummary.category.collegeId)}
           </div>
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">

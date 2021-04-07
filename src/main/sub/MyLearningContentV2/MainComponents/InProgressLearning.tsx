@@ -91,7 +91,9 @@ const InProgressLearning: React.FC<Props> = Props => {
     return inMyLectureMap.get(serviceId);
   };
 
-  const getRating = (learning: LectureModel | InMyLectureModel) => {
+  const getRating = (
+    learning: LectureModel | InMyLectureModel | MyTrainingModel
+  ) => {
     //
     const { ratingMap } = reviewService!;
     let rating: number | undefined;
@@ -142,27 +144,11 @@ const InProgressLearning: React.FC<Props> = Props => {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutes.courseOverview(model.cardId));
+    } else if (model.serviceType === LectureServiceType.Cube) {
       history.push(
-        lectureRoutes.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutes.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
+        lectureRoutes.lectureCardOverview(model.cardId, model.cubeId)
       );
     }
   };

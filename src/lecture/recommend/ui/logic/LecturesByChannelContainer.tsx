@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -16,33 +15,35 @@ import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { CardSorting, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
-import {Lecture} from '../../../shared/Lecture';
+import { Lecture } from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../../../category/ui/view/ChannelLecturesContentWrapperView';
 import LectureServiceType from '../../../model/LectureServiceType';
 
-
-interface Props extends RouteComponentProps<{ channelId: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
-  newPageService?: NewPageService,
-  collegeService?: CollegeService,
-  lectureService?: LectureService,
-  reviewService?: ReviewService,
-  inMyLectureService?: InMyLectureService,
+interface Props
+  extends RouteComponentProps<{ channelId: string; pageNo: string }> {
+  actionLogService?: ActionLogService;
+  newPageService?: NewPageService;
+  collegeService?: CollegeService;
+  lectureService?: LectureService;
+  reviewService?: ReviewService;
+  inMyLectureService?: InMyLectureService;
 }
 
 interface State {
-  lectures: LectureModel[],
-  sorting: string,
+  lectures: LectureModel[];
+  sorting: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.newPageService',
-  'college.collegeService',
-  'lecture.lectureService',
-  'shared.reviewService',
-  'myTraining.inMyLectureService'
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.newPageService',
+    'college.collegeService',
+    'lecture.lectureService',
+    'shared.reviewService',
+    'myTraining.inMyLectureService'
+  )
+)
 @reactAutobind
 @observer
 class LecturesByChannelContainer extends Component<Props, State> {
@@ -97,7 +98,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
   clearAndInit() {
     //
     this.init();
-    this.setState({ lectures: []});
+    this.setState({ lectures: [] });
   }
 
   findChannel() {
@@ -124,25 +125,43 @@ class LecturesByChannelContainer extends Component<Props, State> {
   }
 
   async findPagingRecommendLectures(limit: number, offset: number) {
-    const { match, newPageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const {
+      match,
+      newPageService,
+      lectureService,
+      reviewService,
+      inMyLectureService,
+    } = this.props;
     const { params } = match;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
     inMyLectureService!.findAllInMyLectures();
 
-    const lectures = await lectureService!.addPagingRecommendLectures(this.CHANNEL_SIZE, 0, limit, offset, params.channelId, sorting);
+    const lectures = await lectureService!.addPagingRecommendLectures(
+      this.CHANNEL_SIZE,
+      0,
+      limit,
+      offset,
+      params.channelId,
+      sorting
+    );
     let feedbackIds: string[] = [];
     if (lectures && lectures.results && lectures.results.length) {
-      feedbackIds = feedbackIds.concat(lectures.results.map(lecture => lecture.reviewId));
+      feedbackIds = feedbackIds.concat(
+        lectures.results.map(lecture => lecture.reviewId)
+      );
     }
     reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
-    this.setState((prevState) => ({
-      lectures: [ ...prevState.lectures, ...lectures!.results],
+    this.setState(prevState => ({
+      lectures: [...prevState.lectures, ...lectures!.results],
     }));
-    newPageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectures!.totalCount, pageNo);
-
+    newPageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      lectures!.totalCount,
+      pageNo
+    );
   }
 
   isContentMore() {
@@ -155,14 +174,19 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
-    this.props.actionLogService?.registerClickActionLog({ subAction: data.label });
-
-    this.setState({
-      sorting: data.value,
-    }, () => {
-      this.clearAndInit();
-      this.initialFindPagingRecommendLectures();
+    this.props.actionLogService?.registerClickActionLog({
+      subAction: data.label,
     });
+
+    this.setState(
+      {
+        sorting: data.value,
+      },
+      () => {
+        this.clearAndInit();
+        this.initialFindPagingRecommendLectures();
+      }
+    );
   }
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
@@ -172,31 +196,45 @@ class LecturesByChannelContainer extends Component<Props, State> {
     actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
-    }
-    else {
-      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
-        serviceId: lecture.serviceId,
-        serviceType: lecture.serviceType,
-        category: lecture.category,
-        name: lecture.name,
-        description: lecture.description,
-        cubeType: lecture.cubeType,
-        learningTime: lecture.learningTime,
-        stampCount: lecture.stampCount,
-        coursePlanId: lecture.coursePlanId,
+      inMyLectureService!
+        .removeInMyLecture(lecture.id)
+        .then(() =>
+          inMyLectureService!.removeInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
+    } else {
+      inMyLectureService!
+        .addInMyLecture(
+          new InMyLectureCdoModel({
+            serviceId: lecture.serviceId,
+            serviceType: lecture.serviceType,
+            category: lecture.category,
+            name: lecture.name,
+            description: lecture.description,
+            cubeType: lecture.cubeType,
+            learningTime: lecture.learningTime,
+            stampCount: lecture.stampCount,
+            coursePlanId: lecture.coursePlanId,
 
-        requiredSubsidiaries: lecture.requiredSubsidiaries,
-        cubeId: lecture.cubeId,
-        courseSetJson: lecture.courseSetJson,
-        courseLectureUsids: lecture.courseLectureUsids,
-        lectureCardUsids: lecture.lectureCardUsids,
+            requiredSubsidiaries: lecture.requiredSubsidiaries,
+            cubeId: lecture.cubeId,
+            courseSetJson: lecture.courseSetJson,
+            courseLectureUsids: lecture.courseLectureUsids,
+            lectureCardUsids: lecture.lectureCardUsids,
 
-        reviewId: lecture.reviewId,
-        baseUrl: lecture.baseUrl,
-        servicePatronKeyString: lecture.patronKey.keyString,
-      })).then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
+            reviewId: lecture.reviewId,
+            baseUrl: lecture.baseUrl,
+            servicePatronKeyString: lecture.patronKey.keyString,
+          })
+        )
+        .then(() =>
+          inMyLectureService!.addInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
     }
   }
 
@@ -205,15 +243,16 @@ class LecturesByChannelContainer extends Component<Props, State> {
     const { model } = data;
     const { history } = this.props;
     const collegeId = model.category.college.id;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
+    if (model.serviceType === LectureServiceType.Card) {
       // history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-      history.push(routePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.courseOverview(model.cardId));
+    } else {
       // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
-      history.push(routePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
   }
 
@@ -232,37 +271,47 @@ class LecturesByChannelContainer extends Component<Props, State> {
     const { lectures, sorting } = this.state;
     const page = newPageService!.pageMap.get(this.PAGE_KEY);
     const { ratingMap } = reviewService!;
-    const { inMyLectureMap } =  inMyLectureService!;
+    const { inMyLectureMap } = inMyLectureService!;
 
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        { lectures.length < 1 ?
+        {lectures.length < 1 ? (
           <NoSuchContentPanel message="선택하신 채널에 해당하는 추천 학습 과정이 없습니다." />
-          :
+        ) : (
           <>
-            <CardSorting
-              value={sorting}
-              onChange={this.onChangeSorting}
-            />
+            <CardSorting value={sorting} onChange={this.onChangeSorting} />
 
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
                 {lectures.map((lecture: LectureModel, index: number) => {
-                  let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
-                  const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
-                  if (lecture.cubeType === CubeType.Community) rating = undefined;
+                  let rating: number | undefined =
+                    ratingMap.get(lecture.reviewId) || 0;
+                  const inMyLecture =
+                    inMyLectureMap.get(lecture.serviceId) || undefined;
+                  if (lecture.cubeType === CubeType.Community) {
+                    rating = undefined;
+                  }
                   return (
                     <Lecture
                       key={`lecture-${index}`}
                       model={lecture}
                       rating={rating}
                       thumbnailImage={lecture.baseUrl || undefined}
-                      action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                      action={
+                        inMyLecture
+                          ? Lecture.ActionType.Remove
+                          : Lecture.ActionType.Add
+                      }
                       onAction={() => {
-                        reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                        reactAlert({
+                          title: '알림',
+                          message: inMyLecture
+                            ? '본 과정이 관심목록에서 제외되었습니다.'
+                            : '본 과정이 관심목록에 추가되었습니다.',
+                        });
                         this.onActionLecture(inMyLecture || lecture);
                       }}
                       onViewDetail={this.onViewDetail}
@@ -271,14 +320,12 @@ class LecturesByChannelContainer extends Component<Props, State> {
                 })}
               </Lecture.Group>
 
-              { this.isContentMore() && (
-                <SeeMoreButton
-                  onClick={this.onClickSeeMore}
-                />
+              {this.isContentMore() && (
+                <SeeMoreButton onClick={this.onClickSeeMore} />
               )}
             </div>
           </>
-        }
+        )}
       </ChannelLecturesContentWrapperView>
     );
   }
