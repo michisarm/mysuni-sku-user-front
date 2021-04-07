@@ -13,6 +13,8 @@ import PopularLearning from './MainComponents/POPLearning';
 import RecommendLearning from './MainComponents/LRSLearning';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
+import EnrollingLearning from './MainComponents/EnrollingLearning';
+
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -56,6 +58,7 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
         profileMemberName={member.name}
         profileMemberEmail={member.email}
       /> */}
+      <EnrollingLearning />
     </>
   );
 };

@@ -54,6 +54,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
+  capacity: number = 0;
+  differDays: number = 0;
+  ribbonName: string = '';
 
   constructor(myTraining?: MyTrainingModel) {
     //
@@ -225,6 +228,9 @@ decorate(MyTrainingModel, {
   baseUrl: observable,
   endDate: observable,
   retryDate: observable,
+  capacity: observable,
+  differDays: observable,
+  ribbonName: observable,
 });
 
 export default MyTrainingModel;

@@ -60,6 +60,16 @@ class LectureFilterRdoModel {
       channelIds,
     });
   }
+
+  static enrLectures(limit: number, offset: number, order: OrderByType = OrderByType.Imminent) {
+    //
+    return new LectureFilterRdoModel({
+      orderBy: order,
+      limit,
+      offset
+    });
+  }
+
 }
 
 decorate(LectureFilterRdoModel, {
