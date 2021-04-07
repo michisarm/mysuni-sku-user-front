@@ -80,16 +80,20 @@ const AttendanceModal:React.FC<Props> = ({
   }, [attendFlag, AttendCountItem])
 
   const lotteryTicketModalOpen = useCallback(() => {
-    console.log('암호화 메일', EncryptEmail)
-    console.log('출석 count', AttendCountItem.length)
-
     const frm = document.createElement('form')
+
     const input = document.createElement('input')
     input.type = "hidden"
     input.name = 'q'
     input.value = EncryptEmail
 
+    const env = document.createElement('input')
+    input.type = "hidden"
+    input.name = 'env'
+    input.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
+
     frm.appendChild(input)
+    frm.appendChild(env)
     document.body.appendChild(frm)
 
     frm.setAttribute('action',`https://www.mysuniluckydrawevent.com/auth`)
