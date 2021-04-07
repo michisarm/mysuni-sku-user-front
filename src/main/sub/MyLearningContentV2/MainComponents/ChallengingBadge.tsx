@@ -34,7 +34,7 @@ const ChallengingBadge: React.FC<Props> = Props => {
   */
   const PAGE_SIZE = 5;
 
-  const { myBadges } = badgeService!;
+  const { challengeBadges } = badgeService!;
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -88,7 +88,7 @@ const ChallengingBadge: React.FC<Props> = Props => {
       category: '메인_도전중인-Badge',
       action: 'Click Card',
       // label: `(Badge) - ${myBadges[idx].name}`,
-      label: `${myBadges[idx].name}`,
+      label: `${challengeBadges[idx].name}`,
     });
   };
 
@@ -100,7 +100,7 @@ const ChallengingBadge: React.FC<Props> = Props => {
           Badge
         </strong>
         <div className="right">
-          {myBadges.length > 0 && (
+          {challengeBadges.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View All <Icon className="morelink" />
             </Button>
@@ -108,10 +108,10 @@ const ChallengingBadge: React.FC<Props> = Props => {
         </div>
       </div>
 
-      {myBadges.length > 0 && myBadges[0] ? (
+      {challengeBadges.length > 0 && challengeBadges[0] ? (
         <div className="scrolling">
           <ul className="belt">
-            {myBadges.map((badge: MyBadge, index: number) => {
+            {challengeBadges.map((badge: MyBadge, index: number) => {
               return (
                 <li key={index} onClick={() => onClick(index)}>
                   <BadgeView
