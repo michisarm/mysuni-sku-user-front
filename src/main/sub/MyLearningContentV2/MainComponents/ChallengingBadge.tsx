@@ -55,15 +55,11 @@ const ChallengingBadge: React.FC<Props> = Props => {
     badgeService!.clearMyBadges();
 
     const myBadgeRdo: MyBadgeRdo = {
-      level: 'Level3',
-      offset: 1,
-      limit: 20,
+      offset: 0,
+      limit: 5,
     };
 
-    badgeService!.findAllChallengeBadges(
-      myBadgeRdo,
-      true
-    );
+    badgeService!.findAllChallengeBadges(myBadgeRdo, true);
   };
 
   const onViewAll = () => {
