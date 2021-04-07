@@ -20,7 +20,6 @@ import LectureParams, {
   toPath,
 } from '../../../../lecture/detail/viewModel/LectureParams';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
-import { CardCategory } from 'shared/model/CardCategory';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -121,7 +120,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
             const isRequired = card.permittedCinerooms
               ? isIncludeCineroomId(card.permittedCinerooms)
               : false;
-            console.log(isRequired);
 
             return (
               <li key={i}>
