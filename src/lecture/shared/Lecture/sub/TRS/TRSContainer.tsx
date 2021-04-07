@@ -344,7 +344,7 @@ class TRSContainer extends Component<Props, State> {
     const { open, setOpen } = this.context;
     setOpen(!open);
 
-    if( this.state.inProgress === LearningState.Progress ) {
+    if (this.state.inProgress === LearningState.Progress) {
       setOpen(open);
     } else {
       setOpen(!open);
@@ -556,10 +556,7 @@ class TRSContainer extends Component<Props, State> {
 
   onTestNotReady() {
     const { lectureView } = this.props;
-    if (
-      lectureView.serviceType === LectureServiceType.Program ||
-      lectureView.serviceType === LectureServiceType.Course
-    ) {
+    if (lectureView.serviceType === LectureServiceType.Card) {
       reactAlert({
         title: 'Test 안내',
         message: '과정 이수 완료 후 Test 응시 가능합니다.',

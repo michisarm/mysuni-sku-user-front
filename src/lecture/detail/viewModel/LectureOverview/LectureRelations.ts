@@ -1,5 +1,4 @@
-import { RelatedCard } from '../../../model/RelatedCard';
-
+import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 export default interface LectureRelations {
-  relatedCards: RelatedCard[];
+  cards: CardWithCardRealtedCount[];
 }

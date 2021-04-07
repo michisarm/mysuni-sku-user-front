@@ -198,8 +198,7 @@ class CourseLectureContainer extends Component<Props, State> {
     prevProps: Readonly<Props>,
     prevState: Readonly<State>,
     snapshot?: any
-  ): void {
-  }
+  ): void {}
 
   async init() {
     const {
@@ -868,14 +867,14 @@ class CourseLectureContainer extends Component<Props, State> {
             <div className="deatil">
               {lectureView.cubeTypeName && (
                 <Field>
-                  <SubField
+                  {/* <SubField
                     bold
                     icon={
                       CubeIconType[lectureView.cubeType] ||
                       CubeIconType[lectureView.serviceType]
                     }
                     text={lectureView.cubeTypeName}
-                  />
+                  /> */}
                   <span className="channel">
                     {lectureView.category.channel.name}
                   </span>

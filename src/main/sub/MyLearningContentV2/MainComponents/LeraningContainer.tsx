@@ -29,7 +29,6 @@ import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import { CardBundleType } from '../../../../lecture/shared/model/CardBundleType';
 import LectureParams, {
   toPath,
@@ -50,8 +49,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   history,
   inMyLectureService,
 }) {
-  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
-  useRequestCollege();
   const [cardBundle, setCardBundle] = useState<CardBundle>();
 
   const fetchCards = async () => {
@@ -215,17 +212,17 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
                     description={card.description}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
-                    iconName={inMyLecture ? 'remove2' : 'add-list'}
-                    onAction={() => {
-                      reactAlert({
-                        title: '알림',
-                        message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
-                      });
-                      onActionLecture(inMyLecture!);
-                    }}
-                    onViewDetail={onViewDetail}
+                    // iconName={inMyLecture ? 'remove2' : 'add-list'}
+                    // onAction={() => {
+                    //   reactAlert({
+                    //     title: '알림',
+                    //     message: inMyLecture
+                    //       ? '본 과정이 관심목록에서 제외되었습니다.'
+                    //       : '본 과정이 관심목록에 추가되었습니다.',
+                    //   });
+                    //   onActionLecture(inMyLecture!);
+                    // }}
+                    // onViewDetail={onViewDetail}
                   />
                 </CardGroup>
               </li>
