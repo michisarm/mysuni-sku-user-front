@@ -7,4 +7,5 @@ export interface InternalMediaConnection {
   startTime: string;
   thumbUrl: string;
   viewUrl: string;
+  quizIds: string[];
 }
