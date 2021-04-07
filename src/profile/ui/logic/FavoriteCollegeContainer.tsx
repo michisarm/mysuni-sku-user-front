@@ -1,5 +1,10 @@
 import React from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import {
+  reactAutobind,
+  mobxHelper,
+  reactAlert,
+  IdName,
+} from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -74,7 +79,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     const companyChannels = colleges
       .filter(college => college.collegeType === CollegeType.Company)
       .map(college =>
-        college.channelCounts.map(
+        college.channels.map(
           channel =>
             new ChannelModel({ channelId: channel.id, name: channel.name })
         )
@@ -114,7 +119,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     this.setState({ selectedCollege: college });
   }
 
-  onSelectChannel(channel: IdNameCount | ChannelModel) {
+  onSelectChannel(channel: IdName | ChannelModel) {
     //
     let { favorites }: State = this.state;
 
@@ -206,8 +211,8 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                 <div className="channel">
                   <ul>
                     {(selectedCollege &&
-                      selectedCollege.channelCounts.length &&
-                      selectedCollege.channelCounts.map((channel, index) => {
+                      selectedCollege.channels.length &&
+                      selectedCollege.channels.map((channel, index) => {
                         const ch =
                           channelMap.get(channel.id) || new ChannelModel();
                         return (
@@ -228,7 +233,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                                 data-offset="23"
                                 htmlFor={`checkbox_${index}`}
                               >
-                                {channel.name} <span>({channel.count})</span>
+                                {channel.name}
                               </label>
                               {/* <Popup
                                 className="custom-black"

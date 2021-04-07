@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Icon, Label, List } from 'semantic-ui-react';
+import {
+  getChannelName,
+  getCollgeName,
+} from '../../../../../shared/service/useCollege/useRequestCollege';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 
 interface LectureCubeSubcategoryViewProps {
@@ -49,9 +53,11 @@ const LectureCubeSubcategoryView: React.FC<LectureCubeSubcategoryViewProps> = fu
         {subcategoryTree.map(college => {
           return (
             <List.Item key={college.collegeId}>
-              <div className="title">{college.collegeId}</div>
+              <div className="title">{getCollgeName(college.collegeId)}</div>
               <div className="detail">
-                {college.channelIds.map(channelId => channelId).join(' / ')}
+                {college.channelIds
+                  .map(channelId => getChannelName(channelId))
+                  .join(' / ')}
               </div>
             </List.Item>
           );

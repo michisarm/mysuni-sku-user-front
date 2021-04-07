@@ -5,7 +5,7 @@ import { mobxHelper } from '@nara.platform/accent';
 import classNames from 'classnames';
 import ReactGA from 'react-ga';
 import { BadgeCategoryService } from '../../../lecture/stores';
-import { useRequestBadgeCategory } from '../../service/useBadgeCategory/useRequestBadgeCategory';
+import { useRequestBadgeCategory } from '../../service/useRequestBadgeCategory';
 import BadgeCategoryView from '../view/BadgeCategoryView';
 import badgePaths from '../../routePaths';
 import { BadgeCategory } from '../../model/BadgeCategory';

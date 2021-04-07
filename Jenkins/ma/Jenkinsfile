@@ -20,7 +20,7 @@ spec:
           - key: project
             operator: In
             values:
-            - manager
+            - user
         weight: 100
   containers:
   - command:
@@ -42,7 +42,11 @@ spec:
     tty: true
   tolerations:
   - effect: NoSchedule
+<<<<<<< HEAD
     key: manager
+=======
+    key: user
+>>>>>>> b92a35756ed19b928f0bbbcff4ffeae8be3b0df8
     operator: Equal
     value: "true"
 """

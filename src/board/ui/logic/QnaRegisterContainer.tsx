@@ -61,7 +61,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const name = patronInfo.getPatronName() || '';
     const email = patronInfo.getPatronEmail() || '';
     const { company } = skProfileService!.skProfile.member;
-    postService.clearPost();
+    // postService.clearPost();
     categoryService.findCategoriesByBoardId('QNA')
       .then(() => {
         postService.changePostProps('boardId', 'QNA');
@@ -164,6 +164,20 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
     });
 
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('cube') || currentUrl.includes('course')) {
+      categorys.map((data, index) => {
+        if (data.name === 'Contents') {
+          questionType.push({ key: index, value: data.categoryId, text: data.name });
+        }
+      });
+    } else {
+      categorys.map((data, index) => {
+        questionType.push({ key: index, value: data.categoryId, text: data.name });
+      });
+    }
+
     return (
       <>
         <Segment className="full">
@@ -182,7 +196,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     onBlur={() => this.setState({ focus: false })}
                     value={post && post.title || ''}
                     onChange={(e: any) => {
-                      if (e.target.value.length > 100 ) {
+                      if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
                       } else {
                         this.setState({ write: e.target.value, fieldName: '' });
@@ -191,7 +205,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     }}
                   />
                   <Icon className="clear link"
-                    onClick={(e:any) => {
+                    onClick={(e: any) => {
                       this.setState({ write: '' });
                       this.onChangePostProps('title', e.target.value);
                     }}

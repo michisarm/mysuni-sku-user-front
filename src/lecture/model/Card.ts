@@ -14,7 +14,7 @@ export interface Card {
   description: string;
   difficultyLevel?: DifficultyLevel;
   searchable: boolean;
-  tags?: string[];
+  tags?: string[] | null;
   categories: CardCategory[];
   permittedCinerooms?: PermittedCineroom[];
   learningTime: number;

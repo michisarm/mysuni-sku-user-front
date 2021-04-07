@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router';
@@ -12,13 +12,12 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
-import { BadgeRdo } from '../../model/BadgeRdo';
 import { BadgeLevel } from '../../model/BadgeLevel';
 import { BadgeRouteParams } from '../model/BadgeRouteParams';
 import { BadgeCategoryService } from '../../../lecture/stores';
 import { Badge, getMainCategoryId } from '../../model/Badge';
 import BadgeView from '../view/BadgeView';
-import { useRequestBadgeList } from '../../service/useBadge/useRequestBadgeList';
+import { useRequestAllBadges } from '../../service/useRequestAllBadges';
 
 interface AllBadgeListContainerProps {
   badgeService?: BadgeService;
@@ -35,11 +34,8 @@ function AllBadgeListContainer({
   const history = useHistory();
   const params = useParams<BadgeRouteParams>();
   const { scrollOnceMove } = useScrollMove();
-
-
-  // useScrollTop();
-
-  useRequestBadgeList();
+  
+  useRequestAllBadges();
 
   useEffect(() => {
     setSelectedLevel('');
@@ -50,15 +46,6 @@ function AllBadgeListContainer({
     }
 
   }, [selectedCategoryId]);
-  
-  useEffect(() => {
-    history.replace(routePaths.currentPage(1));
-
-    return () => {
-      badgeService!.clearBadges();
-    }
-
-  }, [selectedLevel]);
 
   useEffect(() => {
     if (badges.length > 0) {
@@ -70,11 +57,12 @@ function AllBadgeListContainer({
 
 
   const onSelectLevel = (level: BadgeLevel) => {
+    history.replace(routePaths.currentPage(1));
     setSelectedLevel(level);
   };
 
   const getCurrentPageNo = () => {
-    return parseInt(params.pageNo, 10);
+    return parseInt(params.pageNo);
   };
 
   const isContentMore = () => {

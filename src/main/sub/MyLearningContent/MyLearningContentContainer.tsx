@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -18,22 +17,25 @@ import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
 import { LectureService } from 'lecture/stores';
 import { Lecture } from 'lecture';
-import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import {
+  MyTrainingModel,
+  InMyLectureCdoModel,
+  InMyLectureModel,
+} from 'myTraining/model';
 import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
 
-
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  notieService?: NotieService,
-  reviewService?: ReviewService,
-  lectureService?: LectureService,
-  myTrainingService?: MyTrainingService,
-  inMyLectureService?: InMyLectureService,
+  actionLogService?: ActionLogService;
+  notieService?: NotieService;
+  reviewService?: ReviewService;
+  lectureService?: LectureService;
+  myTrainingService?: MyTrainingService;
+  inMyLectureService?: InMyLectureService;
 }
 
 interface State {
-  contentType: string
+  contentType: string;
 }
 
 enum ContentType {
@@ -50,14 +52,16 @@ enum ContentTypeName {
   Enrolled = '학습예정',
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.reviewService',
-  'notie.notieService',
-  'lecture.lectureService',
-  'myTraining.myTrainingService',
-  'myTraining.inMyLectureService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.reviewService',
+    'notie.notieService',
+    'lecture.lectureService',
+    'myTraining.myTrainingService',
+    'myTraining.inMyLectureService'
+  )
+)
 @observer
 @reactAutobind
 class MyLearningContentContainer extends Component<Props, State> {
@@ -78,7 +82,12 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   async findMyContent() {
     //
-    const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
+    const {
+      inMyLectureService,
+      lectureService,
+      myTrainingService,
+      reviewService,
+    } = this.props;
     const { contentType } = this.state;
 
     inMyLectureService!.findAllInMyLectures();
@@ -86,8 +95,13 @@ class MyLearningContentContainer extends Component<Props, State> {
     switch (contentType) {
       case ContentType.InMyList: {
         inMyLectureService!.clearInMyLectures();
-        const offsetList = await inMyLectureService!.findInMyLectures(this.PAGE_SIZE, 0);
-        const feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
+        const offsetList = await inMyLectureService!.findInMyLectures(
+          this.PAGE_SIZE,
+          0
+        );
+        const feedbackIds = (offsetList.results || []).map(
+          (lecture: InMyLectureModel) => lecture.reviewId
+        );
 
         reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
         break;
@@ -98,11 +112,19 @@ class MyLearningContentContainer extends Component<Props, State> {
         break;
       case ContentType.InProgress:
         myTrainingService!.clear();
-        myTrainingService!.findAllMyTrainingsWithState(contentType, this.PAGE_SIZE, 0);
+        myTrainingService!.findAllMyTrainingsWithState(
+          contentType,
+          this.PAGE_SIZE,
+          0
+        );
         break;
       case ContentType.Enrolled:
         myTrainingService!.clear();
-        myTrainingService!.findAllMyTrainingsWithState(contentType, this.PAGE_SIZE, 0);
+        myTrainingService!.findAllMyTrainingsWithState(
+          contentType,
+          this.PAGE_SIZE,
+          0
+        );
         break;
     }
   }
@@ -121,11 +143,12 @@ class MyLearningContentContainer extends Component<Props, State> {
         name: ContentType.Required,
         item: (
           <>
-            { ContentTypeName.Required }
-            {
-              lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>
-              || <span className="count">0</span>
-            }
+            {ContentTypeName.Required}
+            {(lectureService.requiredLecturesCount > 0 && (
+              <span className="count">
+                +{lectureService.requiredLecturesCount}
+              </span>
+            )) || <span className="count">0</span>}
           </>
         ),
         render: this.renderRequiredList,
@@ -134,11 +157,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         name: ContentType.InMyList,
         item: (
           <>
-            { ContentTypeName.InMyList }
-            {
-              inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>
-              || <span className="count">0</span>
-            }
+            {ContentTypeName.InMyList}
+            {(inMyLectureAllCount > 0 && (
+              <span className="count">+{inMyLectureAllCount}</span>
+            )) || <span className="count">0</span>}
           </>
         ),
         render: this.renderInMyList,
@@ -147,11 +169,12 @@ class MyLearningContentContainer extends Component<Props, State> {
         name: ContentType.InProgress,
         item: (
           <>
-            { ContentTypeName.InProgress }
-            {
-              myTrainingService.inprogressCount > 0 && <span className="count">+{myTrainingService.inprogressCount}</span>
-              || <span className="count">0</span>
-            }
+            {ContentTypeName.InProgress}
+            {(myTrainingService.inprogressCount > 0 && (
+              <span className="count">
+                +{myTrainingService.inprogressCount}
+              </span>
+            )) || <span className="count">0</span>}
           </>
         ),
         render: this.renderInProgress,
@@ -160,11 +183,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         name: ContentType.Enrolled,
         item: (
           <>
-            { ContentTypeName.Enrolled }
-            {
-              myTrainingService.enrolledCount > 0 && <span className="count">+{myTrainingService.enrolledCount}</span>
-              || <span className="count">0</span>
-            }
+            {ContentTypeName.Enrolled}
+            {(myTrainingService.enrolledCount > 0 && (
+              <span className="count">+{myTrainingService.enrolledCount}</span>
+            )) || <span className="count">0</span>}
           </>
         ),
         render: this.renderEnrolled,
@@ -179,15 +201,20 @@ class MyLearningContentContainer extends Component<Props, State> {
     return inMyLectureMap.get(serviceId);
   }
 
-  getRating(learning: LectureModel | InMyLectureModel) {
+  getRating(learning: LectureModel | InMyLectureModel | MyTrainingModel) {
     //
     const { ratingMap } = this.props.reviewService!;
     let rating: number | undefined;
 
-    if (learning instanceof InMyLectureModel && learning.cubeType !== CubeType.Community) {
+    if (
+      learning instanceof InMyLectureModel &&
+      learning.cubeType !== CubeType.Community
+    ) {
       rating = ratingMap.get(learning.reviewId) || 0;
-    }
-    else if (learning instanceof LectureModel && learning.cubeType !== CubeType.Community) {
+    } else if (
+      learning instanceof LectureModel &&
+      learning.cubeType !== CubeType.Community
+    ) {
       rating = learning.rating;
     }
     return rating;
@@ -201,24 +228,26 @@ class MyLearningContentContainer extends Component<Props, State> {
       return;
     }
 
-    const { actionLogService, lectureService, inMyLectureService, myTrainingService } = this.props;
+    const {
+      actionLogService,
+      lectureService,
+      inMyLectureService,
+      myTrainingService,
+    } = this.props;
 
-    actionLogService?.registerClickActionLog({ subAction: ContentTypeName[contentType] });
+    actionLogService?.registerClickActionLog({
+      subAction: ContentTypeName[contentType],
+    });
 
     if (name === ContentType.Required) {
       lectureService!.clearLectures();
-    }
-    else if (name === ContentType.InMyList) {
+    } else if (name === ContentType.InMyList) {
       inMyLectureService!.clearInMyLectures();
-    }
-    else {
+    } else {
       myTrainingService!.clear();
     }
 
-    this.setState(
-      { contentType: name },
-      this.findMyContent,
-    );
+    this.setState({ contentType: name }, this.findMyContent);
   }
 
   onViewAll() {
@@ -235,13 +264,16 @@ class MyLearningContentContainer extends Component<Props, State> {
     //
     const { model } = data;
     const { history } = this.props;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
+    } else {
+      history.push(
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
+      );
     }
   }
 
@@ -249,54 +281,69 @@ class MyLearningContentContainer extends Component<Props, State> {
     //
     const { actionLogService, inMyLectureService } = this.props;
 
-    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+    actionLogService?.registerSeenActionLog({
+      lecture: training,
+      subAction: '아이콘',
+    });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id)
+      inMyLectureService!
+        .removeInMyLecture(training.id)
         .then(this.findMyContent);
-    }
-    else {
+    } else {
       let servicePatronKeyString = training.patronKey.keyString;
 
       if (training instanceof MyTrainingModel) {
         servicePatronKeyString = training.servicePatronKeyString;
       }
-      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
-        serviceId: training.serviceId,
-        serviceType: training.serviceType,
-        category: training.category,
-        name: training.name,
-        description: training.description,
-        cubeType: training.cubeType,
-        learningTime: training.learningTime,
-        stampCount: training.stampCount,
-        coursePlanId: training.coursePlanId,
+      inMyLectureService!
+        .addInMyLecture(
+          new InMyLectureCdoModel({
+            serviceId: training.serviceId,
+            serviceType: training.serviceType,
+            category: training.category,
+            name: training.name,
+            description: training.description,
+            cubeType: training.cubeType,
+            learningTime: training.learningTime,
+            stampCount: training.stampCount,
+            coursePlanId: training.coursePlanId,
 
-        requiredSubsidiaries: training.requiredSubsidiaries,
-        cubeId: training.cubeId,
-        courseSetJson: training.courseSetJson,
-        courseLectureUsids: training.courseLectureUsids,
-        lectureCardUsids: training.lectureCardUsids,
+            requiredSubsidiaries: training.requiredSubsidiaries,
+            cubeId: training.cubeId,
+            courseSetJson: training.courseSetJson,
+            courseLectureUsids: training.courseLectureUsids,
+            lectureCardUsids: training.lectureCardUsids,
 
-        reviewId: training.reviewId,
-        baseUrl: training.baseUrl,
-        servicePatronKeyString,
-      })).then(this.findMyContent);
+            reviewId: training.reviewId,
+            baseUrl: training.baseUrl,
+            servicePatronKeyString,
+          })
+        )
+        .then(this.findMyContent);
     }
   }
 
   renderRequiredList() {
     //
-    const { lectures } = this.props.lectureService!;
-    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.Required}에 해당하는 학습 과정이 없습니다.`} />;
+    const { requiredLectures } = this.props.lectureService!;
+    const noSuchElement = (
+      <NoSuchContentPanel
+        message={`${ContentTypeName.Required}에 해당하는 학습 과정이 없습니다.`}
+      />
+    );
 
-    return this.renderList(lectures, noSuchElement);
+    return this.renderList(requiredLectures, noSuchElement);
   }
 
   renderInMyList() {
     //
     const { inMyLectures } = this.props.inMyLectureService!;
-    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.InMyList}에 추가한 학습 과정이 없습니다.`} />;
+    const noSuchElement = (
+      <NoSuchContentPanel
+        message={`${ContentTypeName.InMyList}에 추가한 학습 과정이 없습니다.`}
+      />
+    );
 
     return this.renderList(inMyLectures, noSuchElement);
   }
@@ -304,7 +351,11 @@ class MyLearningContentContainer extends Component<Props, State> {
   renderInProgress() {
     //
     const { myTrainings } = this.props.myTrainingService!;
-    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.InProgress}인 과정이 없습니다.`} />;
+    const noSuchElement = (
+      <NoSuchContentPanel
+        message={`${ContentTypeName.InProgress}인 과정이 없습니다.`}
+      />
+    );
 
     return this.renderList(myTrainings, noSuchElement);
   }
@@ -312,12 +363,19 @@ class MyLearningContentContainer extends Component<Props, State> {
   renderEnrolled() {
     //
     const { myTrainings } = this.props.myTrainingService!;
-    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.Enrolled}중인 과정이 없습니다.`} />;
+    const noSuchElement = (
+      <NoSuchContentPanel
+        message={`${ContentTypeName.Enrolled}중인 과정이 없습니다.`}
+      />
+    );
 
     return this.renderList(myTrainings, noSuchElement);
   }
 
-  renderList(learnings: (MyTrainingModel | LectureModel | InMyLectureModel)[], noSuchComponent: React.ReactNode) {
+  renderList(
+    learnings: (MyTrainingModel | LectureModel | InMyLectureModel)[],
+    noSuchComponent: React.ReactNode
+  ) {
     //
     return (
       <ContentWrapper>
@@ -328,31 +386,45 @@ class MyLearningContentContainer extends Component<Props, State> {
           </Button>
         </div>
 
-        { learnings.length > 0 ?
+        {learnings.length > 0 ? (
           <Lecture.Group type={Lecture.GroupType.Line}>
-            { learnings.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
-              //
-              const inMyLecture = this.getInMyLecture(learning.serviceId);
+            {learnings.map(
+              (
+                learning: LectureModel | MyTrainingModel | InMyLectureModel,
+                index: number
+              ) => {
+                //
+                const inMyLecture = this.getInMyLecture(learning.serviceId);
 
-              return (
-                <Lecture
-                  key={`learning-${index}`}
-                  model={learning}
-                  rating={this.getRating(learning)}
-                  thumbnailImage={learning.baseUrl || undefined}
-                  action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                  onAction={() => {
-                    reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
-                    this.onActionLecture(inMyLecture || learning);
-                  }}
-                  onViewDetail={this.onViewDetail}
-                />
-              );
-            })}
+                return (
+                  <Lecture
+                    key={`learning-${index}`}
+                    model={learning}
+                    rating={this.getRating(learning)}
+                    thumbnailImage={learning.baseUrl || undefined}
+                    action={
+                      inMyLecture
+                        ? Lecture.ActionType.Remove
+                        : Lecture.ActionType.Add
+                    }
+                    onAction={() => {
+                      reactAlert({
+                        title: '알림',
+                        message: inMyLecture
+                          ? '본 과정이 관심목록에서 제외되었습니다.'
+                          : '본 과정이 관심목록에 추가되었습니다.',
+                      });
+                      this.onActionLecture(inMyLecture || learning);
+                    }}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              }
+            )}
           </Lecture.Group>
-          :
+        ) : (
           noSuchComponent
-        }
+        )}
       </ContentWrapper>
     );
   }
@@ -361,7 +433,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     //
     return (
       <TabsView>
-        { tabs.map((tab: any, index: number) => (
+        {tabs.map((tab: any, index: number) => (
           <a
             key={`tab-${index}`}
             className={classNames('item', { active: activeName === tab.name })}

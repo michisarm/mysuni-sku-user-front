@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -21,9 +20,6 @@ class MainRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Redirect exact from="/my-training/learning" to="/my-training/learning/InProgress/pages/1" />
-        <Route exact path="/my-training/learning/:tab" component={MyLearningPageV2} />
-        <Route exact path="/my-training/learning/:tab/pages/:pageNo" component={MyLearningPageV2} />
         <Redirect
           exact
           from="/my-training/learning"
@@ -32,32 +28,34 @@ class MainRoutes extends React.Component {
         <Route
           exact
           path="/my-training/learning/:tab"
-          component={MyTrainingPage}
+          component={MyLearningPageV2}
         />
         <Route
           exact
           path="/my-training/learning/:tab/pages/:pageNo"
-          component={MyTrainingPage}
+          component={MyLearningPageV2}
         />
 
-        {/*<Redirect exact from="/my-training/community" to="/my-training/community/MyCommunity" />*/}
-        {/*<Route exact path="/my-training/community/:tab" component={MyCommunityPage} />*/}
-        {/*
+        {/* <Redirect exact from="/my-training/learning" to="/my-training/learning/InProgress/pages/1" /> */}
+        {/* <Route exact path="/my-training/learning/:tab" component={MyTrainingPage} /> */}
+        {/* <Route exact path="/my-training/learning/:tab/pages/:pageNo" component={MyTrainingPage} /> */}
+        {/* <Redirect exact from="/my-training/community" to="/my-training/community/MyCommunity" /> */}
+        {/* <Route exact path="/my-training/community/:tab" component={MyCommunityPage} /> */}
+        {/* <Redirect exact from="/my-training/my-page" to="/my-training/my-page/EarnedStampList/pages/1" /> */}
+        {/* <Route exact path="/my-training/my-page/:tab" component={MyPage} /> */}
+        {/* <Route exact path="/my-training/my-page/:tab/pages/:pageNo" component={MyPage} /> */}
+
         <Redirect
           exact
           from="/my-training/my-page"
-          to="/my-training/my-page/EarnedStampList/pages/1"
+          to="/my-training/my-page/EarnedBadgeList/pages/1"
         />
-        <Route exact path="/my-training/my-page/:tab" component={MyPage} />
+        <Route exact path="/my-training/my-page/:tab" component={MyPageV2} />
         <Route
           exact
           path="/my-training/my-page/:tab/pages/:pageNo"
-          component={MyPage}
+          component={MyPageV2}
         />
-      */}
-        <Redirect exact from="/my-training/my-page" to="/my-training/my-page/EarnedBadgeList/pages/1" />
-        <Route exact path="/my-training/my-page/:tab" component={MyPageV2} />
-        <Route exact path="/my-training/my-page/:tab/pages/:pageNo" component={MyPageV2} />
 
         <Route
           exact

@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { Button, Card, Icon } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { LearningState } from 'shared/model';
+import { CategoryModel, LearningState } from 'shared/model';
 import { InMyLectureModel, MyTrainingModel } from 'myTraining/model';
 
 import { LectureModel } from '../../../../model';
@@ -105,7 +105,10 @@ class ListCardView extends Component<Props> {
 
           <Thumbnail image={image} />
 
-          <Title title={<a>{model.name}</a>} category={model.category}>
+          <Title
+            title={<a>{model.name}</a>}
+            category={new CategoryModel(model.category)}
+          >
             <Fields>
               {/*<Field icon="date" text={`학습완료일 : ${moment(model.time).format('YYYY.MM.DD')}`} />*/}
               <Field
@@ -132,12 +135,13 @@ class ListCardView extends Component<Props> {
                 <Field icon="video2" text={model.cubeTypeName} bold />
               )}
             </div>
-            {model.cubeTypeName === 'Course' && model.stampCount && (
+            {(model.cubeTypeName === 'Card' && model.stampCount && (
               <div className="stamp">
                 Stamp<strong>x{model.stampCount}</strong>
               </div>
-            )}
-            {model.cubeTypeName !== 'Course' && (
+            )) ||
+              null}
+            {model.cubeTypeName !== 'Card' && (
               <div className="time">
                 <strong>&nbsp;</strong>
                 {this.getHourMinuteFormat(hour, minute)}

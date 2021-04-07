@@ -32,7 +32,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
 }) {
   // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
   useRequestCollege();
-
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
 
   const fetchCardList = async () => {
@@ -135,7 +134,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
                     description={card.description}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
-                    onViewDetail={onViewDetail}
                   />
                 </CardGroup>
               </li>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import {
   Button,
@@ -28,6 +28,10 @@ import {
 } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { find } from 'lodash';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { toPath } from '../../../../detail/viewModel/LectureParams';
+import { InMyLectureModel } from '../../../../../myTraining/model';
+import { autorun } from 'mobx';
 
 interface Props {
   isRequired: boolean;
@@ -58,18 +62,46 @@ function CardView({
   inMyLectureService,
   onViewDetail,
 }: Props) {
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
+  const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
   const [isInMyLecture, setIsInMyLecture] = useState(false);
-  const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
-  const collegeId = mainCategory.collegeId;
 
-  const onHoverIn = () => {
+  const iconName = useMemo(() => {
+    if (inMyLectureModel === undefined) {
+      return 'add-list';
+    }
+    return 'remove2';
+  }, [inMyLectureModel]);
+
+  useEffect(() => {
+    return autorun(() => {
+      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
+    });
+  }, []);
+
+  useEffect(() => {
+    setInMyLectureModel(inMyLectureMap?.get(cardId));
+  }, [inMyLectureMap, cardId]);
+
+  const hourMinuteFormat = useMemo(
+    () => dateTimeHelper.timeToHourMinuteFormat(learningTime),
+    [learningTime]
+  );
+
+  const collegeId = useMemo(() => mainCategory.collegeId, [mainCategory]);
+
+  const onHoverIn = useCallback(() => {
     setHovered(true);
-  };
+  }, []);
 
-  const onHoverOut = () => {
+  const onHoverOut = useCallback(() => {
     setHovered(false);
-  };
+  }, []);
+
+  const action = useCallback(() => {}, [inMyLectureModel]);
 
   const renderBottom = () => {
     const progressList = sessionStorage.getItem('inProgressTableViews');
@@ -195,30 +227,7 @@ function CardView({
           <div className="header">{name}</div>
         </div>
 
-        {/*아이콘과 정보 영역*/}
         <Fields>
-          {
-            // model.cubeTypeName && (
-            //   <Field
-            //     icon={
-            //       CubeIconType[model.cubeType] ||
-            //       CubeIconType[model.serviceType]
-            //     }
-            //     text={model.cubeTypeName}
-            //     bold
-            //   >
-            //     {/*0630 PSJ 수강신청, 유료과정에 대한 메타 정보*/}
-            //     {(model.cubeType === CubeType.ClassRoomLecture ||
-            //       model.cubeType === CubeType.ELearning) && (
-            //       <>
-            //         {/*0630 size12 클래스는 유료과정+수강신청일 경우에만 적용*/}
-            //         {/*<span className={ classNames('g-text', 'size12')}>유료과정&amp;수강신청</span>*/}
-            //       </>
-            //     )}
-            //   </Field>
-            // )
-          }
-
           {(learningTime || stampCount) && (
             <div className="li">
               {learningTime && (
@@ -241,8 +250,6 @@ function CardView({
         </Fields>
         <div className="foot-area">{renderBottom()}</div>
       </div>
-
-      {/* hover 시 컨텐츠 */}
       <div className="hover-content">
         <div className="title-area">
           {mainCategory && (
@@ -260,13 +267,9 @@ function CardView({
           <Button icon className="icon-line" onClick={handleInMyLecture}>
             <Icon className={isInMyLecture ? 'remove2' : 'add-list'} />
           </Button>
-          <Button
-            className="ui button fix bg"
-            id={cardId}
-            onClick={onViewDetail}
-          >
-            상세보기
-          </Button>
+          <Link to={toPath({ cardId, viewType: 'view' })}>
+            <button className="ui button fix bg">상세보기</button>
+          </Link>
         </div>
       </div>
     </Card>

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import BadgeCompLeft from './BadgeCompLeft';
 import BadgeCompRight from './BadgeCompRight';
 import { MyBadge } from '../../model/MyBadge';
-import { useBadgeCards } from '../../service/useBadgeCards/useBadgeCards';
+import { useBadgeCards } from '../../service/useBadgeCards';
 import {
   getPassedCardIdMap,
   getPassedCardCount,
@@ -10,7 +10,7 @@ import {
   getFormattedIssueTime,
 } from '../../model/BadgeStudent';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import { useBadgeStudent } from '../../service/useBadgeStudent/useBadgeStudent';
+import { useBadgeStudent } from '../../service/useBadgeStudent';
 
 interface ChallengeBoxContainerProps {
   challengeBadge: MyBadge;
