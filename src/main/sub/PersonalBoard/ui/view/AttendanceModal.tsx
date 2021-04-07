@@ -88,10 +88,10 @@ const AttendanceModal:React.FC<Props> = ({
     input.value = EncryptEmail
     
     const env = document.createElement('input')
-    input.type = "hidden"
-    input.name = 'env'
+    env.type = "hidden"
+    env.name = 'env'
     console.log('env', window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development')
-    input.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
+    env.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
 
     frm.appendChild(input)
     frm.appendChild(env)
