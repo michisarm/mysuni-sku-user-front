@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -8,26 +7,24 @@ import { Icon, Button, Accordion } from 'semantic-ui-react';
 import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import Action from '../../model/Action';
 import { CourseSectionContext } from '../CourseSection';
-import {
-  Title, Buttons,
-} from '../../../ui/view/LectureElementsView';
+import { Title, Buttons } from '../../../ui/view/LectureElementsView';
 import LectureModel from '../../../../model/LectureModel';
-
+import { CategoryModel } from '../../../../../shared/model/CategoryModel';
 
 interface Props {
-  model: LectureModel | MyTrainingModel | InMyLectureModel,
-  children: React.ReactNode,
-  thumbnailImage?: string,
-  action?: Action,
-  toggle?: boolean,
-  open?: boolean,
-  onAction?: () => void,
-  onViewDetail?: (e: any) => void,
-  onToggle?: (openState: boolean) => void,
+  model: LectureModel | MyTrainingModel | InMyLectureModel;
+  children: React.ReactNode;
+  thumbnailImage?: string;
+  action?: Action;
+  toggle?: boolean;
+  open?: boolean;
+  onAction?: () => void;
+  onViewDetail?: (e: any) => void;
+  onToggle?: (openState: boolean) => void;
 }
 
 interface State {
-  open: boolean
+  open: boolean;
 }
 
 @reactAutobind
@@ -80,18 +77,25 @@ class CommunityLectureContainer extends Component<Props, State> {
                 <Icon className="thumb60-1" />
               </div>
             </div>
-            <Title title={<a>{model.name}</a>} category={model.category}>
+            <Title
+              title={<a>{model.name}</a>}
+              category={new CategoryModel(model.category)}
+            >
               <div className="deatil">
                 {/*<span>새로운 글: 5</span>*/}
-                <span>멤버 : {numeral(model.studentCount).format('0,0') || 0}</span>
+                <span>
+                  멤버 : {numeral(model.studentCount).format('0,0') || 0}
+                </span>
               </div>
             </Title>
 
             <Buttons>
-              <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
+              <Button className="fix line" onClick={onViewDetail}>
+                상세보기
+              </Button>
             </Buttons>
 
-            { toggle && (
+            {toggle && (
               <div className="icon-area">
                 <Icon className="dropdown icon" onClick={this.onToggle} />
               </div>
@@ -103,6 +107,5 @@ class CommunityLectureContainer extends Component<Props, State> {
     );
   }
 }
-
 
 export default CommunityLectureContainer;

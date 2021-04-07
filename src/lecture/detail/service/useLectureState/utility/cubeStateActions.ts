@@ -24,8 +24,8 @@ export async function submit(
     cardId,
     cubeId,
     round,
-    approvalProcess,
-    approvalEmail,
+    //approvalProcess,
+    approverDenizenId: approvalEmail,
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();

@@ -309,30 +309,12 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
       // history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-      history.push(
-        routePaths.courseOverview(
-          cineroom.id,
-          collegeId,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.courseOverview(model.cardId));
+    } else {
       // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
-      history.push(
-        routePaths.lectureCardOverview(
-          cineroom.id,
-          collegeId,
-          model.cubeId,
-          model.serviceId
-        )
-      );
+      history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
     // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
     scrollSave && scrollSave();

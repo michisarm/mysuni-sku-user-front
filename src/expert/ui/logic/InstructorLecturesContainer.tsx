@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -12,19 +11,20 @@ import { LectureService } from 'lecture/stores';
 import routePaths from 'lecture/routePaths';
 import { Lecture, SeeMoreButton } from 'lecture';
 
-
-interface Props extends RouteComponentProps<{ instructorId : string }> {
-  pageService?: PageService,
-  reviewService?: ReviewService,
-  lectureService?: LectureService,
-  onChangeLecturesCount: (lecturesCount: number) => void,
+interface Props extends RouteComponentProps<{ instructorId: string }> {
+  pageService?: PageService;
+  reviewService?: ReviewService;
+  lectureService?: LectureService;
+  onChangeLecturesCount: (lecturesCount: number) => void;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.pageService',
-  'shared.reviewService',
-  'lecture.lectureService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.pageService',
+    'shared.reviewService',
+    'lecture.lectureService'
+  )
+)
 @reactAutobind
 @observer
 @observer
@@ -56,15 +56,32 @@ class InstructorLecturesContainer extends Component<Props> {
 
   async findPagingInstructorLectures() {
     //
-    const { pageService, lectureService, reviewService, onChangeLecturesCount } = this.props;
+    const {
+      pageService,
+      lectureService,
+      reviewService,
+      onChangeLecturesCount,
+    } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { instructorId } = this.props.match.params;
 
-    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(instructorId, page!.limit, page!.nextOffset);
-    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
-    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(
+      instructorId,
+      page!.limit,
+      page!.nextOffset
+    );
+    const feedbackIds = (lectureService!.lectures || []).map(
+      (lecture: LectureModel) => lecture.reviewId
+    );
+    if (feedbackIds && feedbackIds.length) {
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      lectureOffsetList.totalCount,
+      page!.pageNo + 1
+    );
     onChangeLecturesCount(lectureOffsetList.totalCount);
   }
 
@@ -76,9 +93,7 @@ class InstructorLecturesContainer extends Component<Props> {
     return page!.pageNo < page!.totalPages;
   }
 
-  onActionLecture() {
-
-  }
+  onActionLecture() {}
 
   onViewDetail(e: any, data: any) {
     //
@@ -86,11 +101,23 @@ class InstructorLecturesContainer extends Component<Props> {
     const { history } = this.props;
     const collegeId = model.category.college.id;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(
+        routePaths.courseOverviewPrev(
+          collegeId,
+          model.coursePlanId,
+          model.serviceType,
+          model.serviceId
+        )
+      );
+    } else if (model.serviceType === LectureServiceType.Cube) {
+      history.push(
+        routePaths.lectureCardOverviewPrev(
+          collegeId,
+          model.cubeId,
+          model.serviceId
+        )
+      );
     }
   }
 
@@ -98,7 +125,6 @@ class InstructorLecturesContainer extends Component<Props> {
     //
     this.findPagingInstructorLectures();
   }
-
 
   render() {
     //
@@ -110,7 +136,7 @@ class InstructorLecturesContainer extends Component<Props> {
 
     return (
       <div className="expert-cont">
-        { lectures.length > 0 ?
+        {lectures.length > 0 ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
@@ -129,19 +155,16 @@ class InstructorLecturesContainer extends Component<Props> {
               })}
             </Lecture.Group>
 
-            { this.isContentMore() && (
-              <SeeMoreButton
-                onClick={this.onClickSeeMore}
-              />
+            {this.isContentMore() && (
+              <SeeMoreButton onClick={this.onClickSeeMore} />
             )}
           </>
-          :
+        ) : (
           <NoSuchContentPanel message="등록된 강의가 없습니다." />
-        }
+        )}
       </div>
     );
   }
-
 }
 
 export default withRouter(InstructorLecturesContainer);

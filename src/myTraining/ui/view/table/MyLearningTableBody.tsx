@@ -47,8 +47,8 @@ function MyLearningTableBody(props: Props) {
   useEffect(() => {
     setTimeout(() => {
       scrollOnceMove();
-    }, 200)
-  }, [scrollOnceMove])
+    }, 200);
+  }, [scrollOnceMove]);
 
   const getApprovalTime = (model: AplModel): string => {
     /* 승인 상태에 따라 승인시간을 다르게 보여줌. */
@@ -120,34 +120,20 @@ function MyLearningTableBody(props: Props) {
     const convertedServiceType = convertServiceType(serviceType);
     // Card
     if (model.isCardType()) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroomId,
-          collegeId,
-          cubeId,
-          serviceId
-        )
-      );
+      history.push(lectureRoutePaths.lectureCardOverview(serviceId, cubeId));
     }
     // Program 또는 Course
     else {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroomId,
-          collegeId,
-          coursePlanId,
-          convertedServiceType,
-          serviceId
-        )
-      );
+      history.push(lectureRoutePaths.courseOverview(serviceId));
     }
 
     // react-ga event
     ReactGA.event({
       category: '학습중인 과정',
       action: 'Click',
-      label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${model.name
-        }`,
+      label: `${model.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${
+        model.name
+      }`,
     });
 
     scrollSave();
@@ -185,7 +171,7 @@ function MyLearningTableBody(props: Props) {
           {model.displayCollegeName} {/* College */}
         </Table.Cell>
         <Table.Cell className="title">
-          <a href="#" onClick={(e) => onClickLearn(model, e)}>
+          <a href="#" onClick={e => onClickLearn(model, e)}>
             <span className="ellipsis">
               {model.name} {/* 과정명 */}
             </span>
@@ -214,9 +200,6 @@ function MyLearningTableBody(props: Props) {
               {model.displayDifficultyLevel} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {model.displayProgressRate} {/* 진행률 */}
-            </Table.Cell>
-            <Table.Cell>
               {model.displayLearningTime}
               {/* 학습시간 */}
             </Table.Cell>
@@ -224,10 +207,39 @@ function MyLearningTableBody(props: Props) {
               {formatDate(model.time)}
               {/* 최근학습일 */}
             </Table.Cell>
+            <Table.Cell>
+              {model.displayProgressRate} {/* 진행률 */}
+            </Table.Cell>
           </>
         );
 
       case MyLearningContentType.InMyList:
+        return (
+          <>
+            <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayDifficultyLevel} {/* Level */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayLearningTime}
+              {/* 학습시간 */}
+            </Table.Cell>
+            <Table.Cell>
+              {formatDate(model.lastStudyDate)}
+              {/* 최근학습일 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayProgressRate} {/* 진행률 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.state}
+              {/* 학습상태 */}
+            </Table.Cell>
+          </>
+        );
       case MyLearningContentType.Required:
         return (
           <>
@@ -243,14 +255,15 @@ function MyLearningTableBody(props: Props) {
               {/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {model.displayStampCount}
-              {/* 스탬프 */}
+              {formatDate(model.time)}
+              {/* 최근학습일 */}
             </Table.Cell>
             <Table.Cell>
-              {contentType === MyLearningContentType.InMyList
-                ? formatDate(model.createDate)
-                : formatDate(model.creationTime)}
-              {/* 등록일 */}
+              {model.displayProgressRate} {/* 진행률 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.state}
+              {/* 학습상태 */}
             </Table.Cell>
           </>
         );
@@ -431,15 +444,19 @@ function MyLearningTableBody(props: Props) {
               )}
               {renderWithBaseContent(model, index)}
               {renderByContentType(model, contentType)}
-              <Table.Cell>
-                <a
-                  className="btn-blue"
-                  href="#"
-                  onClick={(e) => onClickLearn(model, e)}
-                >
-                  학습하기
-                </a>
-              </Table.Cell>
+              {/* {contentType !== MyLearningContentType.InProgress &&
+                contentType !== MyLearningContentType.InMyList &&
+                contentType !== MyLearningContentType.Required && (
+                  <Table.Cell>
+                    <a
+                      className="btn-blue"
+                      href="#"
+                      onClick={e => onClickLearn(model, e)}
+                    >
+                      학습하기
+                    </a>
+                  </Table.Cell>
+                )} */}
             </Table.Row>
           )))}
       {contentType === MyLearningContentType.PersonalCompleted &&
@@ -468,17 +485,20 @@ export default inject(mobxHelper.injectFrom('myTraining.myTrainingService'))(
 
 /* globals */
 const formatDate = (time: number) => {
-  return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
+  if (time && Number(time) !== 0) {
+    return moment(Number(time)).format('YYYY.MM.DD');
+  } else {
+    return '-';
+  }
+  // return time ? moment(Number(time)).format('YYYY.MM.DD') : '-';
 };
 
 const convertServiceType = (serviceType: string): LectureServiceType => {
   switch (serviceType.toUpperCase()) {
-    case 'COURSE':
-      return LectureServiceType.Course;
-    case 'PROGRAM':
-      return LectureServiceType.Program;
-    default:
+    case 'CARD':
       return LectureServiceType.Card;
+    default:
+      return LectureServiceType.Cube;
   }
 };
 
