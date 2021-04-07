@@ -18,6 +18,7 @@ class LectureFilterRdoModel {
   limit: number = 0;
   channelIds?: string[];
   email?: string = patronInfo.getPatronEmail();
+  excludeClosed?: boolean = false;
 
   constructor(lectureRdo?: LectureFilterRdoModel) {
     //
@@ -61,10 +62,11 @@ class LectureFilterRdoModel {
     });
   }
 
-  static enrLectures(limit: number, offset: number, order: OrderByType = OrderByType.Imminent) {
+  static enrLectures(limit: number, offset: number, excludeClosed: boolean, order: OrderByType = OrderByType.Time) {
     //
     return new LectureFilterRdoModel({
       orderBy: order,
+      excludeClosed,
       limit,
       offset
     });

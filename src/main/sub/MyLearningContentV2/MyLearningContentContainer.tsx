@@ -51,6 +51,7 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       <LeraningContainer contentType="New" contentTypeName="신규 과정" />
       <LeraningContainer contentType="Popular" contentTypeName="인기 과정" />
       <LeraningContainer contentType="Recommended" contentTypeName="추천 과정" />
+      {/* <LeraningContainer contentType="Enrolling" contentTypeName="수강 신청 임박 과정" /> */}
       {/* <RequiredLearning />
       <NewLearning />
       <PopularLearning profileMemberName={member.name} />

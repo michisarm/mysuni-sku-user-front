@@ -461,10 +461,10 @@ const NewLearningListView: React.FC<Props> = Props => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
-    let orderBy = OrderByType.Imminent;
+    let excludeClosed = false;
 
     if(viewType === 'Available') {
-      orderBy = OrderByType.Available;
+      excludeClosed = true;
     }
 
     // if(window.sessionStorage.getItem("order_type") === OrderByType.Available) orderBy = OrderByType.Available;
@@ -473,7 +473,8 @@ const NewLearningListView: React.FC<Props> = Props => {
     const lectureFilterRdo = LectureFilterRdoModel.enrLectures(
       page!.limit,
       page!.nextOffset,
-      orderBy
+      excludeClosed,
+      OrderByType.Time
     );
     const lectureOffsetList = await enrLectureService!.findEnrollingLectures(
       lectureFilterRdo

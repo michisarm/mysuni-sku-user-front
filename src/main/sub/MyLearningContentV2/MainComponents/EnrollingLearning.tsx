@@ -26,6 +26,13 @@ import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoMod
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
 import { ContentType } from 'myTraining/ui/page/NewLearningPage';
+import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
+import CardGroup, {
+  GroupType,
+} from '../../../../lecture/shared/Lecture/sub/CardGroup';
+import LectureParams, {
+  toPath,
+} from '../../../../lecture/detail/viewModel/LectureParams';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -82,7 +89,7 @@ const ENRLearning: React.FC<Props> = Props => {
 
     enrLectureService!
       .findEnrollingLectures(
-        LectureFilterRdoModel.enrLectures(PAGE_SIZE, 0),
+        LectureFilterRdoModel.enrLectures(PAGE_SIZE, 0, false),
         true
       )
       .then(response => {
@@ -137,7 +144,8 @@ const ENRLearning: React.FC<Props> = Props => {
 
   const onViewDetail = (e: any, data: any) => {
     //
-    const { model } = data;
+    const { id } = data;
+    console.log("onViewDetail",data);
 
     // react-ga event
     ReactGA.event({
@@ -146,36 +154,43 @@ const ENRLearning: React.FC<Props> = Props => {
       // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
       //   model.name
       // }`,
-      label: `${model.name}`,
+      // label: `${model.name}`,
     });
 
-    const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+    const params: LectureParams = {
+      cardId: id,
+      viewType: 'view',
+    };
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
-      );
-    }
+    history.push(toPath(params));
+
+    // const cineroom =
+    //   patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+    //   patronInfo.getCineroomByDomain(model)!;
+
+    // if (
+    //   model.serviceType === LectureServiceType.Program ||
+    //   model.serviceType === LectureServiceType.Course
+    // ) {
+    //   history.push(
+    //     lectureRoutePaths.courseOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.coursePlanId,
+    //       model.serviceType,
+    //       model.serviceId
+    //     )
+    //   );
+    // } else if (model.serviceType === LectureServiceType.Card) {
+    //   history.push(
+    //     lectureRoutePaths.lectureCardOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.cubeId,
+    //       model.serviceId
+    //     )
+    //   );
+    // }
   };
 
   const onActionLecture = (
@@ -238,6 +253,44 @@ const ENRLearning: React.FC<Props> = Props => {
       {enrLectures.length > 0 && enrLectures[0] ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
           {enrLectures.map(
+            (item,i) => {
+              const { card, cardRelatedCount } = item;
+              const inMyLecture = getInMyLecture(card.id);
+
+              return (
+                <li key={i}>
+                  <CardGroup type={GroupType.Box}>
+                    <CardView
+                      cardId={item.card.id}
+                      learningTime={card.learningTime}
+                      thumbImagePath={card.thumbImagePath}
+                      categories={card.categories}
+                      name={card.name}
+                      stampCount={card.stampCount}
+                      description={card.description}
+                      passedStudentCount={cardRelatedCount.passedStudentCount}
+                      starCount={cardRelatedCount.starCount}
+                      iconName={inMyLecture ? 'remove2' : 'add-list'}
+                      onAction={() => {
+                        reactAlert({
+                          title: '알림',
+                          message: inMyLecture
+                            ? '본 과정이 관심목록에서 제외되었습니다.'
+                            : '본 과정이 관심목록에 추가되었습니다.',
+                        });
+                        onActionLecture(inMyLecture!);
+                      }}
+                      onViewDetail={onViewDetail}
+                    />
+                  </CardGroup>
+                </li>
+            );
+            }
+          )}
+
+
+
+          {/* {enrLectures.map(
             (
               learning: LectureModel | MyTrainingModel | InMyLectureModel,
               index: number
@@ -270,7 +323,7 @@ const ENRLearning: React.FC<Props> = Props => {
                 />
               );
             }
-          )}
+          )} */}
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel
