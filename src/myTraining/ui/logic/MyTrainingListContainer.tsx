@@ -6,11 +6,6 @@ import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { CollegeService } from 'college/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import {
-  MyLearningTableTemplate,
-  MyLearningTableHeader,
-  MyLearningTableBody,
-} from '../view/table';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import {
   MyTrainingService,
@@ -30,6 +25,9 @@ import { MyLearningContentType } from '../model/MyLearningContentType';
 import { MyPageContentType } from '../model/MyPageContentType';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
+import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
+import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
+import MyLearningTableBody from '../view/table/MyLearningTableBody';
 
 interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;

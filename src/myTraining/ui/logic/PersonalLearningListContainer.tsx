@@ -6,12 +6,13 @@ import { AplService } from 'myTraining/stores';
 import { MyApprovalContentType } from '../model/MyApprovalContentType';
 import { SeeMoreButton } from 'lecture';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { MyLearningTableHeader, MyLearningTableTemplate } from '../view/table';
 import { NoSuchContentPanel } from 'shared';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 import { PersonalLearningListView } from '../view/PersonalLearningListView';
 import routePaths from '../../routePaths';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
+import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 
 
 interface PersonalLearningListContainerProps {
@@ -135,7 +136,7 @@ function PersonalLearningListContainer({
         offsetApl.results.length > 0 &&
         (
           <MyLearningTableTemplate>
-            <MyLearningTableHeader 
+            <MyLearningTableHeader
               contentType={params.tab}
             />
             <PersonalLearningListView 

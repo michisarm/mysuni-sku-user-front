@@ -12,7 +12,7 @@ import MyBadgeListContainer from '../../../certification/ui/logic/MyBadgeListCon
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
 import { MyPageContentType, MyPageContentTypeName } from '../model/MyPageContentType';
-import MyTrainingListContainer from '../logic/MyTrainingListContainer';
+import MyStampListContainer from '../logic/MyStampListContainer';
 
 
 interface MyPagePageProps {
@@ -41,7 +41,7 @@ function MyPagePage({
       {
         name: MyPageContentType.EarnedStampList,
         item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />
+        render: () => <MyStampListContainer />
       }
     ] as TabItemModel[];
   };
