@@ -8,6 +8,7 @@ import PostConfigModel from './PostConfigModel';
 import PostCdoModel from './PostCdoModel';
 import OpenState from './OpenState';
 import WriterModel from './WriterModel';
+import AlarmInfoModel from './AlarmInfoModel';
 
 
 class PostModel implements DomainEntity {
@@ -29,12 +30,13 @@ class PostModel implements DomainEntity {
   deleted: boolean = false;
   answered: boolean = false;
   answeredAt: string = '';
-  answerUpdatedAt: string  = '';
+  answerUpdatedAt: string = '';
   openState: OpenState = OpenState.Created;
   answer: IdName = new IdName();
   period: DatePeriod = new DatePeriod();
 
   commentFeedbackId: string = '';
+  alarmInfo: AlarmInfoModel = new AlarmInfoModel();
 
   constructor(post?: PostModel) {
     if (post) {
@@ -51,7 +53,7 @@ class PostModel implements DomainEntity {
     }
   }
 
-  static isBlank(post: PostModel) : string {
+  static isBlank(post: PostModel): string {
     if (!post.title) return '제목';
     if (!post.category.id) return '문의유형';
     if (!post.contents || !post.contents.contents) return '내용';
@@ -67,6 +69,7 @@ class PostModel implements DomainEntity {
       contents: post.contents && post.contents,
       config: post.config && post.config,
       category: post.category && post.category,
+      alarmInfo: post.alarmInfo && post.alarmInfo,
     };
   }
 
@@ -130,7 +133,8 @@ decorate(PostModel, {
   openState: observable,
   answer: observable,
   period: observable,
-  commentFeedbackId: observable
+  commentFeedbackId: observable,
+  alarmInfo: observable
 });
 
 export default PostModel;

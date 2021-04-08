@@ -106,8 +106,8 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               </a>
             )}
           {lectureRelations &&
-            Array.isArray(lectureRelations.relatedCards) &&
-            lectureRelations.relatedCards.length > 0 && (
+            Array.isArray(lectureRelations.cards) &&
+            lectureRelations.cards.length > 0 && (
               <a
                 onClick={relatedHashClick}
                 className={activatedTab === 'related' ? 'lms-act' : ''}
@@ -162,8 +162,8 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <LectureBadgeView lectureBadge={lectureBadge} />
             )}
           {lectureRelations &&
-            Array.isArray(lectureRelations.relatedCards) &&
-            lectureRelations.relatedCards.length > 0 && (
+            Array.isArray(lectureRelations.cards) &&
+            lectureRelations.cards.length > 0 && (
               <LectureRelationsView lectureRelations={lectureRelations} />
             )}
         </>

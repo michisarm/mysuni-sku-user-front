@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
@@ -51,8 +51,8 @@ const SharedListContainer: React.FC<Props> = ({
   useEffect(() => {
     setTimeout(() => {
       scrollOnceMove();
-    }, 1000)
-  }, [scrollOnceMove])
+    }, 1000);
+  }, [scrollOnceMove]);
 
   return (
     <SharedListInnerContainer
@@ -67,8 +67,8 @@ const SharedListContainer: React.FC<Props> = ({
       location={location}
       scrollSave={scrollSave}
     />
-  )
-}
+  );
+};
 
 export default withRouter(SharedListContainer);
 @inject(
@@ -122,7 +122,6 @@ class SharedListInnerContainer extends React.Component<Props, States> {
       this.findSharedLectures();
     });
   }
-
 
   // tab click 시 초기화 by gon
   getSearchInTab(prevProps: Readonly<Props>) {
@@ -242,27 +241,11 @@ class SharedListInnerContainer extends React.Component<Props, States> {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
+    } else {
       history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          collegeId,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          collegeId,
-          model.cubeId,
-          model.serviceId
-        )
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
       );
     }
     scrollSave && scrollSave();
@@ -284,22 +267,24 @@ class SharedListInnerContainer extends React.Component<Props, States> {
           )
         );
     } else {
-      inMyLectureService!.addInMyLecture(InMyLectureCdoModel.fromLecture(lecture)).then(() =>
-        inMyLectureService!.addInMyLectureInAllList(
-          lecture.serviceId,
-          lecture.serviceType
-        )
-      );
+      inMyLectureService!
+        .addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
+        .then(() =>
+          inMyLectureService!.addInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
     }
   }
 
   render() {
     //
     const { lectureService, inMyLectureService } = this.props;
-    const { lectures, totalLectureCount } = lectureService!;
+    const { requiredLectures, totalLectureCount } = lectureService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
-    if (lectures.length < 1) {
+    if (requiredLectures.length < 1) {
       return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
     }
 
@@ -313,7 +298,7 @@ class SharedListInnerContainer extends React.Component<Props, States> {
 
         <div className="section">
           <Lecture.Group type={Lecture.GroupType.Box}>
-            {lectures.map((lecture, index) => {
+            {requiredLectures.map((lecture, index) => {
               const inMyLecture =
                 inMyLectureMap.get(lecture.serviceId) || undefined;
               return (
@@ -350,4 +335,3 @@ class SharedListInnerContainer extends React.Component<Props, States> {
     );
   }
 }
-

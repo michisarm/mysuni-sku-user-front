@@ -1,11 +1,16 @@
-
-import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
-import { autobind, CachingFetch } from '@nara.platform/accent';
+import {
+  IObservableArray,
+  action,
+  computed,
+  observable,
+  runInAction,
+} from 'mobx';
+import { autobind, CachingFetch, IdName } from '@nara.platform/accent';
 
 import { IdNameCount } from 'shared/model';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import CollegeLectureCountRdo from '../../../model/CollegeLectureCountRdo';
-
+import { findAvailableColleges } from '../../../../college/api/collegeApi';
 
 @autobind
 class CollegeLectureCountService {
@@ -14,15 +19,13 @@ class CollegeLectureCountService {
 
   private lectureFlowApi: LectureFlowApi;
 
-
   @observable
   _collegeLectureCounts: CollegeLectureCountRdo[] = [];
 
   collegeLectureCountsCachingFetch: CachingFetch = new CachingFetch();
 
   @observable
-  _channelCounts: IdNameCount[] = [];
-
+  _channelCounts: IdName[] = [];
 
   constructor(lectureFlowApi: LectureFlowApi) {
     this.lectureFlowApi = lectureFlowApi;
@@ -36,6 +39,7 @@ class CollegeLectureCountService {
 
   @computed
   get channelCounts() {
+    console.log('channelCounts', this._channelCounts);
     return (this._channelCounts as IObservableArray).peek();
   }
 
@@ -43,71 +47,54 @@ class CollegeLectureCountService {
   get totalChannelCount() {
     let total = 0;
     this._collegeLectureCounts.map(college => {
-      total += college.channelCounts.length;
+      total += college.channels.length;
     });
     return total;
   }
 
   getCollegesByChannelName(name: string) {
-    return this._collegeLectureCounts
-      .map(college => {
-        const selectedChannels = college.channelCounts.filter(channel => channel.name.includes(name));
-        return selectedChannels.length > 0 ? college : null;
-      });
+    return this._collegeLectureCounts.map(college => {
+      const selectedChannels = college.channels.filter(channel =>
+        channel.name.includes(name)
+      );
+      return selectedChannels.length > 0 ? college : null;
+    });
   }
 
   @action
   clearAll() {
     //
-    runInAction(() => this._collegeLectureCounts = []);
-    runInAction(() => this._channelCounts = []);
+    runInAction(() => (this._collegeLectureCounts = []));
+    runInAction(() => (this._channelCounts = []));
   }
 
   // CollegeLectureCounts ----------------------------------------------------------------------------------------------
 
   @action
   async findCollegeLectureCounts() {
-    //
-    const fetched = this.collegeLectureCountsCachingFetch.fetch(
-      () => this.lectureFlowApi.findCollegeLectureCount(),
-      (collegeLectureCounts) => runInAction(() => this._collegeLectureCounts = collegeLectureCounts),
-    );
-
-    if (this._collegeLectureCounts.length > 0) {
-      sessionStorage.setItem('category', JSON.stringify(this.collegeLectureCounts));
+    const collegeLectureCounts = await findAvailableColleges();
+    if (collegeLectureCounts !== undefined) {
+      sessionStorage.setItem(
+        'category',
+        JSON.stringify(this.collegeLectureCounts)
+      );
+      runInAction(() => (this._collegeLectureCounts = collegeLectureCounts));
     }
-
-    return fetched ? this.collegeLectureCountsCachingFetch.inProgressFetching : this.collegeLectureCounts;
-
-    // const category = sessionStorage.getItem('category');
-    // if (category !== null) {
-    //   // this._collegeLectureCounts = JSON.parse(category);
-    //   runInAction(() => this._collegeLectureCounts = JSON.parse(category));
-    //   return this.collegeLectureCountsCachingFetch.inProgressFetching;
-    // } else {
-    //   const fetched = this.collegeLectureCountsCachingFetch.fetch(
-    //     () => this.lectureFlowApi.findCollegeLectureCount(),
-    //     (collegeLectureCounts) => runInAction(() => this._collegeLectureCounts = collegeLectureCounts),
-    //   );
-    //
-    //   if (this._collegeLectureCounts.length > 0) {
-    //     sessionStorage.setItem('category', JSON.stringify(this._collegeLectureCounts));
-    //   }
-    //
-    //   return fetched ? this.collegeLectureCountsCachingFetch.inProgressFetching : this.collegeLectureCounts;
-    // }
+    return this.collegeLectureCounts;
   }
 
   // ChannelCounts -----------------------------------------------------------------------------------------------------
 
   @action
-  async setChannelCounts(channelsCounts: IdNameCount[]) {
+  async setChannelCounts(channelsCounts: IdName[]) {
     //
-    runInAction(() => this._channelCounts = channelsCounts);
+    runInAction(() => (this._channelCounts = channelsCounts));
     return channelsCounts;
   }
 }
 
-CollegeLectureCountService.instance = new CollegeLectureCountService(LectureFlowApi.instance);
+CollegeLectureCountService.instance = new CollegeLectureCountService(
+  LectureFlowApi.instance
+);
 
 export default CollegeLectureCountService;

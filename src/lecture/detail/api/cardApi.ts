@@ -8,8 +8,21 @@ import { createCacheApi } from './cacheableApi';
 import { CardWithLearningContentCountRom } from '../../model/CardWithLearningContentCountRom';
 import { StudentCdo } from '../../model/StudentCdo';
 import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
+import { Card } from '../../model/Card';
+import { CardRdo } from '../model/CardRdo';
+import { OffsetElementList } from '../../../shared/model';
 
 const BASE_URL = '/api/lecture';
+
+function paramsSerializer(paramObj: Record<string, any>) {
+  const params = new URLSearchParams();
+  for (const key in paramObj) {
+    if (paramObj[key] !== undefined) {
+      params.append(key, paramObj[key]);
+    }
+  }
+  return params.toString();
+}
 
 function findCard(cardId: string) {
   const axios = getAxios();
@@ -57,6 +70,28 @@ export const [
   findMyCardRelatedStudentsCache,
   clearFindMyCardRelatedStudentsCache,
 ] = createCacheApi(findMyCardRelatedStudents);
+
+function findRelatedCards(cardId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/card/findRelatedCards/${cardId}`;
+  return axios.get<Card[]>(url).then(AxiosReturn);
+}
+
+export const [
+  findRelatedCardsCache,
+  clearFindRelatedCardsCache,
+] = createCacheApi(findRelatedCards);
+
+export function findByRdo(cardRdo: CardRdo) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findByRdo`;
+  return axios
+    .get<OffsetElementList<CardWithCardRealtedCount>>(url, {
+      params: cardRdo,
+      paramsSerializer,
+    })
+    .then(AxiosReturn);
+}
 
 export function findByCardId(cardId: string) {
   const axios = getAxios();

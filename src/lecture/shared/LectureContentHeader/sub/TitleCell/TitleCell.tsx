@@ -8,16 +8,15 @@ import { Icon, Label, LabelProps } from 'semantic-ui-react';
 import { CategoryModel, DatePeriod } from 'shared/model';
 import CubeIconType from '../../../Lecture/model/CubeIconType';
 
-
 interface Props {
-  title: string,
-  type: CubeType | 'Program' | 'Course',
-  creationTime: number,
-  typeName?: string,
-  label?: { color: LabelProps['color'], text: string },
-  category?: CategoryModel,
-  learningPeriod?: DatePeriod
-  children?: React.ReactNode,
+  title: string;
+  type: CubeType | 'Card';
+  creationTime: number;
+  typeName?: string;
+  label?: { color: LabelProps['color']; text: string };
+  category?: CategoryModel;
+  learningPeriod?: DatePeriod;
+  children?: React.ReactNode;
 }
 
 @reactAutobind
@@ -26,41 +25,59 @@ class TitleCell extends Component<Props> {
 
   render() {
     //
-    const { label, category, title, type, typeName, creationTime, children, learningPeriod } = this.props;
+    const {
+      label,
+      category,
+      title,
+      type,
+      typeName,
+      creationTime,
+      children,
+      learningPeriod,
+    } = this.props;
     const cubeTypeName = typeName || CubeTypeNameType[type];
 
     return (
       <div className="title-area">
-        {label ?
+        {label ? (
           <Label color={label.color}>{label.text}</Label>
-          :
-          category && category.college.name && (
+        ) : (
+          category &&
+          category.college.name && (
             <Label className={category.color}>{category.college.name}</Label>
           )
-        }
+        )}
 
         <div className="header">{title}</div>
         <div className="deatil">
           <div className="item">
             <Label className="bold onlytext">
-              <Icon className={CubeIconType[type]} /><span>{cubeTypeName}</span>
+              <Icon className={CubeIconType[type]} />
+              <span>{cubeTypeName}</span>
             </Label>
-            {category && category.channel.name && <span className="channel">{category.channel.name}</span>}
+            {category && category.channel.name && (
+              <span className="channel">{category.channel.name}</span>
+            )}
           </div>
           <div className="item">
             <Label className="onlytext">
-              {creationTime ?
+              {creationTime ? (
                 <>
                   <Icon className="date" />
-                  <span>등록일 : {moment(creationTime).format('YYYY.MM.DD')}</span>
+                  <span>
+                    등록일 : {moment(creationTime).format('YYYY.MM.DD')}
+                  </span>
                 </>
-                : null
-              }
-              {
-                learningPeriod && (type === CubeType.ClassRoomLecture || type === CubeType.ELearning) && (
-                  <span className="ml17">학습기간 : {learningPeriod.startDate} ~ {learningPeriod.endDate}</span>
-                ) || null
-              }
+              ) : null}
+              {(learningPeriod &&
+                (type === CubeType.ClassRoomLecture ||
+                  type === CubeType.ELearning) && (
+                  <span className="ml17">
+                    학습기간 : {learningPeriod.startDate} ~{' '}
+                    {learningPeriod.endDate}
+                  </span>
+                )) ||
+                null}
             </Label>
           </div>
         </div>

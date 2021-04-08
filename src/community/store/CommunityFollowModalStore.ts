@@ -1,6 +1,6 @@
 import FollowModalIntro from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
 import { createStore } from './Store';
-
+import FollowingModalIntro from '../viewModel/FollowModalIntro/CommunityFollowingModalIntro';
 
 // modal - follower
 const [
@@ -10,7 +10,6 @@ const [
   useFollowersModal,
 ] = createStore<FollowModalIntro>({
   followers: [],
-  followings: [],
 });
 
 
@@ -20,8 +19,7 @@ const [
   onFollowMingsodal,
   getFollowingsModal,
   useFollowingsModal,
-] = createStore<FollowModalIntro>({
-  followers: [],
+] = createStore<FollowingModalIntro>({
   followings: [],
 });
 

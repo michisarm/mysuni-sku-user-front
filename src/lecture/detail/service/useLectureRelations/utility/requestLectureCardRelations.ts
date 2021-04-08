@@ -1,13 +1,15 @@
 import { CardContents } from '../../../../model/CardContents';
-import { findCardCache } from '../../../api/cardApi';
+import {
+  findCardCache,
+  findCardList,
+  findRelatedCardsCache,
+} from '../../../api/cardApi';
 import { setLectureRelations } from '../../../store/LectureOverviewStore';
-import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 
-function parseLectureRelations(cardContents: CardContents): LectureRelations {
-  const { relatedCards } = cardContents;
-
+async function parseLectureRelations(cardIds: string) {
+  const cards = (await findCardList(cardIds)) || [];
   return {
-    relatedCards,
+    cards,
   };
 }
 
@@ -16,7 +18,13 @@ export async function requestLectureCardRelations(cardId: string) {
   if (cardWithContentsAndRelatedCountRom === undefined) {
     return;
   }
-  const { cardContents } = cardWithContentsAndRelatedCountRom;
-  const lectureCardRelations = parseLectureRelations(cardContents);
-  setLectureRelations(lectureCardRelations);
+  const {
+    cardContents: { relatedCards },
+  } = cardWithContentsAndRelatedCountRom;
+  if (Array.isArray(relatedCards) && relatedCards.length > 0) {
+    const joinedIds = relatedCards.map(c => c.relatedCardId).join();
+
+    const lectureCardRelations = await parseLectureRelations(joinedIds);
+    setLectureRelations(lectureCardRelations);
+  }
 }

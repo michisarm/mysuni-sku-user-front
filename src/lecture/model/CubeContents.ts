@@ -35,7 +35,7 @@ export interface CubeContents {
   };
   reviewFeedbackId: string;
   surveyId: string;
-  tags: [string];
+  tags?: [string] | null;
   terms: [
     {
       displaySort: number;

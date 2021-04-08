@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import Swiper from 'react-id-swiper';
-import { Image } from 'semantic-ui-react';
+// import { Image } from 'semantic-ui-react';
 import { MainBannerWrapper } from '../MyLearningContentElementsView';
 import { BannerService } from '../../../../shared/stores';
 import MainBannerModal from './MainBannerModal';
 import { SkProfileService } from '../../../../profile/stores';
+import Image from '../../../../shared/components/Image/Image';
 import ReactGA from 'react-ga';
 
 enum AnchorTargetType {
@@ -41,7 +42,7 @@ const MainBanner: React.FC<Props> = Props => {
   const getShowingBanners = async () => {
     //
     bannerService!.clear();
-    bannerService!.findShowingBanners(profileMemberCompanyCode);
+    bannerService!.findLatestBannerBundles();
   };
 
   const params = {
@@ -69,10 +70,15 @@ const MainBanner: React.FC<Props> = Props => {
   });
 
   // 클릭한 배너 정보
-  const onClickBanner = (targetUrl: string, target: string, name: string, index: number) => {
+  const onClickBanner = (
+    targetUrl: string,
+    target: string,
+    name: string,
+    index: number
+  ) => {
     console.log('hi', index);
 
-     // react-ga event
+    // react-ga event
     ReactGA.event({
       category: 'Banner',
       action: 'Banner Clicked',
@@ -123,7 +129,12 @@ const MainBanner: React.FC<Props> = Props => {
                   : undefined
               }
               onClick={() =>
-                onClickBanner(banner.targetUrl, banner.target, banner.name, index)
+                onClickBanner(
+                  banner.targetUrl,
+                  banner.target,
+                  banner.name,
+                  index
+                )
               }
             />
           </div>

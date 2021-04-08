@@ -24,8 +24,8 @@ export async function submit(
     cardId,
     cubeId,
     round,
-    approvalProcess,
-    approvalEmail,
+    //approvalProcess,
+    approverDenizenId: approvalEmail,
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
@@ -58,7 +58,7 @@ export async function startLearning() {
   const studentCdo: StudentCdo = {
     cardId,
     cubeId,
-    round: 0,
+    round: 1,
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
