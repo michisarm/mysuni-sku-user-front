@@ -8,27 +8,32 @@ import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import { findCardList } from '../../../lecture/detail/api/cardApi';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
-import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import CardGroup, {
   GroupType,
 } from '../../../lecture/shared/Lecture/sub/CardGroup';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 import { find } from 'lodash';
 
-function LearningContainer({}: RouteComponentProps) {
+interface MatchPrams {
+  type: string;
+}
+
+function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
   useRequestCollege();
 
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
+  const [title, setTitle] = useState('');
 
   const fetchCardList = async () => {
     const cardBundles = await findAvailableCardBundles();
 
-    // 타입으로는 새롭게 추가 되는 타입을 url 에서 받아서 넣어주도록 만들어야 함
-    const filteredCardBundle = find(cardBundles, { type: 'New' });
+    // 현재는 uuid 값을 받아서 필터 유니크한 타입이 생성이 되면 id => type으로 변경시켜야 한다.
+    const filteredCardBundle = find(cardBundles, { id: match.params.type });
 
-    if (filteredCardBundle?.cardIds) {
+    if (filteredCardBundle) {
+      setTitle(filteredCardBundle.displayText);
+
       const joinedIds = filteredCardBundle.cardIds.join();
-
       const cardList = await findCardList(joinedIds);
 
       if (cardList) {
@@ -46,7 +51,7 @@ function LearningContainer({}: RouteComponentProps) {
     <>
       <div className="ma-title">
         <div className="inner">
-          <h2>{}</h2>
+          <h2>{title}</h2>
         </div>
       </div>
       <Segment className="full">
