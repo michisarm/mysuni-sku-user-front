@@ -33,6 +33,7 @@ import {
   setWatchLog,
 } from '../../../service/useLectureMedia/useLectureWatchLog';
 import { confirmProgress } from '../../../service/useLectureMedia/utility/confirmProgress';
+import { setEmbed } from 'lecture/detail/store/EmbedStore';
 import { findAllQuiz } from '../../../../../quiz/api/QuizApi';
 import QuizTableList from '../../../../../quiz/model/QuizTableList';
 import { useLectureMedia } from '../../../service/useLectureMedia/useLectureMedia';
@@ -388,6 +389,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setPanoptoState(10);
       setIsActive(false);
       setEmbedApi('');
+      setEmbed('');
       setLectureConfirmProgress();
     };
   }, []);
@@ -464,6 +466,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
+        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -714,7 +717,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {getLectureTranscripts() &&
+        {/* {getLectureTranscripts() &&
           getLectureMedia() &&
           (getLectureMedia()?.mediaType == 'InternalMedia' ||
             getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
@@ -782,7 +785,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             View Transcript
             <i aria-hidden="true" className="icon icon morelink" />
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

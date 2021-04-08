@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { findAllTranscript, findMedia } from '../../../api/mPersonalCubeApi';
+import { findTranscriptCount, findMedia } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import { getTranscriptItem } from './getTranscriptItemMapFromCube';
 import { setLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
@@ -7,6 +7,7 @@ import { setLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { getMediaItem } from './getMediaItemMapFromCube';
 import LectureParams from '../../../viewModel/LectureParams';
 import { findCubeDetailCache } from '../../../api/cubeApi';
+import { setTranscriptCount } from 'lecture/detail/store/TranscriptCountStore';
 
 export async function getCubeLectureMedia(
   params: LectureParams
@@ -27,8 +28,11 @@ export async function getCubeLectureMedia(
       ) {
         const panoptoSessionId =
           media.mediaContents.internalMedias[0].panoptoSessionId;
-        const transcript = await findAllTranscript(panoptoSessionId, 'ko');
-        setLectureTranscripts(await getTranscriptItem(transcript));
+        // const transcript = await findAllTranscript(panoptoSessionId, 'ko');
+        // setLectureTranscripts(await getTranscriptItem(transcript));
+
+        const transcriptCount = await findTranscriptCount(panoptoSessionId);
+        setTranscriptCount(transcriptCount);
       }
       setLectureMedia(await getMediaItem(media));
     }

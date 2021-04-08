@@ -42,8 +42,6 @@ function LearningContainer({}: RouteComponentProps) {
     fetchCardList();
   }, []);
 
-  const onViewDetail = (_: React.MouseEvent, data: any) => {};
-
   return (
     <>
       <div className="ma-title">
@@ -80,7 +78,6 @@ function LearningContainer({}: RouteComponentProps) {
                         description={card.description}
                         passedStudentCount={cardRelatedCount.passedStudentCount}
                         starCount={cardRelatedCount.starCount}
-                        onViewDetail={onViewDetail}
                       />
                     </CardGroup>
                   </li>

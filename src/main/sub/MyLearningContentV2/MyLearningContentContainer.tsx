@@ -9,6 +9,7 @@ import ChallengingBadge from './MainComponents/ChallengingBadge';
 import MainBanner from './MainComponents/MainBanner';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
+import EnrollingLearning from './MainComponents/EnrollingLearning';
 
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
