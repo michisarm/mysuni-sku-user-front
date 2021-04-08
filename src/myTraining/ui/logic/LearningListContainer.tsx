@@ -8,7 +8,6 @@ import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
 import { findCardList } from '../../../lecture/detail/api/cardApi';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
-import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import CardGroup, {
   GroupType,
 } from '../../../lecture/shared/Lecture/sub/CardGroup';
@@ -19,7 +18,11 @@ import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel'
 import { ContentType } from '../page/NewLearningPage';
 import { ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 
-function LearningContainer({}: RouteComponentProps) {
+interface MatchPrams {
+  type: string;
+}
+
+function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
   useRequestCollege();
 
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
@@ -28,10 +31,11 @@ function LearningContainer({}: RouteComponentProps) {
   const onChangeViewType = ((e: any, data: any, func?: any) => {
     setViewType(data.value);
   });
+  const [title, setTitle] = useState('');
 
   // url 에서 타입 받도록 변경 필요
   // let contentType = 'Enrolling';
-  let contentType = 'New';
+  const contentType = match.params.type;
   
   const fetchCardList = async () => {
     // 수강 신청 모아보기 Card list 조회
@@ -49,17 +53,16 @@ function LearningContainer({}: RouteComponentProps) {
       if(cardList) {
         setCardList(cardList.results);
       }      
-
-      contentType = 'Enrolling';
     } else {
       const cardBundles = await findAvailableCardBundles();
 
-      // 타입으로는 새롭게 추가 되는 타입을 url 에서 받아서 넣어주도록 만들어야 함
-      const filteredCardBundle = find(cardBundles, { type: "New" });
+      // 현재는 uuid 값을 받아서 필터 유니크한 타입이 생성이 되면 id => type으로 변경시켜야 한다.
+      const filteredCardBundle = find(cardBundles, { id: match.params.type });
 
-      if (filteredCardBundle?.cardIds) {
+      if (filteredCardBundle) {
+        setTitle(filteredCardBundle.displayText);
+
         const joinedIds = filteredCardBundle.cardIds.join();
-
         const cardList = await findCardList(joinedIds);
 
         if (cardList) {
@@ -80,7 +83,7 @@ function LearningContainer({}: RouteComponentProps) {
     <>
       <div className="ma-title">
         <div className="inner">
-          <h2>{}</h2>
+          <h2>{title}</h2>
         </div>
       </div>
       <Segment className="full">
