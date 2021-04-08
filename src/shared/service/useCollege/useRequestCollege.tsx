@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import CollegeApi from '../../../college/present/apiclient/CollegeApi';
+import CollegeApi, {
+  findAllCollegeCache,
+  clearfindAllCollegeCache,
+} from '../../../college/present/apiclient/CollegeApi';
 import { devideCollegeAndChannel } from './utility/devideCollegeAndChannel';
 import {
   setCollegeStore,
@@ -12,7 +15,8 @@ import CategoryColorType from '../../model/CategoryColorType';
 
 async function requestCollegeAndChannel() {
   const api = new CollegeApi();
-  const getCollegeData = await api.findAllCollege();
+  // const getCollegeData = await api.findAllCollege();
+  const getCollegeData = await findAllCollegeCache();
 
   setCollegeModelStore(getCollegeData);
   const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
@@ -24,6 +28,10 @@ async function requestCollegeAndChannel() {
 export function useRequestCollege() {
   useEffect(() => {
     requestCollegeAndChannel();
+
+    return () => {
+      clearfindAllCollegeCache();
+    };
   }, []);
 }
 
