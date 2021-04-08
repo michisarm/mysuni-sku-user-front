@@ -11,6 +11,7 @@ import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
 import { Card } from '../../model/Card';
 import { CardRdo } from '../model/CardRdo';
 import { OffsetElementList } from '../../../shared/model';
+import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 
 const BASE_URL = '/api/lecture';
 
@@ -135,4 +136,18 @@ export function markComplete(studentId: string) {
   return axios
     .put<void>(url, { studentId })
     .then(AxiosReturn);
+}
+
+export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
+  const params = {
+    offset: lectureFilterRdo.offset,
+    limit: lectureFilterRdo.limit,
+    excludeClosed: lectureFilterRdo.excludeClosed,
+  };
+
+  const axios = getAxios();
+
+  return axios
+    .get<OffsetElementList<CardWithCardRealtedCount>>(`${BASE_URL}/cards/enrollingCards`, {params})
+    .then(response => response && response.data || null);
 }

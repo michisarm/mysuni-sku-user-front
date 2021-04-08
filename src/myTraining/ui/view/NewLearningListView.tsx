@@ -488,7 +488,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     let feedbackIds: string[] = [];
 
     if (lectureOffsetList.results && lectureOffsetList.results.length > 0) {
-      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      //feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
 

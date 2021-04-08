@@ -45,6 +45,7 @@ interface Props {
   starCount: number;
   description: string;
   inMyLectureService?: InMyLectureService;
+  contentType?: string;
 }
 
 function CardView({
@@ -59,6 +60,7 @@ function CardView({
   thumbImagePath,
   passedStudentCount,
   inMyLectureService,
+  contentType,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
@@ -212,6 +214,10 @@ function CardView({
       {/* Todo: stampReady */}
       <div className="card-ribbon-wrap">
         {isRequired && <Label className="ribbon2">핵인싸과정</Label>}
+        {contentType && contentType === "Enrolling" && (
+          // 나중에 정원 정보 추가 되면 수정 해야함
+          <Label className="ribbon2">정원 마감</Label>
+        )}
         {/* { stampReady && <Label className="ribbon2">Stamp</Label>} */}
       </div>
       <div className="card-inner">
