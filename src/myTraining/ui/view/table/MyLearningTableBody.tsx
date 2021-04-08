@@ -21,6 +21,7 @@ import { MyTrainingRouteParams } from '../../../model/MyTrainingRouteParams';
 import { getCollgeName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { timeToHourMinutePaddingFormat } from '../../../../shared/helper/dateTimeHelper';
 import { CubeTypeNameType } from '../../../../personalcube/personalcube/model';
+import { LearningState } from '../../../../shared/model';
 
 interface Props {
   models: MyTableView[] | AplModel[];
@@ -86,8 +87,8 @@ function MyLearningTableBody(props: Props) {
     [selectedServiceIds, clearOne, selectOne]
   );
 
-  const renderWithBaseContent = (model: MyTableView, index: number) => {
-    const collegeName = getCollgeName(model.category.college.name);
+  const renderBaseContent = (model: MyTableView, index: number) => {
+    const collegeName = getCollgeName(model.category.college.id);
 
     return (
       <>
@@ -112,152 +113,143 @@ function MyLearningTableBody(props: Props) {
     model: MyTableView,
     contentType: MyContentType
   ) => {
-    const formattedLearningTime = timeToHourMinutePaddingFormat(model.learningTime);
-    
     switch (contentType) {
-      case MyLearningContentType.InProgress:
+      case MyLearningContentType.InProgress: {
         return (
           <>
             <Table.Cell>
               {model.serviceType}{' '}
-              {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
-              {model.difficultyLevel || '-'} {/* Level */}
+              {model.difficultyLevel || '-'} 
             </Table.Cell>
             <Table.Cell>
-              {`${model.passedLearningCount}/${model.totalLearningCount}`} {/* 진행률 */}
-            </Table.Cell>
-            <Table.Cell>
-              {formattedLearningTime}
-              {/* 학습시간 */}
+              {timeToHourMinutePaddingFormat(model.learningTime)}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.time)}
-              {/* 최근학습일 */}
             </Table.Cell>
             <Table.Cell>
-              {model.displayProgressRate} {/* 진행률 */}
+              {`${model.passedLearningCount}/${model.totalLearningCount}`}
             </Table.Cell>
           </>
         );
-
-      case MyLearningContentType.InMyList:
+      }
+        
+      case MyLearningContentType.InMyList: {
+        const learningType = model.serviceType === 'Card' && model.serviceType || CubeTypeNameType[model.cubeType];
+        const progressRate = model.serviceType === 'Card' && model.learningState === LearningState.Passed && 
+        `${model.passedLearningCount}/${model.totalLearningCount}` || '-';
+   
         return (
           <>
             <Table.Cell>
-              {model.serviceType === 'Card' && model.serviceType || CubeTypeNameType[model.cubeType]}{' '}
-              {/* 학습유형 */}
+              {learningType}{' '}
             </Table.Cell>
             <Table.Cell>
-              {model.difficultyLevel || '-'} {/* Level */}
+              {model.difficultyLevel || '-'}
             </Table.Cell>
             <Table.Cell>
-              {formattedLearningTime}
-              {/* 학습시간 */}
+              {timeToHourMinutePaddingFormat(model.learningTime)}
             </Table.Cell>
             <Table.Cell>
-              {model.stampCount !== 0 && model.stampCount || '-'}
-              {/* 스탬프 */}
+              {'lastStudyDate'}
             </Table.Cell>
             <Table.Cell>
-              {formatDate(model.createDate)}
-              {/* 등록일 */}
+              {progressRate}
+            </Table.Cell>
+            <Table.Cell>
+              {model.learningState}
             </Table.Cell>
           </>
         );
-      case MyLearningContentType.Required:
+      }
+        
+      case MyLearningContentType.Required: {
         return (
           <>
             <Table.Cell>
               {model.serviceType}{' '}
-              {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
-              {model.difficultyLevel || '-'} {/* Level */}
+              {model.difficultyLevel || '-'}
             </Table.Cell>
             <Table.Cell>
-              {formattedLearningTime}
-              {/* 학습시간 */}
+              {timeToHourMinutePaddingFormat(model.learningTime)}
             </Table.Cell>
             <Table.Cell>
               {model.stampCount !== 0 && model.stampCount || '-'}
-              {/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.creationTime)}
             </Table.Cell>
           </>
         );
-      case MyLearningContentType.Enrolled:
+      }
+    
+      case MyLearningContentType.Enrolled: {
         return (
           <>
             <Table.Cell>
               {CubeTypeNameType[model.cubeType]}{' '}
-              {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
               {model.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
             <Table.Cell>
-              {formattedLearningTime}
-              {/* 학습시간 */}
+              {timeToHourMinutePaddingFormat(model.learningTime)}
             </Table.Cell>
             <Table.Cell>
-              {model.stampCount !== 0 && model.stampCount || ''}
-              {/* 스탬프 */}
+              {model.stampCount !== 0 && model.stampCount || '-'}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.startDate)}
-              {/* 학습시작일 */}
             </Table.Cell>
           </>
         );
-      case MyLearningContentType.Completed:
+      }     
+      case MyLearningContentType.Completed: {
         return (
           <>
             <Table.Cell>
               {model.serviceType}{' '}
-              {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
-              {model.difficultyLevel || '-'} {/* Level */}
+              {model.difficultyLevel || '-'}
             </Table.Cell>
             <Table.Cell>
-              {formattedLearningTime}
-              {/* 학습시간 */}
+              {timeToHourMinutePaddingFormat(model.learningTime)}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.endDate)}
-              {/* 학습완료일 */}
             </Table.Cell>
           </>
         );
-      case MyLearningContentType.Retry:
+      }  
+      case MyLearningContentType.Retry: {
+        const learningType = model.serviceType === 'Card' && model.serviceType || CubeTypeNameType[model.cubeType];
+
         return (
           <>
             <Table.Cell>
-              {model.serviceType === 'Card' && model.serviceType || CubeTypeNameType[model.cubeType]}{' '}
-              {/* 학습유형 */}
+              {learningType}{' '}
             </Table.Cell>
             <Table.Cell>
-              {model.difficultyLevel || '-'} {/* Level */}
+              {model.difficultyLevel || '-'}
             </Table.Cell>
             <Table.Cell>
-              {formattedLearningTime}
-              {/* 학습시간 */}
+              {timeToHourMinutePaddingFormat(model.learningTime)}
             </Table.Cell>
             <Table.Cell>
               {model.stampCount || '-'}
-              {/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.time)}
-              {/* 취소/미이수일 */}
             </Table.Cell>
           </>
         );
-      case MyPageContentType.EarnedStampList:
+      }
+      case MyPageContentType.EarnedStampList: {
         return (
           <>
             <Table.Cell>
@@ -268,8 +260,7 @@ function MyLearningTableBody(props: Props) {
             </Table.Cell>
           </>
         );
-      default:
-        return null;
+      }
     }
   };
 
@@ -324,21 +315,8 @@ function MyLearningTableBody(props: Props) {
                   />
                 </Table.Cell>
               )}
-              {renderWithBaseContent(model, index)}
+              {renderBaseContent(model, index)}
               {renderByContentType(model, contentType)}
-              {/* {contentType !== MyLearningContentType.InProgress &&
-                contentType !== MyLearningContentType.InMyList &&
-                contentType !== MyLearningContentType.Required && (
-                  <Table.Cell>
-                    <a
-                      className="btn-blue"
-                      href="#"
-                      onClick={e => onClickLearn(model, e)}
-                    >
-                      학습하기
-                    </a>
-                  </Table.Cell>
-                )} */}
             </Table.Row>
           )))}
       {contentType === MyLearningContentType.PersonalCompleted &&
