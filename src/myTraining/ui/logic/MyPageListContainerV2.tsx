@@ -179,32 +179,6 @@ class MyPageListContainerV2 extends Component<Props, States> {
     }
   }
 
-  async findAllArrangesExcel() {
-    const { pageService, myTrainingService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { channels } = this.state;
-    const activeItem = this.getAContentType();
-    const channelIds = channels.map(
-      (channel: ChannelModel) => channel.channelId
-    );
-    const stamps: OffsetElementList<MyTrainingModel> = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(
-      page!.limit,
-      page!.nextOffset,
-      channelIds
-    );
-    const stampXlsxList: MyTrainingStampXlsxModel[] = [];
-    stamps.results.map((stamp, index) => {
-      stampXlsxList.push(MyTrainingModel.asStampXLSX(stamp, index));
-    });
-    const arrangeExcel = XLSX.utils.json_to_sheet(stampXlsxList);
-    const temp = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(temp, arrangeExcel, 'stamps');
-
-    // const date = moment().format('YYYY-MM-DD hh:mm:ss');
-    XLSX.writeFile(temp, `MyStamp.xlsx`);
-  }
-
   render() {
     //
     const { pageService, myTrainingService } = this.props;

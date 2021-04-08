@@ -366,58 +366,19 @@ class MyTrainingService {
   }
 
   @action
-  async findAndAddAllMyTrainingsWithStamp(
-    limit: number,
-    offset: number,
-    channelIds: string[] = []
-  ) {
-    //
-    const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
-      rdo
-    );
-
-    runInAction(
-      () =>
-        (this._myTrainings = this._myTrainings.concat(
-          trainingOffsetElementList.results
-        ))
-    );
-    return trainingOffsetElementList;
-  }
-
-  @action
-  async findAndAddAllMyTrainingsWithStampForExcel(
-    limit: number,
-    offset: number,
-    channelIds: string[] = []
-  ) {
-    //
-    const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
-      rdo
-    );
-
-    runInAction(
-      () =>
-        (this._myTrainingsExcel = this._myTrainingsExcel.concat(
-          trainingOffsetElementList.results
-        ))
-    );
-    return trainingOffsetElementList;
-  }
-
-  @action
   async countMyTrainingsWithStamp(
     channelIds: string[] = [],
     startDate?: number,
     endDate?: number
   ) {
     //
-    const rdo = MyTrainingRdoModel.new(1, 0, channelIds, startDate, endDate);
+    const rdo = MyTrainingRdoModel.new(0, 0, channelIds, startDate, endDate);
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
       rdo
     );
+    if (trainingOffsetElementList === undefined) {
+      return;
+    }
 
     if (startDate === undefined || endDate === undefined) {
       runInAction(
