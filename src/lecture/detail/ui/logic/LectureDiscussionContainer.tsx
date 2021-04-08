@@ -1,44 +1,27 @@
 import { CommentList } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Checkbox, Comment, Icon, Image } from 'semantic-ui-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import { findSkProfileByAudienceId } from '../../api/profileApi';
-import { useLectureDiscussion } from '../../service/useLectureDiscussion';
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
-import { getLectureDiscussion,setLectureDiscussion } from '../../store/LectureDiscussionStore';
-import defaultImage from '../../../../style/media/img-profile-80-px.png';
-import { InMyLectureService } from 'myTraining/stores';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import LectureFeedbackContent from '../../viewModel/LectureFeedbackContent';
 import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
-import { Link } from 'react-router-dom';
-import { getLectureFeedbackContent, setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
-
-const str = " 2019년 지구상에 새로 등장한 신종 바이러스 감염병인 코로나19는 세계 많은 국가에 서 1년째 대유행을 하고 있다.코로나19는 21세기 들어 가장 많은 인명 피해를 주고 있는 감염병이란 타이틀을 이미 거머쥐었다. 지금도 정치, 경제,사회, 문화, 보건의료, 과학기술 등 많은 분야를 이전과 다른 모습으로 바꿔놓고 있는 중이다. 따라서 코로나19가 바꾸었거나바꾸고 있는 우리 사회의 다양 한 모습을 살펴보고 또 앞으로 어디까지 어떻게 바꿀지를 분석하는 것은 인류의 지속가능성을위해 매우 중요한 과제라고 할 수 있다. 코로나 사태와 관련, 코로나 사태가 시작되었던 1월 말 당시의 예상 및 결과를 Review해보고,향후 사태 지속 시 사회가 어떤 모습으로 변할지에 대해 답변하면서 평소에 생각하지 못했던 부분까지 생각의 영역을 확장해봅니다.";
+import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
+import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
+import { useLectureParams } from '../../store/LectureParamsStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
-interface Props extends RouteComponentProps<RouteParams> {
-  inMyLectureService?: InMyLectureService;
-}
+const fileDownload = (pdf: string, fileId: string) => {
+  depot.downloadDepotFile(fileId);
+};
 
-interface RouteParams {
-  coursePlanId?: string;
-}
+export default function LectureDiscussionContainer() {
+  useRequestLectureDiscussion();
+  const lectureDiscussion = useLectureDiscussion();
+  const params = useLectureParams();
 
-function LectureDiscussionContainer (props: Props) {
-  const [lectureDiscussion] = useLectureDiscussion();
-
-  const { match } = props;
-
-  const { coursePlanId } = match.params;
-
-  console.log('coursePlanId', coursePlanId)
-  
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -46,14 +29,14 @@ function LectureDiscussionContainer (props: Props) {
   );
   const originArr: string[] = [];
   let origin: string = '';
-  
+
   useEffect(() => {
     getFileIds();
-  },[lectureFeedbackContent])
+  }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
-    const referenceFileBoxId = lectureFeedbackContent && lectureFeedbackContent.depotId;
-    // const referenceFileBoxId = '2h1';
+    const referenceFileBoxId =
+      lectureFeedbackContent && lectureFeedbackContent.depotId;
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
@@ -68,44 +51,25 @@ function LectureDiscussionContainer (props: Props) {
   }, []);
 
   useEffect(() => {
-    if (lectureDiscussion === undefined) {
-      return;
-    }
-    findSkProfileByAudienceId(lectureDiscussion.creatorAudienceId).then(
-      profile => {
-        const mLectureDiscussion = getLectureDiscussion();
-        if (profile !== undefined && mLectureDiscussion !== undefined) {
-          if (mLectureDiscussion.creatorImage != profile.photoImage) {
-            setLectureDiscussion({
-              ...lectureDiscussion,
-              creatorImage: profile.photoImage,
-            });
-          }
-        }
-      }
-    );
-  }, [lectureDiscussion?.creatorAudienceId]);
-
-  useEffect(() => {
-    // LMS 컨텐츠 api호출
-    findFeedbackMenu('dd').then(
-      res => {
-        setLectureFeedbackContent({
-          ...res,
-        })
+    findFeedbackMenu('dd').then(res => {
+      setLectureFeedbackContent({
+        ...res,
       });
-  },[lectureFeedbackContent?.title]);
+    });
+  }, [lectureFeedbackContent?.title]);
 
-  const {
-    skProfile: {
-      member: { company, department, email, name },
-    },
-  } = SkProfileService.instance;
+  const { company, department, email, name } = useMemo(() => {
+    const {
+      skProfile: {
+        member: { company, department, email, name },
+      },
+    } = SkProfileService.instance;
+    return { company, department, email, name };
+  }, []);
 
   const zipFileDownload = useCallback((type: string) => {
     if (type === 'select') {
       if (origin === '') {
-        // console.log('선택 첨부파일 없음 err')
         return;
       }
       if (originArr!.length === 1) {
@@ -120,7 +84,6 @@ function LectureDiscussionContainer (props: Props) {
           idArr.push(foundedFile.id);
         });
         if (idArr.length === 0) {
-          // console.log('전체 첨부파일 없음 err');
           return;
         }
         depot.downloadDepotFiles(idArr);
@@ -135,7 +98,6 @@ function LectureDiscussionContainer (props: Props) {
     setMore(false);
   }, []);
 
-
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
       originArr.push(depotData.id);
@@ -146,45 +108,45 @@ function LectureDiscussionContainer (props: Props) {
     }
   }, []);
 
-  const fileDownload = (pdf: string, fileId: string) => {
-    // const PdfFile = pdf.includes('.pdf');
-    // if (PdfFile) {
-    //   setPdfOpen(!pdfOpen);
-    //   setFileId(fileId);
-    //   setFileName(pdf);
-    // } else {
-      depot.downloadDepotFile(fileId);
-    // }
-  };
-
   return (
     <>
       {lectureDiscussion && (
         <>
           <div className="discuss-wrap">
-            
-            {/* 제목 */}
             <div className="discuss-box">
-              <Image src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`} alt="" style={{display: 'inline-block'}}/>
+              <Image
+                src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`}
+                alt=""
+                style={{ display: 'inline-block' }}
+              />
               <h2>{lectureDiscussion.name}</h2>
-              <span className="peo-opinion">전체 의견 <strong>638</strong></span>
-              <span><strong className="peo-date">{moment(lectureFeedbackContent?.time).format('YYYY.MM.DD')}</strong></span>
+              <span className="peo-opinion">
+                전체 의견 <strong>638</strong>
+              </span>
+              <span>
+                <strong className="peo-date">
+                  {moment(lectureFeedbackContent?.time).format('YYYY.MM.DD')}
+                </strong>
+              </span>
             </div>
-            
-            {/* 본문 */}
             <div className="discuss-box2">
-              {/* <img src={MaskImg} className="discuss-main-img" /> */}
-              <div className="discuss-text-wrap" >
+              <div className="discuss-text-wrap">
                 {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div
-                      dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}
+                      dangerouslySetInnerHTML={{
+                        __html: `${lectureFeedbackContent?.content}`,
+                      }}
                     />
                   </div>
                 )}
                 {lectureFeedbackContent && !more && (
-                  <div className="discuss-text-belt" dangerouslySetInnerHTML={{ __html: `${lectureFeedbackContent?.content}` }}/>
-                  // <p className="discuss-text-belt">{lectureFeedbackContent?.content}</p>
+                  <div
+                    className="discuss-text-belt"
+                    dangerouslySetInnerHTML={{
+                      __html: `${lectureFeedbackContent?.content}`,
+                    }}
+                  />
                 )}
                 {!more && (
                   <button
@@ -192,13 +154,16 @@ function LectureDiscussionContainer (props: Props) {
                     onClick={viewMore}
                   >
                     more
-                    <i aria-hidden="true" className="icon icon morelink more2" />
+                    <i
+                      aria-hidden="true"
+                      className="icon icon morelink more2"
+                    />
                   </button>
                 )}
                 {more && (
                   <button
                     className="ui icon button right btn-blue"
-                    onClick={hideMore} 
+                    onClick={hideMore}
                   >
                     hide
                     <i aria-hidden="true" className="icon hide2" />
@@ -207,21 +172,33 @@ function LectureDiscussionContainer (props: Props) {
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {lectureFeedbackContent && lectureFeedbackContent.relatedUrlList && lectureFeedbackContent.relatedUrlList.length > 0 &&  (lectureFeedbackContent.relatedUrlList[0].title !== ""
-              || lectureFeedbackContent.relatedUrlList[0].url !== "")  &&
-                <div className="community-board-down discuss2">
-                  <div className="board-down-title href">
+              {lectureFeedbackContent &&
+                lectureFeedbackContent.relatedUrlList &&
+                lectureFeedbackContent.relatedUrlList.length > 0 &&
+                (lectureFeedbackContent.relatedUrlList[0].title !== '' ||
+                  lectureFeedbackContent.relatedUrlList[0].url !== '') && (
+                  <div className="community-board-down discuss2">
+                    <div className="board-down-title href">
                       <p>
-                        {" "}
-                        <Image src={`${PUBLIC_URL}/images/all/icon-url.png`} alt="" style={{display: 'inline-block'}}/>
+                        {' '}
+                        <Image
+                          src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                          alt=""
+                          style={{ display: 'inline-block' }}
+                        />
                         관련 URL
                       </p>
-                      {lectureFeedbackContent && lectureFeedbackContent.relatedUrlList?.map((item: any) => (
-                        <a href={item.url} target='blank'>{item.title}</a>
-                      ))}
+                      {lectureFeedbackContent &&
+                        lectureFeedbackContent.relatedUrlList?.map(
+                          (item: any) => (
+                            <a href={item.url} target="blank">
+                              {item.title}
+                            </a>
+                          )
+                        )}
+                    </div>
                   </div>
-                </div>
-              }
+                )}
               {/* eslint-enable */}
               {/* 관련 자료 */}
               <div className="community-board-down discuss2">
@@ -253,40 +230,30 @@ function LectureDiscussionContainer (props: Props) {
                         </button>
                       </div>
                     </div>
-                  {filesMap.get('reference') &&
-                    filesMap
-                      .get('reference')
-                      .map((foundedFile: DepotFileViewModel) => (
-                        <div className="down">
-                          <Checkbox
-                            className="base"
-                            label={foundedFile.name}
-                            name={'depot' + foundedFile.id}
-                            onChange={(event, value) =>
-                              checkOne(event, value, foundedFile)
-                            }
-                          />
-                          <Icon
-                            className="icon-down-type4"
-                            onClick={() =>
-                              fileDownload(foundedFile.name, foundedFile.id)
-                            }
-                          />
-                        </div>
-                      ))}
-
-                    {/* <div className="down">
-                      <Checkbox
-                        className="base"
-                      />
-                      <Icon
-                        className="icon-down-type4"
-                      />
-                    </div> */}
+                    {filesMap.get('reference') &&
+                      filesMap
+                        .get('reference')
+                        .map((foundedFile: DepotFileViewModel) => (
+                          <div className="down">
+                            <Checkbox
+                              className="base"
+                              label={foundedFile.name}
+                              name={'depot' + foundedFile.id}
+                              onChange={(event, value) =>
+                                checkOne(event, value, foundedFile)
+                              }
+                            />
+                            <Icon
+                              className="icon-down-type4"
+                              onClick={() =>
+                                fileDownload(foundedFile.name, foundedFile.id)
+                              }
+                            />
+                          </div>
+                        ))}
                   </div>
                 </div>
-              </div>  
-            {/* discuss-box2 */}
+              </div>
             </div>
           </div>
 
@@ -297,7 +264,7 @@ function LectureDiscussionContainer (props: Props) {
             email={email}
             companyName={company}
             departmentName={department}
-            coursePlanId={coursePlanId}
+            coursePlanId={params?.cardId}
             menuType="discussion"
           />
         </>
@@ -305,9 +272,3 @@ function LectureDiscussionContainer (props: Props) {
     </>
   );
 }
-
-export default inject(
-  mobxHelper.injectFrom(
-    'myTraining.inMyLectureService',
-  )
-)(withRouter(observer(LectureDiscussionContainer)));
