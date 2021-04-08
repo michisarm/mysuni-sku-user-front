@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { Offset } from '@nara.platform/accent';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import { FilterCondition } from './FilterCondition';
+import { MyLearningContentType } from '../ui/model/MyLearningContentType';
+import { MyContentType } from '../ui/model/MyContentType';
 
 class MyTrainingFilterRdoModel {
   myTrainingState: MyContentType = MyLearningContentType.InProgress;

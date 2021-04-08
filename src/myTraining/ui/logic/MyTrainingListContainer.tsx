@@ -7,11 +7,6 @@ import { SkProfileService } from 'profile/stores';
 import { CollegeService } from 'college/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import {
-  MyLearningContentType,
-  MyPageContentType,
-  NoSuchContentPanelMessages,
-} from '../model';
-import {
   MyLearningTableTemplate,
   MyLearningTableHeader,
   MyLearningTableBody,
@@ -27,11 +22,14 @@ import {
   SeeMoreButton,
   StudentService,
 } from '../../../lecture';
-import MyApprovalContentType from '../model/MyApprovalContentType';
 import ReactGA from 'react-ga';
 import { Segment } from 'semantic-ui-react';
 import FilterBoxContainer from './FilterBoxContainer';
 import { Direction } from '../../model/Direction';
+import { MyLearningContentType } from '../model/MyLearningContentType';
+import { MyPageContentType } from '../model/MyPageContentType';
+import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import { MyContentType } from '../model/MyContentType';
 
 interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;
@@ -49,7 +47,7 @@ interface RouteParams {
   pageNo?: string;
 }
 
-function MyLearningListContainerV2(props: Props) {
+function MyTrainingListContainer(props: Props) {
   const { contentType, history, match } = props;
   const {
     skProfileService,
@@ -625,14 +623,10 @@ export default inject(
     'lecture.studentService',
     'college.collegeService'
   )
-)(withRouter(observer(MyLearningListContainerV2)));
+)(withRouter(observer(MyTrainingListContainer)));
 
 /* globals */
 const PAGE_SIZE = 20;
 
 /* types */
-export type ApprovalViewType = 'All' | 'Waiting' | 'Approval' | 'Reject';
-export type MyContentType =
-  | MyLearningContentType
-  | MyPageContentType
-  | MyApprovalContentType;
+

@@ -1,4 +1,5 @@
-import { MyPageContentType } from "../ui/model";
+import { MyPageContentType } from "../ui/model/MyPageContentType";
+
 
 export interface MyPageRouteParams {
   tab: MyPageContentType;

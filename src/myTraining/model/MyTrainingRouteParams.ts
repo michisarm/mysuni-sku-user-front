@@ -1,4 +1,4 @@
-import { MyLearningContentType } from "../ui/model";
+import { MyLearningContentType } from "../ui/model/MyLearningContentType";
 
 export interface MyTrainingRouteParams {
   tab: MyLearningContentType;

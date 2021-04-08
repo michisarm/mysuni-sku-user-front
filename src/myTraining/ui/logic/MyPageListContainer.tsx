@@ -14,8 +14,8 @@ import { Lecture, SeeMoreButton } from 'lecture';
 import routePaths from '../../routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import MyPageContentType from '../model/MyPageContentType';
 import LineHeaderContainer from './LineHeaderContainer';
+import { MyPageContentType } from '../model/MyPageContentType';
 
 interface States {
   channels: ChannelModel[];

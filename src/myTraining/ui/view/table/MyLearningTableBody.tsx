@@ -10,10 +10,8 @@ import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel'
 import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
 import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
 import { AplModel } from 'myTraining/model';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { AplState } from 'myTraining/model/AplState';
 import { AplStateName } from 'myTraining/model/AplStateName';
-import { MyLearningContentType, MyPageContentType } from '../../model';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import LectureParams, { toPath } from '../../../../lecture/detail/viewModel/LectureParams';
@@ -22,6 +20,9 @@ import { getCollgeName } from '../../../../shared/service/useCollege/useRequestC
 import { timeToHourMinutePaddingFormat } from '../../../../shared/helper/dateTimeHelper';
 import { CubeTypeNameType } from '../../../../personalcube/personalcube/model';
 import { LearningState } from '../../../../shared/model';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyPageContentType } from '../../model/MyPageContentType';
+import { MyContentType } from '../../model/MyContentType';
 
 interface Props {
   models: MyTableView[] | AplModel[];

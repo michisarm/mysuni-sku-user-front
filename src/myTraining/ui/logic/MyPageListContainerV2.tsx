@@ -3,22 +3,18 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
-import XLSX from 'xlsx';
 
 import lectureRoutePaths from 'lecture/routePaths';
 import { PageService } from 'shared/stores';
-import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureServiceType } from 'lecture/model';
 import { Lecture, SeeMoreButton } from 'lecture';
-import MyTrainingStampXlsxModel from 'myTraining/model/MyTrainingStampXlsxModel';
 
 import LineHeaderContainer from './LineHeaderContainer';
 import routePaths from '../../routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import MyPageContentType from '../model/MyPageContentType';
-import { OffsetElementList } from '../../../shared/model';
+import { MyPageContentType } from '../model/MyPageContentType';
 
 interface States {
   channels: ChannelModel[];

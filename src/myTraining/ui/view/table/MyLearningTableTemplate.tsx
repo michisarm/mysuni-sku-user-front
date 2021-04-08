@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import { Table } from 'semantic-ui-react';
-import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
-import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
 import { useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../../model/MyTrainingRouteParams';
 import { MyPageRouteParams } from '../../../model/MyPageRouteParams';
 import { MyApprovalRouteParams } from '../../../model/MyApprovalRouteParams';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyPageContentType } from '../../model/MyPageContentType';
 
 interface Props {
   children: React.ReactNode;

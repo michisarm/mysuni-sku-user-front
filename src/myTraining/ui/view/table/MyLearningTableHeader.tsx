@@ -4,10 +4,11 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType, TableHeaderColumn } from '../../model';
 import { toggleDirection, Direction } from '../../../model/Direction';
 import { Order } from '../../../model/Order';
+import TableHeaderColumn from '../../model/TableHeaderColumn';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyContentType } from '../../model/MyContentType';
 
 
 

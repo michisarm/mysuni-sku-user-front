@@ -1,5 +1,5 @@
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -8,11 +8,11 @@ import { BadgeService } from 'lecture/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ContentLayout, TabItemModel } from 'shared';
 import Tab from 'shared/components/Tab';
-import { MyPageContentType, MyPageContentTypeName } from '../model';
-import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import MyBadgeListContainer from '../../../certification/ui/logic/MyBadgeListContainer';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
+import { MyPageContentType, MyPageContentTypeName } from '../model/MyPageContentType';
+import MyTrainingListContainer from '../logic/MyTrainingListContainer';
 
 
 interface MyPagePageProps {
@@ -41,7 +41,7 @@ function MyPagePage({
       {
         name: MyPageContentType.EarnedStampList,
         item: getTabItem(MyPageContentType.EarnedStampList, myStampCount),
-        render: () => <MyLearningListContainerV2 contentType={params.tab} />
+        render: () => <MyTrainingListContainer contentType={params.tab} />
       }
     ] as TabItemModel[];
   };

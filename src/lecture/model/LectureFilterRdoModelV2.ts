@@ -1,9 +1,9 @@
 import moment from 'moment';
 import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import { FilterCondition } from '../../myTraining/model/FilterCondition';
+import { MyLearningContentType } from '../../myTraining/ui/model/MyLearningContentType';
+import { MyContentType } from '../../myTraining/ui/model/MyContentType';
 
 class LectureFilterRdoModelV2 {
 

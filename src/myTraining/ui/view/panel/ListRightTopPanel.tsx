@@ -1,13 +1,13 @@
 import React, { Fragment, memo } from 'react';
 import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
 import { ApprovalViewType } from '../../logic/PersonalLearningListContainer';
 import { ContentType } from '../../page/NewLearningPage';
 import { EnrollingViewType } from '../../logic/NewLearningListContainer';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyContentType } from '../../model/MyContentType';
 
 interface Props {
   contentType: MyContentType | ContentType;

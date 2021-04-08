@@ -1,4 +1,4 @@
-import MyApprovalContentType from "../ui/model/MyApprovalContentType";
+import { MyApprovalContentType } from "../ui/model/MyApprovalContentType";
 
 export interface MyApprovalRouteParams {
   tab: MyApprovalContentType;

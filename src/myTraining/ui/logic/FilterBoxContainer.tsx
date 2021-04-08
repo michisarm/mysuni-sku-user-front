@@ -4,8 +4,6 @@ import { mobxHelper } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import CheckedFilterView from '../view/filterbox/CheckedFilterView';
 import CheckboxOptions from '../model/CheckboxOptions';
@@ -15,6 +13,8 @@ import { useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { FilterCondition } from '../../model/FilterCondition';
 import { FilterConditionName } from '../../model/FilterConditionName';
+import { MyLearningContentType } from '../model/MyLearningContentType';
+import { MyContentType } from '../model/MyContentType';
 
 
 interface FilterBoxContainerProps {

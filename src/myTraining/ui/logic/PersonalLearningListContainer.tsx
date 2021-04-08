@@ -3,15 +3,15 @@ import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { AplService } from 'myTraining/stores';
-import MyApprovalContentType from '../model/MyApprovalContentType';
+import { MyApprovalContentType } from '../model/MyApprovalContentType';
 import { SeeMoreButton } from 'lecture';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
 import { MyLearningTableHeader, MyLearningTableTemplate } from '../view/table';
-import { NoSuchContentPanelMessages } from '../model';
 import { NoSuchContentPanel } from 'shared';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 import { PersonalLearningListView } from '../view/PersonalLearningListView';
 import routePaths from '../../routePaths';
+import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 
 
 interface PersonalLearningListContainerProps {

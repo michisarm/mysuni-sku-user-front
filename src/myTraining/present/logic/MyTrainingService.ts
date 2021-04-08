@@ -8,8 +8,6 @@ import {
 import { autobind, Offset } from '@nara.platform/accent';
 import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
@@ -18,6 +16,8 @@ import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
 import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import { FilterCondition } from '../../model/FilterCondition';
 import { Direction } from '../../model/Direction';
+import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
+import { MyContentType } from '../../ui/model/MyContentType';
 
 @autobind
 class MyTrainingService {
