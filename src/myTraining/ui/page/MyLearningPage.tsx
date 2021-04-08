@@ -50,8 +50,6 @@ class MyLearningPage extends Component<Props> {
     //
     const { myTrainingService, lectureService } = this.props;
 
-    myTrainingService.saveNewLearningPassedToStorage('Passed');
-
     myTrainingService!.findAllTabMyTraining();
 
     //권장과정 갯수 조회

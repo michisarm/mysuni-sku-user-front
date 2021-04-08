@@ -49,8 +49,6 @@ function MyLearningPageV2(props: Props) {
     fetchAllModelsForStorage();
     fetchAllTabCount();
     getMenuAuth();
-    // 학습완료한 강좌에 대해 sessionStorage 저장하는 로직
-    // myTrainingService!.saveNewLearningPassedToStorage('Passed');
     return () => clearAllTabCount();
   }, []);
 

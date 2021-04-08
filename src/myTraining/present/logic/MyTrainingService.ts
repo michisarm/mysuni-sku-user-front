@@ -78,89 +78,6 @@ class MyTrainingService {
   }
 
   @action
-  async saveAllLearningPassedToStorage(state: string, endDate: string) {
-    //
-    await this.myTrainingApi
-      .saveAllLearningPassedToStorage(state, endDate)
-      .then((response: any) => {
-        if (response) {
-          if (response.data !== null && response.data !== '') {
-            this.setCombineLearningPassedFromStorage(
-              JSON.stringify(response.data)
-            );
-          }
-        }
-      });
-  }
-
-  @action
-  async saveNewLearningPassedToStorage(state: string) {
-    //
-    const endDate: string | null = sessionStorage.getItem('endDate');
-    if (endDate) {
-      await this.myTrainingApi
-        .saveAllLearningPassedToStorage(state, endDate)
-        .then((response: any) => {
-          if (response) {
-            if (response.data !== null && response.data !== '') {
-              this.setCombineLearningPassedFromStorage(
-                JSON.stringify(response.data)
-              );
-            }
-          }
-        });
-    } else {
-      this.saveAllLearningPassedToStorage('Passed', '0');
-    }
-  }
-
-  @action
-  async setCombineLearningPassedFromStorage(data: string) {
-    //
-
-    if (data.length > 0) {
-      const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
-        data
-      );
-      // if (newModel.results.length > 0) {
-      // }
-      const oldJson = sessionStorage.getItem('learningPassed');
-      const oldInProgressJson = sessionStorage.getItem(
-        'InProgressLearningList'
-      );
-      if (oldJson) {
-        if (oldJson.length > 0) {
-          const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
-            oldJson
-          );
-          if (oldModel.results.length > 0) {
-            newModel.results = newModel.results.concat(oldModel.results);
-          }
-        }
-      }
-
-      if (newModel && newModel.results && newModel.results.length > 0) {
-        sessionStorage.setItem('endDate', newModel.results[0].endDate);
-        sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
-      }
-
-      if (oldInProgressJson) {
-        if (oldInProgressJson.length > 0) {
-          //window.sessionStorage.removeItem('InProgressLearningList');
-          //this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
-          const rdo = MyTrainingRdoModel.newWithState('InProgress', 8, 0, []);
-          const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
-          //window.sessionStorage.removeItem('InProgressLearningList');
-          window.sessionStorage.setItem(
-            'InProgressLearningList',
-            JSON.stringify(offsetList)
-          );
-        }
-      }
-    }
-  }
-
-  @action
   async getAllLearningPassedFromStorage() {
     //
     this._myTrainings = [];
@@ -212,12 +129,12 @@ class MyTrainingService {
     /* 메인페이지에서 호출 시. */
     const rdo = fromMain
       ? MyTrainingRdoModel.newWithStateFromMain(
-          state,
-          limit,
-          offset,
-          channelIds,
-          'main'
-        )
+        state,
+        limit,
+        offset,
+        channelIds,
+        'main'
+      )
       : MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
 
     const offsetList: OffsetElementList<MyTrainingModel> = await this.myTrainingApi.findAllMyTrainings(

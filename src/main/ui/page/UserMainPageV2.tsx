@@ -27,13 +27,6 @@ class UserMainPageV2 extends Component<Props> {
   constructor(props: Props) {
     //
     super(props);
-
-    const completedLearnings = window.sessionStorage.getItem('learningPassed');
-
-    if (completedLearnings === null || completedLearnings.length < 1) {
-      const { myTrainingService } = this.props;
-      myTrainingService!.saveAllLearningPassedToStorage('Passed', '0');
-    }
   }
 
   componentDidMount() {
