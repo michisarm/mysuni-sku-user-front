@@ -6,7 +6,8 @@ import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { ApprovalViewType } from 'myTraining/ui/logic/MyApprovalListContainerV2';
-import { NewLearningContentType, EnrollingViewType } from 'myTraining/ui/logic/NewLearningListContainer';
+import { NewLearningContentType } from 'myTraining/ui/logic/NewLearningListContainer';
+import { EnrollingViewType } from 'myTraining/ui/logic/LearningListContainer';
 import { ContentType } from 'myTraining/ui/page/NewLearningPage';
 
 interface Props {
