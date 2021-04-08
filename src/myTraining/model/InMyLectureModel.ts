@@ -55,6 +55,10 @@ class InMyLectureModel extends DramaEntityObservableModel {
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
+  capacity: number = 0;
+  differDays: number = 0;
+  ribbonName: string = '';
+
   constructor(inMyLecture?: InMyLectureModel) {
     //
     super();
@@ -179,6 +183,9 @@ decorate(InMyLectureModel, {
   createDate: observable,
   startDate: observable,
   endDate: observable,
+  capacity: observable,
+  differDays: observable,
+  ribbonName: observable,
 });
 
 export default InMyLectureModel;

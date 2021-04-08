@@ -49,9 +49,13 @@ class LectureModel extends DramaEntityObservableModel {
 
   reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
 
+  capacity: number = 0; // 수강 신청 정원
+  differDays: number = 0; // 수강 신청 마감까지 남은 일 수
+
   // UI only
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
+  ribbonName: string = '';
 
   constructor(lecture?: LectureModel) {
     //
@@ -78,6 +82,16 @@ class LectureModel extends DramaEntityObservableModel {
       );
 
       this.reviewSummary = lecture.reviewSummary;
+      
+      if(this.studentCount >= this.capacity) {
+        this.ribbonName = "정원 마감"
+      } else {
+        if(this.differDays == 0) {
+          this.ribbonName = ("D-DAY");
+        } else {
+          this.ribbonName = ("D-"+this.differDays);
+        }
+      }
     }
   }
 
@@ -206,6 +220,9 @@ decorate(LectureModel, {
   updateTimeForTest: observable,
   viewState: observable,
   endDate: observable,
+  capacity: observable,
+  differDays: observable,
+  ribbonName: observable,
 });
 
 export default LectureModel;
