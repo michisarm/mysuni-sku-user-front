@@ -1,13 +1,9 @@
 /* eslint-disable */
 import React from 'react';
-import { useHistory } from 'react-router';
-import { getPublicUrl } from 'shared/helper/envHelper';
-import { useScrollMove } from 'myTraining/useScrollMove';
 import { BadgeLevel } from '../../model/BadgeLevel';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import { BadgeContentWrapper } from './BadgeContentWrapper';
-import badgeRoutePaths from '../../routePaths';
 import Image from '../../../shared/components/Image';
 
 enum certiAdminCategoryIcon {
@@ -42,14 +38,6 @@ export default function BadgeView({
   badgeStyle,
   badgeSize,
 }: BadgeViewProps) {
-  const history = useHistory();
-  const { scrollSave } = useScrollMove();
-
-  const onViewDetail = () => {
-    scrollSave();
-    history.push(badgeRoutePaths.badgeDetailPage(id));
-  };
-
   // 인증주체(mySUNI, Subsidiary, Etc...) 아이콘
   // const getIconUrl = (
   //   certiAdminCategory: string,
@@ -78,22 +66,22 @@ export default function BadgeView({
 
   return (
     <BadgeContentWrapper
+      id={id}
       categoryId={categoryId}
       badgeStyle={badgeStyle}
-      onViewDetail={onViewDetail}
     >
       <span className="issuing">
-        <Image src={certificationIconUrl} alt=""/>
+        <Image src={certificationIconUrl} alt="" />
       </span>
       <span className="college">
         <img src={collegeIconUrl} alt="" />
       </span>
-      <p className={`star-score ${starStyle}`}>{emHtml}</p>
       <span className="title">
         <span className="cell">
           <span>{name}</span>
         </span>
       </span>
+      <p className={`star-score ${starStyle}`}>{emHtml}</p>
     </BadgeContentWrapper>
   );
 }
@@ -104,7 +92,9 @@ const getCertificationIconUrl = (): string => {
 };
 
 const getCollegeIconUrl = (iconUrl: string, categoryId: string): string => {
-  return iconUrl || CategoryImageURL[categoryId as keyof typeof CategoryImageURL];
+  return (
+    iconUrl || CategoryImageURL[categoryId as keyof typeof CategoryImageURL]
+  );
 };
 
 const getStarStyle = (level: BadgeLevel) => {

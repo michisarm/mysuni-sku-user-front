@@ -34,7 +34,7 @@ function AllBadgeListContainer({
   const history = useHistory();
   const params = useParams<BadgeRouteParams>();
   const { scrollOnceMove } = useScrollMove();
-  
+
   useRequestAllBadges();
 
   useEffect(() => {
@@ -43,8 +43,7 @@ function AllBadgeListContainer({
 
     return () => {
       badgeService!.clearBadges();
-    }
-
+    };
   }, [selectedCategoryId]);
 
   useEffect(() => {
@@ -54,7 +53,6 @@ function AllBadgeListContainer({
       }, 800);
     }
   }, [badges.length]);
-
 
   const onSelectLevel = (level: BadgeLevel) => {
     history.replace(routePaths.currentPage(1));
@@ -86,10 +84,9 @@ function AllBadgeListContainer({
         selectedLevel={selectedLevel}
         onSelectLevel={onSelectLevel}
       />
-      <div className="badge-list">
+      <div className="badge-list-type">
         <ul>
-          {
-            badges &&
+          {(badges &&
             badges.length > 0 &&
             badges.map((badge: Badge, index: number) => {
               const mainCategoryId = getMainCategoryId(badge);
@@ -110,10 +107,9 @@ function AllBadgeListContainer({
                   </div>
                 </li>
               );
-            }) || (
-              <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
-            )
-          }
+            })) || (
+            <NoSuchContentPanel message="등록된 Badge List가 없습니다." />
+          )}
         </ul>
       </div>
       {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
@@ -121,7 +117,6 @@ function AllBadgeListContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-    'badge.badgeService',
-    'badge.badgeCategoryService',
-  ))(observer(AllBadgeListContainer));
+export default inject(
+  mobxHelper.injectFrom('badge.badgeService', 'badge.badgeCategoryService')
+)(observer(AllBadgeListContainer));
