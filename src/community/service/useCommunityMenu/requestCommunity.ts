@@ -30,11 +30,11 @@ export function requestCommunityMenu(communityId: string) {
     community.data.map((item: any) => {
       if (item.parentId !== '' && item.parentId !== null) {
         menuArr.map((item2: any, index: number) => {
-          if(item.parentId === item2.id) {
-            if(menuArr[index].child === undefined) {
+          if (item.parentId === item2.id) {
+            if (menuArr[index].child === undefined) {
               menuArr[index].child = []
               menuArr[index].child.push(item)
-            }else {
+            } else {
               menuArr[index].child.push(item)
             }
           }
@@ -53,11 +53,11 @@ export function requestCommunityMenu(communityId: string) {
     })
 
     menuArr.map((item: any, index: number) => {
-      item.order = index+1
+      item.order = index + 1
     })
 
     menuArr.map((item: any, index: number) => {
-      if(item.child) {
+      if (item.child) {
         item.child.sort((a: any, b: any) => {
           if (a.order < b.order) {
             return -1;
@@ -71,15 +71,15 @@ export function requestCommunityMenu(communityId: string) {
     })
 
     menuArr.map((item: any, index: number) => {
-      if(item.child) {
+      if (item.child) {
         item.child.map((item2: any, index: any) => {
-          item2.order = index+1
+          item2.order = index + 1
         })
       }
     })
 
     //여기서 트리구조 형태로 배열 만들어준다.
-    setCommunityAdminMenu({'menu' : menuArr});
+    setCommunityAdminMenu({ 'menu': menuArr });
   });
 }
 

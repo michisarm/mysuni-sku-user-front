@@ -16,6 +16,7 @@ import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Loadingpanel } from 'shared';
+import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
 
 function copyUrl(url: string) {
   const textarea = document.createElement('textarea');
@@ -64,6 +65,34 @@ async function unbookmark(postId: string) {
   });
 }
 
+const Contents:  React.FC<any> = function Contents({
+    postId,
+  }) {
+  const [detail, setDetail] = useState<string>('')
+
+  useEffect(() => {
+
+    const postDetail = getPostDetailInPreview(postId)
+    if (postDetail !== undefined) {
+      postDetail.then((result) => {
+        setDetail(result.html)
+      })
+    }
+  }, [])
+
+  return (
+  <>
+    <div className="ql-snow">
+      <div
+        className="ql-editor"
+        dangerouslySetInnerHTML={{ __html: detail }}
+      />
+    </div>
+  </>
+  )
+}
+  
+
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
   type,
@@ -93,16 +122,6 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
     return () => listen();
   }, [pathname]);
 
-  useEffect(() => {
-    const div = document.createElement('div');
-    div.innerHTML = contents;
-    let nextText = div.innerText;
-    nextText = nextText
-      .split('\n')
-      .filter(c => c !== '')
-      .join('\n');
-    setText(nextText);
-  }, []);
   const shareUrl = useCallback(() => {
     const hostLength = window.location.href.indexOf(pathname);
     if (hostLength === -1) {
@@ -132,6 +151,14 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const hideMore = useCallback(() => {
     setMore(false);
   }, []);
+
+  const contentsView = () => {
+    return (
+      <>
+        <Contents postId={postId}/>
+      </>
+    )
+  }
 
   return (
     <>
@@ -213,20 +240,10 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   {name}
                 </Link>
               </h3>
-              {more && (
-                <div className="ql-snow">
-                  <div
-                    className="ql-editor"
-                    dangerouslySetInnerHTML={{ __html: contents }}
-                  />
-                </div>
-              )}
-              {!more && (
-                <div>
-                  <p className="summary">{text}</p>
-                </div>
-              )}
-              <div className="text-right" style={{float: 'none'}}>
+              {more && 
+                contentsView()
+              }
+              <div className="text-right">
                 {!more && (
                   <button
                     className="ui icon button right btn-blue btn-more"

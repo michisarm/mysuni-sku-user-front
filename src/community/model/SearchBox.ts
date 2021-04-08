@@ -1,5 +1,5 @@
-import moment from "moment";
-import { CommunityMemberApprovedType } from "./CommunityMember";
+import moment from 'moment';
+import { CommunityMemberApprovedType } from './CommunityMember';
 
 export interface SearchBox {
   communityId?: string;
@@ -18,10 +18,20 @@ export interface SearchBox {
   groupMemberIdList?: (string | undefined)[];
 }
 
-export function getEmptySearchBox(approveMember?: CommunityMemberApprovedType, groupId?: string): SearchBox {
+export function getEmptySearchBox(
+  approveMember?: CommunityMemberApprovedType,
+  groupId?: string
+): SearchBox {
   return {
-    startDate: moment().startOf('day').subtract(1, 'y').toDate().getTime(),
-    endDate: moment().endOf('day').toDate().getTime(),
+    startDate: moment()
+      .startOf('day')
+      .subtract(1, 'y')
+      .toDate()
+      .getTime(),
+    endDate: moment()
+      .endOf('day')
+      .toDate()
+      .getTime(),
     limit: 20,
     approved: approveMember,
   };
@@ -33,11 +43,13 @@ export function getEmptyGroupSearchBox(): SearchBox {
   };
 }
 
-export function getEmptyGroupDetailSearchBox(communityId?: string, groupId?: string,): SearchBox {
+export function getEmptyGroupDetailSearchBox(
+  communityId?: string,
+  groupId?: string
+): SearchBox {
   return {
     communityId: communityId || '',
     groupId: groupId || '',
     limit: 20,
   };
 }
-

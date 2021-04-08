@@ -1,10 +1,18 @@
-
 import { computed, decorate, observable } from 'mobx';
-import { CategoryModel, DatePeriod, DramaEntityObservableModel, IconBoxModel } from 'shared/model';
-import {CubeType, CubeTypeNameType, PersonalCubeModel} from 'personalcube/personalcube/model';
+import {
+  CategoryModel,
+  DatePeriod,
+  DramaEntityObservableModel,
+  IconBoxModel,
+} from 'shared/model';
+import {
+  CubeType,
+  CubeTypeNameType,
+  PersonalCubeModel,
+} from 'personalcube/personalcube/model';
 import LectureServiceType from './LectureServiceType';
 import RollBookModel from './RollBookModel';
-import {SurveyFormModel} from '../../survey/form/model/SurveyFormModel';
+import { SurveyFormModel } from '../../survey/form/model/SurveyFormModel';
 import AnswerSheetModel from '../../survey/answer/model/AnswerSheetModel';
 import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
 import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
@@ -12,11 +20,10 @@ import { CubeIntroModel } from '../../personalcube/cubeintro/model';
 import StudentModel from './StudentModel';
 import SurveyCaseModel from '../../survey/event/model/SurveyCaseModel';
 
-
 class LectureViewModel extends DramaEntityObservableModel {
   //
   serviceId: string = '';
-  serviceType: LectureServiceType = LectureServiceType.Program;
+  serviceType: LectureServiceType = LectureServiceType.Card;
   coursePlanId: string = '';
   cubeId: string = '';
   // cube: PersonalCubeModel = new PersonalCubeModel();
@@ -59,7 +66,10 @@ class LectureViewModel extends DramaEntityObservableModel {
 
       this.serviceType = LectureViewModel.getServiceType(lectureView);
       this.category = new CategoryModel(lectureView.category);
-      this.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, this.serviceType);
+      this.cubeTypeName = LectureViewModel.getCubeTypeName(
+        lectureView.cubeType,
+        this.serviceType
+      );
       this.surveyCase = new SurveyCaseModel(this.surveyCase);
     }
   }
@@ -68,30 +78,25 @@ class LectureViewModel extends DramaEntityObservableModel {
     //
     const serviceType = lectureView.serviceType as string;
 
-    if (serviceType === 'COURSE') {
-      return LectureServiceType.Course;
-    }
-    else {
+    if (serviceType === 'Card') {
       return LectureServiceType.Card;
+    } else {
+      return LectureServiceType.Cube;
     }
   }
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
-    if (serviceType === LectureServiceType.Program) {
-      return CubeTypeNameType.Program;
-    }
-    else if (serviceType === LectureServiceType.Course) {
-      return CubeTypeNameType.Course;
-    }
-    else {
+    if (serviceType === 'Card') {
+      return CubeTypeNameType.Card;
+    } else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
 
   @computed
   get baseUrl() {
-    return this.iconBox && this.iconBox.baseUrl || '';
+    return (this.iconBox && this.iconBox.baseUrl) || '';
   }
 }
 

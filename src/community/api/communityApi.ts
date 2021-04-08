@@ -1,23 +1,17 @@
 import { axiosApi, OffsetElementList } from '@nara.platform/accent';
 import Axios, { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
-import PostList from 'community/model/PostList';
 import PostCdo from 'community/model/PostCdo';
-import PostUdo from 'community/model/PostUdo';
 import Community from '../model/Community';
 import CommunityHomeInfo from '../model/CommunityHome';
 import CommunityMenu from '../model/CommunityMenu';
 import Profile from '../model/Profile';
 import FieldItem from '../viewModel/OpenCommunityIntro/FieldItem';
-import PostRdo from 'community/model/PostRdo';
 import CommunityView from '../model/CommunityView';
 import FollowCommunityItem from 'community/viewModel/CommunityFollowIntro/FollowCommunityItem';
 import { NameValueList } from 'shared/model';
-import FollowModal from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
-import { patronInfo } from '@nara.platform/dock';
 import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalItem';
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
-import { CommunityAdminMenu } from 'community/viewModel/CommunityAdminMenu';
 
 const BASE_URL = '/api/community';
 
@@ -99,7 +93,8 @@ export function findAllPostViewsFromMyCommunities(
   offset: number
 ): Promise<OffsetElementList<Post> | undefined> {
   const initLimit = 10;
-  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset + initLimit}`;
+  const url = `${BASE_URL}/postviews/my?sort=${sort}&offset=0&limit=${offset +
+    initLimit}`;
   return axiosApi.get<OffsetElementList<Post>>(url).then(AxiosReturn);
 }
 
@@ -226,7 +221,7 @@ export function findAllMyOpenCommunities(
   sort: string,
   offset: number
 ): Promise<OffsetElementList<CommunityView> | undefined> {
-  const url = `${BASE_URL}/communities/communityView/open/my?sort=${sort}&offset=${offset}&limit=10`;
+  const url = `${BASE_URL}/communities/communityView/open/my?sort=${sort}`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -236,12 +231,16 @@ export function findAllOpenCommunities(
   fieldId?: string
 ): Promise<OffsetElementList<CommunityView> | undefined> {
   if (offset > 12) {
-    const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-      }&sort=${sort}&offset=0&limit=${offset}`;
-    return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
+    const url = `${BASE_URL}/communities/communityView/open?${
+      fieldId === undefined ? '' : `field=${fieldId}`
+    }&sort=${sort}&offset=0&limit=${offset}`;
+    return axiosApi
+      .get<OffsetElementList<CommunityView>>(url)
+      .then(AxiosReturn);
   }
-  const url = `${BASE_URL}/communities/communityView/open?${fieldId === undefined ? '' : `field=${fieldId}`
-    }&sort=${sort}&offset=${offset}&limit=12`;
+  const url = `${BASE_URL}/communities/communityView/open?${
+    fieldId === undefined ? '' : `field=${fieldId}`
+  }&sort=${sort}&offset=${offset}&limit=12`;
   return axiosApi.get<OffsetElementList<CommunityView>>(url).then(AxiosReturn);
 }
 
@@ -342,7 +341,7 @@ export function followList(
   limit: number,
   nickName: string
 ): Promise<OffsetElementList<FollowCommunityItem> | undefined> {
-  const url = `${BASE_URL}/profileviews/following?offset=${offset}&limit=${limit}&nickName=${nickName}`;
+  const url = `${BASE_URL}/profileviews/following?nickName=${nickName}`;
   return axiosApi
     .get<OffsetElementList<FollowCommunityItem>>(url)
     .then(AxiosReturn);
@@ -354,7 +353,7 @@ export function followList(
 export function followingsModal(): Promise<
   OffsetElementList<FollowModalItem> | undefined
 > {
-  const url = `${BASE_URL}/profileviews/following?offset=0&limit=999`;
+  const url = `${BASE_URL}/profileviews/following`;
   return axiosApi
     .get<OffsetElementList<FollowModalItem>>(url)
     .then(AxiosReturn);
@@ -431,29 +430,35 @@ export function getCommunityGroups(communityId: string): Promise<any> {
   });
 }
 
-export function saveCommunityAdminMenu(communityId: string, params: any, selectedRow: any): Promise<any> {
+export function saveCommunityAdminMenu(
+  communityId: string,
+  params: any,
+  selectedRow: any
+): Promise<any> {
   if (params.type === 'DISCUSSION') {
-    let value = ''
-    let name = ''
+    let value = '';
+    let name = '';
 
     params.nameValues.map((item: any) => {
       if (item.name === 'discussionTopic') {
-        value = item.value
+        value = item.value;
       } else if (item.name === 'name') {
-        name = item.value
+        name = item.value;
       }
     });
     const url = `${BASE_URL}/${communityId}/menus/flow/${params.id}?name=${selectedRow.discussionTopic}&discussionTopic=${selectedRow.discussionTopic}&title=${name}`;
     return axiosApi.put(url).then(response => {
       const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-      return axiosApi.put(url, { 'nameValues': params.nameValues }).then(response => {
-        return response && response.data
-      });
+      return axiosApi
+        .put(url, { nameValues: params.nameValues })
+        .then(response => {
+          return response && response.data;
+        });
     });
   }
   const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
-  return axiosApi.put(url, { 'nameValues': params.nameValues }).then(response => {
-    return response && response.data
+  return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
+    return response && response.data;
   });
 }
 
@@ -464,7 +469,7 @@ export function deleteCommunityAdminMenu(
   // params: CommunityAdminMenu
   const url = `${BASE_URL}/${communityId}/menus/${params}`;
   return axiosApi.delete(url).then(response => {
-    return response && response.data
+    return response && response.data;
   });
 }
 
@@ -475,7 +480,7 @@ export function addCommunityAdminMenu(
   // params: CommunityAdminMenu
   const url = `${BASE_URL}/${communityId}/menus`;
   return axiosApi.post(url, addRow).then(response => {
-    return response && response.data
+    return response && response.data;
   });
 }
 
@@ -485,21 +490,21 @@ export function addCommunityAdminDiscussion(
 ): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
   return axiosApi.post(url, addRow).then(response => {
-    return response && response.data
+    return response && response.data;
   });
 }
 
 export function findCommunitySurvey(params: any): Promise<any> {
   const url = `/api/survey/surveyForms/searchKey?`;
   return axiosApi.get(url, { params }).then(response => {
-    return response
+    return response;
   });
 }
 
 export function getCommunitySurveyInfo(surveyId: string): Promise<any> {
   const url = `/api/survey/surveyForms/${surveyId}`;
   return axiosApi.get(url).then(response => {
-    return response
+    return response;
   });
 }
 

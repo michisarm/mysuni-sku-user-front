@@ -547,27 +547,11 @@ const NewLearningListView: React.FC<Props> = Props => {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          collegeId,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
     } else if (model.serviceType === LectureServiceType.Card) {
       history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          collegeId,
-          model.cubeId,
-          model.serviceId
-        )
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
       );
     }
 
