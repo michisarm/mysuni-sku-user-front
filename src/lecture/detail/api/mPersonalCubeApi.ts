@@ -14,6 +14,7 @@ import { ClassroomModel } from '../../../personalcube/classroom/model';
 import TaskCdo from '../model/TaskCdo';
 import { AxiosResponse } from 'axios';
 import { createCacheApi } from './cacheableApi';
+import TranscriptCountModel from '../model/TranscriptCountModel';
 
 const BASE_URL = '/api/cube';
 const FEEDBACK_URL = '/api/feedback';
@@ -33,6 +34,12 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
 export function findAllTranscript(deliveryId: string, locale: string) {
   return axiosApi
     .get<Transcript[]>(`${BASE_URL}/transcripts/${deliveryId}/${locale}`)
+    .then(response => response && response.data);
+}
+
+export function findTranscriptCount(deliveryId: string) {
+  return axiosApi
+    .get<TranscriptCountModel>(`${BASE_URL}/transcripts/countAll/${deliveryId}`)
     .then(response => response && response.data);
 }
 

@@ -14,6 +14,9 @@ import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
 import LectureClassroomInfoView from './LectureClassroomInfoView';
 import './LectureCubeContentView.css';
+import LectureCubeTranscriptContainer from '../../logic/LectureCubeTranscriptContainer';
+import TranscriptCountModel from '../../../model/TranscriptCountModel';
+import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 
 interface LectureCubeContentViewProps {
   lectureDescription?: LectureDescription;
@@ -22,14 +25,16 @@ interface LectureCubeContentViewProps {
   lectureFile?: LectureFile;
   lectureComment?: LectureComment;
   lectureClassroom?: LectureClassroom;
+  lectureTranscriptCount?: TranscriptCountModel;
+  lectureSummary?: LectureCubeSummary;
 }
 
-// function hashLink(hash: string) {
-//   const element = document.getElementById(hash);
-//   if (element !== null) {
-//     element.scrollIntoView();
-//   }
-// }
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
 
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
   lectureDescription,
@@ -38,6 +43,8 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureFile,
   lectureComment,
   lectureClassroom,
+  lectureTranscriptCount,
+  lectureSummary,
 }) {
   const [fixed, setFixed] = useState<boolean>(false);
   // useEffect(() => {
@@ -61,17 +68,42 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
 
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
+    useEffect(() => {
+      setActivatedTab('overview');
+    }, [lectureSummary]);
+
   const overviewHashClick = useCallback(() => {
     // hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const classroomHashClick = useCallback(() => {
-    // hashLink('lms-classroom');
+    hashLink('lms-classroom');
     setActivatedTab('classroom');
   }, []);
   const commentHashClick = useCallback(() => {
     setActivatedTab('comment');
   }, []);
+  const transcriptHashClick = useCallback(() => {
+    setActivatedTab('transcript');
+    // 하드코딩하여 적용... 추후 필요시 체크해서 하는 부분이 필요할 듯
+    const cont = document.getElementById('panopto-embed-player');
+    if(cont){
+      window.scrollTo(0, 800);
+    }
+  }, []);
+
+  // const trascriptScrollMove = () => {
+  //   window.scrollTo(0, 800);
+  // };
+
+  // 대본 관련 Props 세팅
+  const [transLangVal, setTransLangVal] = useState<string>('ko');
+
+  // const [ deliveryId, setDeliveryId ] = useState<string>('');
+
+  // useEffect(() => {
+  //   setDeliveryId(getlectureTranscriptCounts() ? getlectureTranscriptCounts);
+  // }, [getlectureTranscriptCounts()]);
 
   // 스티키 적용 시 필요한 코드
   // useEffect(() => {
@@ -106,6 +138,15 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               차수정보
             </a>
           )}
+          {lectureTranscriptCount !== undefined &&
+            lectureTranscriptCount.transcriptCount > 0 && (
+              <a
+                onClick={transcriptHashClick}
+                className={activatedTab === 'transcript' ? 'lms-act' : ''}
+              >
+                Transcript
+              </a>
+            )}
           <a
             onClick={commentHashClick}
             className={
@@ -148,6 +189,14 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
         </>
       )}
       {activatedTab === 'comment' && <LectureCommentContainer />}
+      {activatedTab === 'transcript' && (
+        <LectureCubeTranscriptContainer
+          transLangVal={transLangVal}
+          setTransLangVal={setTransLangVal}
+          lectureSummary={lectureSummary}
+          // trascriptScrollMove={trascriptScrollMove}
+        />
+      )}
     </>
   );
 };
