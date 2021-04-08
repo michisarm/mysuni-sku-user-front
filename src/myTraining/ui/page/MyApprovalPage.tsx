@@ -7,7 +7,7 @@ import { ContentLayout } from 'shared';
 import Tab, { TabItemModel } from 'shared/components/Tab';
 import { ApprovalCubeService, AplService } from 'myTraining/stores';
 import { MenuControlAuthService } from 'approval/stores';
-import { SkProfileService } from 'profile/stores';
+import { SkProfileService } from 'profile/stores'; 
 import routePaths from '../../routePaths';
 import { SkProfileModel } from 'profile/model';
 import { CountType } from 'myTraining/model/AplRdoModel';
@@ -15,9 +15,9 @@ import MyApprovalContentType from '../model/MyApprovalContentType';
 import MyApprovalContentTypeName from '../model/MyApprovalContentTypeName';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
-import MyApprovalListContainerV2 from '../logic/MyApprovalListContainerV2';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
+import PersonalLearningListContainer from '../logic/PersonalLearningListContainer';
 
 
 interface MyApprovalPageProps {
@@ -71,7 +71,7 @@ function MyApprovalPage({
         {
           name: MyApprovalContentType.PersonalLearning,
           item: getTabItem(MyApprovalContentType.PersonalLearning, personalLearningCount),
-          render: () => <MyApprovalListContainerV2 />
+          render: () => <PersonalLearningListContainer />
         }
       ];
     }

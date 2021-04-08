@@ -3,7 +3,7 @@ import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType } from 'myTraining/ui/model';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
+import { FilterCondition } from '../../myTraining/model/FilterCondition';
 
 class LectureFilterRdoModelV2 {
 

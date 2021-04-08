@@ -51,11 +51,6 @@ class InMyLectureTableViewModel {
     return this.stampCount;
   }
 
-  @computed get displayCollegeName() {
-    return this.category &&
-      this.category.college && this.category.college.name || '-';
-  }
-
   @computed get displayDifficultyLevel(): string {
     return this.difficultyLevel || '-';
   }

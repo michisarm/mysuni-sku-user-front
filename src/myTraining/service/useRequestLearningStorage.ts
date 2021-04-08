@@ -1,13 +1,25 @@
 import { useEffect } from "react";
 import MyTrainingService from "../present/logic/MyTrainingService";
-import { MyLearningContentType } from "../ui/model";
 import MyTrainingFilterRdoModel from "../model/MyTrainingFilterRdoModel";
 
-export function useRequestCompletedStorage() {
-
+export function useRequestLearningStorage() {
   useEffect(() => {
+    requestInProgressStorage();
     requestCompletedStorage();
   }, []);
+
+  const requestInProgressStorage = async () => {
+    if (sessionStorage.getItem('inProgressTableViews') === null) {
+      const inProgressTableViews = await MyTrainingService.instance.findAllInProgressStorage();
+
+      if (
+        inProgressTableViews &&
+        inProgressTableViews.length > 0
+      ) {
+        sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
+      }
+    }
+  };
 
   const requestCompletedStorage = async () => {
     if (sessionStorage.getItem('completedTableViews') === null) {

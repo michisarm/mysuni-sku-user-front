@@ -1,60 +1,57 @@
 import moment from 'moment';
-import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
+import { Offset } from '@nara.platform/accent';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType } from 'myTraining/ui/model';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
+import { FilterCondition } from './FilterCondition';
 
 class MyTrainingFilterRdoModel {
-
-  // default :: offset = 0 / limit = 20
-  offset: Offset = {
-    offset: 0,
-    limit: 20
-  };
-
-  myTrainingState: MyContentType = MyLearningContentType.InProgress; // 탭 전환될 때마다 전달되는 contentType
-
-  /*
-    MultiFilterBox 에서 선택되는 검색 조건들.
-  */
-  collegeIds: string[] = []; // 컬리지
-  difficultyLevels: string[] = []; // 난이도
+  myTrainingState: MyContentType = MyLearningContentType.InProgress;
+  collegeIds: string[] = [];
+  difficultyLevels: string[] = [];
   learningTimes: string[] = [];
-  organizers: string[] = []; // 교육기관
-  required: string = ''; // 핵인싸 ('선택안함' 또한 false 로 간주함.)
-  certifications: string[] = [];  // 뱃지 & 스탬프 유무
+  organizers: string[] = [];
+  required: string = '';
+  certifications: string[] = [];
   startDate: string = '';
   endDate: string = '';
   applying: boolean = false;
   column: string = '';
   direction: string = '';
+  offset: Offset = { offset: 0, limit: 20 };
 
-  // 기본생성자는 offset 및 denizenKey만 초기화 함.
   constructor(myTrainingFilterRdo?: MyTrainingFilterRdoModel) {
     if (myTrainingFilterRdo) {
       Object.assign(this, myTrainingFilterRdo);
     }
   }
 
-  // offset, denizenKey, contentType 만을 검색 조건으로 함.
-  static create(contentType: MyContentType, serviceType?: string) {
-    return new MyTrainingFilterRdoModel({ myTrainingState: contentType } as MyTrainingFilterRdoModel);
+  static create(contentType: MyContentType) {
+    return new MyTrainingFilterRdoModel({
+      myTrainingState: contentType
+    } as MyTrainingFilterRdoModel);
   }
 
-  public static createForStorage(contentType: MyContentType, offset: Offset) {
-    return new MyTrainingFilterRdoModel({ myTrainingState: contentType, offset } as MyTrainingFilterRdoModel);
+  static createForInProgressStorage() {
+    return new MyTrainingFilterRdoModel({
+      myTrainingState: MyLearningContentType.InProgress,
+      offset: { offset: 0, limit: 9999 },
+    } as MyTrainingFilterRdoModel);
+  }
+
+  static createForCompletedStorage() {
+    return new MyTrainingFilterRdoModel({
+      myTrainingState: MyLearningContentType.Completed,
+      offset: { offset: 0, limit: 9999 },
+    } as MyTrainingFilterRdoModel);
   }
 
   static createWithConditions(
     collegeIds: string[],
-    cubeTypes: string[],
     difficultyLevels: string[],
     learningTimes: string[],
     organizers: string[],
     required: string,
     certifications: string[],
-    serviceType: string,
     startDate: string,
     endDate: string,
     applying: boolean

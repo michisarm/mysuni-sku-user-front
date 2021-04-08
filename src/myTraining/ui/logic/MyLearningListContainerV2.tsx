@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
@@ -11,14 +11,12 @@ import {
   MyPageContentType,
   NoSuchContentPanelMessages,
 } from '../model';
-import { MultiFilterBox } from '../view/filterbox';
 import {
   MyLearningTableTemplate,
   MyLearningTableHeader,
   MyLearningTableBody,
 } from '../view/table';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
-import { Direction } from '../view/table/MyLearningTableHeader';
 import {
   MyTrainingService,
   InMyLectureService,
@@ -30,9 +28,10 @@ import {
   StudentService,
 } from '../../../lecture';
 import MyApprovalContentType from '../model/MyApprovalContentType';
-import FilterCountViewModel from '../../model/FilterCountViewModel';
 import ReactGA from 'react-ga';
 import { Segment } from 'semantic-ui-react';
+import FilterBoxContainer from './FilterBoxContainer';
+import { Direction } from '../../model/Direction';
 
 interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;
@@ -361,32 +360,6 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const getFilterCountViews = (
-    contentType: MyContentType
-  ): FilterCountViewModel[] => {
-    switch (contentType) {
-      case MyLearningContentType.InMyList:
-        return inMyLectureService!.filterCountViews;
-      case MyLearningContentType.Required:
-        return lectureService!.filterCountViews;
-      default:
-        return myTrainingService!.filterCountViews;
-    }
-  };
-
-  const getTotalFilterCountView = (
-    contentType: MyContentType
-  ): FilterCountViewModel => {
-    switch (contentType) {
-      case MyLearningContentType.InMyList:
-        return inMyLectureService!.totalFilterCountView;
-      case MyLearningContentType.Required:
-        return lectureService!.totalFilterCountView;
-      default:
-        return myTrainingService!.totalFilterCountView;
-    }
-  };
-
   const isModelExist = (contentType: MyContentType) => {
     const { myTrainingTableViews } = myTrainingService!;
     const { inMyLectureTableViews } = inMyLectureService!;
@@ -422,21 +395,17 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const updateInProgressStorage = async () => {
-    /* 러닝페이지 학습중 스토리지 업데이트 */
-    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
-    sessionStorage.setItem(
-      'inProgressTableViews',
-      JSON.stringify(inProgressTableViews)
-    );
+    const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
+    sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
 
-    /* 메인페이지 학습중 스토리지 업데이트 */
-    await myTrainingService!.findAllMyTrainingsWithState(
-      'InProgress',
-      8,
-      0,
-      [],
-      true
-    );
+    // /* 메인페이지 학습중 스토리지 업데이트 */
+    // await myTrainingService!.findAllMyTrainingsWithState(
+    //   'InProgress',
+    //   8,
+    //   0,
+    //   [],
+    //   true
+    // );
   };
 
   /* handlers */
@@ -461,16 +430,6 @@ function MyLearningListContainerV2(props: Props) {
   const onClickFilter = useCallback(() => {
     setOpenFilter(prev => !prev);
   }, []);
-
-  const onChangeViewType = useCallback(
-    (e: any, data: any) => {
-      sessionStorage.removeItem('learningOffset');
-      sessionStorage.removeItem('SCROLL_POS');
-      pageInfo.current = { offset: 0, limit: 20 };
-      window.scrollTo(0, 0);
-    },
-    [pageInfo.current]
-  );
 
   const onClickDelete = useCallback(() => {
     setOpenModal(true);
@@ -624,15 +583,11 @@ function MyLearningListContainerV2(props: Props) {
             onClickFilter={onClickFilter}
             onClickDelete={onClickDelete}
           />
-          <MultiFilterBox
-            contentType={contentType}
+          <FilterBoxContainer
             openFilter={openFilter}
             onClickFilter={onClickFilter}
             onChangeFilterCount={onChangeFilterCount}
             getModels={getModelsByConditions}
-            colleges={colleges}
-            totalFilterCount={getTotalFilterCountView(contentType)}
-            filterCounts={getFilterCountViews(contentType)}
           />
         </>
       )) || <div style={{ marginTop: 50 }} />}

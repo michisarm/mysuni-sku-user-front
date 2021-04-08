@@ -3,7 +3,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import routePaths from 'myTraining/routePaths';
-import { ActionEventService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
 import { MyTrainingService, InMyLectureService, AplService } from 'myTraining/stores';
 import { LectureService } from 'lecture/stores';
@@ -15,16 +14,14 @@ import TabContainer from 'shared/components/Tab';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
-import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 import MyTrainingHeaderContainer from '../logic/MyTrainingHeaderContainer';
-import { useRequestCompletedStorage } from '../../service/useRequestCompletedStorage';
-import { useRequestInProgressStorage } from '../../service/useRequestInProgressStorage';
 import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrainingCount';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
+import { usePublishViewEvent } from '../../service/usePublishViewEvent';
+import { useRequestLearningStorage } from '../../service/useRequestLearningStorage';
 
 
 interface MyTrainingPageProps {
-  actionEventService?: ActionEventService;
   notieService?: NotieService;
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
@@ -35,7 +32,6 @@ interface MyTrainingPageProps {
 }
 
 function MyTrainingPage({
-  actionEventService,
   notieService,
   myTrainingService,
   inMyLectureService,
@@ -54,24 +50,13 @@ function MyTrainingPage({
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
 
-  useRequestCollege();
-  useRequestInProgressStorage();
-  useRequestCompletedStorage();
+  useRequestLearningStorage();
   useRequestAllMyTrainingCount();
+  usePublishViewEvent('LEARNING_VIEW');
 
-  /* effects */
   useEffect(() => {
-    publishViewEvent();
     getMenuAuth();
-    // 학습완료한 강좌에 대해 sessionStorage 저장하는 로직
-    // myTrainingService!.saveNewLearningPassedToStorage('Passed');
   }, []);
-
-  /* functions */
-  const publishViewEvent = () => {
-    const menu = 'LEARNING_VIEW';
-    actionEventService!.registerViewActionLog({ menu });
-  };
 
   const getMenuAuth = async () => {
     if (!skProfile) {
@@ -160,7 +145,6 @@ function MyTrainingPage({
     ] as TabItemModel[];
   };
 
-  /* functions */
   const getTabItem = (contentType: MyLearningContentType, count: number = 0) => {
     return (
       <>
@@ -171,7 +155,6 @@ function MyTrainingPage({
   };
 
 
-  /* handlers */
   const onChangeTab = (tab: TabItemModel): string => {
     //
     switch (tab.name) {
@@ -193,7 +176,6 @@ function MyTrainingPage({
     return routePaths.learningTab(tab.name);
   };
 
-  /* render */
   return (
     <ContentLayout
       className="mylearning"
@@ -213,7 +195,6 @@ function MyTrainingPage({
 }
 
 export default inject(mobxHelper.injectFrom(
-  'shared.actionEventService',
   'notie.notieService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',

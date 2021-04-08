@@ -33,6 +33,7 @@ import {
   setWatchLog,
 } from '../../../service/useLectureMedia/useLectureWatchLog';
 import { confirmProgress } from '../../../service/useLectureMedia/utility/confirmProgress';
+import MyTrainingFilterRdoModel from '../../../../../myTraining/model/MyTrainingFilterRdoModel';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -203,7 +204,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   // sesstionStorage 에 학습중, 완료 건 update
   const fetchAllModelsForStorage = async () => {
-    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
     if (inProgressTableViews && inProgressTableViews.length) {
       sessionStorage.setItem(
         'inProgressTableViews',
@@ -211,7 +212,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       );
     }
 
-    const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+    const completedTableViews = await myTrainingService!.findAllCompletedStorage();
     if (completedTableViews && completedTableViews.length) {
       sessionStorage.setItem(
         'completedTableViews',

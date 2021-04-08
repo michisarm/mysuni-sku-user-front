@@ -2,8 +2,9 @@ import React, { Fragment, memo } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import { CollegeModel } from 'college/model';
-import { FilterCondition, FilterConditionName } from './MultiFilterBox';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
+import { FilterCondition } from '../../../model/FilterCondition';
+import { FilterConditionName } from '../../../model/FilterConditionName';
 
 interface Props {
   colleges: CollegeModel[];
@@ -146,7 +147,7 @@ export default memo(CheckedFilterView);
 const getCollegeNames = (colleges: CollegeModel[], collegeIds: string[]): string[] => {
   /* collegeId 에 해당하는 college 를 찾아 collegeName 을 구함. */
   return collegeIds.map(collegeId => {
-    const college = colleges.filter(college => college.collegeId === collegeId)[0];
+    const college = colleges.filter(college => college.id === collegeId)[0];
     return college.name;
   });
 };

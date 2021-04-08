@@ -1,25 +1,8 @@
 import moment from 'moment';
-import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
-import { MyLearningContentType } from 'myTraining/ui/model';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
+import { Offset } from '@nara.platform/accent';
+import { FilterCondition } from './FilterCondition';
 
 class InMyLectureFilterRdoModel {
-
-  // default :: offset = 0 / limit = 20
-  offset: Offset = {
-    offset: 0,
-    limit: 20
-  };
-
-  // student 정보를 조회하는 것은 denizenType 의 keyString을 기본적으로 사용함.
-  denizenKey: DenizenKey = {
-    keyString: patronInfo.getDenizenId() || '',
-    patronType: PatronType.Denizen,
-  };
-
-  contentType: MyLearningContentType = MyLearningContentType.InMyList; // 탭 전환될 때마다 전달되는 contentType
-
   collegeIds: string[] = []; // 컬리지
   difficultyLevels: string[] = []; // 난이도
   learningTimes: string[] = [];
@@ -29,17 +12,16 @@ class InMyLectureFilterRdoModel {
   startDate: string = '';
   endDate: string = '';
   applying: boolean = false;
+  offset: Offset = { offset: 0, limit: 20 };
 
-  // 기본생성자는 offset 및 denizenKey만 초기화 함.
   constructor(inMyLectureFilterRdo?: InMyLectureFilterRdoModel) {
     if (inMyLectureFilterRdo) {
       Object.assign(this, inMyLectureFilterRdo);
     }
   }
 
-  // offset, denizenKey, contentType 만을 검색 조건으로 함.
-  static createWithContentType(contentType: MyLearningContentType) {
-    return new InMyLectureFilterRdoModel({ contentType } as InMyLectureFilterRdoModel);
+  static create() {
+    return new InMyLectureFilterRdoModel();
   }
 
   static createWithConditions(
@@ -64,10 +46,6 @@ class InMyLectureFilterRdoModel {
       endDate,
       applying
     } as InMyLectureFilterRdoModel);
-  }
-
-  changeContentType(contentType: MyLearningContentType) {
-    this.contentType = contentType;
   }
 
   changeConditions(conditions: FilterCondition) {

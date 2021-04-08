@@ -21,15 +21,12 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import LectureParams, { toPath } from '../../../../lecture/detail/viewModel/LectureParams';
 
 interface Props {
-  contentType: MyContentType | MyApprovalContentType;
+  contentType: MyContentType;
   totalCount: number;
   models: MyTableView[] | AplModel[];
   myTrainingService?: MyTrainingService;
 }
 
-/* 
-  contentType 에 따라, 테이블 리스트 데이터가 변경됨.
-*/
 function MyLearningTableBody(props: Props) {
   const { contentType, models, totalCount, myTrainingService } = props;
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
@@ -166,7 +163,7 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {model.serviceType}{' '}
               {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
@@ -176,7 +173,7 @@ function MyLearningTableBody(props: Props) {
               {model.displayProgressRate} {/* 진행률 */}
             </Table.Cell>
             <Table.Cell>
-              {model.displayLearningTime}
+              {model.formattedLearningTime}
               {/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
@@ -187,11 +184,10 @@ function MyLearningTableBody(props: Props) {
         );
 
       case MyLearningContentType.InMyList:
-      case MyLearningContentType.Required:
         return (
           <>
             <Table.Cell>
-              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {model.isCardType() ? model.displayCubeType : 'Card'}{' '}
               {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
@@ -213,11 +209,34 @@ function MyLearningTableBody(props: Props) {
             </Table.Cell>
           </>
         );
+      case MyLearningContentType.Required:
+        return (
+          <>
+            <Table.Cell>
+              {model.serviceType}{' '}
+              {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayDifficultyLevel} {/* Level */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayLearningTime}
+              {/* 학습시간 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.displayStampCount}
+              {/* 스탬프 */}
+            </Table.Cell>
+            <Table.Cell>
+              {formatDate(model.creationTime)}
+            </Table.Cell>
+          </>
+        );
       case MyLearningContentType.Enrolled:
         return (
           <>
             <Table.Cell>
-              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {model.displayCubeType}{' '}
               {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
@@ -241,7 +260,7 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {model.serviceType}{' '}
               {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
@@ -261,7 +280,7 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.isCardType() ? model.displayCubeType : 'Course'}{' '}
+              {model.isCardType() ? 'Card' : model.displayCubeType}{' '}
               {/* 학습유형 */}
             </Table.Cell>
             <Table.Cell>
@@ -332,44 +351,6 @@ function MyLearningTableBody(props: Props) {
     );
   };
 
-  /* MyApprovalPage :: 개인학습 */
-  const renderPersonalLearning = (model: AplModel, index: number) => {
-    return (
-      <>
-        <Table.Cell>
-          {totalCount - index} {/* No */}
-        </Table.Cell>
-        <Table.Cell className="title">
-          <a href="#" onClick={() => routeToDetail(model.id, 'approval')}>
-            <span className="ellipsis">{model.title}</span>
-          </a>{' '}
-          {/* title */}
-        </Table.Cell>
-        <Table.Cell>
-          {model.channelName} {/* Channel */}
-        </Table.Cell>
-        <Table.Cell>
-          {getAllowTime(model)} {/* 교육시간 */}
-        </Table.Cell>
-        <Table.Cell>
-          {model.displayCreationTime} {/* 등록일자 */}
-        </Table.Cell>
-        <Table.Cell>
-          <span className="ellipsis">{model.creatorName}</span> {/* 생성자 */}
-        </Table.Cell>
-        <Table.Cell>
-          <span className="ellipsis">{model.creatorId}</span>{' '}
-          {/* 생성자 E-mail */}
-        </Table.Cell>
-        <Table.Cell>
-          {model.displayStateName} {/* 상태 */}
-        </Table.Cell>
-        <Table.Cell>
-          {getApprovalTime(model)} {/* 승인일자 */}
-        </Table.Cell>
-      </>
-    );
-  };
 
   return (
     <Table.Body>
@@ -407,14 +388,6 @@ function MyLearningTableBody(props: Props) {
         (models as AplModel[]).map((model: AplModel, index: number) => (
           <Table.Row key={`learning-body-${model.id}`}>
             {renderPersonalCompleted(model, index)}
-          </Table.Row>
-        ))}
-      {contentType === MyApprovalContentType.PersonalLearning &&
-        models &&
-        models.length &&
-        (models as AplModel[]).map((model: AplModel, index: number) => (
-          <Table.Row key={`learning-body-${model.id}`}>
-            {renderPersonalLearning(model, index)}
           </Table.Row>
         ))}
     </Table.Body>

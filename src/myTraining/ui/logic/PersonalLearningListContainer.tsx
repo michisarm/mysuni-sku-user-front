@@ -4,35 +4,33 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { AplService } from 'myTraining/stores';
 import MyApprovalContentType from '../model/MyApprovalContentType';
-import { AplModel } from 'myTraining/model';
 import { SeeMoreButton } from 'lecture';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { MyLearningTableBody, MyLearningTableHeader, MyLearningTableTemplate } from '../view/table';
+import { MyLearningTableHeader, MyLearningTableTemplate } from '../view/table';
 import { NoSuchContentPanelMessages } from '../model';
 import { NoSuchContentPanel } from 'shared';
 import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
+import { PersonalLearningListView } from '../view/PersonalLearningListView';
+import routePaths from '../../routePaths';
 
 
-interface MyApprovalListContainerV2Props {
+interface PersonalLearningListContainerProps {
   aplService?: AplService;
 }
 
 
-function MyApprovalListContainerV2({
+function PersonalLearningListContainer({
   aplService,
-}: MyApprovalListContainerV2Props) {
-  const { aplCount } = aplService!;
+}: PersonalLearningListContainerProps) {
+  const { apls: offsetApl, aplCount } = aplService!;
 
   const history = useHistory();
   const params = useParams<MyApprovalRouteParams>();
 
-  /* states */
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ApprovalViewType>('');
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
-  /* effects */
 
   useEffect(() => {
     initPage();
@@ -41,7 +39,6 @@ function MyApprovalListContainerV2({
     return () => clearStore();
   }, [viewType]);
 
-  /* functions */
   const initPage = () => {
     initPageInfo();
     initPageNo();
@@ -52,7 +49,7 @@ function MyApprovalListContainerV2({
   };
 
   const initPageNo = (): void => {
-    history.replace('./1');
+    history.push(routePaths.currentPage(1));
   };
 
   const getPageNo = (): number => {
@@ -79,30 +76,12 @@ function MyApprovalListContainerV2({
     checkShowSeeMore();
   }
 
-  const getModels = (): AplModel[] => {
-    const { apls: offsetApl } = aplService!;
-    return offsetApl.results;
-  };
-
-  const getTotalCount = (): number => {
-    const { apls: offsetApl } = aplService!;
-    return offsetApl.totalCount;
-  };
-
-  const isModelExist = (): boolean => {
-    const { apls: offsetApl } = aplService!;
-    return (offsetApl.results && offsetApl.results.length) ? true : false;
-  };
-
   const checkShowSeeMore = () => {
-    const models = getModels();
-    const totalCount = getTotalCount();
-
-    if (models.length >= totalCount) {
+    if (offsetApl.results.length >= offsetApl.totalCount) {
       setShowSeeMore(false);
       return;
     }
-    if (totalCount <= PAGE_SIZE) {
+    if (offsetApl.totalCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -110,7 +89,6 @@ function MyApprovalListContainerV2({
     setShowSeeMore(true);
   };
 
-  /* handlers */
   const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
   }, []);
@@ -121,15 +99,11 @@ function MyApprovalListContainerV2({
     await aplService!.findAllAplsWithPage(pageInfo.current);
 
     checkShowSeeMore();
-    history.replace(`./${getPageNo()}`);
+    history.replace(routePaths.currentPage(getPageNo()));
   }, []);
 
-  /* render functions */
-  const renderNoSuchContentPanel = (contentType: MyApprovalContentType) => {
-    const message = NoSuchContentPanelMessages.getMessageByConentType(contentType);
 
-    return <NoSuchContentPanel message={message} />;
-  };
+  const message = NoSuchContentPanelMessages.getMessageByConentType(params.tab);
 
   /* render */
   return (
@@ -138,7 +112,10 @@ function MyApprovalListContainerV2({
         className="list-top"
         contentType={MyApprovalContentType.PersonalLearning}
       >
-        {isModelExist() &&
+        {
+          offsetApl &&
+          offsetApl.results &&
+          offsetApl.results.length > 0 &&
           (
             <ListLeftTopPanel
               contentType={params.tab}
@@ -152,19 +129,23 @@ function MyApprovalListContainerV2({
           onChangeViewType={onChangeViewType}
         />
       </ListTopPanelTemplate>
-      {isModelExist() &&
+      {
+        offsetApl &&
+        offsetApl.results &&
+        offsetApl.results.length > 0 &&
         (
           <MyLearningTableTemplate>
-            <MyLearningTableHeader
+            <MyLearningTableHeader 
               contentType={params.tab}
             />
-            <MyLearningTableBody
-              contentType={params.tab}
-              totalCount={getTotalCount()}
-              models={getModels()}
+            <PersonalLearningListView 
+              apls={offsetApl.results}
+              totalCount={offsetApl.totalCount}
             />
           </MyLearningTableTemplate>
-        ) || renderNoSuchContentPanel(params.tab)
+        ) || (
+        <NoSuchContentPanel message={message} />
+        )
       }
       {showSeeMore &&
         (
@@ -179,7 +160,7 @@ function MyApprovalListContainerV2({
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.aplService'
-))(observer(MyApprovalListContainerV2));
+))(observer(PersonalLearningListContainer));
 
 /* globals */
 export type ApprovalViewType = '' | 'OpenApproval' | 'Opened' | 'Rejected';

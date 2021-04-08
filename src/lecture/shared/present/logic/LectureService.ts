@@ -7,8 +7,6 @@ import {
 } from 'mobx';
 import { autobind, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
@@ -27,6 +25,8 @@ import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 import { countRequiredCards } from '../../../detail/api/cardApi';
+import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
+import { Direction } from '../../../../myTraining/model/Direction';
 
 @autobind
 class LectureService {
