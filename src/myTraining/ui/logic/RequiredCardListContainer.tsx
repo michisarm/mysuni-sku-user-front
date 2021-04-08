@@ -1,36 +1,34 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Segment } from 'semantic-ui-react';
-import { useParams, useHistory } from 'react-router-dom';
-import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import { inject, observer } from 'mobx-react';
-import { Offset, mobxHelper } from '@nara.platform/accent';
 import ReactGA from 'react-ga';
+import { mobxHelper, Offset } from '@nara.platform/accent';
+import { useHistory, useParams } from 'react-router-dom';
+import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
+import { CollegeService } from '../../../college/stores';
+import { LectureService, SeeMoreButton } from '../../../lecture';
+import { Direction } from '../../model/Direction';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import MyLearningTableBody from '../view/table/MyLearningTableBody';
-import { SeeMoreButton } from '../../../lecture';
+import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import { CollegeService } from '../../../college/stores';
-import MyTrainingService from '../../present/logic/MyTrainingService';
-
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
-import { MyPageContentType } from '../model/MyPageContentType';
-import { Direction } from '../../model/Direction';
+import InMyLectureService from '../../present/logic/InMyLectureService';
 
 
-interface MyStampListContainerProps {
-  myTrainingService?: MyTrainingService;
+interface RequiredCardListContainerProps {
+  lectureService?: LectureService;
   collegeService?: CollegeService;
 }
 
-function MyStampListContainer({
-  myTrainingService,
+function RequiredCardListContainer({
+  lectureService,
   collegeService,
-}: MyStampListContainerProps) {
+}: RequiredCardListContainerProps) {
   const history = useHistory();
-  const params = useParams<MyPageRouteParams>();
+  const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -41,7 +39,7 @@ function MyStampListContainer({
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
-  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+  const { lectureTableViews, lectureTableCount } = lectureService!;
   const { colleges } = collegeService!;
   
   useEffect(() => {
@@ -56,28 +54,29 @@ function MyStampListContainer({
   }, []);
 
   useEffect(() => {
-    fetchStamps();
-    myTrainingService!.findAllFilterCountViews();
+    fetchRequiredCards();
+    lectureService!.findAllFilterCountViews();
 
     return () => {
-      myTrainingService!.clearAllTableViews();
-      myTrainingService!.clearAllFilterCountViews();
+      lectureService!.clearAllTableViews();
+      lectureService!.clearAllFilterCountViews();
     }
   }, []);
 
-  const fetchStamps = async () => {
-    myTrainingService!.initFilterRdo(contentType);
+  const fetchRequiredCards = async () => {
+    lectureService!.initFilterRdo();
 
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViews();
+    const isEmpty = await lectureService!.findAllRqdTableViews();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    return;
   };
 
-  const fetchStampsByConditions = async () => {
+  const fetchRequiredCardsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
+    const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
@@ -85,9 +84,9 @@ function MyStampListContainer({
 
   const getStampsByConditions = (count: number) => {
     if (count > 0) {
-      fetchStampsByConditions();
+      fetchRequiredCardsByConditions();
     } else {
-      fetchStamps();
+      fetchRequiredCards();
     }
   };
 
@@ -105,7 +104,7 @@ function MyStampListContainer({
   }, []);
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
-          myTrainingService!.sortTableViews(column, direction);
+          lectureService!.sortTableViews(column, direction);
       }, []);
 
   const onChangeFilterCount = useCallback((count: number) => {
@@ -124,7 +123,7 @@ function MyStampListContainer({
     history.replace(`./${getNextPageNo()}`);
     
     sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
+    await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
 
     setIsLoading(false);
     checkShowSeeMore();
@@ -132,13 +131,13 @@ function MyStampListContainer({
   }, [contentType, pageInfo.current, params.pageNo]);
 
   const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+    const { lectureTableViews, lectureTableCount } = lectureService!;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
+    if (lectureTableViews.length >= lectureTableCount) {
       setShowSeeMore(false);
       return;
     }
-    if (myTrainingTableCount <= PAGE_SIZE) {
+    if (lectureTableCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -164,7 +163,7 @@ function MyStampListContainer({
           <LineHeaderContainerV2
             contentType={contentType}
             resultEmpty={resultEmpty}
-            totalCount={myTrainingTableCount}
+            totalCount={lectureTableCount}
             filterCount={filterCount}
             openFilter={openFilter}
             onClickFilter={onClickFilter}
@@ -178,8 +177,8 @@ function MyStampListContainer({
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
-        myTrainingTableViews &&
-        myTrainingTableViews.length > 0 && (
+        lectureTableViews &&
+        lectureTableViews.length > 0 && (
           <>
             {(!resultEmpty && (
               <>
@@ -189,8 +188,8 @@ function MyStampListContainer({
                     onClickSort={onClickSort}
                   />
                   <MyLearningTableBody
-                    models={myTrainingTableViews}
-                    totalCount={myTrainingTableCount}
+                    models={lectureTableViews}
+                    totalCount={lectureTableCount}
                   />
                 </MyLearningTableTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
@@ -228,7 +227,7 @@ function MyStampListContainer({
             border: 0,
           }}
         >
-          <Loadingpanel loading={isLoading} />
+          <Loadingpanel={isLoading} />
           {!isLoading && (
             <NoSuchContentPanel
               message={noSuchMessage(contentType)}
@@ -240,11 +239,8 @@ function MyStampListContainer({
   );
 }
 
-export default inject(
-  mobxHelper.injectFrom(
-    'myTraining.myTrainingService',
-    'college.collegeService'
-  )
-)(observer(MyStampListContainer));
+export default inject(mobxHelper.injectFrom(
+
+))(observer(RequiredCardListContainer));
 
 const PAGE_SIZE = 20;

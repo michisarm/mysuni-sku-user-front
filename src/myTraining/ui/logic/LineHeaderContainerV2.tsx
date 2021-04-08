@@ -24,7 +24,7 @@ interface Props extends RouteComponentProps {
   filterCount: number;
   openFilter: boolean;
   onClickFilter: () => void;
-  onClickDelete: () => void;
+  onClickDelete?: () => void;
   //
   myTrainingService?: MyTrainingService;
   aplService?: AplService;

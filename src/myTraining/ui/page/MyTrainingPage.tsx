@@ -11,7 +11,6 @@ import { MenuControlAuthService } from 'approval/stores';
 import { SkProfileModel } from 'profile/model';
 import { TabItemModel, ContentLayout } from 'shared';
 import TabContainer from 'shared/components/Tab';
-import MyLearningListContainerV2 from '../logic/MyTrainingListContainer';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
 import MyTrainingHeaderContainer from '../logic/MyTrainingHeaderContainer';
 import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrainingCount';
@@ -21,6 +20,8 @@ import { useRequestLearningStorage } from '../../service/useRequestLearningStora
 import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model/MyLearningContentType';
 import MyTrainingListContainer from '../logic/MyTrainingListContainer';
+import InMyLectureListContainer from '../logic/InMyLectureListContainer';
+import PersonalCompletedListContainer from '../logic/PersonalCompletedListContainer';
 
 
 interface MyTrainingPageProps {
@@ -77,38 +78,38 @@ function MyTrainingPage({
         {
           name: MyLearningContentType.InProgress,
           item: getTabItem(MyLearningContentType.InProgress, inprogressCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />,
+          render: () => <MyTrainingListContainer />,
         },
         {
           name: MyLearningContentType.InMyList,
           item: getTabItem(MyLearningContentType.InMyList, inMyListCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />,
+          render: () => <InMyLectureListContainer />,
         },
         {
           className: 'division',
           name: MyLearningContentType.Required,
           item: getTabItem(MyLearningContentType.Required, requiredLecturesCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />,
+          render: () => <MyTrainingListContainer />,
         },
         {
           name: MyLearningContentType.Enrolled,
           item: getTabItem(MyLearningContentType.Enrolled, enrolledCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />,
+          render: () => <MyTrainingListContainer />,
         },
         {
           name: MyLearningContentType.Completed,
           item: getTabItem(MyLearningContentType.Completed, completedCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />,
+          render: () => <MyTrainingListContainer />,
         },
         {
           name: MyLearningContentType.PersonalCompleted,
           item: getTabItem(MyLearningContentType.PersonalCompleted, personalCompletedCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />
+          render: () => <PersonalCompletedListContainer />
         },
         {
           name: MyLearningContentType.Retry,
           item: getTabItem(MyLearningContentType.Retry, retryCount),
-          render: () => <MyTrainingListContainer contentType={params.tab} />,
+          render: () => <MyTrainingListContainer />,
         },
       ] as TabItemModel[];
     }
@@ -117,33 +118,33 @@ function MyTrainingPage({
       {
         name: MyLearningContentType.InProgress,
         item: getTabItem(MyLearningContentType.InProgress, inprogressCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />,
+        render: () => <MyTrainingListContainer />,
       },
       {
         name: MyLearningContentType.InMyList,
         item: getTabItem(MyLearningContentType.InMyList, inMyListCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />,
+        render: () => <InMyLectureListContainer />,
       },
       {
         className: 'division',
         name: MyLearningContentType.Required,
         item: getTabItem(MyLearningContentType.Required, requiredLecturesCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />,
+        render: () => <MyTrainingListContainer />,
       },
       {
         name: MyLearningContentType.Enrolled,
         item: getTabItem(MyLearningContentType.Enrolled, enrolledCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />,
+        render: () => <MyTrainingListContainer />,
       },
       {
         name: MyLearningContentType.Completed,
         item: getTabItem(MyLearningContentType.Completed, completedCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />,
+        render: () => <MyTrainingListContainer />,
       },
       {
         name: MyLearningContentType.Retry,
         item: getTabItem(MyLearningContentType.Retry, retryCount),
-        render: () => <MyTrainingListContainer contentType={params.tab} />,
+        render: () => <MyTrainingListContainer />,
       },
     ] as TabItemModel[];
   };

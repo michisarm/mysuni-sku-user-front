@@ -1,36 +1,36 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Segment } from 'semantic-ui-react';
-import { useParams, useHistory } from 'react-router-dom';
-import { MyPageRouteParams } from '../../model/MyPageRouteParams';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Offset, mobxHelper } from '@nara.platform/accent';
+import { useHistory, useParams } from 'react-router-dom';
+import { mobxHelper, Offset } from '@nara.platform/accent';
+import { Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
+import InMyLectureService from '../../present/logic/InMyLectureService';
+import { CollegeService } from '../../../college/stores';
+import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { SeeMoreButton } from '../../../lecture';
+
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import { CollegeService } from '../../../college/stores';
-import MyTrainingService from '../../present/logic/MyTrainingService';
-
-import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
-import { MyPageContentType } from '../model/MyPageContentType';
 import { Direction } from '../../model/Direction';
+import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import { MyContentType } from '../model/MyContentType';
 
 
-interface MyStampListContainerProps {
-  myTrainingService?: MyTrainingService;
+interface InMyLectureListContainerProps {
+  inMyLectureService?: InMyLectureService;
   collegeService?: CollegeService;
 }
 
-function MyStampListContainer({
-  myTrainingService,
+function InMyLectureListContainer({
+  inMyLectureService,
   collegeService,
-}: MyStampListContainerProps) {
+}: InMyLectureListContainerProps) {
   const history = useHistory();
-  const params = useParams<MyPageRouteParams>();
+  const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -41,9 +41,9 @@ function MyStampListContainer({
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
-  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+  const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
   const { colleges } = collegeService!;
-  
+ 
   useEffect(() => {
     if(
       colleges &&
@@ -56,38 +56,38 @@ function MyStampListContainer({
   }, []);
 
   useEffect(() => {
-    fetchStamps();
-    myTrainingService!.findAllFilterCountViews();
+    fetchInMyLectures();
+    inMyLectureService!.findAllFilterCountViews();
 
     return () => {
-      myTrainingService!.clearAllTableViews();
-      myTrainingService!.clearAllFilterCountViews();
+      inMyLectureService!.clearAllTableViews();
+      inMyLectureService!.clearAllFilterCountViews();
     }
   }, []);
 
-  const fetchStamps = async () => {
-    myTrainingService!.initFilterRdo(contentType);
+  const fetchInMyLectures = async() => {
+    inMyLectureService!.initFilterRdo();
 
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViews();
+    const isEmpty = await inMyLectureService!.findAllTableViews();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
   };
 
-  const fetchStampsByConditions = async () => {
+  const fetchInMyLecturesByConditions = async() => {
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
+    const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
   }
 
-  const getStampsByConditions = (count: number) => {
+  const getInMyLecturesByConditions = (count: number) => {
     if (count > 0) {
-      fetchStampsByConditions();
+      fetchInMyLecturesByConditions();
     } else {
-      fetchStamps();
+      fetchInMyLectures();
     }
   };
 
@@ -100,18 +100,20 @@ function MyStampListContainer({
     return 1;
   };
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
+  const checkShowSeeMore = (): void => {
+    const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
 
-  const onClickSort = useCallback((column: string, direction: Direction) => {
-          myTrainingService!.sortTableViews(column, direction);
-      }, []);
+    if (inMyLectureTableViews.length >= inMyLectureTableCount) {
+      setShowSeeMore(false);
+      return;
+    }
+    if (inMyLectureTableCount <= PAGE_SIZE) {
+      setShowSeeMore(false);
+      return;
+    }
 
-  const onChangeFilterCount = useCallback((count: number) => {
-    setFilterCount(count);
-  }, []);
-  
+    setShowSeeMore(true);
+  };
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
@@ -124,31 +126,29 @@ function MyStampListContainer({
     history.replace(`./${getNextPageNo()}`);
     
     sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
+    await inMyLectureService!.findAllTableViewsWithPage(pageInfo.current);
 
     setIsLoading(false);
     checkShowSeeMore();
   
   }, [contentType, pageInfo.current, params.pageNo]);
 
-  const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
-      setShowSeeMore(false);
-      return;
-    }
-    if (myTrainingTableCount <= PAGE_SIZE) {
-      setShowSeeMore(false);
-      return;
-    }
+  const onClickFilter = useCallback(() => {
+    setOpenFilter(prev => !prev);
+  }, []);
 
-    setShowSeeMore(true);
-  };
 
+  const onClickSort = useCallback((column: string, direction: Direction) => { 
+      inMyLectureService!.sortTableViews(column, direction);
+    }, []);
+
+  const onChangeFilterCount = useCallback((count: number) => {
+    setFilterCount(count);
+  }, []);
 
   const noSuchMessage = (
-    contentType: MyPageContentType,
+    contentType: MyContentType,
     withFilter: boolean = false
   ) => {
     return (
@@ -164,7 +164,7 @@ function MyStampListContainer({
           <LineHeaderContainerV2
             contentType={contentType}
             resultEmpty={resultEmpty}
-            totalCount={myTrainingTableCount}
+            totalCount={inMyLectureTableCount}
             filterCount={filterCount}
             openFilter={openFilter}
             onClickFilter={onClickFilter}
@@ -173,13 +173,13 @@ function MyStampListContainer({
             openFilter={openFilter}
             onClickFilter={onClickFilter}
             onChangeFilterCount={onChangeFilterCount}
-            getModels={getStampsByConditions}
+            getModels={getInMyLecturesByConditions}
           />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
-        myTrainingTableViews &&
-        myTrainingTableViews.length > 0 && (
+        inMyLectureTableViews &&
+        inMyLectureTableViews.length > 0 && (
           <>
             {(!resultEmpty && (
               <>
@@ -189,8 +189,8 @@ function MyStampListContainer({
                     onClickSort={onClickSort}
                   />
                   <MyLearningTableBody
-                    models={myTrainingTableViews}
-                    totalCount={myTrainingTableCount}
+                    models={inMyLectureTableViews}
+                    totalCount={inMyLectureTableCount}
                   />
                 </MyLearningTableTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
@@ -242,9 +242,9 @@ function MyStampListContainer({
 
 export default inject(
   mobxHelper.injectFrom(
-    'myTraining.myTrainingService',
-    'college.collegeService'
+    'myTraining.inMyLectureService',
+    'college.collegeService',
   )
-)(observer(MyStampListContainer));
+)(observer(InMyLectureListContainer));
 
 const PAGE_SIZE = 20;

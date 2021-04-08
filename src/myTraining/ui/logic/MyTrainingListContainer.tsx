@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
@@ -9,8 +9,6 @@ import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import {
   MyTrainingService,
-  InMyLectureService,
-  AplService,
 } from '../../stores';
 import {
   LectureService,
@@ -28,34 +26,27 @@ import { MyContentType } from '../model/MyContentType';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import MyLearningTableBody from '../view/table/MyLearningTableBody';
+import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 
-interface Props extends RouteComponentProps<RouteParams> {
-  contentType: MyContentType;
+interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
-  inMyLectureService?: InMyLectureService;
-  aplService?: AplService;
   lectureService?: LectureService;
   studentService?: StudentService;
   collegeService?: CollegeService;
 }
 
-interface RouteParams {
-  tab: string;
-  pageNo?: string;
-}
+function MyTrainingListContainer({
+  skProfileService,
+  myTrainingService,
+  lectureService,
+  studentService,
+  collegeService,
+}: MyTrainingListContainerProps) {
+  const history = useHistory();
+  const params = useParams<MyTrainingRouteParams>();
+  const contentType = params.tab;
 
-function MyTrainingListContainer(props: Props) {
-  const { contentType, history, match } = props;
-  const {
-    skProfileService,
-    myTrainingService,
-    inMyLectureService,
-    aplService,
-    lectureService,
-    studentService,
-    collegeService,
-  } = props;
   const { profileMemberName } = skProfileService!;
   const { colleges } = collegeService!;
 
@@ -65,10 +56,10 @@ function MyTrainingListContainer(props: Props) {
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [refresh, setRefesh] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
   const learningOffset: any = sessionStorage.getItem('learningOffset');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if(
@@ -105,11 +96,6 @@ function MyTrainingListContainer(props: Props) {
   const fetchFilterCountViews = (contentType: MyContentType): void => {
     /* 필터 항목 별 카운트를 조회하기 위함. */
     switch (contentType) {
-      case MyLearningContentType.PersonalCompleted:
-        break;
-      case MyLearningContentType.InMyList:
-        inMyLectureService!.findAllFilterCountViews();
-        break;
       case MyLearningContentType.Required:
         lectureService!.findAllFilterCountViews();
         break;
@@ -120,11 +106,6 @@ function MyTrainingListContainer(props: Props) {
 
   const clearFilterCountViews = (contentType: MyContentType): void => {
     switch (contentType) {
-      case MyLearningContentType.PersonalCompleted:
-        break;
-      case MyLearningContentType.InMyList:
-        inMyLectureService!.clearAllFilterCountViews();
-        break;
       case MyLearningContentType.Required:
         lectureService!.clearAllFilterCountViews();
         break;
@@ -145,35 +126,11 @@ function MyTrainingListContainer(props: Props) {
         setIsLoading(false);
         return;
       }
-      case MyLearningContentType.PersonalCompleted: {
-        setIsLoading(true);
-        const offsetApl = await aplService!.findAllAplsByQuery();
-        const isEmpty = offsetApl.results.length === 0 ? true : false;
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
-      case MyLearningContentType.InMyList: {
-        setIsLoading(true);
-        const isEmpty = await inMyLectureService!.findAllTableViews();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
+    
       /* 권장과정 */
       case MyLearningContentType.Required: {
         setIsLoading(true);
         const isEmpty = await lectureService!.findAllRqdTableViews();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
-      case MyPageContentType.EarnedStampList: {
-        setIsLoading(true);
-        const isEmpty = await myTrainingService!.findAllStampTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         setIsLoading(false);
@@ -194,22 +151,6 @@ function MyTrainingListContainer(props: Props) {
     contentType: MyContentType,
   ) => {
     switch (contentType) {
-      case MyPageContentType.EarnedStampList: {
-        setIsLoading(true);
-        const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
-      case MyLearningContentType.InMyList: {
-        setIsLoading(true);
-        const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
       case MyLearningContentType.Required: {
         setIsLoading(true);
         const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
@@ -239,35 +180,11 @@ function MyTrainingListContainer(props: Props) {
       // if (learningOffset !== null && matchesMenu && refresh) {
       pageInfo.current = JSON.parse(learningOffset);
       await findTableViewsPage(pageInfo.current);
-    } else if (
-      learningOffset !== null &&
-      contentType === 'Required' &&
-      refresh
-    ) {
-      setIsLoading(true);
-      pageInfo.current = JSON.parse(learningOffset);
-      await findRequiredViewPage(pageInfo.current);
-    } else if (
-      learningOffset !== null &&
-      contentType === 'InMyList' &&
-      refresh
-    ) {
-      setIsLoading(true);
-      pageInfo.current = JSON.parse(learningOffset);
-      await findInMyListViewPage(pageInfo.current);
-    } else if (
-      learningOffset !== null &&
-      contentType === 'PersonalCompleted' &&
-      refresh
-    ) {
-      setIsLoading(true);
-      pageInfo.current = JSON.parse(learningOffset);
-      await findPersonalCompletedViewPage(pageInfo.current);
     }
   };
 
   const getPageNo = (): number => {
-    const currentPageNo = match.params.pageNo;
+    const currentPageNo = params.pageNo;
     if (currentPageNo) {
       const nextPageNo = parseInt(currentPageNo) + 1;
       return nextPageNo;
@@ -277,14 +194,8 @@ function MyTrainingListContainer(props: Props) {
 
   const clearStore = (contentType: MyContentType) => {
     switch (contentType) {
-      case MyLearningContentType.InMyList:
-        inMyLectureService!.clearAllTableViews();
-        break;
       case MyLearningContentType.Required:
         lectureService!.clearAllTableViews();
-        break;
-      case MyLearningContentType.PersonalCompleted:
-        aplService!.clearApls();
         break;
       default:
         myTrainingService!.clearAllTableViews();
@@ -293,14 +204,8 @@ function MyTrainingListContainer(props: Props) {
 
   const initStore = (contentType: MyContentType) => {
     switch (contentType) {
-      case MyLearningContentType.InMyList:
-        inMyLectureService!.initFilterRdo();
-        break;
       case MyLearningContentType.Required:
         lectureService!.initFilterRdo();
-        break;
-      case MyLearningContentType.PersonalCompleted:
-        aplService!.clearAplQueryProps();
         break;
       default:
         myTrainingService!.initFilterRdo(contentType);
@@ -309,37 +214,23 @@ function MyTrainingListContainer(props: Props) {
 
   const getModels = (contentType: MyContentType) => {
     const { myTrainingTableViews } = myTrainingService!;
-    const { inMyLectureTableViews } = inMyLectureService!;
-    const { apls: offsetApl } = aplService!;
     const { lectureTableViews } = lectureService!;
 
     switch (contentType) {
-      case MyLearningContentType.InMyList:
-        return inMyLectureTableViews;
       case MyLearningContentType.Required:
         return lectureTableViews;
-      case MyLearningContentType.PersonalCompleted:
-        return offsetApl.results;
       default:
         return myTrainingTableViews;
     }
   };
 
   const getTotalCount = (contentType: MyContentType): number => {
-    const { inMyLectureTableCount } = inMyLectureService!;
     const { myTrainingTableCount } = myTrainingService!;
     const { lectureTableCount } = lectureService!;
-    const {
-      aplCount: { all: aplTableCount },
-    } = aplService!; /* 승인 완료된 카운트만 */
 
     switch (contentType) {
-      case MyLearningContentType.InMyList:
-        return inMyLectureTableCount;
       case MyLearningContentType.Required:
         return lectureTableCount;
-      case MyLearningContentType.PersonalCompleted:
-        return aplTableCount;
       default:
         return myTrainingTableCount;
     }
@@ -347,17 +238,11 @@ function MyTrainingListContainer(props: Props) {
 
   const isModelExist = (contentType: MyContentType) => {
     const { myTrainingTableViews } = myTrainingService!;
-    const { inMyLectureTableViews } = inMyLectureService!;
-    const { apls: offsetApl } = aplService!;
     const { lectureTableViews } = lectureService!;
 
     switch (contentType) {
-      case MyLearningContentType.InMyList:
-        return inMyLectureTableViews && inMyLectureTableViews.length;
       case MyLearningContentType.Required:
         return lectureTableViews && lectureTableViews.length;
-      case MyLearningContentType.PersonalCompleted:
-        return offsetApl.results && offsetApl.results.length;
       default:
         return myTrainingTableViews && myTrainingTableViews.length;
     }
@@ -443,9 +328,6 @@ function MyTrainingListContainer(props: Props) {
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
       switch (contentType) {
-        case MyLearningContentType.InMyList:
-          inMyLectureService!.sortTableViews(column, direction);
-          break;
         case MyLearningContentType.Required:
           lectureService!.sortTableViews(column, direction);
           break;
@@ -461,24 +343,8 @@ function MyTrainingListContainer(props: Props) {
     setIsLoading(false);
   };
 
-  const findInMyListViewPage = async (pageInfo: Offset) => {
-    await inMyLectureService!.findAllTableViewsWithPage(pageInfo);
-    setIsLoading(false);
-  };
-
-  const findPersonalCompletedViewPage = async (pageInfo: Offset) => {
-    await aplService!.findAllAplsWithPage(pageInfo);
-    setIsLoading(false);
-  };
-
   const findTableViewsPage = async (pageInfo: Offset) => {
-    switch (contentType) {
-      case MyPageContentType.EarnedStampList:
-        await myTrainingService!.findAllStampTableViewsWithPage(pageInfo);
-        break;
-      default:
-        await myTrainingService!.findAllTableViewsWithPage(pageInfo);
-    }
+    await myTrainingService!.findAllTableViewsWithPage(pageInfo);
     setIsLoading(false);
   };
 
@@ -491,12 +357,11 @@ function MyTrainingListContainer(props: Props) {
     history.replace(`./${getPageNo()}`);
     sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
     if (contentType === 'Required') findRequiredViewPage(pageInfo.current);
-    if (contentType === 'InMyList') findInMyListViewPage(pageInfo.current);
     if (contentType !== 'InMyList' && contentType !== 'Required') {
       findTableViewsPage(pageInfo.current);
     }
     checkShowSeeMore(contentType);
-  }, [contentType, pageInfo.current, match.params.pageNo]);
+  }, [contentType, pageInfo.current, params.pageNo]);
 
   /* Render Functions */
   const noSuchMessage = (
@@ -615,16 +480,10 @@ export default inject(
   mobxHelper.injectFrom(
     'profile.skProfileService',
     'myTraining.myTrainingService',
-    'myTraining.inMyLectureService',
-    'myTraining.aplService',
     'lecture.lectureService',
     'lecture.studentService',
     'college.collegeService'
   )
-)(withRouter(observer(MyTrainingListContainer)));
+)(observer(MyTrainingListContainer));
 
-/* globals */
 const PAGE_SIZE = 20;
-
-/* types */
-

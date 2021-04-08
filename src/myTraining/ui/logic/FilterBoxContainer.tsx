@@ -66,7 +66,7 @@ function FilterBoxContainer({
       changeFilterRdo(contentType);
       const filterCount = getFilterCount(contentType);
       getModels(filterCount);
-
+      
       /* 
         1. openFilter => false 
         2. showResult => false
