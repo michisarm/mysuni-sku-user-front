@@ -9,7 +9,6 @@ import { useRequestBadgeDetail } from '../../service/useRequestBadgeDetail';
 import BadgeSummaryContainer from '../logic/BadgeSummaryContainer';
 import BadgeContentContainer from '../logic/BadgeContentContainer';
 import { useRequestCineroom } from '../../../shared/service/useCineroom/useRequestCineroom';
-import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 
 interface BadgeDetailPageProps {
   badgeService?: BadgeService;
@@ -21,7 +20,6 @@ function BadgeDetailPage({ badgeService }: BadgeDetailPageProps) {
 
   useRequestBadgeDetail();
   useRequestCineroom();
-  useRequestCollege();
 
   return (
     <ContentLayout

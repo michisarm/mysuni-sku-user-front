@@ -3,9 +3,8 @@ import { CategoryModel, LearningState } from 'shared/model';
 import { DifficultyLevel } from 'myTraining/model/DifficultyLevel';
 import { CubeType } from '../../personalcube/personalcube/model';
 
-
 class LectureTableViewModel {
-
+  // 권장과정
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
@@ -25,6 +24,8 @@ class LectureTableViewModel {
   updateTime: number = 0;
   updateTimeForTest: number = 0;
   stampCount: number = 0; // 스탬프
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   // for make observable object from json data.
   constructor(lectureTableView?: LectureTableViewModel) {

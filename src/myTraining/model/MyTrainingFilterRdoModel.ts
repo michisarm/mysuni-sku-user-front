@@ -56,7 +56,6 @@ class MyTrainingFilterRdoModel {
     endDate: string,
     applying: boolean
   ) {
-
     return new MyTrainingFilterRdoModel({
       collegeIds,
       difficultyLevels,
@@ -66,7 +65,7 @@ class MyTrainingFilterRdoModel {
       certifications,
       startDate,
       endDate,
-      applying
+      applying,
     } as MyTrainingFilterRdoModel);
   }
 
@@ -85,8 +84,12 @@ class MyTrainingFilterRdoModel {
     this.learningTimes = conditions.learningTimes;
     this.organizers = conditions.organizers;
     this.certifications = conditions.certifications;
-    this.startDate = conditions.startDate ? moment(conditions.startDate).format('YYYYMMDD') : '';
-    this.endDate = conditions.endDate ? moment(conditions.endDate).format('YYYYMMDD') : '';
+    this.startDate = conditions.startDate
+      ? moment(conditions.startDate).format('YYYYMMDD')
+      : '';
+    this.endDate = conditions.endDate
+      ? moment(conditions.endDate).format('YYYYMMDD')
+      : '';
     this.required = conditions.required === 'none' ? '' : conditions.required;
     this.applying = conditions.applying === 'true' ? true : false;
 

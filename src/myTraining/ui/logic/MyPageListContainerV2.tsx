@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -21,24 +20,21 @@ import MyTrainingModel from '../../model/MyTrainingModel';
 import MyPageContentType from '../model/MyPageContentType';
 import { OffsetElementList } from '../../../shared/model';
 
-
-
 interface States {
-  channels: ChannelModel[]
+  channels: ChannelModel[];
 }
 
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  pageService?: PageService,
-  myTrainingService?: MyTrainingService
-  contentType: MyPageContentType
-  onChangeCompletedCount?: (completedCount: number) => void
-  onChangeEarnedStampCount?: (earnedStampCount: number) => void
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  pageService?: PageService;
+  myTrainingService?: MyTrainingService;
+  contentType: MyPageContentType;
+  onChangeCompletedCount?: (completedCount: number) => void;
+  onChangeEarnedStampCount?: (earnedStampCount: number) => void;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.pageService',
-  'myTraining.myTrainingService',
-))
+@inject(
+  mobxHelper.injectFrom('shared.pageService', 'myTraining.myTrainingService')
+)
 @observer
 @reactAutobind
 class MyPageListContainerV2 extends Component<Props, States> {
@@ -49,7 +45,6 @@ class MyPageListContainerV2 extends Component<Props, States> {
   state = {
     channels: [],
   };
-
 
   componentDidMount(): void {
     //
@@ -65,15 +60,19 @@ class MyPageListContainerV2 extends Component<Props, States> {
 
     if (prevTab !== currentTab) {
       this.setMyTrainings();
-    }
-    else if (prevProps.match.params.tab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+    } else if (
+      prevProps.match.params.tab === currentTab &&
+      prevProps.match.params.pageNo !== currentPageNo
+    ) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
-      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > this.PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + this.PAGE_SIZE
+          : page!.nextOffset;
       if (currentPageNo === '1') {
         myTrainingService!.clear();
         pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      }
-      else {
+      } else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
       this.findPagingList(this.getPageNo() - 1);
@@ -99,11 +98,18 @@ class MyPageListContainerV2 extends Component<Props, States> {
 
   async findPagingList(pageNo?: number) {
     //
-    const { pageService, myTrainingService, onChangeCompletedCount, onChangeEarnedStampCount } = this.props;
+    const {
+      pageService,
+      myTrainingService,
+      onChangeCompletedCount,
+      onChangeEarnedStampCount,
+    } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
     const activeItem = this.getAContentType();
-    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
+    const channelIds = channels.map(
+      (channel: ChannelModel) => channel.channelId
+    );
     const offsetList: any = null;
 
     /* if (activeItem === MyPageContentType.CompletedList) {
@@ -119,7 +125,11 @@ class MyPageListContainerV2 extends Component<Props, States> {
       onChangeEarnedStampCount(offsetList.totalCount);
     } */
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      offsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
   }
 
   getAContentType() {
@@ -156,35 +166,17 @@ class MyPageListContainerV2 extends Component<Props, States> {
     //
     const { model } = data;
     const { history } = this.props;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+    if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.courseOverview(model.serviceId));
+    } else {
+      history.push(
+        lectureRoutePaths.lectureCardOverview(model.serviceId, model.cubeId)
+      );
     }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
-    }
-  }
-
-  async findAllArrangesExcel() {
-    const { pageService, myTrainingService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { channels } = this.state;
-    const activeItem = this.getAContentType();
-    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
-    const stamps: OffsetElementList<MyTrainingModel> = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
-    const stampXlsxList: MyTrainingStampXlsxModel[] = [];
-    stamps.results.map((stamp, index) => {
-      stampXlsxList.push(MyTrainingModel.asStampXLSX(stamp, index));
-    });
-    const arrangeExcel = XLSX.utils.json_to_sheet(stampXlsxList);
-    const temp = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(temp, arrangeExcel, 'stamps');
-
-    // const date = moment().format('YYYY-MM-DD hh:mm:ss');
-    XLSX.writeFile(temp, `MyStamp.xlsx`);
-
   }
 
   render() {
@@ -210,7 +202,7 @@ class MyPageListContainerV2 extends Component<Props, States> {
     return (
       <>
         <LineHeaderContainer
-          count={page && page.totalCount || 0}
+          count={(page && page.totalCount) || 0}
           channels={channels}
           onFilter={this.onFilter}
           currentTab={this.props.match.params.tab}
@@ -227,10 +219,8 @@ class MyPageListContainerV2 extends Component<Props, States> {
           ))}
         </Lecture.Group>
 
-        { this.isContentMore() && (
-          <SeeMoreButton
-            onClick={this.onClickSeeMore}
-          />
+        {this.isContentMore() && (
+          <SeeMoreButton onClick={this.onClickSeeMore} />
         )}
       </>
     );

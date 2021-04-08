@@ -1,15 +1,24 @@
 import { useEffect } from 'react';
-import CollegeApi from '../../../college/present/apiclient/CollegeApi';
+import CollegeApi, {
+  findAllCollegeCache,
+  clearfindAllCollegeCache,
+} from '../../../college/present/apiclient/CollegeApi';
 import { devideCollegeAndChannel } from './utility/devideCollegeAndChannel';
-import { setCollegeStore, getCollegeStore } from '../../store/CollegeStore';
+import {
+  setCollegeStore,
+  getCollegeStore,
+  setCollegeModelStore,
+} from '../../store/CollegeStore';
 import { setChannelStore, getChannelStore } from '../../store/ChannelStore';
 import { find } from 'lodash';
 import CategoryColorType from '../../model/CategoryColorType';
 
 async function requestCollegeAndChannel() {
-  const api = new CollegeApi()
-  const getCollegeData = await api.findAllCollege();
+  const api = new CollegeApi();
+  // const getCollegeData = await api.findAllCollege();
+  const getCollegeData = await findAllCollegeCache();
 
+  setCollegeModelStore(getCollegeData);
   const collegeAndChannelList = devideCollegeAndChannel(getCollegeData);
 
   setChannelStore(collegeAndChannelList.channels);
@@ -17,15 +26,19 @@ async function requestCollegeAndChannel() {
 }
 
 export function useRequestCollege() {
-  useEffect(()=> {
-    requestCollegeAndChannel()
-  }, [])
+  useEffect(() => {
+    requestCollegeAndChannel();
+
+    return () => {
+      clearfindAllCollegeCache();
+    };
+  }, []);
 }
 
 export function getCollgeName(collegeId: string) {
   const collegeList = getCollegeStore();
 
-  const filterChannelName = find(collegeList, {id: collegeId});
+  const filterChannelName = find(collegeList, { id: collegeId });
 
   return filterChannelName?.name;
 }
@@ -33,7 +46,7 @@ export function getCollgeName(collegeId: string) {
 export function getChannelName(channelId: string) {
   const channelList = getChannelStore();
 
-  const filterChannelName = find(channelList, {id: channelId});
+  const filterChannelName = find(channelList, { id: channelId });
 
   return filterChannelName?.name;
 }

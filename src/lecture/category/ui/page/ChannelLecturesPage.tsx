@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -10,9 +9,9 @@ import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../logic/ChannelLecturesContainer';
 
-
-interface Props extends RouteComponentProps<{ collegeId: string, channelId: string }> {
-  collegeService: CollegeService,
+interface Props
+  extends RouteComponentProps<{ collegeId: string; channelId: string }> {
+  collegeService: CollegeService;
 }
 
 @inject(mobxHelper.injectFrom('college.collegeService'))
@@ -27,8 +26,10 @@ class ChannelLecturesPage extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.match.params.collegeId !== this.props.match.params.collegeId
-        || prevProps.match.params.channelId !== this.props.match.params.channelId) {
+    if (
+      prevProps.match.params.collegeId !== this.props.match.params.collegeId ||
+      prevProps.match.params.channelId !== this.props.match.params.channelId
+    ) {
       this.findCollegeAndChannel();
     }
   }
@@ -37,19 +38,24 @@ class ChannelLecturesPage extends Component<Props> {
     //
     const { match, collegeService } = this.props;
 
-    collegeService.findCollegeAndChannel(match.params.collegeId, match.params.channelId);
+    collegeService.findCollegeAndChannel(
+      match.params.collegeId,
+      match.params.channelId
+    );
   }
-
 
   render() {
     //
     const { collegeService } = this.props;
     const { college, channel } = collegeService;
-    
+
     return (
       <ContentLayout
         breadcrumb={[
-          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
+          {
+            text: `${college.name} College`,
+            path: routePaths.collegeLectures(college.collegeId),
+          },
           { text: `${channel.name} Channel` },
         ]}
       >

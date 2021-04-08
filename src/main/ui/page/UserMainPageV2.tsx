@@ -9,7 +9,7 @@ import MyTrainingService from '../../../myTraining/present/logic/MyTrainingServi
 import MyTrainingFilterRdoModel from '../../../myTraining/model/MyTrainingFilterRdoModel';
 // import MainModals from '../../sub/MainModals';
 // import MainModals from '../../sub/MainModals/TutorialModalViewV2';
-//import MainModals from '../../sub/MainModals/CoursePromotionModalView';
+import MainModals from '../../sub/MainModals/CoursePromotionModalView';
 
 interface Props {
   actionEventService: ActionEventService;
@@ -28,13 +28,6 @@ class UserMainPageV2 extends Component<Props> {
   constructor(props: Props) {
     //
     super(props);
-
-    const completedLearnings = window.sessionStorage.getItem('learningPassed');
-
-    if (completedLearnings === null || completedLearnings.length < 1) {
-      const { myTrainingService } = this.props;
-      myTrainingService!.saveAllLearningPassedToStorage('Passed', '0');
-    }
   }
 
   componentDidMount() {
@@ -83,7 +76,7 @@ class UserMainPageV2 extends Component<Props> {
           <MyLearningSummary />
           <MyLearningContentContainer />
 
-          {/*<MainModals />*/}
+          <MainModals />
         </div>
       </ContentLayout>
     );

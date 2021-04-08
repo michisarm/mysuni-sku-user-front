@@ -8,7 +8,6 @@ import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { MyStampXlsxModel } from './MyStampXlsxModel';
 import { CubeType } from '../../personalcube/personalcube/model';
 
-
 class MyTrainingTableViewModel {
   [key: string]: any;
   id: string = '';
@@ -43,7 +42,7 @@ class MyTrainingTableViewModel {
       학습유형: this.serviceType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      최근학습일: moment(this.time).format('YYYY.MM.DD')
+      최근학습일: moment(this.time).format('YYYY.MM.DD'),
     };
   }
 
@@ -56,12 +55,11 @@ class MyTrainingTableViewModel {
       학습유형: this.serviceType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD')
+      학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD'),
     };
   }
 
   toXlsxForMyStamp(index: number): MyStampXlsxModel {
-
     return {
       No: String(index),
       College: this.category && this.category.college && this.category.college.id || '-',

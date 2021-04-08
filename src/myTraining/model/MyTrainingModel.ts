@@ -54,6 +54,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
+  capacity: number = 0;
+  differDays: number = 0;
+  ribbonName: string = '';
 
   constructor(myTraining?: MyTrainingModel) {
     //
@@ -67,12 +70,16 @@ class MyTrainingModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(myTraining.category);
 
       // UI Model
-      this.cubeTypeName = MyTrainingModel.getCubeTypeName(myTraining.cubeType, this.serviceType);
+      this.cubeTypeName = MyTrainingModel.getCubeTypeName(
+        myTraining.cubeType,
+        this.serviceType
+      );
       this.passedStudentCount = myTraining.studentCount;
     }
   }
 
   toXlsxForInProgress(index: number): InProgressXlsxModel {
+    //
     return {
       No: String(index),
       College: this.category.college.name,
@@ -80,7 +87,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
       학습유형: this.cubeType,
       Level: this.level,
       학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
-      최근학습일: moment(this.time).format('YYYY.MM.DD')
+      최근학습일: moment(this.time).format('YYYY.MM.DD'),
     };
   }
 
@@ -92,7 +99,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
       학습유형: this.cubeType,
       Level: this.level,
       학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
-      학습완료일: moment(this.endDate).format('YYYY.MM.DD')
+      학습완료일: moment(this.endDate).format('YYYY.MM.DD'),
     };
   }
 
@@ -100,37 +107,26 @@ class MyTrainingModel extends DramaEntityObservableModel {
     return this.serviceType === LectureServiceType.Card ? true : false;
   }
 
-
   static getServiceType(myTraining: MyTrainingModel) {
     const serviceType = myTraining.serviceType as string;
 
-    if (serviceType.toUpperCase() === 'PROGRAM') {
-      return LectureServiceType.Program;
-    }
-    if (serviceType.toUpperCase() === 'COURSE') {
-      return LectureServiceType.Course;
+    if (serviceType.toUpperCase() === 'CARD') {
+      return LectureServiceType.Card;
     }
 
-    return LectureServiceType.Card;
+    return LectureServiceType.Cube;
   }
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
-    if (serviceType === LectureServiceType.Program) {
-      return CubeTypeNameType.Program;
-    }
-    else if (serviceType === LectureServiceType.Course) {
-      return CubeTypeNameType.Course;
-    }
-    else {
+    if (serviceType === LectureServiceType.Card) {
+      return CubeTypeNameType.Card;
+    } else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
 
-  static asStampXLSX(
-    myTraining: MyTrainingModel,
-    index: number
-  ) {
+  static asStampXLSX(myTraining: MyTrainingModel, index: number) {
     //
 
     return {
@@ -145,11 +141,14 @@ class MyTrainingModel extends DramaEntityObservableModel {
   @computed
   get state() {
     if (this.proposalState === ProposalState.Approved) {
-      if (this.learningState) return LearningStateName[LearningState[this.learningState]];
-      if (this.cubeType === CubeType.Community) return '가입완료';
+      if (this.learningState) {
+        return LearningStateName[LearningState[this.learningState]];
+      }
+      if (this.cubeType === CubeType.Community) {
+        return '가입완료';
+      }
       return '학습예정';
-    }
-    else {
+    } else {
       return ProposalStateName[ProposalState[this.proposalState]];
     }
   }
@@ -161,13 +160,19 @@ class MyTrainingModel extends DramaEntityObservableModel {
         return moment(Number(this.time)).format('YYYY.MM.DD') + ' 승인 요청';
       } else if (this.proposalState === ProposalState.Approved) {
         if (!this.learningState && this.startDate) {
-          return moment(Number(this.startDate)).format('YYYY.MM.DD') + ' 부터 학습시작';
+          return (
+            moment(Number(this.startDate)).format('YYYY.MM.DD') +
+            ' 부터 학습시작'
+          );
         }
 
         if (
-          this.learningState === LearningState.Progress || this.learningState === LearningState.Waiting
-          || this.learningState === LearningState.HomeworkWaiting || this.learningState === LearningState.TestWaiting
-          || this.learningState === LearningState.TestPassed || this.learningState === LearningState.Failed
+          this.learningState === LearningState.Progress ||
+          this.learningState === LearningState.Waiting ||
+          this.learningState === LearningState.HomeworkWaiting ||
+          this.learningState === LearningState.TestWaiting ||
+          this.learningState === LearningState.TestPassed ||
+          this.learningState === LearningState.Failed
         ) {
           return moment(Number(this.time)).format('YYYY.MM.DD') + ' 학습 시작';
         }
@@ -181,7 +186,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
         }
       }
       if (this.proposalState === ProposalState.Rejected) {
-        return moment(Number(this.time)).format('YYYY.MM.DD') + ' 수강신청 반려';
+        return (
+          moment(Number(this.time)).format('YYYY.MM.DD') + ' 수강신청 반려'
+        );
       }
     }
     return '';
@@ -218,6 +225,9 @@ decorate(MyTrainingModel, {
   baseUrl: observable,
   endDate: observable,
   retryDate: observable,
+  capacity: observable,
+  differDays: observable,
+  ribbonName: observable,
 });
 
 export default MyTrainingModel;

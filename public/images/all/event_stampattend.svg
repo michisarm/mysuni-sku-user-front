@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g transform="translate(-421 -521) translate(380 148) translate(40 214) translate(0 159)">
+                        <circle cx="21.107" cy="20" r="19" fill="#FFE207" stroke="#FF5740" stroke-width="2"/>
+                        <circle cx="21.107" cy="20" r="16.417" stroke="#FF5740" stroke-width=".5"/>
+                        <g>
+                            <path fill="#FF5740" d="M3.063.008l32.692.159c.94.004 1.75.662 1.946 1.58.593 2.766.89 4.758.89 5.975 0 1.206-.291 3.108-.873 5.707-.205.917-1.022 1.568-1.962 1.563L3.01 14.834c-.952-.005-1.768-.68-1.953-1.613L0 7.867l1.083-6.203C1.251.704 2.088.004 3.063.008z" transform="rotate(-15 68.347 8.998)"/>
+                            <text fill="#FFE207" font-family="GongGothicOTFMedium, Gong Gothic OTF" font-size="10" font-weight="400" transform="rotate(-15 68.347 8.998)">
+                                <tspan x="10.307" y="10.597">출석</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -21,6 +21,7 @@ import {
 } from 'myTraining/model';
 import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
+import { toPath } from '../../../../lecture/detail/viewModel/LectureParams';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
 
@@ -91,7 +92,9 @@ const InProgressLearning: React.FC<Props> = Props => {
     return inMyLectureMap.get(serviceId);
   };
 
-  const getRating = (learning: LectureModel | InMyLectureModel) => {
+  const getRating = (
+    learning: LectureModel | InMyLectureModel | MyTrainingModel
+  ) => {
     //
     const { ratingMap } = reviewService!;
     let rating: number | undefined;
@@ -127,7 +130,6 @@ const InProgressLearning: React.FC<Props> = Props => {
   const onViewDetail = (e: any, data: any) => {
     //
     const { model } = data;
-
     // react-ga event
     ReactGA.event({
       category: '메인_학습중',
@@ -138,33 +140,19 @@ const InProgressLearning: React.FC<Props> = Props => {
       label: `${model.name}`,
     });
 
-    const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+    const url = toPath({ cardId: model.serviceId, viewType: 'view' });
+    history.push(url);
+    // const cineroom =
+    //   patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+    //   patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        lectureRoutes.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutes.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
-      );
-    }
+    // if (model.serviceType === LectureServiceType.Card) {
+    //   history.push(lectureRoutes.courseOverview(model.cardId));
+    // } else if (model.serviceType === LectureServiceType.Cube) {
+    //   history.push(
+    //     lectureRoutes.lectureCardOverview(model.cardId, model.cubeId)
+    //   );
+    // }
   };
 
   const onActionLecture = (

@@ -13,7 +13,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { ActionLogService, NewPageService } from 'shared/stores';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
-import { ChannelModel } from 'college/model';
+import { ChannelModel, CollegeModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
@@ -37,6 +37,13 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 import { CoursePlanService } from 'course/stores';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
+import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
+import CardView from '../../../shared/Lecture/ui/view/CardVIew';
+import {
+  getCollegeStore,
+  onCollegeModelStore,
+  useCollegeModelStore,
+} from '../../../../shared/store/CollegeStore';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService;
@@ -53,9 +60,13 @@ interface Props extends RouteComponentProps<RouteParams> {
   isLoading?: boolean | false;
 }
 
+interface CollegeLecturesContainerInnerProps extends Props {
+  collegeModelStore: CollegeModel[];
+}
+
 interface State {
-  lectures: LectureModel[];
-  sorting: string;
+  lectures: CardWithCardRealtedCount[];
+  sorting: OrderByType;
   totalCnt: number; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
   collegeOrder: boolean;
 }
@@ -81,12 +92,36 @@ const CollegeLecturesContainer: React.FC<Props> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const collegeModelStore = useCollegeModelStore();
+
+  useEffect(() => {
+    if (lectureCountService === undefined || collegeModelStore === undefined) {
+      return;
+    }
+    const channels =
+      collegeModelStore
+        .find(c => c.id === match.params.collegeId)
+        ?.channels.map(
+          c =>
+            new ChannelModel({
+              id: c.id,
+              name: c.name,
+              channelId: c.id,
+              checked: false,
+            })
+        ) || [];
+    lectureCountService.setChannels(channels);
+  }, [collegeModelStore, match.params.collegeId, lectureCountService]);
 
   useEffect(() => {
     if (loading) {
       scrollOnceMove();
     }
   }, [loading]);
+
+  if (collegeModelStore === undefined) {
+    return null;
+  }
 
   return (
     <CollegeLecturesContainerInner
@@ -105,6 +140,7 @@ const CollegeLecturesContainer: React.FC<Props> = ({
       scrollSave={scrollSave}
       setIsLoading={setIsLoading}
       isLoading={isLoading}
+      collegeModelStore={collegeModelStore}
     />
   );
 };
@@ -124,23 +160,25 @@ export default withRouter(CollegeLecturesContainer);
 )
 @reactAutobind
 @observer
-class CollegeLecturesContainerInner extends Component<Props, State> {
+class CollegeLecturesContainerInner extends Component<
+  CollegeLecturesContainerInnerProps,
+  State
+> {
   //
   PAGE_KEY = 'lecture.category';
 
   PAGE_SIZE = 8;
 
-  state = {
-    lectures: [],
-    sorting: OrderByType.Time,
-    totalCnt: 0, // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
-    collegeOrder: false,
-  };
-
-  constructor(props: Props) {
+  constructor(props: CollegeLecturesContainerInnerProps) {
     //
     super(props);
     this.init();
+    this.state = {
+      lectures: [],
+      sorting: OrderByType.Time,
+      totalCnt: 0, // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
+      collegeOrder: false,
+    };
   }
 
   async componentDidMount() {
@@ -149,6 +187,28 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
     this.initialFindPagingCollegeLectures();
     this.findChannels();
     this.findInMyLectures();
+    const { lectureCountService, match } = this.props;
+    onCollegeModelStore(collegeModelStore => {
+      if (collegeModelStore === undefined) {
+        return;
+      }
+      if (lectureCountService === undefined) {
+        return;
+      }
+      const channels =
+        collegeModelStore
+          .find(c => c.id === match.params.collegeId)
+          ?.channels.map(
+            c =>
+              new ChannelModel({
+                id: c.id,
+                name: c.name,
+                channelId: c.id,
+                checked: false,
+              })
+          ) || [];
+      lectureCountService.setChannels(channels);
+    }, 'CollegeLecturesContainerInner');
   }
 
   async componentDidUpdate(prevProps: Props) {
@@ -234,29 +294,13 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
       sorting
     );
 
-    const feedbackIds = (lectureService!.lectures || []).map(
-      (lecture: LectureModel) => lecture.reviewId
-    );
-    if (feedbackIds && feedbackIds.length) {
-      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-    }
-
     this.setState(prevState => ({
       lectures: [...prevState.lectures, ...lectureOffsetList.results],
     }));
     setIsLoading && setIsLoading(false);
 
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
-    const category = JSON.parse(sessionStorage.getItem('category')!);
-    let totalCount = 0;
-    if (category === null) {
-      return;
-    }
-    category.map((data: any) => {
-      if (data.collegeId === match.params.collegeId) {
-        totalCount = data.totalCount;
-      }
-    });
+    const totalCount = lectureOffsetList.totalCount;
     this.setState({ totalCnt: totalCount });
 
     newPageService!.setTotalCountAndPageNo(
@@ -376,30 +420,12 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
       patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
       patronInfo.getCineroomByDomain(model)!;
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
+    if (model.serviceType === LectureServiceType.Card) {
       // history.push(routePaths.courseOverviewPrev(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-      history.push(
-        routePaths.courseOverview(
-          cineroom.id,
-          college.collegeId,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.courseOverview(model.cardId));
+    } else if (model.serviceType === LectureServiceType.Cube) {
       // history.push(routePaths.lectureCardOverviewPrev(college.collegeId, model.cubeId, model.serviceId));
-      history.push(
-        routePaths.lectureCardOverview(
-          cineroom.id,
-          college.collegeId,
-          model.cubeId,
-          model.serviceId
-        )
-      );
+      history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
     scrollSave && scrollSave();
   }
@@ -430,6 +456,7 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
       collegeService,
       reviewService,
       inMyLectureService,
+      lectureCountService,
       isLoading,
     } = this.props;
     const { lectures, sorting, totalCnt, collegeOrder } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
@@ -474,33 +501,13 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
         ) : lectures && lectures.length > 0 && lectures[0] ? (
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel, index: number) => {
-                let rating: number | undefined =
-                  ratingMap.get(lecture.reviewId) || 0;
-                const inMyLecture =
-                  inMyLectureMap.get(lecture.serviceId) || undefined;
-                if (lecture.cubeType === CubeType.Community) rating = undefined;
+              {lectures.map(({ card, cardRelatedCount }) => {
                 return (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    model={lecture}
-                    rating={rating}
-                    thumbnailImage={lecture.baseUrl || undefined}
-                    action={
-                      inMyLecture
-                        ? Lecture.ActionType.Remove
-                        : Lecture.ActionType.Add
-                    }
-                    onAction={() => {
-                      reactAlert({
-                        title: '알림',
-                        message: inMyLecture
-                          ? '본 과정이 관심목록에서 제외되었습니다.'
-                          : '본 과정이 관심목록에 추가되었습니다.',
-                      });
-                      this.onActionLecture(inMyLecture || lecture);
-                    }}
-                    onViewDetail={this.onViewDetail}
+                  <CardView
+                    key={card.id}
+                    cardId={card.id}
+                    {...card}
+                    {...cardRelatedCount}
                   />
                 );
               })}
@@ -519,8 +526,10 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
   renderChannelsLectures() {
     //
     const { lectureCountService } = this.props;
-    const { channels } = lectureCountService!;
-
+    if (lectureCountService === undefined) {
+      return null;
+    }
+    const { channels } = lectureCountService;
     return (
       <ChannelsLecturesWrapperView>
         {channels &&
@@ -542,7 +551,10 @@ class CollegeLecturesContainerInner extends Component<Props, State> {
   render() {
     //
     const { lectureCountService } = this.props;
-    const { channels, allSelected } = lectureCountService!;
+    const { allSelected, channels } = lectureCountService!;
+    const { collegeModelStore } = this.props;
+    const { params } = this.props.match;
+    const { collegeId } = params;
 
     return (
       <CategoryLecturesContentWrapperView>

@@ -57,7 +57,6 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   const [limit, setLimit] = useState<number>(20);
   const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('');
-
   // const approveData = useCommunityMemberApprove();
   const AllData =
     communityMembers && communityMembers.results.map(item => item.memberId);

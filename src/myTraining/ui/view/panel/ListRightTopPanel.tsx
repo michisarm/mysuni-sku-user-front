@@ -6,15 +6,17 @@ import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { ApprovalViewType } from '../../logic/PersonalLearningListContainer';
+import { ContentType } from '../../page/NewLearningPage';
+import { EnrollingViewType } from '../../logic/NewLearningListContainer';
 
 interface Props {
-  contentType: MyContentType;
+  contentType: MyContentType | ContentType;
   resultEmpty?: boolean;
   filterCount?: number;
   openFilter?: boolean;
   activeFilter?: boolean;
   onClickFilter?: () => void;
-  checkedViewType?: ApprovalViewType;
+  checkedViewType?: ApprovalViewType | EnrollingViewType;
   onChangeViewType?: (e: any, data: any) => void;
 }
 
@@ -22,7 +24,7 @@ function ListRightTopPanel(props: Props) {
   const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
 
   /* render functions */
-  const renderRadiobox = (contentType: MyContentType) => {
+  const renderRadiobox = (contentType: MyContentType | ContentType) => {
     switch (contentType) {
       case MyApprovalContentType.PersonalLearning:
         return (
@@ -41,18 +43,36 @@ function ListRightTopPanel(props: Props) {
             ))}
           </div>
         )
+      case ContentType.Enrolling:
+        return !resultEmpty && (
+          <div className="view-all">
+            {CheckboxOptions.enrollingViewTypes.map((enrollingViewType, index) => (
+              <Fragment key={`enrolling-view-type-${index}`}>
+                <Checkbox
+                  className="base radio"
+                  name={enrollingViewType.name}
+                  label={enrollingViewType.label}
+                  value={enrollingViewType.value}
+                  checked={enrollingViewType.value === checkedViewType}
+                  onChange={onChangeViewType}
+                />
+              </Fragment>
+            ))}
+          </div>
+        );  
       default:
         return null;
     }
   };
 
-  const renderFilter = (contentType: MyContentType) => {
+  const renderFilter = (contentType: MyContentType | ContentType) => {
     const active = activeFilter ? 'btn-filter-blue' : 'left post';
     const open = openFilter ? 'on' : '';
 
     switch (contentType) {
       case MyLearningContentType.PersonalCompleted:
       case MyApprovalContentType.PersonalLearning:
+      case ContentType.Enrolling:
         return null;
       default:
         return (

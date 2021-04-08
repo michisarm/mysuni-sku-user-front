@@ -4,9 +4,8 @@ import { CubeType } from 'personalcube/personalcube/model';
 import { DifficultyLevel } from './DifficultyLevel';
 
 
-
 class InMyLectureTableViewModel {
-  //
+  // 관심목록
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
@@ -22,6 +21,9 @@ class InMyLectureTableViewModel {
   endDate: number = 0; // 학습완료일 (취소/미이수일)
   createDate: number = 0; // 등록일
   stampCount: number = 0; // 스탬프
+  lastStudyDate: number = 0; // 최근학습일
+  passedLearningCount: number = 0;
+  totalLearningCount: number = 0;
 
   constructor(inMyLectureTableView?: InMyLectureTableViewModel) {
     if (inMyLectureTableView) {

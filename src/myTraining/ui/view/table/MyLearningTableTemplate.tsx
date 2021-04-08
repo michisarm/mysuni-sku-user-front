@@ -5,6 +5,7 @@ import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../../model/MyTrainingRouteParams';
 import { MyPageRouteParams } from '../../../model/MyPageRouteParams';
+import { MyApprovalRouteParams } from '../../../model/MyApprovalRouteParams';
 
 interface Props {
   children: React.ReactNode;
@@ -12,7 +13,8 @@ interface Props {
 
 function MyLearningTableTemplate(props: Props) {
   const { children } = props;
-  const params = useParams<MyTrainingRouteParams | MyPageRouteParams>();
+  const params = useParams<MyTrainingRouteParams | MyPageRouteParams | MyApprovalRouteParams>();
+  const contentType = params.tab;
 
   return (
     <div className={getWrapperStyle(params.tab)}>
@@ -29,6 +31,33 @@ function MyLearningTableTemplate(props: Props) {
             <col width="10%" />
           </colgroup>
         )}
+        {contentType === MyLearningContentType.InProgress && (
+          <colgroup>
+            <col width="4%" />
+            <col width="4%" />
+            <col width="15%" />
+            <col width="25%" />
+            <col width="11%" />
+            <col width="11%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+          </colgroup>
+        )}
+        {(contentType === MyLearningContentType.InMyList ||
+          contentType === MyLearningContentType.Required) && (
+          <colgroup>
+            <col width="8%" />
+            <col width="12%" />
+            <col width="20%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+          </colgroup>
+        )}
         {children}
       </Table>
     </div>
@@ -40,7 +69,8 @@ export default memo(MyLearningTableTemplate);
 /* globals */
 const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
   switch (contentType) {
-    case MyPageContentType.EarnedStampList: /* My Stamp */
+    /* My Stamp */
+    case MyPageContentType.EarnedStampList:
       return 'mystamp-list-wrap';
     default:
       return 'mylearning-list-wrap';
@@ -49,15 +79,19 @@ const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType 
 
 const getTableStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
   switch (contentType) {
-    case MyLearningContentType.InProgress: /* 학습중 */
+    /* 학습중 */
+    case MyLearningContentType.InProgress:
       return 'ml-02-02';
-    case MyLearningContentType.Completed: /* mySUNI 학습완료 */
+    /* mySUNI 학습완료 */
+    case MyLearningContentType.Completed:
       return 'ml-02-06';
     case MyLearningContentType.PersonalCompleted:
       return 'ml-02-09';
-    case MyPageContentType.EarnedStampList: /* My Stamp */
+    /* My Stamp */
+    case MyPageContentType.EarnedStampList:
       return '';
-    case MyApprovalContentType.PersonalLearning: /* 개인학습 */
+    /* 개인학습 */
+    case MyApprovalContentType.PersonalLearning:
       return 'my-04-01';
     default:
       return 'ml-02-03';

@@ -1,22 +1,34 @@
 import { decorate, observable } from 'mobx';
 import IdName from './IdName';
 import CategoryColorType from './CategoryColorType';
+import { Category } from './Category';
+import {
+  getChannelName,
+  getCollgeName,
+} from '../service/useCollege/useRequestCollege';
 
 export class CategoryModel {
   college: IdName = new IdName();
   channel: IdName = new IdName();
   color?: CategoryColorType = CategoryColorType.Default;
 
-  constructor(category?: CategoryModel) {
+  constructor(category?: CategoryModel | Category) {
     //
-    if (category) {
-      const college =
-        (category.college && new IdName(category.college)) || this.college;
-      const channel =
-        (category.channel && new IdName(category.channel)) || this.channel;
-      Object.assign(this, { college, channel });
+    if (category !== undefined) {
+      if (category instanceof CategoryModel) {
+        const college =
+          (category.college && new IdName(category.college)) || this.college;
+        const channel =
+          (category.channel && new IdName(category.channel)) || this.channel;
+        Object.assign(this, { college, channel });
+      } else {
+        this.college.id = category.collegeId;
+        this.college.name = getCollgeName(category.collegeId) || '';
+        this.channel.id = category.channelId;
+        this.channel.name = getChannelName(category.channelId) || '';
+      }
 
-      this.color = CategoryModel.getColor(college);
+      this.color = CategoryModel.getColor(this.college);
     }
   }
 

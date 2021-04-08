@@ -1,5 +1,6 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import AppInitializer from './AppInitializer';
 import ScrollToTop from './ScrollToTop';
 
 import { UserApp, AppLayout } from './shared';
@@ -69,6 +70,7 @@ class Routes extends PureComponent {
           </Suspense>
         </UserApp>
         <HistoryContainer />
+        <AppInitializer />
       </BrowserRouter>
     );
   }

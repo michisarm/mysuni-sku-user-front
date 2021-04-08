@@ -1,0 +1,20 @@
+
+@hostname = localhost
+@port = 8111
+# @host = {{hostname}}:{{port}}
+@host = university.sk.com/api/course
+
+@coursePlanId = COURSE-PLAN-1ja
+@email = ss.park@sk.com
+@name = 박성수
+
+### 코스: 관리자 여부 확인
+GET http://{{host}}/coursePlans/operator
+    ?coursePlanId={{coursePlanId}}
+    &email={{email}}
+    &name={{name}}
+audienceId: r57s-r@ne1-m2-c2
+cineroomUsid: SKCC
+cineroomRoles: User
+dramaRoles: User
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRpdGlvbmFsSW5mb3JtYXRpb24iOnsiY29tcGFueUNvZGUiOiJTS0NDIiwiZW1wbG95ZWVJZCI6IjA3NTc4In0sImxvZ2luSWQiOiJkanBhZWtAc2suY29tIiwidXNlcl9uYW1lIjoiZGpwYWVrQHNrLmNvbSIsImRpc3BsYXlOYW1lIjoi67Cx64-Z7KO8Iiwic2NvcGUiOlsiY2xpZW50Il0sIndvcmtzcGFjZXMiOnsic3RhdGlvbldvcmtzcGFjZXMiOm51bGwsInNxdWFyZVdvcmtzcGFjZXMiOm51bGwsInBhdmlsaW9uV29ya3NwYWNlcyI6bnVsbCwiY2luZXJvb21Xb3Jrc3BhY2VzIjpbeyJpZCI6Im5lMS1tMi1jMzEiLCJuYW1lIjoiVEVTVCBHcm91cCIsInRlbmFudElkIjoicjV3bC1yQG5lMS1tMi1jMzEiLCJyb2xlcyI6WyJVc2VyIl19LHsiaWQiOiJuZTEtbTItYzE3IiwibmFtZSI6IlNLKOyjvClDJkMiLCJ0ZW5hbnRJZCI6InI1d2wtckBuZTEtbTItYzE3Iiwicm9sZXMiOlsiVXNlciIsIkNvbXBhbnlNYW5hZ2VyIl19LHsiaWQiOiJuZTEtbTItYzIiLCJuYW1lIjoiU0sgVW5pdmVyc2l0eSIsInRlbmFudElkIjoicjV3bC1yQG5lMS1tMi1jMiIsInJvbGVzIjpbIlVzZXIiLCJDb2xsZWdlTWFuYWdlciIsIlN1cGVyTWFuYWdlciJdfSx7ImlkIjoibmUxLW0yLWM0MiIsIm5hbWUiOiLsmrjsgrDsp4DtlLzsl5DsiqQiLCJ0ZW5hbnRJZCI6InI1d2wtckBuZTEtbTItYzQyIiwicm9sZXMiOlsiVXNlciIsIkNvbXBhbnlNYW5hZ2VyIl19XSwic3R1ZGlvV29ya3NwYWNlIjpudWxsfSwiZXhwIjoxNjE3NzEyMzQyLCJhdXRob3JpdGllcyI6WyJVc2VyIl0sImp0aSI6ImNkZWQ4NGFkLTFjYTUtNDQ2Ni1hM2JiLTk4YWNmNzJhMDM4NyIsImNsaWVudF9pZCI6Im5hcmEifQ.ZZRIx1UAm1SBrZOs8oxYQGa7xHva85r5vmihTUDiUJs

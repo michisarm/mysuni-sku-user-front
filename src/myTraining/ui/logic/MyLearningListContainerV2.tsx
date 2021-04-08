@@ -166,6 +166,7 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
+      /* 권장과정 */
       case MyLearningContentType.Required: {
         setIsLoading(true);
         const isEmpty = await lectureService!.findAllRqdTableViews();

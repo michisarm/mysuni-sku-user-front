@@ -16,7 +16,6 @@ import LectureRdoModel from '../../../model/LectureRdoModel';
 import LectureViewModel from '../../../model/LectureViewModel';
 import RecommendLectureRdo from '../../../model/RecommendLectureRdo';
 import RecommendLectureListRdo from '../../../model/RecommendLectureListRdo';
-import CommunityLectureRdoModel from '../../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../../model/InstructorRdoModel';
 import OrderByType from '../../../model/OrderByType';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
@@ -24,9 +23,10 @@ import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
-import { countRequiredCards } from '../../../detail/api/cardApi';
-import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
+import { findByRdo } from '../../../detail/api/cardApi';
+import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
+import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
 
 @autobind
 class LectureService {
@@ -40,7 +40,10 @@ class LectureService {
   private studentFlowApi: StudentFlowApi;
 
   @observable
-  _lectures: LectureModel[] = [];
+  _lectures: CardWithCardRealtedCount[] = [];
+
+  @observable
+  _requiredLectures: LectureModel[] = [];
 
   @observable
   totalLectureCount: number = 0;
@@ -59,8 +62,7 @@ class LectureService {
   @observable
   _lectureViews: LectureViewModel[] = [];
 
-  // 
-
+  //
 
   //
 
@@ -92,9 +94,16 @@ class LectureService {
   }
 
   @computed
-  get lectures(): LectureModel[] {
+  get lectures(): CardWithCardRealtedCount[] {
     //
     const lectures = this._lectures as IObservableArray;
+    return lectures.peek();
+  }
+
+  @computed
+  get requiredLectures(): LectureModel[] {
+    //
+    const lectures = this._requiredLectures as IObservableArray;
     return lectures.peek();
   }
 
@@ -138,16 +147,17 @@ class LectureService {
     orderBy: OrderByType
   ) {
     //
-    const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithCollege(collegeId, limit, offset, orderBy)
-    );
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
+    const response =
+      (await findByRdo({
+        collegeIds: collegeId,
+        limit,
+        offset,
+        orderBy,
+      })) || new OffsetElementList<CardWithCardRealtedCount>();
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
+    const lectureOffsetElementList = new OffsetElementList<
+      CardWithCardRealtedCount
+    >(response);
 
     runInAction(
       () =>
@@ -165,17 +175,16 @@ class LectureService {
     offset: number,
     orderBy: OrderByType
   ) {
-    //
-    const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy)
-    );
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
+    const response =
+      (await findByRdo({
+        channelIds: channelId,
+        limit,
+        offset,
+        orderBy,
+      })) || new OffsetElementList<CardWithCardRealtedCount>();
+    const lectureOffsetElementList = new OffsetElementList<
+      CardWithCardRealtedCount
+    >(response);
 
     runInAction(
       () =>
@@ -200,48 +209,22 @@ class LectureService {
     }
     const getChannelOffset: any = sessionStorage.getItem('channelOffset');
     const prevSorting: any = sessionStorage.getItem('channelSort');
-    const prevChannelOffset = JSON.parse(getChannelOffset)
+    const prevChannelOffset = JSON.parse(getChannelOffset);
 
-    const response = await this.lectureApi.findAllLectures(
-      LectureRdoModel.newWithChannelOrder(collegeId, channelId, prevChannelOffset + limit, 0, prevSorting || orderBy)
-    );
+    const response =
+      (await findByRdo({
+        collegeIds: collegeId,
+        channelIds: channelId,
+        limit,
+        offset,
+        orderBy,
+      })) || new OffsetElementList<CardWithCardRealtedCount>();
 
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
+    const lectureOffsetElementList = new OffsetElementList<
+      CardWithCardRealtedCount
+    >(response);
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
-
-    runInAction(
-      () =>
-        (this._lectures = lectureOffsetElementList.results)
-    );
-    return lectureOffsetElementList;
-  }
-
-
-  @action
-  async findPagingCommunityLectures(limit: number, offset: number) {
-    //
-    const response = await this.lectureApi.findAllCommunityLectures(
-      CommunityLectureRdoModel.new(limit, offset)
-    );
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      response
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
-
-    runInAction(
-      () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
-    );
+    runInAction(() => (this._lectures = lectureOffsetElementList.results));
     return lectureOffsetElementList;
   }
 
@@ -275,27 +258,7 @@ class LectureService {
 
     runInAction(
       () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
-    );
-    return lectureOffsetElementList;
-  }
-
-  @action
-  async setPagingRequiredLectures(lectures: OffsetElementList<LectureModel>) {
-    //
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
-      lectures
-    );
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
-      lecture => new LectureModel(lecture)
-    );
-
-    runInAction(
-      () =>
-        (this._lectures = this._lectures.concat(
+        (this._requiredLectures = this._requiredLectures.concat(
           lectureOffsetElementList.results
         ))
     );
@@ -413,12 +376,13 @@ class LectureService {
       lecture => new LectureModel(lecture)
     );
 
-    runInAction(
-      () =>
-        (this._lectures = this._lectures.concat(
-          lectureOffsetElementList.results
-        ))
-    );
+    // jz - 강사 상세 페이지
+    // runInAction(
+    //   () =>
+    //     (this._lectures = this._lectures.concat(
+    //       lectureOffsetElementList.results
+    //     ))
+    // );
     return lectureOffsetElementList;
   }
 
@@ -442,10 +406,11 @@ class LectureService {
     );
 
     // add totalLectureCount by gon
-    runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      this.totalLectureCount = lectureOffsetElementList.totalCount;
-    });
+    // jz - shared
+    // runInAction(() => {
+    //   this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+    //   this.totalLectureCount = lectureOffsetElementList.totalCount;
+    // });
     return lectureOffsetElementList;
   }
 
@@ -559,7 +524,9 @@ class LectureService {
 
   @action
   async countRequiredLectures() {
-    const count = await countRequiredCards();
+    const count = await this.lectureFlowApi.countRequiredLectures(
+      this._lectureFilterRdoV2
+    );
 
     if (count !== undefined) {
       runInAction(() => {
@@ -581,7 +548,7 @@ class LectureService {
   _filterCountViews: FilterCountViewModel[] = [];
 
   @observable
-  _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel()
+  _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
 
   @computed get filterCountViews() {
     return this._filterCountViews;
@@ -620,13 +587,19 @@ class LectureService {
 
   @action
   async findAllRqdTableViews() {
-    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
+    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(
+      this._lectureFilterRdoV2
+    );
 
-    if (offsetTableViews &&
+    if (
+      offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length) {
+      offsetTableViews.results.length
+    ) {
       runInAction(() => {
-        this._lectureTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+        this._lectureTableViews = offsetTableViews.results.map(
+          result => new LectureTableViewModel(result)
+        );
         this._lectureTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -637,13 +610,19 @@ class LectureService {
 
   @action
   async findAllRqdTableViewsByConditions() {
-    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
+    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(
+      this._lectureFilterRdoV2
+    );
 
-    if (offsetTableViews &&
+    if (
+      offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length) {
+      offsetTableViews.results.length
+    ) {
       runInAction(() => {
-        this._lectureTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+        this._lectureTableViews = offsetTableViews.results.map(
+          result => new LectureTableViewModel(result)
+        );
         this._lectureTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -653,15 +632,23 @@ class LectureService {
 
   @action
   async findAllRqdTableViewsWithPage(offset: Offset) {
-    const newOffset: Offset = { offset: 0, limit: offset.offset + offset.limit }
+    const newOffset: Offset = {
+      offset: 0,
+      limit: offset.offset + offset.limit,
+    };
     this._lectureFilterRdoV2.changeOffset(newOffset);
-    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
+    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(
+      this._lectureFilterRdoV2
+    );
 
     if (
       offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length) {
-      const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+      offsetTableViews.results.length
+    ) {
+      const addedTableViews = offsetTableViews.results.map(
+        result => new LectureTableViewModel(result)
+      );
 
       runInAction(() => {
         this._lectureTableViews = [...addedTableViews];
@@ -671,11 +658,17 @@ class LectureService {
 
   @action
   async findAllFilterCountViews() {
-    const response = await this.lectureFlowApi.findAllFilterCountViews(this._lectureFilterRdoV2);
+    const response = await this.lectureFlowApi.findAllFilterCountViews(
+      this._lectureFilterRdoV2
+    );
 
     if (response) {
-      const filterCountViews = response.map((filterCountView: any) => new FilterCountViewModel(filterCountView));
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(filterCountViews);
+      const filterCountViews = response.map(
+        (filterCountView: any) => new FilterCountViewModel(filterCountView)
+      );
+      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
+        filterCountViews
+      );
 
       runInAction(() => {
         this._filterCountViews = filterCountViews;
@@ -695,11 +688,15 @@ class LectureService {
     const propKey = converToKey(column);
 
     if (direction === Direction.ASC) {
-      this._lectureTableViews = this._lectureTableViews.sort((a, b) => a[propKey] - b[propKey]);
+      this._lectureTableViews = this._lectureTableViews.sort(
+        (a, b) => a[propKey] - b[propKey]
+      );
       return;
     }
     if (direction === Direction.DESC) {
-      this._lectureTableViews = this._lectureTableViews.sort((a, b) => b[propKey] - a[propKey]);
+      this._lectureTableViews = this._lectureTableViews.sort(
+        (a, b) => b[propKey] - a[propKey]
+      );
     }
   }
 
@@ -724,6 +721,8 @@ const converToKey = (column: string): any => {
   switch (column) {
     case '학습시간':
       return 'learningTime';
+    case '최근학습일':
+      return 'time';
     case '스탬프':
       return 'stampCount';
     case '등록일':
