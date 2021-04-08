@@ -62,9 +62,7 @@ function MyLearningListContainerV2(props: Props) {
   } = props;
   const { profileMemberName } = skProfileService!;
   const { colleges } = collegeService!;
-  const { inprogressCount } = myTrainingService!;
 
-  /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -76,36 +74,38 @@ function MyLearningListContainerV2(props: Props) {
   const learningOffset: any = sessionStorage.getItem('learningOffset');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  /* effects */
   useEffect(() => {
-    /* 상위 컴포넌트에서 조회되는 colleges 가 없을 경우, MultiFilterBox 에 전달하기 위해 다시 조회함.*/
-    if (!colleges || !colleges.length) {
-      collegeService!.findAllColleges();
+    if(
+      colleges &&
+      colleges.length > 0
+    ) {
+      return;
     }
+
+    collegeService!.findAllColleges();
   }, []);
 
   useEffect(() => {
     refeshPageInfo();
     fetchModelsByContentType(contentType);
-  }, [contentType]);
-
-  useEffect(() => {
-    /* just for clean up */
-    return () => clearStore(contentType);
-  }, [contentType]);
-
-  useEffect(() => {
-    /* 
-      contentType 및 viewType 이 변함에 따라 
-      필터 항목 별 카운트는 다시 조회되어야 함. 
-    */
     fetchFilterCountViews(contentType);
 
-    return () => clearFilterCountViews(contentType);
+    return () => {
+      clearStore(contentType);
+      clearFilterCountViews(contentType);
+    }
   }, [contentType]);
 
-  /* functions */
 
+  useEffect(() => {
+    if (refresh) {
+      refeshPageInfo();
+      getPageInfo();
+    }
+  }, [refresh]);
+
+  const refeshPageInfo = () => setRefesh(() => !refresh);
+  
   const fetchFilterCountViews = (contentType: MyContentType): void => {
     /* 필터 항목 별 카운트를 조회하기 위함. */
     switch (contentType) {
@@ -124,6 +124,8 @@ function MyLearningListContainerV2(props: Props) {
 
   const clearFilterCountViews = (contentType: MyContentType): void => {
     switch (contentType) {
+      case MyLearningContentType.PersonalCompleted:
+        break;
       case MyLearningContentType.InMyList:
         inMyLectureService!.clearAllFilterCountViews();
         break;
@@ -136,11 +138,8 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const fetchModelsByContentType = async (contentType: MyContentType) => {
-    //
-    //clearStore(contentType);
     initStore(contentType);
     switch (contentType) {
-      /* 학습중 & mySUNI 학습완료 */
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
         setIsLoading(true);
@@ -150,7 +149,6 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
-      /* 개인학습 완료 & 승인관리 페이지 개인학습 */
       case MyLearningContentType.PersonalCompleted: {
         setIsLoading(true);
         const offsetApl = await aplService!.findAllAplsByQuery();
@@ -160,7 +158,6 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
-      /* 관심목록 & 권장과정 */
       case MyLearningContentType.InMyList: {
         setIsLoading(true);
         const isEmpty = await inMyLectureService!.findAllTableViews();
@@ -177,7 +174,6 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
-      /* My Page :: My Stamp */
       case MyPageContentType.EarnedStampList: {
         setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllStampTableViews();
@@ -186,7 +182,7 @@ function MyLearningListContainerV2(props: Props) {
         setIsLoading(false);
         return;
       }
-      /* 학습예정 & 취소/미이수 */
+
       default: {
         setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllTableViews();
@@ -236,14 +232,6 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const refeshPageInfo = () => setRefesh(() => !refresh);
-
-  useEffect(() => {
-    if (refresh) {
-      refeshPageInfo();
-      getPageInfo();
-    }
-  }, [refresh]);
 
   const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry'];
 
@@ -441,10 +429,7 @@ function MyLearningListContainerV2(props: Props) {
 
   const onConfirmModal = useCallback(async () => {
     const { selectedServiceIds } = myTrainingService!;
-    /*
-      선택된 serviceIds 를 통해 DELETE(숨김) 처리를 함.
-      숨김 처리 후 목록 업데이트를 위해 다시 목록 조회가 필요함.
-    */
+
     const isHidden = await studentService!.hideWithSelectedServiceIds(
       selectedServiceIds
     );
@@ -526,6 +511,7 @@ function MyLearningListContainerV2(props: Props) {
       NoSuchContentPanelMessages.getMessageByConentType(contentType)
     );
   };
+  
   const noSuchLink = (contentType: MyContentType) => {
     return (
       (contentType === MyLearningContentType.InProgress && {
@@ -533,39 +519,6 @@ function MyLearningListContainerV2(props: Props) {
         path: '/lecture/recommend',
       }) ||
       undefined
-    );
-  };
-
-  const renderNoSuchContentPanel = (
-    contentType: MyContentType,
-    withFilter: boolean = false
-  ) => {
-    const message =
-      (withFilter && '필터 조건에 해당하는 결과가 없습니다.') ||
-      NoSuchContentPanelMessages.getMessageByConentType(contentType);
-
-    const link =
-      (contentType === MyLearningContentType.InProgress && {
-        text: `${profileMemberName} 님에게 추천하는 학습 과정 보기`,
-        path: '/lecture/recommend',
-      }) ||
-      undefined;
-
-    return (
-      <Segment
-        style={{
-          paddingTop: 0,
-          paddingBottom: 0,
-          paddingLeft: 0,
-          paddingRight: 0,
-          height: 400,
-          boxShadow: '0 0 0 0',
-          border: 0,
-        }}
-      >
-        <Loadingpanel loading={isLoading} />
-        {!isLoading && <NoSuchContentPanel message={message} link={link} />}
-      </Segment>
     );
   };
 
@@ -601,7 +554,6 @@ function MyLearningListContainerV2(props: Props) {
                   onClickSort={onClickSort}
                 />
                 <MyLearningTableBody
-                  contentType={contentType}
                   models={getModels(contentType)}
                   totalCount={getTotalCount(contentType)}
                 />

@@ -8,7 +8,6 @@ import { FilterCondition } from '../../../model/FilterCondition';
 import { FilterConditionName } from '../../../model/FilterConditionName';
 
 
-
 interface FilterBoxViewProps {
   colleges: CollegeModel[];
   conditions: FilterCondition;
@@ -53,7 +52,7 @@ export function FilterBoxView({
                   <Checkbox
                     className="base"
                     name={FilterConditionName.College}
-                    label={`${college.name} (${getCollegeCount(filterCounts, college.name)})`}
+                    label={`${college.name} (${getCollegeCount(filterCounts, college.id)})`}
                     value={college.id}
                     checked={conditions.collegeIds.includes(college.id)}
                     onChange={onCheckOne}
@@ -221,7 +220,7 @@ export function FilterBoxView({
 
 const SELECT_ALL = 'Select All';
 
-const getCollegeCount = (filterCountViews: FilterCountViewModel[], collegeName: string): number => {
-  const filterCountView = filterCountViews.find(filterCountview => filterCountview.collegeName === collegeName);
+const getCollegeCount = (filterCountViews: FilterCountViewModel[], collegeId: string): number => {
+  const filterCountView = filterCountViews.find(filterCountview => filterCountview.collegeId === collegeId);
   return filterCountView ? filterCountView.college : 0;
 }

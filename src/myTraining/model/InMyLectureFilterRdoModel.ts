@@ -20,10 +20,6 @@ class InMyLectureFilterRdoModel {
     }
   }
 
-  static create() {
-    return new InMyLectureFilterRdoModel();
-  }
-
   static createWithConditions(
     collegeIds: string[],
     difficultyLevels: string[],

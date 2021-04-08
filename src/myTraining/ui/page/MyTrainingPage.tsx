@@ -19,6 +19,7 @@ import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrain
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { usePublishViewEvent } from '../../service/usePublishViewEvent';
 import { useRequestLearningStorage } from '../../service/useRequestLearningStorage';
+import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 
 
 interface MyTrainingPageProps {
@@ -50,6 +51,7 @@ function MyTrainingPage({
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
 
+  useRequestCollege();
   useRequestLearningStorage();
   useRequestAllMyTrainingCount();
   usePublishViewEvent('LEARNING_VIEW');

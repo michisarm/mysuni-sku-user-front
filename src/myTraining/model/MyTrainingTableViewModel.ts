@@ -1,4 +1,4 @@
-import { observable, decorate, computed } from 'mobx';
+import { observable, decorate } from 'mobx';
 import moment from 'moment';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { CategoryModel, LearningState } from 'shared/model';
@@ -6,6 +6,7 @@ import { DifficultyLevel } from './DifficultyLevel';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { MyStampXlsxModel } from './MyStampXlsxModel';
+import { CubeType } from '../../personalcube/personalcube/model';
 
 
 class MyTrainingTableViewModel {
@@ -16,6 +17,7 @@ class MyTrainingTableViewModel {
   category: CategoryModel = new CategoryModel();
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState?: LearningState;
+  cubeType: CubeType = CubeType.None;
   name: string = '';
   learningTime: number = 0;
   startDate: number = 0; // 학습시작일
@@ -30,25 +32,6 @@ class MyTrainingTableViewModel {
     if (myTrainingTableView) {
       Object.assign(this, myTrainingTableView);
     }
-  }
-
-  @computed get formattedLearningTime(): string {
-    return timeToHourMinutePaddingFormat(this.learningTime);
-  }
-
-  @computed get displayStampCount() {
-    if (!this.stampCount) {
-      return '-';
-    }
-    return this.stampCount;
-  }
-
-  @computed get displayDifficultyLevel(): string {
-    return this.difficultyLevel || '-';
-  }
-
-  @computed get displayProgressRate(): string {
-    return this.serviceType === 'Card' ? `${this.passedLearningCount}/${this.totalLearningCount}` : '-';
   }
 
   toXlsxForInProgress(index: number): InProgressXlsxModel {
