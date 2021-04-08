@@ -261,26 +261,10 @@ const ENRLearning: React.FC<Props> = Props => {
                 <li key={i}>
                   <CardGroup type={GroupType.Box}>
                     <CardView
-                      cardId={item.card.id}
-                      learningTime={card.learningTime}
-                      thumbImagePath={card.thumbImagePath}
-                      categories={card.categories}
-                      name={card.name}
-                      stampCount={card.stampCount}
-                      description={card.description}
-                      passedStudentCount={cardRelatedCount.passedStudentCount}
-                      starCount={cardRelatedCount.starCount}
-                      iconName={inMyLecture ? 'remove2' : 'add-list'}
-                      onAction={() => {
-                        reactAlert({
-                          title: '알림',
-                          message: inMyLecture
-                            ? '본 과정이 관심목록에서 제외되었습니다.'
-                            : '본 과정이 관심목록에 추가되었습니다.',
-                        });
-                        onActionLecture(inMyLecture!);
-                      }}
-                      onViewDetail={onViewDetail}
+                      key={card.id}
+                      cardId={card.id}
+                      {...card}
+                      {...cardRelatedCount}
                     />
                   </CardGroup>
                 </li>
