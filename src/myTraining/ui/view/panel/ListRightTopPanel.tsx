@@ -21,7 +21,16 @@ interface Props {
 }
 
 function ListRightTopPanel(props: Props) {
-  const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
+  const {
+    contentType,
+    resultEmpty,
+    filterCount,
+    openFilter,
+    activeFilter,
+    onClickFilter,
+    checkedViewType,
+    onChangeViewType,
+  } = props;
 
   /* render functions */
   const renderRadiobox = (contentType: MyContentType | ContentType) => {
@@ -29,37 +38,43 @@ function ListRightTopPanel(props: Props) {
       case MyApprovalContentType.PersonalLearning:
         return (
           <div className="radio-wrap">
-            {CheckboxOptions.approvalViewTypes.map((approvalViewType, index) => (
-              <Fragment key={`approval-view-type-${index}`}>
-                <Checkbox
-                  className="base radio"
-                  name={approvalViewType.name}
-                  label={approvalViewType.label}
-                  value={approvalViewType.value}
-                  checked={approvalViewType.value === checkedViewType}
-                  onChange={onChangeViewType}
-                />
-              </Fragment>
-            ))}
+            {CheckboxOptions.approvalViewTypes.map(
+              (approvalViewType, index) => (
+                <Fragment key={`approval-view-type-${index}`}>
+                  <Checkbox
+                    className="base radio"
+                    name={approvalViewType.name}
+                    label={approvalViewType.label}
+                    value={approvalViewType.value}
+                    checked={approvalViewType.value === checkedViewType}
+                    onChange={onChangeViewType}
+                  />
+                </Fragment>
+              )
+            )}
           </div>
-        )
+        );
       case ContentType.Enrolling:
-        return !resultEmpty && (
-          <div className="view-all">
-            {CheckboxOptions.enrollingViewTypes.map((enrollingViewType, index) => (
-              <Fragment key={`enrolling-view-type-${index}`}>
-                <Checkbox
-                  className="base radio"
-                  name={enrollingViewType.name}
-                  label={enrollingViewType.label}
-                  value={enrollingViewType.value}
-                  checked={enrollingViewType.value === checkedViewType}
-                  onChange={onChangeViewType}
-                />
-              </Fragment>
-            ))}
-          </div>
-        );  
+        return (
+          !resultEmpty && (
+            <div className="view-all">
+              {CheckboxOptions.enrollingViewTypes.map(
+                (enrollingViewType, index) => (
+                  <Fragment key={`enrolling-view-type-${index}`}>
+                    <Checkbox
+                      className="base radio"
+                      name={enrollingViewType.name}
+                      label={enrollingViewType.label}
+                      value={enrollingViewType.value}
+                      checked={enrollingViewType.value === checkedViewType}
+                      onChange={onChangeViewType}
+                    />
+                  </Fragment>
+                )
+              )}
+            </div>
+          )
+        );
       default:
         return null;
     }
@@ -81,10 +96,11 @@ function ListRightTopPanel(props: Props) {
             className={classNames(active, open)}
             onClick={onClickFilter}
           >
-            {!activeFilter && (
-              <Icon className="filter2" aria-hidden="true" />
-            )}
-            <span>Filter{filterCount && filterCount > 0 && `(${filterCount})` || ''}</span>
+            {!activeFilter && <Icon className="filter2" aria-hidden="true" />}
+            <span>
+              Filter
+              {(filterCount && filterCount > 0 && `(${filterCount})`) || ''}
+            </span>
           </Button>
         );
     }

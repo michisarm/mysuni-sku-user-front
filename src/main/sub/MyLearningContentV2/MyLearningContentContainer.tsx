@@ -57,6 +57,8 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       {cardBundles?.map((cardBundle, i) => (
         <LeraningContainer key={i} cardBundle={cardBundle} />
       ))}
+
+      <EnrollingLearning />
     </>
   );
 };
