@@ -527,7 +527,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [quizPop, setQuizPop] = useState<boolean>(false);
   const [quizShowTime, setQuizShowTime] = useState<number[]>();
   const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
-
   const [_, lectureMedia] = useLectureMedia();
 
   const videoControll = {
@@ -606,7 +605,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
     if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
       setQuizCurrentIndex(quizCurrentIndex);
-      return;
     }
     setQuizCurrentIndex(quizCurrentIndex + 1);
   }, [quizPop, quizCurrentIndex]);
