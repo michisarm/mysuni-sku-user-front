@@ -1,9 +1,8 @@
-import { DifficultyLevel } from '../../model/DifficultyLevel';
-
 export interface CardRdo {
   channelIds?: string;
   collegeIds?: string;
-  difficultyLevels?: DifficultyLevel;
+  difficultyLevels?: string;
+  learningTimeRanges?: string;
   hasStamp?: boolean;
   limit: number;
   offset: number;

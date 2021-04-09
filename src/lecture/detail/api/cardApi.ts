@@ -11,6 +11,7 @@ import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
 import { Card } from '../../model/Card';
 import { CardRdo } from '../model/CardRdo';
 import { OffsetElementList } from '../../../shared/model';
+import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 
 const BASE_URL = '/api/lecture';
 
@@ -149,11 +150,14 @@ export function markComplete(studentId: string) {
 
 
 
-
-
-
 export function countRequiredCards() {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/required/count`;
   return axios.get<number>(url).then(AxiosReturn);
+}
+
+export function findCollegeAndCardCount() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/required/collegeAndCardCount`;
+  return axios.get<CollegeAndCardCount[]>(url).then(AxiosReturn);
 }

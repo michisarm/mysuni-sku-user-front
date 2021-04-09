@@ -12,9 +12,9 @@ import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
-import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
+import PersonalCompletedListView from '../view/PersonalCompletedListView';
 
 interface PersonalCompletedListContainerProps {
   aplService?: AplService;
@@ -128,8 +128,8 @@ function PersonalCompletedListContainer({
                   <MyLearningTableHeader
                     contentType={contentType}
                   />
-                  <MyLearningTableBody
-                    models={aplTableViews}
+                  <PersonalCompletedListView
+                    apls={aplTableViews}
                     totalCount={aplTableCount}
                   />
                 </MyLearningTableTemplate>

@@ -11,13 +11,13 @@ import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
-import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { SeeMoreButton } from '../../../lecture';
 
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import { Direction } from '../../model/Direction';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
+import InMyLectureListView from '../view/InMyLectureListVIew';
 
 
 interface InMyLectureListContainerProps {
@@ -188,8 +188,8 @@ function InMyLectureListContainer({
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
-                  <MyLearningTableBody
-                    models={inMyLectureTableViews}
+                  <InMyLectureListView
+                    inMyLectures={inMyLectureTableViews}
                     totalCount={inMyLectureTableCount}
                   />
                 </MyLearningTableTemplate>
