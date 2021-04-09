@@ -2,21 +2,28 @@ import React, { Fragment, useEffect, useRef } from 'react';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import LectureVideoContainer from './LectureVideoContainer';
-import { onLectureMedia } from '../../store/LectureMediaStore';
+import { onLectureMedia, setLectureMedia } from '../../store/LectureMediaStore';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
 import { useLectureParams } from '../../store/LectureParamsStore';
 import { MediaType } from '../../../model/MediaType';
+import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
+import { setTranscriptCount } from '../../store/TranscriptCountStore';
 
 function LectureCubeVideoPage() {
   const params = useLectureParams();
   const modalTestRef = useRef<boolean>(false);
   useEffect(() => {
+    if (params?.cubeId !== undefined && params?.cubeType !== undefined) {
+      requestCubeLectureMedia(params.cubeId, params.cubeType);
+    }
     return () => {
       modalTestRef.current = false;
+      setLectureMedia();
+      setTranscriptCount();
     };
-  }, [params?.cubeId]);
+  }, [params?.cubeId, params?.cubeType]);
 
   useEffect(() => {
     return onLectureMedia(next => {

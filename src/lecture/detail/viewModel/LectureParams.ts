@@ -7,6 +7,7 @@ export default interface LectureParams {
   viewType: LectureViewType;
   cubeType?: CubeType;
   contentId?: string;
+  pathname: string;
 }
 
 export function compareLectureParams(a: LectureParams, b: LectureParams) {

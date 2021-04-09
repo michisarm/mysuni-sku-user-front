@@ -21,11 +21,12 @@ import {
 } from '../../../utility/lectureStructureHelper';
 import { getCourseLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCourseLectureReport';
 import { getCubeLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCubeLectureReport';
-import { useHistory, useParams } from 'react-router-dom';
-import LectureParams from '../../../viewModel/LectureParams';
+import { useHistory } from 'react-router-dom';
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
-import { useLectureParams } from '../../../store/LectureParamsStore';
-import { param } from 'jquery';
+import {
+  getLectureParams,
+  useLectureParams,
+} from '../../../store/LectureParamsStore';
 import { submitTask } from '../../../api/cardApi';
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
 
@@ -55,7 +56,13 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   };
 
   const onSubmitClick = useCallback(() => {
-    const lectureStructureItem = getActiveStructureItem() as LectureStructureReportItem;
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    const lectureStructureItem = getActiveStructureItem(
+      params.pathname
+    ) as LectureStructureReportItem;
     const { student } = lectureStructureItem;
     if (student === undefined || student === null) {
       return;

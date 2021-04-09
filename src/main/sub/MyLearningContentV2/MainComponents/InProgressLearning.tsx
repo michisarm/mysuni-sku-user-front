@@ -140,7 +140,11 @@ const InProgressLearning: React.FC<Props> = Props => {
       label: `${model.name}`,
     });
 
-    const url = toPath({ cardId: model.serviceId, viewType: 'view' });
+    const url = toPath({
+      cardId: model.serviceId,
+      viewType: 'view',
+      pathname: '',
+    });
     history.push(url);
     // const cineroom =
     //   patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||

@@ -30,22 +30,35 @@ async function getTestItem(examId: string) {
     });
 
     const denizenId = patronInfo.getDenizenId() || '';
-    const gradeSheet = await findGradeSheet(examId, denizenId);
-    const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
-    const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
+    try {
+      const gradeSheet = await findGradeSheet(examId, denizenId);
+      const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
+      const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
 
-    const item: LectureTestItem = {
-      id: examination.id,
-      name: examination.examPaperTitle,
-      questionCount: examination.questionCount,
-      questions: examPaperForm.questions,
-      successPoint: examination.successPoint,
-      totalPoint: examTotalPoint,
-      graderComment,
-      essayScores,
-      description: examPaperForm.description,
-    };
-    return item;
+      const item: LectureTestItem = {
+        id: examination.id,
+        name: examination.examPaperTitle,
+        questionCount: examination.questionCount,
+        questions: examPaperForm.questions,
+        successPoint: examination.successPoint,
+        totalPoint: examTotalPoint,
+        graderComment,
+        essayScores,
+        description: examPaperForm.description,
+      };
+      return item;
+    } catch (error) {
+      const item: LectureTestItem = {
+        id: examination.id,
+        name: examination.examPaperTitle,
+        questionCount: examination.questionCount,
+        questions: examPaperForm.questions,
+        successPoint: examination.successPoint,
+        totalPoint: examTotalPoint,
+        description: examPaperForm.description,
+      };
+      return item;
+    }
   }
 }
 

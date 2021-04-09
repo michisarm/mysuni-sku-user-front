@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useLectureMedia } from 'lecture/detail/service/useLectureMedia/useLectureMedia';
+import React, { useEffect, useState } from 'react';
 import { findAllQuiz } from 'quiz/api/QuizApi';
 import QuizTableList from 'quiz/model/QuizTableList';
 import VideoQuizContentContainer from './VideoQuizContentContainer';
+import { useLectureMedia } from '../../../lecture/detail/store/LectureMediaStore';
 
 interface Props {
   quizPop: boolean;
@@ -15,7 +15,7 @@ const VideoQuizContainer: React.FC<Props> = ({
   quizPop,
   quizCurrentIndex,
 }) => {
-  const [_, lectureMedia] = useLectureMedia();
+  const lectureMedia = useLectureMedia();
   const [quizData, setQuizData] = useState<QuizTableList>();
   const [checkQuizState, setCheckQuizState] = useState<boolean>(false);
 

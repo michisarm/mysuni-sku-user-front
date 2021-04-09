@@ -9,7 +9,6 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
-import { useLectureParams } from '../../store/LectureParamsStore';
 import { useParams } from 'react-router-dom';
 import LectureParams from '../../viewModel/LectureParams';
 

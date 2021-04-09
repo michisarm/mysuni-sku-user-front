@@ -1,20 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import {
-  Button,
-  Card,
-  Icon,
-  Rating,
-  Label,
-  ButtonProps,
-} from 'semantic-ui-react';
+import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import {
   Field,
   Fields,
-  Ribbon,
   SubField,
   Thumbnail,
-  Title,
 } from '../../../ui/view/LectureElementsView';
 import numeral from 'numeral';
 import { observer, inject } from 'mobx-react';
@@ -190,7 +181,7 @@ function CardView({
       {/* Todo: stampReady */}
       <div className="card-ribbon-wrap">
         {isRequired && <Label className="ribbon2">핵인싸과정</Label>}
-        {contentType && contentType === "Enrolling" && (
+        {contentType && contentType === 'Enrolling' && (
           // 나중에 정원 정보 추가 되면 수정 해야함
           <Label className="ribbon2">정원 마감</Label>
         )}
@@ -247,7 +238,7 @@ function CardView({
           <Button icon className="icon-line" onClick={handleInMyLecture}>
             <Icon className={inMyLectureModel ? 'remove2' : 'add-list'} />
           </Button>
-          <Link to={toPath({ cardId, viewType: 'view' })}>
+          <Link to={toPath({ cardId, viewType: 'view', pathname: '' })}>
             <button className="ui button fix bg">상세보기</button>
           </Link>
         </div>

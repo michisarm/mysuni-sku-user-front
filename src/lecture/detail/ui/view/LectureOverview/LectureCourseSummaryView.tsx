@@ -102,10 +102,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   }
 
   const state = useMemo<State>(() => {
-    if (lectureStructure.card.activated === true) {
-      return lectureStructure.card.state || 'None';
-    }
-    return 'None';
+    return lectureStructure.card.state || 'None';
   }, [lectureStructure]);
 
   // (react-ga) post pageTitle
@@ -130,16 +127,15 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   const qnaUrl = `/board/support-qna/course/${lectureSummary.cardId}`;
 
   useEffect(() => {
-
     const postService = PostService.instance;
     const currentUrl = window.location.href;
     const hostUrl = window.location.host;
     const alarmUrl = currentUrl.split(hostUrl);
 
-    postService.post.alarmInfo.url = 'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
+    postService.post.alarmInfo.url =
+      'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
     postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
     postService.post.alarmInfo.contentsName = lectureSummary.name;
-
   }, [lectureSummary]);
 
   return (
@@ -205,10 +201,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           {state === 'Completed' ? (
             <img src={StampCompleted} />
           ) : (
-              lectureSummary.thumbImagePath !== undefined && (
-                <Thumbnail image={lectureSummary.thumbImagePath} />
-              )
-            )}
+            lectureSummary.thumbImagePath !== undefined && (
+              <Thumbnail image={lectureSummary.thumbImagePath} />
+            )
+          )}
         </div>
       </div>
       <div className="contents-header-side">

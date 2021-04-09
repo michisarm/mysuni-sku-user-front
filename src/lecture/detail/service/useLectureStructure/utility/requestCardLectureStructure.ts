@@ -8,14 +8,17 @@ import {
   findMyCardRelatedStudentsCache,
 } from '../../../api/cardApi';
 import { findCubesByIdsCache } from '../../../api/cubeApi';
-import { setIsLoadingState } from '../../../store/LectureStructureStore';
-import { mergeActivated } from '../../../utility/lectureStructureHelper';
+import {
+  setIsLoadingState,
+  setLectureStructure,
+} from '../../../store/LectureStructureStore';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureChapterItem,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
+  LectureStructureDurationableCubeItem,
   LectureStructureItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
@@ -39,7 +42,9 @@ function parseCubeTestItem(
     cubeId: id,
     viewType: 'test',
     cubeType: cube.type,
+    pathname: '',
   };
+  params.pathname = toPath(params);
 
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
@@ -60,7 +65,7 @@ function parseCubeTestItem(
     name,
     type: 'EXAM',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
@@ -80,7 +85,9 @@ function parseCubeReportItem(
     cubeId: id,
     viewType: 'report',
     cubeType: cube.type,
+    pathname: '',
   };
+  params.pathname = toPath(params);
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
     switch (cubeStudent.extraWork.testStatus) {
@@ -101,7 +108,7 @@ function parseCubeReportItem(
     name,
     type: 'REPORT',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cubeStudent !== undefined && cubeStudent !== null,
     state,
     order: cubeOrder,
@@ -121,7 +128,9 @@ function parseCubeSurveyItem(
     cubeId: id,
     viewType: 'survey',
     cubeType: cube.type,
+    pathname: '',
   };
+  params.pathname = toPath(params);
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
     switch (cubeStudent.extraWork.testStatus) {
@@ -142,7 +151,7 @@ function parseCubeSurveyItem(
     name,
     type: 'SURVEY',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
@@ -158,7 +167,9 @@ function parseCardTestItem(
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'test',
+    pathname: '',
   };
+  params.pathname = toPath(params);
 
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
@@ -179,7 +190,7 @@ function parseCardTestItem(
     name,
     type: 'EXAM',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
@@ -199,7 +210,9 @@ function parseCardReportItem(
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'report',
+    pathname: '',
   };
+  params.pathname = toPath(params);
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
     switch (cardStudent.extraWork.testStatus) {
@@ -220,7 +233,7 @@ function parseCardReportItem(
     name: reportName,
     type: 'REPORT',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
@@ -238,7 +251,9 @@ function parseCardSurveyItem(
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'survey',
+    pathname: '',
   };
+  params.pathname = toPath(params);
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
     switch (cardStudent.extraWork.testStatus) {
@@ -259,7 +274,7 @@ function parseCardSurveyItem(
     name,
     type: 'SURVEY',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
@@ -277,7 +292,9 @@ function parseCardItem(
   const params: LectureParams = {
     cardId: id,
     viewType: 'view',
+    pathname: '',
   };
+  params.pathname = toPath(params);
   const item: LectureStructureCardItem = {
     cardId: id,
     cubes: [],
@@ -286,7 +303,7 @@ function parseCardItem(
     student: cardStudent === null ? undefined : cardStudent,
     order: -1,
     params,
-    path: toPath(params),
+    path: params.pathname,
     type: 'CARD',
     can: true,
     state: convertLearningStateToState(cardStudent?.learningState),
@@ -315,13 +332,15 @@ function parseDiscussionItem(
     cardId: card.id,
     viewType: 'discussion',
     contentId: contentId.substring(contentId.length - 4),
+    pathname: '',
   };
+  params.pathname = toPath(params);
   return {
     id: contentId,
     name: name ? name : '',
     type: 'DISCUSSION',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: cardStudent !== null && cardStudent !== undefined,
     state: 'None',
     order,
@@ -329,6 +348,60 @@ function parseDiscussionItem(
     creator: cardContents.creatorName,
     creatorAudienceId: card.patronKey.keyString,
   };
+}
+
+function parseDurationableCubeItem(
+  card: Card,
+  cube: Cube,
+  order: number,
+  cubeStudent?: Student
+): LectureStructureDurationableCubeItem {
+  const {
+    id,
+    name,
+    type,
+    learningTime,
+    surveyCaseId,
+    hasTest,
+    reportName,
+  } = cube;
+  const params: LectureParams = {
+    cardId: card.id,
+    cubeId: id,
+    viewType: 'view',
+    cubeType: cube.type,
+    pathname: '',
+  };
+  params.pathname = toPath(params);
+  const item: LectureStructureDurationableCubeItem = {
+    cardId: card.id,
+    name,
+    cubeId: id,
+    cubeType: type,
+    learningState: cubeStudent?.learningState,
+    learningTime,
+    student: cubeStudent === null ? undefined : cubeStudent,
+    order,
+    params,
+    path: params.pathname,
+    type: 'CUBE',
+    can: true,
+    state: convertLearningStateToState(cubeStudent?.learningState),
+    cube,
+    duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
+      ? parseInt(cubeStudent?.durationViewSeconds || '')
+      : undefined,
+  };
+  if (hasTest) {
+    item.test = parseCubeTestItem(card, cube, order, cubeStudent);
+  }
+  if (reportName !== null && reportName !== '') {
+    item.report = parseCubeReportItem(card, cube, order, cubeStudent);
+  }
+  if (surveyCaseId !== null && surveyCaseId !== '') {
+    item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
+  }
+  return item;
 }
 
 function parseCubeItem(
@@ -346,12 +419,17 @@ function parseCubeItem(
     hasTest,
     reportName,
   } = cube;
+  if (type === 'Audio' || type === 'Video') {
+    return parseDurationableCubeItem(card, cube, order, cubeStudent);
+  }
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
     viewType: 'view',
     cubeType: cube.type,
+    pathname: '',
   };
+  params.pathname = toPath(params);
   const item: LectureStructureCubeItem = {
     cardId: card.id,
     name,
@@ -362,7 +440,7 @@ function parseCubeItem(
     student: cubeStudent === null ? undefined : cubeStudent,
     order,
     params,
-    path: toPath(params),
+    path: params.pathname,
     type: 'CUBE',
     can: true,
     state: convertLearningStateToState(cubeStudent?.learningState),
@@ -390,13 +468,15 @@ function parseChapterItem(
     cardId: card.id,
     viewType: 'chapter',
     contentId: contentId.substring(contentId.length - 4),
+    pathname: '',
   };
+  params.pathname = toPath(params);
   return {
     id: contentId,
     name: name ? name : '',
     type: 'CHAPTER',
     params,
-    path: toPath(params),
+    path: params.pathname,
     can: true,
     state: 'None',
     order,
@@ -480,7 +560,6 @@ export async function requestCardLectureStructure(cardId: string) {
     items: [],
   };
   lectureStructure.items = parseItems(lectureStructure);
-  const pathname = window.location.pathname.replace('/suni-main', '');
-  mergeActivated(lectureStructure, pathname);
+  setLectureStructure(lectureStructure);
   setIsLoadingState({ isLoading: false });
 }

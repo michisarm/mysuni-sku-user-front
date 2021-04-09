@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useLocation } from 'react-router';
 import LectureParams from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
@@ -24,9 +25,9 @@ interface CubeLectureStructureViewProps {
 const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = function CubeLectureStructureView({
   lectureStructure,
 }) {
+  const { pathname } = useLocation();
   const { card, items } = lectureStructure;
   const { test, survey, report } = card;
-  console.log(items, 'items');
   return (
     <>
       {items !== undefined &&
@@ -39,7 +40,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                   <CubeView
                     name={cube.name}
                     state={cube.state}
-                    activated={cube.activated}
+                    activated={cube.path === pathname}
                     learningTime={cube.learningTime}
                     cubeType={cube.cubeType}
                     path={cube.path}
@@ -50,7 +51,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                   <DurationableCubeView
                     name={cube.name}
                     state={cube.state}
-                    activated={cube.activated}
+                    activated={cube.path === pathname}
                     learningTime={cube.learningTime}
                     cubeType={cube.cubeType}
                     path={cube.path}
@@ -62,7 +63,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                 )}
                 {cube.test !== undefined && (
                   <TestView
-                    activated={cube.test.activated}
+                    activated={cube.test.path === pathname}
                     name={cube.test.name}
                     state={cube.test.state}
                     path={cube.test.path}
@@ -72,7 +73,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                 {cube.survey !== undefined && (
                   <SurveyView
                     name={cube.survey.name}
-                    activated={cube.survey.activated}
+                    activated={cube.survey.path === pathname}
                     state={cube.survey.state}
                     path={cube.survey.path}
                     can={cube.survey.can}
@@ -80,7 +81,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                 )}
                 {cube.report !== undefined && (
                   <ReportView
-                    activated={cube.report.activated}
+                    activated={cube.report.path === pathname}
                     name={cube.report.name}
                     state={cube.report.state}
                     path={cube.report.path}
@@ -98,7 +99,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
                 name={discussion.name}
                 state={discussion.state}
                 path={discussion.path}
-                activated={discussion.activated}
+                activated={discussion.path === pathname}
               />
             );
           }
@@ -107,7 +108,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
         <CourseTestView
           name={test.name}
           state={test.state}
-          activated={test.activated}
+          activated={test.path === pathname}
           path={test.path}
           can={test.can}
         />
@@ -116,7 +117,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
         <CourseSurveyView
           name={survey.name}
           state={survey.state}
-          activated={survey.activated}
+          activated={survey.path === pathname}
           path={survey.path}
           can={survey.can}
         />
@@ -125,7 +126,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
         <CourseReportView
           name={report.name}
           state={report.state}
-          activated={report.activated}
+          activated={report.path === pathname}
           path={report.path}
           can={report.can}
         />
