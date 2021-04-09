@@ -66,6 +66,7 @@ function LectureTaskContainer() {
   const [lectureTags] = useLectureTags();
   const [viewType] = useLectureTaskViewType();
   const [detailTaskId, setDetailTaskId] = useState<string>('');
+  const [postBodyId, setPostBodyId] = useState<string>('');
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
@@ -155,40 +156,44 @@ function LectureTaskContainer() {
     []
   );
 
-  const handleSubmitClick = useCallback((viewType, detailTaskId?) => {
-    reactConfirm({
-      title: '알림',
-      message: '저장하시겠습니까?',
-      onOk: () => {
-        if (viewType === 'create') {
-          const test = createLectureTask().then(() => {
-            setLectureTaskCreateItem({
-              id: detailTaskId!,
-              fileBoxId: '',
-              title: '',
-              writer: {
-                employeeId: '',
-                email: '',
+  const handleSubmitClick = useCallback(
+    (viewType, detailTaskId?, postBodyId?) => {
+      reactConfirm({
+        title: '알림',
+        message: '저장하시겠습니까?',
+        onOk: () => {
+          if (viewType === 'create') {
+            const test = createLectureTask().then(() => {
+              setLectureTaskCreateItem({
+                id: detailTaskId!,
+                fileBoxId: '',
+                title: '',
+                writer: {
+                  employeeId: '',
+                  email: '',
+                  name: '',
+                  companyCode: '',
+                  companyName: '',
+                },
                 name: '',
-                companyCode: '',
-                companyName: '',
-              },
-              name: '',
-              contents: '',
-              time: 0,
-              readCount: 0,
-              commentFeedbackId: '',
-              notice: false,
+                contents: '',
+                time: 0,
+                readCount: 0,
+                commentFeedbackId: '',
+                notice: false,
+              });
+              history.goBack();
             });
-            history.goBack();
-          });
-        } else {
-          updateLectureTask(detailTaskId);
-          history.goBack();
-        }
-      },
-    });
-  }, []);
+          } else {
+            updateLectureTask(detailTaskId, postBodyId).then(() => {
+              history.goBack();
+            });
+          }
+        },
+      });
+    },
+    []
+  );
 
   useEffect(() => {
     async function getContentId() {
