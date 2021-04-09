@@ -1,7 +1,7 @@
-import { MyContentType } from '../logic/MyLearningListContainerV2';
-import MyApprovalContentType from './MyApprovalContentType';
-import MyLearningContentType from './MyLearningContentType';
-import MyPageContentType from './MyPageContentType';
+import { MyApprovalContentType } from './MyApprovalContentType';
+import { MyLearningContentType } from './MyLearningContentType';
+import { MyPageContentType } from './MyPageContentType';
+import { MyContentType } from './MyContentType';
 
 const TableHeaderColumn = {
   /*

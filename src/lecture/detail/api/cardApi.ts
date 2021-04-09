@@ -136,3 +136,24 @@ export function markComplete(studentId: string) {
     .put<void>(url, { studentId })
     .then(AxiosReturn);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function countRequiredCards() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/required/count`;
+  return axios.get<number>(url).then(AxiosReturn);
+}
