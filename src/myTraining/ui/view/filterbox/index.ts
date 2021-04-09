@@ -1,1 +1,1 @@
-export { default as MultiFilterBox } from './MultiFilterBox'; 
+export { default as MultiFilterBox } from '../../logic/FilterBoxContainer'; 

@@ -9,14 +9,18 @@ import { autobind, CachingFetch, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
 import InMyLectureFilterRdoModel from 'myTraining/model/InMyLectureFilterRdoModel';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import InMyLectureApi from '../apiclient/InMyLectureApi';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 import FilterCountViewModel from '../../model/FilterCountViewModel';
+import { FilterCondition } from '../../model/FilterCondition';
+import { Direction } from '../../model/Direction';
 import InMyLectureCdo from '../../../lecture/detail/model/InMyLectureCdo';
+
+
+
+
 
 @autobind
 class InMyLectureService {
@@ -117,7 +121,7 @@ class InMyLectureService {
       });
   }
 
-  @action 
+  @action
   async removeInMyLectureCard(cardId: string, serviceId: string) {
     await this.inMyLectureApi
       .removeInMyLectureCard(cardId, serviceId)
@@ -128,7 +132,7 @@ class InMyLectureService {
         return reason;
       });
   }
-  
+
   @action
   async findInMyLectures(
     limit: number,

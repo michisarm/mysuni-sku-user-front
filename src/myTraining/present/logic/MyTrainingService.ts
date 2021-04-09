@@ -8,19 +8,16 @@ import {
 import { autobind, Offset } from '@nara.platform/accent';
 import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
-import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import {
-  MyContentType,
-  ViewType,
-} from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
 import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
+import { FilterCondition } from '../../model/FilterCondition';
+import { Direction } from '../../model/Direction';
+import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
+import { MyContentType } from '../../ui/model/MyContentType';
 
 @autobind
 class MyTrainingService {
@@ -332,7 +329,6 @@ class MyTrainingService {
   @observable
   _myTrainingTableViewCount: number = 0;
 
-  // store 에서 관리가 되나, 변동사항이 있더라도 리 랜더링하지 않음. observable하지 않음.
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
   @observable
@@ -407,12 +403,7 @@ class MyTrainingService {
     this._myTrainingFilterRdo = MyTrainingFilterRdoModel.create(contentType);
   }
 
-  changeFilterRdoWithViewType(viewType: ViewType) {
-    if (viewType === 'All') {
-      viewType = '';
-    }
-
-    this._myTrainingFilterRdo.changeViewType(viewType);
+  changeFilterRdoWithViewType() {
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
@@ -452,17 +443,6 @@ class MyTrainingService {
       }
 
       if (this.inProgressTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.inProgressTableViews.filter(
-            tableView => tableView.serviceType !== 'CARD'
-          );
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
-          return false;
-        }
-
-        /* 전체보기 */
         this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.inProgressTableCount;
         return false;
@@ -485,16 +465,6 @@ class MyTrainingService {
       }
 
       if (this.completedTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.completedTableViews.filter(
-            tableView => tableView.serviceType !== 'CARD'
-          );
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
-          return false;
-        }
-
         /* 전체보기 */
         this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.completedTableCount;
@@ -627,31 +597,15 @@ class MyTrainingService {
   }
 
   /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
-  private getAddedTableViewsFromStorage(
-    offset: Offset
-  ): MyTrainingTableViewModel[] {
-    const { myTrainingState, viewType } = this._myTrainingFilterRdo;
+  private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
+    const { myTrainingState } = this._myTrainingFilterRdo;
     const endIndex = offset.offset + offset.limit;
 
     if (myTrainingState === MyLearningContentType.InProgress) {
-      if (viewType === 'Course') {
-        const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(
-          tableView => tableView.serviceType !== 'CARD'
-        );
-
-        return courseTableViews.slice(0, endIndex);
-      }
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
     if (myTrainingState === MyLearningContentType.Completed) {
-      if (viewType === 'Course') {
-        const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(
-          tableView => tableView.serviceType !== 'CARD'
-        );
-
-        return courseTableViews.slice(0, endIndex);
-      }
       return this.completedTableViews.slice(0, endIndex);
     }
 
@@ -660,9 +614,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithServiceType(serviceType: string) {
-    console.log(serviceType);
     this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
-    this._myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -741,24 +693,16 @@ class MyTrainingService {
     return myTrainingV2sForExcel;
   }
 
-  /* 메인 페이지 진입 시 session storage 에 전체 학습중 데이터를 저장하기 위한 service. */
-  async findAllInProgressTableViewsForStorage() {
-    const filterRdo = MyTrainingFilterRdoModel.createForStorage(
-      MyLearningContentType.InProgress,
-      { offset: 0, limit: 9999 }
-    );
+  async findAllInProgressStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForInProgressStorage();
+    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
 
-    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      filterRdo
-    );
     if (
       offsetInProgress &&
       offsetInProgress.results &&
-      offsetInProgress.results.length
+      offsetInProgress.results.length > 0
     ) {
-      this.inProgressTableViews = offsetInProgress.results.map(
-        inProgressTableView => new MyTrainingTableViewModel(inProgressTableView)
-      );
+      this.inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
       this.inProgressTableCount = offsetInProgress.totalCount;
 
       return this.inProgressTableViews;
@@ -767,24 +711,16 @@ class MyTrainingService {
     return null;
   }
 
-  /* 메인 페이지 진입 시 session storage 에 전체 학습완료 데이터를 저장하기 위한 service. */
-  async findAllCompletedTableViewsForStorage() {
-    const filterRdo = MyTrainingFilterRdoModel.createForStorage(
-      MyLearningContentType.Completed,
-      { offset: 0, limit: 9999 }
-    );
+  async findAllCompletedStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForCompletedStorage();
+    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
 
-    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      filterRdo
-    );
     if (
       offsetCompleted &&
       offsetCompleted.results &&
-      offsetCompleted.results.length
+      offsetCompleted.results.length > 0
     ) {
-      this.completedTableViews = offsetCompleted.results.map(
-        completedTableView => new MyTrainingTableViewModel(completedTableView)
-      );
+      this.completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
       this.completedTableCount = offsetCompleted.totalCount;
 
       return this.completedTableViews;

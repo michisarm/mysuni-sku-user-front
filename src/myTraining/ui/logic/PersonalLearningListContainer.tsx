@@ -3,40 +3,35 @@ import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { AplService } from 'myTraining/stores';
-import MyApprovalContentType from '../model/MyApprovalContentType';
-import { AplModel } from 'myTraining/model';
+import { MyApprovalContentType } from '../model/MyApprovalContentType';
 import { SeeMoreButton } from 'lecture';
 import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { MyLearningTableBody, MyLearningTableHeader, MyLearningTableTemplate } from '../view/table';
-import { NoSuchContentPanelMessages } from '../model';
 import { NoSuchContentPanel } from 'shared';
+import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
+import { PersonalLearningListView } from '../view/PersonalLearningListView';
+import routePaths from '../../routePaths';
+import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
+import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
+import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 
 
-interface Props {
-  contentType: MyApprovalContentType;
+interface PersonalLearningListContainerProps {
   aplService?: AplService;
 }
 
-interface RouteParams {
-  tab: string;
-  pageNo?: string;
-}
 
-function MyApprovalListContainerV2(props: Props) {
-  /* props */
-  const { contentType, aplService } = props;
-  const { aplCount } = aplService!;
+function PersonalLearningListContainer({
+  aplService,
+}: PersonalLearningListContainerProps) {
+  const { apls: offsetApl, aplCount } = aplService!;
 
   const history = useHistory();
-  const { pageNo } = useParams<RouteParams>();
+  const params = useParams<MyApprovalRouteParams>();
 
-  /* states */
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ApprovalViewType>('');
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
-  /* effects */
 
   useEffect(() => {
     initPage();
@@ -45,7 +40,6 @@ function MyApprovalListContainerV2(props: Props) {
     return () => clearStore();
   }, [viewType]);
 
-  /* functions */
   const initPage = () => {
     initPageInfo();
     initPageNo();
@@ -56,11 +50,11 @@ function MyApprovalListContainerV2(props: Props) {
   };
 
   const initPageNo = (): void => {
-    history.replace('./1');
+    history.push(routePaths.currentPage(1));
   };
 
   const getPageNo = (): number => {
-    const currentPageNo = pageNo;
+    const currentPageNo = params.pageNo;
     if (currentPageNo) {
       const nextPageNo = parseInt(currentPageNo) + 1;
       return nextPageNo;
@@ -83,30 +77,12 @@ function MyApprovalListContainerV2(props: Props) {
     checkShowSeeMore();
   }
 
-  const getModels = (): AplModel[] => {
-    const { apls: offsetApl } = aplService!;
-    return offsetApl.results;
-  };
-
-  const getTotalCount = (): number => {
-    const { apls: offsetApl } = aplService!;
-    return offsetApl.totalCount;
-  };
-
-  const isModelExist = (): boolean => {
-    const { apls: offsetApl } = aplService!;
-    return (offsetApl.results && offsetApl.results.length) ? true : false;
-  };
-
   const checkShowSeeMore = () => {
-    const models = getModels();
-    const totalCount = getTotalCount();
-
-    if (models.length >= totalCount) {
+    if (offsetApl.results.length >= offsetApl.totalCount) {
       setShowSeeMore(false);
       return;
     }
-    if (totalCount <= PAGE_SIZE) {
+    if (offsetApl.totalCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -114,7 +90,6 @@ function MyApprovalListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
-  /* handlers */
   const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
   }, []);
@@ -125,15 +100,11 @@ function MyApprovalListContainerV2(props: Props) {
     await aplService!.findAllAplsWithPage(pageInfo.current);
 
     checkShowSeeMore();
-    history.replace(`./${getPageNo()}`);
+    history.replace(routePaths.currentPage(getPageNo()));
   }, []);
 
-  /* render functions */
-  const renderNoSuchContentPanel = (contentType: MyApprovalContentType) => {
-    const message = NoSuchContentPanelMessages.getMessageByConentType(contentType);
 
-    return <NoSuchContentPanel message={message} />;
-  };
+  const message = NoSuchContentPanelMessages.getMessageByConentType(params.tab);
 
   /* render */
   return (
@@ -142,35 +113,40 @@ function MyApprovalListContainerV2(props: Props) {
         className="list-top"
         contentType={MyApprovalContentType.PersonalLearning}
       >
-        {isModelExist() &&
+        {
+          offsetApl &&
+          offsetApl.results &&
+          offsetApl.results.length > 0 &&
           (
             <ListLeftTopPanel
-              contentType={contentType}
+              contentType={params.tab}
               countModel={aplCount}
             />
           )
         }
         <ListRightTopPanel
-          contentType={contentType}
+          contentType={params.tab}
           checkedViewType={viewType}
           onChangeViewType={onChangeViewType}
         />
       </ListTopPanelTemplate>
-      {isModelExist() &&
+      {
+        offsetApl &&
+        offsetApl.results &&
+        offsetApl.results.length > 0 &&
         (
-          <MyLearningTableTemplate
-            contentType={contentType}
-          >
+          <MyLearningTableTemplate>
             <MyLearningTableHeader
-              contentType={contentType}
+              contentType={params.tab}
             />
-            <MyLearningTableBody
-              contentType={contentType}
-              totalCount={getTotalCount()}
-              models={getModels()}
+            <PersonalLearningListView 
+              apls={offsetApl.results}
+              totalCount={offsetApl.totalCount}
             />
           </MyLearningTableTemplate>
-        ) || renderNoSuchContentPanel(contentType)
+        ) || (
+        <NoSuchContentPanel message={message} />
+        )
       }
       {showSeeMore &&
         (
@@ -185,7 +161,7 @@ function MyApprovalListContainerV2(props: Props) {
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.aplService'
-))(observer(MyApprovalListContainerV2));
+))(observer(PersonalLearningListContainer));
 
 /* globals */
 export type ApprovalViewType = '' | 'OpenApproval' | 'Opened' | 'Rejected';

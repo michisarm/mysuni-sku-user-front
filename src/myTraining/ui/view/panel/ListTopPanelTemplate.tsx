@@ -1,12 +1,13 @@
 import React from 'react';
-import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
 import { ContentType } from 'myTraining/ui/page/NewLearningPage';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyPageContentType } from '../../model/MyPageContentType';
+import { MyContentType } from '../../model/MyContentType';
 
 interface Props {
   className: string;
-  contentType: MyContentType | MyApprovalContentType | ContentType;
+  contentType: MyContentType | ContentType;
   activeFilter?: boolean;
   children: React.ReactNode;
 }
