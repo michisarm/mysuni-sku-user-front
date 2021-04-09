@@ -6,8 +6,11 @@ import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { CubeTypeNameType } from '../../../personalcube/personalcube/model';
-import { LearningState } from '../../../shared/model';
-import { timeToHourMinutePaddingFormat } from '../../../shared/helper/dateTimeHelper';
+import { LearningState, LearningStateName } from '../../../shared/model';
+import {
+  timeToHourMinutePaddingFormat,
+  convertTimeToDate,
+} from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 
 interface InMyLectureTableViewProps {
@@ -37,13 +40,16 @@ export default function InMyLectureListView({
         inMyLectures.length > 0 &&
         inMyLectures.map((inMyLecture, index) => {
           const collegeName = getCollgeName(inMyLecture.category.college.id);
-
           const learningType =
             (inMyLecture.serviceType === 'Card' && inMyLecture.serviceType) ||
             CubeTypeNameType[inMyLecture.cubeType];
+          const learningState =
+            (inMyLecture.learningState &&
+              LearningStateName[inMyLecture.learningState]) ||
+            '-';
           const progressRate =
             (inMyLecture.serviceType === 'Card' &&
-              inMyLecture.learningState === LearningState.Passed &&
+              inMyLecture.learningState &&
               `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
             '-';
 
@@ -61,9 +67,11 @@ export default function InMyLectureListView({
               <Table.Cell>
                 {timeToHourMinutePaddingFormat(inMyLecture.learningTime)}
               </Table.Cell>
-              <Table.Cell>lastStudyDate</Table.Cell>
+              <Table.Cell>
+                {convertTimeToDate(inMyLecture.lastStudyDate)}
+              </Table.Cell>
               <Table.Cell>{progressRate}</Table.Cell>
-              <Table.Cell>{inMyLecture.learningState}</Table.Cell>
+              <Table.Cell>{learningState}</Table.Cell>
             </Table.Row>
           );
         })}

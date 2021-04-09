@@ -783,7 +783,7 @@ const converToKey = (column: string): any => {
     case '학습시간':
       return 'learningTime';
     case '최근학습일':
-      return 'time';
+      return 'updateTime';
     case '스탬프':
       return 'stampCount';
     case '등록일':

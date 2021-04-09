@@ -12,6 +12,7 @@ import StudentFlowApi from '../apiclient/StudentFlowApi';
 import StudentCubeModel from '../../../model/StudentCubeModel';
 import LectureStudentRdoModel from '../../../model/LectureStudentRdoModel';
 import StudentHideUdo from '../../../model/StudentHideUdo';
+import { hideStudent } from '../../../../certification/api/CardStudentApi';
 
 
 @autobind
@@ -295,8 +296,8 @@ class StudentService {
 
   ////////////////////////////////////// 개편 //////////////////////////////////////
   async hideWithSelectedServiceIds(selectedServiceIds: string[]) {
-    const studentHideUdo = StudentHideUdo.createWith(selectedServiceIds);
-    const isHidden = await this.studentApi.modifyStudentHide(studentHideUdo);
+    const studentHideUdo = StudentHideUdo.create(selectedServiceIds);
+    const isHidden = await hideStudent(studentHideUdo);
     return isHidden;
   }
   ////////////////////////////////////// 개편 //////////////////////////////////////

@@ -5,23 +5,22 @@ import { DifficultyLevel } from './DifficultyLevel';
 
 
 class InMyLectureTableViewModel {
-  // 관심목록
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
-  serviceType: string = ''; // 카드 코스 구분을 위해
+  serviceType: string = '';
   cardId: string = '';
-  category: CategoryModel = new CategoryModel(); // College & channel
-  difficultyLevel: DifficultyLevel = DifficultyLevel.Basic; // Level
-  learningState: LearningState = LearningState.Progress; // 학습 상태
-  name: string = ''; // 과정명
-  cubeType: CubeType = CubeType.None; // 학습유형
-  learningTime: number = 0; // 학습시간
-  startDate: number = 0; // 학습시작일
-  endDate: number = 0; // 학습완료일 (취소/미이수일)
-  createDate: number = 0; // 등록일
-  stampCount: number = 0; // 스탬프
-  lastStudyDate: number = 0; // 최근학습일
+  category: CategoryModel = new CategoryModel();
+  difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
+  learningState: LearningState = LearningState.Progress;
+  name: string = '';
+  cubeType: CubeType = CubeType.None;
+  learningTime: number = 0;
+  startDate: number = 0;
+  endDate: number = 0;
+  createDate: number = 0;
+  lastStudyDate: number = 0;
+  stampCount: number = 0;
   passedLearningCount: number = 0;
   totalLearningCount: number = 0;
 

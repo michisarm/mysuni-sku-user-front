@@ -31,7 +31,6 @@ import {
   setWatchLog,
 } from '../../../service/useLectureMedia/useLectureWatchLog';
 import { confirmProgress } from '../../../service/useLectureMedia/utility/confirmProgress';
-import { setEmbed } from 'lecture/detail/store/EmbedStore';
 import { findAllQuiz } from '../../../../../quiz/api/QuizApi';
 import QuizTableList from '../../../../../quiz/model/QuizTableList';
 import VideoQuizContainer from '../../../../../quiz/ui/logic/VideoQuizContainer';
@@ -133,7 +132,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // return = false:중복시청, true:시청가능
     // alert(`retMultiVideoOverlap before: ${usid}`);
     if (show) {
-      retMultiVideoOverlap(viewState, usid).then(res => {
+      retMultiVideoOverlap(viewState, usid).then((res: any) => {
         // alert(`retMultiVideoOverlap after: ${res}`);
         setLiveLectureCardId(res);
         if (viewState !== 'end') {
@@ -388,7 +387,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setPanoptoState(10);
       setIsActive(false);
       setEmbedApi('');
-      setEmbed('');
       setLectureConfirmProgress();
     };
   }, []);
@@ -450,7 +448,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
-        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -562,7 +559,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         videoControll.stop();
       }
     }
-  }, [currentTime, scroll, quizShowTime, panoptoState]);
+  }, [currentTime, scroll, quizShowTime]);
 
   useEffect(() => {
     setQuizPop(false);
@@ -703,75 +700,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {/* {getLectureTranscripts() &&
-          getLectureMedia() &&
-          (getLectureMedia()?.mediaType == 'InternalMedia' ||
-            getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
-          (getLectureTranscripts()?.length || 0) > 0 &&
-          displayTranscript &&
-          false && (
-            <>
-              <button
-                className="ui icon button right btn-blue"
-                onClick={() => setDisplayTranscript(false)}
-              >
-                Close Transcript
-                <i aria-hidden="true" className="icon icon morelink" />
-              </button>
-              <div className="course-video-tanscript" id="tanscript-scroll">
-                <div className="course-video-scroll">
-                  {getLectureTranscripts()?.map(lectureTranscript => {
-                    return (
-                      <>
-                        <strong
-                          id={lectureTranscript.idx + ''}
-                          style={{ cursor: 'pointer' }}
-                          className={highlight(lectureTranscript.idx + '')}
-                          onClick={() => {
-                            // seekByIndex(lectureTranscript.idx);
-                            seekByIndex(
-                              parseInt(
-                                lectureTranscript.startTime.substr(0, 2),
-                                10
-                              ) *
-                                60 *
-                                60 +
-                                parseInt(
-                                  lectureTranscript.startTime.substr(2, 2),
-                                  10
-                                ) *
-                                  60 +
-                                parseInt(
-                                  lectureTranscript.startTime.substr(4, 2),
-                                  10
-                                )
-                            );
-                          }}
-                        >
-                          {lectureTranscript.startTime
-                            .substr(0, 2)
-                            .concat(':')
-                            .concat(lectureTranscript.startTime.substr(2, 2))
-                            .concat(':')
-                            .concat(lectureTranscript.startTime.substr(4, 2))}
-                        </strong>
-                        <p>{lectureTranscript.text}</p>
-                      </>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          )}
-        {getLectureTranscripts()?.length !== 0 && !displayTranscript && false && (
-          <button
-            className="ui icon button right btn-blue"
-            onClick={() => setDisplayTranscript(true)}
-          >
-            View Transcript
-            <i aria-hidden="true" className="icon icon morelink" />
-          </button>
-        )} */}
       </div>
     </div>
   );
