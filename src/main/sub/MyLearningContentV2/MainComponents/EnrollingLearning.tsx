@@ -127,7 +127,10 @@ const ENRLearning: React.FC<Props> = Props => {
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
-                      contentType="Enrolling"
+                      // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함
+                      // 정원 마감 : capacity <= student_count
+                      // D-DAY OR D-14 ... : 수강신청 마감일 - TODAY
+                      // contentType="Enrolling"
                     />
                   </CardGroup>
                 </li>

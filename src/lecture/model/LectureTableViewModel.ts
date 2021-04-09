@@ -1,33 +1,21 @@
 import { observable, decorate } from 'mobx';
-import { CategoryModel, LearningState } from 'shared/model';
-import { DifficultyLevel } from 'myTraining/model/DifficultyLevel';
-import { CubeType } from '../../personalcube/personalcube/model';
+import { CardCategory } from '../../shared/model/CardCategory';
 
 class LectureTableViewModel {
-  // 권장과정
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
-  serviceType: string = ''; // 카드 코스 구분을 위해
-  cineroomId: string = '';
-  coursePlanId: string = '';
-  cubeId: string = '';
-  category: CategoryModel = new CategoryModel(); // College & channel
-  difficultyLevel: DifficultyLevel = DifficultyLevel.Basic; // Level
-  name: string = ''; // 과정명
-  organizer: string = ''; // 교육기관
-  cubeType: CubeType = CubeType.None; // 학습유형
-  learningState?: LearningState; // 학습 상태
-  learningTime: number = 0; // 학습시간
-  time: number = 0; // 학습완료일 (취소/미이수일)
-  creationTime: number = 0; // 등록일
+  serviceType: string = 'Card';
+  category: CardCategory = initialCardCategory;
+  difficultyLevel: string = '';
+  name: string = '';
+  learningTime: number = 0
+  learningState: string = '';
   updateTime: number = 0;
   updateTimeForTest: number = 0;
-  stampCount: number = 0; // 스탬프
   passedLearningCount: number = 0;
   totalLearningCount: number = 0;
 
-  // for make observable object from json data.
   constructor(lectureTableView?: LectureTableViewModel) {
     if (lectureTableView) {
       Object.assign(this, lectureTableView);
@@ -49,3 +37,10 @@ decorate(LectureTableViewModel, {
   createDate: observable,
   stampCount: observable,
 });
+
+
+const initialCardCategory: CardCategory = {
+  collegeId: '',
+  channelId: '',
+  mainCategory: false,
+}
