@@ -297,7 +297,7 @@ function parseCardItem(
   if (reportFileBox?.report === true) {
     item.report = parseCardReportItem(card, cardContents, cardStudent);
   }
-  if (surveyCaseId !== null || surveyCaseId !== '') {
+  if (surveyCaseId !== null && surveyCaseId !== '') {
     item.survey = parseCardSurveyItem(card, cardContents, cardStudent);
   }
   return item;
@@ -374,7 +374,7 @@ function parseCubeItem(
   if (reportName !== null && reportName !== '') {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
-  if (surveyCaseId !== null || surveyCaseId !== '') {
+  if (surveyCaseId !== null && surveyCaseId !== '') {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
   }
   return item;
