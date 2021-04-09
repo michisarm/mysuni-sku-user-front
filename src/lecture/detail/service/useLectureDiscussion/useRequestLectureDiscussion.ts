@@ -7,10 +7,10 @@ export function useRequestLectureDiscussion() {
   const params = useLectureParams();
 
   useEffect(() => {
-    if (params?.cardId === undefined || params?.discussionId === undefined) {
+    if (params?.cardId === undefined || params?.contentId === undefined) {
       return;
     }
-    requestLectureDiscussion(params.cardId, params.discussionId);
+    requestLectureDiscussion(params.cardId, params.contentId);
     return setLectureDiscussion;
-  }, [params?.cardId, params?.discussionId]);
+  }, [params?.cardId, params?.contentId]);
 }

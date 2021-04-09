@@ -8,10 +8,8 @@ import {
   findMyCardRelatedStudentsCache,
 } from '../../../api/cardApi';
 import { findCubesByIdsCache } from '../../../api/cubeApi';
-import {
-  setIsLoadingState,
-  setLectureStructure,
-} from '../../../store/LectureStructureStore';
+import { setIsLoadingState } from '../../../store/LectureStructureStore';
+import { mergeActivated } from '../../../utility/lectureStructureHelper';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
@@ -286,7 +284,7 @@ function parseDiscussionItem(
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'discussion',
-    discussionId: contentId.substring(contentId.length - 4),
+    contentId: contentId.substring(contentId.length - 4),
   };
   return {
     id: card.id,
@@ -361,7 +359,7 @@ function parseChapterItem(
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'chapter',
-    chapterId: contentId.substring(contentId.length - 4),
+    contentId: contentId.substring(contentId.length - 4),
   };
   return {
     id: card.id,
@@ -452,6 +450,7 @@ export async function requestCardLectureStructure(cardId: string) {
     items: [],
   };
   lectureStructure.items = parseItems(lectureStructure);
-  setLectureStructure(lectureStructure);
+  const pathname = window.location.pathname.replace('/suni-main', '');
+  mergeActivated(lectureStructure, pathname);
   setIsLoadingState({ isLoading: false });
 }

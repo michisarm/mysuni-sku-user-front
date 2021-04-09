@@ -51,12 +51,15 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   useEffect(() => {
-    findFeedbackMenu('dd').then(res => {
+    if (lectureDiscussion?.id === undefined) {
+      return;
+    }
+    findFeedbackMenu(lectureDiscussion?.id).then(res => {
       setLectureFeedbackContent({
         ...res,
       });
     });
-  }, [lectureFeedbackContent?.title]);
+  }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   const { company, department, email, name } = useMemo(() => {
     const {
@@ -264,7 +267,7 @@ export default function LectureDiscussionContainer() {
             email={email}
             companyName={company}
             departmentName={department}
-            coursePlanId={params?.cardId}
+            cardId={params?.cardId}
             menuType="discussion"
           />
         </>

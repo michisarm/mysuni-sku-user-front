@@ -43,16 +43,20 @@ export default function LectureDetailCourseRoutes() {
         {viewType === 'report' && <LectureReportPage />}
         {viewType === 'survey' && <LectureSurveyPage />}
         {viewType === 'chapter' && (
-          <Route
-            path="/lecture/card/:cardId/:viewType/:chapterId"
-            component={LectureCourseOverviewPage}
-          />
+          <Switch>
+            <Route
+              path="/lecture/card/:cardId/:viewType/:contentId"
+              component={LectureCourseOverviewPage}
+            />
+          </Switch>
         )}
         {viewType === 'discussion' && (
-          <Route
-            path="/lecture/card/:cardId/:viewType/:discussionId"
-            component={LectureDiscussionPage}
-          />
+          <Switch>
+            <Route
+              path="/lecture/card/:cardId/:viewType/:contentId"
+              component={LectureDiscussionPage}
+            />
+          </Switch>
         )}
         <Route component={NotFoundPage} />
       </Switch>

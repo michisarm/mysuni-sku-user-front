@@ -37,15 +37,19 @@ function getEmpty(text?: string) {
 async function getLectureSummary(
   cubeDetail: CubeDetail
 ): Promise<LectureCubeSummary> {
-  const { cube, cubeContents, cubeReactiveModel } = cubeDetail;
+  const { cube, cubeContents, cubeReactiveModel, operators } = cubeDetail;
 
   const { id, name, categories, type } = cube;
-  const { difficultyLevel, operator } = cubeContents;
+  const {
+    difficultyLevel,
+    operator: { keyString },
+  } = cubeContents;
   const { passedStudentCount, studentCount } = cubeReactiveModel;
 
   const category = categories.find(c => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
   const mylecture = await findInMyLecture(cube.id, 'Cube');
+  const operator = operators.find(({ id }) => id === keyString);
   return {
     name,
     category: {
@@ -55,9 +59,9 @@ async function getLectureSummary(
     difficultyLevel,
     learningTime,
     operator: {
-      email: operator.email,
-      name: operator.name,
-      companyName: operator.companyName,
+      email: operator?.email || '',
+      name: operator?.name?.langStringMap.ko || '',
+      companyName: operator?.companyName?.langStringMap.ko || '',
     },
     passedStudentCount,
     studentCount,
@@ -70,9 +74,10 @@ async function getLectureSummary(
 function getLectureDescription(cubeDetail: CubeDetail): LectureDescription {
   const {
     description: { description, applicants, completionTerms, goal, guide },
-    operator,
+    operator: { keyString },
   } = cubeDetail.cubeContents;
-  const organizer = operator.companyName;
+  const operator = cubeDetail.operators.find(({ id }) => id === keyString);
+  const organizer = operator?.companyName?.langStringMap.ko || '';
   return { description, applicants, completionTerms, goal, guide, organizer };
 }
 
