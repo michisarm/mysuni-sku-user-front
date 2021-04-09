@@ -62,8 +62,8 @@ function parseLectureSummary(
     },
     operator: {
       email: cardOperatorIdentity.email,
-      name: cardOperatorIdentity.name?.langStringMap.ko || '',
-      companyName: cardOperatorIdentity.companyName?.langStringMap.ko || '',
+      name: cardOperatorIdentity.names?.langStringMap.ko || '',
+      companyName: cardOperatorIdentity.companyNames?.langStringMap.ko || '',
     },
     stampCount,
     thumbImagePath,

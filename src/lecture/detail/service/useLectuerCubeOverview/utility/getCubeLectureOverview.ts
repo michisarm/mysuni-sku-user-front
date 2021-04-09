@@ -60,8 +60,8 @@ async function getLectureSummary(
     learningTime,
     operator: {
       email: operator?.email || '',
-      name: operator?.name?.langStringMap.ko || '',
-      companyName: operator?.companyName?.langStringMap.ko || '',
+      name: operator?.names?.langStringMap.ko || '',
+      companyName: operator?.companyNames?.langStringMap.ko || '',
     },
     passedStudentCount,
     studentCount,
@@ -77,7 +77,7 @@ function getLectureDescription(cubeDetail: CubeDetail): LectureDescription {
     operator: { keyString },
   } = cubeDetail.cubeContents;
   const operator = cubeDetail.operators.find(({ id }) => id === keyString);
-  const organizer = operator?.companyName?.langStringMap.ko || '';
+  const organizer = operator?.companyNames?.langStringMap.ko || '';
   return { description, applicants, completionTerms, goal, guide, organizer };
 }
 

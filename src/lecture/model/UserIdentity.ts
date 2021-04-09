@@ -1,7 +1,7 @@
 export interface UserIdentity {
   email: string;
   companyCode: string;
-  companyName?: {
+  companyNames?: {
     defaultLanguage: string;
     langStringMap: {
       ko: string;
@@ -10,7 +10,7 @@ export interface UserIdentity {
     };
   };
   departmentCode: string;
-  departmentName?: {
+  departmentNames?: {
     defaultLanguage: string;
     langStringMap: {
       ko: string;
@@ -19,7 +19,7 @@ export interface UserIdentity {
     };
   };
   id: string;
-  name?: {
+  names?: {
     defaultLanguage: string;
     langStringMap: {
       ko: string;
