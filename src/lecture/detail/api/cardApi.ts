@@ -134,7 +134,7 @@ export function cancelStudents(studentId: string) {
 
 export function markComplete(studentId: string) {
   const axios = getAxios();
-  const url = `${BASE_URL}/students`;
+  const url = `${BASE_URL}/students/markComplete`;
   return axios
     .put<void>(url, { studentId })
     .then(AxiosReturn);

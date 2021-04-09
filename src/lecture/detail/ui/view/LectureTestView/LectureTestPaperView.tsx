@@ -99,7 +99,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       });
     } else {
       const lectureStructureItem = getActiveStructureItem();
-      if (lectureStructureItem?.canSubmit !== true) {
+      console.log('lectureStructureItem', lectureStructureItem);
+      if (lectureStructureItem?.test?.can !== true) {
         reactAlert({
           title: '알림',
           message: '학습 완료 후 Test 제출이 가능합니다.',

@@ -47,7 +47,7 @@ export interface StudentInfoViewBody {
 export function studentInfoView(
   body: StudentInfoViewBody
 ): Promise<LectureStudentView> {
-  const url = `${BASE_URL}/students/flow/studentInfoView`;
+  const url = `${BASE_URL}/students/studentInfoView`;
   return axiosApi
     .post<LectureStudentView>(url, body)
     .then(response => response && response.data);
@@ -111,7 +111,7 @@ export function modifyStudentForExam(
   studentId: string,
   examId: string
 ): Promise<void> {
-  const url = `${BASE_URL}/students/flow/examProcess/${studentId}/${examId}`;
+  const url = `${BASE_URL}/students/examProcess/${studentId}/${examId}`;
   return axiosApi.put<void>(url).then(response => response && response.data);
 }
 

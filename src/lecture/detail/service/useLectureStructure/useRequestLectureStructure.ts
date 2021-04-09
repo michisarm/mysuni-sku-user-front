@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router';
 import {
+  getLectureStructure,
   setLectureStructure,
-  useLectureStructure,
 } from '../../store/LectureStructureStore';
 import { mergeActivated } from '../../utility/lectureStructureHelper';
 import LectureParams from '../../viewModel/LectureParams';
@@ -17,4 +17,10 @@ export function useRequestLectureStructure() {
     }
     return setLectureStructure;
   }, [cardId]);
+  useEffect(() => {
+    const lectureStructure = getLectureStructure();
+    if (lectureStructure !== undefined) {
+      mergeActivated(lectureStructure, pathname);
+    }
+  }, [pathname]);
 }
