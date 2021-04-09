@@ -22,6 +22,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   const params: LectureParams = {
     cardId: prerequisiteCardId,
     viewType: 'view',
+    pathname: '',
   };
   const to = toPath(params);
   return (

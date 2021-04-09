@@ -43,6 +43,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   report,
   path,
 }) {
+  const { pathname } = useLocation();
   const [opened, setOpened] = useState<boolean>(true);
   const toggle = useCallback(() => {
     if (opened) {
@@ -89,7 +90,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     <CubeView
                       name={cube.name}
                       state={cube.state}
-                      activated={cube.activated}
+                      activated={cube.path === pathname}
                       learningTime={cube.learningTime}
                       cubeType={cube.cubeType}
                       path={cube.path}
@@ -100,7 +101,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     <DurationableCubeView
                       name={cube.name}
                       state={cube.state}
-                      activated={cube.activated}
+                      activated={cube.path === pathname}
                       learningTime={cube.learningTime}
                       cubeType={cube.cubeType}
                       path={cube.path}
@@ -112,7 +113,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   )}
                   {cube.test !== undefined && (
                     <TestView
-                      activated={cube.test.activated}
+                      activated={cube.test.path === pathname}
                       name={cube.test.name}
                       state={cube.test.state}
                       path={cube.test.path}
@@ -122,7 +123,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   {cube.survey !== undefined && (
                     <SurveyView
                       name={cube.survey.name}
-                      activated={cube.survey.activated}
+                      activated={cube.survey.path === pathname}
                       state={cube.survey.state}
                       path={cube.survey.path}
                       can={cube.survey.can}
@@ -130,7 +131,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   )}
                   {cube.report !== undefined && (
                     <ReportView
-                      activated={cube.report.activated}
+                      activated={cube.report.path === pathname}
                       name={cube.report.name}
                       state={cube.report.state}
                       path={cube.report.path}
@@ -148,7 +149,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                   name={discussion.name}
                   state={discussion.state}
                   path={discussion.path}
-                  activated={discussion.activated}
+                  activated={discussion.path === pathname}
                 />
               );
             }
@@ -163,7 +164,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     key={cube.cubeId}
                     name={cube.name}
                     state={cube.state}
-                    activated={cube.activated}
+                    activated={cube.path === pathname}
                     learningTime={cube.learningTime}
                     cubeType={cube.cubeType}
                     path={cube.path}
@@ -175,7 +176,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     key={cube.cubeId}
                     name={cube.name}
                     state={cube.state}
-                    activated={cube.activated}
+                    activated={cube.path === pathname}
                     learningTime={cube.learningTime}
                     cubeType={cube.cubeType}
                     path={cube.path}
@@ -191,7 +192,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     state={cube.test.state}
                     path={cube.test.path}
                     can={cube.test.can}
-                    activated={cube.test.activated}
+                    activated={cube.test.path === pathname}
                   />
                 )}
                 {cube.survey !== undefined && (
@@ -200,7 +201,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     state={cube.survey.state}
                     path={cube.survey.path}
                     can={cube.survey.can}
-                    activated={cube.survey.activated}
+                    activated={cube.survey.path === pathname}
                   />
                 )}
                 {cube.report !== undefined && (
@@ -209,7 +210,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     state={cube.report.state}
                     path={cube.report.path}
                     can={cube.report.can}
-                    activated={cube.report.activated}
+                    activated={cube.report.path === pathname}
                   />
                 )}
               </>
@@ -219,7 +220,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           <CourseTestView
             name={test.name}
             state={test.state}
-            activated={test.activated}
+            activated={test.path === pathname}
             path={test.path}
             can={test.can}
           />
@@ -228,7 +229,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           <CourseSurveyView
             name={survey.name}
             state={survey.state}
-            activated={survey.activated}
+            activated={survey.path === pathname}
             path={survey.path}
             can={survey.can}
           />
@@ -237,7 +238,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           <CourseReportView
             name={report.name}
             state={report.state}
-            activated={report.activated}
+            activated={report.path === pathname}
             path={report.path}
             can={report.can}
           />

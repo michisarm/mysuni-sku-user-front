@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Icon, Image } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router';
@@ -27,17 +27,18 @@ export default function BadgeCompRight({
   const history = useHistory();
   const { scrollSave } = useScrollMove();
 
-  const moveToCardPage = (e: any, cardId: string) => {
+  const moveToCardPage = useCallback((e: any, cardId: string) => {
     e.preventDefault();
     scrollSave();
 
     const params: LectureParams = {
       cardId,
       viewType: 'view',
+      pathname: '',
     };
 
     history.push(toPath(params));
-  };
+  }, []);
 
   return (
     <div className="right-area">

@@ -1,12 +1,14 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import FileDownloadPop from '../../../../../personalcube/shared/OverviewField/sub/FileDownloadPop';
 import Student from '../../../../model/Student';
+import { registerStudent } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { documentDownload } from '../../../service/useActionLog/cubeStudyEvent';
 import {
   completeLearning,
   startLearning,
 } from '../../../service/useLectureState/utility/cubeStateActions';
+import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import LectureState from '../../../viewModel/LectureState';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
@@ -29,6 +31,18 @@ function CanceledView(props: CanceledViewProps) {
   const action = useCallback(async () => {
     hookAction();
     startLearning();
+  }, []);
+  useEffect(() => {
+    const params = getLectureParams();
+    if (params?.cubeId !== undefined) {
+      registerStudent({
+        cardId: params.cardId,
+        cubeId: params.cubeId,
+        round: 1,
+      }).then(() => {
+        requestCardLectureStructure(params.cardId);
+      });
+    }
   }, []);
   return (
     <>

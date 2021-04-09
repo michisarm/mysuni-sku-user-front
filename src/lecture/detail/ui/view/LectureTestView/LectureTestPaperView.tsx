@@ -26,6 +26,7 @@ import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import LectureParams from '../../../viewModel/LectureParams';
 import { saveTask, submitTask } from '../../../api/cardApi';
+import { getLectureParams } from '../../../store/LectureParamsStore';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -98,7 +99,11 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
         message: '빈 항목을 입력하세요.',
       });
     } else {
-      const lectureStructureItem = getActiveStructureItem();
+      const params = getLectureParams();
+      if (params === undefined) {
+        return;
+      }
+      const lectureStructureItem = getActiveStructureItem(params.pathname);
       console.log('lectureStructureItem', lectureStructureItem);
       if (lectureStructureItem?.test?.can !== true) {
         reactAlert({

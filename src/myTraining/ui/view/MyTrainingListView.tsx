@@ -7,10 +7,15 @@ import { MyTrainingService } from 'myTraining/stores';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
-import LectureParams, { toPath } from '../../../lecture/detail/viewModel/LectureParams';
+import LectureParams, {
+  toPath,
+} from '../../../lecture/detail/viewModel/LectureParams';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
-import { timeToHourMinutePaddingFormat, convertTimeToDate } from '../../../shared/helper/dateTimeHelper';
+import {
+  timeToHourMinutePaddingFormat,
+  convertTimeToDate,
+} from '../../../shared/helper/dateTimeHelper';
 import { CubeTypeNameType } from '../../../personalcube/personalcube/model';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 
@@ -39,13 +44,13 @@ function MyTrainingListView({
     }, 200);
   }, [scrollOnceMove]);
 
-
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
 
     const params: LectureParams = {
       cardId: myTraining.serviceId,
       viewType: 'view',
+      pathname: '',
     };
 
     history.push(toPath(params));
@@ -53,9 +58,9 @@ function MyTrainingListView({
     ReactGA.event({
       category: '학습중인 과정',
       action: 'Click',
-      label: `${myTraining.serviceType === 'COURSE' ? '(Course)' : '(Cube)'} - ${
-        myTraining.name
-      }`,
+      label: `${
+        myTraining.serviceType === 'COURSE' ? '(Course)' : '(Cube)'
+      } - ${myTraining.name}`,
     });
 
     scrollSave();
@@ -73,22 +78,19 @@ function MyTrainingListView({
     [selectedServiceIds, clearOne, selectOne]
   );
 
-  const renderBaseContent = (myTraining: MyTrainingTableViewModel, index: number) => {
+  const renderBaseContent = (
+    myTraining: MyTrainingTableViewModel,
+    index: number
+  ) => {
     const collegeName = getCollgeName(myTraining.category.college.id);
 
     return (
       <>
-        <Table.Cell>
-          {totalCount - index}
-        </Table.Cell>
-        <Table.Cell>
-          {collegeName}
-        </Table.Cell>
+        <Table.Cell>{totalCount - index}</Table.Cell>
+        <Table.Cell>{collegeName}</Table.Cell>
         <Table.Cell className="title">
           <a href="#" onClick={e => onViewDetail(e, myTraining)}>
-            <span className="ellipsis">
-              {myTraining.name}
-            </span>
+            <span className="ellipsis">{myTraining.name}</span>
           </a>
         </Table.Cell>
       </>
@@ -103,31 +105,23 @@ function MyTrainingListView({
       case MyLearningContentType.InProgress: {
         return (
           <>
-            <Table.Cell>
-              {myTraining.serviceType}{' '}
-            </Table.Cell>
-            <Table.Cell>
-              {myTraining.difficultyLevel || '-'} 
-            </Table.Cell>
+            <Table.Cell>{myTraining.serviceType} </Table.Cell>
+            <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
             </Table.Cell>
-            <Table.Cell>
-              {convertTimeToDate(myTraining.time)}
-            </Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
             <Table.Cell>
               {`${myTraining.passedLearningCount}/${myTraining.totalLearningCount}`}
             </Table.Cell>
           </>
         );
       }
-        
+
       case MyLearningContentType.Enrolled: {
         return (
           <>
-            <Table.Cell>
-              {CubeTypeNameType[myTraining.cubeType]}{' '}
-            </Table.Cell>
+            <Table.Cell>{CubeTypeNameType[myTraining.cubeType]} </Table.Cell>
             <Table.Cell>
               {myTraining.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
@@ -135,52 +129,38 @@ function MyTrainingListView({
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
             </Table.Cell>
             <Table.Cell>
-              {myTraining.stampCount !== 0 && myTraining.stampCount || '-'}
+              {(myTraining.stampCount !== 0 && myTraining.stampCount) || '-'}
             </Table.Cell>
-            <Table.Cell>
-              {convertTimeToDate(myTraining.startDate)}
-            </Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.startDate)}</Table.Cell>
           </>
         );
-      }     
+      }
       case MyLearningContentType.Completed: {
         return (
           <>
-            <Table.Cell>
-              {myTraining.serviceType}{' '}
-            </Table.Cell>
-            <Table.Cell>
-              {myTraining.difficultyLevel || '-'}
-            </Table.Cell>
+            <Table.Cell>{myTraining.serviceType} </Table.Cell>
+            <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
             </Table.Cell>
-            <Table.Cell>
-              {convertTimeToDate(myTraining.endDate)}
-            </Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.endDate)}</Table.Cell>
           </>
         );
-      }  
+      }
       case MyLearningContentType.Retry: {
-        const learningType = myTraining.serviceType === 'Card' && myTraining.serviceType || CubeTypeNameType[myTraining.cubeType];
+        const learningType =
+          (myTraining.serviceType === 'Card' && myTraining.serviceType) ||
+          CubeTypeNameType[myTraining.cubeType];
 
         return (
           <>
-            <Table.Cell>
-              {learningType}{' '}
-            </Table.Cell>
-            <Table.Cell>
-              {myTraining.difficultyLevel || '-'}
-            </Table.Cell>
+            <Table.Cell>{learningType} </Table.Cell>
+            <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
             </Table.Cell>
-            <Table.Cell>
-              {myTraining.stampCount || '-'}
-            </Table.Cell>
-            <Table.Cell>
-              {convertTimeToDate(myTraining.time)}
-            </Table.Cell>
+            <Table.Cell>{myTraining.stampCount || '-'}</Table.Cell>
+            <Table.Cell>{convertTimeToDate(myTraining.time)}</Table.Cell>
           </>
         );
       }
@@ -189,8 +169,7 @@ function MyTrainingListView({
 
   return (
     <Table.Body>
-      {
-        myTrainings &&
+      {myTrainings &&
         myTrainings.length &&
         myTrainings.map((myTraining, index) => (
           <Table.Row key={`mytraining-list-${index}`}>
@@ -206,12 +185,11 @@ function MyTrainingListView({
             {renderBaseContent(myTraining, index)}
             {renderByContentType(myTraining, contentType)}
           </Table.Row>
-        ))
-      }
+        ))}
     </Table.Body>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.myTrainingService'
-))(observer(MyTrainingListView));
+export default inject(mobxHelper.injectFrom('myTraining.myTrainingService'))(
+  observer(MyTrainingListView)
+);

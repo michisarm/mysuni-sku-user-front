@@ -31,6 +31,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskDetailCube';
 import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
+import { getLectureParams } from '../../store/LectureParamsStore';
 
 function LectureTaskContainer() {
   const { pathname, hash } = useLocation();
@@ -196,23 +197,17 @@ function LectureTaskContainer() {
   );
 
   useEffect(() => {
-    async function getContentId() {
-      // if (params === undefined) {
-      //   return;
-      // }
-      // const contentData = await getCubeLectureTaskLearningCardId(
-      //   params.contentId
-      // );
-
-      const structureItem = getActiveStructureItem();
-      if (structureItem !== undefined) {
-        const { cubeId } = structureItem as LectureStructureCubeItem;
-        if (cubeId !== undefined) {
-          setBoardId(cubeId);
-        }
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    const structureItem = getActiveStructureItem(params.pathname);
+    if (structureItem !== undefined) {
+      const { cubeId } = structureItem as LectureStructureCubeItem;
+      if (cubeId !== undefined) {
+        setBoardId(cubeId);
       }
     }
-    getContentId();
   }, [create]);
 
   async function deletePost(id: string, type: string) {
