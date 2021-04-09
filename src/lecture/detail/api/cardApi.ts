@@ -13,6 +13,7 @@ import { CardRdo } from '../model/CardRdo';
 import { OffsetElementList } from '../../../shared/model';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 import { ExtraTaskType } from '../../model/ExtraTaskType';
+import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 
 const BASE_URL = '/api/lecture';
 
