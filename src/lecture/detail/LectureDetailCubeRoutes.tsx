@@ -17,15 +17,16 @@ import {
 } from './store/LectureOverviewStore';
 import { useRequestLectureState } from './service/useLectureState/useRequestLectureState';
 import { useRequestLectureStructure } from './service/useLectureStructure/useRequestLectureStructure';
+import { useCubeBreadcrumb } from './service/useCubeBreadcrumb';
 
 export default function LectureDetailCubeRoutes() {
   useRequestLectureStructure();
-  // jz - useCubeBreadcrumb 필요
+  useCubeBreadcrumb();
 
   const params = useParams<LectureParams>();
   const { cardId, cubeId, viewType } = params;
   useEffect(() => {
-    setLectureParams(params);
+    setLectureParams({ ...params });
   }, [params]);
 
   useEffect(() => {

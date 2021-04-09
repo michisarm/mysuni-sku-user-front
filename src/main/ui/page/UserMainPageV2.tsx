@@ -6,9 +6,10 @@ import { ActionEventService } from 'shared/stores';
 import MyLearningSummary from '../../sub/MyLearningSummaryV2';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
+import MyTrainingFilterRdoModel from '../../../myTraining/model/MyTrainingFilterRdoModel';
 // import MainModals from '../../sub/MainModals';
 // import MainModals from '../../sub/MainModals/TutorialModalViewV2';
-//import MainModals from '../../sub/MainModals/CoursePromotionModalView';
+import MainModals from '../../sub/MainModals/CoursePromotionModalView';
 
 interface Props {
   actionEventService: ActionEventService;
@@ -27,13 +28,6 @@ class UserMainPageV2 extends Component<Props> {
   constructor(props: Props) {
     //
     super(props);
-
-    const completedLearnings = window.sessionStorage.getItem('learningPassed');
-
-    if (completedLearnings === null || completedLearnings.length < 1) {
-      const { myTrainingService } = this.props;
-      myTrainingService!.saveAllLearningPassedToStorage('Passed', '0');
-    }
   }
 
   componentDidMount() {
@@ -41,12 +35,12 @@ class UserMainPageV2 extends Component<Props> {
     this.fetchAllModelsForStorage();
   }
 
-  /* 메인 페이지 진입 시, 전체 학습중, 학습완료 데이터를 session storage 에 저장하기 위한 로직. */
+  /* 메인 페이지 진입 시, 전체 학습중, 학습완료 데이터를 session storage 에 저장하기 위한 로M직. */
   async fetchAllModelsForStorage() {
     const { myTrainingService } = this.props;
 
     if (sessionStorage.getItem('inProgressTableViews') === null) {
-      const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+      const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
       if (inProgressTableViews && inProgressTableViews.length) {
         sessionStorage.setItem(
           'inProgressTableViews',
@@ -56,7 +50,7 @@ class UserMainPageV2 extends Component<Props> {
     }
 
     if (sessionStorage.getItem('completedTableViews') === null) {
-      const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+      const completedTableViews = await myTrainingService!.findAllCompletedStorage();
       if (completedTableViews && completedTableViews.length) {
         sessionStorage.setItem(
           'completedTableViews',
@@ -82,7 +76,7 @@ class UserMainPageV2 extends Component<Props> {
           <MyLearningSummary />
           <MyLearningContentContainer />
 
-          {/*<MainModals />*/}
+          <MainModals />
         </div>
       </ContentLayout>
     );

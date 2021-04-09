@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,

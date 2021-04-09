@@ -1,11 +1,12 @@
-
 enum OrderByType {
-  Time = 'TIME',
-  StudentCount = 'STUDENTCOUNT',
-  Star = 'STAR',
+  Time = 'TimeDesc',
+  StudentCount = 'StudentCountDesc',
+  Star = 'StarCountDesc',
   New = 'NEW',
   Popular = 'POPULAR',
-  collegeOrder = 'COLLEGE_ORDER',
+  collegeOrder = 'CollegeOrder',
+  Available = 'AVAILABLE',
+  Imminent = 'IMMINENT'
 }
 
 export default OrderByType;

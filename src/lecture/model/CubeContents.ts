@@ -21,7 +21,7 @@ export interface CubeContents {
       round: number;
     }
   ];
-  operator: Member;
+  operator: { keyString: string };
   organizerId: string;
   otherOrganizerName: string;
   patronKey: {
@@ -35,7 +35,7 @@ export interface CubeContents {
   };
   reviewFeedbackId: string;
   surveyId: string;
-  tags: [string];
+  tags?: [string] | null;
   terms: [
     {
       displaySort: number;

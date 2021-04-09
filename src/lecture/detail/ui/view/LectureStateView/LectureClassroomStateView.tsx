@@ -31,6 +31,18 @@ interface CanceledViewProps {
   lectureClassroom: LectureClassroom;
 }
 
+function classroomSubmit(classroom: Classroom) {
+  if (classroom.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
+    const messageStr =
+      '본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  } else if (!classroom.freeOfCharge.approvalProcess) {
+    const messageStr =
+      '본 과정 신청이 완료 되었습니다. <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+  }
+}
+
 function CanceledView(props: CanceledViewProps) {
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const applyReferenceModalRef = useRef<ApplyReferenceModal>(null);
@@ -66,12 +78,14 @@ function CanceledView(props: CanceledViewProps) {
       setSelectedClassroom(selected);
       applyReferenceModalRef.current.onOpenModal();
     } else {
+      classroomSubmit(selected);
       submit(selected.round);
     }
   }, []);
   const onApply = useCallback(
     (member: ApprovalMemberModel) => {
       if (selectedClassroom !== null) {
+        classroomSubmit(selectedClassroom);
         submit(selectedClassroom.round, true, member.email);
       }
     },

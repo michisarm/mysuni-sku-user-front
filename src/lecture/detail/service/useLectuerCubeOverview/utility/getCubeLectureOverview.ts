@@ -37,15 +37,18 @@ function getEmpty(text?: string) {
 async function getLectureSummary(
   cubeDetail: CubeDetail
 ): Promise<LectureCubeSummary> {
-  const { cube, cubeContents, cubeReactiveModel } = cubeDetail;
+  const { cube, cubeContents, cubeReactiveModel, operators } = cubeDetail;
 
   const { id, name, categories, type } = cube;
-  const { difficultyLevel, operator } = cubeContents;
+  const { difficultyLevel } = cubeContents;
   const { passedStudentCount, studentCount } = cubeReactiveModel;
 
   const category = categories.find(c => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
   const mylecture = await findInMyLecture(cube.id, 'Cube');
+  const operator = operators.find(
+    ({ id }) => id === cubeContents?.operator?.keyString
+  );
   return {
     name,
     category: {
@@ -55,9 +58,9 @@ async function getLectureSummary(
     difficultyLevel,
     learningTime,
     operator: {
-      email: operator.email,
-      name: operator.name,
-      companyName: operator.companyName,
+      email: operator?.email || '',
+      name: operator?.names?.langStringMap.ko || '',
+      companyName: operator?.companyNames?.langStringMap.ko || '',
     },
     passedStudentCount,
     studentCount,
@@ -70,9 +73,11 @@ async function getLectureSummary(
 function getLectureDescription(cubeDetail: CubeDetail): LectureDescription {
   const {
     description: { description, applicants, completionTerms, goal, guide },
-    operator,
   } = cubeDetail.cubeContents;
-  const organizer = operator.companyName;
+  const operator = cubeDetail.operators.find(
+    ({ id }) => id === cubeDetail?.cubeContents?.operator?.keyString
+  );
+  const organizer = operator?.companyNames?.langStringMap.ko || '';
   return { description, applicants, completionTerms, goal, guide, organizer };
 }
 
@@ -89,6 +94,11 @@ function getLectureTags(cubeDetail: CubeDetail): LectureTags {
   const {
     cubeContents: { tags },
   } = cubeDetail;
+  if (tags === null || tags === undefined) {
+    return {
+      tags: [],
+    };
+  }
   return {
     tags,
   };

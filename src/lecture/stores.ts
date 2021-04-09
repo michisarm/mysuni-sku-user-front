@@ -15,12 +15,14 @@ import RQDLectureService from './shared/present/logic/RQDLectureService';
 import NEWLectureService from './shared/present/logic/NEWLectureService';
 import POPLectureService from './shared/present/logic/POPLectureService';
 import LRSLectureService from './shared/present/logic/LRSLectureService';
+import ENRLectureService from './shared/present/logic/ENRLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
 import BadgeCardService from '../certification/present/logic/BadgeCardService';
 import BadgeCategoryService from '../certification/present/logic/BadgeCategoryService';
 import BadgeStudentService from '../certification/present/logic/BadgeStudentService';
 import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
 import CardStudentService from '../certification/present/logic/CardStudentService';
+
 
 
 export default {
@@ -50,6 +52,9 @@ export default {
   lrsLecture: {
     lrsLectureService: LRSLectureService.instance,
   },
+  enrLecture: {
+    enrLectureService : ENRLectureService.instance,
+  },
   badge: {
     badgeService: BadgeService.instance,
     badgeCardService: BadgeCardService.instance,
@@ -68,6 +73,7 @@ export {
   NEWLectureService,
   POPLectureService,
   LRSLectureService,
+  ENRLectureService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,

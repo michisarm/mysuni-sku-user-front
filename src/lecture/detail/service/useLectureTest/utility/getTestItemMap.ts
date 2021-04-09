@@ -26,6 +26,7 @@ async function getTestItem(examId: string) {
       id: examination.id,
       questionCount: examination.questionCount,
       questions: examPaperForm.questions,
+      description: examPaperForm.description,
     };
     return item;
   }

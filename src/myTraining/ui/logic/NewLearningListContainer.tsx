@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {Radio, Segment} from 'semantic-ui-react';
+import React, {useState, Fragment, useEffect} from 'react';
+import {Segment} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import NewLearningListView from '../view/NewLearningListView';
 import {OrderByType} from '../../../lecture/model';
 import {ContentType} from '../page/NewLearningPage';
-
+import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
+import myTrainingRoutes from 'myTraining/routePaths';
 
 interface Props extends RouteComponentProps {
   contentType: string,
@@ -13,10 +14,11 @@ interface Props extends RouteComponentProps {
 
 const NewLearningListContainer : React.FC<Props> = (Props) => {
   //
-  const { contentType, setPageTitle } = Props;
+  const { contentType, setPageTitle, history } = Props;
 
-  const [totalCount, setTotalCount] = useState(0);
   const [order, setOrder] = useState(OrderByType.New);
+  const [totalCount, setTotalCount] = useState(0);
+  const [viewType, setViewType] = useState<EnrollingViewType>('All');
 
   const showTotalCount = (count: number) => {
     setTotalCount(count);
@@ -34,10 +36,12 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
     setOrder(order);
   };
 
+  const onChangeViewType = ((e: any, data: any, func?: any) => {
+    setViewType(data.value);
+  });
+
   return (
     <Segment className="full">
-      <div className="sort-reult">
-        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
         {/*20.07.28 기능삭제*/}
         {/*<div className="comments-sort">*/}
         {/*<Radio*/}
@@ -57,7 +61,26 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
         {/*onChange={onChangeSorting}*/}
         {/*/>*/}
         {/*</div>*/}
-      </div>
+
+        <div className="sort-reult">
+        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
+
+        {contentType == ContentType.Enrolling && (
+          <div className="comments-sort">
+            <ListTopPanelTemplate
+              className="right-wrap"
+              contentType={contentType}
+            >
+              <ListRightTopPanel
+                contentType={contentType}
+                checkedViewType={viewType}
+                resultEmpty={false}
+                onChangeViewType={onChangeViewType}
+              />
+            </ListTopPanelTemplate>
+          </div>
+        )}
+        </div>
 
       <NewLearningListView
         setNewOrder={setNewOrder}
@@ -66,6 +89,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
         order={window.sessionStorage.getItem('order_type') === OrderByType.New ? OrderByType.New : OrderByType.Popular}
         totalCount={totalCount}
         setPageTitle={setPageTitle}
+        viewType={viewType}
       />
 
     </Segment>
@@ -73,3 +97,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 };
 
 export default withRouter(NewLearningListContainer);
+
+/* globals */
+export type EnrollingViewType = 'All' | 'Available';  // 전체보기 | 수강 신청 가능 과정 모아보기
+export type NewLearningContentType = ContentType;

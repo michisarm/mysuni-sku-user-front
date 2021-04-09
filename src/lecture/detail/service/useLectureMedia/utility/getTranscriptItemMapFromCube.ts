@@ -27,11 +27,13 @@ export async function getTranscriptItem(
     } = transcript;
 
     const lectureTranscript: LectureTranscript = {
+      deliveryId,
       locale,
       idx : 'transcript'+key,
       text,
       startTime,
       endTime,
+      active:false
     };
 
     lectureTranscripts.push(lectureTranscript);

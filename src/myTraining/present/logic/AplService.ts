@@ -13,8 +13,8 @@ import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 import { AplModel } from '../../model';
 import AplUdoModel from '../../model/AplUdoModel';
-import { ApprovalViewType } from '../../ui/logic/MyApprovalListContainerV2';
 import { AplRdoModel, CountType } from '../../model/AplRdoModel';
+import { ApprovalViewType } from '../../ui/logic/PersonalLearningListContainer';
 
 
 @autobind

@@ -33,6 +33,7 @@ import {
   setWatchLog,
 } from '../../../service/useLectureMedia/useLectureWatchLog';
 import { confirmProgress } from '../../../service/useLectureMedia/utility/confirmProgress';
+import { setEmbed } from 'lecture/detail/store/EmbedStore';
 import { findAllQuiz } from '../../../../../quiz/api/QuizApi';
 import QuizTableList from '../../../../../quiz/model/QuizTableList';
 import { useLectureMedia } from '../../../service/useLectureMedia/useLectureMedia';
@@ -209,7 +210,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   // sesstionStorage 에 학습중, 완료 건 update
   const fetchAllModelsForStorage = async () => {
-    const inProgressTableViews = await myTrainingService!.findAllInProgressTableViewsForStorage();
+    const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
     if (inProgressTableViews && inProgressTableViews.length) {
       sessionStorage.setItem(
         'inProgressTableViews',
@@ -217,7 +218,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       );
     }
 
-    const completedTableViews = await myTrainingService!.findAllCompletedTableViewsForStorage();
+    const completedTableViews = await myTrainingService!.findAllCompletedStorage();
     if (completedTableViews && completedTableViews.length) {
       sessionStorage.setItem(
         'completedTableViews',
@@ -388,6 +389,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setPanoptoState(10);
       setIsActive(false);
       setEmbedApi('');
+      setEmbed('');
       setLectureConfirmProgress();
     };
   }, []);
@@ -464,6 +466,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
+        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -712,7 +715,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {getLectureTranscripts() &&
+        {/* {getLectureTranscripts() &&
           getLectureMedia() &&
           (getLectureMedia()?.mediaType == 'InternalMedia' ||
             getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
@@ -780,7 +783,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             View Transcript
             <i aria-hidden="true" className="icon icon morelink" />
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

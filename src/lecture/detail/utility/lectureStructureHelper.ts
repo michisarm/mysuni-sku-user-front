@@ -82,7 +82,6 @@ export function mergeActivated(
           setLectureDiscussion({
             id: discussion.id,
             name: discussion.name,
-            time: discussion.time,
             creator: discussion.creator,
             creatorAudienceId: discussion.creatorAudienceId,
           });

@@ -35,7 +35,7 @@ export default class CoursePlanApi {
       ? '/api/lecture'
       : process.env.REACT_APP_COURSE_LECTURE_CONTENT_API;
 
-      registerCoursePlan(coursePlan: CoursePlanModel) {
+  registerCoursePlan(coursePlan: CoursePlanModel) {
     //
     return axios
       .post<string>(this.URL, coursePlan)
@@ -136,7 +136,7 @@ export default class CoursePlanApi {
     return axios
       .get<number>(
         this.lectureContentsURL +
-          `/lecturecards/orders/count?collegeId=${collegeId}`
+          `/cardCollegeOrders/count/college/${collegeId}`
       )
       .then(response => response && response.data);
   }
