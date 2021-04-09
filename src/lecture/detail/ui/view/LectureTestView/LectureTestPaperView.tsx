@@ -25,6 +25,7 @@ import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import LectureParams from '../../../viewModel/LectureParams';
+import { saveTask, submitTask } from '../../../api/cardApi';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -56,7 +57,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     readOnly = true;
   }
 
-  const saveAnswerSheet = useCallback(() => {
+  const saveAnswerSheet = useCallback(async () => {
     let answerItemId = '';
     if (answerItem !== undefined) {
       answerItemId = answerItem.id;
@@ -67,6 +68,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
+    await saveTask(testStudentItem.studentId, 'Test');
+    await requestCardLectureStructure(cardId);
   }, [answerItem, params]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
@@ -120,84 +123,10 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
 
+            await submitTask(testStudentItem.studentId, 'Test');
             await requestCardLectureStructure(cardId);
             openView('result');
-            /*const lectureTestStudentItem = getLectureTestStudentItem();
-            const course = getActiveCourseStructureItem();
-            const program = getActiveProgramStructureItem();
-            switch (lectureTestStudentItem?.learningState) {
-              case 'Waiting':
-              case 'TestWaiting':
-                if (
-                  course?.survey !== undefined &&
-                  course?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(course?.survey?.path),
-                  });
-                } else if (
-                  program?.survey !== undefined &&
-                  program?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(program?.survey?.path),
-                  });
-                } else {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
-                  });
-                }
-                break;
-              case 'Failed':
-                reactAlert({
-                  title: '알림',
-                  message:
-                    '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.',
-                });
-                break;
-              case 'Passed':
-              case 'TestPassed':
-                if (
-                  course?.survey !== undefined &&
-                  course?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '안내',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(course?.survey?.path),
-                  });
-                } else if (
-                  program?.survey !== undefined &&
-                  program?.survey.state !== 'Completed'
-                ) {
-                  reactAlert({
-                    title: '안내',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능하며, Survey 참여도 부탁드립니다.',
-                    onClose: () => goToPath(program?.survey?.path),
-                  });
-                } else {
-                  reactAlert({
-                    title: '알림',
-                    message:
-                      '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.',
-                  });
-                }
-                break;
-              default:
-                break;
-            }*/
           }
-
           setSubmitOk(true);
         },
       });
