@@ -40,16 +40,15 @@ async function getLectureSummary(
   const { cube, cubeContents, cubeReactiveModel, operators } = cubeDetail;
 
   const { id, name, categories, type } = cube;
-  const {
-    difficultyLevel,
-    operator: { keyString },
-  } = cubeContents;
+  const { difficultyLevel } = cubeContents;
   const { passedStudentCount, studentCount } = cubeReactiveModel;
 
   const category = categories.find(c => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
   const mylecture = await findInMyLecture(cube.id, 'Cube');
-  const operator = operators.find(({ id }) => id === keyString);
+  const operator = operators.find(
+    ({ id }) => id === cubeContents?.operator?.keyString
+  );
   return {
     name,
     category: {
@@ -74,9 +73,10 @@ async function getLectureSummary(
 function getLectureDescription(cubeDetail: CubeDetail): LectureDescription {
   const {
     description: { description, applicants, completionTerms, goal, guide },
-    operator: { keyString },
   } = cubeDetail.cubeContents;
-  const operator = cubeDetail.operators.find(({ id }) => id === keyString);
+  const operator = cubeDetail.operators.find(
+    ({ id }) => id === cubeDetail?.cubeContents?.operator?.keyString
+  );
   const organizer = operator?.companyNames?.langStringMap.ko || '';
   return { description, applicants, completionTerms, goal, guide, organizer };
 }

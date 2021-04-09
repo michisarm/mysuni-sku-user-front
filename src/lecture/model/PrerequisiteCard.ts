@@ -1,5 +1,5 @@
 export interface PrerequisiteCard {
   prerequisiteCardId: string;
-  name: string;
+  prerequisiteCardName: string;
   required: boolean;
 }
