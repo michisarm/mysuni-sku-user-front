@@ -22,7 +22,10 @@ export interface LectureStructureItem {
   can: boolean;
   order: number;
   type: LectureStructureItemType;
-  canSubmit?: boolean;
+  //canSubmit?: boolean;
+  test?: LectureStructureTestItem;
+  survey?: LectureStructureSurveyItem;
+  report?: LectureStructureReportItem;
 }
 
 export interface ItemMap {
