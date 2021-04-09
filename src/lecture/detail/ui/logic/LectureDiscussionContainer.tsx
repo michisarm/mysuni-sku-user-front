@@ -10,6 +10,8 @@ import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useLectureParams } from '../../store/LectureParamsStore';
+import { useParams } from 'react-router-dom';
+import LectureParams from '../../viewModel/LectureParams';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -20,7 +22,7 @@ const fileDownload = (pdf: string, fileId: string) => {
 export default function LectureDiscussionContainer() {
   useRequestLectureDiscussion();
   const lectureDiscussion = useLectureDiscussion();
-  const params = useLectureParams();
+  const params = useParams<LectureParams>();
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);

@@ -43,19 +43,20 @@ function parseCubeTestItem(
 
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
-    state = 'Progress';
-    if (
-      cubeStudent !== undefined &&
-      cubeStudent !== null &&
-      (cubeStudent.learningState === 'Passed' ||
-        cubeStudent.learningState === 'TestPassed' ||
-        cubeStudent.learningState === 'HomeworkWaiting')
-    ) {
-      state = 'Completed';
+    switch (cubeStudent.extraWork.testStatus) {
+      case 'SAVE':
+      case 'SUBMIT':
+      case 'FAIL':
+        state = 'Progress';
+        break;
+      case 'PASS':
+        state = 'Completed';
+      default:
+        break;
     }
   }
   return {
-    id,
+    id: `test-${id}`,
     name,
     type: 'EXAM',
     params,
@@ -63,6 +64,7 @@ function parseCubeTestItem(
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
+    student: cubeStudent,
   };
 }
 
@@ -81,19 +83,21 @@ function parseCubeReportItem(
   };
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
-    if (
-      cubeStudent.homeworkContent !== null ||
-      cubeStudent.homeworkFileBoxId !== null
-    ) {
-      state = 'Progress';
-    }
-    if (cubeStudent.learningState === 'Passed') {
-      state = 'Completed';
+    switch (cubeStudent.extraWork.testStatus) {
+      case 'SAVE':
+      case 'SUBMIT':
+      case 'FAIL':
+        state = 'Progress';
+        break;
+      case 'PASS':
+        state = 'Completed';
+      default:
+        break;
     }
   }
 
   return {
-    id,
+    id: `report-${id}`,
     name,
     type: 'REPORT',
     params,
@@ -101,6 +105,7 @@ function parseCubeReportItem(
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
+    student: cubeStudent,
   };
 }
 
@@ -110,7 +115,7 @@ function parseCubeSurveyItem(
   cubeOrder: number,
   cubeStudent?: Student
 ): LectureStructureSurveyItem {
-  const { id, name } = cube;
+  const { id, name, surveyCaseId } = cube;
   const params: LectureParams = {
     cardId: card.id,
     cubeId: id,
@@ -119,15 +124,21 @@ function parseCubeSurveyItem(
   };
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
-    if (cubeStudent.extraWork.surveyStatus === 'SUBMIT') {
-      state = 'Progress';
-    } else if (cubeStudent.extraWork.surveyStatus === 'PASS') {
-      state = 'Completed';
+    switch (cubeStudent.extraWork.testStatus) {
+      case 'SAVE':
+      case 'FAIL':
+        state = 'Progress';
+        break;
+      case 'SUBMIT':
+      case 'PASS':
+        state = 'Completed';
+      default:
+        break;
     }
   }
 
   return {
-    id,
+    id: surveyCaseId || '',
     name,
     type: 'SURVEY',
     params,
@@ -135,6 +146,7 @@ function parseCubeSurveyItem(
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
+    student: cubeStudent,
   };
 }
 
@@ -150,90 +162,108 @@ function parseCardTestItem(
 
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
-    state = 'Progress';
-    if (
-      cardStudent !== undefined &&
-      cardStudent !== null &&
-      (cardStudent.learningState === 'Passed' ||
-        cardStudent.learningState === 'TestPassed' ||
-        cardStudent.learningState === 'HomeworkWaiting')
-    ) {
-      state = 'Completed';
+    switch (cardStudent.extraWork.testStatus) {
+      case 'SAVE':
+      case 'SUBMIT':
+      case 'FAIL':
+        state = 'Progress';
+        break;
+      case 'PASS':
+        state = 'Completed';
+      default:
+        break;
     }
   }
   return {
-    id,
+    id: `test-${id}`,
     name,
     type: 'EXAM',
     params,
     path: toPath(params),
-    can: cardStudent !== undefined,
+    can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
+    student: cardStudent,
   };
 }
 
 function parseCardReportItem(
   card: Card,
+  cardContents: CardContents,
   cardStudent: Student | null
 ): LectureStructureReportItem {
   const { id, name } = card;
+  const {
+    reportFileBox: { reportName },
+  } = cardContents;
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'report',
   };
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
-    if (
-      cardStudent.homeworkContent !== null ||
-      cardStudent.homeworkFileBoxId !== null
-    ) {
-      state = 'Progress';
-    }
-    if (cardStudent.learningState === 'Passed') {
-      state = 'Completed';
+    switch (cardStudent.extraWork.testStatus) {
+      case 'SAVE':
+      case 'SUBMIT':
+      case 'FAIL':
+        state = 'Progress';
+        break;
+      case 'PASS':
+        state = 'Completed';
+      default:
+        break;
     }
   }
 
   return {
-    id,
-    name,
+    id: `report-${id}`,
+    name: reportName,
     type: 'REPORT',
     params,
     path: toPath(params),
-    can: cardStudent !== undefined,
+    can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
+    student: cardStudent,
   };
 }
 
 function parseCardSurveyItem(
   card: Card,
+  cardContents: CardContents,
   cardStudent: Student | null
 ): LectureStructureSurveyItem {
-  const { id, name } = card;
+  const { name } = card;
+  const { surveyCaseId } = cardContents;
   const params: LectureParams = {
     cardId: card.id,
     viewType: 'survey',
   };
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
-    if (cardStudent.extraWork.surveyStatus === 'SUBMIT') {
-      state = 'Progress';
-    } else if (cardStudent.extraWork.surveyStatus === 'PASS') {
-      state = 'Completed';
+    switch (cardStudent.extraWork.testStatus) {
+      case 'SAVE':
+      case 'FAIL':
+        state = 'Progress';
+        break;
+      case 'SUBMIT':
+      case 'PASS':
+        state = 'Completed';
+      default:
+        break;
     }
   }
 
   return {
-    id,
+    id: surveyCaseId,
     name,
     type: 'SURVEY',
     params,
     path: toPath(params),
-    can: cardStudent !== undefined,
+    can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
+    student: cardStudent,
   };
 }
 
@@ -265,10 +295,10 @@ function parseCardItem(
     item.test = parseCardTestItem(card, cardStudent);
   }
   if (reportFileBox?.report === true) {
-    item.report = parseCardReportItem(card, cardStudent);
+    item.report = parseCardReportItem(card, cardContents, cardStudent);
   }
-  if (surveyCaseId !== null || surveyCaseId !== '') {
-    item.survey = parseCardSurveyItem(card, cardStudent);
+  if (surveyCaseId !== null && surveyCaseId !== '') {
+    item.survey = parseCardSurveyItem(card, cardContents, cardStudent);
   }
   return item;
 }
@@ -287,12 +317,12 @@ function parseDiscussionItem(
     contentId: contentId.substring(contentId.length - 4),
   };
   return {
-    id: card.id,
+    id: contentId,
     name: name ? name : '',
     type: 'DISCUSSION',
     params,
     path: toPath(params),
-    can: cardStudent !== null,
+    can: cardStudent !== null && cardStudent !== undefined,
     state: 'None',
     order,
     time: cardContents.time,
@@ -344,7 +374,7 @@ function parseCubeItem(
   if (reportName !== null && reportName !== '') {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
   }
-  if (surveyCaseId !== null || surveyCaseId !== '') {
+  if (surveyCaseId !== null && surveyCaseId !== '') {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
   }
   return item;
@@ -362,7 +392,7 @@ function parseChapterItem(
     contentId: contentId.substring(contentId.length - 4),
   };
   return {
-    id: card.id,
+    id: contentId,
     name: name ? name : '',
     type: 'CHAPTER',
     params,

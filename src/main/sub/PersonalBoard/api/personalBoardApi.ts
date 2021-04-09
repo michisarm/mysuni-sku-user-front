@@ -43,7 +43,7 @@ export function findMyLearningSummaryYear() {
 
 //우리회사인기코스
 export function getPopularCourse(companyCode: string, date: number) {
-  return axiosApi.get<MyCompanyPopularCourseItem[]>(`/api/lecture/courseStatistics/${companyCode}/${date}`)
+  return axiosApi.get<MyCompanyPopularCourseItem[]>(`/api/lecture/personalBoard/companyCardStatistics/${companyCode}/${date}`)
     .then(response => {
       return response && response.data
     });

@@ -25,6 +25,9 @@ import { useHistory, useParams } from 'react-router-dom';
 import LectureParams from '../../../viewModel/LectureParams';
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { useLectureParams } from '../../../store/LectureParamsStore';
+import { param } from 'jquery';
+import { submitTask } from '../../../api/cardApi';
+import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -37,7 +40,6 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   // setLectureReport,
   setCubeLectureReport,
 }) {
-  const { cardId } = useParams<LectureParams>();
   const params = useLectureParams();
 
   const history = useHistory();
@@ -53,14 +55,20 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   };
 
   const onSubmitClick = useCallback(() => {
-    const lectureStructureItem = getActiveStructureItem();
-    if (lectureStructureItem?.canSubmit !== true) {
-      reactAlert({
-        title: '알림',
-        message: '학습 완료 후 Report 제출이 가능합니다.',
-      });
+    const lectureStructureItem = getActiveStructureItem() as LectureStructureReportItem;
+    const { student } = lectureStructureItem;
+    if (student === undefined || student === null) {
       return;
     }
+
+    // jz - 현재는 사용하지 않는것으로 보이나, 테스트 기간동안 확인해보자.
+    // if (lectureStructureItem?.canSubmit !== true) {
+    //   reactAlert({
+    //     title: '알림',
+    //     message: '학습 완료 후 Report 제출이 가능합니다.',
+    //   });
+    //   return;
+    // }
 
     const homeworkFileBoxId = getLectureReport()?.studentReport
       ?.homeworkFileBoxId;
@@ -85,39 +93,39 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
       title: '제출 안내',
       message: '제출 하시겠습니까?',
       warning: true,
-      onOk: () => {
-        setCubeLectureReport().then(() => {
-          if (params !== undefined) {
-            requestCardLectureStructure(cardId);
-            //새로고침
-            if (params.cubeId === undefined) {
-              getCourseLectureReport(params);
-            } else {
-              getCubeLectureReport(params);
-            }
-          }
-          const course = getActiveCourseStructureItem();
-          if (
-            course?.survey !== undefined &&
-            course?.survey.state !== 'Completed'
-          ) {
-            reactAlert({
-              title: '알림',
-              message:
-                '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
-              onClose: () => goToPath(course?.survey?.path),
-            });
+      onOk: async () => {
+        await setCubeLectureReport();
+        if (params?.cardId !== undefined) {
+          await submitTask(student.id, 'Report');
+          await requestCardLectureStructure(params?.cardId);
+          //새로고침
+          if (params.cubeId === undefined) {
+            getCourseLectureReport(params);
           } else {
-            reactAlert({
-              title: '알림',
-              message:
-                '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
-            });
+            getCubeLectureReport(params);
           }
-        });
+        }
+        const course = getActiveCourseStructureItem();
+        if (
+          course?.survey !== undefined &&
+          course?.survey.state !== 'Completed'
+        ) {
+          reactAlert({
+            title: '알림',
+            message:
+              '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다. Survey 참여도 부탁드립니다.',
+            onClose: () => goToPath(course?.survey?.path),
+          });
+        } else {
+          reactAlert({
+            title: '알림',
+            message:
+              '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+          });
+        }
       },
     });
-  }, [params]);
+  }, [params?.cardId, params?.cubeId]);
 
   const getFileBoxIdForReference = useCallback((depotId: string) => {
     const lectureReport = getLectureReport();

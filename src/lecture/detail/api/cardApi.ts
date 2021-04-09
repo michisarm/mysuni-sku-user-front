@@ -11,7 +11,8 @@ import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
 import { Card } from '../../model/Card';
 import { CardRdo } from '../model/CardRdo';
 import { OffsetElementList } from '../../../shared/model';
-import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
+import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
+import { ExtraTaskType } from '../../model/ExtraTaskType';
 
 const BASE_URL = '/api/lecture';
 
@@ -138,18 +139,22 @@ export function markComplete(studentId: string) {
     .then(AxiosReturn);
 }
 
+export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
+  const params = {
+    offset: lectureFilterRdo.offset,
+    limit: lectureFilterRdo.limit,
+    excludeClosed: lectureFilterRdo.excludeClosed,
+  };
 
+  const axios = getAxios();
 
-
-
-
-
-
-
-
-
-
-
+  return axios
+    .get<OffsetElementList<CardWithCardRealtedCount>>(
+      `${BASE_URL}/cards/enrollingCards`,
+      { params }
+    )
+    .then(response => (response && response.data) || null);
+}
 export function countRequiredCards() {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/required/count`;
@@ -160,4 +165,16 @@ export function findCollegeAndCardCount() {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/required/collegeAndCardCount`;
   return axios.get<CollegeAndCardCount[]>(url).then(AxiosReturn);
+}
+
+export function saveTask(studentId: string, extraTaskType: ExtraTaskType) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/students/save/${studentId}/${extraTaskType}`;
+  return axios.put<void>(url).then(AxiosReturn);
+}
+
+export function submitTask(studentId: string, extraTaskType: ExtraTaskType) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/students/submit/${studentId}/${extraTaskType}`;
+  return axios.put<void>(url).then(AxiosReturn);
 }

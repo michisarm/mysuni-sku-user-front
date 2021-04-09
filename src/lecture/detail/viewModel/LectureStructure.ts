@@ -25,12 +25,6 @@ export interface LectureStructureItem {
   canSubmit?: boolean;
 }
 
-export interface StudentStateMap {
-  learningState: LearningState;
-  state: State;
-  studentId: string;
-}
-
 export interface ItemMap {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
@@ -45,16 +39,19 @@ export interface LectureStructureChapterItem extends LectureStructureItem {
 export interface LectureStructureTestItem extends LectureStructureItem {
   id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureSurveyItem extends LectureStructureItem {
   id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureReportItem extends LectureStructureItem {
   id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureCubeItem extends LectureStructureItem {
