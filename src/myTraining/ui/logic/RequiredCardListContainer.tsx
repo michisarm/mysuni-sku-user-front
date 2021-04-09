@@ -10,11 +10,11 @@ import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
-import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyLearningContentType } from '../model/MyLearningContentType';
+import RequiredCardListView from '../view/RequiredCardListView';
 
 
 interface RequiredCardListContainerProps {
@@ -172,8 +172,8 @@ function RequiredCardListContainer({
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
-                  <MyLearningTableBody
-                    models={lectureTableViews}
+                  <RequiredCardListView 
+                    requiredCards={lectureTableViews}
                     totalCount={lectureTableCount}
                   />
                 </MyLearningTableTemplate>

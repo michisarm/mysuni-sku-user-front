@@ -4,6 +4,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { FilterCondition } from '../../myTraining/model/FilterCondition';
 import { MyLearningContentType } from '../../myTraining/ui/model/MyLearningContentType';
 import { MyContentType } from '../../myTraining/ui/model/MyContentType';
+import { CardRdo } from '../detail/model/CardRdo';
 
 class LectureFilterRdoModelV2 {
 
@@ -103,6 +104,17 @@ class LectureFilterRdoModelV2 {
       this.organizers.length +
       this.certifications.length +
       requiredCount + learningScheduleCount + applyingCount;
+  }
+
+  toCardRdo(): CardRdo {
+    return {
+      collegeIds: this.collegeIds.join(','),
+      difficultyLevels: this.difficultyLevels.join(','),
+      learningTimeRanges: this.learningTimes.join(','),
+      required: true,
+      limit: this.offset.limit,
+      offset: this.offset.offset,
+    };
   }
 }
 

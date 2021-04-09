@@ -22,8 +22,8 @@ import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
-import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
+import MyTrainingListView from '../view/MyTrainingListView';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
@@ -288,8 +288,8 @@ function MyTrainingListContainer({
                   contentType={contentType}
                   onClickSort={onClickSort}
                 />
-                <MyLearningTableBody
-                  models={myTrainingTableViews}
+                <MyTrainingListView
+                  myTrainings={myTrainingTableViews}
                   totalCount={myTrainingTableCount}
                 />
               </MyLearningTableTemplate>
