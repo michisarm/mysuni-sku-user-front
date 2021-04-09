@@ -7,8 +7,6 @@ import {
 } from 'mobx';
 import { autobind, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
@@ -18,7 +16,6 @@ import LectureRdoModel from '../../../model/LectureRdoModel';
 import LectureViewModel from '../../../model/LectureViewModel';
 import RecommendLectureRdo from '../../../model/RecommendLectureRdo';
 import RecommendLectureListRdo from '../../../model/RecommendLectureListRdo';
-import CommunityLectureRdoModel from '../../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../../model/InstructorRdoModel';
 import OrderByType from '../../../model/OrderByType';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
@@ -28,6 +25,8 @@ import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
 import { findByRdo } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
+import { Direction } from '../../../../myTraining/model/Direction';
+import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
 
 @autobind
 class LectureService {
@@ -523,18 +522,17 @@ class LectureService {
     return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
   }
 
-  /**
-   * 권장과정 갯수 조회
-   */
   @action
   async countRequiredLectures() {
     const count = await this.lectureFlowApi.countRequiredLectures(
       this._lectureFilterRdoV2
     );
 
-    runInAction(() => {
-      this.requiredLecturesCount = count;
-    });
+    if (count !== undefined) {
+      runInAction(() => {
+        this.requiredLecturesCount = count;
+      })
+    }
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////

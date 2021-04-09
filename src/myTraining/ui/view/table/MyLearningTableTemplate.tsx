@@ -1,21 +1,26 @@
 import React, { memo } from 'react';
 import { Table } from 'semantic-ui-react';
-import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
+import { useParams } from 'react-router-dom';
+import { MyTrainingRouteParams } from '../../../model/MyTrainingRouteParams';
+import { MyPageRouteParams } from '../../../model/MyPageRouteParams';
+import { MyApprovalRouteParams } from '../../../model/MyApprovalRouteParams';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyPageContentType } from '../../model/MyPageContentType';
 
 interface Props {
-  contentType: MyContentType;
   children: React.ReactNode;
 }
 
 function MyLearningTableTemplate(props: Props) {
-  const { contentType, children } = props;
+  const { children } = props;
+  const params = useParams<MyTrainingRouteParams | MyPageRouteParams | MyApprovalRouteParams>();
+  const contentType = params.tab;
 
   return (
-    <div className={getWrapperStyle(contentType)}>
-      <Table className={getTableStyle(contentType)}>
-        {contentType === MyLearningContentType.PersonalCompleted && (
+    <div className={getWrapperStyle(params.tab)}>
+      <Table className={getTableStyle(params.tab)}>
+        {params.tab === MyLearningContentType.PersonalCompleted && (
           <colgroup>
             <col width="10%" />
             <col width="25%" />
@@ -63,7 +68,7 @@ function MyLearningTableTemplate(props: Props) {
 export default memo(MyLearningTableTemplate);
 
 /* globals */
-const getWrapperStyle = (contentType: MyContentType): string => {
+const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
   switch (contentType) {
     /* My Stamp */
     case MyPageContentType.EarnedStampList:
@@ -73,7 +78,7 @@ const getWrapperStyle = (contentType: MyContentType): string => {
   }
 };
 
-const getTableStyle = (contentType: MyContentType): string => {
+const getTableStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {
   switch (contentType) {
     /* 학습중 */
     case MyLearningContentType.InProgress:

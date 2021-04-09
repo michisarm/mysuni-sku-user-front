@@ -7,7 +7,6 @@ import CategoryModel from '../../ui/model/CategoryModel';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
 import MyBadgeModel from '../../ui/model/MyBadgeModel';
-import BadgeCountModel from '../../ui/model/BadgeCountModel';
 import BadgeStudentModel from '../../ui/model/BadgeStudentModel';
 
 /***** 뱃지 관리 api 모음 클래스 *****/
@@ -18,17 +17,17 @@ class BadgeApi {
   // .env 파일 설정에 따른 로컬 또는 서버 호출 path 정의
   baseUrl =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
-    process.env.REACT_APP_ENVIRONMENT === 'server' ||
-    process.env.REACT_APP_BADGE_API === undefined ||
-    process.env.REACT_APP_BADGE_API === ''
+      process.env.REACT_APP_ENVIRONMENT === 'server' ||
+      process.env.REACT_APP_BADGE_API === undefined ||
+      process.env.REACT_APP_BADGE_API === ''
       ? '/api/badge'
       : process.env.REACT_APP_BADGE_API;
 
   badgeUrl =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
-    process.env.REACT_APP_ENVIRONMENT === 'server' ||
-    process.env.REACT_APP_BADGE_LIST_API === undefined ||
-    process.env.REACT_APP_BADGE_LIST_API === ''
+      process.env.REACT_APP_ENVIRONMENT === 'server' ||
+      process.env.REACT_APP_BADGE_LIST_API === undefined ||
+      process.env.REACT_APP_BADGE_LIST_API === ''
       ? '/api/arrange'
       : process.env.REACT_APP_BADGE_LIST_API;
 
@@ -92,19 +91,6 @@ class BadgeApi {
         this.baseUrl + '/mybadges/flow/students',
         { params }
       )
-      .then(response => (response && response.data) || null)
-      .catch(error => null);
-  }
-
-  getCountOfBadges() {
-    const params = {
-      patronKeyString: BadgeFilterRdoModel.getPatonKey(),
-    };
-
-    return axiosApi
-      .get<BadgeCountModel>(this.baseUrl + '/mybadges/flow/tab-count', {
-        params,
-      })
       .then(response => (response && response.data) || null)
       .catch(error => null);
   }

@@ -16,6 +16,7 @@ import {
   clearFindCubeDetailCache,
   clearFindCubesByIdsCache,
 } from './api/cubeApi';
+import LectureDetailCourseSubRoutes from './LectureDetailCourseSubRoutes';
 
 export default function LectureDetailCourseRoutes() {
   useRequestLectureStructure();
@@ -25,7 +26,7 @@ export default function LectureDetailCourseRoutes() {
   const params = useParams<LectureParams>();
   const { cardId, viewType } = params;
   useEffect(() => {
-    setLectureParams(params);
+    setLectureParams({ ...params });
   }, [params]);
 
   useEffect(() => {
@@ -37,24 +38,15 @@ export default function LectureDetailCourseRoutes() {
 
   return (
     <LectureDetailLayout>
+      {viewType === 'view' && <LectureCourseOverviewPage />}
+      {viewType === 'test' && <LectureTestPage />}
+      {viewType === 'report' && <LectureReportPage />}
+      {viewType === 'survey' && <LectureSurveyPage />}
       <Switch>
-        {viewType === 'view' && <LectureCourseOverviewPage />}
-        {viewType === 'test' && <LectureTestPage />}
-        {viewType === 'report' && <LectureReportPage />}
-        {viewType === 'survey' && <LectureSurveyPage />}
-        {viewType === 'chapter' && (
-          <Route
-            path="/lecture/card/:cardId/:viewType/:chapterId"
-            component={LectureCourseOverviewPage}
-          />
-        )}
-        {viewType === 'discussion' && (
-          <Route
-            path="/lecture/card/:cardId/:viewType/:discussionId"
-            component={LectureDiscussionPage}
-          />
-        )}
-        <Route component={NotFoundPage} />
+        <Route
+          path="/lecture/card/:cardId/:viewType/:contentId"
+          component={LectureDetailCourseSubRoutes}
+        />
       </Switch>
     </LectureDetailLayout>
   );

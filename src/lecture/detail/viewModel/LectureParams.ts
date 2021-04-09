@@ -6,8 +6,7 @@ export default interface LectureParams {
   cubeId?: string;
   viewType: LectureViewType;
   cubeType?: CubeType;
-  chapterId?: string;
-  discussionId?: string;
+  contentId?: string;
 }
 
 export function compareLectureParams(a: LectureParams, b: LectureParams) {
@@ -41,8 +40,8 @@ export function toViewPath(params: LectureParams): string {
   return `/lecture/card/${cardId}/view`;
 }
 export function toChapterPath(params: LectureParams): string {
-  const { chapterId, cardId } = params;
-  return `/lecture/card/${cardId}/chapter/${chapterId}`;
+  const { contentId, cardId } = params;
+  return `/lecture/card/${cardId}/chapter/${contentId}`;
 }
 export function toTestPath(params: LectureParams): string {
   const { cubeId, cardId, cubeType } = params;
@@ -66,6 +65,6 @@ export function toSurveyPath(params: LectureParams): string {
   return `/lecture/card/${cardId}/survey`;
 }
 export function toDiscussionPath(params: LectureParams): string {
-  const { cardId, discussionId } = params;
-  return `/lecture/card/${cardId}/discussion/${discussionId}`;
+  const { cardId, contentId } = params;
+  return `/lecture/card/${cardId}/discussion/${contentId}`;
 }
