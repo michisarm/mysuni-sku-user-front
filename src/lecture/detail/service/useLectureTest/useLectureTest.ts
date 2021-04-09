@@ -1,7 +1,10 @@
 /* eslint-disable consistent-return */
 
 import { useCallback, useEffect, useState } from 'react';
-import { useLectureParams } from '../../store/LectureParamsStore';
+import {
+  getLectureParams,
+  useLectureParams,
+} from '../../store/LectureParamsStore';
 import { onLectureTestItem } from '../../store/LectureTestStore';
 import { LectureTestItem } from '../../viewModel/LectureTest';
 import { getCourseLectureTest } from './utility/getCourseLectureTest';
@@ -16,19 +19,21 @@ export function useLectureTest(): [TestValue] {
   const params = useLectureParams();
 
   const getCubeTestItem = useCallback(() => {
+    const params = getLectureParams();
     if (params !== undefined) {
       getCubeLectureTest(params);
     }
-  }, [params]);
+  }, []);
 
   const getCourseTestItem = useCallback(() => {
+    const params = getLectureParams();
     if (params !== undefined) {
       getCourseLectureTest(params);
     }
-  }, [params]);
+  }, []);
 
   useEffect(() => {
-    if (params === undefined) {
+    if (params?.cardId === undefined) {
       return;
     }
     if (params.cubeId !== undefined) {
@@ -36,7 +41,7 @@ export function useLectureTest(): [TestValue] {
     } else {
       getCourseTestItem();
     }
-  }, [params]);
+  }, [params?.cardId, params?.cubeId]);
 
   useEffect(() => {
     const next = `useLectureTest-${++subscriberIdRef}`;

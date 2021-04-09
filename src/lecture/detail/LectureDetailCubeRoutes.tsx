@@ -26,7 +26,7 @@ export default function LectureDetailCubeRoutes() {
   const params = useParams<LectureParams>();
   const { cardId, cubeId, viewType } = params;
   useEffect(() => {
-    setLectureParams(params);
+    setLectureParams({ ...params });
   }, [params]);
 
   useEffect(() => {
