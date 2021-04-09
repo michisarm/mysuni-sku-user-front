@@ -4,14 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
-import { CollegeService } from 'college/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import {
   MyTrainingService,
 } from '../../stores';
 import {
-  LectureService,
   SeeMoreButton,
   StudentService,
 } from '../../../lecture';
@@ -20,7 +18,6 @@ import { Segment } from 'semantic-ui-react';
 import FilterBoxContainer from './FilterBoxContainer';
 import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../model/MyLearningContentType';
-import { MyPageContentType } from '../model/MyPageContentType';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
@@ -31,25 +28,19 @@ import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
-  lectureService?: LectureService;
   studentService?: StudentService;
-  collegeService?: CollegeService;
 }
 
 function MyTrainingListContainer({
   skProfileService,
   myTrainingService,
-  lectureService,
   studentService,
-  collegeService,
 }: MyTrainingListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
   const { profileMemberName } = skProfileService!;
-  const { colleges } = collegeService!;
-
   const [filterCount, setFilterCount] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -61,25 +52,17 @@ function MyTrainingListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
   const learningOffset: any = sessionStorage.getItem('learningOffset');
 
-  useEffect(() => {
-    if(
-      colleges &&
-      colleges.length > 0
-    ) {
-      return;
-    }
+  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
 
-    collegeService!.findAllColleges();
-  }, []);
 
   useEffect(() => {
     refeshPageInfo();
     fetchModelsByContentType(contentType);
-    fetchFilterCountViews(contentType);
+    fetchFilterCountViews();
 
     return () => {
-      clearStore(contentType);
-      clearFilterCountViews(contentType);
+      myTrainingService!.clearAllTableViews();
+      myTrainingService!.clearAllFilterCountViews();
     }
   }, [contentType]);
 
@@ -93,25 +76,8 @@ function MyTrainingListContainer({
 
   const refeshPageInfo = () => setRefesh(() => !refresh);
   
-  const fetchFilterCountViews = (contentType: MyContentType): void => {
-    /* 필터 항목 별 카운트를 조회하기 위함. */
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        lectureService!.findAllFilterCountViews();
-        break;
-      default:
-        myTrainingService!.findAllFilterCountViews();
-    }
-  };
-
-  const clearFilterCountViews = (contentType: MyContentType): void => {
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        lectureService!.clearAllFilterCountViews();
-        break;
-      default:
-        myTrainingService!.clearAllFilterCountViews();
-    }
+  const fetchFilterCountViews = (): void => {
+    myTrainingService!.findAllFilterCountViews();
   };
 
   const fetchModelsByContentType = async (contentType: MyContentType) => {
@@ -122,17 +88,7 @@ function MyTrainingListContainer({
         setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
-    
-      /* 권장과정 */
-      case MyLearningContentType.Required: {
-        setIsLoading(true);
-        const isEmpty = await lectureService!.findAllRqdTableViews();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
+        checkShowSeeMore();
         setIsLoading(false);
         return;
       }
@@ -141,33 +97,18 @@ function MyTrainingListContainer({
         setIsLoading(true);
         const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
+        checkShowSeeMore();
         setIsLoading(false);
       }
     }
   };
 
-  const fetchModelsByConditions = async (
-    contentType: MyContentType,
-  ) => {
-    switch (contentType) {
-      case MyLearningContentType.Required: {
-        setIsLoading(true);
-        const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-        return;
-      }
-
-      default: {
-        setIsLoading(true);
-        const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore(contentType);
-        setIsLoading(false);
-      }
-    }
+  const fetchModelsByConditions = async () => {
+    setIsLoading(true);
+    const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
+    setResultEmpty(isEmpty);
+    checkShowSeeMore();
+    setIsLoading(false);
   };
 
 
@@ -179,7 +120,7 @@ function MyTrainingListContainer({
       setIsLoading(true);
       // if (learningOffset !== null && matchesMenu && refresh) {
       pageInfo.current = JSON.parse(learningOffset);
-      await findTableViewsPage(pageInfo.current);
+      await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
     }
   };
 
@@ -192,71 +133,19 @@ function MyTrainingListContainer({
     return 1;
   };
 
-  const clearStore = (contentType: MyContentType) => {
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        lectureService!.clearAllTableViews();
-        break;
-      default:
-        myTrainingService!.clearAllTableViews();
-    }
-  };
-
   const initStore = (contentType: MyContentType) => {
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        lectureService!.initFilterRdo();
-        break;
-      default:
-        myTrainingService!.initFilterRdo(contentType);
-    }
+    myTrainingService!.initFilterRdo(contentType);
   };
 
-  const getModels = (contentType: MyContentType) => {
-    const { myTrainingTableViews } = myTrainingService!;
-    const { lectureTableViews } = lectureService!;
 
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        return lectureTableViews;
-      default:
-        return myTrainingTableViews;
-    }
-  };
+  const checkShowSeeMore = (): void => {
+    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
 
-  const getTotalCount = (contentType: MyContentType): number => {
-    const { myTrainingTableCount } = myTrainingService!;
-    const { lectureTableCount } = lectureService!;
-
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        return lectureTableCount;
-      default:
-        return myTrainingTableCount;
-    }
-  };
-
-  const isModelExist = (contentType: MyContentType) => {
-    const { myTrainingTableViews } = myTrainingService!;
-    const { lectureTableViews } = lectureService!;
-
-    switch (contentType) {
-      case MyLearningContentType.Required:
-        return lectureTableViews && lectureTableViews.length;
-      default:
-        return myTrainingTableViews && myTrainingTableViews.length;
-    }
-  };
-
-  const checkShowSeeMore = (contentType: MyContentType): void => {
-    const models = getModels(contentType);
-    const totalCount = getTotalCount(contentType);
-
-    if (models.length >= totalCount) {
+    if (myTrainingTableViews.length >= myTrainingTableCount) {
       setShowSeeMore(false);
       return;
     }
-    if (totalCount <= PAGE_SIZE) {
+    if (myTrainingTableCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -291,7 +180,7 @@ function MyTrainingListContainer({
   const getModelsByConditions = (count: number) => {
     if (count > 0) {
       // initPage();
-      fetchModelsByConditions(contentType);
+      fetchModelsByConditions();
     } else {
       fetchModelsByContentType(contentType);
     }
@@ -327,26 +216,9 @@ function MyTrainingListContainer({
 
   const onClickSort = useCallback(
     (column: string, direction: Direction) => {
-      switch (contentType) {
-        case MyLearningContentType.Required:
-          lectureService!.sortTableViews(column, direction);
-          break;
-        default:
-          myTrainingService!.sortTableViews(column, direction);
-      }
-    },
-    [contentType]
+      myTrainingService!.sortTableViews(column, direction);
+    }, [contentType]
   );
-
-  const findRequiredViewPage = async (pageInfo: Offset) => {
-    await lectureService!.findAllRqdTableViewsWithPage(pageInfo);
-    setIsLoading(false);
-  };
-
-  const findTableViewsPage = async (pageInfo: Offset) => {
-    await myTrainingService!.findAllTableViewsWithPage(pageInfo);
-    setIsLoading(false);
-  };
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
@@ -356,14 +228,13 @@ function MyTrainingListContainer({
     pageInfo.current.offset += pageInfo.current.limit;
     history.replace(`./${getPageNo()}`);
     sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    if (contentType === 'Required') findRequiredViewPage(pageInfo.current);
-    if (contentType !== 'InMyList' && contentType !== 'Required') {
-      findTableViewsPage(pageInfo.current);
-    }
-    checkShowSeeMore(contentType);
+    await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
+    
+    setIsLoading(false);
+    checkShowSeeMore();
+    
   }, [contentType, pageInfo.current, params.pageNo]);
 
-  /* Render Functions */
   const noSuchMessage = (
     contentType: MyContentType,
     withFilter: boolean = false
@@ -392,7 +263,7 @@ function MyTrainingListContainer({
           <LineHeaderContainerV2
             contentType={contentType}
             resultEmpty={resultEmpty}
-            totalCount={getTotalCount(contentType)}
+            totalCount={myTrainingTableCount}
             filterCount={filterCount}
             openFilter={openFilter}
             onClickFilter={onClickFilter}
@@ -406,7 +277,9 @@ function MyTrainingListContainer({
           />
         </>
       )) || <div style={{ marginTop: 50 }} />}
-      {(isModelExist(contentType) && (
+      {
+        myTrainingTableViews &&
+        myTrainingTableViews.length > 0 && (
         <>
           {(!resultEmpty && (
             <>
@@ -416,8 +289,8 @@ function MyTrainingListContainer({
                   onClickSort={onClickSort}
                 />
                 <MyLearningTableBody
-                  models={getModels(contentType)}
-                  totalCount={getTotalCount(contentType)}
+                  models={myTrainingTableViews}
+                  totalCount={myTrainingTableCount}
                 />
               </MyLearningTableTemplate>
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
@@ -451,7 +324,7 @@ function MyTrainingListContainer({
             </Segment>
           )}
         </>
-      )) || (
+      ) || (
         <Segment
           style={{
             paddingTop: 0,
@@ -480,9 +353,7 @@ export default inject(
   mobxHelper.injectFrom(
     'profile.skProfileService',
     'myTraining.myTrainingService',
-    'lecture.lectureService',
     'lecture.studentService',
-    'college.collegeService'
   )
 )(observer(MyTrainingListContainer));
 

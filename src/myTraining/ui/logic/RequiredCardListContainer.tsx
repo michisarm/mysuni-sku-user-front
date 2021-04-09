@@ -4,7 +4,6 @@ import ReactGA from 'react-ga';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
-import { CollegeService } from '../../../college/stores';
 import { LectureService, SeeMoreButton } from '../../../lecture';
 import { Direction } from '../../model/Direction';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -15,17 +14,15 @@ import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
-import InMyLectureService from '../../present/logic/InMyLectureService';
+import { MyLearningContentType } from '../model/MyLearningContentType';
 
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
-  collegeService?: CollegeService;
 }
 
 function RequiredCardListContainer({
   lectureService,
-  collegeService,
 }: RequiredCardListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
@@ -40,18 +37,7 @@ function RequiredCardListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   const { lectureTableViews, lectureTableCount } = lectureService!;
-  const { colleges } = collegeService!;
   
-  useEffect(() => {
-    if(
-      colleges &&
-      colleges.length > 0
-    ) {
-      return;
-    }
-
-    collegeService!.findAllColleges();
-  }, []);
 
   useEffect(() => {
     fetchRequiredCards();
@@ -71,7 +57,6 @@ function RequiredCardListContainer({
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
-    return;
   };
 
   const fetchRequiredCardsByConditions = async () => {
@@ -104,8 +89,8 @@ function RequiredCardListContainer({
   }, []);
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
-          lectureService!.sortTableViews(column, direction);
-      }, []);
+    lectureService!.sortTableViews(column, direction);
+  }, []);
 
   const onChangeFilterCount = useCallback((count: number) => {
     setFilterCount(count);
@@ -147,7 +132,7 @@ function RequiredCardListContainer({
 
 
   const noSuchMessage = (
-    contentType: MyPageContentType,
+    contentType: MyLearningContentType,
     withFilter: boolean = false
   ) => {
     return (
@@ -227,7 +212,7 @@ function RequiredCardListContainer({
             border: 0,
           }}
         >
-          <Loadingpanel={isLoading} />
+          <Loadingpanel loading={isLoading} />
           {!isLoading && (
             <NoSuchContentPanel
               message={noSuchMessage(contentType)}
@@ -240,7 +225,7 @@ function RequiredCardListContainer({
 }
 
 export default inject(mobxHelper.injectFrom(
-
+  'lecture.lectureService',
 ))(observer(RequiredCardListContainer));
 
 const PAGE_SIZE = 20;

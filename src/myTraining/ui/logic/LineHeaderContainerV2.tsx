@@ -42,7 +42,6 @@ function LineHeaderContainerV2(props: Props) {
     myTrainingService,
     aplService,
   } = props;
-  const { aplCount } = aplService!;
 
   /* functions */
   const getModelsForExcel = async (contentType: MyContentType) => {

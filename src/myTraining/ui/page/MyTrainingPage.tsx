@@ -22,6 +22,8 @@ import { MyLearningContentType, MyLearningContentTypeName } from '../model/MyLea
 import MyTrainingListContainer from '../logic/MyTrainingListContainer';
 import InMyLectureListContainer from '../logic/InMyLectureListContainer';
 import PersonalCompletedListContainer from '../logic/PersonalCompletedListContainer';
+import RequiredCardListContainer from '../logic/RequiredCardListContainer';
+import { CollegeService } from '../../../college/stores';
 
 
 interface MyTrainingPageProps {
@@ -32,6 +34,7 @@ interface MyTrainingPageProps {
   aplService?: AplService;
   skProfileService?: SkProfileService;
   menuControlAuthService?: MenuControlAuthService;
+  collegeService?: CollegeService;
 }
 
 function MyTrainingPage({
@@ -42,16 +45,18 @@ function MyTrainingPage({
   aplService,
   skProfileService,
   menuControlAuthService,
+  collegeService,
 }: MyTrainingPageProps) {
+  const history = useHistory();
+  const params = useParams<MyTrainingRouteParams>();
+
   const { skProfile } = skProfileService!;
   const { menuControlAuth } = menuControlAuthService!;
   const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
   const { inMyListCount } = inMyLectureService!;
   const { requiredLecturesCount } = lectureService!;
   const { aplCount: { all: personalCompletedCount } } = aplService!;
-
-  const history = useHistory();
-  const params = useParams<MyTrainingRouteParams>();
+  const { colleges } = collegeService!;
 
   useRequestCollege();
   useRequestLearningStorage();
@@ -59,14 +64,28 @@ function MyTrainingPage({
   usePublishViewEvent('LEARNING_VIEW');
 
   useEffect(() => {
-    getMenuAuth();
-  }, []);
+    fetchColleges();
+    fetchMenuAuth();
+  }, [params.tab]);
 
-  const getMenuAuth = async () => {
-    if (!skProfile) {
-      const profile: SkProfileModel = await skProfileService!.findSkProfile();
-      menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
+  const fetchColleges = () => {
+    if(
+      colleges &&
+      colleges.length > 0
+    ) {
+      return;
     }
+
+    collegeService!.findAllColleges();
+  }
+
+  const fetchMenuAuth = async () => {
+    if(skProfile) {
+      return;
+    }
+    
+    const profile: SkProfileModel = await skProfileService!.findSkProfile();
+    menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
   }
 
   const getTabs = (): TabItemModel[] => {
@@ -89,7 +108,7 @@ function MyTrainingPage({
           className: 'division',
           name: MyLearningContentType.Required,
           item: getTabItem(MyLearningContentType.Required, requiredLecturesCount),
-          render: () => <MyTrainingListContainer />,
+          render: () => <RequiredCardListContainer />,
         },
         {
           name: MyLearningContentType.Enrolled,
@@ -129,7 +148,7 @@ function MyTrainingPage({
         className: 'division',
         name: MyLearningContentType.Required,
         item: getTabItem(MyLearningContentType.Required, requiredLecturesCount),
-        render: () => <MyTrainingListContainer />,
+        render: () => <RequiredCardListContainer />,
       },
       {
         name: MyLearningContentType.Enrolled,
@@ -205,5 +224,6 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService',
   'myTraining.aplService',
   'profile.skProfileService',
-  'approval.menuControlAuthService'
+  'approval.menuControlAuthService',
+  'college.collegeService',
 ))(observer(MyTrainingPage));
