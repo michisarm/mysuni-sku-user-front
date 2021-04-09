@@ -40,7 +40,8 @@ export default function RequiredCardListView({
         requiredCards.map((requiredCard, index) => {
           const collegeName = getCollgeName(requiredCard.category.collegeId);
           const learningState = requiredCard.learningState && LearningStateName[requiredCard.learningState as LearningState] || '-';
-          
+          const progressRate = requiredCard.learningState && `${requiredCard.passedLearningCount}/${requiredCard.totalLearningCount}` || '-';
+
           return (
             <Table.Row key={`requried-card-${index}`}>
               <Table.Cell>
@@ -69,7 +70,7 @@ export default function RequiredCardListView({
                 {convertTimeToDate(requiredCard.updateTime)}
               </Table.Cell>
               <Table.Cell>
-                {`${requiredCard.passedLearningCount}/${requiredCard.totalLearningCount}`}
+                {progressRate}
               </Table.Cell>
               <Table.Cell>
                 {learningState}

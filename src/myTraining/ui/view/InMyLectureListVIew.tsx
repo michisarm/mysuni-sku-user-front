@@ -37,7 +37,7 @@ export default function InMyLectureListView({
           const collegeName = getCollgeName(inMyLecture.category.college.id);
           const learningType = inMyLecture.serviceType === 'Card' && inMyLecture.serviceType || CubeTypeNameType[inMyLecture.cubeType];
           const learningState = inMyLecture.learningState && LearningStateName[inMyLecture.learningState] || '-';
-          const progressRate = inMyLecture.serviceType === 'Card' && inMyLecture.learningState === LearningState.Passed && 
+          const progressRate = inMyLecture.serviceType === 'Card' && inMyLecture.learningState && 
           `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}` || '-';
 
           
