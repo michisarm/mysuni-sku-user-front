@@ -26,6 +26,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
 }) {
   const { card, items } = lectureStructure;
   const { test, survey, report } = card;
+  console.log(items, 'items');
   return (
     <>
       {items !== undefined &&
