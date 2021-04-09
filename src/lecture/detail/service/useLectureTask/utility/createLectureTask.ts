@@ -1,29 +1,28 @@
-import { patronInfo } from "@nara.platform/dock";
-import { modifyCommunityPost, registerCommunityCommentPost, registerPost } from "community/api/communityApi";
-import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
-import { createTaskPost } from "lecture/detail/api/mPersonalCubeApi";
-import TaskCdo from "lecture/detail/model/TaskCdo";
-import { getLectureTaskCreateItem } from "lecture/detail/store/LectureTaskCreateStore";
+import { patronInfo } from '@nara.platform/dock';
+import { getLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
+import { registerPost, registerPostBody } from '../../../api/cubeApi';
+import { PostBodyCdo, PostCdo } from '../../../model/TaskCdo';
 
 export async function createLectureTask(): Promise<void> {
-  const taskCreateItem = getLectureTaskCreateItem()
+  const taskCreateItem = getLectureTaskCreateItem();
   const name = patronInfo.getPatronName() || '';
 
   if (taskCreateItem !== undefined) {
-    const postCdo: TaskCdo = {
-      postCdo: {
-        title: taskCreateItem.title,
-        writer: name,
-        commentFeedbackId: taskCreateItem.commentFeedbackId,
-        boardId: taskCreateItem.id,
-        pinned: taskCreateItem.notice
-      },
-      postBodyCdo:
-      {
-        contents: taskCreateItem.contents,
-        fileBoxId: taskCreateItem.fileBoxId
-      }
+    const postCdo: PostCdo = {
+      title: taskCreateItem.title,
+      writer: name,
+      commentFeedbackId: taskCreateItem.commentFeedbackId,
+      boardId: taskCreateItem.id,
+      pinned: taskCreateItem.notice,
     };
-    return createTaskPost(postCdo);
+    const postId = await registerPost(postCdo);
+    if (postId !== undefined) {
+      const postBodyCdo: PostBodyCdo = {
+        postId,
+        contents: taskCreateItem.contents,
+        fileBoxId: taskCreateItem.fileBoxId,
+      };
+      await registerPostBody(postBodyCdo);
+    }
   }
 }

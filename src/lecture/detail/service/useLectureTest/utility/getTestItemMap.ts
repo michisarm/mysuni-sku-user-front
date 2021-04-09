@@ -9,6 +9,9 @@ import {
   findByCubeId,
   getStudentExam,
 } from '../../../api/cardApi';
+import { patronInfo } from '@nara.platform/dock';
+import { findGradeSheet } from '../../../api/assistantApi';
+import { getEssayScores } from '../../../model/GradeSheet';
 
 async function getTestItem(examId: string) {
   if (examId !== '' && examId !== null) {
@@ -21,11 +24,25 @@ async function getTestItem(examId: string) {
     const { result: examPaperForm } = await findExamPaperForm(
       examination.paperId
     );
+    let examTotalPoint = 0;
+    examPaperForm.questions.map((result, index) => {
+      examTotalPoint += result.allocatedPoint;
+    });
+
+    const denizenId = patronInfo.getDenizenId() || '';
+    const gradeSheet = await findGradeSheet(examId, denizenId);
+    const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
+    const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
 
     const item: LectureTestItem = {
       id: examination.id,
+      name: examination.examPaperTitle,
       questionCount: examination.questionCount,
       questions: examPaperForm.questions,
+      successPoint: examination.successPoint,
+      totalPoint: examTotalPoint,
+      graderComment,
+      essayScores,
       description: examPaperForm.description,
     };
     return item;

@@ -261,7 +261,6 @@ export default function LectureDiscussionContainer() {
               </div>
             </div>
           </div>
-
           <CommentList
             feedbackId={lectureDiscussion.id}
             hideCamera
@@ -269,7 +268,7 @@ export default function LectureDiscussionContainer() {
             email={email}
             companyName={company}
             departmentName={department}
-            // cardId={params?.cardId}
+            cardId={params?.cardId}
             menuType="discussion"
           />
         </>

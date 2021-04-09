@@ -102,7 +102,7 @@ function parseCubeReportItem(
     type: 'REPORT',
     params,
     path: toPath(params),
-    can: cubeStudent !== undefined,
+    can: cubeStudent !== undefined && cubeStudent !== null,
     state,
     order: cubeOrder,
     student: cubeStudent,

@@ -32,6 +32,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
     setViewType(data.value);
   });
   const [title, setTitle] = useState('');
+  const [subTitle, setSubTitle] = useState('');
 
   // url 에서 타입 받도록 변경 필요
   // let contentType = 'Enrolling';
@@ -45,6 +46,9 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
       if(viewType === 'Available') {
         excludeClosed = true;
       }
+
+      setTitle('수강 신청 과정 모아보기');
+      setSubTitle('사전 수강 신청이 필요한 과정들을 조회할 수 있습니다.');
 
       const cardList = await findEnrollingCardList(
         LectureFilterRdoModel.enrLectures(0, 0, excludeClosed)
@@ -84,6 +88,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
       <div className="ma-title">
         <div className="inner">
           <h2>{title}</h2>
+          <p className="txt">{subTitle}</p>
         </div>
       </div>
       <Segment className="full">

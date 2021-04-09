@@ -1,16 +1,14 @@
 import { IdName } from 'shared/model';
 
-export default interface TaskCdo {
-  postCdo: {
-    title: string,
-    writer: string,
-    commentFeedbackId: string,
-    boardId: string,
-    pinned: boolean
-  },
-  postBodyCdo:
-  {
-    contents: string,
-    fileBoxId: string
-  }
+export interface PostCdo {
+  title: string;
+  writer: string;
+  commentFeedbackId: string;
+  boardId: string;
+  pinned: boolean;
+}
+export interface PostBodyCdo {
+  postId: string;
+  contents: string;
+  fileBoxId: string;
 }
