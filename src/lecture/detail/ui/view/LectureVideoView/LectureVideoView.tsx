@@ -574,7 +574,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   }, [currentTime, scroll, quizShowTime]);
 
-  console.log(quizCurrentIndex);
   useEffect(() => {
     setQuizPop(false);
     if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
