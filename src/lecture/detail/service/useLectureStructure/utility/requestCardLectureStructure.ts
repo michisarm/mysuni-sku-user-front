@@ -64,6 +64,7 @@ function parseCubeTestItem(
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
+    student: cubeStudent,
   };
 }
 
@@ -104,6 +105,7 @@ function parseCubeReportItem(
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
+    student: cubeStudent,
   };
 }
 
@@ -144,6 +146,7 @@ function parseCubeSurveyItem(
     can: cubeStudent !== undefined,
     state,
     order: cubeOrder,
+    student: cubeStudent,
   };
 }
 
@@ -180,6 +183,7 @@ function parseCardTestItem(
     can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
+    student: cardStudent,
   };
 }
 
@@ -220,6 +224,7 @@ function parseCardReportItem(
     can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
+    student: cardStudent,
   };
 }
 
@@ -258,6 +263,7 @@ function parseCardSurveyItem(
     can: cardStudent !== undefined && cardStudent !== null,
     state,
     order: -1,
+    student: cardStudent,
   };
 }
 
