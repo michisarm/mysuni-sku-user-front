@@ -35,11 +35,10 @@ interface Props {
   passedStudentCount: number;
   starCount: number;
   description: string;
-  inMyLectureService?: InMyLectureService;
   contentType?: string;
 }
 
-function CardView({
+export default function CardView({
   isRequired,
   cardId,
   name,
@@ -50,7 +49,6 @@ function CardView({
   learningTime,
   thumbImagePath,
   passedStudentCount,
-  inMyLectureService,
   contentType,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
@@ -95,9 +93,9 @@ function CardView({
 
   const handleInMyLecture = () => {
     if (inMyLectureModel) {
-      inMyLectureService!.removeInMyLectureCard(cardId, cardId);
+      InMyLectureService.instance.removeInMyLectureCard(cardId, cardId);
     } else {
-      inMyLectureService!.addInMyLectureCard({
+      InMyLectureService.instance.addInMyLectureCard({
         cardId,
         serviceId: cardId,
         serviceType: 'Card',
@@ -246,7 +244,3 @@ function CardView({
     </Card>
   );
 }
-
-export default inject(mobxHelper.injectFrom('myTraining.inMyLectureService'))(
-  observer(CardView)
-);

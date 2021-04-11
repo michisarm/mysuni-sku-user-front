@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -11,20 +10,21 @@ import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
-import LecturesByChannelContainer from '../logic/LecturesByChannelContainer';
-
+import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
-  actionLogService?: ActionLogService,
-  collegeService: CollegeService,
-  skProfileService: SkProfileService,
+  actionLogService?: ActionLogService;
+  collegeService: CollegeService;
+  skProfileService: SkProfileService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'college.collegeService',
-  'profile.skProfileService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'college.collegeService',
+    'profile.skProfileService'
+  )
+)
 @reactAutobind
 @observer
 class ChannelLecturesPage extends Component<Props> {
@@ -37,7 +37,9 @@ class ChannelLecturesPage extends Component<Props> {
   }
 
   onSelectChannel(channel: ChannelModel) {
-    this.props.actionLogService?.registerClickActionLog({ subAction: channel.name });
+    this.props.actionLogService?.registerClickActionLog({
+      subAction: channel.name,
+    });
     this.props.history.push(routePaths.recommendChannelLectures(channel.id));
   }
 
@@ -57,10 +59,12 @@ class ChannelLecturesPage extends Component<Props> {
       >
         <ChannelLecturesHeaderView
           channel={channel}
-          channels={studySummaryFavoriteChannels.map((channel) => new ChannelModel(channel))}
+          channels={studySummaryFavoriteChannels.map(
+            channel => new ChannelModel(channel)
+          )}
           onSelectChannel={this.onSelectChannel}
         />
-        <LecturesByChannelContainer />
+        <ChannelLecturesContainer />
       </ContentLayout>
     );
   }

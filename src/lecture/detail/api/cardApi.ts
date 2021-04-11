@@ -14,6 +14,7 @@ import { OffsetElementList } from '../../../shared/model';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 import { ExtraTaskType } from '../../model/ExtraTaskType';
 import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
+import { RecommendCardRom } from '../../model/RecommendCardRom';
 
 const BASE_URL = '/api/lecture';
 
@@ -179,3 +180,21 @@ export function submitTask(studentId: string, extraTaskType: ExtraTaskType) {
   const url = `${BASE_URL}/students/submit/${studentId}/${extraTaskType}`;
   return axios.put<void>(url).then(AxiosReturn);
 }
+
+function findRecommendCards(channelLimit?: number, limit?: number) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/recommend`;
+  return axios
+    .get<RecommendCardRom[]>(url, {
+      params: {
+        channelLimit,
+        limit,
+      },
+    })
+    .then(AxiosReturn);
+}
+
+export const [
+  findRecommendCardsCache,
+  clearFindRecommendCards,
+] = createCacheApi(findRecommendCards);

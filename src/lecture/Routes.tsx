@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
-import ChannelsLecturesPage from './recommend/ui/page/ChannelsPage';
+import RecommendChannelsPage from './recommend/ui/page/RecommendChannelsPage';
 import RecommendChannelLecturesPage from './recommend/ui/page/ChannelLecturesPage';
 import PostFormPage from './community/ui/page/PostFormPage';
 import PostDetailPage from './community/ui/page/PostDetailPage';
@@ -55,7 +55,7 @@ class Routes extends Component {
         <Route
           exact
           path="/lecture/recommend/pages/:pageNo"
-          component={ChannelsLecturesPage}
+          component={RecommendChannelsPage}
         />
 
         <Redirect

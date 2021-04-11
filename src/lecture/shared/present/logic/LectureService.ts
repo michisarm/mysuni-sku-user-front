@@ -22,13 +22,16 @@ import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
-import { findByRdo, countRequiredCards, findCollegeAndCardCount } from '../../../detail/api/cardApi';
+import {
+  findByRdo,
+  countRequiredCards,
+  findCollegeAndCardCount,
+} from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
 import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
 import { findCardStudentsByCardIds } from '../../../../certification/api/CardStudentApi';
 import LectureTableViewModel from '../../../model/LectureTableViewModel';
-
 
 @autobind
 class LectureService {
@@ -417,32 +420,6 @@ class LectureService {
   }
 
   @action
-  async findPagingRecommendLectures(
-    channelLimit: number,
-    limit: number,
-    channelId?: string,
-    orderBy?: OrderByType
-  ) {
-    //
-    const lectureRdo = LectureRdoModel.newRecommend(
-      channelLimit,
-      0,
-      limit,
-      0,
-      channelId,
-      orderBy
-    );
-    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(
-      lectureRdo
-    );
-
-    runInAction(
-      () => (this._recommendLectureListRdo = recommendLectureListRdo)
-    );
-    return recommendLectureListRdo;
-  }
-
-  @action
   async addFindPagingRecommendLectures(
     channelLimit: number,
     channelOffset: number,
@@ -531,7 +508,7 @@ class LectureService {
     if (count !== undefined) {
       runInAction(() => {
         this.requiredLecturesCount = count;
-      })
+      });
     }
   }
 
@@ -590,8 +567,6 @@ class LectureService {
     return this.findAllRequiredCards();
   }
 
-
-
   @action
   async findAllRqdTableViewsByConditions() {
     return this.findAllRequiredCards();
@@ -612,13 +587,17 @@ class LectureService {
 
       const lectureTableViews = offsetRequiredCard.results.map(result => {
         const card = result.card;
-        const mainCategory = card.categories.find(category => category.mainCategory === true) || {
+        const mainCategory = card.categories.find(
+          category => category.mainCategory === true
+        ) || {
           collegeId: '',
           channelId: '',
           mainCategory: false,
         };
 
-        const student = cardStudents && cardStudents.find(student => student.lectureId === card.id);
+        const student =
+          cardStudents &&
+          cardStudents.find(student => student.lectureId === card.id);
 
         if (student) {
           const lectureTableView = new LectureTableViewModel();
@@ -636,7 +615,6 @@ class LectureService {
           return lectureTableView;
         }
 
-
         const lectureTableView = new LectureTableViewModel();
         lectureTableView.serviceId = card.id;
         lectureTableView.category = mainCategory!;
@@ -650,7 +628,7 @@ class LectureService {
       runInAction(() => {
         this._lectureTableViews = lectureTableViews;
         this._lectureTableViewCount = offsetRequiredCard.totalCount;
-      })
+      });
 
       return false;
     }
@@ -675,13 +653,17 @@ class LectureService {
 
       const addLectureTableViews = offsetRequiredCard.results.map(result => {
         const card = result.card;
-        const mainCategory = card.categories.find(category => category.mainCategory === true) || {
+        const mainCategory = card.categories.find(
+          category => category.mainCategory === true
+        ) || {
           collegeId: '',
           channelId: '',
           mainCategory: false,
         };
 
-        const student = cardStudents && cardStudents.find(student => student.cardId === card.id);
+        const student =
+          cardStudents &&
+          cardStudents.find(student => student.cardId === card.id);
 
         if (student) {
           const lectureTableView = new LectureTableViewModel();
@@ -707,12 +689,14 @@ class LectureService {
         lectureTableView.learningTime = card.learningTime;
 
         return lectureTableView;
-
       });
 
       runInAction(() => {
-        this._lectureTableViews = [...this._lectureTableViews, ...addLectureTableViews];
-      })
+        this._lectureTableViews = [
+          ...this._lectureTableViews,
+          ...addLectureTableViews,
+        ];
+      });
     }
   }
 
@@ -720,12 +704,13 @@ class LectureService {
   async findAllFilterCountViews() {
     const collegeAndCardCounts = await findCollegeAndCardCount();
 
-    if (
-      collegeAndCardCounts &&
-      collegeAndCardCounts.length > 0
-    ) {
+    if (collegeAndCardCounts && collegeAndCardCounts.length > 0) {
       const filterCountViews = collegeAndCardCounts.map(
-        collegeAndCardCount => new FilterCountViewModel({ collegeId: collegeAndCardCount.collegeId, college: collegeAndCardCount.count } as FilterCountViewModel)
+        collegeAndCardCount =>
+          new FilterCountViewModel({
+            collegeId: collegeAndCardCount.collegeId,
+            college: collegeAndCardCount.count,
+          } as FilterCountViewModel)
       );
       const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
         filterCountViews

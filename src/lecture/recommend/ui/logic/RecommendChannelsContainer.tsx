@@ -5,6 +5,7 @@ import {
   RouteComponentProps,
   useHistory,
   useLocation,
+  useParams,
   withRouter,
 } from 'react-router-dom';
 
@@ -22,38 +23,50 @@ import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { Segment } from 'semantic-ui-react';
+import { RecommendCardRom } from '../../../model/RecommendCardRom';
+import {
+  setRecommendCardRoms,
+  useRecommendCardRoms,
+} from '../../../detail/store/RecommendCardRomsStore';
+import {
+  clearFindRecommendCards,
+  findRecommendCardsCache,
+} from '../../../detail/api/cardApi';
+import { ChannelCards } from '../../../../shared/viewmodel/ChannelCards';
 
-interface Props extends RouteComponentProps<RouteParams> {
+interface Props {
+  channels: ChannelModel[];
+}
+
+interface InnerProps {
   actionLogService?: ActionLogService;
   collegeService?: CollegeService;
-  lectureService?: LectureService;
-  reviewService?: ReviewService;
+  recommendCardRoms: RecommendCardRom[];
   channels: ChannelModel[];
-  onViewAll: (e: any, data: any) => void;
-  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-  setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  history: History;
   scrollSave?: () => void;
-  isLoading?: boolean | false;
+  pathname: string;
+  pageNo: string;
 }
 
 interface RouteParams {
   pageNo: string;
 }
 
-const ChannelsContainer: React.FC<Props> = ({
-  actionLogService,
-  collegeService,
-  lectureService,
-  reviewService,
-  channels,
-  onViewAll,
-  match,
-}) => {
+interface InnerState {
+  channelCards: ChannelCards[];
+  isLoading: boolean;
+}
+
+function RecommendChannelsContainer(props: Props) {
+  const { pageNo } = useParams<RouteParams>();
+  const { channels } = props;
   const history = useHistory();
   const location = useLocation();
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [loading, setLoading] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const recommendCardRoms = useRecommendCardRoms();
 
   useEffect(() => {
     if (loading) {
@@ -66,47 +79,49 @@ const ChannelsContainer: React.FC<Props> = ({
     return () => listen();
   }, [location.pathname]);
 
+  if (recommendCardRoms === undefined) {
+    return null;
+  }
+
   return (
     <ChannelsInnerContainer
-      actionLogService={actionLogService}
-      collegeService={collegeService}
-      lectureService={lectureService}
-      reviewService={reviewService}
       channels={channels}
-      onViewAll={onViewAll}
-      match={match}
+      pathname={location.pathname}
+      pageNo={pageNo}
+      recommendCardRoms={recommendCardRoms}
       history={history}
-      location={location}
       scrollSave={scrollSave}
       setLoading={setLoading}
       setIsLoading={setIsLoading}
       isLoading={isLoading}
     />
   );
-};
+}
 
-export default withRouter(ChannelsContainer);
+const CHANNELS_SIZE = 5;
+
+const LECTURES_SIZE = 8;
+
+export default RecommendChannelsContainer;
 @inject(
-  mobxHelper.injectFrom(
-    'shared.actionLogService',
-    'college.collegeService',
-    'lecture.lectureService',
-    'shared.reviewService'
-  )
+  mobxHelper.injectFrom('shared.actionLogService', 'college.collegeService')
 )
 @reactAutobind
 @observer
-class ChannelsInnerContainer extends Component<Props> {
-  //
-  CHANNELS_SIZE = 5;
-
-  LECTURES_SIZE = 8;
+class ChannelsInnerContainer extends Component<InnerProps, InnerState> {
+  constructor(props: InnerProps) {
+    super(props);
+    this.state = {
+      channelCards: [],
+      isLoading: false,
+    };
+  }
 
   componentDidMount(): void {
     //
-    const { collegeService, channels } = this.props;
+    const { channels } = this.props;
 
-    collegeService!.setChannels(
+    CollegeService.instance.setChannels(
       (channels &&
         channels.length &&
         channels.map(
@@ -117,88 +132,43 @@ class ChannelsInnerContainer extends Component<Props> {
     this.findPagingRecommendLectures();
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>): void {
+  componentDidUpdate(prevProps: Readonly<InnerProps>): void {
     //
-    const { channels: prevChannels } = prevProps;
-    const { collegeService, channels, setLoading } = this.props;
-
-    if (prevChannels !== channels) {
-      const sameLength = prevChannels.length === channels.length;
-
-      if (!sameLength && channels) {
-        collegeService!.setChannels(
-          channels.map(
-            (chanel, index) =>
-              new ChannelModel({
-                ...chanel,
-                checked: sameLength ? channels[index].checked : false,
-              })
-          ) || []
-        );
-        // 이거 주석했더니 렌더가 한번만 된다..^^;;;
-        // this.onConfirmChangeFavorite();
-      }
-    }
-
-    const { pageNo: prevPageNo } = prevProps.match.params;
-    const { pageNo } = this.props.match.params;
+    const { pageNo: prevPageNo } = prevProps;
+    const { pageNo } = this.props;
 
     if (prevPageNo !== pageNo && prevPageNo < pageNo) {
-      this.addPagingRecommendLectures();
+      this.findPagingRecommendLectures();
     }
-
-    setLoading && setLoading(false);
   }
 
   async findPagingRecommendLectures() {
     //
-    const { lectureService, setIsLoading } = this.props;
-    const initialLimit = this.getPageNo() * this.CHANNELS_SIZE;
-
-    setIsLoading && setIsLoading(true);
-    await lectureService!
-      .findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE)
-      .then(() => {
-        setIsLoading && setIsLoading(false);
-      });
-  }
-
-  async addPagingRecommendLectures() {
-    //
-    const { lectureService } = this.props;
-
-    lectureService!.addFindPagingRecommendLectures(
-      this.CHANNELS_SIZE,
-      this.getPageNo() - 1,
-      this.LECTURES_SIZE,
-      0
+    const channelLimit = this.getPageNo() * CHANNELS_SIZE;
+    this.setState({ isLoading: true });
+    const recommendCardRoms = await findRecommendCardsCache(
+      channelLimit,
+      LECTURES_SIZE
     );
-  }
-
-  async findAllRecommendLectures() {
-    //
-    const { lectureService, setIsLoading } = this.props;
-    setIsLoading && setIsLoading(true);
-    await lectureService!
-      .findPagingRecommendLectures(500, this.LECTURES_SIZE)
-      .then(() => {
-        setIsLoading && setIsLoading(false);
-      });
+    setRecommendCardRoms(recommendCardRoms);
+    this.setState({ isLoading: false });
   }
 
   getPageNo() {
-    //
-    const { match } = this.props;
-
-    return parseInt(match.params.pageNo, 10);
+    const { pageNo } = this.props;
+    let no = parseInt(pageNo);
+    if (isNaN(no)) {
+      no = 1;
+    }
+    return no;
   }
 
   isContentMore() {
     //
-    const { lectureService } = this.props;
-    const { recommendLectures, recommendLecturesCount } = lectureService!;
+    const { channels } = this.props;
+    const channelCount = this.getPageNo() * CHANNELS_SIZE;
 
-    return recommendLectures.length < recommendLecturesCount;
+    return channels.length > channelCount;
   }
 
   getDisplayableRecommendLectures() {
@@ -234,15 +204,14 @@ class ChannelsInnerContainer extends Component<Props> {
   }
 
   onConfirmChangeFavorite() {
-    //
-    const { history } = this.props;
-    setTimeout(() => history.replace(routePaths.recommend()), 100);
+    clearFindRecommendCards();
+    this.findPagingRecommendLectures();
   }
 
   onSelectChannel(channel: ChannelModel) {
     //
     const collegeService = this.props.collegeService!;
-    const { history, actionLogService } = this.props;
+    const { actionLogService, history } = this.props;
 
     actionLogService?.registerClickActionLog({ subAction: channel.name });
 

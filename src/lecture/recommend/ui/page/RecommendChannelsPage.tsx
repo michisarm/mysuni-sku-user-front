@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -9,17 +8,16 @@ import { SkProfileService } from 'profile/stores';
 import { ChannelModel } from 'college/model';
 import routePaths from '../../../routePaths';
 import ChannelsContentHeaderContainer from '../logic/ChannelsContentHeaderContainer';
-import ChannelsLecturesContainer from '../logic/ChannelsContainer';
-
+import ChannelsLecturesContainer from '../logic/RecommendChannelsContainer';
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService
+  skProfileService?: SkProfileService;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
-class ChannelLecturesPage extends Component<Props> {
+class RecommendChannelsPage extends Component<Props> {
   //
   componentDidMount(): void {
     this.init();
@@ -42,18 +40,17 @@ class ChannelLecturesPage extends Component<Props> {
     //
     const { skProfileService } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
-    const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+    const channels =
+      studySummaryFavoriteChannels.map(
+        channel => new ChannelModel({ ...channel, channelId: channel.id })
+      ) || [];
 
     return (
       <ContentLayout
         className="mylearning"
-        breadcrumb={[
-          { text: `Recommend` },
-        ]}
+        breadcrumb={[{ text: `Recommend` }]}
       >
-        <ChannelsContentHeaderContainer
-          channels={channels}
-        />
+        <ChannelsContentHeaderContainer channels={channels} />
         <ChannelsLecturesContainer
           channels={channels}
           onViewAll={this.routeTo}
@@ -63,4 +60,4 @@ class ChannelLecturesPage extends Component<Props> {
   }
 }
 
-export default withRouter(ChannelLecturesPage);
+export default withRouter(RecommendChannelsPage);
