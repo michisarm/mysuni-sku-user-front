@@ -12,8 +12,6 @@ import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel'
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
-import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
-import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import { FilterCondition } from '../../model/FilterCondition';
 import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
@@ -331,12 +329,6 @@ class MyTrainingService {
 
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
-  @observable
-  private _filterCountViews: FilterCountViewModel[] = [];
-
-  @observable
-  private _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
-
   private inProgressTableViews: MyTrainingTableViewModel[] = [];
 
   private inProgressTableCount: number = 0;
@@ -359,14 +351,6 @@ class MyTrainingService {
 
   @computed get myTrainingTableCount() {
     return this._myTrainingTableViewCount;
-  }
-
-  @computed get filterCountViews() {
-    return this._filterCountViews;
-  }
-
-  @computed get totalFilterCountView() {
-    return this._totalFilterCountView;
   }
 
   @action
@@ -494,77 +478,6 @@ class MyTrainingService {
   }
 
   @action
-  async findAllStampTableViews() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-    return true;
-  }
-
-  @action
-  async findAllStampTableViewsByConditions() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-    return true;
-  }
-
-  @action
-  async findAllStampTableViewsWithPage(offset: Offset) {
-    this._myTrainingFilterRdo.changeOffset(offset);
-
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      const addedTableViews = offsetTableViews.results.map(
-        result => new MyTrainingTableViewModel(result)
-      );
-      console.log(addedTableViews);
-      runInAction(
-        () =>
-          (this._myTrainingTableViews = [
-            ...this._myTrainingTableViews,
-            ...addedTableViews,
-          ])
-      );
-    }
-  }
-
-  @action
   async findAllTableViewsWithPage(offset: Offset) {
     /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
@@ -675,24 +588,6 @@ class MyTrainingService {
     return myTrainingTableViewsForExcel;
   }
 
-  async findAllStampTableViewsForExcel() {
-    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(
-      this._myTrainingFilterRdo
-    );
-
-    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
-    filterRdoForExcel.changeColumnDirection(this.column, this.direction);
-
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      filterRdoForExcel
-    );
-    const myTrainingV2sForExcel = offsetMyTrainings.results.map(
-      offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining)
-    );
-
-    return myTrainingV2sForExcel;
-  }
-
   async findAllInProgressStorage() {
     const filterRdo = MyTrainingFilterRdoModel.createForInProgressStorage();
     const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
@@ -727,33 +622,6 @@ class MyTrainingService {
     }
 
     return null;
-  }
-
-  @action
-  async findAllFilterCountViews() {
-    const response = await this.myTrainingApi.findAllFilterCountViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (response) {
-      const filterCountViews = response.map(
-        (filterCountView: any) => new FilterCountViewModel(filterCountView)
-      );
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
-        filterCountViews
-      );
-
-      runInAction(() => {
-        this._filterCountViews = filterCountViews;
-        this._totalFilterCountView = totalFilterCountView;
-      });
-    }
-  }
-
-  @action
-  clearAllFilterCountViews() {
-    this._filterCountViews = [];
-    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action

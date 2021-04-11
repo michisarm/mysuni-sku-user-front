@@ -10,4 +10,5 @@ export interface CardRdo {
   name?: string;
   numberOneIfHasStamp?: number;
   required?: boolean;
+  searchable?: boolean;
 }

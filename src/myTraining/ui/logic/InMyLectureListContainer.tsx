@@ -5,36 +5,36 @@ import { mobxHelper, Offset } from '@nara.platform/accent';
 import { Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
 import InMyLectureService from '../../present/logic/InMyLectureService';
-import { CollegeService } from '../../../college/stores';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { SeeMoreButton } from '../../../lecture';
-
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import { Direction } from '../../model/Direction';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
 import InMyLectureListView from '../view/InMyLectureListVIew';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import FilterCountService from '../../present/logic/FilterCountService';
 
 
 interface InMyLectureListContainerProps {
   inMyLectureService?: InMyLectureService;
-  collegeService?: CollegeService;
+  filterCountService?: FilterCountService;
+  filterBoxService?: FilterBoxService;
 }
 
 function InMyLectureListContainer({
   inMyLectureService,
-  collegeService,
+  filterCountService,
+  filterBoxService,
 }: InMyLectureListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const [filterCount, setFilterCount] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,26 +42,15 @@ function InMyLectureListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
-  const { colleges } = collegeService!;
- 
-  useEffect(() => {
-    if(
-      colleges &&
-      colleges.length > 0
-    ) {
-      return;
-    }
-
-    collegeService!.findAllColleges();
-  }, []);
+  const { filterCount } = filterBoxService!;
 
   useEffect(() => {
     fetchInMyLectures();
-    inMyLectureService!.findAllFilterCountViews();
+    filterCountService!.findAllFilterCountViews(contentType);
 
     return () => {
       inMyLectureService!.clearAllTableViews();
-      inMyLectureService!.clearAllFilterCountViews();
+      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
 
@@ -134,18 +123,9 @@ function InMyLectureListContainer({
   }, [contentType, pageInfo.current, params.pageNo]);
 
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
-
-
   const onClickSort = useCallback((column: string, direction: Direction) => { 
       inMyLectureService!.sortTableViews(column, direction);
     }, []);
-
-  const onChangeFilterCount = useCallback((count: number) => {
-    setFilterCount(count);
-  }, []);
 
   const noSuchMessage = (
     contentType: MyContentType,
@@ -165,14 +145,8 @@ function InMyLectureListContainer({
             contentType={contentType}
             resultEmpty={resultEmpty}
             totalCount={inMyLectureTableCount}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
           />
           <FilterBoxContainer
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
-            onChangeFilterCount={onChangeFilterCount}
             getModels={getInMyLecturesByConditions}
           />
         </>
@@ -183,8 +157,8 @@ function InMyLectureListContainer({
           <>
             {(!resultEmpty && (
               <>
-                <MyLearningTableTemplate>
-                  <MyLearningTableHeader
+                <MyLearningListTemplate>
+                  <MyLearningListHeaderView
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
@@ -192,7 +166,7 @@ function InMyLectureListContainer({
                     inMyLectures={inMyLectureTableViews}
                     totalCount={inMyLectureTableCount}
                   />
-                </MyLearningTableTemplate>
+                </MyLearningListTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
               </>
             )) || (
@@ -243,7 +217,8 @@ function InMyLectureListContainer({
 export default inject(
   mobxHelper.injectFrom(
     'myTraining.inMyLectureService',
-    'college.collegeService',
+    'myTraining.filterCountService',
+    'shared.filterBoxService',
   )
 )(observer(InMyLectureListContainer));
 

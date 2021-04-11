@@ -9,3 +9,15 @@ export type FilterCondition = {
   endDate: Date | null;                 // 교육일정 endDate
   applying: string;                     // 수강신청 가능 학습
 }
+
+export const initialCondition = {
+  collegeIds: [],
+  difficultyLevels: [],
+  learningTimes: [],
+  organizers: [],
+  required: '',
+  certifications: [],
+  startDate: null,
+  endDate: null,
+  applying: ''
+}

@@ -114,6 +114,7 @@ class LectureFilterRdoModelV2 {
       required: true,
       limit: this.offset.limit,
       offset: this.offset.offset,
+      searchable: true,
     };
   }
 }

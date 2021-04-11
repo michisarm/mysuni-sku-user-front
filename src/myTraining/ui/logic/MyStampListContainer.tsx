@@ -6,70 +6,61 @@ import { inject, observer } from 'mobx-react';
 import { Offset, mobxHelper } from '@nara.platform/accent';
 import ReactGA from 'react-ga';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import FilterBoxContainer from './FilterBoxContainer';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import { CollegeService } from '../../../college/stores';
-import MyTrainingService from '../../present/logic/MyTrainingService';
-
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyPageContentType } from '../model/MyPageContentType';
 import { Direction } from '../../model/Direction';
 import MyStampListView from '../view/MyStampListView';
+import MyStampService from '../../present/logic/MyStampService';
+import MyStampFilterBoxContainer from './MyStampFilterBoxContainer';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import FilterCountService from '../../present/logic/FilterCountService';
 
 
 interface MyStampListContainerProps {
-  myTrainingService?: MyTrainingService;
-  collegeService?: CollegeService;
+  myStampService?: MyStampService;
+  filterCountService?: FilterCountService;
+  filterBoxService?: FilterBoxService;
 }
 
+
 function MyStampListContainer({
-  myTrainingService,
-  collegeService,
+  myStampService,
+  filterCountService,
+  filterBoxService,
 }: MyStampListContainerProps) {
   const history = useHistory();
   const params = useParams<MyPageRouteParams>();
   const contentType = params.tab;
 
-  const [filterCount, setFilterCount] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
-  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
-  const { colleges } = collegeService!;
-  
-  useEffect(() => {
-    if(
-      colleges &&
-      colleges.length > 0
-    ) {
-      return;
-    }
+  const { myStamps, myStampCount } = myStampService!;
+  const { filterCount } = filterBoxService!;
 
-    collegeService!.findAllColleges();
-  }, []);
 
   useEffect(() => {
     fetchStamps();
-    myTrainingService!.findAllFilterCountViews();
+    filterCountService!.findAllFilterCountViews(contentType);
 
     return () => {
-      myTrainingService!.clearAllTableViews();
-      myTrainingService!.clearAllFilterCountViews();
+      myStampService!.clearAllMyStamps();
+      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
 
   const fetchStamps = async () => {
-    myTrainingService!.initFilterRdo(contentType);
+    myStampService!.initFilterRdo();
 
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViews();
+    const isEmpty = await myStampService!.findAllMyStamps(pageInfo.current);
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
@@ -77,7 +68,7 @@ function MyStampListContainer({
 
   const fetchStampsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
+    const isEmpty = await myStampService!.findAllMyStampsByCondition();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
@@ -100,18 +91,9 @@ function MyStampListContainer({
     return 1;
   };
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
-
   const onClickSort = useCallback((column: string, direction: Direction) => {
-          myTrainingService!.sortTableViews(column, direction);
+          myStampService!.sortMyStamps(column, direction);
       }, []);
-
-  const onChangeFilterCount = useCallback((count: number) => {
-    setFilterCount(count);
-  }, []);
-  
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
@@ -124,7 +106,7 @@ function MyStampListContainer({
     history.replace(`./${getNextPageNo()}`);
     
     sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
+    await myStampService!.findAllMyStampsWithPage(pageInfo.current);
 
     setIsLoading(false);
     checkShowSeeMore();
@@ -132,13 +114,13 @@ function MyStampListContainer({
   }, [contentType, pageInfo.current, params.pageNo]);
 
   const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+    const { myStamps, myStampCount } = myStampService!;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
+    if (myStamps.length >= myStampCount) {
       setShowSeeMore(false);
       return;
     }
-    if (myTrainingTableCount <= PAGE_SIZE) {
+    if (myStampCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -164,35 +146,29 @@ function MyStampListContainer({
           <LineHeaderContainerV2
             contentType={contentType}
             resultEmpty={resultEmpty}
-            totalCount={myTrainingTableCount}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
+            totalCount={myStampCount}
           />
-          <FilterBoxContainer
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
-            onChangeFilterCount={onChangeFilterCount}
+          <MyStampFilterBoxContainer
             getModels={getStampsByConditions}
           />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
-        myTrainingTableViews &&
-        myTrainingTableViews.length > 0 && (
+        myStamps &&
+        myStamps.length > 0 && (
           <>
             {(!resultEmpty && (
               <>
-                <MyLearningTableTemplate>
-                  <MyLearningTableHeader
+                <MyLearningListTemplate>
+                  <MyLearningListHeaderView
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
                   <MyStampListView
-                    myStamps={myTrainingTableViews}
-                    totalCount={myTrainingTableCount}
+                    myStamps={myStamps}
+                    totalCount={myStampCount}
                   />
-                </MyLearningTableTemplate>
+                </MyLearningListTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
               </>
             )) || (
@@ -242,8 +218,9 @@ function MyStampListContainer({
 
 export default inject(
   mobxHelper.injectFrom(
-    'myTraining.myTrainingService',
-    'college.collegeService'
+    'myTraining.myStampService',
+    'myTraining.filterCountService',
+    'shared.filterBoxService',
   )
 )(observer(MyStampListContainer));
 
