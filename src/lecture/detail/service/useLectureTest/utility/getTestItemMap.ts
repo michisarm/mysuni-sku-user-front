@@ -12,8 +12,9 @@ import {
 import { patronInfo } from '@nara.platform/dock';
 import { findGradeSheet } from '../../../api/assistantApi';
 import { getEssayScores } from '../../../model/GradeSheet';
+import { ExtraTaskStatus } from '../../../../model/ExtraTaskStatus';
 
-async function getTestItem(examId: string) {
+async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
   if (examId !== '' && examId !== null) {
     let examination = null;
     {
@@ -30,7 +31,10 @@ async function getTestItem(examId: string) {
     });
 
     const denizenId = patronInfo.getDenizenId() || '';
-    const gradeSheet = await findGradeSheet(examId, denizenId);
+    let gradeSheet;
+    if (testStatus !== null) {
+      gradeSheet = await findGradeSheet(examId, denizenId);
+    }
     const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
     const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
 
@@ -65,7 +69,7 @@ export async function getTestItemMapFromCourse(
     examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId);
+  const testItem = await getTestItem(examId, student.extraWork.testStatus);
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }
@@ -92,7 +96,7 @@ export async function getTestItemMapFromCube(
     examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId);
+  const testItem = await getTestItem(examId, student.extraWork.testStatus);
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }
