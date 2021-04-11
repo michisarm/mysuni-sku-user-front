@@ -8,12 +8,13 @@ import { MyApprovalRouteParams } from '../../../model/MyApprovalRouteParams';
 import { MyLearningContentType } from '../../model/MyLearningContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 
-interface Props {
+interface MyLearningListTemplateProps {
   children: React.ReactNode;
 }
 
-function MyLearningTableTemplate(props: Props) {
-  const { children } = props;
+function MyLearningListTemplate({
+  children,
+}: MyLearningListTemplateProps) {
   const params = useParams<MyTrainingRouteParams | MyPageRouteParams | MyApprovalRouteParams>();
   const contentType = params.tab;
 
@@ -65,7 +66,7 @@ function MyLearningTableTemplate(props: Props) {
   );
 }
 
-export default memo(MyLearningTableTemplate);
+export default memo(MyLearningListTemplate);
 
 /* globals */
 const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType | MyApprovalContentType): string => {

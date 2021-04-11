@@ -1,60 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { observer, inject } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
-import { LectureService } from 'lecture';
-import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
-import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
-import CheckedFilterView from '../view/filterbox/CheckedFilterView';
-import CheckboxOptions from '../model/CheckboxOptions';
+import MyStampService from '../../present/logic/MyStampService';
 import { FilterBoxView } from '../view/filterbox/FilterBoxView';
-import { CollegeService } from '../../../college/stores';
-import { useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
-import { FilterCondition, initialCondition } from '../../model/FilterCondition';
+import CheckedFilterView from '../view/filterbox/CheckedFilterView';
 import { FilterConditionName } from '../../model/FilterConditionName';
-import { MyLearningContentType } from '../model/MyLearningContentType';
-import { MyContentType } from '../model/MyContentType';
+import CheckboxOptions from '../model/CheckboxOptions';
+import { MyPageRouteParams } from '../../model/MyPageRouteParams';
+import { useParams } from 'react-router-dom';
+import { CollegeService } from '../../../college/stores';
+import { FilterCondition, initialCondition } from '../../model/FilterCondition';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
 
-
-interface FilterBoxContainerProps {
+interface MyStampFilterBoxContainerProps {
   getModels: (count: number) => void;
-  myTrainingService?: MyTrainingService;
+  myStampService?: MyStampService;
   filterCountService?: FilterCountService;
-  inMyLectureService?: InMyLectureService;
-  lectureService?: LectureService;
   collegeService?: CollegeService;
   filterBoxService?: FilterBoxService;
 }
 
-
-function FilterBoxContainer({
-  getModels, 
-  myTrainingService, 
+function MyStampFilterBoxContainer({
+  getModels,
+  myStampService,
   filterCountService,
-  inMyLectureService, 
-  lectureService,
   collegeService,
   filterBoxService,
-}: FilterBoxContainerProps) {
-  const params = useParams<MyTrainingRouteParams>();
+}: MyStampFilterBoxContainerProps) {
+  const params = useParams<MyPageRouteParams>();
   const contentType = params.tab;
-
+  
   const [showResult, setShowResult] = useState<boolean>(false);
   const [conditions, setConditions] = useState<FilterCondition>(initialCondition);
 
-
   const { colleges } = collegeService!;
-  const { openFilter, setOpenFilter, setFilterCount } = filterBoxService!;
   const { filterCountViews, totalFilterCountView } = filterCountService!;
-
-  console.log('filterCountViews :: ' ,filterCountViews);
+  const { openFilter, setOpenFilter, setFilterCount } = filterBoxService!;
 
   const onClickFilter = () => {
     setOpenFilter(!openFilter);
   }
-
 
   useEffect(() => {
     /*
@@ -62,8 +48,8 @@ function FilterBoxContainer({
       2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
     */
     if (showResult) {
-      changeFilterRdo(contentType);
-      const filterCount = getFilterCount(contentType);
+      myStampService!.changeFilterRdoWithCondition(conditions);
+      const filterCount = myStampService!.getFilterCount();
       getModels(filterCount);
       
       /* 
@@ -76,10 +62,9 @@ function FilterBoxContainer({
   }, [showResult]);
 
   useEffect(() => {
-
     if (!openFilter) {
-      changeFilterRdo(contentType);
-      const filterCount = getFilterCount(contentType);
+      myStampService!.changeFilterRdoWithCondition(conditions);
+      const filterCount = myStampService!.getFilterCount();
       setFilterCount(filterCount);
     }
   }, [openFilter]);
@@ -88,32 +73,6 @@ function FilterBoxContainer({
     setFilterCount(0);
     setConditions(initialCondition);
   }, [contentType]);
-
-
-  const changeFilterRdo = (contentType: MyContentType) => {
-    switch (contentType) {
-      case MyLearningContentType.InMyList:
-        inMyLectureService!.changeFilterRdoWithConditions(conditions);
-        break;
-      case MyLearningContentType.Required:
-        lectureService!.changeFilterRdoWithConditions(conditions);
-        break;
-      default:
-        myTrainingService!.changeFilterRdoWithConditions(conditions);
-    }
-  };
-
-  const getFilterCount = (contentType: MyContentType) => {
-    switch (contentType) {
-      case MyLearningContentType.InMyList:
-        return inMyLectureService!.getFilterCount();
-      case MyLearningContentType.Required:
-        return lectureService!.getFilterCount();
-      default:
-        return myTrainingService!.getFilterCount();
-    }
-  };
-
 
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(college => college.name === collegeName)[0];
@@ -301,11 +260,11 @@ function FilterBoxContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.myTrainingService',
-  'myTraining.filterCountService',
-  'myTraining.inMyLectureService',
-  'lecture.lectureService',
-  'college.collegeService',
-  'shared.filterBoxService',
-))(observer(FilterBoxContainer));
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.myStampService',
+    'myTraining.filterCountService',
+    'college.collegeService',
+    'shared.filterBoxService',
+  )
+)(observer(MyStampFilterBoxContainer));

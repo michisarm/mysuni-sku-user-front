@@ -222,5 +222,6 @@ const SELECT_ALL = 'Select All';
 
 const getCollegeCount = (filterCountViews: FilterCountViewModel[], collegeId: string): number => {
   const filterCountView = filterCountViews.find(filterCountview => filterCountview.collegeId === collegeId);
+  console.log('filterCountView  :: ' ,filterCountView);
   return filterCountView ? filterCountView.college : 0;
 }
