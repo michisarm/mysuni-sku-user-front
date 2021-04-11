@@ -35,6 +35,7 @@ import { findAllQuiz } from '../../../../../quiz/api/QuizApi';
 import QuizTableList from '../../../../../quiz/model/QuizTableList';
 import VideoQuizContainer from '../../../../../quiz/ui/logic/VideoQuizContainer';
 import { getLectureParams } from '../../../store/LectureParamsStore';
+import { setEmbed } from 'lecture/detail/store/EmbedStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -388,6 +389,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setIsActive(false);
       setEmbedApi('');
       setLectureConfirmProgress();
+      setEmbed('');
     };
   }, []);
 
@@ -448,6 +450,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
+        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
