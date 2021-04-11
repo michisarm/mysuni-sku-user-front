@@ -8,28 +8,32 @@ import { LectureService, SeeMoreButton } from '../../../lecture';
 import { Direction } from '../../model/Direction';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import RequiredCardListView from '../view/RequiredCardListView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import FilterCountService from '../../present/logic/FilterCountService';
 
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
+  filterCountService?: FilterCountService;
+  filterBoxService?: FilterBoxService;
 }
 
 function RequiredCardListContainer({
   lectureService,
+  filterCountService,
+  filterBoxService,
 }: RequiredCardListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const [filterCount, setFilterCount] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,15 +41,16 @@ function RequiredCardListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   const { lectureTableViews, lectureTableCount } = lectureService!;
+  const { filterCount } = filterBoxService!;
   
 
   useEffect(() => {
     fetchRequiredCards();
-    lectureService!.findAllFilterCountViews();
+    filterCountService!.findAllFilterCountViews(MyLearningContentType.Required);
 
     return () => {
       lectureService!.clearAllTableViews();
-      lectureService!.clearAllFilterCountViews();
+      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
 
@@ -84,18 +89,10 @@ function RequiredCardListContainer({
     return 1;
   };
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     lectureService!.sortTableViews(column, direction);
-  }, []);
-
-  const onChangeFilterCount = useCallback((count: number) => {
-    setFilterCount(count);
-  }, []);
-  
+  }, []);  
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
@@ -149,14 +146,8 @@ function RequiredCardListContainer({
             contentType={contentType}
             resultEmpty={resultEmpty}
             totalCount={lectureTableCount}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
           />
           <FilterBoxContainer
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
-            onChangeFilterCount={onChangeFilterCount}
             getModels={getStampsByConditions}
           />
         </>
@@ -167,8 +158,8 @@ function RequiredCardListContainer({
           <>
             {(!resultEmpty && (
               <>
-                <MyLearningTableTemplate>
-                  <MyLearningTableHeader
+                <MyLearningListTemplate>
+                  <MyLearningListHeaderView
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
@@ -176,7 +167,7 @@ function RequiredCardListContainer({
                     requiredCards={lectureTableViews}
                     totalCount={lectureTableCount}
                   />
-                </MyLearningTableTemplate>
+                </MyLearningListTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
               </>
             )) || (
@@ -226,6 +217,8 @@ function RequiredCardListContainer({
 
 export default inject(mobxHelper.injectFrom(
   'lecture.lectureService',
+  'myTraining.filterCountService',
+  'shared.filterBoxService',
 ))(observer(RequiredCardListContainer));
 
 const PAGE_SIZE = 20;

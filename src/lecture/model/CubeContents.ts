@@ -19,6 +19,7 @@ export interface CubeContents {
       instructorId: string;
       representative: true;
       round: number;
+      name?: string;
     }
   ];
   operator: { keyString: string };

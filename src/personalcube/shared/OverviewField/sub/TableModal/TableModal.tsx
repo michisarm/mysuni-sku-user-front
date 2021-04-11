@@ -95,14 +95,14 @@ class TableModal extends Component<Props, States> {
                     <Table.Cell>{classroom.round}</Table.Cell>
                     <Table.Cell>{classroom.instructor}</Table.Cell>
                     <Table.Cell>
-                      {classroom.operator.name}
-                      {(classroom.operator.companyName ||
-                        classroom.operator.email) && (
+                      {classroom.operator?.names?.langStringMap.ko}
+                      {(classroom.operator?.companyNames ||
+                        classroom.operator?.email) && (
                         <>
                           <span className="dash" />
-                          {classroom.operator.companyName}
+                          {classroom.operator?.companyNames?.langStringMap.ko}
                           <br />
-                          {classroom.operator.email}
+                          {classroom.operator?.email}
                         </>
                       )}
                     </Table.Cell>

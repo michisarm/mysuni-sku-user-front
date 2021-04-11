@@ -11,8 +11,8 @@ import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
 import { PersonalLearningListView } from '../view/PersonalLearningListView';
 import routePaths from '../../routePaths';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 
 
 interface PersonalLearningListContainerProps {
@@ -135,15 +135,15 @@ function PersonalLearningListContainer({
         offsetApl.results &&
         offsetApl.results.length > 0 &&
         (
-          <MyLearningTableTemplate>
-            <MyLearningTableHeader
+          <MyLearningListTemplate>
+            <MyLearningListHeaderView
               contentType={params.tab}
             />
             <PersonalLearningListView 
               apls={offsetApl.results}
               totalCount={offsetApl.totalCount}
             />
-          </MyLearningTableTemplate>
+          </MyLearningListTemplate>
         ) || (
         <NoSuchContentPanel message={message} />
         )

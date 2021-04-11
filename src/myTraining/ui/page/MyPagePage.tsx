@@ -1,5 +1,5 @@
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -13,23 +13,38 @@ import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import MyPageHeaderContainer from '../logic/MyPageHeaderContainer';
 import { MyPageContentType, MyPageContentTypeName } from '../model/MyPageContentType';
 import MyStampListContainer from '../logic/MyStampListContainer';
+import { CollegeService } from '../../../college/stores';
 
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
   badgeService?: BadgeService;
+  collegeService?: CollegeService;
 }
 
 
 function MyPagePage({
   myTrainingService,
   badgeService,
+  collegeService,
 }: MyPagePageProps) {
-  const { myStampCount } = myTrainingService!;
-  const { allBadgeCount: { issuedCount } } = badgeService!;
-  
   const history = useHistory();
   const params = useParams<MyPageRouteParams>();
+
+  const { myStampCount } = myTrainingService!;
+  const { allBadgeCount: { issuedCount } } = badgeService!;
+  const { colleges } = collegeService!;
+
+  useEffect(() => {
+    if(
+      colleges &&
+      colleges.length > 0
+    ) {
+      return;
+    }
+
+    collegeService!.findAllColleges();
+  }, []);
 
   const getTabs = (): TabItemModel[] => {
     return [
@@ -55,13 +70,11 @@ function MyPagePage({
     );
   };
 
-  /* handlers */
   const onChangeTab = useCallback((tab: TabItemModel): string => {
     history.push(myTrainingRoutePaths.myPageTab(tab.name));
     return myTrainingRoutePaths.myPageTab(tab.name);
   }, []);
 
-  /* render */
   return (
     <ContentLayout
       className="MyPage"
@@ -84,5 +97,6 @@ function MyPagePage({
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService',
-  'badge.badgeService'
+  'badge.badgeService',
+  'college.collegeService',
 ))(observer(MyPagePage));

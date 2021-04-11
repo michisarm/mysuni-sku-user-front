@@ -35,7 +35,6 @@ function MyTrainingListView({
   const contentType = params.tab;
 
   const { scrollOnceMove, scrollSave } = useScrollMove();
-
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
 
   useEffect(() => {

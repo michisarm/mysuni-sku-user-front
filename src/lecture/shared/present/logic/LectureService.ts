@@ -544,20 +544,6 @@ class LectureService {
 
   _lectureFilterRdoV2: LectureFilterRdoModelV2 = new LectureFilterRdoModelV2();
 
-  @observable
-  _filterCountViews: FilterCountViewModel[] = [];
-
-  @observable
-  _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
-
-  @computed get filterCountViews() {
-    return this._filterCountViews;
-  }
-
-  @computed get totalFilterCountView() {
-    return this._totalFilterCountView;
-  }
-
   @computed get lectureTableViews() {
     return this._lectureTableViews;
   }
@@ -714,34 +700,6 @@ class LectureService {
         this._lectureTableViews = [...this._lectureTableViews, ...addLectureTableViews];
       })
     }
-  }
-
-  @action
-  async findAllFilterCountViews() {
-    const collegeAndCardCounts = await findCollegeAndCardCount();
-
-    if (
-      collegeAndCardCounts &&
-      collegeAndCardCounts.length > 0
-    ) {
-      const filterCountViews = collegeAndCardCounts.map(
-        collegeAndCardCount => new FilterCountViewModel({ collegeId: collegeAndCardCount.collegeId, college: collegeAndCardCount.count } as FilterCountViewModel)
-      );
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
-        filterCountViews
-      );
-
-      runInAction(() => {
-        this._filterCountViews = filterCountViews;
-        this._totalFilterCountView = totalFilterCountView;
-      });
-    }
-  }
-
-  @action
-  clearAllFilterCountViews() {
-    this._filterCountViews = [];
-    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action

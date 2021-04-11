@@ -9,12 +9,12 @@ import {
 } from '../../stores';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import PersonalCompletedListView from '../view/PersonalCompletedListView';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 
 interface PersonalCompletedListContainerProps {
   aplService?: AplService;
@@ -26,8 +26,7 @@ function PersonalCompletedListContainer({
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
-
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,9 +63,6 @@ function PersonalCompletedListContainer({
     return 1;
   };
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
@@ -112,9 +108,6 @@ function PersonalCompletedListContainer({
               contentType={contentType}
               resultEmpty={resultEmpty}
               totalCount={aplTableCount}
-              filterCount={0}
-              openFilter={openFilter}
-              onClickFilter={onClickFilter}
             />
           </>
         ) || <div style={{ marginTop: 50 }} />}
@@ -124,15 +117,15 @@ function PersonalCompletedListContainer({
           <>
             {(!resultEmpty && (
               <>
-                <MyLearningTableTemplate>
-                  <MyLearningTableHeader
+                <MyLearningListTemplate>
+                  <MyLearningListHeaderView
                     contentType={contentType}
                   />
                   <PersonalCompletedListView
                     apls={aplTableViews}
                     totalCount={aplTableCount}
                   />
-                </MyLearningTableTemplate>
+                </MyLearningListTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
               </>
             )) || (
