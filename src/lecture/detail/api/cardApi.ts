@@ -179,3 +179,15 @@ export function submitTask(studentId: string, extraTaskType: ExtraTaskType) {
   const url = `${BASE_URL}/students/submit/${studentId}/${extraTaskType}`;
   return axios.put<void>(url).then(AxiosReturn);
 }
+
+export function registerHomework(
+  studentId: string,
+  fileBoxId: string,
+  homework: string
+): Promise<void> {
+  const url = `${BASE_URL}/students/registerHomework/${studentId}/${fileBoxId}`;
+  const axios = getAxios();
+  return axios
+    .put<void>(url, { homeworkContent: homework })
+    .then(response => response && response.data);
+}

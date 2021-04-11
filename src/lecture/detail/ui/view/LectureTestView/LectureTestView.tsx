@@ -8,6 +8,7 @@ import LectureParams from '../../../viewModel/LectureParams';
 import LectureTestIntroView from './LectureTestIntroView';
 import LectureTestResultView from './LectureTestResultView';
 import LectureTestPaperView from './LectureTestPaperView';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -45,36 +46,32 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
   };
 
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
+
   useEffect(() => {
-    if (testStudentItem !== undefined) {
-      if (
-        testStudentItem.learningState === 'Failed' ||
-        testStudentItem.learningState === 'Missed' ||
-        testStudentItem.learningState === 'TestWaiting' ||
-        testStudentItem.learningState === 'Passed' ||
-        testStudentItem.learningState === 'TestPassed'
-      ) {
-        openView('result');
-      } else {
-        openView('intro');
-      }
+    console.log('LectureTestView.lectureStructureItem', lectureStructureItem);
+    const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
+    if (
+      testStatus === 'SUBMIT' ||
+      testStatus === 'PASS' ||
+      testStatus === 'FAIL'
+    ) {
+      openView('result');
     } else {
       openView('intro');
     }
-  }, [params, testStudentItem]);
+  }, [params, testStudentItem, lectureStructureItem]);
 
   useEffect(() => {
-    if (
-      testStudentItem !== undefined &&
-      testStudentItem.learningState !== undefined &&
-      (testStudentItem.learningState === 'Passed' ||
-        testStudentItem.learningState === 'TestPassed')
-    ) {
+    const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
+    if (testStatus === 'PASS') {
+      console.log('answerItem', answerItem);
       if (
         answerItem !== undefined &&
         !answerItem?.finished &&
         !answerItem?.submitted &&
-        answerItem.submitAnswers.length < 1
+        answerItem.submitAnswers.length < 1 &&
+        lectureStructureItem?.student?.studentScore.examId === answerItem.examId
       ) {
         // 이수처리하여 답안이 없는경우
         reactAlert({
@@ -84,8 +81,12 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         });
       }
     }
-  }, [testStudentItem, answerItem, params]);
+  }, [testStudentItem, answerItem, params, lectureStructureItem?.student]);
 
+  console.log('@#@#useTestResultView');
+  console.log(useTestResultView);
+  console.log(testItem);
+  console.log(testStudentItem);
   return (
     <>
       {useTestIntroView && testItem && (

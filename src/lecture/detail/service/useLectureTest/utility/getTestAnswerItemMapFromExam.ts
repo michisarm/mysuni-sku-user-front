@@ -25,6 +25,7 @@ async function getTestAnswerItem(examId: string) {
     submitAnswers: [],
     finished: false,
     dataLoadTime: 0,
+    examId,
   };
 
   if (examId !== '' && examId !== null) {
@@ -51,9 +52,10 @@ export async function getTestAnswerItemMapFromExam(
   questions: ExamQuestion[]
 ): Promise<void> {
   // void : return이 없는 경우 undefined
-  setLectureTestAnswerItem(undefined);  // 초기화
+  setLectureTestAnswerItem(undefined); // 초기화
   if (examId) {
     const answerItem = await getTestAnswerItem(examId);
+    console.log('answerItem1', answerItem);
     if (answerItem !== undefined) {
       if (answerItem.answers.length < 1) {
         questions.forEach((result, index) => {
@@ -63,6 +65,7 @@ export async function getTestAnswerItemMapFromExam(
           });
         });
       }
+      console.log('answerItem2', answerItem);
 
       setLectureTestAnswerItem(answerItem);
     }

@@ -32,7 +32,7 @@ async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
 
     const denizenId = patronInfo.getDenizenId() || '';
     let gradeSheet;
-    if (testStatus !== null) {
+    if (testStatus !== null && testStatus !== 'SAVE') {
       gradeSheet = await findGradeSheet(examId, denizenId);
     }
     const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
