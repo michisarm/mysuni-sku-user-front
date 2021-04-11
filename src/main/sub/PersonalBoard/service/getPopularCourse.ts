@@ -1,20 +1,25 @@
 import { getPopularCourse } from '../api/personalBoardApi';
-import { setPopularCourseItem, } from '../store/PersonalBoardStore';
+import { setPopularCourseItem } from '../store/PersonalBoardStore';
 import { MyCompanyPopularCourseItem } from '../model/LectureMyCompanyPopularCourse';
+import {
+  getChannelName,
+  getCollgeName,
+} from '../../../../shared/service/useCollege/useRequestCollege';
 
 export async function requestPopularCourse(companyCode: string, date: number) {
-  getPopularCourse(companyCode, date).then((result: MyCompanyPopularCourseItem[]) => {
-    const channalArr: any = []
-    result.map((item: any, index: number) => {
-      channalArr.push({
-        'collegeName': item.category.college.name,
-        'collegeId': item.category.college.id,
-        'coursePlanId': item.coursePlanId,
-        'lectureUsid': item.lectureUsid,
-        'lectureName': item.lectureName,
-        'channelName': item.category.channel.name
-      })
-    })
-    setPopularCourseItem([...channalArr])
-  })
+  getPopularCourse(companyCode, date).then(
+    (result: MyCompanyPopularCourseItem[]) => {
+      const channalArr: any = [];
+      result.map((item: MyCompanyPopularCourseItem, index: number) => {
+        channalArr.push({
+          collegeName: getCollgeName(item.cardCategory.collegeId),
+          collegeId: item.cardCategory.collegeId,
+          cardId: item.cardId,
+          cardName: item.cardName,
+          channelName: getChannelName(item.cardCategory.channelId),
+        });
+      });
+      setPopularCourseItem([...channalArr]);
+    }
+  );
 }
