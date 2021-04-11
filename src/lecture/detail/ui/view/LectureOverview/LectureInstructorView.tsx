@@ -15,17 +15,6 @@ function Represent() {
 const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps> = function LectureInstructorView({
   lectureInstructor,
 }) {
-  const [photos, setPhotos] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    if (lectureInstructor) {
-      const userIds = lectureInstructor.instructors.map(i => i.instructorId);
-      LectureApi.instance.findPhotoUrls(userIds).then(data => {
-        setPhotos(data);
-      });
-    }
-  }, [lectureInstructor]);
-
   return (
     <>
       <div className="section-head">
@@ -42,7 +31,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
         {lectureInstructor &&
           lectureInstructor.instructors &&
           lectureInstructor.instructors.map(
-            ({ instructorId, representative }, index) => (
+            ({ instructorId, representative, memberSummary }, index) => (
               <Link
                 className="ui profile tool-tip"
                 to={`/expert/instructor/${instructorId}/Introduce`}
@@ -52,20 +41,17 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
                   {/*employeeId && employeeId != '' &&
                   <img alt="프로필사진" className="ui image" src={`https://mysuni.sk.com/profile/photo/skcc/${employeeId}.jpg`} />
           */}
-                  {photos && photos[index] && (
+                  {memberSummary?.photoId && (
                     <img
                       alt="프로필사진"
                       className="ui image"
-                      src={photos[index]}
+                      src={memberSummary?.photoId}
                     />
                   )}
                 </div>
                 <i>
-                  // jz-아래 참고하여 수정
-                  <span className="tip-name">{instructorId}</span>
-                  <a className="tip-id">{instructorId}</a>
-                  {/* <span className="tip-name">{name}</span>
-                  <a className="tip-id">{company}</a> */}
+                  <span className="tip-name">{memberSummary?.name}</span>
+                  <a className="tip-id">{memberSummary?.department}</a>
                 </i>
               </Link>
             )
