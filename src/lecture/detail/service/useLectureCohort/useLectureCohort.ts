@@ -15,7 +15,7 @@ export function useLectureCohort(): [Value] {
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureWebpage-${++subscriberIdRef}`;
+    const next = `useLectureCohort-${++subscriberIdRef}`;
     setSubscriberId(next);
   }, []);
 

@@ -1,5 +1,6 @@
 import { Classroom as RemoteClassroom } from '../../model/Classroom';
 import { Member } from '../../model/Member';
+import { UserIdentity } from '../../model/UserIdentity';
 
 export interface Classroom {
   id: string;
@@ -24,7 +25,7 @@ export interface Classroom {
   studentCount: number;
   cancellationPenalty: string;
   remote: RemoteClassroom;
-  operator: Member;
+  operator?: UserIdentity;
 }
 
 export default interface LectureClassroom {

@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { useCourseViewEvent } from '../../../service/useActionLog/useCourseViewEvent';
 import { useRequestLectureCardOverview } from '../../../service/useLectureCourseOverview/useRequestLectureCourseOverview';
 import { useLectureStructure } from '../../../store/LectureStructureStore';
@@ -11,6 +12,16 @@ function LectureCourseOverviewPage() {
   const lectureStructure = useLectureStructure();
 
   useCourseViewEvent();
+
+  const history = useHistory();
+  useEffect(() => {
+    if (lectureStructure === undefined) {
+      return;
+    }
+    if (lectureStructure.cubes.length === 1) {
+      history.replace(lectureStructure.cubes[0].path);
+    }
+  }, [lectureStructure]);
 
   return (
     <Fragment>
