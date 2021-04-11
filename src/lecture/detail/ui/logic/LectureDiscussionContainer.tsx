@@ -9,7 +9,6 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
-import { useLectureParams } from '../../store/LectureParamsStore';
 import { useParams } from 'react-router-dom';
 import LectureParams from '../../viewModel/LectureParams';
 
@@ -261,6 +260,16 @@ export default function LectureDiscussionContainer() {
               </div>
             </div>
           </div>
+          <CommentList
+            feedbackId={lectureDiscussion.id}
+            hideCamera
+            name={name}
+            email={email}
+            companyName={company}
+            departmentName={department}
+            cardId={params?.cardId}
+            menuType="discussion"
+          />
         </>
       )}
     </>

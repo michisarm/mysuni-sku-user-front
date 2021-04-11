@@ -15,14 +15,12 @@ export type LectureStructureItemType =
   | 'SURVEY';
 
 export interface LectureStructureItem {
-  activated?: boolean;
   params: LectureParams;
   path: string;
   state?: State;
   can: boolean;
   order: number;
   type: LectureStructureItemType;
-  //canSubmit?: boolean;
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
@@ -73,7 +71,6 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
 
 export interface LectureStructureDurationableCubeItem
   extends LectureStructureCubeItem {
-  cubeContentsId: string;
   duration?: number;
 }
 

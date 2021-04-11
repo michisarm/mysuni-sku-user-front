@@ -1,5 +1,4 @@
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { patronInfo } from '@nara.platform/dock';
 import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
 import { getCubeLectureTaskDetail } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import {
@@ -7,19 +6,15 @@ import {
   setLectureTaskCreateItem,
 } from 'lecture/detail/store/LectureTaskCreateStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import { toJS } from 'mobx';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Checkbox, Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import { SkProfileService } from '../../../../../profile/stores';
-import { useLectureParams } from '../../../store/LectureParamsStore';
 import {
-  getActiveCubeStructureItem,
-  getActiveStructureItem,
-  getActiveStructureItemAll,
-} from '../../../utility/lectureStructureHelper';
-import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
+  getLectureParams,
+  useLectureParams,
+} from '../../../store/LectureParamsStore';
+import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
 
@@ -45,7 +40,13 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   let [taskDetail] = useLectureTaskCreate();
   const [canNotice, setCanNotice] = useState<boolean>(false);
   useEffect(() => {
-    const lectureStructureCubeItem = getActiveCubeStructureItem();
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    const lectureStructureCubeItem = getActiveCubeStructureItem(
+      params.pathname
+    );
     if (lectureStructureCubeItem === undefined) {
       return;
     }

@@ -1,30 +1,26 @@
-import { patronInfo } from "@nara.platform/dock";
-import { modifyCommunityPost, registerCommunityCommentPost, registerPost } from "community/api/communityApi";
-import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
-import { createTaskPost, updateTaskPost } from "lecture/detail/api/mPersonalCubeApi";
-import TaskCdo from "lecture/detail/model/TaskCdo";
-import { getLectureTaskCreateItem } from "lecture/detail/store/LectureTaskCreateStore";
-import { getLectureTaskDetail } from "lecture/detail/store/LectureTaskStore";
+import { getLectureTaskDetail } from 'lecture/detail/store/LectureTaskStore';
+import { modifyPost, modifyPostBody } from '../../../api/cubeApi';
 
-export async function updateLectureTask(postId: string): Promise<void> {
-
-  const taskDetailItem = getLectureTaskDetail()
+export async function updateLectureTask(
+  postId: string,
+  postBodyId: string
+): Promise<void> {
+  const taskDetailItem = getLectureTaskDetail();
   if (taskDetailItem !== undefined) {
-    const postCdo: any = {
-      postBodyNameValueList: {
-        nameValues: [
-          { name: 'contents', value: taskDetailItem.contents },
-          { name: 'fileBoxId', value: taskDetailItem.fileBoxId }
-        ]
-      },
-      postNameValueList: {
-        nameValues: [
-          { name: 'title', value: taskDetailItem.title },
-          { name: 'commentFeedbackId', value: taskDetailItem.commentFeedbackId },
-          { name: 'deleted', value: "false" }
-        ]
-      }
+    const postNameValueList = {
+      nameValues: [
+        { name: 'title', value: taskDetailItem.title },
+        { name: 'commentFeedbackId', value: taskDetailItem.commentFeedbackId },
+        { name: 'deleted', value: 'false' },
+      ],
     };
-    updateTaskPost(postCdo, postId);
+    const postBodyNameValueList = {
+      nameValues: [
+        { name: 'contents', value: taskDetailItem.contents },
+        { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
+      ],
+    };
+    await modifyPost(postId, postNameValueList);
+    await modifyPostBody(postBodyId, postBodyNameValueList);
   }
 }

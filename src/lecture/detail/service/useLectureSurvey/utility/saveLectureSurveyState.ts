@@ -272,7 +272,9 @@ export async function finishLectureSurveyState() {
 
 export async function saveLectureSurveyState(lectureParams: LectureParams) {
   const lectureSurveyState = getLectureSurveyState();
-  const lectureStructureItem = getActiveStructureItem() as LectureStructureSurveyItem;
+  const lectureStructureItem = getActiveStructureItem(
+    lectureParams.pathname
+  ) as LectureStructureSurveyItem;
   const { student } = lectureStructureItem;
   if (student === undefined || student === null) {
     return;
@@ -298,7 +300,9 @@ export async function saveLectureSurveyState(lectureParams: LectureParams) {
 
 export async function submitLectureSurveyState(lectureParams: LectureParams) {
   const lectureSurveyState = getLectureSurveyState();
-  const lectureStructureItem = getActiveStructureItem() as LectureStructureSurveyItem;
+  const lectureStructureItem = getActiveStructureItem(
+    lectureParams.pathname
+  ) as LectureStructureSurveyItem;
   const { student } = lectureStructureItem;
   if (student === undefined || student === null) {
     return;

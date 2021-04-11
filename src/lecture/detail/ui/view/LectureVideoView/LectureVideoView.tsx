@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { reactAlert } from '@nara.platform/accent';
-import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
 import {
-  getLectureMedia,
   onLectureMedia,
+  useLectureMedia,
 } from 'lecture/detail/store/LectureMediaStore';
 import { patronInfo } from '@nara.platform/dock';
 import WatchLog from 'lecture/detail/model/Watchlog';
@@ -11,7 +10,6 @@ import {
   setLectureConfirmProgress,
   getLectureConfirmProgress,
 } from 'lecture/detail/store/LectureConfirmProgressStore';
-import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import LectureParams from '../../../viewModel/LectureParams';
@@ -33,11 +31,10 @@ import {
   setWatchLog,
 } from '../../../service/useLectureMedia/useLectureWatchLog';
 import { confirmProgress } from '../../../service/useLectureMedia/utility/confirmProgress';
-import { setEmbed } from 'lecture/detail/store/EmbedStore';
 import { findAllQuiz } from '../../../../../quiz/api/QuizApi';
 import QuizTableList from '../../../../../quiz/model/QuizTableList';
-import { useLectureMedia } from '../../../service/useLectureMedia/useLectureMedia';
 import VideoQuizContainer from '../../../../../quiz/ui/logic/VideoQuizContainer';
+import { getLectureParams } from '../../../store/LectureParamsStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -58,6 +55,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   enabled, // 링크드인 판별 state
 }) {
   const params = useParams<LectureParams>();
+  const lectureMedia = useLectureMedia();
   const { cardId } = params;
 
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
@@ -134,7 +132,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     // return = false:중복시청, true:시청가능
     // alert(`retMultiVideoOverlap before: ${usid}`);
     if (show) {
-      retMultiVideoOverlap(viewState, usid).then(res => {
+      retMultiVideoOverlap(viewState, usid).then((res: any) => {
         // alert(`retMultiVideoOverlap after: ${res}`);
         setLiveLectureCardId(res);
         if (viewState !== 'end') {
@@ -288,7 +286,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         JSON.stringify(params.cubeId)
       );
     }
-  }, [panoptoState]);
+  }, [panoptoState, params]);
 
   useEffect(() => {
     let interval: any = null;
@@ -389,7 +387,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setPanoptoState(10);
       setIsActive(false);
       setEmbedApi('');
-      setEmbed('');
       setLectureConfirmProgress();
     };
   }, []);
@@ -397,21 +394,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const cleanUpPanoptoIframe = () => {
     const playerEl = document.getElementById('panopto-embed-player');
     if (playerEl) playerEl.innerHTML = '';
-  };
-
-  const seekByIndex = (index: number) => {
-    if (embedApi && index >= 0) {
-      //TODO current state 를 찾아서 Play 이
-      embedApi.seekTo(index);
-    }
-  };
-
-  const highlight = (id: string) => {
-    if (transciptHighlight === id) {
-      return 'l-current';
-    } else {
-      return '';
-    }
   };
 
   // 2020.12.10 IE iframe Fix
@@ -466,7 +448,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           },
         });
         setEmbedApi(embedApi);
-        setEmbed(embedApi);
       }
     }, 'LectureVideoView');
 
@@ -521,7 +502,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
   // sticky시 비디오명 표시 (cube)
   useEffect(() => {
-    const currentItem = getActiveStructureItem();
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    const currentItem = getActiveStructureItem(params.pathname);
     if (currentItem?.type === 'CUBE') {
       setCubeName((currentItem as LectureStructureCubeItem).name);
     }
@@ -530,8 +515,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [quizPop, setQuizPop] = useState<boolean>(false);
   const [quizShowTime, setQuizShowTime] = useState<number[]>();
   const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
-
-  const [_, lectureMedia] = useLectureMedia();
 
   const videoControll = {
     play: () => embedApi.playVideo(),
@@ -576,7 +559,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         videoControll.stop();
       }
     }
-  }, [currentTime, scroll, quizShowTime, panoptoState]);
+  }, [currentTime, scroll, quizShowTime]);
 
   useEffect(() => {
     setQuizPop(false);
@@ -636,7 +619,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       className={
         scroll > videoPosition &&
         !enabled &&
-        getLectureMedia()?.mediaType === 'InternalMedia'
+        lectureMedia?.mediaType === 'InternalMedia'
           ? 'video-fixed-holder lms-video-fixed'
           : 'video-fixed-holder'
       }
@@ -717,75 +700,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           </div>
         </div>
-        {/* {getLectureTranscripts() &&
-          getLectureMedia() &&
-          (getLectureMedia()?.mediaType == 'InternalMedia' ||
-            getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
-          (getLectureTranscripts()?.length || 0) > 0 &&
-          displayTranscript &&
-          false && (
-            <>
-              <button
-                className="ui icon button right btn-blue"
-                onClick={() => setDisplayTranscript(false)}
-              >
-                Close Transcript
-                <i aria-hidden="true" className="icon icon morelink" />
-              </button>
-              <div className="course-video-tanscript" id="tanscript-scroll">
-                <div className="course-video-scroll">
-                  {getLectureTranscripts()?.map(lectureTranscript => {
-                    return (
-                      <>
-                        <strong
-                          id={lectureTranscript.idx + ''}
-                          style={{ cursor: 'pointer' }}
-                          className={highlight(lectureTranscript.idx + '')}
-                          onClick={() => {
-                            // seekByIndex(lectureTranscript.idx);
-                            seekByIndex(
-                              parseInt(
-                                lectureTranscript.startTime.substr(0, 2),
-                                10
-                              ) *
-                                60 *
-                                60 +
-                                parseInt(
-                                  lectureTranscript.startTime.substr(2, 2),
-                                  10
-                                ) *
-                                  60 +
-                                parseInt(
-                                  lectureTranscript.startTime.substr(4, 2),
-                                  10
-                                )
-                            );
-                          }}
-                        >
-                          {lectureTranscript.startTime
-                            .substr(0, 2)
-                            .concat(':')
-                            .concat(lectureTranscript.startTime.substr(2, 2))
-                            .concat(':')
-                            .concat(lectureTranscript.startTime.substr(4, 2))}
-                        </strong>
-                        <p>{lectureTranscript.text}</p>
-                      </>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          )}
-        {getLectureTranscripts()?.length !== 0 && !displayTranscript && false && (
-          <button
-            className="ui icon button right btn-blue"
-            onClick={() => setDisplayTranscript(true)}
-          >
-            View Transcript
-            <i aria-hidden="true" className="icon icon morelink" />
-          </button>
-        )} */}
       </div>
     </div>
   );

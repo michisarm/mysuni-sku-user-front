@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Route, Switch, useLocation, useParams } from 'react-router-dom';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureTestPage from './ui/logic/LectureTestPage';
@@ -22,12 +22,13 @@ export default function LectureDetailCourseRoutes() {
   useRequestLectureStructure();
   useRequestLectureCardOverview();
   useCardBreadcrumb();
+  const { pathname } = useLocation();
 
   const params = useParams<LectureParams>();
   const { cardId, viewType } = params;
   useEffect(() => {
-    setLectureParams({ ...params });
-  }, [params]);
+    setLectureParams({ ...params, pathname });
+  }, [params, pathname]);
 
   useEffect(() => {
     return () => {

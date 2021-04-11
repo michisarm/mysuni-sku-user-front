@@ -21,12 +21,14 @@ import OrderByType from '../../../model/OrderByType';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
-import LectureTableViewModel from '../../../model/LectureTableViewModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
-import { findByRdo } from '../../../detail/api/cardApi';
+import { findByRdo, countRequiredCards, findCollegeAndCardCount } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
 import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
+import { findCardStudentsByCardIds } from '../../../../certification/api/CardStudentApi';
+import LectureTableViewModel from '../../../model/LectureTableViewModel';
+
 
 @autobind
 class LectureService {
@@ -524,9 +526,7 @@ class LectureService {
 
   @action
   async countRequiredLectures() {
-    const count = await this.lectureFlowApi.countRequiredLectures(
-      this._lectureFilterRdoV2
-    );
+    const count = await countRequiredCards();
 
     if (count !== undefined) {
       runInAction(() => {
@@ -587,84 +587,145 @@ class LectureService {
 
   @action
   async findAllRqdTableViews() {
-    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(
-      this._lectureFilterRdoV2
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._lectureTableViews = offsetTableViews.results.map(
-          result => new LectureTableViewModel(result)
-        );
-        this._lectureTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-
-    return true;
+    return this.findAllRequiredCards();
   }
+
+
 
   @action
   async findAllRqdTableViewsByConditions() {
-    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(
-      this._lectureFilterRdoV2
-    );
+    return this.findAllRequiredCards();
+  }
+
+  @action
+  async findAllRequiredCards(): Promise<boolean> {
+    const cardRdo = this._lectureFilterRdoV2.toCardRdo();
+    const offsetRequiredCard = await findByRdo(cardRdo);
 
     if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
+      offsetRequiredCard &&
+      offsetRequiredCard.results &&
+      offsetRequiredCard.results.length > 0
     ) {
-      runInAction(() => {
-        this._lectureTableViews = offsetTableViews.results.map(
-          result => new LectureTableViewModel(result)
-        );
-        this._lectureTableViewCount = offsetTableViews.totalCount;
+      const cardIds = offsetRequiredCard.results.map(result => result.card.id);
+      const cardStudents = await findCardStudentsByCardIds(cardIds);
+
+      const lectureTableViews = offsetRequiredCard.results.map(result => {
+        const card = result.card;
+        const mainCategory = card.categories.find(category => category.mainCategory === true) || {
+          collegeId: '',
+          channelId: '',
+          mainCategory: false,
+        };
+
+        const student = cardStudents && cardStudents.find(student => student.lectureId === card.id);
+
+        if (student) {
+          const lectureTableView = new LectureTableViewModel();
+          lectureTableView.serviceId = card.id;
+          lectureTableView.category = mainCategory;
+          lectureTableView.difficultyLevel = card.difficultyLevel || '';
+          lectureTableView.name = card.name;
+          lectureTableView.learningTime = card.learningTime;
+          lectureTableView.learningState = student.learningState;
+          lectureTableView.updateTime = student.updateTime;
+          lectureTableView.updateTimeForTest = student.updateTimeForTest;
+          lectureTableView.passedLearningCount = student.completePhaseCount;
+          lectureTableView.totalLearningCount = student.phaseCount;
+
+          return lectureTableView;
+        }
+
+
+        const lectureTableView = new LectureTableViewModel();
+        lectureTableView.serviceId = card.id;
+        lectureTableView.category = mainCategory!;
+        lectureTableView.difficultyLevel = card.difficultyLevel!;
+        lectureTableView.name = card.name;
+        lectureTableView.learningTime = card.learningTime;
+
+        return lectureTableView;
       });
+
+      runInAction(() => {
+        this._lectureTableViews = lectureTableViews;
+        this._lectureTableViewCount = offsetRequiredCard.totalCount;
+      })
+
       return false;
     }
+
     return true;
   }
 
   @action
   async findAllRqdTableViewsWithPage(offset: Offset) {
-    const newOffset: Offset = {
-      offset: 0,
-      limit: offset.offset + offset.limit,
-    };
-    this._lectureFilterRdoV2.changeOffset(newOffset);
-    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(
-      this._lectureFilterRdoV2
-    );
+    this._lectureFilterRdoV2.changeOffset(offset);
+
+    const cardRdo = this._lectureFilterRdoV2.toCardRdo();
+    const offsetRequiredCard = await findByRdo(cardRdo);
 
     if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
+      offsetRequiredCard &&
+      offsetRequiredCard.results &&
+      offsetRequiredCard.results.length > 0
     ) {
-      const addedTableViews = offsetTableViews.results.map(
-        result => new LectureTableViewModel(result)
-      );
+      const cardIds = offsetRequiredCard.results.map(result => result.card.id);
+      const cardStudents = await findCardStudentsByCardIds(cardIds);
+
+      const addLectureTableViews = offsetRequiredCard.results.map(result => {
+        const card = result.card;
+        const mainCategory = card.categories.find(category => category.mainCategory === true) || {
+          collegeId: '',
+          channelId: '',
+          mainCategory: false,
+        };
+
+        const student = cardStudents && cardStudents.find(student => student.cardId === card.id);
+
+        if (student) {
+          const lectureTableView = new LectureTableViewModel();
+          lectureTableView.serviceId = card.id;
+          lectureTableView.category = mainCategory;
+          lectureTableView.difficultyLevel = card.difficultyLevel || '';
+          lectureTableView.name = card.name;
+          lectureTableView.learningTime = card.learningTime;
+          lectureTableView.learningState = student.learningState;
+          lectureTableView.updateTime = student.updateTime;
+          lectureTableView.updateTimeForTest = student.updateTimeForTest;
+          lectureTableView.passedLearningCount = student.completePhaseCount;
+          lectureTableView.totalLearningCount = student.phaseCount;
+
+          return lectureTableView;
+        }
+
+        const lectureTableView = new LectureTableViewModel();
+        lectureTableView.serviceId = card.id;
+        lectureTableView.category = mainCategory!;
+        lectureTableView.difficultyLevel = card.difficultyLevel!;
+        lectureTableView.name = card.name;
+        lectureTableView.learningTime = card.learningTime;
+
+        return lectureTableView;
+
+      });
 
       runInAction(() => {
-        this._lectureTableViews = [...addedTableViews];
-      });
+        this._lectureTableViews = [...this._lectureTableViews, ...addLectureTableViews];
+      })
     }
   }
 
   @action
   async findAllFilterCountViews() {
-    const response = await this.lectureFlowApi.findAllFilterCountViews(
-      this._lectureFilterRdoV2
-    );
+    const collegeAndCardCounts = await findCollegeAndCardCount();
 
-    if (response) {
-      const filterCountViews = response.map(
-        (filterCountView: any) => new FilterCountViewModel(filterCountView)
+    if (
+      collegeAndCardCounts &&
+      collegeAndCardCounts.length > 0
+    ) {
+      const filterCountViews = collegeAndCardCounts.map(
+        collegeAndCardCount => new FilterCountViewModel({ collegeId: collegeAndCardCount.collegeId, college: collegeAndCardCount.count } as FilterCountViewModel)
       );
       const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
         filterCountViews
@@ -722,7 +783,7 @@ const converToKey = (column: string): any => {
     case '학습시간':
       return 'learningTime';
     case '최근학습일':
-      return 'time';
+      return 'updateTime';
     case '스탬프':
       return 'stampCount';
     case '등록일':

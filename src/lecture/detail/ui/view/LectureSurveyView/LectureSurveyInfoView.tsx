@@ -4,16 +4,15 @@ import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import { startLectureSurveyState } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import CommunityMenu from 'community/model/CommunityMenu';
-import {
-  LectureStructure,
-  LectureStructureCubeItem,
-} from 'lecture/detail/viewModel/LectureStructure';
+import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
-import { useLectureParams } from '../../../store/LectureParamsStore';
+import {
+  getLectureParams,
+  useLectureParams,
+} from '../../../store/LectureParamsStore';
 import {
   getActiveCourseStructureItem,
   getActiveCubeStructureItem,
-  getActiveStructureItem,
 } from '../../../utility/lectureStructureHelper';
 
 interface LectureSurveyInfoViewProps {
@@ -43,13 +42,17 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   const questionCount = lectureSurvey.surveyItems.length;
 
   useEffect(() => {
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
     if (currentMenu?.name !== undefined) {
       setSurveyTitleInfo(currentMenu?.name);
       setSurveyInfoText('의 ');
     } else {
       const name =
         getActiveCourseStructureItem()?.name ||
-        getActiveCubeStructureItem()?.name ||
+        getActiveCubeStructureItem(params.pathname)?.name ||
         '';
       setSurveyTitleInfo(name);
       setSurveyInfoText('과정');

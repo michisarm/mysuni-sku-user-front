@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getLectureParams } from '../store/LectureParamsStore';
 import { useLectureStructure } from '../store/LectureStructureStore';
 import { getActiveStructureItem } from '../utility/lectureStructureHelper';
 import { LectureStructureItem } from '../viewModel/LectureStructure';
@@ -10,11 +11,12 @@ export function useNextContent(): Value {
   const lectureStructure = useLectureStructure();
 
   useEffect(() => {
-    if (lectureStructure === undefined) {
+    const params = getLectureParams();
+    if (lectureStructure === undefined || params === undefined) {
       setValue(undefined);
       return;
     }
-    const current = getActiveStructureItem();
+    const current = getActiveStructureItem(params.pathname);
     if (current === undefined) {
       setValue(undefined);
       return;

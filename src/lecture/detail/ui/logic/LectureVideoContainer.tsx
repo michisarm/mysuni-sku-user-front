@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
-import { getLectureMedia } from 'lecture/detail/store/LectureMediaStore';
+import {
+  getLectureMedia,
+  useLectureMedia,
+} from 'lecture/detail/store/LectureMediaStore';
 import LinkedInModal from '../view/LectureVideoView/LinkedInModal';
 import ContentsProviderType from 'personalcube/media/model/ContentsProviderType';
 import { useLocation } from 'react-router-dom';
 import { MediaType } from '../../../model/MediaType';
+import { checkStudent } from '../../service/useLectureMedia/utility/checkStudent';
 
 function LectureVideoContainer() {
-  // useLectureMedia();
-
-  const [, lectureMedia, checkStudent] = useLectureMedia();
+  const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
 
   useEffect(() => {

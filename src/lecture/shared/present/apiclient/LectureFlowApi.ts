@@ -14,9 +14,9 @@ class LectureFlowApi {
 
   baseUrl =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
-    process.env.REACT_APP_ENVIRONMENT === 'server' ||
-    process.env.REACT_APP_LECTURE_FLOW_API === undefined ||
-    process.env.REACT_APP_LECTURE_FLOW_API === ''
+      process.env.REACT_APP_ENVIRONMENT === 'server' ||
+      process.env.REACT_APP_LECTURE_FLOW_API === undefined ||
+      process.env.REACT_APP_LECTURE_FLOW_API === ''
       ? '/api/lecture/lectures/flow'
       : process.env.REACT_APP_LECTURE_FLOW_API;
 
@@ -53,20 +53,6 @@ class LectureFlowApi {
         lectureFilterRdo
       )
       .then(response => response && response.data);
-  }
-
-  /**
-   * 권장과정 갯수 조회 API
-   */
-  countRequiredLectures(lectureFilterRdoV2: LectureFilterRdoModelV2) {
-    return axiosApi
-      .post<number>(`${this.baseUrl}/required/count`, lectureFilterRdoV2)
-      .then(
-        (response: any) =>
-          response.data &&
-          response.data.searchOnCount &&
-          response.data.searchOnCount.valueOf()
-      ); //searchOnCount
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////

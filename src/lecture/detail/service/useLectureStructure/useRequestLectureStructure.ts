@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router';
-import {
-  setLectureStructure,
-  useLectureStructure,
-} from '../../store/LectureStructureStore';
-import { mergeActivated } from '../../utility/lectureStructureHelper';
+import { setLectureStructure } from '../../store/LectureStructureStore';
 import LectureParams from '../../viewModel/LectureParams';
 import { requestCardLectureStructure } from './utility/requestCardLectureStructure';
 

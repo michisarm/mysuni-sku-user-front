@@ -9,7 +9,6 @@ import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
 import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
-import MyLearningTableBody from '../view/table/MyLearningTableBody';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import { CollegeService } from '../../../college/stores';
@@ -18,6 +17,7 @@ import MyTrainingService from '../../present/logic/MyTrainingService';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyPageContentType } from '../model/MyPageContentType';
 import { Direction } from '../../model/Direction';
+import MyStampListView from '../view/MyStampListView';
 
 
 interface MyStampListContainerProps {
@@ -188,8 +188,8 @@ function MyStampListContainer({
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
-                  <MyLearningTableBody
-                    models={myTrainingTableViews}
+                  <MyStampListView
+                    myStamps={myTrainingTableViews}
                     totalCount={myTrainingTableCount}
                   />
                 </MyLearningTableTemplate>
