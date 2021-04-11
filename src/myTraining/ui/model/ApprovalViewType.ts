@@ -1,0 +1,1 @@
+export type ApprovalViewType = 'All' | 'Waiting' | 'Approval' | 'Reject';

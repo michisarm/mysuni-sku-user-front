@@ -17,6 +17,7 @@ import {
   getActiveCourseStructureItem,
   getActiveCubeStructureItem,
 } from '../../../utility/lectureStructureHelper';
+import { getLectureParams } from '../../../store/LectureParamsStore';
 
 interface Props {
   trigger: React.ReactNode;
@@ -50,14 +51,18 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
     onClose();
   }, []);
 
-  const surveyTitle = useMemo(
-    () =>
+  const surveyTitle = useMemo(() => {
+    const params = getLectureParams();
+    if (params === undefined) {
+      return '';
+    }
+    return (
       currentMenu?.name ||
-      getActiveCubeStructureItem()?.name ||
+      getActiveCubeStructureItem(params.pathname)?.name ||
       getActiveCourseStructureItem()?.name ||
-      '',
-    [currentMenu?.name, lectureStructure]
-  );
+      ''
+    );
+  }, [currentMenu?.name, lectureStructure]);
 
   const respondCount =
     (lectureSurveySummary &&

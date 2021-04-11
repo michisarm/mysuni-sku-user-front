@@ -1,4 +1,4 @@
-
+import moment from 'moment';
 
 export function timeToHourMinute(time: number) {
   //
@@ -56,6 +56,14 @@ export function getYearMonthDateHourMinuteSecond(date: Date) {
     minute: date.getMinutes(),
     second: date.getSeconds(),
   };
+}
+
+export function convertTimeToDate(time: number): string {
+  if (time && Number(time) !== 0) {
+    return moment(Number(time)).format('YYYY.MM.DD');
+  } else {
+    return '-';
+  }
 }
 
 export default {

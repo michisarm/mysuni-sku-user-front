@@ -9,6 +9,7 @@ import ChallengingBadge from './MainComponents/ChallengingBadge';
 import MainBanner from './MainComponents/MainBanner';
 import { InMyLectureService } from '../../../myTraining/stores';
 import LeraningContainer from './MainComponents/LeraningContainer';
+import EnrollingLearning from './MainComponents/EnrollingLearning';
 
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
@@ -56,6 +57,8 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       {cardBundles?.map((cardBundle, i) => (
         <LeraningContainer key={i} cardBundle={cardBundle} />
       ))}
+
+      <EnrollingLearning />
     </>
   );
 };

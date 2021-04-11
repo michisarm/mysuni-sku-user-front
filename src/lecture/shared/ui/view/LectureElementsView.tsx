@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {Button, Icon, Label} from 'semantic-ui-react';
 import { CategoryModel } from 'shared/model';
 import Image from '../../../../shared/components/Image';
+import { ContentType } from 'myTraining/ui/page/NewLearningPage';
 
 interface TitleProps {
   title: string | React.ReactNode,
@@ -85,6 +86,7 @@ export const Buttons = ({ children }: ButtonsProps) => (
 interface RibbonProps {
   required?: boolean,
   stampReady?: boolean,
+  contentType?: string,
 }
 
 export const Ribbon = ({ required, stampReady }: RibbonProps) => (
@@ -94,6 +96,20 @@ export const Ribbon = ({ required, stampReady }: RibbonProps) => (
   </div>
 );
 
+interface EnrollingRibbonProps {
+  model: any
+}
+
+export const EnrollingRibbon = ({ model }: EnrollingRibbonProps) => (
+  <div className="card-ribbon-wrap">
+        { model.studentCount >= model.capacity && (
+      <Label className="done">정원 마감</Label>
+    )}
+
+    { model.studentCount < model.capacity && model.differDays === 0 ? <Label className="day">D-DAY</Label>
+     : <Label className="day">D-{model.differDays}</Label> }
+  </div>
+);
 
 interface ThumbnailProps {
   image?: string,

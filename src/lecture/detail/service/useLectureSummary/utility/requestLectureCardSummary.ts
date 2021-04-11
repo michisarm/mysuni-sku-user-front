@@ -2,6 +2,7 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
 import { CardRelatedCount } from '../../../../model/CardRelatedCount';
+import { UserIdentity } from '../../../../model/UserIdentity';
 import { findCardCache } from '../../../api/cardApi';
 import InMyLectureCdo from '../../../model/InMyLectureCdo';
 import {
@@ -36,6 +37,7 @@ function parseInMyLectureCdo(card: Card): InMyLectureCdo {
 function parseLectureSummary(
   card: Card,
   cardContents: CardContents,
+  cardOperatorIdentity: UserIdentity,
   cardRelatedCount: CardRelatedCount
 ): LectureCardSummary {
   const {
@@ -47,7 +49,7 @@ function parseLectureSummary(
     name,
     stampCount,
   } = card;
-  const { cardOperator, communityId } = cardContents;
+  const { communityId } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
 
   return {
@@ -58,7 +60,11 @@ function parseLectureSummary(
       collegeId: mainCategory?.collegeId || '',
       channelId: mainCategory?.channelId || '',
     },
-    operator: cardOperator,
+    operator: {
+      email: cardOperatorIdentity.email,
+      name: cardOperatorIdentity.names?.langStringMap.ko || '',
+      companyName: cardOperatorIdentity.companyNames?.langStringMap.ko || '',
+    },
     stampCount,
     thumbImagePath,
     passedStudentCount,
@@ -77,6 +83,7 @@ export async function requestLectureCardSummary(cardId: string) {
   const {
     card,
     cardContents,
+    cardOperatorIdentity,
     cardRelatedCount,
   } = cardWithContentsAndRelatedCountRom;
   if (card === null) {
@@ -85,6 +92,7 @@ export async function requestLectureCardSummary(cardId: string) {
   const lectureCardSummary = parseLectureSummary(
     card,
     cardContents,
+    cardOperatorIdentity,
     cardRelatedCount
   );
   setLectureCardSummary(lectureCardSummary);

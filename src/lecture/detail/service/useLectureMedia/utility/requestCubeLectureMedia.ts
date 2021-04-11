@@ -1,21 +1,15 @@
 /* eslint-disable consistent-return */
 import { findTranscriptCount, findMedia } from '../../../api/mPersonalCubeApi';
-import PersonalCube from '../../../model/PersonalCube';
-import { getTranscriptItem } from './getTranscriptItemMapFromCube';
-import { setLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
 import { setLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { getMediaItem } from './getMediaItemMapFromCube';
-import LectureParams from '../../../viewModel/LectureParams';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setTranscriptCount } from 'lecture/detail/store/TranscriptCountStore';
+import CubeType from '../../../../model/CubeType';
 
-export async function getCubeLectureMedia(
-  params: LectureParams
+export async function requestCubeLectureMedia(
+  cubeId: string,
+  cubeType: CubeType
 ): Promise<void> {
-  const { cubeId, cubeType } = params;
-  if (cubeId === undefined || cubeType === undefined) {
-    return;
-  }
   const cubeDetail = await findCubeDetailCache(cubeId);
   if (cubeDetail !== undefined && cubeDetail.cubeMaterial.media !== null) {
     const {

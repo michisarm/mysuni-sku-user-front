@@ -5,6 +5,8 @@ enum OrderByType {
   New = 'NEW',
   Popular = 'POPULAR',
   collegeOrder = 'CollegeOrder',
+  Available = 'AVAILABLE',
+  Imminent = 'IMMINENT'
 }
 
 export default OrderByType;

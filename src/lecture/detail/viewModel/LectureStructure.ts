@@ -15,20 +15,15 @@ export type LectureStructureItemType =
   | 'SURVEY';
 
 export interface LectureStructureItem {
-  activated?: boolean;
   params: LectureParams;
   path: string;
   state?: State;
   can: boolean;
   order: number;
   type: LectureStructureItemType;
-  canSubmit?: boolean;
-}
-
-export interface StudentStateMap {
-  learningState: LearningState;
-  state: State;
-  studentId: string;
+  test?: LectureStructureTestItem;
+  survey?: LectureStructureSurveyItem;
+  report?: LectureStructureReportItem;
 }
 
 export interface ItemMap {
@@ -45,16 +40,19 @@ export interface LectureStructureChapterItem extends LectureStructureItem {
 export interface LectureStructureTestItem extends LectureStructureItem {
   id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureSurveyItem extends LectureStructureItem {
   id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureReportItem extends LectureStructureItem {
   id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureCubeItem extends LectureStructureItem {
@@ -73,7 +71,6 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
 
 export interface LectureStructureDurationableCubeItem
   extends LectureStructureCubeItem {
-  cubeContentsId: string;
   duration?: number;
 }
 

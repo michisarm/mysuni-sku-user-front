@@ -5,6 +5,12 @@ const [
   setLectureDiscussion,
   onLectureDiscussion,
   getLectureDiscussion,
+  useLectureDiscussion,
 ] = createStore<LectureDiscussion>();
 
-export { setLectureDiscussion, onLectureDiscussion, getLectureDiscussion };
+export {
+  setLectureDiscussion,
+  onLectureDiscussion,
+  getLectureDiscussion,
+  useLectureDiscussion,
+};

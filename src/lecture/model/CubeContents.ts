@@ -21,7 +21,7 @@ export interface CubeContents {
       round: number;
     }
   ];
-  operator: Member;
+  operator: { keyString: string };
   organizerId: string;
   otherOrganizerName: string;
   patronKey: {

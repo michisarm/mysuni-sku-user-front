@@ -18,6 +18,7 @@ import {
   SubField,
   Thumbnail,
   Title,
+  EnrollingRibbon,
 } from '../../../ui/view/LectureElementsView';
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
@@ -36,6 +37,7 @@ interface Props {
   onHoverOut?: () => void;
   onAction?: () => void;
   onViewDetail?: (e: any) => void;
+  contentType?: string;
 }
 
 interface States {
@@ -55,6 +57,7 @@ class BoxCardView extends Component<Props, States> {
     onHover: () => {},
     onAction: () => {},
     onViewDetail: () => {},
+    contentType: ""
   };
 
   renderBottom() {
@@ -101,6 +104,7 @@ class BoxCardView extends Component<Props, States> {
       onHoverOut,
       onAction,
       onViewDetail,
+      contentType
     } = this.props;
 
     const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(
@@ -117,7 +121,12 @@ class BoxCardView extends Component<Props, States> {
         onMouseLeave={onHoverOut}
       >
         {/* Todo: stampReady */}
-        <Ribbon required={model!.required} />
+        {contentType != 'Enrolling' ? (
+          <Ribbon required={model!.required}/>
+        ) : ( 
+          <EnrollingRibbon model={model}/> 
+        )}
+
 
         <div className="card-inner">
           <Thumbnail image={thumbnailImage} />

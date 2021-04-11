@@ -1,9 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
-import RemoteClassroom from '../model/RemoteClassroom';
-import CubeIntro from '../model/CubeIntro';
 import Media from '../../model/Media';
 import OfficeWeb from '../model/OfficeWeb';
-import PersonalCube from '../model/PersonalCube';
 import Transcript from '../model/Transcript';
 import Task from '../model/Task';
 import TaskChild from '../model/TaskChild';
@@ -11,9 +8,7 @@ import TaskDetail from '../model/TaskDetail';
 import CommentCountRdo from '../model/CommentCountRdo';
 import TaskDetailBody from '../model/TaskDetailBody';
 import { ClassroomModel } from '../../../personalcube/classroom/model';
-import TaskCdo from '../model/TaskCdo';
 import { AxiosResponse } from 'axios';
-import { createCacheApi } from './cacheableApi';
 import TranscriptCountModel from '../model/TranscriptCountModel';
 
 const BASE_URL = '/api/cube';
@@ -128,20 +123,6 @@ export function getTaskCreateId(lectureId: string): Promise<any> {
   const url = `${BASE_URL}/personalcubes/${lectureId}`;
   return axiosApi.get<any>(url).then(response => {
     return response && response.data;
-  });
-}
-
-export function createTaskPost(param: TaskCdo): Promise<any> {
-  const url = `${BASE_URL}/posts/flow`;
-  return axiosApi.post<any>(url, param).then(response => {
-    return response;
-  });
-}
-
-export function updateTaskPost(param: TaskCdo, postId: string): Promise<any> {
-  const url = `${BASE_URL}/posts/flow/${postId}`;
-  return axiosApi.put<any>(url, param).then(response => {
-    return response;
   });
 }
 

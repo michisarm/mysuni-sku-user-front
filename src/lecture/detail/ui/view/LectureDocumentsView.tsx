@@ -8,6 +8,8 @@ import LearningState from 'lecture/detail/model/LearningState';
 import LectureParams from '../../viewModel/LectureParams';
 import { useNextContent } from '../../service/useNextContent';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
+import { findCubeDetailCache } from '../../api/cubeApi';
+import { reactAlert } from '@nara.platform/accent';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 interface LectureDocumentsViewProps {
@@ -36,6 +38,35 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
   const headerWidth: any = useRef();
   const nameList: string[] = [''];
+
+  useEffect(() => {
+    if (params?.cubeId === undefined) {
+      return;
+    }
+    if (learningState !== 'Passed') {
+      findCubeDetailCache(params?.cubeId).then(c => {
+        if (c !== undefined) {
+          const { cube } = c;
+          if (
+            cube.hasTest ||
+            (cube.reportName !== null &&
+              cube.reportName !== undefined &&
+              cube.reportName !== '')
+          ) {
+            reactAlert({
+              title: '',
+              message: `Test / Report가 포함된 과정입니다. <p>응시 후 결과에 따라 이수 처리 여부가 결정되니<p> 반드시 응시하시기 바랍니다.`,
+            });
+          } else {
+            reactAlert({
+              title: '',
+              message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.`,
+            });
+          }
+        }
+      });
+    }
+  }, [params?.cardId, params?.cubeId]);
 
   // '/api/depot/depotFile/flow/download/' + filesArr[0].id
 
@@ -68,11 +99,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     nameList[i] = courseName[i].name;
   }
 
-  const updateHeaderWidth = () => {
+  const updateHeaderWidth = useCallback(() => {
     if (headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
       setPageWidth(headerWidth.current?.clientWidth!);
     }
-  };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -94,11 +125,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     }
   }, [fileBoxId]);
 
-  const onDocumentLoadSuccess = (pdf: any) => {
+  const onDocumentLoadSuccess = useCallback((pdf: any) => {
     setNumPages(pdf.numPages);
-  };
+  }, []);
 
-  const prev = () => {
+  const prev = useCallback(() => {
     const value = (100 / numPages) * pageNumber;
 
     if (pageNumber > 1) {
@@ -109,9 +140,9 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       }
       setPageNumber(pageNumber - 1);
     }
-  };
+  }, [numPages, pageNumber]);
 
-  const next = () => {
+  const next = useCallback(() => {
     const value = (100 / numPages) * pageNumber + 1;
 
     if (pageNumber < numPages) {
@@ -122,7 +153,7 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       }
       setPageNumber(pageNumber + 1);
     }
-  };
+  }, [numPages, pageNumber]);
 
   useEffect(() => {
     return () => {
@@ -131,7 +162,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   }, [fileBoxId, pdfUrl, params?.cubeId]);
 
   useEffect(() => {
-    // setTimeout(() => {
     setFile({
       url: pdfUrl[courseIdx],
       httpHeaders: {
@@ -139,14 +169,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
       },
     });
-    // }, 500);
   }, [pdfUrl, courseIdx, params?.cubeId]);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
     setOpenToggle(!openToggle);
-    // setFileCheck(courseName[idx]);
-    // setFileDiv(nameList[courseIdx]);
   };
 
   const downloadFile = () => {
