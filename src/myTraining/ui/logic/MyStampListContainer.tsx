@@ -13,23 +13,21 @@ import { MyPageContentType } from '../model/MyPageContentType';
 import { Direction } from '../../model/Direction';
 import MyStampListView from '../view/MyStampListView';
 import MyStampService from '../../present/logic/MyStampService';
-import MyStampFilterBoxContainer from './MyStampFilterBoxContainer';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
+import FilterBoxContainer from './FilterBoxContainer';
 
 
 interface MyStampListContainerProps {
   myStampService?: MyStampService;
-  filterCountService?: FilterCountService;
   filterBoxService?: FilterBoxService;
 }
 
 
 function MyStampListContainer({
   myStampService,
-  filterCountService,
   filterBoxService,
 }: MyStampListContainerProps) {
   const history = useHistory();
@@ -43,18 +41,25 @@ function MyStampListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   const { myStamps, myStampCount } = myStampService!;
-  const { filterCount } = filterBoxService!;
+  const { conditions, showResult, filterCount } = filterBoxService!;
 
+  useRequestFilterCountView();
 
   useEffect(() => {
     fetchStamps();
-    filterCountService!.findAllFilterCountViews(contentType);
 
     return () => {
       myStampService!.clearAllMyStamps();
-      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
+
+  useEffect(() => {
+    if(showResult) {
+      myStampService!.setFilterRdoByConditions(conditions);
+      fetchStampsByConditions();
+    }
+
+  }, [showResult]);
 
   const fetchStamps = async () => {
     myStampService!.initFilterRdo();
@@ -74,26 +79,15 @@ function MyStampListContainer({
     setIsLoading(false);
   }
 
-  const getStampsByConditions = (count: number) => {
-    if (count > 0) {
-      fetchStampsByConditions();
-    } else {
-      fetchStamps();
-    }
-  };
-
   const getNextPageNo = (): number => {
     const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+    const nextPageNo = parseInt(currentPageNo) + 1;
+    return nextPageNo;
   };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
-          myStampService!.sortMyStamps(column, direction);
-      }, []);
+    myStampService!.sortMyStamps(column, direction);
+  }, []);
 
   const onClickSeeMore = useCallback(async () => {
     setTimeout(() => {
@@ -148,9 +142,7 @@ function MyStampListContainer({
             resultEmpty={resultEmpty}
             totalCount={myStampCount}
           />
-          <MyStampFilterBoxContainer
-            getModels={getStampsByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -219,7 +211,6 @@ function MyStampListContainer({
 export default inject(
   mobxHelper.injectFrom(
     'myTraining.myStampService',
-    'myTraining.filterCountService',
     'shared.filterBoxService',
   )
 )(observer(MyStampListContainer));

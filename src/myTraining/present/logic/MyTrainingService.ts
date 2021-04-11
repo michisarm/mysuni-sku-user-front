@@ -391,18 +391,14 @@ class MyTrainingService {
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
-  changeFilterRdoWithConditions(conditions: FilterCondition) {
+  setFilterRdoByConditions(conditions: FilterCondition) {
     /* 조건이 변경되면 offset 을 초기화 해, 새롭게 조회함. */
-    this._myTrainingFilterRdo.changeConditions(conditions);
+    this._myTrainingFilterRdo.setByConditions(conditions);
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
   changeFilterRdoWithOffset(offset: Offset) {
-    this._myTrainingFilterRdo.changeOffset(offset);
-  }
-
-  getFilterCount() {
-    return this._myTrainingFilterRdo.getFilterCount();
+    this._myTrainingFilterRdo.setOffset(offset);
   }
 
   @action
@@ -486,7 +482,7 @@ class MyTrainingService {
       return (this._myTrainingTableViews = [...addedTableViews]);
     }
 
-    this._myTrainingFilterRdo.changeOffset(offset);
+    this._myTrainingFilterRdo.setOffset(offset);
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -527,7 +523,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithServiceType(serviceType: string) {
-    this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
+    this._myTrainingFilterRdo.setOffset({ offset: 0, limit: 20 });
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -578,7 +574,7 @@ class MyTrainingService {
     );
 
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
-    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
+    filterRdoForExcel.setOffset({ offset: 0, limit: 9999 });
     filterRdoForExcel.changeColumnDirection(this.column, this.direction);
 
     const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] = await this.myTrainingApi.findAllTableViewsForExcel(

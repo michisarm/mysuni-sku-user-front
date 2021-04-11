@@ -72,7 +72,7 @@ class LectureFilterRdoModelV2 {
     this.contentType = contentType;
   }
 
-  changeConditions(conditions: FilterCondition) {
+  setByConditions(conditions: FilterCondition) {
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -84,26 +84,12 @@ class LectureFilterRdoModelV2 {
     this.applying = conditions.applying === 'true' ? true : false;
   }
 
-  changeOffset(offset: Offset) {
+  setOffset(offset: Offset) {
     this.offset = offset;
   }
 
   setDefaultOffset() {
     this.offset = { offset: 0, limit: 20 };
-  }
-
-
-  getFilterCount() {
-    const requiredCount = this.required && 1 || 0;
-    const learningScheduleCount = this.startDate && this.endDate && 1 || 0;
-    const applyingCount = this.applying && 1 || 0;
-
-    return this.collegeIds.length +
-      this.difficultyLevels.length +
-      this.learningTimes.length +
-      this.organizers.length +
-      this.certifications.length +
-      requiredCount + learningScheduleCount + applyingCount;
   }
 
   toCardRdo(): CardRdo {

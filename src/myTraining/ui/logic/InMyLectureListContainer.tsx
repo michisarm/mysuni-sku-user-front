@@ -17,18 +17,16 @@ import InMyLectureListView from '../view/InMyLectureListVIew';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 
 interface InMyLectureListContainerProps {
   inMyLectureService?: InMyLectureService;
-  filterCountService?: FilterCountService;
   filterBoxService?: FilterBoxService;
 }
 
 function InMyLectureListContainer({
   inMyLectureService,
-  filterCountService,
   filterBoxService,
 }: InMyLectureListContainerProps) {
   const history = useHistory();
@@ -42,22 +40,28 @@ function InMyLectureListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
-  const { filterCount } = filterBoxService!;
+  const { conditions, filterCount, showResult } = filterBoxService!;
+
+  useRequestFilterCountView();
 
   useEffect(() => {
     fetchInMyLectures();
-    filterCountService!.findAllFilterCountViews(contentType);
 
     return () => {
       inMyLectureService!.clearAllTableViews();
-      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
 
-  const fetchInMyLectures = async() => {
-    inMyLectureService!.initFilterRdo();
+  useEffect(() => {
+    if(showResult) {
+      inMyLectureService!.setFilterRdoByConditions(conditions);
+      fetchInMyLecturesByConditions();
+    }
+  }, [showResult]);
 
+  const fetchInMyLectures = async() => {
     setIsLoading(true);
+    inMyLectureService!.initFilterRdo();
     const isEmpty = await inMyLectureService!.findAllTableViews();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
@@ -72,21 +76,10 @@ function InMyLectureListContainer({
     setIsLoading(false);
   }
 
-  const getInMyLecturesByConditions = (count: number) => {
-    if (count > 0) {
-      fetchInMyLecturesByConditions();
-    } else {
-      fetchInMyLectures();
-    }
-  };
-
   const getNextPageNo = (): number => {
     const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+    const nextPageNo = parseInt(currentPageNo) + 1;
+    return nextPageNo;
   };
 
   const checkShowSeeMore = (): void => {
@@ -146,9 +139,7 @@ function InMyLectureListContainer({
             resultEmpty={resultEmpty}
             totalCount={inMyLectureTableCount}
           />
-          <FilterBoxContainer
-            getModels={getInMyLecturesByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -217,7 +208,6 @@ function InMyLectureListContainer({
 export default inject(
   mobxHelper.injectFrom(
     'myTraining.inMyLectureService',
-    'myTraining.filterCountService',
     'shared.filterBoxService',
   )
 )(observer(InMyLectureListContainer));

@@ -16,18 +16,16 @@ import RequiredCardListView from '../view/RequiredCardListView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
-  filterCountService?: FilterCountService;
   filterBoxService?: FilterBoxService;
 }
 
 function RequiredCardListContainer({
   lectureService,
-  filterCountService,
   filterBoxService,
 }: RequiredCardListContainerProps) {
   const history = useHistory();
@@ -41,18 +39,24 @@ function RequiredCardListContainer({
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
   const { lectureTableViews, lectureTableCount } = lectureService!;
-  const { filterCount } = filterBoxService!;
-  
+  const { conditions, showResult, filterCount } = filterBoxService!;
 
+  useRequestFilterCountView();
+  
   useEffect(() => {
     fetchRequiredCards();
-    filterCountService!.findAllFilterCountViews(MyLearningContentType.Required);
 
     return () => {
       lectureService!.clearAllTableViews();
-      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
+
+  useEffect(() => {
+    if(showResult) {
+      lectureService!.setFilterRdoByConditions(conditions);
+      fetchRequiredCardsByConditions();
+    }
+  }, [showResult]);
 
   const fetchRequiredCards = async () => {
     lectureService!.initFilterRdo();
@@ -72,23 +76,11 @@ function RequiredCardListContainer({
     setIsLoading(false);
   }
 
-  const getStampsByConditions = (count: number) => {
-    if (count > 0) {
-      fetchRequiredCardsByConditions();
-    } else {
-      fetchRequiredCards();
-    }
-  };
-
   const getNextPageNo = (): number => {
     const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+    const nextPageNo = parseInt(currentPageNo) + 1;
+    return nextPageNo;
   };
-
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     lectureService!.sortTableViews(column, direction);
@@ -147,9 +139,7 @@ function RequiredCardListContainer({
             resultEmpty={resultEmpty}
             totalCount={lectureTableCount}
           />
-          <FilterBoxContainer
-            getModels={getStampsByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -217,7 +207,6 @@ function RequiredCardListContainer({
 
 export default inject(mobxHelper.injectFrom(
   'lecture.lectureService',
-  'myTraining.filterCountService',
   'shared.filterBoxService',
 ))(observer(RequiredCardListContainer));
 

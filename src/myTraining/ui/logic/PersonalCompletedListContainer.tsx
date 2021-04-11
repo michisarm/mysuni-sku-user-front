@@ -56,11 +56,8 @@ function PersonalCompletedListContainer({
 
   const getNextPageNo = (): number => {
     const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+    const nextPageNo = parseInt(currentPageNo) + 1;
+    return nextPageNo;
   };
 
 

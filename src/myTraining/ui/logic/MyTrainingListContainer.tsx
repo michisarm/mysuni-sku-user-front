@@ -25,12 +25,11 @@ import MyTrainingListView from '../view/MyTrainingListView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
-  filterCountService?: FilterCountService;
   studentService?: StudentService;
   filterBoxService?: FilterBoxService;
 }
@@ -38,7 +37,6 @@ interface MyTrainingListContainerProps {
 function MyTrainingListContainer({
   skProfileService,
   myTrainingService,
-  filterCountService,
   studentService,
   filterBoxService,
 }: MyTrainingListContainerProps) {
@@ -57,16 +55,16 @@ function MyTrainingListContainer({
   const learningOffset: any = sessionStorage.getItem('learningOffset');
 
   const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
-  const { filterCount } = filterBoxService!;
+  const { conditions, showResult, filterCount } = filterBoxService!;
+
+  useRequestFilterCountView();
 
   useEffect(() => {
     refeshPageInfo();
     fetchMyTrainingsByContentType(contentType);
-    filterCountService!.findAllFilterCountViews(contentType);
 
     return () => {
       myTrainingService!.clearAllTableViews();
-      filterCountService!.clearAllFilterCountViews();
     }
   }, [contentType]);
 
@@ -77,6 +75,13 @@ function MyTrainingListContainer({
       getPageInfo();
     }
   }, [refresh]);
+
+  useEffect(() => {
+    if(showResult) {
+      myTrainingService!.setFilterRdoByConditions(conditions);
+      fetchMyTrainingsByCondition();
+    }
+  }, [showResult]);
 
   const refeshPageInfo = () => setRefesh(() => !refresh);
   
@@ -97,26 +102,21 @@ function MyTrainingListContainer({
     setIsLoading(false);
   };
 
-
-  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry'];
-
   const getPageInfo = async () => {
-    const matchesMenu = TableViewsMenu.includes(contentType);
-    if (learningOffset !== null && matchesMenu && refresh) {
+    if (learningOffset !== null && refresh) {
       setIsLoading(true);
-      // if (learningOffset !== null && matchesMenu && refresh) {
-      pageInfo.current = JSON.parse(learningOffset);
-      // await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
+      if (learningOffset !== null && refresh) {
+        pageInfo.current = JSON.parse(learningOffset);
+        await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
+      }
     }
   };
 
   const getPageNo = (): number => {
     const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+    const nextPageNo = parseInt(currentPageNo) + 1;
+    
+    return nextPageNo;
   };
 
   const checkShowSeeMore = (): void => {
@@ -137,14 +137,6 @@ function MyTrainingListContainer({
   const updateInProgressStorage = async () => {
     const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
-  };
-
-  const getMyTrainings = (count: number) => {
-    if (count > 0) {
-      fetchMyTrainingsByCondition();
-    } else {
-      fetchMyTrainingsByContentType(contentType);
-    }
   };
 
   const onClickDelete = useCallback(() => {
@@ -223,9 +215,7 @@ function MyTrainingListContainer({
             totalCount={myTrainingTableCount}
             onClickDelete={onClickDelete}
           />
-          <FilterBoxContainer
-            getModels={getMyTrainings}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -304,7 +294,6 @@ export default inject(
   mobxHelper.injectFrom(
     'profile.skProfileService',
     'myTraining.myTrainingService',
-    'myTraining.filterCountService',
     'lecture.studentService',
     'shared.filterBoxService',
   )

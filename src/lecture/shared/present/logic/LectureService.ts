@@ -556,13 +556,9 @@ class LectureService {
     this._lectureFilterRdoV2 = new LectureFilterRdoModelV2();
   }
 
-  changeFilterRdoWithConditions(conditions: FilterCondition) {
-    this._lectureFilterRdoV2.changeConditions(conditions);
+  setFilterRdoByConditions(conditions: FilterCondition) {
+    this._lectureFilterRdoV2.setByConditions(conditions);
     this._lectureFilterRdoV2.setDefaultOffset();
-  }
-
-  getFilterCount() {
-    return this._lectureFilterRdoV2.getFilterCount();
   }
 
   @action
@@ -646,7 +642,7 @@ class LectureService {
 
   @action
   async findAllRqdTableViewsWithPage(offset: Offset) {
-    this._lectureFilterRdoV2.changeOffset(offset);
+    this._lectureFilterRdoV2.setOffset(offset);
 
     const cardRdo = this._lectureFilterRdoV2.toCardRdo();
     const offsetRequiredCard = await findByRdo(cardRdo);
