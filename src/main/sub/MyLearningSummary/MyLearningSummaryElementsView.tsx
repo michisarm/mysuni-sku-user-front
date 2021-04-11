@@ -1,19 +1,21 @@
 
 import React, { FunctionComponent } from 'react';
+import { Table, Icon, Accordion, Progress } from 'semantic-ui-react';
+import PersonalBoardContainer from '../PersonalBoard/ui/logic/PersonalBoardContainer';
 
-import { Button, Icon, Segment } from 'semantic-ui-react';
-
-
+const PUBLIC_URL = `${process.env.PUBLIC_URL}`
 
 export const HeaderWrapperView: FunctionComponent = ({ children }) => (
-  <div className="my-learning-area">
-    <Segment className="full">
-      <div className="table-css type1">{/* .type1, .type2 //*/}
-        <div className="row">
-          {children}
-        </div>
-      </div>
-    </Segment>
+  <div className="main-personal-wrap">
+    <div className="main_personal">
+      {/* <table>
+        <tbody>
+          <tr> */}
+            {children}
+          {/* </tr>
+        </tbody>
+      </table> */}
+    </div>
   </div>
 );
 
@@ -23,66 +25,64 @@ interface ItemWrapperProps {
 }
 
 export const ItemWrapper: FunctionComponent<ItemWrapperProps> = ({ children, onClick }) => (
-  <div className="cell v-middle">
-    <div className="cell-inner" onClick={onClick}>
-      {children}
-    </div>
-  </div>
+  <Table.Cell onClick={onClick}>
+    {children}
+  </Table.Cell>
 );
-
-
-interface LearningTimeViewProps {
-  label: string;
-  icon: string
-  hour: number;
-  minute: number;
-}
-
-export const LearningTimeView: FunctionComponent<LearningTimeViewProps> = ({ label, icon, hour, minute }) => (
-  <SharedHeaderItemView
-    icon={icon}
-    label={label}
-  >
-    <span className="t1">{hour || '00'}</span><span className="t2">h</span>
-    <span className="t1">{minute || '00'}</span><span className="t2">m</span>
-  </SharedHeaderItemView>
-);
-
 
 interface HeaderItemViewProps {
   label: string
-  icon: string
-  count?: number
+  count?: number,
   onClick: () => void,
 }
 
-export const HeaderItemView: FunctionComponent<HeaderItemViewProps> = ({ label, icon, count, onClick }) => (
+export const HeaderItemView: FunctionComponent<HeaderItemViewProps> = ({ label, count, onClick }) => (
   <SharedHeaderItemView
     label={label}
-    icon={icon}
     onClick={onClick}
   >
-    <span className="t1">{count || 0}</span><span className="t3">개</span>
+    <span className="big">{count || 0}</span><span className="small">개</span>
   </SharedHeaderItemView>
 );
 
 interface SharedHeaderItemViewProps {
   label: string
-  icon: string
   onClick?: () => void,
 }
 
-export const SharedHeaderItemView: FunctionComponent<SharedHeaderItemViewProps> = ({ label, icon, children, onClick }) => (
-  <Button className="btn-complex48" onClick={onClick}>
-    <span className="i">
-      <Icon className={`${icon}48`} />
-      <span className="blind">{icon}</span>
-    </span>
-    <span className="t">
-      <span className="underline">{label}</span>
-      <span className="div">
-        {children}
-      </span>
-    </span>
-  </Button>
+export const SharedHeaderItemView: FunctionComponent<SharedHeaderItemViewProps> = ({ label, children, onClick }) => (
+  <>
+    <div className="title" style={label.indexOf('완료학습')>-1 ? {width: '100px'} : {}}>{label}</div>
+    <a onClick={onClick}>
+      {children}
+    </a>
+  </>
 );
+
+
+interface AdditionalToolsMyLearningProps {
+  children: React.ReactNode,
+  activeIndex: number,
+  companyCode: string,
+  onClickQnA: () => void,
+  handleClick: (e: any, data:any) => void
+}
+
+export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearningProps> = function ({ children, activeIndex, companyCode, onClickQnA, handleClick }) {
+  return (
+    <Accordion>
+      <Accordion.Title
+        active={activeIndex === 1}
+        index={1}
+        onClick={(e, data) => {
+          handleClick(e, data)
+        }}
+      >
+        <img src={activeIndex !== 1 ? `${PUBLIC_URL}/images/all/btn-pboard-open.png` : `${PUBLIC_URL}/images/all/btn-pboard-close.png`} />
+      </Accordion.Title>
+      <Accordion.Content active={activeIndex === 1}>
+        <PersonalBoardContainer companyCode={companyCode} activeIndex={activeIndex}/>
+      </Accordion.Content>
+    </Accordion>
+  );
+} 

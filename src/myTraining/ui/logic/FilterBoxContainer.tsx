@@ -49,8 +49,6 @@ function FilterBoxContainer({
   const { openFilter, setOpenFilter, setFilterCount } = filterBoxService!;
   const { filterCountViews, totalFilterCountView } = filterCountService!;
 
-  console.log('filterCountViews :: ' ,filterCountViews);
-
   const onClickFilter = () => {
     setOpenFilter(!openFilter);
   }
