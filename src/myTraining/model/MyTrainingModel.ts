@@ -54,6 +54,10 @@ class MyTrainingModel extends DramaEntityObservableModel {
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
+  capacity: number = 0;
+  differDays: number = 0;
+  ribbonName: string = '';
+
   constructor(myTraining?: MyTrainingModel) {
     //
     super();
@@ -61,7 +65,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
     if (myTraining) {
       Object.assign(this, myTraining);
       this.originalSerivceType = myTraining.serviceType;
-      this.serviceType = MyTrainingModel.getServiceType(myTraining);
+      // this.serviceType = MyTrainingModel.getServiceType(myTraining);
 
       this.category = new CategoryModel(myTraining.category);
 
@@ -104,12 +108,6 @@ class MyTrainingModel extends DramaEntityObservableModel {
   }
 
   static getServiceType(myTraining: MyTrainingModel) {
-    /* 
-      서버로부터 전달받는 데이터는 'PROGRAM', 'COURSE', 'CARD'
-      한번 변환 과정을 거친 데이터는 'Program', 'Course', 'Card'
-      세션 스토리지의 json 데이터는 Program, Course, Card 로 저장되며,
-      세션 스토리지의 json 을 파싱하기 위한 조건도 필요함. 2020.11.21 김동구
-    */
     const serviceType = myTraining.serviceType as string;
 
     if (serviceType.toUpperCase() === 'CARD') {
@@ -227,6 +225,9 @@ decorate(MyTrainingModel, {
   baseUrl: observable,
   endDate: observable,
   retryDate: observable,
+  capacity: observable,
+  differDays: observable,
+  ribbonName: observable,
 });
 
 export default MyTrainingModel;

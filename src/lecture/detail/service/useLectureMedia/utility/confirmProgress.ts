@@ -2,6 +2,7 @@
 import { setLectureConfirmProgress } from '../../../store/LectureConfirmProgressStore';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { confirmProgressByStudentId, findByCubeId } from '../../../api/cardApi';
+import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
 
 export async function confirmProgress(): Promise<void> {
   const params = getLectureParams();
@@ -12,5 +13,6 @@ export async function confirmProgress(): Promise<void> {
     }
 
     setLectureConfirmProgress(await confirmProgressByStudentId(student.id));
+    requestCardLectureStructure(params.cardId);
   }
 }

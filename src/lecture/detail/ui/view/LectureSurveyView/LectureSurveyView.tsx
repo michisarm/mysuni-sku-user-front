@@ -18,7 +18,10 @@ import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import { SurveyCaseService } from 'survey/stores';
 import { SkProfileService } from 'profile/stores';
 import { CommunityCommentList } from '@nara.drama/feedback';
-import { useLectureParams } from '../../../store/LectureParamsStore';
+import {
+  getLectureParams,
+  useLectureParams,
+} from '../../../store/LectureParamsStore';
 import { useLocation } from 'react-router';
 import {
   getActiveCourseStructureItem,
@@ -39,7 +42,6 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   lectureStructure,
 }) {
   const params = useLectureParams();
-  const { pathname } = useLocation();
   const surveyCaseId = lectureSurveyState?.surveyCaseId;
   const [commentId, setCommentID] = useState('');
 
@@ -47,14 +49,14 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     if (params === undefined) {
       return;
     }
-    saveLectureSurveyState(params, pathname);
+    saveLectureSurveyState(params);
   }, [params]);
 
   const requestSubmitLectureSurveyState = useCallback(() => {
     if (params === undefined) {
       return;
     }
-    submitLectureSurveyState(params, pathname);
+    submitLectureSurveyState(params);
   }, [params]);
 
   useEffect(() => {
@@ -76,8 +78,12 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
     if (currentMenu?.name !== undefined) {
       setSurveyTitle(currentMenu?.name);
     } else {
+      const params = getLectureParams();
+      if (params === undefined) {
+        return;
+      }
       const name =
-        getActiveCubeStructureItem()?.name ||
+        getActiveCubeStructureItem(params.pathname)?.name ||
         getActiveCourseStructureItem()?.name ||
         '';
       setSurveyTitle(`${name}과정 Survey`);

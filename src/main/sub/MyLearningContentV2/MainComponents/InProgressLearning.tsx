@@ -21,6 +21,7 @@ import {
 } from 'myTraining/model';
 import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
+import { toPath } from '../../../../lecture/detail/viewModel/LectureParams';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
 
@@ -129,7 +130,6 @@ const InProgressLearning: React.FC<Props> = Props => {
   const onViewDetail = (e: any, data: any) => {
     //
     const { model } = data;
-
     // react-ga event
     ReactGA.event({
       category: '메인_학습중',
@@ -140,17 +140,23 @@ const InProgressLearning: React.FC<Props> = Props => {
       label: `${model.name}`,
     });
 
-    const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+    const url = toPath({
+      cardId: model.serviceId,
+      viewType: 'view',
+      pathname: '',
+    });
+    history.push(url);
+    // const cineroom =
+    //   patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+    //   patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutes.courseOverview(model.cardId));
-    } else if (model.serviceType === LectureServiceType.Cube) {
-      history.push(
-        lectureRoutes.lectureCardOverview(model.cardId, model.cubeId)
-      );
-    }
+    // if (model.serviceType === LectureServiceType.Card) {
+    //   history.push(lectureRoutes.courseOverview(model.cardId));
+    // } else if (model.serviceType === LectureServiceType.Cube) {
+    //   history.push(
+    //     lectureRoutes.lectureCardOverview(model.cardId, model.cubeId)
+    //   );
+    // }
   };
 
   const onActionLecture = (

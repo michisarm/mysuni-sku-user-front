@@ -1,6 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
@@ -25,12 +24,6 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
   path,
   can,
 }) {
-  console.log(path);
-  console.log(state);
-
-  // if(state !== 'Progress') {
-
-  // }
   return (
     <StructureLink
       can={can}
@@ -47,10 +40,6 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
       </span>
       <span className="copy-holder">
         <span className="copy-title">Survey</span>
-        {/* <ul className="type-info">
-          <li>Survey</li>
-          <li>{`${questionCount}문항`}</li>
-        </ul> */}
       </span>
     </StructureLink>
   );

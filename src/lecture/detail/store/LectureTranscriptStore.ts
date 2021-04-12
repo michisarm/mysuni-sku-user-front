@@ -5,6 +5,12 @@ const [
   setLectureTranscripts,
   onLectureTranscripts,
   getLectureTranscripts,
+  useLectureTranscripts,
 ] = createStore<LectureTranscript[]>();
 
-export { setLectureTranscripts, onLectureTranscripts, getLectureTranscripts };
+export {
+  setLectureTranscripts,
+  onLectureTranscripts,
+  getLectureTranscripts,
+  useLectureTranscripts,
+};

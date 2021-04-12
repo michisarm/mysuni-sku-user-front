@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import CourseView from './CourseView';
 
@@ -9,6 +10,7 @@ interface CourseLectureStructureViewProps {
 const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = function CourseLectureStructureView({
   lectureStructure,
 }) {
+  const { pathname } = useLocation();
   return (
     <>
       {lectureStructure.card !== undefined && (
@@ -16,7 +18,7 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           key={lectureStructure.card.cardId}
           name={lectureStructure.card.name}
           state={lectureStructure.card.state}
-          activated={lectureStructure.card.activated}
+          activated={lectureStructure.card.path === pathname}
           cubes={lectureStructure.cubes}
           items={lectureStructure.items}
           path={lectureStructure.card.path}

@@ -31,6 +31,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskDetailCube';
 import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
+import { getLectureParams } from '../../store/LectureParamsStore';
 
 function LectureTaskContainer() {
   const { pathname, hash } = useLocation();
@@ -66,6 +67,7 @@ function LectureTaskContainer() {
   const [lectureTags] = useLectureTags();
   const [viewType] = useLectureTaskViewType();
   const [detailTaskId, setDetailTaskId] = useState<string>('');
+  const [postBodyId, setPostBodyId] = useState<string>('');
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
@@ -155,59 +157,57 @@ function LectureTaskContainer() {
     []
   );
 
-  const handleSubmitClick = useCallback((viewType, detailTaskId?) => {
-    reactConfirm({
-      title: '알림',
-      message: '저장하시겠습니까?',
-      onOk: () => {
-        if (viewType === 'create') {
-          const test = createLectureTask().then(() => {
-            setLectureTaskCreateItem({
-              id: detailTaskId!,
-              fileBoxId: '',
-              title: '',
-              writer: {
-                employeeId: '',
-                email: '',
+  const handleSubmitClick = useCallback(
+    (viewType, detailTaskId?, postBodyId?) => {
+      reactConfirm({
+        title: '알림',
+        message: '저장하시겠습니까?',
+        onOk: () => {
+          if (viewType === 'create') {
+            const test = createLectureTask().then(() => {
+              setLectureTaskCreateItem({
+                id: detailTaskId!,
+                fileBoxId: '',
+                title: '',
+                writer: {
+                  employeeId: '',
+                  email: '',
+                  name: '',
+                  companyCode: '',
+                  companyName: '',
+                },
                 name: '',
-                companyCode: '',
-                companyName: '',
-              },
-              name: '',
-              contents: '',
-              time: 0,
-              readCount: 0,
-              commentFeedbackId: '',
-              notice: false,
+                contents: '',
+                time: 0,
+                readCount: 0,
+                commentFeedbackId: '',
+                notice: false,
+              });
+              history.goBack();
             });
-            history.goBack();
-          });
-        } else {
-          updateLectureTask(detailTaskId);
-          history.goBack();
-        }
-      },
-    });
-  }, []);
+          } else {
+            updateLectureTask(detailTaskId, postBodyId).then(() => {
+              history.goBack();
+            });
+          }
+        },
+      });
+    },
+    []
+  );
 
   useEffect(() => {
-    async function getContentId() {
-      // if (params === undefined) {
-      //   return;
-      // }
-      // const contentData = await getCubeLectureTaskLearningCardId(
-      //   params.contentId
-      // );
-
-      const structureItem = getActiveStructureItem();
-      if (structureItem !== undefined) {
-        const { cubeId } = structureItem as LectureStructureCubeItem;
-        if (cubeId !== undefined) {
-          setBoardId(cubeId);
-        }
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    const structureItem = getActiveStructureItem(params.pathname);
+    if (structureItem !== undefined) {
+      const { cubeId } = structureItem as LectureStructureCubeItem;
+      if (cubeId !== undefined) {
+        setBoardId(cubeId);
       }
     }
-    getContentId();
   }, [create]);
 
   async function deletePost(id: string, type: string) {

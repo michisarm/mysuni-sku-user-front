@@ -1,4 +1,4 @@
-import { MyContentType } from '../logic/MyLearningListContainerV2';
+import { MyContentType } from './MyContentType';
 
 
 const NoSuchContentPanelMessages = {

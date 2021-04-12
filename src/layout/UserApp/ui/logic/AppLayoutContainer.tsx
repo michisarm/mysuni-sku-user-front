@@ -39,13 +39,13 @@ class AppLayoutContainer extends Component<Props> {
     const data = await SkProfileApi.instance.findSkProfile();
     const obj = JSON.parse(JSON.stringify(data));
 
-    if (!obj.pisAgreement.signed) {
+    if (obj != null && !obj.pisAgreement.signed) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    } else if (obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
+    } else if (obj != null && obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
-    } else if (!obj.studySummaryConfigured) {
+    } else if (obj != null && !obj.studySummaryConfigured) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
       // skprofile.member_json.currentJobGroup

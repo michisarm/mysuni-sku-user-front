@@ -22,6 +22,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   const params: LectureParams = {
     cardId: prerequisiteCardId,
     viewType: 'view',
+    pathname: '',
   };
   const to = toPath(params);
   return (
@@ -67,12 +68,12 @@ const LecturePrecourseView: React.FC<LecturePrecourseViewProps> = function Lectu
       </div>
       <div className="course-cont pre-course">
         {lecturePrecourse.prerequisiteCards.map(
-          ({ prerequisiteCardId, required, name }) => (
+          ({ prerequisiteCardId, required, prerequisiteCardName }) => (
             <CourseView
               key={prerequisiteCardId}
               prerequisiteCardId={prerequisiteCardId}
               required={required}
-              name={name}
+              name={prerequisiteCardName}
             />
           )
         )}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Route, Switch, useLocation, useParams } from 'react-router-dom';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
@@ -24,10 +24,11 @@ export default function LectureDetailCubeRoutes() {
   useCubeBreadcrumb();
 
   const params = useParams<LectureParams>();
+  const { pathname } = useLocation();
   const { cardId, cubeId, viewType } = params;
   useEffect(() => {
-    setLectureParams(params);
-  }, [params]);
+    setLectureParams({ ...params, pathname });
+  }, [params, pathname]);
 
   useEffect(() => {
     return () => {

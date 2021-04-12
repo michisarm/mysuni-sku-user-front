@@ -13,6 +13,7 @@ const initialStore: LectureStructure = {
     params: {
       cardId: '',
       viewType: 'view',
+      pathname: '',
     },
     path: '',
     can: false,

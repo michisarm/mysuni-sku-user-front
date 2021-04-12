@@ -2,8 +2,9 @@ import React, { Fragment, memo } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import { CollegeModel } from 'college/model';
-import { FilterCondition, FilterConditionName } from './MultiFilterBox';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
+import { FilterCondition } from '../../../model/FilterCondition';
+import { FilterConditionName } from '../../../model/FilterConditionName';
 
 interface Props {
   colleges: CollegeModel[];
@@ -37,38 +38,9 @@ function CheckedFilterView(props: Props) {
         ))
       );
     }
-
-    if (conditions.serviceType) {
-      buttons.push(
-        <Button
-          className="del"
-          onClick={() =>
-            onClearOne(FilterConditionName.LearningType, conditions.serviceType)
-          }
-        >
-          {conditions.serviceType}
-        </Button>
-      );
-    }
-
-    if (conditions.learningTypes && conditions.learningTypes.length) {
-      buttons.push(
-        conditions.learningTypes.map((learningType, index) => (
-          <Fragment key={`checked-learningType-${index}`}>
-            <Button
-              className="del"
-              onClick={() =>
-                onClearOne(FilterConditionName.LearningType, learningType)
-              }
-            >
-              {learningType}
-            </Button>
-          </Fragment>
-        ))
-      );
-    }
-
-    if (conditions.learningTimes && conditions.learningTimes.length) {
+    
+    if (conditions.learningTimes &&
+      conditions.learningTimes.length) {
       buttons.push(
         conditions.learningTimes.map((learningTime, index) => (
           <Fragment key={`checked-learningTime-${index}`}>
@@ -225,9 +197,7 @@ const getCollegeNames = (
 ): string[] => {
   /* collegeId 에 해당하는 college 를 찾아 collegeName 을 구함. */
   return collegeIds.map(collegeId => {
-    const college = colleges.filter(
-      college => college.collegeId === collegeId
-    )[0];
+    const college = colleges.filter(college => college.id === collegeId)[0];
     return college.name;
   });
 };

@@ -1,25 +1,26 @@
+import { CardCategory } from '../../../../shared/model/CardCategory';
+
 export interface MyCompanyPopularCourseItem {
-  category: CourseItemCategory,
-  companyCode: string,
-  count: number,
-  coursePlanId: string,
-  date: string,
-  id: string,
-  lectureName: string,
-  lectureUsid: string
+  id: string;
+  date: string;
+  companyCode: string;
+  cardId: string;
+  cardName: string;
+  count: number;
+  cardCategory: CardCategory;
 }
 
 export interface CourseItemCategory {
-  channel: CourseItemCategoryChannel,
-  college: CourseItemCategoryCollege
+  channel: CourseItemCategoryChannel;
+  college: CourseItemCategoryCollege;
 }
 
 export interface CourseItemCategoryChannel {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 export interface CourseItemCategoryCollege {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }

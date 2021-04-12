@@ -1,1 +1,1 @@
-export type ExtraTaskStatus = 'SUBMIT' | 'PASS' | 'FAIL';
+export type ExtraTaskStatus = 'SAVE' | 'SUBMIT' | 'PASS' | 'FAIL';

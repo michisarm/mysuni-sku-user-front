@@ -1,4 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
+import { saveTask, submitTask } from '../../../api/cardApi';
 import {
   openAnswerSheet,
   saveAnswerSheet,
@@ -10,7 +11,9 @@ import {
   getLectureSurveyState,
   setLectureSurveyState,
 } from '../../../store/LectureSurveyStore';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import LectureParams from '../../../viewModel/LectureParams';
+import { LectureStructureSurveyItem } from '../../../viewModel/LectureStructure';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
 import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
@@ -267,11 +270,15 @@ export async function finishLectureSurveyState() {
   setLectureSurveyState({ ...lectureSurveyState, state: 'Completed' });
 }
 
-export async function saveLectureSurveyState(
-  lectureParams: LectureParams,
-  pathname: string
-) {
+export async function saveLectureSurveyState(lectureParams: LectureParams) {
   const lectureSurveyState = getLectureSurveyState();
+  const lectureStructureItem = getActiveStructureItem(
+    lectureParams.pathname
+  ) as LectureStructureSurveyItem;
+  const { student } = lectureStructureItem;
+  if (student === undefined || student === null) {
+    return;
+  }
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -282,6 +289,7 @@ export async function saveLectureSurveyState(
     await openLectureSurveyState();
   }
   await coreSaveLectureSurveyState();
+  await saveTask(student.id, 'Survey');
   requestCardLectureStructure(lectureParams.cardId);
 
   reactAlert({
@@ -290,11 +298,15 @@ export async function saveLectureSurveyState(
   });
 }
 
-export async function submitLectureSurveyState(
-  lectureParams: LectureParams,
-  pathname: string
-) {
+export async function submitLectureSurveyState(lectureParams: LectureParams) {
   const lectureSurveyState = getLectureSurveyState();
+  const lectureStructureItem = getActiveStructureItem(
+    lectureParams.pathname
+  ) as LectureStructureSurveyItem;
+  const { student } = lectureStructureItem;
+  if (student === undefined || student === null) {
+    return;
+  }
   if (lectureSurveyState === undefined) {
     return;
   }
@@ -305,6 +317,7 @@ export async function submitLectureSurveyState(
     await openLectureSurveyState();
   }
   await coreSubmitLectureSurveyState();
+  await submitTask(student.id, 'Survey');
   requestCardLectureStructure(lectureParams.cardId);
 }
 

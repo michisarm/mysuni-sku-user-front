@@ -1,3 +1,4 @@
+import InstructorApi from '../../../../../expert/present/apiclient/InstructorApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureClassroom } from '../../../store/LectureClassroomStore';
 import LectureParams from '../../../viewModel/LectureParams';
@@ -14,7 +15,22 @@ export async function getClassroomFromCube(params: LectureParams) {
   const {
     cubeContents: { instructors },
     cubeMaterial: { classrooms },
+    operators,
   } = cubeDetail;
+
+  const instructorApi = new InstructorApi();
+  const proimseArray = instructors.map(c => {
+    return instructorApi
+      .findInstructor(c.instructorId)
+      .then(r => {
+        if (r !== undefined) {
+          c.name = r.memberSummary.name;
+        }
+      })
+      .catch(() => {});
+  });
+  await Promise.all(proimseArray);
+
   if (classrooms !== null && (classrooms as unknown) !== '') {
     setLectureClassroom({
       classrooms: classrooms.map(remote => {
@@ -28,7 +44,11 @@ export async function getClassroomFromCube(params: LectureParams) {
             enrollingAvailable,
             cancellationPenalty,
           },
-          operation: { location, siteUrl, operator },
+          operation: {
+            location,
+            siteUrl,
+            operator: { keyString },
+          },
           capacity,
           freeOfCharge,
           capacityClosed,
@@ -45,8 +65,7 @@ export async function getClassroomFromCube(params: LectureParams) {
           cancellableEndDate: cancellablePeriod.endDate,
           location,
           siteUrl,
-          instructor:
-            instructors.find(c => c.round === round)?.instructorId || '',
+          instructor: instructors.find(c => c.round === round)?.name || '',
           capacity,
           freeOfCharge: {
             approvalProcess: freeOfCharge.approvalProcess,
@@ -58,7 +77,7 @@ export async function getClassroomFromCube(params: LectureParams) {
           studentCount: waitingCapacity,
           cancellationPenalty,
           remote,
-          operator,
+          operator: operators.find(c => c.id === keyString),
         };
       }),
       remote: classrooms,

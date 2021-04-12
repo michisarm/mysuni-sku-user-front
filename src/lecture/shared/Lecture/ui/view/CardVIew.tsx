@@ -1,20 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import {
-  Button,
-  Card,
-  Icon,
-  Rating,
-  Label,
-  ButtonProps,
-} from 'semantic-ui-react';
+import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import {
   Field,
   Fields,
-  Ribbon,
   SubField,
   Thumbnail,
-  Title,
 } from '../../../ui/view/LectureElementsView';
 import numeral from 'numeral';
 import { observer, inject } from 'mobx-react';
@@ -45,6 +36,7 @@ interface Props {
   starCount: number;
   description: string;
   inMyLectureService?: InMyLectureService;
+  contentType?: string;
 }
 
 function CardView({
@@ -59,20 +51,13 @@ function CardView({
   thumbImagePath,
   passedStudentCount,
   inMyLectureService,
+  contentType,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
-  const [isInMyLecture, setIsInMyLecture] = useState(false);
-
-  const iconName = useMemo(() => {
-    if (inMyLectureModel === undefined) {
-      return 'add-list';
-    }
-    return 'remove2';
-  }, [inMyLectureModel]);
 
   useEffect(() => {
     return autorun(() => {
@@ -99,7 +84,36 @@ function CardView({
     setHovered(false);
   }, []);
 
-  const action = useCallback(() => {}, [inMyLectureModel]);
+  const handleAlert = (inMyLectureModel?: InMyLectureModel) => {
+    reactAlert({
+      title: '알림',
+      message: inMyLectureModel
+        ? '본 과정이 관심목록에서 제외되었습니다.'
+        : '본 과정이 관심목록에 추가되었습니다.',
+    });
+  };
+
+  const handleInMyLecture = () => {
+    if (inMyLectureModel) {
+      inMyLectureService!.removeInMyLectureCard(cardId, cardId);
+    } else {
+      inMyLectureService!.addInMyLectureCard({
+        cardId,
+        serviceId: cardId,
+        serviceType: 'Card',
+        category: {
+          channelId: mainCategory.channelId,
+          collegeId: mainCategory.collegeId,
+          mainCategory: mainCategory.mainCategory,
+        },
+        name,
+        learningTime,
+        stampCount,
+      });
+    }
+
+    handleAlert(inMyLectureModel);
+  };
 
   const renderBottom = () => {
     const progressList = sessionStorage.getItem('inProgressTableViews');
@@ -155,51 +169,6 @@ function CardView({
     );
   };
 
-  useEffect(() => {
-    handleIsInMyLecture();
-  }, [inMyLectureService!.inMyLectureMap]);
-
-  const handleIsInMyLecture = () => {
-    const { inMyLectureMap } = inMyLectureService!;
-
-    if (inMyLectureMap.get(cardId)) {
-      setIsInMyLecture(true);
-    } else {
-      setIsInMyLecture(false);
-    }
-  };
-
-  const handleAlert = (isInMyLecture: boolean) => {
-    reactAlert({
-      title: '알림',
-      message: isInMyLecture
-        ? '본 과정이 관심목록에서 제외되었습니다.'
-        : '본 과정이 관심목록에 추가되었습니다.',
-    });
-  };
-
-  const handleInMyLecture = () => {
-    if (isInMyLecture) {
-      inMyLectureService!.removeInMyLectureCard(cardId, cardId);
-    } else {
-      inMyLectureService!.addInMyLectureCard({
-        cardId,
-        serviceId: cardId,
-        serviceType: 'Card',
-        category: {
-          channelId: mainCategory.channelId,
-          collegeId: mainCategory.collegeId,
-          mainCategory: mainCategory.mainCategory,
-        },
-        name,
-        learningTime,
-        stampCount,
-      });
-    }
-
-    handleAlert(isInMyLecture);
-  };
-
   return (
     <Card
       className={classNames({
@@ -212,6 +181,10 @@ function CardView({
       {/* Todo: stampReady */}
       <div className="card-ribbon-wrap">
         {isRequired && <Label className="ribbon2">핵인싸과정</Label>}
+        {contentType && contentType === 'Enrolling' && (
+          // 나중에 정원 정보 추가 되면 수정 해야함
+          <Label className="ribbon2">정원 마감</Label>
+        )}
         {/* { stampReady && <Label className="ribbon2">Stamp</Label>} */}
       </div>
       <div className="card-inner">
@@ -263,9 +236,9 @@ function CardView({
         />
         <div className="btn-area">
           <Button icon className="icon-line" onClick={handleInMyLecture}>
-            <Icon className={isInMyLecture ? 'remove2' : 'add-list'} />
+            <Icon className={inMyLectureModel ? 'remove2' : 'add-list'} />
           </Button>
-          <Link to={toPath({ cardId, viewType: 'view' })}>
+          <Link to={toPath({ cardId, viewType: 'view', pathname: '' })}>
             <button className="ui button fix bg">상세보기</button>
           </Link>
         </div>
