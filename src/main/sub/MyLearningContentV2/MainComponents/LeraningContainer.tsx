@@ -29,9 +29,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   cardBundle,
   history,
 }) {
-  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
-  useRequestCollege();
-
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
 
   const fetchCardList = async () => {
