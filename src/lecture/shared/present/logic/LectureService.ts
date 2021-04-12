@@ -229,7 +229,12 @@ class LectureService {
       CardWithCardRealtedCount
     >(response);
 
-    runInAction(() => (this._lectures = lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 

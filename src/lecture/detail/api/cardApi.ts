@@ -97,6 +97,8 @@ export function findByRdo(cardRdo: CardRdo) {
     .then(AxiosReturn);
 }
 
+export const [findByRdoCache, clearFindByRdo] = createCacheApi(findByRdo);
+
 export function findByCardId(cardId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/card/${cardId}`;

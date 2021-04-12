@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
+import { getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   actionLogService?: ActionLogService;
@@ -45,9 +46,17 @@ class RecommendChannelLecturesPage extends Component<Props> {
 
   render() {
     //
-    const { skProfileService, collegeService } = this.props;
+    const {
+      skProfileService,
+      match: {
+        params: { channelId },
+      },
+    } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService;
-    const { channel } = collegeService;
+    const channel: ChannelModel = new ChannelModel({
+      id: channelId,
+      name: getChannelName(channelId),
+    });
 
     return (
       <ContentLayout

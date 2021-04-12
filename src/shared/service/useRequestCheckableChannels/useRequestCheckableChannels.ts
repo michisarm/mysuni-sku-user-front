@@ -25,7 +25,9 @@ export function useRequestCheckableChannels() {
   }, []);
 
   useEffect(() => {
-    getValueFromMobx();
+    SkProfileService.instance.findSkProfile().then(() => {
+      getValueFromMobx();
+    });
     return setCheckableChannelsStore;
   }, []);
 }
