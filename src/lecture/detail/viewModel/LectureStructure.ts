@@ -24,6 +24,7 @@ export interface LectureStructureItem {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  student?: Student | null;
 }
 
 export interface ItemMap {

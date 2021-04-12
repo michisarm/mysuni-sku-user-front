@@ -1,11 +1,13 @@
 import { observable, decorate } from 'mobx';
 import { CardCategory } from '../../shared/model/CardCategory';
+import { LearningType } from '../../myTraining/model/LearningType';
 
 class LectureTableViewModel {
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
   serviceType: string = 'Card';
+  type: LearningType = LearningType.None;
   category: CardCategory = initialCardCategory;
   difficultyLevel: string = '';
   name: string = '';

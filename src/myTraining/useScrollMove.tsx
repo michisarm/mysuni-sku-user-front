@@ -10,8 +10,10 @@ export const useScrollMove = () => {
     if (!scrollPos && scrollPos !== 0) {
       return;
     }
+
     sessionStorage.removeItem('SCROLL_POS');
     setScrollPos(sessionStorage.getItem('SCROLL_POS'));
+    console.log('hello...', scrollPos);
     window.scrollTo(0, scrollPos);
   }
 

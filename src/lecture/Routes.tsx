@@ -3,14 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
-import ChannelsLecturesPage from './recommend/ui/page/ChannelsPage';
-import RecommendChannelLecturesPage from './recommend/ui/page/ChannelLecturesPage';
-import PostFormPage from './community/ui/page/PostFormPage';
-import PostDetailPage from './community/ui/page/PostDetailPage';
-import ReplyFormPage from './community/ui/page/ReplyFormPage';
-import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
-import LectureDetailCubeRoutes from './detail/LectureDetailCubeRoutes';
-import LectureDetailCourseRoutes from './detail/LectureDetailCourseRoutes';
+import RecommendRoutes from './recommend/Routes';
+import LectureDetailRoutes from './detail/LectureDetailRoutes';
 
 class Routes extends Component {
   //
@@ -37,39 +31,11 @@ class Routes extends Component {
           component={ChannelLecturesPage}
         />
 
-        <Route
-          path="/lecture/card/:cardId/cube/:cubeId/:viewType/:cubeType"
-          component={LectureDetailCubeRoutes}
-        />
+        <Route path="/lecture/card/:cardId" component={LectureDetailRoutes} />
 
-        <Route
-          path="/lecture/card/:cardId/:viewType"
-          component={LectureDetailCourseRoutes}
-        />
         {/* recommend */}
-        <Redirect
-          exact
-          from="/lecture/recommend"
-          to="/lecture/recommend/pages/1"
-        />
-        <Route
-          exact
-          path="/lecture/recommend/pages/:pageNo"
-          component={ChannelsLecturesPage}
-        />
+        <Route path="/lecture/recommend" component={RecommendRoutes} />
 
-        <Redirect
-          exact
-          from="/lecture/recommend/channel/:channelId"
-          to="/lecture/recommend/channel/:channelId/pages/1"
-        />
-        <Route
-          exact
-          path="/lecture/recommend/channel/:channelId/pages/:pageNo"
-          component={RecommendChannelLecturesPage}
-        />
-
-        {/* community  */}
         <Route component={NotFoundPage} />
       </Switch>
     );

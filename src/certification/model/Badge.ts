@@ -1,12 +1,16 @@
-import { BadgeState } from "./BadgeState";
-import { BadgeType } from "./BadgeType";
-import { OpenRequest } from "../../personalcube/personalcube/model/OpenRequest";
-import { GroupBasedAccessRule } from "../../lecture/model/GroupBasedAccessRule";
-import { BadgeCategory } from "./BadgeCategory";
-import { BadgeLevel } from "./BadgeLevel";
-import { BadgeOperator } from "./BadgeOperator";
-import { PatronKey } from "@nara.platform/accent";
+import { BadgeState } from './BadgeState';
+import { BadgeType } from './BadgeType';
+import { OpenRequest } from '../../personalcube/personalcube/model/OpenRequest';
+import { GroupBasedAccessRule } from '../../lecture/model/GroupBasedAccessRule';
+import { BadgeCategory } from './BadgeCategory';
+import { BadgeLevel } from './BadgeLevel';
+import { BadgeOperator } from './BadgeOperator';
+import { PatronKey } from '@nara.platform/accent';
 
+export interface BadgeBundle {
+  badge: Badge;
+  badgeCategory: BadgeCategory;
+}
 export interface Badge {
   id: string;
   patronKey: PatronKey;
@@ -52,7 +56,9 @@ export function getMainCategoryId(badge?: Badge): string {
     return '';
   }
 
-  const mainCategory = badge.categories.find(category => category.mainCategory === true);
+  const mainCategory = badge.categories.find(
+    category => category.mainCategory === true
+  );
 
   if (mainCategory === undefined) {
     return '';
@@ -62,11 +68,7 @@ export function getMainCategoryId(badge?: Badge): string {
 }
 
 export function getCineroomId(badge?: Badge): string {
-  if (
-    !badge ||
-    !badge.patronKey ||
-    !badge.patronKey.keyString
-  ) {
+  if (!badge || !badge.patronKey || !badge.patronKey.keyString) {
     return '';
   }
 

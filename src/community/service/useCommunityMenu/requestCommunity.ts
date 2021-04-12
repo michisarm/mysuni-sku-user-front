@@ -52,31 +52,34 @@ export function requestCommunityMenu(communityId: string) {
       }
     })
 
-    menuArr.map((item: any, index: number) => {
-      item.order = index + 1
-    })
+    // menuArr.map((item: any, index: number) => {
+    //   item.order = index + 1
+    // })
 
-    menuArr.map((item: any, index: number) => {
-      if (item.child) {
-        item.child.sort((a: any, b: any) => {
-          if (a.order < b.order) {
-            return -1;
-          } else if (a.order > b.order) {
-            return 1;
-          } else {
-            return 0;
-          }
-        })
-      }
-    })
+    // menuArr.map((item: any, index: number) => {
+    //   if (item.child) {
+    //     item.child.sort((a: any, b: any) => {
+    //       if (a.order < b.order) {
+    //         return -1;
+    //       } else if (a.order > b.order) {
+    //         return 1;
+    //       } else {
+    //         return 0;
+    //       }
+    //     })
+    //   }
+    // })
 
-    menuArr.map((item: any, index: number) => {
-      if (item.child) {
-        item.child.map((item2: any, index: any) => {
-          item2.order = index + 1
-        })
-      }
-    })
+    // menuArr.map((item: any, index: number) => {
+    //   if (item.child) {
+    //     item.child.map((item2: any, index: any) => {
+    //       item2.order = index + 1
+    //     })
+    //   }
+    // })
+
+    console.log('menuArr :', menuArr);
+
 
     //여기서 트리구조 형태로 배열 만들어준다.
     setCommunityAdminMenu({ 'menu': menuArr });

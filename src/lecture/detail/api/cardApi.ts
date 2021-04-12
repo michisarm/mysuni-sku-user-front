@@ -14,6 +14,7 @@ import { OffsetElementList } from '../../../shared/model';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 import { ExtraTaskType } from '../../model/ExtraTaskType';
 import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
+import { RecommendCardRom } from '../../model/RecommendCardRom';
 
 const BASE_URL = '/api/lecture';
 
@@ -48,6 +49,15 @@ export const [findCardListCache, clearFindCardListCache] = createCacheApi(
   findCardList
 );
 
+export function findMyLatestLearningCards(count: number) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findMyLatestLearningCards`;
+
+  return axios
+    .get<CardWithCardRealtedCount[]>(url, { params: { count } })
+    .then(AxiosReturn);
+}
+
 export function findCardWithLearningContentCounts(
   cardIds: string[]
 ): Promise<CardWithLearningContentCountRom[] | undefined> {
@@ -63,6 +73,7 @@ export function findCardWithLearningContentCounts(
     })
     .then(AxiosReturn);
 }
+
 function findMyCardRelatedStudents(cardId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/myCardRelatedStudents/${cardId}`;
@@ -95,6 +106,8 @@ export function findByRdo(cardRdo: CardRdo) {
     })
     .then(AxiosReturn);
 }
+
+export const [findByRdoCache, clearFindByRdo] = createCacheApi(findByRdo);
 
 export function findByCardId(cardId: string) {
   const axios = getAxios();
@@ -178,4 +191,34 @@ export function submitTask(studentId: string, extraTaskType: ExtraTaskType) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/submit/${studentId}/${extraTaskType}`;
   return axios.put<void>(url).then(AxiosReturn);
+}
+
+function findRecommendCards(channelLimit?: number, limit?: number) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/recommend`;
+  return axios
+    .get<RecommendCardRom[]>(url, {
+      params: {
+        channelLimit,
+        limit,
+      },
+    })
+    .then(AxiosReturn);
+}
+
+export const [
+  findRecommendCardsCache,
+  clearFindRecommendCards,
+] = createCacheApi(findRecommendCards);
+
+export function registerHomework(
+  studentId: string,
+  fileBoxId: string,
+  homework: string
+): Promise<void> {
+  const url = `${BASE_URL}/students/registerHomework/${studentId}/${fileBoxId}`;
+  const axios = getAxios();
+  return axios
+    .put<void>(url, { homeworkContent: homework })
+    .then(response => response && response.data);
 }
