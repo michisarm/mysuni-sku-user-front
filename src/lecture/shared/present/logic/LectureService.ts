@@ -694,6 +694,7 @@ class LectureService {
 
       runInAction(() => {
         this._lectureTableViews = [...this._lectureTableViews, ...addLectureTableViews];
+        this._lectureTableViewCount = offsetRequiredCard.totalCount;
       })
     }
   }

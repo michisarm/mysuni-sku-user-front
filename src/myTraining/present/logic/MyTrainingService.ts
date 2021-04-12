@@ -477,13 +477,14 @@ class MyTrainingService {
   async findAllTableViewsWithPage(offset: Offset) {
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
+
       runInAction(() => {
         this._myTrainingTableViews = [...addedTableViews];
+        this._myTrainingTableViewCount = this.inProgressTableCount;
       });
 
       return;
     }
-
 
     this._myTrainingFilterRdo.setOffset(offset);
 
@@ -504,6 +505,8 @@ class MyTrainingService {
           ...this._myTrainingTableViews,
           ...addedTableViews,
         ];
+
+        this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
     }
   }
@@ -514,10 +517,38 @@ class MyTrainingService {
     const endIndex = offset.offset + offset.limit;
 
     if (myTrainingState === MyLearningContentType.InProgress) {
+      if (!this.inProgressTableViews.length) {
+        const inProgressJson = sessionStorage.getItem('inProgressTableViews');
+        if (inProgressJson) {
+          const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(
+            inProgressJson
+          );
+          if (inProgressStorage && inProgressStorage.length) {
+            this.inProgressTableViews = inProgressStorage.map(
+              (inProgress: MyTrainingTableViewModel) =>
+                new MyTrainingTableViewModel(inProgress)
+            );
+            this.inProgressTableCount = inProgressStorage.length;
+          }
+        }
+      }
+
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
     if (myTrainingState === MyLearningContentType.Completed) {
+      if (!this.completedTableViews.length) {
+        const completedJson = sessionStorage.getItem('completedTableViews');
+        if (completedJson) {
+          const completedStorage: any[] = JSON.parse(completedJson);
+          if (completedStorage && completedStorage.length) {
+            this.completedTableViews = completedStorage.map(
+              completed => new MyTrainingTableViewModel(completed)
+            );
+            this.completedTableCount = completedStorage.length;
+          }
+        }
+      }
       return this.completedTableViews.slice(0, endIndex);
     }
 

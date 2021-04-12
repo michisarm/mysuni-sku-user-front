@@ -89,6 +89,7 @@ class MyStampService {
       runInAction(() => {
         const addMyStamps = offsetMyStamp.results.map(result => new MyTrainingTableViewModel(result));
         this._myStamps = [...this._myStamps, ...addMyStamps];
+        this._myStampCount = offsetMyStamp.totalCount;
       })
     }
   }
