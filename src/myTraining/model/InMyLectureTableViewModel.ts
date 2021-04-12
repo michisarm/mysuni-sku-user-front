@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
 import { CategoryModel, LearningState } from 'shared/model';
-import { CubeType } from 'personalcube/personalcube/model';
 import { DifficultyLevel } from './DifficultyLevel';
+import { LearningType } from './LearningType';
 
 
 class InMyLectureTableViewModel {
@@ -14,7 +14,7 @@ class InMyLectureTableViewModel {
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState: LearningState = LearningState.Progress;
   name: string = '';
-  cubeType: CubeType = CubeType.None;
+  cubeType: LearningType = LearningType.None;
   learningTime: number = 0;
   startDate: number = 0;
   endDate: number = 0;
