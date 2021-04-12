@@ -7,16 +7,7 @@ import LectureParams from '../../../viewModel/LectureParams';
 export async function getCourseLectureReport(
   params: LectureParams
 ): Promise<void> {
-  const { cardId } = params;
-
-  const lectureStudentView = await studentInfoView({
-    courseLectureIds: [],
-    lectureCardIds: [],
-    preLectureCardIds: [],
-    serviceId: cardId,
-  });
-
-  const student = lectureStudentView.own;
-  const next = await getReportItem(cardId, student);
+  const { cardId, pathname } = params;
+  const next = await getReportItem(cardId, pathname);
   setLectureReport(next);
 }

@@ -4,19 +4,25 @@ import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
-  ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
-import Student from '../../../../model/Student';
 import { CubeContents } from '../../../../model/CubeContents';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 export async function getReportItem(
   cubeContents: CubeContents,
-  student?: Student
+  paramsPathname?: string
 ): Promise<LectureReport> {
   const { reportFileBox, id } = cubeContents;
   const lectureReport: LectureReport = { reportId: id };
   const studentReport: StudentReport = {};
-  if (reportFileBox?.report === true) {
+
+  let lectureStructureItem;
+  if (paramsPathname) {
+    lectureStructureItem = getActiveStructureItem(paramsPathname);
+  }
+  const student = lectureStructureItem?.student;
+
+  if (lectureStructureItem !== undefined && lectureStructureItem.can === true) {
     let state: State = 'None';
 
     if (student !== undefined && student !== null) {
@@ -40,7 +46,7 @@ export async function getReportItem(
     }
     lectureReport.reportFileBox = reportFileBox;
     lectureReport.studentReport = studentReport;
-    if (student?.learningState == 'Passed') {
+    if (lectureStructureItem?.student?.extraWork.reportStatus === 'PASS') {
       state = 'Completed';
     }
     lectureReport.state = state;

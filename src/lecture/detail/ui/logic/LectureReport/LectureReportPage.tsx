@@ -33,7 +33,7 @@ function LectureReportPage() {
     if (params === undefined) {
       return;
     }
-    if (params.cubeId === undefined) {
+    if (params.cubeId !== undefined) {
       getCubeReportItem();
     } else {
       getCourseReportItem();
