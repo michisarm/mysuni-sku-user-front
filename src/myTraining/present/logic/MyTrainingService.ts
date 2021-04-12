@@ -8,19 +8,14 @@ import {
 import { autobind, Offset } from '@nara.platform/accent';
 import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
-import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import {
-  MyContentType,
-  ViewType,
-} from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
-import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
-import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
+import { FilterCondition } from '../../model/FilterCondition';
+import { Direction } from '../../model/Direction';
+import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
+import { MyContentType } from '../../ui/model/MyContentType';
 
 @autobind
 class MyTrainingService {
@@ -78,89 +73,6 @@ class MyTrainingService {
   }
 
   @action
-  async saveAllLearningPassedToStorage(state: string, endDate: string) {
-    //
-    await this.myTrainingApi
-      .saveAllLearningPassedToStorage(state, endDate)
-      .then((response: any) => {
-        if (response) {
-          if (response.data !== null && response.data !== '') {
-            this.setCombineLearningPassedFromStorage(
-              JSON.stringify(response.data)
-            );
-          }
-        }
-      });
-  }
-
-  @action
-  async saveNewLearningPassedToStorage(state: string) {
-    //
-    const endDate: string | null = sessionStorage.getItem('endDate');
-    if (endDate) {
-      await this.myTrainingApi
-        .saveAllLearningPassedToStorage(state, endDate)
-        .then((response: any) => {
-          if (response) {
-            if (response.data !== null && response.data !== '') {
-              this.setCombineLearningPassedFromStorage(
-                JSON.stringify(response.data)
-              );
-            }
-          }
-        });
-    } else {
-      this.saveAllLearningPassedToStorage('Passed', '0');
-    }
-  }
-
-  @action
-  async setCombineLearningPassedFromStorage(data: string) {
-    //
-
-    if (data.length > 0) {
-      const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
-        data
-      );
-      // if (newModel.results.length > 0) {
-      // }
-      const oldJson = sessionStorage.getItem('learningPassed');
-      const oldInProgressJson = sessionStorage.getItem(
-        'InProgressLearningList'
-      );
-      if (oldJson) {
-        if (oldJson.length > 0) {
-          const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
-            oldJson
-          );
-          if (oldModel.results.length > 0) {
-            newModel.results = newModel.results.concat(oldModel.results);
-          }
-        }
-      }
-
-      if (newModel && newModel.results && newModel.results.length > 0) {
-        sessionStorage.setItem('endDate', newModel.results[0].endDate);
-        sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
-      }
-
-      if (oldInProgressJson) {
-        if (oldInProgressJson.length > 0) {
-          //window.sessionStorage.removeItem('InProgressLearningList');
-          //this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
-          const rdo = MyTrainingRdoModel.newWithState('InProgress', 8, 0, []);
-          const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
-          //window.sessionStorage.removeItem('InProgressLearningList');
-          window.sessionStorage.setItem(
-            'InProgressLearningList',
-            JSON.stringify(offsetList)
-          );
-        }
-      }
-    }
-  }
-
-  @action
   async getAllLearningPassedFromStorage() {
     //
     this._myTrainings = [];
@@ -212,12 +124,12 @@ class MyTrainingService {
     /* 메인페이지에서 호출 시. */
     const rdo = fromMain
       ? MyTrainingRdoModel.newWithStateFromMain(
-          state,
-          limit,
-          offset,
-          channelIds,
-          'main'
-        )
+        state,
+        limit,
+        offset,
+        channelIds,
+        'main'
+      )
       : MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
 
     const offsetList: OffsetElementList<MyTrainingModel> = await this.myTrainingApi.findAllMyTrainings(
@@ -366,58 +278,19 @@ class MyTrainingService {
   }
 
   @action
-  async findAndAddAllMyTrainingsWithStamp(
-    limit: number,
-    offset: number,
-    channelIds: string[] = []
-  ) {
-    //
-    const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
-      rdo
-    );
-
-    runInAction(
-      () =>
-        (this._myTrainings = this._myTrainings.concat(
-          trainingOffsetElementList.results
-        ))
-    );
-    return trainingOffsetElementList;
-  }
-
-  @action
-  async findAndAddAllMyTrainingsWithStampForExcel(
-    limit: number,
-    offset: number,
-    channelIds: string[] = []
-  ) {
-    //
-    const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
-      rdo
-    );
-
-    runInAction(
-      () =>
-        (this._myTrainingsExcel = this._myTrainingsExcel.concat(
-          trainingOffsetElementList.results
-        ))
-    );
-    return trainingOffsetElementList;
-  }
-
-  @action
   async countMyTrainingsWithStamp(
     channelIds: string[] = [],
     startDate?: number,
     endDate?: number
   ) {
     //
-    const rdo = MyTrainingRdoModel.new(1, 0, channelIds, startDate, endDate);
+    const rdo = MyTrainingRdoModel.new(0, 0, channelIds, startDate, endDate);
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
       rdo
     );
+    if (trainingOffsetElementList === undefined) {
+      return;
+    }
 
     if (startDate === undefined || endDate === undefined) {
       runInAction(
@@ -454,14 +327,7 @@ class MyTrainingService {
   @observable
   _myTrainingTableViewCount: number = 0;
 
-  // store 에서 관리가 되나, 변동사항이 있더라도 리 랜더링하지 않음. observable하지 않음.
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
-
-  @observable
-  private _filterCountViews: FilterCountViewModel[] = [];
-
-  @observable
-  private _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
 
   private inProgressTableViews: MyTrainingTableViewModel[] = [];
 
@@ -485,14 +351,6 @@ class MyTrainingService {
 
   @computed get myTrainingTableCount() {
     return this._myTrainingTableViewCount;
-  }
-
-  @computed get filterCountViews() {
-    return this._filterCountViews;
-  }
-
-  @computed get totalFilterCountView() {
-    return this._totalFilterCountView;
   }
 
   @action
@@ -529,27 +387,18 @@ class MyTrainingService {
     this._myTrainingFilterRdo = MyTrainingFilterRdoModel.create(contentType);
   }
 
-  changeFilterRdoWithViewType(viewType: ViewType) {
-    if (viewType === 'All') {
-      viewType = '';
-    }
-
-    this._myTrainingFilterRdo.changeViewType(viewType);
+  changeFilterRdoWithViewType() {
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
-  changeFilterRdoWithConditions(conditions: FilterCondition) {
+  setFilterRdoByConditions(conditions: FilterCondition) {
     /* 조건이 변경되면 offset 을 초기화 해, 새롭게 조회함. */
-    this._myTrainingFilterRdo.changeConditions(conditions);
+    this._myTrainingFilterRdo.setByConditions(conditions);
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
   changeFilterRdoWithOffset(offset: Offset) {
-    this._myTrainingFilterRdo.changeOffset(offset);
-  }
-
-  getFilterCount() {
-    return this._myTrainingFilterRdo.getFilterCount();
+    this._myTrainingFilterRdo.setOffset(offset);
   }
 
   @action
@@ -574,17 +423,6 @@ class MyTrainingService {
       }
 
       if (this.inProgressTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.inProgressTableViews.filter(
-            tableView => tableView.serviceType !== 'CARD'
-          );
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
-          return false;
-        }
-
-        /* 전체보기 */
         this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.inProgressTableCount;
         return false;
@@ -607,16 +445,6 @@ class MyTrainingService {
       }
 
       if (this.completedTableViews.length) {
-        /* 코스만보기 */
-        if (this._myTrainingFilterRdo.viewType === 'Course') {
-          const courseTableViews = this.completedTableViews.filter(
-            tableView => tableView.serviceType !== 'CARD'
-          );
-          this._myTrainingTableViews = courseTableViews.slice(0, 20);
-          this._myTrainingTableViewCount = courseTableViews.length;
-          return false;
-        }
-
         /* 전체보기 */
         this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.completedTableCount;
@@ -646,86 +474,18 @@ class MyTrainingService {
   }
 
   @action
-  async findAllStampTableViews() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-    return true;
-  }
-
-  @action
-  async findAllStampTableViewsByConditions() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-    return true;
-  }
-
-  @action
-  async findAllStampTableViewsWithPage(offset: Offset) {
-    this._myTrainingFilterRdo.changeOffset(offset);
-
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      const addedTableViews = offsetTableViews.results.map(
-        result => new MyTrainingTableViewModel(result)
-      );
-      console.log(addedTableViews);
-      runInAction(
-        () =>
-          (this._myTrainingTableViews = [
-            ...this._myTrainingTableViews,
-            ...addedTableViews,
-          ])
-      );
-    }
-  }
-
-  @action
   async findAllTableViewsWithPage(offset: Offset) {
-    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
-      /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-      return (this._myTrainingTableViews = [...addedTableViews]);
+      runInAction(() => {
+        this._myTrainingTableViews = [...addedTableViews];
+      });
+
+      return;
     }
 
-    this._myTrainingFilterRdo.changeOffset(offset);
+
+    this._myTrainingFilterRdo.setOffset(offset);
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -749,31 +509,15 @@ class MyTrainingService {
   }
 
   /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
-  private getAddedTableViewsFromStorage(
-    offset: Offset
-  ): MyTrainingTableViewModel[] {
-    const { myTrainingState, viewType } = this._myTrainingFilterRdo;
+  private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
+    const { myTrainingState } = this._myTrainingFilterRdo;
     const endIndex = offset.offset + offset.limit;
 
     if (myTrainingState === MyLearningContentType.InProgress) {
-      if (viewType === 'Course') {
-        const courseTableViews: MyTrainingTableViewModel[] = this.inProgressTableViews.filter(
-          tableView => tableView.serviceType !== 'CARD'
-        );
-
-        return courseTableViews.slice(0, endIndex);
-      }
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
     if (myTrainingState === MyLearningContentType.Completed) {
-      if (viewType === 'Course') {
-        const courseTableViews: MyTrainingTableViewModel[] = this.completedTableViews.filter(
-          tableView => tableView.serviceType !== 'CARD'
-        );
-
-        return courseTableViews.slice(0, endIndex);
-      }
       return this.completedTableViews.slice(0, endIndex);
     }
 
@@ -782,9 +526,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithServiceType(serviceType: string) {
-    console.log(serviceType);
-    this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
-    this._myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
+    this._myTrainingFilterRdo.setOffset({ offset: 0, limit: 20 });
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -835,7 +577,7 @@ class MyTrainingService {
     );
 
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
-    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
+    filterRdoForExcel.setOffset({ offset: 0, limit: 9999 });
     filterRdoForExcel.changeColumnDirection(this.column, this.direction);
 
     const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] = await this.myTrainingApi.findAllTableViewsForExcel(
@@ -845,42 +587,16 @@ class MyTrainingService {
     return myTrainingTableViewsForExcel;
   }
 
-  async findAllStampTableViewsForExcel() {
-    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(
-      this._myTrainingFilterRdo
-    );
+  async findAllInProgressStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForInProgressStorage();
+    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
 
-    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
-    filterRdoForExcel.changeColumnDirection(this.column, this.direction);
-
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      filterRdoForExcel
-    );
-    const myTrainingV2sForExcel = offsetMyTrainings.results.map(
-      offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining)
-    );
-
-    return myTrainingV2sForExcel;
-  }
-
-  /* 메인 페이지 진입 시 session storage 에 전체 학습중 데이터를 저장하기 위한 service. */
-  async findAllInProgressTableViewsForStorage() {
-    const filterRdo = MyTrainingFilterRdoModel.createForStorage(
-      MyLearningContentType.InProgress,
-      { offset: 0, limit: 9999 }
-    );
-
-    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      filterRdo
-    );
     if (
       offsetInProgress &&
       offsetInProgress.results &&
-      offsetInProgress.results.length
+      offsetInProgress.results.length > 0
     ) {
-      this.inProgressTableViews = offsetInProgress.results.map(
-        inProgressTableView => new MyTrainingTableViewModel(inProgressTableView)
-      );
+      this.inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
       this.inProgressTableCount = offsetInProgress.totalCount;
 
       return this.inProgressTableViews;
@@ -889,57 +605,22 @@ class MyTrainingService {
     return null;
   }
 
-  /* 메인 페이지 진입 시 session storage 에 전체 학습완료 데이터를 저장하기 위한 service. */
-  async findAllCompletedTableViewsForStorage() {
-    const filterRdo = MyTrainingFilterRdoModel.createForStorage(
-      MyLearningContentType.Completed,
-      { offset: 0, limit: 9999 }
-    );
+  async findAllCompletedStorage() {
+    const filterRdo = MyTrainingFilterRdoModel.createForCompletedStorage();
+    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
 
-    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      filterRdo
-    );
     if (
       offsetCompleted &&
       offsetCompleted.results &&
-      offsetCompleted.results.length
+      offsetCompleted.results.length > 0
     ) {
-      this.completedTableViews = offsetCompleted.results.map(
-        completedTableView => new MyTrainingTableViewModel(completedTableView)
-      );
+      this.completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
       this.completedTableCount = offsetCompleted.totalCount;
 
       return this.completedTableViews;
     }
 
     return null;
-  }
-
-  @action
-  async findAllFilterCountViews() {
-    const response = await this.myTrainingApi.findAllFilterCountViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (response) {
-      const filterCountViews = response.map(
-        (filterCountView: any) => new FilterCountViewModel(filterCountView)
-      );
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
-        filterCountViews
-      );
-
-      runInAction(() => {
-        this._filterCountViews = filterCountViews;
-        this._totalFilterCountView = totalFilterCountView;
-      });
-    }
-  }
-
-  @action
-  clearAllFilterCountViews() {
-    this._filterCountViews = [];
-    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action
@@ -1032,35 +713,3 @@ export const convertToKey = (column: string): any => {
       return '';
   }
 };
-
-// if (channelIds.length > 0) {
-//   // const result: ConcatArray<MyTrainingModel> = [];
-//   const trst: MyTrainingModel[][] = [];
-//   const rest: MyTrainingModel[] = [];
-//
-//   for (let i = 0; i < channelIds.length; i++) {
-//     for (let j = 0; j < offsetList.results.length; j++) {
-//       if (offsetList.results[j].category.channel.id === channelIds[i]){
-//         rest.push(offsetList.results[j]);
-//       }
-//     }
-//     //trst.push(offsetList.results.filter(e => e.category.channel.id === channelIds[i]));
-//   }
-//
-//   // @ts-ignore
-//   rest.sort((a, b) => b.endDate - a.endDate).slice(offset, limit + offset);
-//
-//   offsetList.totalCount = rest.length;
-//
-//   // const result = offsetList.results.slice(offset, limit + offset).find(e => e.category.channel.id === channelIds[0]);
-//   const result = offsetList.results.filter(e => e.category.channel.id === channelIds[0]).slice(offset, limit + offset);
-//   // @ts-ignore
-//   runInAction(() => this._myTrainings = this._myTrainings.concat(rest));
-//   return offsetList;
-// } else {
-//   const result = offsetList.results.slice(offset, limit + offset);
-//   // @ts-ignore
-//   runInAction(() => this._myTrainings = this._myTrainings.concat(result));
-//   return offsetList;
-// }
-// 1

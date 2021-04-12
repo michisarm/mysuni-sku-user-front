@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { DeleteButton, DownloadExcelButton } from '../MyLearningButtons';
-import { MyLearningContentType, MyPageContentType } from '../../../../myTraining/ui/model';
-import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
+import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
 import { AplCountModel } from 'myTraining/model/AplCountModel';
+import { MyLearningContentType } from '../../model/MyLearningContentType';
+import { MyPageContentType } from '../../model/MyPageContentType';
+import { MyContentType } from '../../model/MyContentType';
 
 interface Props {
   contentType: MyContentType;

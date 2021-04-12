@@ -19,9 +19,10 @@ export interface CubeContents {
       instructorId: string;
       representative: true;
       round: number;
+      name?: string;
     }
   ];
-  operator: Member;
+  operator: { keyString: string };
   organizerId: string;
   otherOrganizerName: string;
   patronKey: {

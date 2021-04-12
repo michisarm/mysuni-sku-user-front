@@ -1,5 +1,5 @@
-import { findLearningObjectives, findTotalMyLearningSummary, updateLearningObjectives } from '../api/personalBoardApi';
-import { getLearningObjectivesItem, setBadgeLearningTimeItem, setLearningObjectivesItem } from '../store/PersonalBoardStore';
+import { findLearningObjectives, updateLearningObjectives } from '../api/personalBoardApi';
+import { getLearningObjectivesItem, setLearningObjectivesItem } from '../store/PersonalBoardStore';
 
 export function requestLearningObjectives() {
   findLearningObjectives().then((learningObjectives) => {

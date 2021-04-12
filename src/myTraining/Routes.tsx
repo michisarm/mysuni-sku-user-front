@@ -2,17 +2,14 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
-
-import MyTrainingPage from './ui/page/MyLearningPage';
 // import MyCommunityPage from './ui/page/MyCommunityPage';
-import MyPage from './ui/page/MyPagePage';
 //import ApprovalManagerDetailPage from './ui/page/ApprovalManagerDetailPage';
 import ApprovalSharedDetailContainer from './ui/logic/ApprovalSharedDetailContainer';
 // 고도화
 import NewLearningPage from './ui/page/NewLearningPage';
-import MyLearningPageV2 from './ui/page/MyLearningPageV2';
 import { AplCreatePage } from './index';
-import MyPageV2 from './ui/page/MyPagePageV2';
+import MyPagePage from './ui/page/MyPagePage';
+import MyTrainingPage from './ui/page/MyTrainingPage';
 
 class MainRoutes extends React.Component {
   //
@@ -28,12 +25,12 @@ class MainRoutes extends React.Component {
         <Route
           exact
           path="/my-training/learning/:tab"
-          component={MyLearningPageV2}
+          component={MyTrainingPage}
         />
         <Route
           exact
           path="/my-training/learning/:tab/pages/:pageNo"
-          component={MyLearningPageV2}
+          component={MyTrainingPage}
         />
 
         {/* <Redirect exact from="/my-training/learning" to="/my-training/learning/InProgress/pages/1" /> */}
@@ -50,11 +47,11 @@ class MainRoutes extends React.Component {
           from="/my-training/my-page"
           to="/my-training/my-page/EarnedBadgeList/pages/1"
         />
-        <Route exact path="/my-training/my-page/:tab" component={MyPageV2} />
+        <Route exact path="/my-training/my-page/:tab" component={MyPagePage} />
         <Route
           exact
           path="/my-training/my-page/:tab/pages/:pageNo"
-          component={MyPageV2}
+          component={MyPagePage}
         />
 
         <Route

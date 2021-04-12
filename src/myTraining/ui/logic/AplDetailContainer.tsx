@@ -14,7 +14,7 @@ import ApprovalButtons from '../view/button/ApprovalButtons';
 import MyApprovalInfoTable from '../view/table/MyApprovalInfoTable';
 import ApprovalInfoView from '../view/ApprovalInfoView';
 import ApprovalRejectModal from '../view/modal/ApprovalRejectModal';
-import { MyLearningContentType } from '../model';
+import { MyLearningContentType } from '../model/MyLearningContentType';
 
 
 interface Props {

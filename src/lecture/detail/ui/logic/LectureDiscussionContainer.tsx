@@ -9,7 +9,8 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
-import { useLectureParams } from '../../store/LectureParamsStore';
+import { useParams } from 'react-router-dom';
+import LectureParams from '../../viewModel/LectureParams';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -20,7 +21,7 @@ const fileDownload = (pdf: string, fileId: string) => {
 export default function LectureDiscussionContainer() {
   useRequestLectureDiscussion();
   const lectureDiscussion = useLectureDiscussion();
-  const params = useLectureParams();
+  const params = useParams<LectureParams>();
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
@@ -51,12 +52,15 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   useEffect(() => {
-    findFeedbackMenu('dd').then(res => {
+    if (lectureDiscussion?.id === undefined) {
+      return;
+    }
+    findFeedbackMenu(lectureDiscussion?.id).then(res => {
       setLectureFeedbackContent({
         ...res,
       });
     });
-  }, [lectureFeedbackContent?.title]);
+  }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   const { company, department, email, name } = useMemo(() => {
     const {
@@ -256,7 +260,6 @@ export default function LectureDiscussionContainer() {
               </div>
             </div>
           </div>
-
           <CommentList
             feedbackId={lectureDiscussion.id}
             hideCamera
@@ -264,7 +267,7 @@ export default function LectureDiscussionContainer() {
             email={email}
             companyName={company}
             departmentName={department}
-            coursePlanId={params?.cardId}
+            // cardId={params?.cardId}
             menuType="discussion"
           />
         </>

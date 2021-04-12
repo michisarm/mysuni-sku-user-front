@@ -1,7 +1,9 @@
-enum MyPageContentType {
+export enum MyPageContentType {
   EarnedBadgeList = 'EarnedBadgeList',
-  EarnedStampList = 'EarnedStampList'
+  EarnedStampList = 'EarnedStampList',
 }
 
-export default MyPageContentType;
-
+export enum MyPageContentTypeName {
+  EarnedBadgeList = 'My Badge',
+  EarnedStampList = 'My Stamp',
+}

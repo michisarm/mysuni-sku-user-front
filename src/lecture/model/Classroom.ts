@@ -34,7 +34,9 @@ export interface Classroom {
   id: string;
   operation: {
     location: string;
-    operator: Member;
+    operator: {
+      keyString: string;
+    };
     siteUrl: string;
   };
   patronKey: {

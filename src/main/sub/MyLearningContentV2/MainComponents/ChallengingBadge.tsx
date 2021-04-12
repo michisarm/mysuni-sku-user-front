@@ -39,6 +39,10 @@ const ChallengingBadge: React.FC<Props> = Props => {
   // // lectureService 변경  실행
   useEffect(() => {
     findMyContent();
+
+    return () => {
+      badgeService!.clearChallengeBadges();
+    };
   }, []);
 
   const findMyContent = async () => {
@@ -51,8 +55,6 @@ const ChallengingBadge: React.FC<Props> = Props => {
     //     return;
     //   }
     // }
-
-    badgeService!.clearMyBadges();
 
     const myBadgeRdo: MyBadgeRdo = {
       offset: 0,
