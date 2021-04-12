@@ -14,6 +14,7 @@ import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
+  useRequestCollege,
   getCollgeName,
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
@@ -53,6 +54,7 @@ function CardView({
   inMyLectureService,
   contentType,
 }: Props) {
+  useRequestCollege();
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
@@ -228,7 +230,6 @@ function CardView({
               {getCollgeName(collegeId)}
             </Label>
           )}
-          <div className="header">{name}</div>
         </div>
         <p
           className="text-area"
