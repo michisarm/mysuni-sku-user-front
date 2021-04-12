@@ -21,3 +21,16 @@ export const initialCondition = {
   endDate: null,
   applying: ''
 }
+
+export function getFilterCount(condition: FilterCondition) {
+  const requiredCount = condition.required && 1 || 0;
+  const learningScheduleCount = condition.startDate && condition.endDate && 1 || 0;
+  const applyingCount = condition.applying && 1 || 0;
+
+  return condition.collegeIds.length +
+    condition.difficultyLevels.length +
+    condition.learningTimes.length +
+    condition.organizers.length +
+    condition.certifications.length +
+    requiredCount + learningScheduleCount + applyingCount;
+}

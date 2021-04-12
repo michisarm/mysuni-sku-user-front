@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import ReactGA from 'react-ga';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { LectureService, SeeMoreButton } from '../../../lecture';
@@ -16,18 +16,16 @@ import RequiredCardListView from '../view/RequiredCardListView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
-  filterCountService?: FilterCountService;
   filterBoxService?: FilterBoxService;
 }
 
 function RequiredCardListContainer({
   lectureService,
-  filterCountService,
   filterBoxService,
 }: RequiredCardListContainerProps) {
   const history = useHistory();
@@ -38,23 +36,35 @@ function RequiredCardListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
   const { lectureTableViews, lectureTableCount } = lectureService!;
-  const { filterCount } = filterBoxService!;
-  
+  const { conditions, showResult, filterCount } = filterBoxService!;
 
+  useRequestFilterCountView();
+  
   useEffect(() => {
-    fetchRequiredCards();
-    filterCountService!.findAllFilterCountViews(MyLearningContentType.Required);
+    requestRequiredCards();
 
     return () => {
       lectureService!.clearAllTableViews();
-      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
 
-  const fetchRequiredCards = async () => {
+  useEffect(() => {
+    if(showResult) {
+      lectureService!.setFilterRdoByConditions(conditions);
+      requestRequiredCardsByConditions();
+    }
+  }, [showResult]);
+
+  useEffect(() => {
+    if(params.pageNo === '1') {
+      return;
+    }
+      
+    requestRequiredCardsWithPage();
+  }, [params.pageNo]);
+
+  const requestRequiredCards = async () => {
     lectureService!.initFilterRdo();
 
     setIsLoading(true);
@@ -64,53 +74,41 @@ function RequiredCardListContainer({
     setIsLoading(false);
   };
 
-  const fetchRequiredCardsByConditions = async () => {
+  const requestRequiredCardsByConditions = async () => {
     setIsLoading(true);
     const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    history.replace('./1');
   }
 
-  const getStampsByConditions = (count: number) => {
-    if (count > 0) {
-      fetchRequiredCardsByConditions();
-    } else {
-      fetchRequiredCards();
-    }
-  };
+  const requestRequiredCardsWithPage = async () => {
+    const currentPageNo = parseInt(params.pageNo);
 
-  const getNextPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
-  };
+    const limit = PAGE_SIZE;
+    const offset = (currentPageNo - 1) * PAGE_SIZE;
 
+    setIsLoading(true);
+    await lectureService!.findAllRqdTableViewsWithPage({ limit, offset });
+    checkShowSeeMore();
+    setIsLoading(false);
+  };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     lectureService!.sortTableViews(column, direction);
   }, []);  
 
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
-
-    history.replace(`./${getNextPageNo()}`);
     
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
 
-    setIsLoading(false);
-    checkShowSeeMore();
-  
-  }, [contentType, pageInfo.current, params.pageNo]);
+    history.replace(`./${nextPageNo}`);
+  }
 
   const checkShowSeeMore = (): void => {
     const { lectureTableViews, lectureTableCount } = lectureService!;
@@ -147,9 +145,7 @@ function RequiredCardListContainer({
             resultEmpty={resultEmpty}
             totalCount={lectureTableCount}
           />
-          <FilterBoxContainer
-            getModels={getStampsByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -217,7 +213,6 @@ function RequiredCardListContainer({
 
 export default inject(mobxHelper.injectFrom(
   'lecture.lectureService',
-  'myTraining.filterCountService',
   'shared.filterBoxService',
 ))(observer(RequiredCardListContainer));
 

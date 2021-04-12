@@ -1,9 +1,21 @@
 import { autobind } from "@nara.platform/accent";
 import { observable, computed, action } from "mobx";
+import { FilterCondition, initialCondition } from "../../../myTraining/model/FilterCondition";
 
 @autobind
 class FilterBoxService {
   static instance: FilterBoxService;
+
+  @observable
+  private _conditions: FilterCondition = initialCondition;
+
+  @computed get conditions() {
+    return this._conditions;
+  }
+
+  @action setConditions(next: FilterCondition) {
+    return this._conditions = next;
+  }
 
   @observable
   private _filterCount: number = 0;
@@ -34,10 +46,23 @@ class FilterBoxService {
     this._openFilter = !this._openFilter;
   }
 
+  @observable
+  private _showResult: boolean = false;
+
+  @computed get showResult() {
+    return this._showResult;
+  }
+
+  @action setShowResult(next: boolean) {
+    return this._showResult = next;
+  }
+
   @action
-  clearFilterBox() {
+  clear() {
+    this._conditions = initialCondition;
     this._filterCount = 0;
     this._openFilter = false;
+    this._showResult = false;
   }
 }
 
