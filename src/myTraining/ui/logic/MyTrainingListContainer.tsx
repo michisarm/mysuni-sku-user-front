@@ -61,7 +61,7 @@ function MyTrainingListContainer({
 
   useEffect(() => {
     refeshPageInfo();
-    fetchMyTrainingsByContentType(contentType);
+    requestMyTrainings(contentType);
 
     return () => {
       myTrainingService!.clearAllTableViews();
@@ -79,13 +79,13 @@ function MyTrainingListContainer({
   useEffect(() => {
     if(showResult) {
       myTrainingService!.setFilterRdoByConditions(conditions);
-      fetchMyTrainingsByCondition();
+      requestMyTrainingsByConditions();
     }
   }, [showResult]);
 
   const refeshPageInfo = () => setRefesh(() => !refresh);
   
-  const fetchMyTrainingsByContentType = async (contentType: MyContentType) => {
+  const requestMyTrainings = async (contentType: MyContentType) => {
     myTrainingService!.initFilterRdo(contentType);
     setIsLoading(true);
     const isEmpty = await myTrainingService!.findAllTableViews();
@@ -94,7 +94,7 @@ function MyTrainingListContainer({
     setIsLoading(false);
   };
 
-  const fetchMyTrainingsByCondition = async () => {
+  const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
     const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
     setResultEmpty(isEmpty);
@@ -204,7 +204,6 @@ function MyTrainingListContainer({
     );
   };
 
-  /* render */
   return (
     <>
       {((!resultEmpty || filterCount > 0) && (

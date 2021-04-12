@@ -44,7 +44,7 @@ function RequiredCardListContainer({
   useRequestFilterCountView();
   
   useEffect(() => {
-    fetchRequiredCards();
+    requestRequiredCards();
 
     return () => {
       lectureService!.clearAllTableViews();
@@ -54,11 +54,11 @@ function RequiredCardListContainer({
   useEffect(() => {
     if(showResult) {
       lectureService!.setFilterRdoByConditions(conditions);
-      fetchRequiredCardsByConditions();
+      requestRequiredCardsByConditions();
     }
   }, [showResult]);
 
-  const fetchRequiredCards = async () => {
+  const requestRequiredCards = async () => {
     lectureService!.initFilterRdo();
 
     setIsLoading(true);
@@ -68,7 +68,7 @@ function RequiredCardListContainer({
     setIsLoading(false);
   };
 
-  const fetchRequiredCardsByConditions = async () => {
+  const requestRequiredCardsByConditions = async () => {
     setIsLoading(true);
     const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
     setResultEmpty(isEmpty);

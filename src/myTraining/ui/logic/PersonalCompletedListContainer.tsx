@@ -36,14 +36,14 @@ function PersonalCompletedListContainer({
   const { apls: {results: aplTableViews }, aplCount: {all: aplTableCount } } = aplService!;
 
   useEffect(() => {
-    fetchApls();
+    requestApls();
 
     return () => {
       aplService!.clearApls();
     }
   }, []);
 
-  const fetchApls = async () => {
+  const requestApls = async () => {
     aplService!.clearAplQueryProps();
 
     setIsLoading(true);

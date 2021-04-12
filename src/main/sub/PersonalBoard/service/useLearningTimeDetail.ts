@@ -1,21 +1,7 @@
 import { findMyLearningSummaryYear } from '../api/personalBoardApi';
 import { setLearningTimeDetailItem } from '../store/PersonalBoardStore';
-import { MyLearningSummaryService } from '../../../../myTraining/stores';
 
 export function requestLearningTimeDetail() {
-  const myLearningSummary = MyLearningSummaryService.instance.myLearningSummary;
-
-  if (myLearningSummary) {
-    setLearningTimeDetailItem({
-      suniLearningTime: myLearningSummary.suniLearningTime - myLearningSummary.myCompanyInSuniLearningTime,
-      displayMyCompanyLearningTime: myLearningSummary.myCompanyLearningTime - myLearningSummary.myCompanyInSuniLearningTime,
-      aplAllowTime: myLearningSummary.aplAllowTime,
-      totalCollegeTime: myLearningSummary.totalCollegeTime,
-    });
-
-    return;
-  }
-
   findMyLearningSummaryYear().then((result) => {
     setLearningTimeDetailItem({
       suniLearningTime: result.suniLearningTime - result.myCompanyInSuniLearningTime,         //mySuni

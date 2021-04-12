@@ -109,7 +109,7 @@ export function FilterBoxView({
             ))}
           </td>
         </tr>
-        <tr>
+        {/* <tr>
           <th>{FilterConditionName.Organizer}</th>
           <td>
             <Checkbox
@@ -132,7 +132,7 @@ export function FilterBoxView({
               </Fragment>
             ))}
           </td>
-        </tr>
+        </tr> */}
         <tr>
           <th>{FilterConditionName.Required}</th>
           <td>
@@ -203,14 +203,14 @@ export function FilterBoxView({
                 </div>
               </div>
             </div>
-            <Checkbox
+            {/* <Checkbox
               className="base"
               name={FilterConditionName.LearningSchedule}
               label="수강신청 가능 학습만 보기"
               value="true"
               checked={conditions.applying === 'true'}
               onChange={onCheckApplying}
-            />
+            /> */}
           </td>
         </tr>
       </tbody>

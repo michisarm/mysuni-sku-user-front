@@ -5,13 +5,10 @@ import CheckedFilterView from '../view/filterbox/CheckedFilterView';
 import CheckboxOptions from '../model/CheckboxOptions';
 import { FilterBoxView } from '../view/filterbox/FilterBoxView';
 import { CollegeService } from '../../../college/stores';
-import { useParams } from 'react-router-dom';
-import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { initialCondition, getFilterCount } from '../../model/FilterCondition';
 import { FilterConditionName } from '../../model/FilterConditionName';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
-import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 
 
 interface FilterBoxContainerProps {
@@ -26,9 +23,6 @@ function FilterBoxContainer({
   filterCountService,
   filterBoxService,
 }: FilterBoxContainerProps) {
-  const params = useParams<MyTrainingRouteParams | MyPageRouteParams>();
-  const contentType = params.tab;
-
   const { colleges } = collegeService!;
   const { conditions, openFilter, showResult, setConditions, setOpenFilter, setFilterCount, setShowResult } = filterBoxService!;
   const { filterCountViews, totalFilterCountView } = filterCountService!;
@@ -47,17 +41,13 @@ function FilterBoxContainer({
     }
   }, [openFilter]);
 
-  useEffect(() => {
-    setFilterCount(0);
-    setConditions(initialCondition);
-  }, [contentType]);
-
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(college => college.name === collegeName)[0];
     return college.collegeId;
   };
 
-  const onClickShowResult = () => {
+  const onClickShowResult = (e:  React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
     setShowResult(true);
   }
 

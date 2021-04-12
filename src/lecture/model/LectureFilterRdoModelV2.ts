@@ -93,14 +93,25 @@ class LectureFilterRdoModelV2 {
   }
 
   toCardRdo(): CardRdo {
+    console.log('this.certi :: ', this.certifications);
+
+    const hasStamp = this.certifications.includes('stamp');
+    const hasBadge = this.certifications.includes('badge');
+    const startLearningDate = this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : '';
+    const endLearningDate = this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : '';
+
     return {
       collegeIds: this.collegeIds.join(','),
       difficultyLevels: this.difficultyLevels.join(','),
       learningTimeRanges: this.learningTimes.join(','),
       required: true,
+      hasStamp,
+      hasBadge,
       limit: this.offset.limit,
       offset: this.offset.offset,
       searchable: true,
+      startLearningDate,
+      endLearningDate,
     };
   }
 }

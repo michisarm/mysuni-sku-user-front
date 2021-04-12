@@ -4,6 +4,7 @@ export interface CardRdo {
   difficultyLevels?: string;
   learningTimeRanges?: string;
   hasStamp?: boolean;
+  hasBadge?: boolean;
   limit: number;
   offset: number;
   orderBy?: string;
@@ -11,4 +12,6 @@ export interface CardRdo {
   numberOneIfHasStamp?: number;
   required?: boolean;
   searchable?: boolean;
+  startLearningDate?: string;
+  endLearningDate?: string;
 }

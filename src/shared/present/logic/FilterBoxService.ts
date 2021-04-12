@@ -58,7 +58,7 @@ class FilterBoxService {
   }
 
   @action
-  clearFilterBox() {
+  clear() {
     this._conditions = initialCondition;
     this._filterCount = 0;
     this._openFilter = false;

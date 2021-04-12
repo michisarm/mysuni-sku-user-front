@@ -45,7 +45,7 @@ function InMyLectureListContainer({
   useRequestFilterCountView();
 
   useEffect(() => {
-    fetchInMyLectures();
+    requestInMyLectures();
 
     return () => {
       inMyLectureService!.clearAllTableViews();
@@ -55,11 +55,11 @@ function InMyLectureListContainer({
   useEffect(() => {
     if(showResult) {
       inMyLectureService!.setFilterRdoByConditions(conditions);
-      fetchInMyLecturesByConditions();
+      requestInMyLecturesByConditions();
     }
   }, [showResult]);
 
-  const fetchInMyLectures = async() => {
+  const requestInMyLectures = async() => {
     setIsLoading(true);
     inMyLectureService!.initFilterRdo();
     const isEmpty = await inMyLectureService!.findAllTableViews();
@@ -68,7 +68,7 @@ function InMyLectureListContainer({
     setIsLoading(false);
   };
 
-  const fetchInMyLecturesByConditions = async() => {
+  const requestInMyLecturesByConditions = async() => {
     setIsLoading(true);
     const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
     setResultEmpty(isEmpty);
