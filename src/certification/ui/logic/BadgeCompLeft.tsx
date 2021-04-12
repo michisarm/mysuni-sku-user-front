@@ -58,15 +58,18 @@ function BadgeCompLeft({
 
   return (
     <div className="left-area">
-      <BadgeView
-        id={challengeBadge.id}
-        name={challengeBadge.name}
-        level={challengeBadge.level}
-        iconUrl={challengeBadge.iconUrl}
-        categoryId={challengeBadge.categoryId}
-        badgeStyle={BadgeStyle.List}
-        badgeSize={BadgeSize.Small}
-      />
+      <div className="badge-list-type" style={{ padding: 0! }}>
+        <BadgeView
+          id={challengeBadge.id}
+          name={challengeBadge.name}
+          level={challengeBadge.level}
+          iconUrl={challengeBadge.iconUrl}
+          categoryId={challengeBadge.categoryId}
+          badgeStyle={BadgeStyle.List}
+          badgeSize={BadgeSize.Small}
+          badgeColor={challengeBadge.badgeCategory.themeColor}
+        />
+      </div>
       <div className="status">
         {challengeState === ChallengeState.Requested && (
           <span className="status">

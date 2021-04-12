@@ -15,15 +15,17 @@ import BadgeView from '../view/BadgeView';
 import { useRequestMyBadges } from '../../service/useRequestMyBadges';
 import { MyBadge } from '../../model/MyBadge';
 
-
 interface MyBadgeListContainerProps {
   badgeService?: BadgeService;
 }
 
-function MyBadgeListContainer({ 
-  badgeService,
- }: MyBadgeListContainerProps) {
-  const { myBadges, myBadgeCount, selectedLevel, setSelectedLevel } = badgeService!;
+function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
+  const {
+    myBadges,
+    myBadgeCount,
+    selectedLevel,
+    setSelectedLevel,
+  } = badgeService!;
 
   const history = useHistory();
   useRequestMyBadges();
@@ -36,7 +38,6 @@ function MyBadgeListContainer({
     history.push(BadgeRoutePaths.badgeTab());
   }, []);
 
-  
   return (
     <>
       <LineHeaderContainer
@@ -47,8 +48,7 @@ function MyBadgeListContainer({
       />
       <div className="badge-list">
         <ul>
-          {
-            myBadges &&
+          {(myBadges &&
             myBadges.length > 0 &&
             myBadges.map((myBadge: MyBadge, index: number) => {
               return (
@@ -61,41 +61,41 @@ function MyBadgeListContainer({
                     categoryId={myBadge.categoryId}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
+                    badgeColor={myBadge.badgeCategory.themeColor}
                   />
                   <div className="badge-name">
                     <span>{myBadge.name}</span>
                   </div>
                 </li>
               );
-            }) || (
-              <NoSuchContentPanel
-                message={
-                  <>
-                    <div className="text">
-                      획득한 Badge가 없습니다.
-                      <br />
-                      등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
-                    </div>
-                    <Button
-                      icon
-                      as="a"
-                      className="right btn-blue2"
-                      onClick={moveToBadgeList}
-                    >
-                      <span className="border">Badge List 바로가기</span>
-                      <Icon className="morelink" />
-                    </Button>
-                  </>
-                }
-              />
-            )
-          }
+            })) || (
+            <NoSuchContentPanel
+              message={
+                <>
+                  <div className="text">
+                    획득한 Badge가 없습니다.
+                    <br />
+                    등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.
+                  </div>
+                  <Button
+                    icon
+                    as="a"
+                    className="right btn-blue2"
+                    onClick={moveToBadgeList}
+                  >
+                    <span className="border">Badge List 바로가기</span>
+                    <Icon className="morelink" />
+                  </Button>
+                </>
+              }
+            />
+          )}
         </ul>
       </div>
     </>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService'
-))(observer(MyBadgeListContainer));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(MyBadgeListContainer)
+);
