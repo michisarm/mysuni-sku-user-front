@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -20,121 +20,92 @@ import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyContentType } from '../model/MyContentType';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import MyTrainingListView from '../view/MyTrainingListView';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
   studentService?: StudentService;
+  filterBoxService?: FilterBoxService;
 }
 
 function MyTrainingListContainer({
   skProfileService,
   myTrainingService,
   studentService,
+  filterBoxService,
 }: MyTrainingListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
   const { profileMemberName } = skProfileService!;
-  const [filterCount, setFilterCount] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
-  const [refresh, setRefesh] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-  const learningOffset: any = sessionStorage.getItem('learningOffset');
-
   const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+  const { conditions, showResult, filterCount } = filterBoxService!;
 
+  useRequestFilterCountView();
 
   useEffect(() => {
-    refeshPageInfo();
-    fetchModelsByContentType(contentType);
-    fetchFilterCountViews();
+    requestMyTrainings(contentType);
 
     return () => {
       myTrainingService!.clearAllTableViews();
-      myTrainingService!.clearAllFilterCountViews();
     }
   }, [contentType]);
 
+  useEffect(() => {
+    if(showResult) {
+      myTrainingService!.setFilterRdoByConditions(conditions);
+      requestMyTrainingsByConditions();
+    }
+  }, [showResult]);
 
   useEffect(() => {
-    if (refresh) {
-      refeshPageInfo();
-      getPageInfo();
-    }
-  }, [refresh]);
+    if(params.pageNo === '1') {
+      return;
+    }    
 
-  const refeshPageInfo = () => setRefesh(() => !refresh);
+    requestmyTrainingsWithPage();
+  }, [params.pageNo]);
   
-  const fetchFilterCountViews = (): void => {
-    myTrainingService!.findAllFilterCountViews();
-  };
-
-  const fetchModelsByContentType = async (contentType: MyContentType) => {
-    initStore(contentType);
-    switch (contentType) {
-      case MyLearningContentType.InProgress:
-      case MyLearningContentType.Completed: {
-        setIsLoading(true);
-        const isEmpty = await myTrainingService!.findAllTableViews();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore();
-        setIsLoading(false);
-        return;
-      }
-
-      default: {
-        setIsLoading(true);
-        const isEmpty = await myTrainingService!.findAllTableViews();
-        setResultEmpty(isEmpty);
-        checkShowSeeMore();
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const fetchModelsByConditions = async () => {
+  const requestMyTrainings = async (contentType: MyContentType) => {
+    myTrainingService!.initFilterRdo(contentType);
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
+    const isEmpty = await myTrainingService!.findAllTableViews();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
   };
 
-
-  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry'];
-
-  const getPageInfo = async () => {
-    const matchesMenu = TableViewsMenu.includes(contentType);
-    if (learningOffset !== null && matchesMenu && refresh) {
-      setIsLoading(true);
-      // if (learningOffset !== null && matchesMenu && refresh) {
-      pageInfo.current = JSON.parse(learningOffset);
-      await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
-    }
+  const requestMyTrainingsByConditions = async () => {
+    setIsLoading(true);
+    const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
+    setResultEmpty(isEmpty);
+    checkShowSeeMore();
+    setIsLoading(false);
+    history.replace('./1');
   };
 
-  const getPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
-  };
+  const requestmyTrainingsWithPage = async () => {
+    const currentPageNo = parseInt(params.pageNo);
 
-  const initStore = (contentType: MyContentType) => {
-    myTrainingService!.initFilterRdo(contentType);
+    const limit = PAGE_SIZE;
+    const offset = (currentPageNo - 1) * PAGE_SIZE;
+
+    setIsLoading(true);
+    await myTrainingService!.findAllTableViewsWithPage({ limit, offset });
+    checkShowSeeMore(); 
+    setIsLoading(false);
   };
 
 
@@ -156,46 +127,14 @@ function MyTrainingListContainer({
   const updateInProgressStorage = async () => {
     const inProgressTableViews = await myTrainingService!.findAllInProgressStorage();
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
-
-    // /* 메인페이지 학습중 스토리지 업데이트 */
-    // await myTrainingService!.findAllMyTrainingsWithState(
-    //   'InProgress',
-    //   8,
-    //   0,
-    //   [],
-    //   true
-    // );
   };
-
-  /* handlers */
-  const onChangeFilterCount = useCallback((count: number) => {
-    /* if (filterCount && filterCount === count) {
-      initPage();
-      fetchModelsByConditions(contentType, viewType);
-    }
-    */
-    setFilterCount(count);
-  }, []);
-
-  const getModelsByConditions = (count: number) => {
-    if (count > 0) {
-      // initPage();
-      fetchModelsByConditions();
-    } else {
-      fetchModelsByContentType(contentType);
-    }
-  };
-
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
 
   const onClickDelete = useCallback(() => {
-    setOpenModal(true);
+    setDeleteModal(true);
   }, []);
 
-  const onCloseModal = useCallback(() => {
-    setOpenModal(false);
+  const onCloseDeleteModal = useCallback(() => {
+    setDeleteModal(false);
   }, []);
 
   const onConfirmModal = useCallback(async () => {
@@ -211,7 +150,7 @@ function MyTrainingListContainer({
       myTrainingService!.clearAllSelectedServiceIds();
     }
 
-    setOpenModal(false);
+    setDeleteModal(false);
   }, []);
 
   const onClickSort = useCallback(
@@ -220,20 +159,16 @@ function MyTrainingListContainer({
     }, [contentType]
   );
 
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
-    history.replace(`./${getPageNo()}`);
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
     
-    setIsLoading(false);
-    checkShowSeeMore();
-    
-  }, [contentType, pageInfo.current, params.pageNo]);
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
+
+    history.replace(`./${nextPageNo}`);
+  }
 
   const noSuchMessage = (
     contentType: MyContentType,
@@ -255,7 +190,6 @@ function MyTrainingListContainer({
     );
   };
 
-  /* render */
   return (
     <>
       {((!resultEmpty || filterCount > 0) && (
@@ -264,17 +198,9 @@ function MyTrainingListContainer({
             contentType={contentType}
             resultEmpty={resultEmpty}
             totalCount={myTrainingTableCount}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
             onClickDelete={onClickDelete}
           />
-          <FilterBoxContainer
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
-            onChangeFilterCount={onChangeFilterCount}
-            getModels={getModelsByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -283,8 +209,8 @@ function MyTrainingListContainer({
         <>
           {(!resultEmpty && (
             <>
-              <MyLearningTableTemplate>
-                <MyLearningTableHeader
+              <MyLearningListTemplate>
+                <MyLearningListHeaderView
                   contentType={contentType}
                   onClickSort={onClickSort}
                 />
@@ -292,12 +218,12 @@ function MyTrainingListContainer({
                   myTrainings={myTrainingTableViews}
                   totalCount={myTrainingTableCount}
                 />
-              </MyLearningTableTemplate>
+              </MyLearningListTemplate>
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              {openModal && (
+              {deleteModal && (
                 <MyLearningDeleteModal
-                  open={openModal}
-                  onClose={onCloseModal}
+                  open={deleteModal}
+                  onClose={onCloseDeleteModal}
                   onConfirm={onConfirmModal}
                 />
               )}
@@ -354,6 +280,7 @@ export default inject(
     'profile.skProfileService',
     'myTraining.myTrainingService',
     'lecture.studentService',
+    'shared.filterBoxService',
   )
 )(observer(MyTrainingListContainer));
 

@@ -1,6 +1,6 @@
 import { observable, decorate } from 'mobx';
 import moment from 'moment';
-import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
+import { timeToHourMinutePaddingFormat, convertTimeToDate } from 'shared/helper/dateTimeHelper';
 import { CategoryModel, LearningState } from 'shared/model';
 import { DifficultyLevel } from './DifficultyLevel';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
@@ -33,39 +33,39 @@ class MyTrainingTableViewModel {
     }
   }
 
-  toXlsxForInProgress(index: number): InProgressXlsxModel {
+  toXlsxForInProgress(index: number, collegeName?: string): InProgressXlsxModel {
 
     return {
       No: String(index),
-      College: this.category && this.category.college && this.category.college.id || '-',
+      College: collegeName || '-',
       과정명: this.name || '-',
       학습유형: this.serviceType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      최근학습일: moment(this.time).format('YYYY.MM.DD'),
+      최근학습일: convertTimeToDate(this.time),
     };
   }
 
-  toXlsxForCompleted(index: number): CompletedXlsxModel {
+  toXlsxForCompleted(index: number, collegeName?: string): CompletedXlsxModel {
 
     return {
       No: String(index),
-      College: this.category && this.category.college && this.category.college.id || '-',
+      College: collegeName || '-',
       과정명: this.name || '-',
       학습유형: this.serviceType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
-      학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD'),
+      학습완료일: convertTimeToDate(this.endDate),
     };
   }
 
-  toXlsxForMyStamp(index: number): MyStampXlsxModel {
+  toXlsxForMyStamp(index: number, collegeName?: string): MyStampXlsxModel {
     return {
       No: String(index),
-      College: this.category && this.category.college && this.category.college.id || '-',
+      College: collegeName || '-',
       과정명: this.name || '-',
       스탬프: String(this.stampCount),
-      획득일자: moment(Number(this.endDate)).format('YYYY.MM.DD'),
+      획득일자: convertTimeToDate(this.endDate),
     };
   }
 }

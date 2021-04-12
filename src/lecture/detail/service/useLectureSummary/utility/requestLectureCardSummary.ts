@@ -1,3 +1,4 @@
+import { InMyLectureService } from '../../../../../myTraining/stores';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
@@ -72,6 +73,7 @@ function parseLectureSummary(
     difficultyLevel: difficultyLevel || 'Basic',
     hasCommunity: (communityId || '') !== '',
     communityId,
+    mytrainingId: InMyLectureService.instance.inMyLectureMap.get(id)?.id,
   };
 }
 
@@ -89,6 +91,7 @@ export async function requestLectureCardSummary(cardId: string) {
   if (card === null) {
     return;
   }
+  await InMyLectureService.instance.findAllInMyLectures();
   const lectureCardSummary = parseLectureSummary(
     card,
     cardContents,

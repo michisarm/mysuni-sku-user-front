@@ -17,7 +17,6 @@ export function useRequestAllBadges() {
   useEffect(() => {
 
     return () => {
-      console.log('hello');
       BadgeService.instance.clearBadges();
     }
   }, [selectedLevel, params.tab]);

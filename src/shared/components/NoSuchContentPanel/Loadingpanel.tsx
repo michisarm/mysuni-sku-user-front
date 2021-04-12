@@ -15,7 +15,7 @@ interface Props extends RouteComponentProps {
 class Loadingpanel extends Component<Props> {
   render() {
     const { loading, color } = this.props;
-    //
+    
     return (
       <>
         <Dimmer

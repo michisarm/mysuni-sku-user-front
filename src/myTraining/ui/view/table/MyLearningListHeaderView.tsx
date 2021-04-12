@@ -12,14 +12,17 @@ import { MyContentType } from '../../model/MyContentType';
 
 
 
-interface Props {
+interface MyLearningListHeaderViewProps {
   contentType: MyContentType;
   onClickSort?: (column: string, direction: Direction) => void;
   myTrainingService?: MyTrainingService;
 }
 
-function MyLearningTableHeader(props: Props) {
-  const { contentType, onClickSort, myTrainingService } = props;
+function MyLearningListHeaderView({
+  contentType,
+  onClickSort,
+  myTrainingService,
+}: MyLearningListHeaderViewProps) {
   const { myTrainingTableViews, selectedServiceIds, selectAll, clearAll } = myTrainingService!;
 
   const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
@@ -109,4 +112,4 @@ function MyLearningTableHeader(props: Props) {
 
 export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService'
-))(observer(MyLearningTableHeader));
+))(observer(MyLearningListHeaderView));

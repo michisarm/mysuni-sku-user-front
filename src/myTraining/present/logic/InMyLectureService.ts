@@ -236,12 +236,6 @@ class InMyLectureService {
   @observable
   _inMyListCount: number = 0;
 
-  @observable
-  _filterCountViews: FilterCountViewModel[] = [];
-
-  @observable
-  _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
-
   @computed get inMyLectureTableViews() {
     return this._inMyLectureTableViews;
   }
@@ -254,14 +248,6 @@ class InMyLectureService {
     return this._inMyListCount;
   }
 
-  @computed get filterCountViews() {
-    return this._filterCountViews;
-  }
-
-  @computed get totalFilterCountView() {
-    return this._totalFilterCountView;
-  }
-
   @action
   clearAllTableViews() {
     this._inMyLectureTableViews = [];
@@ -272,14 +258,9 @@ class InMyLectureService {
     this._inMyLectureFilterRdo = new InMyLectureFilterRdoModel();
   }
 
-  changeFilterRdoWithConditions(conditions: FilterCondition) {
-    /* 조건이 변경되면 offset 을 초기화 해, 새롭게 조회함. */
-    this._inMyLectureFilterRdo.changeConditions(conditions);
+  setFilterRdoByConditions(conditions: FilterCondition) {
+    this._inMyLectureFilterRdo.setByConditions(conditions);
     this._inMyLectureFilterRdo.setDefaultOffset();
-  }
-
-  getFilterCount() {
-    return this._inMyLectureFilterRdo.getFilterCount();
   }
 
   @action
@@ -328,7 +309,7 @@ class InMyLectureService {
 
   @action
   async findAllTableViewsWithPage(offset: Offset) {
-    this._inMyLectureFilterRdo.changeOffset(offset);
+    this._inMyLectureFilterRdo.setOffset(offset);
 
     const offsetTableViews = await this.inMyLectureApi.findAllTableViews(
       this._inMyLectureFilterRdo
@@ -356,33 +337,6 @@ class InMyLectureService {
     const tabCount = await this.inMyLectureApi.countInMyLectures();
 
     runInAction(() => (this._inMyListCount = tabCount));
-  }
-
-  @action
-  async findAllFilterCountViews() {
-    const response = await this.inMyLectureApi.findAllFilterCountViews(
-      this._inMyLectureFilterRdo
-    );
-
-    if (response) {
-      const filterCountViews = response.map(
-        (filterCountView: any) => new FilterCountViewModel(filterCountView)
-      );
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
-        filterCountViews
-      );
-
-      runInAction(() => {
-        this._filterCountViews = filterCountViews;
-        this._totalFilterCountView = totalFilterCountView;
-      });
-    }
-  }
-
-  @action
-  clearAllFilterCountViews() {
-    this._filterCountViews = [];
-    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action

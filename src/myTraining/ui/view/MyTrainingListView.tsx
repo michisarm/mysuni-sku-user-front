@@ -35,7 +35,6 @@ function MyTrainingListView({
   const contentType = params.tab;
 
   const { scrollOnceMove, scrollSave } = useScrollMove();
-
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
 
   useEffect(() => {
@@ -47,6 +46,18 @@ function MyTrainingListView({
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
 
+    if(contentType === MyLearningContentType.InProgress) {
+      ReactGA.event({
+        category: '학습중인 과정',
+        action: 'Click',
+        label: `${
+          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
+        } - ${myTraining.name}`,
+      });
+    }
+    
+    scrollSave();
+
     const params: LectureParams = {
       cardId: myTraining.serviceId,
       viewType: 'view',
@@ -55,15 +66,7 @@ function MyTrainingListView({
 
     history.push(toPath(params));
 
-    ReactGA.event({
-      category: '학습중인 과정',
-      action: 'Click',
-      label: `${
-        myTraining.serviceType === 'COURSE' ? '(Course)' : '(Cube)'
-      } - ${myTraining.name}`,
-    });
-
-    scrollSave();
+   
   };
 
   const onCheckOne = useCallback(

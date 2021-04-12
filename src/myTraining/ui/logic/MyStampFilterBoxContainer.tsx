@@ -1,34 +1,49 @@
-import React, { useEffect } from 'react';
-import { observer, inject } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
-import CheckedFilterView from '../view/filterbox/CheckedFilterView';
-import CheckboxOptions from '../model/CheckboxOptions';
+import React, { useState, useEffect } from 'react';
+import MyStampService from '../../present/logic/MyStampService';
 import { FilterBoxView } from '../view/filterbox/FilterBoxView';
-import { CollegeService } from '../../../college/stores';
-import { initialCondition, getFilterCount } from '../../model/FilterCondition';
+import CheckedFilterView from '../view/filterbox/CheckedFilterView';
 import { FilterConditionName } from '../../model/FilterConditionName';
+import CheckboxOptions from '../model/CheckboxOptions';
+import { MyPageRouteParams } from '../../model/MyPageRouteParams';
+import { useParams } from 'react-router-dom';
+import { CollegeService } from '../../../college/stores';
+import { FilterCondition, initialCondition, getFilterCount } from '../../model/FilterCondition';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
 
-
-interface FilterBoxContainerProps {
+interface MyStampFilterBoxContainerProps {
+  refindList: (count: number) => void;
+  myStampService?: MyStampService;
   filterCountService?: FilterCountService;
   collegeService?: CollegeService;
   filterBoxService?: FilterBoxService;
 }
 
-
-function FilterBoxContainer({
-  collegeService,
+function MyStampFilterBoxContainer({
+  refindList,
+  myStampService,
   filterCountService,
+  collegeService,
   filterBoxService,
-}: FilterBoxContainerProps) {
+}: MyStampFilterBoxContainerProps) {
+  const params = useParams<MyPageRouteParams>();
+  const contentType = params.tab;
+  
+  const [showResult, setShowResult] = useState<boolean>(false);
+  const [conditions, setConditions] = useState<FilterCondition>(initialCondition);
+
   const { colleges } = collegeService!;
-  const { conditions, openFilter, showResult, setConditions, setOpenFilter, setFilterCount, setShowResult } = filterBoxService!;
   const { filterCountViews, totalFilterCountView } = filterCountService!;
+  const { openFilter, setOpenFilter, setFilterCount } = filterBoxService!;
 
   useEffect(() => {
     if (showResult) {
+      myStampService!.setFilterRdoByConditions(conditions);
+      const filterCount = getFilterCount(conditions);
+      refindList(filterCount);
+    
       setOpenFilter(false);
       setShowResult(false);
     }
@@ -36,29 +51,36 @@ function FilterBoxContainer({
 
   useEffect(() => {
     if (!openFilter) {
+      myStampService!.setFilterRdoByConditions(conditions);
       const filterCount = getFilterCount(conditions);
       setFilterCount(filterCount);
     }
   }, [openFilter]);
+
+  useEffect(() => {
+    setFilterCount(0);
+    setConditions(initialCondition);
+  }, [contentType]);
 
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(college => college.name === collegeName)[0];
     return college.collegeId;
   };
 
-  const onClickShowResult = (e:  React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
+  const onClickShowResult = () => {
     setShowResult(true);
   }
+
 
   const onCheckAll = (e: any, data: any) => {
     switch (data.name) {
       case FilterConditionName.College:
+        /* 전체 해제 */
         if (conditions.collegeIds.length === colleges.length) {
           setConditions({ ...conditions, collegeIds: [] });
           break;
         }
-
+        /* 전체 선택 */
         setConditions({ ...conditions, collegeIds: [...colleges.map(college => college.id)] });
         break;
       case FilterConditionName.DifficultyLevel:
@@ -97,10 +119,11 @@ function FilterBoxContainer({
     switch (data.name) {
       case FilterConditionName.College:
         if (conditions.collegeIds.includes(data.value)) {
+          /* 선택 해제 */
           setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== data.value) });
           break;
         }
-
+        /* 선택 */
         setConditions({ ...conditions, collegeIds: conditions.collegeIds.concat(data.value) });
         break;
       case FilterConditionName.DifficultyLevel:
@@ -202,10 +225,10 @@ function FilterBoxContainer({
           <FilterBoxView 
             colleges={colleges}
             conditions={conditions}
-            filterCounts={filterCountViews}
             totalFilterCount={totalFilterCountView}
-            onCheckOne={onCheckOne}
+            filterCounts={filterCountViews}
             onCheckAll={onCheckAll}
+            onCheckOne={onCheckOne}
             onChangeStartDate={onChangeStartDate}
             onChangeEndDate={onChangeEndDate}
             onCheckApplying={onCheckApplying}
@@ -213,8 +236,8 @@ function FilterBoxContainer({
           <CheckedFilterView
             colleges={colleges}
             conditions={conditions}
-            onClearOne={onClearOne}
             onClearAll={onClearAll}
+            onClearOne={onClearOne}
           />
           <div className="moreAll">
             <a className="more-text" onClick={onClickShowResult}>결과보기</a>
@@ -225,8 +248,11 @@ function FilterBoxContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'college.collegeService',
-  'myTraining.filterCountService',
-  'shared.filterBoxService',
-))(observer(FilterBoxContainer));
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.myStampService',
+    'myTraining.filterCountService',
+    'college.collegeService',
+    'shared.filterBoxService',
+  )
+)(observer(MyStampFilterBoxContainer));

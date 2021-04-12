@@ -6,139 +6,122 @@ import { inject, observer } from 'mobx-react';
 import { Offset, mobxHelper } from '@nara.platform/accent';
 import ReactGA from 'react-ga';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import FilterBoxContainer from './FilterBoxContainer';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { SeeMoreButton } from '../../../lecture';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
-import { CollegeService } from '../../../college/stores';
-import MyTrainingService from '../../present/logic/MyTrainingService';
-
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyPageContentType } from '../model/MyPageContentType';
 import { Direction } from '../../model/Direction';
 import MyStampListView from '../view/MyStampListView';
+import MyStampService from '../../present/logic/MyStampService';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
+import FilterBoxContainer from './FilterBoxContainer';
 
 
 interface MyStampListContainerProps {
-  myTrainingService?: MyTrainingService;
-  collegeService?: CollegeService;
+  myStampService?: MyStampService;
+  filterBoxService?: FilterBoxService;
 }
 
+
 function MyStampListContainer({
-  myTrainingService,
-  collegeService,
+  myStampService,
+  filterBoxService,
 }: MyStampListContainerProps) {
   const history = useHistory();
   const params = useParams<MyPageRouteParams>();
   const contentType = params.tab;
 
-  const [filterCount, setFilterCount] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
+  const { myStamps, myStampCount } = myStampService!;
+  const { conditions, showResult, filterCount } = filterBoxService!;
 
-  const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
-  const { colleges } = collegeService!;
-  
+  useRequestFilterCountView();
+
   useEffect(() => {
-    if(
-      colleges &&
-      colleges.length > 0
-    ) {
+    requestStamps();
+
+    return () => {
+      myStampService!.clearAllMyStamps();
+    }
+  }, []);
+
+  useEffect(() => {
+    if(showResult) {
+      myStampService!.setFilterRdoByConditions(conditions);
+      requestStampsByConditions();
+    }
+
+  }, [showResult]);
+
+  useEffect(() => {
+    if(params.pageNo === '1') {
       return;
     }
 
-    collegeService!.findAllColleges();
-  }, []);
+    requestStampsWithPage();
+  }, [params.pageNo]);
 
-  useEffect(() => {
-    fetchStamps();
-    myTrainingService!.findAllFilterCountViews();
-
-    return () => {
-      myTrainingService!.clearAllTableViews();
-      myTrainingService!.clearAllFilterCountViews();
-    }
-  }, []);
-
-  const fetchStamps = async () => {
-    myTrainingService!.initFilterRdo(contentType);
+  const requestStamps = async () => {
+    myStampService!.initFilterRdo();
 
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViews();
+    const isEmpty = await myStampService!.findAllMyStamps();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
   };
 
-  const fetchStampsByConditions = async () => {
+  const requestStampsByConditions = async () => {
     setIsLoading(true);
-    const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
+    const isEmpty = await myStampService!.findAllMyStampsByCondition();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    history.replace('./1');
   }
 
-  const getStampsByConditions = (count: number) => {
-    if (count > 0) {
-      fetchStampsByConditions();
-    } else {
-      fetchStamps();
-    }
-  };
+  const requestStampsWithPage = async () => {
+    const currentPageNo = parseInt(params.pageNo);
 
-  const getNextPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
-  };
+    const limit = PAGE_SIZE;
+    const offset = (currentPageNo - 1) * PAGE_SIZE;
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
+    setIsLoading(true);
+    await myStampService!.findAllMyStampsWithPage({ limit, offset });
+    checkShowSeeMore(); 
+    setIsLoading(false)
+  }
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
-          myTrainingService!.sortTableViews(column, direction);
-      }, []);
-
-  const onChangeFilterCount = useCallback((count: number) => {
-    setFilterCount(count);
+    myStampService!.sortMyStamps(column, direction);
   }, []);
-  
 
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
 
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
+    const currentPageNo = parseInt(params.tab);
+    const nextPageNo = currentPageNo + 1;
 
-    history.replace(`./${getNextPageNo()}`);
-    
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
 
-    setIsLoading(false);
-    checkShowSeeMore();
-  
-  }, [contentType, pageInfo.current, params.pageNo]);
+    history.replace(`./${nextPageNo}`);
+  }
 
   const checkShowSeeMore = (): void => {
-    const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
+    const { myStamps, myStampCount } = myStampService!;
 
-    if (myTrainingTableViews.length >= myTrainingTableCount) {
+    if (myStamps.length >= myStampCount) {
       setShowSeeMore(false);
       return;
     }
-    if (myTrainingTableCount <= PAGE_SIZE) {
+    if (myStampCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -164,35 +147,27 @@ function MyStampListContainer({
           <LineHeaderContainerV2
             contentType={contentType}
             resultEmpty={resultEmpty}
-            totalCount={myTrainingTableCount}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
+            totalCount={myStampCount}
           />
-          <FilterBoxContainer
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
-            onChangeFilterCount={onChangeFilterCount}
-            getModels={getStampsByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
-        myTrainingTableViews &&
-        myTrainingTableViews.length > 0 && (
+        myStamps &&
+        myStamps.length > 0 && (
           <>
             {(!resultEmpty && (
               <>
-                <MyLearningTableTemplate>
-                  <MyLearningTableHeader
+                <MyLearningListTemplate>
+                  <MyLearningListHeaderView
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
                   <MyStampListView
-                    myStamps={myTrainingTableViews}
-                    totalCount={myTrainingTableCount}
+                    myStamps={myStamps}
+                    totalCount={myStampCount}
                   />
-                </MyLearningTableTemplate>
+                </MyLearningListTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
               </>
             )) || (
@@ -242,8 +217,8 @@ function MyStampListContainer({
 
 export default inject(
   mobxHelper.injectFrom(
-    'myTraining.myTrainingService',
-    'college.collegeService'
+    'myTraining.myStampService',
+    'shared.filterBoxService',
   )
 )(observer(MyStampListContainer));
 

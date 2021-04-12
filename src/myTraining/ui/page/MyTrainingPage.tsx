@@ -6,9 +6,7 @@ import routePaths from 'myTraining/routePaths';
 import { NotieService } from 'notie/stores';
 import { MyTrainingService, InMyLectureService, AplService } from 'myTraining/stores';
 import { LectureService } from 'lecture/stores';
-import { SkProfileService } from 'profile/stores';
 import { MenuControlAuthService } from 'approval/stores';
-import { SkProfileModel } from 'profile/model';
 import { TabItemModel, ContentLayout } from 'shared';
 import TabContainer from 'shared/components/Tab';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
@@ -24,6 +22,8 @@ import InMyLectureListContainer from '../logic/InMyLectureListContainer';
 import PersonalCompletedListContainer from '../logic/PersonalCompletedListContainer';
 import RequiredCardListContainer from '../logic/RequiredCardListContainer';
 import { CollegeService } from '../../../college/stores';
+import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 
 
 interface MyTrainingPageProps {
@@ -32,9 +32,9 @@ interface MyTrainingPageProps {
   inMyLectureService?: InMyLectureService;
   lectureService?: LectureService;
   aplService?: AplService;
-  skProfileService?: SkProfileService;
   menuControlAuthService?: MenuControlAuthService;
   collegeService?: CollegeService;
+  filterBoxService?: FilterBoxService;
 }
 
 function MyTrainingPage({
@@ -43,29 +43,32 @@ function MyTrainingPage({
   inMyLectureService,
   lectureService,
   aplService,
-  skProfileService,
   menuControlAuthService,
   collegeService,
+  filterBoxService,
 }: MyTrainingPageProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
 
-  const { skProfile } = skProfileService!;
+  const { colleges } = collegeService!;
   const { menuControlAuth } = menuControlAuthService!;
   const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
   const { inMyListCount } = inMyLectureService!;
   const { requiredLecturesCount } = lectureService!;
   const { aplCount: { all: personalCompletedCount } } = aplService!;
-  const { colleges } = collegeService!;
 
   useRequestCollege();
+  useRequestMenuAuth();
   useRequestLearningStorage();
   useRequestAllMyTrainingCount();
   usePublishViewEvent('LEARNING_VIEW');
 
   useEffect(() => {
     fetchColleges();
-    fetchMenuAuth();
+
+    return () => {
+      filterBoxService!.clear();
+    };
   }, [params.tab]);
 
   const fetchColleges = () => {
@@ -77,15 +80,6 @@ function MyTrainingPage({
     }
 
     collegeService!.findAllColleges();
-  }
-
-  const fetchMenuAuth = async () => {
-    if(skProfile) {
-      return;
-    }
-    
-    const profile: SkProfileModel = await skProfileService!.findSkProfile();
-    menuControlAuthService!.findMenuControlAuth(profile.member.companyCode);
   }
 
   const getTabs = (): TabItemModel[] => {
@@ -223,7 +217,7 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.inMyLectureService',
   'myTraining.myTrainingService',
   'myTraining.aplService',
-  'profile.skProfileService',
   'approval.menuControlAuthService',
   'college.collegeService',
+  'shared.filterBoxService',
 ))(observer(MyTrainingPage));

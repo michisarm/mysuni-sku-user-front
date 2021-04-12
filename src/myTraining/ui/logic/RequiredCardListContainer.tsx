@@ -1,55 +1,70 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import ReactGA from 'react-ga';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { LectureService, SeeMoreButton } from '../../../lecture';
 import { Direction } from '../../model/Direction';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import FilterBoxContainer from './FilterBoxContainer';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
-import MyLearningTableHeader from '../view/table/MyLearningTableHeader';
 import { Segment } from 'semantic-ui-react';
 import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import NoSuchContentPanelMessages from '../model/NoSuchContentPanelMessages';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import RequiredCardListView from '../view/RequiredCardListView';
+import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 
 interface RequiredCardListContainerProps {
   lectureService?: LectureService;
+  filterBoxService?: FilterBoxService;
 }
 
 function RequiredCardListContainer({
   lectureService,
+  filterBoxService,
 }: RequiredCardListContainerProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const [filterCount, setFilterCount] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
   const { lectureTableViews, lectureTableCount } = lectureService!;
-  
+  const { conditions, showResult, filterCount } = filterBoxService!;
 
+  useRequestFilterCountView();
+  
   useEffect(() => {
-    fetchRequiredCards();
-    lectureService!.findAllFilterCountViews();
+    requestRequiredCards();
 
     return () => {
       lectureService!.clearAllTableViews();
-      lectureService!.clearAllFilterCountViews();
     }
   }, []);
 
-  const fetchRequiredCards = async () => {
+  useEffect(() => {
+    if(showResult) {
+      lectureService!.setFilterRdoByConditions(conditions);
+      requestRequiredCardsByConditions();
+    }
+  }, [showResult]);
+
+  useEffect(() => {
+    if(params.pageNo === '1') {
+      return;
+    }
+      
+    requestRequiredCardsWithPage();
+  }, [params.pageNo]);
+
+  const requestRequiredCards = async () => {
     lectureService!.initFilterRdo();
 
     setIsLoading(true);
@@ -59,61 +74,41 @@ function RequiredCardListContainer({
     setIsLoading(false);
   };
 
-  const fetchRequiredCardsByConditions = async () => {
+  const requestRequiredCardsByConditions = async () => {
     setIsLoading(true);
     const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    history.replace('./1');
   }
 
-  const getStampsByConditions = (count: number) => {
-    if (count > 0) {
-      fetchRequiredCardsByConditions();
-    } else {
-      fetchRequiredCards();
-    }
-  };
+  const requestRequiredCardsWithPage = async () => {
+    const currentPageNo = parseInt(params.pageNo);
 
-  const getNextPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
-  };
+    const limit = PAGE_SIZE;
+    const offset = (currentPageNo - 1) * PAGE_SIZE;
 
-  const onClickFilter = useCallback(() => {
-    setOpenFilter(prev => !prev);
-  }, []);
+    setIsLoading(true);
+    await lectureService!.findAllRqdTableViewsWithPage({ limit, offset });
+    checkShowSeeMore();
+    setIsLoading(false);
+  };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     lectureService!.sortTableViews(column, direction);
-  }, []);
+  }, []);  
 
-  const onChangeFilterCount = useCallback((count: number) => {
-    setFilterCount(count);
-  }, []);
-  
-
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
-
-    history.replace(`./${getNextPageNo()}`);
     
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
 
-    setIsLoading(false);
-    checkShowSeeMore();
-  
-  }, [contentType, pageInfo.current, params.pageNo]);
+    history.replace(`./${nextPageNo}`);
+  }
 
   const checkShowSeeMore = (): void => {
     const { lectureTableViews, lectureTableCount } = lectureService!;
@@ -149,16 +144,8 @@ function RequiredCardListContainer({
             contentType={contentType}
             resultEmpty={resultEmpty}
             totalCount={lectureTableCount}
-            filterCount={filterCount}
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
           />
-          <FilterBoxContainer
-            openFilter={openFilter}
-            onClickFilter={onClickFilter}
-            onChangeFilterCount={onChangeFilterCount}
-            getModels={getStampsByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -167,8 +154,8 @@ function RequiredCardListContainer({
           <>
             {(!resultEmpty && (
               <>
-                <MyLearningTableTemplate>
-                  <MyLearningTableHeader
+                <MyLearningListTemplate>
+                  <MyLearningListHeaderView
                     contentType={contentType}
                     onClickSort={onClickSort}
                   />
@@ -176,7 +163,7 @@ function RequiredCardListContainer({
                     requiredCards={lectureTableViews}
                     totalCount={lectureTableCount}
                   />
-                </MyLearningTableTemplate>
+                </MyLearningListTemplate>
                 {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
               </>
             )) || (
@@ -226,6 +213,7 @@ function RequiredCardListContainer({
 
 export default inject(mobxHelper.injectFrom(
   'lecture.lectureService',
+  'shared.filterBoxService',
 ))(observer(RequiredCardListContainer));
 
 const PAGE_SIZE = 20;

@@ -1,4 +1,4 @@
-import { findTotalMyLearningSummary, getBadgeLearningCompanyAvg } from '../api/personalBoardApi';
+import { getBadgeLearningCompanyAvg } from '../api/personalBoardApi';
 import { setBadgeLearningTimeItem, getBadgeLearningTimeItem, } from '../store/PersonalBoardStore';
 import { findBadgesWithStudentCount } from '../../../../certification/api/BadgeApi';
 
@@ -13,19 +13,18 @@ export async function requestBadgeLearningTime(companyCode: string) {
   if (badgeLearningTime !== undefined) {
     mylearningTime = badgeLearningTime.mylearningTimeHour * 60 + badgeLearningTime.mylearningTimeMinute
   }
-  findTotalMyLearningSummary().then(() => {
-    if (allBadgeCount) {
-      setBadgeLearningTimeItem({
-        badgeMyCount: allBadgeCount.issuedCount,
-        AllBadgeMyCount: allBadgeCount.badgeCount,
-        companyAvgBadgeCount: badgeLearningCompanyAvg ? badgeLearningCompanyAvg.badgeAverage : 0,
-        allCompanyAvgBadgeCount: allBadgeCount.badgeCount,
-        allMylearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
-        mylearningTimeHour: badgeLearningTime!.mylearningTimeHour,
-        mylearningTimeMinute: badgeLearningTime!.mylearningTimeMinute,
-        companyAvglearningTime: badgeLearningCompanyAvg ? Math.round(badgeLearningCompanyAvg.learningTimeAverage) : 0,
-        allCompanyAvglearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
-      })
-    }
-  })
+  // findTotalMyLearningSummary().then(() => {
+  if (allBadgeCount) {
+    setBadgeLearningTimeItem({
+      badgeMyCount: allBadgeCount.issuedCount,
+      AllBadgeMyCount: allBadgeCount.badgeCount,
+      companyAvgBadgeCount: badgeLearningCompanyAvg ? badgeLearningCompanyAvg.badgeAverage : 0,
+      allCompanyAvgBadgeCount: allBadgeCount.badgeCount,
+      allMylearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
+      mylearningTimeHour: badgeLearningTime!.mylearningTimeHour,
+      mylearningTimeMinute: badgeLearningTime!.mylearningTimeMinute,
+      companyAvglearningTime: badgeLearningCompanyAvg ? Math.round(badgeLearningCompanyAvg.learningTimeAverage) : 0,
+      allCompanyAvglearningTime: mylearningTime > badgeLearningCompanyAvg.learningTimeAverage ? mylearningTime * 110 : badgeLearningCompanyAvg * 110,
+    })
+  }
 }

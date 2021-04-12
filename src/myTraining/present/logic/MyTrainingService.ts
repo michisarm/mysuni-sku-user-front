@@ -12,8 +12,6 @@ import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel'
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
-import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
-import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import { FilterCondition } from '../../model/FilterCondition';
 import { Direction } from '../../model/Direction';
 import { MyLearningContentType } from '../../ui/model/MyLearningContentType';
@@ -331,12 +329,6 @@ class MyTrainingService {
 
   _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
 
-  @observable
-  private _filterCountViews: FilterCountViewModel[] = [];
-
-  @observable
-  private _totalFilterCountView: FilterCountViewModel = new FilterCountViewModel();
-
   private inProgressTableViews: MyTrainingTableViewModel[] = [];
 
   private inProgressTableCount: number = 0;
@@ -359,14 +351,6 @@ class MyTrainingService {
 
   @computed get myTrainingTableCount() {
     return this._myTrainingTableViewCount;
-  }
-
-  @computed get filterCountViews() {
-    return this._filterCountViews;
-  }
-
-  @computed get totalFilterCountView() {
-    return this._totalFilterCountView;
   }
 
   @action
@@ -407,18 +391,14 @@ class MyTrainingService {
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
-  changeFilterRdoWithConditions(conditions: FilterCondition) {
+  setFilterRdoByConditions(conditions: FilterCondition) {
     /* 조건이 변경되면 offset 을 초기화 해, 새롭게 조회함. */
-    this._myTrainingFilterRdo.changeConditions(conditions);
+    this._myTrainingFilterRdo.setByConditions(conditions);
     this._myTrainingFilterRdo.setDefaultOffset();
   }
 
   changeFilterRdoWithOffset(offset: Offset) {
-    this._myTrainingFilterRdo.changeOffset(offset);
-  }
-
-  getFilterCount() {
-    return this._myTrainingFilterRdo.getFilterCount();
+    this._myTrainingFilterRdo.setOffset(offset);
   }
 
   @action
@@ -494,86 +474,18 @@ class MyTrainingService {
   }
 
   @action
-  async findAllStampTableViews() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-    return true;
-  }
-
-  @action
-  async findAllStampTableViewsByConditions() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-      return false;
-    }
-    return true;
-  }
-
-  @action
-  async findAllStampTableViewsWithPage(offset: Offset) {
-    this._myTrainingFilterRdo.changeOffset(offset);
-
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      const addedTableViews = offsetTableViews.results.map(
-        result => new MyTrainingTableViewModel(result)
-      );
-      console.log(addedTableViews);
-      runInAction(
-        () =>
-          (this._myTrainingTableViews = [
-            ...this._myTrainingTableViews,
-            ...addedTableViews,
-          ])
-      );
-    }
-  }
-
-  @action
   async findAllTableViewsWithPage(offset: Offset) {
-    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
-      /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-      return (this._myTrainingTableViews = [...addedTableViews]);
+      runInAction(() => {
+        this._myTrainingTableViews = [...addedTableViews];
+      });
+
+      return;
     }
 
-    this._myTrainingFilterRdo.changeOffset(offset);
+
+    this._myTrainingFilterRdo.setOffset(offset);
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -614,7 +526,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithServiceType(serviceType: string) {
-    this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
+    this._myTrainingFilterRdo.setOffset({ offset: 0, limit: 20 });
 
     const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
       this._myTrainingFilterRdo
@@ -665,7 +577,7 @@ class MyTrainingService {
     );
 
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
-    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
+    filterRdoForExcel.setOffset({ offset: 0, limit: 9999 });
     filterRdoForExcel.changeColumnDirection(this.column, this.direction);
 
     const myTrainingTableViewsForExcel: MyTrainingTableViewModel[] = await this.myTrainingApi.findAllTableViewsForExcel(
@@ -673,24 +585,6 @@ class MyTrainingService {
     );
 
     return myTrainingTableViewsForExcel;
-  }
-
-  async findAllStampTableViewsForExcel() {
-    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(
-      this._myTrainingFilterRdo
-    );
-
-    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
-    filterRdoForExcel.changeColumnDirection(this.column, this.direction);
-
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(
-      filterRdoForExcel
-    );
-    const myTrainingV2sForExcel = offsetMyTrainings.results.map(
-      offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining)
-    );
-
-    return myTrainingV2sForExcel;
   }
 
   async findAllInProgressStorage() {
@@ -727,33 +621,6 @@ class MyTrainingService {
     }
 
     return null;
-  }
-
-  @action
-  async findAllFilterCountViews() {
-    const response = await this.myTrainingApi.findAllFilterCountViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (response) {
-      const filterCountViews = response.map(
-        (filterCountView: any) => new FilterCountViewModel(filterCountView)
-      );
-      const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
-        filterCountViews
-      );
-
-      runInAction(() => {
-        this._filterCountViews = filterCountViews;
-        this._totalFilterCountView = totalFilterCountView;
-      });
-    }
-  }
-
-  @action
-  clearAllFilterCountViews() {
-    this._filterCountViews = [];
-    this._totalFilterCountView = new FilterCountViewModel();
   }
 
   @action
@@ -846,35 +713,3 @@ export const convertToKey = (column: string): any => {
       return '';
   }
 };
-
-// if (channelIds.length > 0) {
-//   // const result: ConcatArray<MyTrainingModel> = [];
-//   const trst: MyTrainingModel[][] = [];
-//   const rest: MyTrainingModel[] = [];
-//
-//   for (let i = 0; i < channelIds.length; i++) {
-//     for (let j = 0; j < offsetList.results.length; j++) {
-//       if (offsetList.results[j].category.channel.id === channelIds[i]){
-//         rest.push(offsetList.results[j]);
-//       }
-//     }
-//     //trst.push(offsetList.results.filter(e => e.category.channel.id === channelIds[i]));
-//   }
-//
-//   // @ts-ignore
-//   rest.sort((a, b) => b.endDate - a.endDate).slice(offset, limit + offset);
-//
-//   offsetList.totalCount = rest.length;
-//
-//   // const result = offsetList.results.slice(offset, limit + offset).find(e => e.category.channel.id === channelIds[0]);
-//   const result = offsetList.results.filter(e => e.category.channel.id === channelIds[0]).slice(offset, limit + offset);
-//   // @ts-ignore
-//   runInAction(() => this._myTrainings = this._myTrainings.concat(rest));
-//   return offsetList;
-// } else {
-//   const result = offsetList.results.slice(offset, limit + offset);
-//   // @ts-ignore
-//   runInAction(() => this._myTrainings = this._myTrainings.concat(result));
-//   return offsetList;
-// }
-// 1
