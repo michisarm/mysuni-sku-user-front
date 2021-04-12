@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import MyTrainingService from "../present/logic/MyTrainingService";
-import MyTrainingFilterRdoModel from "../model/MyTrainingFilterRdoModel";
 
 export function useRequestLearningStorage() {
   useEffect(() => {

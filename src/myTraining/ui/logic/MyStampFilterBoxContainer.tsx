@@ -7,14 +7,14 @@ import CheckboxOptions from '../model/CheckboxOptions';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
 import { useParams } from 'react-router-dom';
 import { CollegeService } from '../../../college/stores';
-import { FilterCondition, initialCondition } from '../../model/FilterCondition';
+import { FilterCondition, initialCondition, getFilterCount } from '../../model/FilterCondition';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import FilterCountService from '../../present/logic/FilterCountService';
 
 interface MyStampFilterBoxContainerProps {
-  getModels: (count: number) => void;
+  refindList: (count: number) => void;
   myStampService?: MyStampService;
   filterCountService?: FilterCountService;
   collegeService?: CollegeService;
@@ -22,7 +22,7 @@ interface MyStampFilterBoxContainerProps {
 }
 
 function MyStampFilterBoxContainer({
-  getModels,
+  refindList,
   myStampService,
   filterCountService,
   collegeService,
@@ -38,33 +38,21 @@ function MyStampFilterBoxContainer({
   const { filterCountViews, totalFilterCountView } = filterCountService!;
   const { openFilter, setOpenFilter, setFilterCount } = filterBoxService!;
 
-  const onClickFilter = () => {
-    setOpenFilter(!openFilter);
-  }
-
   useEffect(() => {
-    /*
-      1. filter 창이 열리는 순간, College 에 대한 정보를 불러옴. 2020.10.08 by 김동구
-      2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
-    */
     if (showResult) {
-      myStampService!.changeFilterRdoWithCondition(conditions);
-      const filterCount = myStampService!.getFilterCount();
-      getModels(filterCount);
-      
-      /* 
-        1. openFilter => false 
-        2. showResult => false
-      */
-      onClickFilter();
+      myStampService!.setFilterRdoByConditions(conditions);
+      const filterCount = getFilterCount(conditions);
+      refindList(filterCount);
+    
+      setOpenFilter(false);
       setShowResult(false);
     }
   }, [showResult]);
 
   useEffect(() => {
     if (!openFilter) {
-      myStampService!.changeFilterRdoWithCondition(conditions);
-      const filterCount = myStampService!.getFilterCount();
+      myStampService!.setFilterRdoByConditions(conditions);
+      const filterCount = getFilterCount(conditions);
       setFilterCount(filterCount);
     }
   }, [openFilter]);

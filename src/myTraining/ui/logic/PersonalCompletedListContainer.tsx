@@ -36,14 +36,14 @@ function PersonalCompletedListContainer({
   const { apls: {results: aplTableViews }, aplCount: {all: aplTableCount } } = aplService!;
 
   useEffect(() => {
-    fetchApls();
+    requestApls();
 
     return () => {
       aplService!.clearApls();
     }
   }, []);
 
-  const fetchApls = async () => {
+  const requestApls = async () => {
     aplService!.clearAplQueryProps();
 
     setIsLoading(true);
@@ -56,11 +56,8 @@ function PersonalCompletedListContainer({
 
   const getNextPageNo = (): number => {
     const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+    const nextPageNo = parseInt(currentPageNo) + 1;
+    return nextPageNo;
   };
 
 
