@@ -14,8 +14,8 @@ import {
 } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
 
 const SORT_OPTIONS = [
-  { key: 'memberCreatedTime', value: 'memberCreatedTime', text: '최근가입순' },
   { key: 'lastPostTime', value: 'lastPostTime', text: '최신글순' },
+  { key: 'memberCreatedTime', value: 'memberCreatedTime', text: '최근가입순' },
   { key: 'name', value: 'name', text: '가나다순' },
 ];
 
@@ -57,7 +57,7 @@ function changeSort(_: any, data: DropdownProps) {
   if (myCommunityIntro === undefined) {
     return;
   }
-  const communitiesSort = (data.value || 'memberCreatedTime').toString();
+  const communitiesSort = (data.value || 'lastPostTime').toString();
   setMyCommunityIntro({
     ...myCommunityIntro,
     communitiesSort,
@@ -97,16 +97,16 @@ function MyCommunityListContainer() {
         </div>
         {myCommunityIntro.communitiesTotalCount >
           myCommunityIntro.communitiesOffset && (
-          <div className="more-comments community-side">
-            <Button
-              icon
-              className="left moreview"
-              onClick={requestAppendMyCommunityList}
-            >
-              <Icon className="moreview" /> list more
-            </Button>
-          </div>
-        )}
+            <div className="more-comments community-side">
+              <Button
+                icon
+                className="left moreview"
+                onClick={requestAppendMyCommunityList}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            </div>
+          )}
       </div>
     </div>
   );
