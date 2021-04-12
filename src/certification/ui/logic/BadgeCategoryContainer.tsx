@@ -53,7 +53,7 @@ function BadgeCategoryContainer({
       <div className="badge-slide-inner">
         <div className="badge-navi">
           <Button className="btn-prev prev-off">이전</Button>
-          <Button className="btn-prev next-on">다음</Button>
+          <Button className="btn-next next-on">다음</Button>
         </div>
         <div className={classNames('fn-parent')}>
           <a className="fn-click">

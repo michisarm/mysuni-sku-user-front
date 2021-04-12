@@ -5,6 +5,7 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import { BadgeContentWrapper } from './BadgeContentWrapper';
 import Image from '../../../shared/components/Image';
+import BadgeStarSvg from './BadgeStarSvg';
 
 enum certiAdminCategoryIcon {
   //mySUNI = '/static/media/logo-badge.svg',
@@ -115,22 +116,34 @@ const getEmHtml = (level: BadgeLevel) => {
     case 'Level1':
       return (
         <>
-          <em />
+          <em>
+            <BadgeStarSvg color="" />
+          </em>
         </>
       );
     case 'Level2':
       return (
         <>
-          <em />
-          <em />
+          <em>
+            <BadgeStarSvg color="" />
+          </em>
+          <em>
+            <BadgeStarSvg color="" />
+          </em>
         </>
       );
     case 'Level3':
       return (
         <>
-          <em />
-          <em />
-          <em />
+          <em>
+            <BadgeStarSvg color="" />
+          </em>
+          <em>
+            <BadgeStarSvg color="" />
+          </em>
+          <em>
+            <BadgeStarSvg color="" />
+          </em>
         </>
       );
   }
