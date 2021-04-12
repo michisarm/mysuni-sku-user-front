@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { InMyLectureTableViewModel } from '../../model';
 import { Table } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,7 @@ import {
   convertTimeToDate,
 } from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
+import { useScrollMove } from '../../useScrollMove';
 
 interface InMyLectureTableViewProps {
   inMyLectures: InMyLectureTableViewModel[];
@@ -23,8 +24,19 @@ export default function InMyLectureListView({
   totalCount,
 }: InMyLectureTableViewProps) {
   const history = useHistory();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 200);
+  }, [scrollOnceMove]);
 
   const onViewDetail = (e: any, cardId: string) => {
+    e.preventDefault();
+    
+    scrollSave();
+
     const params: LectureParams = {
       cardId,
       viewType: 'view',
