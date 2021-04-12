@@ -475,12 +475,15 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithPage(offset: Offset) {
-    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
     if (this._myTrainingFilterRdo.getFilterCount() === 0) {
-      /* 조건이 없을 경우에만 session storage 에서 데이터를 가져옴. */
       const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-      return (this._myTrainingTableViews = [...addedTableViews]);
+      runInAction(() => {
+        this._myTrainingTableViews = [...addedTableViews];
+      });
+
+      return;
     }
+
 
     this._myTrainingFilterRdo.setOffset(offset);
 
@@ -710,35 +713,3 @@ export const convertToKey = (column: string): any => {
       return '';
   }
 };
-
-// if (channelIds.length > 0) {
-//   // const result: ConcatArray<MyTrainingModel> = [];
-//   const trst: MyTrainingModel[][] = [];
-//   const rest: MyTrainingModel[] = [];
-//
-//   for (let i = 0; i < channelIds.length; i++) {
-//     for (let j = 0; j < offsetList.results.length; j++) {
-//       if (offsetList.results[j].category.channel.id === channelIds[i]){
-//         rest.push(offsetList.results[j]);
-//       }
-//     }
-//     //trst.push(offsetList.results.filter(e => e.category.channel.id === channelIds[i]));
-//   }
-//
-//   // @ts-ignore
-//   rest.sort((a, b) => b.endDate - a.endDate).slice(offset, limit + offset);
-//
-//   offsetList.totalCount = rest.length;
-//
-//   // const result = offsetList.results.slice(offset, limit + offset).find(e => e.category.channel.id === channelIds[0]);
-//   const result = offsetList.results.filter(e => e.category.channel.id === channelIds[0]).slice(offset, limit + offset);
-//   // @ts-ignore
-//   runInAction(() => this._myTrainings = this._myTrainings.concat(rest));
-//   return offsetList;
-// } else {
-//   const result = offsetList.results.slice(offset, limit + offset);
-//   // @ts-ignore
-//   runInAction(() => this._myTrainings = this._myTrainings.concat(result));
-//   return offsetList;
-// }
-// 1

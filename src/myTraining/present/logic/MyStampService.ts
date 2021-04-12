@@ -38,8 +38,7 @@ class MyStampService {
   private direction: Direction = Direction.DESC;
 
   @action
-  async findAllMyStamps(offset: Offset) {
-    this.filterRdo.setOffset(offset);
+  async findAllMyStamps() {
     const offsetMyStamp = await this.myTrainingApi.findAllStampTableViews(this.filterRdo);
 
     if (

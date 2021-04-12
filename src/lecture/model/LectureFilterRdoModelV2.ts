@@ -1,3 +1,4 @@
+import { includes } from 'lodash';
 import moment from 'moment';
 import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
@@ -93,10 +94,8 @@ class LectureFilterRdoModelV2 {
   }
 
   toCardRdo(): CardRdo {
-    console.log('this.certi :: ', this.certifications);
-
-    const hasStamp = this.certifications.includes('stamp');
-    const hasBadge = this.certifications.includes('badge');
+    const hasStamp = includes(this.certifications, 'stamp');
+    const hasBadge = includes(this.certifications, 'badge');
     const startLearningDate = this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : '';
     const endLearningDate = this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : '';
 

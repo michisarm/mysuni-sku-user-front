@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import ReactGA from 'react-ga';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { LectureService, SeeMoreButton } from '../../../lecture';
@@ -36,8 +36,6 @@ function RequiredCardListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
   const { lectureTableViews, lectureTableCount } = lectureService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
@@ -58,6 +56,14 @@ function RequiredCardListContainer({
     }
   }, [showResult]);
 
+  useEffect(() => {
+    if(params.pageNo === '1') {
+      return;
+    }
+      
+    requestRequiredCardsWithPage();
+  }, [params.pageNo]);
+
   const requestRequiredCards = async () => {
     lectureService!.initFilterRdo();
 
@@ -74,35 +80,35 @@ function RequiredCardListContainer({
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    history.replace('./1');
   }
 
-  const getNextPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    const nextPageNo = parseInt(currentPageNo) + 1;
-    return nextPageNo;
+  const requestRequiredCardsWithPage = async () => {
+    const currentPageNo = parseInt(params.pageNo);
+
+    const limit = PAGE_SIZE;
+    const offset = (currentPageNo - 1) * PAGE_SIZE;
+
+    setIsLoading(true);
+    await lectureService!.findAllRqdTableViewsWithPage({ limit, offset });
+    checkShowSeeMore();
+    setIsLoading(false);
   };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
     lectureService!.sortTableViews(column, direction);
   }, []);  
 
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
-
-    history.replace(`./${getNextPageNo()}`);
     
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
 
-    setIsLoading(false);
-    checkShowSeeMore();
-  
-  }, [contentType, pageInfo.current, params.pageNo]);
+    history.replace(`./${nextPageNo}`);
+  }
 
   const checkShowSeeMore = (): void => {
     const { lectureTableViews, lectureTableCount } = lectureService!;
