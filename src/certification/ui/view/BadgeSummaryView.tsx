@@ -18,7 +18,7 @@ export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
 
   return (
     <>
-      <div className="badge-list-type">
+      <div className="badge-list-type badge_new">
         <div className="badge-box basic">
           <BadgeView
             id={badge.id}

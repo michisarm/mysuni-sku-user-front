@@ -6,6 +6,7 @@ import BadgeSize from '../model/BadgeSize';
 import { BadgeContentWrapper } from './BadgeContentWrapper';
 import Image from '../../../shared/components/Image';
 import BadgeStarSvg from './BadgeStarSvg';
+import { useRequestBadgeColor } from '../../service/useRequestBadgeColor';
 
 enum certiAdminCategoryIcon {
   //mySUNI = '/static/media/logo-badge.svg',
@@ -28,6 +29,7 @@ interface BadgeViewProps {
   categoryId: string;
   badgeStyle: BadgeStyle;
   badgeSize: BadgeSize;
+  badgeColor?: string;
 }
 
 export default function BadgeView({
@@ -38,6 +40,7 @@ export default function BadgeView({
   categoryId,
   badgeStyle,
   badgeSize,
+  badgeColor,
 }: BadgeViewProps) {
   // 인증주체(mySUNI, Subsidiary, Etc...) 아이콘
   // const getIconUrl = (
@@ -60,10 +63,13 @@ export default function BadgeView({
   //   }
   // };
 
+  if (badgeColor === undefined) {
+    badgeColor = useRequestBadgeColor(id);
+  }
   const certificationIconUrl = getCertificationIconUrl();
   const collegeIconUrl = getCollegeIconUrl(iconUrl, categoryId);
   const starStyle = getStarStyle(level);
-  const emHtml = getEmHtml(level);
+  const emHtml = getEmHtml(level, badgeColor);
 
   return (
     <BadgeContentWrapper
@@ -111,13 +117,13 @@ const getStarStyle = (level: BadgeLevel) => {
   return '';
 };
 
-const getEmHtml = (level: BadgeLevel) => {
+const getEmHtml = (level: BadgeLevel, badgeColor: string) => {
   switch (level) {
     case 'Level1':
       return (
         <>
           <em>
-            <BadgeStarSvg color="" />
+            <BadgeStarSvg color={badgeColor} />
           </em>
         </>
       );
@@ -125,10 +131,10 @@ const getEmHtml = (level: BadgeLevel) => {
       return (
         <>
           <em>
-            <BadgeStarSvg color="" />
+            <BadgeStarSvg color={badgeColor} />
           </em>
           <em>
-            <BadgeStarSvg color="" />
+            <BadgeStarSvg color={badgeColor} />
           </em>
         </>
       );
@@ -136,13 +142,13 @@ const getEmHtml = (level: BadgeLevel) => {
       return (
         <>
           <em>
-            <BadgeStarSvg color="" />
+            <BadgeStarSvg color={badgeColor} />
           </em>
           <em>
-            <BadgeStarSvg color="" />
+            <BadgeStarSvg color={badgeColor} />
           </em>
           <em>
-            <BadgeStarSvg color="" />
+            <BadgeStarSvg color={badgeColor} />
           </em>
         </>
       );

@@ -13,7 +13,7 @@ function BadgeStartSvg({ color }: Props) {
       viewBox="0 0 14 15"
     >
       <g fill="none" fillRule="evenodd">
-        <g fill="#EA012C" fillRule="nonzero">
+        <g fill={color} fillRule="nonzero">
           <g>
             <g>
               <g>

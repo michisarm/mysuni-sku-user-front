@@ -15,7 +15,7 @@ import { useScrollMove } from 'myTraining/useScrollMove';
 import { BadgeLevel } from '../../model/BadgeLevel';
 import { BadgeRouteParams } from '../model/BadgeRouteParams';
 import { BadgeCategoryService } from '../../../lecture/stores';
-import { Badge, getMainCategoryId } from '../../model/Badge';
+import { BadgeBundle, getMainCategoryId } from '../../model/Badge';
 import BadgeView from '../view/BadgeView';
 import { useRequestAllBadges } from '../../service/useRequestAllBadges';
 
@@ -88,22 +88,23 @@ function AllBadgeListContainer({
         <ul>
           {(badges &&
             badges.length > 0 &&
-            badges.map((badge: Badge, index: number) => {
-              const mainCategoryId = getMainCategoryId(badge);
+            badges.map((badgeBundle: BadgeBundle, index: number) => {
+              const mainCategoryId = getMainCategoryId(badgeBundle.badge);
 
               return (
                 <li key={`all-badge-${index}`}>
                   <BadgeView
-                    id={badge.id}
-                    name={badge.name}
-                    level={badge.level}
-                    iconUrl={badge.iconUrl}
+                    id={badgeBundle.badge.id}
+                    name={badgeBundle.badge.name}
+                    level={badgeBundle.badge.level}
+                    iconUrl={badgeBundle.badge.iconUrl}
                     categoryId={mainCategoryId}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
+                    badgeColor={badgeBundle.badgeCategory.themeColor}
                   />
                   <div className="badge-name">
-                    <span>{badge.name}</span>
+                    <span>{badgeBundle.badge.name}</span>
                   </div>
                 </li>
               );
