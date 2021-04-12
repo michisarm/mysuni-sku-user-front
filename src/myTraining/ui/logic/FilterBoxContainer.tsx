@@ -53,6 +53,13 @@ function FilterBoxContainer({
 
   const onCheckAll = (e: any, data: any) => {
     switch (data.name) {
+      case FilterConditionName.LearningType:
+        if(conditions.learningTypes.length === CheckboxOptions.learningTypes.length) {
+          setConditions({ ...conditions, learningTypes: [] });
+          break;
+        }
+        setConditions({ ...conditions, learningTypes: [...CheckboxOptions.learningTypes.map(learningType => learningType.value )]});
+        break;
       case FilterConditionName.College:
         if (conditions.collegeIds.length === colleges.length) {
           setConditions({ ...conditions, collegeIds: [] });
@@ -93,8 +100,15 @@ function FilterBoxContainer({
   };
 
   const onCheckOne = (e: any, data: any) => {
-
     switch (data.name) {
+      case FilterConditionName.LearningType:
+        if(conditions.learningTypes.includes(data.value)) {
+          setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== data.value) });
+          break;
+        }
+
+        setConditions({ ...conditions, learningTypes: conditions.learningTypes.concat(data.value) });
+        break;
       case FilterConditionName.College:
         if (conditions.collegeIds.includes(data.value)) {
           setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== data.value) });
@@ -143,6 +157,9 @@ function FilterBoxContainer({
 
   const onClearOne = (type: string, condition: string) => {
     switch (type) {
+      case FilterConditionName.LearningType:
+        setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== condition) });
+        break;
       case FilterConditionName.College:
         setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== getCollegeId(condition)) });
         break;
@@ -181,14 +198,6 @@ function FilterBoxContainer({
     setConditions({ ...conditions, endDate: value });
   };
 
-  const onCheckApplying = (e: any, data: any) => {
-    if (conditions.applying === 'true') {
-      setConditions({ ...conditions, applying: '' });
-      return;
-    }
-    setConditions({ ...conditions, applying: data.value });
-  }
-
   return (
     <div className={(openFilter && 'filter-table on') || 'filter-table'}>
       {openFilter && (
@@ -208,7 +217,6 @@ function FilterBoxContainer({
             onCheckAll={onCheckAll}
             onChangeStartDate={onChangeStartDate}
             onChangeEndDate={onChangeEndDate}
-            onCheckApplying={onCheckApplying}
           />
           <CheckedFilterView
             colleges={colleges}

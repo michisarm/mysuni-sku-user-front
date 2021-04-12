@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Table } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -12,6 +12,7 @@ import LectureTableViewModel from '../../../lecture/model/LectureTableViewModel'
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { LearningStateName, LearningState } from '../../../shared/model';
 import { useScrollMove } from '../../useScrollMove';
+import { LearningTypeName } from '../../model/LearningType';
 
 interface RequiredCardListViewProps {
   requiredCards: LectureTableViewModel[];
@@ -44,6 +45,7 @@ export default function RequiredCardListView({
       {requiredCards &&
         requiredCards.length > 0 &&
         requiredCards.map((requiredCard, index) => {
+          const learningType = LearningTypeName[requiredCard.type];
           const collegeName = getCollgeName(requiredCard.category.collegeId);
           const learningState =
             (requiredCard.learningState &&
@@ -68,7 +70,7 @@ export default function RequiredCardListView({
                   <span className="ellipsis">{requiredCard.name}</span>
                 </a>
               </Table.Cell>
-              <Table.Cell>{requiredCard.serviceType} </Table.Cell>
+              <Table.Cell>{learningType || '-'} </Table.Cell>
               <Table.Cell>{requiredCard.difficultyLevel || '-'}</Table.Cell>
               <Table.Cell>
                 {timeToHourMinutePaddingFormat(requiredCard.learningTime)}

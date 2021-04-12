@@ -328,6 +328,7 @@ class InMyLectureService {
           ...this._inMyLectureTableViews,
           ...addedTableViews,
         ];
+        this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
     }
   }

@@ -605,6 +605,7 @@ class LectureService {
         if (student) {
           const lectureTableView = new LectureTableViewModel();
           lectureTableView.serviceId = card.id;
+          lectureTableView.type = card.type;
           lectureTableView.category = mainCategory;
           lectureTableView.difficultyLevel = card.difficultyLevel || '';
           lectureTableView.name = card.name;
@@ -621,6 +622,7 @@ class LectureService {
 
         const lectureTableView = new LectureTableViewModel();
         lectureTableView.serviceId = card.id;
+        lectureTableView.type = card.type;
         lectureTableView.category = mainCategory!;
         lectureTableView.difficultyLevel = card.difficultyLevel!;
         lectureTableView.name = card.name;
