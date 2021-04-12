@@ -18,7 +18,11 @@ import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import LectureParams from '../../../viewModel/LectureParams';
-import { saveTask, submitTask } from '../../../api/cardApi';
+import {
+  clearFindMyCardRelatedStudentsCache,
+  saveTask,
+  submitTask,
+} from '../../../api/cardApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 
 interface LectureTestPaperViewProps {
@@ -62,6 +66,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
     await saveTask(testStudentItem.studentId, 'Test');
+    await clearFindMyCardRelatedStudentsCache();
     await requestCardLectureStructure(cardId);
   }, [answerItem, params]);
 
@@ -121,6 +126,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
             }
 
             await submitTask(testStudentItem.studentId, 'Test');
+            await clearFindMyCardRelatedStudentsCache();
             await requestCardLectureStructure(cardId);
             openView('result');
           }
