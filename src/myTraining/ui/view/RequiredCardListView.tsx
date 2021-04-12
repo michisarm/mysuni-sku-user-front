@@ -23,13 +23,7 @@ export default function RequiredCardListView({
   totalCount,
 }: RequiredCardListViewProps) {
   const history = useHistory();
-  const { scrollOnceMove, scrollSave } = useScrollMove();
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollOnceMove();
-    }, 200);
-  }, [scrollOnceMove]);
+  const { scrollSave } = useScrollMove();
 
   const onViewDetail = (e: any, cardId: string) => {
     e.preventDefault();

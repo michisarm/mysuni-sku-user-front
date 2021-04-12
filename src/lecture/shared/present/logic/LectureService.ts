@@ -7,7 +7,6 @@ import {
 } from 'mobx';
 import { autobind, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
-import FilterCountViewModel from 'myTraining/model/FilterCountViewModel';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
@@ -22,11 +21,7 @@ import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
-import {
-  findByRdo,
-  countRequiredCards,
-  findCollegeAndCardCount,
-} from '../../../detail/api/cardApi';
+import { findByRdo, countRequiredCards } from '../../../detail/api/cardApi';
 import { CardWithCardRealtedCount } from '../../../model/CardWithCardRealtedCount';
 import { Direction } from '../../../../myTraining/model/Direction';
 import { FilterCondition } from '../../../../myTraining/model/FilterCondition';
@@ -683,6 +678,7 @@ class LectureService {
           ...this._lectureTableViews,
           ...addLectureTableViews,
         ];
+        this._lectureTableViewCount = offsetRequiredCard.totalCount;
       });
     }
   }

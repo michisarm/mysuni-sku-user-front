@@ -94,8 +94,8 @@ class LectureFilterRdoModelV2 {
   }
 
   toCardRdo(): CardRdo {
-    const hasStamp = includes(this.certifications, 'stamp');
-    const hasBadge = includes(this.certifications, 'badge');
+    const hasStamp = includes(this.certifications, 'stamp') || undefined;
+    const hasBadge = includes(this.certifications, 'badge') || undefined;
     const startLearningDate = this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : '';
     const endLearningDate = this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : '';
 

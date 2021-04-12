@@ -3,11 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
-import RecommendChannelsPage from './recommend/ui/page/RecommendChannelsPage';
-import RecommendChannelLecturesPage from './recommend/ui/page/RecommendChannelLecturesPage';
-import LectureDetailCubeRoutes from './detail/LectureDetailCubeRoutes';
-import LectureDetailCourseRoutes from './detail/LectureDetailCourseRoutes';
 import RecommendRoutes from './recommend/Routes';
+import LectureDetailRoutes from './detail/LectureDetailRoutes';
 
 class Routes extends Component {
   //
@@ -34,15 +31,8 @@ class Routes extends Component {
           component={ChannelLecturesPage}
         />
 
-        <Route
-          path="/lecture/card/:cardId/cube/:cubeId/:viewType/:cubeType"
-          component={LectureDetailCubeRoutes}
-        />
+        <Route path="/lecture/card/:cardId" component={LectureDetailRoutes} />
 
-        <Route
-          path="/lecture/card/:cardId/:viewType"
-          component={LectureDetailCourseRoutes}
-        />
         {/* recommend */}
         <Route path="/lecture/recommend" component={RecommendRoutes} />
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -26,6 +26,7 @@ import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
+import { useScrollMove } from '../../useScrollMove';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
@@ -50,17 +51,30 @@ function MyTrainingListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { scrollOnceMove } = useScrollMove();
+
   const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
   useRequestFilterCountView();
 
   useEffect(() => {
-    requestMyTrainings(contentType);
+    myTrainingService!.clearAllTableViews();
+    myTrainingService!.initFilterRdo(contentType);
+    
+    if(params.pageNo === '1') {
+      requestMyTrainings();
+      return;
+    }
+
+    const currentPageNo = parseInt(params.pageNo);
+    const limit = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage({ offset: 0, limit });
 
     return () => {
-      myTrainingService!.clearAllTableViews();
-    }
+     
+    };
   }, [contentType]);
 
   useEffect(() => {
@@ -70,16 +84,7 @@ function MyTrainingListContainer({
     }
   }, [showResult]);
 
-  useEffect(() => {
-    if(params.pageNo === '1') {
-      return;
-    }    
-
-    requestmyTrainingsWithPage();
-  }, [params.pageNo]);
-  
-  const requestMyTrainings = async (contentType: MyContentType) => {
-    myTrainingService!.initFilterRdo(contentType);
+  const requestMyTrainings = async () => {
     setIsLoading(true);
     const isEmpty = await myTrainingService!.findAllTableViews();
     setResultEmpty(isEmpty);
@@ -96,18 +101,13 @@ function MyTrainingListContainer({
     history.replace('./1');
   };
 
-  const requestmyTrainingsWithPage = async () => {
-    const currentPageNo = parseInt(params.pageNo);
-
-    const limit = PAGE_SIZE;
-    const offset = (currentPageNo - 1) * PAGE_SIZE;
-
+  const requestmyTrainingsWithPage = async (offset: Offset) => {
     setIsLoading(true);
-    await myTrainingService!.findAllTableViewsWithPage({ limit, offset });
+    await myTrainingService!.findAllTableViewsWithPage(offset);
     checkShowSeeMore(); 
     setIsLoading(false);
+    scrollOnceMove();
   };
-
 
   const checkShowSeeMore = (): void => {
     const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
@@ -166,6 +166,11 @@ function MyTrainingListContainer({
     
     const currentPageNo = parseInt(params.pageNo);
     const nextPageNo = currentPageNo + 1;
+
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage({ offset, limit });
 
     history.replace(`./${nextPageNo}`);
   }

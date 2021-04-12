@@ -49,6 +49,15 @@ export const [findCardListCache, clearFindCardListCache] = createCacheApi(
   findCardList
 );
 
+export function findMyLatestLearningCards(count: number) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findMyLatestLearningCards`;
+
+  return axios
+    .get<CardWithCardRealtedCount[]>(url, { params: { count } })
+    .then(AxiosReturn);
+}
+
 export function findCardWithLearningContentCounts(
   cardIds: string[]
 ): Promise<CardWithLearningContentCountRom[] | undefined> {
@@ -64,6 +73,7 @@ export function findCardWithLearningContentCounts(
     })
     .then(AxiosReturn);
 }
+
 function findMyCardRelatedStudents(cardId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/myCardRelatedStudents/${cardId}`;
@@ -200,3 +210,15 @@ export const [
   findRecommendCardsCache,
   clearFindRecommendCards,
 ] = createCacheApi(findRecommendCards);
+
+export function registerHomework(
+  studentId: string,
+  fileBoxId: string,
+  homework: string
+): Promise<void> {
+  const url = `${BASE_URL}/students/registerHomework/${studentId}/${fileBoxId}`;
+  const axios = getAxios();
+  return axios
+    .put<void>(url, { homeworkContent: homework })
+    .then(response => response && response.data);
+}

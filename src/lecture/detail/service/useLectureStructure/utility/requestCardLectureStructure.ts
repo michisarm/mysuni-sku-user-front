@@ -90,7 +90,7 @@ function parseCubeReportItem(
   params.pathname = toPath(params);
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
-    switch (cubeStudent.extraWork.testStatus) {
+    switch (cubeStudent.extraWork.reportStatus) {
       case 'SAVE':
       case 'SUBMIT':
       case 'FAIL':
@@ -133,7 +133,7 @@ function parseCubeSurveyItem(
   params.pathname = toPath(params);
   let state: State = 'None';
   if (cubeStudent !== undefined && cubeStudent !== null) {
-    switch (cubeStudent.extraWork.testStatus) {
+    switch (cubeStudent.extraWork.surveyStatus) {
       case 'SAVE':
       case 'FAIL':
         state = 'Progress';
@@ -215,7 +215,7 @@ function parseCardReportItem(
   params.pathname = toPath(params);
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
-    switch (cardStudent.extraWork.testStatus) {
+    switch (cardStudent.extraWork.reportStatus) {
       case 'SAVE':
       case 'SUBMIT':
       case 'FAIL':
@@ -256,7 +256,7 @@ function parseCardSurveyItem(
   params.pathname = toPath(params);
   let state: State = 'None';
   if (cardStudent !== undefined && cardStudent !== null) {
-    switch (cardStudent.extraWork.testStatus) {
+    switch (cardStudent.extraWork.surveyStatus) {
       case 'SAVE':
       case 'FAIL':
         state = 'Progress';

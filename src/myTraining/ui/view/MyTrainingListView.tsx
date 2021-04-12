@@ -34,17 +34,19 @@ function MyTrainingListView({
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const { scrollOnceMove, scrollSave } = useScrollMove();
+  const { scrollSave } = useScrollMove();
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollOnceMove();
-    }, 200);
-  }, [scrollOnceMove]);
 
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
+
+    const params: LectureParams = {
+      cardId: myTraining.serviceId,
+      viewType: 'view',
+      pathname: '',
+    };
+
+    history.push(toPath(params));
 
     if(contentType === MyLearningContentType.InProgress) {
       ReactGA.event({
@@ -55,18 +57,7 @@ function MyTrainingListView({
         } - ${myTraining.name}`,
       });
     }
-    
     scrollSave();
-
-    const params: LectureParams = {
-      cardId: myTraining.serviceId,
-      viewType: 'view',
-      pathname: '',
-    };
-
-    history.push(toPath(params));
-
-   
   };
 
   const onCheckOne = useCallback(

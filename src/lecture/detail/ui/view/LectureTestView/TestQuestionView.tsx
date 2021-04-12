@@ -10,6 +10,8 @@ import {
 } from 'lecture/detail/store/LectureTestStore';
 import LearningState from 'lecture/detail/model/LearningState';
 import { EssayScore } from 'lecture/detail/model/GradeSheet';
+import LectureParams from '../../../viewModel/LectureParams';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
@@ -19,9 +21,10 @@ interface TestQuestionViewProps {
   readOnly: boolean;
   learningState?: LearningState;
   submitOk: boolean;
-  setSubmitOk: (submitOk:boolean) => void;
+  setSubmitOk: (submitOk: boolean) => void;
   dataLoadTime?: Number;
   essayScore?: EssayScore;
+  params: LectureParams;
 }
 
 function setAnswer(questionNo: string, value: string) {
@@ -53,6 +56,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   setSubmitOk,
   dataLoadTime,
   essayScore,
+  params,
 }) {
   let questionClassName = ' course-radio-survey ';
   if (
@@ -88,20 +92,34 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
     ) {
       if (submitOk && submitted) {
         if (!answerResult) {
-          if (learningState === 'Failed' || learningState === 'Missed') {
-            setAnswer(question.questionNo, '');  // 미이수 로딩시 틀린답안 표시 안함
+          const lectureStructureItem = getActiveStructureItem(params.pathname);
+          if (
+            lectureStructureItem?.student?.extraWork.testStatus === 'FAIL' ||
+            lectureStructureItem?.student?.extraWork.testStatus === 'SUBMIT'
+          ) {
+            setAnswer(question.questionNo, ''); // 미이수 로딩시 틀린답안 표시 안함
           }
         }
       }
     }
-  }, [question.questionNo, submitted,learningState,submitOk, dataLoadTime]);  // 배열에는 변경을 감지할 항목(제출 후 미이수시)
+  }, [
+    params.pathname,
+    question.questionNo,
+    submitted,
+    learningState,
+    submitOk,
+    dataLoadTime,
+  ]); // 배열에는 변경을 감지할 항목(제출 후 미이수시)
 
-  const showScore = learningState && (
-    learningState === 'Passed' || 
-    learningState === 'TestPassed' || 
-    learningState === 'Failed' ||
-    learningState === 'Missed'
-    ) ? true : false;
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
+
+  const showScore =
+    lectureStructureItem &&
+    (lectureStructureItem.student?.extraWork.testStatus === 'PASS' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'FAIL' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT')
+      ? true
+      : false;
 
   return (
     <>
@@ -110,11 +128,21 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           <span>{question.questionNo}</span>
           {(question.questionImgSrc && (
             <p>
-              <span className="copy" dangerouslySetInnerHTML={{__html:`${question.direction} (${question.allocatedPoint}점)`}}/>
+              <span
+                className="copy"
+                dangerouslySetInnerHTML={{
+                  __html: `${question.direction} (${question.allocatedPoint}점)`,
+                }}
+              />
             </p>
           )) || (
             <>
-              <span className="copy" dangerouslySetInnerHTML={{__html:`${question.direction} (${question.allocatedPoint}점)`}}/>
+              <span
+                className="copy"
+                dangerouslySetInnerHTML={{
+                  __html: `${question.direction} (${question.allocatedPoint}점)`,
+                }}
+              />
             </>
           )}
         </p>

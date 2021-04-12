@@ -24,13 +24,7 @@ export default function InMyLectureListView({
   totalCount,
 }: InMyLectureTableViewProps) {
   const history = useHistory();
-  const { scrollOnceMove, scrollSave } = useScrollMove();
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollOnceMove();
-    }, 200);
-  }, [scrollOnceMove]);
+  const { scrollSave } = useScrollMove();
 
   const onViewDetail = (e: any, cardId: string) => {
     e.preventDefault();
