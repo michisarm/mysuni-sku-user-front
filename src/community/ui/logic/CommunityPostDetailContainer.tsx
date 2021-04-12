@@ -308,6 +308,7 @@ function CommunityPostDetailContainer() {
             deletable={true}
             editAuth={editAuth}
             menuType={menuType}
+            like={like}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
@@ -398,25 +399,25 @@ function CommunityPostDetailContainer() {
             </div>
           )} */}
           <div className="task-read-bottom">
-            {postDetail.menuId !== 'NOTICE' && (
-              <button
-                className="ui icon button left post edit"
-                onClick={OnClickLike}
-              >
-                {(like && (
+
+            <button
+              className="ui icon button left post edit"
+              onClick={OnClickLike}
+            >
+              {(like && (
+                <img
+                  src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
+                  style={{ marginBottom: '-3px', marginRight: '3px' }}
+                />
+              )) || (
                   <img
-                    src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
+                    src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
                     style={{ marginBottom: '-3px', marginRight: '3px' }}
                   />
-                )) || (
-                    <img
-                      src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
-                      style={{ marginBottom: '-3px', marginRight: '3px' }}
-                    />
-                  )}
+                )}
                 좋아요
-              </button>
-            )}
+            </button>
+
             {creatorId === postDetail.creatorId && (
               <>
                 <Button

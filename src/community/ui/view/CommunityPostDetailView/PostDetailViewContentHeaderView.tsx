@@ -17,6 +17,7 @@ interface Props {
   likeCount?: number;
   editAuth?: boolean;
   menuType?: string;
+  like?: boolean;
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
@@ -40,6 +41,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       postDetail,
       editAuth,
       menuType,
+      like,
       onClickList,
       onClickDelete,
       onClickModify,
@@ -89,18 +91,17 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                   )}
                 </div>
                 <div className="right-area">
-                { postDetail.menuId !== 'NOTICE' && likeCount === 0 &&(
-                  <div className="ui onlytext" onClick={onClickLike}>
-                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />&nbsp;
-                    <span className="heartText">{likeCount}</span>
-                  </div>
-                )}
-                { postDetail.menuId !== 'NOTICE' && likeCount !== 0 &&(
-                  <div className="ui onlytext" onClick={onClickLike}>
-                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
-                    <span className="heartText">{likeCount}</span>
-                  </div>
-                )}
+                  {(like && (
+                    <div className="ui onlytext" onClick={onClickLike}>
+                      <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
+                      <span className="heartText">{likeCount}</span>
+                    </div>
+                  )) || (
+                      <div className="ui onlytext" onClick={onClickLike}>
+                        <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />&nbsp;
+                        <span className="heartText">{likeCount}</span>
+                      </div>
+                    )}
                   <div className="ui onlytext">
                     {onClickModify && editAuth && (
                       <Button
