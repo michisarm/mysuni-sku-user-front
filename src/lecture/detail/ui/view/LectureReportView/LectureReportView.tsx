@@ -170,7 +170,6 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   {
     /*eslint-disable*/
   }
-  console.log('lectureReport', lectureReport);
   return (
     <>
       {/* Header */}

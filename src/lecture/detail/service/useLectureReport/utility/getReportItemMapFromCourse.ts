@@ -1,17 +1,12 @@
 /* eslint-disable consistent-return */
 
-import { cacheableFindCoursePlan } from '../../../api/courseApi';
 import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
   ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
-import Student from '../../../../model/Student';
-import {
-  getActiveCourseStructureItem,
-  getActiveStructureItem,
-} from '../../../utility/lectureStructureHelper';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 import { findCardCache } from '../../../api/cardApi';
 
 export async function getReportItem(
@@ -22,12 +17,10 @@ export async function getReportItem(
   if (paramsPathname) {
     lectureStructureItem = getActiveStructureItem(paramsPathname);
   }
-  console.log('lectureStructureItem', lectureStructureItem);
+
   const student = lectureStructureItem?.student;
 
   const coursePlan = await findCardCache(coursePlanId);
-  console.log('coursePlan', coursePlan);
-  //const coursePlan = await cacheableFindCoursePlan(coursePlanId);
   if (coursePlan === undefined) {
     return;
   }

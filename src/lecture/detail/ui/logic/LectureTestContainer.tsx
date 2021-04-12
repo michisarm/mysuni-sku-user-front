@@ -6,7 +6,7 @@ import LectureTestView from '../view/LectureTestView/LectureTestView';
 function LectureTestContainer() {
   const [testItem] = useLectureTest();
   const params = useLectureParams();
-  console.log('testItem', testItem);
+
   return (
     <>
       {testItem !== undefined && params !== undefined && (

@@ -55,7 +55,6 @@ export async function getTestAnswerItemMapFromExam(
   setLectureTestAnswerItem(undefined); // 초기화
   if (examId) {
     const answerItem = await getTestAnswerItem(examId);
-    console.log('answerItem1', answerItem);
     if (answerItem !== undefined) {
       if (answerItem.answers.length < 1) {
         questions.forEach((result, index) => {
@@ -65,7 +64,6 @@ export async function getTestAnswerItemMapFromExam(
           });
         });
       }
-      console.log('answerItem2', answerItem);
 
       setLectureTestAnswerItem(answerItem);
     }

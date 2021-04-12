@@ -4,11 +4,8 @@ import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
-  ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
-import Student from '../../../../model/Student';
 import { CubeContents } from '../../../../model/CubeContents';
-import LectureParams from '../../../viewModel/LectureParams';
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 export async function getReportItem(
@@ -23,7 +20,6 @@ export async function getReportItem(
   if (paramsPathname) {
     lectureStructureItem = getActiveStructureItem(paramsPathname);
   }
-  console.log('lectureStructureItem', lectureStructureItem);
   const student = lectureStructureItem?.student;
 
   if (lectureStructureItem !== undefined && lectureStructureItem.can === true) {

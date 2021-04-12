@@ -140,6 +140,7 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                   setSubmitOk={setSubmitOk}
                   dataLoadTime={answerItem?.dataLoadTime}
                   essayScore={matchedEssayScore}
+                  params={params}
                 />
               );
             })}

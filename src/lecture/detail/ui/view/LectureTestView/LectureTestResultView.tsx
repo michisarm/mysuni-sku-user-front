@@ -2,10 +2,9 @@ import {
   getActiveCourseStructureItem,
   getActiveStructureItem,
 } from '../../../utility/lectureStructureHelper';
-import { getLectureTestStudentItem } from 'lecture/detail/store/LectureTestStore';
 import LectureParams from '../../../viewModel/LectureParams';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   LectureTestAnswerItem,
   LectureTestItem,
@@ -44,7 +43,6 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
 
   let surveyPath: string = '';
   const course = getActiveCourseStructureItem();
-  console.log('course', course);
   //const program = getActiveProgramStructureItem();
   if (course?.survey !== undefined && course?.survey.state !== 'Completed') {
     surveyPath = course?.survey?.path;

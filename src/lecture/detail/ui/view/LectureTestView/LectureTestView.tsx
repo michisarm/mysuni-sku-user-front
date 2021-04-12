@@ -1,4 +1,4 @@
-import { reactAlert, reactConfirm } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 
@@ -49,7 +49,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   const lectureStructureItem = getActiveStructureItem(params.pathname);
 
   useEffect(() => {
-    console.log('LectureTestView.lectureStructureItem', lectureStructureItem);
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
     if (
       testStatus === 'SUBMIT' ||
@@ -65,13 +64,13 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   useEffect(() => {
     const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
     if (testStatus === 'PASS') {
-      console.log('answerItem', answerItem);
       if (
         answerItem !== undefined &&
+        lectureStructureItem?.student?.studentScore.examId ===
+          answerItem.examId &&
         !answerItem?.finished &&
         !answerItem?.submitted &&
-        answerItem.submitAnswers.length < 1 &&
-        lectureStructureItem?.student?.studentScore.examId === answerItem.examId
+        answerItem.submitAnswers.length < 1
       ) {
         // 이수처리하여 답안이 없는경우
         reactAlert({
@@ -83,10 +82,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
   }, [testStudentItem, answerItem, params, lectureStructureItem?.student]);
 
-  console.log('@#@#useTestResultView');
-  console.log(useTestResultView);
-  console.log(testItem);
-  console.log(testStudentItem);
   return (
     <>
       {useTestIntroView && testItem && (

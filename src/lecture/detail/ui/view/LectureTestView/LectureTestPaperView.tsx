@@ -1,25 +1,18 @@
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
-import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 
-import {
-  getLectureTestStudentItem,
-  setLectureTestAnswerItem,
-} from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback, useEffect, useState } from 'react';
+import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
+import React, { useCallback, useState } from 'react';
 import {
   LectureTestAnswerItem,
   LectureTestItem,
   LectureTestStudentItem,
 } from '../../../viewModel/LectureTest';
-import TestQuestionView from './TestQuestionView';
 import {
   saveCourseTestAnswerSheet,
   saveCubeTestAnswerSheet,
 } from 'lecture/detail/service/useLectureTest/utility/saveLectureTest';
 
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
-import { EssayScore } from 'lecture/detail/model/GradeSheet';
-import { GraderCommentView } from './GraderCommentView';
 import { useHistory, useParams } from 'react-router-dom';
 import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 
@@ -103,7 +96,6 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
         return;
       }
       const lectureStructureItem = getActiveStructureItem(params.pathname);
-      console.log('lectureStructureItem', lectureStructureItem);
       if (lectureStructureItem?.can !== true) {
         reactAlert({
           title: '알림',
