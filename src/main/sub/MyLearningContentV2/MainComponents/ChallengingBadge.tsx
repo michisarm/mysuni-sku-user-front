@@ -112,23 +112,25 @@ const ChallengingBadge: React.FC<Props> = Props => {
 
       {challengeBadges.length > 0 && challengeBadges[0] ? (
         <div className="scrolling">
-          <ul className="belt">
-            {challengeBadges.map((badge: MyBadge, index: number) => {
-              return (
-                <li key={index} onClick={() => onClick(index)}>
-                  <BadgeView
-                    id={badge.id}
-                    name={badge.name}
-                    level={badge.level}
-                    iconUrl={badge.iconUrl}
-                    categoryId={badge.categoryId}
-                    badgeStyle={BadgeStyle.List}
-                    badgeSize={BadgeSize.Small}
-                  />
-                </li>
-              );
-            })}
-          </ul>
+          <div className="badge-list-type">
+            <ul className="belt">
+              {challengeBadges.map((badge: MyBadge, index: number) => {
+                return (
+                  <li key={index} onClick={() => onClick(index)}>
+                    <BadgeView
+                      id={badge.id}
+                      name={badge.name}
+                      level={badge.level}
+                      iconUrl={badge.iconUrl}
+                      categoryId={badge.categoryId}
+                      badgeStyle={BadgeStyle.List}
+                      badgeSize={BadgeSize.Small}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       ) : (
         <NoSuchContentPanel
