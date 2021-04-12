@@ -6,6 +6,7 @@ import routePaths from '../../routePaths';
 import { AplModel } from '../../model';
 import { AplStateName } from '../../model/AplStateName';
 import { AplState } from '../../model/AplState';
+import { useScrollMove } from '../../useScrollMove';
 
 
 interface PersonalCompletedListViewProps {
@@ -19,8 +20,10 @@ export default function PersonalCompletedListView({
   totalCount,
 }: PersonalCompletedListViewProps) {
   const history = useHistory();
+  const { scrollSave } = useScrollMove();
 
   const onViewDetail = (page: string, id: string) => {
+    scrollSave();
     history.push(routePaths.approvalPersonalLearningDetail(page, id));
   }
 
