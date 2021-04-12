@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MyTrainingTableViewModel } from '../../model';
 import { Table } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
@@ -7,6 +7,7 @@ import LectureParams, {
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { convertTimeToDate } from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
+import { useScrollMove } from '../../useScrollMove';
 
 interface MyStampListViewProps {
   myStamps: MyTrainingTableViewModel[];
@@ -18,9 +19,18 @@ export default function MyStampListView({
   totalCount,
 }: MyStampListViewProps) {
   const history = useHistory();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollOnceMove();
+    }, 200);
+  }, [scrollOnceMove]);
 
   const onViewDetail = (e: any, myStamp: MyTrainingTableViewModel) => {
     e.preventDefault();
+
+    scrollSave();
 
     const params: LectureParams = {
       cardId: myStamp.serviceId,

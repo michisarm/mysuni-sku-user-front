@@ -34,14 +34,8 @@ function MyTrainingListView({
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const { scrollOnceMove, scrollSave } = useScrollMove();
+  const { scrollSave } = useScrollMove();
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollOnceMove();
-    }, 200);
-  }, [scrollOnceMove]);
 
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
@@ -54,14 +48,15 @@ function MyTrainingListView({
 
     history.push(toPath(params));
 
-    ReactGA.event({
-      category: '학습중인 과정',
-      action: 'Click',
-      label: `${
-        myTraining.serviceType === 'COURSE' ? '(Course)' : '(Cube)'
-      } - ${myTraining.name}`,
-    });
-
+    if(contentType === MyLearningContentType.InProgress) {
+      ReactGA.event({
+        category: '학습중인 과정',
+        action: 'Click',
+        label: `${
+          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
+        } - ${myTraining.name}`,
+      });
+    }
     scrollSave();
   };
 

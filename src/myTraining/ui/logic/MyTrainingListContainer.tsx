@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
@@ -25,12 +25,12 @@ import MyTrainingListView from '../view/MyTrainingListView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
+import { useScrollMove } from '../../useScrollMove';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
-  filterCountService?: FilterCountService;
   studentService?: StudentService;
   filterBoxService?: FilterBoxService;
 }
@@ -38,7 +38,6 @@ interface MyTrainingListContainerProps {
 function MyTrainingListContainer({
   skProfileService,
   myTrainingService,
-  filterCountService,
   studentService,
   filterBoxService,
 }: MyTrainingListContainerProps) {
@@ -47,41 +46,45 @@ function MyTrainingListContainer({
   const contentType = params.tab;
 
   const { profileMemberName } = skProfileService!;
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
-  const [refresh, setRefesh] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-  const learningOffset: any = sessionStorage.getItem('learningOffset');
+  const { scrollOnceMove } = useScrollMove();
 
   const { myTrainingTableViews, myTrainingTableCount } = myTrainingService!;
-  const { filterCount } = filterBoxService!;
+  const { conditions, showResult, filterCount } = filterBoxService!;
+
+  useRequestFilterCountView();
 
   useEffect(() => {
-    refeshPageInfo();
-    fetchMyTrainingsByContentType(contentType);
-    filterCountService!.findAllFilterCountViews(contentType);
+    myTrainingService!.clearAllTableViews();
+    myTrainingService!.initFilterRdo(contentType);
+    
+    if(params.pageNo === '1') {
+      requestMyTrainings();
+      return;
+    }
+
+    const currentPageNo = parseInt(params.pageNo);
+    const limit = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage({ offset: 0, limit });
 
     return () => {
-      myTrainingService!.clearAllTableViews();
-      filterCountService!.clearAllFilterCountViews();
-    }
+     
+    };
   }, [contentType]);
 
-
   useEffect(() => {
-    if (refresh) {
-      refeshPageInfo();
-      getPageInfo();
+    if(showResult) {
+      myTrainingService!.setFilterRdoByConditions(conditions);
+      requestMyTrainingsByConditions();
     }
-  }, [refresh]);
+  }, [showResult]);
 
-  const refeshPageInfo = () => setRefesh(() => !refresh);
-  
-  const fetchMyTrainingsByContentType = async (contentType: MyContentType) => {
-    myTrainingService!.initFilterRdo(contentType);
+  const requestMyTrainings = async () => {
     setIsLoading(true);
     const isEmpty = await myTrainingService!.findAllTableViews();
     setResultEmpty(isEmpty);
@@ -89,34 +92,21 @@ function MyTrainingListContainer({
     setIsLoading(false);
   };
 
-  const fetchMyTrainingsByCondition = async () => {
+  const requestMyTrainingsByConditions = async () => {
     setIsLoading(true);
     const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    history.replace('./1');
   };
 
-
-  const TableViewsMenu = ['InProgress', 'Enrolled', 'Completed', 'Retry'];
-
-  const getPageInfo = async () => {
-    const matchesMenu = TableViewsMenu.includes(contentType);
-    if (learningOffset !== null && matchesMenu && refresh) {
-      setIsLoading(true);
-      // if (learningOffset !== null && matchesMenu && refresh) {
-      pageInfo.current = JSON.parse(learningOffset);
-      // await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
-    }
-  };
-
-  const getPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+  const requestmyTrainingsWithPage = async (offset: Offset) => {
+    setIsLoading(true);
+    await myTrainingService!.findAllTableViewsWithPage(offset);
+    checkShowSeeMore(); 
+    setIsLoading(false);
+    scrollOnceMove();
   };
 
   const checkShowSeeMore = (): void => {
@@ -139,20 +129,12 @@ function MyTrainingListContainer({
     sessionStorage.setItem('inProgressTableViews', JSON.stringify(inProgressTableViews));
   };
 
-  const getMyTrainings = (count: number) => {
-    if (count > 0) {
-      fetchMyTrainingsByCondition();
-    } else {
-      fetchMyTrainingsByContentType(contentType);
-    }
-  };
-
   const onClickDelete = useCallback(() => {
-    setOpenModal(true);
+    setDeleteModal(true);
   }, []);
 
-  const onCloseModal = useCallback(() => {
-    setOpenModal(false);
+  const onCloseDeleteModal = useCallback(() => {
+    setDeleteModal(false);
   }, []);
 
   const onConfirmModal = useCallback(async () => {
@@ -168,7 +150,7 @@ function MyTrainingListContainer({
       myTrainingService!.clearAllSelectedServiceIds();
     }
 
-    setOpenModal(false);
+    setDeleteModal(false);
   }, []);
 
   const onClickSort = useCallback(
@@ -177,20 +159,21 @@ function MyTrainingListContainer({
     }, [contentType]
   );
 
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
-    history.replace(`./${getPageNo()}`);
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
     
-    setIsLoading(false);
-    checkShowSeeMore();
-    
-  }, [contentType, pageInfo.current, params.pageNo]);
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
+
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestmyTrainingsWithPage({ offset, limit });
+
+    history.replace(`./${nextPageNo}`);
+  }
 
   const noSuchMessage = (
     contentType: MyContentType,
@@ -212,7 +195,6 @@ function MyTrainingListContainer({
     );
   };
 
-  /* render */
   return (
     <>
       {((!resultEmpty || filterCount > 0) && (
@@ -223,9 +205,7 @@ function MyTrainingListContainer({
             totalCount={myTrainingTableCount}
             onClickDelete={onClickDelete}
           />
-          <FilterBoxContainer
-            getModels={getMyTrainings}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -245,10 +225,10 @@ function MyTrainingListContainer({
                 />
               </MyLearningListTemplate>
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              {openModal && (
+              {deleteModal && (
                 <MyLearningDeleteModal
-                  open={openModal}
-                  onClose={onCloseModal}
+                  open={deleteModal}
+                  onClose={onCloseDeleteModal}
                   onConfirm={onConfirmModal}
                 />
               )}
@@ -304,7 +284,6 @@ export default inject(
   mobxHelper.injectFrom(
     'profile.skProfileService',
     'myTraining.myTrainingService',
-    'myTraining.filterCountService',
     'lecture.studentService',
     'shared.filterBoxService',
   )

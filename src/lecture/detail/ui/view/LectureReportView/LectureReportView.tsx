@@ -27,7 +27,10 @@ import {
   getLectureParams,
   useLectureParams,
 } from '../../../store/LectureParamsStore';
-import { submitTask } from '../../../api/cardApi';
+import {
+  clearFindMyCardRelatedStudentsCache,
+  submitTask,
+} from '../../../api/cardApi';
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
 
 interface LectureReportViewProps {
@@ -104,6 +107,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         await setCubeLectureReport();
         if (params?.cardId !== undefined) {
           await submitTask(student.id, 'Report');
+          await clearFindMyCardRelatedStudentsCache();
           await requestCardLectureStructure(params?.cardId);
           //새로고침
           if (params.cubeId === undefined) {

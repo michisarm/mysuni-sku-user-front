@@ -8,13 +8,14 @@ import { findCubeDetailCache } from '../../../api/cubeApi';
 export async function getCubeLectureReport(
   params: LectureParams
 ): Promise<void> {
-  const { cubeId } = params;
+  const { cubeId, pathname } = params;
   if (cubeId !== undefined) {
     const cubeDetail = await findCubeDetailCache(cubeId);
-    if (cubeDetail !== undefined) {
+
+    if (cubeDetail !== undefined && pathname !== undefined) {
       const { cubeContents } = cubeDetail;
-      const student = await findByCubeId(cubeId);
-      const next = await getReportItem(cubeContents, student);
+      //const student = await findByCubeId(cubeId);
+      const next = await getReportItem(cubeContents, pathname);
       setLectureReport(next);
     }
   }

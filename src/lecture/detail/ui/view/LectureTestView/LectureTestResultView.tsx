@@ -1,8 +1,10 @@
-import { getActiveCourseStructureItem } from '../../../utility/lectureStructureHelper';
-import { getLectureTestStudentItem } from 'lecture/detail/store/LectureTestStore';
+import {
+  getActiveCourseStructureItem,
+  getActiveStructureItem,
+} from '../../../utility/lectureStructureHelper';
 import LectureParams from '../../../viewModel/LectureParams';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   LectureTestAnswerItem,
   LectureTestItem,
@@ -25,28 +27,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
   params,
   answerItem,
 }) {
-  let testResultState = '';
-  if (
-    testStudentItem !== undefined &&
-    testStudentItem.learningState !== undefined &&
-    (testStudentItem.learningState === 'Failed' ||
-      testStudentItem.learningState === 'Missed')
-  ) {
-    testResultState = 'testFail';
-  } else if (
-    testStudentItem !== undefined &&
-    testStudentItem.learningState !== undefined &&
-    (testStudentItem.learningState === 'Passed' ||
-      testStudentItem.learningState === 'TestPassed')
-  ) {
-    testResultState = 'testPass';
-  } else if (
-    testStudentItem !== undefined &&
-    testStudentItem.learningState !== undefined &&
-    testStudentItem.learningState === 'TestWaiting'
-  ) {
-    testResultState = 'testWait';
-  }
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
 
   const history = useHistory();
   const goToPath = (path?: string) => {
@@ -76,9 +57,9 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
 
   return (
     <>
-      {testItem && testStudentItem && (
+      {testItem && lectureStructureItem && lectureStructureItem.student && (
         <>
-          {testResultState === 'testFail' && (
+          {lectureStructureItem.student.extraWork.testStatus === 'FAIL' && (
             <>
               <div className="ui segment full test-complete">
                 {/* Header */}
@@ -102,7 +83,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-fail.png`}
                   />
                   <h1 className="test_fail">
-                    {testStudentItem.studentScore.latestScore}점
+                    {lectureStructureItem.student.studentScore.latestScore}점
                   </h1>
                   <h2>
                     <strong>Test 이수조건을 통과하지 못했습니다.</strong>
@@ -136,7 +117,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
               </div>
             </>
           )}
-          {testResultState === 'testPass' && (
+          {lectureStructureItem.student.extraWork.testStatus === 'PASS' && (
             <>
               <div className="ui segment full test-complete">
                 {/* Header */}
@@ -160,7 +141,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
                     src={`${process.env.PUBLIC_URL}/images/all/icon-test-pass.png`}
                   />
                   <h1 className="test_result">
-                    {testStudentItem.studentScore.latestScore}점
+                    {lectureStructureItem.student.studentScore.latestScore}점
                   </h1>
                   <h2>
                     <strong>Test 이수조건을 통과하셨습니다!</strong>
@@ -198,7 +179,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> = function Lec
               </div>
             </>
           )}
-          {testResultState === 'testWait' && (
+          {lectureStructureItem.student.extraWork.testStatus === 'SUBMIT' && (
             <>
               <div className="ui segment full test-complete">
                 {/* Header */}

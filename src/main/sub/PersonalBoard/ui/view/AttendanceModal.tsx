@@ -80,16 +80,19 @@ const AttendanceModal:React.FC<Props> = ({
   }, [attendFlag, AttendCountItem])
 
   const lotteryTicketModalOpen = useCallback(() => {
-    console.log('암호화 메일', EncryptEmail)
-    console.log('출석 count', AttendCountItem.length)
-
     const frm = document.createElement('form')
     const input = document.createElement('input')
     input.type = "hidden"
     input.name = 'q'
     input.value = EncryptEmail
-
+    
+    const env = document.createElement('input')
+    env.type = "hidden"
+    env.name = 'env'
+    env.value = window.location.host.toUpperCase() === 'MYSUNI.SK.COM' ? 'production' : 'development'
+    
     frm.appendChild(input)
+    frm.appendChild(env)
     document.body.appendChild(frm)
 
     frm.setAttribute('action',`https://www.mysuniluckydrawevent.com/auth`)
@@ -131,12 +134,10 @@ const AttendanceModal:React.FC<Props> = ({
                 </dt>
                 <dd>5, 10, 15, 20회 당<strong>복권 1장씩!</strong></dd>
               </dl>
-
               <div className="stamp_sample">
                   <em><img src={`${PUBLIC_URL}/images/all/event_stampattend.svg`} alt="출석"/></em>
                   <em><img src={`${PUBLIC_URL}/images/all/event_stamplotto.svg`} alt="복권"/></em>
               </div>
-
               <Link to="/board/support/notice-detail/NTC-00004m" className="go_event">
                 이벤트 자세히 보러가기
               </Link>

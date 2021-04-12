@@ -1,35 +1,44 @@
 /* eslint-disable consistent-return */
 
-import { cacheableFindCoursePlan } from '../../../api/courseApi';
 import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
   ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
-import Student from '../../../../model/Student';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
+import { findCardCache } from '../../../api/cardApi';
 
 export async function getReportItem(
   coursePlanId: string,
-  student?: Student
+  paramsPathname?: string
 ): Promise<LectureReport | undefined> {
-  const coursePlan = await cacheableFindCoursePlan(coursePlanId);
+  let lectureStructureItem;
+  if (paramsPathname) {
+    lectureStructureItem = getActiveStructureItem(paramsPathname);
+  }
+
+  const student = lectureStructureItem?.student;
+
+  const coursePlan = await findCardCache(coursePlanId);
   if (coursePlan === undefined) {
     return;
   }
   const lectureReport: LectureReport = { reportId: coursePlanId };
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
+
   if (
-    coursePlan.reportFileBox.reportName !== '' &&
-    coursePlan.reportFileBox.reportName !== null
+    coursePlan.cardContents.reportFileBox.reportName !== '' &&
+    coursePlan.cardContents.reportFileBox.reportName !== null
   ) {
     let state: State = 'None';
 
-    reportFileBox.fileBoxId = coursePlan.reportFileBox.fileBoxId;
-    reportFileBox.report = coursePlan.reportFileBox.report;
-    reportFileBox.reportName = coursePlan.reportFileBox.reportName;
-    reportFileBox.reportQuestion = coursePlan.reportFileBox.reportQuestion;
+    reportFileBox.fileBoxId = coursePlan.cardContents.reportFileBox.fileBoxId;
+    reportFileBox.report = coursePlan.cardContents.reportFileBox.report;
+    reportFileBox.reportName = coursePlan.cardContents.reportFileBox.reportName;
+    reportFileBox.reportQuestion =
+      coursePlan.cardContents.reportFileBox.reportQuestion;
 
     if (student !== undefined && student !== null) {
       if (
@@ -52,7 +61,7 @@ export async function getReportItem(
     }
     lectureReport.reportFileBox = reportFileBox;
     lectureReport.studentReport = studentReport;
-    if (student?.learningState == 'Passed') {
+    if (lectureStructureItem?.student?.extraWork.reportStatus === 'PASS') {
       state = 'Completed';
     }
     lectureReport.state = state;

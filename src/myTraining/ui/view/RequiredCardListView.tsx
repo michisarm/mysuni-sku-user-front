@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -11,6 +11,7 @@ import LectureParams, {
 import LectureTableViewModel from '../../../lecture/model/LectureTableViewModel';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { LearningStateName, LearningState } from '../../../shared/model';
+import { useScrollMove } from '../../useScrollMove';
 
 interface RequiredCardListViewProps {
   requiredCards: LectureTableViewModel[];
@@ -22,9 +23,12 @@ export default function RequiredCardListView({
   totalCount,
 }: RequiredCardListViewProps) {
   const history = useHistory();
+  const { scrollSave } = useScrollMove();
 
   const onViewDetail = (e: any, cardId: string) => {
     e.preventDefault();
+
+    scrollSave();
 
     const params: LectureParams = {
       cardId,
