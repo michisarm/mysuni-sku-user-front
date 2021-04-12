@@ -1,6 +1,11 @@
 import Post from "community/model/Post";
 import PostType from "community/model/PostType";
 
+type RelatedUrlList = {
+  title: string;
+  url: string;
+}
+
 export interface CommunityPostDetail {
   id: string,
   postId: string,
@@ -26,6 +31,8 @@ export interface CommunityPostDetail {
   profileImg: string,
   prevPost?: Post,
   nextPost?: Post,
+  relatedUrlList?: RelatedUrlList[],
+  depotId?: string,
 }
 
 export interface CommunityPostItem {
@@ -42,4 +49,6 @@ export interface CommunityPostItem {
   creatorName: string;
   createdTime: number;
   nick: string;
+  relatedUrlList?: RelatedUrlList[];
+  depotId?: string;
 }
