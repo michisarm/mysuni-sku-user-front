@@ -50,12 +50,12 @@ function MyTrainingPage({
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
 
+  const { colleges } = collegeService!;
   const { menuControlAuth } = menuControlAuthService!;
   const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
   const { inMyListCount } = inMyLectureService!;
   const { requiredLecturesCount } = lectureService!;
   const { aplCount: { all: personalCompletedCount } } = aplService!;
-  const { colleges } = collegeService!;
 
   useRequestCollege();
   useRequestMenuAuth();
@@ -65,7 +65,10 @@ function MyTrainingPage({
 
   useEffect(() => {
     fetchColleges();
-    filterBoxService!.clearFilterBox();
+
+    return () => {
+      filterBoxService!.clear();
+    };
   }, [params.tab]);
 
   const fetchColleges = () => {

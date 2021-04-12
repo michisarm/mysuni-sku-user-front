@@ -78,7 +78,7 @@ class MyTrainingFilterRdoModel {
     this.direction = direction;
   }
 
-  changeConditions(conditions: FilterCondition) {
+  setByConditions(conditions: FilterCondition) {
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -101,7 +101,7 @@ class MyTrainingFilterRdoModel {
     }
   }
 
-  changeOffset(offset: Offset) {
+  setOffset(offset: Offset) {
     this.offset = offset;
   }
 

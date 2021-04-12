@@ -30,10 +30,10 @@ export function getBadgeLearningCompanyAvg(companyCode: string) {
     .then(response => response && response.data);
 }
 
-export function findTotalMyLearningSummary() {
-  return axiosApi.get<MyLearningSummaryModel>(flowURL)
-    .then(response => response && response.data);
-}
+// export function findTotalMyLearningSummary() {
+//   return axiosApi.get<MyLearningSummaryModel>(flowURL)
+//     .then(response => response && response.data);
+// }
 
 export function findMyLearningSummaryYear() {
   const year = moment().format('YYYY');

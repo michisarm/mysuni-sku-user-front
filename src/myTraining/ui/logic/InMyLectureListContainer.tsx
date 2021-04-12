@@ -1,7 +1,7 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper } from '@nara.platform/accent';
 import { Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
 import InMyLectureService from '../../present/logic/InMyLectureService';
@@ -17,18 +17,16 @@ import InMyLectureListView from '../view/InMyLectureListVIew';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-import FilterCountService from '../../present/logic/FilterCountService';
+import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 
 
 interface InMyLectureListContainerProps {
   inMyLectureService?: InMyLectureService;
-  filterCountService?: FilterCountService;
   filterBoxService?: FilterBoxService;
 }
 
 function InMyLectureListContainer({
   inMyLectureService,
-  filterCountService,
   filterBoxService,
 }: InMyLectureListContainerProps) {
   const history = useHistory();
@@ -39,55 +37,64 @@ function InMyLectureListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
   const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
-  const { filterCount } = filterBoxService!;
+  const { conditions, filterCount, showResult } = filterBoxService!;
+
+  useRequestFilterCountView();
 
   useEffect(() => {
-    fetchInMyLectures();
-    filterCountService!.findAllFilterCountViews(contentType);
+    requestInMyLectures();
 
     return () => {
       inMyLectureService!.clearAllTableViews();
-      filterCountService!.clearAllFilterCountViews();
     }
   }, []);
 
-  const fetchInMyLectures = async() => {
-    inMyLectureService!.initFilterRdo();
+  useEffect(() => {
+    if(showResult) {
+      inMyLectureService!.setFilterRdoByConditions(conditions);
+      requestInMyLecturesByConditions();
+    }
+  }, [showResult]);
 
+  useEffect(() => {
+    if(params.pageNo === '1') {
+      return;
+    }
+
+    requestInMyLecturesWithPage();
+
+  }, [params.pageNo]);
+
+  const requestInMyLectures = async () => {
     setIsLoading(true);
+    inMyLectureService!.initFilterRdo();
     const isEmpty = await inMyLectureService!.findAllTableViews();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
   };
 
-  const fetchInMyLecturesByConditions = async() => {
+  const requestInMyLecturesByConditions = async () => {
     setIsLoading(true);
     const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
     setIsLoading(false);
+    history.replace('./1');
   }
 
-  const getInMyLecturesByConditions = (count: number) => {
-    if (count > 0) {
-      fetchInMyLecturesByConditions();
-    } else {
-      fetchInMyLectures();
-    }
-  };
+  const requestInMyLecturesWithPage = async () => {
+    const currentPageNo = parseInt(params.pageNo);
 
-  const getNextPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
-  };
+    const limit = PAGE_SIZE;
+    const offset = (currentPageNo - 1) * PAGE_SIZE;
+
+    setIsLoading(true);
+    await inMyLectureService!.findAllTableViewsWithPage({ limit, offset });
+    checkShowSeeMore();
+    setIsLoading(false);
+  }
 
   const checkShowSeeMore = (): void => {
     const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
@@ -104,24 +111,16 @@ function InMyLectureListContainer({
     setShowSeeMore(true);
   };
 
-  const onClickSeeMore = useCallback(async () => {
+  const onClickSeeMore = async () => {
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
 
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
 
-    history.replace(`./${getNextPageNo()}`);
-    
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await inMyLectureService!.findAllTableViewsWithPage(pageInfo.current);
-
-    setIsLoading(false);
-    checkShowSeeMore();
-  
-  }, [contentType, pageInfo.current, params.pageNo]);
-
+    history.replace(`./${nextPageNo}`);
+  }
 
   const onClickSort = useCallback((column: string, direction: Direction) => { 
       inMyLectureService!.sortTableViews(column, direction);
@@ -146,9 +145,7 @@ function InMyLectureListContainer({
             resultEmpty={resultEmpty}
             totalCount={inMyLectureTableCount}
           />
-          <FilterBoxContainer
-            getModels={getInMyLecturesByConditions}
-          />
+          <FilterBoxContainer />
         </>
       )) || <div style={{ marginTop: 50 }} />}
       {
@@ -217,7 +214,6 @@ function InMyLectureListContainer({
 export default inject(
   mobxHelper.injectFrom(
     'myTraining.inMyLectureService',
-    'myTraining.filterCountService',
     'shared.filterBoxService',
   )
 )(observer(InMyLectureListContainer));
