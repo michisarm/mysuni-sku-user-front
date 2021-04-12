@@ -10,17 +10,10 @@ import NotFoundPage from 'layout/NotFoundPage';
 import { setLectureParams } from './store/LectureParamsStore';
 import { clearFindCubeDetailCache } from './api/cubeApi';
 import { getCubeLectureOverview } from './service/useLectuerCubeOverview/utility/getCubeLectureOverview';
-import {
-  setLectureCubeSummary,
-  setLectureDescription,
-  setLectureSubcategory,
-} from './store/LectureOverviewStore';
 import { useRequestLectureState } from './service/useLectureState/useRequestLectureState';
-import { useRequestLectureStructure } from './service/useLectureStructure/useRequestLectureStructure';
 import { useCubeBreadcrumb } from './service/useCubeBreadcrumb';
 
 export default function LectureDetailCubeRoutes() {
-  useRequestLectureStructure();
   useCubeBreadcrumb();
 
   const params = useParams<LectureParams>();
