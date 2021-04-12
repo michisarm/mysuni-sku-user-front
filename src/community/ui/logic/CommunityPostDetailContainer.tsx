@@ -8,9 +8,7 @@ import React, {
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import {
-  CommunityCommentList,
-} from '@nara.drama/feedback';
+import { CommunityCommentList } from '@nara.drama/feedback';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
@@ -39,7 +37,7 @@ interface profileParams {
   profileImg: string;
   introduce: string;
   nickName: string;
-  creatorName: string
+  creatorName: string;
 }
 
 function CommunityPostDetailContainer() {
@@ -71,12 +69,12 @@ function CommunityPostDetailContainer() {
   const { skProfile } = skProfileService;
   const { member } = skProfile;
 
-  const fileDownload = (pdf: string, fileId: string) => {
-    const PdfFile = pdf.includes('.pdf');
-    if (PdfFile) {
+  const fileDownload = (fileName: string, fileId: string) => {
+    const pdfFile = fileName.includes('.pdf');
+    if (pdfFile) {
       setPdfOpen(!pdfOpen);
       setFileId(fileId);
-      setFileName(pdf);
+      setFileName(fileName);
     } else {
       depot.downloadDepotFile(fileId);
     }
@@ -114,36 +112,36 @@ function CommunityPostDetailContainer() {
   }, [communityId, postId]);
 
   const clickProfileEventHandler = useCallback(async () => {
-    const id = document.body.getAttribute('selectedProfileId')
-    findCommunityProfile(id!).then((result) => {
+    const id = document.body.getAttribute('selectedProfileId');
+    findCommunityProfile(id!).then(result => {
       setProfileInfo({
-        'id': result!.id,
-        'profileImg': result!.profileImg,
-        'introduce': result!.introduce,
-        'nickName': result!.nickname,
-        'creatorName': result!.name
-      })
-      setProfileOpen(true)
-    })
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
   }, []);
 
   useEffect(() => {
     if (postDetail === undefined) {
       return;
     }
-    
+
     const checkMemberfunction = async () => {
-      const joinFlag = await checkMember(communityId)
-      if(!joinFlag) {
+      const joinFlag = await checkMember(communityId);
+      if (!joinFlag) {
         history.push({
           pathname: `/community/${communityId}`,
         });
       }
-    }
+    };
 
-    checkMemberfunction()
+    checkMemberfunction();
   }, [postDetail]);
-  
+
   useEffect(() => {
     window.addEventListener('commentCount', commentCountEventHandler);
     window.addEventListener('clickProfile', clickProfileEventHandler);
@@ -152,7 +150,6 @@ function CommunityPostDetailContainer() {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
-
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();

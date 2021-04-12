@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommunityCommentList } from '@nara.drama/feedback';
 import { patronInfo } from '@nara.platform/dock';
@@ -13,20 +13,22 @@ import { useCommunityDiscussionPostDetail } from 'community/service/useCommunity
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import DiscussionViewContentHeaderView from '../view/CommunityPostDetailView/DiscussionViewContentHeaderView';
 
-
 interface Params {
   communityId: string;
   menuId: string;
 }
 
 function CommunityDiscussionContainer() {
-  
-  const { communityId, menuId} = useParams<Params>();
+  const { pathname } = useLocation();
+  const { menuId } = useParams<Params>();
+  const discussionType = pathname.split('/')[3].toUpperCase();
   const [postDetail] = useCommunityDiscussionPostDetail(menuId);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
+
+  console.log(discussionType);
   const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
 
@@ -87,7 +89,7 @@ function CommunityDiscussionContainer() {
           </div> */}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
-            menuType="DISCUSSION"
+            menuType={discussionType}
             hideCamera
             name=""
             email=""

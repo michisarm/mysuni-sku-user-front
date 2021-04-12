@@ -3,6 +3,7 @@ type CommunityMenuType =
   | 'BASIC'
   | 'DISCUSSION'
   | 'ANONYMOUS'
+  | 'ANODISCUSSION'
   | 'NOTICE'
   | 'STORE'
   | 'SURVEY'

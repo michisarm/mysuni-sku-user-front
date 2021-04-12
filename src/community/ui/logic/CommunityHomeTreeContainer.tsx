@@ -112,6 +112,7 @@ const MenuItemView: React.FC<CommunityMenu &
       `(커뮤니티 하위메뉴)-${name}`
     );
   };
+
   return (
     <>
       <li onClick={gaEvent}>
@@ -535,7 +536,13 @@ function CommunityHomeTreeContainer() {
 
   function deleteAllPostMenu(communityId: string) {
     // 전체글 메뉴 삭제 Func => filteredCommunity 배열에 communityId 추가
-    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a', 'COMMUNITY-25', 'COMMUNITY-1w'];
+    const filteredCommunity = [
+      'COMMUNITY-1s',
+      'COMMUNITY-1q',
+      'COMMUNITY-a',
+      'COMMUNITY-25',
+      'COMMUNITY-1w',
+    ];
     if (
       communityId !== '' &&
       communityId !== null &&
