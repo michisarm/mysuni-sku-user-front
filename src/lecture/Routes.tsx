@@ -4,13 +4,10 @@ import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
 import RecommendChannelsPage from './recommend/ui/page/RecommendChannelsPage';
-import RecommendChannelLecturesPage from './recommend/ui/page/ChannelLecturesPage';
-import PostFormPage from './community/ui/page/PostFormPage';
-import PostDetailPage from './community/ui/page/PostDetailPage';
-import ReplyFormPage from './community/ui/page/ReplyFormPage';
-import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
+import RecommendChannelLecturesPage from './recommend/ui/page/RecommendChannelLecturesPage';
 import LectureDetailCubeRoutes from './detail/LectureDetailCubeRoutes';
 import LectureDetailCourseRoutes from './detail/LectureDetailCourseRoutes';
+import RecommendRoutes from './recommend/Routes';
 
 class Routes extends Component {
   //
@@ -47,29 +44,8 @@ class Routes extends Component {
           component={LectureDetailCourseRoutes}
         />
         {/* recommend */}
-        <Redirect
-          exact
-          from="/lecture/recommend"
-          to="/lecture/recommend/pages/1"
-        />
-        <Route
-          exact
-          path="/lecture/recommend/pages/:pageNo"
-          component={RecommendChannelsPage}
-        />
+        <Route path="/lecture/recommend" component={RecommendRoutes} />
 
-        <Redirect
-          exact
-          from="/lecture/recommend/channel/:channelId"
-          to="/lecture/recommend/channel/:channelId/pages/1"
-        />
-        <Route
-          exact
-          path="/lecture/recommend/channel/:channelId/pages/:pageNo"
-          component={RecommendChannelLecturesPage}
-        />
-
-        {/* community  */}
         <Route component={NotFoundPage} />
       </Switch>
     );

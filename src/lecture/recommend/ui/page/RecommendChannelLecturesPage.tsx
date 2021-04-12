@@ -27,7 +27,7 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
 )
 @reactAutobind
 @observer
-class ChannelLecturesPage extends Component<Props> {
+class RecommendChannelLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
@@ -70,4 +70,4 @@ class ChannelLecturesPage extends Component<Props> {
   }
 }
 
-export default withRouter(ChannelLecturesPage);
+export default withRouter(RecommendChannelLecturesPage);

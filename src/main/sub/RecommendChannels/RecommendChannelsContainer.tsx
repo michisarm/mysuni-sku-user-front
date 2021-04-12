@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -16,31 +15,31 @@ import { Wrapper, EmptyContents } from './RecommendElementsView';
 import SeeMoreButtonView from './SeeMoreButtonView';
 import routePaths from '../../routePaths';
 
-
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService,
-  skProfileService?: SkProfileService
-  collegeLectureCountService?: CollegeLectureCountService
-  lectureService?: LectureService
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  collegeLectureCountService?: CollegeLectureCountService;
+  lectureService?: LectureService;
 }
 
 interface RouteParams {
-  pageNo: string
+  pageNo: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'profile.skProfileService',
-  'lecture.collegeLectureCountService',
-  'lecture.lectureService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'profile.skProfileService',
+    'lecture.collegeLectureCountService',
+    'lecture.lectureService'
+  )
+)
 @observer
 @reactAutobind
 class RecommendChannelsContainer extends Component<Props> {
   //
   CHANNELS_SIZE = 5;
   LECTURES_SIZE = 8;
-
 
   componentDidMount(): void {
     //
@@ -76,14 +75,20 @@ class RecommendChannelsContainer extends Component<Props> {
     const { lectureService } = this.props;
     const initialLimit = this.getPageNo() * this.CHANNELS_SIZE;
 
-    lectureService!.findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE);
+    // jz LRS 불러오기 주석 처리
+    // lectureService!.findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE);
   }
 
   async addPagingRecommendLectures() {
     //
     const { lectureService } = this.props;
 
-    lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, this.getPageNo() - 1, this.LECTURES_SIZE, 0);
+    lectureService!.addFindPagingRecommendLectures(
+      this.CHANNELS_SIZE,
+      this.getPageNo() - 1,
+      this.LECTURES_SIZE,
+      0
+    );
   }
 
   getPageNo() {
@@ -103,7 +108,9 @@ class RecommendChannelsContainer extends Component<Props> {
 
   routeTo(e: any, data: any) {
     //
-    this.props.history.push(lectureRoutePaths.recommendChannelLectures(data.channel.id));
+    this.props.history.push(
+      lectureRoutePaths.recommendChannelLectures(data.channel.id)
+    );
   }
 
   onClickSeeMore() {
@@ -116,13 +123,18 @@ class RecommendChannelsContainer extends Component<Props> {
 
   render() {
     //
-    const { skProfileService, collegeLectureCountService, lectureService } = this.props;
+    const {
+      skProfileService,
+      collegeLectureCountService,
+      lectureService,
+    } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
     const { totalChannelCount } = collegeLectureCountService!;
     const { recommendLectures } = lectureService!;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
-      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    const favoriteChannels = studySummaryFavoriteChannels.map(
+      channel =>
+        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
 
     return (
@@ -136,23 +148,23 @@ class RecommendChannelsContainer extends Component<Props> {
           }}
         />
 
-        {
-          recommendLectures && recommendLectures.length > 0 ?
-            recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
+        {recommendLectures && recommendLectures.length > 0 ? (
+          recommendLectures.map(
+            (recommendLecture: RecommendLectureRdo, index: number) => (
               <ChannelLecturesLine
                 key={`channel_cont_${index}`}
                 channel={new ChannelModel(recommendLecture.channel)}
                 lectures={recommendLecture.lectures}
                 onViewAll={this.routeTo}
               />
-            ))
-            :
-            <EmptyContents />
-        }
-        { this.isContentMore() && (
+            )
+          )
+        ) : (
+          <EmptyContents />
+        )}
+        {this.isContentMore() && (
           <SeeMoreButtonView onClick={this.onClickSeeMore} />
         )}
-
       </Wrapper>
     );
   }

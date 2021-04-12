@@ -8,7 +8,7 @@ import { SkProfileService } from 'profile/stores';
 import { ChannelModel } from 'college/model';
 import routePaths from '../../../routePaths';
 import ChannelsContentHeaderContainer from '../logic/ChannelsContentHeaderContainer';
-import ChannelsLecturesContainer from '../logic/RecommendChannelsContainer';
+import RecommendContentBodyContainer from '../logic/RecommendContentBodyContainer';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -51,10 +51,11 @@ class RecommendChannelsPage extends Component<Props> {
         breadcrumb={[{ text: `Recommend` }]}
       >
         <ChannelsContentHeaderContainer channels={channels} />
-        <ChannelsLecturesContainer
+        <RecommendContentBodyContainer />
+        {/* <ChannelsLecturesContainer
           channels={channels}
           onViewAll={this.routeTo}
-        />
+        /> */}
       </ContentLayout>
     );
   }

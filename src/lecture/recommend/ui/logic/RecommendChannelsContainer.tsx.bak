@@ -43,10 +43,8 @@ interface InnerProps {
   collegeService?: CollegeService;
   recommendCardRoms: RecommendCardRom[];
   channels: ChannelModel[];
-  history: History;
   scrollSave?: () => void;
   pathname: string;
-  pageNo: string;
 }
 
 interface RouteParams {
@@ -59,7 +57,6 @@ interface InnerState {
 }
 
 function RecommendChannelsContainer(props: Props) {
-  const { pageNo } = useParams<RouteParams>();
   const { channels } = props;
   const history = useHistory();
   const location = useLocation();
@@ -87,13 +84,8 @@ function RecommendChannelsContainer(props: Props) {
     <ChannelsInnerContainer
       channels={channels}
       pathname={location.pathname}
-      pageNo={pageNo}
       recommendCardRoms={recommendCardRoms}
-      history={history}
       scrollSave={scrollSave}
-      setLoading={setLoading}
-      setIsLoading={setIsLoading}
-      isLoading={isLoading}
     />
   );
 }
