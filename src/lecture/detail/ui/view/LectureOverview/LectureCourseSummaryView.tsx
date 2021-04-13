@@ -19,6 +19,7 @@ import { InMyLectureModel } from '../../../../../myTraining/model';
 import { useLectureParams } from '../../../store/LectureParamsStore';
 import { autorun } from 'mobx';
 import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
+import { Area } from 'tracker/model';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -163,7 +164,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   }, [inMyLectureMap, params?.cardId]);
 
   return (
-    <div className="course-info-header">
+    <div
+      className="course-info-header"
+      data-area={Area.CARD_HEADER}
+    >
       <div className="contents-header">
         <div className="title-area">
           <div

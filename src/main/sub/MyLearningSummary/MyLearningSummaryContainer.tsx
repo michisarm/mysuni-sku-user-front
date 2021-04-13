@@ -27,7 +27,7 @@ import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
 import LearningTimeSummaryView from './LearningTimeSummaryView';
 import BadgeLearningSummaryView from './BadgeLearningSummaryView';
 import LearningCompleteSummaryView from './LearningCompleteSummaryView';
-
+import { Action, Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService,
@@ -249,7 +249,10 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             }
           </AdditionalToolsMyLearning>
         )}
-        <div className="main-learning-link sty2">
+        <div
+          className="main-learning-link sty2"
+          data-area={Area.MAIN_INFO}
+        >
             <div className="inner">
                 <div className="left">
                     <div>
@@ -257,7 +260,15 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                         trigger={
                           <a>
                             <Icon className="channel25"/>
-                            <span>관심 채널 설정</span>
+                            <span
+                              data-area={Area.MAIN_INFO}
+                              data-action={Action.VIEW}
+                              data-action-name="관심 채널 설정 PV"
+                              data-pathname="관심 채널 설정"
+                              data-page="#attention-channel"
+                            >
+                              관심 채널 설정
+                            </span>
                           </a>
                         }
                         favorites={favoriteChannels}

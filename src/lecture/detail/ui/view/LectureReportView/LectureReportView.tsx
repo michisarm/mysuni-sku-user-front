@@ -32,6 +32,7 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
+import { Area } from 'tracker/model';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -177,7 +178,10 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   return (
     <>
       {/* Header */}
-      <div className="course-info-header">
+      <div
+        className="course-info-header"
+        data-area={Area.CUBE_HEADER}
+      >
         <Reportheader />
       </div>
 

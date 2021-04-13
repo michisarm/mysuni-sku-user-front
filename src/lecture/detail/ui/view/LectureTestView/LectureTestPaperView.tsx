@@ -26,6 +26,7 @@ import {
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { getTestStudentItemMapFromCourse } from '../../../service/useLectureTest/utility/getTestStudentItemMap';
 import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
+import { Area } from 'tracker/model';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -201,7 +202,10 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
           )}
           {!modalGbn && (
             <div className={testClassName}>
-              <div className="course-info-header">
+              <div
+                className="course-info-header"
+                data-area={Area.CUBE_HEADER}
+              >
                 <div className="survey-header">
                   <div className="survey-header-left">{testItem.name}</div>
                   <div className="survey-header-right">
