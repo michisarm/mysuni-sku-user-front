@@ -116,10 +116,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
     <Fragment>
       {boardId && taskDetail && (
         <>
-          <div
-            className="course-info-header"
-            data-area={Area.CUBE_HEADER}
-          >
+          <div className="course-info-header" data-area={Area.CUBE_HEADER}>
             <div className="survey-header">
               {viewType === 'create' && (
                 <div className="survey-header-left">Create Post</div>
@@ -134,7 +131,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               <Form.Field>
                 <div className="board-write-checkbox">
                   <div className="ui checkbox base">
-                    {canNotice && (
+                    {/* {canNotice && (
                       <Checkbox
                         className="base"
                         label="공지 등록"
@@ -142,7 +139,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                         checked={taskDetail.notice}
                         onChange={handlePinnedChange}
                       />
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div

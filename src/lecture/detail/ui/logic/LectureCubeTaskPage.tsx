@@ -23,7 +23,6 @@ function LectureCubeTaskPage() {
 
   useCubeViewEvent();
 
-  // jz - 여기도 코드 이상했음, 왜 lecturesStructure 를 검사했지?
   return <LectureTaskContainer />;
 }
 
