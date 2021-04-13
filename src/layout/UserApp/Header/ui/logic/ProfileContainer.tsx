@@ -95,8 +95,7 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   routeToAlarmBackLink(backLink: string) {
-    // /this.props.history.push(backLink);
-    window.location.replace(backLink)
+    this.props.history.push(backLink);
   }
 
   handleClickAlarm() {
