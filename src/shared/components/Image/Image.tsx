@@ -6,6 +6,7 @@ interface Props extends Record<string, any> {
 }
 
 function Image({ src, alt, className }: Props) {
+  console.log('src 시작!', src);
   const srcParser = () => {
     // 절대경로 이거나 base64인 경우
     if (
@@ -21,22 +22,24 @@ function Image({ src, alt, className }: Props) {
     // file 로 시작하지 않고 suni-asset으로 시작하지 않고
     // host가 mysuni.sk.com 인 경우
     if (!next.startsWith('suni-asset')) {
-      if (!next.startsWith('icon')) {
+      if (!next.startsWith('icon') && !next.startsWith('badge')) {
         return src;
       }
     }
+
     if (!next.startsWith('suni-asset')) {
       next = `suni-asset/${next}`;
     }
+
     if (window.location.host === 'mysuni.sk.com') {
       next = `http://image.mysuni.sk.com/${next}`;
     } else {
       next = `/${next}`;
     }
-
     // 나머지는 상대경로 그대로 return
     return next;
   };
+
   if (src === null || src === undefined) {
     return null;
   }

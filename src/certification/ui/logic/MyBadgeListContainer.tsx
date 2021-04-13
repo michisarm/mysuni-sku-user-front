@@ -61,7 +61,6 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
                     categoryId={myBadge.categoryId}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
-                    badgeColor={myBadge.badgeCategory.themeColor}
                   />
                   <div className="badge-name">
                     <span>{myBadge.name}</span>
