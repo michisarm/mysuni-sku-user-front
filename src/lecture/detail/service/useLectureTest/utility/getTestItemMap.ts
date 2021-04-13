@@ -88,7 +88,7 @@ export async function getTestItemMapFromCube(
     return;
   }
   let examId = student.studentScore.examId;
-  if (examId === null) {
+  if (examId === null || examId === '') {
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;

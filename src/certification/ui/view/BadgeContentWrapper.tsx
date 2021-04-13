@@ -10,6 +10,7 @@ interface BadgeContentWrapperProps {
   categoryId: string;
   badgeStyle: string;
   onViewDetail?: () => void;
+  backgroundImagePath: string;
   children: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ export function BadgeContentWrapper({
   id,
   categoryId,
   badgeStyle,
+  backgroundImagePath,
   children,
 }: BadgeContentWrapperProps) {
   const history = useHistory();
@@ -27,20 +29,19 @@ export function BadgeContentWrapper({
     history.push(badgeRoutePaths.badgeDetailPage(id));
   };
 
-  const badgeURL = `/static/media/badge/${categoryId}.png`;
   return (
     <>
       {badgeStyle === 'List' ? (
         <a className={classNames('badge-box basic')} onClick={onViewDetail}>
           <span className="badge_thumb">
-            <Image src={badgeURL} alt="뱃지이미지" />
+            <Image src={backgroundImagePath} alt="뱃지이미지" />
           </span>
           {children}
         </a>
       ) : (
         <>
           <span className="badge_thumb">
-            <Image src={badgeURL} alt="뱃지이미지" />
+            <Image src={backgroundImagePath} alt="뱃지이미지" />
           </span>
           {children}
         </>

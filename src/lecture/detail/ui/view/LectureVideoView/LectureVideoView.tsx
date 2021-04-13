@@ -172,7 +172,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           sessionStorage.removeItem('InProgressLearningList');
         }
         videoStart();
-        if(!isFirstAction){
+        if (!isFirstAction) {
           setIsFirstAction(true);
         }
       } else if (state == 2) {
@@ -183,11 +183,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   );
 
   // study action event : 방문당 한번 적재
-  useEffect(()=>{
-    if(isFirstAction){
+  useEffect(() => {
+    if (isFirstAction) {
       // study action track
       debounceActionTrack({
-        email: getCookie('tryingLoginId') ||
+        email:
+          getCookie('tryingLoginId') ||
           (window.sessionStorage.getItem('email') as string) ||
           (window.localStorage.getItem('nara.email') as string),
         path: window.location.pathname,
@@ -195,16 +196,16 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         area: Area.CUBE_PLAY,
         actionType: ActionType.STUDY,
         action: Action.CLICK,
-        actionName: '학습버튼 클릭'
+        actionName: '학습버튼 클릭',
       } as ActionTrackParam);
     }
-  },[isFirstAction]);
+  }, [isFirstAction]);
 
-  useEffect(()=>{
-    if(params.cubeId){
+  useEffect(() => {
+    if (params.cubeId) {
       setIsFirstAction(false);
     }
-  },[params.cubeId]);
+  }, [params.cubeId]);
 
   const registCheckStudent = useCallback(
     async (params: LectureParams | undefined) => {
@@ -446,7 +447,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [durationTime, setDurationTime] = useState<number>(0);
 
   useEffect(() => {
-    onLectureMedia(lectureMedia => {
+    const dispose = onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
       if (
         lectureMedia &&
@@ -486,6 +487,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }, 'LectureVideoView');
 
     return () => {
+      dispose();
       cleanUpPanoptoIframe();
     };
   }, []);

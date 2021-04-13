@@ -14,6 +14,7 @@ import {
   getActiveCourseStructureItem,
   getActiveCubeStructureItem,
 } from '../../../utility/lectureStructureHelper';
+import { Area } from 'tracker/model';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
@@ -60,7 +61,10 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
 
   return (
     <>
-      <div className="course-info-header">
+      <div
+        className="course-info-header"
+        data-area={Area.CUBE_HEADER}
+      >
         <div className="survey-header">
           <div className="survey-header-left test_ing">
             <i className="icon testHeader02">

@@ -126,7 +126,6 @@ const ChallengingBadge: React.FC<Props> = Props => {
                       categoryId={badge.categoryId}
                       badgeStyle={BadgeStyle.List}
                       badgeSize={BadgeSize.Small}
-                      badgeColor={badge.badgeCategory.themeColor}
                     />
                   </li>
                 );
