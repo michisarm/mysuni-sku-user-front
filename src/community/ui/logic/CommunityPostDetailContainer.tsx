@@ -239,6 +239,19 @@ function CommunityPostDetailContainer() {
     }
   }, [like, likeCount]);
 
+  const onClickWriter = useCallback((id) => {
+    findCommunityProfile(id).then((result) => {
+      setProfileInfo({
+        'id': result!.id,
+        'profileImg': result!.profileImg,
+        'introduce': result!.introduce,
+        'nickName': result!.nickname,
+        'creatorName': result!.name
+      })
+      setProfileOpen(true)
+    })
+  }, [])
+
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
       originArr.push(depotData.id);
@@ -294,6 +307,7 @@ function CommunityPostDetailContainer() {
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
             onClickLike={OnClickLike}
+            onClickWriter={onClickWriter}
           />
           <div className="class-guide-txt fn-parents ql-snow">
             <div
