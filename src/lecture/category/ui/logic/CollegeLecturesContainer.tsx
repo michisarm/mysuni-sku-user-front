@@ -54,7 +54,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   reviewService?: ReviewService;
   inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
-  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   scrollSave?: () => void;
   isLoading?: boolean | false;
@@ -132,13 +131,13 @@ const CollegeLecturesContainer: React.FC<Props> = ({
       reviewService={reviewService}
       inMyLectureService={inMyLectureService}
       coursePlanService={coursePlanService}
+      collegeModelStore={collegeModelStore}
       location={location}
       history={history}
       match={match}
-      scrollSave={scrollSave}
-      setIsLoading={setIsLoading}
       isLoading={isLoading}
-      collegeModelStore={collegeModelStore}
+      setIsLoading={setIsLoading}
+      scrollSave={scrollSave}
       scrollOnceMove={scrollOnceMove}
     />
   );
@@ -228,9 +227,8 @@ class CollegeLecturesContainerInner extends Component<
 
   init() {
     //
-    const { match, newPageService, lectureService, setLoading } = this.props;
+    const { match, newPageService, lectureService } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
-    setLoading && setLoading(false);
     newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
     lectureService!.clearLectures();
   }
@@ -260,9 +258,10 @@ class CollegeLecturesContainerInner extends Component<
     //
     const { newPageService, setIsLoading } = this.props;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
-
-    setIsLoading && setIsLoading(true);
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
+    if (typeof setIsLoading === 'function') {
+      setIsLoading(true); // Loading Progress 실행
+    }
   }
 
   async addFindPagingCollegeLectures() {
@@ -279,12 +278,9 @@ class CollegeLecturesContainerInner extends Component<
       match,
       newPageService,
       lectureService,
-      reviewService,
-      setLoading,
-      setIsLoading,
       scrollOnceMove,
+      setIsLoading,
     } = this.props;
-    const { lectures } = this.state;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
@@ -299,8 +295,6 @@ class CollegeLecturesContainerInner extends Component<
       lectures: [...prevState.lectures, ...lectureOffsetList.results],
     }));
 
-    // setIsLoading && setIsLoading(false);
-
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const totalCount = lectureOffsetList.totalCount;
     this.setState({ totalCnt: totalCount });
@@ -310,12 +304,14 @@ class CollegeLecturesContainerInner extends Component<
       lectureOffsetList.totalCount,
       pageNo
     );
-    console.log(lectureOffsetList.empty);
-    if (!lectureOffsetList.empty) {
-      setIsLoading && setIsLoading(false);
-      scrollOnceMove && scrollOnceMove();
-    } else {
-      setIsLoading && setIsLoading(true);
+
+    if (
+      !lectureOffsetList.empty &&
+      typeof scrollOnceMove === 'function' &&
+      typeof setIsLoading === 'function'
+    ) {
+      setIsLoading(false); // Loading Progress 종료
+      scrollOnceMove();
     }
   }
 
@@ -458,7 +454,6 @@ class CollegeLecturesContainerInner extends Component<
       collegeService,
       reviewService,
       inMyLectureService,
-      lectureCountService,
       isLoading,
     } = this.props;
     const { lectures, sorting, totalCnt, collegeOrder } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon

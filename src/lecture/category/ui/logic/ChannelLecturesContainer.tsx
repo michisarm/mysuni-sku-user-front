@@ -41,7 +41,6 @@ interface Props
   inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
   scrollSave?: () => void;
-  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   isLoading?: boolean | false;
   scrollOnceMove?: () => void;
@@ -66,7 +65,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
 }) => {
   const history = useHistory();
   const location = useLocation();
-  const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -88,10 +86,9 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       history={history}
       location={location}
       match={match}
-      scrollSave={scrollSave}
-      setLoading={setLoading}
-      setIsLoading={setIsLoading}
       isLoading={isLoading}
+      setIsLoading={setIsLoading}
+      scrollSave={scrollSave}
       scrollOnceMove={scrollOnceMove}
     />
   );
@@ -165,18 +162,25 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   init() {
     //
-    const { pageService, lectureService, setLoading } = this.props;
-    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
-    const prevChannelOffset = JSON.parse(getChannelOffset);
-    setLoading && setLoading(false);
+    const { pageService, lectureService, setIsLoading } = this.props;
+    const getChannelOffset: string | null = sessionStorage.getItem(
+      'channelOffset'
+    );
+
+    if (typeof setIsLoading === 'function') {
+      setIsLoading(true); // Loading Progress 실행
+    }
+
+    const prevChannelOffset = getChannelOffset
+      ? JSON.parse(getChannelOffset)
+      : null;
+
     pageService!.initPageMap(
       this.PAGE_KEY,
       0, // offset
       prevChannelOffset ? prevChannelOffset : this.PAGE_SIZE // limit
     );
     lectureService!.clearLectures();
-    // 뒤로가기 할때 포지션이 처음으로 감. 수정되면 적용..
-    // setIsLoading && setIsLoading(true);
   }
 
   async findPagingChannelLectures() {
@@ -185,15 +189,19 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       match,
       pageService,
       lectureService,
-      reviewService,
       inMyLectureService,
-      setLoading,
-      setIsLoading,
       scrollOnceMove,
+      setIsLoading,
     } = this.props;
 
-    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
-    const prevChannelOffset = JSON.parse(getChannelOffset);
+    const getChannelOffset: string | null = sessionStorage.getItem(
+      'channelOffset'
+    );
+
+    const prevChannelOffset = getChannelOffset
+      ? JSON.parse(getChannelOffset)
+      : null;
+
     this.setState({ channelOffset: prevChannelOffset });
     const { sorting, channelOffset } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
@@ -207,11 +215,13 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       sorting
     );
 
-    if (!lectureOffsetList.empty) {
-      setIsLoading && setIsLoading(false);
-      scrollOnceMove && scrollOnceMove();
-    } else {
-      setIsLoading && setIsLoading(true);
+    if (
+      !lectureOffsetList.empty &&
+      typeof scrollOnceMove === 'function' &&
+      typeof setIsLoading === 'function'
+    ) {
+      setIsLoading(false); // Loading Progress 종료
+      scrollOnceMove();
     }
 
     if (channelOffset > 0 && page) {
