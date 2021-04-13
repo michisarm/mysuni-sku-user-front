@@ -1,96 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
-
 import { Button, Icon } from 'semantic-ui-react';
-// import { ActionLogService } from 'shared/stores';
-import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel } from 'shared';
-
-import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutes from 'myTraining/routePaths';
-import { LectureModel, LectureServiceType } from 'lecture/model';
-import { ENRLectureService } from 'lecture/stores';
+import ReactGA from 'react-ga';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { Lecture } from 'lecture';
-import {
-  MyTrainingModel,
-  InMyLectureCdoModel,
-  InMyLectureModel,
-} from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
-import OffsetElementList from '../../../../shared/model/OffsetElementList';
-import ReactGA from 'react-ga';
-import { ContentType } from 'myTraining/ui/page/NewLearningPage';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
+import { EnrollingCardList } from '../../../../lecture/model/EnrollingCardList';
+import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import LectureParams, {
-  toPath,
-} from '../../../../lecture/detail/viewModel/LectureParams';
-import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
-import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
-import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
+import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
 
-/*
-  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
-*/
-interface Props extends RouteComponentProps {
-  // actionLogService?: ActionLogService,
-  reviewService?: ReviewService;
-  enrLectureService?: ENRLectureService;
-  inMyLectureService?: InMyLectureService;
-}
+function EnrollingLearning({ history }: RouteComponentProps) {
+  const [cardList, setCardList] = useState<EnrollingCardList[]>();
+  const [isLoading, setIsLoading] = useState(false);
 
-const ENRLearning: React.FC<Props> = Props => {
-  //
-  const {
-    enrLectureService,
-    inMyLectureService,
-    history,
-  } = Props;
-
-  const CONTENT_TYPE_NAME = '수강신청 기간';
-  const PAGE_SIZE = 8;
-
-  // const { enrLectures } = enrLectureService!;
-
-  useRequestCollege();
-  const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
-
-  // // lectureService 변경  실행
   useEffect(() => {
-    findMyContent();
+    fetchLearningCardLsit().then(() => setIsLoading(true));
   }, []);
 
-  const findMyContent = async () => {
-    const cards = await findEnrollingCardList(
-      LectureFilterRdoModel.enrLectures(PAGE_SIZE, 0, false)
+  const fetchLearningCardLsit = async () => {
+    const EnrollingCardList = await findEnrollingCardList(
+      LectureFilterRdoModel.enrLectures(8, 0, false)
     );
 
-    if (cards !== undefined) {
-      setCardList(cards.results);
-    }
-  };
-
-  const getInMyLecture = (serviceId: string) => {
-    //
-    const { inMyLectureMap } = inMyLectureService!;
-    return inMyLectureMap.get(serviceId);
+    setCardList(EnrollingCardList.results);
   };
 
   const onViewAll = () => {
-    //
-    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
     window.sessionStorage.setItem('from_main', 'TRUE');
-    history.push(myTrainingRoutes.learningEnrLecture());
+    history.push(`/my-training/new-learning/Enrolling/pages/1`);
 
     // react-ga event
     ReactGA.event({
@@ -103,54 +46,61 @@ const ENRLearning: React.FC<Props> = Props => {
   return (
     <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
       <div className="section-head">
-        {cardList.length > 0 && <strong>수강 신청 과정 모아보기</strong>}
+        {cardList && cardList.length > 0 && (
+          <strong>수강 신청 과정 모아보기</strong>
+        )}
         <div className="right">
-          {cardList.length > 0 && (
+          {cardList && cardList.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View all <Icon className="morelink" />
             </Button>
           )}
         </div>
       </div>
-
-      {cardList.length > 0 ? (
+      {cardList && cardList.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {cardList.map(
-            (item,i) => {
-              const { card, cardRelatedCount } = item;
-              const inMyLecture = getInMyLecture(card.id);
+          {cardList.map((item, i) => {
+            const { card, cardRelatedCount, upcomingClassroomInfo } = item;
+            const isRequired = card.permittedCinerooms
+              ? isIncludeCineroomId(card.permittedCinerooms)
+              : false;
 
-              return (
-                <li key={i}>
-                  <CardGroup type={GroupType.Box}>
-                    <CardView
-                      key={card.id}
-                      cardId={card.id}
-                      {...card}
-                      {...cardRelatedCount}
-                      // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함
-                      // 정원 마감 : capacity <= student_count
-                      // D-DAY OR D-14 ... : 수강신청 마감일 - TODAY
-                      // contentType="Enrolling"
-                    />
-                  </CardGroup>
-                </li>
+            return (
+              <li key={i}>
+                <CardGroup type={GroupType.Box}>
+                  <CardView
+                    cardId={item.card.id}
+                    isRequired={isRequired}
+                    learningTime={card.learningTime}
+                    thumbImagePath={card.thumbImagePath}
+                    mainCategory={card.mainCategory}
+                    name={card.name}
+                    stampCount={card.stampCount}
+                    simpleDescription={card.simpleDescription}
+                    type={card.type}
+                    passedStudentCount={cardRelatedCount.passedStudentCount}
+                    starCount={cardRelatedCount.starCount}
+                    studentCount={upcomingClassroomInfo.studentCount}
+                    remainingDayCount={upcomingClassroomInfo.remainingDayCount}
+                    capacity={upcomingClassroomInfo.capacity}
+                  />
+                </CardGroup>
+              </li>
             );
-            }
-          )}
+          })}
         </Lecture.Group>
       ) : (
-        ''
+        <>
+          <Loadingpanel loading={isLoading} color="#eff0f1" />
+          {!isLoading && (
+            <NoSuchContentPanel
+              message={<div className="text">수강 신청 과정이 없습니다.</div>}
+            />
+          )}
+        </>
       )}
     </ContentWrapper>
   );
-};
+}
 
-export default inject(
-  mobxHelper.injectFrom(
-    // 'shared.actionLogService',
-    'shared.reviewService',
-    'enrLecture.enrLectureService',
-    'myTraining.inMyLectureService'
-  )
-)(withRouter(observer(ENRLearning)));
+export default withRouter(EnrollingLearning);

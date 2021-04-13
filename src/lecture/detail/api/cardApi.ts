@@ -8,6 +8,7 @@ import { createCacheApi } from './cacheableApi';
 import { CardWithLearningContentCountRom } from '../../model/CardWithLearningContentCountRom';
 import { StudentCdo } from '../../model/StudentCdo';
 import { CardWithCardRealtedCount } from '../../model/CardWithCardRealtedCount';
+import { EnrollingCardList } from '../../model/EnrollingCardList';
 import { Card } from '../../model/Card';
 import { CardRdo } from '../model/CardRdo';
 import { OffsetElementList } from '../../../shared/model';
@@ -163,7 +164,7 @@ export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
   const axios = getAxios();
 
   return axios
-    .get<OffsetElementList<CardWithCardRealtedCount>>(
+    .get<OffsetElementList<EnrollingCardList>>(
       `${BASE_URL}/cards/enrollingCards`,
       { params }
     )
