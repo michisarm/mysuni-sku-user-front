@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
 import { setLectureParams } from './store/LectureParamsStore';
+import LectureChapterPage from './ui/logic/LectureChapter/LectureChapterPage';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
 import LectureDiscussionPage from './ui/logic/LectureDiscussionPage';
 import LectureParams from './viewModel/LectureParams';
@@ -17,7 +18,7 @@ function LectureDetailCourseSubRoutes() {
 
   return (
     <>
-      {viewType === 'chapter' && <LectureCourseOverviewPage />}
+      {viewType === 'chapter' && <LectureChapterPage />}
       {viewType === 'discussion' && <LectureDiscussionPage />}
     </>
   );

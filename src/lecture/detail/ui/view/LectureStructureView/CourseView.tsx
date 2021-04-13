@@ -2,6 +2,7 @@ import React, { Fragment, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import {
+  LectureStructureChapterItem,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
   LectureStructureDurationableCubeItem,
@@ -139,6 +140,18 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                     />
                   )}
                 </Fragment>
+              );
+            }
+            if (item.type === 'CHAPTER') {
+              const discussion = item as LectureStructureChapterItem;
+              return (
+                <DiscussionView
+                  key={discussion.id}
+                  name={discussion.name}
+                  state={discussion.state}
+                  path={discussion.path}
+                  activated={discussion.path === pathname}
+                />
               );
             }
             if (item.type === 'DISCUSSION') {
