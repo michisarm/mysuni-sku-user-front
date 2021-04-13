@@ -9,5 +9,4 @@ export default interface LectureSummary {
   operator: Member;
   passedStudentCount: number;
   studentCount: number;
-  mytrainingId?: string;
 }
