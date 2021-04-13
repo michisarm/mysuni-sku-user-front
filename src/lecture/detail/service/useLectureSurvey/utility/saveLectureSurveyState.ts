@@ -321,6 +321,45 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   requestCardLectureStructure(lectureParams.cardId);
 }
 
+export async function saveCommunitySurveyState() {
+  const lectureSurveyState = getLectureSurveyState();
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  if (lectureSurveyState.answerSheetId === undefined) {
+    await openLectureSurveyState();
+  }
+  await coreSaveLectureSurveyState();
+  //requestLectureStructure(lectureParams, pathname);
+
+  reactAlert({
+    title: '알림',
+    message: 'Survey 설문 이 저장 되었습니다.',
+  });
+}
+
+export async function submitCommunitySurveyState() {
+  const lectureSurveyState = getLectureSurveyState();
+  console.log(
+    'submitCommunitySurveyState.lectureSurveyState',
+    lectureSurveyState
+  );
+  if (lectureSurveyState === undefined) {
+    return;
+  }
+  if (lectureSurveyState.state === 'Completed') {
+    return;
+  }
+  if (lectureSurveyState.answerSheetId === undefined) {
+    await openLectureSurveyState();
+  }
+  await coreSubmitLectureSurveyState();
+  //requestLectureStructure(lectureParams, pathname);
+}
+
 export function selectSentenceAnswer(
   lectureSurveyItem: LectureSurveyItem,
   value: string
