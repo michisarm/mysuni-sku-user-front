@@ -74,7 +74,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   }, [lectureSummary]);
 
   const overviewHashClick = useCallback(() => {
-    // hashLink('lms-overview');
+    hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const classroomHashClick = useCallback(() => {
