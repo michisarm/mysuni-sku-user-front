@@ -1,5 +1,9 @@
 import { reactAlert } from '@nara.platform/accent';
-import { saveTask, submitTask } from '../../../api/cardApi';
+import {
+  clearFindMyCardRelatedStudentsCache,
+  saveTask,
+  submitTask,
+} from '../../../api/cardApi';
 import {
   openAnswerSheet,
   saveAnswerSheet,
@@ -318,6 +322,7 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   }
   await coreSubmitLectureSurveyState();
   await submitTask(student.id, 'Survey');
+  await clearFindMyCardRelatedStudentsCache();
   requestCardLectureStructure(lectureParams.cardId);
 }
 

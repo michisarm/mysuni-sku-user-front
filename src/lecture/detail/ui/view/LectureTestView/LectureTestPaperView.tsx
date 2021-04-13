@@ -130,7 +130,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
 
-            await submitTask(testStudentItem.studentId, 'Test');
+            //await submitTask(testStudentItem.studentId, 'Test');  // /examProcess api와 중복
             await clearFindMyCardRelatedStudentsCache();
             await requestCardLectureStructure(cardId);
 
