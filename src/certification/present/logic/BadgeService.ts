@@ -158,9 +158,9 @@ class BadgeService {
   }
 
   @observable
-  _linkedBadges: Badge[] = [];
+  _linkedBadges: BadgeBundle[] = [];
 
-  @computed get linkedBadges(): Badge[] {
+  @computed get linkedBadges(): BadgeBundle[] {
     return this._linkedBadges;
   }
 
@@ -168,7 +168,7 @@ class BadgeService {
   async findAllLinkedBadges(badgeIds: string[]): Promise<void> {
     const foundLinkedBadges = await findBadgesByIds(badgeIds);
 
-    if (foundLinkedBadges && foundLinkedBadges.length > 0) {
+    if (foundLinkedBadges) {
       runInAction(() => {
         this._linkedBadges = foundLinkedBadges;
       });
