@@ -3,14 +3,14 @@ import React, { Component } from 'react';
 import { Image, Segment } from 'semantic-ui-react';
 import introductionCertification2 from '../../../style/media/introduction-certification2.png';
 import certification from '../../../style/media/certification.png';
-
+import { Area } from 'tracker/model';
 
 class CertificationView extends Component {
   //
   render() {
     //
     return (
-      <>
+      <div data-area={Area.INTRODUCTION_CERTIFICATION}>
         <div className="common-intro case3">
           <div className="inner">
             <div className="strong">mySUNI에서는 구성원의 자발적 학습과 Career 개발을 위해<br/>인증제도를 운영하고 있습니다.</div>
@@ -150,8 +150,7 @@ class CertificationView extends Component {
             </div>
           </div>
         </Segment>
-
-      </>
+      </div>
     );
   }
 }

@@ -6,6 +6,7 @@ import {
   LectureStructure,
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
+import { Area } from 'tracker/model';
 
 interface LectureCubeNavigatorViewProps {
   lectureStructure: LectureStructure;
@@ -38,7 +39,7 @@ const LectureCubeNavigatorView: React.FC<LectureCubeNavigatorViewProps> = functi
   return (
     <>
       {visible && (
-        <div className="course-info-banner">
+        <div className="course-info-banner" data-area={Area.CARD_MENU}>
           안녕하세요.<span>{name}</span>님, 학습 중인 강의가 있습니다.
           <h3>{progressingCube.name}</h3>
           <span

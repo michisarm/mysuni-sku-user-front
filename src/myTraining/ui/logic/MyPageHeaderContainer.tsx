@@ -15,7 +15,7 @@ import myTrainingPaths from '../../routePaths';
 import lecturePaths from '../../../lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { useRequestLearningSummaryCurrentYear } from '../../service/useRequestLearningSummaryCurrentYear';
-
+import { Area } from 'tracker/model';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -65,7 +65,14 @@ function MyPageHeaderContainer({
     // <ContentHeader
     //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
     // >
-    <ContentHeader type="Learning">
+    <ContentHeader
+      dataArea={
+        window.location.pathname.includes('/my-page/')
+          ? Area.MYPAGE_INFO
+          : Area.LEARNING_INFO
+      }
+      type="Learning"
+    >
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
             myPageActive={false}

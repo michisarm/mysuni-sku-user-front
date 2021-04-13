@@ -143,9 +143,10 @@ function MyApprovalInfoTable(props: Props) {
                     <a href="#" className="link" key={index}>
                       <span
                         className="ellipsis"
-                        onClick={() =>
-                          depot.downloadDepotFile(foundedFile.id)
-                        }
+                        onClick={e => {
+                          depot.downloadDepotFile(foundedFile.id);
+                          e.preventDefault();
+                        }}
                       >
                         {'    ' + foundedFile.name + '     '}
                       </span>

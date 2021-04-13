@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Segment, Image } from 'semantic-ui-react';
-
+import { Area } from 'tracker/model';
 
 class MySuniView extends Component {
   //
@@ -10,7 +10,7 @@ class MySuniView extends Component {
   render() {
     //
     return (
-      <>
+      <div data-area={Area.INTRODUCTION_MYSUNI}>
         <div className="common-intro case1">
           <div className="inner" style={{backgroundImage: `url(${this.PUBLIC_URL}/images/all/mysuni-Main.png)`}}>
             <div className="strong">mySUNI는 구성원 개인의 자기 성장과 행복 추구를 위해 <br />성장 역량을 강화하는 새로운 학습 플랫폼입니다.</div>
@@ -182,7 +182,7 @@ class MySuniView extends Component {
             </ul>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
