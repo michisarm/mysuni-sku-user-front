@@ -50,6 +50,7 @@ interface Props
 interface State {
   sorting: string;
   collegeOrder: boolean;
+  channelOffset: number;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -120,6 +121,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   state = {
     sorting: OrderByType.Time,
     collegeOrder: false,
+    channelOffset: 0,
   };
 
   constructor(props: Props) {
@@ -158,6 +160,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { pageService, lectureService, setLoading } = this.props;
     const getChannelOffset: any = sessionStorage.getItem('channelOffset');
     const prevChannelOffset = JSON.parse(getChannelOffset);
+    this.setState({ channelOffset: prevChannelOffset });
     setLoading && setLoading(false);
     pageService!.initPageMap(
       this.PAGE_KEY,
@@ -181,7 +184,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       setIsLoading,
       scrollOnceMove,
     } = this.props;
-    const { sorting } = this.state;
+    const { sorting, channelOffset } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     inMyLectureService!.findAllInMyLectures();
     const getChannelOffset: any = sessionStorage.getItem('channelOffset');
@@ -207,8 +210,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      page!.pageNo + 1
+      channelOffset && channelOffset > 0 ? (channelOffset / 8) + page!.pageNo + 1 : page!.pageNo + 1
     );
+    this.setState({ channelOffset: 0 });
   }
 
   async findCollegeOrder() {
@@ -330,6 +334,14 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.props.actionLogService?.registerClickActionLog({
       subAction: 'list more',
     });
+
+
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    if (page) {
+      page.limit = 8;
+    }
+
     this.findPagingChannelLectures();
   }
 
@@ -394,8 +406,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             </div>
           </>
         ) : (
-          <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
-        )}
+              <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
+            )}
       </ChannelLecturesContentWrapperView>
     );
   }
