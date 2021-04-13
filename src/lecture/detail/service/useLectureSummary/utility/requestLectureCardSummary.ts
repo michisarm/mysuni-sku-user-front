@@ -5,35 +5,14 @@ import { CardContents } from '../../../../model/CardContents';
 import { CardRelatedCount } from '../../../../model/CardRelatedCount';
 import { UserIdentity } from '../../../../model/UserIdentity';
 import { findCardCache } from '../../../api/cardApi';
-import InMyLectureCdo from '../../../model/InMyLectureCdo';
+import InMyLectureCdo, {
+  makeInMyLectureCdo,
+} from '../../../model/InMyLectureCdo';
 import {
   setInMyLectureCdo,
   setLectureCardSummary,
 } from '../../../store/LectureOverviewStore';
 import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
-
-function parseInMyLectureCdo(card: Card): InMyLectureCdo {
-  const {
-    id: cardId,
-    name,
-    mainCategory = card.mainCategory || {
-      channelId: '',
-      collegeId: '',
-      mainCategory: true,
-    },
-    learningTime,
-    stampCount,
-  } = card;
-  return {
-    category: mainCategory,
-    learningTime,
-    name,
-    serviceId: cardId,
-    cardId,
-    serviceType: 'Card',
-    stampCount,
-  };
-}
 
 function parseLectureSummary(
   card: Card,
@@ -99,6 +78,6 @@ export async function requestLectureCardSummary(cardId: string) {
     cardRelatedCount
   );
   setLectureCardSummary(lectureCardSummary);
-  const inMyLectureCdo = parseInMyLectureCdo(card);
+  const inMyLectureCdo = makeInMyLectureCdo(card);
   setInMyLectureCdo(inMyLectureCdo);
 }
