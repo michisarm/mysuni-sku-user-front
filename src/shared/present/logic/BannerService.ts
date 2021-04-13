@@ -82,7 +82,11 @@ class BannerService {
   async findLatestBannerBundles() {
     const bannerList = await this.bannerApi.findLatestBannerBundles();
 
-    if (bannerList && bannerList.banners.length > 0) {
+    if (
+      bannerList &&
+      bannerList.banners &&
+      bannerList.banners.length > 0
+    ) {
       runInAction(() => {
         this._bannerInfo = Object.assign(
           Object.create(Object.getPrototypeOf(bannerList)),

@@ -13,32 +13,39 @@ import {
 import LectureCardSummary from '../../viewModel/LectureOverview/LectureCardSummary';
 import { studentInfoView } from 'lecture/detail/api/lectureApi';
 import LectureParams from '../../viewModel/LectureParams';
+import { getLectureParams } from '../../store/LectureParamsStore';
+import InMyLectureService from '../../../../myTraining/present/logic/InMyLectureService';
 
 type Value = LectureCardSummary | undefined;
 
 export function toggleCardBookmark() {
-  const lectureSummary = getLectureCardSummary();
-  if (lectureSummary !== undefined) {
-    if (lectureSummary.mytrainingId === undefined) {
-      const inMyLectureCdo = getInMyLectureCdo();
-      if (inMyLectureCdo !== undefined) {
-        addInMyLecture(inMyLectureCdo).then(mytrainingId => {
-          setLectureCardSummary({ ...lectureSummary, mytrainingId });
-          reactAlert({
-            title: '알림',
-            message: '본 과정이 관심목록에 추가되었습니다.',
-          });
-        });
-      }
-    } else {
-      removeInMyLecture(lectureSummary.mytrainingId).then(() => {
-        setLectureCardSummary({ ...lectureSummary, mytrainingId: undefined });
+  const params = getLectureParams();
+  if (params === undefined) {
+    return;
+  }
+  const { cardId } = params;
+
+  const imMyLecture = InMyLectureService.instance.inMyLectureMap.get(cardId);
+
+  if (imMyLecture === undefined) {
+    const inMyLectureCdo = getInMyLectureCdo();
+    if (inMyLectureCdo !== undefined) {
+      addInMyLecture(inMyLectureCdo).then(() => {
+        InMyLectureService.instance.findAllInMyLectures();
         reactAlert({
           title: '알림',
-          message: '본 과정이 관심목록에서 제외되었습니다.',
+          message: '본 과정이 관심목록에 추가되었습니다.',
         });
       });
     }
+  } else {
+    removeInMyLecture(imMyLecture.id).then(() => {
+      InMyLectureService.instance.findAllInMyLectures();
+      reactAlert({
+        title: '알림',
+        message: '본 과정이 관심목록에서 제외되었습니다.',
+      });
+    });
   }
 }
 

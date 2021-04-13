@@ -2,40 +2,45 @@
 
 import { reactAlert } from '@nara.platform/accent';
 import { useEffect, useState } from 'react';
+import { InMyLectureService } from '../../../../myTraining/stores';
 import { addInMyLecture, removeInMyLecture } from '../../api/mytrainingApi';
 import {
   getInMyLectureCdo,
-  getLectureCubeSummary,
   onLectureCubeSummary,
-  setLectureCubeSummary,
 } from '../../store/LectureOverviewStore';
+import { getLectureParams } from '../../store/LectureParamsStore';
 import LectureCubeSummary from '../../viewModel/LectureOverview/LectureCubeSummary';
 
 type Value = LectureCubeSummary | undefined;
 
 export function toggleCubeBookmark() {
-  const lectureSummary = getLectureCubeSummary();
-  if (lectureSummary !== undefined) {
-    if (lectureSummary.mytrainingId === undefined) {
-      const inMyLectureCdo = getInMyLectureCdo();
-      if (inMyLectureCdo !== undefined) {
-        addInMyLecture(inMyLectureCdo).then(mytrainingId => {
-          setLectureCubeSummary({ ...lectureSummary, mytrainingId });
-          reactAlert({
-            title: '알림',
-            message: '본 과정이 관심목록에 추가되었습니다.',
-          });
-        });
-      }
-    } else {
-      removeInMyLecture(lectureSummary.mytrainingId).then(() => {
-        setLectureCubeSummary({ ...lectureSummary, mytrainingId: undefined });
+  const params = getLectureParams();
+  if (params === undefined) {
+    return;
+  }
+  const { cardId } = params;
+
+  const imMyLecture = InMyLectureService.instance.inMyLectureMap.get(cardId);
+
+  if (imMyLecture === undefined) {
+    const inMyLectureCdo = getInMyLectureCdo();
+    if (inMyLectureCdo !== undefined) {
+      addInMyLecture(inMyLectureCdo).then(() => {
+        InMyLectureService.instance.findAllInMyLectures();
         reactAlert({
           title: '알림',
-          message: '본 과정이 관심목록에서 제외되었습니다.',
+          message: '본 과정이 관심목록에 추가되었습니다.',
         });
       });
     }
+  } else {
+    removeInMyLecture(imMyLecture.id).then(() => {
+      InMyLectureService.instance.findAllInMyLectures();
+      reactAlert({
+        title: '알림',
+        message: '본 과정이 관심목록에서 제외되었습니다.',
+      });
+    });
   }
 }
 
