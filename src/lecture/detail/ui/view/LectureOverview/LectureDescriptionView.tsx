@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import './LectureDescriptionView.css';
+import { Area } from 'tracker/model';
 
 interface LectureDescriptionViewProps {
   htmlContent: string;
@@ -41,7 +42,10 @@ function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
     }
   }, [descriptionOpen]);
   return (
-    <div className="class-guide-txt fn-parents ql-snow">
+    <div
+      className="class-guide-txt fn-parents ql-snow"
+      data-area={Area.CUBE_OVERVIEW}
+    >
       <div
         className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
         dangerouslySetInnerHTML={{ __html: htmlContent }}

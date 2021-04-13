@@ -7,6 +7,7 @@ import OpenCommunityIntroFieldListContainer from '../logic/OpenCommunityIntro/Op
 import OpenCommunityIntroCommunityListContainer from '../logic/OpenCommunityIntro/OpenCommunityIntroCommunityListContainer';
 
 import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
 
 interface OpenCommunityViewProps { }
 
@@ -30,7 +31,7 @@ const OpenCommunityView: React.FC<OpenCommunityViewProps> = function OpenCommuni
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
-        <div className="cont-inner">
+        <div className="cont-inner" data-area={Area.COMMUNITY_MENU}>
           <Menu className="sku">
             <Menu.Item
               name="MyCommunity"

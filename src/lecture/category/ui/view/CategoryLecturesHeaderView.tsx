@@ -8,7 +8,7 @@ import { ContentHeader } from 'shared';
 import { ActionLogService } from 'shared/stores';
 import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
-
+import { Area } from 'tracker/model';
 
 interface Props {
   actionLogService?: ActionLogService,
@@ -111,7 +111,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
     const { actionLogService, college, onClickMySuni } = this.props;
 
     return (
-      <ContentHeader>
+      <ContentHeader dataArea={Area.COLLEGE_INFO}>
         <ContentHeader.Cell className="thumb">
           <ThumbnailView icon={this.getThumbnailIcon(college.name)} />
         </ContentHeader.Cell>

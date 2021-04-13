@@ -122,9 +122,10 @@ class AnswerDetailContainer extends Component<Props, States> {
                           <a href="#" className="link" key={index}>
                             <span
                               className="ellipsis"
-                              onClick={() =>
+                              onClick={e => {
                                 depot.downloadDepotFile(foundedFile.id)
-                              }
+                                e.preventDefault();
+                              }}
                             >
                               {'    ' + foundedFile.name + '     '}
                             </span>

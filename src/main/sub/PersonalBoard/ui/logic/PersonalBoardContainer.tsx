@@ -17,6 +17,7 @@ import BadgeLearningTimeView from '../view/BadgeLearningTimeView';
 import CollegeTopChartView from '../view/CollegeTopChartView';
 import LearningTimeDetailView from '../view/LearningTimeDetailView';
 import MyCompanyPopularCourseView from '../view/MyCompanyPopularCourseView';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   myLearningSummaryService?: MyLearningSummaryService;
@@ -63,7 +64,7 @@ function PersonalBoardContainer(props: Props){
 
 return (
   <>
-    <div className="personal-contents">
+    <div className="personal-contents" data-area={Area.MAIN_INFO}>
       <BadgeLearningTimeView activeIndex={activeIndex}/>
       <LearningTimeDetailView showApl={showApl()}/>
       <CollegeTopChartView

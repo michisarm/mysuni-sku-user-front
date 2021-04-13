@@ -11,6 +11,7 @@ import myTrainingRoutePaths from 'myTraining/routePaths';
 import { Image } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import HeaderAlarmView from '../view/HeaderAlarmView';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -138,7 +139,10 @@ class ProfileContainer extends Component<Props, State> {
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
         </button>
 
-        <div className={`balloon-pop ${balloonShowClass}`}>
+        <div
+          className={`balloon-pop ${balloonShowClass}`}
+          data-area={Area.HEADER_PROFILE}
+        >
           <ul>
             {menuAuth.some(
               (menuAuth: PageElement) =>
@@ -147,9 +151,10 @@ class ProfileContainer extends Component<Props, State> {
                 <li>
                   <a
                     href="#"
-                    onClick={() =>
-                      this.props.history.push(myTrainingRoutePaths.myPage())
-                    }
+                    onClick={e => {
+                      this.props.history.push(myTrainingRoutePaths.myPage());
+                      e.preventDefault();
+                    }}
                   >
                     <i aria-hidden="true" className="balloon mypage icon" />
                     <span>My Page</span>
