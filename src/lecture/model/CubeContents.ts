@@ -20,6 +20,12 @@ export interface CubeContents {
       representative: true;
       round: number;
       name?: string;
+      memberSummary?: {
+        department: string;
+        email: string;
+        name: string;
+        photoId: string;
+      };
     }
   ];
   operator: { keyString: string };
