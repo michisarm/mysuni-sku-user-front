@@ -62,6 +62,7 @@ interface Props extends RouteComponentProps<RouteParams> {
 
 interface CollegeLecturesContainerInnerProps extends Props {
   collegeModelStore: CollegeModel[];
+  scrollOnceMove: () => void;
 }
 
 interface State {
@@ -89,7 +90,6 @@ const CollegeLecturesContainer: React.FC<Props> = ({
 }) => {
   const history = useHistory();
   const location = useLocation();
-  const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const collegeModelStore = useCollegeModelStore();
@@ -114,10 +114,9 @@ const CollegeLecturesContainer: React.FC<Props> = ({
   }, [collegeModelStore, match.params.collegeId, lectureCountService]);
 
   useEffect(() => {
-    if (loading) {
-      scrollOnceMove();
-    }
-  }, [loading]);
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, []);
 
   if (collegeModelStore === undefined) {
     return null;
@@ -136,11 +135,11 @@ const CollegeLecturesContainer: React.FC<Props> = ({
       location={location}
       history={history}
       match={match}
-      setLoading={setLoading}
       scrollSave={scrollSave}
       setIsLoading={setIsLoading}
       isLoading={isLoading}
       collegeModelStore={collegeModelStore}
+      scrollOnceMove={scrollOnceMove}
     />
   );
 };
@@ -283,7 +282,9 @@ class CollegeLecturesContainerInner extends Component<
       reviewService,
       setLoading,
       setIsLoading,
+      scrollOnceMove,
     } = this.props;
+    const { lectures } = this.state;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
@@ -297,7 +298,8 @@ class CollegeLecturesContainerInner extends Component<
     this.setState(prevState => ({
       lectures: [...prevState.lectures, ...lectureOffsetList.results],
     }));
-    setIsLoading && setIsLoading(false);
+
+    // setIsLoading && setIsLoading(false);
 
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const totalCount = lectureOffsetList.totalCount;
@@ -308,11 +310,12 @@ class CollegeLecturesContainerInner extends Component<
       lectureOffsetList.totalCount,
       pageNo
     );
-
+    console.log(lectureOffsetList.empty);
     if (!lectureOffsetList.empty) {
-      setLoading && setLoading(true);
+      setIsLoading && setIsLoading(false);
+      scrollOnceMove && scrollOnceMove();
     } else {
-      setLoading && setLoading(false);
+      setIsLoading && setIsLoading(true);
     }
   }
 
@@ -427,7 +430,6 @@ class CollegeLecturesContainerInner extends Component<
       // history.push(routePaths.lectureCardOverviewPrev(college.collegeId, model.cubeId, model.serviceId));
       history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
-    scrollSave && scrollSave();
   }
 
   onClickSeeMore() {
