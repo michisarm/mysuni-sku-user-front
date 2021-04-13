@@ -168,6 +168,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       prevChannelOffset ? prevChannelOffset : this.PAGE_SIZE // limit
     );
     lectureService!.clearLectures();
+    console.log('1');
     // 뒤로가기 할때 포지션이 처음으로 감. 수정되면 적용..
     // setIsLoading && setIsLoading(true);
   }
@@ -192,6 +193,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
     // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
 
+    console.log('page!.limit, : ', page!.limit);
+    console.log('page!.nextOffset, : ', page!.nextOffset);
+
     const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
       match.params.collegeId,
       match.params.channelId,
@@ -200,6 +204,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       sorting
     );
 
+    console.log('2');
+    console.log(page);
     if (!lectureOffsetList.empty) {
       setIsLoading && setIsLoading(false);
       scrollOnceMove && scrollOnceMove();
