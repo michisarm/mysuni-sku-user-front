@@ -26,7 +26,6 @@ import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
 
 interface Props {
-  isRequired?: boolean;
   cardId: string;
   learningTime: number;
   thumbImagePath: string;
@@ -35,22 +34,24 @@ interface Props {
   stampCount: number;
   passedStudentCount: number;
   starCount: number;
-  description: string;
+  simpleDescription: string;
+  inMyLectureService?: InMyLectureService;
   contentType?: string;
+  isRequired?: boolean;
 }
 
-export default function CardView({
-  isRequired,
+function CardView({
   cardId,
   name,
   starCount,
   stampCount,
   mainCategory,
-  description,
+  simpleDescription,
   learningTime,
   thumbImagePath,
   passedStudentCount,
   contentType,
+  isRequired,
 }: Props) {
   useRequestCollege();
   const [inMyLectureMap, setInMyLectureMap] = useState<
@@ -115,43 +116,45 @@ export default function CardView({
     handleAlert(inMyLectureModel);
   };
 
-  const renderBottom = () => {
-    const progressList = sessionStorage.getItem('inProgressTableViews');
-    const completeList = sessionStorage.getItem('completedTableViews');
+  const getEducationDate = (
+    state: 'inProgressTableViews' | 'completedTableViews'
+  ) => {
+    const educationStateList = sessionStorage.getItem(state);
 
-    const parserProgressList = progressList && JSON.parse(progressList);
-    const parserCompleteList = completeList && JSON.parse(completeList);
+    const parserEducationStateList =
+      educationStateList && JSON.parse(educationStateList);
 
-    const filterProgress = find(parserProgressList, { serviceId: cardId });
-    const filterComplete = find(parserCompleteList, { serviceId: cardId });
+    const filterEducationState = find(parserEducationStateList, {
+      serviceId: cardId,
+    });
 
-    if (filterProgress) {
-      const startDate = moment(Number(filterProgress.startDate)).format(
-        'YYYY.MM.DD'
-      );
+    if (state === 'inProgressTableViews') {
       return (
-        <>
-          <Label className="onlytext bold">
-            <Icon className="state" />
-            <span>학습중</span>
-          </Label>
-          <div className="study-date">{`${startDate} 학습 시작`}</div>
-        </>
+        filterEducationState &&
+        moment(Number(filterEducationState.startDate)).format('YYYY.MM.DD')
+      );
+    } else {
+      return (
+        filterEducationState &&
+        moment(Number(filterEducationState.endDate)).format('YYYY.MM.DD')
       );
     }
+  };
 
-    if (filterComplete) {
-      const endDate = moment(Number(filterComplete.endDate)).format(
-        'YYYY.MM.DD'
-      );
+  const renderBottom = () => {
+    const startDate = getEducationDate('inProgressTableViews');
+    const endDate = getEducationDate('completedTableViews');
 
+    if (startDate || endDate) {
+      const text = startDate ? '학습중' : endDate && '학습 완료';
+      const date = startDate || endDate;
       return (
         <>
           <Label className="onlytext bold">
             <Icon className="state" />
-            <span>학습 완료</span>
+            <span>{text}</span>
           </Label>
-          <div className="study-date">{`${endDate} 학습 완료`}</div>
+          <div className="study-date">{`${date} 학습 시작`}</div>
         </>
       );
     }
@@ -231,7 +234,7 @@ export default function CardView({
         </div>
         <p
           className="text-area"
-          dangerouslySetInnerHTML={{ __html: description }}
+          dangerouslySetInnerHTML={{ __html: simpleDescription }}
         />
         <div className="btn-area">
           <Button icon className="icon-line" onClick={handleInMyLecture}>

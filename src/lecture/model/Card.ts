@@ -13,7 +13,7 @@ export interface Card {
   patronKey: PatronKey;
   thumbImagePath: string;
   stampCount: number;
-  description: string;
+  simpleDescription: string;
   difficultyLevel?: DifficultyLevel;
   searchable: boolean;
   tags?: string[] | null;

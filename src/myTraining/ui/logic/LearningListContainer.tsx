@@ -27,23 +27,23 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
 
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
   const [viewType, setViewType] = useState<EnrollingViewType>('All');
-  
-  const onChangeViewType = ((e: any, data: any, func?: any) => {
+
+  const onChangeViewType = (e: any, data: any, func?: any) => {
     setViewType(data.value);
-  });
+  };
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
 
   // url 에서 타입 받도록 변경 필요
   // let contentType = 'Enrolling';
   const contentType = match.params.type;
-  
+
   const fetchCardList = async () => {
     // 수강 신청 모아보기 Card list 조회
-    if(contentType == ContentType.Enrolling) {
+    if (contentType == ContentType.Enrolling) {
       let excludeClosed = false;
 
-      if(viewType === 'Available') {
+      if (viewType === 'Available') {
         excludeClosed = true;
       }
 
@@ -54,9 +54,9 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
         LectureFilterRdoModel.enrLectures(0, 0, excludeClosed)
       );
 
-      if(cardList) {
+      if (cardList) {
         setCardList(cardList.results);
-      }      
+      }
     } else {
       const cardBundles = await findAvailableCardBundles();
 
@@ -73,10 +73,8 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
           setCardList(cardList);
         }
       }
-    }    
+    }
   };
-
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -112,7 +110,6 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
               </ListTopPanelTemplate>
             </div>
           )}
-
         </div>
         <div className="section">
           {cardList.length > 0 ? (
@@ -134,7 +131,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                         mainCategory={card.mainCategory}
                         name={card.name}
                         stampCount={card.stampCount}
-                        description={card.description}
+                        simpleDescription={card.simpleDescription}
                         passedStudentCount={cardRelatedCount.passedStudentCount}
                         starCount={cardRelatedCount.starCount}
                       />
@@ -153,4 +150,4 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
 }
 
 export default withRouter(LearningContainer);
-export type EnrollingViewType = 'All' | 'Available';  // 전체보기 | 수강 신청 가능 과정 모아보기
+export type EnrollingViewType = 'All' | 'Available'; // 전체보기 | 수강 신청 가능 과정 모아보기
