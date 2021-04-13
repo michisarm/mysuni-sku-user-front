@@ -1,4 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import LectureChapterTitleView from '../../view/LectureChapterView/LectureChapterTitleView';
+import LectureCourseListView from '../../view/LectureChapterView/LectureCourseListView';
+
 import { useHistory } from 'react-router';
 import { useCourseViewEvent } from '../../../service/useActionLog/useCourseViewEvent';
 import { useRequestLectureCardOverview } from '../../../service/useLectureCourseOverview/useRequestLectureCourseOverview';
@@ -8,29 +11,30 @@ import LectureCourseContentContainer from './LectureCourseContentContainer';
 import LectureCourseSummaryContainer from './LectureCourseSummaryContainer';
 
 function LectureChapterPage() {
-  useRequestLectureCardOverview();
-  const lectureStructure = useLectureStructure();
+  // useRequestLectureCardOverview();
+  // const lectureStructure = useLectureStructure();
 
-  useCourseViewEvent();
+  // const history = useHistory();
 
-  const history = useHistory();
-  useEffect(() => {
-    if (lectureStructure === undefined) {
-      return;
-    }
-    if (lectureStructure.cubes.length === 1) {
-      history.replace(lectureStructure.cubes[0].path);
-    }
-  }, [lectureStructure]);
+  // useEffect(() => {
+  //   if (lectureStructure === undefined) {
+  //     return;
+  //   }
+  //   if (lectureStructure.cubes.length === 1) {
+  //     history.replace(lectureStructure.cubes[0].path);
+  //   }
+  // }, [lectureStructure]);
 
   return (
-    <Fragment>
-      {lectureStructure !== undefined && (
+    <>
+      <LectureChapterTitleView />
+      <LectureCourseListView />
+      {/* {lectureStructure !== undefined && (
         <LectureCubeNavigatorView lectureStructure={lectureStructure} />
       )}
       <LectureCourseSummaryContainer />
-      <LectureCourseContentContainer />
-    </Fragment>
+      <LectureCourseContentContainer /> */}
+    </>
   );
 }
 
