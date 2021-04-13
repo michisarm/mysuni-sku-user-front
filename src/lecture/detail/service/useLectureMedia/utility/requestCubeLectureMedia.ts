@@ -28,7 +28,7 @@ export async function requestCubeLectureMedia(
         const transcriptCount = await findTranscriptCount(panoptoSessionId);
         setTranscriptCount(transcriptCount);
       }
-      setLectureMedia(await getMediaItem(media));
+      setLectureMedia(getMediaItem(media));
     }
   }
 }

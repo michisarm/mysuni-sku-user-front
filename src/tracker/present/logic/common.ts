@@ -70,6 +70,14 @@ export const getServiceType = (path: string) => {
   return serviceType;
 };
 
+export const getCubeType = (path: string) => {
+  let cubeType = null;
+  if (/(^\/suni-main)?\/lecture\/card\/.*?\/cube\/.*?\/.*?\/(.*)/.test(path)) {
+    cubeType = RegExp.$2;
+  }
+  return cubeType;
+};
+
 export const getPathKey = (path: string, param: string) => {
   if (!path.includes('/' + param)) {
     return null;

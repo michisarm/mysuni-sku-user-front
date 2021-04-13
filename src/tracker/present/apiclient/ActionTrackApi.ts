@@ -1,6 +1,9 @@
 import { axiosApi } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
-import { ActionTrackModel, ActionTrackViewModel } from 'tracker/model/ActionTrackModel';
+import {
+  ActionTrackModel,
+  ActionTrackViewModel,
+} from 'tracker/model/ActionTrackModel';
 
 const BASE_URL = '/api/action-log-collector';
 // const BASE_URL = '/local';

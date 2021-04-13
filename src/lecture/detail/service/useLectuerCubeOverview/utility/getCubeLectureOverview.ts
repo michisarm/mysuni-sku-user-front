@@ -2,10 +2,10 @@ import LectureDescription from 'lecture/detail/viewModel/LectureOverview/Lecture
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CubeDetail } from '../../../../model/CubeDetail';
+import { findCardCache } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { countByFeedbackId, findReviewSummary } from '../../../api/feedbackApi';
-import { findInMyLecture } from '../../../api/mytrainingApi';
-import InMyLectureCdo from '../../../model/InMyLectureCdo';
+import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -22,7 +22,6 @@ import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
-import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -46,7 +45,6 @@ async function getLectureSummary(
 
   const category = categories.find(c => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
-  const mylecture = await findInMyLecture(cube.id, 'Cube');
   const operator = operators.find(
     ({ id }) => id === cubeContents?.operator?.keyString
   );
@@ -66,7 +64,6 @@ async function getLectureSummary(
     passedStudentCount,
     studentCount,
     cubeType: type,
-    mytrainingId: getEmpty(mylecture && mylecture.id),
     cubeId: id,
   };
 }
@@ -177,27 +174,15 @@ async function getLectureReview(
   return { id: '', average: 0 };
 }
 
-function makeInMyLectureCdo(cubeDetail: CubeDetail): InMyLectureCdo {
-  const {
-    cube: { id, name, type, learningTime, categories },
-  } = cubeDetail;
-  return {
-    serviceType: 'Cube',
-    cardId: '',
-    serviceId: id,
-    category: categories.find(c => c.mainCategory) || {
-      collegeId: '',
-      channelId: '',
-      mainCategory: true,
-    },
-    name,
-    cubeType: type,
-    learningTime,
-    stampCount: 0,
-  };
-}
-
-export async function getCubeLectureOverview(cubeId: string) {
+export async function getCubeLectureOverview(cardId: string, cubeId: string) {
+  const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+  if (cardWithContentsAndRelatedCountRom === undefined) {
+    return;
+  }
+  const { card } = cardWithContentsAndRelatedCountRom;
+  if (card === null) {
+    return;
+  }
   const cubeDetail = await findCubeDetailCache(cubeId);
   if (cubeDetail === undefined) {
     return;
@@ -233,5 +218,5 @@ export async function getCubeLectureOverview(cubeId: string) {
   }
   const lectureReview = await getLectureReview(cubeDetail);
   setLectureReview(lectureReview);
-  setInMyLectureCdo(makeInMyLectureCdo(cubeDetail));
+  setInMyLectureCdo(makeInMyLectureCdo(card));
 }

@@ -19,7 +19,7 @@ export default function BadgeCategoryView({
           <span>
             <Image
               className="ui image"
-              src={category.iconUrl}
+              src={category.iconPath}
               alt={category.name}
             />
           </span>

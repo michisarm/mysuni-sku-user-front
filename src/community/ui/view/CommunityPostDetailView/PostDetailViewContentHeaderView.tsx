@@ -17,10 +17,12 @@ interface Props {
   likeCount?: number;
   editAuth?: boolean;
   menuType?: string;
+  like?: boolean;
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
   onClickLike: () => void;
+  onClickWriter: (id: string) => void;
 }
 
 @reactAutobind
@@ -40,10 +42,12 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       postDetail,
       editAuth,
       menuType,
+      like,
       onClickList,
       onClickDelete,
       onClickModify,
-      onClickLike
+      onClickLike,
+      onClickWriter
     } = this.props;
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -80,7 +84,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                     <div className="ui label onlytext">
                       <span className="header-span-first">작성자: </span>
                       {postDetail.nickName && (
-                        <span>{postDetail.nickName}</span>
+                        <span onClick={() => onClickWriter(postDetail.creatorId)} style={{cursor: 'pointer'}}>{postDetail.nickName}</span>
                       )}
                       {postDetail.nickName === null || postDetail.nickName === '' && (
                         <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
@@ -89,18 +93,17 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                   )}
                 </div>
                 <div className="right-area">
-                { postDetail.menuId !== 'NOTICE' && likeCount === 0 &&(
-                  <div className="ui onlytext" onClick={onClickLike}>
-                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />&nbsp;
-                    <span className="heartText">{likeCount}</span>
-                  </div>
-                )}
-                { postDetail.menuId !== 'NOTICE' && likeCount !== 0 &&(
-                  <div className="ui onlytext" onClick={onClickLike}>
-                    <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
-                    <span className="heartText">{likeCount}</span>
-                  </div>
-                )}
+                  {(like && (
+                    <div className="ui onlytext" onClick={onClickLike}>
+                      <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
+                      <span className="heartText">{likeCount}</span>
+                    </div>
+                  )) || (
+                      <div className="ui onlytext" onClick={onClickLike}>
+                        <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />&nbsp;
+                        <span className="heartText">{likeCount}</span>
+                      </div>
+                    )}
                   <div className="ui onlytext">
                     {onClickModify && editAuth && (
                       <Button

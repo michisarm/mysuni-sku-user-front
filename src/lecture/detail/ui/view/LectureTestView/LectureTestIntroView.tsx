@@ -1,5 +1,6 @@
 import React from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
+import { Area } from 'tracker/model';
 
 interface LectureTestIntroViewProps {
   testItem: LectureTestItem;
@@ -15,7 +16,10 @@ const LectureTestIntroView: React.FC<LectureTestIntroViewProps> = function Lectu
       {testItem && (
         <>
           <div className="ui segment full test-complete">
-            <div className="course-info-header">
+            <div
+              className="course-info-header"
+              data-area={Area.CUBE_HEADER}
+            >
               <div className="survey-header">
                 <div className="survey-header-left test_ing">
                   <i className="icon testHeader">

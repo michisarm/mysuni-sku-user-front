@@ -5,6 +5,7 @@ import { MyLearningSummaryService } from 'myTraining/stores';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
+import { timeToHourMinute } from '../../../../../shared/helper/dateTimeHelper';
 
 
 interface Props extends RouteComponentProps {
@@ -16,7 +17,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
 
   const { activeIndex, history, myLearningSummaryService } = Props;
 
-  const { myLearningSummary } = myLearningSummaryService!;
+  const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
   
   const badgeLearningTimeItem = useBadgeLearningTimeItem()
 
@@ -28,19 +29,10 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
     history.push('/my-training/learning/Completed/pages/1')
   }, [])
 
-  const getHourMinute = useCallback((minuteTime: number) => {
-    //
-    let hour = 0;
-    let minute = minuteTime;
+  const sumOfCurrentYearLectureTime = lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0
+  const totalLearningTime = myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime + myLearningSummary.aplAllowTime + sumOfCurrentYearLectureTime
 
-    if (minuteTime) {
-      hour = Math.floor(minuteTime / 60);
-      minute = minuteTime % 60;
-    }
-    return { hour, minute };
-  }, [])
-
-  const { hour, minute } = getHourMinute(myLearningSummary.displayTotalLearningTime)
+  const { hour, minute } = timeToHourMinute(totalLearningTime)
 
   return (
     <>
@@ -99,12 +91,12 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
           <div className="card-item-con">
             <div className="card-gauge-bar color-manage">
               <span className="gauge-tit">MY 학습시간</span>
-              <div className="card-gauge-bar sty2 color-manage">
+              <div className="card-gauge-bar sty2 color-blue">
                 <div className="rangeBox">
                   <div className="range">
                     <div
                       style={activeIndex === -1 ? {width:0} : {
-                        width: `${myLearningSummary.displayTotalLearningTime > badgeLearningTimeItem.companyAvglearningTime ? (myLearningSummary.displayTotalLearningTime/(myLearningSummary.displayTotalLearningTime*1.1))*100 : (myLearningSummary.displayTotalLearningTime/(badgeLearningTimeItem.companyAvglearningTime*1.1))*100}%`,
+                        width: `${totalLearningTime > badgeLearningTimeItem.companyAvglearningTime ? (totalLearningTime/(totalLearningTime*1.1))*100 : (totalLearningTime/(badgeLearningTimeItem.companyAvglearningTime*1.1))*100}%`,
                       }}
                       className="percent"
                     />
@@ -131,7 +123,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                   <div className="range">
                     <div
                       style={activeIndex === -1 ? {width:0} : {
-                        width: `${myLearningSummary.displayTotalLearningTime > badgeLearningTimeItem.companyAvglearningTime ? (badgeLearningTimeItem.companyAvglearningTime/(myLearningSummary.displayTotalLearningTime*1.1))*100 : (badgeLearningTimeItem.companyAvglearningTime/(badgeLearningTimeItem.companyAvglearningTime*1.1))*100}%`,
+                        width: `${totalLearningTime > badgeLearningTimeItem.companyAvglearningTime ? (badgeLearningTimeItem.companyAvglearningTime/(totalLearningTime*1.1))*100 : (badgeLearningTimeItem.companyAvglearningTime/(badgeLearningTimeItem.companyAvglearningTime*1.1))*100}%`,
                       }}
                       className="percent"
                     />

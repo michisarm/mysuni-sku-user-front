@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import { useHistory } from 'react-router-dom';
+import { Area } from 'tracker/model';
 
 interface Props {
   taskDetail: LectureTaskDetail;
@@ -53,7 +54,10 @@ const LectureTaskDetailContentHeaderView: React.FC<Props> = function LectureTask
 
   return (
     <>
-      <div className="course-info-header">
+      <div
+        className="course-info-header"
+        data-area={Area.CUBE_HEADER}
+      >
         <div className="survey-header">
           <div className="survey-header-left debate-header-sub">
             <div className="title">{title}</div>
