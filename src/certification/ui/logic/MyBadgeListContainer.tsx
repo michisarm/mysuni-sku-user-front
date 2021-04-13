@@ -46,7 +46,7 @@ function MyBadgeListContainer({ badgeService }: MyBadgeListContainerProps) {
         selectedLevel={selectedLevel}
         onSelectLevel={onSelectLevel}
       />
-      <div className="badge-list">
+      <div className="badge-list-type">
         <ul>
           {(myBadges &&
             myBadges.length > 0 &&

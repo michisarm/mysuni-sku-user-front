@@ -6,7 +6,6 @@ interface Props extends Record<string, any> {
 }
 
 function Image({ src, alt, className }: Props) {
-  console.log('src 시작!', src);
   const srcParser = () => {
     // 절대경로 이거나 base64인 경우
     if (

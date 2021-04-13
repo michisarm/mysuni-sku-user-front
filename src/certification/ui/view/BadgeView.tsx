@@ -8,19 +8,6 @@ import Image from '../../../shared/components/Image';
 import BadgeStarSvg from './BadgeStarSvg';
 import { useRequestBadgeWIthCategory } from '../../service/useRequestBadgeWIthCategory';
 
-enum certiAdminCategoryIcon {
-  //mySUNI = '/static/media/logo-badge.svg',
-  mySUNI = '/static/media/logo-badgeN.png',
-}
-
-enum CategoryImageURL {
-  BDGCAT_AIDT = '/static/media/icon-ai.png',
-  BDGCAT_JOB = '/static/media/icon-happy.png',
-  BDGCAT_BIZ = '/static/media/icon-biz.png',
-  BDGCAT_HAPPY = '/static/media/icon-happy.png',
-  BDGCAT_BM = '/static/media/icon-bmdesign.png',
-}
-
 interface BadgeViewProps {
   id: string;
   name: string;
@@ -72,7 +59,7 @@ export default function BadgeView({
       <span className="college">
         <Image src={iconUrl} alt="아이콘" />
       </span>
-      <span className="title">
+      <span className="title" style={{ margin: 0 }}>
         <span className="cell">
           <span>{name}</span>
         </span>
@@ -81,11 +68,6 @@ export default function BadgeView({
     </BadgeContentWrapper>
   );
 }
-
-const getCertificationIconUrl = (): string => {
-  // 직접 등록한 아이콘 우선 노출
-  return certiAdminCategoryIcon.mySUNI;
-};
 
 const getStarStyle = (level: BadgeLevel) => {
   switch (level) {
