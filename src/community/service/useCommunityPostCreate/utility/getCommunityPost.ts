@@ -33,7 +33,6 @@ export async function getCommunityPost(
       introduce: '',
       profileImg: '',
       relatedUrlList: [],
-      depotId: '',
 
   }
   if (menuId !== undefined) {
@@ -59,7 +58,6 @@ export async function getCommunityPost(
           postDetailItem.prevPost = post.prevPost;
           postDetailItem.nextPost = post.nextPost;
           postDetailItem.relatedUrlList = post.relatedUrlList;
-          postDetailItem.depotId = post.depotId;
       }
   }
   setCommunityPostDetailItem(postDetailItem);

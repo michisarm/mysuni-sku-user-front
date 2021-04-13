@@ -120,7 +120,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               />
               <h2>{postDetail.title}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>638</strong>
+                전체 의견 <strong>{postDetail.replyCount}</strong>
               </span>
               <span>
                 <strong className="peo-date">
@@ -201,7 +201,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                 )}
               {/* eslint-enable */}
               {/* 관련 자료 */}
-              {postDetail.depotId && (
+              {(postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null) && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
