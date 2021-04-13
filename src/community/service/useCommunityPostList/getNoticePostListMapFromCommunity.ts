@@ -56,7 +56,9 @@ export async function getPostItem(
               newBadge: addNewBadge(post.createdTime),
               creatorName: post.creatorName!,
               visible: post.visible,
-              creatorId: post.creatorId
+              creatorId: post.creatorId,
+              readCount: post.readCount,
+              likeCount: post.likeCount
             });
           });
         }

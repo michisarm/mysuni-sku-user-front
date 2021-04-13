@@ -21,51 +21,53 @@ export async function getAllPostItem(
   //TODO api 수정되면 바꿀 예정
   if (param.communityId !== undefined) {
     // {
-      const postRdo = {
-        'title': param.title,
-        'html': param.html,
-        'creatorId': param.creatorId,
-        'offset': param.offset,
-        'limit': 10,
-        'searchGubun': param.searchGubun,
-        'searchTitle': param.searchTitle,
-        'menuId': param.menuId,
-        'menuType': param.menuType,
-        'communityId': param.communityId,
-        'sort': param.sort,
-        'pinned': param.pinned
-      }
-      const findPostData = await findAllPost(postRdo);
-      if (findPostData) {
-        communityPost.totalCount = findPostData.totalCount;
-        communityPost.offset = param.offset;
-        if (findPostData.results.length !== 0) {
-          findPostData.results.forEach(post => {
-            communityPost.items.push({
-              postId: post.postId,
-              communityId: post.communityId,
-              communityName: post.communityName,
-              title: post.title,
-              html: post.html,
-              createdTime: post.createdTime,
-              replyCount: post.replyCount,
-              commentFeedbackId: post.commentFeedbackId,
-              menuId: post.menuId,
-              menuType: post.menuType,
-              nickName: post.nickName || '',
-              pinned: post.pinned,
-              fileBoxId: post.fileBoxId,
-              newBadge: addNewBadge(post.createdTime),
-              creatorName: post.creatorName!,
-              visible:post.visible,
-              creatorId: post.creatorId
-            });
+    const postRdo = {
+      'title': param.title,
+      'html': param.html,
+      'creatorId': param.creatorId,
+      'offset': param.offset,
+      'limit': 10,
+      'searchGubun': param.searchGubun,
+      'searchTitle': param.searchTitle,
+      'menuId': param.menuId,
+      'menuType': param.menuType,
+      'communityId': param.communityId,
+      'sort': param.sort,
+      'pinned': param.pinned
+    }
+    const findPostData = await findAllPost(postRdo);
+    if (findPostData) {
+      communityPost.totalCount = findPostData.totalCount;
+      communityPost.offset = param.offset;
+      if (findPostData.results.length !== 0) {
+        findPostData.results.forEach(post => {
+          communityPost.items.push({
+            postId: post.postId,
+            communityId: post.communityId,
+            communityName: post.communityName,
+            title: post.title,
+            html: post.html,
+            createdTime: post.createdTime,
+            replyCount: post.replyCount,
+            commentFeedbackId: post.commentFeedbackId,
+            menuId: post.menuId,
+            menuType: post.menuType,
+            nickName: post.nickName || '',
+            pinned: post.pinned,
+            fileBoxId: post.fileBoxId,
+            newBadge: addNewBadge(post.createdTime),
+            creatorName: post.creatorName!,
+            visible: post.visible,
+            creatorId: post.creatorId,
+            readCount: post.readCount,
+            likeCount: post.likeCount
           });
-        }
-        return communityPost;
+        });
       }
+      return communityPost;
     }
   }
+}
 
 export async function getAllPostListMapFromCommunity(
 

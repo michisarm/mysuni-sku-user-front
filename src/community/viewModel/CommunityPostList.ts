@@ -21,7 +21,7 @@ export interface CommunityPostItem {
   commentFeedbackId: string;
   menuId: string;
   createdTime: number;
-  creatorId:string;
+  creatorId: string;
   nickName: string;
   pinned: boolean;
   fileBoxId: string;
@@ -29,4 +29,6 @@ export interface CommunityPostItem {
   menuType?: string;
   creatorName: string;
   visible: boolean;
+  readCount: number;
+  likeCount: number;
 }
