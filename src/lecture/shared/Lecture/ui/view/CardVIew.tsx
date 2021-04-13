@@ -8,8 +8,7 @@ import {
   Thumbnail,
 } from '../../../ui/view/LectureElementsView';
 import numeral from 'numeral';
-import { observer, inject } from 'mobx-react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
@@ -24,7 +23,7 @@ import { Link } from 'react-router-dom';
 import { toPath } from '../../../../detail/viewModel/LectureParams';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
-import { LearningType } from '../../../../../myTraining/model/LearningType';
+import CardType from '../../../model/CardType';
 import CubeIconType from '../../model/CubeIconType';
 
 interface Props {
@@ -37,7 +36,7 @@ interface Props {
   passedStudentCount: number;
   starCount: number;
   simpleDescription: string;
-  type: LearningType;
+  type: CardType;
   isRequired?: boolean;
   studentCount?: number;
   remainingDayCount?: number;

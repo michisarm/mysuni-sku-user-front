@@ -9,6 +9,7 @@ type CardType =
   | 'Community'
   | 'Task'
   | 'Cohort'
-  | 'Course';
+  | 'Course'
+  | 'None';
 
 export default CardType;
