@@ -1,7 +1,7 @@
 import { reactAlert } from '@nara.platform/accent';
 /* eslint-disable consistent-return */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addInMyLecture, removeInMyLecture } from '../../api/mytrainingApi';
 import {
   getInMyLectureCdo,
