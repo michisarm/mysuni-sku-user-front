@@ -18,10 +18,6 @@ import { FilterCondition } from '../../model/FilterCondition';
 import { Direction } from '../../model/Direction';
 import InMyLectureCdo from '../../../lecture/detail/model/InMyLectureCdo';
 
-
-
-
-
 @autobind
 class InMyLectureService {
   //
@@ -122,9 +118,9 @@ class InMyLectureService {
   }
 
   @action
-  async removeInMyLectureCard(cardId: string, serviceId: string) {
+  async removeInMyLectureCard(serviceId: string) {
     await this.inMyLectureApi
-      .removeInMyLectureCard(cardId, serviceId)
+      .removeInMyLectureCard(serviceId, serviceId)
       .then(() => {
         return runInAction(() => this.findAllInMyLectures());
       })
@@ -276,7 +272,7 @@ class InMyLectureService {
     ) {
       runInAction(() => {
         this._inMyLectureTableViews = offsetTableViews.results.map(
-          result => new InMyLectureTableViewModel(result)
+          (result: any) => new InMyLectureTableViewModel(result)
         );
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
@@ -298,7 +294,7 @@ class InMyLectureService {
     ) {
       runInAction(() => {
         this._inMyLectureTableViews = offsetTableViews.results.map(
-          result => new InMyLectureTableViewModel(result)
+          (result: any) => new InMyLectureTableViewModel(result)
         );
         this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
@@ -321,7 +317,7 @@ class InMyLectureService {
       offsetTableViews.results.length
     ) {
       const addedTableViews = offsetTableViews.results.map(
-        result => new InMyLectureTableViewModel(result)
+        (result: any) => new InMyLectureTableViewModel(result)
       );
       runInAction(() => {
         this._inMyLectureTableViews = [

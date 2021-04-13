@@ -17,7 +17,7 @@ export function getEmptyMyCommunityIntro(): MyCommunityIntro {
   return {
     communities: [],
     communitiesTotalCount: 0,
-    communitiesSort: 'memberCreatedTime',
+    communitiesSort: 'lastPostTime',
     communitiesOffset: 0,
     requested: false,
     posts: [],

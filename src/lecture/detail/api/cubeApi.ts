@@ -1,10 +1,10 @@
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import { NameValueList } from '../../../shared/model/NameValueList';
 import { Cube } from '../../model/Cube';
 import { CubeDetail } from '../../model/CubeDetail';
 import { PostBodyCdo, PostCdo } from '../model/TaskCdo';
 import { createCacheApi } from './cacheableApi';
+import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
 
 const BASE_URL = '/api/cube';
 
@@ -76,4 +76,10 @@ export function modifyPostBody(
   const axios = getAxios();
   const url = `${BASE_URL}/postbodys/${postBodyId}`;
   return axios.put<void>(url, nameValueList).then(AxiosReturn);
+}
+
+export function findMyLectureTimeSummary() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/myLectureTimeSummary`;
+  return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
 }

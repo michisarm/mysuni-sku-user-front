@@ -205,7 +205,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           target: path.data?.target,
         } as ActionTrackViewParam);
       }
-    }, 500),
+    }, 1000),
     []
   );
 
