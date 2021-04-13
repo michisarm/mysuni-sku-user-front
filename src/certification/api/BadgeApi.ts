@@ -19,13 +19,13 @@ export function findBadge(badgeId: string): Promise<Badge | undefined> {
 
 export function findBadgesByIds(
   badgeIds: string[]
-): Promise<Badge[] | undefined> {
+): Promise<BadgeBundle[] | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/byIds`;
   const splitedIds = (badgeIds && badgeIds.join(',')) || [];
 
   return axios
-    .get<Badge[]>(url, {
+    .get<BadgeBundle[]>(url, {
       params: {
         ids: splitedIds,
       },
