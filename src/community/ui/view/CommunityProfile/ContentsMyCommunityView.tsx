@@ -69,12 +69,13 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
                 `/community/admin/${communityId}/memberManagement/member`
               )
             }
+            style={{ color: '#ff664d', borderColor: '#ff664d' }}
           >
             관리하기
           </button>
         )}
         {!isManager && (
-          <button type="button" className="sece_btn" onClick={handleOk}>
+          <button type="button" className="sece_btn" onClick={handleOk} style={{ color: '#6b788f', borderColor: '#6b788f' }}>
             탈퇴하기
           </button>
         )}
@@ -120,13 +121,13 @@ const ContentsMyCommunityView: React.FC<ContentsMyCommunityViewProps> = function
           <div className="more-comments">
             {communityProfileMyCommunity.communitiesTotalCount >
               communityProfileMyCommunity.communitiesOffset && (
-              <button
-                className="ui icon button left moreview"
-                onClick={requestAppendProfileCommunities}
-              >
-                <i aria-hidden="true" className="icon moreview" /> list more
-              </button>
-            )}
+                <button
+                  className="ui icon button left moreview"
+                  onClick={requestAppendProfileCommunities}
+                >
+                  <i aria-hidden="true" className="icon moreview" /> list more
+                </button>
+              )}
           </div>
         </div>
       </div>

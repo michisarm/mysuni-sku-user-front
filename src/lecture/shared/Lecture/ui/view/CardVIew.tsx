@@ -102,10 +102,9 @@ export default function CardView({
 
   const handleInMyLecture = () => {
     if (inMyLectureModel) {
-      InMyLectureService.instance.removeInMyLectureCard(cardId, cardId);
+      InMyLectureService.instance.removeInMyLectureCard(cardId);
     } else {
       InMyLectureService.instance.addInMyLectureCard({
-        cardId,
         serviceId: cardId,
         serviceType: 'Card',
         category: {
@@ -114,6 +113,7 @@ export default function CardView({
           mainCategory: mainCategory.mainCategory,
         },
         name,
+        cubeType: type,
         learningTime,
         stampCount,
       });
