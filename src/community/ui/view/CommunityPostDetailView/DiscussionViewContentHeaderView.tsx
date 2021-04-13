@@ -1,4 +1,4 @@
-import React, { Component, useCallback, useEffect, useState } from 'react';
+import React, { Component, useCallback, useEffect, useRef, useState } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import moment from 'moment';
@@ -39,6 +39,9 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
 }) => {
   //
 
+  // content가 undefined 일때 hidden 처리
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [textUndefined, setTextUndefined] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -48,6 +51,9 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
 
   useEffect(() => {
     getFileIds();
+
+    // content가 undefined 일때 hidden 처리
+    contentRef.current?.textContent === 'undefined' && setTextUndefined(true);
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -129,10 +135,11 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               </span>
             </div>
             <div className="discuss-box2">
-              <div className="discuss-text-wrap">
+              <div className="discuss-text-wrap" style={textUndefined ? {display: 'none'} : {}}>
                 {postDetail && more && (
                   <div className="ql-snow">
                     <div
+                      ref={contentRef}
                       className="discuss-text-belt"
                       dangerouslySetInnerHTML={{
                         __html: `${postDetail?.content}`,
@@ -142,6 +149,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                 )}
                 {postDetail && !more && (
                   <div
+                    ref={contentRef}
                     className="discuss-text-belt"
                     dangerouslySetInnerHTML={{
                       __html: `${postDetail?.content}`,
