@@ -15,4 +15,5 @@ export interface CardRdo {
   searchable?: boolean;
   startLearningDate?: string;
   endLearningDate?: string;
+  type?: string[];
 }

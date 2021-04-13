@@ -21,7 +21,11 @@ function Image({ src, alt, className }: Props) {
     // file 로 시작하지 않고 suni-asset으로 시작하지 않고
     // host가 mysuni.sk.com 인 경우
     if (!next.startsWith('suni-asset')) {
-      if (!next.startsWith('icon') && !next.startsWith('badge')) {
+      if (
+        !next.startsWith('icon') &&
+        !next.startsWith('badge') &&
+        !next.startsWith('banner')
+      ) {
         return src;
       }
     }
@@ -39,7 +43,7 @@ function Image({ src, alt, className }: Props) {
     return next;
   };
 
-  if (src === null || src === undefined) {
+  if (src === null || src === undefined || src === '') {
     return null;
   }
 

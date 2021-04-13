@@ -15,8 +15,8 @@ export default interface TaskDetailPost {
 }
 
 export default interface TaskDetail {
-  post: TaskDetailPost;
-  postBody: TaskDetailBody;
+  post?: TaskDetailPost;
+  postBody?: TaskDetailBody;
 }
 
 export default interface TaskDetailComment {

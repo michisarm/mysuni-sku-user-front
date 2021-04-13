@@ -26,13 +26,8 @@ const MainBanner: React.FC<Props> = Props => {
   //
   const { bannerService, skProfileService } = Props;
   const { banners, intervalTime } = bannerService!;
-  const { profileMemberCompanyCode } = skProfileService!;
 
   const DEFAULT_BANNER_INTERVAL = 7000;
-  const domainPath =
-    process.env.NODE_ENV !== 'development'
-      ? window.location.protocol + '//' + window.location.host
-      : 'http://10.178.66.114';
 
   // myTrainingService 변경  실행
   useEffect(() => {
@@ -116,11 +111,9 @@ const MainBanner: React.FC<Props> = Props => {
       <Swiper {...params}>
         {banners.map((banner, index) => (
           <div className="swiper-slide" key={`main-banner-${index}`}>
-            <Image
-              src={domainPath + banner.imageUrl}
-              alt={banner.imageAlt}
+            <a
+              className="ui image"
               title={banner.name}
-              as="a"
               target={banner.target}
               href={
                 banner.target === AnchorTargetType.blank ||
@@ -136,7 +129,9 @@ const MainBanner: React.FC<Props> = Props => {
                   index
                 )
               }
-            />
+            >
+              <Image alt={banner.imageAlt} src={banner.imageUrl} />
+            </a>
           </div>
         ))}
       </Swiper>
