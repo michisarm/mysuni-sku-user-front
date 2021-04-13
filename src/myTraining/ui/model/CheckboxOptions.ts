@@ -20,8 +20,11 @@ const CheckboxOptions = {
     { key: 3, text: 'e-Learning', value: 'ELearning' },
     { key: 4, text: 'Classroom', value: 'ClassRoomLecture' },
     { key: 5, text: 'Community', value: 'Community' },
-    { key: 6, text: 'Web Page', value: 'WebPage' },
-    { key: 7, text: 'Documents', value: 'Documents' },
+    { key: 6, text: 'Task', value: 'Task' },
+    { key: 7, text: 'Web Page', value: 'WebPage' },
+    { key: 8, text: 'Documents', value: 'Documents' },
+    { key: 9, text: 'Experiential', value: 'Experiential' },
+    { key: 10, text: 'Cohort', value: 'Cohort' },
   ],
 
   learningTimes: [
