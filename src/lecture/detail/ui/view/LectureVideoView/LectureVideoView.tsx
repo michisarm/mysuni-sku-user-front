@@ -87,6 +87,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
   const nextContent = useNextContent();
   const [pauseVideoSticky, setPauseVideoSticky] = useState<boolean>(false);
+  const [nextContentsView, setNextContentsView] = useState<boolean>(false);
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -170,7 +171,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         videoStart();
       } else if (state == 2) {
         videoClose();
-        // setNextContentsView(true);
       }
     },
     [params, isStateUpated]
@@ -324,6 +324,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         ) {
           // sessionStorage update
           fetchAllModelsForStorage();
+          setNextContentsView(true);
         }
       }, 10000);
       // playIntervalRef.current = interval;
@@ -645,7 +646,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           )}
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-          {nextContent?.path !== undefined &&
+          {nextContentsView &&
+            nextContent?.path !== undefined &&
             getLectureConfirmProgress()?.learningState == 'Passed' && (
               <>
                 <div

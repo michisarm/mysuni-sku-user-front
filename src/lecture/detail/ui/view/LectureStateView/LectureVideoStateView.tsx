@@ -205,6 +205,30 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
   );
 }
 
+interface NormalApprovedViewProps {
+  student: Student;
+}
+
+function NormalApprovedView(props: NormalApprovedViewProps) {
+  const { student } = props;
+  const stateText = useMemo<string>(() => {
+    if (student.learningState === 'Passed') {
+      return COMPLETE;
+    }
+    return PROGRESS;
+  }, [student]);
+  return (
+    <>
+      <button
+        className={`ui button free ${stateClassName} p18`}
+        style={{ cursor: 'default' }}
+      >
+        {stateText}
+      </button>
+    </>
+  );
+}
+
 interface ApprovedViewProps {
   student: Student;
   media: Media;
@@ -219,7 +243,7 @@ function ApprovedView(props: ApprovedViewProps) {
   if (media.mediaType === 'ContentsProviderMedia') {
     return <LinkApprovedView media={media} student={student} cube={cube} />;
   }
-  return null;
+  return <NormalApprovedView student={student} />;
 }
 
 interface LectureVideoStateViewProps {
