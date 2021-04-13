@@ -13,6 +13,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
+import { Area } from 'tracker/model';
 
 function EnrollingLearning({ history }: RouteComponentProps) {
   const [cardList, setCardList] = useState<EnrollingCardList[]>();
@@ -43,7 +44,7 @@ function EnrollingLearning({ history }: RouteComponentProps) {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
       <div className="section-head">
         {cardList && cardList.length > 0 && (
           <strong>수강 신청 과정 모아보기</strong>

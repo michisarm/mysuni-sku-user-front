@@ -13,13 +13,14 @@ import personalCubePaths from 'personalcube/routePaths';
 import communityPaths from 'community/routePaths';
 import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import CategoryMenuContainer from '../logic/CategoryMenuContainer';
+import { Area } from 'tracker/model';
 
 interface LogoViewProps {
   onClickMenu: (menuName: string) => void;
 }
 
 export const LogoView: React.FC<LogoViewProps> = ({ onClickMenu }) => (
-  <div className="g-logo">
+  <div className="g-logo" data-area={Area.HEADER_LOGO}>
     <Link to="/" onClick={() => onClickMenu('mySUNI')}>
       <i className="sk-university icon">
         <span className="blind">mySUNI</span>
@@ -51,7 +52,7 @@ export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
           pagemElement.type === 'Category'
       ) && <CategoryMenuContainer />}
       <div className="g-menu">
-        <div className="nav">
+        <div className="nav" data-area={Area.HEADER_GNB}>
           {menuAuth.some(
             pagemElement =>
               pagemElement.position === 'TopMenu' &&
@@ -142,7 +143,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({
   onClick,
   onClear,
 }) => (
-  <div className="g-search">
+  <div className="g-search" data-area={Area.HEADER_SEARCH}>
     <div
       className={classNames('ui h38 search input', {
         focus: focused,

@@ -12,6 +12,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   profileMemberName: string;
@@ -43,7 +44,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_LEARNING}>
       <div className="section-head">
         <strong>{`${profileMemberName}님이 학습중인 과정`}</strong>
         <div className="right">

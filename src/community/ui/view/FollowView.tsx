@@ -10,6 +10,7 @@ import CommunityFollowPostListContainer from '../logic/CommunityFollow/Community
 import { useFollowCommunityIntro } from 'community/store/CommunityMainStore';
 
 import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
 
 const FollowView: React.FC = function FollowView() {
   const contextRef = useRef(null);
@@ -81,7 +82,10 @@ const FollowView: React.FC = function FollowView() {
             </>
           ) : (
             <>
-              <section className="content community">
+              <section
+                className="content community"
+                data-area={Area.COMMUNITY_NOCONTENT}
+              >
                 <Segment className="full">
                   <div className="no-cont-wrap">
                     <Icon className="no-contents80" />

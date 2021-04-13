@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import RecommendChannelsPanelContainer from '../logic/RecommendChannelsPanelContainer';
+import { Area } from 'tracker/model';
 
 interface Props {
   channels: CheckableChannel[];
@@ -23,7 +24,7 @@ class ChannelsContentWrapperView extends Component<Props> {
 
     return (
       <Segment className="full">
-        <div className="recommend-detail">
+        <div className="recommend-detail" data-area={Area.RECOMMEND_LIST}>
           <RecommendChannelsPanelContainer
             channels={channels}
             title="관심 Channel 보기"
