@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import FileDownloadPop from '../../../../../personalcube/shared/OverviewField/sub/FileDownloadPop';
+import { Cube } from '../../../../model/Cube';
 import Student from '../../../../model/Student';
 import { registerStudent } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
@@ -10,7 +12,9 @@ import {
 } from '../../../service/useLectureState/utility/cubeStateActions';
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { getLectureParams } from '../../../store/LectureParamsStore';
+import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import LectureState from '../../../viewModel/LectureState';
+import { LectureStructure } from '../../../viewModel/LectureStructure';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 
 const DOWNLOAD = '다운로드';
@@ -58,12 +62,14 @@ function CanceledView(props: CanceledViewProps) {
 }
 
 interface ApprovedViewProps {
+  pathname: string;
   student: Student;
+  lectureStructure: LectureStructure;
   hookAction: () => void;
 }
 
 function ApprovedView(props: ApprovedViewProps) {
-  const { student, hookAction } = props;
+  const { student, hookAction, lectureStructure, pathname } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -73,6 +79,13 @@ function ApprovedView(props: ApprovedViewProps) {
     }
     return PROGRESS;
   }, [student]);
+  const actionText = useMemo<string>(() => {
+    const cubeItem = getActiveCubeStructureItem(pathname);
+    if (cubeItem?.report === undefined && cubeItem?.test === undefined) {
+      return COMPLETE;
+    }
+    return PROGRESS;
+  }, [lectureStructure]);
   const action = useCallback(async () => {
     hookAction();
     const params = getLectureParams();
@@ -83,7 +96,11 @@ function ApprovedView(props: ApprovedViewProps) {
     if (cubeDetail === undefined) {
       return;
     }
-    if (cubeDetail.cube.reportName === null && !cubeDetail.cube.hasTest) {
+    if (
+      (cubeDetail.cube.reportName === null ||
+        cubeDetail.cube.reportName === '') &&
+      !cubeDetail.cube.hasTest
+    ) {
       completeLearning();
     }
   }, []);
@@ -96,7 +113,7 @@ function ApprovedView(props: ApprovedViewProps) {
           onClick={action}
           id="ACTION"
         >
-          {DOWNLOAD}
+          {actionText}
         </button>
       )}
       <button
@@ -112,11 +129,13 @@ function ApprovedView(props: ApprovedViewProps) {
 interface LectureDocumentsStateViewProps {
   lectureState: LectureState;
   lectureWebpage: LectureWebpage;
+  lectureStructure: LectureStructure;
 }
 
 const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> = function LectureDocumentsStateView({
   lectureState,
   lectureWebpage,
+  lectureStructure,
 }) {
   const { student } = lectureState;
 
@@ -131,13 +150,20 @@ const LectureDocumentsStateView: React.FC<LectureDocumentsStateViewProps> = func
     setFileDonwloadPopShow(true);
   }, []);
 
+  const { pathname } = useLocation();
+
   return (
     <>
       {(student === undefined || student?.proposalState === 'Canceled') && (
         <CanceledView hookAction={hookAction} />
       )}
       {student?.proposalState === 'Approved' && (
-        <ApprovedView hookAction={hookAction} student={student} />
+        <ApprovedView
+          pathname={pathname}
+          hookAction={hookAction}
+          student={student}
+          lectureStructure={lectureStructure}
+        />
       )}
       {fileDonwloadPopShow && (
         <FileDownloadPop
