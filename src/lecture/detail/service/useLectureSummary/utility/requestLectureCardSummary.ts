@@ -5,9 +5,7 @@ import { CardContents } from '../../../../model/CardContents';
 import { CardRelatedCount } from '../../../../model/CardRelatedCount';
 import { UserIdentity } from '../../../../model/UserIdentity';
 import { findCardCache } from '../../../api/cardApi';
-import InMyLectureCdo, {
-  makeInMyLectureCdo,
-} from '../../../model/InMyLectureCdo';
+import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
   setInMyLectureCdo,
   setLectureCardSummary,
@@ -52,7 +50,6 @@ function parseLectureSummary(
     difficultyLevel: difficultyLevel || 'Basic',
     hasCommunity: (communityId || '') !== '',
     communityId,
-    mytrainingId: InMyLectureService.instance.inMyLectureMap.get(id)?.id,
   };
 }
 

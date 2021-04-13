@@ -33,7 +33,7 @@ export default function LectureDetailCubeRoutes() {
     if (cubeId === undefined) {
       return;
     }
-    getCubeLectureOverview(cubeId);
+    getCubeLectureOverview(cardId, cubeId);
   }, [cubeId]);
   useRequestLectureState();
 

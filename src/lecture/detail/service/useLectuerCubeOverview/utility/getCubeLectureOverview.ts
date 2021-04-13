@@ -1,18 +1,11 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
-import { Card } from '../../../../model/Card';
 import { CubeDetail } from '../../../../model/CubeDetail';
-import {
-  findCardCache,
-  findCardWithLearningContentCounts,
-} from '../../../api/cardApi';
+import { findCardCache } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { countByFeedbackId, findReviewSummary } from '../../../api/feedbackApi';
-import { findInMyLecture } from '../../../api/mytrainingApi';
-import InMyLectureCdo, {
-  makeInMyLectureCdo,
-} from '../../../model/InMyLectureCdo';
+import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
   setInMyLectureCdo,
   setLectureComment,
@@ -29,7 +22,6 @@ import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
-import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -53,7 +45,6 @@ async function getLectureSummary(
 
   const category = categories.find(c => c.mainCategory);
   const learningTime = timeToHourMinuteFormat(cube.learningTime);
-  const mylecture = await findInMyLecture(cube.id, 'Cube');
   const operator = operators.find(
     ({ id }) => id === cubeContents?.operator?.keyString
   );
@@ -73,7 +64,6 @@ async function getLectureSummary(
     passedStudentCount,
     studentCount,
     cubeType: type,
-    mytrainingId: getEmpty(mylecture && mylecture.id),
     cubeId: id,
   };
 }

@@ -118,9 +118,9 @@ class InMyLectureService {
   }
 
   @action
-  async removeInMyLectureCard(cardId: string, serviceId: string) {
+  async removeInMyLectureCard(serviceId: string) {
     await this.inMyLectureApi
-      .removeInMyLectureCard(cardId, serviceId)
+      .removeInMyLectureCard(serviceId, serviceId)
       .then(() => {
         return runInAction(() => this.findAllInMyLectures());
       })
