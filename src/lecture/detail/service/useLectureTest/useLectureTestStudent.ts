@@ -37,7 +37,7 @@ export function useLectureTestStudent(): [TestStudentValue] {
       ///api/lecture/students/flow/studentInfoView 여기 호출
       getCourseTestStudentItem();
     }
-  }, [params?.cubeId]);
+  }, [params?.cardId, params?.cubeId]);
 
   useEffect(() => {
     const next = `useLectureTestStudent-${++subscriberIdRef}`;

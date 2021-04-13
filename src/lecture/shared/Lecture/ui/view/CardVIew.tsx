@@ -14,6 +14,7 @@ import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
+  useRequestCollege,
   getCollgeName,
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
@@ -35,11 +36,10 @@ interface Props {
   passedStudentCount: number;
   starCount: number;
   description: string;
-  inMyLectureService?: InMyLectureService;
   contentType?: string;
 }
 
-function CardView({
+export default function CardView({
   isRequired,
   cardId,
   name,
@@ -50,9 +50,9 @@ function CardView({
   learningTime,
   thumbImagePath,
   passedStudentCount,
-  inMyLectureService,
   contentType,
 }: Props) {
+  useRequestCollege();
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
@@ -95,9 +95,9 @@ function CardView({
 
   const handleInMyLecture = () => {
     if (inMyLectureModel) {
-      inMyLectureService!.removeInMyLectureCard(cardId, cardId);
+      InMyLectureService.instance.removeInMyLectureCard(cardId, cardId);
     } else {
-      inMyLectureService!.addInMyLectureCard({
+      InMyLectureService.instance.addInMyLectureCard({
         cardId,
         serviceId: cardId,
         serviceType: 'Card',
@@ -228,7 +228,6 @@ function CardView({
               {getCollgeName(collegeId)}
             </Label>
           )}
-          <div className="header">{name}</div>
         </div>
         <p
           className="text-area"
@@ -246,7 +245,3 @@ function CardView({
     </Card>
   );
 }
-
-export default inject(mobxHelper.injectFrom('myTraining.inMyLectureService'))(
-  observer(CardView)
-);

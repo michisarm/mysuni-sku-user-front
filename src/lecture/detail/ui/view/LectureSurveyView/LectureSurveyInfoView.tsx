@@ -59,7 +59,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
     }
   }, [lectureStructure, currentMenu?.name]);
 
-  if (lectureSurveyState) {
+  if (lectureSurveyState && lectureSurveyState.state === 'None') {
     startLectureSurveyState();
   }
 

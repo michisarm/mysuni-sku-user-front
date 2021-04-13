@@ -1,12 +1,11 @@
 import { observable, decorate } from 'mobx';
-import moment from 'moment';
 import { timeToHourMinutePaddingFormat, convertTimeToDate } from 'shared/helper/dateTimeHelper';
 import { CategoryModel, LearningState } from 'shared/model';
 import { DifficultyLevel } from './DifficultyLevel';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
 import { MyStampXlsxModel } from './MyStampXlsxModel';
-import { CubeType } from '../../personalcube/personalcube/model';
+import { LearningType, LearningTypeName } from './LearningType';
 
 class MyTrainingTableViewModel {
   [key: string]: any;
@@ -16,7 +15,7 @@ class MyTrainingTableViewModel {
   category: CategoryModel = new CategoryModel();
   difficultyLevel: DifficultyLevel = DifficultyLevel.Basic;
   learningState?: LearningState;
-  cubeType: CubeType = CubeType.None;
+  cubeType: LearningType = LearningType.None;
   name: string = '';
   learningTime: number = 0;
   startDate: number = 0; // 학습시작일
@@ -34,12 +33,13 @@ class MyTrainingTableViewModel {
   }
 
   toXlsxForInProgress(index: number, collegeName?: string): InProgressXlsxModel {
+    const learningType = LearningTypeName[this.cubeType];
 
     return {
       No: String(index),
       College: collegeName || '-',
       과정명: this.name || '-',
-      학습유형: this.serviceType || '-',
+      학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       최근학습일: convertTimeToDate(this.time),
@@ -47,12 +47,13 @@ class MyTrainingTableViewModel {
   }
 
   toXlsxForCompleted(index: number, collegeName?: string): CompletedXlsxModel {
+    const learningType = LearningTypeName[this.cubeType];
 
     return {
       No: String(index),
       College: collegeName || '-',
       과정명: this.name || '-',
-      학습유형: this.serviceType || '-',
+      학습유형: learningType || '-',
       Level: this.difficultyLevel || '-',
       학습시간: timeToHourMinutePaddingFormat(this.learningTime),
       학습완료일: convertTimeToDate(this.endDate),

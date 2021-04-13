@@ -12,7 +12,7 @@ import {
   requestIssue,
   cancelRequestIssue,
 } from '../../api/BadgeApi';
-import { Badge } from '../../model/Badge';
+import { Badge, BadgeBundle } from '../../model/Badge';
 import { MyBadgeRdo } from '../../model/MyBadgeRdo';
 import { MyBadge } from '../../model/MyBadge';
 import { BadgeRdo } from '../../model/BadgeRdo';
@@ -49,7 +49,7 @@ class BadgeService {
   }
 
   @observable
-  _badges: Badge[] = [];
+  _badges: BadgeBundle[] = [];
 
   @computed get badges() {
     return this._badges;
