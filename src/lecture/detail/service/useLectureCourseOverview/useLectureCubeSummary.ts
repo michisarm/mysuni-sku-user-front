@@ -26,6 +26,7 @@ export function toggleCubeBookmark() {
     const inMyLectureCdo = getInMyLectureCdo();
     if (inMyLectureCdo !== undefined) {
       addInMyLecture(inMyLectureCdo).then(() => {
+        InMyLectureService.instance.findAllInMyLectures();
         reactAlert({
           title: '알림',
           message: '본 과정이 관심목록에 추가되었습니다.',
@@ -34,6 +35,7 @@ export function toggleCubeBookmark() {
     }
   } else {
     removeInMyLecture(imMyLecture.id).then(() => {
+      InMyLectureService.instance.findAllInMyLectures();
       reactAlert({
         title: '알림',
         message: '본 과정이 관심목록에서 제외되었습니다.',
