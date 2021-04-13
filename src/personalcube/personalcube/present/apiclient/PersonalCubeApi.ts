@@ -57,7 +57,14 @@ export default class PersonalCubeApi {
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
     return axios
-      .post<string>(this.URL + '/regist', cubeCdo)
+      .post<string>('/api/cube/userCubes', cubeCdo)
+      .then(response => (response && response.data) || null);
+  }
+
+  registerUserCube(cubeCdo: PersonalCubeCdoModel) {
+    //
+    return axios
+      .post<string>('/api/cube/userCubes', cubeCdo)
       .then(response => (response && response.data) || null);
   }
 
@@ -82,7 +89,7 @@ export default class PersonalCubeApi {
   findAllPersonalCubes(offset: number, limit: number) {
     //
     return axios
-      .get<OffsetElementList<PersonalCubeModel>>(this.URL, {
+      .get<OffsetElementList<PersonalCubeModel>>('/api/cube/userCubes', {
         params: {
           offset,
           limit,
@@ -114,7 +121,7 @@ export default class PersonalCubeApi {
       cubeState,
     };
     return axios
-      .get<OffsetElementList<PersonalCubeModel>>(this.URL + `/forCreator`, {
+      .get<OffsetElementList<PersonalCubeModel>>(`/api/cube/userCubes`, {
         params,
       })
       .then((response: any) =>
@@ -167,12 +174,13 @@ export default class PersonalCubeApi {
 
   ////////////////////////////////////// 개편 //////////////////////////////////////
   findLectureTimeSummary(email: string) {
-
     return axios
       .get<LectureTimeSummary>(`${this.flowURL}/instructor/lecture-time`, {
-        params: { email }
+        params: { email },
       })
-      .then(response => response && new LectureTimeSummary(response.data) || null);
+      .then(
+        response => (response && new LectureTimeSummary(response.data)) || null
+      );
   }
   ////////////////////////////////////// 개편 //////////////////////////////////////
 }

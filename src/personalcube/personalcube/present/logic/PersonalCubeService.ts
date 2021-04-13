@@ -7,7 +7,6 @@ import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSumma
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 
-
 @autobind
 export default class PersonalCubeService {
   //
@@ -49,6 +48,14 @@ export default class PersonalCubeService {
   registerCube(personalCube: PersonalCubeModel) {
     //
     return this.personalCubeApi.registerCube(
+      PersonalCubeModel.asCdo(personalCube)
+    );
+  }
+
+  @action
+  registerUserCube(personalCube: PersonalCubeModel) {
+    //
+    return this.personalCubeApi.registerUserCube(
       PersonalCubeModel.asCdo(personalCube)
     );
   }
@@ -97,9 +104,10 @@ export default class PersonalCubeService {
   }
 
   findPersonalCubeFromJson(cube: string) {
-
     const personalCube = JSON.parse(cube);
-    runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
+    runInAction(
+      () => (this.personalCube = new PersonalCubeModel(personalCube))
+    );
 
     return null;
   }
@@ -169,8 +177,10 @@ export default class PersonalCubeService {
   async findLectureTimeSummary() {
     const email = patronInfo.getPatronEmail();
     if (email) {
-      const lectureTimeSummary = await this.personalCubeApi.findLectureTimeSummary(email);
-      runInAction(() => this.lectureTimeSummary = lectureTimeSummary);
+      const lectureTimeSummary = await this.personalCubeApi.findLectureTimeSummary(
+        email
+      );
+      runInAction(() => (this.lectureTimeSummary = lectureTimeSummary));
     }
   }
   ////////////////////////////////////// 개편 //////////////////////////////////////
