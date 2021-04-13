@@ -534,7 +534,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         sessionStorage.removeItem('lectureVideoView');
       }, 1000);
     }
-
     if (
       learningState !== 'Passed' && // 학습이수 체크
       matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
@@ -592,10 +591,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (quizPop) {
       setQuizPop(false);
       videoControll.play();
-    }
-    if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
-      setQuizCurrentIndex(quizCurrentIndex);
-      return;
     }
     setQuizCurrentIndex(quizCurrentIndex + 1);
   }, [quizPop, quizCurrentIndex]);
