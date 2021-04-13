@@ -24,6 +24,8 @@ import { Link } from 'react-router-dom';
 import { toPath } from '../../../../detail/viewModel/LectureParams';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
+import { LearningType } from '../../../../../myTraining/model/LearningType';
+import CubeIconType from '../../model/CubeIconType';
 
 interface Props {
   cardId: string;
@@ -35,12 +37,14 @@ interface Props {
   passedStudentCount: number;
   starCount: number;
   simpleDescription: string;
-  inMyLectureService?: InMyLectureService;
-  contentType?: string;
+  type: LearningType;
   isRequired?: boolean;
+  studentCount?: number;
+  remainingDayCount?: number;
+  capacity?: number;
 }
 
-function CardView({
+export default function CardView({
   cardId,
   name,
   starCount,
@@ -50,8 +54,11 @@ function CardView({
   learningTime,
   thumbImagePath,
   passedStudentCount,
-  contentType,
+  type,
   isRequired,
+  capacity,
+  remainingDayCount,
+  studentCount,
 }: Props) {
   useRequestCollege();
   const [inMyLectureMap, setInMyLectureMap] = useState<
@@ -172,6 +179,28 @@ function CardView({
     );
   };
 
+  const renderRibbon = () => {
+    if (isRequired) {
+      return <Label className="ribbon2">핵인싸과정</Label>;
+    }
+
+    if (
+      studentCount !== undefined &&
+      capacity !== undefined &&
+      remainingDayCount !== undefined
+    ) {
+      if (studentCount >= capacity) {
+        return <Label className="done">정원 마감</Label>;
+      }
+
+      if (remainingDayCount === 0) {
+        return <Label className="day">D-DAY</Label>;
+      } else {
+        return <Label className="day">D-{remainingDayCount}</Label>;
+      }
+    }
+  };
+
   return (
     <Card
       className={classNames({
@@ -181,15 +210,7 @@ function CardView({
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
     >
-      {/* Todo: stampReady */}
-      <div className="card-ribbon-wrap">
-        {isRequired && <Label className="ribbon2">핵인싸과정</Label>}
-        {contentType && contentType === 'Enrolling' && (
-          // 나중에 정원 정보 추가 되면 수정 해야함
-          <Label className="ribbon2">정원 마감</Label>
-        )}
-        {/* { stampReady && <Label className="ribbon2">Stamp</Label>} */}
-      </div>
+      <div className="card-ribbon-wrap">{renderRibbon()}</div>
       <div className="card-inner">
         <Thumbnail image={thumbImagePath} />
         <div className="title-area">
@@ -202,6 +223,12 @@ function CardView({
         </div>
 
         <Fields>
+          <div className="li">
+            <Label className="onlytext bold">
+              <Icon className={CubeIconType[type]} />
+              <span>{type}</span>
+            </Label>
+          </div>
           {(learningTime || stampCount) && (
             <div className="li">
               {learningTime && (

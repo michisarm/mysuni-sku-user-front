@@ -74,6 +74,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                     name={card.name}
                     stampCount={card.stampCount}
                     simpleDescription={card.simpleDescription}
+                    type={card.type}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
                     // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함

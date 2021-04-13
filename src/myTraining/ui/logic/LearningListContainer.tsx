@@ -132,6 +132,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                         name={card.name}
                         stampCount={card.stampCount}
                         simpleDescription={card.simpleDescription}
+                        type={card.type}
                         passedStudentCount={cardRelatedCount.passedStudentCount}
                         starCount={cardRelatedCount.starCount}
                       />
