@@ -142,10 +142,18 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   async componentDidUpdate(prevProps: Props) {
     //
+    const { pageService } = this.props;
     if (
       prevProps.match.params.channelId !== this.props.match.params.channelId
     ) {
       this.init();
+      pageService!.initPageMap(
+        this.PAGE_KEY,
+        0, // offset
+        this.PAGE_SIZE // limit
+      );
+      sessionStorage.removeItem('channelOffset');
+
       try {
         await this.findCollegeOrder();
       } catch (error) {
@@ -206,7 +214,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       setIsLoading && setIsLoading(true);
     }
 
-
     if (channelOffset > 0 && page) {
       page.limit = 8;
     }
@@ -214,10 +221,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      channelOffset > 0 ? (channelOffset / 8) + page!.pageNo : page!.pageNo + 1
+      channelOffset > 0 ? channelOffset / 8 + page!.pageNo : page!.pageNo + 1
     );
     this.setState({ channelOffset: 0 });
-
   }
 
   async findCollegeOrder() {
@@ -340,7 +346,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       subAction: 'list more',
     });
 
-
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     if (page) {
@@ -396,7 +401,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
                 {lectures.map(({ card, cardRelatedCount }, index) => {
                   return (
                     <CardView
-                      key={card.id + index}
+                      key={`${card.id}+${index}`}
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
@@ -411,8 +416,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             </div>
           </>
         ) : (
-              <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
-            )}
+          <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
+        )}
       </ChannelLecturesContentWrapperView>
     );
   }
