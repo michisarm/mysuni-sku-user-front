@@ -67,7 +67,6 @@ function BadgeCompLeft({
           categoryId={challengeBadge.categoryId}
           badgeStyle={BadgeStyle.List}
           badgeSize={BadgeSize.Small}
-          badgeColor={challengeBadge.badgeCategory.themeColor}
         />
       </div>
       <div className="status">
