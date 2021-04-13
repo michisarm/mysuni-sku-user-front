@@ -15,7 +15,7 @@ import myTrainingPaths from '../../routePaths';
 import lecturePaths from '../../../lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
-
+import { Area } from 'tracker/model';
 
 interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
@@ -64,7 +64,18 @@ function MyPageHeaderContainer({
   }, []);
 
   return (
-    <ContentHeader type="Learning">
+    // 요청사항으로 관심 Channel 주석처리
+    // <ContentHeader
+    //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
+    // >
+    <ContentHeader
+      dataArea={
+        window.location.pathname.includes('/my-page/')
+          ? Area.MYPAGE_INFO
+          : Area.LEARNING_INFO
+      }
+      type="Learning"
+    >
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
             myPageActive={false}

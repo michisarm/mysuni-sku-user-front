@@ -12,6 +12,7 @@ import {
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useHistory } from 'react-router-dom';
+import { Area } from 'tracker/model';
 
 const FollowListItemView: React.FC<FollowListItem> = function FollowListItemView({
   id,
@@ -77,7 +78,10 @@ const CommunityFollowListContainer: React.FC = () => {
 
   return (
     <>
-      <div className="community-left community-main-left">
+      <div
+        className="community-left community-main-left"
+        data-area={Area.COMMUNITY_FOLLOWING}
+      >
         <div className="sub-info-box">
           <div className="main-left-search">
             {/* searchBox */}

@@ -4,6 +4,7 @@ import { Modal, Checkbox, Button, Image } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import { getCookie, setCookie } from '@nara.platform/accent';
 import { useHistory } from 'react-router';
+import { Area } from 'tracker/model';
 
 const CoursePromotionModalView = () => {
   //
@@ -62,7 +63,7 @@ const CoursePromotionModalView = () => {
         </div>
       </Modal.Header>
       <Modal.Content>
-        <div className="scrolling-80vh">
+        <div className="scrolling-80vh" data-area={Area.MAIN_POPBANNER}>
           <div className="cont-wrap">
             <div className="img" onClick={handleClickImg}>
               {/* <a> */}

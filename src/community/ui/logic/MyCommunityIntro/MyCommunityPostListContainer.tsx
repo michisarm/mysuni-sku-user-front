@@ -15,6 +15,7 @@ import {
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Area } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
 
@@ -65,9 +66,9 @@ async function unbookmark(postId: string) {
   });
 }
 
-const Contents:  React.FC<any> = function Contents({
-    postId,
-  }) {
+const Contents: React.FC<any> = function Contents({
+  postId,
+}) {
   const [detail, setDetail] = useState<string>('')
 
   useEffect(() => {
@@ -81,17 +82,17 @@ const Contents:  React.FC<any> = function Contents({
   }, [])
 
   return (
-  <>
-    <div className="ql-snow">
-      <div
-        className="ql-editor"
-        dangerouslySetInnerHTML={{ __html: detail }}
-      />
-    </div>
-  </>
+    <>
+      <div className="ql-snow">
+        <div
+          className="ql-editor"
+          dangerouslySetInnerHTML={{ __html: detail }}
+        />
+      </div>
+    </>
   )
 }
-  
+
 
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
@@ -155,7 +156,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const contentsView = () => {
     return (
       <>
-        <Contents postId={postId}/>
+        <Contents postId={postId} />
       </>
     )
   }
@@ -165,106 +166,110 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
       <div className="sub-info-box">
         <div className="comment-area community-main-card  commu-sub-card">
           {/* comments */}
-          <Comment.Group className="base">
-            {/*comment : 2줄이상 말줄임, 대댓글*/}
-            <Comment>
-              <Comment.Avatar
-                src={
-                  profileImage === undefined ||
-                  profileImage === null ||
-                  profileImage === '' ||
-                  type === 'ANONYMOUS'
-                    ? DefaultImg
-                    : `/files/community/${profileImage}`
-                }
-              />
-              <Comment.Content>
-                <Comment.Author>
-                  <Link to={`/community/${communityId}`}>{communityName}</Link>
-                </Comment.Author>
-                <Comment.Text>
-                  <div className="ellipsis">
-                    <span className="id">
-                      {type === 'ANONYMOUS' ? '익명' : nickName || profileId}
-                    </span>
-                    <span className="date">{createdTime}</span>
-                  </div>
-                  {/* <Button>+ View more</Button> */}
-                </Comment.Text>
-                <Comment.Actions>
-                  <Popup
-                    className="balloon-pop myCumu_btn"
-                    trigger={
-                      <div className="right top sub-menu">
-                        <Button icon className="img-icon">
-                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAJKADAAQAAAABAAAAJAAAAAAqDuP8AAAAlUlEQVRYCWNgGAWjITAaAiMsBBgp9W9capXnP4a/s0DmMDEwpy2a3badEjOZKNEM0gtyzP//DDIgDHMYJWZS7CBKLMeml2IHgaKJkZHhCQiD2NgsGRUbDYERHQKjBSOh6Ke4HCJkAanyFDtotGAkNchH1Y+4EBgtGAlFOcXlECELSJWn2EGjBSOpQT6qfjQERkMALQQAIac5FltQmtUAAAAASUVORK5CYII=" />
-                          <span className="blind">북마크</span>
-                        </Button>
-                      </div>
-                    }
-                    position="bottom right"
-                    on="click"
-                  >
-                    <Popup.Content>
-                      <ul>
-                        <li className="community-profile">
-                          <a href="#" onClick={shareUrl}>
-                            <i className="balloon icon popupUrl" />
-                            <span>URL 복사</span>
-                          </a>
-                        </li>
-                        <li>
-                          {!bookmarked && (
-                            <a href="#" onClick={bookmarkClick}>
-                              <i className="balloon icon popupBook" />
-                              <span>북마크</span>
+          <Link to={`/community/${communityId}/post/${postId}`}>
+            <Comment.Group className="base">
+              {/*comment : 2줄이상 말줄임, 대댓글*/}
+              <Comment>
+                <Comment.Avatar
+                  src={
+                    profileImage === undefined ||
+                      profileImage === null ||
+                      profileImage === '' ||
+                      type === 'ANONYMOUS'
+                      ? DefaultImg
+                      : `/files/community/${profileImage}`
+                  }
+                />
+                <Comment.Content>
+                  <Comment.Author>
+                    {/* <Link to={`/community/${communityId}`}>{communityName}</Link> */}
+                    {communityName}
+                  </Comment.Author>
+                  <Comment.Text>
+                    <div className="ellipsis">
+                      <span className="id">
+                        {type === 'ANONYMOUS' ? '익명' : nickName || profileId}
+                      </span>
+                      <span className="date">{createdTime}</span>
+                    </div>
+                    {/* <Button>+ View more</Button> */}
+                  </Comment.Text>
+                  <Comment.Actions>
+                    <Popup
+                      className="balloon-pop myCumu_btn"
+                      trigger={
+                        <div className="right top sub-menu">
+                          <Button icon className="img-icon">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAJKADAAQAAAABAAAAJAAAAAAqDuP8AAAAlUlEQVRYCWNgGAWjITAaAiMsBBgp9W9capXnP4a/s0DmMDEwpy2a3badEjOZKNEM0gtyzP//DDIgDHMYJWZS7CBKLMeml2IHgaKJkZHhCQiD2NgsGRUbDYERHQKjBSOh6Ke4HCJkAanyFDtotGAkNchH1Y+4EBgtGAlFOcXlECELSJWn2EGjBSOpQT6qfjQERkMALQQAIac5FltQmtUAAAAASUVORK5CYII=" />
+                            <span className="blind">북마크</span>
+                          </Button>
+                        </div>
+                      }
+                      position="bottom right"
+                      on="click"
+                    >
+                      <Popup.Content>
+                        <ul>
+                          <li className="community-profile">
+                            <a href="#" onClick={shareUrl}>
+                              <i className="balloon icon popupUrl" />
+                              <span>URL 복사</span>
                             </a>
-                          )}
-                          {bookmarked && (
-                            <a href="#" onClick={unbookmarkClick}>
-                              <i className="balloon icon popupBookRemove" />
-                              <span>북마크</span>
-                            </a>
-                          )}
-                        </li>
-                      </ul>
-                    </Popup.Content>
-                  </Popup>
-                </Comment.Actions>
-              </Comment.Content>
-            </Comment>
-            <div className="card-bottom">
-              <h3>
-                <span className={`ico_feed ${icon}`}>게시물</span>
-                <Link to={`/community/${communityId}/post/${postId}`}>
+                          </li>
+                          <li>
+                            {!bookmarked && (
+                              <a href="#" onClick={bookmarkClick}>
+                                <i className="balloon icon popupBook" />
+                                <span>북마크</span>
+                              </a>
+                            )}
+                            {bookmarked && (
+                              <a href="#" onClick={unbookmarkClick}>
+                                <i className="balloon icon popupBookRemove" />
+                                <span>북마크</span>
+                              </a>
+                            )}
+                          </li>
+                        </ul>
+                      </Popup.Content>
+                    </Popup>
+                  </Comment.Actions>
+                </Comment.Content>
+              </Comment>
+              <div className="card-bottom">
+                <h3>
+                  <span className={`ico_feed ${icon}`}>게시물</span>
+                  {/* <Link to={`/community/${communityId}/post/${postId}`}>
                   {name}
-                </Link>
-              </h3>
-              {more && 
-                contentsView()
-              }
-              <div className="text-right">
-                {!more && (
-                  <button
-                    className="ui icon button right btn-blue btn-more"
-                    onClick={viewMore}
-                  >
-                    more
-                    <i aria-hidden="true" className="icon more2" />
-                  </button>
-                )}
-                {more && (
-                  <button
-                    className="ui icon button right btn-blue fn-more-toggle"
-                    onClick={hideMore}
-                  >
-                    hide
-                    <i aria-hidden="true" className="icon hide2" />
-                  </button>
-                )}
+                </Link> */}
+                  {name}
+                </h3>
+                {more &&
+                  contentsView()
+                }
+                <div className="text-right">
+                  {!more && (
+                    <button
+                      className="ui icon button right btn-blue btn-more"
+                      onClick={viewMore}
+                    >
+                      more
+                      <i aria-hidden="true" className="icon more2" />
+                    </button>
+                  )}
+                  {more && (
+                    <button
+                      className="ui icon button right btn-blue fn-more-toggle"
+                      onClick={hideMore}
+                    >
+                      hide
+                      <i aria-hidden="true" className="icon hide2" />
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          </Comment.Group>
+            </Comment.Group>
+          </Link>
         </div>
       </div>
     </>
@@ -285,7 +290,10 @@ function MyCommunityPostListContainer() {
   }
 
   return (
-    <div className="community-main-contants">
+    <div
+      className="community-main-contants"
+      data-area={Area.COMMUNITY_MYPOST}
+    >
       {isLoading ? (
         <Segment
           style={{
@@ -302,33 +310,33 @@ function MyCommunityPostListContainer() {
           <Loadingpanel loading={isLoading} />
         </Segment>
       ) : (
-        <>
-          {myCommunityIntro !== undefined &&
-            myCommunityIntro.posts.map(postItem => (
-              <PostItemView key={postItem.postId} {...postItem} />
-            ))}
-          <div className="more-comments community-side">
-            {myCommunityIntro.postsTotalCount >
-              myCommunityIntro.postsOffset && (
-              <Button
-                icon
-                className="left moreview"
-                onClick={requestAppendMyCommunityPostList}
-              >
-                <Icon className="moreview" /> list more
-              </Button>
-            )}
-            {myCommunityIntro.postsTotalCount <=
-              myCommunityIntro.postsOffset && (
-              <Button
-                icon
-                className="left moreview"
-                style={{ cursor: 'default' }}
-              />
-            )}
-          </div>
-        </>
-      )}
+          <>
+            {myCommunityIntro !== undefined &&
+              myCommunityIntro.posts.map(postItem => (
+                <PostItemView key={postItem.postId} {...postItem} />
+              ))}
+            <div className="more-comments community-side">
+              {myCommunityIntro.postsTotalCount >
+                myCommunityIntro.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    onClick={requestAppendMyCommunityPostList}
+                  >
+                    <Icon className="moreview" /> list more
+                  </Button>
+                )}
+              {myCommunityIntro.postsTotalCount <=
+                myCommunityIntro.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    style={{ cursor: 'default' }}
+                  />
+                )}
+            </div>
+          </>
+        )}
     </div>
   );
 }

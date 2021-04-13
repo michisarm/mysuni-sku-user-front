@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Icon, Button } from 'semantic-ui-react';
-
+import { Area } from 'tracker/model';
 
 
 interface Props {
@@ -19,7 +19,7 @@ class FooterView extends Component<Props> {
     const { nav, buttons } = this.props;
 
     return (
-      <section className="footer">
+      <section className="footer" data-area={Area.FOOTER_NAVI}>
         <div className="cont-inner">
           <i className="s-kuniversity icon">
             <span className="blind">mySUNI</span>

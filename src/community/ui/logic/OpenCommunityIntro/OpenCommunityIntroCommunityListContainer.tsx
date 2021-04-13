@@ -17,6 +17,7 @@ import {
 } from '../../../service/useOpenCommunityIntro/utility/requestOpenCommunityIntro';
 import { StreamUtils } from 'xlsx/types';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Area } from 'tracker/model';
 
 interface FieldItemViewProps {}
 
@@ -283,7 +284,10 @@ function OpenCommunityIntroCommunityListContainer() {
           onClick={sortApproved}
         />
       </div>
-      <div className="course-detail-center community-containter padding-none">
+      <div
+        className="course-detail-center community-containter padding-none"
+        data-area={Area.COMMUNITY_LIST}
+      >
         <div className="community-open-contants">
           {openCommunityIntro &&
             openCommunityIntro.communities.length > 0 &&

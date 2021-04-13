@@ -2,19 +2,31 @@
 import React, { FunctionComponent } from 'react';
 import { Segment } from 'semantic-ui-react';
 import classNames from 'classnames';
+import { Action, Area } from 'tracker/model';
+import { scrollTrack } from 'tracker/present/logic/ActionTrackService';
 
 interface ContentWrapperProps {
-  className?: string
+  className?: string;
+  dataArea?: Area;
+  dataAction?: Action;
 }
 
-export const ContentWrapper: FunctionComponent<ContentWrapperProps> = ({ children, className }) => (
-  <div className={ classNames('scrolling-area', className )} >
-    <Segment className="full">
+export const ContentWrapper: FunctionComponent<ContentWrapperProps> = ({
+  children,
+  className,
+  dataArea,
+  dataAction,
+}) => (
+  <div
+    className={ classNames('scrolling-area', className )}
+    data-area={dataArea}
+    data-action={dataAction}
+  >
+    <Segment className="full" onScroll={(e: React.UIEvent<HTMLElement, UIEvent>) => scrollTrack({e, area: dataArea, scrollClassName:'scrolling', actionName: '메인카드 스크롤'})}>
       {children}
     </Segment>
   </div>
 );
-
 
 interface TabsViewProps {
   children: React.ReactNode,
@@ -49,7 +61,7 @@ interface MainBannerProps {
 }
 
 export const MainBannerWrapper: FunctionComponent<MainBannerProps> = ({ children }) => (
-  <div className="middle-swiper">
+  <div className="middle-swiper" data-area={Area.MAIN_BANNER}>
     <Segment className="full">
       <div className="swiper-section type2">
         {children}

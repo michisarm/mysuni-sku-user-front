@@ -1,7 +1,7 @@
-import { BadgeType } from "./BadgeType";
-import { BadgeLevel } from "./BadgeLevel";
-import { BadgeIssueState } from "./BadgeIssueState";
-
+import { BadgeType } from './BadgeType';
+import { BadgeLevel } from './BadgeLevel';
+import { BadgeIssueState } from './BadgeIssueState';
+import { BadgeCategory } from './BadgeCategory';
 export interface MyBadge {
   id: string;
   name: string;
@@ -15,4 +15,5 @@ export interface MyBadge {
   issueAutomatically: boolean;
   badgeStudentId: string;
   badgeIssueState: BadgeIssueState;
+  badgeCategory: BadgeCategory;
 }

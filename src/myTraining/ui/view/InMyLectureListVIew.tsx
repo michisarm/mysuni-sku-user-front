@@ -13,6 +13,7 @@ import {
 } from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { useScrollMove } from '../../useScrollMove';
+import { LearningTypeName } from '../../model/LearningType';
 
 interface InMyLectureTableViewProps {
   inMyLectures: InMyLectureTableViewModel[];
@@ -45,10 +46,11 @@ export default function InMyLectureListView({
       {inMyLectures &&
         inMyLectures.length > 0 &&
         inMyLectures.map((inMyLecture, index) => {
+          const learningType = LearningTypeName[inMyLecture.cubeType];
           const collegeName = getCollgeName(inMyLecture.category.college.id);
-          const learningType =
-            (inMyLecture.serviceType === 'Card' && inMyLecture.serviceType) ||
-            CubeTypeNameType[inMyLecture.cubeType];
+          // const learningType =
+          //   (inMyLecture.serviceType === 'Card' && inMyLecture.serviceType) ||
+          //   CubeTypeNameType[inMyLecture.cubeType];
           const learningState =
             (inMyLecture.learningState &&
               LearningStateName[inMyLecture.learningState]) ||
@@ -68,7 +70,7 @@ export default function InMyLectureListView({
                   <span className="ellipsis">{inMyLecture.name}</span>
                 </a>
               </Table.Cell>
-              <Table.Cell>{learningType} </Table.Cell>
+              <Table.Cell>{learningType || '-'} </Table.Cell>
               <Table.Cell>{inMyLecture.difficultyLevel || '-'}</Table.Cell>
               <Table.Cell>
                 {timeToHourMinutePaddingFormat(inMyLecture.learningTime)}

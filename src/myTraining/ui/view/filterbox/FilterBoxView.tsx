@@ -17,7 +17,6 @@ interface FilterBoxViewProps {
   onCheckOne: (e: any, data: any) => void;
   onChangeStartDate: (data: Date) => void;
   onChangeEndDate: (data: Date) => void;
-  onCheckApplying: (e: any, data: any) => void;
 }
 
 export function FilterBoxView({
@@ -29,12 +28,35 @@ export function FilterBoxView({
   onCheckOne,
   onChangeStartDate,
   onChangeEndDate,
-  onCheckApplying,
 }: FilterBoxViewProps) {
 
   return (
     <table className="">
       <tbody>
+        <tr>
+          <th>{FilterConditionName.LearningType}</th>
+          <td>
+            <Checkbox
+              className="base"
+              name={FilterConditionName.LearningType}
+              label={`${SELECT_ALL} (${totalFilterCount.totalCount})`}
+              checked={conditions.learningTypes.length === CheckboxOptions.learningTypes.length}
+              onChange={onCheckAll}
+            />
+            {CheckboxOptions.learningTypes.map((learningType, index) => (
+              <Fragment key={`checkbox-learningType-${index}`}>
+                <Checkbox
+                  className="base"
+                  name={FilterConditionName.LearningType}
+                  label={`${learningType.text} (${totalFilterCount.getCountFromLearningType(learningType.text)})`}
+                  value={learningType.value}
+                  checked={conditions.learningTypes.includes(learningType.value)}
+                  onChange={onCheckOne}
+                />
+              </Fragment>
+            ))}
+          </td>
+        </tr>
         <tr>
           <th>{FilterConditionName.College}</th>
           <td>

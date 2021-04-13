@@ -49,7 +49,7 @@ class SharedTypeDetailView extends React.Component<Props> {
             {
               media && media.mediaType === MediaType.LinkMedia && (
                 <div className="text2">
-                  <a href="#" onClick={() => this.goToUrl(media.mediaContents.linkMediaUrl)}>
+                  <a href="#" onClick={e => { this.goToUrl(media.mediaContents.linkMediaUrl); e.preventDefault();}}>
                     {media && media.mediaContents && media.mediaContents.linkMediaUrl || ''}
                   </a>
                 </div>
@@ -81,7 +81,7 @@ class SharedTypeDetailView extends React.Component<Props> {
           <Table.HeaderCell>교육자료</Table.HeaderCell>
           <Table.Cell>
             <div className="text2">
-              <a href="#" onClick={() => this.goToUrl(officeWeb.webPageUrl)}>
+              <a href="#" onClick={e => { this.goToUrl(officeWeb.webPageUrl); e.preventDefault(); }}>
                 {officeWeb && officeWeb.webPageUrl || ''}
               </a>
             </div>

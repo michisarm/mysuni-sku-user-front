@@ -1,16 +1,12 @@
 import React from 'react';
+import { useHistory } from 'react-router';
+import { useScrollMove } from 'myTraining/useScrollMove';
+import Image from 'shared/components/Image';
+import badgeRoutePaths from '../../routePaths';
 import classNames from 'classnames';
 
-
-enum BadgeCategoryId {
-  BDGCAT_AIDT = 'aidt',
-  BDGCAT_JOB = 'job',
-  BDGCAT_BIZ = 'biz',
-  BDGCAT_HAPPY = 'happy',
-  BDGCAT_BM = 'bm',
-}
-
 interface BadgeContentWrapperProps {
+  id: string;
   categoryId: string;
   badgeStyle: string;
   onViewDetail?: () => void;
@@ -18,31 +14,37 @@ interface BadgeContentWrapperProps {
 }
 
 export function BadgeContentWrapper({
+  id,
   categoryId,
   badgeStyle,
-  onViewDetail,
   children,
-}: BadgeContentWrapperProps) { 
-  
+}: BadgeContentWrapperProps) {
+  const history = useHistory();
+  const { scrollSave } = useScrollMove();
+
+  const onViewDetail = () => {
+    scrollSave();
+    history.push(badgeRoutePaths.badgeDetailPage(id));
+  };
+
+  const badgeURL = `/static/media/badge/${categoryId}.png`;
   return (
     <>
       {badgeStyle === 'List' ? (
-        <a
-          className={classNames('badge_new', getCategoryStyle(categoryId))}
-          onClick={onViewDetail}
-        >
+        <a className={classNames('badge-box basic')} onClick={onViewDetail}>
+          <span className="badge_thumb">
+            <Image src={badgeURL} alt="뱃지이미지" />
+          </span>
           {children}
         </a>
       ) : (
-        <div className={classNames('badge_new', getCategoryStyle(categoryId))}>
+        <>
+          <span className="badge_thumb">
+            <Image src={badgeURL} alt="뱃지이미지" />
+          </span>
           {children}
-        </div>
+        </>
       )}
     </>
   );
-}
-
-
-const getCategoryStyle = (categoryId: string) => {
-  return BadgeCategoryId[categoryId as keyof typeof BadgeCategoryId];
 }

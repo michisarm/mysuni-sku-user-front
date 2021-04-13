@@ -2,7 +2,7 @@ import { getCommunitySurvey } from 'community/service/useCommunityMenu/requestCo
 import { useSearchBox } from 'community/store/SearchBoxStore';
 import CommunitySurveyModalContainer from 'community/ui/logic/CommunitySurveyModalContainer';
 import { MenuItem } from 'community/viewModel/CommunityAdminMenu';
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import { Button, DropdownItemProps, Radio, Select, TextArea } from 'semantic-ui-react';
 
@@ -12,7 +12,7 @@ interface RouteParams {
 
 interface CommunityAdminMenuAddViewProps {
   addMenuFlag?: boolean
-  addChildMenuFlag? : boolean
+  addChildMenuFlag?: boolean
   communityAdminGroups: any
   selectedRow?: MenuItem
   onChangeAddValue: (data: any, name: string) => void
@@ -34,7 +34,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
     //   'text': '선택'
     // }
   ]
-  communityAdminGroups && communityAdminGroups!.results.map((data:any, index: number) => {
+  communityAdminGroups && communityAdminGroups!.results.map((data: any, index: number) => {
     groupArr.push({
       'key': data.groupId,
       'value': data.groupId,
@@ -43,16 +43,16 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   });
 
   useEffect(() => {
-    if(selectedRow && selectedRow.type === 'SURVEY') {
-      getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
-        if(result.data === '') {
+    if (selectedRow && selectedRow.type === 'SURVEY') {
+      selectedRow!.surveyId && getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
+        if (result.data === '') {
           setSelectedSurvey({})
-        }else {
+        } else {
           setSelectedSurvey(result.data)
         }
       })
     }
-  }, [selectedRow]);
+  }, [selectedRow?.type]);
 
   const menuType = [
     { key: 'CATEGORY', value: 'CATEGORY', text: '카테고리' },
@@ -67,33 +67,24 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   ];
 
   function changeType(_: any, data: any) {
-    if(selectedRow && data) {
+    if (selectedRow && data) {
       selectedRow.type = data.value
       onChangeAddValue(selectedRow, 'type');
-      if(selectedRow.type === 'SURVEY') {
-        getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
-          if(result.data) {
-            setSelectedSurvey(result.data)
-          } else {
-            setSelectedSurvey({})
-          }
-        })
-      }
     }
   }
 
   function changeValue(e: any) {
     const value = e.target.value;
-    if(selectedRow) {
-      if(e.target.name === 'name') {
+    if (selectedRow) {
+      if (e.target.name === 'name') {
         selectedRow.name = value
-      }else if(e.target.name === 'discussionTopic'){
+      } else if (e.target.name === 'discussionTopic') {
         selectedRow.discussionTopic = value
-      }else if(e.target.name === 'surveyInformation'){
+      } else if (e.target.name === 'surveyInformation') {
         selectedRow.surveyInformation = value
-      }else if(e.target.name === 'url'){
+      } else if (e.target.name === 'url') {
         selectedRow.url = value
-      }else if(e.target.name === 'html'){
+      } else if (e.target.name === 'html') {
         selectedRow.html = value
       }
       onChangeAddValue(selectedRow, e.target.name);
@@ -101,11 +92,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   }
 
   function changeAuth(e: any, value: any) {
-    if(selectedRow) {
+    if (selectedRow) {
       if (value === 'community') {
         selectedRow.groupId = null
         selectedRow.accessType = 'COMMUNITY_ALL_MEMBER'
-      } else {
+      } else if (groupArr && groupArr[0]) {
         selectedRow.groupId = groupArr[0].value
         selectedRow.accessType = 'COMMUNITY_GROUP'
       }
@@ -114,7 +105,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   }
 
   function onChangeGroup(e: any, data: any) {
-    if(selectedRow) {
+    if (selectedRow) {
       selectedRow.groupId = data.value
       onChangeAddValue(selectedRow, 'groupId');
     }
@@ -152,14 +143,14 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
           </tr>
           <tr>
             {selectedRow!.type !== 'CATEGORY' && (
-            <th>메뉴명</th>
+              <th>메뉴명</th>
             )}
             {selectedRow!.type === 'CATEGORY' && (
-            <th>카테고리명</th>
+              <th>카테고리명</th>
             )}
             <td>
               <div className="ui right-top-count input admin">
-                <input 
+                <input
                   type="text"
                   placeholder="제목을 입력해주세요."
                   value={selectedRow && selectedRow.name}
@@ -170,100 +161,100 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
             </td>
           </tr>
           {selectedRow!.type === 'DISCUSSION' && (
-          <tr>
-            <th>주제</th>
-            <td>
-              <div className="ui right-top-count input admin">
-                <input 
-                  type="text"
-                  placeholder="주제를 입력해주세요."
-                  value={selectedRow && selectedRow.discussionTopic}
-                  name="discussionTopic"
-                  onChange={changeValue}
-                />
-              </div>
-            </td>
-          </tr>
+            <tr>
+              <th>주제</th>
+              <td>
+                <div className="ui right-top-count input admin">
+                  <input
+                    type="text"
+                    placeholder="주제를 입력해주세요."
+                    value={selectedRow && selectedRow.discussionTopic}
+                    name="discussionTopic"
+                    onChange={changeValue}
+                  />
+                </div>
+              </td>
+            </tr>
           )}
           {selectedRow!.type === 'SURVEY' && (
-          <tr>
-            <th>설문 안내글</th>
-            <td>
-              <div className="ui right-top-count input admin">
-                <input 
-                  type="text"
-                  placeholder="안내글을 입력해주세요."
-                  value={selectedRow && selectedRow.surveyInformation}
-                  name="surveyInformation"
-                  onChange={changeValue}
-                />
-              </div>
-            </td>
-          </tr>
+            <tr>
+              <th>설문 안내글</th>
+              <td>
+                <div className="ui right-top-count input admin">
+                  <input
+                    type="text"
+                    placeholder="안내글을 입력해주세요."
+                    value={selectedRow && selectedRow.surveyInformation}
+                    name="surveyInformation"
+                    onChange={changeValue}
+                  />
+                </div>
+              </td>
+            </tr>
           )}
-          {selectedRow!.type === 'SURVEY' && searchBox && selectedSurvey && (
-          <tr>
-            <th className="admin_survey_th">Survey 추가</th>
-            <td className="admin_survey_btn">
-              <CommunitySurveyModalContainer
-                trigger={<Button icon className="ui button admin_table_button02">Survey 찾기</Button>}
-                defaultSelectedChannel={null}
-                onConfirmChannel={handleSurveyModalClose}
-                searchBox={searchBox}
-              />
-              {selectedSurvey.titles !== undefined && (
-                <table className="menu_survey">
-                  <colgroup>
-                    <col />
-                    <col width="100px" />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>제목</th>
-                      <th>등록자</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{selectedSurvey.titles.langStringMap[selectedSurvey.titles.defaultLanguage]}</td>
-                      <td>{selectedSurvey.formDesigner.names.langStringMap[selectedSurvey.formDesigner.names.defaultLanguage]}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              )}
-            </td>
-          </tr>
+          {selectedRow!.type === 'SURVEY' && searchBox && (
+            <tr>
+              <th className="admin_survey_th">Survey 추가</th>
+              <td className="admin_survey_btn">
+                <CommunitySurveyModalContainer
+                  trigger={<Button icon className="ui button admin_table_button02">Survey 찾기</Button>}
+                  defaultSelectedChannel={null}
+                  onConfirmChannel={handleSurveyModalClose}
+                  searchBox={searchBox}
+                />
+                {selectedSurvey && selectedSurvey.titles !== undefined && (
+                  <table className="menu_survey">
+                    <colgroup>
+                      <col />
+                      <col width="100px" />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>제목</th>
+                        <th>등록자</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{selectedSurvey.titles.langStringMap[selectedSurvey.titles.defaultLanguage]}</td>
+                        <td>{selectedSurvey.formDesigner.names.langStringMap[selectedSurvey.formDesigner.names.defaultLanguage]}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
+              </td>
+            </tr>
           )}
           {selectedRow!.type === 'LINK' && (
-          <tr>
-            <th>URL</th>
-            <td>
-              <div className="ui right-top-count input admin">
-                <input 
-                  type="text"
-                  placeholder="URL를 입력해주세요."
-                  value={selectedRow && selectedRow.url}
-                  name="url"
-                  onChange={changeValue}
-                />
-              </div>
-            </td>
-          </tr>
+            <tr>
+              <th>URL</th>
+              <td>
+                <div className="ui right-top-count input admin">
+                  <input
+                    type="text"
+                    placeholder="URL를 입력해주세요."
+                    value={selectedRow && selectedRow.url}
+                    name="url"
+                    onChange={changeValue}
+                  />
+                </div>
+              </td>
+            </tr>
           )}
           {selectedRow!.type === 'HTML' && (
-          <tr>
-            <td colSpan={2}>
-              <div>
-                <textarea
-                  style={{ height: 548, width: '100%' }}
-                  value={selectedRow && selectedRow.html}
-                  onChange={(e) => {
+            <tr>
+              <td colSpan={2}>
+                <div>
+                  <textarea
+                    style={{ height: 548, width: '100%' }}
+                    value={selectedRow && selectedRow.html}
+                    onChange={(e) => {
                       handleChangeHtml(e);
-                  }}
-                />
-              </div>
-            </td>
-          </tr>
+                    }}
+                  />
+                </div>
+              </td>
+            </tr>
           )}
           <tr>
             <th>접근 권한</th>

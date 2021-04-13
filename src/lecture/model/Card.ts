@@ -4,14 +4,15 @@ import { DifficultyLevel } from './DifficultyLevel';
 import { GroupBasedAccessRule } from './GroupBasedAccessRule';
 import { PermittedCineroom } from './PermittedCineroom';
 import { PatronKey } from '@nara.platform/accent';
-
+import CardType from '../shared/model/CardType';
 export interface Card {
   id: string;
   name: string;
+  type: CardType;
   patronKey: PatronKey;
   thumbImagePath: string;
   stampCount: number;
-  description: string;
+  simpleDescription: string;
   difficultyLevel?: DifficultyLevel;
   searchable: boolean;
   tags?: string[] | null;

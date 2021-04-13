@@ -6,6 +6,7 @@ import { MyContentType } from '../ui/model/MyContentType';
 
 class MyTrainingFilterRdoModel {
   myTrainingState: MyContentType = MyLearningContentType.InProgress;
+  learningTypes: string[] = [];
   collegeIds: string[] = [];
   difficultyLevels: string[] = [];
   learningTimes: string[] = [];
@@ -45,30 +46,6 @@ class MyTrainingFilterRdoModel {
     } as MyTrainingFilterRdoModel);
   }
 
-  static createWithConditions(
-    collegeIds: string[],
-    difficultyLevels: string[],
-    learningTimes: string[],
-    organizers: string[],
-    required: string,
-    certifications: string[],
-    startDate: string,
-    endDate: string,
-    applying: boolean
-  ) {
-    return new MyTrainingFilterRdoModel({
-      collegeIds,
-      difficultyLevels,
-      learningTimes,
-      organizers,
-      required,
-      certifications,
-      startDate,
-      endDate,
-      applying,
-    } as MyTrainingFilterRdoModel);
-  }
-
   changeContentType(contentType: MyContentType) {
     this.myTrainingState = contentType;
   }
@@ -79,6 +56,7 @@ class MyTrainingFilterRdoModel {
   }
 
   setByConditions(conditions: FilterCondition) {
+    this.learningTypes = conditions.learningTypes;
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;

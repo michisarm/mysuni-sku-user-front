@@ -1,4 +1,5 @@
 export enum FilterConditionName {
+  LearningType = '교육유형',
   College = '컬리지',
   DifficultyLevel = '난이도',
   LearningTime = '학습시간',

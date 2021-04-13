@@ -46,6 +46,12 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
           <span className="cell date center">
             {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
           </span>
+          <span className="cell date center">
+            {post.readCount || 0}
+          </span>
+          <span className="cell date center">
+            {post.likeCount || 0}
+          </span>
         </a>
       )}
       {post.pinned === true && (
@@ -77,6 +83,12 @@ function renderPostRow(post: CommunityPostItem, handleClickRow: any, menuType: s
           )}
           <span className="cell date center">
             {post.createdTime && moment(post.createdTime).format('YYYY.MM.DD')}
+          </span>
+          <span className="cell date center">
+            {post.readCount || 0}
+          </span>
+          <span className="cell date center">
+            {post.likeCount || 0}
           </span>
         </a>
       )}
@@ -120,7 +132,9 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
           </span>
         </span>
         <span className="cell nick">작성자</span>
-        <span className="cell date center">등록일</span>
+        <span className="cell date">작성일</span>
+        <span className="cell date">조회</span>
+        <span className="cell date center">좋아요</span>
       </a>
       {postItems.items.map((post, index) => {
         return renderPostRow(post, onHandleClickRow, menuType);

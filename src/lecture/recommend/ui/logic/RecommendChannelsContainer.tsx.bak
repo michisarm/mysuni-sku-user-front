@@ -1,0 +1,313 @@
+import React, { Component, useEffect, useState } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import {
+  RouteComponentProps,
+  useHistory,
+  useLocation,
+  useParams,
+  withRouter,
+} from 'react-router-dom';
+
+import { ReviewService } from '@nara.drama/feedback';
+import { NoSuchContentPanel, Loadingpanel } from 'shared';
+import { ActionLogService } from 'shared/stores';
+import { ChannelModel } from 'college/model';
+import { CollegeService } from 'college/stores';
+import { RecommendLectureRdo } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import routePaths from '../../../routePaths';
+import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';
+import ChannelsContentWrapperView from '../view/ChannelsContentWrapperView';
+import SeeMoreButtonView from '../view/SeeMoreButtonView';
+import ReactGA from 'react-ga';
+import { useScrollMove } from 'myTraining/useScrollMove';
+import { Segment } from 'semantic-ui-react';
+import { RecommendCardRom } from '../../../model/RecommendCardRom';
+import {
+  setRecommendCardRoms,
+  useRecommendCardRoms,
+} from '../../../detail/store/RecommendCardRomsStore';
+import {
+  clearFindRecommendCards,
+  findRecommendCardsCache,
+} from '../../../detail/api/cardApi';
+import { ChannelCards } from '../../../../shared/viewmodel/ChannelCards';
+
+interface Props {
+  channels: ChannelModel[];
+}
+
+interface InnerProps {
+  actionLogService?: ActionLogService;
+  collegeService?: CollegeService;
+  recommendCardRoms: RecommendCardRom[];
+  channels: ChannelModel[];
+  scrollSave?: () => void;
+  pathname: string;
+}
+
+interface RouteParams {
+  pageNo: string;
+}
+
+interface InnerState {
+  channelCards: ChannelCards[];
+  isLoading: boolean;
+}
+
+function RecommendChannelsContainer(props: Props) {
+  const { channels } = props;
+  const history = useHistory();
+  const location = useLocation();
+  const { scrollOnceMove, scrollSave } = useScrollMove();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const recommendCardRoms = useRecommendCardRoms();
+
+  useEffect(() => {
+    if (loading) {
+      scrollOnceMove();
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, [location.pathname]);
+
+  if (recommendCardRoms === undefined) {
+    return null;
+  }
+
+  return (
+    <ChannelsInnerContainer
+      channels={channels}
+      pathname={location.pathname}
+      recommendCardRoms={recommendCardRoms}
+      scrollSave={scrollSave}
+    />
+  );
+}
+
+const CHANNELS_SIZE = 5;
+
+const LECTURES_SIZE = 8;
+
+export default RecommendChannelsContainer;
+@inject(
+  mobxHelper.injectFrom('shared.actionLogService', 'college.collegeService')
+)
+@reactAutobind
+@observer
+class ChannelsInnerContainer extends Component<InnerProps, InnerState> {
+  constructor(props: InnerProps) {
+    super(props);
+    this.state = {
+      channelCards: [],
+      isLoading: false,
+    };
+  }
+
+  componentDidMount(): void {
+    //
+    const { channels } = this.props;
+
+    CollegeService.instance.setChannels(
+      (channels &&
+        channels.length &&
+        channels.map(
+          chanel => new ChannelModel({ ...chanel, checked: false })
+        )) ||
+        []
+    );
+    this.findPagingRecommendLectures();
+  }
+
+  componentDidUpdate(prevProps: Readonly<InnerProps>): void {
+    //
+    const { pageNo: prevPageNo } = prevProps;
+    const { pageNo } = this.props;
+
+    if (prevPageNo !== pageNo && prevPageNo < pageNo) {
+      this.findPagingRecommendLectures();
+    }
+  }
+
+  async findPagingRecommendLectures() {
+    //
+    const channelLimit = this.getPageNo() * CHANNELS_SIZE;
+    this.setState({ isLoading: true });
+    const recommendCardRoms = await findRecommendCardsCache(
+      channelLimit,
+      LECTURES_SIZE
+    );
+    setRecommendCardRoms(recommendCardRoms);
+    this.setState({ isLoading: false });
+  }
+
+  getPageNo() {
+    const { pageNo } = this.props;
+    let no = parseInt(pageNo);
+    if (isNaN(no)) {
+      no = 1;
+    }
+    return no;
+  }
+
+  isContentMore() {
+    //
+    const { channels } = this.props;
+    const channelCount = this.getPageNo() * CHANNELS_SIZE;
+
+    return channels.length > channelCount;
+  }
+
+  getDisplayableRecommendLectures() {
+    //
+    const { recommendLectures } = this.props.lectureService!;
+    const { channels } = this.props.collegeService!;
+    const { setLoading } = this.props;
+
+    const notChecked = channels.every(channel => !channel.checked);
+    let displayableRecommendLectures: RecommendLectureRdo[] = [];
+
+    /**
+     * 관심채널보기 전체해제인 경우는 전체 관심채널들에 대한 추천Lecture 라인들을 보여줌.
+     */
+    if (notChecked) {
+      displayableRecommendLectures = recommendLectures;
+    }
+    // 선택된 관심채널에 대한 추천Lecture 라인들만 보여줌.(체크확인 filter 처리)
+    else {
+      const checkedChannelIds = channels
+        .filter(channel => channel.checked)
+        .map(channel => channel.id);
+
+      displayableRecommendLectures = recommendLectures.filter(lecture =>
+        checkedChannelIds.includes(lecture.channel.id)
+      );
+    }
+    if (displayableRecommendLectures.length > 0) {
+      setLoading && setLoading(true);
+    }
+
+    return displayableRecommendLectures;
+  }
+
+  onConfirmChangeFavorite() {
+    clearFindRecommendCards();
+    this.findPagingRecommendLectures();
+  }
+
+  onSelectChannel(channel: ChannelModel) {
+    //
+    const collegeService = this.props.collegeService!;
+    const { actionLogService, history } = this.props;
+
+    actionLogService?.registerClickActionLog({ subAction: channel.name });
+
+    const index = collegeService!._channels
+      .map((channel: ChannelModel) => channel.id)
+      .findIndex((id: string) => channel.id === id);
+
+    const prevAllChecked = collegeService.channels.every(
+      channel => channel.checked
+    );
+    const prevAllNotChecked = collegeService.channels.every(
+      channel => !channel.checked
+    );
+
+    collegeService.setChannelsProp(index, 'checked', !channel.checked);
+    const allChecked = collegeService.channels.every(
+      channel => channel.checked
+    );
+    const allNotChecked = collegeService.channels.every(
+      channel => !channel.checked
+    );
+
+    // 채널별 조회 -> 전체 채널 조회
+    if (
+      !prevAllChecked &&
+      !prevAllNotChecked &&
+      (allChecked || allNotChecked)
+    ) {
+      this.findPagingRecommendLectures();
+      history.replace(routePaths.currentPage(1));
+    }
+    // 전체 채널 조회 -> 채널별 조회
+    else if (
+      (prevAllChecked || prevAllNotChecked) &&
+      !allChecked &&
+      !allNotChecked
+    ) {
+      this.findAllRecommendLectures();
+    }
+  }
+
+  onClickSeeMore() {
+    //
+    const { actionLogService, history } = this.props;
+
+    actionLogService?.registerClickActionLog({ subAction: 'list more' });
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
+
+    setTimeout(() => {
+      ReactGA.pageview(window.location.pathname, [], 'Recommend');
+    }, 1000);
+  }
+
+  render() {
+    //
+    const { collegeService, onViewAll, scrollSave, isLoading } = this.props;
+    const { channels } = collegeService!;
+    const displayableRecommendLectures = this.getDisplayableRecommendLectures();
+
+    return (
+      <ChannelsContentWrapperView
+        channels={channels}
+        onSelectChannel={this.onSelectChannel}
+        onConfirmCallback={this.onConfirmChangeFavorite}
+      >
+        <div className="recommend-area">
+          {isLoading ? (
+            <Segment
+              style={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 400,
+                boxShadow: '0 0 0 0',
+                border: 0,
+              }}
+            >
+              <Loadingpanel loading={isLoading} />
+            </Segment>
+          ) : (
+            <>
+              {!displayableRecommendLectures ||
+              displayableRecommendLectures.length < 1 ? (
+                <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
+              ) : (
+                displayableRecommendLectures.map(
+                  (lecture: RecommendLectureRdo, index: number) => (
+                    <ChannelLecturesLineContainer
+                      key={`channel_cont_${index}`}
+                      channel={new ChannelModel(lecture.channel)}
+                      lectures={lecture.lectures}
+                      onViewAll={onViewAll}
+                    />
+                  )
+                )
+              )}
+              {this.isContentMore() && (
+                <SeeMoreButtonView onClick={this.onClickSeeMore} />
+              )}
+            </>
+          )}
+        </div>
+      </ChannelsContentWrapperView>
+    );
+  }
+}

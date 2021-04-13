@@ -160,9 +160,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { focus, write, fieldName, alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
-    categorys.map((data, index) => {
-      questionType.push({ key: index, value: data.categoryId, text: data.name });
-    });
+    // categorys.map((data, index) => {
+    //   questionType.push({ key: index, value: data.categoryId, text: data.name });
+    // });
 
     const currentUrl = window.location.href;
 
