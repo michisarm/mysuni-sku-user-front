@@ -160,7 +160,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { pageService, lectureService, setLoading } = this.props;
     const getChannelOffset: any = sessionStorage.getItem('channelOffset');
     const prevChannelOffset = JSON.parse(getChannelOffset);
-    this.setState({ channelOffset: prevChannelOffset });
     setLoading && setLoading(false);
     pageService!.initPageMap(
       this.PAGE_KEY,
@@ -168,7 +167,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       prevChannelOffset ? prevChannelOffset : this.PAGE_SIZE // limit
     );
     lectureService!.clearLectures();
-    console.log('1');
     // 뒤로가기 할때 포지션이 처음으로 감. 수정되면 적용..
     // setIsLoading && setIsLoading(true);
   }
@@ -185,16 +183,13 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       setIsLoading,
       scrollOnceMove,
     } = this.props;
+
+    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
+    const prevChannelOffset = JSON.parse(getChannelOffset);
+    this.setState({ channelOffset: prevChannelOffset });
     const { sorting, channelOffset } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     inMyLectureService!.findAllInMyLectures();
-    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
-    const prevChannelOffset = JSON.parse(getChannelOffset);
-
-    // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
-
-    console.log('page!.limit, : ', page!.limit);
-    console.log('page!.nextOffset, : ', page!.nextOffset);
 
     const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
       match.params.collegeId,
@@ -204,8 +199,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       sorting
     );
 
-    console.log('2');
-    console.log(page);
     if (!lectureOffsetList.empty) {
       setIsLoading && setIsLoading(false);
       scrollOnceMove && scrollOnceMove();
@@ -213,12 +206,18 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       setIsLoading && setIsLoading(true);
     }
 
+
+    if (channelOffset > 0 && page) {
+      page.limit = 8;
+    }
+
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      channelOffset && channelOffset > 0 ? (channelOffset / 8) + page!.pageNo + 1 : page!.pageNo + 1
+      channelOffset > 0 ? (channelOffset / 8) + page!.pageNo : page!.pageNo + 1
     );
     this.setState({ channelOffset: 0 });
+
   }
 
   async findCollegeOrder() {
