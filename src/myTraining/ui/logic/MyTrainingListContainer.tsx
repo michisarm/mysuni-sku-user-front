@@ -81,7 +81,7 @@ function MyTrainingListContainer({
     if(showResult) {
       myTrainingService!.setFilterRdoByConditions(conditions);
       requestMyTrainingsByConditions();
-    }
+    }  
   }, [showResult]);
 
   const requestMyTrainings = async () => {

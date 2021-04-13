@@ -1,5 +1,4 @@
 import { decorate, observable, computed } from 'mobx';
-import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
 import { DramaEntityObservableModel } from 'shared/model';
 
 class MyLearningSummaryModel extends DramaEntityObservableModel {
@@ -12,7 +11,6 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   acheiveStampCount: number = 0;
   achieveBadgeCount: number = 0;
 
-  /* college 별 학습시간 */
   aiCollegeTime: number = 0;
   dtCollegeTime: number = 0;
   happyCollegeTime: number = 0;
@@ -32,14 +30,11 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
 
   /* 개인 학습(인정)시간 */
   aplAllowTime: number = 0;
-  /* 강의시간 */
-  lectureTimeSummary: LectureTimeSummary = new LectureTimeSummary();
 
   /* 누적시간 */
   totalSuniLearningTime: number = 0;
   totalMyCompanyLearningTime: number = 0;
   totalAplAllowTime: number = 0;
-  totalCollegeTime: number = 0;
   totalCompleteLectureCount: number = 0;
 
   /* mySUNI 학습시간 */
@@ -50,54 +45,6 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   /* 관계사 학습시간 */
   @computed get displayMyCompanyLearningTime(): number {
     return this.myCompanyLearningTime + this.myCompanyInSuniLearningTime;
-  }
-
-  /* 총 학습시간 */
-  @computed get displayTotalLearningTime(): number {
-    /*
-      1. mySUNI 학습시간
-      2. 관계사 학습시간
-      3. 개인 학습시간
-      4. 강의시간
-    */
-    if (this.lectureTimeSummary) {
-      /* lectureTimeSummary 는 object 이므로 null 처리를 꼭 해주도록 한다. */
-      return (
-        this.suniLearningTime +
-        this.myCompanyLearningTime +
-        this.aplAllowTime +
-        this.lectureTimeSummary.totalCollegeTime
-      );
-    }
-
-    return (
-      this.suniLearningTime + this.myCompanyLearningTime + this.aplAllowTime
-    );
-  }
-
-  /* 총 학습시간(누적) */
-  @computed get displayAccrueTotalLearningTime(): number {
-    /*
-      1. mySUNI 학습시간
-      2. 관계사 학습시간
-      3. 개인 학습시간
-      4. 강의시간
-    */
-    if (this.lectureTimeSummary) {
-      /* lectureTimeSummary 는 object 이므로 null 처리를 꼭 해주도록 한다. */
-      return (
-        this.totalSuniLearningTime +
-        this.totalMyCompanyLearningTime +
-        this.totalAplAllowTime +
-        this.totalCollegeTime
-      );
-    }
-
-    return (
-      this.totalSuniLearningTime +
-      this.totalMyCompanyLearningTime +
-      this.totalAplAllowTime
-    );
   }
 
   constructor(summary?: MyLearningSummaryModel) {
@@ -132,11 +79,9 @@ decorate(MyLearningSummaryModel, {
   lifeStyleCollegeTime: observable,
   myCompanyInSuniLearningTime: observable,
   aplAllowTime: observable,
-  lectureTimeSummary: observable,
   totalSuniLearningTime: observable,
   totalMyCompanyLearningTime: observable,
   totalAplAllowTime: observable,
-  totalCollegeTime: observable,
   totalCompleteLectureCount: observable,
 });
 

@@ -14,7 +14,7 @@ import badgePaths from '../../../certification/routePaths';
 import myTrainingPaths from '../../routePaths';
 import lecturePaths from '../../../lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { useRequestLearningSummaryCurrentYear } from '../../service/useRequestLearningSummaryCurrentYear';
+import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
 
 
 interface MyPageHeaderContainerProps {
@@ -31,22 +31,25 @@ function MyPageHeaderContainer({
   badgeService,
 }: MyPageHeaderContainerProps) {
   const { skProfile } = skProfileService!;
-  const { myLearningSummary } = myLearningSummaryService!;
-  const { myStampCount, thisYearMyStampCount } = myTrainingService!;
+  const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+  const { myStampCount } = myTrainingService!;
   const { allBadgeCount: { issuedCount } } = badgeService!;
 
   const history = useHistory();
   const currentYear = moment().year();
 
+  const sumOfCurrentYearLectureTime = lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0;
+  const totalLectureTime = lectureTimeSummary && lectureTimeSummary.totalLectureTime || 0;
+
+  const totalLearningTime = myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime + myLearningSummary.aplAllowTime + sumOfCurrentYearLectureTime;
+  const totalAccrueLearningTime = myLearningSummary.totalSuniLearningTime + myLearningSummary.totalMyCompanyLearningTime + myLearningSummary.totalAplAllowTime + totalLectureTime;
+
   useEffect(() => {
-    if (myStampCount === 0 && issuedCount === 0 && thisYearMyStampCount === 0) {
-      badgeService!.findAllBadgeCount();
-      myTrainingService!.countMyTrainingsWithStamp();
-      myTrainingService!.countMyTrainingsWithStamp([],moment([currentYear,1-1,1]).toDate().getTime(),moment([currentYear,12-1,31]).toDate().getTime());
-    }
+    badgeService!.findAllBadgeCount();
+    myTrainingService!.countMyTrainingsWithStamp();
   }, []);
 
-  useRequestLearningSummaryCurrentYear();
+  useRequestLearningSummary();
 
   const onClickMyBadge = useCallback(() => {
     history.push(badgePaths.badgeEarnedBadgeList());
@@ -56,15 +59,11 @@ function MyPageHeaderContainer({
     history.push(myTrainingPaths.myPageEarnedStampList());
   }, []);
 
-  const routeToRecommend = useCallback(() => {
+  const onClickRecommend = useCallback(() => {
     history.push(lecturePaths.recommend());
   }, []);
 
   return (
-    // 요청사항으로 관심 Channel 주석처리
-    // <ContentHeader
-    //   bottom={isFromMyPage(contentType) && <FavoriteChannelContainer />}
-    // >
     <ContentHeader type="Learning">
       <ContentHeader.Cell inner className="personal-inner">
           <ContentHeader.ProfileItem
@@ -87,34 +86,23 @@ function MyPageHeaderContainer({
         <ContentHeaderStampView
           stampCount={myStampCount}
           onClickItem={onClickMyStamp}
-          thisYearStampCount={thisYearMyStampCount}
         />
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        {myLearningSummary.displayTotalLearningTime !== 0 &&
+        {totalLearningTime !== 0 &&
           (
             <ContentHeader.LearningTimeItem
-              minute={myLearningSummary.displayTotalLearningTime}
+              minute={totalLearningTime}
               year={currentYear}
-              accrueMinute={myLearningSummary.displayAccrueTotalLearningTime}
+              accrueMinute={totalAccrueLearningTime}
             />
           ) ||
           (
             <ContentHeader.WaitingItem
               year={currentYear}
-              onClickRecommend={routeToRecommend}
+              onClickRecommend={onClickRecommend}
             />
           )}
-        {/* DropDown 포지션 변경으로 인한 부모컨테이너 변경 */}
-        {/* DropDown options 프롭스는 퍼블리싱 테스트를 위해 임의의 데이터로 다시 변경. */}
-        {/*<div className="year">
-          <Dropdown
-            className="inline tight"
-            value={selectedYear}
-            onChange={onChangeYear}
-            options={getYearOptions()}
-          />
-          </div>*/}
       </ContentHeader.Cell>
     </ContentHeader>
   );
