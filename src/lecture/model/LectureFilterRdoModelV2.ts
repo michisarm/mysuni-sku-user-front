@@ -7,12 +7,7 @@ import { MyContentType } from '../../myTraining/ui/model/MyContentType';
 import { CardRdo } from '../detail/model/CardRdo';
 
 class LectureFilterRdoModelV2 {
-
-  offset: Offset = {
-    offset: 0,
-    limit: 20
-  };
-
+  cardTypes: string[] = [];
   contentType: MyContentType = MyLearningContentType.Required;
   collegeIds: string[] = [];
   difficultyLevels: string[] = [];
@@ -23,6 +18,11 @@ class LectureFilterRdoModelV2 {
   startDate: string = '';
   endDate: string = '';
   applying: boolean = false;
+
+  offset: Offset = {
+    offset: 0,
+    limit: 20
+  };
 
   constructor(lectureFilterRdo?: LectureFilterRdoModelV2) {
     if (lectureFilterRdo) {
@@ -39,6 +39,7 @@ class LectureFilterRdoModelV2 {
   }
 
   setByConditions(conditions: FilterCondition) {
+    this.cardTypes = conditions.learningTypes;
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -65,6 +66,7 @@ class LectureFilterRdoModelV2 {
     const endLearningDate = this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : '';
 
     return {
+      type: this.cardTypes,
       collegeIds: this.collegeIds.join(','),
       difficultyLevels: this.difficultyLevels.join(','),
       learningTimeRanges: this.learningTimes.join(','),
