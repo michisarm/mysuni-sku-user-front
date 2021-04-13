@@ -3,11 +3,12 @@ import { Offset } from '@nara.platform/accent';
 import { FilterCondition } from './FilterCondition';
 
 class InMyLectureFilterRdoModel {
-  collegeIds: string[] = []; // 컬리지
-  difficultyLevels: string[] = []; // 난이도
+  learningTypes: string[] = [];
+  collegeIds: string[] = [];
+  difficultyLevels: string[] = [];
   learningTimes: string[] = [];
-  organizers: string[] = []; // 교육기관
-  required: string = ''; // 핵인싸 ('선택안함' 또한 false 로 간주함.)
+  organizers: string[] = [];
+  required: string = '';
   certifications: string[] = [];
   startDate: string = '';
   endDate: string = '';
@@ -20,31 +21,8 @@ class InMyLectureFilterRdoModel {
     }
   }
 
-  static createWithConditions(
-    collegeIds: string[],
-    difficultyLevels: string[],
-    learningTimes: string[],
-    organizers: string[],
-    required: string,
-    certifications: string[],
-    startDate: string,
-    endDate: string,
-    applying: boolean
-  ) {
-    return new InMyLectureFilterRdoModel({
-      collegeIds,
-      difficultyLevels,
-      learningTimes,
-      organizers,
-      required,
-      certifications,
-      startDate,
-      endDate,
-      applying
-    } as InMyLectureFilterRdoModel);
-  }
-
-  changeConditions(conditions: FilterCondition) {
+  setByConditions(conditions: FilterCondition) {
+    this.learningTypes = conditions.learningTypes;
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -56,26 +34,12 @@ class InMyLectureFilterRdoModel {
     this.applying = conditions.applying === 'true' ? true : false;
   }
 
-  changeOffset(offset: Offset) {
+  setOffset(offset: Offset) {
     this.offset = offset;
   }
 
   setDefaultOffset() {
     this.offset = { offset: 0, limit: 20 };
-  }
-
-
-  getFilterCount() {
-    const requiredCount = this.required && 1 || 0;
-    const learningScheduleCount = this.startDate && this.endDate && 1 || 0;
-    const applyingCount = this.applying && 1 || 0;
-
-    return this.collegeIds.length +
-      this.difficultyLevels.length +
-      this.learningTimes.length +
-      this.organizers.length +
-      this.certifications.length +
-      requiredCount + learningScheduleCount + applyingCount;
   }
 }
 

@@ -1,10 +1,7 @@
 import { decorate, observable } from "mobx";
 
-//
 class FilterCountViewModel {
-
   collegeId: string = '';
-  collegeName: string = '';
   totalCount: number = 0;
   college: number = 0;
   course: number = 0;
@@ -19,7 +16,6 @@ class FilterCountViewModel {
   public constructor(filterCountView?: FilterCountViewModel) {
     if (filterCountView) {
       this.collegeId = filterCountView.collegeId ? filterCountView.collegeId : '';
-      this.collegeName = filterCountView.collegeName ? filterCountView.collegeName : '';
       this.college = filterCountView.college ? filterCountView.college : 0;
       this.course = filterCountView.course ? filterCountView.course : 0;
       this.video = filterCountView.video ? filterCountView.video : 0;
@@ -32,7 +28,6 @@ class FilterCountViewModel {
     }
   }
 
-  /** 나중에 고치기!  */
   public getCountFromLearningType = (learningType: string) => {
     switch (learningType) {
       case 'Course':
@@ -85,7 +80,6 @@ export default FilterCountViewModel;
 
 decorate(FilterCountViewModel, {
   collegeId: observable,
-  collegeName: observable,
   college: observable,
   course: observable,
   video: observable,

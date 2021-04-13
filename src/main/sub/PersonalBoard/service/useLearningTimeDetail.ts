@@ -1,6 +1,5 @@
-import moment from 'moment';
 import { findMyLearningSummaryYear } from '../api/personalBoardApi';
-import { setBadgeLearningTimeItem, setLearningTimeDetailItem } from '../store/PersonalBoardStore';
+import { setLearningTimeDetailItem } from '../store/PersonalBoardStore';
 
 export function requestLearningTimeDetail() {
   findMyLearningSummaryYear().then((result) => {

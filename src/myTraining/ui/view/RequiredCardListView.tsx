@@ -11,6 +11,8 @@ import LectureParams, {
 import LectureTableViewModel from '../../../lecture/model/LectureTableViewModel';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { LearningStateName, LearningState } from '../../../shared/model';
+import { useScrollMove } from '../../useScrollMove';
+import { LearningTypeName } from '../../model/LearningType';
 
 interface RequiredCardListViewProps {
   requiredCards: LectureTableViewModel[];
@@ -22,9 +24,12 @@ export default function RequiredCardListView({
   totalCount,
 }: RequiredCardListViewProps) {
   const history = useHistory();
+  const { scrollSave } = useScrollMove();
 
   const onViewDetail = (e: any, cardId: string) => {
     e.preventDefault();
+
+    scrollSave();
 
     const params: LectureParams = {
       cardId,
@@ -40,6 +45,7 @@ export default function RequiredCardListView({
       {requiredCards &&
         requiredCards.length > 0 &&
         requiredCards.map((requiredCard, index) => {
+          const learningType = LearningTypeName[requiredCard.type];
           const collegeName = getCollgeName(requiredCard.category.collegeId);
           const learningState =
             (requiredCard.learningState &&
@@ -64,7 +70,7 @@ export default function RequiredCardListView({
                   <span className="ellipsis">{requiredCard.name}</span>
                 </a>
               </Table.Cell>
-              <Table.Cell>{requiredCard.serviceType} </Table.Cell>
+              <Table.Cell>{learningType || '-'} </Table.Cell>
               <Table.Cell>{requiredCard.difficultyLevel || '-'}</Table.Cell>
               <Table.Cell>
                 {timeToHourMinutePaddingFormat(requiredCard.learningTime)}

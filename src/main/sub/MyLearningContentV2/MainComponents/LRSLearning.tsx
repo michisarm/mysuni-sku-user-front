@@ -26,7 +26,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
-
+import { Area } from 'tracker/model';
 import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
 import { findCardList } from '../../../../lecture/detail/api/cardApi';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
@@ -246,7 +246,7 @@ const LRSLearning: React.FC<Props> = function LRSLearning({
   }; */
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_RECOMMEND}>
       <div className="section-head">
         {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
         <strong>{newCard?.displayText}</strong>

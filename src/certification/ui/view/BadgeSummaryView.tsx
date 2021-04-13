@@ -18,15 +18,19 @@ export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
 
   return (
     <>
-      <BadgeView
-        id={badge.id}
-        name={badge.name}
-        level={badge.level}
-        iconUrl={badge.iconUrl}
-        categoryId={mainCategoryId}
-        badgeStyle={BadgeStyle.Detail}
-        badgeSize={BadgeSize.Small}
-      />
+      <div className="badge-list-type badge_new">
+        <div className="badge-box basic">
+          <BadgeView
+            id={badge.id}
+            name={badge.name}
+            level={badge.level}
+            iconUrl={badge.iconUrl}
+            categoryId={mainCategoryId}
+            badgeStyle={BadgeStyle.Detail}
+            badgeSize={BadgeSize.Small}
+          />
+        </div>
+      </div>
       <BadgeTitleView college={mainCategoryId} name={badge.name} />
       <BadgeInformationView
         certiAdminId={cineroomName}

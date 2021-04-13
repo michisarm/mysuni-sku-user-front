@@ -4,13 +4,10 @@ import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureC
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureSurveyPage from './ui/logic/LectureSurveyPage';
-import LectureDiscussionPage from './ui/logic/LectureDiscussionPage';
 import LectureParams from './viewModel/LectureParams';
 import LectureDetailLayout from './ui/view/LectureDetailLayout';
-import NotFoundPage from 'layout/NotFoundPage';
 import { useCardBreadcrumb } from './service/useCardBreadcrumb';
 import { setLectureParams } from './store/LectureParamsStore';
-import { useRequestLectureStructure } from './service/useLectureStructure/useRequestLectureStructure';
 import { useRequestLectureCardOverview } from './service/useLectureCourseOverview/useRequestLectureCourseOverview';
 import {
   clearFindCubeDetailCache,
@@ -19,7 +16,6 @@ import {
 import LectureDetailCourseSubRoutes from './LectureDetailCourseSubRoutes';
 
 export default function LectureDetailCourseRoutes() {
-  useRequestLectureStructure();
   useRequestLectureCardOverview();
   useCardBreadcrumb();
   const { pathname } = useLocation();

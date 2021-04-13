@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -16,8 +16,8 @@ import {
   timeToHourMinutePaddingFormat,
   convertTimeToDate,
 } from '../../../shared/helper/dateTimeHelper';
-import { CubeTypeNameType } from '../../../personalcube/personalcube/model';
 import { MyLearningContentType } from '../model/MyLearningContentType';
+import { LearningTypeName } from '../../model/LearningType';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -34,14 +34,8 @@ function MyTrainingListView({
   const params = useParams<MyTrainingRouteParams>();
   const contentType = params.tab;
 
-  const { scrollOnceMove, scrollSave } = useScrollMove();
+  const { scrollSave } = useScrollMove();
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollOnceMove();
-    }, 200);
-  }, [scrollOnceMove]);
 
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
@@ -54,14 +48,15 @@ function MyTrainingListView({
 
     history.push(toPath(params));
 
-    ReactGA.event({
-      category: '학습중인 과정',
-      action: 'Click',
-      label: `${
-        myTraining.serviceType === 'COURSE' ? '(Course)' : '(Cube)'
-      } - ${myTraining.name}`,
-    });
-
+    if(contentType === MyLearningContentType.InProgress) {
+      ReactGA.event({
+        category: '학습중인 과정',
+        action: 'Click',
+        label: `${
+          myTraining.serviceType === 'Card' ? '(Card)' : '(Cube)'
+        } - ${myTraining.name}`,
+      });
+    }
     scrollSave();
   };
 
@@ -100,11 +95,13 @@ function MyTrainingListView({
     myTraining: MyTrainingTableViewModel,
     contentType: MyLearningContentType
   ) => {
+    const learningType = LearningTypeName[myTraining.cubeType];
+
     switch (contentType) {
       case MyLearningContentType.InProgress: {
         return (
           <>
-            <Table.Cell>{myTraining.serviceType} </Table.Cell>
+            <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
@@ -120,7 +117,7 @@ function MyTrainingListView({
       case MyLearningContentType.Enrolled: {
         return (
           <>
-            <Table.Cell>{CubeTypeNameType[myTraining.cubeType]} </Table.Cell>
+            <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>
               {myTraining.difficultyLevel || '-'} {/* Level */}
             </Table.Cell>
@@ -137,7 +134,7 @@ function MyTrainingListView({
       case MyLearningContentType.Completed: {
         return (
           <>
-            <Table.Cell>{myTraining.serviceType} </Table.Cell>
+            <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}
@@ -147,13 +144,9 @@ function MyTrainingListView({
         );
       }
       case MyLearningContentType.Retry: {
-        const learningType =
-          (myTraining.serviceType === 'Card' && myTraining.serviceType) ||
-          CubeTypeNameType[myTraining.cubeType];
-
         return (
           <>
-            <Table.Cell>{learningType} </Table.Cell>
+            <Table.Cell>{learningType || '-'} </Table.Cell>
             <Table.Cell>{myTraining.difficultyLevel || '-'}</Table.Cell>
             <Table.Cell>
               {timeToHourMinutePaddingFormat(myTraining.learningTime)}

@@ -1,32 +1,35 @@
-
 import React, { Component } from 'react';
-
 import { Segment } from 'semantic-ui-react';
-import { ChannelModel } from 'college/model';
-import ChannelsPanelContainer from '../../../shared/ui/logic/ChannelsPanelContainer';
-
+import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
+import RecommendChannelsPanelContainer from '../logic/RecommendChannelsPanelContainer';
+import { Area } from 'tracker/model';
 
 interface Props {
-  channels: ChannelModel[]
-  children: React.ReactNode
-  onSelectChannel: (channel: ChannelModel) => void
-  onConfirmCallback: () => void
+  channels: CheckableChannel[];
+  children: React.ReactNode;
+  onSelectChannel: (channel: CheckableChannel) => void;
+  onConfirmCallback: () => void;
 }
 
 class ChannelsContentWrapperView extends Component<Props> {
   //
   render() {
     //
-    const { channels, children, onSelectChannel, onConfirmCallback } = this.props;
+    const {
+      channels,
+      children,
+      onSelectChannel,
+      onConfirmCallback,
+    } = this.props;
 
     return (
       <Segment className="full">
-        <div className="recommend-detail">
-          <ChannelsPanelContainer
+        <div className="recommend-detail" data-area={Area.RECOMMEND_LIST}>
+          <RecommendChannelsPanelContainer
             channels={channels}
             title="관심 Channel 보기"
             configurable
-            onSelectChannel={(e, { channel }) => onSelectChannel(channel)}
+            onSelectChannel={(_: any, { channel }) => onSelectChannel(channel)}
             onConfirmCallback={onConfirmCallback}
           />
           {children}

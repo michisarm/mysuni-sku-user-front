@@ -15,6 +15,7 @@ import {
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Area } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
 
@@ -289,7 +290,10 @@ function MyCommunityPostListContainer() {
   }
 
   return (
-    <div className="community-main-contants">
+    <div
+      className="community-main-contants"
+      data-area={Area.COMMUNITY_MYPOST}
+    >
       {isLoading ? (
         <Segment
           style={{

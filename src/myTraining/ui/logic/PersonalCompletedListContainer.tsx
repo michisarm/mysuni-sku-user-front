@@ -15,6 +15,7 @@ import { Loadingpanel, NoSuchContentPanel } from '../../../shared';
 import PersonalCompletedListView from '../view/PersonalCompletedListView';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
+import { useScrollMove } from '../../useScrollMove';
 
 interface PersonalCompletedListContainerProps {
   aplService?: AplService;
@@ -31,21 +32,29 @@ function PersonalCompletedListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
+  const { scrollOnceMove } = useScrollMove();
 
   const { apls: {results: aplTableViews }, aplCount: {all: aplTableCount } } = aplService!;
 
   useEffect(() => {
-    fetchApls();
+    aplService!.clearAplQueryProps();
+    
+    if(params.pageNo === '1') {  
+     requestApls();
+     return;
+    }
+
+    const currentPageNo = parseInt(params.pageNo);
+    const limit = currentPageNo * PAGE_SIZE;
+
+    requestAplsWithPage({ offset: 0, limit });
 
     return () => {
       aplService!.clearApls();
     }
   }, []);
 
-  const fetchApls = async () => {
-    aplService!.clearAplQueryProps();
-
+  const requestApls = async () => {
     setIsLoading(true);
     const offsetApl = await aplService!.findAllAplsByQuery();
     const isEmpty = offsetApl.results.length === 0 ? true : false;
@@ -54,33 +63,29 @@ function PersonalCompletedListContainer({
     setIsLoading(false);
   };
 
-  const getNextPageNo = (): number => {
-    const currentPageNo = params.pageNo;
-    if (currentPageNo) {
-      const nextPageNo = parseInt(currentPageNo) + 1;
-      return nextPageNo;
-    }
-    return 1;
+  const requestAplsWithPage = async (offset: Offset) => {
+    setIsLoading(true);
+    await aplService!.findAllAplsWithPage(offset);
+    checkShowSeeMore();
+    setIsLoading(false);
+    scrollOnceMove();
   };
 
+  const onClickSeeMore = async () => {
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
 
-  const onClickSeeMore = useCallback(async () => {
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestAplsWithPage({ offset, limit });
+    
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
 
-    pageInfo.current.limit = PAGE_SIZE;
-    pageInfo.current.offset += pageInfo.current.limit;
-
-    history.replace(`./${getNextPageNo()}`);
-    
-    sessionStorage.setItem('learningOffset', JSON.stringify(pageInfo.current));
-    await aplService!.findAllAplsWithPage(pageInfo.current);
-
-    setIsLoading(false);
-    checkShowSeeMore();
-  
-  }, [contentType, pageInfo.current, params.pageNo]);
+    history.replace(`./${nextPageNo}`);
+  };
 
   const checkShowSeeMore = (): void => {
     const { apls: { results: aplTableViews }, aplCount: { all: aplTableCount } } = aplService!;

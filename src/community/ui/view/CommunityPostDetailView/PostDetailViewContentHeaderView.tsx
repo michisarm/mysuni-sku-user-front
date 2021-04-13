@@ -22,6 +22,7 @@ interface Props {
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
   onClickLike: () => void;
+  onClickWriter: (id: string) => void;
 }
 
 @reactAutobind
@@ -45,7 +46,8 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       onClickList,
       onClickDelete,
       onClickModify,
-      onClickLike
+      onClickLike,
+      onClickWriter
     } = this.props;
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -82,7 +84,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                     <div className="ui label onlytext">
                       <span className="header-span-first">작성자: </span>
                       {postDetail.nickName && (
-                        <span>{postDetail.nickName}</span>
+                        <span onClick={() => onClickWriter(postDetail.creatorId)} style={{cursor: 'pointer'}}>{postDetail.nickName}</span>
                       )}
                       {postDetail.nickName === null || postDetail.nickName === '' && (
                         <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>

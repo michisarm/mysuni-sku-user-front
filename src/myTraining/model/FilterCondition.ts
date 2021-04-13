@@ -1,4 +1,5 @@
 export type FilterCondition = {
+  learningTypes: string[];
   collegeIds: string[];                 // 컬리지
   difficultyLevels: string[];           // 난이도
   learningTimes: string[];              // 교육기간
@@ -11,6 +12,7 @@ export type FilterCondition = {
 }
 
 export const initialCondition = {
+  learningTypes: [],
   collegeIds: [],
   difficultyLevels: [],
   learningTimes: [],
@@ -20,4 +22,18 @@ export const initialCondition = {
   startDate: null,
   endDate: null,
   applying: ''
+}
+
+export function getFilterCount(condition: FilterCondition) {
+  const requiredCount = condition.required && 1 || 0;
+  const learningScheduleCount = condition.startDate && condition.endDate && 1 || 0;
+  const applyingCount = condition.applying && 1 || 0;
+
+  return condition.learningTypes.length +
+    condition.collegeIds.length +
+    condition.difficultyLevels.length +
+    condition.learningTimes.length +
+    condition.organizers.length +
+    condition.certifications.length +
+    requiredCount + learningScheduleCount + applyingCount;
 }

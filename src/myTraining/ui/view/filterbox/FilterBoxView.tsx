@@ -17,7 +17,6 @@ interface FilterBoxViewProps {
   onCheckOne: (e: any, data: any) => void;
   onChangeStartDate: (data: Date) => void;
   onChangeEndDate: (data: Date) => void;
-  onCheckApplying: (e: any, data: any) => void;
 }
 
 export function FilterBoxView({
@@ -29,12 +28,35 @@ export function FilterBoxView({
   onCheckOne,
   onChangeStartDate,
   onChangeEndDate,
-  onCheckApplying,
 }: FilterBoxViewProps) {
 
   return (
     <table className="">
       <tbody>
+        <tr>
+          <th>{FilterConditionName.LearningType}</th>
+          <td>
+            <Checkbox
+              className="base"
+              name={FilterConditionName.LearningType}
+              label={`${SELECT_ALL} (${totalFilterCount.totalCount})`}
+              checked={conditions.learningTypes.length === CheckboxOptions.learningTypes.length}
+              onChange={onCheckAll}
+            />
+            {CheckboxOptions.learningTypes.map((learningType, index) => (
+              <Fragment key={`checkbox-learningType-${index}`}>
+                <Checkbox
+                  className="base"
+                  name={FilterConditionName.LearningType}
+                  label={`${learningType.text} (${totalFilterCount.getCountFromLearningType(learningType.text)})`}
+                  value={learningType.value}
+                  checked={conditions.learningTypes.includes(learningType.value)}
+                  onChange={onCheckOne}
+                />
+              </Fragment>
+            ))}
+          </td>
+        </tr>
         <tr>
           <th>{FilterConditionName.College}</th>
           <td>
@@ -109,7 +131,7 @@ export function FilterBoxView({
             ))}
           </td>
         </tr>
-        <tr>
+        {/* <tr>
           <th>{FilterConditionName.Organizer}</th>
           <td>
             <Checkbox
@@ -132,7 +154,7 @@ export function FilterBoxView({
               </Fragment>
             ))}
           </td>
-        </tr>
+        </tr> */}
         <tr>
           <th>{FilterConditionName.Required}</th>
           <td>
@@ -203,14 +225,14 @@ export function FilterBoxView({
                 </div>
               </div>
             </div>
-            <Checkbox
+            {/* <Checkbox
               className="base"
               name={FilterConditionName.LearningSchedule}
               label="수강신청 가능 학습만 보기"
               value="true"
               checked={conditions.applying === 'true'}
               onChange={onCheckApplying}
-            />
+            /> */}
           </td>
         </tr>
       </tbody>
@@ -222,6 +244,5 @@ const SELECT_ALL = 'Select All';
 
 const getCollegeCount = (filterCountViews: FilterCountViewModel[], collegeId: string): number => {
   const filterCountView = filterCountViews.find(filterCountview => filterCountview.collegeId === collegeId);
-  console.log('filterCountView  :: ' ,filterCountView);
   return filterCountView ? filterCountView.college : 0;
 }

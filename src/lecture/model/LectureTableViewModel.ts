@@ -1,15 +1,17 @@
 import { observable, decorate } from 'mobx';
 import { CardCategory } from '../../shared/model/CardCategory';
+import CardType from '../shared/model/CardType';
 
 class LectureTableViewModel {
   [key: string]: any;
   id: string = '';
   serviceId: string = '';
   serviceType: string = 'Card';
+  type: CardType = 'None';
   category: CardCategory = initialCardCategory;
   difficultyLevel: string = '';
   name: string = '';
-  learningTime: number = 0
+  learningTime: number = 0;
   learningState: string = '';
   updateTime: number = 0;
   updateTimeForTest: number = 0;
@@ -38,9 +40,8 @@ decorate(LectureTableViewModel, {
   stampCount: observable,
 });
 
-
 const initialCardCategory: CardCategory = {
   collegeId: '',
   channelId: '',
   mainCategory: false,
-}
+};

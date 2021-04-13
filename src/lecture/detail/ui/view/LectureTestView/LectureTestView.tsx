@@ -1,4 +1,4 @@
-import { reactAlert, reactConfirm } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 
@@ -8,6 +8,7 @@ import LectureParams from '../../../viewModel/LectureParams';
 import LectureTestIntroView from './LectureTestIntroView';
 import LectureTestResultView from './LectureTestResultView';
 import LectureTestPaperView from './LectureTestPaperView';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
@@ -45,33 +46,28 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
   };
 
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
+
   useEffect(() => {
-    if (testStudentItem !== undefined) {
-      if (
-        testStudentItem.learningState === 'Failed' ||
-        testStudentItem.learningState === 'Missed' ||
-        testStudentItem.learningState === 'TestWaiting' ||
-        testStudentItem.learningState === 'Passed' ||
-        testStudentItem.learningState === 'TestPassed'
-      ) {
-        openView('result');
-      } else {
-        openView('intro');
-      }
+    const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
+    if (
+      testStatus === 'SUBMIT' ||
+      testStatus === 'PASS' ||
+      testStatus === 'FAIL'
+    ) {
+      openView('result');
     } else {
       openView('intro');
     }
-  }, [params, testStudentItem]);
+  }, [params, testStudentItem, lectureStructureItem]);
 
   useEffect(() => {
-    if (
-      testStudentItem !== undefined &&
-      testStudentItem.learningState !== undefined &&
-      (testStudentItem.learningState === 'Passed' ||
-        testStudentItem.learningState === 'TestPassed')
-    ) {
+    const testStatus = lectureStructureItem?.student?.extraWork.testStatus;
+    if (testStatus === 'PASS') {
       if (
         answerItem !== undefined &&
+        lectureStructureItem?.student?.studentScore.examId ===
+          answerItem.examId &&
         !answerItem?.finished &&
         !answerItem?.submitted &&
         answerItem.submitAnswers.length < 1
@@ -84,7 +80,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         });
       }
     }
-  }, [testStudentItem, answerItem, params]);
+  }, [testStudentItem, answerItem, params, lectureStructureItem?.student]);
 
   return (
     <>

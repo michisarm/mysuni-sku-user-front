@@ -258,13 +258,9 @@ class InMyLectureService {
     this._inMyLectureFilterRdo = new InMyLectureFilterRdoModel();
   }
 
-  changeFilterRdoWithConditions(conditions: FilterCondition) {
-    this._inMyLectureFilterRdo.changeConditions(conditions);
+  setFilterRdoByConditions(conditions: FilterCondition) {
+    this._inMyLectureFilterRdo.setByConditions(conditions);
     this._inMyLectureFilterRdo.setDefaultOffset();
-  }
-
-  getFilterCount() {
-    return this._inMyLectureFilterRdo.getFilterCount();
   }
 
   @action
@@ -313,7 +309,7 @@ class InMyLectureService {
 
   @action
   async findAllTableViewsWithPage(offset: Offset) {
-    this._inMyLectureFilterRdo.changeOffset(offset);
+    this._inMyLectureFilterRdo.setOffset(offset);
 
     const offsetTableViews = await this.inMyLectureApi.findAllTableViews(
       this._inMyLectureFilterRdo
@@ -332,6 +328,7 @@ class InMyLectureService {
           ...this._inMyLectureTableViews,
           ...addedTableViews,
         ];
+        this._inMyLectureTableViewCount = offsetTableViews.totalCount;
       });
     }
   }

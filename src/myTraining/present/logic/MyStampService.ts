@@ -38,8 +38,7 @@ class MyStampService {
   private direction: Direction = Direction.DESC;
 
   @action
-  async findAllMyStamps(offset: Offset) {
-    this.filterRdo.changeOffset(offset);
+  async findAllMyStamps() {
     const offsetMyStamp = await this.myTrainingApi.findAllStampTableViews(this.filterRdo);
 
     if (
@@ -79,7 +78,7 @@ class MyStampService {
 
   @action
   async findAllMyStampsWithPage(offset: Offset) {
-    this.filterRdo.changeOffset(offset);
+    this.filterRdo.setOffset(offset);
     const offsetMyStamp = await this.myTrainingApi.findAllStampTableViews(this.filterRdo);
 
     if (
@@ -90,6 +89,7 @@ class MyStampService {
       runInAction(() => {
         const addMyStamps = offsetMyStamp.results.map(result => new MyTrainingTableViewModel(result));
         this._myStamps = [...this._myStamps, ...addMyStamps];
+        this._myStampCount = offsetMyStamp.totalCount;
       })
     }
   }
@@ -98,7 +98,7 @@ class MyStampService {
   async findAllMyStampsForExcel() {
     const excelFilterRdo = new MyTrainingFilterRdoModel(this.filterRdo);
 
-    excelFilterRdo.changeOffset({ offset: 0, limit: 9999 });
+    excelFilterRdo.setOffset({ offset: 0, limit: 9999 });
     excelFilterRdo.changeColumnDirection(this.column, this.direction);
 
     const offsetMyStamp = await this.myTrainingApi.findAllStampTableViews(excelFilterRdo);
@@ -140,13 +140,9 @@ class MyStampService {
     this.filterRdo = MyTrainingFilterRdoModel.create(MyPageContentType.EarnedStampList);
   }
 
-  changeFilterRdoWithCondition(conditions: FilterCondition) {
-    this.filterRdo.changeConditions(conditions);
+  setFilterRdoByConditions(conditions: FilterCondition) {
+    this.filterRdo.setByConditions(conditions);
     this.filterRdo.setDefaultOffset();
-  }
-
-  getFilterCount() {
-    return this.filterRdo.getFilterCount();
   }
 }
 

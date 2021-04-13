@@ -9,6 +9,7 @@ import moment from 'moment';
 import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 import CommunityType from '../../../model/CommunityType';
 import { requestAppendProfileCommunities } from '../../../service/useCommunityProfile/utility/requestProfileCommunities';
+import { Area } from 'tracker/model';
 
 interface OtherCommunityViewProps {
   communityProfileCommunity: CommunityProfileMyCommunity;
@@ -58,7 +59,10 @@ const OtherCommunityView: React.FC<OtherCommunityViewProps> = function OtherComm
 }) {
   return (
     <Segment className="full">
-      <div className="course-detail-center community-containter">
+      <div
+        className="course-detail-center community-containter"
+        data-area={Area.COMMUNITY_COMMUNITY}
+      >
         <div className="community-main-contants">
           <div className="community-list-wrap">
             <table className="ui table fixed">
