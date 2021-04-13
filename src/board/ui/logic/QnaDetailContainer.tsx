@@ -202,7 +202,7 @@ class QnaDetailContainer extends Component<Props, States> {
                     && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
                       <div>
                         <a href="#" className="link" key={index}>
-                          <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
+                          <span className="ellipsis" onClick={e => { depot.downloadDepotFile(foundedFile.id); e.preventDefault(); }}>
                             {'    ' + foundedFile.name + '     '}
                           </span><br />
                         </a>

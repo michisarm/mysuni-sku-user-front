@@ -9,7 +9,9 @@ import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 import {
+  saveCommunitySurveyState,
   saveLectureSurveyState,
+  submitCommunitySurveyState,
   submitLectureSurveyState,
 } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import LectureSurveyResultModalView from './LectureSurveyResultModalView';
@@ -46,18 +48,20 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
   const [commentId, setCommentID] = useState('');
 
   const requestSaveLectureSurveyState = useCallback(() => {
-    if (params === undefined) {
-      return;
+    if (params !== undefined) {
+      saveLectureSurveyState(params);
+    } else {
+      saveCommunitySurveyState();
     }
-    saveLectureSurveyState(params);
-  }, [params]);
+  }, [params, currentMenu]);
 
   const requestSubmitLectureSurveyState = useCallback(() => {
-    if (params === undefined) {
-      return;
+    if (params !== undefined) {
+      submitLectureSurveyState(params);
+    } else {
+      submitCommunitySurveyState();
     }
-    submitLectureSurveyState(params);
-  }, [params]);
+  }, [params, currentMenu]);
 
   useEffect(() => {
     const surveyCaseService = SurveyCaseService.instance;

@@ -6,6 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import MyCommunityListContainer from '../logic/MyCommunityIntro/MyCommunityListContainer';
 import MyCommunityPostListContainer from '../logic/MyCommunityIntro/MyCommunityPostListContainer';
 import { useMyCommunityIntro } from '../../store/CommunityMainStore';
+import { Area } from 'tracker/model';
 
 import ReactGA from 'react-ga';
 
@@ -48,7 +49,7 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef} className="tab-menu offset0">
-        <div className="cont-inner">
+        <div className="cont-inner" data-area={Area.COMMUNITY_MENU}>
           <Menu className="sku">
             <Menu.Item
               name="MyCommunity"
@@ -94,7 +95,10 @@ const MyCommunityView: React.FC<MyCommunityViewProps> = function MyCommunityView
         {myCommunityIntro !== undefined &&
           myCommunityIntro.communities.length === 0 &&
           myCommunityIntro.requested === true && (
-            <div className="no-cont-wrap">
+            <div
+              className="no-cont-wrap"
+              data-area={Area.COMMUNITY_NOCONTENT}
+            >
               <i aria-hidden="true" className="icon no-contents80" />
               <span className="blind">콘텐츠 없음</span>
               <div className="text lms-color-type1">

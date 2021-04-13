@@ -101,11 +101,9 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
       if (value === 'community') {
         selectedRow.groupId = null
         selectedRow.accessType = 'COMMUNITY_ALL_MEMBER'
-      } else {
+      } else if (groupArr && groupArr[0]) {
         selectedRow.groupId = groupArr[0].value
         selectedRow.accessType = 'COMMUNITY_GROUP'
-        console.log('value', value)
-        console.log('selectedRow?.groupId', selectedRow?.groupId)
         handleChangeGroup('', selectedRow?.groupId)
       }
       onChangeValue(selectedRow, 'accessType');

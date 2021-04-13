@@ -11,6 +11,7 @@ import routePaths from '../../routePaths';
 import CollegeInnerTabView from './CollegeInnerTabView';
 import CollegeInnerTabAi from './CollegeInnerTabAi';
 import CollegeInnerTabDt from './CollegeInnerTabDt';
+import { Area } from 'tracker/model';
 
 const emptyAlert = (e: any) => {
   e.preventDefault();
@@ -2814,7 +2815,7 @@ class CollegeView extends Component<Props, State> {
     const { activeIndex } = this.state;
 
     return (
-      <div>
+      <div data-area={Area.INTRODUCTION_COLLEGE}>
         <style
           dangerouslySetInnerHTML={{
             __html:
