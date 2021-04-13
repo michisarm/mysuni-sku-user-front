@@ -25,7 +25,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
-
+import { Area } from 'tracker/model';
 import { getAxios } from '../../../../shared/api/Axios';
 
 import { find } from 'lodash';
@@ -275,7 +275,7 @@ const POPLearning: React.FC<Props> = Props => {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_POPULAR}>
       <div className="section-head">
         <strong>{popCard?.displayText}</strong>
         <div className="right">

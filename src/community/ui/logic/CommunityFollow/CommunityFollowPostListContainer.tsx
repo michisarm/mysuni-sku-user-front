@@ -11,6 +11,7 @@ import { off } from 'process';
 import { registerBookmark } from '../../../api/communityApi';
 import { getFollowCommunityIntro, setFollowCommunityIntro } from '../../../store/CommunityMainStore';
 import { Link } from 'react-router-dom';
+import { Area } from 'tracker/model';
 
 //default imgage
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
@@ -260,7 +261,10 @@ function CommunityFollowPostListContainer() {
   }
 
   return (
-    <div className="community-main-contants">
+    <div
+      className="community-main-contants"
+      data-area={Area.COMMUNITY_FOLLOWPOST}
+    >
       {communityFollowPostList !== undefined &&
         communityFollowPostList.posts.map(postItem => (
           <FollowPostItemView key={postItem.postId} {...postItem} />

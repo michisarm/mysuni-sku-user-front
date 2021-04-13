@@ -36,6 +36,7 @@ import LectureParams, {
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
 import { findEnrollingCardList } from '../../../../lecture/detail/api/cardApi';
+import { Area } from 'tracker/model';
 
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -100,7 +101,7 @@ const ENRLearning: React.FC<Props> = Props => {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_ENROLLING}>
       <div className="section-head">
         {cardList.length > 0 && <strong>수강 신청 과정 모아보기</strong>}
         <div className="right">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 import Profile from '../../../model/Profile';
+import { Area } from 'tracker/model';
 
 interface OtherProfileViewProps {
   profile?: Profile;
@@ -12,7 +13,10 @@ const OtherProfileView: React.FC<OtherProfileViewProps> = function OtherProfileV
   return (
     <>
       <Segment className="full">
-        <div className="course-detail-center community-containter">
+        <div
+          className="course-detail-center community-containter"
+          data-area={Area.COMMUNITY_PROFILE}
+        >
           <div className="community-main-contants">
             <table className="ui fixed table vertical celled">
               <tbody>

@@ -11,6 +11,7 @@ import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import { Area } from 'tracker/model';
 import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand';
 import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
 import { SkProfileModel } from 'profile/model';
@@ -86,7 +87,10 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     );
 
     return (
-      <ContentHeaderRecommand className="content-division">
+      <ContentHeaderRecommand
+        className="content-division"
+        dataArea={Area.RECOMMEND_INFO}
+      >
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             image={skProfile.photoFilePath || profileImg}

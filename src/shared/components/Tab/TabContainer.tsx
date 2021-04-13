@@ -8,8 +8,10 @@ import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import { ActionEventService } from 'shared/stores';
 import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
-
 import ReactGA from 'react-ga';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import { MyBadgeContentType } from 'certification/ui/model';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
@@ -154,18 +156,107 @@ class TabContainer extends Component<Props, State> {
     });
   }
 
+  findArea(type?: string) {
+    const { activeName } = this.state;
+    let dataArea = null;
+    if (!activeName) {
+      return dataArea;
+    }
+    switch (activeName) {
+      case MyLearningContentType.InProgress:
+        dataArea = Area.LEARNING_INPROGRESS;
+        break;
+      case MyLearningContentType.InMyList:
+        dataArea = Area.LEARNING_INMYLIST;
+        break;
+      case MyLearningContentType.Required:
+        dataArea = Area.LEARNING_REQUIRED;
+        break;
+      case MyLearningContentType.Enrolled:
+        dataArea = Area.LEARNING_ENROLLED;
+        break;
+      case MyLearningContentType.Completed:
+        dataArea = Area.LEARNING_COMPLETED;
+        break;
+      case MyLearningContentType.PersonalCompleted:
+        dataArea = Area.LEARNING_PERSONALCOMPLETED;
+        break;
+      case MyLearningContentType.Retry:
+        dataArea = Area.LEARNING_RETRY;
+        break;
+      case 'Create':
+        dataArea = Area.CREATE_CREATE;
+        break;
+      case 'Shared':
+        dataArea = Area.CREATE_SHARED;
+        break;
+      case MyBadgeContentType.AllBadgeList:
+        dataArea = Area.CERTIFICATION_ALLBADGELIST;
+        break;
+      case MyBadgeContentType.ChallengingBadgeList:
+        dataArea = Area.CERTIFICATION_CHALLENGINGBADGELIST;
+        break;
+      case MyBadgeContentType.EarnedBadgeList:
+        if (window.location.pathname.includes('/my-page/')) {
+          dataArea = Area.MYPAGE_MYBADGE;
+        } else {
+          dataArea = Area.CERTIFICATION_EARNEDBADGELIST;
+        }
+        break;
+      case 'MySuni':
+        dataArea = Area.INTRODUCTION_MYSUNI;
+        break;
+      case 'College':
+        dataArea = Area.INTRODUCTION_COLLEGE;
+        break;
+      case 'College':
+        dataArea = Area.INTRODUCTION_COLLEGE;
+        break;
+      case 'Certification':
+        dataArea = Area.INTRODUCTION_CERTIFICATION;
+        break;
+      case 'PromotionTab':
+        dataArea = Area.INTRODUCTION_PROMOTION;
+        break;
+      case 'Introduce':
+        dataArea = Area.EXPERT_INTRODUCE;
+        break;
+      case 'Lecture':
+        dataArea = Area.EXPERT_LECTURE;
+        break;
+      case MyPageContentType.EarnedStampList:
+        dataArea = Area.MYPAGE_STAMP;
+        break;
+      case 'Notice':
+        dataArea = Area.BOARD_NOTICE;
+        break;
+      case 'FAQ':
+        dataArea = Area.BOARD_FAQ;
+        break;
+      case 'Q&A':
+        dataArea = Area.BOARD_QNA;
+        break;
+      default:
+        break;
+    }
+    if (type === 'tab' && dataArea) {
+      dataArea = dataArea?.split('-')[0] + '-MENU';
+    }
+    return dataArea;
+  }
+
   renderItems() {
     //
     const { renderItems, header, className, large, tabs, renderStaticMenu } = this.props;
     const { activeName } = this.state;
-
+    const dataArea = this.findArea('tab');
     if (renderItems) {
       return renderItems({ tabs, activeName, onClickTab: this.onClickTab });
     } else {
       return (
         <Sticky context={this.contextRef} className={className}>
           {header}
-          <div className="cont-inner">
+          <div className="cont-inner" data-area={dataArea}>
             <Menu className={large ? 'sku2' : 'sku'}>
               {tabs.map((tab, index) => (
                 <Menu.Item
@@ -196,7 +287,7 @@ class TabContainer extends Component<Props, State> {
     if (typeof renderContent === 'function') {
       return renderContent({ tab, active: tab.name === activeName });
     }
-
+    const dataArea = this.findArea();
     return (
       <>
         {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
@@ -206,6 +297,7 @@ class TabContainer extends Component<Props, State> {
             className={classNames('ui tab', {
               active: tab.name === activeName,
             })}
+            data-area={dataArea}
           >
             {tab.render({ tab, active: tab.name === activeName })}
           </div>
