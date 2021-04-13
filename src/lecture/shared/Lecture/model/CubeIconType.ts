@@ -1,4 +1,3 @@
-
 enum CubeIconType {
   //
   ClassRoomLecture = 'classroom',
@@ -10,11 +9,11 @@ enum CubeIconType {
   Experiential = 'experiential',
   Community = 'community',
   Task = 'community',
-  None = 'course',
   Program = 'course',
   Course = 'course',
   Card = 'course',
   Cohort = 'webpage',
+  None = '',
 }
 
 export default CubeIconType;

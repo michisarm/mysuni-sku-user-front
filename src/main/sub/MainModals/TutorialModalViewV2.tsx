@@ -90,7 +90,7 @@ const TutorialModalView = () => {
                       menu.value,
                       menu.value === activeMenu ? 'current' : ''
                     )}
-                    onClick={e => onClickSubMenu(menu.value, e)}
+                    onClick={e => { onClickSubMenu(menu.value, e); e.preventDefault(); }}
                   >
                     {menu.text}
                   </a>

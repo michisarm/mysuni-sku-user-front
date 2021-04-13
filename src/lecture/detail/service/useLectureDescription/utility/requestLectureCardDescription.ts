@@ -4,8 +4,8 @@ import { setLectureDescription } from '../../../store/LectureOverviewStore';
 import { findCardCache } from '../../../api/cardApi';
 
 function parseLectureDescription(card: Card): LectureDescription {
-  const { description } = card;
-
+  const { simpleDescription } = card;
+  const description = simpleDescription;
   return {
     description,
   };

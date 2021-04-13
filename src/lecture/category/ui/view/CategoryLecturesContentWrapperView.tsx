@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
-
+import { Area } from 'tracker/model';
 
 interface Props {
   children: React.ReactNode,
@@ -16,7 +16,7 @@ class CategoryLecturesContentWrapperView extends Component<Props> {
 
     return (
       <Segment className="full">
-        <div className="college-detail">
+        <div className="college-detail" data-area={Area.COLLEGE_CARD}>
           {children}
         </div>
       </Segment>

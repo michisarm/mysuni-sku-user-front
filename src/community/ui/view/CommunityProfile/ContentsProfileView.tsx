@@ -5,7 +5,7 @@ import ContentsProfileEditView from "./ContentsProfileEditView";
 import { reactAlert, reactConfirm } from "@nara.platform/accent";
 import { saveCommunityProfile } from "community/service/useCommunityProfile/utility/saveCommunityProfile";
 import { getExistsByNickname } from "community/service/useCommunityProfile/utility/getExistsByNickname";
-
+import { Area } from 'tracker/model';
 
 interface ContentsProfileViewProps {
   profileItem: CommunityProfileItem;
@@ -85,7 +85,10 @@ const ContentsProfileView: React.FC<ContentsProfileViewProps> = function Content
   return (
     <>
       <Segment className="full">
-        <div className="course-detail-center community-containter">
+        <div
+          className="course-detail-center community-containter"
+          data-area={Area.COMMUNITY_PROFILE}
+        >
           <div className="community-main-contants">
           <table className="ui fixed table vertical celled">
             <tbody>

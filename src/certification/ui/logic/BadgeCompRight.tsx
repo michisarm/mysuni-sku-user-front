@@ -62,7 +62,7 @@ export default function BadgeCompRight({
                   )}
                   key={`challenge-badge-card-${index}`}
                 >
-                  <a href="#" onClick={e => moveToCardPage(e, card.id)}>
+                  <a href="#" onClick={e => { moveToCardPage(e, card.id); e.preventDefault(); }}>
                     <span className="class-icon">
                       <Image src={card.thumbImagePath} />
                     </span>

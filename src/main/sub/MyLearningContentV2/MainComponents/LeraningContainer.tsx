@@ -19,6 +19,7 @@ import CardGroup, {
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -29,6 +30,7 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
   cardBundle,
   history,
 }) {
+  const [dataArea, setDataArea] = useState<Area>();
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
 
   const fetchCardList = async () => {
@@ -65,8 +67,26 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
     });
   };
 
+  useEffect(() => {
+    const { type } = cardBundle;
+    switch (type) {
+      case 'Normal':
+        setDataArea(Area.MAIN_NORMAL);
+        break;
+      case 'New':
+        setDataArea(Area.MAIN_NEW);
+        break;
+      case 'Popular':
+        setDataArea(Area.MAIN_POPULAR);
+        break;
+      case 'Recommended':
+        setDataArea(Area.MAIN_RECOMMEND);
+        break;
+    }
+  }, [cardBundle]);
+
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={dataArea}>
       <div className="section-head">
         <strong>{cardBundle?.displayText}</strong>
         <div className="right">
@@ -96,12 +116,10 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
                     mainCategory={card.mainCategory}
                     name={card.name}
                     stampCount={card.stampCount}
-                    description={card.description}
+                    simpleDescription={card.simpleDescription}
+                    type={card.type}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
-                    // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함
-                    // 정원 마감 : capacity <= student_count
-                    // D-DAY OR D-14 ... : 수강신청 마감일 - TODAY
                   />
                 </CardGroup>
               </li>

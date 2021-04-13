@@ -24,6 +24,8 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
+import { getTestStudentItemMapFromCourse } from '../../../service/useLectureTest/utility/getTestStudentItemMap';
+import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -68,6 +70,9 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     await saveTask(testStudentItem.studentId, 'Test');
     await clearFindMyCardRelatedStudentsCache();
     await requestCardLectureStructure(cardId);
+
+    await getTestStudentItemMapFromCourse(params); // student 재호출
+    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   }, [answerItem, params]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
@@ -125,9 +130,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
 
-            await submitTask(testStudentItem.studentId, 'Test');
+            //await submitTask(testStudentItem.studentId, 'Test');  // /examProcess api와 중복
             await clearFindMyCardRelatedStudentsCache();
             await requestCardLectureStructure(cardId);
+
+            await getTestStudentItemMapFromCourse(params); // student 재호출
+            await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
             openView('result');
           }
           setSubmitOk(true);

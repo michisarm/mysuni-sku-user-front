@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, getCookie } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -13,6 +13,8 @@ import { LogoView, MenuView, SearchBarView } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
 import MainNotice from '../../../Notice';
 import ReactGA from 'react-ga';
+import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -64,6 +66,19 @@ class HeaderContainer extends Component<Props, State> {
       const { history } = this.props;
       history.push(`/search?query=${searchValue}`);
       // window.location.href = encodeURI(`/search?query=${searchValue}`);
+
+      // search track
+      debounceActionTrack({
+        email: getCookie('tryingLoginId') ||
+          (window.sessionStorage.getItem('email') as string) ||
+          (window.localStorage.getItem('nara.email') as string),
+        path: window.location.pathname,
+        search: window.location.search,
+        area: Area.HEADER_SEARCH,
+        actionType: ActionType.GENERAL,
+        action: Action.SEARCH,
+        actionName: '헤더검색::'+searchValue
+      } as ActionTrackParam);
 
       // react-GA logic
       setTimeout(() => {
