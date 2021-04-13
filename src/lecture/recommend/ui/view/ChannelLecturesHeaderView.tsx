@@ -5,7 +5,7 @@ import { Segment, Dropdown } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 
 import { ChannelModel } from 'college/model';
-
+import { Area } from 'tracker/model';
 
 interface Props {
   channel: ChannelModel
@@ -22,7 +22,7 @@ class ChannelLecturesHeaderView extends Component<Props> {
     const { channel, channels, onSelectChannel } = this.props;
 
     return (
-      <div className="main-filter">
+      <div className="main-filter" data-area={Area.RECOMMEND_TITLE}>
         <Segment className="full">
           <Dropdown className="ui inline transparent large" text={`${channel.name || ''} 채널의 추천과정`}>
             <Dropdown.Menu>

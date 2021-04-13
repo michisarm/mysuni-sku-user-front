@@ -26,6 +26,7 @@ import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureS
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import ReactGA from 'react-ga';
 import { EnrollingViewType } from 'myTraining/ui/logic/NewLearningListContainer';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
@@ -77,6 +78,7 @@ const NewLearningListView: React.FC<Props> = Props => {
   const PAGE_SIZE = 16;
 
   const [yPos, setYPos] = useState(0);
+  const [dataArea, setDataArea] = useState<Area | null>(null);
 
   const lectures = useRef<LectureModel[] | null>(null);
   const curOrder = useRef(''); // 컴포넌트 렌더링에 관여하지 않는다.
@@ -617,8 +619,31 @@ const NewLearningListView: React.FC<Props> = Props => {
     return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
   };
 
+  useEffect(() => {
+    let area = null;
+    switch (contentType) {
+      case ContentType.Required:
+        area = Area.NEWLEARNING_REQUIRED;
+        break;
+      case ContentType.New:
+        area = Area.NEWLEARNING_NEW;
+        break;
+      case ContentType.Popular:
+        area = Area.NEWLEARNING_POPULAR;
+        break;
+      case ContentType.Recommend:
+        area = Area.NEWLEARNING_RECOMMEND;
+        break;
+      default:
+        break;
+    }
+    if (area) {
+      setDataArea(area);
+    }
+  }, [contentType]);
+
   return (
-      <div className="section">
+      <div className="section" data-area={dataArea}>
         {lectures &&
         lectures.current &&
         lectures.current.length > 0 &&

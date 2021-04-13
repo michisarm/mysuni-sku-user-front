@@ -24,6 +24,7 @@ import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
 import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
 import CommunityProfileModal from '../view/CommunityProfileModal';
 import { findCommunityProfile } from '../../api/profileApi';
@@ -574,7 +575,7 @@ function CommunityHomeTreeContainer() {
 
   return (
     <>
-      <div className="community-left community-home-left">
+      <div className="community-left community-home-left" data-area={Area.COMMUNITY_LNB}>
         <div className="sub-info-box">
           <div className="commnuity-left-top">
             <div className="community-left-header">

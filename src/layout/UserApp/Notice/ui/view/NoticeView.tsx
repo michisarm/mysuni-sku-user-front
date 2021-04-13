@@ -5,6 +5,7 @@ import moment from 'moment';
 import { PostModel } from 'board/model';
 import routePaths from 'board/routePaths';
 import { getCookie, setCookie } from '@nara.platform/accent';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   notices: PostModel[];
@@ -38,7 +39,10 @@ const NoticeView: React.FC<Props> = Props => {
 
   return showNotice && notices.length > 0 ? (
     <>
-      <section className="notice-bar visible">
+      <section
+        className="notice-bar visible"
+        data-area={Area.HEADER_NOTICE}
+      >
         <div className="inner">
           <div className="text">
             <a

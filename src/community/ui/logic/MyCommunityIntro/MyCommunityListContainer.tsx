@@ -12,6 +12,7 @@ import {
   requestAppendMyCommunityList,
   requestMyCommunityList,
 } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
+import { Area } from 'tracker/model';
 
 const SORT_OPTIONS = [
   { key: 'memberCreatedTime', value: 'memberCreatedTime', text: '최근가입순' },
@@ -72,7 +73,10 @@ function MyCommunityListContainer() {
   }
 
   return (
-    <div className="community-left community-main-left">
+    <div
+      className="community-left community-main-left"
+      data-area={Area.COMMUNITY_MYLIST}
+    >
       <div className="sub-info-box">
         <div className="commnuity-left-top scroll">
           <Select

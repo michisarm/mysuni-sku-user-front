@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Area } from 'tracker/model';
 
 class PromotionTab extends Component {
 
@@ -48,7 +49,7 @@ class PromotionTab extends Component {
     } as React.CSSProperties;
 
     return (
-      <>
+      <div data-area={Area.INTRODUCTION_PROMOTION}>
         <div className="ui attached active" data-tab="third">
           <div className="common-intro case3">
             <div className="mainVideoInner">
@@ -84,7 +85,7 @@ class PromotionTab extends Component {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

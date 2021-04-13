@@ -1,15 +1,12 @@
-import InstructorApi from '../../../../../expert/present/apiclient/InstructorApi';
+import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CardContents } from '../../../../model/CardContents';
 import { findCardCache } from '../../../api/cardApi';
 import { setLectureInstructor } from '../../../store/LectureOverviewStore';
-import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 
 async function parseLectureInstructor(cardContents: CardContents) {
   const { instructors } = cardContents;
-  const instructorApi = new InstructorApi();
   const proimseArray = instructors.map(c => {
-    return instructorApi
-      .findInstructor(c.instructorId)
+    return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined) {
           c.memberSummary = {

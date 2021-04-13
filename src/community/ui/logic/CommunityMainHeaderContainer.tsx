@@ -24,6 +24,7 @@ import DefaultImg from '../../../style/media/img-profile-80-px.png';
 import { render } from 'react-dom';
 import { reactConfirm } from '@nara.platform/accent';
 import { getCommunityProfileItem, setCommunityProfileItem } from 'community/store/CommunityProfileStore';
+import { Area } from 'tracker/model';
 
 function CommunityMainHeaderContainer() {
   const [open, setOpen] = useState<boolean>(false);
@@ -164,7 +165,10 @@ function CommunityMainHeaderContainer() {
     <>
       {/* <FollowerView /> */}
       {/* eslint-disable */}
-      <div className="main-info-area community-main-header">
+      <div
+        className="main-info-area community-main-header"
+        data-area={Area.COMMUNITY_INFO}
+      >
         <div className="progress-info-wrap">
           <div className="cell">
             <div className="cell-inner">

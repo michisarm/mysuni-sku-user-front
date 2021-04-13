@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Button } from 'semantic-ui-react';
-
+import { Action, Area } from 'tracker/model';
 
 interface Props {
   topButtons: React.ReactNode,
@@ -19,7 +19,7 @@ export class MenuWrapperView extends Component<Props> {
     } = this.props;
 
     return (
-      <div className="quick-menu">
+      <div className="quick-menu" data-area={Area.FOOTER_HAMBURGER}>
         <Button.Group className="quick-black horizontal">
           {topButtons}
         </Button.Group>
@@ -75,9 +75,18 @@ export class BottomMenuItemView extends Component<BottomMenuItemViewProps> {
       iconName, text, onClick,
     } = this.props;
 
+    const dataSet: any = {};
+    if (text === '관심채널') {
+      dataSet['data-area'] = Area.FOOTER_HAMBURGER;
+      dataSet['data-action'] = Action.VIEW;
+      dataSet['data-action-name'] = '관심 채널 설정 PV';
+      dataSet['data-pathname'] = '관심 채널 설정';
+      dataSet['data-page'] = '#attention-channel';
+    }
     return (
-      <Button onClick={onClick}>
-        <Icon className={iconName} />{text}
+      <Button onClick={onClick} {...dataSet}>
+        <Icon className={iconName} />
+        {text}
       </Button>
     );
   }
