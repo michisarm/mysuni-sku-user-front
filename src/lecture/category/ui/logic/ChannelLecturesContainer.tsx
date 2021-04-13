@@ -44,6 +44,7 @@ interface Props
   setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   isLoading?: boolean | false;
+  scrollOnceMove?: () => void;
 }
 
 interface State {
@@ -62,17 +63,16 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   inMyLectureService,
   match,
 }) => {
-  const histroy = useHistory();
+  const history = useHistory();
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (loading) {
-      scrollOnceMove();
-    }
-  }, [loading]);
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, []);
 
   return (
     <ChannelLecturesInnerContainer
@@ -84,13 +84,14 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       lectureCardService={lectureCardService}
       reviewService={reviewService}
       inMyLectureService={inMyLectureService}
-      history={histroy}
+      history={history}
       location={location}
       match={match}
       scrollSave={scrollSave}
       setLoading={setLoading}
       setIsLoading={setIsLoading}
       isLoading={isLoading}
+      scrollOnceMove={scrollOnceMove}
     />
   );
 };
@@ -154,14 +155,15 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   init() {
     //
-    const {
-      pageService,
-      lectureService,
-      setLoading,
-      setIsLoading,
-    } = this.props;
+    const { pageService, lectureService, setLoading } = this.props;
+    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
+    const prevChannelOffset = JSON.parse(getChannelOffset);
     setLoading && setLoading(false);
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    pageService!.initPageMap(
+      this.PAGE_KEY,
+      0, // offset
+      prevChannelOffset ? prevChannelOffset : this.PAGE_SIZE // limit
+    );
     lectureService!.clearLectures();
     // 뒤로가기 할때 포지션이 처음으로 감. 수정되면 적용..
     // setIsLoading && setIsLoading(true);
@@ -177,12 +179,16 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       inMyLectureService,
       setLoading,
       setIsLoading,
+      scrollOnceMove,
     } = this.props;
     const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     inMyLectureService!.findAllInMyLectures();
+    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
+    const prevChannelOffset = JSON.parse(getChannelOffset);
 
     // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
+
     const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
       match.params.collegeId,
       match.params.channelId,
@@ -192,11 +198,11 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     );
 
     if (!lectureOffsetList.empty) {
-      setLoading && setLoading(true);
+      setIsLoading && setIsLoading(false);
+      scrollOnceMove && scrollOnceMove();
     } else {
-      setLoading && setLoading(false);
+      setIsLoading && setIsLoading(true);
     }
-    setIsLoading && setIsLoading(false);
 
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
@@ -311,7 +317,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
     // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
-    scrollSave && scrollSave();
+
     ReactGA.event({
       category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
       action: 'Click Card',
@@ -370,10 +376,10 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map(({ card, cardRelatedCount }) => {
+                {lectures.map(({ card, cardRelatedCount }, index) => {
                   return (
                     <CardView
-                      key={card.id}
+                      key={card.id + index}
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}

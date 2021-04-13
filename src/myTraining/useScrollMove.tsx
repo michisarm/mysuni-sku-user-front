@@ -14,8 +14,9 @@ export const useScrollMove = () => {
     }
     sessionStorage.removeItem('SCROLL_POS');
     setScrollPos(sessionStorage.getItem('SCROLL_POS'));
-    console.log('hello...', scrollPos);
-    window.scrollTo(0, scrollPos);
+    if (scrollPos !== '0') {
+      window.scrollTo(0, scrollPos);
+    }
   }, [scrollPos]);
 
   const scrollOnceMove = useCallback(scrollMove, [scrollTop]);
