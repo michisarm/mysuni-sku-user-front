@@ -1040,6 +1040,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               className="btn-play orange"
               onClick={e => {
                 this.checkPreCourseOnViewDetail(lectureView);
+                e.preventDefault();
               }}
             >
               <span className="text">
@@ -1061,6 +1062,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               className="btn-play orange"
               onClick={e => {
                 this.checkPreCourseOnViewDetail(lectureView);
+                e.preventDefault();
               }}
             >
               <span className="text">
@@ -1082,6 +1084,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               className="btn-play completed"
               onClick={e => {
                 this.checkPreCourseOnViewDetail(lectureView);
+                e.preventDefault();
               }}
             >
               <span className="text">학습완료</span>
@@ -1095,6 +1098,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               className="btn-play black"
               onClick={e => {
                 this.checkPreCourseOnViewDetail(lectureView);
+                e.preventDefault();
               }}
             >
               <span className="text">학습하기</span>

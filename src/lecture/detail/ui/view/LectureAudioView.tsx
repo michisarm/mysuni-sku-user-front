@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { getCookie } from '@nara.platform/accent';
 import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import WatchLog from 'lecture/detail/model/Watchlog';
 import { patronInfo } from '@nara.platform/dock';
@@ -22,6 +23,8 @@ import {
 } from '../../viewModel/LectureStructure';
 import { confirmProgress } from '../../service/useLectureMedia/utility/confirmProgress';
 import { setWatchLog } from '../../service/useLectureMedia/useLectureWatchLog';
+import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
 
 interface LectureAudioViewProps {
   checkStudent: (params: LectureParams, path: string) => void;
@@ -33,6 +36,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const { pathname } = useLocation();
   const params = useParams<LectureParams>();
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
+  const [isFirstAction, setIsFirstAction] = useState<boolean>(false);
   const nextContent = useNextContent();
 
   const [watchlogState, setWatchlogState] = useState<WatchLog>();
@@ -100,12 +104,39 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
           sessionStorage.removeItem('InProgressLearningList');
         }
         audioStart();
+        if(!isFirstAction){
+          setIsFirstAction(true);
+        }
       } else if (state == 0) {
         setNextContentsView(true);
       }
     },
     [params]
   );
+
+  // study action event : 방문당 한번 적재
+  useEffect(()=>{
+    if(isFirstAction){
+      // study action track
+      debounceActionTrack({
+        email: getCookie('tryingLoginId') ||
+          (window.sessionStorage.getItem('email') as string) ||
+          (window.localStorage.getItem('nara.email') as string),
+        path: window.location.pathname,
+        search: window.location.search,
+        area: Area.CUBE_PLAY,
+        actionType: ActionType.STUDY,
+        action: Action.CLICK,
+        actionName: '학습버튼 클릭'
+      } as ActionTrackParam);
+    }
+  },[isFirstAction]);
+
+  useEffect(()=>{
+    if(params.cubeId){
+      setIsFirstAction(false);
+    }
+  },[params.cubeId]);
 
   const registCheckStudent = useCallback(
     async (params: LectureParams | undefined) => {

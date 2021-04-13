@@ -12,6 +12,7 @@ import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   profileMemberName: string;
@@ -43,7 +44,7 @@ function InProgressLearning({ profileMemberName, history }: Props) {
   };
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_LEARNING}>
       <div className="section-head">
         <strong>{`${profileMemberName}님이 학습중인 과정`}</strong>
         <div className="right">
@@ -73,7 +74,8 @@ function InProgressLearning({ profileMemberName, history }: Props) {
                     mainCategory={card.mainCategory}
                     name={card.name}
                     stampCount={card.stampCount}
-                    description={card.description}
+                    simpleDescription={card.simpleDescription}
+                    type={card.type}
                     passedStudentCount={cardRelatedCount.passedStudentCount}
                     starCount={cardRelatedCount.starCount}
                     // 리본에 정원마감 또는 D-DAY, D-14 형식으로 표현 돼야 함

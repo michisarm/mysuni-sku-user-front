@@ -16,11 +16,8 @@ import LectureClassroom, {
   Classroom,
 } from '../../../viewModel/LectureClassroom';
 import moment from 'moment';
-import { useLectureCardSummary } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
-import { Lecture2, Lecture } from '../../../../shared';
 import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
-
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -214,16 +211,15 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   }, []);
 
   useEffect(() => {
-
     const postService = PostService.instance;
     const currentUrl = window.location.href;
     const hostUrl = window.location.host;
     const alarmUrl = currentUrl.split(hostUrl);
 
-    postService.post.alarmInfo.url = 'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
+    postService.post.alarmInfo.url =
+      'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
     postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
     postService.post.alarmInfo.contentsName = lectureSummary.name;
-
   }, [lectureSummary]);
 
   return (
@@ -276,7 +272,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   <Label className="bold onlytext">
                     <span className="header-span-first">강사</span>
                     <span className="tool-tip">
-                      {instrutor.instructorId}
+                      {instrutor.memberSummary?.name}
                       <i>
                         <Link
                           to={`/expert/instructor/${instrutor.instructorId}/Introduce`}
@@ -284,9 +280,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                           style={{ whiteSpace: 'nowrap', display: 'block' }}
                           target="_blank"
                         >
-                          {instrutor.instructorId}
+                          {instrutor.memberSummary?.name}
                         </Link>
-                        <span className="tip-id">{instrutor.instructorId}</span>
+                        <span className="tip-id">
+                          {instrutor.memberSummary?.department}
+                        </span>
                       </i>
                     </span>
                   </Label>

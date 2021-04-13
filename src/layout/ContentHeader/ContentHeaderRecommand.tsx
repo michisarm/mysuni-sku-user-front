@@ -9,12 +9,14 @@ import WaitingItem from './sub/WaitingItem';
 import ChartItem from './sub/ChartItem';
 import CommunityItem from './sub/CommunityItem';
 import RecommendItem from './sub/RecommendItem';
-
+import { Action, Area } from 'tracker/model';
 
 interface Props {
   className?: string,
   bottom?: React.ReactNode,
   children: React.ReactNode,
+  dataArea?: Area;
+  dataAction?: Action;
 }
 
 @reactAutobind
@@ -36,11 +38,14 @@ class ContentHeaderRecommand extends Component<Props> {
 
   render() {
     //
-    const { className, bottom, children } = this.props;
+    const { className, bottom, children, dataArea, dataAction } = this.props;
 
     return (
       <div className={classNames('main-info-area', className)}>
-        <div className="progress-info-wrap personal-channel">
+        <div className="progress-info-wrap personal-channel"
+          data-area={dataArea}
+          data-action={dataAction}
+        >
           {children}
         </div>
         {bottom}

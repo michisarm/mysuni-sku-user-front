@@ -1,5 +1,6 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CubeDetail } from '../../../../model/CubeDetail';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { countByFeedbackId, findReviewSummary } from '../../../api/feedbackApi';
@@ -104,10 +105,25 @@ function getLectureTags(cubeDetail: CubeDetail): LectureTags {
   };
 }
 
-function getLectureInstructor(cubeDetail: CubeDetail): LectureInstructor {
+async function getLectureInstructor(cubeDetail: CubeDetail) {
   const {
     cubeContents: { instructors },
   } = cubeDetail;
+  const proimseArray = instructors.map(c => {
+    return findInstructorCache(c.instructorId)
+      .then(r => {
+        if (r !== undefined) {
+          c.memberSummary = {
+            department: r.memberSummary.department,
+            email: r.memberSummary.email,
+            name: r.memberSummary.name,
+            photoId: r.memberSummary.photoId,
+          };
+        }
+      })
+      .catch(() => {});
+  });
+  await Promise.all(proimseArray);
   return {
     instructors,
   };
@@ -194,7 +210,7 @@ export async function getCubeLectureOverview(cubeId: string) {
   setLectureSubcategory(lectureSubcategory);
   const lectureTags = getLectureTags(cubeDetail);
   setLectureTags(lectureTags);
-  const lectureInstructor = getLectureInstructor(cubeDetail);
+  const lectureInstructor = await getLectureInstructor(cubeDetail);
   setLectureInstructor(lectureInstructor);
   setLecturePrecourse(getEmptyLecturePrecourse());
   if (

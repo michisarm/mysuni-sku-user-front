@@ -25,6 +25,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
 import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
 import { findCardList } from '../../../../lecture/detail/api/cardApi';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
@@ -263,7 +264,7 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
   }; */
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_NEW}>
       <div className="section-head">
         <strong>{newCard?.displayText}</strong>
         <div className="right">

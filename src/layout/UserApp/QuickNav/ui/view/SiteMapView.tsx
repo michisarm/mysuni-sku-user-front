@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-
+import { Area } from 'tracker/model';
 // import { Icon } from 'semantic-ui-react';
 
 
@@ -33,7 +33,7 @@ class SiteMapView extends Component<Props> {
     const { onClickItem } = this.props;
 
     return (
-      <ul>
+      <ul data-area={Area.FOOTER_SITEMAP}>
         {siteMaps.map((siteMap, index) => (
           <li key={`site-map-${index}`}>
             <span>{siteMap.name}</span>
