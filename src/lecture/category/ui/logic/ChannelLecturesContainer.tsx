@@ -158,6 +158,16 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     const { pageService, lectureService, setLoading } = this.props;
     const getChannelOffset: any = sessionStorage.getItem('channelOffset');
     const prevChannelOffset = JSON.parse(getChannelOffset);
+
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    if (page && prevChannelOffset) {
+      // page.nextOffset = prevChannelOffset;
+      page.pageNo = prevChannelOffset / 8;
+    }
+
+    console.log('prevChannelOffset/8 : ', prevChannelOffset / 8);
+
     setLoading && setLoading(false);
     pageService!.initPageMap(
       this.PAGE_KEY,
@@ -165,6 +175,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       prevChannelOffset ? prevChannelOffset : this.PAGE_SIZE // limit
     );
     lectureService!.clearLectures();
+    console.log('1');
     // 뒤로가기 할때 포지션이 처음으로 감. 수정되면 적용..
     // setIsLoading && setIsLoading(true);
   }
@@ -189,6 +200,9 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
     // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
 
+    console.log('page!.limit, : ', page!.limit);
+    console.log('page!.nextOffset, : ', page!.nextOffset);
+
     const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
       match.params.collegeId,
       match.params.channelId,
@@ -197,6 +211,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       sorting
     );
 
+    console.log('2');
+    console.log(page);
     if (!lectureOffsetList.empty) {
       setIsLoading && setIsLoading(false);
       scrollOnceMove && scrollOnceMove();
@@ -207,7 +223,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      page!.pageNo + 1
+      page!.limit / 8 + 1
     );
   }
 
@@ -327,9 +343,16 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
+    const { pageService } = this.props;
     this.props.actionLogService?.registerClickActionLog({
       subAction: 'list more',
     });
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    if (page) {
+      page.limit = 8;
+    }
+
     this.findPagingChannelLectures();
   }
 
