@@ -123,7 +123,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           <a
             onClick={overviewHashClick}
             className={activatedTab === 'overview' ? 'lms-act' : ''}
-            data-area={Area.CARD_TAB}
+            data-area={Area.CUBE_TAB}
             data-action={Action.CLICK}
             data-action-name="CUBE TAB 클릭::Overview"
           >
@@ -133,7 +133,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             <a
               onClick={classroomHashClick}
               className={activatedTab === 'classroom' ? 'lms-act' : ''}
-              data-area={Area.CARD_TAB}
+              data-area={Area.CUBE_TAB}
               data-action={Action.CLICK}
               data-action-name="CUBE TAB 클릭::차수정보"
             >
@@ -145,7 +145,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               <a
                 onClick={transcriptHashClick}
                 className={activatedTab === 'transcript' ? 'lms-act' : ''}
-                data-area={Area.CARD_TAB}
+                data-area={Area.CUBE_TAB}
                 data-action={Action.CLICK}
                 data-action-name="CUBE TAB 클릭::Transcript"
               >
@@ -157,7 +157,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             className={
               activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
             }
-            data-area={Area.CARD_TAB}
+            data-area={Area.CUBE_TAB}
             data-action={Action.CLICK}
             data-action-name="CUBE TAB 클릭::Comments"
           >
