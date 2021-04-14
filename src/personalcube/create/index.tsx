@@ -1,5 +1,5 @@
 
-export { default as CreateListPage } from './ui/page/CreateListPage';
-export { default as CreatePersonalCubeDetailPage } from './ui/page/CreatePersonalCubeDetailPage';
-export { default as CreateCubeIntroDetailPage } from './ui/page/CreateCubeIntroDetailPage';
+export { default as CreateCubeListPage } from './ui/page/CreateCubeListPage';
+export { default as CreateCubePage } from './ui/page/CreateCubePage';
+export { default as CreateCubeIntroPage } from './ui/page/CreateCubeIntroPage';
 export { default as CreateSharedDetailPage } from './ui/page/CreateSharedDetailPage';

@@ -1,9 +1,7 @@
 import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
 import _ from 'lodash';
 import { CubeState } from 'shared/model';
-import LectureTimeSummary from 'personalcube/personalcube/model/LectureTimeSummary';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 
@@ -25,11 +23,6 @@ export default class PersonalCubeService {
 
   @observable
   searchState: CubeState = CubeState.ALL;
-
-  ////////////////////////////////////// 개편 //////////////////////////////////////
-  @observable
-  lectureTimeSummary: LectureTimeSummary = new LectureTimeSummary();
-  ////////////////////////////////////// 개편 //////////////////////////////////////
 
   constructor(personalCubeApi: PersonalCubeApi) {
     //
@@ -132,29 +125,28 @@ export default class PersonalCubeService {
     return personalCubes;
   }
 
-  // create list 조회
-  @action
-  async findPersonalCubesForCreator(
-    offset: number,
-    limit: number,
-    cubeState?: CubeState
-  ) {
-    //
-    const personalCubeOffsetList = await this.personalCubeApi.findPersonalCubesForCreator(
-      offset,
-      limit,
-      cubeState
-    );
+  // @action
+  // async findPersonalCubesForCreator(
+  //   offset: number,
+  //   limit: number,
+  //   cubeState?: CubeState
+  // ) {
+  //   //
+  //   const personalCubeOffsetList = await this.personalCubeApi.findPersonalCubesForCreator(
+  //     offset,
+  //     limit,
+  //     cubeState
+  //   );
 
-    runInAction(() => {
-      this.personalCubeOffsetList.results = this.personalCubeOffsetList.results.concat(
-        personalCubeOffsetList.results
-      );
-      this.personalCubeOffsetList.totalCount =
-        personalCubeOffsetList.totalCount;
-    });
-    return personalCubeOffsetList;
-  }
+  //   runInAction(() => {
+  //     this.personalCubeOffsetList.results = this.personalCubeOffsetList.results.concat(
+  //       personalCubeOffsetList.results
+  //     );
+  //     this.personalCubeOffsetList.totalCount =
+  //       personalCubeOffsetList.totalCount;
+  //   });
+  //   return personalCubeOffsetList;
+  // }
 
   @action
   clear() {
@@ -171,19 +163,6 @@ export default class PersonalCubeService {
     //
     this.searchState = cubeState;
   }
-
-  ////////////////////////////////////// 개편 //////////////////////////////////////
-  @action
-  async findLectureTimeSummary() {
-    const email = patronInfo.getPatronEmail();
-    if (email) {
-      const lectureTimeSummary = await this.personalCubeApi.findLectureTimeSummary(
-        email
-      );
-      runInAction(() => (this.lectureTimeSummary = lectureTimeSummary));
-    }
-  }
-  ////////////////////////////////////// 개편 //////////////////////////////////////
 }
 
 Object.defineProperty(PersonalCubeService, 'instance', {
