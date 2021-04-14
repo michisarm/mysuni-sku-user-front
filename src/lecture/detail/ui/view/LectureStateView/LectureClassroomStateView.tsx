@@ -168,6 +168,16 @@ function ApprovedView(props: ApprovedViewProps) {
     }
     return PROGRESS;
   }, [student]);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'bg2';
+  }, [student]);
   return (
     <>
       <button
