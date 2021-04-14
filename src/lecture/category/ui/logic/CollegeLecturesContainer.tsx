@@ -538,10 +538,10 @@ class CollegeLecturesContainerInner extends Component<
   render() {
     //
     const { lectureCountService } = this.props;
-    const { allSelected, channels } = lectureCountService!;
-    const { collegeModelStore } = this.props;
-    const { params } = this.props.match;
-    const { collegeId } = params;
+    const { channels } = lectureCountService!;
+    const allSelected =
+      channels.every(c => c.checked === true) ||
+      channels.every(c => c.checked !== true);
 
     return (
       <CategoryLecturesContentWrapperView>
@@ -549,7 +549,7 @@ class CollegeLecturesContainerInner extends Component<
           channels={channels}
           onSelectChannel={this.onSelectChannel}
         />
-        {lectureCountService!.categoryType === 'CollegeLectures' || allSelected
+        {allSelected
           ? this.renderCollegeLectures()
           : this.renderChannelsLectures()}
       </CategoryLecturesContentWrapperView>
