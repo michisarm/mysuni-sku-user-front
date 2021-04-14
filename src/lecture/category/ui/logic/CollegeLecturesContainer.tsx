@@ -344,6 +344,7 @@ class CollegeLecturesContainerInner extends Component<
     this.setState(
       {
         sorting: data.value,
+        loading: true,
       },
       () => {
         this.clearAndInit();

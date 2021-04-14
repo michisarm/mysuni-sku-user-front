@@ -255,6 +255,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.setState(
       {
         sorting: data.value,
+        loading: true,
       },
       () => {
         this.init();
