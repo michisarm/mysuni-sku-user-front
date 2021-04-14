@@ -168,7 +168,10 @@ async function getLectureReview(
       reviewSummary !== undefined &&
       reviewSummary.average !== undefined
     ) {
-      return { average: reviewSummary.average, id: reviewSummary.id };
+      return {
+        average: isNaN(reviewSummary.average) ? 0 : reviewSummary.average,
+        id: reviewSummary.id,
+      };
     }
   }
   return { id: '', average: 0 };
