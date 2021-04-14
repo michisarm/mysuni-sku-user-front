@@ -111,7 +111,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     }
 
     //자료실 타입 첨부파일 필수 체크
-    const menu = menuId && (await findMenu(communityId, menuId));
+    const menu = menuId && menuId !== 'noticeCreate' && (await findMenu(communityId, menuId));
     if (
       (menu && menu.type == 'STORE') ||
       getCommunityPostCreateItem()?.menuType == 'STORE'
