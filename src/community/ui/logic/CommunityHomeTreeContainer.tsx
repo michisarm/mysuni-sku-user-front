@@ -51,6 +51,10 @@ const MenuItemView: React.FC<CommunityMenu &
   let path = 'board';
   let icon = boardIcon;
   switch (type) {
+    case 'ANODISCUSSION':
+      icon = discussionIcon;
+      path = 'anodiscussion';
+      break;
     case 'DISCUSSION':
       icon = discussionIcon;
       path = 'discussion';
@@ -147,6 +151,10 @@ const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
   let path = 'board';
   let nextIcon = icon || boardIcon;
   switch (type) {
+    case 'ANODISCUSSION':
+      icon = discussionIcon;
+      path = 'anodiscussion';
+      break;
     case 'DISCUSSION':
       nextIcon = discussionIcon;
       path = 'discussion';
@@ -238,6 +246,10 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   let path = 'board';
   let icon = boardIcon;
   switch (type) {
+    case 'ANODISCUSSION':
+      icon = discussionIcon;
+      path = 'anodiscussion';
+      break;
     case 'DISCUSSION':
       icon = discussionIcon;
       path = 'discussion';
@@ -309,6 +321,10 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
   let path = 'board';
   let icon = boardIcon;
   switch (type) {
+    case 'ANODISCUSSION':
+      icon = discussionIcon;
+      path = 'anodiscussion';
+      break;
     case 'DISCUSSION':
       icon = discussionIcon;
       path = 'discussion';

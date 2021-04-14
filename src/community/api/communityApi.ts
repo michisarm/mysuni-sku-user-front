@@ -435,10 +435,9 @@ export function saveCommunityAdminMenu(
   params: any,
   selectedRow: any
 ): Promise<any> {
-  if (params.type === 'DISCUSSION') {
+  if (params.type === 'DISCUSSION' || params.type === 'ANODISCUSSION') {
     let value = '';
     let name = '';
-
     params.nameValues.map((item: any) => {
       if (item.name === 'discussionTopic') {
         value = item.value;

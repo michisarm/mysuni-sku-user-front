@@ -111,6 +111,11 @@ function CommunityRoutes() {
               />
               <Route
                 exact
+                path="/community/:communityId/anodiscussion/:menuId"
+                component={DiscussionPostPage}
+              />
+              <Route
+                exact
                 path="/community/:communityId/poll/:menuId"
                 component={SurveyPostPage}
               />

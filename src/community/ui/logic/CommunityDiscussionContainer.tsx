@@ -89,7 +89,8 @@ function CommunityDiscussionContainer() {
           </div> */}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
-            menuType={discussionType}
+            menuType="DISCUSSION"
+            anonymous={discussionType === 'ANODISCUSSION' ? true : false}
             hideCamera
             name=""
             email=""
