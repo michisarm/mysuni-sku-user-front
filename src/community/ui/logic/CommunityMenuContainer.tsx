@@ -498,25 +498,36 @@ function CommunityMenuContainer() {
   }
 
   const handleDown = useCallback(() => {
-
+console.log('1')
     if (!selectedRow) {
       return;
     }
-
+    console.log('11')
     const originOrder = selectedRow.order;
+    console.log(communityAdminMenu?.menu.filter((m) => {
+      if (m.id === selectedRow?.parentId) {
+        return m.child
+      }
+    //나보다 order가 큰게있다면 바꾼다
+    })[0].child)
     const list = (selectedRow?.parentId ?
+      //2뎁스
       communityAdminMenu?.menu.filter((m) => {
         if (m.id === selectedRow?.parentId) {
           return m.child
         }
+      //나보다 order가 큰게있다면 바꾼다
       })[0].child.filter((c: any) => c.order > selectedRow.order).sort((a: any, b: any) => a.order - b.order) 
       :
+      //1뎁스
       communityAdminMenu?.menu.filter((c) => c.parentId === null && c.order > selectedRow.order).sort((a, b) => a.order - b.order)
     )
+  console.log('list', list)
 
     if (list && list.length === 0) {
       return;
     }
+    console.log('111')
     const nextOrder = list[0].order;
     const ValuesArr = { 'id': selectedRow.id, 'name': 'order', 'value': list && list[0].order };
     const nextValuesArr = { 'id': list && list[0].id, 'name': 'order', 'value': selectedRow.order };
@@ -546,7 +557,7 @@ function CommunityMenuContainer() {
 
       return m
     }));
-
+    console.log('1111')
     menu && setCommunityAdminMenu({ 'menu': menu });
 
     nameValuesArr.map((item, index) => {
@@ -560,8 +571,12 @@ function CommunityMenuContainer() {
         nameValuesArr.splice(index, 1)
       }
     })
+
+    console.log('끝')
     nameValuesArr.push(ValuesArr)
+    console.log('ValuesArr', ValuesArr)
     nameValuesArr.push(nextValuesArr)
+    console.log('nextValuesArr', nextValuesArr)
 
     setNameValues(nameValuesArr)
     const sortedData = orderSort(communityAdminMenu?.menu!)
