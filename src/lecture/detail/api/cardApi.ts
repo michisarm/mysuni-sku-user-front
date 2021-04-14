@@ -224,7 +224,7 @@ export function registerHomework(
   fileBoxId: string,
   homework: string
 ): Promise<void> {
-  const url = `${BASE_URL}/students/registerHomework/${studentId}/${fileBoxId}`;
+  const url = `${BASE_URL}/students/registerHomework/${studentId}?fileBoxId=${fileBoxId}`;
   const axios = getAxios();
   return axios
     .put<void>(url, { homeworkContent: homework })
