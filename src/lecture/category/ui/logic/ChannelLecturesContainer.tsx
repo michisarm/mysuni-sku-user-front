@@ -41,8 +41,6 @@ interface Props
   inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
   scrollSave?: () => void;
-  setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-  isLoading?: boolean | false;
   scrollOnceMove?: () => void;
 }
 
@@ -50,6 +48,7 @@ interface State {
   sorting: string;
   collegeOrder: boolean;
   channelOffset: number;
+  loading: boolean;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -66,7 +65,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   const history = useHistory();
   const location = useLocation();
   const { scrollOnceMove, scrollSave } = useScrollMove();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const listen = history.listen(scrollSave);
@@ -86,8 +84,6 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       history={history}
       location={location}
       match={match}
-      isLoading={isLoading}
-      setIsLoading={setIsLoading}
       scrollSave={scrollSave}
       scrollOnceMove={scrollOnceMove}
     />
@@ -119,6 +115,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     sorting: OrderByType.Time,
     collegeOrder: false,
     channelOffset: 0,
+    loading: true,
   };
 
   constructor(props: Props) {
@@ -162,15 +159,10 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   init() {
     //
-    const { pageService, lectureService, setIsLoading } = this.props;
+    const { pageService, lectureService } = this.props;
     const getChannelOffset: string | null = sessionStorage.getItem(
       'channelOffset'
     );
-
-    if (typeof setIsLoading === 'function') {
-      setIsLoading(true); // Loading Progress 실행
-    }
-
     const prevChannelOffset = getChannelOffset
       ? JSON.parse(getChannelOffset)
       : null;
@@ -191,7 +183,6 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       lectureService,
       inMyLectureService,
       scrollOnceMove,
-      setIsLoading,
     } = this.props;
 
     const getChannelOffset: string | null = sessionStorage.getItem(
@@ -215,12 +206,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       sorting
     );
 
-    if (
-      !lectureOffsetList.empty &&
-      typeof scrollOnceMove === 'function' &&
-      typeof setIsLoading === 'function'
-    ) {
-      setIsLoading(false); // Loading Progress 종료
+    if (!lectureOffsetList.empty && typeof scrollOnceMove === 'function') {
+      this.setState({ loading: false }); // Loading Progress 종료
       scrollOnceMove();
     }
 
@@ -372,9 +359,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       lectureService,
       reviewService,
       inMyLectureService,
-      isLoading,
     } = this.props;
-    const { sorting, collegeOrder } = this.state;
+    const { sorting, collegeOrder, loading } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
@@ -385,7 +371,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        {isLoading ? (
+        {loading ? (
           <Segment
             style={{
               paddingTop: 0,
@@ -397,7 +383,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
               border: 0,
             }}
           >
-            <Loadingpanel loading={isLoading} />
+            <Loadingpanel loading={loading} />
           </Segment>
         ) : lectures && lectures.length > 0 ? (
           <>

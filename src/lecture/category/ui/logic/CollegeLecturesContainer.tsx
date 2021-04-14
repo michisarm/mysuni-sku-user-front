@@ -54,14 +54,12 @@ interface Props extends RouteComponentProps<RouteParams> {
   reviewService?: ReviewService;
   inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
-  setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-  scrollSave?: () => void;
-  isLoading?: boolean | false;
 }
 
 interface CollegeLecturesContainerInnerProps extends Props {
   collegeModelStore: CollegeModel[];
   scrollOnceMove: () => void;
+  scrollSave?: () => void;
 }
 
 interface State {
@@ -69,6 +67,7 @@ interface State {
   sorting: OrderByType;
   totalCnt: number; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
   collegeOrder: boolean;
+  loading: boolean;
 }
 
 interface RouteParams {
@@ -135,8 +134,6 @@ const CollegeLecturesContainer: React.FC<Props> = ({
       location={location}
       history={history}
       match={match}
-      isLoading={isLoading}
-      setIsLoading={setIsLoading}
       scrollSave={scrollSave}
       scrollOnceMove={scrollOnceMove}
     />
@@ -176,6 +173,7 @@ class CollegeLecturesContainerInner extends Component<
       sorting: OrderByType.Time,
       totalCnt: 0, // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
       collegeOrder: false,
+      loading: true,
     };
   }
 
@@ -256,12 +254,9 @@ class CollegeLecturesContainerInner extends Component<
 
   async initialFindPagingCollegeLectures() {
     //
-    const { newPageService, setIsLoading } = this.props;
+    const { newPageService } = this.props;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
-    if (typeof setIsLoading === 'function') {
-      setIsLoading(true); // Loading Progress 실행
-    }
   }
 
   async addFindPagingCollegeLectures() {
@@ -279,7 +274,6 @@ class CollegeLecturesContainerInner extends Component<
       newPageService,
       lectureService,
       scrollOnceMove,
-      setIsLoading,
     } = this.props;
     const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
@@ -305,12 +299,8 @@ class CollegeLecturesContainerInner extends Component<
       pageNo
     );
 
-    if (
-      !lectureOffsetList.empty &&
-      typeof scrollOnceMove === 'function' &&
-      typeof setIsLoading === 'function'
-    ) {
-      setIsLoading(false); // Loading Progress 종료
+    if (!lectureOffsetList.empty && typeof scrollOnceMove === 'function') {
+      this.setState({ loading: false }); // Loading Progress 종료
       scrollOnceMove();
     }
   }
@@ -454,9 +444,8 @@ class CollegeLecturesContainerInner extends Component<
       collegeService,
       reviewService,
       inMyLectureService,
-      isLoading,
     } = this.props;
-    const { lectures, sorting, totalCnt, collegeOrder } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
+    const { lectures, sorting, totalCnt, collegeOrder, loading } = this.state; // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const page = newPageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
@@ -481,7 +470,7 @@ class CollegeLecturesContainerInner extends Component<
           )
         }
       >
-        {isLoading ? (
+        {loading ? (
           <Segment
             style={{
               paddingTop: 0,
@@ -493,7 +482,7 @@ class CollegeLecturesContainerInner extends Component<
               border: 0,
             }}
           >
-            <Loadingpanel loading={isLoading} />
+            <Loadingpanel loading={loading} />
           </Segment>
         ) : lectures && lectures.length > 0 && lectures[0] ? (
           <>
