@@ -58,7 +58,7 @@ function CPAndLinkCanceledView(props: CPAndLinkCanceledViewProps) {
       link.setAttribute('target', '_blank');
       link.click();
     }
-    submit(0);
+    submit(1);
   }, [media]);
   return (
     <>
@@ -101,6 +101,7 @@ function CPApprovedView(props: CPApprovedViewProps) {
     }
     return PROGRESS;
   }, [student]);
+
   const action = useCallback(async () => {
     const {
       mediaContents: {

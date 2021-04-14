@@ -81,7 +81,11 @@ function ApprovedView(props: ApprovedViewProps) {
   }, [student]);
   const actionText = useMemo<string>(() => {
     const cubeItem = getActiveCubeStructureItem(pathname);
-    if (cubeItem?.report === undefined && cubeItem?.test === undefined) {
+    if (
+      cubeItem !== undefined &&
+      cubeItem.report === undefined &&
+      cubeItem.test === undefined
+    ) {
       return COMPLETE;
     }
     return PROGRESS;

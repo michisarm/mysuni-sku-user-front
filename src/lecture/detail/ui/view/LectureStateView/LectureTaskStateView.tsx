@@ -15,7 +15,7 @@ function CanceledView() {
   const history = useHistory();
   const action = useCallback(async () => {
     history.push('#create');
-    submit(0);
+    submit(1);
   }, []);
   return (
     <>
