@@ -1,5 +1,5 @@
 import { LearningContentType } from './LearningContentType';
-
+import { LearningContentChildren } from './LearningContentChildren';
 export interface LearningContent {
   contentId: string;
   name: string | null;
@@ -7,4 +7,5 @@ export interface LearningContent {
   learningContentType: LearningContentType;
   chapter: boolean;
   description: string;
+  children: LearningContentChildren[];
 }
