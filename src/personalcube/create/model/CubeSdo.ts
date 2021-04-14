@@ -9,12 +9,12 @@ export interface CubeSdo {
   type: CubeType;
   categories: CubeCategory[];
   sharingCineroomIds: string[];
-  learningTime: number;
-  difficultyLevel: DifficultyLevel;
+  tags: string[];
+  learningTime?: number;
+  difficultyLevel?: DifficultyLevel;
   description?: Description;
   organizerId?: string;
   otherOrganizerName?: string;
-  tags?: string[];
   materialSdo?: CubeMaterialSdo;
 }
 
@@ -23,6 +23,9 @@ export const initialCubeSdo: CubeSdo = {
   type: 'Video',
   categories: [],
   sharingCineroomIds: [],
-  learningTime: 0,
-  difficultyLevel: 'Basic',
+  tags: [],
 };
+
+export function getEmptyRequiredField(cubeSdo: CubeSdo) {
+  return 'success';
+}

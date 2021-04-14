@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { CreateCube } from "../../../create/model/CreateCube";
 
 import { UserCubeRdo } from "../../model/UserCubeRdo";
-import { findUserCubes, findCubeDetail } from "../apiclient/cubeApi";
+import { findUserCubes, findCubeDetail, registerUserCube, modifyUserCube } from "../apiclient/cubeApi";
 import { CubeState } from "../../../../shared/model";
 import { CreateCubeDetail, getCubeSdo } from "../../../create/model/CreateCubeDetail";
 import { CubeSdo, initialCubeSdo } from "../../../create/model/CubeSdo";
@@ -21,6 +21,21 @@ export default class CreateCubeService {
     return this._createCubeDetail;
   }
 
+  @observable
+  _cubeSdo: CubeSdo = initialCubeSdo;
+
+  @computed get cubeSdo() {
+    return this._cubeSdo;
+  }
+
+  async registerUserCube(cubeSdo: CubeSdo) {
+    return registerUserCube(cubeSdo);
+  }
+
+  async modifyUserCube(cubeId: string, cubeSdo: CubeSdo) {
+    return modifyUserCube(cubeId, cubeSdo);
+  }
+
   @action
   async findCreateCubeDetail(cubeId: string) {
     const foundCubeDetail = await findCubeDetail(cubeId);
@@ -30,6 +45,8 @@ export default class CreateCubeService {
     }
 
     const cubeSdo = getCubeSdo(foundCubeDetail);
+
+    console.log('cubeSDo :: ', cubeSdo);
 
     runInAction(() => {
       this._createCubeDetail = foundCubeDetail;
@@ -45,8 +62,8 @@ export default class CreateCubeService {
   }
 
   @action
-  changeCreateCubeDetailProp(name: string, value: string | {} | string[]) {
-    this._createCubeDetail = _.set(this._createCubeDetail, name, value);
+  changeCubeSdoProps(name: string, value: string | {} | string[]) {
+    this._cubeSdo = _.set(this._cubeSdo, name, value);
   }
 
   @observable

@@ -18,5 +18,3 @@ export interface Cube {
   surveyCaseId: string | null;
   sharingCineroomIds: string[];
 }
-
-export 

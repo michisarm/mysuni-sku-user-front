@@ -1,4 +1,4 @@
 export interface CreateDetailPageParams {
-  personalCubeId: string;
-  cubeType: string;
+  personalCubeId?: string;
+  cubeType?: string;
 }

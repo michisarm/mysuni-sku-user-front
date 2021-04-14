@@ -1,30 +1,26 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { useHistory, useParams } from 'react-router-dom';
 import { CreateDetailPageParams } from '../../model/CreateDetailPageParams';
 import { FormTitle } from '../view/DetailElementsView';
 import { Button } from 'semantic-ui-react';
 import cubePaths from '../../../routePaths';
-import { SkProfileService } from '../../../../profile/stores';
-import { CollegeService } from '../../../../college/stores';
+import { getEmptyRequiredField } from '../../model/CubeSdo';
+import CubeBasicFormContainer from './CubeBasicFormContainer';
 
 interface CreateCubeContainerProps {
   createCubeService?: CreateCubeService;
-  skProfileService?: SkProfileService;
-  collegeService?: CollegeService;
 }
 
 function CreateCubeContainer({
   createCubeService,
-  skProfileService,
-  collegeService,
 }: CreateCubeContainerProps) {
   const history = useHistory();
   const params = useParams<CreateDetailPageParams>();
 
-  const { createCubeDetail, setTargetSubsidiaryId } = createCubeService!;
+  const { createCubeDetail, setTargetSubsidiaryId, cubeSdo } = createCubeService!;
 
   useEffect(() => {
     if(!params.personalCubeId) {
@@ -53,16 +49,39 @@ function CreateCubeContainer({
   };
 
   const moveToCreateIntro = () => {
-    const cubeType = createCubeDetail?.cube.type || '';
-    history.push(cubePaths.createCubeIntroDetail(params.personalCubeId, cubeType));
+    if(params.personalCubeId === undefined || params.cubeType === undefined) {
+      return;
+    }
+
+    history.push(cubePaths.createCubeIntroDetail(params.personalCubeId, params.cubeType));
   };
 
   const onClickSave = () => {
-    
+    const result = getEmptyRequiredField(cubeSdo);
+
+    if(result === 'success') {
+      reactConfirm({
+        title: '저장 안내',
+        message: '입력하신 강좌를 저장 하시겠습니까?',
+        onOk: onSave,
+      });
+    } else {
+      alertRequiredField(result);
+    }
   };
 
   const onClickNext = () => {
+    const result = getEmptyRequiredField(cubeSdo);
 
+    if(result === 'success') {
+      reactConfirm({
+        title: '저장 안내',
+        message: '입력하신 강좌를 저장 하시겠습니까?',
+        onOk: onNext,
+      });
+    } else {
+      alertRequiredField(result);
+    }
   };
 
   const onClickDelete = () => {
@@ -70,11 +89,25 @@ function CreateCubeContainer({
   };
 
   const onSave = () => {
+    if(params.personalCubeId === undefined) {
+      return;
+    }
 
+    createCubeService!.modifyUserCube(params.personalCubeId, cubeSdo);
   };
 
-  const onNext = () => {
-    
+  const onNext = async () => {
+    if(params.personalCubeId) {
+      await createCubeService!.modifyUserCube(params.personalCubeId, cubeSdo);
+      moveToCreateIntro();
+    } else {
+      const newCubeId = await createCubeService!.registerUserCube(cubeSdo);
+      if(newCubeId !== undefined) {
+        moveToCreateIntro();
+      } else {
+        reactAlert({ title: '저장 실패', message: '저장을 실패했습니다. 잠시 후 다시 시도해주세요.' });
+      }
+    }
   };
 
   const alertRequiredField = (message: string) => {
@@ -86,6 +119,7 @@ function CreateCubeContainer({
       <FormTitle
         activeStep={1}
       />
+      <CubeBasicFormContainer />
       {/* <BasicInfoFormContainer
         contentNew={!params.personalCubeId}
         createCube={createCubeDetail}
@@ -116,6 +150,4 @@ function CreateCubeContainer({
 
 export default inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
-  'profile.skProfileService',
-  'college.collegeService',
 ))(observer(CreateCubeContainer));

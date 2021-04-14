@@ -4,6 +4,7 @@ import { AxiosReturn } from "../../../../shared/api/AxiosReturn";
 import { UserCubeRdo } from "../../model/UserCubeRdo";
 import { CreateCube } from "../../../create/model/CreateCube";
 import { CreateCubeDetail } from "../../../create/model/CreateCubeDetail";
+import { CubeSdo } from "../../../create/model/CubeSdo";
 
 const BASE_URL = '/api/cube';
 
@@ -33,7 +34,14 @@ export function findUserCubes(userCubeRdo: UserCubeRdo) {
   }).then(AxiosReturn);
 }
 
-export function registerUserCube() {
+export function registerUserCube(cubeSdo: CubeSdo): Promise<string | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/userCubes`;
+  return axios.post<string | undefined>(url, cubeSdo).then(AxiosReturn);
+}
+
+export function modifyUserCube(cubeId: string, cubeSdo: CubeSdo): Promise<void> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/userCubes/${cubeId}`;
+  return axios.put<void>(url, cubeSdo).then(AxiosReturn);
 }

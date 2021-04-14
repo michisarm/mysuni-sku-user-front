@@ -1,35 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import { Form } from 'semantic-ui-react';
+import { Form, Button, Select } from 'semantic-ui-react';
 import CreateInput from '../shared/CreateInput';
+import { ChannelFieldRow } from '../view/DetailElementsView';
+import MainChannelModalContainer from './MainChannelModalContainer';
+import SubChannelModalContainer from './SubChannelModalContainer';
+import { CollegeModel, CollegeType } from '../../../../college/model';
+import { IdName, CategoryModel } from '../../../../shared/model';
+import { CubeCategory } from '../../../../shared/model/CubeCategory';
+import { useParams } from 'react-router-dom';
+import { CreateDetailPageParams } from '../../model/CreateDetailPageParams';
+import SelectOptions from '../../model/SelectOptions';
 
 interface CubeBasicFormContainerProps {
   createCubeService?: CreateCubeService;
-
 }
 
 function CubeBasicFormContainer({
   createCubeService,
 }: CubeBasicFormContainerProps) {
-  
+  const params = useParams<CreateDetailPageParams>();
 
-  const onChangeName = () => {
+  const [selectedCollegeId, setSelectedCollegeId] = useState<string>();
+  const [collegeType, setCollegeType] = useState<CollegeType>();
 
+  const { cubeSdo, setTargetSubsidiaryId } = createCubeService!;
+
+  const onChangeName = (e: any, data: any) => {
+    e.preventDefault();
+    createCubeService!.changeCubeSdoProps('name', data.value);
   };
 
 
-  const onChangeCubeType = () => {
-
+  const onChangeCubeType = (e: any, data: any) => {
+    createCubeService!.changeCubeSdoProps('cubeType', data.value);
   };
 
-  const onConfirmMainChannel = () => {
+  const onConfirmMainChannel = (college: CollegeModel, channel: IdName) => {
+    const cubeCategory: CubeCategory = {
+      collegeId: college.id,
+      channelId: channel.id,
+      mainCategory: true,
+    }
 
+    createCubeService!.changeCubeSdoProps('categories', [cubeCategory]);
+
+    setSelectedCollegeId(college.id);
+    setCollegeType(college.collegeType);
+
+    if(college.collegeType === CollegeType.Company) {
+      setTargetSubsidiaryId(college.id);
+    } else {
+      setTargetSubsidiaryId('');
+    }
   };
 
-  const onConfirmSubChannel = () => {
+  const onConfirmSubChannel = (categoryChannels: CategoryModel[]) => {
+    const subCategories: CubeCategory[] = categoryChannels.map(channel => {
+      return {
+        collegeId: channel.college.id,
+        channelId: channel.channel.id,
+        mainCategory: false,
+      };
+    });
 
+    createCubeService!.changeCubeSdoProps('categories', [subCategories]);
   };
 
   return (
@@ -39,11 +76,11 @@ function CubeBasicFormContainer({
           required
           label="강좌명"
           placeholder="제목을 입력해주세요."
-          value={personalCube.name}
+          value={cubeSdo.name || ''}
           sizeLimited
           maxSize={100}
           invalidMessage="You can enter up to 100 characters."
-          onChange={this.onChangeName}
+          onChange={onChangeName}
         />
       </Form.Field>
 
@@ -52,7 +89,7 @@ function CubeBasicFormContainer({
 
         <div>
           <ChannelFieldRow>
-            <div className="cell v-middle">
+            {/* <div className="cell v-middle">
               <span className="text1">메인채널</span>
 
               <MainChannelModalContainer
@@ -74,10 +111,10 @@ function CubeBasicFormContainer({
                   {personalCube.category.channel.name}
                 </span>
               )}
-            </div>
+            </div> */}
           </ChannelFieldRow>
           <ChannelFieldRow>
-            <div className="cell v-middle">
+            {/* <div className="cell v-middle">
               <span className="text1">서브채널</span>
 
               <SubChannelModalContainer
@@ -89,11 +126,11 @@ function CubeBasicFormContainer({
                 collegeType={collegeType}
                 targetCollegeId={selectedCollegeId}
                 defaultSelectedCategoryChannels={personalCube.subCategories}
-                onConfirmCategoryChannels={this.onConfirmSubChannel}
+                onConfirmCategoryChannels={onConfirmSubChannel}
               />
-            </div>
+            </div> */}
             <div className="cell v-middle">
-              {subCategoriesGroupByCollege.length < 1 ? (
+              {/* {subCategoriesGroupByCollege.length < 1 ? (
                 <span key="select-sub-category" className="text1">
                   서브채널을 선택해주세요.
                 </span>
@@ -107,7 +144,7 @@ function CubeBasicFormContainer({
                       .join(', ')}
                   </span>
                 ))
-              )}
+              )} */}
             </div>
           </ChannelFieldRow>
         </div>
@@ -116,15 +153,15 @@ function CubeBasicFormContainer({
       <Form.Field>
         <label className="necessary">교육형태</label>
         <div className="select-box">
-          {contentNew ? (
+          {params.personalCubeId === undefined ? (
             <Select
               className="dropdown selection"
-              value={personalCube.contents.type || 'None'}
+              value=""
               options={SelectOptions.cubeType}
-              onChange={this.onChangeContentsType}
+              onChange={onChangeCubeType}
             />
           ) : (
-            <input readOnly value={personalCube.contents.type || ''} />
+            <input readOnly value={cubeSdo.type || ''} />
           )}
         </div>
       </Form.Field>
@@ -133,5 +170,5 @@ function CubeBasicFormContainer({
 }
 
 export default inject(mobxHelper.injectFrom(
-
-  ))(observer(CubeBasicFormContainer));
+  'personalCube.createCubeService',
+))(observer(CubeBasicFormContainer));
