@@ -44,7 +44,6 @@ function CreateCubeListContainer({
 
     requestCreateCubes(userCubeRdo);
   }, [params.pageNo]);
-  
 
   const requestCreateCubes = async (userCubeRdo: UserCubeRdo) => {
     await createCubeService!.findCreateCubes(userCubeRdo);

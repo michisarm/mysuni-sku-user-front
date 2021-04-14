@@ -37,7 +37,7 @@ export function findUserCubes(userCubeRdo: UserCubeRdo) {
 export function registerUserCube(cubeSdo: CubeSdo): Promise<string | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/userCubes`;
-  return axios.post<string | undefined>(url, cubeSdo).then(AxiosReturn);
+  return axios.post<string | undefined>(url, cubeSdo).then(AxiosReturn).catch(err => undefined);
 }
 
 export function modifyUserCube(cubeId: string, cubeSdo: CubeSdo): Promise<void> {

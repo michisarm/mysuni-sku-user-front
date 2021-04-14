@@ -8,6 +8,7 @@ type CubeType =
   | 'WebPage'
   | 'Community'
   | 'Task'
-  | 'Cohort';
+  | 'Cohort'
+  | 'None';
 
 export default CubeType;

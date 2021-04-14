@@ -21,13 +21,6 @@ export default class CreateCubeService {
     return this._createCubeDetail;
   }
 
-  @observable
-  _cubeSdo: CubeSdo = initialCubeSdo;
-
-  @computed get cubeSdo() {
-    return this._cubeSdo;
-  }
-
   async registerUserCube(cubeSdo: CubeSdo) {
     return registerUserCube(cubeSdo);
   }
@@ -45,9 +38,7 @@ export default class CreateCubeService {
     }
 
     const cubeSdo = getCubeSdo(foundCubeDetail);
-
-    console.log('cubeSDo :: ', cubeSdo);
-
+    
     runInAction(() => {
       this._createCubeDetail = foundCubeDetail;
       this._cubeSdo = cubeSdo;
@@ -59,6 +50,14 @@ export default class CreateCubeService {
   @action
   clearCreateCubeDetail() {
     this._createCubeDetail = undefined;
+    this._cubeSdo = initialCubeSdo;
+  }
+
+  @observable
+  _cubeSdo: CubeSdo = initialCubeSdo;
+
+  @computed get cubeSdo() {
+    return this._cubeSdo;
   }
 
   @action
@@ -67,15 +66,20 @@ export default class CreateCubeService {
   }
 
   @observable
-  _targetSubsidiaryId: string = '';
+  _targetCineroomId: string = '';
 
-  @computed get targetSubsidiaryId() {
-    return this._targetSubsidiaryId;
+  @computed get targetCineroomId() {
+    return this._targetCineroomId;
   }
 
   @action
-  setTargetSubsidiaryId(next: string) {
-    this._targetSubsidiaryId = next;
+  setTargetCineroomId(next: string) {
+    this._targetCineroomId = next;
+  }
+
+  @action
+  clearTargetCineroomId() {
+    this._targetCineroomId = '';
   }
 
   @observable

@@ -2,6 +2,7 @@ import { Cube } from "../../../lecture/model/Cube";
 import { CubeContents } from "../../../lecture/model/CubeContents";
 import { CubeMaterial } from "../../../lecture/model/CubeMaterial";
 import { CubeSdo } from "./CubeSdo";
+import { CubeCategory } from "../../../shared/model/CubeCategory";
 
 export interface CreateCubeDetail {
   cube: Cube;
@@ -9,6 +10,14 @@ export interface CreateCubeDetail {
   cubeMaterial: CubeMaterial;
 }
 
+export function getMainCategory(categories: CubeCategory[]) {
+  return categories.find(category => category.mainCategory === true);
+}
+
+export function getSubCategories(categories: CubeCategory[]) {
+  return categories.filter(category => category.mainCategory === false);
+}
+ 
 export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
   const { cube, cubeContents, cubeMaterial } = cubeDetail;
   const { media, board, officeWeb } = cubeMaterial;

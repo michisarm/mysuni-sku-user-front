@@ -3,33 +3,40 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { useHistory, useParams } from 'react-router-dom';
-import { CreateDetailPageParams } from '../../model/CreateDetailPageParams';
+import { CreateCubePageParams } from '../../model/CreateCubePageParams';
 import { FormTitle } from '../view/DetailElementsView';
 import { Button } from 'semantic-ui-react';
 import cubePaths from '../../../routePaths';
-import { getEmptyRequiredField } from '../../model/CubeSdo';
-import CubeBasicFormContainer from './CubeBasicFormContainer';
+import { getBlankRequiredField } from '../../model/CubeSdo';
+import { CollegeService } from '../../../../college/stores';
+import { CollegeType } from '../../../../college/model';
+import CreateBasicFormContainer from './CreateBasicFormContainer';
+import CreateExposureFormContainer from './CreateExposureFormContainer';
+import { useRequestCineroom } from '../../../../shared/service/useCineroom/useRequestCineroom';
 
 interface CreateCubeContainerProps {
   createCubeService?: CreateCubeService;
+  collegeService?: CollegeService;
 }
 
 function CreateCubeContainer({
   createCubeService,
+  collegeService,
 }: CreateCubeContainerProps) {
   const history = useHistory();
-  const params = useParams<CreateDetailPageParams>();
-
-  const { createCubeDetail, setTargetSubsidiaryId, cubeSdo } = createCubeService!;
+  const params = useParams<CreateCubePageParams>();
+  const { createCubeDetail, setTargetCineroomId, cubeSdo } = createCubeService!;
 
   useEffect(() => {
-    if(!params.personalCubeId) {
+    if(params.personalCubeId === undefined) {
       return;
     }
+
     createCubeService!.findCreateCubeDetail(params.personalCubeId);
 
     return () => {
       createCubeService!.clearCreateCubeDetail();
+      createCubeService!.clearTargetCineroomId();
     };
   }, [params.personalCubeId]);
 
@@ -37,12 +44,24 @@ function CreateCubeContainer({
     if(createCubeDetail === undefined) {
       return;
     }
-
     const mainCategory = createCubeDetail.cube.categories.find(category => category.mainCategory === true); 
-    const mainCategoryId = mainCategory?.collegeId || '';
-    setTargetSubsidiaryId(mainCategoryId);
+
+    if(mainCategory !== undefined) {
+      const isCompanyType = isCompanyTypeCollege(mainCategory.collegeId);
+      if(isCompanyType) {
+        setTargetCineroomId(mainCategory.collegeId);
+      }
+    }
   }, [createCubeDetail]);
 
+  const isCompanyTypeCollege = async (collegeId :string) => {
+    const college = await collegeService!.findCollege(collegeId);
+    if(college && college.collegeType === CollegeType.Company) {
+      return true;
+    }
+
+    return false;
+  }
 
   const moveToCreateList = () => {
     history.push(cubePaths.create());
@@ -57,7 +76,7 @@ function CreateCubeContainer({
   };
 
   const onClickSave = () => {
-    const result = getEmptyRequiredField(cubeSdo);
+    const result = getBlankRequiredField(cubeSdo);
 
     if(result === 'success') {
       reactConfirm({
@@ -71,7 +90,7 @@ function CreateCubeContainer({
   };
 
   const onClickNext = () => {
-    const result = getEmptyRequiredField(cubeSdo);
+    const result = getBlankRequiredField(cubeSdo);
 
     if(result === 'success') {
       reactConfirm({
@@ -119,18 +138,8 @@ function CreateCubeContainer({
       <FormTitle
         activeStep={1}
       />
-      <CubeBasicFormContainer />
-      {/* <BasicInfoFormContainer
-        contentNew={!params.personalCubeId}
-        createCube={createCubeDetail}
-        onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-        onChangeCollege={this.onChangeCollege}
-      />
-      <ExposureInfoFormContainer
-        createCube={createCubeDetail}
-        targetSubsidiaryId={targetSubsidiaryId}
-        onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-      /> */}
+      <CreateBasicFormContainer />
+      <CreateExposureFormContainer />
       { params.personalCubeId ?
         <div className="buttons">
           <Button type="button" className="fix line" onClick={onClickDelete}>Delete</Button>
@@ -150,4 +159,5 @@ function CreateCubeContainer({
 
 export default inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
+  'college.collegeService',
 ))(observer(CreateCubeContainer));
