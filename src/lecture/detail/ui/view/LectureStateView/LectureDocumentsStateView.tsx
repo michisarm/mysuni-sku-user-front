@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import FileDownloadPop from '../../../../../personalcube/shared/OverviewField/sub/FileDownloadPop';
-import { Cube } from '../../../../model/Cube';
 import Student from '../../../../model/Student';
 import { registerStudent } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
@@ -23,7 +22,6 @@ const COMPLETE = '학습완료';
 const WAIT = '학습예정';
 
 const actionClassName = 'bg';
-const stateClassName = 'line';
 
 interface CanceledViewProps {
   hookAction: () => void;
@@ -108,6 +106,16 @@ function ApprovedView(props: ApprovedViewProps) {
       completeLearning();
     }
   }, []);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'bg2';
+  }, [student]);
 
   return (
     <>

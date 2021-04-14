@@ -1,7 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Cube } from '../../../../model/Cube';
 import Media from '../../../../model/Media';
 import { MediaType } from '../../../../model/MediaType';
@@ -19,7 +18,6 @@ const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
 
 const actionClassName = 'bg';
-const stateClassName = 'line';
 
 interface CPAndLinkCanceledViewProps {
   media: Media;
@@ -93,7 +91,6 @@ interface CPApprovedViewProps {
 }
 
 function CPApprovedView(props: CPApprovedViewProps) {
-  const history = useHistory();
   const { student, media } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
@@ -127,6 +124,16 @@ function CPApprovedView(props: CPApprovedViewProps) {
 
     cPLinked();
   }, [media]);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'bg2';
+  }, [student]);
 
   return (
     <>
@@ -153,7 +160,6 @@ interface LinkApprovedViewProps {
 }
 
 function LinkApprovedView(props: LinkApprovedViewProps) {
-  const history = useHistory();
   const { student, media, cube } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
@@ -187,6 +193,16 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
       completeLearning();
     }
   }, [student, cube]);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'bg2';
+  }, [student]);
 
   return (
     <>
@@ -218,6 +234,16 @@ function NormalApprovedView(props: NormalApprovedViewProps) {
     }
     return PROGRESS;
   }, [student]);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'bg2';
+  }, [student]);
   return (
     <>
       <button
@@ -238,10 +264,10 @@ interface ApprovedViewProps {
 
 function ApprovedView(props: ApprovedViewProps) {
   const { media, student, cube } = props;
-  if (media.mediaType === 'LinkMedia') {
+  if (media.mediaType === 'ContentsProviderMedia') {
     return <CPApprovedView media={media} student={student} />;
   }
-  if (media.mediaType === 'ContentsProviderMedia') {
+  if (media.mediaType === 'LinkMedia') {
     return <LinkApprovedView media={media} student={student} cube={cube} />;
   }
   return <NormalApprovedView student={student} />;
