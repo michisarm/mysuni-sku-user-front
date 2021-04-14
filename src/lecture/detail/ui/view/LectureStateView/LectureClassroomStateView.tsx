@@ -122,7 +122,7 @@ function SubmittedView() {
         className={`ui button free ${actionClassName} p18`}
         onClick={cancel}
       >
-        {SUBMIT}
+        {CANCEL}
       </button>
       <button
         className={`ui button free ${stateClassName} p18`}
