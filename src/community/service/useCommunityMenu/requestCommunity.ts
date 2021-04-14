@@ -20,7 +20,7 @@ import { setCommunityAdminGroupsStore } from 'community/store/CommunityAdminGrou
 
 export function requestCommunityMenu(communityId: string) {
   const menuArr: any = [];
-  findCommunityMenu(communityId).then(community => {
+  return findCommunityMenu(communityId).then(community => {
 
     community.data.map((item: any, index: number) => {
       if (item.parentId === null) {
@@ -78,11 +78,10 @@ export function requestCommunityMenu(communityId: string) {
     //   }
     // })
 
-    console.log('menuArr :', menuArr);
-
-
+    // console.log('menuArr :', menuArr);
     //여기서 트리구조 형태로 배열 만들어준다.
     setCommunityAdminMenu({ 'menu': menuArr });
+    return menuArr
   });
 }
 
@@ -149,7 +148,5 @@ export function getCommunitySurvey(surveyId: string) {
 }
 
 export function requestCommunityMenuOrder(communityId: string) {
-  return setCommunityMenuOrder(communityId).then(result => {
-    return result
-  });
+  return setCommunityMenuOrder(communityId)
 }
