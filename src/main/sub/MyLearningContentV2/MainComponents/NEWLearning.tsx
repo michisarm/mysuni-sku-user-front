@@ -50,9 +50,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
   inMyLectureService,
   history,
 }) {
-  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
-  useRequestCollege();
-
   const CONTENT_TYPE_NAME = '신규과정';
   // const PAGE_SIZE = 8;
   // const { newLectures } = newLectureService!;

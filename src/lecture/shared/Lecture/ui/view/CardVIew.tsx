@@ -59,7 +59,6 @@ export default function CardView({
   remainingDayCount,
   studentCount,
 }: Props) {
-  useRequestCollege();
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
