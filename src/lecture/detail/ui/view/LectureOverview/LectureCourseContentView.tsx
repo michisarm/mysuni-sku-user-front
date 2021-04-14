@@ -83,7 +83,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           <a
             onClick={overviewHashClick}
             className={activatedTab === 'overview' ? 'lms-act' : ''}
-            data-area={Area.CUBE_TAB}
+            data-area={Area.CARD_TAB}
             data-action={Action.CLICK}
             data-action-name="CARD TAB 클릭::Overview"
           >
@@ -95,7 +95,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <a
                 onClick={instructorHashClick}
                 className={activatedTab === 'instructor' ? 'lms-act' : ''}
-                data-area={Area.CUBE_TAB}
+                data-area={Area.CARD_TAB}
                 data-action={Action.CLICK}
                 data-action-name="CARD TAB 클릭::강사정보"
               >
@@ -108,7 +108,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <a
                 onClick={badgeHashClick}
                 className={activatedTab === 'badge' ? 'lms-act' : ''}
-                data-area={Area.CUBE_TAB}
+                data-area={Area.CARD_TAB}
                 data-action={Action.CLICK}
                 data-action-name="CARD TAB 클릭::관련 Badge"
               >
@@ -121,7 +121,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <a
                 onClick={relatedHashClick}
                 className={activatedTab === 'related' ? 'lms-act' : ''}
-                data-area={Area.CUBE_TAB}
+                data-area={Area.CARD_TAB}
                 data-action={Action.CLICK}
                 data-action-name="CARD TAB 클릭::관련과정"
               >
@@ -131,7 +131,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           <a
             onClick={commentHashClick}
             className={activatedTab === 'comment' ? 'lms-act' : ''}
-            data-area={Area.CUBE_TAB}
+            data-area={Area.CARD_TAB}
             data-action={Action.CLICK}
             data-action-name="CARD TAB 클릭::Comments"
           >
