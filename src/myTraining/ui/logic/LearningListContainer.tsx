@@ -6,6 +6,7 @@ import { NoSuchContentPanel } from 'shared';
 import { useRequestCollege } from 'shared/service/useCollege/useRequestCollege';
 import isIncludeCineroomId from 'shared/helper/isIncludeCineroomId';
 import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
+import { UpcomingClassroomInfo } from '../../../lecture/model/UpcomingClassroomInfo';
 import { findCardList } from '../../../lecture/detail/api/cardApi';
 import CardView from '../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
@@ -22,10 +23,16 @@ interface MatchPrams {
   type: string;
 }
 
+type CardListExtendsUpcomingClassRom = CardWithCardRealtedCount & {
+  upcomingClassroomInfo?: UpcomingClassroomInfo;
+};
+
 function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
   useRequestCollege();
 
-  const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
+  const [cardList, setCardList] = useState<CardListExtendsUpcomingClassRom[]>(
+    []
+  );
   const [viewType, setViewType] = useState<EnrollingViewType>('All');
 
   const onChangeViewType = (e: any, data: any, func?: any) => {
@@ -115,7 +122,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
           {cardList.length > 0 ? (
             <Lecture.Group type={Lecture.GroupType.Box}>
               {cardList.map((item, i) => {
-                const { card, cardRelatedCount } = item;
+                const { card, cardRelatedCount, upcomingClassroomInfo } = item;
                 const isRequired = card.permittedCinerooms
                   ? isIncludeCineroomId(card.permittedCinerooms)
                   : false;
@@ -135,6 +142,11 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                         type={card.type}
                         passedStudentCount={cardRelatedCount.passedStudentCount}
                         starCount={cardRelatedCount.starCount}
+                        capacity={upcomingClassroomInfo?.capacity}
+                        studentCount={upcomingClassroomInfo?.studentCount}
+                        remainingDayCount={
+                          upcomingClassroomInfo?.remainingDayCount
+                        }
                       />
                     </CardGroup>
                   </li>
