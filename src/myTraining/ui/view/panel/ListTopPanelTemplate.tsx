@@ -1,6 +1,6 @@
 import React from 'react';
 import { MyApprovalContentType } from 'myTraining/ui/model/MyApprovalContentType';
-import { ContentType } from 'myTraining/ui/page/NewLearningPage';
+import { ContentType } from 'myTraining/ui/logic/NewLearningListContainer';
 import { MyLearningContentType } from '../../model/MyLearningContentType';
 import { MyPageContentType } from '../../model/MyPageContentType';
 import { MyContentType } from '../../model/MyContentType';
@@ -22,24 +22,12 @@ function ListTopPanelTemplate(props: Props) {
       case MyPageContentType.EarnedStampList:
       case MyApprovalContentType.PersonalLearning:
       case ContentType.Enrolling:
-        return (
-          <div className={className}>
-            {children}
-          </div>
-        );
+        return <div className={className}>{children}</div>;
       default:
         return (
-          (activeFilter && className === 'right-wrap') &&
-          (
-            <div className={className}>
-              {children}
-            </div>
-          ) ||
-          (
-            <>
-              {children}
-            </>
-          )
+          (activeFilter && className === 'right-wrap' && (
+            <div className={className}>{children}</div>
+          )) || <>{children}</>
         );
     }
   };

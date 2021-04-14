@@ -122,7 +122,7 @@ function SubmittedView() {
         className={`ui button free ${actionClassName} p18`}
         onClick={cancel}
       >
-        {SUBMIT}
+        {CANCEL}
       </button>
       <button
         className={`ui button free ${stateClassName} p18`}
@@ -167,6 +167,16 @@ function ApprovedView(props: ApprovedViewProps) {
       return WAIT;
     }
     return PROGRESS;
+  }, [student]);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'bg2';
   }, [student]);
   return (
     <>

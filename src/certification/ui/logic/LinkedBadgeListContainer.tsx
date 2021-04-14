@@ -24,20 +24,23 @@ function LinkedBadgeListContainer({
         {(linkedBadges && linkedBadges.length > 0 && (
           <ul>
             {linkedBadges.map((linkedBadge, index) => {
-              const mainCategoryId = getMainCategoryId(linkedBadge);
+              const mainCategoryId = getMainCategoryId(linkedBadge.badge);
 
               return (
                 <li key={`linked-badge-${index}`}>
                   <BadgeView
-                    id={linkedBadge.id}
-                    name={linkedBadge.name}
-                    level={linkedBadge.level}
-                    iconUrl={linkedBadge.iconUrl}
+                    id={linkedBadge.badge.id}
+                    name={linkedBadge.badge.name}
+                    level={linkedBadge.badge.level}
+                    iconUrl={linkedBadge.badge.iconUrl}
                     categoryId={mainCategoryId}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
+                    backgroundImagePath={linkedBadge.badgeCategory.backgroundImagePath}
+                    badgeColor={linkedBadge.badgeCategory.themeColor}
+                    topImagePath={linkedBadge.badgeCategory.topImagePath}
                   />
-                  <div className="badge-name">{linkedBadge.name}</div>
+                  <div className="badge-name">{linkedBadge.badge.name}</div>
                 </li>
               );
             })}

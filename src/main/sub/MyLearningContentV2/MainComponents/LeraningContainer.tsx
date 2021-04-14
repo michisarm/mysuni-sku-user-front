@@ -17,7 +17,6 @@ import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
 

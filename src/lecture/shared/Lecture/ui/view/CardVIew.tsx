@@ -59,7 +59,6 @@ export default function CardView({
   remainingDayCount,
   studentCount,
 }: Props) {
-  useRequestCollege();
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
@@ -179,10 +178,6 @@ export default function CardView({
   };
 
   const renderRibbon = () => {
-    if (isRequired) {
-      return <Label className="ribbon2">핵인싸과정</Label>;
-    }
-
     if (
       studentCount !== undefined &&
       capacity !== undefined &&
@@ -197,6 +192,10 @@ export default function CardView({
       } else {
         return <Label className="day">D-{remainingDayCount}</Label>;
       }
+    }
+
+    if (isRequired) {
+      return <Label className="ribbon2">핵인싸과정</Label>;
     }
   };
 

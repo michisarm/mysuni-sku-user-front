@@ -10,6 +10,7 @@ import TaskDetailBody from '../model/TaskDetailBody';
 import { ClassroomModel } from '../../../personalcube/classroom/model';
 import { AxiosResponse } from 'axios';
 import TranscriptCountModel from '../model/TranscriptCountModel';
+import { findPost, findPostBody } from './cubeApi';
 
 const BASE_URL = '/api/cube';
 const FEEDBACK_URL = '/api/feedback';
@@ -61,7 +62,7 @@ export function findTask(
   if (tabType === 'Posts') {
     url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   } else {
-    url = `${BASE_URL}/posts/byBoardIdAndPatronKey?boardId=${boardId}&patronKey=${''}&offset=${offset}&limit=${limit}`;
+    url = `${BASE_URL}/posts/myByBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   }
   return axiosApi.get<Task>(url).then(response => {
     return response && response.data;
@@ -86,23 +87,6 @@ export function findTaskCommentCount(
     arr.results = response.data;
     return response && arr.results;
   });
-}
-
-export function getTaskDetail(
-  postId: string,
-  postType: string
-): Promise<TaskDetail> {
-  const url = `${BASE_URL}/posts/flow/detail/${postId}`;
-  const replyUrl = `${BASE_URL}/replies/${postId}`;
-  if (postType === 'parent') {
-    return axiosApi.get<TaskDetail>(url).then(response => {
-      return response && response.data;
-    });
-  } else {
-    return axiosApi.get<TaskDetail>(replyUrl).then(response => {
-      return response && response.data;
-    });
-  }
 }
 
 export function getCommentFeedbackId(commentFeedbackId: string): Promise<any> {

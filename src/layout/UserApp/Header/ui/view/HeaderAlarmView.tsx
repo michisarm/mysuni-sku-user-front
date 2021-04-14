@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
 import MentionModel from 'notie/model/MentionModel';
 import moment from 'moment';
-
+import { Area } from 'tracker/model';
 
 interface Props {
   myNotieMentions: MentionModel[],
@@ -82,7 +82,7 @@ class HeaderAlarmView extends Component<Props, State> {
               <Icon className="clear2 selected link" />
             </Button>
           </div>
-          <div className="lms-alarm-body">
+          <div className="lms-alarm-body" data-area={Area.HEADER_ALARM}>
             {myNotieMentions && myNotieMentions.map((result, index) => {
               let notReadClass = '';
               if (!result.read) {

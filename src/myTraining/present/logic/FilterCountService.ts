@@ -6,8 +6,9 @@ import MyTrainingFilterRdoModel from "../../model/MyTrainingFilterRdoModel";
 import { MyPageContentType } from "../../ui/model/MyPageContentType";
 import { MyLearningContentType } from "../../ui/model/MyLearningContentType";
 import InMyLectureApi from "../apiclient/InMyLectureApi";
-import { findCollegeAndCardCount } from "../../../lecture/detail/api/cardApi";
+import { findCollegeAndCardCount, findCardTypeAndCardCount } from "../../../lecture/detail/api/cardApi";
 import InMyLectureFilterRdoModel from "../../model/InMyLectureFilterRdoModel";
+import { getTotalFilterCountView } from "../../../lecture/model/CardTypeAndCardCount";
 
 
 @autobind
@@ -42,17 +43,28 @@ class FilterCountService {
 
     if (response) {
       if (contentType === MyLearningContentType.Required) {
-        const filterCountViews = response.map(
-          (collegeAndCardCount: any) => new FilterCountViewModel({ collegeId: collegeAndCardCount.collegeId, college: collegeAndCardCount.count } as FilterCountViewModel)
-        );
-        const totalFilterCountView = FilterCountViewModel.getTotalFilterCountView(
-          filterCountViews
+        let totalCollegeCount = 0;
+
+        const filterCountViews = response.map((collegeAndCardCount: any) => {
+          totalCollegeCount += collegeAndCardCount.count;
+          return new FilterCountViewModel({ collegeId: collegeAndCardCount.collegeId, college: collegeAndCardCount.count } as FilterCountViewModel);
+        }
         );
 
-        runInAction(() => {
-          this._filterCountViews = filterCountViews;
-          this._totalFilterCountView = totalFilterCountView;
-        });
+        const cardTypeAndCardCounts = await findCardTypeAndCardCount();
+
+        if (
+          cardTypeAndCardCounts &&
+          cardTypeAndCardCounts.length > 0
+        ) {
+          const totalFilterCountView = getTotalFilterCountView(cardTypeAndCardCounts);
+          totalFilterCountView.college = totalCollegeCount;
+
+          runInAction(() => {
+            this._filterCountViews = filterCountViews;
+            this._totalFilterCountView = totalFilterCountView;
+          });
+        }
       } else {
         const filterCountViews = response.map(
           (filterCountView: any) => new FilterCountViewModel(filterCountView)

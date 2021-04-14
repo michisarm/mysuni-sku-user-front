@@ -16,6 +16,7 @@ import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 import { ExtraTaskType } from '../../model/ExtraTaskType';
 import { CollegeAndCardCount } from '../../model/CollegeAndCardCount';
 import { RecommendCardRom } from '../../model/RecommendCardRom';
+import { CardTypeAndCardCount } from '../../model/CardTypeAndCardCount';
 
 const BASE_URL = '/api/lecture';
 
@@ -182,6 +183,12 @@ export function findCollegeAndCardCount() {
   return axios.get<CollegeAndCardCount[]>(url).then(AxiosReturn);
 }
 
+export function findCardTypeAndCardCount() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/required/cardTypeAndCardCount`;
+  return axios.get<CardTypeAndCardCount[]>(url).then(AxiosReturn);
+}
+
 export function saveTask(studentId: string, extraTaskType: ExtraTaskType) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/save/${studentId}/${extraTaskType}`;
@@ -217,7 +224,7 @@ export function registerHomework(
   fileBoxId: string,
   homework: string
 ): Promise<void> {
-  const url = `${BASE_URL}/students/registerHomework/${studentId}/${fileBoxId}`;
+  const url = `${BASE_URL}/students/registerHomework/${studentId}?fileBoxId=${fileBoxId}`;
   const axios = getAxios();
   return axios
     .put<void>(url, { homeworkContent: homework })

@@ -5,6 +5,8 @@ import { CubeDetail } from '../../model/CubeDetail';
 import { PostBodyCdo, PostCdo } from '../model/TaskCdo';
 import { createCacheApi } from './cacheableApi';
 import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
+import TaskDetailPost from '../model/TaskDetail';
+import TaskDetailBody from '../model/TaskDetailBody';
 
 const BASE_URL = '/api/cube';
 
@@ -54,10 +56,22 @@ export function registerPost(postCdo: PostCdo) {
   return axios.post<string>(url, postCdo).then(AxiosReturn);
 }
 
+export function findPost(postId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/posts/${postId}`;
+  return axios.get<TaskDetailPost>(url).then(AxiosReturn);
+}
+
 export function registerPostBody(postBodyCdo: PostBodyCdo) {
   const axios = getAxios();
   const url = `${BASE_URL}/postbodys`;
   return axios.post<string>(url, postBodyCdo).then(AxiosReturn);
+}
+
+export function findPostBody(postId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/postbodys/${postId}`;
+  return axios.get<TaskDetailBody>(url).then(AxiosReturn);
 }
 
 export function modifyPost(
