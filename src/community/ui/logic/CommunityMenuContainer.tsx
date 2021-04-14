@@ -341,8 +341,8 @@ function CommunityMenuContainer() {
         if (obj.type === 'DISCUSSION') {
           addCommunityDiscussion(communityId, obj).then((result) => {
             //오더정리
-            requestCommunityMenuOrder(communityId).then((result) => {
-              requestCommunityMenu(communityId);
+            requestCommunityMenu(communityId).then((result) => {
+              requestCommunityMenuOrder(communityId);
               reactAlert({
                 title: '',
                 message:
@@ -353,8 +353,8 @@ function CommunityMenuContainer() {
         } else {
           addCommunityMenu(communityId, obj).then((result) => {
             //오더정리
-            requestCommunityMenuOrder(communityId).then((result) => {
-              requestCommunityMenu(communityId);
+            requestCommunityMenu(communityId).then((result) => {
+              requestCommunityMenuOrder(communityId);
               reactAlert({
                 title: '',
                 message:
@@ -383,9 +383,9 @@ function CommunityMenuContainer() {
       const validateCheck = confirmBlank(obj)
       if (validateCheck === 'success') {
         if (obj.type === 'DISCUSSION') {
-          addCommunityDiscussion(communityId, obj).then((result) => {
+          addCommunityDiscussion(communityId, obj).then(() => {
             //오더정리
-            requestCommunityMenuOrder(communityId).then((result) => {
+            requestCommunityMenuOrder(communityId).then(() => {
               requestCommunityMenu(communityId);
               reactAlert({
                 title: '',
@@ -397,7 +397,7 @@ function CommunityMenuContainer() {
         } else {
           addCommunityMenu(communityId, obj).then((result) => {
             //오더정리
-            requestCommunityMenuOrder(communityId).then((result) => {
+            requestCommunityMenuOrder(communityId).then(() => {
               requestCommunityMenu(communityId);
               reactAlert({
                 title: '',
@@ -504,14 +504,14 @@ function CommunityMenuContainer() {
     }
 
     const originOrder = selectedRow.order;
-    const list = (selectedRow?.parentId ? communityAdminMenu?.menu.filter((m) => {
-      if (m.id === selectedRow?.parentId) {
-        return m.child
-      }
-    })[0].child.filter((c: any) => c.order > selectedRow.order)
-      .sort((a: any, b: any) => a.order - b.order) :
-      communityAdminMenu?.menu.filter((c) => c.parentId === null && c.order > selectedRow.order)
-        .sort((a, b) => a.order - b.order)
+    const list = (selectedRow?.parentId ?
+      communityAdminMenu?.menu.filter((m) => {
+        if (m.id === selectedRow?.parentId) {
+          return m.child
+        }
+      })[0].child.filter((c: any) => c.order > selectedRow.order).sort((a: any, b: any) => a.order - b.order) 
+      :
+      communityAdminMenu?.menu.filter((c) => c.parentId === null && c.order > selectedRow.order).sort((a, b) => a.order - b.order)
     )
 
     if (list && list.length === 0) {
