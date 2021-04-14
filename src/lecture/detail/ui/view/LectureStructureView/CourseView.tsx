@@ -2,6 +2,7 @@ import React, { Fragment, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import {
+  LectureStructureChapterItem,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
   LectureStructureDurationableCubeItem,
@@ -153,68 +154,6 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                 />
               );
             }
-          })}
-        {items === undefined &&
-          cubes !== undefined &&
-          cubes.map(cube => {
-            return (
-              <>
-                {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
-                  <CubeView
-                    key={cube.cubeId}
-                    name={cube.name}
-                    state={cube.state}
-                    activated={cube.path === pathname}
-                    learningTime={cube.learningTime}
-                    cubeType={cube.cubeType}
-                    path={cube.path}
-                    can={cube.can}
-                  />
-                )}
-                {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
-                  <DurationableCubeView
-                    key={cube.cubeId}
-                    name={cube.name}
-                    state={cube.state}
-                    activated={cube.path === pathname}
-                    learningTime={cube.learningTime}
-                    cubeType={cube.cubeType}
-                    path={cube.path}
-                    can={cube.can}
-                    duration={
-                      (cube as LectureStructureDurationableCubeItem).duration
-                    }
-                  />
-                )}
-                {cube.test !== undefined && (
-                  <TestView
-                    name={cube.test.name}
-                    state={cube.test.state}
-                    path={cube.test.path}
-                    can={cube.test.can}
-                    activated={cube.test.path === pathname}
-                  />
-                )}
-                {cube.survey !== undefined && (
-                  <SurveyView
-                    name={cube.survey.name}
-                    state={cube.survey.state}
-                    path={cube.survey.path}
-                    can={cube.survey.can}
-                    activated={cube.survey.path === pathname}
-                  />
-                )}
-                {cube.report !== undefined && (
-                  <ReportView
-                    name={cube.report.name}
-                    state={cube.report.state}
-                    path={cube.report.path}
-                    can={cube.report.can}
-                    activated={cube.report.path === pathname}
-                  />
-                )}
-              </>
-            );
           })}
         {test && (
           <CourseTestView
