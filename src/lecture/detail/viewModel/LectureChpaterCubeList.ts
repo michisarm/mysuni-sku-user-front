@@ -1,6 +1,8 @@
+import CubeType from '../../model/CubeType';
 export interface LectureChpaterCubeList {
+  cubeId: string;
   name: string | null;
   description: string | null;
-  type: string;
+  type: CubeType;
   learningTime: number;
 }

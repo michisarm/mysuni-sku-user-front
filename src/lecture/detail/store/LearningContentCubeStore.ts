@@ -1,14 +1,16 @@
-import { Cube } from '../../model/Cube';
+import { LectureChpaterCubeList } from '../viewModel/LectureChpaterCubeList';
 import { createStore } from './Store';
 
 const [
   setLearningContentCube,
   onLearningContentCube,
   getLearningContentCube,
-] = createStore<Cube[]>();
+  useLearningContentCube,
+] = createStore<LectureChpaterCubeList[]>();
 
 export {
   setLearningContentCube,
   onLearningContentCube,
   getLearningContentCube,
+  useLearningContentCube,
 };

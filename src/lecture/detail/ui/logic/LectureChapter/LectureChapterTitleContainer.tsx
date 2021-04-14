@@ -1,9 +1,9 @@
 import React from 'react';
 import LectureChapterTitleView from '../../view/LectureChapterView/LectureChapterTitleView';
-import { getLearningContent } from '../../../store/LearningContentStore';
+import { useLearningContent } from '../../../store/LearningContentStore';
 
 function LectureChapterTitleContainer() {
-  const LearningContent = getLearningContent();
+  const LearningContent = useLearningContent();
 
   return (
     <>

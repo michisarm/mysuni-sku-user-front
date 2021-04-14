@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import LectureCourseListView from '../../view/LectureChapterView/LectureCourseListView';
-import { useLectureCubeList } from '../../../service/useLectureChapter/useLectureCubeList';
+import { useLearningContentCube } from '../../../store/LearningContentCubeStore';
 
 function LectureCourseListContainer() {
-  const cubeList = useLectureCubeList();
+  const cubeList = useLearningContentCube();
 
   return (
     <>

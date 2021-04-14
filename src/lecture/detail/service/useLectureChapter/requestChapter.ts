@@ -1,6 +1,7 @@
 import { findCardCache } from '../../../detail/api/cardApi';
 import { ChapterParams } from '../../model/ChapterParams';
 import { getContents } from './utility/getContent';
+import { getCombineCubeAndContentCubeList } from './utility/getCombineCubeAndContentCubeList';
 import { findCubesByIdsCache } from '../../api/cubeApi';
 import { setLearningContent } from '../../store/LearningContentStore';
 import { setLearningContentCube } from '../../store/LearningContentCubeStore';
@@ -25,8 +26,14 @@ export async function requestChapter(params: ChapterParams) {
   const cubeIds: string[] = [];
   learningContent?.children.map(item => cubeIds.push(item.contentId));
 
+  const contentCubeList = learningContent && learningContent.children;
   const cubeList = await findCubesByIdsCache(cubeIds);
 
+  const learningContentWithCubeList = getCombineCubeAndContentCubeList(
+    contentCubeList,
+    cubeList
+  );
+
   setLearningContent(learningContent);
-  setLearningContentCube(cubeList);
+  setLearningContentCube(learningContentWithCubeList);
 }
