@@ -13,9 +13,11 @@ import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
+import { SkProfileService } from '../../../profile/stores';
 
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
+  skProfileService?: SkProfileService;
   boardService?: BoardService,
   categoryService?: CategoryService,
   postService?: PostService,
@@ -32,6 +34,7 @@ interface States {
 }
 
 @inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
   'board.boardService',
   'board.categoryService',
   'board.postService',
@@ -52,18 +55,17 @@ class QnaModifyContainer extends React.Component<Props, States> {
 
 
   componentDidMount(): void {
-    //
-    const categoryService = this.props.categoryService!;
-    const postService = this.props.postService!;
-    const name = patronInfo.getPatronName() || '';
-    const email = patronInfo.getPatronEmail() || '';
+    const { categoryService, postService, skProfileService } = this.props;
 
-    postService.clearPost();
-    categoryService.findCategoriesByBoardId('QNA')
+    const name = patronInfo.getPatronName() || '';
+    const { email } = skProfileService!.skProfile.member;
+
+    postService!.clearPost();
+    categoryService!.findCategoriesByBoardId('QNA')
       .then(() => {
-        postService.changePostProps('boardId', 'QNA');
-        postService.changePostProps('writer.name', name);
-        postService.changePostProps('writer.email', email);
+        postService!.changePostProps('boardId', 'QNA');
+        postService!.changePostProps('writer.name', name);
+        postService!.changePostProps('writer.email', email);
       });
   }
 
