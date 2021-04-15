@@ -1,10 +1,8 @@
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureClassroom } from '../../../store/LectureClassroomStore';
-import LectureParams from '../../../viewModel/LectureParams';
 
-export async function getClassroomFromCube(params: LectureParams) {
-  const { cubeId } = params;
+export async function getClassroomFromCube(cubeId: string) {
   if (cubeId === undefined) {
     return;
   }
