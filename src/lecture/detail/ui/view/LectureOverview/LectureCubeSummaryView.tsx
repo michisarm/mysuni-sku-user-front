@@ -1,5 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -16,11 +16,13 @@ import LectureClassroom, {
   Classroom,
 } from '../../../viewModel/LectureClassroom';
 import moment from 'moment';
-import { useLectureCardSummary } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
-import { Lecture2, Lecture } from '../../../../shared';
 import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
-
+import { InMyLectureModel } from '../../../../../myTraining/model';
+import { autorun } from 'mobx';
+import { InMyLectureService } from '../../../../../myTraining/stores';
+import { useLectureParams } from '../../../store/LectureParamsStore';
+import { Area } from 'tracker/model';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -214,20 +216,42 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   }, []);
 
   useEffect(() => {
-
     const postService = PostService.instance;
     const currentUrl = window.location.href;
     const hostUrl = window.location.host;
     const alarmUrl = currentUrl.split(hostUrl);
 
-    postService.post.alarmInfo.url = 'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
+    postService.post.alarmInfo.url =
+      'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
     postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
     postService.post.alarmInfo.contentsName = lectureSummary.name;
-
   }, [lectureSummary]);
 
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
+  const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
+
+  const params = useLectureParams();
+
+  useEffect(() => {
+    return autorun(() => {
+      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (params?.cardId === undefined) {
+      return;
+    }
+    setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
+  }, [inMyLectureMap, params?.cardId]);
+
   return (
-    <div className="course-info-header">
+    <div
+      className="course-info-header"
+      data-area={Area.CUBE_HEADER}
+    >
       <div className="contents-header">
         <div className="title-area">
           <div
@@ -276,7 +300,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                   <Label className="bold onlytext">
                     <span className="header-span-first">강사</span>
                     <span className="tool-tip">
-                      {instrutor.instructorId}
+                      {instrutor.memberSummary?.name}
                       <i>
                         <Link
                           to={`/expert/instructor/${instrutor.instructorId}/Introduce`}
@@ -284,9 +308,11 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
                           style={{ whiteSpace: 'nowrap', display: 'block' }}
                           target="_blank"
                         >
-                          {instrutor.instructorId}
+                          {instrutor.memberSummary?.name}
                         </Link>
-                        <span className="tip-id">{instrutor.instructorId}</span>
+                        <span className="tip-id">
+                          {instrutor.memberSummary?.department}
+                        </span>
                       </i>
                     </span>
                   </Label>
@@ -386,12 +412,10 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
               <span>
                 <Icon
                   className={
-                    lectureSummary.mytrainingId === undefined
-                      ? 'listAdd'
-                      : 'listDelete'
+                    inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
                   }
                 />
-                {lectureSummary.mytrainingId === undefined
+                {inMyLectureModel === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}
               </span>

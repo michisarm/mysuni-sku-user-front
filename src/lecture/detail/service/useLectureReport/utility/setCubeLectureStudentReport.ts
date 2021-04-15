@@ -17,14 +17,14 @@
 }
  */
 
-import { modifyStudent } from '../../../api/lectureApi';
 import { LectureReportCubeItemParams } from 'lecture/detail/viewModel/LectureReport';
 import { getLectureReport } from '../../../store/LectureReportStore';
+import { registerHomework } from '../../../api/cardApi';
 
 export async function setCubeLectureStudentReport(
   params: LectureReportCubeItemParams
 ): Promise<void> {
-  await modifyStudent(
+  await registerHomework(
     getLectureReport()?.studentReport?.id || '',
     getLectureReport()?.studentReport?.homeworkFileBoxId || '',
     getLectureReport()?.studentReport?.homeworkContent || ''

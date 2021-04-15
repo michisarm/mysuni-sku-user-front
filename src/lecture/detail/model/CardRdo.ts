@@ -5,6 +5,7 @@ export interface CardRdo {
   learningTimeRanges?: string;
   hasStamp?: boolean;
   hasBadge?: boolean;
+  instructorId?: string;
   limit: number;
   offset: number;
   orderBy?: string;
@@ -14,4 +15,5 @@ export interface CardRdo {
   searchable?: boolean;
   startLearningDate?: string;
   endLearningDate?: string;
+  type?: string[];
 }

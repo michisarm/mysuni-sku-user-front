@@ -54,21 +54,19 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   };
 
   componentDidMount(): void {
-    //
-    const skProfileService = this.props.skProfileService!;
-    const categoryService = this.props.categoryService!;
-    const postService = this.props.postService!;
+    
+    const { postService, categoryService, skProfileService } = this.props;
+    const { skProfile } = skProfileService!;
     const name = patronInfo.getPatronName() || '';
-    const email = patronInfo.getPatronEmail() || '';
-    const { company } = skProfileService!.skProfile.member;
+    const { email, company } = skProfileService!.skProfile.member;
     // postService.clearPost();
-    categoryService.findCategoriesByBoardId('QNA')
+    categoryService!.findCategoriesByBoardId('QNA')
       .then(() => {
-        postService.changePostProps('boardId', 'QNA');
-        postService.changePostProps('writer.name', name);
-        postService.changePostProps('writer.email', email);
-        postService.changePostProps('writer.companyName', company);
-        postService.changePostProps('writer.companyCode', skProfileService!.skProfile.member.companyCode);
+        postService!.changePostProps('boardId', 'QNA');
+        postService!.changePostProps('writer.name', name);
+        postService!.changePostProps('writer.email', email);
+        postService!.changePostProps('writer.companyName', company);
+        postService!.changePostProps('writer.companyCode', skProfileService!.skProfile.member.companyCode);
       });
   }
 
@@ -160,9 +158,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { focus, write, fieldName, alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
-    categorys.map((data, index) => {
-      questionType.push({ key: index, value: data.categoryId, text: data.name });
-    });
+    // categorys.map((data, index) => {
+    //   questionType.push({ key: index, value: data.categoryId, text: data.name });
+    // });
 
     const currentUrl = window.location.href;
 

@@ -5,10 +5,10 @@ export default interface LectureCardSummary extends LectureSummary {
   cardId: string;
   stampCount: number;
   thumbImagePath?: string;
-  mytrainingId?: string;
   difficultyLevel: DifficultyLevel;
   hasCommunity?: boolean;
   communityId?: string;
+  hasClassroomCube?: boolean;
 }
 
 export function getEmptyLectureCardSummary(): LectureCardSummary {

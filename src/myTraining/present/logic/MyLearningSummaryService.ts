@@ -4,6 +4,8 @@ import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
+import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
+import { findMyLectureTimeSummary } from '../../../lecture/detail/api/cubeApi';
 
 
 @autobind
@@ -17,16 +19,24 @@ class MyLearningSummaryService {
   myLearningSummary: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
   @observable
-  private _totalMyLearningSummary: MyLearningSummaryModel = new MyLearningSummaryModel();
-
-  @observable
   totalMyLearningSummaryDash: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
-  myLearningSummaryCachingFetch: CachingFetch = new CachingFetch();
+  @observable
+  _lectureTimeSummary?: LectureTimeSummary;
 
-  @computed get totalMyLearningSummary() {
-    return this._totalMyLearningSummary;
+  @computed get lectureTimeSummary() {
+    return this._lectureTimeSummary;
   }
+
+  @action async findLectureTimeSummary() {
+    const foundLectureTimeSummary = await findMyLectureTimeSummary();
+
+    runInAction(() => {
+      this._lectureTimeSummary = foundLectureTimeSummary;
+    });
+  }
+
+  myLearningSummaryCachingFetch: CachingFetch = new CachingFetch();
 
   constructor(myLearningSummaryApi: MyLearningSummaryApi) {
     this.myLearningSummaryApi = myLearningSummaryApi;
@@ -54,17 +64,6 @@ class MyLearningSummaryService {
       this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
       return myLearningSummary;
     });
-  }
-
-  ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
-  @action
-  async findTotalMyLearningSummary() {
-    this.myLearningSummaryCachingFetch.fetch(
-      () => this.myLearningSummaryApi.findTotalMyLearningSummary(),
-      (totalMyLearningSummary) => runInAction(() => {
-        return this._totalMyLearningSummary = new MyLearningSummaryModel(totalMyLearningSummary)
-      })
-    );
   }
 
   @action

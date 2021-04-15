@@ -218,7 +218,6 @@ class AplModel extends NewQueryModel {
       creationTime: aplModel.creationTime,
       creatorId:
         SkProfileService.instance.skProfile.member.email ||
-        patronInfo.getPatronEmail() ||
         '',
       creatorName:
         SkProfileService.instance.skProfile.member.name ||

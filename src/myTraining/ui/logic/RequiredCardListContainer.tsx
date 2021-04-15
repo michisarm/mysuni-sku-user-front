@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import ReactGA from 'react-ga';
-import { mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, Offset } from '@nara.platform/accent';
 import { useHistory, useParams } from 'react-router-dom';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { LectureService, SeeMoreButton } from '../../../lecture';
@@ -17,6 +17,7 @@ import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
+import { useScrollMove } from '../../useScrollMove';
 
 
 interface RequiredCardListContainerProps {
@@ -36,17 +37,26 @@ function RequiredCardListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { scrollOnceMove } = useScrollMove();
+
   const { lectureTableViews, lectureTableCount } = lectureService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
   useRequestFilterCountView();
   
   useEffect(() => {
-    requestRequiredCards();
+    lectureService!.clearAllTableViews();
+    lectureService!.initFilterRdo();
+    
+    if(params.pageNo === '1') {
+      requestRequiredCards();
+      return;
+    } 
 
-    return () => {
-      lectureService!.clearAllTableViews();
-    }
+    const currentPageNo = parseInt(params.pageNo);
+    const limit = currentPageNo * PAGE_SIZE;
+
+    requestRequiredCardsWithPage({ offset: 0, limit });
   }, []);
 
   useEffect(() => {
@@ -56,17 +66,7 @@ function RequiredCardListContainer({
     }
   }, [showResult]);
 
-  useEffect(() => {
-    if(params.pageNo === '1') {
-      return;
-    }
-      
-    requestRequiredCardsWithPage();
-  }, [params.pageNo]);
-
   const requestRequiredCards = async () => {
-    lectureService!.initFilterRdo();
-
     setIsLoading(true);
     const isEmpty = await lectureService!.findAllRqdTableViews();
     setResultEmpty(isEmpty);
@@ -83,16 +83,12 @@ function RequiredCardListContainer({
     history.replace('./1');
   }
 
-  const requestRequiredCardsWithPage = async () => {
-    const currentPageNo = parseInt(params.pageNo);
-
-    const limit = PAGE_SIZE;
-    const offset = (currentPageNo - 1) * PAGE_SIZE;
-
+  const requestRequiredCardsWithPage = async (offset: Offset) => {
     setIsLoading(true);
-    await lectureService!.findAllRqdTableViewsWithPage({ limit, offset });
+    await lectureService!.findAllRqdTableViewsWithPage(offset);
     checkShowSeeMore();
     setIsLoading(false);
+    scrollOnceMove();
   };
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
@@ -103,9 +99,15 @@ function RequiredCardListContainer({
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-    
+
     const currentPageNo = parseInt(params.pageNo);
     const nextPageNo = currentPageNo + 1;
+
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestRequiredCardsWithPage({ offset, limit });
+
 
     history.replace(`./${nextPageNo}`);
   }

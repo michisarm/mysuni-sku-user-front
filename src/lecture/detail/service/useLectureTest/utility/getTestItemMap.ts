@@ -12,8 +12,9 @@ import {
 import { patronInfo } from '@nara.platform/dock';
 import { findGradeSheet } from '../../../api/assistantApi';
 import { getEssayScores } from '../../../model/GradeSheet';
+import { ExtraTaskStatus } from '../../../../model/ExtraTaskStatus';
 
-async function getTestItem(examId: string) {
+async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
   if (examId !== '' && examId !== null) {
     let examination = null;
     {
@@ -30,35 +31,25 @@ async function getTestItem(examId: string) {
     });
 
     const denizenId = patronInfo.getDenizenId() || '';
-    try {
-      const gradeSheet = await findGradeSheet(examId, denizenId);
-      const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
-      const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
-
-      const item: LectureTestItem = {
-        id: examination.id,
-        name: examination.examPaperTitle,
-        questionCount: examination.questionCount,
-        questions: examPaperForm.questions,
-        successPoint: examination.successPoint,
-        totalPoint: examTotalPoint,
-        graderComment,
-        essayScores,
-        description: examPaperForm.description,
-      };
-      return item;
-    } catch (error) {
-      const item: LectureTestItem = {
-        id: examination.id,
-        name: examination.examPaperTitle,
-        questionCount: examination.questionCount,
-        questions: examPaperForm.questions,
-        successPoint: examination.successPoint,
-        totalPoint: examTotalPoint,
-        description: examPaperForm.description,
-      };
-      return item;
+    let gradeSheet;
+    if (testStatus !== null && testStatus !== 'SAVE') {
+      gradeSheet = await findGradeSheet(examId, denizenId);
     }
+    const graderComment = (gradeSheet && gradeSheet.graderComment) || '';
+    const essayScores = (gradeSheet && getEssayScores(gradeSheet)) || [];
+
+    const item: LectureTestItem = {
+      id: examination.id,
+      name: examination.examPaperTitle,
+      questionCount: examination.questionCount,
+      questions: examPaperForm.questions,
+      successPoint: examination.successPoint,
+      totalPoint: examTotalPoint,
+      graderComment,
+      essayScores,
+      description: examPaperForm.description,
+    };
+    return item;
   }
 }
 
@@ -78,7 +69,7 @@ export async function getTestItemMapFromCourse(
     examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId);
+  const testItem = await getTestItem(examId, student.extraWork.testStatus);
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }
@@ -97,7 +88,7 @@ export async function getTestItemMapFromCube(
     return;
   }
   let examId = student.studentScore.examId;
-  if (examId === null) {
+  if (examId === null || examId === '') {
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;
@@ -105,7 +96,7 @@ export async function getTestItemMapFromCube(
     examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId);
+  const testItem = await getTestItem(examId, student.extraWork.testStatus);
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }

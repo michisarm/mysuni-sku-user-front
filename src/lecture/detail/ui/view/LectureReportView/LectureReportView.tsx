@@ -27,8 +27,12 @@ import {
   getLectureParams,
   useLectureParams,
 } from '../../../store/LectureParamsStore';
-import { submitTask } from '../../../api/cardApi';
+import {
+  clearFindMyCardRelatedStudentsCache,
+  submitTask,
+} from '../../../api/cardApi';
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
+import { Area } from 'tracker/model';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -104,6 +108,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         await setCubeLectureReport();
         if (params?.cardId !== undefined) {
           await submitTask(student.id, 'Report');
+          await clearFindMyCardRelatedStudentsCache();
           await requestCardLectureStructure(params?.cardId);
           //새로고침
           if (params.cubeId === undefined) {
@@ -173,7 +178,10 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   return (
     <>
       {/* Header */}
-      <div className="course-info-header">
+      <div
+        className="course-info-header"
+        data-area={Area.CUBE_HEADER}
+      >
         <Reportheader />
       </div>
 

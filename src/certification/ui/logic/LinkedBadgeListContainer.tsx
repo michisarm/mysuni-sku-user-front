@@ -9,7 +9,6 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeView from '../view/BadgeView';
 import { getMainCategoryId } from '../../model/Badge';
 
-
 interface LinkedBadgeListContainerProps {
   badgeService?: BadgeService;
 }
@@ -21,41 +20,37 @@ function LinkedBadgeListContainer({
 
   return (
     <LinkedBadgeListWrapper>
-      <div className="list">
-        {
-          linkedBadges && 
-          linkedBadges.length > 0 && (
-            <ul>
-              {linkedBadges.map((linkedBadge, index) => {
-                const mainCategoryId = getMainCategoryId(linkedBadge);
+      <div className="badge-list-type">
+        {(linkedBadges && linkedBadges.length > 0 && (
+          <ul>
+            {linkedBadges.map((linkedBadge, index) => {
+              const mainCategoryId = getMainCategoryId(linkedBadge.badge);
 
-                return (
-                  <li key={`linked-badge-${index}`}>
-                    <BadgeView
-                      id={linkedBadge.id}
-                      name={linkedBadge.name}
-                      level={linkedBadge.level}
-                      iconUrl={linkedBadge.iconUrl}
-                      categoryId={mainCategoryId}
-                      badgeStyle={BadgeStyle.List}
-                      badgeSize={BadgeSize.Small}
-                    />
-                    <div className="badge-name">
-                      {linkedBadge.name}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          ) || (
-          <NoSuchContentPanel message="등록된 연관 Badge가 없습니다." />
-          )
-        }
+              return (
+                <li key={`linked-badge-${index}`}>
+                  <BadgeView
+                    id={linkedBadge.badge.id}
+                    name={linkedBadge.badge.name}
+                    level={linkedBadge.badge.level}
+                    iconUrl={linkedBadge.badge.iconUrl}
+                    categoryId={mainCategoryId}
+                    badgeStyle={BadgeStyle.List}
+                    badgeSize={BadgeSize.Small}
+                    backgroundImagePath={linkedBadge.badgeCategory.backgroundImagePath}
+                    badgeColor={linkedBadge.badgeCategory.themeColor}
+                    topImagePath={linkedBadge.badgeCategory.topImagePath}
+                  />
+                  <div className="badge-name">{linkedBadge.badge.name}</div>
+                </li>
+              );
+            })}
+          </ul>
+        )) || <NoSuchContentPanel message="등록된 연관 Badge가 없습니다." />}
       </div>
     </LinkedBadgeListWrapper>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService'
-  ))(observer(LinkedBadgeListContainer));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(LinkedBadgeListContainer)
+);

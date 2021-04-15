@@ -1,72 +1,37 @@
 import { includes } from 'lodash';
 import moment from 'moment';
-import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
+import { Offset } from '@nara.platform/accent';
 import { FilterCondition } from '../../myTraining/model/FilterCondition';
 import { MyLearningContentType } from '../../myTraining/ui/model/MyLearningContentType';
 import { MyContentType } from '../../myTraining/ui/model/MyContentType';
 import { CardRdo } from '../detail/model/CardRdo';
 
 class LectureFilterRdoModelV2 {
-
-  // default :: offset = 0 / limit = 20
-  offset: Offset = {
-    offset: 0,
-    limit: 20
-  };
-
-  // student 정보를 조회하는 것은 denizenType 의 keyString을 기본적으로 사용함.
-  denizenKey: DenizenKey = {
-    keyString: patronInfo.getDenizenId() || '',
-    patronType: PatronType.Denizen,
-  };
-
-  contentType: MyContentType = MyLearningContentType.Required; // 탭 전환될 때마다 전달되는 contentType
-
-  collegeIds: string[] = []; // 컬리지
-  difficultyLevels: string[] = []; // 난이도
+  cardTypes: string[] = [];
+  contentType: MyContentType = MyLearningContentType.Required;
+  collegeIds: string[] = [];
+  difficultyLevels: string[] = [];
   learningTimes: string[] = [];
-  organizers: string[] = []; // 교육기관
-  required: string = ''; // 핵인싸 ('선택안함' 또한 false 로 간주함.)
+  organizers: string[] = [];
+  required: string = '';
   certifications: string[] = [];
   startDate: string = '';
   endDate: string = '';
   applying: boolean = false;
 
-  // 기본생성자는 offset 및 denizenKey만 초기화 함.
+  offset: Offset = {
+    offset: 0,
+    limit: 20
+  };
+
   constructor(lectureFilterRdo?: LectureFilterRdoModelV2) {
     if (lectureFilterRdo) {
       Object.assign(this, lectureFilterRdo);
     }
   }
 
-  // offset, denizenKey, contentType 만을 검색 조건으로 함.
   static create(contentType: MyContentType) {
     return new LectureFilterRdoModelV2({ contentType } as LectureFilterRdoModelV2);
-  }
-
-  static createWithConditions(
-    collegeIds: string[],
-    difficultyLevels: string[],
-    learningTimes: string[],
-    organizers: string[],
-    required: string,
-    certifications: string[],
-    startDate: string,
-    endDate: string,
-    applying: boolean
-  ) {
-    return new LectureFilterRdoModelV2({
-      collegeIds,
-      difficultyLevels,
-      learningTimes,
-      organizers,
-      required,
-      certifications,
-      startDate,
-      endDate,
-      applying
-    } as LectureFilterRdoModelV2);
   }
 
   changeContentType(contentType: MyContentType) {
@@ -74,6 +39,7 @@ class LectureFilterRdoModelV2 {
   }
 
   setByConditions(conditions: FilterCondition) {
+    this.cardTypes = conditions.learningTypes;
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -94,12 +60,13 @@ class LectureFilterRdoModelV2 {
   }
 
   toCardRdo(): CardRdo {
-    const hasStamp = includes(this.certifications, 'stamp');
-    const hasBadge = includes(this.certifications, 'badge');
+    const hasStamp = includes(this.certifications, 'stamp') || undefined;
+    const hasBadge = includes(this.certifications, 'badge') || undefined;
     const startLearningDate = this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : '';
     const endLearningDate = this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : '';
 
     return {
+      type: this.cardTypes,
       collegeIds: this.collegeIds.join(','),
       difficultyLevels: this.difficultyLevels.join(','),
       learningTimeRanges: this.learningTimes.join(','),

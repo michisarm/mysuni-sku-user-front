@@ -1,32 +1,32 @@
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
-import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 
-import {
-  getLectureTestStudentItem,
-  setLectureTestAnswerItem,
-} from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback, useEffect, useState } from 'react';
+import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
+import React, { useCallback, useState } from 'react';
 import {
   LectureTestAnswerItem,
   LectureTestItem,
   LectureTestStudentItem,
 } from '../../../viewModel/LectureTest';
-import TestQuestionView from './TestQuestionView';
 import {
   saveCourseTestAnswerSheet,
   saveCubeTestAnswerSheet,
 } from 'lecture/detail/service/useLectureTest/utility/saveLectureTest';
 
 import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
-import { EssayScore } from 'lecture/detail/model/GradeSheet';
-import { GraderCommentView } from './GraderCommentView';
 import { useHistory, useParams } from 'react-router-dom';
 import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 
 import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import LectureParams from '../../../viewModel/LectureParams';
-import { saveTask, submitTask } from '../../../api/cardApi';
+import {
+  clearFindMyCardRelatedStudentsCache,
+  saveTask,
+  submitTask,
+} from '../../../api/cardApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
+import { getTestStudentItemMapFromCourse } from '../../../service/useLectureTest/utility/getTestStudentItemMap';
+import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
+import { Area } from 'tracker/model';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -47,13 +47,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
 }) {
   const { cardId } = useParams<LectureParams>();
 
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
   let readOnly = false;
   if (
-    testStudentItem &&
-    testStudentItem.learningState &&
-    (testStudentItem.learningState === 'TestWaiting' ||
-      testStudentItem.learningState === 'Passed' ||
-      testStudentItem.learningState === 'TestPassed')
+    lectureStructureItem &&
+    (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'PASS')
   ) {
     readOnly = true;
   }
@@ -70,7 +69,11 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
     await saveTask(testStudentItem.studentId, 'Test');
+    await clearFindMyCardRelatedStudentsCache();
     await requestCardLectureStructure(cardId);
+
+    await getTestStudentItemMapFromCourse(params); // student 재호출
+    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   }, [answerItem, params]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
@@ -104,8 +107,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
         return;
       }
       const lectureStructureItem = getActiveStructureItem(params.pathname);
-      console.log('lectureStructureItem', lectureStructureItem);
-      if (lectureStructureItem?.test?.can !== true) {
+      if (lectureStructureItem?.can !== true) {
         reactAlert({
           title: '알림',
           message: '학습 완료 후 Test 제출이 가능합니다.',
@@ -129,8 +131,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
               await saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
 
-            await submitTask(testStudentItem.studentId, 'Test');
+            //await submitTask(testStudentItem.studentId, 'Test');  // /examProcess api와 중복
+            await clearFindMyCardRelatedStudentsCache();
             await requestCardLectureStructure(cardId);
+
+            await getTestStudentItemMapFromCourse(params); // student 재호출
+            await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
             openView('result');
           }
           setSubmitOk(true);
@@ -186,6 +192,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
                         testStudentItem={testStudentItem}
                         answerItem={answerItem}
                         modalGbn={modalGbn}
+                        params={params}
                       />
                     </div>
                   </div>
@@ -195,36 +202,30 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
           )}
           {!modalGbn && (
             <div className={testClassName}>
-              <div className="course-info-header">
+              <div
+                className="course-info-header"
+                data-area={Area.CUBE_HEADER}
+              >
                 <div className="survey-header">
                   <div className="survey-header-left">{testItem.name}</div>
                   <div className="survey-header-right">
-                    {!testStudentItem ||
-                      !testStudentItem.learningState ||
-                      (testStudentItem.learningState !== 'Failed' &&
-                        testStudentItem.learningState !== 'Missed' &&
-                        testStudentItem.learningState !== 'TestWaiting' &&
-                        testStudentItem.learningState !== 'Passed' &&
-                        testStudentItem.learningState !== 'TestPassed')}
-                    {testStudentItem &&
-                      testStudentItem.learningState &&
-                      (testStudentItem.learningState === 'Failed' ||
-                        testStudentItem.learningState === 'Missed') && (
+                    {lectureStructureItem &&
+                      lectureStructureItem.student?.extraWork.testStatus ===
+                        'FAIL' && (
                         <button className="ui button free proceeding p18">
                           미이수
                         </button>
                       )}
-                    {testStudentItem &&
-                      testStudentItem.learningState &&
-                      testStudentItem.learningState === 'TestWaiting' && (
+                    {lectureStructureItem &&
+                      lectureStructureItem.student?.extraWork.testStatus ===
+                        'SUBMIT' && (
                         <button className="ui button free proceeding p18">
                           검수중
                         </button>
                       )}
-                    {testStudentItem &&
-                      testStudentItem.learningState &&
-                      (testStudentItem.learningState === 'Passed' ||
-                        testStudentItem.learningState === 'TestPassed') && (
+                    {lectureStructureItem &&
+                      lectureStructureItem.student?.extraWork.testStatus ===
+                        'PASS' && (
                         <button className="ui button free proceeding p18">
                           이수
                         </button>
@@ -257,6 +258,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
                 testStudentItem={testStudentItem}
                 answerItem={answerItem}
                 modalGbn={modalGbn}
+                params={params}
               />
               {!readOnly && (
                 <div className="survey-preview">

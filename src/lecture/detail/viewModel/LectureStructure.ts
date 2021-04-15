@@ -24,6 +24,8 @@ export interface LectureStructureItem {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  student?: Student | null;
+  parentId?: string;
 }
 
 export interface ItemMap {
@@ -35,6 +37,7 @@ export interface ItemMap {
 export interface LectureStructureChapterItem extends LectureStructureItem {
   id: string;
   name: string;
+  cubeCount: number;
 }
 
 export interface LectureStructureTestItem extends LectureStructureItem {
@@ -67,6 +70,7 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
   report?: LectureStructureReportItem;
   student?: Student;
   cube: Cube;
+  last?: boolean;
 }
 
 export interface LectureStructureDurationableCubeItem
@@ -92,6 +96,8 @@ export interface LectureStructureCardItem extends LectureStructureItem {
   report?: LectureStructureReportItem;
   discussions?: LectureStructureDiscussionItem[];
   student?: Student;
+  learningTime: number;
+  additionalLearningTime: number;
 }
 
 export interface LectureStructure {

@@ -1,15 +1,12 @@
 
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Icon, Label } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 
 
 interface Props {
   stampCount: number;
-  // selectedYear: number;
-  // onChangeYear: (e: any, data: any) => void;
   onClickItem?: () => void;
-  thisYearStampCount?: number;
 }
 
 @reactAutobind

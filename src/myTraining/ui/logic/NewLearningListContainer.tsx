@@ -1,18 +1,28 @@
-import React, {useState, Fragment, useEffect} from 'react';
-import {Segment} from 'semantic-ui-react';
-import {RouteComponentProps, withRouter} from 'react-router';
+import React, { useState, Fragment, useEffect } from 'react';
+import { Segment } from 'semantic-ui-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import NewLearningListView from '../view/NewLearningListView';
-import {OrderByType} from '../../../lecture/model';
-import {ContentType} from '../page/NewLearningPage';
-import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
+import { OrderByType } from '../../../lecture/model';
+import {
+  ListLeftTopPanel,
+  ListRightTopPanel,
+  ListTopPanelTemplate,
+} from '../view/panel';
 import myTrainingRoutes from 'myTraining/routePaths';
 
+export enum ContentType {
+  New = 'New',
+  Popular = 'Popular',
+  Recommend = 'Recommend',
+  Required = 'Required',
+  Enrolling = 'Enrolling',
+}
 interface Props extends RouteComponentProps {
-  contentType: string,
+  contentType: string;
   setPageTitle: (contentType: ContentType) => void;
 }
 
-const NewLearningListContainer : React.FC<Props> = (Props) => {
+const NewLearningListContainer: React.FC<Props> = Props => {
   //
   const { contentType, setPageTitle, history } = Props;
 
@@ -36,34 +46,36 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
     setOrder(order);
   };
 
-  const onChangeViewType = ((e: any, data: any, func?: any) => {
+  const onChangeViewType = (e: any, data: any, func?: any) => {
     setViewType(data.value);
-  });
+  };
 
   return (
     <Segment className="full">
-        {/*20.07.28 기능삭제*/}
-        {/*<div className="comments-sort">*/}
-        {/*<Radio*/}
-        {/*label="최신순"*/}
-        {/*className="base"*/}
-        {/*name="list-sort"*/}
-        {/*value={OrderByType.New}*/}
-        {/*checked={window.sessionStorage.getItem('order_type')===OrderByType.New}*/}
-        {/*onChange={onChangeSorting}*/}
-        {/*/>*/}
-        {/*<Radio*/}
-        {/*label="인기순"*/}
-        {/*className="base"*/}
-        {/*name="list-sort"*/}
-        {/*value={OrderByType.Popular}*/}
-        {/*checked={window.sessionStorage.getItem('order_type')===OrderByType.Popular}*/}
-        {/*onChange={onChangeSorting}*/}
-        {/*/>*/}
-        {/*</div>*/}
+      {/*20.07.28 기능삭제*/}
+      {/*<div className="comments-sort">*/}
+      {/*<Radio*/}
+      {/*label="최신순"*/}
+      {/*className="base"*/}
+      {/*name="list-sort"*/}
+      {/*value={OrderByType.New}*/}
+      {/*checked={window.sessionStorage.getItem('order_type')===OrderByType.New}*/}
+      {/*onChange={onChangeSorting}*/}
+      {/*/>*/}
+      {/*<Radio*/}
+      {/*label="인기순"*/}
+      {/*className="base"*/}
+      {/*name="list-sort"*/}
+      {/*value={OrderByType.Popular}*/}
+      {/*checked={window.sessionStorage.getItem('order_type')===OrderByType.Popular}*/}
+      {/*onChange={onChangeSorting}*/}
+      {/*/>*/}
+      {/*</div>*/}
 
-        <div className="sort-reult">
-        <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
+      <div className="sort-reult">
+        <div className="section-count">
+          총 <span>{totalCount}개</span>의 리스트가 있습니다.
+        </div>
 
         {contentType == ContentType.Enrolling && (
           <div className="comments-sort">
@@ -80,18 +92,21 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
             </ListTopPanelTemplate>
           </div>
         )}
-        </div>
+      </div>
 
       <NewLearningListView
         setNewOrder={setNewOrder}
         showTotalCount={showTotalCount}
         contentType={contentType}
-        order={window.sessionStorage.getItem('order_type') === OrderByType.New ? OrderByType.New : OrderByType.Popular}
+        order={
+          window.sessionStorage.getItem('order_type') === OrderByType.New
+            ? OrderByType.New
+            : OrderByType.Popular
+        }
         totalCount={totalCount}
         setPageTitle={setPageTitle}
         viewType={viewType}
       />
-
     </Segment>
   );
 };
@@ -99,5 +114,5 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
 export default withRouter(NewLearningListContainer);
 
 /* globals */
-export type EnrollingViewType = 'All' | 'Available';  // 전체보기 | 수강 신청 가능 과정 모아보기
+export type EnrollingViewType = 'All' | 'Available'; // 전체보기 | 수강 신청 가능 과정 모아보기
 export type NewLearningContentType = ContentType;

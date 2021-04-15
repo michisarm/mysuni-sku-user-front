@@ -8,12 +8,12 @@ import {
   Thumbnail,
 } from '../../../ui/view/LectureElementsView';
 import numeral from 'numeral';
-import { observer, inject } from 'mobx-react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
+  useRequestCollege,
   getCollgeName,
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
@@ -23,9 +23,10 @@ import { Link } from 'react-router-dom';
 import { toPath } from '../../../../detail/viewModel/LectureParams';
 import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
+import CardType from '../../../model/CardType';
+import CubeIconType from '../../model/CubeIconType';
 
 interface Props {
-  isRequired?: boolean;
   cardId: string;
   learningTime: number;
   thumbImagePath: string;
@@ -34,24 +35,29 @@ interface Props {
   stampCount: number;
   passedStudentCount: number;
   starCount: number;
-  description: string;
-  inMyLectureService?: InMyLectureService;
-  contentType?: string;
+  simpleDescription: string;
+  type: CardType;
+  isRequired?: boolean;
+  studentCount?: number;
+  remainingDayCount?: number;
+  capacity?: number;
 }
 
-function CardView({
-  isRequired,
+export default function CardView({
   cardId,
   name,
   starCount,
   stampCount,
   mainCategory,
-  description,
+  simpleDescription,
   learningTime,
   thumbImagePath,
   passedStudentCount,
-  inMyLectureService,
-  contentType,
+  type,
+  isRequired,
+  capacity,
+  remainingDayCount,
+  studentCount,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
@@ -95,10 +101,9 @@ function CardView({
 
   const handleInMyLecture = () => {
     if (inMyLectureModel) {
-      inMyLectureService!.removeInMyLectureCard(cardId, cardId);
+      InMyLectureService.instance.removeInMyLectureCard(cardId);
     } else {
-      inMyLectureService!.addInMyLectureCard({
-        cardId,
+      InMyLectureService.instance.addInMyLectureCard({
         serviceId: cardId,
         serviceType: 'Card',
         category: {
@@ -107,6 +112,7 @@ function CardView({
           mainCategory: mainCategory.mainCategory,
         },
         name,
+        cubeType: type,
         learningTime,
         stampCount,
       });
@@ -115,43 +121,45 @@ function CardView({
     handleAlert(inMyLectureModel);
   };
 
-  const renderBottom = () => {
-    const progressList = sessionStorage.getItem('inProgressTableViews');
-    const completeList = sessionStorage.getItem('completedTableViews');
+  const getEducationDate = (
+    state: 'inProgressTableViews' | 'completedTableViews'
+  ) => {
+    const educationStateList = sessionStorage.getItem(state);
 
-    const parserProgressList = progressList && JSON.parse(progressList);
-    const parserCompleteList = completeList && JSON.parse(completeList);
+    const parserEducationStateList =
+      educationStateList && JSON.parse(educationStateList);
 
-    const filterProgress = find(parserProgressList, { serviceId: cardId });
-    const filterComplete = find(parserCompleteList, { serviceId: cardId });
+    const filterEducationState = find(parserEducationStateList, {
+      serviceId: cardId,
+    });
 
-    if (filterProgress) {
-      const startDate = moment(Number(filterProgress.startDate)).format(
-        'YYYY.MM.DD'
-      );
+    if (state === 'inProgressTableViews') {
       return (
-        <>
-          <Label className="onlytext bold">
-            <Icon className="state" />
-            <span>학습중</span>
-          </Label>
-          <div className="study-date">{`${startDate} 학습 시작`}</div>
-        </>
+        filterEducationState &&
+        moment(Number(filterEducationState.startDate)).format('YYYY.MM.DD')
+      );
+    } else {
+      return (
+        filterEducationState &&
+        moment(Number(filterEducationState.endDate)).format('YYYY.MM.DD')
       );
     }
+  };
 
-    if (filterComplete) {
-      const endDate = moment(Number(filterComplete.endDate)).format(
-        'YYYY.MM.DD'
-      );
+  const renderBottom = () => {
+    const startDate = getEducationDate('inProgressTableViews');
+    const endDate = getEducationDate('completedTableViews');
 
+    if (startDate || endDate) {
+      const text = startDate ? '학습중' : endDate && '학습 완료';
+      const date = startDate || endDate;
       return (
         <>
           <Label className="onlytext bold">
             <Icon className="state" />
-            <span>학습 완료</span>
+            <span>{text}</span>
           </Label>
-          <div className="study-date">{`${endDate} 학습 완료`}</div>
+          <div className="study-date">{`${date} 학습 시작`}</div>
         </>
       );
     }
@@ -169,6 +177,28 @@ function CardView({
     );
   };
 
+  const renderRibbon = () => {
+    if (
+      studentCount !== undefined &&
+      capacity !== undefined &&
+      remainingDayCount !== undefined
+    ) {
+      if (studentCount >= capacity) {
+        return <Label className="done">정원 마감</Label>;
+      }
+
+      if (remainingDayCount === 0) {
+        return <Label className="day">D-DAY</Label>;
+      } else {
+        return <Label className="day">D-{remainingDayCount}</Label>;
+      }
+    }
+
+    if (isRequired) {
+      return <Label className="ribbon2">핵인싸과정</Label>;
+    }
+  };
+
   return (
     <Card
       className={classNames({
@@ -178,15 +208,7 @@ function CardView({
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
     >
-      {/* Todo: stampReady */}
-      <div className="card-ribbon-wrap">
-        {isRequired && <Label className="ribbon2">핵인싸과정</Label>}
-        {contentType && contentType === 'Enrolling' && (
-          // 나중에 정원 정보 추가 되면 수정 해야함
-          <Label className="ribbon2">정원 마감</Label>
-        )}
-        {/* { stampReady && <Label className="ribbon2">Stamp</Label>} */}
-      </div>
+      <div className="card-ribbon-wrap">{renderRibbon()}</div>
       <div className="card-inner">
         <Thumbnail image={thumbImagePath} />
         <div className="title-area">
@@ -199,6 +221,12 @@ function CardView({
         </div>
 
         <Fields>
+          <div className="li">
+            <Label className="onlytext bold">
+              <Icon className={CubeIconType[type]} />
+              <span>{type}</span>
+            </Label>
+          </div>
           {(learningTime || stampCount) && (
             <div className="li">
               {learningTime && (
@@ -228,11 +256,10 @@ function CardView({
               {getCollgeName(collegeId)}
             </Label>
           )}
-          <div className="header">{name}</div>
         </div>
         <p
           className="text-area"
-          dangerouslySetInnerHTML={{ __html: description }}
+          dangerouslySetInnerHTML={{ __html: simpleDescription }}
         />
         <div className="btn-area">
           <Button icon className="icon-line" onClick={handleInMyLecture}>
@@ -246,7 +273,3 @@ function CardView({
     </Card>
   );
 }
-
-export default inject(mobxHelper.injectFrom('myTraining.inMyLectureService'))(
-  observer(CardView)
-);

@@ -25,6 +25,7 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
 import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
 import { findCardList } from '../../../../lecture/detail/api/cardApi';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
@@ -49,9 +50,6 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
   inMyLectureService,
   history,
 }) {
-  // collegeName, channelName 을 불러오는 api를 호출하여 stroe에 저장한다.
-  useRequestCollege();
-
   const CONTENT_TYPE_NAME = '신규과정';
   // const PAGE_SIZE = 8;
   // const { newLectures } = newLectureService!;
@@ -263,7 +261,7 @@ const NEWLearning: React.FC<Props> = function NEWLearning({
   }; */
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_NEW}>
       <div className="section-head">
         <strong>{newCard?.displayText}</strong>
         <div className="right">

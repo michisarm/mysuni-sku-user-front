@@ -18,6 +18,7 @@ import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import FilterBoxContainer from './FilterBoxContainer';
+import { useScrollMove } from '../../useScrollMove';
 
 
 interface MyStampListContainerProps {
@@ -38,17 +39,25 @@ function MyStampListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { scrollOnceMove } = useScrollMove();
+
   const { myStamps, myStampCount } = myStampService!;
   const { conditions, showResult, filterCount } = filterBoxService!;
 
   useRequestFilterCountView();
 
   useEffect(() => {
-    requestStamps();
-
-    return () => {
-      myStampService!.clearAllMyStamps();
+    myStampService!.clearAllMyStamps();
+    myStampService!.initFilterRdo();
+    if(params.pageNo === '1') {
+      requestStamps();
+      return;
     }
+
+    const currentPageNo = parseInt(params.pageNo);
+    const limit = currentPageNo * PAGE_SIZE;
+
+    requestStampsWithPage({ offset: 0, limit });
   }, []);
 
   useEffect(() => {
@@ -59,17 +68,7 @@ function MyStampListContainer({
 
   }, [showResult]);
 
-  useEffect(() => {
-    if(params.pageNo === '1') {
-      return;
-    }
-
-    requestStampsWithPage();
-  }, [params.pageNo]);
-
   const requestStamps = async () => {
-    myStampService!.initFilterRdo();
-
     setIsLoading(true);
     const isEmpty = await myStampService!.findAllMyStamps();
     setResultEmpty(isEmpty);
@@ -86,16 +85,12 @@ function MyStampListContainer({
     history.replace('./1');
   }
 
-  const requestStampsWithPage = async () => {
-    const currentPageNo = parseInt(params.pageNo);
-
-    const limit = PAGE_SIZE;
-    const offset = (currentPageNo - 1) * PAGE_SIZE;
-
+  const requestStampsWithPage = async (offset: Offset) => {
     setIsLoading(true);
-    await myStampService!.findAllMyStampsWithPage({ limit, offset });
+    await myStampService!.findAllMyStampsWithPage(offset);
     checkShowSeeMore(); 
     setIsLoading(false)
+    scrollOnceMove();
   }
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
@@ -103,13 +98,17 @@ function MyStampListContainer({
   }, []);
 
   const onClickSeeMore = () => {
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
+    
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestStampsWithPage({ offset, limit });
+
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    const currentPageNo = parseInt(params.tab);
-    const nextPageNo = currentPageNo + 1;
-
 
     history.replace(`./${nextPageNo}`);
   }

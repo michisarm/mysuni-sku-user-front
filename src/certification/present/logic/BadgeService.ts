@@ -12,7 +12,7 @@ import {
   requestIssue,
   cancelRequestIssue,
 } from '../../api/BadgeApi';
-import { Badge } from '../../model/Badge';
+import { Badge, BadgeBundle } from '../../model/Badge';
 import { MyBadgeRdo } from '../../model/MyBadgeRdo';
 import { MyBadge } from '../../model/MyBadge';
 import { BadgeRdo } from '../../model/BadgeRdo';
@@ -49,7 +49,7 @@ class BadgeService {
   }
 
   @observable
-  _badges: Badge[] = [];
+  _badges: BadgeBundle[] = [];
 
   @computed get badges() {
     return this._badges;
@@ -158,9 +158,9 @@ class BadgeService {
   }
 
   @observable
-  _linkedBadges: Badge[] = [];
+  _linkedBadges: BadgeBundle[] = [];
 
-  @computed get linkedBadges(): Badge[] {
+  @computed get linkedBadges(): BadgeBundle[] {
     return this._linkedBadges;
   }
 
@@ -168,7 +168,7 @@ class BadgeService {
   async findAllLinkedBadges(badgeIds: string[]): Promise<void> {
     const foundLinkedBadges = await findBadgesByIds(badgeIds);
 
-    if (foundLinkedBadges && foundLinkedBadges.length > 0) {
+    if (foundLinkedBadges) {
       runInAction(() => {
         this._linkedBadges = foundLinkedBadges;
       });

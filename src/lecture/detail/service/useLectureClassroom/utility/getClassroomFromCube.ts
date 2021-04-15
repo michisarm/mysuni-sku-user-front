@@ -1,10 +1,8 @@
-import InstructorApi from '../../../../../expert/present/apiclient/InstructorApi';
+import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureClassroom } from '../../../store/LectureClassroomStore';
-import LectureParams from '../../../viewModel/LectureParams';
 
-export async function getClassroomFromCube(params: LectureParams) {
-  const { cubeId } = params;
+export async function getClassroomFromCube(cubeId: string) {
   if (cubeId === undefined) {
     return;
   }
@@ -18,10 +16,8 @@ export async function getClassroomFromCube(params: LectureParams) {
     operators,
   } = cubeDetail;
 
-  const instructorApi = new InstructorApi();
   const proimseArray = instructors.map(c => {
-    return instructorApi
-      .findInstructor(c.instructorId)
+    return findInstructorCache(c.instructorId)
       .then(r => {
         if (r !== undefined) {
           c.name = r.memberSummary.name;

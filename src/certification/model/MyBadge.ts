@@ -1,7 +1,6 @@
-import { BadgeType } from "./BadgeType";
-import { BadgeLevel } from "./BadgeLevel";
-import { BadgeIssueState } from "./BadgeIssueState";
-
+import { BadgeType } from './BadgeType';
+import { BadgeLevel } from './BadgeLevel';
+import { BadgeIssueState } from './BadgeIssueState';
 export interface MyBadge {
   id: string;
   name: string;

@@ -403,69 +403,39 @@ class MyTrainingService {
 
   @action
   async findAllTableViews() {
-    /* session storage 에 학습중 & 학습완료 데이터가 있다면 session storage 에서 데이터를 조회함. */
-    /* 학습중 */
-    if (this._myTrainingFilterRdo.myTrainingState === 'InProgress') {
-      if (!this.inProgressTableViews.length) {
-        const inProgressJson = sessionStorage.getItem('inProgressTableViews');
-        if (inProgressJson) {
-          const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(
-            inProgressJson
-          );
-          if (inProgressStorage && inProgressStorage.length) {
-            this.inProgressTableViews = inProgressStorage.map(
-              (inProgress: MyTrainingTableViewModel) =>
-                new MyTrainingTableViewModel(inProgress)
-            );
-            this.inProgressTableCount = inProgressStorage.length;
-          }
-        }
+    if (this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress) {
+      if (this.inProgressTableViews.length <= 0) {
+        this.findInProgressTableViews();
       }
 
-      if (this.inProgressTableViews.length) {
+      if (this.inProgressTableViews.length > 0) {
         this._myTrainingTableViews = this.inProgressTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.inProgressTableCount;
         return false;
       }
     }
 
-    /* 학습완료 */
     if (this._myTrainingFilterRdo.myTrainingState === 'Completed') {
-      if (!this.completedTableViews.length) {
-        const completedJson = sessionStorage.getItem('completedTableViews');
-        if (completedJson) {
-          const completedStorage: any[] = JSON.parse(completedJson);
-          if (completedStorage && completedStorage.length) {
-            this.completedTableViews = completedStorage.map(
-              completed => new MyTrainingTableViewModel(completed)
-            );
-            this.completedTableCount = completedStorage.length;
-          }
-        }
+      if (this.completedTableViews.length <= 0) {
+        this.findCompletedTableViews();
       }
 
-      if (this.completedTableViews.length) {
-        /* 전체보기 */
+      if (this.completedTableViews.length > 0) {
         this._myTrainingTableViews = this.completedTableViews.slice(0, 20);
         this._myTrainingTableViewCount = this.completedTableCount;
         return false;
       }
     }
 
-    // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      this._myTrainingFilterRdo
-    );
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetTableViews &&
       offsetTableViews.results &&
-      offsetTableViews.results.length
+      offsetTableViews.results.length > 0
     ) {
       runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
+        this._myTrainingTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
         this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -475,75 +445,61 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsWithPage(offset: Offset) {
-    if (this._myTrainingFilterRdo.getFilterCount() === 0) {
-      const addedTableViews = this.getAddedTableViewsFromStorage(offset);
-      runInAction(() => {
-        this._myTrainingTableViews = [...addedTableViews];
-      });
+    if (
+      this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress ||
+      this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.Completed
+    ) {
+      if (this._myTrainingFilterRdo.getFilterCount() === 0) {
+        const addTableViews = this.getAddTableViewsFromStorage(offset);
 
-      return;
+        runInAction(() => {
+          this._myTrainingTableViews = addTableViews;
+          this._myTrainingTableViewCount = this.inProgressTableCount;
+        });
+
+        return;
+      }
     }
-
 
     this._myTrainingFilterRdo.setOffset(offset);
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      this._myTrainingFilterRdo
-    );
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetTableViews &&
       offsetTableViews.results &&
       offsetTableViews.results.length
     ) {
-      const addedTableViews = offsetTableViews.results.map(
-        result => new MyTrainingTableViewModel(result)
-      );
+      const addTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
       runInAction(() => {
         this._myTrainingTableViews = [
           ...this._myTrainingTableViews,
-          ...addedTableViews,
+          ...addTableViews,
         ];
+        this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
     }
   }
 
-  /* session storage 로부터 페이징 처리 후 추가되어야 하는 데이터를 조회함. */
-  private getAddedTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
-    const { myTrainingState } = this._myTrainingFilterRdo;
+  private getAddTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
     const endIndex = offset.offset + offset.limit;
 
-    if (myTrainingState === MyLearningContentType.InProgress) {
+    if (this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress) {
+      if (this.inProgressTableViews.length <= 0) {
+        this.findInProgressTableViews();
+      }
+
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
-    if (myTrainingState === MyLearningContentType.Completed) {
+    if (this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.Completed) {
+      if (this.completedTableViews.length <= 0) {
+        this.findCompletedTableViews();
+      }
       return this.completedTableViews.slice(0, endIndex);
     }
 
     return [];
-  }
-
-  @action
-  async findAllTableViewsWithServiceType(serviceType: string) {
-    this._myTrainingFilterRdo.setOffset({ offset: 0, limit: 20 });
-
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
-      this._myTrainingFilterRdo
-    );
-
-    if (
-      offsetTableViews &&
-      offsetTableViews.results &&
-      offsetTableViews.results.length
-    ) {
-      runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(
-          result => new MyTrainingTableViewModel(result)
-        );
-        this._myTrainingTableViewCount = offsetTableViews.totalCount;
-      });
-    }
   }
 
   @action
@@ -621,6 +577,36 @@ class MyTrainingService {
     }
 
     return null;
+  }
+
+  findInProgressTableViews() {
+    const inProgressJson = sessionStorage.getItem('inProgressTableViews');
+    if (inProgressJson) {
+      const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(inProgressJson);
+
+      if (
+        inProgressStorage &&
+        inProgressStorage.length > 0
+      ) {
+        this.inProgressTableViews = inProgressStorage.map((inProgress: MyTrainingTableViewModel) => new MyTrainingTableViewModel(inProgress));
+        this.inProgressTableCount = inProgressStorage.length;
+      }
+    }
+  }
+
+  findCompletedTableViews() {
+    const completedJson = sessionStorage.getItem('completedTableViews');
+    if (completedJson) {
+      const completedStorage: any[] = JSON.parse(completedJson);
+
+      if (
+        completedStorage &&
+        completedStorage.length > 0
+      ) {
+        this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+        this.completedTableCount = completedStorage.length;
+      }
+    }
   }
 
   @action

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, getCookie } from '@nara.platform/accent';
 import {
   onLectureMedia,
   useLectureMedia,
@@ -36,6 +36,8 @@ import QuizTableList from '../../../../../quiz/model/QuizTableList';
 import VideoQuizContainer from '../../../../../quiz/ui/logic/VideoQuizContainer';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { setEmbed } from 'lecture/detail/store/EmbedStore';
+import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
+import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -60,6 +62,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const { cardId } = params;
 
   const [isStateUpated, setIsStateUpated] = useState<boolean>(false);
+  const [isFirstAction, setIsFirstAction] = useState<boolean>(false);
   const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
   const [cubeName, setCubeName] = useState<any>('');
 
@@ -87,6 +90,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
   const nextContent = useNextContent();
   const [pauseVideoSticky, setPauseVideoSticky] = useState<boolean>(false);
+  const [nextContentsView, setNextContentsView] = useState<boolean>(false);
 
   useEffect(() => {
     const watchlog: WatchLog = {
@@ -168,13 +172,40 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
           sessionStorage.removeItem('InProgressLearningList');
         }
         videoStart();
+        if (!isFirstAction) {
+          setIsFirstAction(true);
+        }
       } else if (state == 2) {
         videoClose();
-        // setNextContentsView(true);
       }
     },
     [params, isStateUpated]
   );
+
+  // study action event : 방문당 한번 적재
+  useEffect(() => {
+    if (isFirstAction) {
+      // study action track
+      debounceActionTrack({
+        email:
+          getCookie('tryingLoginId') ||
+          (window.sessionStorage.getItem('email') as string) ||
+          (window.localStorage.getItem('nara.email') as string),
+        path: window.location.pathname,
+        search: window.location.search,
+        area: Area.CUBE_PLAY,
+        actionType: ActionType.STUDY,
+        action: Action.CLICK,
+        actionName: '학습버튼 클릭',
+      } as ActionTrackParam);
+    }
+  }, [isFirstAction]);
+
+  useEffect(() => {
+    if (params.cubeId) {
+      setIsFirstAction(false);
+    }
+  }, [params.cubeId]);
 
   const registCheckStudent = useCallback(
     async (params: LectureParams | undefined) => {
@@ -324,6 +355,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         ) {
           // sessionStorage update
           fetchAllModelsForStorage();
+          setNextContentsView(true);
         }
       }, 10000);
       // playIntervalRef.current = interval;
@@ -415,7 +447,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
   const [durationTime, setDurationTime] = useState<number>(0);
 
   useEffect(() => {
-    onLectureMedia(lectureMedia => {
+    const dispose = onLectureMedia(lectureMedia => {
       cleanUpPanoptoIframe(); //기존에 어떤 상태이건 초기화
       if (
         lectureMedia &&
@@ -455,6 +487,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }, 'LectureVideoView');
 
     return () => {
+      dispose();
       cleanUpPanoptoIframe();
     };
   }, []);
@@ -534,7 +567,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
         sessionStorage.removeItem('lectureVideoView');
       }, 1000);
     }
-
     if (
       learningState !== 'Passed' && // 학습이수 체크
       matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
@@ -593,10 +625,6 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
       setQuizPop(false);
       videoControll.play();
     }
-    if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
-      setQuizCurrentIndex(quizCurrentIndex);
-      return;
-    }
     setQuizCurrentIndex(quizCurrentIndex + 1);
   }, [quizPop, quizCurrentIndex]);
 
@@ -645,7 +673,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
             </div>
           )}
           {/* video-overlay 에 "none"클래스 추가 시 영역 안보이기 */}
-          {nextContent?.path !== undefined &&
+          {nextContentsView &&
+            nextContent?.path !== undefined &&
             getLectureConfirmProgress()?.learningState == 'Passed' && (
               <>
                 <div

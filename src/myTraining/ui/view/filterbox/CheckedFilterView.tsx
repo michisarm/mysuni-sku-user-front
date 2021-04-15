@@ -22,6 +22,19 @@ function CheckedFilterView(props: Props) {
     const buttons: React.ReactNode[] = [];
     const collegeNames = getCollegeNames(colleges, conditions.collegeIds);
 
+    if (conditions.learningTypes &&
+      conditions.learningTypes.length) {
+      buttons.push(
+        conditions.learningTypes.map((learningType, index) => (
+          <Fragment key={`checked-learningType-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningType, learningType)}>
+              {learningType}
+            </Button>
+          </Fragment >
+        ))
+      );
+    }
+
     if (conditions.collegeIds && conditions.collegeIds.length) {
       buttons.push(
         collegeNames.map((collegeName, index) => (

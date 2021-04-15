@@ -1,5 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
@@ -15,6 +15,12 @@ import { toggleCardBookmark } from '../../../service/useLectureCourseOverview/us
 import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { Thumbnail } from '../../../../shared/ui/view/LectureElementsView';
+import { InMyLectureModel } from '../../../../../myTraining/model';
+import { useLectureParams } from '../../../store/LectureParamsStore';
+import { autorun } from 'mobx';
+import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
+import { Area } from 'tracker/model';
+import LectureStateContainer from '../../logic/LectureStateContainer';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -138,8 +144,28 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
     postService.post.alarmInfo.contentsName = lectureSummary.name;
   }, [lectureSummary]);
 
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
+  const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
+
+  const params = useLectureParams();
+
+  useEffect(() => {
+    return autorun(() => {
+      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (params?.cardId === undefined) {
+      return;
+    }
+    setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
+  }, [inMyLectureMap, params?.cardId]);
+
   return (
-    <div className="course-info-header">
+    <div className="course-info-header" data-area={Area.CARD_HEADER}>
       <div className="contents-header">
         <div className="title-area">
           <div
@@ -198,12 +224,19 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           </div>
         </div>
         <div className="right-area">
-          {state === 'Completed' ? (
-            <img src={StampCompleted} />
-          ) : (
-            lectureSummary.thumbImagePath !== undefined && (
-              <Thumbnail image={lectureSummary.thumbImagePath} />
-            )
+          {lectureSummary.hasClassroomCube !== true && (
+            <>
+              {state === 'Completed' ? (
+                <img src={StampCompleted} />
+              ) : (
+                lectureSummary.thumbImagePath !== undefined && (
+                  <Thumbnail image={lectureSummary.thumbImagePath} />
+                )
+              )}
+            </>
+          )}
+          {lectureSummary.hasClassroomCube === true && (
+            <LectureStateContainer />
           )}
         </div>
       </div>
@@ -245,12 +278,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               <span>
                 <Icon
                   className={
-                    lectureSummary.mytrainingId === undefined
-                      ? 'listAdd'
-                      : 'listDelete'
+                    inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
                   }
                 />
-                {lectureSummary.mytrainingId === undefined
+                {inMyLectureModel === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}
               </span>

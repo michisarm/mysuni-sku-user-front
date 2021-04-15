@@ -30,7 +30,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     //   'value': 0,
     //   'text': '선택'
     // }
-  ];
+  ]
   communityAdminGroups!.results.map((data: any, index: number) => {
     groupArr.push({
       key: data.groupId,
@@ -41,11 +41,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
 
   useEffect(() => {
     if (selectedRow && selectedRow.type === 'SURVEY') {
-      getCommunitySurvey(selectedRow!.surveyId!).then(result => {
+      getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
         if (result.data === '') {
-          setSelectedSurvey({});
+          setSelectedSurvey({})
         } else {
-          setSelectedSurvey(result.data);
+          setSelectedSurvey(result.data)
         }
       });
     }
@@ -66,12 +66,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
 
   function changeType(_: any, data: any) {
     if (selectedRow && data) {
-      selectedRow.type = data.value;
+      selectedRow.type = data.value
       onChangeValue(selectedRow, 'type');
       if (selectedRow.type === 'SURVEY') {
-        getCommunitySurvey(selectedRow!.surveyId!).then(result => {
+        getCommunitySurvey(selectedRow!.surveyId!).then((result) => {
           if (result.data) {
-            setSelectedSurvey(result.data);
+            setSelectedSurvey(result.data)
           } else {
             setSelectedSurvey({});
           }
@@ -84,15 +84,15 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     const value = e.target.value;
     if (selectedRow) {
       if (e.target.name === 'name') {
-        selectedRow.name = value;
+        selectedRow.name = value
       } else if (e.target.name === 'discussionTopic') {
-        selectedRow.discussionTopic = value;
+        selectedRow.discussionTopic = value
       } else if (e.target.name === 'surveyInformation') {
-        selectedRow.surveyInformation = value;
+        selectedRow.surveyInformation = value
       } else if (e.target.name === 'url') {
-        selectedRow.url = value;
+        selectedRow.url = value
       } else if (e.target.name === 'html') {
-        selectedRow.html = value;
+        selectedRow.html = value
       }
       onChangeValue(selectedRow, e.target.name);
     }
@@ -101,20 +101,21 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function changeAuth(e: any, value: any) {
     if (selectedRow) {
       if (value === 'community') {
-        selectedRow.groupId = null;
-        selectedRow.accessType = 'COMMUNITY_ALL_MEMBER';
-      } else {
-        selectedRow.groupId = groupArr[0].value;
-        selectedRow.accessType = 'COMMUNITY_GROUP';
-        handleChangeGroup('', selectedRow?.groupId);
+        selectedRow.groupId = null
+        selectedRow.accessType = 'COMMUNITY_ALL_MEMBER'
+      } else if (groupArr && groupArr[0]) {
+        selectedRow.groupId = groupArr[0].value
+        selectedRow.accessType = 'COMMUNITY_GROUP'
+        handleChangeGroup('', selectedRow?.groupId)
       }
       onChangeValue(selectedRow, 'accessType');
     }
   }
 
   function handleChangeGroup(e: any, data: any) {
+    console.log('handleChangeGroup')
     if (selectedRow) {
-      selectedRow.groupId = data.value;
+      selectedRow.groupId = data.value
       onChangeValue(selectedRow, 'groupId');
     }
   }
@@ -141,6 +142,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
             <th>메뉴 유형</th>
             <td>
               <Select
+                disabled={true}
                 placeholder="전체"
                 className="ui small-border admin_tab_select"
                 value={selectedRow && selectedRow.type}
@@ -150,8 +152,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
             </td>
           </tr>
           <tr>
-            {selectedRow!.type !== 'CATEGORY' && <th>메뉴명</th>}
-            {selectedRow!.type === 'CATEGORY' && <th>카테고리명</th>}
+            {selectedRow!.type !== 'CATEGORY' && (
+              <th>메뉴명</th>
+            )}
+            {selectedRow!.type === 'CATEGORY' && (
+              <th>카테고리명</th>
+            )}
             <td>
               <div className="ui right-top-count input admin">
                 <input
@@ -217,11 +223,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               <th className="admin_survey_th">Survey 추가</th>
               <td className="admin_survey_btn">
                 <CommunitySurveyModalContainer
-                  trigger={
-                    <Button icon className="ui button admin_table_button02">
-                      Survey 찾기
-                    </Button>
-                  }
+                  trigger={<Button icon className="ui button admin_table_button02">Survey 찾기</Button>}
                   defaultSelectedChannel={null}
                   onConfirmChannel={handleSurveyModalClose}
                   searchBox={searchBox}
@@ -240,20 +242,8 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                     </thead>
                     <tbody>
                       <tr>
-                        <td>
-                          {
-                            selectedSurvey.titles.langStringMap[
-                              selectedSurvey.titles.defaultLanguage
-                            ]
-                          }
-                        </td>
-                        <td>
-                          {
-                            selectedSurvey.formDesigner.names.langStringMap[
-                              selectedSurvey.formDesigner.names.defaultLanguage
-                            ]
-                          }
-                        </td>
+                        <td>{selectedSurvey.titles.langStringMap[selectedSurvey.titles.defaultLanguage]}</td>
+                        <td>{selectedSurvey.formDesigner.names.langStringMap[selectedSurvey.formDesigner.names.defaultLanguage]}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -284,7 +274,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   <textarea
                     style={{ height: 548, width: '100%' }}
                     value={selectedRow && selectedRow.html}
-                    onChange={e => {
+                    onChange={(e) => {
                       handleChangeHtml(e);
                     }}
                   />

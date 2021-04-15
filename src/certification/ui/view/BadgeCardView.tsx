@@ -32,7 +32,7 @@ function BadgeCardView({
   return (
     <div className="bar">
       <div className="tit">
-        <a className="ellipsis" href="#" onClick={() => moveToCardPage(cardId)}>
+        <a className="ellipsis" href="#" onClick={e => { moveToCardPage(cardId); e.preventDefault(); }}>
           {cardName}
         </a>
       </div>

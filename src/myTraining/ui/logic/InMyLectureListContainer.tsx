@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { useHistory, useParams } from 'react-router-dom';
-import { mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, Offset } from '@nara.platform/accent';
 import { Segment } from 'semantic-ui-react';
 import ReactGA from 'react-ga';
 import InMyLectureService from '../../present/logic/InMyLectureService';
@@ -18,6 +18,7 @@ import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
+import { useScrollMove } from '../../useScrollMove';
 
 
 interface InMyLectureListContainerProps {
@@ -37,17 +38,26 @@ function InMyLectureListContainer({
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { scrollOnceMove } = useScrollMove();
+
   const { inMyLectureTableViews, inMyLectureTableCount } = inMyLectureService!;
   const { conditions, filterCount, showResult } = filterBoxService!;
 
   useRequestFilterCountView();
 
   useEffect(() => {
-    requestInMyLectures();
+    inMyLectureService!.clearAllTableViews();
+    inMyLectureService!.initFilterRdo();
 
-    return () => {
-      inMyLectureService!.clearAllTableViews();
+    if(params.pageNo === '1') {
+      requestInMyLectures();
+      return;
     }
+
+    const currentPageNo = parseInt(params.pageNo);
+    const limit = currentPageNo * PAGE_SIZE;
+
+    requestInMyLecturesWithPage({ offset: 0, limit });
   }, []);
 
   useEffect(() => {
@@ -57,18 +67,8 @@ function InMyLectureListContainer({
     }
   }, [showResult]);
 
-  useEffect(() => {
-    if(params.pageNo === '1') {
-      return;
-    }
-
-    requestInMyLecturesWithPage();
-
-  }, [params.pageNo]);
-
   const requestInMyLectures = async () => {
     setIsLoading(true);
-    inMyLectureService!.initFilterRdo();
     const isEmpty = await inMyLectureService!.findAllTableViews();
     setResultEmpty(isEmpty);
     checkShowSeeMore();
@@ -84,16 +84,12 @@ function InMyLectureListContainer({
     history.replace('./1');
   }
 
-  const requestInMyLecturesWithPage = async () => {
-    const currentPageNo = parseInt(params.pageNo);
-
-    const limit = PAGE_SIZE;
-    const offset = (currentPageNo - 1) * PAGE_SIZE;
-
+  const requestInMyLecturesWithPage = async (offset: Offset) => {
     setIsLoading(true);
-    await inMyLectureService!.findAllTableViewsWithPage({ limit, offset });
+    await inMyLectureService!.findAllTableViewsWithPage(offset);
     checkShowSeeMore();
     setIsLoading(false);
+    scrollOnceMove();
   }
 
   const checkShowSeeMore = (): void => {
@@ -112,12 +108,17 @@ function InMyLectureListContainer({
   };
 
   const onClickSeeMore = async () => {
+    const currentPageNo = parseInt(params.pageNo);
+    const nextPageNo = currentPageNo + 1;
+
+    const limit = PAGE_SIZE;
+    const offset = currentPageNo * PAGE_SIZE;
+
+    requestInMyLecturesWithPage({ offset, limit });
+
     setTimeout(() => {
       ReactGA.pageview(window.location.pathname, [], 'Learning');
     }, 1000);
-
-    const currentPageNo = parseInt(params.pageNo);
-    const nextPageNo = currentPageNo + 1;
 
     history.replace(`./${nextPageNo}`);
   }

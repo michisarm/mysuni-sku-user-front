@@ -22,7 +22,7 @@ export async function findApplyingClassroom(cubeId: string) {
     const startTime = new Date(startDate).getTime();
     const endTime = new Date(endDate).getTime() + ONE_DAY;
     const now = Date.now();
-    if (startTime >= now && endTime > now) {
+    if (startTime <= now && endTime > now) {
       return classroom;
     }
   }

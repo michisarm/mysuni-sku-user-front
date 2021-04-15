@@ -15,6 +15,7 @@ import {
 import PostItem from '../../../viewModel/MyCommunityIntro/PostItem';
 import DefaultImg from '../../../../style/media/img-profile-80-px.png';
 import { useScrollMove } from 'myTraining/useScrollMove';
+import { Area } from 'tracker/model';
 import { Loadingpanel } from 'shared';
 import { getPostDetailInPreview } from 'community/service/useCommunityPostCreate/utility/getPostDetail';
 
@@ -65,9 +66,9 @@ async function unbookmark(postId: string) {
   });
 }
 
-const Contents:  React.FC<any> = function Contents({
-    postId,
-  }) {
+const Contents: React.FC<any> = function Contents({
+  postId,
+}) {
   const [detail, setDetail] = useState<string>('')
 
   useEffect(() => {
@@ -81,17 +82,17 @@ const Contents:  React.FC<any> = function Contents({
   }, [])
 
   return (
-  <>
-    <div className="ql-snow">
-      <div
-        className="ql-editor"
-        dangerouslySetInnerHTML={{ __html: detail }}
-      />
-    </div>
-  </>
+    <>
+      <div className="ql-snow">
+        <div
+          className="ql-editor"
+          dangerouslySetInnerHTML={{ __html: detail }}
+        />
+      </div>
+    </>
   )
 }
-  
+
 
 const PostItemView: React.FC<PostItem> = function CommunityItemView({
   communityId,
@@ -155,7 +156,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
   const contentsView = () => {
     return (
       <>
-        <Contents postId={postId}/>
+        <Contents postId={postId} />
       </>
     )
   }
@@ -165,22 +166,23 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
       <div className="sub-info-box">
         <div className="comment-area community-main-card  commu-sub-card">
           {/* comments */}
+
           <Comment.Group className="base">
             {/*comment : 2줄이상 말줄임, 대댓글*/}
             <Comment>
               <Comment.Avatar
                 src={
                   profileImage === undefined ||
-                  profileImage === null ||
-                  profileImage === '' ||
-                  type === 'ANONYMOUS'
+                    profileImage === null ||
+                    profileImage === '' ||
+                    type === 'ANONYMOUS'
                     ? DefaultImg
                     : `/files/community/${profileImage}`
                 }
               />
               <Comment.Content>
                 <Comment.Author>
-                  <Link to={`/community/${communityId}`}>{communityName}</Link>
+                  <Link to={`/community/${communityId}/post/${postId}`}>{communityName}</Link>
                 </Comment.Author>
                 <Comment.Text>
                   <div className="ellipsis">
@@ -240,7 +242,7 @@ const PostItemView: React.FC<PostItem> = function CommunityItemView({
                   {name}
                 </Link>
               </h3>
-              {more && 
+              {more &&
                 contentsView()
               }
               <div className="text-right">
@@ -285,7 +287,10 @@ function MyCommunityPostListContainer() {
   }
 
   return (
-    <div className="community-main-contants">
+    <div
+      className="community-main-contants"
+      data-area={Area.COMMUNITY_MYPOST}
+    >
       {isLoading ? (
         <Segment
           style={{
@@ -302,33 +307,33 @@ function MyCommunityPostListContainer() {
           <Loadingpanel loading={isLoading} />
         </Segment>
       ) : (
-        <>
-          {myCommunityIntro !== undefined &&
-            myCommunityIntro.posts.map(postItem => (
-              <PostItemView key={postItem.postId} {...postItem} />
-            ))}
-          <div className="more-comments community-side">
-            {myCommunityIntro.postsTotalCount >
-              myCommunityIntro.postsOffset && (
-              <Button
-                icon
-                className="left moreview"
-                onClick={requestAppendMyCommunityPostList}
-              >
-                <Icon className="moreview" /> list more
-              </Button>
-            )}
-            {myCommunityIntro.postsTotalCount <=
-              myCommunityIntro.postsOffset && (
-              <Button
-                icon
-                className="left moreview"
-                style={{ cursor: 'default' }}
-              />
-            )}
-          </div>
-        </>
-      )}
+          <>
+            {myCommunityIntro !== undefined &&
+              myCommunityIntro.posts.map(postItem => (
+                <PostItemView key={postItem.postId} {...postItem} />
+              ))}
+            <div className="more-comments community-side">
+              {myCommunityIntro.postsTotalCount >
+                myCommunityIntro.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    onClick={requestAppendMyCommunityPostList}
+                  >
+                    <Icon className="moreview" /> list more
+                  </Button>
+                )}
+              {myCommunityIntro.postsTotalCount <=
+                myCommunityIntro.postsOffset && (
+                  <Button
+                    icon
+                    className="left moreview"
+                    style={{ cursor: 'default' }}
+                  />
+                )}
+            </div>
+          </>
+        )}
     </div>
   );
 }

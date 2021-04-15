@@ -1,10 +1,12 @@
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
-import { NameValueList } from '../../../shared/model/NameValueList';
 import { Cube } from '../../model/Cube';
 import { CubeDetail } from '../../model/CubeDetail';
 import { PostBodyCdo, PostCdo } from '../model/TaskCdo';
 import { createCacheApi } from './cacheableApi';
+import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
+import TaskDetailPost from '../model/TaskDetail';
+import TaskDetailBody from '../model/TaskDetailBody';
 
 const BASE_URL = '/api/cube';
 
@@ -54,10 +56,22 @@ export function registerPost(postCdo: PostCdo) {
   return axios.post<string>(url, postCdo).then(AxiosReturn);
 }
 
+export function findPost(postId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/posts/${postId}`;
+  return axios.get<TaskDetailPost>(url).then(AxiosReturn);
+}
+
 export function registerPostBody(postBodyCdo: PostBodyCdo) {
   const axios = getAxios();
   const url = `${BASE_URL}/postbodys`;
   return axios.post<string>(url, postBodyCdo).then(AxiosReturn);
+}
+
+export function findPostBody(postId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/postbodys/${postId}`;
+  return axios.get<TaskDetailBody>(url).then(AxiosReturn);
 }
 
 export function modifyPost(
@@ -76,4 +90,10 @@ export function modifyPostBody(
   const axios = getAxios();
   const url = `${BASE_URL}/postbodys/${postBodyId}`;
   return axios.put<void>(url, nameValueList).then(AxiosReturn);
+}
+
+export function findMyLectureTimeSummary() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/myLectureTimeSummary`;
+  return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
 }

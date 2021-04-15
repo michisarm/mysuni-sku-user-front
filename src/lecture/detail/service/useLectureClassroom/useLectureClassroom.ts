@@ -32,11 +32,11 @@ export function useLectureClassroom(notRequest?: boolean): [Value] {
     if (notRequest === true) {
       return;
     }
-    if (params === undefined) {
+    if (params?.cubeId === undefined) {
       return;
     }
-    getClassroomFromCube(params);
-  }, [params]);
+    getClassroomFromCube(params.cubeId);
+  }, [params?.cubeId]);
 
   return [value];
 }

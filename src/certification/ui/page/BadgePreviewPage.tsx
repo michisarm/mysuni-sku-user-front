@@ -13,9 +13,7 @@ interface BadgePreviewPageProps {
   badgeService?: BadgeService;
 }
 
-function BadgePreviewPage({
-  badgeService,
-}: BadgePreviewPageProps) {
+function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
   const { badge } = badgeService!;
   const params = useParams<BadgeDetailRouteParams>();
 
@@ -25,40 +23,39 @@ function BadgePreviewPage({
 
   const mainCategoryId = getMainCategoryId(badge);
   return (
-    <div className="badge-list">
+    <div className="badge-list-type">
       {badge && (
-          <ul>
-            <li>
-              <BadgeView
-                id={badge.id}
-                name={badge.name}
-                level={badge.level}
-                iconUrl={badge.iconUrl}
-                categoryId={mainCategoryId}
-                badgeStyle={BadgeStyle.Detail}
-                badgeSize={BadgeSize.Small}
-              />
-              <div className="badge-name">{badge.name}</div>
-            </li>
-            <li>
-              <BadgeView
-                id={badge.id}
-                name={badge.name}
-                level={badge.level}
-                iconUrl={badge.iconUrl}
-                categoryId={mainCategoryId}
-                badgeStyle={BadgeStyle.Detail}
-                badgeSize={BadgeSize.Small}
-              />
-              <div className="badge-name">{badge.name}</div>
-            </li>
-          </ul>
-        )
-      }
+        <ul>
+          <li>
+            <BadgeView
+              id={badge.id}
+              name={badge.name}
+              level={badge.level}
+              iconUrl={badge.iconUrl}
+              categoryId={mainCategoryId}
+              badgeStyle={BadgeStyle.Detail}
+              badgeSize={BadgeSize.Small}
+            />
+            <div className="badge-name">{badge.name}</div>
+          </li>
+          <li>
+            <BadgeView
+              id={badge.id}
+              name={badge.name}
+              level={badge.level}
+              iconUrl={badge.iconUrl}
+              categoryId={mainCategoryId}
+              badgeStyle={BadgeStyle.Detail}
+              badgeSize={BadgeSize.Small}
+            />
+            <div className="badge-name">{badge.name}</div>
+          </li>
+        </ul>
+      )}
     </div>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService'
-))(observer(BadgePreviewPage));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(BadgePreviewPage)
+);

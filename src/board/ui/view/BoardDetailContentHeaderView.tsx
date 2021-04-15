@@ -31,15 +31,15 @@ class BoardDetailContentHeaderView extends Component<Props> {
           <div className="title">{title}</div>
           <div className="user-info">
             {subField}
-            <span className="date">{time && moment(time).format('YYYY.MM.DD HH:MM')}</span>
+            <span className="date">{time && moment(time).format('YYYY.MM.DD HH:mm')}</span>
           </div>
           <div className="actions">
-            { onClickModify && (
+            {onClickModify && (
               <Button icon className="left postset edit" onClick={onClickModify}>
                 <Icon name="edit" />Edit
               </Button>
             )}
-            { deletable && (
+            {deletable && (
               <Button icon className="left postset delete" onClick={onClickDelete}>
                 <Icon name="delete" />Delete
               </Button>

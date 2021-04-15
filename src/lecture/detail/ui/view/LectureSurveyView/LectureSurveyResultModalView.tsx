@@ -54,14 +54,14 @@ const LectureSurveyResultModalView: React.FC<Props> = function LectureSurveyResu
   const surveyTitle = useMemo(() => {
     const params = getLectureParams();
     if (params === undefined) {
-      return '';
+      return currentMenu?.name;
+    } else {
+      return (
+        getActiveCubeStructureItem(params.pathname)?.name ||
+        getActiveCourseStructureItem()?.name ||
+        ''
+      );
     }
-    return (
-      currentMenu?.name ||
-      getActiveCubeStructureItem(params.pathname)?.name ||
-      getActiveCourseStructureItem()?.name ||
-      ''
-    );
   }, [currentMenu?.name, lectureStructure]);
 
   const respondCount =

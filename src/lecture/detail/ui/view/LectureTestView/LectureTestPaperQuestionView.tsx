@@ -7,12 +7,15 @@ import {
 import TestQuestionView from './TestQuestionView';
 import { EssayScore } from 'lecture/detail/model/GradeSheet';
 import { GraderCommentView } from './GraderCommentView';
+import LectureParams from '../../../viewModel/LectureParams';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 interface LectureTestPaperQuestionViewProps {
   testItem: LectureTestItem;
   testStudentItem: LectureTestStudentItem;
   answerItem?: LectureTestAnswerItem;
   modalGbn?: boolean;
+  params: LectureParams;
 }
 
 const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> = function LectureTestPaperQuestionView({
@@ -20,14 +23,14 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
   testStudentItem,
   answerItem,
   modalGbn,
+  params,
 }) {
+  const lectureStructureItem = getActiveStructureItem(params.pathname);
   let readOnly = false;
   if (
-    testStudentItem &&
-    testStudentItem.learningState &&
-    (testStudentItem.learningState === 'TestWaiting' ||
-      testStudentItem.learningState === 'Passed' ||
-      testStudentItem.learningState === 'TestPassed')
+    lectureStructureItem &&
+    (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'PASS')
   ) {
     readOnly = true;
   }
@@ -137,6 +140,7 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                   setSubmitOk={setSubmitOk}
                   dataLoadTime={answerItem?.dataLoadTime}
                   essayScore={matchedEssayScore}
+                  params={params}
                 />
               );
             })}

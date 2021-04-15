@@ -13,6 +13,7 @@ import {
 } from '../../../shared/helper/dateTimeHelper';
 import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import { useScrollMove } from '../../useScrollMove';
+import { LearningTypeName } from '../../model/LearningType';
 
 interface InMyLectureTableViewProps {
   inMyLectures: InMyLectureTableViewModel[];
@@ -24,13 +25,7 @@ export default function InMyLectureListView({
   totalCount,
 }: InMyLectureTableViewProps) {
   const history = useHistory();
-  const { scrollOnceMove, scrollSave } = useScrollMove();
-
-  useEffect(() => {
-    setTimeout(() => {
-      scrollOnceMove();
-    }, 200);
-  }, [scrollOnceMove]);
+  const { scrollSave } = useScrollMove();
 
   const onViewDetail = (e: any, cardId: string) => {
     e.preventDefault();
@@ -51,30 +46,23 @@ export default function InMyLectureListView({
       {inMyLectures &&
         inMyLectures.length > 0 &&
         inMyLectures.map((inMyLecture, index) => {
+          const learningType = LearningTypeName[inMyLecture.cubeType];
           const collegeName = getCollgeName(inMyLecture.category.college.id);
-          const learningType =
-            (inMyLecture.serviceType === 'Card' && inMyLecture.serviceType) ||
-            CubeTypeNameType[inMyLecture.cubeType];
-          const learningState =
-            (inMyLecture.learningState &&
-              LearningStateName[inMyLecture.learningState]) ||
-            '-';
-          const progressRate =
-            (inMyLecture.serviceType === 'Card' &&
-              inMyLecture.learningState &&
-              `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
-            '-';
+          const learningState = inMyLecture.learningState &&
+              LearningStateName[inMyLecture.learningState] || '-';
+          const progressRate = inMyLecture.learningState &&
+              `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}` || '-';
 
           return (
             <Table.Row key={`inMyLecture-list-${index}`}>
               <Table.Cell>{totalCount - index}</Table.Cell>
               <Table.Cell>{collegeName}</Table.Cell>
               <Table.Cell className="title">
-                <a href="#" onClick={e => onViewDetail(e, inMyLecture.cardId)}>
+                <a href="#" onClick={e => onViewDetail(e, inMyLecture.serviceId)}>
                   <span className="ellipsis">{inMyLecture.name}</span>
                 </a>
               </Table.Cell>
-              <Table.Cell>{learningType} </Table.Cell>
+              <Table.Cell>{learningType || '-'} </Table.Cell>
               <Table.Cell>{inMyLecture.difficultyLevel || '-'}</Table.Cell>
               <Table.Cell>
                 {timeToHourMinutePaddingFormat(inMyLecture.learningTime)}

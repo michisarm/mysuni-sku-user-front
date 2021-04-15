@@ -7,6 +7,15 @@ import {
   getCollgeName,
 } from '../service/useCollege/useRequestCollege';
 
+function isCategoryModel(
+  category: CategoryModel | Category
+): category is CategoryModel {
+  return (
+    (<CategoryModel>category).college !== undefined ||
+    (<CategoryModel>category).channel !== undefined
+  );
+}
+
 export class CategoryModel {
   college: IdName = new IdName();
   channel: IdName = new IdName();
@@ -15,7 +24,7 @@ export class CategoryModel {
   constructor(category?: CategoryModel | Category) {
     //
     if (category !== undefined) {
-      if (category instanceof CategoryModel) {
+      if (isCategoryModel(category)) {
         const college =
           (category.college && new IdName(category.college)) || this.college;
         const channel =

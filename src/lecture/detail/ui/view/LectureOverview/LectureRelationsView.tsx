@@ -10,6 +10,7 @@ import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
 import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
+import { Area } from 'tracker/model';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -81,7 +82,11 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
   lectureRelations,
 }) {
   return (
-    <div className="badge-detail border-none" id="lms-related-process">
+    <div
+      className="badge-detail border-none"
+      id="lms-related-process"
+      data-area={Area.CARD_RELATION}
+    >
       <div className="ov-paragraph">
         <div className="section-head">
           <div className="title">

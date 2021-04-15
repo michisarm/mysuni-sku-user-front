@@ -54,8 +54,8 @@ export async function saveCourseTestAnswerSheet(
         answerSheetBody.examId
       );
     }
-    await getTestStudentItemMapFromCourse(params); // student 재호출
-    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+    //await getTestStudentItemMapFromCourse(params); // student 재호출
+    //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(async newAnswerSheetId => {
       answerSheetBody.id = newAnswerSheetId;
@@ -66,8 +66,8 @@ export async function saveCourseTestAnswerSheet(
           answerSheetBody.examId
         );
       }
-      await getTestStudentItemMapFromCourse(params); // student 재호출
-      await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+      //await getTestStudentItemMapFromCourse(params); // student 재호출
+      //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
     });
   }
 }
@@ -108,8 +108,8 @@ export async function saveCubeTestAnswerSheet(
         answerSheetBody.examId
       );
     }
-    await getTestStudentItemMapFromCube(params); // student 재호출
-    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+    //await getTestStudentItemMapFromCube(params); // student 재호출
+    //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(async newAnswerSheetId => {
       answerSheetBody.id = newAnswerSheetId;
@@ -120,8 +120,8 @@ export async function saveCubeTestAnswerSheet(
           answerSheetBody.examId
         );
       }
-      await getTestStudentItemMapFromCube(params); // student 재호출
-      await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
+      //await getTestStudentItemMapFromCube(params); // student 재호출
+      //await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
     });
   }
 }

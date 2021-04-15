@@ -1,18 +1,15 @@
-import { observable, computed, action, runInAction } from "mobx";
-import { reactAutobind } from "@nara.platform/accent";
-import Student from "../../../lecture/model/Student";
-import { LearningState } from "../../../shared/model";
-import { findCardStudentsByCardIdsAndLearningState } from "../../api/CardStudentApi";
-
+import { observable, computed, action, runInAction } from 'mobx';
+import { reactAutobind } from '@nara.platform/accent';
+import Student from '../../../lecture/model/Student';
+import { LearningState } from '../../../shared/model';
+import { findCardStudentsByCardIdsAndLearningState } from '../../api/CardStudentApi';
 
 @reactAutobind
 export default class CardStudentService {
-
   static instance: CardStudentService;
 
   @observable
   _cardStudents: Student[] = [];
-
 
   @computed get cardStudents() {
     return this._cardStudents;
@@ -33,20 +30,22 @@ export default class CardStudentService {
   }
 
   @action
-  async findCardStudentsByCardIdsAndLearningState(cardIds: string[], learningState: LearningState) {
-    const foundCardStudents = await findCardStudentsByCardIdsAndLearningState(cardIds, learningState);
+  async findCardStudentsByCardIdsAndLearningState(
+    cardIds: string[],
+    learningState: LearningState
+  ) {
+    const foundCardStudents = await findCardStudentsByCardIdsAndLearningState(
+      cardIds,
+      learningState
+    );
 
-    if (
-      foundCardStudents &&
-      foundCardStudents.length > 0
-    ) {
-
+    if (foundCardStudents && foundCardStudents.length > 0) {
       runInAction(() => {
         this._cardStudents = foundCardStudents;
         this._passedCardCount = foundCardStudents.length;
 
         foundCardStudents.forEach(s => {
-          this._passedCardIdMap.set(s.cardId, true);
+          this._passedCardIdMap.set(s.lectureId, true);
         });
       });
     }
@@ -59,7 +58,6 @@ export default class CardStudentService {
     this._passedCardIdMap = new Map<string, boolean>();
   }
 }
-
 
 Object.defineProperty(CardStudentService, 'instance', {
   value: new CardStudentService(),

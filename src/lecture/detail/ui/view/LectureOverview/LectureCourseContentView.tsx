@@ -18,6 +18,7 @@ import LectureRelationsView from './LectureRelationsView';
 import './LectureCubeContentView.css';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureFileView from './LectureFileView';
+import { Action, Area } from 'tracker/model';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -31,12 +32,12 @@ interface LectureCourseContentViewProps {
   lectureRelations?: LectureRelations;
 }
 
-// function hashLink(hash: string) {
-//   const element = document.getElementById(hash);
-//   if (element !== null) {
-//     element.scrollIntoView();
-//   }
-// }
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
+}
 
 const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = function LectureCourseContentView({
   lectureDescription,
@@ -51,19 +52,19 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
   const overviewHashClick = useCallback(() => {
-    // hashLink('lms-overview');
+    hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const instructorHashClick = useCallback(() => {
-    // hashLink('lms-instructor-Info');
+    hashLink('lms-instructor-Info');
     setActivatedTab('instructor');
   }, []);
   const badgeHashClick = useCallback(() => {
-    // hashLink('lms-related-badge');
+    hashLink('lms-related-badge');
     setActivatedTab('badge');
   }, []);
   const relatedHashClick = useCallback(() => {
-    // hashLink('lms-related-process');
+    hashLink('lms-related-process');
     setActivatedTab('related');
   }, []);
 
@@ -82,6 +83,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           <a
             onClick={overviewHashClick}
             className={activatedTab === 'overview' ? 'lms-act' : ''}
+            data-area={Area.CARD_TAB}
+            data-action={Action.CLICK}
+            data-action-name="CARD TAB 클릭::Overview"
           >
             Overview
           </a>
@@ -91,6 +95,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <a
                 onClick={instructorHashClick}
                 className={activatedTab === 'instructor' ? 'lms-act' : ''}
+                data-area={Area.CARD_TAB}
+                data-action={Action.CLICK}
+                data-action-name="CARD TAB 클릭::강사정보"
               >
                 강사정보
               </a>
@@ -101,6 +108,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <a
                 onClick={badgeHashClick}
                 className={activatedTab === 'badge' ? 'lms-act' : ''}
+                data-area={Area.CARD_TAB}
+                data-action={Action.CLICK}
+                data-action-name="CARD TAB 클릭::관련 Badge"
               >
                 관련 Badge
               </a>
@@ -111,6 +121,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               <a
                 onClick={relatedHashClick}
                 className={activatedTab === 'related' ? 'lms-act' : ''}
+                data-area={Area.CARD_TAB}
+                data-action={Action.CLICK}
+                data-action-name="CARD TAB 클릭::관련과정"
               >
                 관련과정
               </a>
@@ -118,6 +131,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           <a
             onClick={commentHashClick}
             className={activatedTab === 'comment' ? 'lms-act' : ''}
+            data-area={Area.CARD_TAB}
+            data-action={Action.CLICK}
+            data-action-name="CARD TAB 클릭::Comments"
           >
             <i className="lms-comment-icon" />
             Comments
@@ -136,7 +152,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
               htmlContent={lectureDescription.description}
             />
           )}
-          <div className="badge-detail">
+          <div className="badge-detail" data-area={Area.CARD_TAG}>
             {lectureSubcategory && (
               <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
             )}
@@ -146,7 +162,11 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
           {lectureInstructor &&
             Array.isArray(lectureInstructor.instructors) &&
             lectureInstructor.instructors.length > 0 && (
-              <div className="badge-detail" id="lms-instructor-Info">
+              <div
+                className="badge-detail"
+                id="lms-instructor-Info"
+                data-area={Area.CARD_EXPERT}
+              >
                 <div className="ov-paragraph">
                   {lectureInstructor && (
                     <LectureInstructorView

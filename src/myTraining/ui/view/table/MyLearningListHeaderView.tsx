@@ -95,7 +95,7 @@ function MyLearningListHeaderView({
                 >
                   {headerColumn.text}
                   {headerColumn.icon && (
-                    <a href="#" onClick={() => handleClickSort(headerColumn.text)}>
+                    <a href="#" onClick={e => { handleClickSort(headerColumn.text); e.preventDefault(); }}>
                       <Icon className={getOrderIcon(headerColumn.text, true)}>
                         <span className="blind">{getOrderIcon(headerColumn.text)}</span>
                       </Icon>

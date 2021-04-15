@@ -50,7 +50,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     if (postItems === undefined) {
       return;
     }
-
+    totalPages();
     if (menuId === undefined || menuId === '' || menuId === null) {
       return;
     }
@@ -60,7 +60,7 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       setMenuName(result.name);
       setMenuType(result.type);
     });
-    totalPages();
+    
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
