@@ -1,4 +1,4 @@
-import { CommentList, CommentService } from '@nara.drama/feedback';
+import { CommentList } from '@nara.drama/feedback';
 import moment from 'moment';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
@@ -125,7 +125,7 @@ export default function LectureDiscussionContainer() {
               />
               <h2>{lectureDiscussion.name}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{CommentService.instance.commentCount}</strong>
+                전체 의견 <strong>638</strong>
               </span>
               <span>
                 <strong className="peo-date">
