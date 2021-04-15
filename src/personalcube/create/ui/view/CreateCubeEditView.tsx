@@ -5,24 +5,23 @@ import ReactQuill from 'react-quill';
 import SelectOptions from '../../model/SelectOptions';
 import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import { CreateCubeDetail } from '../../model/CreateCubeDetail';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
+import ContentProviderContainer from '../logic/ContentProviderContainer';
 
 
-interface CreateDetailEditViewProps {
-  createCubeDetail: CreateCubeDetail,
+interface CreateCubeEditViewProps {
   createCubeService?: CreateCubeService;
 }
 
-
-function CreateDetailEditView({
-  createCubeDetail,
+function CreateCubeEditView({
   createCubeService,
-}: CreateDetailEditViewProps) {
+}: CreateCubeEditViewProps) {
+  if(createCubeService === undefined) {
+    return null;
+  }
 
-  const { cube } = createCubeDetail;
-  const { cubeSdo } = createCubeService!;
+  const { createCubeDetail, cubeSdo } = createCubeService;
 
   const onChangeGoal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     CreateCubeService.instance.changeCubeSdoProps('description.goal', e.target.value);
@@ -55,12 +54,12 @@ function CreateDetailEditView({
         <div className="ui form">
           <div className="ui right-top-count input">
             <span className="count">
-              <span className="now">{cubeSdo.description && cubeSdo.description.goal.length || 0}</span>/
+              <span className="now">{cubeSdo.description?.goal.length || 0}</span>/
               <span className="max">500</span>
             </span>
             <textarea
               placeholder="교육 목표를 입력해주세요. (최대 500자 입력 가능)"
-              value={cubeSdo.description && cubeSdo.description.goal}
+              value={cubeSdo.description?.goal}
               onChange={onChangeGoal}
             />
             <span className="validation">You can enter up to 500 characters.</span>
@@ -72,12 +71,12 @@ function CreateDetailEditView({
         <div className="ui form">
           <div className="ui right-top-count input">
             <span className="count">
-              <span className="now">{cubeSdo.description && cubeSdo.description.applicants.length || 0}</span>/
+              <span className="now">{cubeSdo.description?.applicants.length || 0}</span>/
               <span className="max">500</span>
             </span>
             <textarea
               placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
-              value={cubeSdo.description && cubeSdo.description.applicants}
+              value={cubeSdo.description?.applicants}
               onChange={onChangeApplicants}
             />
             <span className="validation">You can enter up to 500 characters.</span>
@@ -92,7 +91,7 @@ function CreateDetailEditView({
               modules={SelectOptions.modules}
               formats={SelectOptions.formats}
               onChange={onChangeDescripiton}
-              value={cubeSdo.description && cubeSdo.description.description}
+              value={cubeSdo.description?.description}
             />
           </div>
         </div>
@@ -101,7 +100,7 @@ function CreateDetailEditView({
         <div className="ui grid create create2">
           <div className="column"><label>이수조건</label></div>
           <div className="column">
-            <div className="text1">{cubeSdo.description && cubeSdo.description.completionTerms}</div>
+            <div className="text1">{cubeSdo.description?.completionTerms}</div>
           </div>
         </div>
       </Form.Field>
@@ -112,7 +111,7 @@ function CreateDetailEditView({
             modules={SelectOptions.modules}
             formats={SelectOptions.formats}
             onChange={onChangeGuide}
-            value={cubeSdo.description && cubeSdo.description.guide}
+            value={cubeSdo.description?.guide}
           />
         </div>
       </Form.Field>
@@ -121,12 +120,11 @@ function CreateDetailEditView({
           <div className="column"><label>교육시간</label></div>
           <div className="column">
             <div className="text1">
-              {timeToHourMinuteFormat(cube.learningTime)}
+              {timeToHourMinuteFormat(createCubeDetail?.cube.learningTime || 0)}
             </div>
           </div>
         </div>
       </Form.Field>
-
       <Form.Field>
         <label>난이도</label>
         <div className="ui grid create">
@@ -141,18 +139,14 @@ function CreateDetailEditView({
         </div>
       </Form.Field>
       <Form.Field>
-        <ContentsProviderSelectContainer
-          targetProps="operation.organizer"
-          type="cubeInfo"
-          defaultValue="hello"
-            // cubeContents && cubeContents.operator && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
-            // && JSON.stringify({ id: cubeIntro.operation.organizer.id, name: cubeIntro.operation.organizer.name })
-        />
+        <ContentProviderContainer />
       </Form.Field>
     </>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
+const CreateCubeListViewDefault = inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
-))(observer(CreateDetailEditView));
+))(observer(CreateCubeEditView));
+
+export default CreateCubeListViewDefault;

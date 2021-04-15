@@ -1,66 +1,59 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useParams } from 'react-router-dom';
 import { CreateCubeDetailPageParams } from '../../model/CreateCubeDetailPageParams';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { Segment, Form, Button } from 'semantic-ui-react';
-import { AlertWin, ConfirmWin } from 'shared';
-import SharedDetailBasicInfoView from '../view/SharedDetailBasicInfoView';
-import SharedDetailExposureInfoView from '../view/SharedDetailExposureInfoView';
-import SharedDetailIntroView from '../view/SharedDetailIntroView';
-import SharedDetailIntroEditContainer from './SharedDetailIntroEditContainer';
-import SharedTypeDetailView from '../view/SharedTypeDetailView';
-import cubePaths, { routeToCreateList } from '../../../routePaths';
-import CreateDetailBasicInfoView from '../view/CreateDetailBasicInfoView';
-import CreateDetailExposureInfoView from '../view/CreateDetailExposureInfoView';
-import CreateDetailInfoView from './CreateDetailInfoView';
-import CreateDetailEditView from '../view/CreateDetailEditView';
+import { routeToCreateList } from '../../../routePaths';
+import CreateCubeEditView from '../view/CreateCubeEditView';
 import { useRequestCreateCubeDetail } from '../../service/useRequestCreateCubeDetail';
-import CreateDetailTypeView from './CreateDetailTypeView';
-import { DepotFileViewModel } from '@nara.drama/depot';
+import CreateCubeBasicInfoView from '../view/CreateCubeBasicInfoView';
+import CreateCubeExposureInfoView from '../view/CreateCubeExposureInfoView';
+import CreateCubeDetailInfoView from '../view/CreateCubeDetailInfoView';
+import CreateCubeTypeView from '../view/CreateCubeTypeView';
+import { FileService } from '../../../../shared/present/logic/FileService';
+import { getBlankRequiredCubeContentsField } from '../../model/CubeSdo';
 
 
 interface CreateCubeDetailContainerProps {
   createCubeService?: CreateCubeService;
+  fileService?: FileService;
 }
 
 function CreateCubeDetailContainer({  
   createCubeService,
+  fileService,
 }: CreateCubeDetailContainerProps) {
   const params = useParams<CreateCubeDetailPageParams>();
 
-  const [alertWinOpen, setAlertWinOpen] = useState<boolean>(false);
-  const [confirmWinOpen, setConfirmWinOpen] = useState<boolean>(false);
-
-  const [fileMap ,setFileMap] = useState<Map<string, DepotFileViewModel[]>>(new Map<string, DepotFileViewModel[]>());
- 
+  const { createCubeDetail, cubeSdo } = createCubeService!;
+  const { fileMap } = fileService!;
 
   useRequestCreateCubeDetail();
 
-  const onClickSave = () => {
+  const onSave = useCallback(() => {
+    CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
+    routeToCreateList();
+  }, [params.personalCubeId, cubeSdo]);
 
-  };
+  const onClickSave = useCallback(() => {
+    const blankField = getBlankRequiredCubeContentsField(cubeSdo);
 
-  const onCloseAlertWin = () => {
+    if(blankField === 'none') {
+      reactConfirm({
+        title: '저장 안내',
+        message: '입력하신 강좌를 저장 하시겠습니까?',
+        onOk: onSave,
+      });
+    } else {
+      alertRequiredField(blankField);
+    }
+  }, [cubeSdo]);
 
-  };
-
-  const onConfirmAlertWin = () => {
-
-  };
-
-  const onCloseConfirmWin = () => {
-
-  };
-
-  const onConfrimConfirmWin = () => {
-
-  };
-
-  const { createCubeDetail } = createCubeService!;
-
-  const message = <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>;
+  const alertRequiredField =useCallback((message: string) => {
+    reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
+  }, []);
 
   return (
     <>
@@ -75,53 +68,54 @@ function CreateCubeDetailContainer({
       <Segment className="full">
         <div className="apl-form-wrap create">
           {
-            createCubeDetail && (
+            createCubeDetail !== undefined && (
               <Form>
-                <CreateDetailBasicInfoView createCubeDetail={createCubeDetail} />
-                <CreateDetailExposureInfoView createCubeDetail={createCubeDetail} />
+                <CreateCubeBasicInfoView
+                  name={createCubeDetail.cube.name}
+                  categories={createCubeDetail.cube.categories}
+                  cubeType={createCubeDetail.cube.type}
+                  cubeState={params.cubeState}
+                  time={createCubeDetail.cube.time}
+                  creatorName={createCubeDetail.cubeContents.creatorName}
+                />
+                <CreateCubeExposureInfoView
+                  sharingCineroomIds={createCubeDetail.cube.sharingCineroomIds}
+                  tags={createCubeDetail.cubeContents.tags}
+                />
                 {
                   params.cubeState === 'OpenApproval' && (
-                    <CreateDetailInfoView
+                    <CreateCubeDetailInfoView
                       createCubeDetail={createCubeDetail}
                       cubeType={params.cubeState}
                     /> 
-                  )|| ( 
-                    <CreateDetailEditView createCubeDetail={createCubeDetail}/>
                   )
                 }
-                <CreateDetailTypeView createCubeDetail={createCubeDetail} fileMap={fileMap}/>
+                { params.cubeState !== 'OpenApproval' && ( 
+                    <CreateCubeEditView />
+                  )
+                }
+                <CreateCubeTypeView 
+                  cubeMaterial={createCubeDetail.cubeMaterial} 
+                  fileMap={fileMap}
+                />
                 {
-                  params.cubeState === 'OpenApproval' ?
+                  params.cubeState === 'OpenApproval' && (
                     <div className="buttons editor">
                       <Button className="fix bg" onClick={routeToCreateList}>List</Button>
                     </div>
-                    :
+                  )
+                }
+                {
+                  params.cubeState !== 'OpenApproval' && (
                     <div className="buttons">
                       <Button className="fix line" onClick={routeToCreateList}>Cancel</Button>
                       <Button className="fix bg" onClick={onClickSave}>Save</Button>
                     </div>
+                  )
                 }
-                <AlertWin
-                  message="hello"
-                  handleClose={onCloseAlertWin}
-                  open={alertWinOpen}
-                  alertIcon="triangle"
-                  title= "필수 정보 입력 안내"
-                  handleOk={onConfirmAlertWin}
-                />
-                <ConfirmWin
-                  id={params.personalCubeId}
-                  message={message}
-                  open={confirmWinOpen}
-                  handleClose={onCloseConfirmWin}
-                  handleOk={onConfrimConfirmWin}
-                  title="저장 안내"
-                  buttonYesName="OK"
-                  buttonNoName="Cancel"
-                />
               </Form>
-                )
-              } 
+            )
+          }
         </div>
       </Segment>
     </>
@@ -130,4 +124,5 @@ function CreateCubeDetailContainer({
 
 export default inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
+  'shared.fileService',
 ))(observer(CreateCubeDetailContainer));

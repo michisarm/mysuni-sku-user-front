@@ -5,16 +5,16 @@ import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 
 
-interface CreateDetailInfoViewProps {
+interface CreateCubeDetailInfoViewProps {
   createCubeDetail: CreateCubeDetail;
   cubeType: string;
 }
 
 
-export default function CreateDetailInfoView({
+export default function CreateCubeDetailInfoView({
   createCubeDetail,
   cubeType,
-}: CreateDetailInfoViewProps) {
+}: CreateCubeDetailInfoViewProps) {
   const { cube, cubeContents, cubeMaterial: { board } } = createCubeDetail;
 
   return (

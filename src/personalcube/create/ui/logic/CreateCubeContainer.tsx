@@ -7,7 +7,7 @@ import { CreateCubePageParams } from '../../model/CreateCubePageParams';
 import { FormTitle } from '../view/DetailElementsView';
 import { Button } from 'semantic-ui-react';
 import cubePaths from '../../../routePaths';
-import { getBlankRequiredField } from '../../model/CubeSdo';
+import { getBlankRequiredCubeField } from '../../model/CubeSdo';
 import { CollegeService } from '../../../../college/stores';
 import { CollegeType } from '../../../../college/model';
 import CreateBasicFormContainer from './CreateBasicFormContainer';
@@ -60,7 +60,7 @@ function CreateCubeContainer({
   };
 
   const onClickSave = () => {
-    const blankField = getBlankRequiredField(cubeSdo);
+    const blankField = getBlankRequiredCubeField(cubeSdo);
 
     if(blankField === 'none') {
       reactConfirm({
@@ -74,7 +74,7 @@ function CreateCubeContainer({
   };
 
   const onClickNext = () => {
-    const blankField = getBlankRequiredField(cubeSdo);
+    const blankField = getBlankRequiredCubeField(cubeSdo);
 
     if(blankField === 'none') {
       reactConfirm({
@@ -119,23 +119,26 @@ function CreateCubeContainer({
 
   return (
     <>
-      <FormTitle
-        activeStep={1}
-      />
+      <FormTitle activeStep={1} />
       <CreateBasicFormContainer />
       <CreateExposureFormContainer />
-      { params.personalCubeId ?
-        <div className="buttons">
-          <Button type="button" className="fix line" onClick={onClickDelete}>Delete</Button>
-          <Button type="button" className="fix line" onClick={moveToCreateList}>Cancel</Button>
-          <Button type="button" className="fix line" onClick={onClickSave}>Save</Button>
-          <Button type="button" className="fix bg" onClick={onClickNext}>Next</Button>
-        </div>
-        :
-        <div className="buttons">
-          <Button type="button" className="fix line" onClick={moveToCreateList}>Cancel</Button>
-          <Button type="button" className="fix bg" onClick={onClickNext}>Next</Button>
-        </div>
+      {
+        params.personalCubeId !== undefined && (
+          <div className="buttons">
+            <Button type="button" className="fix line" onClick={onClickDelete}>Delete</Button>
+            <Button type="button" className="fix line" onClick={moveToCreateList}>Cancel</Button>
+            <Button type="button" className="fix line" onClick={onClickSave}>Save</Button>
+            <Button type="button" className="fix bg" onClick={onClickNext}>Next</Button>
+          </div>
+        )
+      }
+      {
+        params.personalCubeId === undefined && (
+          <div className="buttons">
+            <Button type="button" className="fix line" onClick={moveToCreateList}>Cancel</Button>
+            <Button type="button" className="fix bg" onClick={onClickNext}>Next</Button>
+          </div>
+        )
       }
     </>
   );

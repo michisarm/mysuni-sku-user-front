@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { useParams } from 'react-router';

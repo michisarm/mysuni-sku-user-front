@@ -1,18 +1,18 @@
 import React from 'react';
-import { CreateCubeDetail } from '../../model/CreateCubeDetail';
 import { Table } from 'semantic-ui-react';
 import { getCineroomName } from '../../../../shared/service/useCineroom/useRequestCineroom';
 
 
-interface CreateDetailExposureInfoViewProps {
-  createCubeDetail: CreateCubeDetail;
+interface CreateCubeExposureInfoViewProps {
+  sharingCineroomIds: string[];
+  tags?: string[] | null;
 }
 
 
-export default function CreateDetailExposureInfoView({
-  createCubeDetail,
-}: CreateDetailExposureInfoViewProps) {
-  const { cube, cubeContents } = createCubeDetail;
+export default function CreateCubeExposureInfoView({
+  sharingCineroomIds,
+  tags,
+}: CreateCubeExposureInfoViewProps) {
 
   return (
     <>
@@ -25,9 +25,8 @@ export default function CreateDetailExposureInfoView({
             <Table.HeaderCell>관계사 공개 범위 설정</Table.HeaderCell>
             <Table.Cell>
               {
-                cube.sharingCineroomIds &&
-                cube.sharingCineroomIds.length > 0 && 
-                cube.sharingCineroomIds.map((cineroomId, index) => {
+                sharingCineroomIds.length > 0 &&
+                sharingCineroomIds.map((cineroomId, index) => {
                   if (index === 0) {
                     return <span key={index}>{getCineroomName(cineroomId)}</span>;
                   } else {
@@ -41,9 +40,9 @@ export default function CreateDetailExposureInfoView({
             <Table.HeaderCell>Tag 정보</Table.HeaderCell>
             <Table.Cell>
               {
-                cubeContents.tags &&
-                cubeContents.tags.length > 0 &&
-                cubeContents.tags.map((tag, index) => {
+                tags &&
+                tags.length > 0 &&
+                tags.map((tag, index) => {
                   if (index === 0) {
                     return <span key={index}>{tag}</span>;
                   } else {

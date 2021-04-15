@@ -6,6 +6,7 @@ import ActionLogService from './present/logic/ActionLogService';
 import ActionEventService from './present/logic/ActionEventService';
 import BannerService from './present/logic/BannerService';
 import FilterBoxService from './present/logic/FilterBoxService';
+import { FileService } from './present/logic/FileService';
 
 export default {
   shared: {
@@ -17,6 +18,7 @@ export default {
     actionEventService: ActionEventService.instance,
     bannerService: BannerService.instance,
     filterBoxService: FilterBoxService.instance,
+    fileService: FileService.instance,
   },
 };
 

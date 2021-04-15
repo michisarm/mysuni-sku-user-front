@@ -22,24 +22,24 @@ function CreateCubeListPage({
 
   const { createCubeCount } = createCubeService!;
 
-  const getTabs = () => {
-    return [
-      {
-        name: 'Create',
-        item: (
-          <>
-            Create
-            <span className="count">
-              {createCubeCount > 0 ? `+${createCubeCount}` : createCubeCount}
-            </span>
-          </>
-        ),
-        render: () => (
-          <CreateCubeListContainer />
-        ),
-      }
-    ] as TabItemModel[];
-  }
+    const getTabs = () => {
+      return [
+        {
+          name: 'Create',
+          item: (
+            <>
+              Create
+              <span className="count">
+                {createCubeCount > 0 ? `+${createCubeCount}` : createCubeCount}
+              </span>
+            </>
+          ),
+          render: () => (
+            <CreateCubeListContainer />
+          ),
+        }
+      ] as TabItemModel[];
+    }
 
   const onChangeTab = (tab: TabItemModel): string => {
     history.push(cubePaths.createTab(tab.name));

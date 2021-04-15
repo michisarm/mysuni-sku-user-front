@@ -23,4 +23,4 @@ function CreateCubeDetailPage() {
   );
 }
 
-export default CreateCubeDetailPage
+export default CreateCubeDetailPage;
