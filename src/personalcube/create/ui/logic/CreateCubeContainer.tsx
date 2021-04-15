@@ -12,7 +12,6 @@ import { CollegeService } from '../../../../college/stores';
 import { CollegeType } from '../../../../college/model';
 import CreateBasicFormContainer from './CreateBasicFormContainer';
 import CreateExposureFormContainer from './CreateExposureFormContainer';
-import { useRequestCineroom } from '../../../../shared/service/useCineroom/useRequestCineroom';
 
 interface CreateCubeContainerProps {
   createCubeService?: CreateCubeService;
@@ -25,7 +24,7 @@ function CreateCubeContainer({
 }: CreateCubeContainerProps) {
   const history = useHistory();
   const params = useParams<CreateCubePageParams>();
-  const { createCubeDetail, setTargetCineroomId, cubeSdo } = createCubeService!;
+  const { createCubeDetail, cubeSdo, setCompanyCineroomId } = createCubeService!;
 
   useEffect(() => {
     if(params.personalCubeId === undefined) {
@@ -36,7 +35,7 @@ function CreateCubeContainer({
 
     return () => {
       createCubeService!.clearCreateCubeDetail();
-      createCubeService!.clearTargetCineroomId();
+      createCubeService!.clearCompanyCineroomId();
     };
   }, [params.personalCubeId]);
 
@@ -47,20 +46,16 @@ function CreateCubeContainer({
     const mainCategory = createCubeDetail.cube.categories.find(category => category.mainCategory === true); 
 
     if(mainCategory !== undefined) {
-      const isCompanyType = isCompanyTypeCollege(mainCategory.collegeId);
-      if(isCompanyType) {
-        setTargetCineroomId(mainCategory.collegeId);
-      }
+      setCompanyCineroom(mainCategory.collegeId);
     }
   }, [createCubeDetail]);
 
-  const isCompanyTypeCollege = async (collegeId :string) => {
+
+  const setCompanyCineroom = async (collegeId: string) => {
     const college = await collegeService!.findCollege(collegeId);
     if(college && college.collegeType === CollegeType.Company) {
-      return true;
+      setCompanyCineroomId(collegeId);
     }
-
-    return false;
   }
 
   const moveToCreateList = () => {
@@ -76,30 +71,30 @@ function CreateCubeContainer({
   };
 
   const onClickSave = () => {
-    const result = getBlankRequiredField(cubeSdo);
+    const blankField = getBlankRequiredField(cubeSdo);
 
-    if(result === 'success') {
+    if(blankField === 'none') {
       reactConfirm({
         title: '저장 안내',
         message: '입력하신 강좌를 저장 하시겠습니까?',
         onOk: onSave,
       });
     } else {
-      alertRequiredField(result);
+      alertRequiredField(blankField);
     }
   };
 
   const onClickNext = () => {
-    const result = getBlankRequiredField(cubeSdo);
+    const blankField = getBlankRequiredField(cubeSdo);
 
-    if(result === 'success') {
+    if(blankField === 'none') {
       reactConfirm({
         title: '저장 안내',
         message: '입력하신 강좌를 저장 하시겠습니까?',
         onOk: onNext,
       });
     } else {
-      alertRequiredField(result);
+      alertRequiredField(blankField);
     }
   };
 

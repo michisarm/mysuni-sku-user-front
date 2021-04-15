@@ -14,8 +14,9 @@ import { useParams } from 'react-router-dom';
 import { CreateCubePageParams } from '../../model/CreateCubePageParams';
 import SelectOptions from '../../model/SelectOptions';
 import { CollegeService } from '../../../../college/stores';
-import { getMainCategory } from '../../model/CreateCubeDetail';
+import { getMainCategory, getSubCategories } from '../../model/CreateCubeDetail';
 import { getCollgeName, getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
+
 
 interface CreateBasicFormContainerProps {
   createCubeService?: CreateCubeService;
@@ -28,18 +29,16 @@ function CreateBasicFormContainer({
 }: CreateBasicFormContainerProps) {
   const params = useParams<CreateCubePageParams>();
 
-  const [selectedCollegeId, setSelectedCollegeId] = useState<string>();
-  const [collegeType, setCollegeType] = useState<CollegeType>();
+  const [mainCollegeId, setMainCollegeId] = useState<string>();
+  const [mainCollegeType, setMainCollegeType] = useState<CollegeType>();
 
-  const { cubeSdo, setTargetCineroomId } = createCubeService!;
+  const { cubeSdo, setCompanyCineroomId } = createCubeService!;
 
   useEffect(() => {
     if(params.personalCubeId === undefined) {
       return;
     }
-
     const mainCategory = cubeSdo.categories.find(category => category.mainCategory === true);
-
     if(mainCategory !== undefined) {
       setSelectedCollege(mainCategory.collegeId);
     }
@@ -47,9 +46,10 @@ function CreateBasicFormContainer({
 
   const setSelectedCollege = async (collegeId: string) => {
     const college = await collegeService!.findCollege(collegeId);
+
     if(college) {
-      setSelectedCollegeId(college.id);
-      setCollegeType(college.collegeType);
+      setMainCollegeId(college.id);
+      setMainCollegeType(college.collegeType);
     }
   }
 
@@ -73,48 +73,45 @@ function CreateBasicFormContainer({
 
     createCubeService!.changeCubeSdoProps('categories', [mainCategory]);
 
-    setSelectedCollegeId(college.id);
-    setCollegeType(college.collegeType);
+    setMainCollegeId(college.id);
+    setMainCollegeType(college.collegeType);
 
     if(college.collegeType === CollegeType.Company) {
-      setTargetCineroomId(college.id);
+      setCompanyCineroomId(college.id);
     } else {
-      setTargetCineroomId('');
+      setCompanyCineroomId('');
     }
   };
 
   const onConfirmSubChannel = (categoryModels: CategoryModel[]) => {
     const mainCategory = getMainCategory(cubeSdo.categories);
 
-    const categories: CubeCategory[] = categoryModels.map(categoryModel => {
-      const isMainCategory = categoryModel.college.id === mainCategory?.collegeId;
+    if(mainCategory === undefined) {
+      return;
+    }
+
+    const subCategories: CubeCategory[] = categoryModels.map(categoryModel => {
       return {
         collegeId: categoryModel.college.id,
         channelId: categoryModel.channel.id,
-        mainCategory: isMainCategory,
+        mainCategory: false,
       };
     });
 
-    console.log('categories :: ', categories);
-
-    createCubeService!.changeCubeSdoProps('categories', categories);
+    createCubeService!.changeCubeSdoProps('categories', [mainCategory, ...subCategories]);
   };
-
+ 
   const mainCategory = getMainCategory(cubeSdo.categories);
-  const mainCollegeName = getCollgeName(mainCategory?.collegeId || '');
-  const mainChannelName = getChannelName(mainCategory?.channelId || '');
-
-  console.log('channeNale :', mainChannelName);
+  const subCategories = getSubCategories(cubeSdo.categories);
+  const mainChannelId = mainCategory && mainCategory.channelId || '';
+  const mainChannelName = mainCategory && getChannelName(mainCategory.channelId) || '';
 
   const mainChannel: IdName = {
-    id: mainCategory?.channelId || '',
-    name: mainChannelName || '',
+    id: mainChannelId,
+    name: mainChannelName,
   };
 
-
-  console.log('mainChannel :: ', mainChannel);
-
-  const categoryModels: CategoryModel[] = cubeSdo.categories.map(category => {
+  const subCategoryModels: CategoryModel[] = subCategories.map(category => {
   const collegeName = getCollgeName(category.collegeId) || '';
   const channelName = getChannelName(category.channelId) || '';
 
@@ -174,33 +171,34 @@ function CreateBasicFormContainer({
           <ChannelFieldRow>
             <div className="cell v-middle">
               <span className="text1">서브채널</span>
-
               <SubChannelModalContainer
                 trigger={
                   <Button icon className="left post delete">
                     채널선택
                   </Button>
                 }
-                collegeType={collegeType}
-                targetCollegeId={selectedCollegeId}
-                defaultSelectedCategoryChannels={categoryModels}
+                targetCollegeId={mainCollegeId}
+                collegeType={mainCollegeType}
+                defaultSelectedCategoryChannels={subCategoryModels}
                 onConfirmCategoryChannels={onConfirmSubChannel}
               />
             </div>
             <div className="cell v-middle">
-              {cubeSdo.categories.length < 1 ? (
-                <span key="select-sub-category" className="text1">
-                  서브채널을 선택해주세요.
-                </span>
-              ) : (
-                cubeSdo.categories.map((category, index) => (
+              {
+                subCategories &&
+                subCategories.length > 0 &&
+                subCategories.map((subCategory, index) => (
                   <span className="text2" key={`channels-${index}`}>
-                    {getCollgeName(category.collegeId)}
+                    {getCollgeName(subCategory.collegeId)}
                     {` > `}
-                    {getChannelName(category.channelId)}
+                    {getChannelName(subCategory.channelId)}
                   </span>
-                ))
-              )}
+                )) || (
+                  <span key="select-sub-category" className="text1">
+                    서브채널을 선택해주세요.
+                  </span>
+                )
+              }
             </div>
           </ChannelFieldRow>
         </div>

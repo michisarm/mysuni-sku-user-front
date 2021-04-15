@@ -19,12 +19,12 @@ function CreateExposureFormContainer({
   createCubeService,
 }: CreateExposureFormContainerProps) {
   const [cineroomAllChecked, setCineroomAllChecked] = useState<boolean>(false);  
-  const { cubeSdo, targetCineroomId } = createCubeService!;
+  const { cubeSdo, companyCineroomId } = createCubeService!;
 
   const cineroomList = useCineroomStore();
 
   useEffect(() => {
-    if(targetCineroomId) {
+    if(companyCineroomId) {
       setCineroomAllChecked(false);
     }
   }, []);
@@ -64,7 +64,7 @@ function CreateExposureFormContainer({
     createCubeService!.changeCubeSdoProps('tags', data.value);
   };
 
-  const hasTargetCineroomId = targetCineroomId ? true : false;
+  const hasTargetCineroomId = companyCineroomId ? true : false;
 
   return (
     <>

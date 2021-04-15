@@ -38,7 +38,7 @@ export default class CreateCubeService {
     }
 
     const cubeSdo = getCubeSdo(foundCubeDetail);
-    
+
     runInAction(() => {
       this._createCubeDetail = foundCubeDetail;
       this._cubeSdo = cubeSdo;
@@ -66,20 +66,20 @@ export default class CreateCubeService {
   }
 
   @observable
-  _targetCineroomId: string = '';
+  _companyCineroomId: string = '';
 
-  @computed get targetCineroomId() {
-    return this._targetCineroomId;
+  @computed get companyCineroomId() {
+    return this._companyCineroomId;
   }
 
   @action
-  setTargetCineroomId(next: string) {
-    this._targetCineroomId = next;
+  setCompanyCineroomId(next: string) {
+    this._companyCineroomId = next;
   }
 
   @action
-  clearTargetCineroomId() {
-    this._targetCineroomId = '';
+  clearCompanyCineroomId() {
+    this._companyCineroomId = '';
   }
 
   @observable
