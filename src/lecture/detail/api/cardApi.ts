@@ -76,10 +76,28 @@ export function findCardWithLearningContentCounts(
     .then(AxiosReturn);
 }
 
-function findMyCardRelatedStudents(cardId: string) {
+async function findMyCardRelatedStudents(cardId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/myCardRelatedStudents/${cardId}`;
-  return axios.get<MyCardRelatedStudentsRom>(url).then(AxiosReturn);
+  const result = await axios
+    .get<MyCardRelatedStudentsRom>(url)
+    .then(AxiosReturn);
+  if (result !== undefined) {
+    if (
+      result.cardStudent === null &&
+      Array.isArray(result.cubeStudents) &&
+      result.cubeStudents[0] !== undefined
+    ) {
+      const cubeStudent = result.cubeStudents[0];
+      await registerStudent({
+        cardId,
+        cubeId: cubeStudent.lectureId,
+        round: cubeStudent.round,
+      });
+      return axios.get<MyCardRelatedStudentsRom>(url).then(AxiosReturn);
+    }
+  }
+  return result;
 }
 
 export const [
@@ -224,7 +242,7 @@ export function registerHomework(
   fileBoxId: string,
   homework: string
 ): Promise<void> {
-  const url = `${BASE_URL}/students/registerHomework/${studentId}/${fileBoxId}`;
+  const url = `${BASE_URL}/students/registerHomework/${studentId}?fileBoxId=${fileBoxId}`;
   const axios = getAxios();
   return axios
     .put<void>(url, { homeworkContent: homework })

@@ -49,7 +49,7 @@ class LectureCountService {
 
   @computed
   get allSelected() {
-    return this._channels.every(channel => channel.checked);
+    return this._channels.every(channel => channel.checked === true);
   }
 
   @computed

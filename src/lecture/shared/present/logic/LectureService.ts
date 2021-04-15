@@ -205,11 +205,8 @@ class LectureService {
   ) {
     //
     if (offset >= 8) {
-      sessionStorage.setItem('channelOffset', JSON.stringify(offset));
+      sessionStorage.setItem('channelOffset', JSON.stringify(offset + limit));
     }
-    const getChannelOffset: any = sessionStorage.getItem('channelOffset');
-    const prevSorting: any = sessionStorage.getItem('channelSort');
-    const prevChannelOffset = JSON.parse(getChannelOffset);
 
     const response =
       (await findByRdo({
@@ -230,6 +227,7 @@ class LectureService {
           lectureOffsetElementList.results
         ))
     );
+
     return lectureOffsetElementList;
   }
 

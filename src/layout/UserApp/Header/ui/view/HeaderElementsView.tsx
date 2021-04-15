@@ -36,7 +36,7 @@ interface MenuViewProps {
 export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => {
   const [menuAuth, setMenuAuth] = useState<PageElement[]>([]);
   useEffect(() => {
-    const axios = getAxios();
+    //const axios = getAxios();
     const fetchMenu = async () => {
       const response = await findAvailablePageElements();
       setMenuAuth(response);

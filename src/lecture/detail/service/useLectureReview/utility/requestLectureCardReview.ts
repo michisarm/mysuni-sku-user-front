@@ -12,7 +12,7 @@ async function parseLectureReview(
 
   return {
     id: reviewFeedbackId,
-    average,
+    average: isNaN(average) ? 0 : average,
   };
 }
 
