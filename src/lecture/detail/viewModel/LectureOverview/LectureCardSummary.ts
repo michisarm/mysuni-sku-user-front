@@ -8,6 +8,7 @@ export default interface LectureCardSummary extends LectureSummary {
   difficultyLevel: DifficultyLevel;
   hasCommunity?: boolean;
   communityId?: string;
+  hasClassroomCube?: boolean;
 }
 
 export function getEmptyLectureCardSummary(): LectureCardSummary {
