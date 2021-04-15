@@ -1,5 +1,5 @@
 export interface CreateCubeDetailPageParams {
-  personalcubeId: string;
+  personalCubeId: string;
   cubeType: string;
   cubeState: string;
 }

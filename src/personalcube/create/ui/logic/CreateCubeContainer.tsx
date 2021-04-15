@@ -12,6 +12,8 @@ import { CollegeService } from '../../../../college/stores';
 import { CollegeType } from '../../../../college/model';
 import CreateBasicFormContainer from './CreateBasicFormContainer';
 import CreateExposureFormContainer from './CreateExposureFormContainer';
+import { useRequestCreateCubeDetail } from '../../service/useRequestCreateCubeDetail';
+import { getMainCategory } from '../../model/CreateCubeDetail';
 
 interface CreateCubeContainerProps {
   createCubeService?: CreateCubeService;
@@ -24,37 +26,24 @@ function CreateCubeContainer({
 }: CreateCubeContainerProps) {
   const history = useHistory();
   const params = useParams<CreateCubePageParams>();
-  const { createCubeDetail, cubeSdo, setCompanyCineroomId } = createCubeService!;
+
+  useRequestCreateCubeDetail();
+
+  const { createCubeDetail, cubeSdo } = createCubeService!;
 
   useEffect(() => {
-    if(params.personalCubeId === undefined) {
-      return;
-    }
-
-    createCubeService!.findCreateCubeDetail(params.personalCubeId);
-
-    return () => {
-      createCubeService!.clearCreateCubeDetail();
-      createCubeService!.clearCompanyCineroomId();
-    };
-  }, [params.personalCubeId]);
-
-  useEffect(() => {
-    if(createCubeDetail === undefined) {
-      return;
-    }
-    const mainCategory = createCubeDetail.cube.categories.find(category => category.mainCategory === true); 
+    const mainCategory = getMainCategory(createCubeDetail?.cube.categories || []);
 
     if(mainCategory !== undefined) {
       setCompanyCineroom(mainCategory.collegeId);
     }
-  }, [createCubeDetail]);
 
+  }, [createCubeDetail]);
 
   const setCompanyCineroom = async (collegeId: string) => {
     const college = await collegeService!.findCollege(collegeId);
     if(college && college.collegeType === CollegeType.Company) {
-      setCompanyCineroomId(collegeId);
+      CreateCubeService.instance.setCompanyCineroomId(collegeId);
     }
   }
 
@@ -107,15 +96,15 @@ function CreateCubeContainer({
       return;
     }
 
-    createCubeService!.modifyUserCube(params.personalCubeId, cubeSdo);
+    CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
   };
 
   const onNext = async () => {
     if(params.personalCubeId) {
-      await createCubeService!.modifyUserCube(params.personalCubeId, cubeSdo);
+      await CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
       moveToCreateIntro();
     } else {
-      const newCubeId = await createCubeService!.registerUserCube(cubeSdo);
+      const newCubeId = await CreateCubeService.instance.registerUserCube(cubeSdo);
       if(newCubeId !== undefined) {
         moveToCreateIntro();
       } else {

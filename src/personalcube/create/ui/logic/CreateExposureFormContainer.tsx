@@ -120,7 +120,6 @@ function CreateExposureFormContainer({
   );
 }
 
-
 export default inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
 ))(observer(CreateExposureFormContainer));

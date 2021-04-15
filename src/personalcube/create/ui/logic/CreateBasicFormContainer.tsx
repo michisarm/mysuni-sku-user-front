@@ -32,6 +32,8 @@ function CreateBasicFormContainer({
   const [mainCollegeId, setMainCollegeId] = useState<string>();
   const [mainCollegeType, setMainCollegeType] = useState<CollegeType>();
 
+//   const [selectedCollege, setSelectedCollege] = useSelectedCollege();
+
   const { cubeSdo, setCompanyCineroomId } = createCubeService!;
 
   useEffect(() => {
@@ -100,9 +102,44 @@ function CreateBasicFormContainer({
 
     createCubeService!.changeCubeSdoProps('categories', [mainCategory, ...subCategories]);
   };
+
+  const combineCollege = (categories: CubeCategory[]) => {
+    // collegeid: [channelId...] 형식으로 담을 객체 선언
+    const combineCollegeWithChannel: { [key: string]: string[] } = {};
+    // collegeid 담을 배열 선언
+    const collegeIdList: string[] = [];
+    // combineCollegeWithChannel 객체에 
+    // collegeid가 존재하면 channelId 를 푸시 
+    // 아니면 collegeIdList에 collegeId 를 푸시하고 
+    // collegeId: [channelId] 를 추가 
+    categories.map(item => {
+      if (combineCollegeWithChannel[item.collegeId]) {
+        combineCollegeWithChannel[item.collegeId].push(item.channelId);
+      }
+      if (!combineCollegeWithChannel[item.collegeId]) {
+        collegeIdList.push(item.collegeId);
+        combineCollegeWithChannel[item.collegeId] = [item.channelId];
+      }
+    });
+    return { combineCollegeWithChannel, collegeIdList };
+  };
+  
+  const renderChannelNames = (
+    collegeId: string,
+    collegeWithChannel: { [key: string]: string[] }
+  ) => {
+    const channelNameList: string[] = [];
+    // collegeWithChannel 은 collegeid: [channelId...] 형식을 가진 객체 
+    // collegeWithChannel 에서 collegeid 키로 뽑아낸 [channelId...] 를 반복문을 돌리면서 배열에 푸시
+    collegeWithChannel[collegeId].map(item =>
+      channelNameList.push(getChannelName(item) || '')
+    );
+    return channelNameList.join();
+  };
  
   const mainCategory = getMainCategory(cubeSdo.categories);
   const subCategories = getSubCategories(cubeSdo.categories);
+  const {collegeIdList, combineCollegeWithChannel } = combineCollege(subCategories);
   const mainChannelId = mainCategory && mainCategory.channelId || '';
   const mainChannelName = mainCategory && getChannelName(mainCategory.channelId) || '';
 
@@ -185,13 +222,13 @@ function CreateBasicFormContainer({
             </div>
             <div className="cell v-middle">
               {
-                subCategories &&
-                subCategories.length > 0 &&
-                subCategories.map((subCategory, index) => (
+                collegeIdList &&
+                collegeIdList.length > 0 &&
+                collegeIdList.map((subCategory, index) => (
                   <span className="text2" key={`channels-${index}`}>
-                    {getCollgeName(subCategory.collegeId)}
+                    {getCollgeName(subCategory)}
                     {` > `}
-                    {getChannelName(subCategory.channelId)}
+                    {renderChannelNames(subCategory, combineCollegeWithChannel)}
                   </span>
                 )) || (
                   <span key="select-sub-category" className="text1">

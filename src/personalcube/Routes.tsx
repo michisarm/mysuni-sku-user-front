@@ -8,7 +8,7 @@ import {
   CreateCubeListPage,
   CreateCubePage,
   CreateCubeIntroPage,
-  CreateSharedDetailPage,
+  CreateCubeDetailPage,
 } from './create';
 
 
@@ -25,7 +25,7 @@ class Routes extends PureComponent {
         <Route exact path="/personalcube/create/cubes/new" component={CreateCubePage} />
         <Route exact path="/personalcube/create/cubes/cube/:personalCubeId/:cubeType" component={CreateCubePage} />
         <Route exact path="/personalcube/create/cubes/intro/:personalCubeId/:cubeType" component={CreateCubeIntroPage} />
-        <Route exact path="/personalcube/create/cubes/shared/:personalCubeId/:cubeType/:cubeState" component={CreateSharedDetailPage} />
+        <Route exact path="/personalcube/create/cubes/shared/:personalCubeId/:cubeType/:cubeState" component={CreateCubeDetailPage} />
 
         <Route component={NotFoundPage} />
       </Switch>
