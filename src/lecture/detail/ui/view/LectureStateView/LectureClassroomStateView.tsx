@@ -176,7 +176,7 @@ function ApprovedView(props: ApprovedViewProps) {
       default:
         break;
     }
-    return 'bg2';
+    return 'line';
   }, [student]);
   return (
     <>
