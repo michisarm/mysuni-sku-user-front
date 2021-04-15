@@ -12,6 +12,7 @@ import {
   clearFindCubeDetailCache,
   clearFindCubesByIdsCache,
 } from './api/cubeApi';
+import { clearFindMyCardRelatedStudentsCache } from './api/cardApi';
 
 export default function LectureDetailRoutes() {
   const params = useParams<LectureParams>();
@@ -20,6 +21,7 @@ export default function LectureDetailRoutes() {
     return () => {
       clearFindCubesByIdsCache();
       clearFindCubeDetailCache();
+      clearFindMyCardRelatedStudentsCache();
     };
   }, [cardId]);
 
