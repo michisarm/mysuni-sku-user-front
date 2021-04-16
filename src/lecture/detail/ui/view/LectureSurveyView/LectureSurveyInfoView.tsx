@@ -53,9 +53,9 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   if (
     lectureSurveyState &&
     lectureSurveyState.state === 'None' &&
-    params !== undefined
+    currentMenu?.name === undefined
   ) {
-    // params !== 'undefined'는 community에서 접근('None'의 intro 화면 필요)이 아닌 학습화면에서 접근(intro화면이 필요없어서 'Start'로 변경)한 경우를 의미
+    // 학습화면에서 접근(intro화면이 필요없어서 'Start'로 변경)한 경우를 의미
     startLectureSurveyState();
   }
 
