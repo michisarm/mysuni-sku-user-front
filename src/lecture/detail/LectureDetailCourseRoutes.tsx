@@ -9,10 +9,6 @@ import LectureDetailLayout from './ui/view/LectureDetailLayout';
 import { useCardBreadcrumb } from './service/useCardBreadcrumb';
 import { setLectureParams } from './store/LectureParamsStore';
 import { useRequestLectureCardOverview } from './service/useLectureCourseOverview/useRequestLectureCourseOverview';
-import {
-  clearFindCubeDetailCache,
-  clearFindCubesByIdsCache,
-} from './api/cubeApi';
 import LectureDetailCourseSubRoutes from './LectureDetailCourseSubRoutes';
 
 export default function LectureDetailCourseRoutes() {
@@ -25,13 +21,6 @@ export default function LectureDetailCourseRoutes() {
   useEffect(() => {
     setLectureParams({ ...params, pathname });
   }, [params, pathname]);
-
-  useEffect(() => {
-    return () => {
-      clearFindCubesByIdsCache();
-      clearFindCubeDetailCache();
-    };
-  }, [cardId]);
 
   return (
     <LectureDetailLayout>

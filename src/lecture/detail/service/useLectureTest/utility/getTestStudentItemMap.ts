@@ -1,8 +1,12 @@
 /* eslint-disable consistent-return */
 import { setLectureTestStudentItem } from 'lecture/detail/store/LectureTestStore';
 import LectureParams from '../../../viewModel/LectureParams';
-import { findByCardId, findByCubeId } from '../../../api/cardApi';
+import {
+  findByCardId,
+  findMyCardRelatedStudentsCache,
+} from '../../../api/cardApi';
 import { LectureTestStudentItem } from '../../../viewModel/LectureTest';
+import Student from '../../../../model/Student';
 
 export async function getTestStudentItemMapFromCourse(
   params: LectureParams
@@ -30,7 +34,16 @@ export async function getTestStudentItemMapFromCube(
   if (params.cubeId === undefined) {
     return;
   }
-  const student = await findByCubeId(params.cubeId);
+  const students = await findMyCardRelatedStudentsCache(params.cardId);
+  if (students === undefined) {
+    return;
+  }
+  let student: Student | undefined;
+  students.cubeStudents?.forEach(cubeStudent => {
+    if (cubeStudent.lectureId === params.cubeId) {
+      student = cubeStudent;
+    }
+  });
   if (student === undefined) {
     return;
   }

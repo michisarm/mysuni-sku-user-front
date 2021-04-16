@@ -2,6 +2,7 @@ import { findPostView, findPostViewWithRead } from "community/api/communityApi";
 import Post from "community/model/Post";
 import { setCommunityPostDetailItem } from "community/store/CommunityPostDetailStore";
 import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
+import { countByFeedbackId } from "../../../../lecture/detail/api/feedbackApi";
 import { deletePost } from "./deleteCommunityPost";
 
 export async function getPostDetailMapFromCommunity(
@@ -35,6 +36,7 @@ export async function getPostDetailMapFromCommunity(
     }
     if (postId !== undefined) {
         const post: Post = await findPostView(postId);
+        const { count } = await countByFeedbackId(post.commentFeedbackId);
         if (post !== undefined && post !== null) {
             postDetailItem.id = post.id!;
             postDetailItem.postId = post.postId;
@@ -46,7 +48,7 @@ export async function getPostDetailMapFromCommunity(
             postDetailItem.fileBoxId = post.fileBoxId;
             postDetailItem.createdTime = post.createdTime;
             postDetailItem.creatorId = post.creatorId;
-            postDetailItem.replyCount = post.replyCount;
+            postDetailItem.replyCount = count;
             postDetailItem.likeCount = post.likeCount;
             postDetailItem.readCount = post.readCount;
             postDetailItem.nickName = post.nickName!;
@@ -93,6 +95,7 @@ export async function getPostDetailWithReadMapFromCommunity(
     }
     if (postId !== undefined) {
         const post: Post = await findPostViewWithRead(postId);
+        const { count } = await countByFeedbackId(post.commentFeedbackId);
         if (post !== undefined && post !== null) {
             postDetailItem.id = post.id!;
             postDetailItem.postId = post.postId;
@@ -104,7 +107,7 @@ export async function getPostDetailWithReadMapFromCommunity(
             postDetailItem.fileBoxId = post.fileBoxId;
             postDetailItem.createdTime = post.createdTime;
             postDetailItem.creatorId = post.creatorId;
-            postDetailItem.replyCount = post.replyCount;
+            postDetailItem.replyCount = count;
             postDetailItem.likeCount = post.likeCount;
             postDetailItem.readCount = post.readCount;
             postDetailItem.nickName = post.nickName!;

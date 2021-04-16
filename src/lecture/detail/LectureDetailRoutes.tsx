@@ -1,13 +1,30 @@
 import React, { useEffect } from 'react';
 import { Switch } from 'react-router';
-import { Route } from 'react-router-dom';
+import { Route, useParams } from 'react-router-dom';
 import NotFoundPage from '../../layout/NotFoundPage';
 import { InMyLectureService } from '../../myTraining/stores';
 import LectureDetailCourseRoutes from './LectureDetailCourseRoutes';
 import LectureDetailCubeRoutes from './LectureDetailCubeRoutes';
 import { useRequestLectureStructure } from './service/useLectureStructure/useRequestLectureStructure';
+import LectureParams from './viewModel/LectureParams';
+import { setLectureParams } from './store/LectureParamsStore';
+import {
+  clearFindCubeDetailCache,
+  clearFindCubesByIdsCache,
+} from './api/cubeApi';
+import { clearFindMyCardRelatedStudentsCache } from './api/cardApi';
 
 export default function LectureDetailRoutes() {
+  const params = useParams<LectureParams>();
+  const { cardId } = params;
+  useEffect(() => {
+    return () => {
+      clearFindCubesByIdsCache();
+      clearFindCubeDetailCache();
+      clearFindMyCardRelatedStudentsCache();
+    };
+  }, [cardId]);
+
   useRequestLectureStructure();
   useEffect(() => {
     InMyLectureService.instance.findAllInMyLectures();
