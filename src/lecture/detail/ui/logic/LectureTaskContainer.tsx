@@ -36,11 +36,13 @@ import { getLectureParams } from '../../store/LectureParamsStore';
 function LectureTaskContainer() {
   const { pathname, hash } = useLocation();
   const history = useHistory();
+
   useEffect(() => {
     return () => {
       setLectureTaskTab('Overview');
     };
   }, [pathname]);
+
   useEffect(() => {
     if (hash === '#create') {
       setLectureTaskViewType('create');
@@ -48,9 +50,6 @@ function LectureTaskContainer() {
       return;
     } else if (hash === '#edit') {
       setLectureTaskViewType('edit');
-      return;
-    } else if (hash === '#reply') {
-      setLectureTaskViewType('reply');
       return;
     } else if (hash === '#detail') {
       setLectureTaskViewType('detail');
@@ -70,6 +69,7 @@ function LectureTaskContainer() {
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
+  const [isReply, setIsReply] = useState<boolean>(false);
 
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
@@ -77,6 +77,7 @@ function LectureTaskContainer() {
   }, []);
 
   const moveToDetail = useCallback((param: any) => {
+    setIsReply(param.type === 'child');
     getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
@@ -88,13 +89,13 @@ function LectureTaskContainer() {
     history.goBack();
   }, []);
 
-  const onHandleSave = useCallback(() => {
-    history.goBack();
-  }, []);
+  // const onHandleSave = useCallback(() => {
+  //   history.goBack();
+  // }, []);
 
-  const onHandleReply = useCallback(() => {
-    history.goBack();
-  }, []);
+  // const onHandleReply = useCallback(() => {
+  //   history.goBack();
+  // }, []);
 
   const onClickModify = useCallback(() => {
     setCreate(true);
@@ -102,7 +103,10 @@ function LectureTaskContainer() {
     // history.goBack();
   }, []);
 
-  const onClickReplies = useCallback(() => {}, []);
+  const onClickReplies = useCallback(() => {
+    history.push('#create');
+    setIsReply(true);
+  }, []);
 
   const onClickDelete = useCallback((id: string, type: string) => {
     deletePost(id, type);
@@ -131,6 +135,7 @@ function LectureTaskContainer() {
 
   const onHandleChange = useCallback(
     (value: string, name: string, viewType: string) => {
+      console.log(value, name, viewType);
       if (viewType === 'create') {
         if (getLectureTaskCreateItem() === undefined) {
           return;
@@ -156,13 +161,13 @@ function LectureTaskContainer() {
     []
   );
 
-  const handleSubmitClick = useCallback((viewType, detailTaskId?) => {
+  const handleSubmitClick = useCallback((viewType, detailTaskId, isReply) => {
     reactConfirm({
       title: '알림',
       message: '저장하시겠습니까?',
       onOk: () => {
         if (viewType === 'create') {
-          const test = createLectureTask().then(() => {
+          createLectureTask(isReply, detailTaskId).then(() => {
             setLectureTaskCreateItem({
               id: detailTaskId!,
               fileBoxId: '',
@@ -184,7 +189,7 @@ function LectureTaskContainer() {
             history.goBack();
           });
         } else {
-          updateLectureTask(detailTaskId).then(() => {
+          updateLectureTask(detailTaskId, isReply).then(() => {
             history.goBack();
           });
         }
@@ -248,9 +253,13 @@ function LectureTaskContainer() {
       {viewType === 'create' && (
         <>
           <LectureTaskCreateView
+            isReply={isReply}
             viewType="create"
             boardId={boardId}
-            handleSubmitClick={viewType => handleSubmitClick(viewType)}
+            taskEdit={taskDetail!}
+            handleSubmitClick={viewType =>
+              handleSubmitClick(viewType, detailTaskId, isReply)
+            }
             changeProps={(value: string, name: string, viewType: string) =>
               onHandleChange(value, name, viewType)
             }
@@ -260,11 +269,12 @@ function LectureTaskContainer() {
       {viewType === 'edit' && (
         <>
           <LectureTaskCreateView
+            isReply={isReply}
             viewType="edit"
             detailTaskId={detailTaskId}
             boardId={boardId}
             handleSubmitClick={viewType =>
-              handleSubmitClick(viewType, detailTaskId)
+              handleSubmitClick(viewType, detailTaskId, isReply)
             }
             taskEdit={taskDetail!}
             changeProps={(value: string, name: string, viewType: string) =>
@@ -273,14 +283,14 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {viewType === 'reply' && (
+      {/* {viewType === 'reply' && (
         <LectureTaskReplyView
           postId={detailTaskId}
           boardId={boardId}
           handleOnClickList={onHandleReply}
           handleCloseClick={onClickList}
         />
-      )}
+      )} */}
     </>
   );
 }
