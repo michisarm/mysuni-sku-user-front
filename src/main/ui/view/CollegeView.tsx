@@ -2837,109 +2837,109 @@ export default withRouter(CollegeView);
 
 const semiconductorLinks: any = {
   '[입문] 반쓸신잡 - 반도체 산업의 과거, 현재, 그리고 미래':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fl/Course/C-LECTURE-co',
+    '/lecture/card/CARD-535/view',
   '반도체 클라쓰 - Keyword로 알아보는 반도체의 품격':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fj/Course/C-LECTURE-cm',
+    '/lecture/card/CARD-534/view',
   'News로 본 반도체 - 다가온 미래, Big Data 시대의 경쟁력 강화':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fi/Course/C-LECTURE-cl',
+    '/lecture/card/CARD-533/view',
   'News로 본 반도체 - Data Centric World':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ra/Course/C-LECTURE-n5',
+    '/lecture/card/CARD-6mb/view',
   'News로 본 반도체 - 반도체 제품 분류별 시장 분석과 AI 반도체':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-rc/Course/C-LECTURE-n6',
+    '/lecture/card/CARD-6mc/view',
   'News로 본 반도체 - 반도체 Value Chain In-depth 분석':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-uw/Course/C-LECTURE-r0',
+    '/lecture/card/CARD-72y/view',
   'News로 본 반도체 - 반도체의 미래와 우리의 준비':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-v0/Course/C-LECTURE-r2',
+    '/lecture/card/CARD-73c/view',
   'News 심층분석 - 미국의 대중 제재와 반도체 시장의 변화':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-127/Course/C-LECTURE-xg',
+    '/lecture/card/CARD-86v/view',
   '반도체 Industry 이해 Part1. 반도체 산업의 기본 개념과 시장 경쟁구도':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-lk/Course/C-LECTURE-i6',
+    '/lecture/card/CARD-5vj/view',
   '반도체 Industry 이해 Part2. 무모한 도전에서 챔피언이 된 삼성전자':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-nu/Course/C-LECTURE-jw',
+    '/lecture/card/CARD-645/view',
   '반도체 Industry 이해 Part3. CPU의 강자 인텔의 과거 현재 미래':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ot/Course/C-LECTURE-ku',
+    '/lecture/card/CARD-691/view',
   '반도체 Industry 이해 Part4. 펩리스와 파운드리- 거대한 IDM 사이의 기회와 전략':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-pg/Course/C-LECTURE-lb',
+    '/lecture/card/CARD-6co/view',
   '반도체 Industry 이해 Part5. 무한 경쟁시대의 미래 전망 - 반도체 기업들의 도전과 과제':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-qs/Course/C-LECTURE-mo',
+    '/lecture/card/CARD-6jt/view',
   '한방에 이해하는 꿀잼 반도체':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fh/Course/C-LECTURE-ck',
+    '/lecture/card/CARD-532/view',
   '슬기로운 IT생활 - 전자기기의 구조와 동작원리':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-mm/Course/C-LECTURE-is',
+    '/lecture/card/CARD-5xw/view',
   '반도체 What - 반도체 Tech 지식백과':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fg/Course/C-LECTURE-cj',
+    '/lecture/card/CARD-531/view',
   '반도체 제대로 이해하기 - 기본편':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ff/Course/C-LECTURE-ci',
+    '/lecture/card/CARD-530/view',
   '[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00017/course-plan/COURSE-PLAN-k8/Course/C-LECTURE-h2',
+    '/lecture/card/CARD-5pa/view',
   '[Computing System 이해] 컴퓨터 동작의 이해':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vr/Course/C-LECTURE-ro',
+    '/lecture/card/CARD-7bf/view',
   '[AI HW 개론] AI Hardware':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-14n/Course/C-LECTURE-ze',
+    '/lecture/card/CARD-8h6/view',
   '[AI HW 개론] AI Model':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ze/Course/C-LECTURE-uu',
+    '/lecture/card/CARD-7sd/view',
   '[AI HW 개론] AI Platform':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-yk/Course/C-LECTURE-u8',
+    '/lecture/card/CARD-7ns/view',
   '[HW 개발] Fundamentals':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-x3/Course/C-LECTURE-sw',
+    '/lecture/card/CARD-7gh/view',
   '[HW 개발] CPU Micro-Architecture':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-zu/Course/C-LECTURE-vg',
+    '/lecture/card/CARD-7vh/view',
   '[HW 개발] Analog Design':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-11q/Course/C-LECTURE-x1',
+    '/lecture/card/CARD-847/view',
   '[HW 개발] Digital Design':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-yx/Course/C-LECTURE-ui',
+    '/lecture/card/CARD-7rf/view',
   '[HW 개발] SoC 설계 Flow':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-wn/Course/C-LECTURE-sh',
+    '/lecture/card/CARD-7ep/view',
   '[HW 개발] SoC 설계 사례 - Mobile Computing':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-wl/Course/C-LECTURE-sf',
+    '/lecture/card/CARD-7ec/view',
   '[AI HW 이해] DNN HW 가속기 아키텍처':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-y2/Course/C-LECTURE-tt',
+    '/lecture/card/CARD-7kt/view',
   '[AI HW 이해] DNN 알고리즘 및 워크로드 특성':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-xl/Course/C-LECTURE-tb',
+    '/lecture/card/CARD-7j4/view',
   '첨단 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-18l/Course/C-LECTURE-131',
+    '/lecture/card/CARD-97q/view',
   'Lithography 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-154/Course/C-LECTURE-zs',
+    '/lecture/card/CARD-8jl/view',
   'Etching 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-12r/Course/C-LECTURE-xs',
+    '/lecture/card/CARD-8bf/view',
   'Metallization 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-11w/Course/C-LECTURE-x5',
+    '/lecture/card/CARD-84s/view',
   'Doping 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-wg/Course/C-LECTURE-sb',
+    '/lecture/card/CARD-7e2/view',
   'Thin Film 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vl/Course/C-LECTURE-ri',
+    '/lecture/card/CARD-78k/view',
   'Image Sensor 소자 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-18k/Course/C-LECTURE-130',
+    '/lecture/card/CARD-97n/view',
   '화합물 반도체 소자 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-yb/Course/C-LECTURE-u1',
+    '/lecture/card/CARD-7mg/view',
   'Solar Cell 소자 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ww/Course/C-LECTURE-sq',
+    '/lecture/card/CARD-7fr/view',
   'Smart Factory구현을 위한 제조 시스템 이해와 의사결정':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ux/Course/C-LECTURE-r1',
+    '/lecture/card/CARD-733/view',
   'Smart Factory의 구성요소와 사례':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vp/Course/C-LECTURE-rm',
+    '/lecture/card/CARD-7b2/view',
   'Smart Factory 시스템의 연결과 지능화':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-w2/Course/C-LECTURE-ry',
+    '/lecture/card/CARD-7ck/view',
   '첨단 기술과 제조의 만남':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-xw/Course/C-LECTURE-tn',
+    '/lecture/card/CARD-7k7/view',
   'AI 알고리즘 기반 반도체 Factory':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-11v/Course/C-LECTURE-x4',
+    '/lecture/card/CARD-84n/view',
   '반도체 FAB 자동화 이해':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/cube/CUBE-afs/lecture-card/LECTURE-CARD-860',
+    '/lecture/card/CARD-7vi/cube/CUBE-afs/view/ClassRoomLecture',
   'Neuromorphic Computing : Challenges and Opportunities':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ve/Course/C-LECTURE-rb',
+    '/lecture/card/CARD-77f/view',
   'AI반도체 - Next Tech Trend':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vn/Course/C-LECTURE-rk',
+    '/lecture/card/CARD-7a1/view',
   '자동차 반도체, 기회와 도전':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vs/Course/C-LECTURE-rp',
+    '/lecture/card/CARD-7bv/view',
   '양자 컴퓨팅과 양자 암호 기술의 현재와 미래':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-xi/Course/C-LECTURE-t7',
+    '/lecture/card/CARD-7ip/view',
   'Next Generation Semiconductor Packaging Technology':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-12u/Course/C-LECTURE-xu',
+    '/lecture/card/CARD-8c8/view',
   '반도체 FAB 생산 운영 전문가':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-1ap/Course/C-LECTURE-14u',
+    '/lecture/card/CARD-9nm/view',
   '반도체 FAB 최적화 전문가':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-1aq/Course/C-LECTURE-14v',
+    '/lecture/card/CARD-9np/view',
   'Covid-19이 반도체 Supply Chain에 미치는 영향':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00017/course-plan/COURSE-PLAN-on/Course/C-LECTURE-kp',
+    '/lecture/card/CARD-68a/view',
 };
