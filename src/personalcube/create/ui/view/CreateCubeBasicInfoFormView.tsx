@@ -16,6 +16,8 @@ import SelectOptions from '../../model/SelectOptions';
 import { getMainCategory, getSubCategories } from '../../model/CreateCubeDetail';
 import { getCollgeName, getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { useSelectedCollege, setSelectedCollege } from '../../../store/SelectedCollegeStore';
+import { setCubeType } from '../../../store/CubeTypeStore';
+import CubeType from '../../../../lecture/model/CubeType';
 
 
 interface CreateCubeBasicInfoFormViewProps {
@@ -37,7 +39,9 @@ function CreateCubeBasicInfoFormView({
 
   const onChangeCubeType = useCallback((e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     e.preventDefault();
-    CreateCubeService.instance.changeCubeSdoProps('type', String(data.value));
+    const nextCubeType = String(data.value);
+    setCubeType(nextCubeType);
+    CreateCubeService.instance.changeCubeSdoProps('type', nextCubeType);
   }, []);
 
   const onConfirmMainChannel = useCallback((college: CollegeModel, channel: IdName) => {
