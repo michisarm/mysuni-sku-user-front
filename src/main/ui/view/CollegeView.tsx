@@ -316,10 +316,10 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               디자인씽킹 <br />
                               코칭 스킬
-                            </a>
+                            </Link>
                           </td>
                         </tbody>
                       </table>
@@ -363,10 +363,10 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               서비스 디자인 <br />
                               Intensive
-                            </a>
+                            </Link>
                           </td>
                           <td>
                             <Link to="/lecture/card/CARD-8cr/view">
@@ -381,10 +381,10 @@ const panes = [
                             </Link>
                           </td>
                           <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz - Self 실습
-                            </a>
+                            </Link>
                           </td>
                         </tbody>
                       </table>
@@ -417,10 +417,10 @@ const panes = [
                         <tbody>
                           <td></td>
                           <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz 고민하기
-                            </a>
+                            </Link>
                           </td>
                           <td>
                             <Link to="/lecture/card/CARD-86m/view">
@@ -467,18 +467,18 @@ const panes = [
                       <div className="logical-list tab01">
                         <ul>
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.2)
-                            </a>
+                            </Link>
                           </li>
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.1)
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -618,10 +618,10 @@ const panes = [
                             </Link>
                           </td>
                           <td className="dashed-or">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               애자일 코치 <br />
                               양성 과정
-                            </a>
+                            </Link>
                           </td>
                         </tbody>
                       </table>
@@ -725,10 +725,10 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td className="dashed-or">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               오픈 이노베이션 <br />
                               Workshop
-                            </a>
+                            </Link>
                           </td>
                           <td>
                             <Link to="/lecture/card/CARD-69v/view">
@@ -1022,11 +1022,11 @@ const panes = [
                               alt=""
                             />
                           </div>
-                          <a href="" onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             Organization
                             <br />
                             Transformation
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <div className="badge_box1 left">
@@ -1051,11 +1051,11 @@ const panes = [
                               alt=""
                             />
                           </div>
-                          <a href="" onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             Leadership
                             <br />
                             Transformation
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <Link
@@ -1070,7 +1070,7 @@ const panes = [
                             to="/lecture/card/CARD-69m/view"
                             className="leader_blue"
                           >
-                            Deep Change & 리더십?- 목적 기반의
+                            Deep Change &#38; 리더십?- 목적 기반의
                             <br />
                             딥체인지 실천 가이드
                           </Link>
@@ -1122,21 +1122,21 @@ const panes = [
                           <br />
                           Acceleration P/G
                         </p>
-                        <a href="" onClick={emptyAlert}>
+                        <Link to="#" onClick={emptyAlert}>
                           Remote Performance Mgmt.
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           Impactful Conversation
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           Drives for Engagement
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           Leveraging Conflict
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           EQ Leadership
-                        </a>
+                        </Link>
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
@@ -1271,7 +1271,7 @@ const panes = [
                           to="/lecture/card/CARD-5xh/view"
                           className="bg_blue"
                         >
-                          카르마 & 다르마
+                          카르마 &#38; 다르마
                         </Link>
                         <Link
                           to="/lecture/card/CARD-8r6/view"
@@ -1468,9 +1468,9 @@ const panes = [
                                 src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
                                 alt=""
                               />
-                              <a href="#" onClick={emptyAlert}>
+                              <Link to="#" onClick={emptyAlert}>
                                 Smart SCM 전문가
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                           <ul>
@@ -1486,10 +1486,10 @@ const panes = [
                                 src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
                                 alt=""
                               />
-                              <a href="#" onClick={emptyAlert}>
+                              <Link to="#" onClick={emptyAlert}>
                                 AI manufacturing <br />
                                 Project (PBL)
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                         </div>
@@ -2526,10 +2526,10 @@ const panes = [
                             </Link>
                           </li>
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               [심화I] Deal Structuring <br />
                               &#38; Financing
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                         <ul className="list_bm">
@@ -2570,10 +2570,10 @@ const panes = [
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               Financial Storytelling <br />
                               글로벌 사례 연구
-                            </a>
+                            </Link>
                           </li>
                           <li>
                             <Link to="/lecture/card/CARD-ac8/view">
@@ -2584,9 +2584,9 @@ const panes = [
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               6R 관점 Stakeholder 이해
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -2629,9 +2629,9 @@ const panes = [
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <a href="" onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             Financial Story 이해
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <Link to="/lecture/card/CARD-6z1/view">
