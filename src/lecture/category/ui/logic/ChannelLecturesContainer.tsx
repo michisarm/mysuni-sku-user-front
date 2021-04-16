@@ -41,14 +41,14 @@ interface Props
   inMyLectureService?: InMyLectureService;
   coursePlanService?: CoursePlanService;
   scrollSave?: () => void;
-  setLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-  setIsLoading?: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-  isLoading?: boolean | false;
+  scrollOnceMove?: () => void;
 }
 
 interface State {
   sorting: string;
   collegeOrder: boolean;
+  channelOffset: number;
+  loading: boolean;
 }
 
 const ChannelLecturesContainer: React.FC<Props> = ({
@@ -62,17 +62,14 @@ const ChannelLecturesContainer: React.FC<Props> = ({
   inMyLectureService,
   match,
 }) => {
-  const histroy = useHistory();
+  const history = useHistory();
   const location = useLocation();
-  const [loading, setLoading] = useState<boolean>(false);
   const { scrollOnceMove, scrollSave } = useScrollMove();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (loading) {
-      scrollOnceMove();
-    }
-  }, [loading]);
+    const listen = history.listen(scrollSave);
+    return () => listen();
+  }, []);
 
   return (
     <ChannelLecturesInnerContainer
@@ -84,13 +81,11 @@ const ChannelLecturesContainer: React.FC<Props> = ({
       lectureCardService={lectureCardService}
       reviewService={reviewService}
       inMyLectureService={inMyLectureService}
-      history={histroy}
+      history={history}
       location={location}
       match={match}
       scrollSave={scrollSave}
-      setLoading={setLoading}
-      setIsLoading={setIsLoading}
-      isLoading={isLoading}
+      scrollOnceMove={scrollOnceMove}
     />
   );
 };
@@ -119,6 +114,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
   state = {
     sorting: OrderByType.Time,
     collegeOrder: false,
+    channelOffset: 0,
+    loading: true,
   };
 
   constructor(props: Props) {
@@ -139,10 +136,18 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   async componentDidUpdate(prevProps: Props) {
     //
+    const { pageService } = this.props;
     if (
       prevProps.match.params.channelId !== this.props.match.params.channelId
     ) {
       this.init();
+      pageService!.initPageMap(
+        this.PAGE_KEY,
+        0, // offset
+        this.PAGE_SIZE // limit
+      );
+      sessionStorage.removeItem('channelOffset');
+
       try {
         await this.findCollegeOrder();
       } catch (error) {
@@ -154,17 +159,20 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
 
   init() {
     //
-    const {
-      pageService,
-      lectureService,
-      setLoading,
-      setIsLoading,
-    } = this.props;
-    setLoading && setLoading(false);
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    const { pageService, lectureService } = this.props;
+    const getChannelOffset: string | null = sessionStorage.getItem(
+      'channelOffset'
+    );
+    const prevChannelOffset = getChannelOffset
+      ? JSON.parse(getChannelOffset)
+      : null;
+
+    pageService!.initPageMap(
+      this.PAGE_KEY,
+      0, // offset
+      prevChannelOffset ? prevChannelOffset : this.PAGE_SIZE // limit
+    );
     lectureService!.clearLectures();
-    // 뒤로가기 할때 포지션이 처음으로 감. 수정되면 적용..
-    // setIsLoading && setIsLoading(true);
   }
 
   async findPagingChannelLectures() {
@@ -173,16 +181,23 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       match,
       pageService,
       lectureService,
-      reviewService,
       inMyLectureService,
-      setLoading,
-      setIsLoading,
+      scrollOnceMove,
     } = this.props;
-    const { sorting } = this.state;
+
+    const getChannelOffset: string | null = sessionStorage.getItem(
+      'channelOffset'
+    );
+
+    const prevChannelOffset = getChannelOffset
+      ? JSON.parse(getChannelOffset)
+      : null;
+
+    this.setState({ channelOffset: prevChannelOffset });
+    const { sorting, channelOffset } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     inMyLectureService!.findAllInMyLectures();
 
-    // const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
     const lectureOffsetList = await lectureService!.findPagingChannelOrderLectures(
       match.params.collegeId,
       match.params.channelId,
@@ -191,18 +206,21 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       sorting
     );
 
-    if (!lectureOffsetList.empty) {
-      setLoading && setLoading(true);
-    } else {
-      setLoading && setLoading(false);
+    if (!lectureOffsetList.empty && typeof scrollOnceMove === 'function') {
+      this.setState({ loading: false }); // Loading Progress 종료
+      scrollOnceMove();
     }
-    setIsLoading && setIsLoading(false);
+
+    if (channelOffset > 0 && page) {
+      page.limit = 8;
+    }
 
     pageService!.setTotalCountAndPageNo(
       this.PAGE_KEY,
       lectureOffsetList.totalCount,
-      page!.pageNo + 1
+      channelOffset > 0 ? channelOffset / 8 + page!.pageNo : page!.pageNo + 1
     );
+    this.setState({ channelOffset: 0 });
   }
 
   async findCollegeOrder() {
@@ -237,6 +255,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.setState(
       {
         sorting: data.value,
+        loading: true,
       },
       () => {
         this.init();
@@ -311,7 +330,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       history.push(routePaths.lectureCardOverview(model.cardId, model.cubeId));
     }
     // console.log('카드명', data?.model?.name, 'channle', data?.model?.category?.channel?.name, 'college', data?.model?.category?.college.name);
-    scrollSave && scrollSave();
+
     ReactGA.event({
       category: `${data?.model?.category?.college.name}_${data?.model?.category?.channel?.name}`,
       action: 'Click Card',
@@ -324,6 +343,13 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.props.actionLogService?.registerClickActionLog({
       subAction: 'list more',
     });
+
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    if (page) {
+      page.limit = 8;
+    }
+
     this.findPagingChannelLectures();
   }
 
@@ -334,9 +360,8 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
       lectureService,
       reviewService,
       inMyLectureService,
-      isLoading,
     } = this.props;
-    const { sorting, collegeOrder } = this.state;
+    const { sorting, collegeOrder, loading } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
@@ -347,7 +372,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
         lectureCount={page!.totalCount}
         countDisabled={lectures.length < 1}
       >
-        {isLoading ? (
+        {loading ? (
           <Segment
             style={{
               paddingTop: 0,
@@ -359,7 +384,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
               border: 0,
             }}
           >
-            <Loadingpanel loading={isLoading} />
+            <Loadingpanel loading={loading} />
           </Segment>
         ) : lectures && lectures.length > 0 ? (
           <>
@@ -370,10 +395,10 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
             />
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map(({ card, cardRelatedCount }) => {
+                {lectures.map(({ card, cardRelatedCount }, index) => {
                   return (
                     <CardView
-                      key={card.id}
+                      key={`${card.id}+${index}`}
                       cardId={card.id}
                       {...card}
                       {...cardRelatedCount}
