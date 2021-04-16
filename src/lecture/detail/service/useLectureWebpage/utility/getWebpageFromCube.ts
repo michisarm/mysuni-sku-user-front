@@ -27,6 +27,7 @@ export async function getWebpageFromCube(params: LectureParams) {
       image: undefined,
       url,
       fileBoxId: officeWeb.fileBoxId,
+      urlType: officeWeb.urlType
     };
     setLectureWebpage(webpage);
   } else {
@@ -37,6 +38,7 @@ export async function getWebpageFromCube(params: LectureParams) {
       image,
       url,
       fileBoxId: officeWeb.fileBoxId,
+      urlType: officeWeb.urlType
     };
     setLectureWebpage(webpage);
   }
