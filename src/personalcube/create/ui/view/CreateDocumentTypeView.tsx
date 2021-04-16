@@ -1,149 +1,109 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { SearchFilterType } from 'shared/model';
+import { inject, observer } from 'mobx-react';
+import { FileBox, ValidationType } from '@nara.drama/depot';
 import { depotHelper } from 'shared';
-import { Form, Icon, Radio } from 'semantic-ui-react';
-import { PersonalCubeModel } from 'personalcube/personalcube/model';
-import { OfficeWebModel } from 'personalcube/officeweb/model';
+import { mobxHelper, PatronType } from '@nara.platform/accent';
+import { Form, Icon } from 'semantic-ui-react';
+import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 
-interface Props {
-  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void;
-  officeWeb: OfficeWebModel;
-  onChangeOfficeWebProps: (
-    name: string,
-    value: string | Date,
-    nameSub?: string
-  ) => void;
-  getFileBoxIdForReference: (fileBoxId: string) => void;
-  personalCube: PersonalCubeModel;
-  getFileBoxIdForEducation: (fileBoxId: string) => void;
+
+interface CreateDocumentTypeViewProps {
+  createCubeService?: CreateCubeService;
 }
 
-@observer
-@reactAutobind
-class CreateDocumentTypeView extends React.Component<Props> {
-  //
-  render() {
-    const {
-      onChangePersonalCubeProps,
-      officeWeb,
-      getFileBoxIdForEducation,
-      getFileBoxIdForReference,
-      personalCube,
-    } = this.props;
 
-    return (
-      <>
-        <hr className="dividing" />
+function CreateDocumentTypeView({
+  createCubeService,
+}: CreateDocumentTypeViewProps) {
 
-        <div className="section-tit">
-          <span className="text1">부가정보</span>
-        </div>
-        <Form.Field>
-          <label className="necessary">교육자료</label>
-          <div className="line-attach">
-            <div className="attach-inner">
-              <FileBox
-                id={(officeWeb && officeWeb.fileBoxId) || ''}
-                vaultKey={{
-                  keyString: 'sku-depot',
-                  patronType: PatronType.Pavilion,
-                }}
-                patronKey={{
-                  keyString: 'sku-denizen',
-                  patronType: PatronType.Denizen,
-                }}
-                validations={[
-                  {
-                    type: ValidationType.Duplication,
-                    validator: depotHelper.duplicationValidator,
-                  },
-                ]}
-                onChange={getFileBoxIdForEducation}
-              />
-              <div className="info-text">
-                <Icon className="info16" />
-                <span className="blind">infomation</span>
-                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
-                용량의 파일을 등록하실 수 있습니다.
-              </div>
-            </div>
-          </div>
-        </Form.Field>
+  const { createCubeDetail, cubeSdo } = createCubeService!;
 
-        <Form.Field>
-          <label>참고자료</label>
-          <div className="lg-attach">
-            <div className="attach-inner">
-              <FileBox
-                vaultKey={{
-                  keyString: 'sku-depot',
-                  patronType: PatronType.Pavilion,
-                }}
-                patronKey={{
-                  keyString: 'sku-denizen',
-                  patronType: PatronType.Denizen,
-                }}
-                validations={[
-                  {
-                    type: ValidationType.Duplication,
-                    validator: depotHelper.duplicationValidator,
-                  },
-                ]}
-                onChange={getFileBoxIdForReference}
-                id={
-                  personalCube &&
-                  personalCube.contents &&
-                  personalCube.contents.fileBoxId
-                }
-              />
-              <div className="bottom">
-                <span className="text1">
-                  <Icon className="info16" />
-                  <span className="blind">information</span>
-                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
-                  용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을
-                  등록할 수 있습니다.
-                </span>
-              </div>
-            </div>
-          </div>
-        </Form.Field>
+  const onChangeEducationFileBoxId = (id: string) => {
+    CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.fileBoxId', id);
+  };
 
-        <Form.Field>
-          <label className="necessary">학습카드 공개여부</label>
-          <Radio
-            className="base"
-            label="공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOn}
-            checked={
-              personalCube &&
-              personalCube.searchFilter === SearchFilterType.SearchOn
-            }
-            onChange={(e: any, data: any) =>
-              onChangePersonalCubeProps('searchFilter', data.value)
-            }
-          />
-          <Radio
-            className="base"
-            label="비공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOff}
-            checked={
-              personalCube &&
-              personalCube.searchFilter === SearchFilterType.SearchOff
-            }
-            onChange={(e: any, data: any) =>
-              onChangePersonalCubeProps('searchFilter', data.value)
-            }
-          />
-        </Form.Field>
-      </>
-    );
+  const onChangeFileboxId = (id: string) => {
+    CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.fileBoxId', id);
   }
+
+  return (
+    <>
+      <hr className="dividing" />
+
+      <div className="section-tit">
+        <span className="text1">부가정보</span>
+      </div>
+      <Form.Field>
+        <label className="necessary">교육자료</label>
+        <div className="line-attach">
+          <div className="attach-inner">
+            <FileBox
+              id={cubeSdo.materialSdo?.officeWebSdo.fileBoxId || ''}
+              vaultKey={{
+                keyString: 'sku-depot',
+                patronType: PatronType.Pavilion,
+              }}
+              patronKey={{
+                keyString: 'sku-denizen',
+                patronType: PatronType.Denizen,
+              }}
+              validations={[
+                {
+                  type: ValidationType.Duplication,
+                  validator: depotHelper.duplicationValidator,
+                },
+              ]}
+              onChange={onChangeEducationFileBoxId}
+            />
+            <div className="info-text">
+              <Icon className="info16" />
+              <span className="blind">infomation</span>
+              DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
+              용량의 파일을 등록하실 수 있습니다.
+            </div>
+          </div>
+        </div>
+      </Form.Field>
+      <Form.Field>
+        <label>참고자료</label>
+        <div className="lg-attach">
+          <div className="attach-inner">
+            <FileBox
+              vaultKey={{
+                keyString: 'sku-depot',
+                patronType: PatronType.Pavilion,
+              }}
+              patronKey={{
+                keyString: 'sku-denizen',
+                patronType: PatronType.Denizen,
+              }}
+              validations={[
+                {
+                  type: ValidationType.Duplication,
+                  validator: depotHelper.duplicationValidator,
+                },
+              ]}
+              onChange={onChangeFileboxId}
+              id={createCubeDetail?.cubeContents.fileBoxId || ''}
+            />
+            <div className="bottom">
+              <span className="text1">
+                <Icon className="info16" />
+                <span className="blind">information</span>
+                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
+                용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을
+                등록할 수 있습니다.
+              </span>
+            </div>
+          </div>
+        </div>
+      </Form.Field>
+    </>
+  );
 }
 
-export default CreateDocumentTypeView;
+const CreateDocumentTypeViewDefault = inject(mobxHelper.injectFrom(
+  'personalCube.createCubeService',
+))(observer(CreateDocumentTypeView));
+
+export default CreateDocumentTypeViewDefault;

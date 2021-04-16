@@ -4,9 +4,9 @@ import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
+import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
 import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
-import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 
 
 interface CreateCubeContentsTypeContainerProps {
@@ -25,6 +25,16 @@ function CreateCubeContentsTypeContainer({
 
   return (
     <>
+    {
+      cubeSdo.type === 'WebPage' && (
+        <CreateWebPageTypeView />
+      )
+    }
+    {
+      cubeSdo.type === 'Documents' && (
+        <CreateDocumentTypeView />
+      )
+    }
       {/* {
         cubeSdo.type === 'Video' && (
           <CreateVideoTypeView

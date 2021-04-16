@@ -1,98 +1,68 @@
-
 import React from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
-
-import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { Form, Icon, Radio } from 'semantic-ui-react';
-import { SearchFilterType } from 'shared/model';
+import { PatronType } from '@nara.platform/accent';
+import { FileBox, ValidationType } from '@nara.drama/depot';
 import { depotHelper } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube/model';
-import { OfficeWebModel } from 'personalcube/officeweb/model';
+import { Form, Icon } from 'semantic-ui-react';
+import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 
-interface Props {
-  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
-  officeWeb: OfficeWebModel
-  onChangeOfficeWebProps: (name: string, value: string | Date, nameSub?: string) => void
-  getFileBoxIdForReference: (fileBoxId: string) => void
-  personalCube: PersonalCubeModel
-}
 
-@observer
-@reactAutobind
-class CreateWebPageTypeView extends React.Component<Props> {
-  render() {
+function CreateWebPageTypeView() {
+  const { createCubeDetail, cubeSdo } = CreateCubeService.instance;
 
-    const { onChangePersonalCubeProps, officeWeb, onChangeOfficeWebProps, getFileBoxIdForReference, personalCube } = this.props;
+  const onChangeWebPageUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.webPageUrl', e.target.value);
+  };
 
-    return (
-      <>
-        <hr className="dividing" />
+  const onChangeFileBoxId = (id: string) => {
+    CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.fileBoxId', id);
+  };
 
-        <div className="section-tit">
-          <span className="text1">부가정보</span>
+  return (
+    <>
+      <hr className="dividing" />
+      <div className="section-tit">
+        <span className="text1">부가정보</span>
+      </div>
+      <Form.Field>
+        <label className="necessary">교육자료</label>
+        <div className="ui input h48">
+          <input
+            type="text"
+            name=""
+            placeholder="http://"
+            value={cubeSdo.materialSdo?.officeWebSdo.webPageUrl || ''}
+            onChange={onChangeWebPageUrl}
+          />
         </div>
-        <Form.Field>
-          <label className="necessary">교육자료</label>
-          <div className="ui input h48">
-            <input
-              type="text"
-              name=""
-              placeholder="http://"
-              value={officeWeb && officeWeb.webPageUrl || ''}
-              onChange={(e: any) => onChangeOfficeWebProps('webPageUrl', e.target.value)}
+        <div className="info-text">
+          <Icon className="info16" /><span className="blind">infomation</span>
+          Webpage 학습이 제공되는 URL을 입력해주세요.
+        </div>
+      </Form.Field>
+      <Form.Field>
+        <label>참고자료</label>
+        <div className="lg-attach">
+          <div className="attach-inner">
+            <FileBox
+              vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+              patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+              validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
+              onChange={onChangeFileBoxId}
+              id={createCubeDetail?.cubeMaterial.officeWeb?.fileBoxId || ''}
             />
-          </div>
-          <div className="info-text">
-            <Icon className="info16" /><span className="blind">infomation</span>
-            Webpage 학습이 제공되는 URL을 입력해주세요.
-          </div>
-        </Form.Field>
-
-        <Form.Field>
-          <label>참고자료</label>
-          <div className="lg-attach">
-            <div className="attach-inner">
-              <FileBox
-                vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
-                patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
-                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
-                onChange={getFileBoxIdForReference}
-                id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
-              />
-              <div className="bottom">
-                <span className="text1"><Icon className="info16" />
-                  <span className="blind">information</span>
-                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
-                </span>
-              </div>
+            <div className="bottom">
+              <span className="text1"><Icon className="info16" />
+                <span className="blind">information</span>
+                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
+              </span>
             </div>
           </div>
-        </Form.Field>
-
-        <Form.Field>
-          <label className="necessary">학습카드 공개여부</label>
-          <Radio
-            className="base"
-            label="공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOn}
-            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
-            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
-          />
-          <Radio
-            className="base"
-            label="비공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
-            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
-          />
-        </Form.Field>
-      </>
-    );
-  }
+        </div>
+      </Form.Field>
+    </>
+  );
 }
 
-export default CreateWebPageTypeView;
 
+export default CreateWebPageTypeView;
