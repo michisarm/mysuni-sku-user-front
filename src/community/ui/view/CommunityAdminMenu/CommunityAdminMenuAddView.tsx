@@ -84,9 +84,16 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
     }
   }
 
-  function changeValue(e: any) {
-    const value = e.target.value;
+  function changeValue(e: any, targetName?: string, index?: number) {
+    if (selectedRow && targetName === 'content') {
+      // Editor Value
+      selectedRow.content = e;
+      onChangeAddValue(selectedRow, targetName);
+      return;
+    }
+
     if (selectedRow) {
+      const value = e.target.value;
       if (e.target.name === 'name') {
         selectedRow.name = value;
       } else if (e.target.name === 'discussionTopic') {
@@ -95,8 +102,22 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
         selectedRow.surveyInformation = value;
       } else if (e.target.name === 'url') {
         selectedRow.url = value;
+      } else if (
+        targetName === 'urlTitle' &&
+        typeof index === 'number' &&
+        selectedRow.relatedUrlList
+      ) {
+        selectedRow.relatedUrlList[index].title = value;
+      } else if (
+        targetName === 'urlValue' &&
+        typeof index === 'number' &&
+        selectedRow.relatedUrlList
+      ) {
+        selectedRow.relatedUrlList[index].url = value;
       } else if (e.target.name === 'html') {
         selectedRow.html = value;
+      } else if (targetName && targetName === 'content') {
+        selectedRow.content = value;
       }
       onChangeAddValue(selectedRow, e.target.name);
     }
@@ -131,6 +152,19 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   function handleChangeHtml(e: any) {
     selectedRow!.html = e.target.value;
     onChangeAddValue(selectedRow, 'html');
+  }
+
+  function handleAddUrlField() {
+    selectedRow!.relatedUrlList?.push({ title: '', url: '' });
+    onChangeAddValue(selectedRow, 'relatedUrlList');
+  }
+
+  function handleDeleteUrlField(fieldIndex: number) {
+    if (selectedRow!.relatedUrlList?.length === 1) {
+      return;
+    }
+    selectedRow!.relatedUrlList?.filter((url, index) => index !== fieldIndex);
+    onChangeAddValue(selectedRow, 'relatedUrlList');
   }
 
   return (
@@ -174,7 +208,12 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
           </tr>
           {(selectedRow!.type === 'DISCUSSION' ||
             selectedRow!.type === 'ANODISCUSSION') && (
-            <AdminDiscussionCreateView />
+            <AdminDiscussionCreateView
+              changeValue={changeValue}
+              selectedRow={selectedRow}
+              handleAddUrlField={handleAddUrlField}
+              handleDeleteUrlField={handleDeleteUrlField}
+            />
           )}
           {selectedRow!.type === 'SURVEY' && (
             <tr>

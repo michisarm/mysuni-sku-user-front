@@ -28,7 +28,6 @@ function CommunityDiscussionContainer() {
     new Map<string, any>()
   );
 
-  console.log(discussionType);
   const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
 
@@ -53,7 +52,7 @@ function CommunityDiscussionContainer() {
             deletable={true}
             onClickList={OnClickList}
           />
-          {/* <div className="class-guide-txt fn-parents ql-snow">
+          <div className="class-guide-txt fn-parents ql-snow">
             <div className="text ql-editor">
               <div
                 className="text description ql-editor"
@@ -63,8 +62,8 @@ function CommunityDiscussionContainer() {
                 ref={textContainerRef}
               />
             </div>
-          </div> */}
-          {/* <div className="ov-paragraph download-area task-read-down">
+          </div>
+          <div className="ov-paragraph download-area task-read-down">
             <div className="detail">
               {postDetail.fileBoxId &&
                 filesMap.get('reference') &&
@@ -86,7 +85,7 @@ function CommunityDiscussionContainer() {
                     </div>
                   ))}
             </div>
-          </div> */}
+          </div>
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
             menuType="DISCUSSION"

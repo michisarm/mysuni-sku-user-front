@@ -114,7 +114,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     }
   }
 
-  console.log(selectedRow);
   function handleChangeGroup(e: any, data: any) {
     console.log('handleChangeGroup');
     if (selectedRow) {
@@ -133,6 +132,20 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     selectedRow!.surveyId = data.id;
     onChangeValue(selectedRow, 'surveyId');
   }
+
+  function handleAddUrlField() {
+    selectedRow!.relatedUrlList?.push({ title: '', url: '' });
+    onChangeValue(selectedRow, 'relatedUrlList');
+  }
+
+  function handleDeleteUrlField(fieldIndex: number) {
+    if (selectedRow!.relatedUrlList?.length === 1) {
+      return;
+    }
+    selectedRow!.relatedUrlList?.filter((url, index) => index !== fieldIndex);
+    onChangeValue(selectedRow, 'relatedUrlList');
+  }
+
   return (
     <div className="menu_right_contents">
       <table>
@@ -175,7 +188,12 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
           </tr>
           {(selectedRow!.type === 'DISCUSSION' ||
             selectedRow!.type === 'ANODISCUSSION') && (
-            <AdminDiscussionCreateView />
+            <AdminDiscussionCreateView
+              changeValue={changeValue}
+              selectedRow={selectedRow}
+              handleAddUrlField={handleAddUrlField}
+              handleDeleteUrlField={handleDeleteUrlField}
+            />
           )}
           {selectedRow!.type === 'SURVEY' && (
             <tr>
