@@ -22,6 +22,7 @@ import htmlIcon from '../../../style/media/icon-community-menu-html.png';
 import storeIcon from '../../../style/media/icon-communtiy-menu-download.png';
 import surveyIcon from '../../../style/media/icon-communtiy-menu-survey.png';
 import linkIcon from '../../../style/media/icon-community-menu-link.png';
+import { findCommunityMenuDetail } from '../../api/CommunityMenuApi';
 
 interface RouteParams {
   communityId: string;
@@ -55,14 +56,22 @@ function CommunityMenuContainer() {
   }, [communityId]);
 
   const onHandleClickTaskRow = useCallback(
-    (e, param, type) => {
+    async (e, param, type) => {
       setAddMenuFlag(false);
       e.persist();
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
       if (type !== 'delete') {
-        setSelectedRow(param);
-        setAddChildMenuFlag(false);
+        if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
+          const discusParam = await findCommunityMenuDetail(param.menuId).then(
+            res => res.data
+          );
+          setSelectedRow(discusParam);
+          setAddChildMenuFlag(false);
+        } else {
+          setSelectedRow(param);
+          setAddChildMenuFlag(false);
+        }
       } else if (type === 'delete') {
         reactConfirm({
           title: '알림',
@@ -112,6 +121,8 @@ function CommunityMenuContainer() {
       surveyInformation: '',
       url: '',
       html: '',
+      content: '',
+      relatedUrlList: [{ title: '', url: '' }],
     });
     setAddMenuFlag(true);
     setAddChildMenuFlag(false);
@@ -143,6 +154,8 @@ function CommunityMenuContainer() {
       surveyInformation: '',
       url: '',
       html: '',
+      content: '',
+      relatedUrlList: [{ title: '', url: '' }],
     });
   }, [communityAdminMenu]);
 
@@ -182,6 +195,8 @@ function CommunityMenuContainer() {
         surveyId: '',
         surveyInformation: '',
         html: '',
+        content: '',
+        relatedUrlList: [{ title: '', url: '' }],
       });
     } else {
       reactAlert({
@@ -339,44 +354,23 @@ function CommunityMenuContainer() {
             };
           });
         });
-      } else {
-        saveCommunityMenu(communityId, result, selectedRow)
-        successFlag = true
-      }
-    }
-    setNameValues([...nameValues, []])
-    if (type === 'add') {
-      if (communityAdminMenu!.menu.length === 0) {
-        obj.order = 1
-      } else {
-        obj.order = communityAdminMenu && communityAdminMenu.menu.map(m => { return m.child ? m.child.length : 0 }).reduce((r, c) => r + c) + communityAdminMenu!.menu.length + 1
-      }
-      const validateCheck = confirmBlank(obj)
-      if (validateCheck === 'success') {
-        if (obj.type === 'DISCUSSION') {
-          addCommunityDiscussion(communityId, obj).then((result) => {
-            //오더정리
-            requestCommunityMenu(communityId).then((result) => {
-              requestCommunityMenuOrder(communityId);
-              reactAlert({
-                title: '',
-                message:
-                  '저장되었습니다.',
-              });
-            })
-          })
+        let text = '';
+        editValidateCheck.map(item => {
+          item.map((item2: any) => {
+            if (item2.state === false) {
+              text += item2.text + '</br>';
+            }
+          });
+        });
+
+        if (text !== '') {
+          reactAlert({
+            title: '',
+            message: text,
+          });
         } else {
-          addCommunityMenu(communityId, obj).then((result) => {
-            //오더정리
-            requestCommunityMenu(communityId).then((result) => {
-              requestCommunityMenuOrder(communityId);
-              reactAlert({
-                title: '',
-                message:
-                  '저장되었습니다.',
-              });
-            })
-          })
+          saveCommunityMenu(communityId, result, selectedRow);
+          successFlag = true;
         }
       }
       setNameValues([...nameValues, []]);
@@ -399,8 +393,8 @@ function CommunityMenuContainer() {
           if (obj.type === 'DISCUSSION' || obj.type === 'ANODISCUSSION') {
             addCommunityDiscussion(communityId, obj).then(result => {
               //오더정리
-              requestCommunityMenuOrder(communityId).then(result => {
-                requestCommunityMenu(communityId);
+              requestCommunityMenu(communityId).then(result => {
+                requestCommunityMenuOrder(communityId);
                 reactAlert({
                   title: '',
                   message: '저장되었습니다.',
@@ -410,8 +404,8 @@ function CommunityMenuContainer() {
           } else {
             addCommunityMenu(communityId, obj).then(result => {
               //오더정리
-              requestCommunityMenuOrder(communityId).then(result => {
-                requestCommunityMenu(communityId);
+              requestCommunityMenu(communityId).then(result => {
+                requestCommunityMenuOrder(communityId);
                 reactAlert({
                   title: '',
                   message: '저장되었습니다.',
@@ -446,10 +440,10 @@ function CommunityMenuContainer() {
         });
         const validateCheck = confirmBlank(obj);
         if (validateCheck === 'success') {
-          if (obj.type === 'DISCUSSION' || obj.type === 'ANODISCUSSION') {
-            addCommunityDiscussion(communityId, obj).then(result => {
+          if (obj.type === 'DISCUSSION') {
+            addCommunityDiscussion(communityId, obj).then(() => {
               //오더정리
-              requestCommunityMenuOrder(communityId).then(result => {
+              requestCommunityMenuOrder(communityId).then(() => {
                 requestCommunityMenu(communityId);
                 reactAlert({
                   title: '',
@@ -460,7 +454,7 @@ function CommunityMenuContainer() {
           } else {
             addCommunityMenu(communityId, obj).then(result => {
               //오더정리
-              requestCommunityMenuOrder(communityId).then(result => {
+              requestCommunityMenuOrder(communityId).then(() => {
                 requestCommunityMenu(communityId);
                 reactAlert({
                   title: '',
@@ -569,76 +563,91 @@ function CommunityMenuContainer() {
   }
 
   const handleDown = useCallback(() => {
-
     if (!selectedRow) {
       return;
     }
 
     const originOrder = selectedRow.order;
-    const list = (selectedRow?.parentId ?
-      communityAdminMenu?.menu.filter((m) => {
-        if (m.id === selectedRow?.parentId) {
-          return m.child
-        }
-      })[0].child.filter((c: any) => c.order > selectedRow.order).sort((a: any, b: any) => a.order - b.order) 
-      :
-      communityAdminMenu?.menu.filter((c) => c.parentId === null && c.order > selectedRow.order).sort((a, b) => a.order - b.order)
-    )
+    const list = selectedRow?.parentId
+      ? communityAdminMenu?.menu
+          .filter(m => {
+            if (m.id === selectedRow?.parentId) {
+              return m.child;
+            }
+          })[0]
+          .child.filter((c: any) => c.order > selectedRow.order)
+          .sort((a: any, b: any) => a.order - b.order)
+      : communityAdminMenu?.menu
+          .filter(c => c.parentId === null && c.order > selectedRow.order)
+          .sort((a, b) => a.order - b.order);
 
     if (list && list.length === 0) {
       return;
     }
     const nextOrder = list[0].order;
-    const ValuesArr = { 'id': selectedRow.id, 'name': 'order', 'value': list && list[0].order };
-    const nextValuesArr = { 'id': list && list[0].id, 'name': 'order', 'value': selectedRow.order };
+    const ValuesArr = {
+      id: selectedRow.id,
+      name: 'order',
+      value: list && list[0].order,
+    };
+    const nextValuesArr = {
+      id: list && list[0].id,
+      name: 'order',
+      value: selectedRow.order,
+    };
 
-    const menu = list && (selectedRow?.parentId ? communityAdminMenu?.menu.filter((m) => {
-      if (m.id === selectedRow?.parentId) {
-        return m.child
-      }
-    })[0].child.map((m: any) => {
-      if (m.id === list[0].id) {
-        m.order = originOrder
-      }
+    const menus =
+      list &&
+      (selectedRow?.parentId
+        ? communityAdminMenu?.menu
+            .filter(m => {
+              if (m.id === selectedRow?.parentId) {
+                return m.child;
+              }
+            })[0]
+            .child.map((m: any) => {
+              if (m.id === list[0].id) {
+                m.order = originOrder;
+              }
 
-      if (m.id === selectedRow.id) {
-        m.order = nextOrder
-      }
+              if (m.id === selectedRow.id) {
+                m.order = nextOrder;
+              }
 
-      return m
-    }) : communityAdminMenu?.menu.map((m) => {
-      if (m.id === list[0].id) {
-        m.order = originOrder
-      }
+              return m;
+            })
+        : communityAdminMenu?.menu.map(m => {
+            if (m.id === list[0].id) {
+              m.order = originOrder;
+            }
 
-      if (m.id === selectedRow.id) {
-        m.order = nextOrder
-      }
+            if (m.id === selectedRow.id) {
+              m.order = nextOrder;
+            }
 
-      return m
-    }));
+            return m;
+          }));
 
-    menu && setCommunityAdminMenu({ 'menu': menu });
+    menus && setCommunityAdminMenu({ menu: menus });
 
     nameValuesArr.map((item, index) => {
       if (item.id === ValuesArr.id && item.name === 'order') {
-        nameValuesArr.splice(index, 1)
+        nameValuesArr.splice(index, 1);
       }
-    })
+    });
 
     nameValuesArr.map((item, index) => {
       if (item.id === nextValuesArr.id && item.name === 'order') {
-        nameValuesArr.splice(index, 1)
+        nameValuesArr.splice(index, 1);
       }
-    })
-    nameValuesArr.push(ValuesArr)
-    nameValuesArr.push(nextValuesArr)
+    });
+    nameValuesArr.push(ValuesArr);
+    nameValuesArr.push(nextValuesArr);
 
-    setNameValues(nameValuesArr)
-    const sortedData = orderSort(communityAdminMenu?.menu!)
-    setCommunityAdminMenu({ 'menu': sortedData });
-
-  }, [selectedRow])
+    setNameValues(nameValuesArr);
+    const sortedData = orderSort(communityAdminMenu?.menu!);
+    setCommunityAdminMenu({ menu: sortedData });
+  }, [selectedRow]);
 
   const handleUp = useCallback(() => {
     if (!selectedRow) {
@@ -647,71 +656,87 @@ function CommunityMenuContainer() {
 
     const originOrder = selectedRow.order;
 
-    const list = (selectedRow?.parentId ? communityAdminMenu?.menu.filter((m) => {
-      if (m.id === selectedRow?.parentId) {
-        return m.child
-      }
-    })[0].child.filter((c: any) => c.order < selectedRow.order)
-      .sort((a: any, b: any) => a.order - b.order) :
-      communityAdminMenu?.menu.filter((c) => c.parentId === null && c.order < selectedRow.order)
-        .sort((a, b) => a.order - b.order)
-    )
+    const list = selectedRow?.parentId
+      ? communityAdminMenu?.menu
+          .filter(m => {
+            if (m.id === selectedRow?.parentId) {
+              return m.child;
+            }
+          })[0]
+          .child.filter((c: any) => c.order < selectedRow.order)
+          .sort((a: any, b: any) => a.order - b.order)
+      : communityAdminMenu?.menu
+          .filter(c => c.parentId === null && c.order < selectedRow.order)
+          .sort((a, b) => a.order - b.order);
 
     if (list && list.length === 0) {
       return;
     }
 
     const nextOrder = list[list.length - 1].order;
-    const ValuesArr = { 'id': selectedRow.id, 'name': 'order', 'value': list && list[list.length - 1].order };
-    const nextValuesArr = { 'id': list && list[list.length - 1].id, 'name': 'order', 'value': selectedRow.order };
+    const ValuesArr = {
+      id: selectedRow.id,
+      name: 'order',
+      value: list && list[list.length - 1].order,
+    };
+    const nextValuesArr = {
+      id: list && list[list.length - 1].id,
+      name: 'order',
+      value: selectedRow.order,
+    };
 
-    const menu = list && (selectedRow?.parentId ? communityAdminMenu?.menu.filter((m) => {
-      if (m.id === selectedRow?.parentId) {
-        return m.child
-      }
-    })[0].child.map((m: any) => {
-      if (m.id === list[list.length - 1].id) {
-        m.order = originOrder
-      }
+    const menus =
+      list &&
+      (selectedRow?.parentId
+        ? communityAdminMenu?.menu
+            .filter(m => {
+              if (m.id === selectedRow?.parentId) {
+                return m.child;
+              }
+            })[0]
+            .child.map((m: any) => {
+              if (m.id === list[list.length - 1].id) {
+                m.order = originOrder;
+              }
 
-      if (m.id === selectedRow.id) {
-        m.order = nextOrder
-      }
+              if (m.id === selectedRow.id) {
+                m.order = nextOrder;
+              }
 
-      return m
-    }) : communityAdminMenu?.menu.map((m) => {
-      if (m.id === list[list.length - 1].id) {
-        m.order = originOrder
-      }
+              return m;
+            })
+        : communityAdminMenu?.menu.map(m => {
+            if (m.id === list[list.length - 1].id) {
+              m.order = originOrder;
+            }
 
-      if (m.id === selectedRow.id) {
-        m.order = nextOrder
-      }
+            if (m.id === selectedRow.id) {
+              m.order = nextOrder;
+            }
 
-      return m
-    }));
+            return m;
+          }));
 
-    menu && setCommunityAdminMenu({ 'menu': menu });
+    menus && setCommunityAdminMenu({ menu: menus });
 
     nameValuesArr.map((item, index) => {
       if (item.id === ValuesArr.id && item.name === 'order') {
-        nameValuesArr.splice(index, 1)
+        nameValuesArr.splice(index, 1);
       }
-    })
+    });
 
     nameValuesArr.map((item, index) => {
       if (item.id === nextValuesArr.id && item.name === 'order') {
-        nameValuesArr.splice(index, 1)
+        nameValuesArr.splice(index, 1);
       }
-    })
-    nameValuesArr.push(ValuesArr)
-    nameValuesArr.push(nextValuesArr)
+    });
+    nameValuesArr.push(ValuesArr);
+    nameValuesArr.push(nextValuesArr);
 
-    setNameValues(nameValuesArr)
-    const sortedData = orderSort(communityAdminMenu?.menu!)
-    setCommunityAdminMenu({ 'menu': sortedData });
-  }, [selectedRow])
-
+    setNameValues(nameValuesArr);
+    const sortedData = orderSort(communityAdminMenu?.menu!);
+    setCommunityAdminMenu({ menu: sortedData });
+  }, [selectedRow]);
 
   function imageHandle(type: string) {
     let nextIcon = `${process.env.PUBLIC_URL}/images/all/icon-communtiy-menu-board.png`;
