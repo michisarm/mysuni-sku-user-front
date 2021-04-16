@@ -4,6 +4,9 @@ import { Description } from "../../personalcube/model/Description";
 import { CubeMaterialSdo } from "./CubeMaterialSdo";
 import CubeType from "../../../lecture/detail/model/CubeType";
 import { getMainCategory } from "./CreateCubeDetail";
+import { DenizenKey, reactAlert } from "@nara.platform/accent";
+import { patronInfo } from "@nara.platform/dock";
+import { useCallback } from "react";
 
 
 export interface CubeSdo {
@@ -16,6 +19,7 @@ export interface CubeSdo {
   description: Description;
   organizerId: string;
   otherOrganizerName?: string;
+  fileBoxId?: string;
   materialSdo?: CubeMaterialSdo;
 }
 
@@ -35,6 +39,7 @@ export const initialCubeSdo: CubeSdo = {
   },
   organizerId: '',
   otherOrganizerName: '',
+  fileBoxId: '',
 };
 
 export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
@@ -66,3 +71,7 @@ export function getBlankRequiredCubeContentsField(cubeSdo: CubeSdo) {
 
   return 'none';
 }
+
+export const alertRequiredField = (message: string) => {
+  reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
+};

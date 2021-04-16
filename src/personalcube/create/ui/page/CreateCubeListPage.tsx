@@ -1,26 +1,19 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { ContentLayout, Tab, TabItemModel } from '../../../../shared';
 import CreateProfileContainer from '../logic/CreateProfileContainer';
 import { useParams, useHistory } from 'react-router-dom';
 import { CreateCubeListParams } from '../../model/CreateCubeListParams';
 import CreateCubeListContainer from '../logic/CreateCubeListContainer';
 import cubePaths from '../../../routePaths';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 
 
-interface CreateCubeListPageProps {
-  createCubeService?: CreateCubeService;
-}
-
-function CreateCubeListPage({
-  createCubeService,
-}: CreateCubeListPageProps) {
+function CreateCubeListPage() {
   const history = useHistory();
   const { tab } = useParams<CreateCubeListParams>();
 
-  const { createCubeCount } = createCubeService!;
+  const { createCubeCount } = CreateCubeService.instance;
 
     const getTabs = () => {
       return [
@@ -64,6 +57,7 @@ function CreateCubeListPage({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateCubeListPage));
+
+const CreateCubeListDefault = observer(CreateCubeListPage);
+
+export default CreateCubeListDefault;

@@ -1,20 +1,12 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 import { Form } from 'semantic-ui-react';
 import CreateInput from '../shared/CreateInput';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 
 
-interface CreateCubeExposureInfoFormViewProps {
-  createCubeService?: CreateCubeService;
-}
-
-
-function CreateCubeExposureInfoFormView({
-  createCubeService,
-}: CreateCubeExposureInfoFormViewProps) {
-  const { cubeSdo } = createCubeService!;
+function CreateCubeExposureInfoFormView() {
+  const { cubeSdo } = CreateCubeService.instance;
 
   const onChangeTags = (e: any, data: any) => {
     e.preventDefault();
@@ -40,8 +32,6 @@ function CreateCubeExposureInfoFormView({
 }
 
 
-const CreateCubeExposureInfoFormViewDefault = inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateCubeExposureInfoFormView));
+const CreateCubeExposureInfoFormViewDefault = observer(CreateCubeExposureInfoFormView);
 
 export default CreateCubeExposureInfoFormViewDefault;

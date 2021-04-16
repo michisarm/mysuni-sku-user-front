@@ -3,19 +3,18 @@ import { CreateCubeDetail } from '../../model/CreateCubeDetail';
 import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
+import { getContentsProviderName } from '../../service/useRequestContentsProvider';
 
 
 interface CreateCubeDetailInfoViewProps {
   createCubeDetail: CreateCubeDetail;
-  cubeType: string;
 }
 
 
 export default function CreateCubeDetailInfoView({
   createCubeDetail,
-  cubeType,
 }: CreateCubeDetailInfoViewProps) {
-  const { cube, cubeContents, cubeMaterial: { board } } = createCubeDetail;
+  const { cube, cubeContents } = createCubeDetail;
 
   return (
     <>
@@ -75,32 +74,12 @@ export default function CreateCubeDetailInfoView({
                 <div>{cubeContents.difficultyLevel}</div>
               </Table.Cell>
             </Table.Row>
-            {
-              cubeType === 'Community' && (
-                <>
-                  <Table.Row>
-                    <Table.HeaderCell>커뮤니티 구분</Table.HeaderCell>
-                    <Table.Cell>
-                      <div>{board && board.config && board.config.enClosed ? '폐쇄형' : '오픈형'}</div>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.HeaderCell>기간</Table.HeaderCell>
-                    <Table.Cell>
-                      <div>{board && board.learningPeriod && board.learningPeriod.startDate}
-                      ~ {board && board.learningPeriod && board.learningPeriod.endDate}
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                </>
-              )
-            }
             <Table.Row>
               <Table.HeaderCell>교육기관 / 출처</Table.HeaderCell>
               <Table.Cell>
                 <div>
-                  {cubeContents.organizerId}
-                  {cubeContents.otherOrganizerName}
+                  {getContentsProviderName(cubeContents.organizerId)}
+                  {cubeContents.organizerId === 'PVD00018' && `: ${cubeContents.otherOrganizerName}`}
                 </div>
               </Table.Cell>
             </Table.Row>

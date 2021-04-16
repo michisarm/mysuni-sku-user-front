@@ -111,6 +111,11 @@ export default class CreateCubeService {
   setSelectedCubeState(next: CubeState) {
     this._selectedCubeState = next;
   }
+
+  @action
+  clearSelectedCubeState() {
+    this._selectedCubeState = CubeState.ALL;
+  }
 }
 
 Object.defineProperty(CreateCubeService, 'instance', {

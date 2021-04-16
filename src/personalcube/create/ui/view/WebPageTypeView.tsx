@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Table } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import OfficeWeb from '../../../../lecture/detail/model/OfficeWeb';
@@ -15,9 +15,9 @@ export default function WebPageTypeView({
   fileMap,
 }: WebPageTypeViewProps) {
 
-  const moveToUrl = (url: string) => {
-    window.open(url);
-  };
+  const onClickWebPageUrl = useCallback(() => {
+    window.open(officeWeb?.webPageUrl);
+  }, [officeWeb?.webPageUrl])
 
   return (
     <>
@@ -25,8 +25,8 @@ export default function WebPageTypeView({
         <Table.HeaderCell>교육자료</Table.HeaderCell>
         <Table.Cell>
           <div className="text2">
-            <a onClick={() => moveToUrl(officeWeb?.webPageUrl || '')}>
-              {officeWeb?.webPageUrl || ''}
+            <a onClick={onClickWebPageUrl}>
+              {officeWeb?.webPageUrl}
             </a>
           </div>
         </Table.Cell>
@@ -35,10 +35,9 @@ export default function WebPageTypeView({
         <Table.HeaderCell>참고자료</Table.HeaderCell>
         <Table.Cell>
         {
-          fileMap &&
           fileMap.get('reference')?.map((foundedFile: DepotFileViewModel, index: number) => (
               <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
-            )) || '-'
+            ))
         }
         </Table.Cell>
       </Table.Row>

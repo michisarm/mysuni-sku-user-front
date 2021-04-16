@@ -18,9 +18,9 @@ export default function DocumentTypeView({
         <Table.HeaderCell>교육자료</Table.HeaderCell>
         <Table.Cell>
           {
-            fileMap.get('officeweb')?.map((foundedFile: DepotFileViewModel, index: number) => (
+            fileMap.get('officeWeb')?.map((foundedFile: DepotFileViewModel, index: number) => (
               <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
-            )) || '-'
+            ))
           }
         </Table.Cell>
       </Table.Row>
@@ -28,10 +28,9 @@ export default function DocumentTypeView({
         <Table.HeaderCell>참고자료</Table.HeaderCell>
         <Table.Cell>
           {
-            fileMap &&
             fileMap.get('reference')?.map((foundedFile: DepotFileViewModel, index: number) => (
               <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
-            )) || '-'
+            ))
           }
         </Table.Cell>
       </Table.Row>

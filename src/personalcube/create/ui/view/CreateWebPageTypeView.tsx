@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { PatronType } from '@nara.platform/accent';
 import { FileBox, ValidationType } from '@nara.drama/depot';
 import { depotHelper } from 'shared';
@@ -15,7 +16,7 @@ function CreateWebPageTypeView() {
   };
 
   const onChangeFileBoxId = (id: string) => {
-    CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.fileBoxId', id);
+    CreateCubeService.instance.changeCubeSdoProps('fileBoxId', id);
   };
 
   return (
@@ -31,7 +32,7 @@ function CreateWebPageTypeView() {
             type="text"
             name=""
             placeholder="http://"
-            value={cubeSdo.materialSdo?.officeWebSdo.webPageUrl || ''}
+            value={cubeSdo.materialSdo?.officeWebSdo.webPageUrl}
             onChange={onChangeWebPageUrl}
           />
         </div>
@@ -49,7 +50,7 @@ function CreateWebPageTypeView() {
               patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
               validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
               onChange={onChangeFileBoxId}
-              id={createCubeDetail?.cubeMaterial.officeWeb?.fileBoxId || ''}
+              id={cubeSdo.fileBoxId}
             />
             <div className="bottom">
               <span className="text1"><Icon className="info16" />
@@ -64,5 +65,6 @@ function CreateWebPageTypeView() {
   );
 }
 
+const CreateWebPageTypeViewDefault = observer(CreateWebPageTypeView);
 
-export default CreateWebPageTypeView;
+export default CreateWebPageTypeViewDefault;

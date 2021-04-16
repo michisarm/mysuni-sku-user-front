@@ -48,10 +48,9 @@ export default function VideoTypeView({
         <Table.HeaderCell>참고자료</Table.HeaderCell>
         <Table.Cell>
           {
-            fileMap && 
             fileMap.get('reference')?.map((foundedFile: DepotFileViewModel, index: number) => (
                 <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
-              )) || '-'
+              ))
           }
         </Table.Cell>
       </Table.Row>

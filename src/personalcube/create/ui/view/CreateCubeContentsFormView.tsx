@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 import { Form, Select, Icon, DropdownProps } from 'semantic-ui-react';
 import classNames from 'classnames';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
@@ -10,16 +9,10 @@ import SelectOptions from '../../model/SelectOptions';
 import { timeToHourMinute } from '../../../../shared/helper/dateTimeHelper';
 
 
-interface CreateCubeContentsFormViewProps {
-  createCubeService?: CreateCubeService;
-}
-
-function CreateCubeContentsFormView({
-  createCubeService,
-}: CreateCubeContentsFormViewProps) {
+function CreateCubeContentsFormView() {
   const [errorFieldName, setErrorFieldName] = useState<string>('');
 
-  const { cubeSdo } = createCubeService!;
+  const { cubeSdo } = CreateCubeService.instance;
   const { hour, minute } = timeToHourMinute(cubeSdo.learningTime || 0);
 
   const onChangeGoal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -65,7 +58,8 @@ function CreateCubeContentsFormView({
 
   const onChangeDifficultyLevel = (e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>{
     e.preventDefault();
-    CreateCubeService.instance.changeCubeSdoProps('difficultyLevel', String(data.value));
+    const nextDifficultyLevel = String(data.value);
+    CreateCubeService.instance.changeCubeSdoProps('difficultyLevel', nextDifficultyLevel);
   };
 
   const onChangeLearningHour = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -217,8 +211,6 @@ function CreateCubeContentsFormView({
   );
 }
 
-const CreateCubeContentsFormViewDefault = inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateCubeContentsFormView));
+const CreateCubeContentsFormViewDefault = observer(CreateCubeContentsFormView);
 
 export default CreateCubeContentsFormViewDefault;

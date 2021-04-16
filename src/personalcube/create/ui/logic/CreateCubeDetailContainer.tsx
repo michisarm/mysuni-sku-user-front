@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useParams } from 'react-router-dom';
 import { CreateCubeDetailParams } from '../../model/CreateCubeDetailParams';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
@@ -11,30 +11,28 @@ import { useRequestCreateCubeDetail } from '../../service/useRequestCreateCubeDe
 import CreateCubeBasicInfoView from '../view/CreateCubeBasicInfoView';
 import CreateCubeExposureInfoView from '../view/CreateCubeExposureInfoView';
 import CreateCubeDetailInfoView from '../view/CreateCubeDetailInfoView';
-import CreateCubeTypeView from '../view/CreateCubeTypeView';
-import { FileService } from '../../../../shared/present/logic/FileService';
-import { getBlankRequiredCubeContentsField } from '../../model/CubeSdo';
+import { getBlankRequiredCubeContentsField, alertRequiredField } from '../../model/CubeSdo';
+import CreateCubeDetailTypeContainer from '../view/CreateCubeDetailTypeContainer';
 
 
-interface CreateCubeDetailContainerProps {
-  createCubeService?: CreateCubeService;
-  fileService?: FileService;
-}
-
-function CreateCubeDetailContainer({  
-  createCubeService,
-  fileService,
-}: CreateCubeDetailContainerProps) {
+function CreateCubeDetailContainer() {
   const params = useParams<CreateCubeDetailParams>();
-
-  const { createCubeDetail, cubeSdo } = createCubeService!;
-  const { fileMap } = fileService!;
-
   useRequestCreateCubeDetail(params.personalCubeId);
 
-  const onSave = useCallback(() => {
-    CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
-    routeToCreateList();
+  const { createCubeDetail, cubeSdo } = CreateCubeService.instance;
+
+  const onSave = useCallback(async () => {
+    const result = await CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
+    
+    if(result) {
+      reactConfirm({
+        title: '저장완료',
+        message: '저장되었습니다. 목록 페이지로 이동하시겠습니까?',
+        onOk: routeToCreateList
+      }); 
+    } else {
+      reactAlert({ title: '저장 실패', message: '저장을 실패했습니다. 잠시 후 다시 시도해주세요.' });
+    }
   }, [params.personalCubeId, cubeSdo]);
 
   const onClickSave = useCallback(() => {
@@ -50,10 +48,6 @@ function CreateCubeDetailContainer({
       alertRequiredField(blankField);
     }
   }, [cubeSdo]);
-
-  const alertRequiredField = useCallback((message: string) => {
-    reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
-  }, []);
 
   return (
     <>
@@ -79,14 +73,12 @@ function CreateCubeDetailContainer({
                   creatorName={createCubeDetail.cubeContents.creatorName}
                 />
                 <CreateCubeExposureInfoView
-                  sharingCineroomIds={createCubeDetail.cube.sharingCineroomIds}
                   tags={createCubeDetail.cubeContents.tags}
                 />
                 {
                   params.cubeState === 'OpenApproval' && (
                     <CreateCubeDetailInfoView
                       createCubeDetail={createCubeDetail}
-                      cubeType={params.cubeState}
                     /> 
                   )
                 }
@@ -94,10 +86,7 @@ function CreateCubeDetailContainer({
                     <CreateCubeEditView />
                   )
                 }
-                <CreateCubeTypeView 
-                  cubeMaterial={createCubeDetail.cubeMaterial} 
-                  fileMap={fileMap}
-                />
+                <CreateCubeDetailTypeContainer />
                 {
                   params.cubeState === 'OpenApproval' && (
                     <div className="buttons editor">
@@ -122,7 +111,7 @@ function CreateCubeDetailContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-  'shared.fileService',
-))(observer(CreateCubeDetailContainer));
+
+const CreateCubeDetailContainerDefault = observer(CreateCubeDetailContainer);
+
+export default CreateCubeDetailContainerDefault;

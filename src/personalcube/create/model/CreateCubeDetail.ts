@@ -32,6 +32,7 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
     organizerId: cubeContents.organizerId,
     otherOrganizerName: cubeContents.otherOrganizerName,
     tags: cubeContents.tags || [],
+    fileBoxId: cubeContents.fileBoxId,
     materialSdo: {
       mediaSdo: {
         name: media?.name,

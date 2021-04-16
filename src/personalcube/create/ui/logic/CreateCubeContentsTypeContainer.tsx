@@ -1,27 +1,12 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import CreateVideoTypeView from '../view/CreateVideoTypeView';
-import CreateAudioTypeView from '../view/CreateAudioTypeView';
-import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
 import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
 
 
-interface CreateCubeContentsTypeContainerProps {
-  createCubeService?: CreateCubeService;
-}
-
-
-function CreateCubeContentsTypeContainer({
-  createCubeService,
-}: CreateCubeContentsTypeContainerProps) {
-  if(createCubeService === undefined) {
-    return null;
-  }
-  
-  const { cubeSdo } = createCubeService;
+function CreateCubeContentsTypeContainer() {
+    const { cubeSdo } = CreateCubeService.instance;
 
   return (
     <>
@@ -93,9 +78,7 @@ function CreateCubeContentsTypeContainer({
   );
 }
 
-const CreateCubeContentsTypeContainerDefault = inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateCubeContentsTypeContainer));
+const CreateCubeContentsTypeContainerDefault = observer(CreateCubeContentsTypeContainer);
 
 
 export default CreateCubeContentsTypeContainerDefault;

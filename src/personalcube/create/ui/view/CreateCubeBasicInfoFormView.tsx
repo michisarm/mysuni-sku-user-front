@@ -17,20 +17,13 @@ import { getMainCategory, getSubCategories } from '../../model/CreateCubeDetail'
 import { getCollgeName, getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
 import { useSelectedCollege, setSelectedCollege } from '../../../store/SelectedCollegeStore';
 import { setCubeType } from '../../../store/CubeTypeStore';
-import CubeType from '../../../../lecture/model/CubeType';
 
 
-interface CreateCubeBasicInfoFormViewProps {
-  createCubeService?: CreateCubeService;
-}
-
-function CreateCubeBasicInfoFormView({
-  createCubeService,
-}: CreateCubeBasicInfoFormViewProps) {
+function CreateCubeBasicInfoFormView() {
   const params = useParams<CreateCubeParams>();
   const selectedCollege = useSelectedCollege();
   
-  const { cubeSdo } = createCubeService!;
+  const { cubeSdo } = CreateCubeService.instance;
 
   const onChangeName = useCallback((e: any, data: any) => {
     e.preventDefault();
@@ -74,7 +67,7 @@ function CreateCubeBasicInfoFormView({
       };
     });
 
-    createCubeService!.changeCubeSdoProps('categories', [mainCategory, ...subCategories]);
+    CreateCubeService.instance.changeCubeSdoProps('categories', [mainCategory, ...subCategories]);
   }, [cubeSdo.categories]);
 
   
@@ -211,9 +204,7 @@ function CreateCubeBasicInfoFormView({
   );
 }
 
-const CreateCubeBasicInfoFormViewDefault = inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateCubeBasicInfoFormView));
+const CreateCubeBasicInfoFormViewDefault = observer(CreateCubeBasicInfoFormView);
 
 
 export default CreateCubeBasicInfoFormViewDefault;

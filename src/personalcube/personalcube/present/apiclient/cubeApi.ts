@@ -41,10 +41,10 @@ export function registerUserCube(cubeSdo: CubeSdo): Promise<string | undefined> 
   return axios.post<string | undefined>(url, cubeSdo).then(AxiosReturn).catch(err => undefined);
 }
 
-export function modifyUserCube(cubeId: string, cubeSdo: CubeSdo): Promise<void> {
+export function modifyUserCube(cubeId: string, cubeSdo: CubeSdo): Promise<boolean> {
   const axios = getAxios();
   const url = `${BASE_URL}/userCubes/${cubeId}`;
-  return axios.put<void>(url, cubeSdo).then(AxiosReturn);
+  return axios.put<void>(url, cubeSdo).then(result => true).catch(error => false);
 }
 
 export function findContentsProviders() {

@@ -8,6 +8,7 @@ import CreateCubeContainer from '../logic/CreateCubeContainer';
 
 function CreateCubePage() {
   useRequestCollege();
+  
   return (
     <ContentLayout
       className="bg-white"

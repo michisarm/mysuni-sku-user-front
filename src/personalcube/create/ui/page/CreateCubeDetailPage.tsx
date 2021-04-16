@@ -4,12 +4,14 @@ import cubePaths from '../../../routePaths';
 import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 import { useRequestCineroom } from '../../../../shared/service/useCineroom/useRequestCineroom';
 import CreateCubeDetailContainer from '../logic/CreateCubeDetailContainer';
+import { useRequestContentsProviders } from '../../service/useRequestContentsProvider';
 
 
 function CreateCubeDetailPage() {
   useRequestCollege();
   useRequestCineroom();
-
+  useRequestContentsProviders();
+  
   return (
     <ContentLayout
       className="bg-white"

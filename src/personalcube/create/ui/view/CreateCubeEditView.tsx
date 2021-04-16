@@ -1,34 +1,37 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
+import React, { useState } from 'react';
+import { observer } from 'mobx-react';
 import { Form, Select, DropdownProps } from 'semantic-ui-react';
+import classNames from 'classnames';
 import ReactQuill from 'react-quill';
 import SelectOptions from '../../model/SelectOptions';
-import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 import ContentsProviderContainer from '../logic/ContentsProviderContainer';
 
 
-interface CreateCubeEditViewProps {
-  createCubeService?: CreateCubeService;
-}
-
-function CreateCubeEditView({
-  createCubeService,
-}: CreateCubeEditViewProps) {
-  if(createCubeService === undefined) {
-    return null;
-  }
-
-  const { createCubeDetail, cubeSdo } = createCubeService;
+function CreateCubeEditView() {
+  const [errorFieldName, setErrorFieldName] = useState<string>('');
+  const { createCubeDetail, cubeSdo } = CreateCubeService.instance;
 
   const onChangeGoal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    CreateCubeService.instance.changeCubeSdoProps('description.goal', e.target.value);
+    e.preventDefault();
 
+    if(e.target.value.length > 500) {
+      setErrorFieldName('goal');
+    } else {
+      setErrorFieldName('');
+      CreateCubeService.instance.changeCubeSdoProps('description.goal', e.target.value);
+    }
   };
 
   const onChangeApplicants = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    CreateCubeService.instance.changeCubeSdoProps('description.applicants', e.target.value);
+    e.preventDefault();
+    if(e.target.value.length > 500) {
+      setErrorFieldName('applicants');
+    } else {
+      setErrorFieldName('');
+      CreateCubeService.instance.changeCubeSdoProps('description.applicants', e.target.value);
+    }
   };
 
   const onChangeDescripiton = (content: string) => {
@@ -40,7 +43,9 @@ function CreateCubeEditView({
   };
 
   const onChangeDifficultyLevel = (e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) =>{ 
-    CreateCubeService.instance.changeCubeSdoProps('difficultyLevel', String(data.value));
+    e.preventDefault();
+    const nextDifficultyLevel = String(data.value);
+    CreateCubeService.instance.changeCubeSdoProps('difficultyLevel', nextDifficultyLevel);
   };
 
   return (
@@ -51,7 +56,7 @@ function CreateCubeEditView({
       <Form.Field>
         <label>교육목표</label>
         <div className="ui form">
-          <div className="ui right-top-count input">
+          <div className={classNames('ui right-top-count input', {error: errorFieldName === 'goal'})}>
             <span className="count">
               <span className="now">{cubeSdo.description?.goal.length || 0}</span>/
               <span className="max">500</span>
@@ -68,7 +73,7 @@ function CreateCubeEditView({
       <Form.Field>
         <label>교육대상</label>
         <div className="ui form">
-          <div className="ui right-top-count input">
+          <div className={classNames('ui right-top-count input', {error: errorFieldName === 'applicants'})}>
             <span className="count">
               <span className="now">{cubeSdo.description?.applicants.length || 0}</span>/
               <span className="max">500</span>
@@ -144,8 +149,6 @@ function CreateCubeEditView({
   );
 }
 
-const CreateCubeListViewDefault = inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateCubeEditView));
+const CreateCubeListViewDefault = observer(CreateCubeEditView);
 
 export default CreateCubeListViewDefault;

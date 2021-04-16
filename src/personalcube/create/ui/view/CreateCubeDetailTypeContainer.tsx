@@ -2,22 +2,17 @@ import React  from 'react';
 import { Table } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { CreateCubeDetailParams } from '../../model/CreateCubeDetailParams';
-import { CubeMaterial } from '../../../../lecture/model/CubeMaterial';
 import VideoTypeView from './VideoTypeView';
 import WebPageTypeView from './WebPageTypeView';
 import DocumentTypeView from './DocumentTypeView';
+import { observer } from 'mobx-react';
+import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
+import { FileService } from '../../../../shared/present/logic/FileService';
 
-
-interface CreateCubeTypeViewProps {
-  cubeMaterial: CubeMaterial;
-  fileMap: Map<string, any>;
-}
-
-export default function CreateCubeTypeView({
-  cubeMaterial,
-  fileMap,
-}: CreateCubeTypeViewProps) {
+function CreateCubeDetailTypeContainer() {
   const params = useParams<CreateCubeDetailParams>();
+  const { createCubeDetail } = CreateCubeService.instance;
+  const { fileMap } = FileService.instance;
 
   return (
     <>
@@ -29,7 +24,7 @@ export default function CreateCubeTypeView({
           {
             (params.cubeType === 'Video' || params.cubeType === 'Audio') && (
               <VideoTypeView 
-                media={cubeMaterial.media}
+                media={createCubeDetail?.cubeMaterial.media}
                 fileMap={fileMap}
               />
             )
@@ -44,7 +39,7 @@ export default function CreateCubeTypeView({
           {
             (params.cubeType === 'WebPage' || params.cubeType === 'Cohort') && (
               <WebPageTypeView 
-                officeWeb={cubeMaterial.officeWeb}
+                officeWeb={createCubeDetail?.cubeMaterial.officeWeb}
                 fileMap={fileMap}
               />
             )
@@ -54,3 +49,8 @@ export default function CreateCubeTypeView({
     </>
   );
 }
+
+
+const CreateCubeDetailTypeContainerDefault = observer(CreateCubeDetailTypeContainer);
+
+export default CreateCubeDetailTypeContainerDefault;

@@ -1,35 +1,26 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { FileBox, ValidationType } from '@nara.drama/depot';
 import { depotHelper } from 'shared';
-import { mobxHelper, PatronType } from '@nara.platform/accent';
+import {  PatronType } from '@nara.platform/accent';
 import { Form, Icon } from 'semantic-ui-react';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 
 
-interface CreateDocumentTypeViewProps {
-  createCubeService?: CreateCubeService;
-}
-
-
-function CreateDocumentTypeView({
-  createCubeService,
-}: CreateDocumentTypeViewProps) {
-
-  const { createCubeDetail, cubeSdo } = createCubeService!;
+function CreateDocumentTypeView() {
+  const { cubeSdo } = CreateCubeService.instance;
 
   const onChangeEducationFileBoxId = (id: string) => {
     CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.fileBoxId', id);
   };
 
   const onChangeFileboxId = (id: string) => {
-    CreateCubeService.instance.changeCubeSdoProps('materialSdo.officeWebSdo.fileBoxId', id);
+    CreateCubeService.instance.changeCubeSdoProps('fileBoxId', id);
   }
 
   return (
     <>
       <hr className="dividing" />
-
       <div className="section-tit">
         <span className="text1">부가정보</span>
       </div>
@@ -38,7 +29,7 @@ function CreateDocumentTypeView({
         <div className="line-attach">
           <div className="attach-inner">
             <FileBox
-              id={cubeSdo.materialSdo?.officeWebSdo.fileBoxId || ''}
+              id={cubeSdo.materialSdo?.officeWebSdo.fileBoxId}
               vaultKey={{
                 keyString: 'sku-depot',
                 patronType: PatronType.Pavilion,
@@ -84,7 +75,7 @@ function CreateDocumentTypeView({
                 },
               ]}
               onChange={onChangeFileboxId}
-              id={createCubeDetail?.cubeContents.fileBoxId || ''}
+              id={cubeSdo.fileBoxId}
             />
             <div className="bottom">
               <span className="text1">
@@ -102,8 +93,6 @@ function CreateDocumentTypeView({
   );
 }
 
-const CreateDocumentTypeViewDefault = inject(mobxHelper.injectFrom(
-  'personalCube.createCubeService',
-))(observer(CreateDocumentTypeView));
+const CreateDocumentTypeViewDefault = observer(CreateDocumentTypeView);
 
 export default CreateDocumentTypeViewDefault;
