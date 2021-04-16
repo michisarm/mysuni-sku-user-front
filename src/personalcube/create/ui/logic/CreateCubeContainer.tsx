@@ -1,65 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import { useHistory, useParams } from 'react-router-dom';
-import { CreateCubePageParams } from '../../model/CreateCubePageParams';
-import { FormTitle } from '../view/DetailElementsView';
+import { useParams } from 'react-router-dom';
+import { CreateCubeParams } from '../../model/CreateCubeParams';
 import { Button } from 'semantic-ui-react';
-import cubePaths from '../../../routePaths';
+import { routeToCreateList } from '../../../routePaths';
 import { getBlankRequiredCubeField } from '../../model/CubeSdo';
-import { CollegeService } from '../../../../college/stores';
-import { CollegeType } from '../../../../college/model';
-import CreateBasicFormContainer from './CreateBasicFormContainer';
-import CreateExposureFormContainer from './CreateExposureFormContainer';
 import { useRequestCreateCubeDetail } from '../../service/useRequestCreateCubeDetail';
-import { getMainCategory } from '../../model/CreateCubeDetail';
+import CreateCubeContentsFormView from '../view/CreateCubeContentsFormView';
+import CreateCubeContentsTypeContainer from './CreateCubeContentsTypeContainer';
+import CreateCubeBasicInfoFormView from '../view/CreateCubeBasicInfoFormView';
+import CreateCubeExposureInfoFormView from '../view/CreateCubeExposureInfoFormView';
+import { useRequestSelectedCollege } from '../../service/useRequestSelectedCollege';
+
 
 interface CreateCubeContainerProps {
   createCubeService?: CreateCubeService;
-  collegeService?: CollegeService;
 }
+
 
 function CreateCubeContainer({
   createCubeService,
-  collegeService,
 }: CreateCubeContainerProps) {
-  const history = useHistory();
-  const params = useParams<CreateCubePageParams>();
+  const params = useParams<CreateCubeParams>();
+  useRequestCreateCubeDetail(params.personalCubeId);
+  useRequestSelectedCollege();
 
-  useRequestCreateCubeDetail();
+  const { cubeSdo } = createCubeService!;
 
-  const { createCubeDetail, cubeSdo } = createCubeService!;
-
-  useEffect(() => {
-    const mainCategory = getMainCategory(createCubeDetail?.cube.categories || []);
-
-    if(mainCategory !== undefined) {
-      setCompanyCineroom(mainCategory.collegeId);
-    }
-
-  }, [createCubeDetail]);
-
-  const setCompanyCineroom = async (collegeId: string) => {
-    const college = await collegeService!.findCollege(collegeId);
-    if(college && college.collegeType === CollegeType.Company) {
-      CreateCubeService.instance.setCompanyCineroomId(collegeId);
-    }
-  }
-
-  const moveToCreateList = () => {
-    history.push(cubePaths.create());
-  };
-
-  const moveToCreateIntro = () => {
-    if(params.personalCubeId === undefined || params.cubeType === undefined) {
-      return;
-    }
-
-    history.push(cubePaths.createCubeIntroDetail(params.personalCubeId, params.cubeType));
-  };
-
-  const onClickSave = () => {
+  const onClickSave = useCallback(() => {
     const blankField = getBlankRequiredCubeField(cubeSdo);
 
     if(blankField === 'none') {
@@ -71,72 +41,57 @@ function CreateCubeContainer({
     } else {
       alertRequiredField(blankField);
     }
-  };
-
-  const onClickNext = () => {
-    const blankField = getBlankRequiredCubeField(cubeSdo);
-
-    if(blankField === 'none') {
-      reactConfirm({
-        title: '저장 안내',
-        message: '입력하신 강좌를 저장 하시겠습니까?',
-        onOk: onNext,
-      });
-    } else {
-      alertRequiredField(blankField);
-    }
-  };
+  }, [cubeSdo]);
 
   const onClickDelete = () => {
-
+    // Created 상태 cube 삭제 api 부탁하기.
   };
 
-  const onSave = () => {
+  const onSave = useCallback(async () => {
+    if(cubeSdo.organizerId !== 'PVD00018') {
+      cubeSdo.otherOrganizerName = '';
+    }
+    
     if(params.personalCubeId === undefined) {
+      const newCubeId = await CreateCubeService.instance.registerUserCube(cubeSdo);
+      if(newCubeId !== undefined) {
+        routeToCreateList();
+      } else {
+        reactAlert({ title: '저장 실패', message: '저장을 실패했습니다. 잠시 후 다시 시도해주세요.' });
+      }
+
       return;
     }
 
     CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
-  };
+  }, [params.personalCubeId, cubeSdo]);
 
-  const onNext = async () => {
-    if(params.personalCubeId) {
-      await CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
-      moveToCreateIntro();
-    } else {
-      const newCubeId = await CreateCubeService.instance.registerUserCube(cubeSdo);
-      if(newCubeId !== undefined) {
-        moveToCreateIntro();
-      } else {
-        reactAlert({ title: '저장 실패', message: '저장을 실패했습니다. 잠시 후 다시 시도해주세요.' });
-      }
-    }
-  };
-
-  const alertRequiredField = (message: string) => {
+  const alertRequiredField = useCallback((message: string) => {
     reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
-  };
+  }, []);
 
   return (
     <>
-      <FormTitle activeStep={1} />
-      <CreateBasicFormContainer />
-      <CreateExposureFormContainer />
+      <CreateCubeBasicInfoFormView />
+      <hr className="dividing" />
+      <CreateCubeExposureInfoFormView />
+      <hr className="dividing" />
+      <CreateCubeContentsFormView />
+      <CreateCubeContentsTypeContainer />
       {
         params.personalCubeId !== undefined && (
           <div className="buttons">
             <Button type="button" className="fix line" onClick={onClickDelete}>Delete</Button>
-            <Button type="button" className="fix line" onClick={moveToCreateList}>Cancel</Button>
-            <Button type="button" className="fix line" onClick={onClickSave}>Save</Button>
-            <Button type="button" className="fix bg" onClick={onClickNext}>Next</Button>
+            <Button type="button" className="fix line" onClick={routeToCreateList}>Cancel</Button>
+            <Button type="button" className="fix bg" onClick={onClickSave}>Save</Button>
           </div>
         )
       }
       {
         params.personalCubeId === undefined && (
           <div className="buttons">
-            <Button type="button" className="fix line" onClick={moveToCreateList}>Cancel</Button>
-            <Button type="button" className="fix bg" onClick={onClickNext}>Next</Button>
+            <Button type="button" className="fix line" onClick={routeToCreateList}>Cancel</Button>
+            <Button type="button" className="fix bg" onClick={onClickSave}>Save</Button>
           </div>
         )
       }
@@ -144,7 +99,8 @@ function CreateCubeContainer({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
+const CreateCubeContainerDefault =  inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
-  'college.collegeService',
 ))(observer(CreateCubeContainer));
+
+export default CreateCubeContainerDefault;

@@ -1,91 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import { Form, Button, Select } from 'semantic-ui-react';
+import { Form, Button, Select, DropdownProps } from 'semantic-ui-react';
 import CreateInput from '../shared/CreateInput';
-import { ChannelFieldRow } from '../view/DetailElementsView';
-import MainChannelModalContainer from './MainChannelModalContainer';
-import SubChannelModalContainer from './SubChannelModalContainer';
-import { CollegeModel, CollegeType } from '../../../../college/model';
+import { ChannelFieldRow } from './DetailElementsView';
+import MainChannelModalContainer from '../logic/MainChannelModalContainer';
+import SubChannelModalContainer from '../logic/SubChannelModalContainer';
+import { CollegeModel } from '../../../../college/model';
 import { IdName, CategoryModel } from '../../../../shared/model';
 import { CubeCategory, combineCollege, renderChannelNames } from '../../../../shared/model/CubeCategory';
 import { useParams } from 'react-router-dom';
-import { CreateCubePageParams } from '../../model/CreateCubePageParams';
+import { CreateCubeParams } from '../../model/CreateCubeParams';
 import SelectOptions from '../../model/SelectOptions';
-import { CollegeService } from '../../../../college/stores';
 import { getMainCategory, getSubCategories } from '../../model/CreateCubeDetail';
 import { getCollgeName, getChannelName } from '../../../../shared/service/useCollege/useRequestCollege';
+import { useSelectedCollege, setSelectedCollege } from '../../../store/SelectedCollegeStore';
 
 
-interface CreateBasicFormContainerProps {
+interface CreateCubeBasicInfoFormViewProps {
   createCubeService?: CreateCubeService;
-  collegeService?: CollegeService;
 }
 
-function CreateBasicFormContainer({
+function CreateCubeBasicInfoFormView({
   createCubeService,
-  collegeService,
-}: CreateBasicFormContainerProps) {
-  const params = useParams<CreateCubePageParams>();
+}: CreateCubeBasicInfoFormViewProps) {
+  const params = useParams<CreateCubeParams>();
+  const selectedCollege = useSelectedCollege();
+  
+  const { cubeSdo } = createCubeService!;
 
-  const [mainCollegeId, setMainCollegeId] = useState<string>();
-  const [mainCollegeType, setMainCollegeType] = useState<CollegeType>();
-
-//   const [selectedCollege, setSelectedCollege] = useSelectedCollege();
-
-  const { cubeSdo, setCompanyCineroomId } = createCubeService!;
-
-  useEffect(() => {
-    if(params.personalCubeId === undefined) {
-      return;
-    }
-    const mainCategory = cubeSdo.categories.find(category => category.mainCategory === true);
-    if(mainCategory !== undefined) {
-      setSelectedCollege(mainCategory.collegeId);
-    }
-  }, [params.personalCubeId]);
-
-  const setSelectedCollege = async (collegeId: string) => {
-    const college = await collegeService!.findCollege(collegeId);
-
-    if(college) {
-      setMainCollegeId(college.id);
-      setMainCollegeType(college.collegeType);
-    }
-  }
-
-  const onChangeName = (e: any, data: any) => {
+  const onChangeName = useCallback((e: any, data: any) => {
     e.preventDefault();
-    createCubeService!.changeCubeSdoProps('name', data.value);
-  };
+    CreateCubeService.instance.changeCubeSdoProps('name', data.value);
+  }, []);
 
-
-  const onChangeCubeType = (e: any, data: any) => {
+  const onChangeCubeType = useCallback((e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     e.preventDefault();
-    createCubeService!.changeCubeSdoProps('type', data.value);
-  };
+    CreateCubeService.instance.changeCubeSdoProps('type', String(data.value));
+  }, []);
 
-  const onConfirmMainChannel = (college: CollegeModel, channel: IdName) => {
+  const onConfirmMainChannel = useCallback((college: CollegeModel, channel: IdName) => {
     const mainCategory: CubeCategory = {
       collegeId: college.id,
       channelId: channel.id,
       mainCategory: true,
     }
 
-    createCubeService!.changeCubeSdoProps('categories', [mainCategory]);
+    CreateCubeService.instance.changeCubeSdoProps('categories', [mainCategory]);
 
-    setMainCollegeId(college.id);
-    setMainCollegeType(college.collegeType);
+    setSelectedCollege({
+      collegeId: college.id,
+      collegeType: college.collegeType,
+    });
+  }, []);
 
-    if(college.collegeType === CollegeType.Company) {
-      setCompanyCineroomId(college.id);
-    } else {
-      setCompanyCineroomId('');
-    }
-  };
-
-  const onConfirmSubChannel = (categoryModels: CategoryModel[]) => {
+  const onConfirmSubChannel = useCallback((categoryModels: CategoryModel[]) => {
     const mainCategory = getMainCategory(cubeSdo.categories);
 
     if(mainCategory === undefined) {
@@ -101,14 +71,15 @@ function CreateBasicFormContainer({
     });
 
     createCubeService!.changeCubeSdoProps('categories', [mainCategory, ...subCategories]);
-  };
+  }, [cubeSdo.categories]);
 
- 
+  
   const mainCategory = getMainCategory(cubeSdo.categories);
   const subCategories = getSubCategories(cubeSdo.categories);
   const {collegeIdList, combineCollegeWithChannel } = combineCollege(subCategories);
-  const mainChannelId = mainCategory && mainCategory.channelId || '';
-  const mainChannelName = mainCategory && getChannelName(mainCategory.channelId) || '';
+  
+  const mainChannelId = mainCategory?.channelId || '';
+  const mainChannelName = getChannelName(mainChannelId) || '';
 
   const mainChannel: IdName = {
     id: mainChannelId,
@@ -162,14 +133,19 @@ function CreateBasicFormContainer({
               />
             </div>
             <div className="cell v-middle">
-              {mainCategory === undefined ? (
-                <span className="text1">메인채널을 선택해주세요.</span>
-              ) : (
-                <span className="text2">
-                  {getCollgeName(mainCategory.collegeId)} &gt;{' '}
-                  {getChannelName(mainCategory.channelId)}
-                </span>
-              )}
+              {
+                mainCategory === undefined && (
+                  <span className="text1">메인채널을 선택해주세요.</span>
+                )
+              }
+              {
+                mainCategory !== undefined && (
+                  <span className="text2">
+                    {getCollgeName(mainCategory.collegeId)} &gt;{' '}
+                    {getChannelName(mainCategory.channelId)}
+                  </span>
+                )
+              }
             </div>
           </ChannelFieldRow>
           <ChannelFieldRow>
@@ -181,8 +157,8 @@ function CreateBasicFormContainer({
                     채널선택
                   </Button>
                 }
-                targetCollegeId={mainCollegeId}
-                collegeType={mainCollegeType}
+                targetCollegeId={selectedCollege?.collegeId}
+                collegeType={selectedCollege?.collegeType}
                 defaultSelectedCategoryChannels={subCategoryModels}
                 onConfirmCategoryChannels={onConfirmSubChannel}
               />
@@ -210,23 +186,30 @@ function CreateBasicFormContainer({
       <Form.Field>
         <label className="necessary">교육형태</label>
         <div className="select-box">
-          {params.personalCubeId === undefined && (
-            <Select
-              className="dropdown selection"
-              value={cubeSdo.type}
-              options={SelectOptions.cubeType}
-              onChange={onChangeCubeType}
-            />
-          ) || (
-            <input readOnly value={cubeSdo.type} />
-          )}
+          {
+            params.personalCubeId === undefined && (
+              <Select
+                className="dropdown selection"
+                value={cubeSdo.type}
+                options={SelectOptions.cubeType}
+                onChange={onChangeCubeType}
+              />
+            )
+          } 
+          { 
+            params.personalCubeId !== undefined && (
+              <input readOnly value={cubeSdo.type} />
+            )
+          }
         </div>
       </Form.Field>
     </>
   );
 }
 
-export default inject(mobxHelper.injectFrom(
+const CreateCubeBasicInfoFormViewDefault = inject(mobxHelper.injectFrom(
   'personalCube.createCubeService',
-  'college.collegeService',
-))(observer(CreateBasicFormContainer));
+))(observer(CreateCubeBasicInfoFormView));
+
+
+export default CreateCubeBasicInfoFormViewDefault;

@@ -2,16 +2,16 @@ import { createStore } from "./Store";
 import { ContentsProvider } from "../personalcube/model/ContentsProvider";
 
 const [
-  setContentsProviderStore,
-  onContentsProviderStore,
-  getContentsProviderStore,
-  useContentsProviderStore,
+  setContentsProviders,
+  onContentsProviders,
+  getContentsProviders,
+  useContentsProviders,
 ] = createStore<ContentsProvider[]>([]);
 
 
 export {
-  setContentsProviderStore,
-  onContentsProviderStore,
-  getContentsProviderStore,
-  useContentsProviderStore,
+  setContentsProviders,
+  onContentsProviders,
+  getContentsProviders,
+  useContentsProviders,
 };

@@ -6,8 +6,7 @@ import SelectOptions from '../../model/SelectOptions';
 import { mobxHelper } from '@nara.platform/accent';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
-import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
-import ContentProviderContainer from '../logic/ContentProviderContainer';
+import ContentsProviderContainer from '../logic/ContentsProviderContainer';
 
 
 interface CreateCubeEditViewProps {
@@ -139,7 +138,7 @@ function CreateCubeEditView({
         </div>
       </Form.Field>
       <Form.Field>
-        <ContentProviderContainer />
+        <ContentsProviderContainer />
       </Form.Field>
     </>
   );

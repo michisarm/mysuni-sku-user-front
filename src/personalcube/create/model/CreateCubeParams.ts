@@ -1,4 +1,4 @@
-export interface CreateCubePageParams {
+export interface CreateCubeParams {
   personalCubeId?: string;
   cubeType?: string;
 }

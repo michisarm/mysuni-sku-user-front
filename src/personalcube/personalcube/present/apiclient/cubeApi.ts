@@ -47,7 +47,7 @@ export function modifyUserCube(cubeId: string, cubeSdo: CubeSdo): Promise<void> 
   return axios.put<void>(url, cubeSdo).then(AxiosReturn);
 }
 
-export function findContentProviders() {
+export function findContentsProviders() {
   const axios = getAxios();
   const url = `${BASE_URL}/contentsProviders`;
   return axios.get<ContentsProvider[]>(url).then(AxiosReturn);

@@ -12,7 +12,7 @@ import CreateListView from '../view/CreateListView';
 import ReactGA from 'react-ga';
 import { useScrollMove } from 'myTraining/useScrollMove';
 import { UserCubeRdo } from '../../../personalcube/model/UserCubeRdo';
-import { CreateListPageParams } from '../../model/CreateListPageParams';
+import { CreateCubeListParams } from '../../model/CreateCubeListParams';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { getCurrentHistory } from '../../../../shared/store/HistoryStore';
 
@@ -28,7 +28,7 @@ function CreateCubeListContainer({
 }: CreateCubeistContainerProps) {
 
   const history = useHistory();
-  const params = useParams<CreateListPageParams>();
+  const params = useParams<CreateCubeListParams>();
   const { scrollOnceMove } = useScrollMove();
 
   useEffect(() => {

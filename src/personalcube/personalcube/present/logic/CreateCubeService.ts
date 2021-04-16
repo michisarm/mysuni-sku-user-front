@@ -66,23 +66,6 @@ export default class CreateCubeService {
   }
 
   @observable
-  _companyCineroomId: string = '';
-
-  @computed get companyCineroomId() {
-    return this._companyCineroomId;
-  }
-
-  @action
-  setCompanyCineroomId(next: string) {
-    this._companyCineroomId = next;
-  }
-
-  @action
-  clearCompanyCineroomId() {
-    this._companyCineroomId = '';
-  }
-
-  @observable
   _createCubes: CreateCube[] = [];
 
   @computed get createCubes() {

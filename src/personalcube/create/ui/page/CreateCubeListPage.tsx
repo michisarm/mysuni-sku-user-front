@@ -2,7 +2,7 @@ import React from 'react';
 import { ContentLayout, Tab, TabItemModel } from '../../../../shared';
 import CreateProfileContainer from '../logic/CreateProfileContainer';
 import { useParams, useHistory } from 'react-router-dom';
-import { CreateListPageParams } from '../../model/CreateListPageParams';
+import { CreateCubeListParams } from '../../model/CreateCubeListParams';
 import CreateCubeListContainer from '../logic/CreateCubeListContainer';
 import cubePaths from '../../../routePaths';
 import { inject, observer } from 'mobx-react';
@@ -18,7 +18,7 @@ function CreateCubeListPage({
   createCubeService,
 }: CreateCubeListPageProps) {
   const history = useHistory();
-  const { tab } = useParams<CreateListPageParams>();
+  const { tab } = useParams<CreateCubeListParams>();
 
   const { createCubeCount } = createCubeService!;
 

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { useParams } from 'react-router-dom';
-import { CreateCubeDetailPageParams } from '../../model/CreateCubeDetailPageParams';
+import { CreateCubeDetailParams } from '../../model/CreateCubeDetailParams';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { Segment, Form, Button } from 'semantic-ui-react';
 import { routeToCreateList } from '../../../routePaths';
@@ -25,12 +25,12 @@ function CreateCubeDetailContainer({
   createCubeService,
   fileService,
 }: CreateCubeDetailContainerProps) {
-  const params = useParams<CreateCubeDetailPageParams>();
+  const params = useParams<CreateCubeDetailParams>();
 
   const { createCubeDetail, cubeSdo } = createCubeService!;
   const { fileMap } = fileService!;
 
-  useRequestCreateCubeDetail();
+  useRequestCreateCubeDetail(params.personalCubeId);
 
   const onSave = useCallback(() => {
     CreateCubeService.instance.modifyUserCube(params.personalCubeId, cubeSdo);
@@ -51,7 +51,7 @@ function CreateCubeDetailContainer({
     }
   }, [cubeSdo]);
 
-  const alertRequiredField =useCallback((message: string) => {
+  const alertRequiredField = useCallback((message: string) => {
     reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
   }, []);
 

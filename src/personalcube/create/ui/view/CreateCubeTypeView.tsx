@@ -1,8 +1,7 @@
 import React  from 'react';
 import { Table } from 'semantic-ui-react';
-import { DepotFileViewModel } from '@nara.drama/depot';
 import { useParams } from 'react-router-dom';
-import { CreateCubeDetailPageParams } from '../../model/CreateCubeDetailPageParams';
+import { CreateCubeDetailParams } from '../../model/CreateCubeDetailParams';
 import { CubeMaterial } from '../../../../lecture/model/CubeMaterial';
 import VideoTypeView from './VideoTypeView';
 import WebPageTypeView from './WebPageTypeView';
@@ -18,7 +17,7 @@ export default function CreateCubeTypeView({
   cubeMaterial,
   fileMap,
 }: CreateCubeTypeViewProps) {
-  const params = useParams<CreateCubeDetailPageParams>();
+  const params = useParams<CreateCubeDetailParams>();
 
   return (
     <>

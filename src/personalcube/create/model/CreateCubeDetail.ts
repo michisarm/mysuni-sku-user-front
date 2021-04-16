@@ -17,7 +17,7 @@ export function getMainCategory(categories: CubeCategory[]) {
 export function getSubCategories(categories: CubeCategory[]) {
   return categories.filter(category => category.mainCategory === false);
 }
- 
+
 export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
   const { cube, cubeContents, cubeMaterial } = cubeDetail;
   const { media, board, officeWeb } = cubeMaterial;
@@ -31,7 +31,6 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
     description: cubeContents.description,
     organizerId: cubeContents.organizerId,
     otherOrganizerName: cubeContents.otherOrganizerName,
-    sharingCineroomIds: cube.sharingCineroomIds,
     tags: cubeContents.tags || [],
     materialSdo: {
       mediaSdo: {

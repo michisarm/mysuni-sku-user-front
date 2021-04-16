@@ -1,46 +1,51 @@
-import React, { useState } from 'react';
-import { Grid, Select, Icon } from 'semantic-ui-react';
+import React, { useState, useCallback } from 'react';
+import { Grid, Select, Icon, DropdownProps } from 'semantic-ui-react';
 import classNames from 'classnames';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import { getContentsProviderStore } from '../../../store/ContentsProviderStore';
+import { useContentsProviders } from '../../../store/ContentsProviderStore';
+import { getSelectOptions } from '../../../personalcube/model/ContentsProvider';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
 
 
-function ContentProviderSelecteView() {
+interface ContentsProviderSelectViewProps {
+  createCubeService?: CreateCubeService;
+}
+
+function ContentsProviderSelecteView({
+  createCubeService,
+}: ContentsProviderSelectViewProps) {
   const [focus, setFocus] = useState<boolean>(false);
   const [write, setWrite] = useState<string>('');
 
-  const cubeSdo = CreateCubeService.instance.cubeSdo;
+  const contentsProviders = useContentsProviders();
+  const { cubeSdo } = createCubeService!;
 
-  const getSelectOptions = () => {
-    const contentProviders = getContentsProviderStore();
+  const onChangeOrganizerId = useCallback((e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    e.preventDefault();
 
-    console.log('contentProviders :: ', contentProviders);
+    const nextOrganizerId = String(data.value);
+    CreateCubeService.instance.changeCubeSdoProps('organizerId', nextOrganizerId);
+  }, []);
 
-    if(contentProviders === undefined) {
-      return;
-    }
+  const onChangeOtherOrganizerName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setWrite(e.target.value);
+    CreateCubeService.instance.changeCubeSdoProps('otherOrganizerName', e.target.value);
+  }, []);
 
-    const selectOptions: any = [];
-    
-    selectOptions.push({
-      key: '',
-      text: '선택해주세요',
-      value: '',
-    });
-    contentProviders.map((contentsProvider) => {
-      selectOptions.push(
-        {
-          key: contentsProvider.contentsProvider.id,
-          text: contentsProvider.contentsProvider.name,
-          value: contentsProvider.contentsProvider.id,
-        });
-    });
-    return selectOptions;
-  };
+  const onClearCOtherOrganizerName = useCallback(() => {
+    setWrite('');
+    CreateCubeService.instance.changeCubeSdoProps('otherOrganizerName', '');
+  }, []);
 
-  const onChangeOrganizerId = (e: any, data: any) => {
-    CreateCubeService.instance.changeCubeSdoProps('organizerId', data.value);
-  };
+  const onFocus = useCallback(() => {
+    setFocus(true);
+  }, []);  
+
+  const onBlur = useCallback(() => {
+    setFocus(false);
+  }, []);
 
   return (
     <>
@@ -50,37 +55,36 @@ function ContentProviderSelecteView() {
           <Select
             placeholder="선택해주세요"
             className="w100"
-            options = {getSelectOptions()}
+            options = {getSelectOptions(contentsProviders || [])}
             onChange={onChangeOrganizerId}
             value={cubeSdo.organizerId}
           />
         </Grid.Column>
-        { cubeSdo.organizerId && cubeSdo.organizerId === '기타' ?
-          <Grid.Column>
-            <div className={classNames('ui right-top-count input', { focus, write })}>
-              <input type="text"
-                placeholder="선택사항이 없는 경우, 교육기관/출처 를 입력해주세요."
-                value={cubeSdo.otherOrganizerName || ''}
-                onClick={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
-                onChange={(e: any) => {
-                  setWrite(e.target.value);
-                  CreateCubeService.instance.changeCubeSdoProps('otherOrganizerName', e.target.value);
-                }}
-              />
-              <Icon className="clear link"
-                onClick={() => {
-                  setWrite('');
-                  CreateCubeService.instance.changeCubeSdoProps('otherOrganizerName', '');
-                }}
-              />
-            </div>
-          </Grid.Column>
-          : null
+        {
+          cubeSdo.organizerId === 'PVD00018' && (
+            <Grid.Column>
+              <div className={classNames('ui right-top-count input', { focus, write })}>
+                <input type="text"
+                  placeholder="선택사항이 없는 경우, 교육기관/출처 를 입력해주세요."
+                  value={cubeSdo.otherOrganizerName || ''}
+                  onClick={onFocus}
+                  onBlur={onBlur}
+                  onChange={onChangeOtherOrganizerName}
+                />
+                <Icon className="clear link"
+                  onClick={onClearCOtherOrganizerName}
+                />
+              </div>
+            </Grid.Column>
+          )
         }
       </Grid>
     </>
   );
 }
 
-export default ContentProviderSelecteView;
+const ContentsProviderSelecteViewDefault = inject(mobxHelper.injectFrom(
+  'personalCube.createCubeService',
+))(observer(ContentsProviderSelecteView));
+
+export default ContentsProviderSelecteViewDefault;
