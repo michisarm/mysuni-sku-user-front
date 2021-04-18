@@ -1,17 +1,27 @@
-import { autobind } from "@nara.platform/accent";
-import { observable, computed, action, runInAction } from "mobx";
+import { autobind } from '@nara.platform/accent';
+import { observable, computed, action, runInAction } from 'mobx';
 import _ from 'lodash';
-import { CreateCube } from "../../../create/model/CreateCube";
+import { CreateCube } from '../../../create/model/CreateCube';
 
-import { UserCubeRdo } from "../../model/UserCubeRdo";
-import { findUserCubes, findCubeDetail, registerUserCube, modifyUserCube } from "../apiclient/cubeApi";
-import { CubeState } from "../../../../shared/model";
-import { CreateCubeDetail, getCubeSdo } from "../../../create/model/CreateCubeDetail";
-import { CubeSdo, initialCubeSdo } from "../../../create/model/CubeSdo";
+import { UserCubeRdo } from '../../model/UserCubeRdo';
+import {
+  findUserCubes,
+  findCubeDetail,
+  registerUserCube,
+  modifyUserCube,
+  findPanopToList,
+} from '../apiclient/cubeApi';
+import { CubeState } from '../../../../shared/model';
+import {
+  CreateCubeDetail,
+  getCubeSdo,
+} from '../../../create/model/CreateCubeDetail';
+import { CubeSdo, initialCubeSdo } from '../../../create/model/CubeSdo';
+import { PanoptoCdoModel } from '../../../media/model/PanoptoCdoModel';
+import { InternalMediaConnection } from '../../../../lecture/model/InternalMediaConnection';
 
 @autobind
 export default class CreateCubeService {
-
   static instance: CreateCubeService;
 
   @observable
@@ -88,7 +98,6 @@ export default class CreateCubeService {
     }
 
     runInAction(() => {
-
       this._createCubes = [...this._createCubes, ...offsetCreateCube.results];
       this._createCubeCount = offsetCreateCube.totalCount;
     });
@@ -115,6 +124,54 @@ export default class CreateCubeService {
   @action
   clearSelectedCubeState() {
     this._selectedCubeState = CubeState.ALL;
+  }
+
+  @observable
+  _panoptoCdo: PanoptoCdoModel = new PanoptoCdoModel();
+
+  @computed get panoptoCdo() {
+    return this._panoptoCdo;
+  }
+
+  @action
+  async findPanopToList(panoptoCdo: PanoptoCdoModel) {
+    const panoptos = await findPanopToList(panoptoCdo);
+    return runInAction(() => {
+      if (
+        this.cubeSdo.materialSdo &&
+        this.cubeSdo.materialSdo?.mediaSdo.meidaContents
+      ) {
+        this.cubeSdo.materialSdo.mediaSdo.meidaContents.internalMedias =
+          panoptos.results;
+      }
+    });
+  }
+
+  @action
+  changePanoptoCdoProps(name: string, value: string | number) {
+    this._panoptoCdo = _.set(this.panoptoCdo, name, value);
+  }
+
+  @observable
+  _panopto: InternalMediaConnection = {
+    duration: 0,
+    folderId: '',
+    folderName: '',
+    name: '',
+    panoptoSessionId: '',
+    startTime: '',
+    thumbUrl: '',
+    viewUrl: '',
+    quizIds: [],
+  };
+
+  @computed get panopto() {
+    return this._panopto;
+  }
+
+  @action
+  setPanoptoProps(selectedPanopto: InternalMediaConnection) {
+    this._panopto = selectedPanopto;
   }
 }
 

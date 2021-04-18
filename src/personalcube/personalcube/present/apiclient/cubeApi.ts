@@ -1,11 +1,13 @@
-import { getAxios } from "../../../../shared/api/Axios";
-import { OffsetElementList } from "../../../../shared/model";
-import { AxiosReturn } from "../../../../shared/api/AxiosReturn";
-import { UserCubeRdo } from "../../model/UserCubeRdo";
-import { CreateCube } from "../../../create/model/CreateCube";
-import { CreateCubeDetail } from "../../../create/model/CreateCubeDetail";
-import { CubeSdo } from "../../../create/model/CubeSdo";
-import { ContentsProvider } from "../../model/ContentsProvider";
+import { getAxios } from '../../../../shared/api/Axios';
+import { OffsetElementList } from '../../../../shared/model';
+import { AxiosReturn } from '../../../../shared/api/AxiosReturn';
+import { UserCubeRdo } from '../../model/UserCubeRdo';
+import { CreateCube } from '../../../create/model/CreateCube';
+import { CreateCubeDetail } from '../../../create/model/CreateCubeDetail';
+import { CubeSdo } from '../../../create/model/CubeSdo';
+import { ContentsProvider } from '../../model/ContentsProvider';
+import { PanoptoCdoModel } from '../../../media/model/PanoptoCdoModel';
+import { InternalMediaConnection } from '../../../../lecture/model/InternalMediaConnection';
 
 const BASE_URL = '/api/cube';
 
@@ -27,28 +29,52 @@ export function findCubeDetail(cubeId: string) {
 
 export function findUserCubes(userCubeRdo: UserCubeRdo) {
   const axios = getAxios();
-  const url = `${BASE_URL}/userCubes`
+  const url = `${BASE_URL}/userCubes`;
 
-  return axios.get<OffsetElementList<CreateCube>>(url, {
-    params: userCubeRdo,
-    paramsSerializer
-  }).then(AxiosReturn);
+  return axios
+    .get<OffsetElementList<CreateCube>>(url, {
+      params: userCubeRdo,
+      paramsSerializer,
+    })
+    .then(AxiosReturn);
 }
 
-export function registerUserCube(cubeSdo: CubeSdo): Promise<string | undefined> {
+export function registerUserCube(
+  cubeSdo: CubeSdo
+): Promise<string | undefined> {
   const axios = getAxios();
   const url = `${BASE_URL}/userCubes`;
-  return axios.post<string | undefined>(url, cubeSdo).then(AxiosReturn).catch(err => undefined);
+  return axios
+    .post<string | undefined>(url, cubeSdo)
+    .then(AxiosReturn)
+    .catch(err => undefined);
 }
 
-export function modifyUserCube(cubeId: string, cubeSdo: CubeSdo): Promise<boolean> {
+export function modifyUserCube(
+  cubeId: string,
+  cubeSdo: CubeSdo
+): Promise<boolean> {
   const axios = getAxios();
   const url = `${BASE_URL}/userCubes/${cubeId}`;
-  return axios.put<void>(url, cubeSdo).then(result => true).catch(error => false);
+  return axios
+    .put<void>(url, cubeSdo)
+    .then(result => true)
+    .catch(error => false);
 }
 
 export function findContentsProviders() {
   const axios = getAxios();
   const url = `${BASE_URL}/contentsProviders`;
   return axios.get<ContentsProvider[]>(url).then(AxiosReturn);
+}
+
+export function findPanopToList(panoptoCdo: PanoptoCdoModel) {
+  const axios = getAxios();
+
+  const baseUrl = `${BASE_URL}/medias/panoptos`;
+  return axios
+    .get<OffsetElementList<InternalMediaConnection>>(baseUrl, {
+      params: panoptoCdo,
+    })
+    .then(response => (response && response.data) || null);
 }
