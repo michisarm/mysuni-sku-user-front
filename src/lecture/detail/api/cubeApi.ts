@@ -9,6 +9,7 @@ import TaskChild from '../model/TaskChild';
 import { TaskChildCdo } from '../model/TaskChildCdo';
 import TaskDetailPost from '../model/TaskDetail';
 import TaskDetailBody from '../model/TaskDetailBody';
+import { IntPair } from '../../../shared/model/IntPair';
 
 const BASE_URL = '/api/cube';
 
@@ -125,3 +126,16 @@ export function modifyReply(
 
   return axios.put<void>(url, nameValueList).then(AxiosReturn);
 }
+
+function countClassroomStudents(cubeId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/countClassroomStudents`;
+  return axios
+    .get<IntPair[]>(url, { params: { cubeId } })
+    .then(AxiosReturn);
+}
+
+export const [
+  countClassroomStudentsCache,
+  cleaCountClassroomStudentsCache,
+] = createCacheApi(countClassroomStudents);

@@ -1,5 +1,8 @@
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
-import { findCubeDetailCache } from '../../../api/cubeApi';
+import {
+  countClassroomStudentsCache,
+  findCubeDetailCache,
+} from '../../../api/cubeApi';
 import { setLectureClassroom } from '../../../store/LectureClassroomStore';
 
 export async function getClassroomFromCube(cubeId: string) {
@@ -10,6 +13,8 @@ export async function getClassroomFromCube(cubeId: string) {
   if (cubeDetail === undefined) {
     return;
   }
+  const counts = (await countClassroomStudentsCache(cubeId)) || [];
+
   const {
     cubeContents: { instructors },
     cubeMaterial: { classrooms },
@@ -70,7 +75,7 @@ export async function getClassroomFromCube(cubeId: string) {
           },
           enrollingAvailable,
           capacityClosed,
-          studentCount: waitingCapacity,
+          studentCount: counts.find(c => c.left === round)?.right || 0,
           cancellationPenalty,
           remote,
           operator: operators.find(c => c.id === keyString),
