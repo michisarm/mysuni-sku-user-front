@@ -1,22 +1,22 @@
+import { AreaType } from "./AreaType";
+
+
 export interface ContentsProvider {
-  areaType: string;
-  creatorEmail: string;
-  creatorId: string;
-  creatorName: string;
-  depotId: string;
   id: string;
-  patronKey: {
-    keyString: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  url: string;
+  creator: {
+    keyString: string,
   };
+  areaType: AreaType;
+  enabled: boolean;
   link: boolean;
-  providerEmail: string;
-  providerName: string;
-  providerPhoneNumber: string;
-  providerUrl: string;
   remark: string;
-  thumbnail: string;
+  depotId: string;
+  thumbnailPath: string;
   time: number;
-  use: boolean;
 }
 
 export function getSelectOptions(contentsProviders: ContentsProvider[]): SelectOption[] {
@@ -31,7 +31,7 @@ export function getSelectOptions(contentsProviders: ContentsProvider[]): SelectO
   contentsProviders.forEach(contentsProvider => {
     selectOptions.push({
       key: contentsProvider.id,
-      text: contentsProvider.providerName,
+      text: contentsProvider.name,
       value: contentsProvider.id,
     });
   });
