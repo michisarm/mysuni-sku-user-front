@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+import { getLectureTestItem } from '../../../store/LectureTestStore';
 import LectureParams from '../../../viewModel/LectureParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import { getTestItemMapFromCube } from './getTestItemMap';
@@ -17,7 +18,7 @@ export async function getCubeLectureTestStudent(
 export async function getCubeLectureTestAnswer(
   params: LectureParams
 ): Promise<void> {
-  const testItem = await getTestItemMapFromCube(params); // 다른 방법은?
+  const testItem = getLectureTestItem();
   if (testItem) {
     await getTestAnswerItemMapFromExam(testItem.id, testItem.questions);
   }

@@ -3,7 +3,7 @@ import { PatronKey } from '@nara.platform/accent';
 export interface BadgeCategory {
   id: string;
   name: string;
-  iconUrl: string;
+  // iconUrl: string;
   displayOrder: number;
   creatorName: string;
   time: number;
@@ -11,4 +11,5 @@ export interface BadgeCategory {
   iconPath: string;
   backgroundImagePath: string;
   patronKey: PatronKey;
+  topImagePath: string;
 }

@@ -102,6 +102,10 @@ function AllBadgeListContainer({
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
                     badgeColor={badgeBundle.badgeCategory.themeColor}
+                    backgroundImagePath={
+                      badgeBundle.badgeCategory.backgroundImagePath
+                    }
+                    topImagePath={badgeBundle.badgeCategory.topImagePath}
                   />
                   <div className="badge-name">
                     <span>{badgeBundle.badge.name}</span>

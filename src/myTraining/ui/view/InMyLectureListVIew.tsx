@@ -48,25 +48,17 @@ export default function InMyLectureListView({
         inMyLectures.map((inMyLecture, index) => {
           const learningType = LearningTypeName[inMyLecture.cubeType];
           const collegeName = getCollgeName(inMyLecture.category.college.id);
-          // const learningType =
-          //   (inMyLecture.serviceType === 'Card' && inMyLecture.serviceType) ||
-          //   CubeTypeNameType[inMyLecture.cubeType];
-          const learningState =
-            (inMyLecture.learningState &&
-              LearningStateName[inMyLecture.learningState]) ||
-            '-';
-          const progressRate =
-            (inMyLecture.serviceType === 'Card' &&
-              inMyLecture.learningState &&
-              `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}`) ||
-            '-';
+          const learningState = inMyLecture.learningState &&
+              LearningStateName[inMyLecture.learningState] || '-';
+          const progressRate = inMyLecture.learningState &&
+              `${inMyLecture.passedLearningCount}/${inMyLecture.totalLearningCount}` || '-';
 
           return (
             <Table.Row key={`inMyLecture-list-${index}`}>
               <Table.Cell>{totalCount - index}</Table.Cell>
               <Table.Cell>{collegeName}</Table.Cell>
               <Table.Cell className="title">
-                <a href="#" onClick={e => onViewDetail(e, inMyLecture.cardId)}>
+                <a href="#" onClick={e => onViewDetail(e, inMyLecture.serviceId)}>
                   <span className="ellipsis">{inMyLecture.name}</span>
                 </a>
               </Table.Cell>

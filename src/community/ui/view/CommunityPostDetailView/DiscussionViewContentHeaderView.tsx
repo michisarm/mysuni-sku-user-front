@@ -41,7 +41,7 @@ class DiscussionViewContentHeaderView extends Component<Props> {
         <div className="course-info-header">
           <div className="survey-header">
             <div className="survey-header-left debate-header-sub">
-              <div className="title">{title}</div>
+              <div className="title" style={{wordBreak: 'break-word'}}>{title}</div>
               {/* <div className="survey-read-side mb0">
                 <div className="title-area">
                   <div className="ui label onlytext">

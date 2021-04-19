@@ -6,13 +6,14 @@ import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import {
   findByCardId,
-  findByCubeId,
+  findMyCardRelatedStudentsCache,
   getStudentExam,
 } from '../../../api/cardApi';
 import { patronInfo } from '@nara.platform/dock';
 import { findGradeSheet } from '../../../api/assistantApi';
 import { getEssayScores } from '../../../model/GradeSheet';
 import { ExtraTaskStatus } from '../../../../model/ExtraTaskStatus';
+import Student from '../../../../model/Student';
 
 async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
   if (examId !== '' && examId !== null) {
@@ -83,12 +84,23 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  const student = await findByCubeId(params.cubeId);
+  const students = await findMyCardRelatedStudentsCache(params.cardId);
+  if (students === undefined) {
+    return;
+  }
+
+  let student: Student | undefined;
+  students.cubeStudents?.forEach(cubeStudent => {
+    if (cubeStudent.lectureId === params.cubeId) {
+      student = cubeStudent;
+    }
+  });
   if (student === undefined) {
     return;
   }
+
   let examId = student.studentScore.examId;
-  if (examId === null) {
+  if (examId === null || examId === '') {
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;

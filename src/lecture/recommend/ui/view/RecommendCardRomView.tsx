@@ -6,13 +6,27 @@ import { RecommendCardRom } from '../../../model/RecommendCardRom';
 import CardView from '../../../shared/Lecture/ui/view/CardVIew';
 
 export function RecommendCardRomView(props: RecommendCardRom) {
-  const { channelId, cardCount, cardWithRelatedCountRoms } = props;
+  const {
+    channelId,
+    cardCount,
+    totalCardCount,
+    cardWithRelatedCountRoms,
+  } = props;
+
+  const getCardCount = () => {
+    if (totalCardCount !== undefined && totalCardCount >= 0) {
+      return totalCardCount;
+    }
+
+    return cardCount;
+  };
+
   return (
     <>
       <div className="section-head">
         <span className="channel">{getChannelName(channelId)}</span>
         {`채널에서 ${SkProfileService.instance.profileMemberName}님께 추천하는 과정입니다.`}
-        <span className="channel">{`(${cardCount})`}</span>
+        <span className="channel">{`(${getCardCount()})`}</span>
         <div className="right">
           <Link to={`/lecture/recommend/channel/${channelId}`}>
             <button className="ui icon button right btn-blue">

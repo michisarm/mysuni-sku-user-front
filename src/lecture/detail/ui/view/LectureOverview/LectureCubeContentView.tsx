@@ -74,7 +74,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   }, [lectureSummary]);
 
   const overviewHashClick = useCallback(() => {
-    // hashLink('lms-overview');
+    hashLink('lms-overview');
     setActivatedTab('overview');
   }, []);
   const classroomHashClick = useCallback(() => {
@@ -86,11 +86,6 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   }, []);
   const transcriptHashClick = useCallback(() => {
     setActivatedTab('transcript');
-    // 하드코딩하여 적용... 추후 필요시 체크해서 하는 부분이 필요할 듯
-    const cont = document.getElementById('panopto-embed-player');
-    if (cont) {
-      window.scrollTo(0, 800);
-    }
   }, []);
 
   // const trascriptScrollMove = () => {
@@ -128,7 +123,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           <a
             onClick={overviewHashClick}
             className={activatedTab === 'overview' ? 'lms-act' : ''}
-            data-area={Area.CARD_TAB}
+            data-area={Area.CUBE_TAB}
             data-action={Action.CLICK}
             data-action-name="CUBE TAB 클릭::Overview"
           >
@@ -138,7 +133,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             <a
               onClick={classroomHashClick}
               className={activatedTab === 'classroom' ? 'lms-act' : ''}
-              data-area={Area.CARD_TAB}
+              data-area={Area.CUBE_TAB}
               data-action={Action.CLICK}
               data-action-name="CUBE TAB 클릭::차수정보"
             >
@@ -150,7 +145,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
               <a
                 onClick={transcriptHashClick}
                 className={activatedTab === 'transcript' ? 'lms-act' : ''}
-                data-area={Area.CARD_TAB}
+                data-area={Area.CUBE_TAB}
                 data-action={Action.CLICK}
                 data-action-name="CUBE TAB 클릭::Transcript"
               >
@@ -162,7 +157,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             className={
               activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
             }
-            data-area={Area.CARD_TAB}
+            data-area={Area.CUBE_TAB}
             data-action={Action.CLICK}
             data-action-name="CUBE TAB 클릭::Comments"
           >

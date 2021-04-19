@@ -9,13 +9,12 @@ const COMPLETE = '학습완료';
 const JOIN = '작성하기';
 
 const actionClassName = 'bg';
-const stateClassName = 'line';
 
 function CanceledView() {
   const history = useHistory();
   const action = useCallback(async () => {
     history.push('#create');
-    submit(0);
+    submit(1);
   }, []);
   return (
     <>
@@ -45,6 +44,16 @@ function ApprovedView(props: ApprovedViewProps) {
   const action = useCallback(async () => {
     history.push('#create');
   }, []);
+  const stateClassName = useMemo(() => {
+    const { learningState } = student;
+    switch (learningState) {
+      case 'Passed':
+        return 'complete';
+      default:
+        break;
+    }
+    return 'line';
+  }, [student]);
 
   return (
     <>

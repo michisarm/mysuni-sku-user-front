@@ -27,6 +27,7 @@ import { requestCommunity } from 'community/service/useCommunityHome/requestComm
 import { Console } from 'console';
 import { addNewBadge } from 'community/utility/communityHelper';
 import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
 
 const NoticeItemView: React.FC<Post> = function NoticeItemView({
   communityId,
@@ -183,7 +184,7 @@ const RecentItemView: React.FC<Post> = function RecentItemView({
         <strong>{title}</strong>
         {isNew && <span className="new-label">NEW</span>}
       </div>
-      <p>{text}</p>profileIcon
+      <p>{text}</p>
       <div className="survey-read-side mb0">
         <div className="title-area read-header-left">
           <div className="text-list">
@@ -250,7 +251,10 @@ function CommunityHomePage() {
 
   return (
     <>
-      <div className="community-home-contants">
+      <div
+        className="community-home-contants"
+        data-area={Area.COMMUNITY_HOME}
+      >
         {/* 배너 */}
         <div className="community-banner-type1">
           {communityHome.community.homeType === 'BASIC' && (

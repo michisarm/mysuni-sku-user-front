@@ -14,6 +14,7 @@ import {
   getActiveCourseStructureItem,
   getActiveCubeStructureItem,
 } from '../../../utility/lectureStructureHelper';
+import { Area } from 'tracker/model';
 
 interface LectureSurveyInfoViewProps {
   lectureSurvey: LectureSurvey;
@@ -32,24 +33,14 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
   const [surveyTitleInfo, setSurveyTitleInfo] = useState<string>();
   const [surveyInfoText, setSurveyInfoText] = useState<string>();
 
-  const requestStartLectureSurveyState = useCallback(() => {
-    if (params === undefined) {
-      return;
-    }
-    startLectureSurveyState();
-  }, [params]);
-
   const questionCount = lectureSurvey.surveyItems.length;
 
   useEffect(() => {
     const params = getLectureParams();
-    if (params === undefined) {
-      return;
-    }
     if (currentMenu?.name !== undefined) {
       setSurveyTitleInfo(currentMenu?.name);
       setSurveyInfoText('의 ');
-    } else {
+    } else if (params !== undefined) {
       const name =
         getActiveCourseStructureItem()?.name ||
         getActiveCubeStructureItem(params.pathname)?.name ||
@@ -59,13 +50,21 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
     }
   }, [lectureStructure, currentMenu?.name]);
 
-  if (lectureSurveyState && lectureSurveyState.state === 'None') {
+  if (
+    lectureSurveyState &&
+    lectureSurveyState.state === 'None' &&
+    currentMenu?.name === undefined
+  ) {
+    // 학습화면에서 접근(intro화면이 필요없어서 'Start'로 변경)한 경우를 의미
     startLectureSurveyState();
   }
 
   return (
     <>
-      <div className="course-info-header">
+      <div
+        className="course-info-header"
+        data-area={Area.CUBE_HEADER}
+      >
         <div className="survey-header">
           <div className="survey-header-left test_ing">
             <i className="icon testHeader02">
@@ -97,7 +96,7 @@ const LectureSurveyInfoView: React.FC<LectureSurveyInfoViewProps> = function Lec
           <div className="course-info-bottom">
             <button
               className="ui button fix bg"
-              onClick={requestStartLectureSurveyState}
+              onClick={startLectureSurveyState}
             >
               참여하기
             </button>

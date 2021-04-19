@@ -139,7 +139,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               <Icon className="delete" />
               delete
             </Button>
-            {viewType !== 'reply' && (
+            {detailType === 'parent' && (
               <Button
                 className="ui icon button left post reply"
                 onClick={onClickReplies}

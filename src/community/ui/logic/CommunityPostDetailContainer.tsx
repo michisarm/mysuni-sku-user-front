@@ -131,10 +131,10 @@ function CommunityPostDetailContainer() {
     if (postDetail === undefined) {
       return;
     }
-    
+
     const checkMemberfunction = async () => {
       const joinFlag = await checkMember(communityId)
-      if(!joinFlag) {
+      if (!joinFlag) {
         history.push({
           pathname: `/community/${communityId}`,
         });
@@ -143,7 +143,7 @@ function CommunityPostDetailContainer() {
 
     checkMemberfunction()
   }, [postDetail]);
-  
+
   useEffect(() => {
     window.addEventListener('commentCount', commentCountEventHandler);
     window.addEventListener('clickProfile', clickProfileEventHandler);
@@ -203,9 +203,27 @@ function CommunityPostDetailContainer() {
     }
   }, []);
 
+
   const OnClickList = useCallback(() => {
-    history.goBack();
-  }, []);
+    //history.goBack();
+    if (postDetail?.menuId === 'NOTICE') {
+      history.push({
+        pathname: `/community/${communityId}/notice`,
+      });
+    } else if (menuType === 'STORE') {
+      history.push({
+        pathname: `/community/${communityId}/data/${postDetail?.menuId}`,
+      });
+    } else {
+      history.push({
+        pathname: `/community/${communityId}/board/${postDetail?.menuId}`,
+      });
+    }
+    //   history.push({
+    //     pathname: `/community/${communityId}/board/${postDetail?.menuId}`,
+    //   });
+
+  }, [postDetail, menuType]);
 
   const OnClickDelete = useCallback(() => {
     reactConfirm({
@@ -271,21 +289,21 @@ function CommunityPostDetailContainer() {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.nextPost!.communityId
-        }/${menuType}/post/${postDetail.nextPost!.postId}`;
+          }/${menuType}/post/${postDetail.nextPost!.postId}`;
       } else {
         return `/community/${postDetail.nextPost!.communityId}/post/${
           postDetail.nextPost!.postId
-        }`;
+          }`;
       }
     } else {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.prevPost!.communityId
-        }/${menuType}/post/${postDetail.prevPost!.postId}`;
+          }/${menuType}/post/${postDetail.prevPost!.postId}`;
       } else {
         return `/community/${postDetail.prevPost!.communityId}/post/${
           postDetail.prevPost!.postId
-        }`;
+          }`;
       }
     }
   }, []);
@@ -303,6 +321,7 @@ function CommunityPostDetailContainer() {
             deletable={true}
             editAuth={editAuth}
             menuType={menuType}
+            like={like}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
@@ -394,25 +413,25 @@ function CommunityPostDetailContainer() {
             </div>
           )} */}
           <div className="task-read-bottom">
-            {postDetail.menuId !== 'NOTICE' && (
-              <button
-                className="ui icon button left post edit"
-                onClick={OnClickLike}
-              >
-                {(like && (
-                  <img
-                    src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
-                    style={{ marginBottom: '-3px', marginRight: '3px' }}
-                  />
-                )) || (
+
+            <button
+              className="ui icon button left post edit"
+              onClick={OnClickLike}
+            >
+              {(like && (
+                <img
+                  src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
+                  style={{ marginBottom: '-3px', marginRight: '3px' }}
+                />
+              )) || (
                   <img
                     src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
                     style={{ marginBottom: '-3px', marginRight: '3px' }}
                   />
                 )}
                 좋아요
-              </button>
-            )}
+            </button>
+
             {creatorId === postDetail.creatorId && (
               <>
                 <Button

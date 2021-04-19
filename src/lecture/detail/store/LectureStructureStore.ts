@@ -19,6 +19,8 @@ const initialStore: LectureStructure = {
     can: false,
     order: -1,
     type: 'CARD',
+    learningTime: 0,
+    additionalLearningTime: 0,
   },
   chapters: [],
   cubes: [],

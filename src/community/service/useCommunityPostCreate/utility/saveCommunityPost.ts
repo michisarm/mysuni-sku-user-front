@@ -17,9 +17,6 @@ export async function saveCommunityPost(
   const postCreateItem = getCommunityPostCreateItem();
   if (postCreateItem !== undefined) {
     if (postId === undefined && menuId !== undefined) {
-      const commentFeedbackId = await registerCommunityCommentPost(
-        postCreateItem.title
-      );
       const postCdo: PostCdo = {
         title: postCreateItem.title,
         html: postCreateItem.contents,
@@ -27,7 +24,6 @@ export async function saveCommunityPost(
         pinned: postCreateItem.pinned,
         visible: postCreateItem.visible,
         menuId,
-        commentFeedbackId,
       };
       return registerPost(communityId, postCdo);
     } else if (postId !== undefined) {

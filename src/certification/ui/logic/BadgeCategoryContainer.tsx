@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
@@ -10,6 +10,7 @@ import { useRequestBadgeCategory } from '../../service/useRequestBadgeCategory';
 import BadgeCategoryView from '../view/BadgeCategoryView';
 import badgePaths from '../../routePaths';
 import { BadgeCategory } from '../../model/BadgeCategory';
+import { useBadgeSlide } from '../../service/useBadgeSlide';
 
 interface BadgeCategoryContainerProps {
   badgeCategoryService?: BadgeCategoryService;
@@ -24,8 +25,36 @@ function BadgeCategoryContainer({
     setSelectedCategoryId,
   } = badgeCategoryService!;
 
+  useEffect(() => {
+    return () => {
+      BadgeCategoryService.instance.clearSelectedCategoryId();
+    };
+  }, []);
+
+  const {
+    isNext,
+    isPrev,
+    onClickNext,
+    onClickPrev,
+    sliceCategories,
+  } = useBadgeSlide(categories);
+
   const history = useHistory();
-  useRequestBadgeCategory();
+
+  const isAllCheck = selectedCategoryId === '' ? 'on' : '';
+
+  const handleAllCheck = () => {
+    setSelectedCategoryId('');
+  };
+
+  const onClickCategory = useCallback(
+    (categoryId: string) => {
+      setSelectedCategoryId(categoryId);
+
+      history.replace(badgePaths.currentPage(1));
+    },
+    [selectedCategoryId]
+  );
 
   const onClickGA = useCallback((categoryName: string) => {
     ReactGA.event({
@@ -35,28 +64,25 @@ function BadgeCategoryContainer({
     });
   }, []);
 
-  const onClickCategory = useCallback(
-    (categoryId: string) => {
-      if (selectedCategoryId === categoryId) {
-        setSelectedCategoryId('');
-      } else {
-        setSelectedCategoryId(categoryId);
-      }
-
-      history.replace(badgePaths.currentPage(1));
-    },
-    [selectedCategoryId]
-  );
-
   return (
     <div className="badge-slide-wrap">
       <div className="badge-slide-inner">
         <div className="badge-navi">
-          <Button className="btn-prev prev-off">이전</Button>
-          <Button className="btn-next next-on">다음</Button>
+          <Button
+            className={classNames('btn-prev', isPrev)}
+            onClick={onClickPrev}
+          >
+            이전
+          </Button>
+          <Button
+            className={classNames('btn-next', isNext)}
+            onClick={onClickNext}
+          >
+            다음
+          </Button>
         </div>
-        <div className={classNames('fn-parent')}>
-          <a className="fn-click">
+        <div className={classNames('fn-parent', isAllCheck)}>
+          <a className="fn-click" onClick={handleAllCheck}>
             <span className="icon">
               <span>All</span>
             </span>
@@ -67,9 +93,9 @@ function BadgeCategoryContainer({
         </div>
         <div className="badge-slide">
           <ul>
-            {categories &&
-              categories.length > 0 &&
-              categories.map((category: BadgeCategory, index: number) => {
+            {sliceCategories &&
+              sliceCategories.length > 0 &&
+              sliceCategories.map((category: BadgeCategory, index: number) => {
                 const isActive = selectedCategoryId === category.id ? 'on' : '';
 
                 return (

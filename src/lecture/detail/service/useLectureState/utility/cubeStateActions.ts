@@ -2,11 +2,13 @@ import { StudentCdo } from '../../../../model/StudentCdo';
 import {
   cancelStudents,
   clearFindMyCardRelatedStudentsCache,
-  findByCubeId,
+  findMyCardRelatedStudentsCache,
   markComplete,
   registerStudent,
 } from '../../../api/cardApi';
+import CubeType from '../../../model/CubeType';
 import { getLectureParams } from '../../../store/LectureParamsStore';
+import { findCubeStudent } from '../../../utility/findCubeStudent';
 import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
 import { requestLectureState } from './requestLectureState';
 
@@ -30,7 +32,32 @@ export async function submit(
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
   requestCardLectureStructure(cardId);
-  requestLectureState(cubeId, cubeType);
+  requestLectureState(cardId, cubeId, cubeType);
+}
+
+export async function submitFromCubeId(
+  cubeId: string,
+  cubeType: CubeType,
+  round: number,
+  approvalProcess?: boolean,
+  approvalEmail?: string
+) {
+  const params = getLectureParams();
+  if (params?.cardId === undefined) {
+    return;
+  }
+  const { cardId } = params;
+  const studentCdo: StudentCdo = {
+    cardId,
+    cubeId,
+    round,
+    //approvalProcess,
+    approverDenizenId: approvalEmail,
+  };
+  await registerStudent(studentCdo);
+  clearFindMyCardRelatedStudentsCache();
+  requestCardLectureStructure(cardId);
+  requestLectureState(cardId, cubeId, cubeType);
 }
 
 export async function cancel() {
@@ -39,14 +66,16 @@ export async function cancel() {
     return;
   }
   const { cardId, cubeId, cubeType } = params;
-  const student = await findByCubeId(cubeId);
+  const myCardRelatedStudents = await findMyCardRelatedStudentsCache(cardId);
+  const cubeStudents = myCardRelatedStudents?.cubeStudents;
+  const student = findCubeStudent(cubeId, cubeStudents);
   if (student === undefined) {
     return;
   }
   await cancelStudents(student.id);
   clearFindMyCardRelatedStudentsCache();
   requestCardLectureStructure(cardId);
-  requestLectureState(cubeId, cubeType);
+  requestLectureState(cardId, cubeId, cubeType);
 }
 
 export async function startLearning() {
@@ -63,7 +92,7 @@ export async function startLearning() {
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
   requestCardLectureStructure(cardId);
-  requestLectureState(cubeId, cubeType);
+  requestLectureState(cardId, cubeId, cubeType);
 }
 
 export async function completeLearning() {
@@ -72,12 +101,14 @@ export async function completeLearning() {
     return;
   }
   const { cardId, cubeId, cubeType } = params;
-  const student = await findByCubeId(cubeId);
+  const myCardRelatedStudents = await findMyCardRelatedStudentsCache(cardId);
+  const cubeStudents = myCardRelatedStudents?.cubeStudents;
+  const student = findCubeStudent(cubeId, cubeStudents);
   if (student === undefined) {
     return;
   }
   await markComplete(student.id);
   clearFindMyCardRelatedStudentsCache();
   requestCardLectureStructure(cardId);
-  requestLectureState(cubeId, cubeType);
+  requestLectureState(cardId, cubeId, cubeType);
 }

@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 import ReactGA from 'react-ga';
 import { CheckableChannel } from '../../../../shared/viewmodel/CheckableChannel';
 import FavoriteChannelChangeModal from '../FavoriteChannelChangeModal';
+import { Action, Area } from 'tracker/model';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -127,6 +128,11 @@ class RecommendChannelsPanelContainer extends Component<Props, States> {
                         onClick={() =>
                           this.onClickActionLog('관심 Channel 보기')
                         }
+                        data-area={Area.RECOMMEND_LIST}
+                        data-action={Action.VIEW}
+                        data-action-name="관심 채널 설정 PV"
+                        data-pathname="관심 채널 설정"
+                        data-page="#attention-channel"
                       >
                         <Icon
                           className="setting17"

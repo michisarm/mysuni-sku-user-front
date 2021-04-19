@@ -2,6 +2,7 @@ import { trackAction, trackView } from 'tracker/present/apiclient';
 import {
   getPathValue,
   getServiceType,
+  getCubeType,
   getPathKey,
   getPathName,
   setResultName,
@@ -94,6 +95,7 @@ export async function actionTrack({
         cardName: result.find(r => r.type === FieldType.Card)?.name,
         cubeId: result.find(r => r.type === FieldType.Cube)?.id,
         cubeName: result.find(r => r.type === FieldType.Cube)?.name,
+        cubeType: getCubeType(path)
         // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
         // clectureId: getPathKey(path, 'C-LECTURE'),
       };
@@ -192,6 +194,7 @@ export async function actionTrackView({
         cardName: result.find(r => r.type === FieldType.Card)?.name,
         cubeId: result.find(r => r.type === FieldType.Cube)?.id,
         cubeName: result.find(r => r.type === FieldType.Cube)?.name,
+        cubeType: getCubeType(path)
         // lectureCardId: getPathKey(path, 'LECTURE-CARD'),
         // clectureId: getPathKey(path, 'C-LECTURE'),
       };

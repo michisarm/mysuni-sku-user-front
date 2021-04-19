@@ -32,6 +32,7 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
+import { Area } from 'tracker/model';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -177,7 +178,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   return (
     <>
       {/* Header */}
-      <div className="course-info-header">
+      <div className="course-info-header" data-area={Area.CUBE_HEADER}>
         <Reportheader />
       </div>
 
@@ -236,6 +237,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                 <div className="attach-inner">
                   <FileBox
                     id={
+                      (params?.cubeId === lectureReport.reportId ||
+                        params?.cardId === lectureReport.reportId) && // report 잔상이 남아있지 않게
+                      lectureReport?.studentReport?.homeworkFileBoxId &&
                       lectureReport?.studentReport?.homeworkFileBoxId !==
                         null &&
                       lectureReport?.studentReport?.homeworkFileBoxId !== 'null'

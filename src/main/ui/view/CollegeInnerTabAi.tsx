@@ -223,21 +223,21 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-wf/Course/C-LECTURE-sd">AI Biz Case : 환경</Link>
+                      <Link to="/lecture/card/CARD-7dq/view">AI Biz Case : 환경</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-vm/Course/C-LECTURE-rj">AI Biz Case : 에너지/화학</Link>
+                      <Link to="/lecture/card/CARD-79m/view">AI Biz Case : 에너지/화학</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-tu/Course/C-LECTURE-q2">AI Biz Case : 바이오/헬스</Link>
+                      <Link to="/lecture/card/CARD-6xe/view">AI Biz Case : 바이오/헬스</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-vq/Course/C-LECTURE-rn">AI Biz Case : 마케팅</Link>
+                      <Link to="/lecture/card/CARD-7b3/view">AI Biz Case : 마케팅</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-tz/Course/C-LECTURE-q6">AI Biz Case : 생산/공정</Link>
+                      <Link to="/lecture/card/CARD-6y1/view">AI Biz Case : 생산/공정</Link>
                     </li>
                   </ul>
                 </div>
@@ -252,39 +252,39 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-11r/Course/C-LECTURE-x2">
+                      <Link to="/lecture/card/CARD-84c/view">
                         SK텔레콤의 AI업무 적용 사례 및 Lessons Learned
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-117/Course/C-LECTURE-wp">
+                      <Link to="/lecture/card/CARD-83g/view">
                         SK관계사의 Industrial AI도입 사례 및 Lessons Learned
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-7j9/lecture-card/LECTURE-CARD-5gf">
+                      <Link to="/lecture/card/CARD-aau/cube/CUBE-7j9/view/Video">
                         [AI Biz Insight] RPA를 활용한 SK텔레콤의 업무 효율화 사례
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-10n/lecture-card/LECTURE-CARD-1g">
+                      <Link to="/lecture/card/CARD-aaw/cube/CUBE-10n/view/Video">
                         [AI Biz Insight] 딥러닝을 활용한 Film Defect 자동유형분류
                       </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-118/Course/C-LECTURE-wq">
+                      <Link to="/lecture/card/CARD-83k/view">
                         SK 관계사의 AI도입/적용 Pain Points와 그룹차원의 협력방안
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-865/lecture-card/LECTURE-CARD-5yk">
+                      <Link to="/lecture/card/CARD-aax/cube/CUBE-865/view/Video">
                         [AI Biz Insight] 딥러닝을 활용한 Sales QA 자동화
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2ix/lecture-card/LECTURE-CARD-1tf">
+                      <Link to="/lecture/card/CARD-aav/cube/CUBE-2ix/view/Video">
                         [AI Biz Insight] 사무실 책상 위 AI, AI Assistant와 RDA
                       </Link>
                     </li>
@@ -301,7 +301,7 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-xb/Course/C-LECTURE-t3">The Road to AI – AI Biz 적용 프로세스</Link>
+                      <Link to="/lecture/card/CARD-aat/view">The Road to AI – AI Biz 적용 프로세스</Link>
                     </li>
                     <li>
                       <Link to="/search?query=AI%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D/%EA%B0%9C%EB%B0%9C%20%EA%B8%B0%EC%B4%88">AI서비스 기획 개발 (입문/기획/기초)</Link>
@@ -309,7 +309,7 @@ const CollegeInnerTabAi = () => {
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-gk/Course/C-LECTURE-do">Industrial AI솔루션 동향과 도입 방안</Link>
+                      <Link to="/lecture/card/CARD-57d/view">Industrial AI솔루션 동향과 도입 방안</Link>
                     </li>
                   </ul>
                 </div>
@@ -370,45 +370,45 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-c88/lecture-card/LECTURE-CARD-9qj">
+                      <Link to="/lecture/card/CARD-9pa/cube/CUBE-c88/view/Video">
                         [꼼꼼한 논문 읽기] Batch Normalization (속도, 성능 개선)
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-b6t/lecture-card/LECTURE-CARD-8tt">
+                      <Link to="/lecture/card/CARD-8lx/cube/CUBE-b6t/view/Video">
                         [꼼꼼한 논문 읽기] TextFooler (자연어처리 공격기법)
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-apm/lecture-card/LECTURE-CARD-8e9">
+                      <Link to="/lecture/card/CARD-85x/cube/CUBE-apm/view/Video">
                         [꼼꼼한 논문 읽기] ResNet (잔류학습, 이미지분류)
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-a7u/lecture-card/LECTURE-CARD-7xx">
+                      <Link to="/lecture/card/CARD-7nh/cube/CUBE-a7u/view/Video">
                         [꼼꼼한 논문 읽기] Shadow Attack (딥러닝 보안)
                       </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-9sd/lecture-card/LECTURE-CARD-7gt">
+                      <Link to="/lecture/card/CARD-79b/cube/CUBE-9sd/view/Video">
                         [AI최신기술동향] DDSP Differentiable Digital Signal
                         Processing
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-9rz/lecture-card/LECTURE-CARD-7g8">
+                      <Link to="/lecture/card/CARD-78z/cube/CUBE-9rz/view/Video">
                         [AI최신기술동향] Adversarially Trained End-to-end Korean
                         <br />
                         Singing Voice Synthesis System
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-8w5/lecture-card/LECTURE-CARD-6m7">[AI최신기술동향] Mogrifier LSTM</Link>
+                      <Link to="/lecture/card/CARD-6cg/cube/CUBE-8w5/view/Video">[AI최신기술동향] Mogrifier LSTM</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-8t0/lecture-card/LECTURE-CARD-6it">
+                      <Link to="/lecture/card/CARD-69b/cube/CUBE-8t0/view/Video">
                         [AI최신기술동향] Revisiting the Sibling Head in Object
                         Detector
                       </Link>
@@ -426,18 +426,18 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zl/Course/C-LECTURE-v7">[ai.x2020] 1.인간과 AI의 공존</Link>
+                      <Link to="/lecture/card/CARD-7tj/view">[ai.x2020] 1.인간과 AI의 공존</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zj/Course/C-LECTURE-v5">[ai.x2020] 3. AI 최신 연구와 적용 사례</Link>
+                      <Link to="/lecture/card/CARD-7th/view">[ai.x2020] 3. AI 최신 연구와 적용 사례</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zk/Course/C-LECTURE-v6">[ai.x2020] 2.뉴노멀과 AI Tech</Link>
+                      <Link to="/lecture/card/CARD-7ti/view">[ai.x2020] 2.뉴노멀과 AI Tech</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-zi/Course/C-LECTURE-v3">[ai.x2020] 4. Secret Talk (연사 인터뷰)</Link>
+                      <Link to="/lecture/card/CARD-7tg/view">[ai.x2020] 4. Secret Talk (연사 인터뷰)</Link>
                     </li>
                   </ul>
                 </div>
@@ -453,10 +453,10 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19p/Course/C-LECTURE-141">[SK ICT Tech Summit] Industrial AI</Link>
+                      <Link to="/lecture/card/CARD-9ez/view">[SK ICT Tech Summit] Industrial AI</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19s/Course/C-LECTURE-13z">[SK ICT Tech Summit] AI 응용 기술 &#38; 솔루션</Link>
+                      <Link to="/lecture/card/CARD-9f2/view">[SK ICT Tech Summit] AI 응용 기술 &#38; 솔루션</Link>
                     </li>
                   </ul>
                   <ul>
@@ -476,7 +476,7 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul className="float-left">
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-wi/Course/C-LECTURE-so">[Conference] AI의 현재와 미래</Link>
+                      <Link to="/lecture/card/CARD-9f0/view">[Conference] AI의 현재와 미래</Link>
                     </li>
                   </ul>
                 </div>
@@ -533,18 +533,18 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cn/Program/P-LECTURE-26">[딥러닝 기초] 1. 신경망, 경사하강, 역전파</Link>
+                      <Link to="/lecture/card/CARD-9yw/view">[딥러닝 기초] 1. 신경망, 경사하강, 역전파</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1ct/Program/P-LECTURE-24">[딥러닝 기초] 3. 주요 적용 기법</Link>
+                      <Link to="/lecture/card/CARD-9z2/view">[딥러닝 기초] 3. 주요 적용 기법</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cq/Program/P-LECTURE-25">[딥러닝 기초] 2. CNN, RNN</Link>
+                      <Link to="/lecture/card/CARD-9yz/view">[딥러닝 기초] 2. CNN, RNN</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cx/Program/P-LECTURE-27">[딥러닝] Vision, GAN, NLP, Reinforcement 등</Link>
+                      <Link to="/lecture/card/CARD-9z6/view">[딥러닝] Vision, GAN, NLP, Reinforcement 등</Link>
                     </li>
                   </ul>
                 </div>
@@ -559,12 +559,12 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5n/Course/C-LECTURE-3t">AI Expert with Meta Learner 입문 (온라인)</Link>
+                      <Link to="/lecture/card/CARD-16x/view">AI Expert with Meta Learner 입문 (온라인)</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19b/Course/C-LECTURE-13s">Meta Learner 입문</Link>
+                      <Link to="/lecture/card/CARD-9d0/view">Meta Learner 입문</Link>
                     </li>
                   </ul>
                 </div>
@@ -583,12 +583,12 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1cd/Program/P-LECTURE-22">Tensorflow 2.0 와 Pytorch 프레임워크 기초</Link>
+                      <Link to="/lecture/card/CARD-9xu/view">Tensorflow 2.0 와 Pytorch 프레임워크 기초</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1ci/Program/P-LECTURE-23">이미지 분석으로 배우는 Tensorflow와 Pytorch</Link>
+                      <Link to="/lecture/card/CARD-9yc/view">이미지 분석으로 배우는 Tensorflow와 Pytorch</Link>
                     </li>
                   </ul>
                 </div>
@@ -603,12 +603,12 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-1fz/Course/C-LECTURE-1a6">머신러닝 이해와 실습 上</Link>
+                      <Link to="/lecture/card/CARD-16w/view">머신러닝 이해와 실습 上</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5l/Course/C-LECTURE-3r">머신러닝 이해와 실습 下</Link>
+                      <Link to="/lecture/card/CARD-16v/view">머신러닝 이해와 실습 下</Link>
                     </li>
                   </ul>
                 </div>
@@ -623,15 +623,15 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-5r/Course/C-LECTURE-3x">AI 101</Link>
+                      <Link to="/lecture/card/CARD-178/view">AI 101</Link>
                     </li>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-66/Course/C-LECTURE-4h">인공지능/머신러닝 기초</Link>
+                      <Link to="/lecture/card/CARD-1bn/view">인공지능/머신러닝 기초</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-64/Course/C-LECTURE-4i">비전공자를 위한 머신러닝</Link>
+                      <Link to="/lecture/card/CARD-1bl/view">비전공자를 위한 머신러닝</Link>
                     </li>
                   </ul>
                 </div>
@@ -646,12 +646,12 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-yt/Course/C-LECTURE-ue">[AI수학 #1] 선형대수 기초</Link>
+                      <Link to="/lecture/card/CARD-7pc/view">[AI수학 #1] 선형대수 기초</Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-yu/Course/C-LECTURE-uf">[AI수학 #2] 확률통계 기초</Link>
+                      <Link to="/lecture/card/CARD-7pd/view">[AI수학 #2] 확률통계 기초</Link>
                     </li>
                   </ul>
                 </div>

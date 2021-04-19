@@ -316,10 +316,10 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               디자인씽킹 <br />
                               코칭 스킬
-                            </a>
+                            </Link>
                           </td>
                         </tbody>
                       </table>
@@ -334,26 +334,26 @@ const panes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-3/lecture-card/LECTURE-CARD-2z">
+                            <Link to="/lecture/card/CARD-2/cube/CUBE-3/view/ClassRoomLecture">
                               디자인씽킹 <br />
                               Project
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-tx/Course/C-LECTURE-q3">
+                            <Link to="/lecture/card/CARD-6xo/view">
                               디자인씽킹
                               <br />
                               Team W/S
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-1i0/Course/C-LECTURE-1b3">
+                            <Link to="/lecture/card/CARD-ag7/view">
                               디자인씽킹 <br />
                               Workshop
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yv/Course/C-LECTURE-ug">
+                            <Link to="/lecture/card/CARD-7pk/view">
                               디자인씽킹 Self <br />
                               실습 (SV사례)
                             </Link>
@@ -363,28 +363,28 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               서비스 디자인 <br />
                               Intensive
-                            </a>
+                            </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-131/Course/C-LECTURE-19g">
+                            <Link to="/lecture/card/CARD-8cr/view">
                               From Ideas to <br />
                               Action - IDEO
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-133/Course/C-LECTURE-19i">
+                            <Link to="/lecture/card/CARD-8ct/view">
                               Human-Centered <br />
                               Service Design - IDEO
                             </Link>
                           </td>
                           <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz - Self 실습
-                            </a>
+                            </Link>
                           </td>
                         </tbody>
                       </table>
@@ -394,19 +394,19 @@ const panes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-ys/Course/C-LECTURE-ud">
+                            <Link to="/lecture/card/CARD-7pb/view">
                               디자인씽킹 사례 <br />
                               (SV)보며 익히기
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-q/Course/C-LECTURE-8">
+                            <Link to="/lecture/card/CARD-13c/view">
                               디자인씽킹 - <br />
                               Linkedin
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-1fv/Course/C-LECTURE-19j">
+                            <Link to="/lecture/card/CARD-aac/view">
                               Hello Design <br />
                               Thinking - IDEO
                             </Link>
@@ -417,13 +417,13 @@ const panes = [
                         <tbody>
                           <td></td>
                           <td className="dashed">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               기술에서 고객 중심 <br />
                               Biz 고민하기
-                            </a>
+                            </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-124/Course/C-LECTURE-xa">
+                            <Link to="/lecture/card/CARD-86m/view">
                               디자인 사고 연습
                             </Link>
                           </td>
@@ -435,7 +435,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-89/Course/C-LECTURE-6e">
+                            <Link to="/lecture/card/CARD-1f0/view">
                               처음 만나는 <br />
                               디자인씽킹
                             </Link>
@@ -445,13 +445,13 @@ const panes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-q4/Course/C-LECTURE-m2">
+                            <Link to="/lecture/card/CARD-6f3/view">
                               창의적 <br />
                               IDEA 발상법
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-83/Course/C-LECTURE-6b">
+                            <Link to="/lecture/card/CARD-1ew/view">
                               Biz. Ideation
                               <br /> 첫걸음
                             </Link>
@@ -467,18 +467,18 @@ const panes = [
                       <div className="logical-list tab01">
                         <ul>
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.2)
-                            </a>
+                            </Link>
                           </li>
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               컨설턴트의 일하는 <br />
                               스킬 익히기 <br />
                               (Lv.1)
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -502,7 +502,7 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-132/Course/C-LECTURE-19h">
+                            <Link to="/lecture/card/CARD-8cs/view">
                               Insights for <br />
                               Innovation - IDEO
                             </Link>
@@ -516,13 +516,13 @@ const panes = [
                         <tbody>
                           <td></td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-im/Course/C-LECTURE-fi">
+                            <Link to="/lecture/card/CARD-5js/view">
                               고객 Research <br />
                               방법
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-ik/Course/C-LECTURE-fg">
+                            <Link to="/lecture/card/CARD-5j8/view">
                               고객 Needs <br />
                               Finding
                             </Link>
@@ -535,7 +535,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-8e/Course/C-LECTURE-6d">
+                            <Link to="/lecture/card/CARD-1f4/view">
                               고객 <br />
                               Need란?
                             </Link>
@@ -562,13 +562,13 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-a2j/lecture-card/LECTURE-CARD-7tb">
+                            <Link to="/lecture/card/CARD-7j3/cube/CUBE-a2j/view/ClassRoomLecture">
                               워킹백워드 <br />
                               Project
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yr/Course/C-LECTURE-uk">
+                            <Link to="/lecture/card/CARD-7pa/view">
                               워킹백워드 <br />
                               Workshop_online
                             </Link>
@@ -583,7 +583,7 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-je/Course/C-LECTURE-h3">
+                            <Link to="/lecture/card/CARD-5mq/view">
                               워킹백워드 <br />
                               Tools
                             </Link>
@@ -596,7 +596,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-7z/Course/C-LECTURE-66">
+                            <Link to="/lecture/card/CARD-1es/view">
                               처음 만나는 <br />
                               워킹백워드
                             </Link>
@@ -618,10 +618,10 @@ const panes = [
                             </Link>
                           </td>
                           <td className="dashed-or">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               애자일 코치 <br />
                               양성 과정
-                            </a>
+                            </Link>
                           </td>
                         </tbody>
                       </table>
@@ -630,18 +630,18 @@ const panes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-781/lecture-card/LECTURE-CARD-33u">
+                            <Link to="/lecture/card/CARD-4vu/cube/CUBE-781/view/ClassRoomLecture">
                               애자일 Project
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-14x/Course/C-LECTURE-zn">
+                            <Link to="/lecture/card/CARD-8j1/view">
                               애자일 리더십 <br />
                               Workshop
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/cube/CUBE-7id/lecture-card/LECTURE-CARD-5da">
+                            <Link to="/lecture/card/CARD-53b/cube/CUBE-7id/view/ClassRoomLecture">
                               애자일 Project
                               <br />
                               Management <br />
@@ -649,7 +649,7 @@ const panes = [
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-w9/Course/C-LECTURE-s6">
+                            <Link to="/lecture/card/CARD-7dd/view">
                               애자일 <br />
                               Workshop
                             </Link>
@@ -662,17 +662,17 @@ const panes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-x/Course/C-LECTURE-7">
+                            <Link to="/lecture/card/CARD-13d/view">
                               Agile Management <br />- Linkedin
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-hl/Course/C-LECTURE-ei">
+                            <Link to="/lecture/card/CARD-5c4/view">
                               애자일 방법론 <br />- Linkedin
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-u9/Course/C-LECTURE-qd">
+                            <Link to="/lecture/card/CARD-6zk/view">
                               SK 네트웍스 구매팀 <br />
                               애자일 사례
                             </Link>
@@ -685,22 +685,22 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="small">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-yj/Course/C-LECTURE-u7">
+                            <Link to="/lecture/card/CARD-7np/view">
                               애자일 방법론 기초
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-11u/Course/C-LECTURE-x3">
+                            <Link to="/lecture/card/CARD-84k/view">
                               애자일 에센셜
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-fc/Course/C-LECTURE-ch">
+                            <Link to="/lecture/card/CARD-52y/view">
                               처음 만나는 애자일
                             </Link>
                           </td>
                           <td className="small">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-82/Course/C-LECTURE-6a">
+                            <Link to="/lecture/card/CARD-1ev/view">
                               Why 애자일
                             </Link>
                           </td>
@@ -725,13 +725,13 @@ const panes = [
                           <td></td>
                           <td></td>
                           <td className="dashed-or">
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               오픈 이노베이션 <br />
                               Workshop
-                            </a>
+                            </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-oy/Course/C-LECTURE-kz">
+                            <Link to="/lecture/card/CARD-69v/view">
                               퓨처캐스팅 <br />
                               Workshop
                             </Link>
@@ -744,18 +744,18 @@ const panes = [
                       <table>
                         <tbody>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-80/Course/C-LECTURE-67">
+                            <Link to="/lecture/card/CARD-1et/view">
                               Futurecasting
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-88/Course/C-LECTURE-68">
+                            <Link to="/lecture/card/CARD-1ez/view">
                               All about <br />
                               오픈 이노베이션
                             </Link>
                           </td>
                           <td>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-y6/Course/C-LECTURE-u9">
+                            <Link to="/lecture/card/CARD-7lo/view">
                               Creative Collabo <br />
                               Skills - Linkedin
                             </Link>
@@ -768,7 +768,7 @@ const panes = [
                       <table>
                         <tbody>
                           <td className="two">
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-81/Course/C-LECTURE-69">
+                            <Link to="/lecture/card/CARD-1eu/view">
                               Open
                               <br />
                               Collaboration
@@ -786,31 +786,31 @@ const panes = [
                   <div className="inno-bottom con01">
                     <ul>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-8c/Course/C-LECTURE-6i">
+                        <Link to="/lecture/card/CARD-1f3/view">
                           Deep Change와
                           <br />
                           Design 이해
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-8b/Course/C-LECTURE-6h">
+                        <Link to="/lecture/card/CARD-1f2/view">
                           고객 이해의 중요성 <br />
                           Remind!
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-3/Course/C-LECTURE-3">
+                        <Link to="/lecture/card/CARD-139/view">
                           YouTube <br />
                           디자인 사고 이해
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-rp/Course/C-LECTURE-nj">
+                        <Link to="/lecture/card/CARD-6om/view">
                           혁신의 비법
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-7x/Course/C-LECTURE-62">
+                        <Link to="/lecture/card/CARD-1er/view">
                           Leading with
                           <br />
                           Innovation
@@ -829,13 +829,13 @@ const panes = [
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-k3/Course/C-LECTURE-gx">
+                        <Link to="/lecture/card/CARD-5p3/view">
                           도약을 위한 <br />
                           미래 디자인
                         </Link>
                       </li>
                       <li>
-                        <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00005/course-plan/COURSE-PLAN-f5/Course/C-LECTURE-ca">
+                        <Link to="/lecture/card/CARD-502/view">
                           효율적으로 <br />
                           일하는 Tip
                         </Link>
@@ -1009,7 +1009,7 @@ const panes = [
                               />
                             </Link>
                           </div>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1ae/Course/C-LECTURE-14n">
+                          <Link to="/lecture/card/CARD-9l6/view">
                             Leader as Coach
                             <br />
                             Advanced P/G
@@ -1022,11 +1022,11 @@ const panes = [
                               alt=""
                             />
                           </div>
-                          <a href="" onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             Organization
                             <br />
                             Transformation
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <div className="badge_box1 left">
@@ -1040,7 +1040,7 @@ const panes = [
                               />
                             </Link>
                           </div>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1h0/Course/C-LECTURE-1ac">
+                          <Link to="/lecture/card/CARD-acn/view">
                             Leader as Coach P/G
                           </Link>
                         </li>
@@ -1051,15 +1051,15 @@ const panes = [
                               alt=""
                             />
                           </div>
-                          <a href="" onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             Leadership
                             <br />
                             Transformation
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <Link
-                            to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-uu/Course/C-LECTURE-qy"
+                            to="/lecture/card/CARD-729/view"
                             className="leader_blue"
                           >
                             진정성이 이끄는 리더의 길
@@ -1067,10 +1067,10 @@ const panes = [
                         </li>
                         <li>
                           <Link
-                            to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-ox/Course/C-LECTURE-ky"
+                            to="/lecture/card/CARD-69m/view"
                             className="leader_blue"
                           >
-                            Deep Change & 리더십?- 목적 기반의
+                            Deep Change &#38; 리더십?- 목적 기반의
                             <br />
                             딥체인지 실천 가이드
                           </Link>
@@ -1082,7 +1082,7 @@ const panes = [
                       <ul>
                         <li>
                           <Link
-                            to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-lc/Course/C-LECTURE-hy"
+                            to="/lecture/card/CARD-5uk/view"
                             className="leader_blue"
                           >
                             딥체인지와 기업문화 혁신
@@ -1090,7 +1090,7 @@ const panes = [
                         </li>
                         <li>
                           <Link
-                            to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-u0/Course/C-LECTURE-q5"
+                            to="/lecture/card/CARD-6y9/view"
                             className="leader_blue"
                           >
                             영화로 만나는
@@ -1100,7 +1100,7 @@ const panes = [
                         </li>
                         <li>
                           <Link
-                            to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-9o/Course/C-LECTURE-7g"
+                            to="/lecture/card/CARD-1gt/view"
                             className="leader_blue"
                           >
                             Deep Change Leadership 이해
@@ -1122,21 +1122,21 @@ const panes = [
                           <br />
                           Acceleration P/G
                         </p>
-                        <a href="" onClick={emptyAlert}>
+                        <Link to="#" onClick={emptyAlert}>
                           Remote Performance Mgmt.
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           Impactful Conversation
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           Drives for Engagement
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           Leveraging Conflict
-                        </a>
-                        <a href="" onClick={emptyAlert}>
+                        </Link>
+                        <Link to="#" onClick={emptyAlert}>
                           EQ Leadership
-                        </a>
+                        </Link>
                       </li>
                       <li className="leader_boxwrap col-blue margin_sm">
                         <div className="badge_box1 left">
@@ -1152,37 +1152,37 @@ const panes = [
                         </div>
                         <p className="non-link">Leadership Essentials</p>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-pe/Course/C-LECTURE-la"
+                          to="/lecture/card/CARD-6ch/view"
                           className="bg_blue"
                         >
                           전략적 사고
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-m8/Course/C-LECTURE-ii"
+                          to="/lecture/card/CARD-5xc/view"
                           className="bg_blue"
                         >
                           Remote Leadership
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-us/Course/C-LECTURE-qw"
+                          to="/lecture/card/CARD-71i/view"
                           className="bg_blue"
                         >
                           Coaching Leadership
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-ur/Course/C-LECTURE-qv"
+                          to="/lecture/card/CARD-71h/view"
                           className="bg_blue"
                         >
                           리더의 스토리텔링
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-wr/Course/C-LECTURE-sl"
+                          to="/lecture/card/CARD-7fj/view"
                           className="bg_blue"
                         >
                           스마트한 리더의 위임
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-16w/Course/C-LECTURE-11h"
+                          to="/lecture/card/CARD-8yh/view"
                           className="bg_blue"
                         >
                           Motivation Designer
@@ -1190,7 +1190,7 @@ const panes = [
                       </li>
                       <li>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-1gy/Course/C-LECTURE-1a1"
+                          to="/lecture/card/CARD-ack/view"
                           className="leader_blue"
                         >
                           갈등의 재발견
@@ -1198,7 +1198,7 @@ const panes = [
                       </li>
                       <li>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-9n/Course/C-LECTURE-7h"
+                          to="/lecture/card/CARD-1gq/view"
                           className="leader_blue"
                         >
                           Leadership Self-Assessment
@@ -1213,31 +1213,31 @@ const panes = [
                       <li className="leader_boxwrap col-blue">
                         <p className="non-link">Leadership Pain Points</p>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8t/Course/C-LECTURE-6x"
+                          to="/lecture/card/CARD-1fg/view"
                           className="bg_blue"
                         >
                           자기성장
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8w/Course/C-LECTURE-6z"
+                          to="/lecture/card/CARD-1fj/view"
                           className="bg_blue"
                         >
                           Performance
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8v/Course/C-LECTURE-7i"
+                          to="/lecture/card/CARD-1fi/view"
                           className="bg_blue"
                         >
                           시너지/협업
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8u/Course/C-LECTURE-6y"
+                          to="/lecture/card/CARD-1fh/view"
                           className="bg_blue"
                         >
                           건강한 조직 운영
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-8x/Course/C-LECTURE-70"
+                          to="/lecture/card/CARD-1fk/view"
                           className="bg_blue"
                         >
                           구성원 육성
@@ -1245,7 +1245,7 @@ const panes = [
                       </li>
                       <li>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-o8/Course/C-LECTURE-ka"
+                          to="/lecture/card/CARD-65j/view"
                           className="leader_blue"
                         >
                           리더의 세계 Ⅰ, Ⅱ
@@ -1253,7 +1253,7 @@ const panes = [
                       </li>
                       <li>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-ii/Course/C-LECTURE-ff"
+                          to="/lecture/card/CARD-5id/view"
                           className="leader_blue"
                         >
                           1on1 미팅
@@ -1268,13 +1268,13 @@ const panes = [
                       <li className="leader_boxwrap col-blue">
                         <p className="non-link">리더십, 인문학에 길을 묻다</p>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-mc/Course/C-LECTURE-ik"
+                          to="/lecture/card/CARD-5xh/view"
                           className="bg_blue"
                         >
-                          카르마 & 다르마
+                          카르마 &#38; 다르마
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-162/Course/C-LECTURE-10x"
+                          to="/lecture/card/CARD-8r6/view"
                           className="bg_blue"
                         >
                           고난의 시대에 미래를 보는 리더십
@@ -1285,19 +1285,19 @@ const panes = [
                           심리학으로 풀어보는 리더십 Talk
                         </p>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-gy/Course/C-LECTURE-dx"
+                          to="/lecture/card/CARD-59v/view"
                           className="bg_blue"
                         >
                           I. 변화의 시작
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-kb/Course/C-LECTURE-h6"
+                          to="/lecture/card/CARD-5pr/view"
                           className="bg_blue"
                         >
                           II. 이런 고민 있나요?
                         </Link>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-of/Course/C-LECTURE-kh"
+                          to="/lecture/card/CARD-671/view"
                           className="bg_blue"
                         >
                           III. 리더라서 고민이다
@@ -1305,7 +1305,7 @@ const panes = [
                       </li>
                       <li>
                         <Link
-                          to="/lecture/cineroom/ne1-m2-c2/college/CLG00007/course-plan/COURSE-PLAN-y1/Course/C-LECTURE-ts"
+                          to="/lecture/card/CARD-7kq/view"
                           className="leader_blue"
                         >
                           세대 이해 – 86, X, MZ
@@ -1468,9 +1468,9 @@ const panes = [
                                 src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
                                 alt=""
                               />
-                              <a href="#" onClick={emptyAlert}>
+                              <Link to="#" onClick={emptyAlert}>
                                 Smart SCM 전문가
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                           <ul>
@@ -1486,10 +1486,10 @@ const panes = [
                                 src={`${PUBLIC_URL}/images/all/badge-open-blue.png`}
                                 alt=""
                               />
-                              <a href="#" onClick={emptyAlert}>
+                              <Link to="#" onClick={emptyAlert}>
                                 AI manufacturing <br />
                                 Project (PBL)
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                         </div>
@@ -2410,19 +2410,19 @@ const panes = [
                       <p>( 사전 Becoming BM Designer 과정 이수 필수 )</p>
                       <ul className="list_flex">
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fr/Course/C-LECTURE-19c">
+                          <Link to="/lecture/card/CARD-a9s/view">
                             BM Design 실습 <br />
                             (4주)
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1go/Course/C-LECTURE-19u">
+                          <Link to="/lecture/card/CARD-abv/view">
                             디커플링 Workshop <br />
                             (2일)
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1gn/Course/C-LECTURE-19t">
+                          <Link to="/lecture/card/CARD-abt/view">
                             환경∙에너지 <br />
                             BM Design 실습 <br />
                             (4주)
@@ -2439,25 +2439,25 @@ const panes = [
                       <div className="bm-flex">
                         <ul className="list_bm bg_white">
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crs/lecture-card/LECTURE-CARD-acl">
+                            <Link to="/lecture/card/CARD-abm/cube/CUBE-crs/view/ClassRoomLecture">
                               CEO 1:1 과정
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-cru/lecture-card/LECTURE-CARD-acj">
+                            <Link to="/lecture/card/CARD-abo/cube/CUBE-cru/view/ClassRoomLecture">
                               6R Storytelling Workshop
                             </Link>
                           </li>
                         </ul>
                         <ul className="list_bm bg_white">
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crt/lecture-card/LECTURE-CARD-ack">
+                            <Link to="/lecture/card/CARD-abn/cube/CUBE-crt/view/ClassRoomLecture">
                               Leader Storytelling <br />
                               Workshop
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crv/lecture-card/LECTURE-CARD-aci">
+                            <Link to="/lecture/card/CARD-abp/cube/CUBE-crv/view/ClassRoomLecture">
                               FS 전문가 심포지엄
                             </Link>
                           </li>
@@ -2475,18 +2475,18 @@ const panes = [
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-12v/Course/C-LECTURE-xw">
+                          <Link to="/lecture/card/CARD-8c9/view">
                             Ⅰ. As-Is BM <br />
                             Sustainability
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fh/Course/C-LECTURE-191">
+                          <Link to="/lecture/card/CARD-a8f/view">
                             Ⅱ. BM 환경 분석
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-12x/Course/C-LECTURE-xy">
+                          <Link to="/lecture/card/CARD-8cb/view">
                             Ⅲ. 신규 BM <br />
                             발굴 전략
                           </Link>
@@ -2505,56 +2505,56 @@ const panes = [
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1da/Course/C-LECTURE-17d">
+                            <Link to="/lecture/card/CARD-a1p/view">
                               Ⅰ. M&#38;A Overview
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dp/Course/C-LECTURE-17f">
+                            <Link to="/lecture/card/CARD-a1w/view">
                               Ⅲ. 대상 선정 &#38; <br />
                               Deal Structuring
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dr/Course/C-LECTURE-17h">
+                            <Link to="/lecture/card/CARD-a1y/view">
                               Ⅴ. Valuation
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dt/Course/C-LECTURE-17j">
+                            <Link to="/lecture/card/CARD-a20/view">
                               Ⅶ. Legal
                             </Link>
                           </li>
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               [심화I] Deal Structuring <br />
                               &#38; Financing
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dv/Course/C-LECTURE-17e">
+                            <Link to="/lecture/card/CARD-a22/view">
                               Ⅱ. M&#38;A Strategy
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dq/Course/C-LECTURE-17g">
+                            <Link to="/lecture/card/CARD-a1x/view">
                               Ⅳ. Due Diligence
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1ds/Course/C-LECTURE-17i">
+                            <Link to="/lecture/card/CARD-a1z/view">
                               Ⅵ. Negotiation
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1du/Course/C-LECTURE-17k">
+                            <Link to="/lecture/card/CARD-a21/view">
                               Ⅷ. PMI &#38; Value-up
                             </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1dw/Course/C-LECTURE-17l">
+                            <Link to="/lecture/card/CARD-a23/view">
                               [심화Ⅱ] Legal
                             </Link>
                           </li>
@@ -2570,13 +2570,13 @@ const panes = [
                       <div className="bm-flex">
                         <ul className="list_bm">
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               Financial Storytelling <br />
                               글로벌 사례 연구
-                            </a>
+                            </Link>
                           </li>
                           <li>
-                            <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1gs/Course/C-LECTURE-19y">
+                            <Link to="/lecture/card/CARD-ac8/view">
                               [Focus] Financial <br />
                               Society Partnership
                             </Link>
@@ -2584,9 +2584,9 @@ const panes = [
                         </ul>
                         <ul className="list_bm">
                           <li>
-                            <a href="" onClick={emptyAlert}>
+                            <Link to="#" onClick={emptyAlert}>
                               6R 관점 Stakeholder 이해
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -2602,19 +2602,19 @@ const panes = [
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fg/Course/C-LECTURE-190">
+                          <Link to="/lecture/card/CARD-a8e/view">
                             Ⅰ.Sustainable BM <br />
                             혁신 중요성
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fi/Course/C-LECTURE-192">
+                          <Link to="/lecture/card/CARD-a8g/view">
                             Ⅱ. BM Framework <br />
                             &#38; SK BM 혁신 노력
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-1fj/Course/C-LECTURE-193">
+                          <Link to="/lecture/card/CARD-a8h/view">
                             Ⅲ. BM / Deep Change <br />
                             Design과 실행
                           </Link>
@@ -2629,17 +2629,17 @@ const panes = [
                       </h3>
                       <ul className="list_flex md">
                         <li>
-                          <a href="" onClick={emptyAlert}>
+                          <Link to="#" onClick={emptyAlert}>
                             Financial Story 이해
-                          </a>
+                          </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/course-plan/COURSE-PLAN-u7/Course/C-LECTURE-qb">
+                          <Link to="/lecture/card/CARD-6z1/view">
                             Financial Acumen
                           </Link>
                         </li>
                         <li>
-                          <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00020/cube/CUBE-crx/lecture-card/LECTURE-CARD-acg">
+                          <Link to="/lecture/card/CARD-abr/cube/CUBE-crx/view/Video">
                             투자자 관점에서 본 <br />
                             Financial Story
                           </Link>
@@ -2837,109 +2837,109 @@ export default withRouter(CollegeView);
 
 const semiconductorLinks: any = {
   '[입문] 반쓸신잡 - 반도체 산업의 과거, 현재, 그리고 미래':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fl/Course/C-LECTURE-co',
+    '/lecture/card/CARD-535/view',
   '반도체 클라쓰 - Keyword로 알아보는 반도체의 품격':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fj/Course/C-LECTURE-cm',
+    '/lecture/card/CARD-534/view',
   'News로 본 반도체 - 다가온 미래, Big Data 시대의 경쟁력 강화':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fi/Course/C-LECTURE-cl',
+    '/lecture/card/CARD-533/view',
   'News로 본 반도체 - Data Centric World':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ra/Course/C-LECTURE-n5',
+    '/lecture/card/CARD-6mb/view',
   'News로 본 반도체 - 반도체 제품 분류별 시장 분석과 AI 반도체':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-rc/Course/C-LECTURE-n6',
+    '/lecture/card/CARD-6mc/view',
   'News로 본 반도체 - 반도체 Value Chain In-depth 분석':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-uw/Course/C-LECTURE-r0',
+    '/lecture/card/CARD-72y/view',
   'News로 본 반도체 - 반도체의 미래와 우리의 준비':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-v0/Course/C-LECTURE-r2',
+    '/lecture/card/CARD-73c/view',
   'News 심층분석 - 미국의 대중 제재와 반도체 시장의 변화':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-127/Course/C-LECTURE-xg',
+    '/lecture/card/CARD-86v/view',
   '반도체 Industry 이해 Part1. 반도체 산업의 기본 개념과 시장 경쟁구도':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-lk/Course/C-LECTURE-i6',
+    '/lecture/card/CARD-5vj/view',
   '반도체 Industry 이해 Part2. 무모한 도전에서 챔피언이 된 삼성전자':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-nu/Course/C-LECTURE-jw',
+    '/lecture/card/CARD-645/view',
   '반도체 Industry 이해 Part3. CPU의 강자 인텔의 과거 현재 미래':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ot/Course/C-LECTURE-ku',
+    '/lecture/card/CARD-691/view',
   '반도체 Industry 이해 Part4. 펩리스와 파운드리- 거대한 IDM 사이의 기회와 전략':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-pg/Course/C-LECTURE-lb',
+    '/lecture/card/CARD-6co/view',
   '반도체 Industry 이해 Part5. 무한 경쟁시대의 미래 전망 - 반도체 기업들의 도전과 과제':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-qs/Course/C-LECTURE-mo',
+    '/lecture/card/CARD-6jt/view',
   '한방에 이해하는 꿀잼 반도체':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fh/Course/C-LECTURE-ck',
+    '/lecture/card/CARD-532/view',
   '슬기로운 IT생활 - 전자기기의 구조와 동작원리':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-mm/Course/C-LECTURE-is',
+    '/lecture/card/CARD-5xw/view',
   '반도체 What - 반도체 Tech 지식백과':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-fg/Course/C-LECTURE-cj',
+    '/lecture/card/CARD-531/view',
   '반도체 제대로 이해하기 - 기본편':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ff/Course/C-LECTURE-ci',
+    '/lecture/card/CARD-530/view',
   '[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00017/course-plan/COURSE-PLAN-k8/Course/C-LECTURE-h2',
+    '/lecture/card/CARD-5pa/view',
   '[Computing System 이해] 컴퓨터 동작의 이해':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vr/Course/C-LECTURE-ro',
+    '/lecture/card/CARD-7bf/view',
   '[AI HW 개론] AI Hardware':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-14n/Course/C-LECTURE-ze',
+    '/lecture/card/CARD-8h6/view',
   '[AI HW 개론] AI Model':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ze/Course/C-LECTURE-uu',
+    '/lecture/card/CARD-7sd/view',
   '[AI HW 개론] AI Platform':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-yk/Course/C-LECTURE-u8',
+    '/lecture/card/CARD-7ns/view',
   '[HW 개발] Fundamentals':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-x3/Course/C-LECTURE-sw',
+    '/lecture/card/CARD-7gh/view',
   '[HW 개발] CPU Micro-Architecture':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-zu/Course/C-LECTURE-vg',
+    '/lecture/card/CARD-7vh/view',
   '[HW 개발] Analog Design':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-11q/Course/C-LECTURE-x1',
+    '/lecture/card/CARD-847/view',
   '[HW 개발] Digital Design':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-yx/Course/C-LECTURE-ui',
+    '/lecture/card/CARD-7rf/view',
   '[HW 개발] SoC 설계 Flow':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-wn/Course/C-LECTURE-sh',
+    '/lecture/card/CARD-7ep/view',
   '[HW 개발] SoC 설계 사례 - Mobile Computing':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-wl/Course/C-LECTURE-sf',
+    '/lecture/card/CARD-7ec/view',
   '[AI HW 이해] DNN HW 가속기 아키텍처':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-y2/Course/C-LECTURE-tt',
+    '/lecture/card/CARD-7kt/view',
   '[AI HW 이해] DNN 알고리즘 및 워크로드 특성':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-xl/Course/C-LECTURE-tb',
+    '/lecture/card/CARD-7j4/view',
   '첨단 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-18l/Course/C-LECTURE-131',
+    '/lecture/card/CARD-97q/view',
   'Lithography 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-154/Course/C-LECTURE-zs',
+    '/lecture/card/CARD-8jl/view',
   'Etching 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-12r/Course/C-LECTURE-xs',
+    '/lecture/card/CARD-8bf/view',
   'Metallization 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-11w/Course/C-LECTURE-x5',
+    '/lecture/card/CARD-84s/view',
   'Doping 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-wg/Course/C-LECTURE-sb',
+    '/lecture/card/CARD-7e2/view',
   'Thin Film 공정 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vl/Course/C-LECTURE-ri',
+    '/lecture/card/CARD-78k/view',
   'Image Sensor 소자 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-18k/Course/C-LECTURE-130',
+    '/lecture/card/CARD-97n/view',
   '화합물 반도체 소자 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-yb/Course/C-LECTURE-u1',
+    '/lecture/card/CARD-7mg/view',
   'Solar Cell 소자 및 소재':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ww/Course/C-LECTURE-sq',
+    '/lecture/card/CARD-7fr/view',
   'Smart Factory구현을 위한 제조 시스템 이해와 의사결정':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ux/Course/C-LECTURE-r1',
+    '/lecture/card/CARD-733/view',
   'Smart Factory의 구성요소와 사례':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vp/Course/C-LECTURE-rm',
+    '/lecture/card/CARD-7b2/view',
   'Smart Factory 시스템의 연결과 지능화':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-w2/Course/C-LECTURE-ry',
+    '/lecture/card/CARD-7ck/view',
   '첨단 기술과 제조의 만남':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-xw/Course/C-LECTURE-tn',
+    '/lecture/card/CARD-7k7/view',
   'AI 알고리즘 기반 반도체 Factory':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-11v/Course/C-LECTURE-x4',
+    '/lecture/card/CARD-84n/view',
   '반도체 FAB 자동화 이해':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/cube/CUBE-afs/lecture-card/LECTURE-CARD-860',
+    '/lecture/card/CARD-7vi/cube/CUBE-afs/view/ClassRoomLecture',
   'Neuromorphic Computing : Challenges and Opportunities':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-ve/Course/C-LECTURE-rb',
+    '/lecture/card/CARD-77f/view',
   'AI반도체 - Next Tech Trend':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vn/Course/C-LECTURE-rk',
+    '/lecture/card/CARD-7a1/view',
   '자동차 반도체, 기회와 도전':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-vs/Course/C-LECTURE-rp',
+    '/lecture/card/CARD-7bv/view',
   '양자 컴퓨팅과 양자 암호 기술의 현재와 미래':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-xi/Course/C-LECTURE-t7',
+    '/lecture/card/CARD-7ip/view',
   'Next Generation Semiconductor Packaging Technology':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-12u/Course/C-LECTURE-xu',
+    '/lecture/card/CARD-8c8/view',
   '반도체 FAB 생산 운영 전문가':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-1ap/Course/C-LECTURE-14u',
+    '/lecture/card/CARD-9nm/view',
   '반도체 FAB 최적화 전문가':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00019/course-plan/COURSE-PLAN-1aq/Course/C-LECTURE-14v',
+    '/lecture/card/CARD-9np/view',
   'Covid-19이 반도체 Supply Chain에 미치는 영향':
-    '/lecture/cineroom/ne1-m2-c2/college/CLG00017/course-plan/COURSE-PLAN-on/Course/C-LECTURE-kp',
+    '/lecture/card/CARD-68a/view',
 };

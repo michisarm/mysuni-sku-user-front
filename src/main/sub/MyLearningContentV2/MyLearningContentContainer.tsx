@@ -13,6 +13,7 @@ import EnrollingLearning from './MainComponents/EnrollingLearning';
 
 import { CardBundle } from '../../../lecture/shared/model/CardBundle';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
+import LRSLearning from './MainComponents/LRSLearning';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -57,6 +58,7 @@ const MyLearningContentContainer: React.FC<Props> = Props => {
       {cardBundles?.map((cardBundle, i) => (
         <LeraningContainer key={i} cardBundle={cardBundle} />
       ))}
+      <LRSLearning profileMemberName={member.name} />
 
       <EnrollingLearning />
     </>
