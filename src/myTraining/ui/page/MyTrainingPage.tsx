@@ -70,6 +70,7 @@ function MyTrainingPage({
     aplCount: { all: personalCompletedCount },
   } = aplService!;
 
+  useRequestCollege();
   useRequestMenuAuth();
   useRequestLearningStorage();
   useRequestAllMyTrainingCount();

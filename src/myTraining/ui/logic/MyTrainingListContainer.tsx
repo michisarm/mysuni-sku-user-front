@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, Offset } from '@nara.platform/accent';
+import { mobxHelper, Offset, reactAlert } from '@nara.platform/accent';
 import { NoSuchContentPanel, Loadingpanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
@@ -27,6 +27,8 @@ import MyLearningListHeaderView from '../view/table/MyLearningListHeaderView';
 import MyLearningListTemplate from '../view/table/MyLearningListTemplate';
 import { useRequestFilterCountView } from '../../service/useRequestFilterCountView';
 import { useScrollMove } from '../../useScrollMove';
+import MyLearningDeleteFinishModal from '../view/MyLearningDeleteFinishModal';
+import MyLearningNoCheckModal from '../view/MyLearningNoCheckModal';
 
 interface MyTrainingListContainerProps {
   skProfileService?: SkProfileService;
@@ -47,6 +49,8 @@ function MyTrainingListContainer({
 
   const { profileMemberName } = skProfileService!;
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [deleteFinishModal, setDeleteFinishModal] = useState<boolean>(false);
+  const [noCheckedModal, setNoCheckedModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -130,6 +134,13 @@ function MyTrainingListContainer({
   };
 
   const onClickDelete = useCallback(() => {
+    const { selectedServiceIds } = myTrainingService!;
+
+    if(selectedServiceIds.length === 0) {
+      setNoCheckedModal(true);
+      return;
+    }
+
     setDeleteModal(true);
   }, []);
 
@@ -151,6 +162,16 @@ function MyTrainingListContainer({
     }
 
     setDeleteModal(false);
+    setDeleteFinishModal(true);
+  }, []);
+
+
+  const onCloseNoCheckedModal = useCallback(() => {
+    setNoCheckedModal(false);
+  }, []);
+
+  const onCloseFinishModal = useCallback(() => {
+    setDeleteFinishModal(false);
   }, []);
 
   const onClickSort = useCallback(
@@ -225,13 +246,6 @@ function MyTrainingListContainer({
                 />
               </MyLearningListTemplate>
               {showSeeMore && <SeeMoreButton onClick={onClickSeeMore} />}
-              {deleteModal && (
-                <MyLearningDeleteModal
-                  open={deleteModal}
-                  onClose={onCloseDeleteModal}
-                  onConfirm={onConfirmModal}
-                />
-              )}
             </>
           )) || (
             <Segment
@@ -276,6 +290,19 @@ function MyTrainingListContainer({
           )}
         </Segment>
       )}
+      <MyLearningDeleteModal
+        open={deleteModal}
+        onClose={onCloseDeleteModal}
+        onConfirm={onConfirmModal}
+      />
+      <MyLearningDeleteFinishModal 
+        open={deleteFinishModal}
+        onConfirm={onCloseFinishModal}
+      />
+      <MyLearningNoCheckModal 
+        open={noCheckedModal}
+        onConfirm={onCloseNoCheckedModal}
+      />
     </>
   );
 }
