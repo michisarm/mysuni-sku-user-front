@@ -12,6 +12,7 @@ import {
   setIsLoadingState,
   setLectureStructure,
 } from '../../../store/LectureStructureStore';
+import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
@@ -559,9 +560,7 @@ export async function requestCardLectureStructure(cardId: string) {
   const cubeItems: LectureStructureCubeItem[] = [];
   if (cubes !== undefined) {
     cubes.forEach(cube => {
-      const cubeStudent = (cubeStudents != null ? cubeStudents : []).find(
-        ({ lectureId }) => lectureId === cube.id
-      );
+      const cubeStudent = findCubeStudent(cube.id, cubeStudents);
       const order = cardContents.learningContents.findIndex(
         ({ contentId }) => contentId === cube.id
       );
