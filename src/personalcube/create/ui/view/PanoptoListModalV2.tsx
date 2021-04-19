@@ -13,24 +13,24 @@ import {
 import { SharedService } from 'shared/stores';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { InternalMediaConnection } from '../../../../lecture/model/InternalMediaConnection';
+import { PanoptoService } from '../../../../shared/present/logic/PanoptoService';
 
 function PanoptoListModal() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    changeCubeSdoProps,
-    cubeSdo,
-    panoptoCdo,
-    panopto,
-    changePanoptoCdoProps,
-    setPanoptoProps,
-    findPanopToList,
-  } = CreateCubeService.instance;
+  const { changeCubeSdoProps, cubeSdo } = CreateCubeService.instance;
 
   const { setPage, setPageMap, setCount, pageMap } = SharedService.instance;
-
+  const {
+    panopto,
+    panoptoCdo,
+    panoptoList,
+    findPanopToList,
+    setPanoptoProps,
+    changePanoptoCdoProps,
+  } = PanoptoService.instance;
   const InternalMedia =
-    cubeSdo.materialSdo?.mediaSdo.meidaContents?.internalMedias;
+    cubeSdo.materialSdo?.mediaSdo.mediaContents?.internalMedias;
 
   useEffect(() => {
     findAllPanoptos();
@@ -61,7 +61,7 @@ function PanoptoListModal() {
   };
 
   const handleOK = () => {
-    changeCubeSdoProps('materialSdo.mediaSdo.meidaContents.internalMedias', [
+    changeCubeSdoProps('materialSdo.mediaSdo.mediaContents.internalMedias', [
       panopto,
     ]);
     setIsOpen(false);
@@ -115,32 +115,25 @@ function PanoptoListModal() {
               </Table.Header>
 
               <Table.Body>
-                {(InternalMedia &&
-                  InternalMedia.map((panopto, index) => (
+                {panoptoList &&
+                  panoptoList.map((item, index) => (
                     <Table.Row key={index}>
                       <Table.Cell textAlign="center">
                         <Form.Field
                           control={Radio}
-                          onChange={() => selectPanopto(panopto)}
+                          onChange={() => selectPanopto(item)}
                           checked={
                             panopto &&
-                            panopto.panoptoSessionId ===
-                              panopto.panoptoSessionId
+                            panopto.panoptoSessionId === item.panoptoSessionId
                           }
                         />
                       </Table.Cell>
-                      <Table.Cell>{panopto.name}</Table.Cell>
-                      {/* <Table.Cell>{panopto.duration}</Table.Cell>
-                    <Table.Cell>{panopto.folderName}</Table.Cell>
-                    <Table.Cell>
-                      <Button onClick={() => this.goToVieo(panopto.viewUrl)}>Play</Button>
-                    </Table.Cell>*/}
+                      <Table.Cell>{item.name}</Table.Cell>
                     </Table.Row>
-                  ))) ||
-                  null}
+                  ))}
               </Table.Body>
             </Table>
-            {InternalMedia?.length === 0 && (
+            {panoptoList.length !== 0 && (
               <div className="center">
                 <Pagination
                   activePage={
@@ -158,13 +151,6 @@ function PanoptoListModal() {
               </div>
             )}
           </div>
-          {/* <div className="right-filter">
-          <select className="ui small-border dropdown">
-            <option value="All">내 폴더</option>
-            <option value="a">내 컬리지 폴더</option>
-            <option value="b">내 회사 컬리지 폴더</option>
-          </select>
-        </div>*/}
         </Modal.Content>
         <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={handleClose} type="button">

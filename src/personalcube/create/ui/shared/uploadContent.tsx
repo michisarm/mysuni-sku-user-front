@@ -206,7 +206,7 @@ function setData(ret: any) {
   console.log(ret);
   const { cubeSdo, changeCubeSdoProps } = CreateCubeService.instance;
   const internalMedias =
-    cubeSdo.materialSdo?.mediaSdo.meidaContents?.internalMedias;
+    cubeSdo.materialSdo?.mediaSdo.mediaContents?.internalMedias;
 
   if (ret.boolResult && ret.obj && ret.obj.list) {
     const internalMediaList: InternalMediaConnection[] = [];
@@ -235,7 +235,7 @@ function setData(ret: any) {
             newInternalMedias = [...internalMedias];
 
             changeCubeSdoProps(
-              'materialSdo.mediaSdo.meidaContents.internalMedias',
+              'materialSdo.mediaSdo.mediaContents.internalMedias',
               internalMediaList.concat(newInternalMedias)
             );
           }

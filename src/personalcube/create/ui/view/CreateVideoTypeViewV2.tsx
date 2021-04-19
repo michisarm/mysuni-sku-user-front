@@ -1,48 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { observer } from 'mobx-react';
-import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { Form, Icon, Radio, CheckboxProps } from 'semantic-ui-react';
 import { MediaType } from '../../../media/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 import PanoptoListModal from './PanoptoListModalV2';
 import { contentUploader } from '../shared/uploadContent';
 
-function CreateVideoTypeView() {
-  const { cubeSdo, changeCubeSdoProps } = CreateCubeService.instance;
+interface Props {
+  mediaType: MediaType;
+  linkMediaUrl?: string;
+  internalMedias?: InternalMediaConnectionModel[];
+  onChecked: (_: React.FormEvent, data: CheckboxProps) => void;
+  onChangeLinkMedia: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  const media = cubeSdo.materialSdo?.mediaSdo;
-
-  const [checkedName, setCheckedName] = useState('InternalMedia');
-  const [link, setLink] = useState(media?.meidaContents?.linkMediaUrl || '');
-
-  const handleChecked = (_: React.FormEvent, data: CheckboxProps) => {
-    const value = data.value || '';
-    setCheckedName(value as string);
-  };
-
-  const onChangeLinkMedia = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    setLink(e.target.value);
-    // changeCubeSdoProps(
-    //   'materialSdo.mediaSdo.meidaContents.linkMediaUrl',
-    //   e.target.value
-    // );
-  };
-
-  useEffect(() => {
-    changeCubeSdoProps('materialSdo.mediaSdo.mediaType', checkedName);
-  }, [checkedName]);
-
-  useEffect(() => {
-    if (media?.meidaContents) {
-      changeCubeSdoProps(
-        'materialSdo.mediaSdo.meidaContents.linkMediaUrl',
-        link
-      );
-    }
-  }, [link]);
-
+function CreateVideoTypeView({
+  mediaType,
+  linkMediaUrl,
+  internalMedias,
+  onChecked,
+  onChangeLinkMedia,
+}: Props) {
   useEffect(() => {
     contentUploader();
   });
@@ -58,30 +35,30 @@ function CreateVideoTypeView() {
           className="base"
           label="영상파일 업로드"
           value={MediaType.InternalMedia}
-          checked={checkedName === 'InternalMedia'}
-          onChange={handleChecked}
+          checked={mediaType === 'InternalMedia'}
+          onChange={onChecked}
         />
         <Radio
           className="base"
           label="제작영상 가져오기"
           value={MediaType.InternalMediaUpload}
-          checked={checkedName === 'InternalMediaUpload'}
-          onChange={handleChecked}
+          checked={mediaType === 'InternalMediaUpload'}
+          onChange={onChecked}
         />
 
         <Radio
           className="base"
           label="영상링크"
           value={MediaType.LinkMedia}
-          checked={checkedName === 'LinkMedia'}
-          onChange={handleChecked}
+          checked={mediaType === 'LinkMedia'}
+          onChange={onChecked}
         />
         <div className="ui form">
-          {checkedName === MediaType.InternalMedia && (
+          {mediaType === MediaType.InternalMedia && (
             <>
-              {(media && media.meidaContents?.internalMedias.length && (
+              {(internalMedias && internalMedias.length && (
                 <div className="ui input h48 file">
-                  {media.meidaContents.internalMedias.map(
+                  {internalMedias.map(
                     (
                       internalMedia: InternalMediaConnectionModel,
                       index: number
@@ -127,16 +104,13 @@ function CreateVideoTypeView() {
               )}
             </>
           )}
-          {checkedName === MediaType.InternalMediaUpload && (
-            <PanoptoListModal />
-          )}
-          {checkedName === MediaType.LinkMedia && (
+          {mediaType === MediaType.InternalMediaUpload && <PanoptoListModal />}
+          {mediaType === MediaType.LinkMedia && (
             <div className="ui input h48">
               <input
                 type="text"
                 placeholder="http://"
-                // value={media?.meidaContents?.linkMediaUrl || ''}
-                value={link}
+                value={linkMediaUrl}
                 onChange={onChangeLinkMedia}
               />
             </div>
@@ -153,6 +127,4 @@ function CreateVideoTypeView() {
   );
 }
 
-const CreateVideoTypeViewDefauilt = observer(CreateVideoTypeView);
-
-export default CreateVideoTypeViewDefauilt;
+export default CreateVideoTypeView;

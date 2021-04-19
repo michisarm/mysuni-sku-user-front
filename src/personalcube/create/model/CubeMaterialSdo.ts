@@ -1,6 +1,6 @@
-import { MediaType } from "../../../lecture/model/MediaType";
-import { MediaContents } from "../../../lecture/model/MediaContents";
-import { DatePeriod } from "../../../shared/model/DatePeriod";
+import { MediaType } from '../../../lecture/model/MediaType';
+import { MediaContents } from '../../../lecture/model/MediaContents';
+import { DatePeriod } from '../../../shared/model/DatePeriod';
 
 export interface CubeMaterialSdo {
   mediaSdo: MediaSdo;
@@ -11,7 +11,7 @@ export interface CubeMaterialSdo {
 export interface MediaSdo {
   name?: string;
   mediaType?: MediaType;
-  meidaContents?: MediaContents;
+  mediaContents?: MediaContents;
 }
 
 export interface boardSdo {

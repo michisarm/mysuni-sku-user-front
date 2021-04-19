@@ -1,52 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { observer } from 'mobx-react';
-import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
-import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
+import React from 'react';
 import { Form, Icon, Radio, CheckboxProps } from 'semantic-ui-react';
 import { MediaType } from '../../../media/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
-import { SearchFilterType } from 'shared/model';
-import { depotHelper } from 'shared';
-import { contentUploader } from '../shared/uploadContent';
 
-function CreateAudioTypeView() {
-  const [checkedName, setCheckedName] = useState('InternalMedia');
-  const { cubeSdo } = CreateCubeService.instance;
+interface Props {
+  mediaType: MediaType;
+  linkMediaUrl?: string;
+  internalMedias?: InternalMediaConnectionModel[];
+  onChecked: (_: React.FormEvent, data: CheckboxProps) => void;
+  onChangeLinkMedia: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  const media = cubeSdo.materialSdo?.mediaSdo;
-
-  const handleChecked = (_: React.FormEvent, data: CheckboxProps) => {
-    const value = data.value || '';
-    setCheckedName(value as string);
-  };
-
-  const onChangeFilterType = (_: React.FormEvent, data: CheckboxProps) => {
-    const value = data.value || '';
-    CreateCubeService.instance.changeCubeSdoProps('searchFilter', value);
-  };
-
-  const onChangeFileBoxId = (id: string) => {
-    CreateCubeService.instance.changeCubeSdoProps('fileBoxId', id);
-  };
-
-  const onChangeLinkMedia = (e: React.ChangeEvent<HTMLInputElement>) => {
-    CreateCubeService.instance.changeCubeSdoProps(
-      'materialSdo.mediaSdo.meidaContents.linkMediaUrl',
-      e.target.value
-    );
-  };
-
-  useEffect(() => {
-    CreateCubeService.instance.changeCubeSdoProps(
-      'materialSdo.mediaSdo.mediaType',
-      checkedName
-    );
-  }, [checkedName]);
-
-  useEffect(() => {
-    contentUploader();
-  });
-
+function CreateAudioTypeView({
+  mediaType,
+  linkMediaUrl,
+  internalMedias,
+  onChangeLinkMedia,
+  onChecked,
+}: Props) {
   return (
     <>
       <div className="section-tit">
@@ -58,22 +29,22 @@ function CreateAudioTypeView() {
           className="base"
           label="오디오 파일 업로드"
           value={MediaType.InternalMedia}
-          checked={checkedName === 'InternalMedia'}
-          onChange={handleChecked}
+          checked={mediaType === 'InternalMedia'}
+          onChange={onChecked}
         />
         <Radio
           className="base"
           label="오디오 링크"
           value={MediaType.LinkMedia}
-          checked={checkedName === 'LinkMedia'}
-          onChange={handleChecked}
+          checked={mediaType === 'LinkMedia'}
+          onChange={onChecked}
         />
         <div className="ui form">
-          {checkedName === MediaType.InternalMedia && (
+          {mediaType === MediaType.InternalMedia && (
             <>
-              {(media && media.meidaContents?.internalMedias.length && (
+              {(internalMedias && internalMedias.length && (
                 <div className="ui input h48 file">
-                  {media.meidaContents.internalMedias.map(
+                  {internalMedias.map(
                     (
                       internalMedia: InternalMediaConnectionModel,
                       index: number
@@ -117,13 +88,13 @@ function CreateAudioTypeView() {
               )}
             </>
           )}
-          {checkedName === MediaType.LinkMedia && (
+          {mediaType === MediaType.LinkMedia && (
             <div className="ui input h48">
               <input
                 type="text"
                 name=""
                 placeholder="http://"
-                value={media && media.meidaContents?.linkMediaUrl}
+                value={linkMediaUrl}
                 onChange={onChangeLinkMedia}
               />
             </div>
@@ -136,65 +107,8 @@ function CreateAudioTypeView() {
           </div>
         </div>
       </Form.Field>
-
-      <Form.Field>
-        <label>참고자료</label>
-        <div className="lg-attach">
-          <div className="attach-inner">
-            <FileBox
-              vaultKey={{
-                keyString: 'sample',
-                patronType: PatronType.Audience,
-              }}
-              patronKey={{
-                keyString: 'sample',
-                patronType: PatronType.Audience,
-              }}
-              validations={[
-                {
-                  type: ValidationType.Duplication,
-                  validator: depotHelper.duplicationValidator,
-                },
-              ]}
-              onChange={onChangeFileBoxId}
-              id={cubeSdo.fileBoxId}
-            />
-            <div className="bottom">
-              <span className="text1">
-                <Icon className="info16" />
-                <span className="blind">information</span>
-                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
-                용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을
-                등록할 수 있습니다.
-              </span>
-            </div>
-          </div>
-        </div>
-      </Form.Field>
-
-      <Form.Field>
-        <label className="necessary">학습카드 공개여부</label>
-        <Radio
-          className="base"
-          label="공개"
-          name="radioGroup"
-          value={SearchFilterType.SearchOn}
-          checked={cubeSdo.searchFilter === SearchFilterType.SearchOn}
-          onChange={onChangeFilterType}
-        />
-        <Radio
-          className="base"
-          label="비공개"
-          name="radioGroup"
-          value={SearchFilterType.SearchOff}
-          checked={cubeSdo.searchFilter === SearchFilterType.SearchOff}
-          onChange={onChangeFilterType}
-        />
-      </Form.Field>
     </>
   );
 }
 
-const CreateAudioTypeViewDefault = observer(CreateAudioTypeView);
-
-export default CreateAudioTypeViewDefault;
+export default CreateAudioTypeView;

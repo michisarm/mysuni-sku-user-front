@@ -9,7 +9,6 @@ import {
   findCubeDetail,
   registerUserCube,
   modifyUserCube,
-  findPanopToList,
 } from '../apiclient/cubeApi';
 import { CubeState } from '../../../../shared/model';
 import {
@@ -17,8 +16,6 @@ import {
   getCubeSdo,
 } from '../../../create/model/CreateCubeDetail';
 import { CubeSdo, initialCubeSdo } from '../../../create/model/CubeSdo';
-import { PanoptoCdoModel } from '../../../media/model/PanoptoCdoModel';
-import { InternalMediaConnection } from '../../../../lecture/model/InternalMediaConnection';
 
 @autobind
 export default class CreateCubeService {
@@ -124,54 +121,6 @@ export default class CreateCubeService {
   @action
   clearSelectedCubeState() {
     this._selectedCubeState = CubeState.ALL;
-  }
-
-  @observable
-  _panoptoCdo: PanoptoCdoModel = new PanoptoCdoModel();
-
-  @computed get panoptoCdo() {
-    return this._panoptoCdo;
-  }
-
-  @action
-  async findPanopToList(panoptoCdo: PanoptoCdoModel) {
-    const panoptos = await findPanopToList(panoptoCdo);
-    return runInAction(() => {
-      if (
-        this.cubeSdo.materialSdo &&
-        this.cubeSdo.materialSdo?.mediaSdo.meidaContents
-      ) {
-        this.cubeSdo.materialSdo.mediaSdo.meidaContents.internalMedias =
-          panoptos.results;
-      }
-    });
-  }
-
-  @action
-  changePanoptoCdoProps(name: string, value: string | number) {
-    this._panoptoCdo = _.set(this.panoptoCdo, name, value);
-  }
-
-  @observable
-  _panopto: InternalMediaConnection = {
-    duration: 0,
-    folderId: '',
-    folderName: '',
-    name: '',
-    panoptoSessionId: '',
-    startTime: '',
-    thumbUrl: '',
-    viewUrl: '',
-    quizIds: [],
-  };
-
-  @computed get panopto() {
-    return this._panopto;
-  }
-
-  @action
-  setPanoptoProps(selectedPanopto: InternalMediaConnection) {
-    this._panopto = selectedPanopto;
   }
 }
 

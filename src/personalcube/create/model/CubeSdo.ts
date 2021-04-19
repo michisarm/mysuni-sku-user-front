@@ -5,9 +5,6 @@ import { CubeMaterialSdo } from './CubeMaterialSdo';
 import CubeType from '../../../lecture/detail/model/CubeType';
 import { getMainCategory } from './CreateCubeDetail';
 import { DenizenKey, reactAlert } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
-import { useCallback } from 'react';
-import { SearchFilterType } from 'shared/model';
 
 export interface CubeSdo {
   name: string;
@@ -20,8 +17,7 @@ export interface CubeSdo {
   organizerId: string;
   otherOrganizerName?: string;
   fileBoxId?: string;
-  materialSdo?: CubeMaterialSdo;
-  searchFilter?: SearchFilterType;
+  materialSdo: CubeMaterialSdo;
 }
 
 export const initialCubeSdo: CubeSdo = {
@@ -41,7 +37,24 @@ export const initialCubeSdo: CubeSdo = {
   organizerId: '',
   otherOrganizerName: '',
   fileBoxId: '',
-  searchFilter: SearchFilterType.SearchOff,
+  materialSdo: {
+    mediaSdo: {
+      mediaContents: {
+        contentsProvider: {
+          contentsProviderType: {
+            id: '',
+            name: '',
+          },
+          expiryDate: '',
+          url: '',
+        },
+        internalMedias: [],
+        linkMediaUrl: '',
+      },
+    },
+    boardSdo: {},
+    officeWebSdo: {},
+  },
 };
 
 export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {

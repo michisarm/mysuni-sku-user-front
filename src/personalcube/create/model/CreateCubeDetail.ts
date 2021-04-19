@@ -1,8 +1,8 @@
-import { Cube } from "../../../lecture/model/Cube";
-import { CubeContents } from "../../../lecture/model/CubeContents";
-import { CubeMaterial } from "../../../lecture/model/CubeMaterial";
-import { CubeSdo } from "./CubeSdo";
-import { CubeCategory } from "../../../shared/model/CubeCategory";
+import { Cube } from '../../../lecture/model/Cube';
+import { CubeContents } from '../../../lecture/model/CubeContents';
+import { CubeMaterial } from '../../../lecture/model/CubeMaterial';
+import { CubeSdo } from './CubeSdo';
+import { CubeCategory } from '../../../shared/model/CubeCategory';
 
 export interface CreateCubeDetail {
   cube: Cube;
@@ -36,7 +36,7 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
     materialSdo: {
       mediaSdo: {
         name: media?.name,
-        meidaContents: media?.mediaContents,
+        mediaContents: media?.mediaContents,
         mediaType: media?.mediaType,
       },
       boardSdo: {
@@ -49,7 +49,7 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
         fileBoxId: officeWeb?.fileBoxId,
         webPageUrl: officeWeb?.webPageUrl,
         learningPeriod: officeWeb?.learningPeriod,
-      }
+      },
     },
-  }
+  };
 }
