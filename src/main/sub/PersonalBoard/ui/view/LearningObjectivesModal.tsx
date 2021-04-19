@@ -52,7 +52,7 @@ const LearningObjectivesModal:React.FC<Props> = ({
           </div>
 
           <div className="personal-main-box">
-            <span className="personal-des">일주일에 몇 일 학습하실 건가요?</span>
+            <span className="personal-des">일주일에 며칠 학습하실 건가요?</span>
             <Form>
               <Form.Field className="form-field2">
                 <div className="preview" style={{overflow: 'visible'}}>

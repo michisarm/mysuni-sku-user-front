@@ -20,6 +20,7 @@ import { useLectureParams } from '../../../store/LectureParamsStore';
 import { autorun } from 'mobx';
 import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
 import { Area } from 'tracker/model';
+import LectureStateContainer from '../../logic/LectureStateContainer';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -164,10 +165,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
   }, [inMyLectureMap, params?.cardId]);
 
   return (
-    <div
-      className="course-info-header"
-      data-area={Area.CARD_HEADER}
-    >
+    <div className="course-info-header" data-area={Area.CARD_HEADER}>
       <div className="contents-header">
         <div className="title-area">
           <div
@@ -226,12 +224,19 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           </div>
         </div>
         <div className="right-area">
-          {state === 'Completed' ? (
-            <img src={StampCompleted} />
-          ) : (
-            lectureSummary.thumbImagePath !== undefined && (
-              <Thumbnail image={lectureSummary.thumbImagePath} />
-            )
+          {lectureSummary.hasClassroomCube !== true && (
+            <>
+              {state === 'Completed' ? (
+                <img src={StampCompleted} />
+              ) : (
+                lectureSummary.thumbImagePath !== undefined && (
+                  <Thumbnail image={lectureSummary.thumbImagePath} />
+                )
+              )}
+            </>
+          )}
+          {lectureSummary.hasClassroomCube === true && (
+            <LectureStateContainer />
           )}
         </div>
       </div>

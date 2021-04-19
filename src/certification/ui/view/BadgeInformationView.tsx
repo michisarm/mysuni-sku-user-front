@@ -1,8 +1,7 @@
 import React from 'react';
 import { dateTimeHelper } from '../../shared';
 import { BadgeLevel } from '../../model/BadgeLevel';
-
-
+import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 
 interface BadgeInformationViewProps {
   certiAdminId: string;
@@ -18,7 +17,9 @@ export function BadgeInformationView({
   learningTime,
 }: BadgeInformationViewProps) {
   //
-  const formattedLearningTime = dateTimeHelper.timeToHourMinuteFormat(learningTime);
+  const formattedLearningTime = dateTimeHelper.timeToHourMinuteFormat(
+    learningTime
+  );
   const levelHtml = getLevelHtml(level);
 
   return (
@@ -32,7 +33,7 @@ export function BadgeInformationView({
       <div>
         <span className="detail design">
           <span>설계 주체</span>
-          <span>{designAdminId}</span>
+          <span>{getBadgeCategoryName(designAdminId)}</span>
         </span>
       </div>
       <div>
@@ -52,7 +53,6 @@ export function BadgeInformationView({
     </div>
   );
 }
-
 
 const getLevelHtml = (level: BadgeLevel) => {
   //

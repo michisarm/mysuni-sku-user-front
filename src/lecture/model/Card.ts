@@ -19,6 +19,7 @@ export interface Card {
   categories: CardCategory[];
   permittedCinerooms?: PermittedCineroom[];
   learningTime: number;
+  additionalLearningTime: number;
   cardState?: CardState;
   cardStateUpdatedTime: number;
   mainCategory: CardCategory;

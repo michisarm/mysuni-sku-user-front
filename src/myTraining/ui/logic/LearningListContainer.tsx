@@ -28,8 +28,6 @@ type CardListExtendsUpcomingClassRom = CardWithCardRealtedCount & {
 };
 
 function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
-  useRequestCollege();
-
   const [cardList, setCardList] = useState<CardListExtendsUpcomingClassRom[]>(
     []
   );

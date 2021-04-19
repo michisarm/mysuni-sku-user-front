@@ -3,13 +3,14 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ApplyReferenceModal } from '../../../../../approval';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
 import ClassroomModalView from '../../../../category/ui/view/ClassroomModalView';
+import CubeType from '../../../../model/CubeType';
 import Student from '../../../../model/Student';
 import { findApplyingClassroom } from '../../../service/useLectureClassroom/utility/classroomFinders';
 import {
   cancel,
   submit,
+  submitFromCubeId,
 } from '../../../service/useLectureState/utility/cubeStateActions';
-import { useLectureParams } from '../../../store/LectureParamsStore';
 import LectureClassroom, {
   Classroom,
 } from '../../../viewModel/LectureClassroom';
@@ -29,6 +30,8 @@ const stateClassName = 'line';
 
 interface CanceledViewProps {
   lectureClassroom: LectureClassroom;
+  cubeId: string;
+  cubeType: CubeType;
 }
 
 function classroomSubmit(classroom: Classroom) {
@@ -47,18 +50,14 @@ function CanceledView(props: CanceledViewProps) {
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const applyReferenceModalRef = useRef<ApplyReferenceModal>(null);
 
-  const { lectureClassroom } = props;
+  const { lectureClassroom, cubeId, cubeType } = props;
 
-  const params = useLectureParams();
   const [selectedClassroom, setSelectedClassroom] = useState<Classroom | null>(
     null
   );
   /* eslint-disable */
   const action = useCallback(async () => {
-    if (params?.cubeId === undefined) {
-      return;
-    }
-    const classroom = await findApplyingClassroom(params.cubeId);
+    const classroom = await findApplyingClassroom(cubeId);
     if (classroom === undefined) {
       reactAlert({
         title: '수강신청 기간 안내',
@@ -67,29 +66,38 @@ function CanceledView(props: CanceledViewProps) {
       return;
     }
     return ClassroomModalViewRef.current?.show();
-  }, [params?.cubeId]);
+  }, [cubeId]);
   /* eslint-enable */
-  const onClassroomSelected = useCallback((selected: Classroom) => {
-    if (
-      selected.enrollingAvailable &&
-      selected.freeOfCharge.approvalProcess &&
-      applyReferenceModalRef.current !== null
-    ) {
-      setSelectedClassroom(selected);
-      applyReferenceModalRef.current.onOpenModal();
-    } else {
-      classroomSubmit(selected);
-      submit(selected.round);
-    }
-  }, []);
+  const onClassroomSelected = useCallback(
+    (selected: Classroom) => {
+      if (
+        selected.enrollingAvailable &&
+        selected.freeOfCharge.approvalProcess &&
+        applyReferenceModalRef.current !== null
+      ) {
+        setSelectedClassroom(selected);
+        applyReferenceModalRef.current.onOpenModal();
+      } else {
+        classroomSubmit(selected);
+        submitFromCubeId(cubeId, cubeType, selected.round);
+      }
+    },
+    [cubeId, cubeType]
+  );
   const onApply = useCallback(
     (member: ApprovalMemberModel) => {
       if (selectedClassroom !== null) {
         classroomSubmit(selectedClassroom);
-        submit(selectedClassroom.round, true, member.email);
+        submitFromCubeId(
+          cubeId,
+          cubeType,
+          selectedClassroom.round,
+          true,
+          member.email
+        );
       }
     },
-    [selectedClassroom]
+    [selectedClassroom, cubeId, cubeType]
   );
   return (
     <>
@@ -176,7 +184,7 @@ function ApprovedView(props: ApprovedViewProps) {
       default:
         break;
     }
-    return 'bg2';
+    return 'line';
   }, [student]);
   return (
     <>
@@ -232,13 +240,30 @@ const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> = func
   lectureState,
   lectureClassroom,
 }) {
-  const { student } = lectureState;
+  const {
+    student,
+    cubeDetail: {
+      cube: { id, type },
+    },
+  } = lectureState;
 
   if (student === undefined) {
-    return <CanceledView lectureClassroom={lectureClassroom} />;
+    return (
+      <CanceledView
+        lectureClassroom={lectureClassroom}
+        cubeId={id}
+        cubeType={type}
+      />
+    );
   }
   if (student.proposalState === 'Canceled') {
-    return <CanceledView lectureClassroom={lectureClassroom} />;
+    return (
+      <CanceledView
+        lectureClassroom={lectureClassroom}
+        cubeId={id}
+        cubeType={type}
+      />
+    );
   }
   if (student.proposalState === 'Submitted') {
     return <SubmittedView />;

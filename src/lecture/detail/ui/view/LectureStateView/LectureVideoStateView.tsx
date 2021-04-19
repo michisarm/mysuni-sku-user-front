@@ -132,7 +132,7 @@ function CPApprovedView(props: CPApprovedViewProps) {
       default:
         break;
     }
-    return 'bg2';
+    return 'line';
   }, [student]);
 
   return (
