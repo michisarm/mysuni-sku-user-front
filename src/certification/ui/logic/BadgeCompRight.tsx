@@ -10,6 +10,7 @@ import { CardWithLearningContentCountRom } from '../../../lecture/model/CardWith
 import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
+import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 
 interface BadgeCompRightProps {
   name: string;
@@ -42,7 +43,10 @@ export default function BadgeCompRight({
 
   return (
     <div className="right-area">
-      <ChallengeBadgeTitle mainCategoryName={categoryId} name={name} />
+      <ChallengeBadgeTitle
+        mainCategoryName={getBadgeCategoryName(categoryId)}
+        name={name}
+      />
       <div className="challenge-list">
         <ul>
           {badgeCards &&
@@ -62,7 +66,13 @@ export default function BadgeCompRight({
                   )}
                   key={`challenge-badge-card-${index}`}
                 >
-                  <a href="#" onClick={e => { moveToCardPage(e, card.id); e.preventDefault(); }}>
+                  <a
+                    href="#"
+                    onClick={e => {
+                      moveToCardPage(e, card.id);
+                      e.preventDefault();
+                    }}
+                  >
                     <span className="class-icon">
                       <Image src={card.thumbImagePath} />
                     </span>

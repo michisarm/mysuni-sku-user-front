@@ -12,11 +12,12 @@ import {
   // setLectureChildTaskItem,
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import { findPost, findPostBody } from '../../../api/cubeApi';
+import { findPost, findPostBody, getReply } from '../../../api/cubeApi';
 
 async function getTaskItem(postParam: any) {
   const lectureTaskDetail: LectureTaskDetail = {
     id: '',
+    postId: '',
     fileBoxId: '',
     title: '',
     name: '',
@@ -50,6 +51,22 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.fileBoxId = postBody.fileBoxId;
     }
     return lectureTaskDetail;
+  }
+
+  if (postParam.id !== '' && postParam.type === 'child') {
+    const post = await getReply(postParam.id);
+
+    if (post !== undefined) {
+      lectureTaskDetail.id = post.id;
+      lectureTaskDetail.postId = post.postId;
+      lectureTaskDetail.title = post.title;
+      lectureTaskDetail.name = post.writer;
+      lectureTaskDetail.time = post.time;
+      lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
+      lectureTaskDetail.readCount = post.readCount;
+      lectureTaskDetail.contents = post.contents;
+      lectureTaskDetail.fileBoxId = post.fileBoxId;
+    }
   }
 
   return lectureTaskDetail;

@@ -6,6 +6,7 @@ import BadgeStyle from '../model/BadgeStyle';
 import { BadgeTitleView } from './BadgeTitleView';
 import { BadgeInformationView } from './BadgeInformationView';
 import { getCineroomName } from '../../../shared/service/useCineroom/useRequestCineroom';
+import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 
 interface BadgeSummaryViewProps {
   badge: Badge;
@@ -31,7 +32,10 @@ export default function BadgeSummaryView({ badge }: BadgeSummaryViewProps) {
           />
         </div>
       </div>
-      <BadgeTitleView college={mainCategoryId} name={badge.name} />
+      <BadgeTitleView
+        college={getBadgeCategoryName(mainCategoryId)}
+        name={badge.name}
+      />
       <BadgeInformationView
         certiAdminId={cineroomName}
         designAdminId={mainCategoryId}
