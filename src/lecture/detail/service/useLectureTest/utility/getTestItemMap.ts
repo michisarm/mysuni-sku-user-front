@@ -2,7 +2,10 @@
 
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
-import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
+import {
+  getLectureTestItem,
+  setLectureTestItem,
+} from 'lecture/detail/store/LectureTestStore';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import {
   findByCardId,
@@ -69,8 +72,10 @@ export async function getTestItemMapFromCourse(
   if (student === undefined) {
     return;
   }
-  let examId = student.studentScore.examId;
-  if (examId === null) {
+  const oriLectureTestItem = getLectureTestItem();
+  let examId = student.studentScore.examId || '';
+  if ((examId === null || examId === '') && oriLectureTestItem === undefined) {
+    // 중복 호출 방지
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;
@@ -112,8 +117,10 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  let examId = student.studentScore.examId;
-  if (examId === null || examId === '') {
+  const oriLectureTestItem = getLectureTestItem();
+  let examId = student.studentScore.examId || '';
+  if ((examId === null || examId === '') && oriLectureTestItem === undefined) {
+    // 중복 호출 방지
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;
