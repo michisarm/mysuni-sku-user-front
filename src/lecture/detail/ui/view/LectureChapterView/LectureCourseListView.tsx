@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 import { LectureChpaterCubeList } from '../../../viewModel/LectureChpaterCubeList';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { ChapterParams } from '../../../model/ChapterParams';
+import CubeIconType from '../../../../shared/Lecture/model/CubeIconType';
+import { Icon, Label } from 'semantic-ui-react';
 
 interface Props {
   courseCount: number;
   learningContents: LectureChpaterCubeList[];
 }
-
-// e-icon, v-icon, a-icon
-//    return `/lecture/card/${cardId}/cube/${cubeId}/view/${cubeType}`;
 
 function LectureCourseListView({ courseCount, learningContents }: Props) {
   const { cardId } = useParams<ChapterParams>();
@@ -33,14 +32,20 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
         };
 
         return (
-          <div className="essential-wrap">
+          <div className="essential-wrap" key={cube.cubeId}>
             <div className="essential-card">
               <Link to={toPath(params)} className="detail-title">
                 {cube.name}
               </Link>
               <div className="detail-subject-box">
-                <span className="detail-subject e-icon">{cube.type}</span>
-                <span className="detail-subject time">{`${cube.learningTime}m`}</span>
+                <Label className="onlytext">
+                  <Icon className={`icon ${CubeIconType[cube.type]}`} />
+                  <span>{cube.type}</span>
+                </Label>
+                <Label className="onlytext">
+                  <Icon className="icon time2" />
+                  <span>{`${cube.learningTime}m`}</span>
+                </Label>
               </div>
               <p>{cube.description}</p>
             </div>
