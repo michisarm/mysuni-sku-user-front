@@ -71,6 +71,7 @@ export interface LectureStructureCubeItem extends LectureStructureItem {
   student?: Student;
   cube: Cube;
   last?: boolean;
+  isDurationable?: boolean;
 }
 
 export interface LectureStructureDurationableCubeItem

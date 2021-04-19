@@ -87,7 +87,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
               const cube = item as LectureStructureCubeItem;
               return (
                 <Fragment key={cube.cubeId}>
-                  {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+                  {cube.isDurationable !== true && (
                     <CubeView
                       name={cube.name}
                       state={cube.state}
@@ -98,7 +98,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
                       can={cube.can}
                     />
                   )}
-                  {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+                  {cube.isDurationable === true && (
                     <DurationableCubeView
                       name={cube.name}
                       state={cube.state}

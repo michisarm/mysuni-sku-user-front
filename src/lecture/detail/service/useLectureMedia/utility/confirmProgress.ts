@@ -7,10 +7,12 @@ import {
 } from '../../../api/cardApi';
 import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
+import { clearfindAllCollegeCache } from '../../../../../college/present/apiclient/CollegeApi';
 
 export async function confirmProgress(): Promise<void> {
   const params = getLectureParams();
   if (params?.cardId !== undefined && params?.cubeId !== undefined) {
+    clearfindAllCollegeCache();
     const myCardRelatedStudents = await findMyCardRelatedStudentsCache(
       params?.cardId
     );
