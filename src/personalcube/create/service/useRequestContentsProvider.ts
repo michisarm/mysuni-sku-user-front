@@ -21,6 +21,6 @@ export function getContentsProviderName(contentsProviderId: string) {
     return '';
   }
 
-  const foundContentsProvider = contentsProviders.find(contentsProvider => contentsProvider.contentsProvider.id === contentsProviderId);
-  return foundContentsProvider?.contentsProvider.name || '';
+  const foundContentsProvider = contentsProviders.find(contentsProvider => contentsProvider.id === contentsProviderId);
+  return foundContentsProvider?.providerName || '';
 }

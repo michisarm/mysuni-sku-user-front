@@ -1,9 +1,5 @@
 export interface ContentsProvider {
   areaType: string;
-  contentsProvider: {
-    id: string;
-    name: string;
-  };
   creatorEmail: string;
   creatorId: string;
   creatorName: string;
@@ -34,9 +30,9 @@ export function getSelectOptions(contentsProviders: ContentsProvider[]): SelectO
 
   contentsProviders.forEach(contentsProvider => {
     selectOptions.push({
-      key: contentsProvider.contentsProvider.id,
-      text: contentsProvider.contentsProvider.name,
-      value: contentsProvider.contentsProvider.id,
+      key: contentsProvider.id,
+      text: contentsProvider.providerName,
+      value: contentsProvider.id,
     });
   });
 
