@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 
 // 2021-03-12
 import './style/css/2.828261bb.chunk.css';
-import './style/css/main.fb4c6978.chunk';
+import './style/css/main.fb4c6978.chunk.css';
 
 initializeBody();
 
