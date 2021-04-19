@@ -9,6 +9,7 @@ import { useRequestBadgeDetail } from '../../service/useRequestBadgeDetail';
 import BadgeSummaryContainer from '../logic/BadgeSummaryContainer';
 import BadgeContentContainer from '../logic/BadgeContentContainer';
 import { useRequestCineroom } from '../../../shared/service/useCineroom/useRequestCineroom';
+import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 
 interface BadgeDetailPageProps {
   badgeService?: BadgeService;
@@ -24,7 +25,7 @@ function BadgeDetailPage({ badgeService }: BadgeDetailPageProps) {
   return (
     <ContentLayout
       className="no-padding"
-      breadcrumb={[{ text: mainCategoryId }]}
+      breadcrumb={[{ text: getBadgeCategoryName(mainCategoryId) }]}
     >
       <BadgeSummaryContainer />
       <BadgeContentContainer />
