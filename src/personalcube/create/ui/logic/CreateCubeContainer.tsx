@@ -36,10 +36,6 @@ function CreateCubeContainer() {
     }
   }, [cubeSdo]);
 
-  const onClickDelete = () => {
-    // Created 상태 cube 삭제 api 부탁하기.
-  };
-
   const onSave = useCallback(async () => {
     if(cubeSdo.organizerId !== 'PVD00018') {
       cubeSdo.otherOrganizerName = '';
@@ -73,6 +69,28 @@ function CreateCubeContainer() {
     }
     
   }, [params.personalCubeId, cubeSdo]);
+
+  const onClickDelete = useCallback(() => {
+    reactConfirm({
+      title: '강좌 삭제',
+      message: '등록된 강좌정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.',
+      onOk: onDelete,
+    });
+  }, []);
+
+  const onDelete = async () => {
+    if(params.personalCubeId === undefined) {
+      return;
+    }
+
+    const result = await CreateCubeService.instance.removeUserCube(params.personalCubeId);
+
+    if(result) {
+      routeToCreateList();
+    } else {
+      reactAlert({ title: '삭제 실패', message: '삭제를 실패했습니다. 잠시 후 다시 시도해주세요.' });
+    } 
+  };
 
   const alertRequiredField = useCallback((message: string) => {
     reactAlert({ title: '필수 정보 입력 안내', message, warning: true });

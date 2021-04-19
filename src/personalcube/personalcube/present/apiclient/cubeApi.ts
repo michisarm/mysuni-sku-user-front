@@ -62,6 +62,12 @@ export function modifyUserCube(
     .catch(error => false);
 }
 
+export function removeUserCube(cubeId: string): Promise<boolean> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/userCubes/${cubeId}`;
+  return axios.delete<void>(url).then(result => true).catch(error => false);
+}
+
 export function findContentsProviders() {
   const axios = getAxios();
   const url = `${BASE_URL}/contentsProviders`;
