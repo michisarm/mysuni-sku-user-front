@@ -14,22 +14,31 @@ function action() {
 const LectureWebpageView: React.FC<LectureWebpage &
   Props> = function LectureWebpageView({ title, description, image, url, urlType }) {
     return (
-      <div className="lms-open-graph">
-        <img src={image ? image : DefaultImg} className="lms-open-image" />
-        <div className="lms-open-con">
-          <div className="lms-open-title">{title}</div>
-          <div className="lms-open-copy">{description}</div>
-          <a
-            href={url}
-            className="lms-open-link"
-            target="_blank"
-            id="webpage-link"
-            onClick={action}
-          >
-            {url}{urlType}
-          </a>
-        </div>
-      </div>
+      <>
+        {urlType && urlType === "embedded" && (
+          <iframe className="iframe-area" src={url} />
+        )
+        }
+        {urlType === null && (
+          <div className="lms-open-graph">
+            <img src={image ? image : DefaultImg} className="lms-open-image" />
+            <div className="lms-open-con">
+              <div className="lms-open-title">{title}</div>
+              <div className="lms-open-copy">{description}</div>
+              <a
+                href={url}
+                className="lms-open-link"
+                target="_blank"
+                id="webpage-link"
+                onClick={action}
+              >
+                {url}
+              </a>
+            </div>
+          </div>
+        )
+        }
+      </>
     );
   };
 

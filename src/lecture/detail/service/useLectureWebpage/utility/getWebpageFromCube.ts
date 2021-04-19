@@ -2,6 +2,7 @@ import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureWebpage } from '../../../store/LectureWebpageStore';
 import LectureParams from '../../../viewModel/LectureParams';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
+import { generationEncryptKey } from '../../../api/profileApi';
 
 export async function getWebpageFromCube(params: LectureParams) {
   const { cubeId } = params;
@@ -15,7 +16,18 @@ export async function getWebpageFromCube(params: LectureParams) {
   const {
     cubeMaterial: { officeWeb },
   } = cubeDetail;
-  const url = officeWeb.webPageUrl;
+
+  let url = officeWeb.webPageUrl;
+
+  if (officeWeb.urlType && officeWeb.urlType === "embedded") {
+    const encryptKey = await generationEncryptKey(cubeId);
+    if (url.indexOf('?') > -1) {
+      url = url + '&p=' + encryptKey;
+    } else {
+      url = url + '?p=' + encryptKey;
+    }
+  }
+
   if (
     officeWeb.webUrlInfo === null ||
     (officeWeb.webUrlInfo as unknown) === '' ||
