@@ -22,5 +22,5 @@ export function getContentsProviderName(contentsProviderId: string) {
   }
 
   const foundContentsProvider = contentsProviders.find(contentsProvider => contentsProvider.id === contentsProviderId);
-  return foundContentsProvider?.providerName || '';
+  return foundContentsProvider?.name || '';
 }
