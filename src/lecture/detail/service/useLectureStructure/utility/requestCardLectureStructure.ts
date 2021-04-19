@@ -2,12 +2,13 @@ import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
 import { Cube } from '../../../../model/Cube';
 import { LearningContent } from '../../../../model/LearningContent';
+import { MediaType } from '../../../../model/MediaType';
 import Student from '../../../../model/Student';
 import {
   findCardCache,
   findMyCardRelatedStudentsCache,
 } from '../../../api/cardApi';
-import { findCubesByIdsCache } from '../../../api/cubeApi';
+import { findCubeDetailCache, findCubesByIdsCache } from '../../../api/cubeApi';
 import {
   setIsLoadingState,
   setLectureStructure,
@@ -394,25 +395,29 @@ function parseDurationableCubeItem(
     duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
       ? parseInt(cubeStudent?.durationViewSeconds || '')
       : undefined,
+    isDurationable: true,
   };
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
+    item.test.can = item.test.can && item.duration === 100;
   }
   if (reportName !== null && reportName !== '') {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
+    item.report.can = item.report.can && item.duration === 100;
   }
   if (surveyCaseId !== null && surveyCaseId !== '') {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
+    item.survey.can = item.survey.can && item.duration === 100;
   }
   return item;
 }
 
-function parseCubeItem(
+async function parseCubeItem(
   card: Card,
   cube: Cube,
   order: number,
   cubeStudent?: Student
-): LectureStructureCubeItem {
+): Promise<LectureStructureCubeItem> {
   const {
     id,
     name,
@@ -423,7 +428,14 @@ function parseCubeItem(
     reportName,
   } = cube;
   if (type === 'Audio' || type === 'Video') {
-    return parseDurationableCubeItem(card, cube, order, cubeStudent);
+    const cubeDetail = await findCubeDetailCache(id);
+    if (
+      cubeDetail?.cubeMaterial.media?.mediaType === MediaType.InternalMedia ||
+      cubeDetail?.cubeMaterial.media?.mediaType ===
+        MediaType.InternalMediaUpload
+    ) {
+      return parseDurationableCubeItem(card, cube, order, cubeStudent);
+    }
   }
   const params: LectureParams = {
     cardId: card.id,
@@ -557,15 +569,18 @@ export async function requestCardLectureStructure(cardId: string) {
   }
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
-  const cubeItems: LectureStructureCubeItem[] = [];
+  let cubeItems: LectureStructureCubeItem[] = [];
   if (cubes !== undefined) {
-    cubes.forEach(cube => {
-      const cubeStudent = findCubeStudent(cube.id, cubeStudents);
-      const order = cardContents.learningContents.findIndex(
-        ({ contentId }) => contentId === cube.id
-      );
-      cubeItems.push(parseCubeItem(card, cube, order, cubeStudent));
-    });
+    cubeItems = await Promise.all(
+      cubes.map(async cube => {
+        const cubeStudent = findCubeStudent(cube.id, cubeStudents);
+        const order = cardContents.learningContents.findIndex(
+          ({ contentId }) => contentId === cube.id
+        );
+        const cubeItem = await parseCubeItem(card, cube, order, cubeStudent);
+        return cubeItem;
+      })
+    );
   }
   const discussionItems: LectureStructureDiscussionItem[] = [];
   cardContents.learningContents
