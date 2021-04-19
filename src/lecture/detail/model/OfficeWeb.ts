@@ -9,4 +9,5 @@ export default interface OfficeWeb {
   webUrlInfo: OfficeWebUrlInfo;
   webPageUrl: string;
   time: number;
+  urlType: string;
 }
