@@ -1,6 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import React, { useCallback } from 'react';
+import { observer } from 'mobx-react';
 import CreateCubeService from '../../../personalcube/present/logic/CreateCubeService';
 import { Form, Button, Select, DropdownProps } from 'semantic-ui-react';
 import CreateInput from '../shared/CreateInput';
