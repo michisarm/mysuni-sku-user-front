@@ -331,7 +331,7 @@ const CollegeInnerTabView = () => {
                     <h3>AI/DT &#38; Strategy</h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <a href="/lecture/card/CARD-1ha/view">
+                        <Link to="/lecture/card/CARD-1ha/view">
                           <ul>
                             <li>AI/DT 기반의 Deep Change 전략</li>
                             <li>- AI/DT 전략의 기본 개념</li>
@@ -339,7 +339,7 @@ const CollegeInnerTabView = () => {
                             <li>- AI 기반 DT의 전략적 의미</li>
                             <li>- AI/DT 전략 가설의 재구성</li>
                           </ul>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -386,7 +386,7 @@ const CollegeInnerTabView = () => {
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <a href="/lecture/card/CARD-9m5/view">
+                        <Link to="/lecture/card/CARD-9m5/view">
                           <ul className="height_fixed">
                             <li>전략 101 : 어서 와, 전략은 처음이지?</li>
                             <li>- 전략이란 무엇인가?</li>
@@ -394,8 +394,8 @@ const CollegeInnerTabView = () => {
                             <li>- 전략의 수립 및 실행</li>
                             <li>- Strategy in SK</li>
                           </ul>
-                        </a>
-                        <a href="/lecture/card/CARD-a2s/view">
+                        </Link>
+                        <Link to="/lecture/card/CARD-a2s/view">
                           <ul className="height_fixed">
                             <li>All about Portfolio Strategy</li>
                             <li>- Portfolio Mgmt의 Option</li>
@@ -403,17 +403,17 @@ const CollegeInnerTabView = () => {
                             <li>- Separation/Divestiture</li>
                             <li>- SK M&#38;A History &#38; Case</li>
                           </ul>
-                        </a>
+                        </Link>
                       </div>
                       <div className="con_sub_box">
-                        <a href="/lecture/card/CARD-a4f/view">
+                        <Link to="/lecture/card/CARD-a4f/view">
                           <ul className="sub height_fixed">
                             <li>전략 수립의 시작, 경영환경분석</li>
                             <li>- 외부환경분석 Tool &#38; Framework</li>
                             <li>- 내부환경분석 Tool &#38; Framework</li>
                             <li>- 경영환경분석 실전 Tip</li>
                           </ul>
-                        </a>
+                        </Link>
                         <ul className="ul_img_none height_fixed">
                           <li className="pd0">
                             <Image
@@ -695,7 +695,7 @@ const CollegeInnerTabView = () => {
                           </li>
                         </ul>
   
-                        <a href="" onClick={emptyAlert}>
+                        <Link to="#" onClick={emptyAlert}>
                           <ul>
                             <li>AI 마케팅</li>
                             <li>1. Reach : AI 로 고객을 유인하라</li>
@@ -703,7 +703,7 @@ const CollegeInnerTabView = () => {
                             <li>3. Convert : AI 로 단골 고객 만들기</li>
                             <li>4. Engage : AI 기반 고객 예측</li>
                           </ul>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -727,16 +727,16 @@ const CollegeInnerTabView = () => {
                       <div className="con_sub_box">
                         <ul onClick={emptyAlert}>
                           <li>
-                            <Link to="">마케팅 Framework &#38; Tool</Link>
+                            <Link to="#">마케팅 Framework &#38; Tool</Link>
                           </li>
                           <li>
-                            <Link to="">- 마케팅 환경 분석</Link>
+                            <Link to="#">- 마케팅 환경 분석</Link>
                           </li>
                           <li>
-                            <Link to="">- 마케팅 전략 수립</Link>
+                            <Link to="#">- 마케팅 전략 수립</Link>
                           </li>
                           <li>
-                            <Link to="">- 마케팅 실행 전술</Link>
+                            <Link to="#">- 마케팅 실행 전술</Link>
                           </li>
                         </ul>
                         <Link to="/lecture/card/CARD-a4g/view">
@@ -1753,14 +1753,14 @@ const CollegeInnerTabView = () => {
                     </h3>
                     <div className="con_box">
                       <div className="con_sub_box">
-                        <a href="/lecture/card/CARD-8l7/view">
+                        <Link to="/lecture/card/CARD-8l7/view">
                           <ul>
                             <li>Customer Measure &#38; Analytics</li>
                             <li>- 고객 측정의 기본 개념</li>
                             <li>- Customer Value 개념과 측정</li>
                             <li>- 고객 측정 지표의 활용과 한계</li>
                           </ul>
-                        </a>
+                        </Link>
                       </div>
                       <div className="con_sub_box">
                         <Link to="/lecture/card/CARD-8ic/view">
