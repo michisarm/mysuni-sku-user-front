@@ -72,7 +72,6 @@ class CreateDocumentTypeView extends React.Component<Props> {
             </div>
           </div>
         </Form.Field>
-
         <Form.Field>
           <label>참고자료</label>
           <div className="lg-attach">
@@ -110,36 +109,6 @@ class CreateDocumentTypeView extends React.Component<Props> {
               </div>
             </div>
           </div>
-        </Form.Field>
-
-        <Form.Field>
-          <label className="necessary">학습카드 공개여부</label>
-          <Radio
-            className="base"
-            label="공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOn}
-            checked={
-              personalCube &&
-              personalCube.searchFilter === SearchFilterType.SearchOn
-            }
-            onChange={(e: any, data: any) =>
-              onChangePersonalCubeProps('searchFilter', data.value)
-            }
-          />
-          <Radio
-            className="base"
-            label="비공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOff}
-            checked={
-              personalCube &&
-              personalCube.searchFilter === SearchFilterType.SearchOff
-            }
-            onChange={(e: any, data: any) =>
-              onChangePersonalCubeProps('searchFilter', data.value)
-            }
-          />
         </Form.Field>
       </>
     );

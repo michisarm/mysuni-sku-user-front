@@ -16,4 +16,5 @@ export interface Cube {
   hasTest: boolean;
   reportName: string | null;
   surveyCaseId: string | null;
+  sharingCineroomIds: string[];
 }

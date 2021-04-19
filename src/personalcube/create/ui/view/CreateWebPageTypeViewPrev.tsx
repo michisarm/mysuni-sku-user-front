@@ -2,20 +2,16 @@
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { Form, Icon, Radio } from 'semantic-ui-react';
-import { SearchFilterType } from 'shared/model';
+import { Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube/model';
-import { OfficeWebModel } from 'personalcube/officeweb/model';
+import OfficeWeb from '../../../../lecture/detail/model/OfficeWeb';
+import { PersonalCubeModel } from '../../../personalcube/model';
 
 interface Props {
-  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
-  officeWeb: OfficeWebModel
-  onChangeOfficeWebProps: (name: string, value: string | Date, nameSub?: string) => void
+  officeWeb: OfficeWeb;
   getFileBoxIdForReference: (fileBoxId: string) => void
-  personalCube: PersonalCubeModel
+  personalCube: PersonalCubeModel;
 }
 
 @observer
@@ -23,7 +19,7 @@ interface Props {
 class CreateWebPageTypeView extends React.Component<Props> {
   render() {
 
-    const { onChangePersonalCubeProps, officeWeb, onChangeOfficeWebProps, getFileBoxIdForReference, personalCube } = this.props;
+    const {officeWeb, getFileBoxIdForReference, personalCube } = this.props;
 
     return (
       <>
@@ -40,7 +36,7 @@ class CreateWebPageTypeView extends React.Component<Props> {
               name=""
               placeholder="http://"
               value={officeWeb && officeWeb.webPageUrl || ''}
-              onChange={(e: any) => onChangeOfficeWebProps('webPageUrl', e.target.value)}
+              
             />
           </div>
           <div className="info-text">
@@ -58,7 +54,7 @@ class CreateWebPageTypeView extends React.Component<Props> {
                 patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                 onChange={getFileBoxIdForReference}
-                id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
+                
               />
               <div className="bottom">
                 <span className="text1"><Icon className="info16" />
@@ -68,26 +64,6 @@ class CreateWebPageTypeView extends React.Component<Props> {
               </div>
             </div>
           </div>
-        </Form.Field>
-
-        <Form.Field>
-          <label className="necessary">학습카드 공개여부</label>
-          <Radio
-            className="base"
-            label="공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOn}
-            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
-            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
-          />
-          <Radio
-            className="base"
-            label="비공개"
-            name="radioGroup"
-            value={SearchFilterType.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
-            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
-          />
         </Form.Field>
       </>
     );

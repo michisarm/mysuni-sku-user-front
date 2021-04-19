@@ -5,13 +5,13 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import routePaths from '../../../routePaths';
-import PersonalCubeContentContainer from '../logic/PersonalCubeContentContainer';
+import CubeIntroContentContainer from '../logic/CubeIntroContentContainer';
 import { ContentWrapperWithHeader } from '../view/DetailElementsView';
 
 
 @observer
 @reactAutobind
-class CreatePersonalCubeDetailPage extends Component {
+class CreateCubeIntroPage extends Component {
   //
   render() {
     //
@@ -24,11 +24,11 @@ class CreatePersonalCubeDetailPage extends Component {
         ]}
       >
         <ContentWrapperWithHeader>
-          <PersonalCubeContentContainer />
+          <CubeIntroContentContainer />
         </ContentWrapperWithHeader>
       </ContentLayout>
     );
   }
 }
 
-export default CreatePersonalCubeDetailPage;
+export default CreateCubeIntroPage;

@@ -13,10 +13,12 @@ const [
   setCineroomStore,
   onCineroomStore,
   getCineroomStore,
+  useCineroomStore,
 ] = createStore<CineroomModel[]>([initialStore]);
 
 export {
   setCineroomStore,
   onCineroomStore,
   getCineroomStore,
+  useCineroomStore,
 };

@@ -4,9 +4,7 @@ import { reactAutobind, mobxHelper, reactAlert, reactConfirm } from '@nara.platf
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
-
 import { Button } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 import { CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
@@ -22,7 +20,6 @@ import { FormTitle } from '../view/DetailElementsView';
 
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
-  actionLogService?: ActionLogService
   skProfileService?: SkProfileService
   collegeService?: CollegeService
   personalCubeService?: PersonalCubeService
@@ -37,7 +34,6 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
   'profile.skProfileService',
   'college.collegeService',
   'personalCube.personalCubeService',
@@ -82,24 +78,20 @@ class PersonalCubeContentContainer extends Component<Props, State> {
   }
 
   componentWillUnmount(): void {
-    //
     patronInfo.clearWorkspace();
   }
 
   clearAll() {
-    //
     const personalCubeService = this.props.personalCubeService!;
 
     personalCubeService.clearPersonalCube();
   }
 
   routeToCreateList() {
-    //
     this.props.history.push(routePaths.create());
   }
 
   routeToCreateIntro(personalCubeId: string) {
-    //
     const { history,  personalCubeService } = this.props;
     const { personalCube } = personalCubeService!;
 
@@ -215,10 +207,6 @@ class PersonalCubeContentContainer extends Component<Props, State> {
     });
   }
 
-  onClickActionLog(text: string) {
-    this.props.actionLogService?.registerClickActionLog({ subAction: text });
-  }
-
   render() {
     //
     const { personalCubeService, match: { params }} = this.props;
@@ -230,31 +218,28 @@ class PersonalCubeContentContainer extends Component<Props, State> {
         <FormTitle
           activeStep={1}
         />
-
         <BasicInfoFormContainer
           contentNew={!params.personalCubeId}
           personalCube={personalCube}
           onChangePersonalCubeProps={this.onChangePersonalCubeProps}
           onChangeCollege={this.onChangeCollege}
         />
-
         <ExposureInfoFormContainer
           personalCube={personalCube}
           targetSubsidiaryId={targetSubsidiaryId}
           onChangePersonalCubeProps={this.onChangePersonalCubeProps}
         />
-
         { params.personalCubeId ?
           <div className="buttons">
-            <Button type="button" className="fix line" onClick={() => { this.onClickActionLog('Delete'); this.onRemovePersonalCube(); }}>Delete</Button>
-            <Button type="button" className="fix line" onClick={() => { this.onClickActionLog('Cancel'); this.routeToCreateList(); }}>Cancel</Button>
-            <Button type="button" className="fix line" onClick={() => { this.onClickActionLog('Save'); this.onSave(false); }}>Save</Button>
-            <Button type="button" className="fix bg" onClick={() => { this.onClickActionLog('Next'); this.onSave(true); }}>Next</Button>
+            <Button type="button" className="fix line" onClick={this.onRemovePersonalCube}>Delete</Button>
+            <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+            <Button type="button" className="fix line" onClick={() => {this.onSave(false)}}>Save</Button>
+            <Button type="button" className="fix bg" onClick={() => {this.onSave(true)}}>Next</Button>
           </div>
           :
           <div className="buttons">
-            <Button type="button" className="fix line" onClick={() => { this.onClickActionLog('Cancel'); this.routeToCreateList(); }}>Cancel</Button>
-            <Button type="button" className="fix bg" onClick={() => { this.onClickActionLog('Next'); this.onSave(true); }}>Next</Button>
+            <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+            <Button type="button" className="fix bg" onClick={() => {this.onSave(true)}}>Next</Button>
           </div>
         }
       </>
