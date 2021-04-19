@@ -9,6 +9,7 @@ import {
   findCubeDetail,
   registerUserCube,
   modifyUserCube,
+  removeUserCube,
 } from '../apiclient/cubeApi';
 import { CubeState } from '../../../../shared/model';
 import {
@@ -34,6 +35,10 @@ export default class CreateCubeService {
 
   async modifyUserCube(cubeId: string, cubeSdo: CubeSdo) {
     return modifyUserCube(cubeId, cubeSdo);
+  }
+
+  async removeUserCube(cubeId: string) {
+    return removeUserCube(cubeId);
   }
 
   @action
