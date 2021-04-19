@@ -5724,10 +5724,10 @@
     "whatwg-mimetype" "^2.2.0"
     "whatwg-url" "^7.0.0"
 
-"date-fns@^2.0.1":
-  "integrity" "sha512-X3bf2iTPgCAQp9wvjOQytnf5vO5rESYRXlPIVcgSbtT5OTScPcsf9eZU+B/YIkKAtYr5WeCii58BgATrNitlWg=="
-  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-2.19.0.tgz"
-  "version" "2.19.0"
+"date-fns@^2.0.1", "date-fns@2.17.0":
+  "integrity" "sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-2.17.0.tgz"
+  "version" "2.17.0"
 
 "debug@*", "debug@^3.0.0", "debug@=3.1.0", "debug@3.1.0":
   "integrity" "sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g=="
@@ -12903,7 +12903,7 @@
   "resolved" "https://registry.npmjs.org/react-confirm-alert/-/react-confirm-alert-2.7.0.tgz"
   "version" "2.7.0"
 
-"react-datepicker@^2.10.1", "react-datepicker@^2.9.6":
+"react-datepicker@^2.9.6", "react-datepicker@2.16.0":
   "integrity" "sha512-TvcmSY27rn0JKvuJuIXNNS+niGQNdgtuG/CsBttVYhPOA9KmSw7c2PvQBPVEvzkyV+QPNJ8jN/KVJNj9uvopqA=="
   "resolved" "https://registry.npmjs.org/react-datepicker/-/react-datepicker-2.16.0.tgz"
   "version" "2.16.0"
