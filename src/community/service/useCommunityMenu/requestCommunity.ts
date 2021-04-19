@@ -79,6 +79,7 @@ export function requestCommunityMenu(communityId: string) {
     // })
 
     // console.log('menuArr :', menuArr);
+    console.log('menuArr', menuArr)
     //여기서 트리구조 형태로 배열 만들어준다.
     setCommunityAdminMenu({ 'menu': menuArr });
     return menuArr
