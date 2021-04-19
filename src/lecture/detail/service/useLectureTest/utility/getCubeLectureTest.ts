@@ -19,7 +19,10 @@ export async function getCubeLectureTestAnswer(
   params: LectureParams
 ): Promise<void> {
   const testItem = getLectureTestItem();
-  if (testItem) {
-    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions);
+  if (params.cubeId !== undefined && params.cubeId === testItem?.serviceId) {
+    // 중복 호출 방지
+    if (testItem) {
+      await getTestAnswerItemMapFromExam(testItem.id, testItem.questions);
+    }
   }
 }

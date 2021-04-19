@@ -14,8 +14,14 @@ import { findGradeSheet } from '../../../api/assistantApi';
 import { getEssayScores } from '../../../model/GradeSheet';
 import { ExtraTaskStatus } from '../../../../model/ExtraTaskStatus';
 import Student from '../../../../model/Student';
+import { LectureType } from '../../../viewModel/LectureType';
 
-async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
+async function getTestItem(
+  examId: string,
+  testStatus: ExtraTaskStatus,
+  serviceType: LectureType,
+  serviceId: string
+) {
   if (examId !== '' && examId !== null) {
     let examination = null;
     {
@@ -49,6 +55,8 @@ async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
       graderComment,
       essayScores,
       description: examPaperForm.description,
+      serviceType,
+      serviceId,
     };
     return item;
   }
@@ -70,7 +78,12 @@ export async function getTestItemMapFromCourse(
     examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId, student.extraWork.testStatus);
+  const testItem = await getTestItem(
+    examId,
+    student.extraWork.testStatus,
+    'Card',
+    params.cardId
+  );
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }
@@ -108,7 +121,12 @@ export async function getTestItemMapFromCube(
     examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId, student.extraWork.testStatus);
+  const testItem = await getTestItem(
+    examId,
+    student.extraWork.testStatus,
+    'Cube',
+    params.cubeId
+  );
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }
