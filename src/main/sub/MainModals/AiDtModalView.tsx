@@ -52,13 +52,13 @@ const AiDtModalView = () => {
             alt="사회는 거리두기, 우리 조직 DT는 ai/dt college로 거리 좁히기"
           />
           <Link
-            to="/suni-main/certification/badge/badge-detail/BADGE-2t"
+            to="/certification/badge/badge-detail/BADGE-2t"
             className="literacy"
           >
             구성원과정
           </Link>
           <Link
-            to="/suni-main/certification/badge/badge-detail/BADGE-4w"
+            to="/certification/badge/badge-detail/BADGE-4w"
             className="executive"
           >
             리더과정
