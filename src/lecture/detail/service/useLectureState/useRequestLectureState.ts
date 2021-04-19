@@ -6,11 +6,15 @@ import { requestLectureState } from './utility/requestLectureState';
 export function useRequestLectureState() {
   const params = useLectureParams();
   useEffect(() => {
-    if (params?.cubeId === undefined || params?.cubeType === undefined) {
+    if (
+      params?.cardId === undefined ||
+      params?.cubeId === undefined ||
+      params?.cubeType === undefined
+    ) {
       return;
     }
-    const { cubeId, cubeType } = params;
-    requestLectureState(cubeId, cubeType);
+    const { cardId, cubeId, cubeType } = params;
+    requestLectureState(cardId, cubeId, cubeType);
     return setLectureState;
   }, [params?.cubeId]);
 }

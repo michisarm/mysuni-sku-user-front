@@ -96,7 +96,7 @@ export async function requestLectureCardSummary(cardId: string) {
       c => c.type === 'ClassRoomLecture' || c.type === 'ELearning'
     );
     if (cube !== undefined) {
-      await requestLectureState(cube.id, cube.type);
+      await requestLectureState(cardId, cube.id, cube.type);
       await getClassroomFromCube(cube.id);
       lectureCardSummary.hasClassroomCube = true;
     }
