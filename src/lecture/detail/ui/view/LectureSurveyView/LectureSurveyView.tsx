@@ -19,7 +19,7 @@ import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import { SurveyCaseService } from 'survey/stores';
 import { SkProfileService } from 'profile/stores';
-import { CommunityCommentList } from '@nara.drama/feedback';
+import { CommentList, CommunityCommentList } from '@nara.drama/feedback';
 import {
   getLectureParams,
   useLectureParams,
@@ -259,7 +259,7 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         commentId !== undefined &&
         commentId !== '' && (
           <div className="outline">
-            <CommunityCommentList
+            <CommentList
               feedbackId={commentId}
               menuType=""
               hideCamera
