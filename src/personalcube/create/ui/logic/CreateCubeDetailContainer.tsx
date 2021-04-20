@@ -13,6 +13,7 @@ import CreateCubeExposureInfoView from '../view/CreateCubeExposureInfoView';
 import CreateCubeDetailInfoView from '../view/CreateCubeDetailInfoView';
 import { getBlankRequiredCubeContentsField, alertRequiredField } from '../../model/CubeSdo';
 import CreateCubeDetailTypeContainer from '../view/CreateCubeDetailTypeContainer';
+import { getRemark } from '../../model/CreateCubeDetail';
 
 
 function CreateCubeDetailContainer() {
@@ -72,6 +73,7 @@ function CreateCubeDetailContainer() {
                   cubeState={params.cubeState}
                   time={createCubeDetail.cube.time}
                   creatorName={createCubeDetail.cubeContents.creatorName}
+                  remark={getRemark(createCubeDetail.userCube.openRequests)}
                 />
                 <CreateCubeExposureInfoView
                   tags={createCubeDetail.cubeContents.tags}

@@ -119,7 +119,7 @@ function CreateCubeContainer() {
       reactAlert({
         title: '승인요청 완료',
         message: '승인요청이 완료되었습니다.',
-        onClose: routeToCreateList
+        onClose: routeToCreateList,
       }); 
     } else {
       reactAlert({ title: '승인요청 실패', message: '승인요청을 실패했습니다. 잠시 후 다시 시도해주세요.' });
