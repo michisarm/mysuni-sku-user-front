@@ -21,18 +21,19 @@ interface State {
 class HeaderAlarmView extends Component<Props, State> {
   //
   alarmButtonRef: any = React.createRef();
+  alarmRef: any = React.createRef();
 
   state = {
     alarmShowClass: '',
   };
 
-  //componentDidMount() {
-  //  document.addEventListener('mousedown', this.handleClickOutside);
-  //}
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
 
-  //componentWillUnmount() {
-  //  document.removeEventListener('mousedown', this.handleClickOutside);
-  //}
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 
   onTogglePop() {
     const { alarmShowClass } = this.state;
@@ -52,6 +53,18 @@ class HeaderAlarmView extends Component<Props, State> {
   //  }
   //}
 
+
+  handleClickOutside(e: MouseEvent) {
+    const { alarmShowClass } = this.state;
+    console.log(this.alarmRef.current.contains(e.target))
+
+    if (
+      !this.alarmRef.current.contains(e.target)
+    ) {
+      this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
+    }
+  }
+
   render() {
     //
     const { myNotieMentions, myNotieNoReadMentionCount, routeToAlarmBackLink } = this.props;
@@ -61,9 +74,8 @@ class HeaderAlarmView extends Component<Props, State> {
     if (myNotieNoReadMentionCount > 0) {
       existNoReadClass = 'lms-on'
     }
-
     return (
-      <>
+      <div ref={this.alarmRef}>
         <a
           className={`lms-alarm ${existNoReadClass}`}
           onClick={this.onTogglePop}
@@ -71,7 +83,7 @@ class HeaderAlarmView extends Component<Props, State> {
         >
           <span>알림</span>
         </a>
-        <div className={`lms-alarm-list ${alarmShowClass}`}>
+        <div className={`lms-alarm-list ${alarmShowClass}`} ref={this.alarmButtonRef}>
           <div className="lms-alarm-header">
             <span className="lms-alarm-title">알림</span>
             <Button
@@ -104,7 +116,7 @@ class HeaderAlarmView extends Component<Props, State> {
             })}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
