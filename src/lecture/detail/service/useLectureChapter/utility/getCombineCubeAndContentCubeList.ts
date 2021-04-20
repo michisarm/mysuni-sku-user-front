@@ -25,7 +25,6 @@ export function getCombineCubeAndContentCubeList(
 
   if (discussionList) {
     discussionList.map(item => {
-      console.log(item.contentId);
       const course: LectureChpaterCubeList = {
         cubeId: item.contentId.slice(-4),
         name: item.name,
