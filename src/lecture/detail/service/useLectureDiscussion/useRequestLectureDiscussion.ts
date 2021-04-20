@@ -12,6 +12,7 @@ export function useRequestLectureDiscussion() {
     if (params?.cardId === undefined || params?.contentId === undefined) {
       return;
     }
+
     requestLectureDiscussion(params.cardId, params.contentId);
     return setLectureDiscussion;
   }, [params?.cardId, params?.contentId]);

@@ -44,24 +44,13 @@ class HeaderAlarmView extends Component<Props, State> {
     handleClickAlarm();
   }
 
-  //handleClickOutside(e: MouseEvent) {
-  //  if (
-  //    this.alarmButtonRef &&
-  //    !this.alarmButtonRef.current.contains(e.target)
-  //  ) {
-  //    setTimeout(() => this.setState({ alarmShowClass: '' }), 500);
-  //  }
-  //}
-
-
   handleClickOutside(e: MouseEvent) {
     const { alarmShowClass } = this.state;
-    console.log(this.alarmRef.current.contains(e.target))
-
     if (
+      this.alarmRef &&
       !this.alarmRef.current.contains(e.target)
     ) {
-      this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
+      this.setState({ alarmShowClass: '' });
     }
   }
 

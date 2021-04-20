@@ -18,7 +18,7 @@ function LectureChapterTitleView({ name, description }: Props) {
       <div className="course-info-explain">
         <div className="syllabus-contents-wrap">
           <div className="contents-belt">
-            <img src="/images/all/icon-syllabus-22-px.png" />
+            <img src="/suni-main/images/all/icon-syllabus-22-px.png" />
             Syllabus
           </div>
           <div
