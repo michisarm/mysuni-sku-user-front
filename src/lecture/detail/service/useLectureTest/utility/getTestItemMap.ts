@@ -70,15 +70,13 @@ export async function getTestItemMapFromCourse(
   if (student === undefined) {
     return;
   }
-  const examId = student.studentScore.examId || '';
+  let examId = student.studentScore.examId || '';
   if (examId === null || examId === '') {
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;
     }
-    //clearFindMyCardRelatedStudentsCache();
-    getTestItemMapFromCourse(params); // students재조회(getStudentExam 중복호출방지ㅠ)
-    return;
+    examId = test.testId;
   }
 
   const testItem = await getTestItem(
@@ -100,6 +98,7 @@ export async function getTestItemMapFromCube(
     return;
   }
 
+  clearFindMyCardRelatedStudentsCache();
   const students = await findMyCardRelatedStudentsCache(params.cardId);
   if (students === undefined) {
     return;
@@ -115,15 +114,13 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  const examId = student.studentScore.examId || '';
+  let examId = student.studentScore.examId || '';
   if (examId === null || examId === '') {
     const test = await getStudentExam(student.id);
     if (test === undefined) {
       return;
     }
-    clearFindMyCardRelatedStudentsCache();
-    getTestItemMapFromCube(params); // students재조회(getStudentExam 중복호출방지ㅠ)
-    return;
+    examId = test.testId;
   }
 
   const testItem = await getTestItem(
