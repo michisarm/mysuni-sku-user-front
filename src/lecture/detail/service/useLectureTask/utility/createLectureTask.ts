@@ -23,17 +23,10 @@ export async function createLectureTask(
         commentFeedbackId: taskCreateItem.commentFeedbackId,
         boardId: taskCreateItem.id,
         pinned: taskCreateItem.notice,
+        contents: taskCreateItem.contents,
+        fileBoxId: taskCreateItem.fileBoxId,
       };
-
-      const postId = await registerPost(postCdo);
-      if (postId !== undefined) {
-        const postBodyCdo: PostBodyCdo = {
-          postId,
-          contents: taskCreateItem.contents,
-          fileBoxId: taskCreateItem.fileBoxId,
-        };
-        await registerPostBody(postBodyCdo);
-      }
+      await registerPost(postCdo);
     }
 
     if (isReply) {

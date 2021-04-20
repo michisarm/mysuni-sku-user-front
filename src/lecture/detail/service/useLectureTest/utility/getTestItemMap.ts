@@ -5,6 +5,7 @@ import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import {
+  clearFindMyCardRelatedStudentsCache,
   findByCardId,
   findMyCardRelatedStudentsCache,
   getStudentExam,
@@ -69,17 +70,15 @@ export async function getTestItemMapFromCourse(
   if (student === undefined) {
     return;
   }
-  let examId = student.studentScore.examId || '';
+  const examId = student.studentScore.examId || '';
   if (examId === null || examId === '') {
-    try {
-      const test = await getStudentExam(student.id);
-      if (test === undefined) {
-        return;
-      }
-      examId = test.testId;
-    } catch (e) {
-      console.log('err', e);
+    const test = await getStudentExam(student.id);
+    if (test === undefined) {
+      return;
     }
+    //clearFindMyCardRelatedStudentsCache();
+    getTestItemMapFromCourse(params); // students재조회(getStudentExam 중복호출방지ㅠ)
+    return;
   }
 
   const testItem = await getTestItem(
@@ -116,17 +115,15 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  let examId = student.studentScore.examId || '';
+  const examId = student.studentScore.examId || '';
   if (examId === null || examId === '') {
-    try {
-      const test = await getStudentExam(student.id);
-      if (test === undefined) {
-        return;
-      }
-      examId = test.testId;
-    } catch (e) {
-      console.log('err', e);
+    const test = await getStudentExam(student.id);
+    if (test === undefined) {
+      return;
     }
+    clearFindMyCardRelatedStudentsCache();
+    getTestItemMapFromCube(params); // students재조회(getStudentExam 중복호출방지ㅠ)
+    return;
   }
 
   const testItem = await getTestItem(

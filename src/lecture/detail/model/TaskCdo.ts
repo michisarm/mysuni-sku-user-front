@@ -6,6 +6,8 @@ export interface PostCdo {
   commentFeedbackId: string;
   boardId: string;
   pinned: boolean;
+  contents: string;
+  fileBoxId: string;
 }
 export interface PostBodyCdo {
   postId: string;
