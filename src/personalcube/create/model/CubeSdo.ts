@@ -1,10 +1,12 @@
+import { isEmpty } from 'lodash';
 import { CubeCategory } from '../../../shared/model/CubeCategory';
 import DifficultyLevel from '../../../lecture/detail/model/DifficultyLevel';
 import { Description } from '../../personalcube/model/Description';
 import { CubeMaterialSdo } from './CubeMaterialSdo';
 import CubeType from '../../../lecture/detail/model/CubeType';
 import { getMainCategory } from './CreateCubeDetail';
-import { DenizenKey, reactAlert } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
 
 export interface CubeSdo {
   name: string;
@@ -16,6 +18,9 @@ export interface CubeSdo {
   description: Description;
   organizerId: string;
   otherOrganizerName?: string;
+  operator: {
+    keyString: string,
+  };
   fileBoxId?: string;
   materialSdo: CubeMaterialSdo;
 }
@@ -55,6 +60,9 @@ export const initialCubeSdo: CubeSdo = {
     boardSdo: {},
     officeWebSdo: {},
   },
+  operator: {
+    keyString: patronInfo.getDenizenId() || '',
+  }
 };
 
 export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
@@ -77,6 +85,20 @@ export function getBlankRequiredCubeField(cubeSdo: CubeSdo) {
 }
 
 export function getBlankRequiredCubeContentsField(cubeSdo: CubeSdo) {
+  const mainCategory = getMainCategory(cubeSdo.categories);
+
+  if (!cubeSdo.name) return '강좌정보';
+  if (!mainCategory) return '메인채널';
+  if (cubeSdo.tags.length > 10) {
+    return '태그는 10개까지 입력 가능합니다.';
+  }
+  if (cubeSdo.type === 'None') return '교육형태';
+  if (!cubeSdo.description?.goal) return '교육목표';
+  if (!cubeSdo.description?.applicants) return '교육대상';
+  if (!cubeSdo.description?.description) return '교육내용';
+  if (!cubeSdo.learningTime) return '교육시간';
+  if (!cubeSdo.difficultyLevel) return '난이도';
+  if (!cubeSdo.organizerId) return '교육기관/출처';
   if (!cubeSdo.description?.goal) return '교육목표';
   if (!cubeSdo.description?.applicants) return '교육대상';
   if (!cubeSdo.description?.description) return '교육내용';
@@ -84,8 +106,28 @@ export function getBlankRequiredCubeContentsField(cubeSdo: CubeSdo) {
   if (!cubeSdo.difficultyLevel) return '난이도';
   if (!cubeSdo.organizerId) return '교육기관/출처';
 
+  if (cubeSdo.type === 'Video' || cubeSdo.type === 'Audio') {
+    const mediaContents = cubeSdo.materialSdo.mediaSdo.mediaContents;
+    if (isEmpty(mediaContents?.internalMedias[0]) && !mediaContents?.linkMediaUrl) {
+      return '교육자료';
+    }
+  }
+
+  if (cubeSdo.type === 'Documents') {
+    if (!cubeSdo.materialSdo.officeWebSdo.fileBoxId) {
+      return '교육자료';
+    }
+  }
+
+  if (cubeSdo.type === 'WebPage') {
+    if (!cubeSdo.materialSdo.officeWebSdo.webPageUrl) {
+      return '교육자료';
+    }
+  }
+
   return 'none';
 }
+
 
 export const alertRequiredField = (message: string) => {
   reactAlert({ title: '필수 정보 입력 안내', message, warning: true });

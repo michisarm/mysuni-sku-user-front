@@ -6,13 +6,14 @@ import { useParams } from 'react-router-dom';
 import { CreateCubeParams } from '../../model/CreateCubeParams';
 import { Button } from 'semantic-ui-react';
 import { routeToCreateList } from '../../../routePaths';
-import { getBlankRequiredCubeField } from '../../model/CubeSdo';
+import { getBlankRequiredCubeContentsField } from '../../model/CubeSdo';
 import { useRequestCreateCubeDetail } from '../../service/useRequestCreateCubeDetail';
 import CreateCubeContentsFormView from '../view/CreateCubeContentsFormView';
 import CreateCubeContentsTypeContainer from './CreateCubeContentsTypeContainer';
 import CreateCubeBasicInfoFormView from '../view/CreateCubeBasicInfoFormView';
 import CreateCubeExposureInfoFormView from '../view/CreateCubeExposureInfoFormView';
 import { useRequestSelectedCollege } from '../../service/useRequestSelectedCollege';
+import { requestOpenUserCube } from '../../../personalcube/present/apiclient/cubeApi';
 
 
 function CreateCubeContainer() {
@@ -23,7 +24,7 @@ function CreateCubeContainer() {
   const { cubeSdo } = CreateCubeService.instance;
 
   const onClickSave = useCallback(() => {
-    const blankField = getBlankRequiredCubeField(cubeSdo);
+    const blankField = getBlankRequiredCubeContentsField(cubeSdo);
 
     if(blankField === 'none') {
       reactConfirm({
@@ -91,6 +92,40 @@ function CreateCubeContainer() {
       reactAlert({ title: '삭제 실패', message: '삭제를 실패했습니다. 잠시 후 다시 시도해주세요.' });
     } 
   };
+  
+  const onClickApprovalRequest = useCallback(() => {
+    const blankField = getBlankRequiredCubeContentsField(cubeSdo);
+    
+    if(blankField === 'none') {
+      reactConfirm({
+        title: '승인 요청 안내',
+        message: '학습 강좌에 대해 승인 요청하시겠습니까?',
+        onOk: onApprovalRequest,
+      });
+    } else {
+      alertRequiredField(blankField);
+    }
+
+  }, [cubeSdo]);
+
+  const onApprovalRequest = useCallback( async () => {
+    if(params.personalCubeId === undefined) {
+      return;
+    }
+
+    const result = await requestOpenUserCube(params.personalCubeId);
+
+    if(result) {
+      reactAlert({
+        title: '승인요청 완료',
+        message: '승인요청이 완료되었습니다.',
+        onClose: routeToCreateList,
+      }); 
+    } else {
+      reactAlert({ title: '승인요청 실패', message: '승인요청을 실패했습니다. 잠시 후 다시 시도해주세요.' });
+    }
+
+  }, [params.personalCubeId]);
 
   const alertRequiredField = useCallback((message: string) => {
     reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
@@ -109,7 +144,8 @@ function CreateCubeContainer() {
           <div className="buttons">
             <Button type="button" className="fix line" onClick={onClickDelete}>Delete</Button>
             <Button type="button" className="fix line" onClick={routeToCreateList}>Cancel</Button>
-            <Button type="button" className="fix bg" onClick={onClickSave}>Save</Button>
+            <Button type="button" className="fix line" onClick={onClickSave}>Save</Button>
+            <Button type="button" className="fix bg" onClick={onClickApprovalRequest}>승인요청</Button>
           </div>
         )
       }
