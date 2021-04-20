@@ -27,13 +27,13 @@ class HeaderAlarmView extends Component<Props, State> {
     alarmShowClass: '',
   };
 
-  // componentDidMount() {
-  //   document.addEventListener('mousedown', this.handleClickOutside);
-  // }
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
 
-  // componentWillUnmount() {
-  //   document.removeEventListener('mousedown', this.handleClickOutside);
-  // }
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 
   onTogglePop() {
     const { alarmShowClass } = this.state;
@@ -44,26 +44,15 @@ class HeaderAlarmView extends Component<Props, State> {
     handleClickAlarm();
   }
 
-  //handleClickOutside(e: MouseEvent) {
-  //  if (
-  //    this.alarmButtonRef &&
-  //    !this.alarmButtonRef.current.contains(e.target)
-  //  ) {
-  //    setTimeout(() => this.setState({ alarmShowClass: '' }), 500);
-  //  }
-  //}
-
-
-  // handleClickOutside(e: MouseEvent) {
-  //   const { alarmShowClass } = this.state;
-  //   console.log(this.alarmRef.current.contains(e.target))
-
-  //   if (
-  //     !this.alarmRef.current.contains(e.target)
-  //   ) {
-  //     this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
-  //   }
-  // }
+  handleClickOutside(e: MouseEvent) {
+    const { alarmShowClass } = this.state;
+    if (
+      this.alarmRef &&
+      !this.alarmRef.current.contains(e.target)
+    ) {
+      this.setState({ alarmShowClass: '' });
+    }
+  }
 
   render() {
     //
@@ -75,7 +64,7 @@ class HeaderAlarmView extends Component<Props, State> {
       existNoReadClass = 'lms-on'
     }
     return (
-      <div>
+      <div ref={this.alarmRef}>
         <a
           className={`lms-alarm ${existNoReadClass}`}
           onClick={this.onTogglePop}
