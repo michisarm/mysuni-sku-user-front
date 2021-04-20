@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -42,8 +42,10 @@ function MyTrainingListView({
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
 
+    const cardId = myTraining.serviceType === 'Card' ? myTraining.serviceId : myTraining.cardId;
+
     const params: LectureParams = {
-      cardId: myTraining.serviceId,
+      cardId,
       viewType: 'view',
       pathname: '',
     };
