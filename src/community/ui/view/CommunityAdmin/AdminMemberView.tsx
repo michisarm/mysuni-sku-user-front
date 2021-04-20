@@ -8,6 +8,7 @@ import {
   updateMembers,
   deleteMembers,
   rejectMembers,
+  updateMemberType
 } from 'community/service/useMemberList/useMemberList';
 import { CommunityMemberList } from 'community/model/CommunityMember';
 import CommunityMemberCompanionModal from './CommunityMemberCompanionModal';
@@ -50,6 +51,11 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
     { text: '100개씩 보기', value: '100' },
   ];
 
+  const memberOptions = [
+    { text: '멤버', value: 'MEMBER' },
+    { text: '관리자', value: 'ADMIN' }
+  ];
+
   // const [focus, setFocus] = useState<boolean>(false);
   // const [write, setWrite] = useState<string>('');
   const [selectedList, setSelectedList] = useState<(string | undefined)[]>([]);
@@ -57,6 +63,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   const [limit, setLimit] = useState<number>(20);
   const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('');
+  const [memberType, setMemberType] = useState<string>('MEMBER');
   // const approveData = useCommunityMemberApprove();
   const AllData =
     communityMembers && communityMembers.results.map(item => item.memberId);
@@ -111,6 +118,34 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       },
     });
   }, [communityId, selectedList, searchBox]);
+
+  const onChangeMemberType = useCallback(() => {
+    if (selectedList && selectedList.length === 0) {
+      reactAlert({ title: '알림', message: '멤버를 선택해 주세요.' });
+      return;
+    }
+    if (selectedList && selectedList.find(item => item === managerId)) {
+      reactAlert({ title: '알림', message: '대표관리자는 등급을 변경할 수 없습니다.' });
+      return;
+    }
+
+    let memberTypeText = '';
+
+    if (memberType === 'ADMIN') {
+      memberTypeText = '관리자'
+    } else {
+      memberTypeText = '멤버'
+    }
+
+    reactConfirm({
+      title: '알림',
+      message: '선택한 멤버를 ' + memberTypeText + '로 변경하시겠습니까?',
+      onOk: async () => {
+        await updateMemberType(communityId, selectedList, memberType)
+        setSelectedList([]);
+      },
+    });
+  }, [communityId, selectedList, memberType, searchBox]);
 
   const totalPages = useCallback(() => {
     let totalPage = Math.ceil(communityMembers!.totalCount / limit);
@@ -308,7 +343,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                   defaultValue={selectOptions[0].value}
                   options={selectOptions}
                   onChange={(e: any, data: any) => setSearchType(data.value)}
-                  // setSearchType
+                // setSearchType
                 />
                 <div className={classNames('ui input admin_text_input')}>
                   <input
@@ -331,54 +366,75 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
           </tbody>
         </table>
       ) : (
-        <table className="ui admin_table_search sub">
-          <colgroup>
-            <col width="100px" />
-            <col />
-          </colgroup>
-          <tbody>
-            <tr>
-              <th>검색어</th>
-              <td>
-                <Select
-                  placeholder="전체"
-                  className="ui small-border admin_tab_select"
-                  defaultValue={selectOptions[0].value}
-                  options={selectOptions}
-                  onChange={(e: any, data: any) => setSearchType(data.value)}
-                />
-                <div className={classNames('ui input admin_text_input add')}>
-                  <input
-                    type="text"
-                    placeholder="검색어를 입력해주세요."
-                    value={searchText}
-                    disabled={searchType === ''}
-                    onChange={(e: any) => setSearchText(e.target.value)}
-                    onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
+          <table className="ui admin_table_search sub">
+            <colgroup>
+              <col width="100px" />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <th>검색어</th>
+                <td>
+                  <Select
+                    placeholder="전체"
+                    className="ui small-border admin_tab_select"
+                    defaultValue={selectOptions[0].value}
+                    options={selectOptions}
+                    onChange={(e: any, data: any) => setSearchType(data.value)}
                   />
-                  <button
-                    className="ui button admin_text_button"
-                    onClick={() => handleSubmitClick()}
-                  >
-                    검색
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      )}
+                  <div className={classNames('ui input admin_text_input add')}>
+                    <input
+                      type="text"
+                      placeholder="검색어를 입력해주세요."
+                      value={searchText}
+                      disabled={searchType === ''}
+                      onChange={(e: any) => setSearchText(e.target.value)}
+                      onKeyPress={e => e.key === 'Enter' && handleSubmitClick()}
+                    />
+                    <button
+                      className="ui button admin_text_button"
+                      onClick={() => handleSubmitClick()}
+                    >
+                      검색
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
       <div className="table-board-title">
         <div className="table_list_string">
           ㆍ전체 <strong>{communityMembers.totalCount}명</strong>멤버
-        </div>
-        <div className="right-wrap">
           <Select
             className="ui small-border admin_table_select"
             defaultValue={limitOptions[0].value}
             options={limitOptions}
             onChange={(e: any, data: any) => setLimit(data.value)}
           />
+        </div>
+        <div className="right-wrap">
+
+          {searchBox.approved === 'APPROVED' && (
+            <>
+              <span>선택한 멤버를</span>
+
+              <Select
+                className="ui small-border admin_table_select"
+                defaultValue={memberOptions[0].value}
+                options={memberOptions}
+                style={{ marginLeft: '5px' }}
+                onChange={(e: any, data: any) => setMemberType(data.value)}
+              />
+
+              <button
+                className="ui button admin_table_button"
+                onClick={e => onChangeMemberType()}
+              >
+                등급변경
+              </button>
+            </>
+          )}
 
           {!searchBox.groupId && (
             <button
@@ -441,6 +497,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                 <th>닉네임</th>
                 <th>E-mail</th>
                 <th>가입일</th>
+                <th>등급</th>
               </tr>
             </thead>
             <tbody>
@@ -472,22 +529,23 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
                     {item.createdTime &&
                       moment(item.createdTime).format('YYYY.MM.DD')}
                   </td>
+                  <td>{managerId === item.memberId ? '대표관리자' : item.memberType === 'ADMIN' ? '관리자' : '멤버'}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       ) : (
-        <div className="no-cont-wrap">
-          <Icon className="no-contents80" />
-          <span className="blind">콘텐츠 없음</span>
-          <div className="text">
-            {searchBox.approved === 'APPROVED'
-              ? '커뮤니티 멤버가 없습니다.'
-              : '가입 대기가 없습니다.'}
+          <div className="no-cont-wrap">
+            <Icon className="no-contents80" />
+            <span className="blind">콘텐츠 없음</span>
+            <div className="text">
+              {searchBox.approved === 'APPROVED'
+                ? '커뮤니티 멤버가 없습니다.'
+                : '가입 대기가 없습니다.'}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       {communityMembers && communityMembers.totalCount >= 20 ? (
         <div className="lms-paging-holder">
           <Pagination

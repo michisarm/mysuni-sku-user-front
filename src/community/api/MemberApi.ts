@@ -125,3 +125,17 @@ export function registerMemberTempComplete(
     )
     .then(response => (response && response.data) || null);
 }
+
+export function modifyMemberType(
+  communityId: string,
+  memberIdList: (string | undefined)[],
+  memberType: string
+): Promise<string> {
+  return axios
+    .put<string>(
+      `${BASE_URL}/communities/${communityId}/members/memberType/${memberIdList.join(
+        ','
+      )}?memberType=${memberType}`
+    )
+    .then(response => response && response.data);
+}

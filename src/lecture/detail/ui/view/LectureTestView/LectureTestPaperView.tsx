@@ -24,7 +24,10 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
-import { getTestStudentItemMapFromCourse } from '../../../service/useLectureTest/utility/getTestStudentItemMap';
+import {
+  getTestStudentItemMapFromCourse,
+  getTestStudentItemMapFromCube,
+} from '../../../service/useLectureTest/utility/getTestStudentItemMap';
 import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { Area } from 'tracker/model';
 
@@ -63,7 +66,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       answerItemId = answerItem.id;
     }
 
-    if (params.cardId !== undefined) {
+    if (params.cubeId !== undefined) {
       saveCubeTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
@@ -72,7 +75,11 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     await clearFindMyCardRelatedStudentsCache();
     await requestCardLectureStructure(cardId);
 
-    await getTestStudentItemMapFromCourse(params); // student 재호출
+    if (params.cubeId !== undefined) {
+      await getTestStudentItemMapFromCube(params); // student 재호출
+    } else {
+      await getTestStudentItemMapFromCourse(params); // student 재호출
+    }
     await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   }, [answerItem, params]);
 
@@ -202,10 +209,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
           )}
           {!modalGbn && (
             <div className={testClassName}>
-              <div
-                className="course-info-header"
-                data-area={Area.CUBE_HEADER}
-              >
+              <div className="course-info-header" data-area={Area.CUBE_HEADER}>
                 <div className="survey-header">
                   <div className="survey-header-left">{testItem.name}</div>
                   <div className="survey-header-right">

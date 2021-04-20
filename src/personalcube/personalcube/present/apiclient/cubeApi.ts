@@ -8,6 +8,7 @@ import { CubeSdo } from '../../../create/model/CubeSdo';
 import { ContentsProvider } from '../../model/ContentsProvider';
 import { PanoptoCdoModel } from '../../../media/model/PanoptoCdoModel';
 import { InternalMediaConnection } from '../../../../lecture/model/InternalMediaConnection';
+import { UserCube } from '../../../create/model/UserCube';
 
 const BASE_URL = '/api/cube';
 
@@ -25,6 +26,12 @@ export function findCubeDetail(cubeId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/${cubeId}/detail`;
   return axios.get<CreateCubeDetail>(url).then(AxiosReturn);
+}
+
+export function findUserCube(cubeId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/userCubes/${cubeId}`;
+  return axios.get<UserCube>(url).then(AxiosReturn);
 }
 
 export function findUserCubes(userCubeRdo: UserCubeRdo) {
@@ -83,4 +90,10 @@ export function findPanopToList(panoptoCdo: PanoptoCdoModel) {
       params: panoptoCdo,
     })
     .then(response => (response && response.data) || null);
+}
+
+export function requestOpenUserCube(cubeId: string) {
+  const axios = getAxios();
+  const baseUrl = `${BASE_URL}/userCubes/${cubeId}/requestOpen`;
+  return axios.put<void>(baseUrl).then(response => true).catch(error => false);
 }

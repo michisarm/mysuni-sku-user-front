@@ -49,7 +49,7 @@ export async function getTestStudentItemMapFromCube(
   }
   const lectureTestStudentItem: LectureTestStudentItem = {
     studentId: student.id,
-    serviceType: 'Card',
+    serviceType: 'Cube',
     learningState: student.learningState,
     studentScore: student.studentScore,
     examId: student.studentScore.examId,

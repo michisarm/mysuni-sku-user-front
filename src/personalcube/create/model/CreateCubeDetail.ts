@@ -3,11 +3,14 @@ import { CubeContents } from '../../../lecture/model/CubeContents';
 import { CubeMaterial } from '../../../lecture/model/CubeMaterial';
 import { CubeSdo } from './CubeSdo';
 import { CubeCategory } from '../../../shared/model/CubeCategory';
+import { UserCube } from './UserCube';
+import { OpenRequest } from './OpenRequest';
 
 export interface CreateCubeDetail {
   cube: Cube;
   cubeContents: CubeContents;
   cubeMaterial: CubeMaterial;
+  userCube: UserCube;
 }
 
 export function getMainCategory(categories: CubeCategory[]) {
@@ -16,6 +19,14 @@ export function getMainCategory(categories: CubeCategory[]) {
 
 export function getSubCategories(categories: CubeCategory[]) {
   return categories.filter(category => category.mainCategory === false);
+}
+
+export function getRemark(openRequests: OpenRequest[]) {
+  if (openRequests.length > 0 && openRequests[0].response) {
+    return openRequests[0].response.remark;
+  }
+
+  return '';
 }
 
 export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
@@ -51,5 +62,6 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
         learningPeriod: officeWeb?.learningPeriod,
       },
     },
+    operator: cubeContents.operator,
   };
 }
