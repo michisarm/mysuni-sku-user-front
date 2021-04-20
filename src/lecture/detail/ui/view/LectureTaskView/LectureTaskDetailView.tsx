@@ -75,6 +75,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     <Fragment>
       {taskDetail && (
         <>
+          {taskDetail.contents}
           <LectureTaskDetailContentHeaderView
             taskDetail={taskDetail}
             title={taskDetail.title}

@@ -37,7 +37,7 @@ async function getTaskItem(postParam: any) {
   //
   if (postParam.id !== '' && postParam.type === 'parent') {
     const post = await findPost(postParam.id);
-    const postBody = await findPostBody(postParam.id);
+    const result = await findPostBody(postParam.id);
     if (post !== undefined) {
       lectureTaskDetail.id = post.id;
       lectureTaskDetail.title = post.title;
@@ -46,9 +46,10 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
       lectureTaskDetail.readCount = post.readCount;
     }
-    if (postBody !== undefined) {
-      lectureTaskDetail.contents = postBody.contents;
-      lectureTaskDetail.fileBoxId = postBody.fileBoxId;
+    if (result !== undefined && result.postBody !== undefined) {
+      debugger;
+      lectureTaskDetail.contents = result.postBody.contents;
+      lectureTaskDetail.fileBoxId = result.postBody.fileBoxId;
     }
     return lectureTaskDetail;
   }
