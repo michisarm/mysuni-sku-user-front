@@ -47,7 +47,6 @@ async function getTaskItem(postParam: any) {
       lectureTaskDetail.readCount = post.readCount;
     }
     if (result !== undefined && result.postBody !== undefined) {
-      debugger;
       lectureTaskDetail.contents = result.postBody.contents;
       lectureTaskDetail.fileBoxId = result.postBody.fileBoxId;
     }
