@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
@@ -25,7 +25,11 @@ function BadgeCategoryContainer({
     setSelectedCategoryId,
   } = badgeCategoryService!;
 
-  useRequestBadgeCategory();
+  useEffect(() => {
+    return () => {
+      BadgeCategoryService.instance.clearSelectedCategoryId();
+    };
+  }, []);
 
   const {
     isNext,

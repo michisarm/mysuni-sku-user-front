@@ -23,6 +23,6 @@ export async function checkStudent(params: LectureParams): Promise<void> {
     }
     clearFindMyCardRelatedStudentsCache();
     requestCardLectureStructure(cardId);
-    requestLectureState(cubeId, cubeType);
+    requestLectureState(cardId, cubeId, cubeType);
   }
 }

@@ -1,10 +1,11 @@
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
-import { findCubeDetailCache } from '../../../api/cubeApi';
+import {
+  countClassroomStudentsCache,
+  findCubeDetailCache,
+} from '../../../api/cubeApi';
 import { setLectureClassroom } from '../../../store/LectureClassroomStore';
-import LectureParams from '../../../viewModel/LectureParams';
 
-export async function getClassroomFromCube(params: LectureParams) {
-  const { cubeId } = params;
+export async function getClassroomFromCube(cubeId: string) {
   if (cubeId === undefined) {
     return;
   }
@@ -12,6 +13,8 @@ export async function getClassroomFromCube(params: LectureParams) {
   if (cubeDetail === undefined) {
     return;
   }
+  const counts = (await countClassroomStudentsCache(cubeId)) || [];
+
   const {
     cubeContents: { instructors },
     cubeMaterial: { classrooms },
@@ -72,7 +75,7 @@ export async function getClassroomFromCube(params: LectureParams) {
           },
           enrollingAvailable,
           capacityClosed,
-          studentCount: waitingCapacity,
+          studentCount: counts.find(c => c.left === round)?.right || 0,
           cancellationPenalty,
           remote,
           operator: operators.find(c => c.id === keyString),

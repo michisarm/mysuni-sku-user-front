@@ -63,7 +63,10 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
         </div>
         <LectureStructureContainer />
       </div>
-      <div className="course-info-detail responsive-course">
+      <div
+        className="course-info-detail responsive-course"
+        data-area={Area.CARD_CONTENT}
+      >
         <a
           className={
             nowScroll > scrollValue ? 'btn-wide lms-wide-fixed' : 'btn-wide'

@@ -1,7 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-
 import { Form, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
@@ -127,24 +126,7 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
             </div>
           </div>
         </Form.Field>
-
         <Form.Field>
-          {/*<label>교육기관 / 출처</label>
-          <div className="ui grid create">
-            <div className="column">
-              <Select placeholder="선택해주세요"
-                className="dropdown w100"
-                options={selectOptions02}
-                defaultValue={selectOptions02[1].value}
-              />
-            </div>
-            <div className="column">
-              <div className="ui h48 input">
-                <input type="text" name="" placeholder="직접입력 선택 시 활성화 됩니다." value="EBS 중학" />
-                <Icon className="clear link" />
-              </div>
-            </div>
-          </div>*/}
           <ContentsProviderSelectContainer
             targetProps="operation.organizer"
             type="cubeInfo"
@@ -155,7 +137,6 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
           />
         </Form.Field>
       </>
-
     );
   }
 }

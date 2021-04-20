@@ -6,15 +6,22 @@ import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import {
   findByCardId,
-  findByCubeId,
+  findMyCardRelatedStudentsCache,
   getStudentExam,
 } from '../../../api/cardApi';
 import { patronInfo } from '@nara.platform/dock';
 import { findGradeSheet } from '../../../api/assistantApi';
 import { getEssayScores } from '../../../model/GradeSheet';
 import { ExtraTaskStatus } from '../../../../model/ExtraTaskStatus';
+import Student from '../../../../model/Student';
+import { LectureType } from '../../../viewModel/LectureType';
 
-async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
+async function getTestItem(
+  examId: string,
+  testStatus: ExtraTaskStatus,
+  serviceType: LectureType,
+  serviceId: string
+) {
   if (examId !== '' && examId !== null) {
     let examination = null;
     {
@@ -48,6 +55,8 @@ async function getTestItem(examId: string, testStatus: ExtraTaskStatus) {
       graderComment,
       essayScores,
       description: examPaperForm.description,
+      serviceType,
+      serviceId,
     };
     return item;
   }
@@ -60,16 +69,25 @@ export async function getTestItemMapFromCourse(
   if (student === undefined) {
     return;
   }
-  let examId = student.studentScore.examId;
-  if (examId === null) {
-    const test = await getStudentExam(student.id);
-    if (test === undefined) {
-      return;
+  let examId = student.studentScore.examId || '';
+  if (examId === null || examId === '') {
+    try {
+      const test = await getStudentExam(student.id);
+      if (test === undefined) {
+        return;
+      }
+      examId = test.testId;
+    } catch (e) {
+      console.log('err', e);
     }
-    examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId, student.extraWork.testStatus);
+  const testItem = await getTestItem(
+    examId,
+    student.extraWork.testStatus,
+    'Card',
+    params.cardId
+  );
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }
@@ -83,20 +101,40 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  const student = await findByCubeId(params.cubeId);
+  const students = await findMyCardRelatedStudentsCache(params.cardId);
+  if (students === undefined) {
+    return;
+  }
+
+  let student: Student | undefined;
+  students.cubeStudents?.forEach(cubeStudent => {
+    if (cubeStudent.lectureId === params.cubeId) {
+      student = cubeStudent;
+    }
+  });
   if (student === undefined) {
     return;
   }
-  let examId = student.studentScore.examId;
+
+  let examId = student.studentScore.examId || '';
   if (examId === null || examId === '') {
-    const test = await getStudentExam(student.id);
-    if (test === undefined) {
-      return;
+    try {
+      const test = await getStudentExam(student.id);
+      if (test === undefined) {
+        return;
+      }
+      examId = test.testId;
+    } catch (e) {
+      console.log('err', e);
     }
-    examId = test.testId;
   }
 
-  const testItem = await getTestItem(examId, student.extraWork.testStatus);
+  const testItem = await getTestItem(
+    examId,
+    student.extraWork.testStatus,
+    'Cube',
+    params.cubeId
+  );
   if (testItem !== undefined) {
     setLectureTestItem(testItem);
   }

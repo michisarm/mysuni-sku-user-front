@@ -20,6 +20,7 @@ export interface LectureTaskChildRepliesItem {
 
 export interface LectureTaskDetail {
   id: string;
+  postId?: string;
   fileBoxId: string;
   title: string;
   writer: WriterModel;

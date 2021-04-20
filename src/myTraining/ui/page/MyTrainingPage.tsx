@@ -4,7 +4,11 @@ import { observer, inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import routePaths from 'myTraining/routePaths';
 import { NotieService } from 'notie/stores';
-import { MyTrainingService, InMyLectureService, AplService } from 'myTraining/stores';
+import {
+  MyTrainingService,
+  InMyLectureService,
+  AplService,
+} from 'myTraining/stores';
 import { LectureService } from 'lecture/stores';
 import { MenuControlAuthService } from 'approval/stores';
 import { TabItemModel, ContentLayout } from 'shared';
@@ -16,7 +20,10 @@ import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { usePublishViewEvent } from '../../service/usePublishViewEvent';
 import { useRequestLearningStorage } from '../../service/useRequestLearningStorage';
 import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
-import { MyLearningContentType, MyLearningContentTypeName } from '../model/MyLearningContentType';
+import {
+  MyLearningContentType,
+  MyLearningContentTypeName,
+} from '../model/MyLearningContentType';
 import MyTrainingListContainer from '../logic/MyTrainingListContainer';
 import InMyLectureListContainer from '../logic/InMyLectureListContainer';
 import PersonalCompletedListContainer from '../logic/PersonalCompletedListContainer';
@@ -24,7 +31,6 @@ import RequiredCardListContainer from '../logic/RequiredCardListContainer';
 import { CollegeService } from '../../../college/stores';
 import { useRequestMenuAuth } from '../../service/useRequestMenuAuth';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
-
 
 interface MyTrainingPageProps {
   notieService?: NotieService;
@@ -52,10 +58,17 @@ function MyTrainingPage({
 
   const { colleges } = collegeService!;
   const { menuControlAuth } = menuControlAuthService!;
-  const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
+  const {
+    inprogressCount,
+    completedCount,
+    enrolledCount,
+    retryCount,
+  } = myTrainingService!;
   const { inMyListCount } = inMyLectureService!;
   const { requiredLecturesCount } = lectureService!;
-  const { aplCount: { all: personalCompletedCount } } = aplService!;
+  const {
+    aplCount: { all: personalCompletedCount },
+  } = aplService!;
 
   useRequestCollege();
   useRequestMenuAuth();
@@ -72,21 +85,19 @@ function MyTrainingPage({
   }, [params.tab]);
 
   const fetchColleges = () => {
-    if(
-      colleges &&
-      colleges.length > 0
-    ) {
+    if (colleges && colleges.length > 0) {
       return;
     }
 
     collegeService!.findAllColleges();
-  }
+  };
 
   const getTabs = (): TabItemModel[] => {
-   
-    if (menuControlAuth.companyCode === ''
-        || ( menuControlAuth.authCode === MenuControlAuth.User
-        && menuControlAuth.useYn === MenuControlAuth.Yes)) {
+    if (
+      menuControlAuth.companyCode === '' ||
+      (menuControlAuth.authCode === MenuControlAuth.User &&
+        menuControlAuth.useYn === MenuControlAuth.Yes)
+    ) {
       return [
         {
           name: MyLearningContentType.InProgress,
@@ -101,7 +112,10 @@ function MyTrainingPage({
         {
           className: 'division',
           name: MyLearningContentType.Required,
-          item: getTabItem(MyLearningContentType.Required, requiredLecturesCount),
+          item: getTabItem(
+            MyLearningContentType.Required,
+            requiredLecturesCount
+          ),
           render: () => <RequiredCardListContainer />,
         },
         {
@@ -116,8 +130,11 @@ function MyTrainingPage({
         },
         {
           name: MyLearningContentType.PersonalCompleted,
-          item: getTabItem(MyLearningContentType.PersonalCompleted, personalCompletedCount),
-          render: () => <PersonalCompletedListContainer />
+          item: getTabItem(
+            MyLearningContentType.PersonalCompleted,
+            personalCompletedCount
+          ),
+          render: () => <PersonalCompletedListContainer />,
         },
         {
           name: MyLearningContentType.Retry,
@@ -162,15 +179,17 @@ function MyTrainingPage({
     ] as TabItemModel[];
   };
 
-  const getTabItem = (contentType: MyLearningContentType, count: number = 0) => {
+  const getTabItem = (
+    contentType: MyLearningContentType,
+    count: number = 0
+  ) => {
     return (
       <>
         {MyLearningContentTypeName[contentType]}
-        <span className="count">+{count > 0 && count || 0}</span>
+        <span className="count">+{(count > 0 && count) || 0}</span>
       </>
     );
   };
-
 
   const onChangeTab = (tab: TabItemModel): string => {
     //
@@ -198,7 +217,7 @@ function MyTrainingPage({
       className="mylearning"
       breadcrumb={[
         { text: 'Learning' },
-        { text: MyLearningContentTypeName[params.tab] }
+        { text: MyLearningContentTypeName[params.tab] },
       ]}
     >
       <MyTrainingHeaderContainer />
@@ -211,13 +230,15 @@ function MyTrainingPage({
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'notie.notieService',
-  'lecture.lectureService',
-  'myTraining.inMyLectureService',
-  'myTraining.myTrainingService',
-  'myTraining.aplService',
-  'approval.menuControlAuthService',
-  'college.collegeService',
-  'shared.filterBoxService',
-))(observer(MyTrainingPage));
+export default inject(
+  mobxHelper.injectFrom(
+    'notie.notieService',
+    'lecture.lectureService',
+    'myTraining.inMyLectureService',
+    'myTraining.myTrainingService',
+    'myTraining.aplService',
+    'approval.menuControlAuthService',
+    'college.collegeService',
+    'shared.filterBoxService'
+  )
+)(observer(MyTrainingPage));
