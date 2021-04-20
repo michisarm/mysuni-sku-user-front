@@ -23,11 +23,18 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
         </span>
       </div>
       {learningContents.map(cube => {
+        const isDiscussion = cube.type === 'None';
+
+        const viewType = isDiscussion ? 'discussion' : 'view';
+        const cubeType = isDiscussion ? 'Discussion' : cube.type;
+        const cubeIcon = isDiscussion ? 'None' : CubeIconType[cube.type];
+
         const params: LectureParams = {
           cardId,
           cubeId: cube.cubeId,
+          contentId: cube.cubeId,
           cubeType: cube.type,
-          viewType: 'view',
+          viewType,
           pathname: '',
         };
 
@@ -39,13 +46,15 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
               </Link>
               <div className="detail-subject-box">
                 <Label className="onlytext">
-                  <Icon className={`icon ${CubeIconType[cube.type]}`} />
-                  <span>{cube.type}</span>
+                  <Icon className={`icon ${cubeIcon}`} />
+                  <span>{cubeType}</span>
                 </Label>
-                <Label className="onlytext">
-                  <Icon className="icon time2" />
-                  <span>{`${cube.learningTime}m`}</span>
-                </Label>
+                {cube.learningTime > 0 && (
+                  <Label className="onlytext">
+                    <Icon className="icon time2" />
+                    <span>{`${cube.learningTime}m`}</span>
+                  </Label>
+                )}
               </div>
               <p>{cube.description}</p>
             </div>

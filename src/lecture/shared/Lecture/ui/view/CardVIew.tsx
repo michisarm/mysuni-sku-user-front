@@ -25,6 +25,7 @@ import { InMyLectureModel } from '../../../../../myTraining/model';
 import { autorun } from 'mobx';
 import CardType from '../../../model/CardType';
 import CubeIconType from '../../model/CubeIconType';
+import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
 
 interface Props {
   cardId: string;
@@ -224,7 +225,7 @@ export default function CardView({
           <div className="li">
             <Label className="onlytext bold">
               <Icon className={CubeIconType[type]} />
-              <span>{type}</span>
+              <span>{CubeNameType[type]}</span>
             </Label>
           </div>
           {(learningTime || stampCount) && (

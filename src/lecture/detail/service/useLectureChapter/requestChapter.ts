@@ -5,6 +5,7 @@ import { getCombineCubeAndContentCubeList } from './utility/getCombineCubeAndCon
 import { findCubesByIdsCache } from '../../api/cubeApi';
 import { setLearningContent } from '../../store/LearningContentStore';
 import { setLearningContentCube } from '../../store/LearningContentCubeStore';
+import { LearningContentChildren } from '../../../model/LearningContentChildren';
 
 export async function requestChapter(params: ChapterParams) {
   const { cardId, contentId } = params;
@@ -24,14 +25,27 @@ export async function requestChapter(params: ChapterParams) {
   const learningContent = getContents(cardContents.learningContents, contentId);
 
   const cubeIds: string[] = [];
-  learningContent?.children.map(item => cubeIds.push(item.contentId));
+  const discussionList: LearningContentChildren[] = [];
+  const cubeList: LearningContentChildren[] = [];
 
-  const contentCubeList = learningContent && learningContent.children;
-  const cubeList = await findCubesByIdsCache(cubeIds);
+  learningContent?.children.map(item => {
+    if (item.learningContentType === 'Cube') {
+      cubeIds.push(item.contentId);
+      cubeList.push(item);
+    }
+
+    if (item.learningContentType === 'Discussion') {
+      discussionList.push(item);
+    }
+  });
+
+  const contentCubeList = cubeList;
+  const CubeDetaillList = await findCubesByIdsCache(cubeIds);
 
   const learningContentWithCubeList = getCombineCubeAndContentCubeList(
     contentCubeList,
-    cubeList
+    discussionList,
+    CubeDetaillList
   );
 
   setLearningContent(learningContent);
