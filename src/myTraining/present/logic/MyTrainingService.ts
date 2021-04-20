@@ -451,10 +451,11 @@ class MyTrainingService {
     ) {
       if (this._myTrainingFilterRdo.getFilterCount() === 0) {
         const addTableViews = this.getAddTableViewsFromStorage(offset);
+        const totalCount = this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress ? this.inProgressTableCount : this.completedTableCount;
 
         runInAction(() => {
           this._myTrainingTableViews = addTableViews;
-          this._myTrainingTableViewCount = this.inProgressTableCount;
+          this._myTrainingTableViewCount = totalCount;
         });
 
         return;

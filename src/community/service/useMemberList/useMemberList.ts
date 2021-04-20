@@ -9,6 +9,7 @@ import {
   findMembers,
   removeMembers,
   registerMemberTempComplete,
+  modifyMemberType
 } from 'community/api/MemberApi';
 import { setCommunityMemberApprove } from 'community/store/CommunityMemberApproveStore';
 import { setCommunityMember } from 'community/store/CommunityMemberStore';
@@ -101,4 +102,14 @@ export function registerMembersTempComplete(
     memberTempCboList
   );
   return memberTempProcList;
+}
+
+export function updateMemberType(
+  communityId: string,
+  memberIdList: (string | undefined)[],
+  memberType: string
+) {
+  modifyMemberType(communityId, memberIdList, memberType).then(response => {
+    getMembers(communityId);
+  })
 }

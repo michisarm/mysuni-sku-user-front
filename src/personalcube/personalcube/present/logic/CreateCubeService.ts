@@ -10,6 +10,7 @@ import {
   registerUserCube,
   modifyUserCube,
   removeUserCube,
+  findUserCube,
 } from '../apiclient/cubeApi';
 import { CubeState } from '../../../../shared/model';
 import {
@@ -44,8 +45,9 @@ export default class CreateCubeService {
   @action
   async findCreateCubeDetail(cubeId: string) {
     const foundCubeDetail = await findCubeDetail(cubeId);
+    const foundUserCube = await findUserCube(cubeId);
 
-    if (foundCubeDetail === undefined) {
+    if (foundCubeDetail === undefined || foundUserCube === undefined) {
       return;
     }
 
@@ -53,6 +55,7 @@ export default class CreateCubeService {
 
     runInAction(() => {
       this._createCubeDetail = foundCubeDetail;
+      this._createCubeDetail.userCube = foundUserCube;
       this._cubeSdo = cubeSdo;
     });
 

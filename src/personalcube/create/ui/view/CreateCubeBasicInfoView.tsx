@@ -16,7 +16,7 @@ interface CreateCubeBasicInfoViewProps {
   cubeState: string;
   creatorName: string;
   time: number;
-  remark?: string;
+  remark: string;
 }
 
 export default function CreateCubeBasicInfoView({
@@ -92,7 +92,11 @@ export default function CreateCubeBasicInfoView({
               <Table.Cell>
                 <div>
                 {EnumUtil.getEnumValue(CubeStateView, cubeState).get(cubeState)}
-                {remark}
+                {
+                  remark  && (
+                    <><br />사유<span className = "dash" />{remark}</>
+                  )
+                }
                 </div>
               </Table.Cell>
             </Table.Row>

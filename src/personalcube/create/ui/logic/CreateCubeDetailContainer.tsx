@@ -13,6 +13,7 @@ import CreateCubeExposureInfoView from '../view/CreateCubeExposureInfoView';
 import CreateCubeDetailInfoView from '../view/CreateCubeDetailInfoView';
 import { getBlankRequiredCubeContentsField, alertRequiredField } from '../../model/CubeSdo';
 import CreateCubeDetailTypeContainer from '../view/CreateCubeDetailTypeContainer';
+import { getRemark } from '../../model/CreateCubeDetail';
 
 
 function CreateCubeDetailContainer() {
@@ -36,6 +37,7 @@ function CreateCubeDetailContainer() {
   }, [params.personalCubeId, cubeSdo]);
 
   const onClickSave = useCallback(() => {
+    
     const blankField = getBlankRequiredCubeContentsField(cubeSdo);
 
     if(blankField === 'none') {
@@ -71,6 +73,7 @@ function CreateCubeDetailContainer() {
                   cubeState={params.cubeState}
                   time={createCubeDetail.cube.time}
                   creatorName={createCubeDetail.cubeContents.creatorName}
+                  remark={getRemark(createCubeDetail.userCube.openRequests)}
                 />
                 <CreateCubeExposureInfoView
                   tags={createCubeDetail.cubeContents.tags}
@@ -98,7 +101,7 @@ function CreateCubeDetailContainer() {
                   params.cubeState !== 'OpenApproval' && (
                     <div className="buttons">
                       <Button className="fix line" onClick={routeToCreateList}>Cancel</Button>
-                      <Button className="fix bg" onClick={onClickSave}>Save</Button>
+                      <Button className="fix line" onClick={onClickSave}>Save</Button>
                     </div>
                   )
                 }

@@ -2,10 +2,7 @@
 
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
-import {
-  getLectureTestItem,
-  setLectureTestItem,
-} from 'lecture/detail/store/LectureTestStore';
+import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import {
   findByCardId,
@@ -72,15 +69,17 @@ export async function getTestItemMapFromCourse(
   if (student === undefined) {
     return;
   }
-  const oriLectureTestItem = getLectureTestItem();
   let examId = student.studentScore.examId || '';
-  if ((examId === null || examId === '') && oriLectureTestItem === undefined) {
-    // 중복 호출 방지
-    const test = await getStudentExam(student.id);
-    if (test === undefined) {
-      return;
+  if (examId === null || examId === '') {
+    try {
+      const test = await getStudentExam(student.id);
+      if (test === undefined) {
+        return;
+      }
+      examId = test.testId;
+    } catch (e) {
+      console.log('err', e);
     }
-    examId = test.testId;
   }
 
   const testItem = await getTestItem(
@@ -117,15 +116,17 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  const oriLectureTestItem = getLectureTestItem();
   let examId = student.studentScore.examId || '';
-  if ((examId === null || examId === '') && oriLectureTestItem === undefined) {
-    // 중복 호출 방지
-    const test = await getStudentExam(student.id);
-    if (test === undefined) {
-      return;
+  if (examId === null || examId === '') {
+    try {
+      const test = await getStudentExam(student.id);
+      if (test === undefined) {
+        return;
+      }
+      examId = test.testId;
+    } catch (e) {
+      console.log('err', e);
     }
-    examId = test.testId;
   }
 
   const testItem = await getTestItem(
