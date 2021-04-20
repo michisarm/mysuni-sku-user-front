@@ -64,7 +64,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
               </span>
             </div>
             <div className="card-gauge-bar">
-              <span className="gauge-tit">우리 회사 평균</span>
+                    <span className="gauge-tit">우리 회사 평균{badgeLearningTimeItem.companyAvgBadgeCount}/{badgeLearningTimeItem.allCompanyAvgBadgeCount}</span>
               <div className="card-gauge-bar sty2">
                 <div className="rangeBox">
                   <div className="range">
