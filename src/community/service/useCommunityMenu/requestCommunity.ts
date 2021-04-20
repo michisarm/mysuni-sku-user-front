@@ -104,8 +104,7 @@ export function requestCommunityGroups(communityId: string) {
 
 export async function saveCommunityMenu(communityId: string, params: any, selectedRow: any) {
   for await (const param of params) {
-    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
-    });
+     saveCommunityAdminMenu(communityId, param, selectedRow)
   }
 }
 
