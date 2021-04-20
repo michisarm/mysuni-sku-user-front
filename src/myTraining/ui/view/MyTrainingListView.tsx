@@ -11,13 +11,13 @@ import LectureParams, {
   toPath,
 } from '../../../lecture/detail/viewModel/LectureParams';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
-import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
 import {
   timeToHourMinutePaddingFormat,
   convertTimeToDate,
 } from '../../../shared/helper/dateTimeHelper';
 import { MyLearningContentType } from '../model/MyLearningContentType';
 import { LearningTypeName } from '../../model/LearningType';
+import { useCollegeStore } from '../../../shared/store/CollegeStore';
 
 interface MyTrainingListViewProps {
   myTrainings: MyTrainingTableViewModel[];
@@ -32,16 +32,20 @@ function MyTrainingListView({
 }: MyTrainingListViewProps) {
   const history = useHistory();
   const params = useParams<MyTrainingRouteParams>();
+  const colleges = useCollegeStore();
   const contentType = params.tab;
 
   const { scrollSave } = useScrollMove();
+
   const { selectedServiceIds, selectOne, clearOne } = myTrainingService!;
 
   const onViewDetail = (e: any, myTraining: MyTrainingTableViewModel) => {
     e.preventDefault();
 
+    const cardId = myTraining.serviceType === 'Card' ? myTraining.serviceId : myTraining.cardId;
+
     const params: LectureParams = {
-      cardId: myTraining.serviceId,
+      cardId,
       viewType: 'view',
       pathname: '',
     };
@@ -76,7 +80,7 @@ function MyTrainingListView({
     myTraining: MyTrainingTableViewModel,
     index: number
   ) => {
-    const collegeName = getCollgeName(myTraining.category.college.id);
+    const collegeName = colleges?.find(college => college.id === myTraining.category.college.id)?.name;
 
     return (
       <>

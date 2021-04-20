@@ -135,12 +135,6 @@ export function findByCardId(cardId: string) {
   return axios.get<Student>(url).then(AxiosReturn);
 }
 
-export function findByCubeId(cubeId: string) {
-  const axios = getAxios();
-  const url = `${BASE_URL}/students/cube/${cubeId}`;
-  return axios.get<Student>(url).then(AxiosReturn);
-}
-
 export function getStudentExam(studentId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/getStudentExam/${studentId}`;

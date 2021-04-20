@@ -2,16 +2,18 @@ import { Card } from '../../../../model/Card';
 import { CardContents } from '../../../../model/CardContents';
 import { Cube } from '../../../../model/Cube';
 import { LearningContent } from '../../../../model/LearningContent';
+import { MediaType } from '../../../../model/MediaType';
 import Student from '../../../../model/Student';
 import {
   findCardCache,
   findMyCardRelatedStudentsCache,
 } from '../../../api/cardApi';
-import { findCubesByIdsCache } from '../../../api/cubeApi';
+import { findCubeDetailCache, findCubesByIdsCache } from '../../../api/cubeApi';
 import {
   setIsLoadingState,
   setLectureStructure,
 } from '../../../store/LectureStructureStore';
+import { findCubeStudent } from '../../../utility/findCubeStudent';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
@@ -393,25 +395,29 @@ function parseDurationableCubeItem(
     duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
       ? parseInt(cubeStudent?.durationViewSeconds || '')
       : undefined,
+    isDurationable: true,
   };
   if (hasTest) {
     item.test = parseCubeTestItem(card, cube, order, cubeStudent);
+    item.test.can = item.test.can && item.duration === 100;
   }
   if (reportName !== null && reportName !== '') {
     item.report = parseCubeReportItem(card, cube, order, cubeStudent);
+    item.report.can = item.report.can && item.duration === 100;
   }
   if (surveyCaseId !== null && surveyCaseId !== '') {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
+    item.survey.can = item.survey.can && item.duration === 100;
   }
   return item;
 }
 
-function parseCubeItem(
+async function parseCubeItem(
   card: Card,
   cube: Cube,
   order: number,
   cubeStudent?: Student
-): LectureStructureCubeItem {
+): Promise<LectureStructureCubeItem> {
   const {
     id,
     name,
@@ -422,7 +428,14 @@ function parseCubeItem(
     reportName,
   } = cube;
   if (type === 'Audio' || type === 'Video') {
-    return parseDurationableCubeItem(card, cube, order, cubeStudent);
+    const cubeDetail = await findCubeDetailCache(id);
+    if (
+      cubeDetail?.cubeMaterial.media?.mediaType === MediaType.InternalMedia ||
+      cubeDetail?.cubeMaterial.media?.mediaType ===
+        MediaType.InternalMediaUpload
+    ) {
+      return parseDurationableCubeItem(card, cube, order, cubeStudent);
+    }
   }
   const params: LectureParams = {
     cardId: card.id,
@@ -514,11 +527,22 @@ function parseItems(
           }
           items.push(cube);
         }
+        const discussion = lectureStructure.discussions.find(
+          d => d.id === c.contentId
+        );
+        if (discussion !== undefined) {
+          const i = lectureStructure.cubes.findIndex(
+            d => d.cubeId === c.contentId
+          );
+          discussion.parentId = contentId;
+          items.push(discussion);
+        }
       });
     } else if (learningContentType === 'Discussion') {
       const discussion = lectureStructure.discussions.find(
         c => c.id === contentId
       );
+
       if (discussion !== undefined) {
         items.push(discussion);
       }
@@ -531,6 +555,7 @@ export async function requestCardLectureStructure(cardId: string) {
   setIsLoadingState({ isLoading: true });
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
   const myCardRelatedStudentsRom = await findMyCardRelatedStudentsCache(cardId);
+
   if (
     cardWithContentsAndRelatedCountRom === undefined ||
     myCardRelatedStudentsRom === undefined
@@ -538,37 +563,73 @@ export async function requestCardLectureStructure(cardId: string) {
     setIsLoadingState({ isLoading: false });
     return;
   }
+
   const { card, cardContents } = cardWithContentsAndRelatedCountRom;
+
   if (card === null) {
     setIsLoadingState({ isLoading: false });
     return;
   }
+
   const { cardStudent, cubeStudents } = myCardRelatedStudentsRom;
   const cubeIds: string[] = [];
+
   for (let i = 0; i < cardContents.learningContents.length; i++) {
     const learningContent = cardContents.learningContents[i];
     if (learningContent.learningContentType === 'Cube') {
       cubeIds.push(learningContent.contentId);
     }
     if (learningContent.learningContentType === 'Chapter') {
-      learningContent.children.forEach(c => cubeIds.push(c.contentId));
+      learningContent.children
+        .filter(c => c.learningContentType === 'Cube')
+        .forEach(c => cubeIds.push(c.contentId));
     }
   }
+
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
-  const cubeItems: LectureStructureCubeItem[] = [];
+
+  let cubeItems: LectureStructureCubeItem[] = [];
+
   if (cubes !== undefined) {
-    cubes.forEach(cube => {
-      const cubeStudent = (cubeStudents != null ? cubeStudents : []).find(
-        ({ lectureId }) => lectureId === cube.id
-      );
-      const order = cardContents.learningContents.findIndex(
-        ({ contentId }) => contentId === cube.id
-      );
-      cubeItems.push(parseCubeItem(card, cube, order, cubeStudent));
-    });
+    cubeItems = await Promise.all(
+      cubes.map(async cube => {
+        const cubeStudent = findCubeStudent(cube.id, cubeStudents);
+        const order = cardContents.learningContents.findIndex(
+          ({ contentId }) => contentId === cube.id
+        );
+        const cubeItem = await parseCubeItem(card, cube, order, cubeStudent);
+        return cubeItem;
+      })
+    );
   }
+
   const discussionItems: LectureStructureDiscussionItem[] = [];
+
+  cardContents.learningContents.map(content => {
+    if (content.chapter) {
+      content.children
+        .filter(
+          ({ learningContentType }) => learningContentType === 'Discussion'
+        )
+        .forEach(learningContent => {
+          const order = content.children.findIndex(
+            ({ contentId }) => contentId === learningContent.contentId
+          );
+
+          discussionItems.push(
+            parseDiscussionItem(
+              card,
+              cardContents,
+              learningContent,
+              order,
+              cardStudent
+            )
+          );
+        });
+    }
+  });
+
   cardContents.learningContents
     .filter(({ learningContentType }) => learningContentType === 'Discussion')
     .forEach(learningContent => {
@@ -585,7 +646,9 @@ export async function requestCardLectureStructure(cardId: string) {
         )
       );
     });
+
   const chapterItems: LectureStructureChapterItem[] = [];
+
   cardContents.learningContents
     .filter(({ learningContentType }) => learningContentType === 'Chapter')
     .forEach(learningContent => {
@@ -594,6 +657,7 @@ export async function requestCardLectureStructure(cardId: string) {
       );
       chapterItems.push(parseChapterItem(card, learningContent, order));
     });
+
   const lectureStructure: LectureStructure = {
     card: cardItem,
     cubes: cubeItems,
@@ -601,10 +665,12 @@ export async function requestCardLectureStructure(cardId: string) {
     chapters: chapterItems,
     items: [],
   };
+
   lectureStructure.items = parseItems(
     lectureStructure,
     cardContents.learningContents
   );
+
   setLectureStructure(lectureStructure);
   setIsLoadingState({ isLoading: false });
 }

@@ -9,8 +9,8 @@ import { MediaService } from '../../../media/stores';
 import { OfficeWebService } from '../../../officeweb/stores';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
-import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
-import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
+import CreateWebPageTypeView from '../view/CreateWebPageTypeViewPrev';
+import CreateDocumentTypeView from '../view/CreateDocumentTypeViewPrev';
 import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 
 
@@ -111,17 +111,17 @@ class CubeIntroMediaContainer extends React.Component<Props> {
             />
             : null
         }
-        {
+        {/* {
           cubeType === 'WebPage' || cubeType === 'Cohort' ?
             <CreateWebPageTypeView
               onChangeOfficeWebProps={this.onChangeOfficeWebProps}
-              officeWeb={officeWeb}
+              // officeWeb={officeWeb}
               onChangePersonalCubeProps={onChangePersonalCubeProps}
               getFileBoxIdForReference ={this.getFileBoxIdForReference}
               personalCube={personalCube}
             />
             : null
-        }
+        } */}
         {
           cubeType === 'Documents' ?
             <CreateDocumentTypeView

@@ -34,7 +34,7 @@ const ProgramTestView: React.FC<ProgramTestViewProps> = function ProgramTestView
       className={`btn-single-cube ${activated ? 'act-on' : ''}`}
     >
       <span className="label-type n-test">Test</span>
-      <span className="copy">{name}</span>
+      {/* <span className="copy">{name}</span> */}
       <span
         className={`label-state-learning ${
           state === 'Progress' ? 'proceeding' : ''

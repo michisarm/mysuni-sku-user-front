@@ -9,7 +9,7 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { getCommunityHome } from 'community/store/CommunityHomeStore';
+import { getCommunityHome, useCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { checkMember } from 'community/service/useMember/useMember';
 import {
@@ -44,11 +44,13 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
   const [postItems] = useCommunityPostList();
+  const communityHome = useCommunityHome();
   const { communityId, menuId } = useParams<Params>();
   const history = useHistory();
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
+  const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
   const [menuType, setMenuType] = useState<string>('');
   const [menuName, setMenuName] = useState<string>('');
 
@@ -74,9 +76,15 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
     ) {
       setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId);
     }
+
+    if (
+      communityHome?.community?.memberType === 'ADMIN'
+    ) {
+      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
+    }
   }, [postItems]);
 
-  const handelClickCreatePost = () => {};
+  const handelClickCreatePost = () => { };
   const handleClickRow = async (param: any) => {
     //멤버 가입 체크
     if (!(await checkMember(communityId))) {
@@ -181,6 +189,7 @@ const CommunityNoticePostListContainer: React.FC<CommunityPostListContainerProps
             totalCount={postItems.totalCount}
             pageType="notice"
             managerAuth={adminAuth}
+            communityAdminAuth={communityAdminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />

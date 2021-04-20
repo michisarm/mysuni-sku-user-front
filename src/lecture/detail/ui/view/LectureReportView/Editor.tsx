@@ -13,8 +13,8 @@ interface EditorProps {
 const Editor: React.FC<EditorProps> = function Editor({ reportId }) {
   const editorRef = useRef<ReactQuill>(null);
   // const [value, setValue] = useState<string>();
+  const lectureReport = getLectureReport();
   useEffect(() => {
-    const lectureReport = getLectureReport();
     if (editorRef.current !== null) {
       const innerEditor = editorRef.current.getEditor();
       innerEditor.setText('');
@@ -28,7 +28,7 @@ const Editor: React.FC<EditorProps> = function Editor({ reportId }) {
       }
     }
     // setValue(lectureReport?.studentReport?.homeworkContent || '');
-  }, [reportId]);
+  }, [reportId, lectureReport?.studentReport?.id]);
 
   const modules = {
     toolbar: [

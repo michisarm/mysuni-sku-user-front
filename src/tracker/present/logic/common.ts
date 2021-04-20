@@ -60,6 +60,81 @@ export const getPathValue = (
   }
 };
 
+export const getCardRelId = async (cardId: string) => {
+  let returnFields: Field[] = [];
+  const relation = 'relation';
+  let field;
+  let collegeId;
+  let channelId;
+  let addId = false;
+  if (lsTest()) {
+    const cachedFiled = localStorage.getItem(FIELD_STORAGE_KEY);
+    if (cachedFiled) {
+      field = JSON.parse(cachedFiled);
+      if (field && field[FieldType.Card]) {
+        const rel = field[FieldType.Card][relation];
+        if(rel && rel[cardId]){
+          collegeId = rel[cardId].collegeId;
+          channelId = rel[cardId].channelId;
+        }
+        
+      }
+    }
+  }
+
+  if(!(collegeId && channelId)){
+    const result = await findCardCache(cardId);
+    if(result?.card?.categories){
+      result?.card?.categories.filter(o=>o.mainCategory===true).map(o=>{
+        collegeId = o.collegeId;
+        channelId = o.channelId;
+        addId = true;
+      })
+    }
+  }
+
+  let tempObj;
+  let tempRel;
+  if (lsTest() && addId) {
+    const value = {'collegeId': collegeId, 'channelId':channelId}
+    if (field) {
+      if(field[FieldType.Card]){
+        tempObj = field[FieldType.Card];
+        tempRel = field[FieldType.Card][relation];
+        if (tempRel) {
+          if(!tempRel[cardId]){
+            // relation add
+            field[FieldType.Card][relation][cardId] = value;
+            tempObj = { ...field, ...{ [FieldType.Card]: field[FieldType.Card] } };
+          } else {
+            tempObj = field;
+          }
+        } else {
+          // relation new
+          tempObj = { ...field, ...{ ...tempObj, relation: {[cardId]: value }}};
+        }
+      } else {
+        // card new
+        tempObj = { ...field, [FieldType.Card]: { relation: {[cardId]: value}}};
+      }
+    } else {
+      // field new
+      tempObj = {
+        [FieldType.Card]: { relation: {[cardId]: value }},
+        createDate: moment().toISOString(true),
+      };
+    }
+    localStorage.setItem(FIELD_STORAGE_KEY, JSON.stringify(tempObj));
+  }
+
+  const fields = [];
+  if(collegeId) fields.push({type: FieldType.College, id: collegeId});
+  if(channelId) fields.push({type: FieldType.Channel, id: channelId});
+  returnFields = fields;
+
+  return returnFields;
+}
+
 export const getServiceType = (path: string) => {
   let serviceType = null;
   if (path.includes('/cube/')) {

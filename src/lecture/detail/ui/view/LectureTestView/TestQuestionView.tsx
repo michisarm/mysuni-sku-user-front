@@ -70,21 +70,21 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
     question.questionType === 'MultiChoice' ||
     question.questionType === 'ShortAnswer'
   ) {
-    if (submitted) {
-      const lectureStructureItem = getActiveStructureItem(params.pathname);
-      if (
-        lectureStructureItem?.student?.extraWork.testStatus === 'FAIL' ||
-        lectureStructureItem?.student?.extraWork.testStatus === 'SUBMIT' ||
-        lectureStructureItem?.student?.extraWork.testStatus === 'PASS'
-      ) {
-        // 답안을 전송했을 경우 채점
-        if (answerResult) {
-          questionClassName += ' correct ';
-        } else {
-          questionClassName += ' wrong ';
-        }
+    //if (submitted) {
+    const lectureStructureItem = getActiveStructureItem(params.pathname);
+    if (
+      lectureStructureItem?.student?.extraWork.testStatus === 'FAIL' ||
+      lectureStructureItem?.student?.extraWork.testStatus === 'SUBMIT' ||
+      lectureStructureItem?.student?.extraWork.testStatus === 'PASS'
+    ) {
+      // 답안을 전송했을 경우 채점
+      if (answerResult) {
+        questionClassName += ' correct ';
+      } else {
+        questionClassName += ' wrong ';
       }
     }
+    //}
     if (
       question.questionImgSrc !== undefined &&
       question.questionImgSrc !== ''

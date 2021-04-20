@@ -1,6 +1,7 @@
 import { trackAction, trackView } from 'tracker/present/apiclient';
 import {
   getPathValue,
+  getCardRelId,
   getServiceType,
   getCubeType,
   getPathKey,
@@ -45,12 +46,19 @@ export async function actionTrack({
   pathName = path && !pathName ? await getPathName(path, search) : pathName;
 
   // field name setting
-  const fields = [];
+  let fields = [];
   fields.push(getPathValue(path, 'college', FieldType.College));
   fields.push(getPathValue(path, 'channel', FieldType.Channel));
   // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
-  fields.push(getPathValue(path, 'card', FieldType.Card));
   fields.push(getPathValue(path, 'cube', FieldType.Cube));
+  const cardField = getPathValue(path, 'card', FieldType.Card);
+  if(cardField && cardField.id){
+    fields.push(cardField);
+    const relFields = await getCardRelId(cardField.id);
+    if(relFields.length>0){
+      fields = [...fields, ...relFields];
+    }
+  }
 
   const promises: any[] = [];
   fields
@@ -143,12 +151,19 @@ export async function actionTrackView({
       : refererName;
 
   // field name setting
-  const fields = [];
+  let fields = [];
   fields.push(getPathValue(path, 'college', FieldType.College));
   fields.push(getPathValue(path, 'channel', FieldType.Channel));
   // fields.push(getPathValue(path, 'course-plan', FieldType.Course));
-  fields.push(getPathValue(path, 'card', FieldType.Card));
   fields.push(getPathValue(path, 'cube', FieldType.Cube));
+  const cardField = getPathValue(path, 'card', FieldType.Card);
+  if(cardField && cardField.id){
+    fields.push(cardField);
+    const relFields = await getCardRelId(cardField.id);
+    if(relFields.length>0){
+      fields = [...fields, ...relFields];
+    }
+  }
 
   const promises: any[] = [];
   fields

@@ -16,17 +16,19 @@ export async function updateLectureTask(
             value: taskDetailItem.commentFeedbackId,
           },
           { name: 'deleted', value: 'false' },
-        ],
-      };
-      const postBodyNameValueList = {
-        nameValues: [
           { name: 'contents', value: taskDetailItem.contents },
           { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
         ],
       };
+      // const postBodyNameValueList = {
+      //   nameValues: [
+      //     { name: 'contents', value: taskDetailItem.contents },
+      //     { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
+      //   ],
+      // };
 
       await modifyPost(postId, postNameValueList);
-      await modifyPostBody(postId, postBodyNameValueList);
+      // await modifyPostBody(postId, postBodyNameValueList);
     }
 
     if (isReply) {

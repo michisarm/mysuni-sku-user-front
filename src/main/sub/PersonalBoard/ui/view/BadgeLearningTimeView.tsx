@@ -31,7 +31,6 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
 
   const sumOfCurrentYearLectureTime = lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0
   const totalLearningTime = myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime + myLearningSummary.aplAllowTime + sumOfCurrentYearLectureTime
-
   const { hour, minute } = timeToHourMinute(totalLearningTime)
 
   return (
@@ -53,6 +52,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                     <div
                       style={activeIndex === -1 ? {width:0} : {
                         width: `${(badgeLearningTimeItem.badgeMyCount/badgeLearningTimeItem.AllBadgeMyCount)*100}%`,
+                        // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
                       } }
                       className="percent"
                     />
@@ -64,13 +64,14 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
               </span>
             </div>
             <div className="card-gauge-bar">
-              <span className="gauge-tit">우리 회사 평균</span>
+                    <span className="gauge-tit">우리 회사 평균</span>
               <div className="card-gauge-bar sty2">
                 <div className="rangeBox">
                   <div className="range">
                     <div
                       style={activeIndex === -1 ? {width:0} : {
                         width: `${(badgeLearningTimeItem.companyAvgBadgeCount/badgeLearningTimeItem.allCompanyAvgBadgeCount)*100}%`,
+                        // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
                       }}
                       className="percent"
                     />

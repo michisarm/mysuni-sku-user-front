@@ -7,8 +7,8 @@ import LectureDetailCourseRoutes from './LectureDetailCourseRoutes';
 import LectureDetailCubeRoutes from './LectureDetailCubeRoutes';
 import { useRequestLectureStructure } from './service/useLectureStructure/useRequestLectureStructure';
 import LectureParams from './viewModel/LectureParams';
-import { setLectureParams } from './store/LectureParamsStore';
 import {
+  cleaCountClassroomStudentsCache,
   clearFindCubeDetailCache,
   clearFindCubesByIdsCache,
 } from './api/cubeApi';
@@ -22,6 +22,7 @@ export default function LectureDetailRoutes() {
       clearFindCubesByIdsCache();
       clearFindCubeDetailCache();
       clearFindMyCardRelatedStudentsCache();
+      cleaCountClassroomStudentsCache();
     };
   }, [cardId]);
 

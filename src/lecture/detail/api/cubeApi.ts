@@ -7,8 +7,12 @@ import { createCacheApi } from './cacheableApi';
 import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
 import TaskChild from '../model/TaskChild';
 import { TaskChildCdo } from '../model/TaskChildCdo';
+import TaskDetail from '../model/TaskDetail';
+
 import TaskDetailPost from '../model/TaskDetail';
 import TaskDetailBody from '../model/TaskDetailBody';
+
+import { IntPair } from '../../../shared/model/IntPair';
 
 const BASE_URL = '/api/cube';
 
@@ -72,8 +76,8 @@ export function registerPostBody(postBodyCdo: PostBodyCdo) {
 
 export function findPostBody(postId: string) {
   const axios = getAxios();
-  const url = `${BASE_URL}/postbodys/${postId}`;
-  return axios.get<TaskDetailBody>(url).then(AxiosReturn);
+  const url = `${BASE_URL}/posts/${postId}/detail`;
+  return axios.get<TaskDetail>(url).then(AxiosReturn);
 }
 
 export function modifyPost(
@@ -125,3 +129,16 @@ export function modifyReply(
 
   return axios.put<void>(url, nameValueList).then(AxiosReturn);
 }
+
+function countClassroomStudents(cubeId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/countClassroomStudents`;
+  return axios
+    .get<IntPair[]>(url, { params: { cubeId } })
+    .then(AxiosReturn);
+}
+
+export const [
+  countClassroomStudentsCache,
+  cleaCountClassroomStudentsCache,
+] = createCacheApi(countClassroomStudents);

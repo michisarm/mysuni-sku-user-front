@@ -5,10 +5,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
 
 import {
-  CreateListPage,
-  CreatePersonalCubeDetailPage,
-  CreateCubeIntroDetailPage,
-  CreateSharedDetailPage,
+  CreateCubeListPage,
+  CreateCubePage,
+  CreateCubeIntroPage,
+  CreateCubeDetailPage,
 } from './create';
 
 
@@ -19,13 +19,13 @@ class Routes extends PureComponent {
     return (
       <Switch>
         <Redirect exact from="/personalcube/create" to="/personalcube/create/Create/pages/1" />
-        <Route exact path="/personalcube/create/:tab" component={CreateListPage} />
-        <Route exact path="/personalcube/create/:tab/pages/:pageNo" component={CreateListPage} />
+        <Route exact path="/personalcube/create/:tab" component={CreateCubeListPage} />
+        <Route exact path="/personalcube/create/:tab/pages/:pageNo" component={CreateCubeListPage} />
 
-        <Route exact path="/personalcube/create/cubes/new" component={CreatePersonalCubeDetailPage} />
-        <Route exact path="/personalcube/create/cubes/cube/:personalCubeId/:cubeType" component={CreatePersonalCubeDetailPage} />
-        <Route exact path="/personalcube/create/cubes/intro/:personalCubeId/:cubeType" component={CreateCubeIntroDetailPage} />
-        <Route exact path="/personalcube/create/cubes/shared/:personalCubeId/:cubeType/:cubeState" component={CreateSharedDetailPage} />
+        <Route exact path="/personalcube/create/cubes/new" component={CreateCubePage} />
+        <Route exact path="/personalcube/create/cubes/cube/:personalCubeId/:cubeType" component={CreateCubePage} />
+        <Route exact path="/personalcube/create/cubes/intro/:personalCubeId/:cubeType" component={CreateCubeIntroPage} />
+        <Route exact path="/personalcube/create/cubes/shared/:personalCubeId/:cubeType/:cubeState" component={CreateCubeDetailPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

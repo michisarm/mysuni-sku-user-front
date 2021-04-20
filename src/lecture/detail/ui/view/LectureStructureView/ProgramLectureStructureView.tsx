@@ -12,6 +12,7 @@ import CourseReportView from './CourseReportView';
 import CourseSurveyView from './CourseSurveyView';
 import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
+import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ProgramHeaderView from './ProgramHeaderView';
@@ -34,6 +35,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
   const onToggle = useCallback((nextCollapsedIds: string[]) => {
     setCollapsedIds(nextCollapsedIds);
   }, []);
+
   return (
     <>
       {lectureStructure.card !== undefined && (
@@ -74,7 +76,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           }
           return (
             <Fragment key={cube.cubeId}>
-              {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+              {cube.isDurationable !== true && (
                 <CubeView
                   key={cube.cubeId}
                   name={cube.name}
@@ -86,7 +88,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   activated={cube.path === pathname}
                 />
               )}
-              {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+              {cube.isDurationable === true && (
                 <DurationableCubeView
                   key={cube.cubeId}
                   name={cube.name}
@@ -158,7 +160,19 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
             </Fragment>
           );
         }
-        if (item.type === 'DISCUSSION') {
+        if (item.type === 'DISCUSSION' && item.parentId !== undefined) {
+          const discussion = item as LectureStructureDiscussionItem;
+          return (
+            <DiscussionView
+              key={discussion.id}
+              name={discussion.name}
+              state={discussion.state}
+              path={discussion.path}
+              activated={discussion.path === pathname}
+            />
+          );
+        }
+        if (item.type === 'DISCUSSION' && item.parentId === undefined) {
           const discussion = item as LectureStructureDiscussionItem;
           return (
             <ProgramDiscussionView
@@ -172,7 +186,6 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
         }
         return null;
       })}
-
       {lectureStructure.card?.test !== undefined && (
         <ProgramTestView
           name={lectureStructure.card.test.name}

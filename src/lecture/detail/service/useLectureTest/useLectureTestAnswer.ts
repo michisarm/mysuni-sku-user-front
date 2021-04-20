@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLectureParams } from '../../store/LectureParamsStore';
 import { onLectureTestAnswerItem } from '../../store/LectureTestStore';
 import { LectureTestAnswerItem } from '../../viewModel/LectureTest';
+import { useLectureTest } from './useLectureTest';
 import { getCourseLectureTestAnswer } from './utility/getCourseLectureTest';
 import { getCubeLectureTestAnswer } from './utility/getCubeLectureTest';
 
@@ -14,6 +15,7 @@ export function useLectureTestAnswer(): [AnswerValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [answerValue, setAnswerValue] = useState<AnswerValue>();
   const params = useLectureParams();
+  const [testItem] = useLectureTest();
 
   const getCubeTestAnswerItem = useCallback(() => {
     if (params !== undefined) {
@@ -37,7 +39,7 @@ export function useLectureTestAnswer(): [AnswerValue] {
     } else {
       getCourseTestAnswerItem();
     }
-  }, [params]);
+  }, [params, testItem?.id]);
 
   useEffect(() => {
     const next = `useLectureTestAnswer-${++subscriberIdRef}`;
