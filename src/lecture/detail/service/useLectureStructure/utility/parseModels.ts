@@ -4,7 +4,7 @@ import { State } from '../../../viewModel/LectureState';
 export function convertLearningStateToState(
   learningState?: LearningState
 ): State {
-  if (learningState === undefined) {
+  if (learningState === undefined || learningState === null) {
     return 'None';
   }
   if (learningState === 'Passed') {

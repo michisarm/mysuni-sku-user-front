@@ -178,7 +178,7 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
     if (student.learningState === 'Passed' || noTestAndNoReport) {
       return 'bg2';
     }
-    return 'bg';
+    return 'line';
   }, [student, cube]);
   const action = useCallback(async () => {
     const noTestAndNoReport = hasNoTestAndNoReport(cube);
@@ -201,7 +201,7 @@ function LinkApprovedView(props: LinkApprovedViewProps) {
       default:
         break;
     }
-    return 'bg2';
+    return 'line';
   }, [student]);
 
   return (
@@ -242,7 +242,7 @@ function NormalApprovedView(props: NormalApprovedViewProps) {
       default:
         break;
     }
-    return 'bg2';
+    return 'line';
   }, [student]);
   return (
     <>

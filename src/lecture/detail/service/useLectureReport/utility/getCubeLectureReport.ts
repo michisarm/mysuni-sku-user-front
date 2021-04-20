@@ -2,7 +2,6 @@
 import { getReportItem } from './getReportItemMapFromCube';
 import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
 import LectureParams from '../../../viewModel/LectureParams';
-import { findByCubeId } from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 
 export async function getCubeLectureReport(

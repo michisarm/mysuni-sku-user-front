@@ -4,4 +4,5 @@ export default interface LectureWebpage {
   image?: string;
   fileBoxId: string;
   url: string;
+  urlType?: string;
 }

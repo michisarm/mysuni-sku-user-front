@@ -1,4 +1,3 @@
-
 import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
@@ -30,7 +29,10 @@ export default class MediaService {
   panoptoCdo: PanoptoCdoModel = new PanoptoCdoModel();
 
   @observable
-  panoptos: OffsetElementList<InternalMediaConnectionModel> = { results: [], totalCount: 0 };
+  panoptos: OffsetElementList<InternalMediaConnectionModel> = {
+    results: [],
+    totalCount: 0,
+  };
 
   @observable
   panopto: InternalMediaConnectionModel = new InternalMediaConnectionModel();
@@ -54,37 +56,62 @@ export default class MediaService {
     //
     const media = await this.mediaApi.findMedia(mediaId);
 
-    runInAction(() => this.media = media);
+    runInAction(() => (this.media = media));
     return media;
   }
 
-  makeMedia(personalCubeModel: PersonalCubeModel, cubeIntro: CubeIntroModel, media: MediaModel) {
+  makeMedia(
+    personalCubeModel: PersonalCubeModel,
+    cubeIntro: CubeIntroModel,
+    media: MediaModel
+  ) {
     //
     return this.mediaFlowApi.makeMedia(
       new MediaFlowCdoModel(
         PersonalCubeModel.asCdo(personalCubeModel),
         CubeIntroModel.asCdo(cubeIntro),
-        MediaModel.asCdo(media))
+        MediaModel.asCdo(media)
+      )
     );
   }
 
-  makeMediaByUser(personalCubeId : string, cubeIntro: CubeIntroModel, media: MediaModel) {
+  makeMediaByUser(
+    personalCubeId: string,
+    cubeIntro: CubeIntroModel,
+    media: MediaModel
+  ) {
     //
     return this.mediaFlowApi.makeMediaByUser(
       new MediaFlowUserCdoModel(
         personalCubeId,
         CubeIntroModel.asCdo(cubeIntro),
-        MediaModel.asCdo(media))
+        MediaModel.asCdo(media)
+      )
     );
   }
 
-  modifyMediaByUser(personalCubeId: string, cubeIntro : CubeIntroModel, media: MediaModel) {
-    return this.mediaFlowApi.modifyMediaByUser(personalCubeId, new MediaFlowUserUdoModel(cubeIntro, media));
+  modifyMediaByUser(
+    personalCubeId: string,
+    cubeIntro: CubeIntroModel,
+    media: MediaModel
+  ) {
+    return this.mediaFlowApi.modifyMediaByUser(
+      personalCubeId,
+      new MediaFlowUserUdoModel(cubeIntro, media)
+    );
   }
 
-  modifyMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, media: MediaModel) {
+  modifyMedia(
+    personalCubeId: string,
+    cube: PersonalCubeModel,
+    cubeIntro: CubeIntroModel,
+    media: MediaModel
+  ) {
     //
-    return this.mediaFlowApi.modifyMedia(personalCubeId, new MediaFlowUdoModel(cube, cubeIntro, media));
+    return this.mediaFlowApi.modifyMedia(
+      personalCubeId,
+      new MediaFlowUdoModel(cube, cubeIntro, media)
+    );
   }
 
   removeMedia(personalCubeId: string) {
@@ -93,7 +120,12 @@ export default class MediaService {
   }
 
   @action
-  changeMediaProps(name: string, value: string | Date | any[], nameSub?: string, valueSub?: string) {
+  changeMediaProps(
+    name: string,
+    value: string | Date | any[],
+    nameSub?: string,
+    valueSub?: string
+  ) {
     //
     this.media = _.set(this.media, name, value);
     if (typeof value === 'object' && nameSub) {
@@ -127,8 +159,8 @@ export default class MediaService {
   @action
   async findPanoptoList() {
     //
-    const panoptos = await this.mediaApi.findPanoptoList(this.panoptoCdo);
-    return runInAction(() => this.panoptos = panoptos);
+    const panoptos = await this.mediaApi.getPanopToList(this.panoptoCdo);
+    return runInAction(() => (this.panoptos = panoptos));
   }
 
   @action

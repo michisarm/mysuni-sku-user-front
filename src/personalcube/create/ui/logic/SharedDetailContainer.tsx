@@ -281,15 +281,16 @@ class SharedDetailContainer extends React.Component<Props, States> {
               />
 
               {
-                cubeState === 'OpenApproval' ?
+                cubeState === 'OpenApproval' && (
                   <SharedDetailIntroView
                     cubeIntro={cubeIntro}
                     cubeType={cubeType}
-                  />
-                  :
+                  /> 
+                ) || (
                   <SharedDetailIntroEditContainer
                     cubeIntro={cubeIntro}
                   />
+                )
               }
               <SharedTypeDetailView
                 personalCube={personalCube}
@@ -313,7 +314,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
                 handleClose={this.handleCloseAlertWin}
                 open={alertWinOpen}
                 alertIcon={alertIcon}
-                title={alertTitle}
+                title="필수 정보 입력 안내"
                 type={alertType}
                 handleOk={this.handleAlertOk}
               />

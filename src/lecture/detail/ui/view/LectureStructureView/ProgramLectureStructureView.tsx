@@ -74,7 +74,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           }
           return (
             <Fragment key={cube.cubeId}>
-              {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+              {cube.isDurationable !== true && (
                 <CubeView
                   key={cube.cubeId}
                   name={cube.name}
@@ -86,7 +86,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   activated={cube.path === pathname}
                 />
               )}
-              {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+              {cube.isDurationable === true && (
                 <DurationableCubeView
                   key={cube.cubeId}
                   name={cube.name}

@@ -38,7 +38,12 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
 
   let testClassName = ' ui segment full ';
-  if (answerItem?.submitted) {
+  if (
+    lectureStructureItem &&
+    (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'PASS' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'FAIL')
+  ) {
     testClassName += ' test-complete ';
   }
 
@@ -62,7 +67,15 @@ const LectureTestPaperQuestionView: React.FC<LectureTestPaperQuestionViewProps> 
                   }
                 });
 
-                if (answerItem.submitted) {
+                if (
+                  lectureStructureItem &&
+                  (lectureStructureItem.student?.extraWork.testStatus ===
+                    'SUBMIT' ||
+                    lectureStructureItem.student?.extraWork.testStatus ===
+                      'PASS' ||
+                    lectureStructureItem.student?.extraWork.testStatus ===
+                      'FAIL')
+                ) {
                   let submitAnswer = '';
                   answerItem.submitAnswers.forEach(result => {
                     if (result.questionNo === question.questionNo) {
