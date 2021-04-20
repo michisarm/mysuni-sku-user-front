@@ -8,19 +8,30 @@ import { PatronType } from '@nara.platform/accent';
 import { depotHelper } from '../../../../shared';
 import { MenuItem } from '../../../viewModel/CommunityAdminMenu';
 import AdminDiscussionCreateEditor from './AdminDiscussionCreateEditor';
+import { CommunityDiscussion } from '../../../model/CommunityDiscussion';
 
 interface Props {
   changeValue: (event: any, targetName?: string, index?: number) => void;
-  handleAddUrlField: () => void;
-  handleDeleteUrlField: (fieldIndex: number) => void;
   selectedRow: MenuItem | undefined;
+  discussRow: CommunityDiscussion | undefined;
+  onChangeDiscussValue: (
+    value: string | boolean,
+    type: string,
+    currentIndex?: number
+  ) => void;
+  onAddUrlsList: () => void;
+  onDeleteUrlsList: (currentIndex: number) => void;
+  onAddFileBoxId: (fileBoxId: string) => void;
 }
 
 const AdminDiscussionCreateView: React.FC<Props> = ({
   changeValue,
   selectedRow,
-  handleAddUrlField,
-  handleDeleteUrlField,
+  discussRow,
+  onChangeDiscussValue,
+  onAddUrlsList,
+  onDeleteUrlsList,
+  onAddFileBoxId,
 }) => {
   return (
     <>
@@ -55,8 +66,8 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
         <td>
           <div className="ui editor-wrap">
             <AdminDiscussionCreateEditor
-              contents={(selectedRow && selectedRow.content) || ''}
-              onChange={(e: any) => changeValue(e, 'content')}
+              contents={(discussRow && discussRow.content) || ''}
+              onChange={(e: any) => onChangeDiscussValue(e, 'content')}
             />
           </div>
         </td>
@@ -65,9 +76,9 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
       <tr className="related-url-belt">
         <th>관련 URL</th>
         <td>
-          {selectedRow &&
-            selectedRow?.relatedUrlList?.map(({ title, url }, index) => (
-              <div className="related-url-bar">
+          {discussRow &&
+            discussRow.relatedUrlList?.map(({ title, url }, index) => (
+              <div className="related-url-bar" key={index}>
                 <div
                   className="ui right-top-count input admin"
                   style={{ width: '100%' }}
@@ -76,8 +87,10 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                     type="text"
                     placeholder="관련 URL 타이틀을 입력해주세요."
                     className="bg"
-                    value={title}
-                    onChange={(e: any) => changeValue(e, 'urlTitle', index)}
+                    value={title || ''}
+                    onChange={(e: any) =>
+                      onChangeDiscussValue(e.target.value, 'urlTitle', index)
+                    }
                   />
                   {
                     <Icon
@@ -92,8 +105,10 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                       type="text"
                       placeholder="https://"
                       className="bg"
-                      value={url}
-                      onChange={(e: any) => changeValue(e, 'urlValue', index)}
+                      value={url || ''}
+                      onChange={(e: any) =>
+                        onChangeDiscussValue(e.target.value, 'urlValue', index)
+                      }
                     />
                     {
                       <Icon
@@ -103,10 +118,10 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                     }
                   </div>
                   {index ===
-                  (selectedRow &&
-                    selectedRow.relatedUrlList &&
-                    selectedRow?.relatedUrlList?.length - 1) ? (
-                    <Button className="plus" onClick={handleAddUrlField}>
+                  (discussRow &&
+                    discussRow.relatedUrlList &&
+                    discussRow.relatedUrlList.length - 1) ? (
+                    <Button className="plus" onClick={onAddUrlsList}>
                       <Icon>
                         <img src={PlusIcon} />
                       </Icon>
@@ -114,7 +129,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                   ) : (
                     <Button
                       className="cancle-btn"
-                      onClick={() => handleDeleteUrlField(index)}
+                      onClick={() => onDeleteUrlsList(index)}
                     >
                       <Icon>
                         <img src={MinusIcon} />
@@ -134,7 +149,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
             <div className="attach-inner">
               <div>
                 <FileBox
-                  id="id"
+                  id={(discussRow && discussRow.fileBoxId) || ''}
                   vaultKey={{
                     keyString: 'sku-depot',
                     patronType: PatronType.Pavilion,
@@ -149,7 +164,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
                       validator: depotHelper.duplicationValidator,
                     },
                   ]}
-                  // onChange={this.getFileBoxIdForReference}
+                  onChange={onAddFileBoxId}
                 />
                 <div className="bottom">
                   <span className="text1">
@@ -172,16 +187,16 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
               label="공개"
               name="optionGroup"
               value="option01"
-              checked={true}
-              onChange={(e: any) => console.log(e)}
+              checked={discussRow && !discussRow.privateComment}
+              onChange={() => onChangeDiscussValue(false, 'privateComment')}
             />
             <Radio
               className="base"
               label="비공개"
               name="optionGroup"
               value="option02"
-              checked={false}
-              onChange={(e: any) => console.log(e)}
+              checked={discussRow && discussRow.privateComment}
+              onChange={() => onChangeDiscussValue(true, 'privateComment')}
             />
           </div>
           <span className="open-option-detail">

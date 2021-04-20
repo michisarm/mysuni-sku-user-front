@@ -7,19 +7,34 @@ import { SearchBox } from 'community/model/SearchBox';
 import { useSearchBox } from 'community/store/SearchBoxStore';
 import { getCommunitySurvey } from 'community/service/useCommunityMenu/requestCommunity';
 import AdminDiscussionCreateView from '../CommunityAdmin/AdminDiscussionCreateView';
+import { CommunityDiscussion } from '../../../model/CommunityDiscussion';
 
 interface CommunityAdminMenuDetailViewProps {
   addMenuFlag: boolean;
   communityAdminGroups: any;
   selectedRow?: MenuItem;
+  discussRow?: CommunityDiscussion;
   onChangeValue: (data: any, name: string) => void;
+  onChangeDiscussValue: (
+    value: string | boolean,
+    type: string,
+    currentIndex?: number
+  ) => void;
+  onAddUrlsList: () => void;
+  onDeleteUrlsList: (currentIndex: number) => void;
+  onAddFileBoxId: (fileBoxId: string) => void;
 }
 
 const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
+  discussRow,
   communityAdminGroups,
   onChangeValue,
+  onChangeDiscussValue,
+  onAddUrlsList,
+  onDeleteUrlsList,
+  onAddFileBoxId,
 }) {
   const searchBox = useSearchBox();
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
@@ -154,19 +169,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     onChangeValue(selectedRow, 'surveyId');
   }
 
-  function handleAddUrlField() {
-    selectedRow!.relatedUrlList?.push({ title: '', url: '' });
-    onChangeValue(selectedRow, 'relatedUrlList');
-  }
-
-  function handleDeleteUrlField(fieldIndex: number) {
-    if (selectedRow!.relatedUrlList?.length === 1) {
-      return;
-    }
-    selectedRow!.relatedUrlList?.filter((url, index) => index !== fieldIndex);
-    onChangeValue(selectedRow, 'relatedUrlList');
-  }
-
   return (
     <div className="menu_right_contents">
       <table>
@@ -200,7 +202,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
                   className="bg"
                   type="text"
                   placeholder="제목을 입력해주세요."
-                  value={selectedRow && selectedRow.name}
+                  value={(selectedRow && selectedRow.name) || ''}
                   name="name"
                   onChange={changeValue}
                 />
@@ -212,8 +214,11 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
             <AdminDiscussionCreateView
               changeValue={changeValue}
               selectedRow={selectedRow}
-              handleAddUrlField={handleAddUrlField}
-              handleDeleteUrlField={handleDeleteUrlField}
+              discussRow={discussRow}
+              onChangeDiscussValue={onChangeDiscussValue}
+              onAddUrlsList={onAddUrlsList}
+              onDeleteUrlsList={onDeleteUrlsList}
+              onAddFileBoxId={onAddFileBoxId}
             />
           )}
           {selectedRow!.type === 'SURVEY' && (

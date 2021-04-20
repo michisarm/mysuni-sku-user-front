@@ -40,6 +40,8 @@ function CommunityDiscussionContainer() {
     history.goBack();
   }, []);
 
+  console.log(postDetail);
+
   return (
     <Fragment>
       {postDetail && (
@@ -79,7 +81,7 @@ function CommunityDiscussionContainer() {
                             depot.downloadDepotFile(foundedFile.id)
                           }
                         >
-                          <span>{foundedFile.name}</span>
+                          <span>{foundedFile.name}1123</span>
                         </a>
                       </div>
                     </div>

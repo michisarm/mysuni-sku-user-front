@@ -43,86 +43,61 @@ interface ApprovedProps {
 
 const MenuItemView: React.FC<CommunityMenu &
   MenuItemViewProps> = function MenuItemView({
-    type,
-    name,
-    communityId,
-    menuId,
-    url,
-    subMenus,
-    lastPostTime,
-  }) {
-    let path = 'board';
-    let icon = boardIcon;
-    switch (type) {
-      case 'DISCUSSION':
-        icon = discussionIcon;
-        path = 'discussion';
-        break;
-      case 'STORE':
-        icon = storeIcon;
-        path = 'data';
-        break;
-      case 'SURVEY':
-        icon = surveyIcon;
-        path = 'poll';
-        break;
-      case 'LINK':
-        icon = linkIcon;
-        break;
-      case 'HTML':
-        icon = htmlIcon;
-        path = 'content';
-        break;
-      default:
-        break;
-    }
-    if (type === 'LINK') {
-      return (
-        <li>
-          <a href={url} target="_blank">
-            <img src={icon} />
-            {name}
-          </a>
-        </li>
-      );
-    }
-    if (type === 'CATEGORY') {
-      return (
-        <>
-          <li>
-            <span>
-              <img src={icon} />
-              {name}
-            </span>
-          </li>
-          {subMenus.length > 0 && (
-            <ul>
-              {subMenus
-                .sort((a, b) => a.order - b.order)
-                .map(menu => (
-                  <SubMenuItemView key={menu.menuId} {...menu} />
-                ))}
-            </ul>
-          )}
-        </>
-      );
-    }
-
-    const gaEvent = (): void => {
-      ReactGA.pageview(
-        `${`/community/${communityId}/${path}/${menuId}`}`,
-        [],
-        `(커뮤니티 하위메뉴)-${name}`
-      );
-    };
+  type,
+  name,
+  communityId,
+  menuId,
+  url,
+  subMenus,
+  lastPostTime,
+}) {
+  let path = 'board';
+  let icon = boardIcon;
+  switch (type) {
+    case 'ANODISCUSSION':
+      icon = discussionIcon;
+      path = 'anodiscussion';
+      break;
+    case 'DISCUSSION':
+      icon = discussionIcon;
+      path = 'discussion';
+      break;
+    case 'STORE':
+      icon = storeIcon;
+      path = 'data';
+      break;
+    case 'SURVEY':
+      icon = surveyIcon;
+      path = 'poll';
+      break;
+    case 'LINK':
+      icon = linkIcon;
+      break;
+    case 'HTML':
+      icon = htmlIcon;
+      path = 'content';
+      break;
+    default:
+      break;
+  }
+  if (type === 'LINK') {
+    return (
+      <li>
+        <a href={url} target="_blank">
+          <img src={icon} />
+          {name}
+        </a>
+      </li>
+    );
+  }
+  if (type === 'CATEGORY') {
     return (
       <>
-        <li onClick={gaEvent}>
-          <Link to={`/community/${communityId}/${path}/${menuId}`}>
+        <li>
+          <span>
             <img src={icon} />
-            {name}{' '}
-            {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
-          </Link>
+            {name}
+          </span>
         </li>
         {subMenus.length > 0 && (
           <ul>
@@ -135,105 +110,134 @@ const MenuItemView: React.FC<CommunityMenu &
         )}
       </>
     );
+  }
+
+  const gaEvent = (): void => {
+    ReactGA.pageview(
+      `${`/community/${communityId}/${path}/${menuId}`}`,
+      [],
+      `(커뮤니티 하위메뉴)-${name}`
+    );
   };
+  return (
+    <>
+      <li onClick={gaEvent}>
+        <Link to={`/community/${communityId}/${path}/${menuId}`}>
+          <img src={icon} />
+          {name}{' '}
+          {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+        </Link>
+      </li>
+      {subMenus.length > 0 && (
+        <ul>
+          {subMenus
+            .sort((a, b) => a.order - b.order)
+            .map(menu => (
+              <SubMenuItemView key={menu.menuId} {...menu} />
+            ))}
+        </ul>
+      )}
+    </>
+  );
+};
 
 const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
   ApprovedProps> = function MenuItemView({
-    type,
-    name,
-    icon,
-    approved,
-    subMenus,
-    lastPostTime,
-  }) {
-    let path = 'board';
-    let nextIcon = icon || boardIcon;
-    switch (type) {
-      case 'ANODISCUSSION':
-	    icon = discussionIcon;
-	    path = 'anodiscussion';
-	    break;
-      case 'DISCUSSION':
-        nextIcon = discussionIcon;
-        path = 'discussion';
-        break;
-      case 'STORE':
-        nextIcon = storeIcon;
-        path = 'data';
-        break;
-      case 'SURVEY':
-        nextIcon = surveyIcon;
-        path = 'poll';
-        break;
-      case 'LINK':
-        nextIcon = linkIcon;
-        break;
-      case 'HTML':
-        nextIcon = htmlIcon;
-        path = 'content';
-        break;
-      default:
-        break;
+  type,
+  name,
+  icon,
+  approved,
+  subMenus,
+  lastPostTime,
+}) {
+  let path = 'board';
+  let nextIcon = icon || boardIcon;
+  switch (type) {
+    case 'ANODISCUSSION':
+      icon = discussionIcon;
+      path = 'anodiscussion';
+      break;
+    case 'DISCUSSION':
+      nextIcon = discussionIcon;
+      path = 'discussion';
+      break;
+    case 'STORE':
+      nextIcon = storeIcon;
+      path = 'data';
+      break;
+    case 'SURVEY':
+      nextIcon = surveyIcon;
+      path = 'poll';
+      break;
+    case 'LINK':
+      nextIcon = linkIcon;
+      break;
+    case 'HTML':
+      nextIcon = htmlIcon;
+      path = 'content';
+      break;
+    default:
+      break;
+  }
+
+  const Alert = useCallback(() => {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
+      reactConfirm({
+        title: '알림',
+        message: '커뮤니티에 가입하시겠습니까?',
+        onOk: async () => {
+          const communtyHome = getCommunityHome();
+          if (
+            communtyHome === undefined ||
+            communtyHome.community === undefined
+          ) {
+            return;
+          }
+          await joinCommunity(communtyHome.community.communityId);
+          requestCommunity(communtyHome.community.communityId);
+          if (communtyHome.community.allowSelfJoin === 1) {
+            reactAlert({
+              title: '알림',
+              message: '커뮤니티에 가입이 완료되었습니다.',
+            });
+          }
+        },
+      });
+    } else if (approved === 'WAITING') {
+      reactAlert({
+        title: '안내',
+        message: '지금 가입 승인을 기다리는 중입니다.',
+      });
     }
+  }, [approved]);
 
-    const Alert = useCallback(() => {
-      if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
-        reactConfirm({
-          title: '알림',
-          message: '커뮤니티에 가입하시겠습니까?',
-          onOk: async () => {
-            const communtyHome = getCommunityHome();
-            if (
-              communtyHome === undefined ||
-              communtyHome.community === undefined
-            ) {
-              return;
-            }
-            await joinCommunity(communtyHome.community.communityId);
-            requestCommunity(communtyHome.community.communityId);
-            if (communtyHome.community.allowSelfJoin === 1) {
-              reactAlert({
-                title: '알림',
-                message: '커뮤니티에 가입이 완료되었습니다.',
-              });
-            }
-          },
-        });
-      } else if (approved === 'WAITING') {
-        reactAlert({
-          title: '안내',
-          message: '지금 가입 승인을 기다리는 중입니다.',
-        });
-      }
-    }, [approved]);
-
-    return (
-      <>
-        <li>
-          <button onClick={Alert}>
-            <img src={nextIcon} />
-            {name}{' '}
-            {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
-          </button>
-        </li>
-        {subMenus.length > 0 && (
-          <ul>
-            {subMenus
-              .sort((a, b) => a.order - b.order)
-              .map(menu => (
-                <ReadonlySubMenuItemView
-                  key={menu.menuId}
-                  type={menu.type}
-                  name={menu.name}
-                  approved={approved}
-                  lastPostTime={menu.lastPostTime}
-                />
-              ))}
-          </ul>
-        )}
-      </>
-    );
-  };
+  return (
+    <>
+      <li>
+        <button onClick={Alert}>
+          <img src={nextIcon} />
+          {name}{' '}
+          {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+        </button>
+      </li>
+      {subMenus.length > 0 && (
+        <ul>
+          {subMenus
+            .sort((a, b) => a.order - b.order)
+            .map(menu => (
+              <ReadonlySubMenuItemView
+                key={menu.menuId}
+                type={menu.type}
+                name={menu.name}
+                approved={approved}
+                lastPostTime={menu.lastPostTime}
+              />
+            ))}
+        </ul>
+      )}
+    </>
+  );
+};
 
 const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   type,
@@ -508,7 +512,7 @@ interface profileParams {
   profileImg: string;
   introduce: string;
   nickName: string;
-  creatorName: string
+  creatorName: string;
 }
 
 function CommunityHomeTreeContainer() {
@@ -524,7 +528,7 @@ function CommunityHomeTreeContainer() {
     const currentUrl = window.location.toString();
     const url = `${currentUrl.split('/community/')[0]}/community/${
       communtyHome.community.communityId
-      }`;
+    }`;
     const textarea = document.createElement('textarea');
     textarea.value = url;
     document.body.appendChild(textarea);
@@ -579,21 +583,24 @@ function CommunityHomeTreeContainer() {
   }
 
   function onClickManagerName(params: any) {
-    findCommunityProfile(params.managerId).then((result) => {
+    findCommunityProfile(params.managerId).then(result => {
       setProfileInfo({
-        'id': result!.id,
-        'profileImg': result!.profileImg,
-        'introduce': result!.introduce,
-        'nickName': result!.nickname,
-        'creatorName': result!.name
-      })
-      setProfileOpen(true)
-    })
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
   }
 
   return (
     <>
-      <div className="community-left community-home-left" data-area={Area.COMMUNITY_LNB}>
+      <div
+        className="community-left community-home-left"
+        data-area={Area.COMMUNITY_LNB}
+      >
         <div className="sub-info-box">
           <div className="commnuity-left-top">
             <div className="community-left-header">
@@ -610,7 +617,10 @@ function CommunityHomeTreeContainer() {
             <h3>{communtyHome.community.name}</h3>
             <div className="community-home-left-span">
               <div className="community-user-info">
-                <span onClick={() => onClickManagerName(communtyHome.community)} style={{ cursor: 'pointer' }}>
+                <span
+                  onClick={() => onClickManagerName(communtyHome.community)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <img src={managerIcon} />
                   <strong>{communtyHome.community.managerName}</strong>
                 </span>
@@ -623,9 +633,9 @@ function CommunityHomeTreeContainer() {
               {communtyHome.community.approved === 'REJECT' && <JoinView />}
               {communtyHome.community.approved === 'WAITING' && <WaitView />}
               {communtyHome.community.approved === 'APPROVED' && <MemberView />}
-              {(communtyHome.community.managerId === patronInfo.getDenizenId() || communtyHome.community.memberType === 'ADMIN') && (
-                <AdminView />
-              )}
+              {(communtyHome.community.managerId ===
+                patronInfo.getDenizenId() ||
+                communtyHome.community.memberType === 'ADMIN') && <AdminView />}
             </div>
           </div>
           <div className="community-home-right-contents">
@@ -639,16 +649,18 @@ function CommunityHomeTreeContainer() {
                   </Link>
                 </li>
                 {communtyHome?.community &&
-                  deleteAllPostMenu(communtyHome?.community.communityId) ? null : (
-                    <ReadonlyMenuItemView
-                      type="NOTICE"
-                      name="전체글"
-                      icon={boardIcon}
-                      approved={communtyHome.community?.approved}
-                      subMenus={[]}
-                      lastPostTime={0}
-                    />
-                  )}
+                deleteAllPostMenu(
+                  communtyHome?.community.communityId
+                ) ? null : (
+                  <ReadonlyMenuItemView
+                    type="NOTICE"
+                    name="전체글"
+                    icon={boardIcon}
+                    approved={communtyHome.community?.approved}
+                    subMenus={[]}
+                    lastPostTime={0}
+                  />
+                )}
                 <ReadonlyMenuItemView
                   type="NOTICE"
                   name="공지사항"
@@ -682,16 +694,18 @@ function CommunityHomeTreeContainer() {
                   </Link>
                 </li>
                 {communtyHome?.community &&
-                  deleteAllPostMenu(communtyHome?.community.communityId) ? null : (
-                    <li onClick={() => gaEvent('all')}>
-                      <Link
-                        to={`/community/${communtyHome.community.communityId}/all`}
-                      >
-                        <img src={boardIcon} />
-                        전체글
-                      </Link>
-                    </li>
-                  )}
+                deleteAllPostMenu(
+                  communtyHome?.community.communityId
+                ) ? null : (
+                  <li onClick={() => gaEvent('all')}>
+                    <Link
+                      to={`/community/${communtyHome.community.communityId}/all`}
+                    >
+                      <img src={boardIcon} />
+                      전체글
+                    </Link>
+                  </li>
+                )}
                 <li onClick={() => gaEvent('notic')}>
                   <Link
                     to={`/community/${communtyHome.community.communityId}/notice`}

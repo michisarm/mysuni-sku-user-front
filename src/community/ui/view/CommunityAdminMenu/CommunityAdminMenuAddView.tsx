@@ -11,6 +11,7 @@ import {
   Select,
   TextArea,
 } from 'semantic-ui-react';
+import { CommunityDiscussion } from '../../../model/CommunityDiscussion';
 import AdminDiscussionCreateView from '../CommunityAdmin/AdminDiscussionCreateView';
 
 interface RouteParams {
@@ -22,14 +23,28 @@ interface CommunityAdminMenuAddViewProps {
   addChildMenuFlag?: boolean;
   communityAdminGroups: any;
   selectedRow?: MenuItem;
+  discussRow?: CommunityDiscussion;
   onChangeAddValue: (data: any, name: string) => void;
+  onChangeDiscussValue: (
+    value: string | boolean,
+    type: string,
+    currentIndex?: number
+  ) => void;
+  onAddUrlsList: () => void;
+  onDeleteUrlsList: (currentIndex: number) => void;
+  onAddFileBoxId: (fileBoxId: string) => void;
 }
 
 const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
   addMenuFlag,
   selectedRow,
+  discussRow,
   communityAdminGroups,
   onChangeAddValue,
+  onChangeDiscussValue,
+  onAddUrlsList,
+  onDeleteUrlsList,
+  onAddFileBoxId,
 }) {
   const searchBox = useSearchBox();
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
@@ -154,19 +169,6 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
     onChangeAddValue(selectedRow, 'html');
   }
 
-  function handleAddUrlField() {
-    selectedRow!.relatedUrlList?.push({ title: '', url: '' });
-    onChangeAddValue(selectedRow, 'relatedUrlList');
-  }
-
-  function handleDeleteUrlField(fieldIndex: number) {
-    if (selectedRow!.relatedUrlList?.length === 1) {
-      return;
-    }
-    selectedRow!.relatedUrlList?.filter((url, index) => index !== fieldIndex);
-    onChangeAddValue(selectedRow, 'relatedUrlList');
-  }
-
   return (
     <div className="menu_right_contents">
       <table>
@@ -211,8 +213,11 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
             <AdminDiscussionCreateView
               changeValue={changeValue}
               selectedRow={selectedRow}
-              handleAddUrlField={handleAddUrlField}
-              handleDeleteUrlField={handleDeleteUrlField}
+              discussRow={discussRow}
+              onChangeDiscussValue={onChangeDiscussValue}
+              onAddUrlsList={onAddUrlsList}
+              onDeleteUrlsList={onDeleteUrlsList}
+              onAddFileBoxId={onAddFileBoxId}
             />
           )}
           {selectedRow!.type === 'SURVEY' && (

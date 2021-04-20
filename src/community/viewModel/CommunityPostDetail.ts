@@ -26,9 +26,6 @@ export interface CommunityPostDetail {
   profileImg: string;
   prevPost?: Post;
   nextPost?: Post;
-
-  content?: string;
-  relatedUrlList?: [{ title: string; url: string }];
 }
 
 export interface CommunityPostItem {

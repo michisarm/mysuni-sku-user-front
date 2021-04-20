@@ -1,32 +1,36 @@
-import { onCommunityPostDetailItem, setCommunityPostDetailItem } from "community/store/CommunityPostDetailStore";
-import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
-import { useEffect, useRef, useState } from "react";
-import { getCommunityPost } from "../useCommunityPostCreate/utility/getCommunityPost";
+import { useEffect, useRef, useState } from 'react';
+import { onCommunityDiscussionDetailItem } from '../../store/CommunityDiscussionDetailStore';
+import { CommunityDiscussionDetail } from '../../viewModel/CommunityDiscussionDetail';
+import { getCommunityDiscussion } from '../useCommunityPostCreate/utility/getDiscussionDetail';
 
-type PostDetailValue = CommunityPostDetail | undefined;
+type PostDetailValue = CommunityDiscussionDetail | undefined;
 
-export function useCommunityDiscussionPostDetail(menuId: string): [PostDetailValue] {
-    const subscriberIdRef = useRef<number>(0);
-    const [subscriberId, setSubscriberId] = useState<string>();
-    const [PostDetailValue, setPostDetailValue] = useState<CommunityPostDetail>();
-    
-    useEffect(() => {
-      getCommunityPost(menuId);
-    }, [menuId]);
+export function useCommunityDiscussionPostDetail(
+  menuId: string
+): [PostDetailValue] {
+  const subscriberIdRef = useRef<number>(0);
+  const [subscriberId, setSubscriberId] = useState<string>();
+  const [PostDetailValue, setPostDetailValue] = useState<
+    CommunityDiscussionDetail
+  >();
 
-    useEffect(() => {
-      const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;
-      setSubscriberId(next);
-    }, []);
+  useEffect(() => {
+    getCommunityDiscussion(menuId);
+  }, [menuId]);
 
-    useEffect(() => {
-      if (subscriberId === undefined) {
-        return;
-      }
-      return onCommunityPostDetailItem(next => {
-        setPostDetailValue(next)
-      }, subscriberId);
-    }, [subscriberId]);
-  
-    return [PostDetailValue];
+  useEffect(() => {
+    const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;
+    setSubscriberId(next);
+  }, []);
+
+  useEffect(() => {
+    if (subscriberId === undefined) {
+      return;
+    }
+    return onCommunityDiscussionDetailItem(next => {
+      setPostDetailValue(next);
+    }, subscriberId);
+  }, [subscriberId]);
+
+  return [PostDetailValue];
 }
