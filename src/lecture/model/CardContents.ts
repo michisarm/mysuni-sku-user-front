@@ -17,6 +17,7 @@ export interface CardContents {
   instructors: Instructor[];
   // admin 에서만 사용
   tests: Test[];
+  description: string;
 
   relatedCards: RelatedCard[];
   cardOperator: Member;
