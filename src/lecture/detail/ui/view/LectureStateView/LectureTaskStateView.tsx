@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Student from '../../../../model/Student';
 import { submit } from '../../../service/useLectureState/utility/cubeStateActions';
 import LectureState from '../../../viewModel/LectureState';
+import { reactAlert } from '@nara.platform/accent';
 
 const PROGRESS = '학습중';
 const COMPLETE = '학습완료';
@@ -54,6 +55,15 @@ function ApprovedView(props: ApprovedViewProps) {
     }
     return 'line';
   }, [student]);
+
+  useEffect(() => {
+    if (!student?.complete && student.learningState === 'Progress') {
+      reactAlert({
+        title: '안내',
+        message: `이수조건을 확인 후 학습을 진행해주세요`,
+      });
+    }
+  }, [student.id]);
 
   return (
     <>
