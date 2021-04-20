@@ -19,7 +19,7 @@ const LectureWebpageView: React.FC<LectureWebpage &
           <iframe className="iframe-area" src={url} />
         )
         }
-        {urlType === null && (
+        {urlType === null || urlType === "" && (
           <div className="lms-open-graph">
             <img src={image ? image : DefaultImg} className="lms-open-image" />
             <div className="lms-open-con">

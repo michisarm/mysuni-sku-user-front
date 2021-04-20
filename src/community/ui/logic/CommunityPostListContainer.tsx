@@ -9,7 +9,7 @@ import PostRdo from 'community/model/PostRdo';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
-import { getCommunityHome } from 'community/store/CommunityHomeStore';
+import { getCommunityHome, useCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { checkMember } from 'community/service/useMember/useMember';
 import { getNoticePostGroupManager } from 'community/service/useCommunityPostList/getNoticePostListMapFromCommunity';
@@ -36,6 +36,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   handelOnSearch,
   onPaging,
 }) {
+  const communityHome = useCommunityHome();
   const [sortType, setSortType] = useState<SortType>('createdTime');
   const [searchType, setSearchType] = useState<SearchType>('all');
   const [searchText, setsearchText] = useState<string>('');
@@ -46,6 +47,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
   const history = useHistory();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [groupAuth, setGroupAuth] = useState<boolean>(false);
+  const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -83,9 +85,15 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
     ) {
       setAdminAuth(getCommunityHome()?.community?.managerId! === denizenId);
     }
+
+    if (
+      communityHome?.community?.memberType === 'ADMIN'
+    ) {
+      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
+    }
   }, [postItems, communityId]);
 
-  const handelClickCreatePost = () => {};
+  const handelClickCreatePost = () => { };
   const handleClickRow = async (param: any, menuType: string) => {
     //멤버 가입 체크
     if (!(await checkMember(communityId))) {
@@ -188,6 +196,7 @@ const CommunityPostListContainer: React.FC<CommunityPostListContainerProps> = fu
             menuType={menuType}
             managerAuth={adminAuth}
             groupAuth={groupAuth}
+            communityAdminAuth={communityAdminAuth}
             onChangeSortType={(e, id) => onChangeSortType(e, id)}
             handelClickCreateTask={handelClickCreatePost}
           />
