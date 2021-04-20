@@ -36,6 +36,7 @@ function CreateCubeDetailContainer() {
   }, [params.personalCubeId, cubeSdo]);
 
   const onClickSave = useCallback(() => {
+    
     const blankField = getBlankRequiredCubeContentsField(cubeSdo);
 
     if(blankField === 'none') {
@@ -98,7 +99,7 @@ function CreateCubeDetailContainer() {
                   params.cubeState !== 'OpenApproval' && (
                     <div className="buttons">
                       <Button className="fix line" onClick={routeToCreateList}>Cancel</Button>
-                      <Button className="fix bg" onClick={onClickSave}>Save</Button>
+                      <Button className="fix line" onClick={onClickSave}>Save</Button>
                     </div>
                   )
                 }

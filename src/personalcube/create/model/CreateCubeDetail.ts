@@ -51,5 +51,6 @@ export function getCubeSdo(cubeDetail: CreateCubeDetail): CubeSdo {
         learningPeriod: officeWeb?.learningPeriod,
       },
     },
+    operator: cubeContents.operator,
   };
 }

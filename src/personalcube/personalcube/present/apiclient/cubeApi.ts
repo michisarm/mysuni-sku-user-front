@@ -84,3 +84,9 @@ export function findPanopToList(panoptoCdo: PanoptoCdoModel) {
     })
     .then(response => (response && response.data) || null);
 }
+
+export function requestOpenUserCube(cubeId: string) {
+  const axios = getAxios();
+  const baseUrl = `${BASE_URL}/userCubes/${cubeId}/requestOpen`;
+  return axios.put<void>(baseUrl).then(response => true).catch(error => false);
+}
