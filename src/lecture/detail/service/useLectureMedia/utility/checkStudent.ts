@@ -19,7 +19,9 @@ export async function checkStudent(params: LectureParams): Promise<void> {
     };
     const studentId = await registerStudent(studentCdo);
     if (studentId !== undefined) {
+      clearFindMyCardRelatedStudentsCache();
       await confirmProgress();
+      return;
     }
     clearFindMyCardRelatedStudentsCache();
     requestCardLectureStructure(cardId);

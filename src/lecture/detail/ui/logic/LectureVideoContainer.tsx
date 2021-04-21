@@ -6,21 +6,240 @@ import {
 } from 'lecture/detail/store/LectureMediaStore';
 import LinkedInModal from '../view/LectureVideoView/LinkedInModal';
 import ContentsProviderType from 'personalcube/media/model/ContentsProviderType';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { MediaType } from '../../../model/MediaType';
-import { checkStudent } from '../../service/useLectureMedia/utility/checkStudent';
+import {
+  addOnProgressEventHandler,
+  createOnProgressEventHandler,
+  PlayerState,
+} from '../../service/PanoptoEmbedPlayer';
+import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
+import { useLectureState } from '../../store/LectureStateStore';
+import {
+  videoClose,
+  videoStart,
+} from '../../service/useActionLog/cubeStudyEvent';
+import {
+  callConfirmProgress,
+  callDebounceActionTrack,
+  callRegisterWatchLog,
+  checkStudent,
+  fetchAllModelsForStorage,
+} from '../../service/useVideoContainer/utility/VideoContainerEvents';
+import { getActiveCourseStructureItem } from '../../utility/lectureStructureHelper';
+import { reactAlert } from '@nara.platform/accent';
+import { retMultiVideoOverlap } from '../../service/useLectureMedia/useLectureWatchLog';
+import { useLectureParams } from '../../store/LectureParamsStore';
 
 function LectureVideoContainer() {
   const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
+  const [nextContentsView, setNextContentsView] = useState<boolean>(false);
+  const [surveyAlerted, setSurveyAlerted] = useState<boolean>(false);
+  const lectureState = useLectureState();
+  const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
+  const history = useHistory();
+  const params = useLectureParams();
+
+  const callVideoNearEnded = useCallback(() => {
+    fetchAllModelsForStorage();
+    setNextContentsView(true);
+  }, []);
+
+  useEffect(() => {
+    const removeCallRegisterWatchLog = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callRegisterWatchLog,
+        (lastActionTime, state) => {
+          return (
+            state.playerState === PlayerState.Playing &&
+            lastActionTime + 10000 < Date.now()
+          );
+        }
+      )
+    );
+    const removeCallVideoNearEnded = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callVideoNearEnded,
+        (lastActionTime, state, didAction) => {
+          const { duration, currentTime, playerState } = state;
+          return (
+            playerState === PlayerState.Playing &&
+            currentTime + 20 > duration &&
+            didAction === false
+          );
+        }
+      )
+    );
+    const removeCheckStudent = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        checkStudent,
+        (lastActionTime, state, didAction) => {
+          const { playerState } = state;
+          return playerState === PlayerState.Playing && didAction === false;
+        }
+      )
+    );
+    const removeDebounceActionTrack = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callDebounceActionTrack,
+        (lastActionTime, state, didAction) => {
+          const { playerState } = state;
+          return playerState === PlayerState.Playing && didAction === false;
+        }
+      )
+    );
+    return () => {
+      removeCallRegisterWatchLog();
+      removeCallVideoNearEnded();
+      removeCheckStudent();
+      removeDebounceActionTrack();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (panoptoEmbedPlayerState?.playerState === undefined) {
+      return;
+    }
+    callConfirmProgress();
+    if (panoptoEmbedPlayerState.playerState === PlayerState.Playing) {
+      videoStart();
+    } else {
+      videoClose();
+    }
+  }, [panoptoEmbedPlayerState?.playerState]);
+
+  useEffect(() => {
+    if (surveyAlerted === true) {
+      return;
+    }
+    if (
+      panoptoEmbedPlayerState?.playerState === undefined ||
+      panoptoEmbedPlayerState?.duration === undefined ||
+      panoptoEmbedPlayerState?.currentTime === undefined
+    ) {
+      return;
+    }
+    if (
+      panoptoEmbedPlayerState.playerState === PlayerState.Paused ||
+      panoptoEmbedPlayerState.playerState === PlayerState.Ended
+    ) {
+      if (
+        panoptoEmbedPlayerState.duration <= panoptoEmbedPlayerState.currentTime
+      ) {
+        const course = getActiveCourseStructureItem();
+        if (
+          course?.state === 'Completed' &&
+          course.survey !== undefined &&
+          course.survey.state !== 'Completed'
+        ) {
+          setSurveyAlerted(true);
+          reactAlert({
+            title: '안내',
+            message: 'Survey 설문 참여를 해주세요.',
+            onClose: () => {
+              if (course?.survey?.path !== undefined) {
+                history.push(course.survey.path);
+              }
+            },
+          });
+        }
+      }
+    }
+  }, [
+    panoptoEmbedPlayerState?.playerState,
+    panoptoEmbedPlayerState?.duration,
+    panoptoEmbedPlayerState?.currentTime,
+    surveyAlerted,
+  ]);
+
+  useEffect(() => {
+    if (panoptoEmbedPlayerState?.duration === undefined) {
+      return;
+    }
+    const interval = Math.max(
+      (panoptoEmbedPlayerState?.duration / 20) * 1000,
+      30000
+    );
+    const removeCallConfirmProgress = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callConfirmProgress,
+        (lastActionTime, state) => {
+          return (
+            state.playerState === PlayerState.Playing &&
+            lastActionTime + interval < Date.now()
+          );
+        }
+      )
+    );
+    return () => {
+      removeCallConfirmProgress();
+    };
+  }, [panoptoEmbedPlayerState?.duration]);
+
+  const [liveLectureCardId, setLiveLectureCardId] = useState<string>('');
+  const handleMultiVideo = useCallback((viewState: string, usid: string) => {
+    // 멀티시청 제한 param = patronKeyString, state, lectureId
+    // state = start:시작, 중간 end:종료
+    // lectureId = 시청중인 ID
+    retMultiVideoOverlap(viewState, usid).then((res: any) => {
+      setLiveLectureCardId(res);
+      // jz - 오류 수정 후 기능 복원
+      // if (viewState !== 'end') {
+      //   if (!res || res === 'false') {
+      //     reactAlert({
+      //       title: '알림',
+      //       message:
+      //         '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+      //     });
+      //   }
+      // }
+    });
+  }, []);
+
+  const endMultiVideo = useCallback(() => {
+    const liveLectureId = JSON.parse(
+      sessionStorage.getItem('liveLectureCardId')!
+    );
+    if (liveLectureId) {
+      //중복 동영상 체크 종료 signal
+      handleMultiVideo('end', liveLectureId);
+      sessionStorage.removeItem('liveLectureCardId');
+    }
+  }, []);
 
   useEffect(() => {
     if (
-      getLectureMedia() &&
-      getLectureMedia()?.mediaType === MediaType.ContentsProviderMedia &&
-      (getLectureMedia()?.mediaContents.contentsProvider.contentsProviderType
+      panoptoEmbedPlayerState?.playerState === undefined ||
+      params?.cubeId === undefined
+    ) {
+      return;
+    }
+    if (panoptoEmbedPlayerState.playerState === PlayerState.Playing) {
+      handleMultiVideo('start', params.cubeId || 'start');
+      sessionStorage.setItem(
+        'liveLectureCardId',
+        JSON.stringify(params.cubeId)
+      );
+    } else {
+      //중복 동영상 체크 종료 signal
+      handleMultiVideo('end', liveLectureCardId);
+      sessionStorage.removeItem('liveLectureCardId');
+    }
+  }, [panoptoEmbedPlayerState?.playerState, params?.cubeId]);
+
+  useEffect(() => {
+    return () => {
+      endMultiVideo();
+    };
+  }, [lectureMedia]);
+
+  useEffect(() => {
+    if (
+      lectureMedia?.mediaType === MediaType.ContentsProviderMedia &&
+      (lectureMedia?.mediaContents.contentsProvider.contentsProviderType
         .name === 'Linked in' ||
-        getLectureMedia()?.mediaContents.contentsProvider.contentsProviderType
+        lectureMedia?.mediaContents.contentsProvider.contentsProviderType
           .name === ContentsProviderType.LinkedIn)
     ) {
       setLinkedInOpen(true);
@@ -31,7 +250,7 @@ function LectureVideoContainer() {
     return () => {
       setLinkedInOpen(false);
     };
-  }, [getLectureMedia()]);
+  }, [lectureMedia]);
 
   const { pathname } = useLocation();
 
@@ -63,15 +282,22 @@ function LectureVideoContainer() {
   );
   return (
     <>
-      {lectureMedia &&
+      {lectureMedia !== undefined &&
+        lectureState !== undefined &&
         (lectureMedia.mediaType == 'InternalMedia' ||
           lectureMedia.mediaType == 'InternalMediaUpload') && (
           <LectureVideoView
-            checkStudent={checkStudent}
             getStickyPosition={getStickyPosition}
             scroll={scroll}
             videoPosition={videoPosition}
             enabled={linkedInOpen}
+            nextContentsView={nextContentsView}
+            lectureState={lectureState}
+            currentTime={panoptoEmbedPlayerState?.currentTime || 0}
+            duration={panoptoEmbedPlayerState?.duration || 0}
+            playerState={
+              panoptoEmbedPlayerState?.playerState || PlayerState.Paused
+            }
           />
         )}
       <LinkedInModal enabled={linkedInOpen} />
