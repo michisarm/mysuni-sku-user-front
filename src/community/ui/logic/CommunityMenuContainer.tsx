@@ -27,7 +27,7 @@ import {
   CommunityDiscussion,
   getEmptyCommunityDiscussion,
 } from '../../model/CommunityDiscussion';
-import { findPostMenuDiscussion } from '../../api/communityApi';
+import { findAllMenus, findPostMenuDiscussion } from '../../api/communityApi';
 
 interface RouteParams {
   communityId: string;
@@ -40,7 +40,6 @@ function CommunityMenuContainer() {
   const { communityId } = useParams<RouteParams>();
   const [communityAdminMenu] = useCommunityAdminMenu();
   const [communityAdminGroups] = useCommunityGroups();
-  const [fileReady, setFileReady] = useState<boolean>();
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [addChildMenuFlag, setAddChildMenuFlag] = useState<boolean>(false);
   const [discussRow, setDiscussRow] = useState<CommunityDiscussion>();
@@ -68,15 +67,13 @@ function CommunityMenuContainer() {
       e.persist();
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
-      setFileReady(false);
       if (type !== 'delete') {
         if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
+          setDiscussRow(getEmptyCommunityDiscussion());
           const discussionParams = await findPostMenuDiscussion(
             param.menuId
           ).then(res => res);
           if (discussionParams) {
-            console.log('2', discussionParams);
-            setFileReady(true);
             setSelectedRow(param);
             setDiscussRow({
               content: discussionParams.content,
@@ -87,8 +84,6 @@ function CommunityMenuContainer() {
             //
           }
         } else {
-          console.log('3');
-          setFileReady(true);
           setSelectedRow(param);
           setAddChildMenuFlag(false);
         }
@@ -119,7 +114,7 @@ function CommunityMenuContainer() {
         });
       }
     },
-    [communityAdminMenu, discussRow, selectedRow, fileReady]
+    [communityAdminMenu, discussRow, selectedRow]
   );
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
@@ -444,9 +439,10 @@ function CommunityMenuContainer() {
               }
             );
           } else {
-            addCommunityMenu(communityId, obj).then(result => {
+            addCommunityMenu(communityId, obj).then(() => {
               //오더정리
-              requestCommunityMenu(communityId).then(result => {
+
+              requestCommunityMenu(communityId).then(() => {
                 requestCommunityMenuOrder(communityId);
                 reactAlert({
                   title: '',
@@ -516,6 +512,7 @@ function CommunityMenuContainer() {
               reactAlert({
                 title: '',
                 message: '저장되었습니다.',
+                onClose: () => findAllMenus(communityId),
               });
             });
           }, 500);
@@ -1218,7 +1215,6 @@ function CommunityMenuContainer() {
                       addMenuFlag={addMenuFlag}
                       selectedRow={selectedRow}
                       discussRow={discussRow}
-                      fileReady={fileReady}
                       communityAdminGroups={communityAdminGroups}
                       onChangeValue={(data, name) => onChangeValue(data, name)}
                       onChangeDiscussValue={onChangeDiscussValue}
@@ -1242,7 +1238,6 @@ function CommunityMenuContainer() {
                     addMenuFlag={addMenuFlag}
                     selectedRow={addRow}
                     discussRow={discussRow}
-                    fileReady={fileReady}
                     communityAdminGroups={communityAdminGroups}
                     onChangeAddValue={(data, name) =>
                       onChangeAddValue(data, name, 'parent')
@@ -1270,7 +1265,6 @@ function CommunityMenuContainer() {
                     addChildMenuFlag={addChildMenuFlag}
                     selectedRow={addRow}
                     discussRow={discussRow}
-                    fileReady={fileReady}
                     communityAdminGroups={communityAdminGroups}
                     onChangeAddValue={(data, name) =>
                       onChangeAddValue(data, name, 'child')

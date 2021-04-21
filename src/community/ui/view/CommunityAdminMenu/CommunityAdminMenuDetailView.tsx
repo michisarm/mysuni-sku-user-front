@@ -14,7 +14,6 @@ interface CommunityAdminMenuDetailViewProps {
   communityAdminGroups: any;
   selectedRow?: MenuItem;
   discussRow?: CommunityDiscussion;
-  fileReady?: boolean;
   onChangeValue: (data: any, name: string) => void;
   onChangeDiscussValue: (
     value: string | boolean,
@@ -30,7 +29,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   addMenuFlag,
   selectedRow,
   discussRow,
-  fileReady,
   communityAdminGroups,
   onChangeValue,
   onChangeDiscussValue,
@@ -68,7 +66,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
         }
       });
     }
-    console.log('4', discussRow);
   }, [selectedRow, discussRow]);
 
   const menuType = [
@@ -218,7 +215,6 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
               changeValue={changeValue}
               selectedRow={selectedRow}
               discussRow={discussRow}
-              fileReady={fileReady}
               onChangeDiscussValue={onChangeDiscussValue}
               onAddUrlsList={onAddUrlsList}
               onDeleteUrlsList={onDeleteUrlsList}
