@@ -5,6 +5,7 @@ const [
   setLectureFeedbackContent,
   onLectureFeedbackContent,
   getLectureFeedbackContent,
+  useLectureFeedbackContent
 ] = createStore<LectureFeedbackContent>();
 
-export { setLectureFeedbackContent, onLectureFeedbackContent, getLectureFeedbackContent };
+export { setLectureFeedbackContent, onLectureFeedbackContent, getLectureFeedbackContent, useLectureFeedbackContent };
