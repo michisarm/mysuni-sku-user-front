@@ -20,7 +20,7 @@ import LectureParams from '../../../viewModel/LectureParams';
 import { LectureStructureSurveyItem } from '../../../viewModel/LectureStructure';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
 import { MatrixItem } from '../../../viewModel/LectureSurveyState';
-import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
+import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 
 async function openLectureSurveyState() {
   const lectureSurveyState = getLectureSurveyState();
@@ -294,7 +294,8 @@ export async function saveLectureSurveyState(lectureParams: LectureParams) {
   }
   await coreSaveLectureSurveyState();
   await saveTask(student.id, 'Survey');
-  requestCardLectureStructure(lectureParams.cardId);
+  clearFindMyCardRelatedStudentsCache();
+  updateCardLectureStructure(lectureParams.cardId);
 
   reactAlert({
     title: '알림',
@@ -322,8 +323,8 @@ export async function submitLectureSurveyState(lectureParams: LectureParams) {
   }
   await coreSubmitLectureSurveyState();
   await submitTask(student.id, 'Survey');
-  await clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(lectureParams.cardId);
+  clearFindMyCardRelatedStudentsCache();
+  updateCardLectureStructure(lectureParams.cardId);
 }
 
 export async function saveCommunitySurveyState() {
