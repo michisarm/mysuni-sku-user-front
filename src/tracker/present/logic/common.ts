@@ -10,6 +10,8 @@ import { findCollege } from 'college/present/apiclient/CollegeApi';
 import { findChannel } from 'college/present/apiclient/ChannelApi';
 import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
+import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
+import { find } from 'lodash';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 
@@ -38,9 +40,6 @@ export const getPathValue = (
       case FieldType.Channel:
         checkId = 'CHN';
         break;
-      // case FieldType.Course:
-        // checkId = 'COURSE';
-        // break;
       case FieldType.Card:
         checkId = 'CARD';
         break;
@@ -52,6 +51,9 @@ export const getPathValue = (
         break;
       case FieldType.Badge:
         checkId = 'BADGE';
+        break;
+      default:
+        checkId = 'NONE';
         break;
     }
     return matches[1].includes(checkId) ? { type, id: matches[1] } : null;
@@ -201,6 +203,26 @@ const getFieldName = async (id: string, type: string) => {
     } else if (type === FieldType.Badge) {
       const badge = await findBadge(id);
       name = badge?.name;
+    } else if (type === FieldType.CardBundle) {
+      // id기반 api 없는지 확인
+      const cardBundles = await findAvailableCardBundles();
+      const cardBundle = find(cardBundles, { id });
+      let type = cardBundle?.type || 'none';
+      switch (type){
+        case 'Normal':
+          type = '일반과정';
+          break;
+        case 'Popular':
+          type = '인기과정';
+          break;
+        case 'New':
+          type = '신규과정';
+          break;
+        case 'Recommended':
+          type = '추천과정';
+          break;
+      }
+      name = type+"::"+cardBundle?.displayText;
     }
     if (lsTest() && name) {
       let tempObj;
@@ -301,6 +323,14 @@ export const getPathName = async (path: string, search: string) => {
                   break;
                 case 'Enrolling':
                   pathName += '::수강신청과정';
+                  break;
+                default:
+                  await setResultName({
+                    type: FieldType.CardBundle,
+                    id: RegExp.$3,
+                  }).then(result => {
+                    pathName = 'Main-Section::' + result.name;
+                  });
                   break;
               }
               break;
