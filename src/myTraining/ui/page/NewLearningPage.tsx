@@ -5,6 +5,7 @@ import { find } from 'lodash';
 import LRSListContainer from '../logic/LRSListContainer';
 import LearningListContainer from '../logic/LearningListContainer';
 import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
+import { Area } from 'tracker/model';
 
 export enum ContentType {
   Recommend = 'Recommend',
@@ -18,6 +19,8 @@ interface Params {
 
 function NewLearningPage() {
   const [breadcrumbTItle, setBreadcrumbTItle] = useState<string>('');
+  const [cardType, setCardType] = useState<String>('');
+  const [dataArea, setDataArea] = useState<Area | undefined>(undefined);
   const { type } = useParams<Params>();
   console.log(useParams());
   const contentType = type as ContentType;
@@ -28,6 +31,7 @@ function NewLearningPage() {
 
     if (cardBundle) {
       setBreadcrumbTItle(cardBundle.displayText);
+      setCardType(cardBundle.type);
     }
   };
 
@@ -46,6 +50,37 @@ function NewLearningPage() {
     }
   };
 
+  useEffect(() => {
+    let area = null;
+    switch (contentType) {
+      case ContentType.Recommend:
+        area = Area.NEWLEARNING_RECOMMEND;
+        break;
+      case ContentType.Enrolling:
+        area = Area.NEWLEARNING_ENROLLING;
+        break;
+      default:
+        switch(cardType){
+          case "Normal":
+            area = Area.NEWLEARNING_NORMAL;
+            break;
+          case "Popular":
+            area = Area.NEWLEARNING_POPULAR;
+            break;
+          case "New":
+            area = Area.NEWLEARNING_NEW;
+            break;
+          case "Recommended":
+            area = Area.NEWLEARNING_RECOMMEND;
+            break;
+        }
+        break;
+    }
+    if (area) {
+      setDataArea(area);
+    }
+  }, [contentType, cardType]);
+
   const renderLearningList = () => {
     switch (contentType) {
       case ContentType.Recommend:
@@ -58,7 +93,7 @@ function NewLearningPage() {
   };
 
   return (
-    <ContentLayout breadcrumb={[{ text: getBreadcrumb() }]}>
+    <ContentLayout breadcrumb={[{ text: getBreadcrumb() }]} dataArea={dataArea}>
       {renderLearningList()}
     </ContentLayout>
   );

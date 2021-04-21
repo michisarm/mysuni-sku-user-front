@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { Context } from 'layout/UserApp';
-
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
 
@@ -14,13 +14,15 @@ interface Props extends RouteComponentProps {
   /** CSS className: html의 <div className="content"> 에 추가로 들어가는 클래스명을 명시합니다. */
   className?: string,
 
-  disabled?: boolean
+  disabled?: boolean,
 
   /** breadcrumb (page navigation) */
   breadcrumb?: Breadcrumb[],
 
   /** 내부사용 context */
   context?: any,
+
+  dataArea?: Area,
 }
 
 interface Breadcrumb {
@@ -63,14 +65,16 @@ class ContentLayoutContainer extends Component<Props> {
 
   render() {
     //
-    const { className, disabled, children } = this.props;
-
+    const { className, disabled, children, dataArea } = this.props;
     if (disabled) {
       return children;
     }
 
     return (
-      <section className={classNames('content', className)}>
+      <section
+        className={classNames('content', className)}
+        data-area={dataArea}
+      >
         {children}
       </section>
     );
