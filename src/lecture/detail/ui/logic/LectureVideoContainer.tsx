@@ -35,6 +35,7 @@ function LectureVideoContainer() {
   const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
+  const [surveyAlerted, setSurveyAlerted] = useState<boolean>(false);
   const lectureState = useLectureState();
   const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
   const history = useHistory();
@@ -109,6 +110,9 @@ function LectureVideoContainer() {
   }, [panoptoEmbedPlayerState?.playerState]);
 
   useEffect(() => {
+    if (surveyAlerted === true) {
+      return;
+    }
     if (
       panoptoEmbedPlayerState?.playerState === undefined ||
       panoptoEmbedPlayerState?.duration === undefined ||
@@ -121,7 +125,7 @@ function LectureVideoContainer() {
       panoptoEmbedPlayerState.playerState === PlayerState.Ended
     ) {
       if (
-        panoptoEmbedPlayerState.duration === panoptoEmbedPlayerState.currentTime
+        panoptoEmbedPlayerState.duration <= panoptoEmbedPlayerState.currentTime
       ) {
         const course = getActiveCourseStructureItem();
         if (
@@ -129,6 +133,7 @@ function LectureVideoContainer() {
           course.survey !== undefined &&
           course.survey.state !== 'Completed'
         ) {
+          setSurveyAlerted(true);
           reactAlert({
             title: '안내',
             message: 'Survey 설문 참여를 해주세요.',
@@ -145,6 +150,7 @@ function LectureVideoContainer() {
     panoptoEmbedPlayerState?.playerState,
     panoptoEmbedPlayerState?.duration,
     panoptoEmbedPlayerState?.currentTime,
+    surveyAlerted,
   ]);
 
   useEffect(() => {
@@ -178,15 +184,16 @@ function LectureVideoContainer() {
     // lectureId = 시청중인 ID
     retMultiVideoOverlap(viewState, usid).then((res: any) => {
       setLiveLectureCardId(res);
-      if (viewState !== 'end') {
-        if (!res || res === 'false') {
-          reactAlert({
-            title: '알림',
-            message:
-              '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
-          });
-        }
-      }
+      // jz - 오류 수정 후 기능 복원
+      // if (viewState !== 'end') {
+      //   if (!res || res === 'false') {
+      //     reactAlert({
+      //       title: '알림',
+      //       message:
+      //         '현재 다른 과정을 학습하고 있습니다.<br>기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+      //     });
+      //   }
+      // }
     });
   }, []);
 

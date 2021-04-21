@@ -58,9 +58,13 @@ function createPanoptoEmbedPlayer() {
     }
     const state =
       getPanoptoEmbedPlayerState() || getEmptyPanoptoEmbedPlayerState();
+    const currentTime: number = embedApi.getCurrentTime();
+    const duration: number = embedApi.getDuration();
     setPanoptoEmbedPlayerState({
       ...state,
       playerState,
+      currentTime,
+      duration,
     });
   }
 
