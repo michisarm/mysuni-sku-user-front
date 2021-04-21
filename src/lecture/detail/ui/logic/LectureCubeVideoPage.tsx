@@ -1,52 +1,29 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import {
-  setInMyLectureCdo,
-  setLectureComment,
-  setLectureCubeSummary,
-  setLectureDescription,
-  setLectureFile,
-  setLectureInstructor,
-  setLecturePrecourse,
-  setLectureReview,
-  setLectureSubcategory,
-  setLectureTags,
-} from '../../store/LectureOverviewStore';
-import { getCubeLectureOverview } from '../../service/useLectuerCubeOverview/utility/getCubeLectureOverview';
-import { useLectureRouterParams } from '../../service/useLectureRouterParams';
+import React, { Fragment, useEffect, useRef } from 'react';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import LectureVideoContainer from './LectureVideoContainer';
-import { setLectureState } from 'lecture/detail/store/LectureStateStore';
-import { onLectureMedia } from '../../store/LectureMediaStore';
-import { MediaType } from '../../model/MediaType';
+import { onLectureMedia, setLectureMedia } from '../../store/LectureMediaStore';
 import moment from 'moment';
 import { reactAlert } from '@nara.platform/accent';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
+import { useLectureParams } from '../../store/LectureParamsStore';
+import { MediaType } from '../../../model/MediaType';
+import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
+import { setTranscriptCount } from '../../store/TranscriptCountStore';
 
 function LectureCubeVideoPage() {
-  const params = useLectureRouterParams();
-  const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
+  const params = useLectureParams();
   const modalTestRef = useRef<boolean>(false);
   useEffect(() => {
-    if (params === undefined) {
-      return;
+    if (params?.cubeId !== undefined && params?.cubeType !== undefined) {
+      requestCubeLectureMedia(params.cubeId, params.cubeType);
     }
-    getCubeLectureOverview(contentId, lectureId);
     return () => {
-      setLectureCubeSummary();
-      setLectureDescription();
-      setLectureSubcategory();
-      setLectureTags();
-      setLectureInstructor();
-      setLecturePrecourse();
-      setLectureFile();
-      setLectureComment();
-      setLectureReview();
-      setInMyLectureCdo();
-      setLectureState();
       modalTestRef.current = false;
+      setLectureMedia();
+      setTranscriptCount();
     };
-  }, [contentId, lectureId]);
+  }, [params?.cubeId, params?.cubeType]);
 
   useEffect(() => {
     return onLectureMedia(next => {

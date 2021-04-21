@@ -1,30 +1,51 @@
-import { patronInfo } from "@nara.platform/dock";
-import { modifyCommunityPost, registerCommunityCommentPost, registerPost } from "community/api/communityApi";
-import { getCommunityPostCreateItem } from "community/store/CommunityPostCreateStore";
-import { createTaskPost, updateTaskPost } from "lecture/detail/api/mPersonalCubeApi";
-import TaskCdo from "lecture/detail/model/TaskCdo";
-import { getLectureTaskCreateItem } from "lecture/detail/store/LectureTaskCreateStore";
-import { getLectureTaskDetail } from "lecture/detail/store/LectureTaskStore";
+import { getLectureTaskDetail } from 'lecture/detail/store/LectureTaskStore';
+import { modifyPost, modifyPostBody, modifyReply } from '../../../api/cubeApi';
 
-export async function updateLectureTask(postId: string): Promise<void> {
-
-  const taskDetailItem = getLectureTaskDetail()
+export async function updateLectureTask(
+  postId: string,
+  isReply: boolean
+): Promise<void> {
+  const taskDetailItem = getLectureTaskDetail();
   if (taskDetailItem !== undefined) {
-    const postCdo: any = {
-      postBodyNameValueList: {
-        nameValues: [
-          { name: 'contents', value: taskDetailItem.contents },
-          { name: 'fileBoxId', value: taskDetailItem.fileBoxId }
-        ]
-      },
-      postNameValueList: {
+    if (!isReply) {
+      const postNameValueList = {
         nameValues: [
           { name: 'title', value: taskDetailItem.title },
-          { name: 'commentFeedbackId', value: taskDetailItem.commentFeedbackId },
-          { name: 'deleted', value: "false" }
-        ]
-      }
-    };
-    updateTaskPost(postCdo, postId);
+          {
+            name: 'commentFeedbackId',
+            value: taskDetailItem.commentFeedbackId,
+          },
+          { name: 'deleted', value: 'false' },
+          { name: 'contents', value: taskDetailItem.contents },
+          { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
+        ],
+      };
+      // const postBodyNameValueList = {
+      //   nameValues: [
+      //     { name: 'contents', value: taskDetailItem.contents },
+      //     { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
+      //   ],
+      // };
+
+      await modifyPost(postId, postNameValueList);
+      // await modifyPostBody(postId, postBodyNameValueList);
+    }
+
+    if (isReply) {
+      const postNameValueList = {
+        nameValues: [
+          { name: 'title', value: taskDetailItem.title },
+          {
+            name: 'commentFeedbackId',
+            value: taskDetailItem.commentFeedbackId,
+          },
+          { name: 'contents', value: taskDetailItem.contents },
+          { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
+          { name: 'deleted', value: 'false' },
+        ],
+      };
+
+      await modifyReply(postId, postNameValueList);
+    }
   }
 }

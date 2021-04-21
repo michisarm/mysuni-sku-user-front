@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { MyContentType } from '../logic/MyLearningListContainerV2';
+import { MyContentType } from '../model/MyContentType';
 
 interface DeleteButtonProps {
   onDelete: () => void;

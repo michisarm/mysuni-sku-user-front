@@ -54,7 +54,6 @@ class CollegeLecturesPage extends Component<Props> {
     //
     const { collegeService } = this.props;
     const { college } = collegeService;
-
     this.props.history.push(mainRoutePaths.introductionCollege(college.name));
   }
 

@@ -1,5 +1,6 @@
 import CommunityHomeType from './CommunityHomeType';
 import CommunityType from './CommunityType';
+import { CommunityMemberApprovedType, CommunityMemberType } from './CommunityMember';
 
 export default interface CommunityView {
   communityId: string;
@@ -9,6 +10,9 @@ export default interface CommunityView {
   description: string;
   createdTime: number;
   managerId: string;
+  managerEmail: string;
+  managerProfileImg: string;
+  color: string;
   lastPostTime: number | null;
   lastNoticePostTime: number | null;
   courseId: string;
@@ -23,6 +27,9 @@ export default interface CommunityView {
   memberCount: number;
 
   fieldName: string | null;
+  profileImg: string;
+  approved: CommunityMemberApprovedType;
+  allowSelfJoin: number;
 
-  approved: boolean | null;
+  memberType: CommunityMemberType;
 }

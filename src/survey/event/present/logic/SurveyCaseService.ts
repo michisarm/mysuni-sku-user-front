@@ -27,9 +27,21 @@ export default class SurveyCaseService {
   @observable
   roundPart: RoundPartModel = new RoundPartModel();
 
-
   constructor(surveyCaseApi: SurveyCaseApi) {
     this.surveyCaseApi = surveyCaseApi;
+  }
+
+  @action
+  async findSurveyCaseFeedBack(surveyCaseId: string) {
+    const surveyCase = await this.surveyCaseApi.findSurveyCaseByFeed(
+      surveyCaseId
+    );
+    //return surveyCase.commentFeedbackId;
+    //return surveyCase.surveyFormId;
+    return runInAction(() => {
+      this.surveyCase = surveyCase;
+      return surveyCase;
+    });
   }
 
   @action

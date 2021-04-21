@@ -1,10 +1,13 @@
-import { patronInfo } from "@nara.platform/dock";
-import moment from "moment";
-import { findAllMyCommunities } from "../../../api/communityApi";
-import { getCommunityProfileMyCommunity, setCommunityProfileMyCommunity } from "../../../store/CommunityProfileMyCommunityStore";
-import { getEmtpyCommunityProfileMyCommunity } from "../../../viewModel/CommunityProfile";
-import CommunityView from '../../../model/CommunityView'
-import ProfileCommunityItem from "../../../viewModel/CommunityProfile/ProfileCommunityItem";
+import { patronInfo } from '@nara.platform/dock';
+import moment from 'moment';
+import { findAllMyCommunities, deleteMember } from '../../../api/communityApi';
+import {
+  getCommunityProfileMyCommunity,
+  setCommunityProfileMyCommunity,
+} from '../../../store/CommunityProfileMyCommunityStore';
+import { getEmtpyCommunityProfileMyCommunity } from '../../../viewModel/CommunityProfile';
+import CommunityView from '../../../model/CommunityView';
+import ProfileCommunityItem from '../../../viewModel/CommunityProfile/ProfileCommunityItem';
 
 function isManager(managerId: string) {
   const denizenId = patronInfo.getDenizenId();
@@ -12,11 +15,20 @@ function isManager(managerId: string) {
 }
 
 function createdTimeString(createdTime: number) {
-  return moment(createdTime).format('YYYY.MM.DD')
+  return moment(createdTime).format('YYYY.MM.DD');
 }
 
 function parseCommunityView(community: CommunityView): ProfileCommunityItem {
-  const { communityId, type, fieldName, name, managerId, managerName, memberCount, createdTime } = community;
+  const {
+    communityId,
+    type,
+    fieldName,
+    name,
+    managerId,
+    managerName,
+    memberCount,
+    createdTime,
+  } = community;
   return {
     communityId,
     type,
@@ -26,15 +38,15 @@ function parseCommunityView(community: CommunityView): ProfileCommunityItem {
     memberCount,
     isManager: isManager(managerId),
     createdTime: createdTimeString(createdTime),
-  }
+  };
 }
 
 export async function requestProfileCommunities() {
-  const sort = 'createdTime'
+  const sort = 'createdTime';
   const offset = 0;
-  const communityViews = await findAllMyCommunities(sort, offset)
+  const communityViews = await findAllMyCommunities(sort, offset);
   if (communityViews === undefined) {
-    setCommunityProfileMyCommunity(getEmtpyCommunityProfileMyCommunity())
+    setCommunityProfileMyCommunity(getEmtpyCommunityProfileMyCommunity());
     return;
   }
   const communities = communityViews.results.map(parseCommunityView);
@@ -42,22 +54,34 @@ export async function requestProfileCommunities() {
     communities,
     communitiesTotalCount: communityViews.totalCount,
     communitiesOffset: communities.length,
-  })
+  });
 }
 
 export async function requestAppendProfileCommunities() {
-  const sort = 'createdTime'
-  const { communitiesOffset } = getCommunityProfileMyCommunity() || getEmtpyCommunityProfileMyCommunity();
-  const communityViews = await findAllMyCommunities(sort, communitiesOffset)
+  const sort = 'createdTime';
+  const { communitiesOffset } =
+    getCommunityProfileMyCommunity() || getEmtpyCommunityProfileMyCommunity();
+  const communityViews = await findAllMyCommunities(sort, communitiesOffset);
   if (communityViews === undefined) {
-    setCommunityProfileMyCommunity(getEmtpyCommunityProfileMyCommunity())
+    setCommunityProfileMyCommunity(getEmtpyCommunityProfileMyCommunity());
     return;
   }
-  const { communities } = getCommunityProfileMyCommunity() || getEmtpyCommunityProfileMyCommunity();
-  const next = [...communities, ...communityViews.results.map(parseCommunityView)];
+  const { communities } =
+    getCommunityProfileMyCommunity() || getEmtpyCommunityProfileMyCommunity();
+  const next = [
+    ...communities,
+    ...communityViews.results.map(parseCommunityView),
+  ];
   setCommunityProfileMyCommunity({
     communities: next,
     communitiesTotalCount: communityViews.totalCount,
     communitiesOffset: next.length,
-  })
+  });
+}
+
+export function delMember(
+  communityId: string,
+  memberId: string
+): Promise<string> {
+  return deleteMember(communityId, memberId);
 }

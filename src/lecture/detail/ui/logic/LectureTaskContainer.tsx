@@ -4,7 +4,6 @@ import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
   getLectureTaskDetail,
   setLectureTaskDetail,
-  setLectureTaskItem,
   setLectureTaskOffset,
   setLectureTaskTab,
   setLectureTaskViewType,
@@ -14,11 +13,7 @@ import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
-import {
-  deleteCubeLectureTaskPost,
-  getCubeLectureTaskLearningCardId,
-} from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
+import { deleteCubeLectureTaskPost } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import LectureTaskReplyView from '../view/LectureTaskView/LectureTaskReplyView';
 import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
 import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOverview/useLectureSubcategory';
@@ -34,17 +29,20 @@ import { updateLectureTask } from 'lecture/detail/service/useLectureTask/utility
 import { createLectureTask } from 'lecture/detail/service/useLectureTask/utility/createLectureTask';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getTaskDetailCube } from '../../service/useLectureTask/utility/getTaskDetailCube';
-import { getActiveStructureItem } from '../../service/useLectureStructure/useLectureStructure';
+import { getActiveStructureItem } from '../../utility/lectureStructureHelper';
 import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
+import { getLectureParams } from '../../store/LectureParamsStore';
 
 function LectureTaskContainer() {
   const { pathname, hash } = useLocation();
   const history = useHistory();
+
   useEffect(() => {
     return () => {
       setLectureTaskTab('Overview');
     };
   }, [pathname]);
+
   useEffect(() => {
     if (hash === '#create') {
       setLectureTaskViewType('create');
@@ -52,9 +50,6 @@ function LectureTaskContainer() {
       return;
     } else if (hash === '#edit') {
       setLectureTaskViewType('edit');
-      return;
-    } else if (hash === '#reply') {
-      setLectureTaskViewType('reply');
       return;
     } else if (hash === '#detail') {
       setLectureTaskViewType('detail');
@@ -65,7 +60,6 @@ function LectureTaskContainer() {
 
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
-  const params = useLectureRouterParams();
   const [lectureDescription] = useLectureDescription();
   const [lectureSubcategory] = useLectureSubcategory();
   const [lectureFile] = useLectureFile();
@@ -74,8 +68,8 @@ function LectureTaskContainer() {
   const [detailTaskId, setDetailTaskId] = useState<string>('');
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
-  const [edit, setEdit] = useState<boolean>();
   const [detailType, setDetailType] = useState<string>('');
+  const [isReply, setIsReply] = useState<boolean>(false);
 
   const moreView = useCallback((offset: number) => {
     const nextOffset = offset + 10;
@@ -83,6 +77,7 @@ function LectureTaskContainer() {
   }, []);
 
   const moveToDetail = useCallback((param: any) => {
+    setIsReply(param.type === 'child');
     getTaskDetailCube(param);
     setDetailTaskId(param.id);
     setDetailType(param.type);
@@ -94,13 +89,13 @@ function LectureTaskContainer() {
     history.goBack();
   }, []);
 
-  const onHandleSave = useCallback(() => {
-    history.goBack();
-  }, []);
+  // const onHandleSave = useCallback(() => {
+  //   history.goBack();
+  // }, []);
 
-  const onHandleReply = useCallback(() => {
-    history.goBack();
-  }, []);
+  // const onHandleReply = useCallback(() => {
+  //   history.goBack();
+  // }, []);
 
   const onClickModify = useCallback(() => {
     setCreate(true);
@@ -108,7 +103,10 @@ function LectureTaskContainer() {
     // history.goBack();
   }, []);
 
-  const onClickReplies = useCallback(() => {}, []);
+  const onClickReplies = useCallback(() => {
+    history.push('#create');
+    setIsReply(true);
+  }, []);
 
   const onClickDelete = useCallback((id: string, type: string) => {
     deletePost(id, type);
@@ -137,6 +135,7 @@ function LectureTaskContainer() {
 
   const onHandleChange = useCallback(
     (value: string, name: string, viewType: string) => {
+      console.log(value, name, viewType);
       if (viewType === 'create') {
         if (getLectureTaskCreateItem() === undefined) {
           return;
@@ -162,13 +161,13 @@ function LectureTaskContainer() {
     []
   );
 
-  const handleSubmitClick = useCallback((viewType, detailTaskId?) => {
+  const handleSubmitClick = useCallback((viewType, detailTaskId, isReply) => {
     reactConfirm({
       title: '알림',
       message: '저장하시겠습니까?',
       onOk: () => {
         if (viewType === 'create') {
-          const test = createLectureTask().then(() => {
+          createLectureTask(isReply, detailTaskId).then(() => {
             setLectureTaskCreateItem({
               id: detailTaskId!,
               fileBoxId: '',
@@ -190,32 +189,27 @@ function LectureTaskContainer() {
             history.goBack();
           });
         } else {
-          updateLectureTask(detailTaskId);
-          history.goBack();
+          updateLectureTask(detailTaskId, isReply).then(() => {
+            history.goBack();
+          });
         }
       },
     });
   }, []);
 
   useEffect(() => {
-    async function getContentId() {
-      // if (params === undefined) {
-      //   return;
-      // }
-      // const contentData = await getCubeLectureTaskLearningCardId(
-      //   params.contentId
-      // );
-
-      const structureItem = getActiveStructureItem();
-      if (structureItem !== undefined) {
-        const { cube } = structureItem as LectureStructureCubeItem;
-        if (cube !== undefined) {
-          setBoardId(cube.contents.contents.id);
-        }
+    const params = getLectureParams();
+    if (params === undefined) {
+      return;
+    }
+    const structureItem = getActiveStructureItem(params.pathname);
+    if (structureItem !== undefined) {
+      const { cubeId } = structureItem as LectureStructureCubeItem;
+      if (cubeId !== undefined) {
+        setBoardId(cubeId);
       }
     }
-    getContentId();
-  }, [create, edit]);
+  }, [create]);
 
   async function deletePost(id: string, type: string) {
     await deleteCubeLectureTaskPost(id, type);
@@ -259,9 +253,13 @@ function LectureTaskContainer() {
       {viewType === 'create' && (
         <>
           <LectureTaskCreateView
+            isReply={isReply}
             viewType="create"
             boardId={boardId}
-            handleSubmitClick={viewType => handleSubmitClick(viewType)}
+            taskEdit={taskDetail!}
+            handleSubmitClick={viewType =>
+              handleSubmitClick(viewType, detailTaskId, isReply)
+            }
             changeProps={(value: string, name: string, viewType: string) =>
               onHandleChange(value, name, viewType)
             }
@@ -271,11 +269,12 @@ function LectureTaskContainer() {
       {viewType === 'edit' && (
         <>
           <LectureTaskCreateView
+            isReply={isReply}
             viewType="edit"
             detailTaskId={detailTaskId}
             boardId={boardId}
             handleSubmitClick={viewType =>
-              handleSubmitClick(viewType, detailTaskId)
+              handleSubmitClick(viewType, detailTaskId, isReply)
             }
             taskEdit={taskDetail!}
             changeProps={(value: string, name: string, viewType: string) =>
@@ -284,14 +283,14 @@ function LectureTaskContainer() {
           />
         </>
       )}
-      {viewType === 'reply' && (
+      {/* {viewType === 'reply' && (
         <LectureTaskReplyView
           postId={detailTaskId}
           boardId={boardId}
           handleOnClickList={onHandleReply}
           handleCloseClick={onClickList}
         />
-      )}
+      )} */}
     </>
   );
 }

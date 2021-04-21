@@ -3,7 +3,8 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
-
+import { getAxios } from 'shared/api/Axios';
+import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { FavoriteChannelChangeModal } from 'shared';
 import { NotieService } from 'notie/stores';
 import { ChannelModel } from 'college/model';
@@ -23,9 +24,15 @@ import {
 } from '../view/QuickNavElementsView';
 import MenuControlAuthService from '../../../../../approval/company/present/logic/MenuControlAuthService';
 import SkProfileModel from '../../../../../profile/model/SkProfileModel';
-import {MenuControlAuth} from '../../../../../shared/model/MenuControlAuth';
+import { MenuControlAuth } from '../../../../../shared/model/MenuControlAuth';
 
 import ReactGA from 'react-ga';
+import Axios from 'axios';
+import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
+import { PageElement } from '../../../../../lecture/shared/model/PageElement';
+import { responseToModel } from '../../../../../shared/helper/apiHelper';
+import { type } from 'jquery';
+import { array } from '@storybook/addon-knobs';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -35,12 +42,16 @@ interface Props extends RouteComponentProps {
 
 interface State {
   active: boolean;
+  menuAuth: PageElement[];
 }
 
-@inject(mobxHelper.injectFrom(
-  'notie.notieService',
-  'profile.skProfileService',
-  'approval.menuControlAuthService'))
+@inject(
+  mobxHelper.injectFrom(
+    'notie.notieService',
+    'profile.skProfileService',
+    'approval.menuControlAuthService'
+  )
+)
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {
@@ -53,6 +64,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   state = {
     active: false,
+    menuAuth: [],
   };
 
   componentDidMount() {
@@ -60,6 +72,7 @@ class QuickNavContainer extends Component<Props, State> {
     window.addEventListener('click', this.deactive);
     this.props.notieService!.hasQuickLearningFeeds();
     this.menuControlAuth();
+    this.avaible(); //api호출을 위해서 3.30
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -72,8 +85,21 @@ class QuickNavContainer extends Component<Props, State> {
   menuControlAuth() {
     //
     const { skProfileService, menuControlAuthService } = this.props;
-    skProfileService!.findSkProfile()
-      .then((profile: SkProfileModel) => menuControlAuthService!.findMenuControlAuth(profile.member.companyCode))
+    skProfileService!
+      .findSkProfile()
+      .then((profile: SkProfileModel) =>
+        menuControlAuthService!.findMenuControlAuth(profile.member.companyCode)
+      );
+  }
+
+  async avaible() {
+    const response = await findAvailablePageElements();
+
+    if (response) {
+      this.setState({
+        menuAuth: response,
+      });
+    }
   }
 
   deactive() {
@@ -114,7 +140,7 @@ class QuickNavContainer extends Component<Props, State> {
       category: 'QuickNav',
       action: 'Click',
       label: `QuickNav-${name}`,
-    })
+    });
   }
 
   onClickLearning(name: string) {
@@ -155,7 +181,7 @@ class QuickNavContainer extends Component<Props, State> {
       category: 'QuickNav',
       action: 'Click',
       label: `QuickNav-${name}`,
-    })
+    });
   }
 
   onClickApproval(name: string) {
@@ -167,7 +193,7 @@ class QuickNavContainer extends Component<Props, State> {
       category: 'QuickNav',
       action: 'Click',
       label: `QuickNav-${name}`,
-    })
+    });
   }
 
   onClickApl(name: string) {
@@ -180,7 +206,7 @@ class QuickNavContainer extends Component<Props, State> {
       category: 'QuickNav',
       action: 'Click',
       label: `QuickNav-${name}`,
-    })
+    });
   }
 
   onClickAdminSite(name: string) {
@@ -199,7 +225,7 @@ class QuickNavContainer extends Component<Props, State> {
       category: 'QuickNav',
       action: 'Click',
       label: `QuickNav-${name}`,
-    })
+    });
   }
 
   onConfirmFavorite() {
@@ -220,10 +246,15 @@ class QuickNavContainer extends Component<Props, State> {
     const { active } = this.state;
     const { studySummaryFavoriteChannels } = skProfileService!;
     const { menuControlAuth } = menuControlAuthService!;
+    const { menuAuth } = this.state;
 
     const favoriteChannels = studySummaryFavoriteChannels.map(
       channel =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+        new ChannelModel({
+          ...channel,
+          channelId: channel.id,
+          checked: true,
+        })
     );
 
     return (
@@ -242,53 +273,83 @@ class QuickNavContainer extends Component<Props, State> {
                 onClick={() => this.onClickLearning('Learning')}
               />
               {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
-              <TopMenuItemView
-                iconName="support32"
-                notieActive={this.props.notieService!.notieActive}
-                text="Support"
-                onClick={() => this.onClickSupport('Support')}
-              />
+              {menuAuth.some(
+                (menuAuth: PageElement) =>
+                  menuAuth.position === 'FloatingMenu' &&
+                  menuAuth.type === 'Support'
+              ) && (
+                <TopMenuItemView
+                  iconName="support32"
+                  notieActive={this.props.notieService!.notieActive}
+                  text="Support"
+                  onClick={() => this.onClickSupport('Support')}
+                />
+              )}
             </>
           }
           bottomButtons={
             <>
-              <BottomMenuItemView
-                iconName="building"
-                text="mySUNI Introduction"
-                onClick={() => this.onClickIntroduction('mySUNI Introduction')}
-              />
-              <FavoriteChannelChangeModal
-                trigger={
-                  <BottomMenuItemView
-                    iconName="admin"
-                    text="관심채널"
-                    onClick={() => this.onClose('관심채널')}
-                  />
-                }
-                favorites={favoriteChannels}
-                onConfirmCallback={this.onConfirmFavorite}
-              />
-              <SiteMapModalContainer
-                trigger={
-                  <BottomMenuItemView
-                    iconName="sitemap"
-                    text="Site Map"
-                    onClick={() => this.onClose('Site Map')}
-                  />
-                }
-              />
-
+              {menuAuth.some(
+                (menuAuth: PageElement) =>
+                  menuAuth.position === 'FloatingMenu' &&
+                  menuAuth.type === 'Introduction'
+              ) && (
+                <BottomMenuItemView
+                  iconName="building"
+                  text="mySUNI Introduction"
+                  onClick={() =>
+                    this.onClickIntroduction('mySUNI Introduction')
+                  }
+                />
+              )}
+              {menuAuth.some(
+                (menuAuth: PageElement) =>
+                  menuAuth.position === 'FloatingMenu' &&
+                  menuAuth.type === 'FavoriteChannels'
+              ) && (
+                <FavoriteChannelChangeModal
+                  trigger={
+                    <BottomMenuItemView
+                      iconName="admin"
+                      text="관심채널"
+                      onClick={() => this.onClose('관심채널')}
+                    />
+                  }
+                  favorites={favoriteChannels}
+                  onConfirmCallback={this.onConfirmFavorite}
+                />
+              )}
+              {menuAuth.some(
+                (menuAuth: PageElement) =>
+                  menuAuth.position === 'FloatingMenu' &&
+                  menuAuth.type === 'SiteMap'
+              ) && (
+                <SiteMapModalContainer
+                  trigger={
+                    <BottomMenuItemView
+                      iconName="sitemap"
+                      text="Site Map"
+                      onClick={() => this.onClose('Site Map')}
+                    />
+                  }
+                />
+              )}
               {/*0513 승인관리 메뉴 추가*/}
-              <BottomMenuItemView
-                iconName="confirm"
-                text="승인관리"
-                onClick={() => this.onClickApproval('승인관리')}
-              />
-
+              {menuAuth.some(
+                (menuAuth: PageElement) =>
+                  menuAuth.position === 'FloatingMenu' &&
+                  menuAuth.type === 'Approval'
+              ) && (
+                <BottomMenuItemView
+                  iconName="confirm"
+                  text="승인관리"
+                  onClick={() => this.onClickApproval('승인관리')}
+                />
+              )}
               {/*0907 개인학습 등록 메뉴 추가*/}
-              {(menuControlAuth.companyCode === '' || ( menuControlAuth.authCode === MenuControlAuth.User
-                && menuControlAuth.useYn === MenuControlAuth.Yes))
-              &&(
+              {(menuControlAuth.companyCode === '' ||
+                (menuControlAuth.authCode === MenuControlAuth.User &&
+                  menuControlAuth.useYn === MenuControlAuth.Yes)) && (
                 <>
                   <BottomMenuItemView
                     iconName="apl"
@@ -296,8 +357,7 @@ class QuickNavContainer extends Component<Props, State> {
                     onClick={() => this.onClickApl('개인학습 등록')}
                   />
                 </>
-                )
-              }
+              )}
               {/*
               <BottomMenuItemView
                 iconName="apl"

@@ -11,20 +11,32 @@ interface LectureStructureViewProps {
 const LectureStructureView: React.FC<LectureStructureViewProps> = function LectureStructureView({
   lectureStructure,
 }) {
+  if (lectureStructure.chapters.length > 0) {
+    return (
+      <div className="course-info-wrapper">
+        <ProgramLectureStructureView lectureStructure={lectureStructure} />
+        <div className="lms-fixed-holder" />
+      </div>
+    );
+  }
+
+  if (
+    lectureStructure.items.length === 1 &&
+    lectureStructure.card.test === undefined &&
+    lectureStructure.card.report === undefined &&
+    lectureStructure.card.survey === undefined
+  ) {
+    return (
+      <div className="course-info-wrapper">
+        <CubeLectureStructureView lectureStructure={lectureStructure} />
+        <div className="lms-fixed-holder" />
+      </div>
+    );
+  }
+
   return (
     <div className="course-info-wrapper">
-      {lectureStructure.type === 'Program' && (
-        <ProgramLectureStructureView lectureStructure={lectureStructure} />
-      )}
-      {lectureStructure.type === 'Card' && (
-        <CourseLectureStructureView lectureStructure={lectureStructure} />
-      )}
-      {lectureStructure.type === 'Course' && (
-        <CourseLectureStructureView lectureStructure={lectureStructure} />
-      )}
-      {lectureStructure.type === 'Cube' && (
-        <CubeLectureStructureView lectureStructure={lectureStructure} />
-      )}
+      <CourseLectureStructureView lectureStructure={lectureStructure} />
       <div className="lms-fixed-holder" />
     </div>
   );

@@ -7,40 +7,38 @@ import { ContentLayout } from 'shared';
 import Tab, { TabItemModel } from 'shared/components/Tab';
 import { ApprovalCubeService, AplService } from 'myTraining/stores';
 import { MenuControlAuthService } from 'approval/stores';
-import { SkProfileService } from 'profile/stores';
+import { SkProfileService } from 'profile/stores'; 
 import routePaths from '../../routePaths';
 import { SkProfileModel } from 'profile/model';
 import { CountType } from 'myTraining/model/AplRdoModel';
-import MyApprovalContentType from '../model/MyApprovalContentType';
-import MyApprovalContentTypeName from '../model/MyApprovalContentTypeName';
+import { MyApprovalContentType, MyApprovalContentTypeName } from '../model/MyApprovalContentType';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
-import MyApprovalListContainerV2 from '../logic/MyApprovalListContainerV2';
 import { MenuControlAuth } from '../../../shared/model/MenuControlAuth';
+import { MyApprovalRouteParams } from '../../model/MyApprovalRouteParams';
+import PersonalLearningListContainer from '../logic/PersonalLearningListContainer';
 
 
-interface Props {
+interface MyApprovalPageProps {
   approvalCubeService?: ApprovalCubeService;
   menuControlAuthService?: MenuControlAuthService;
   skProfileService?: SkProfileService;
   aplService?: AplService;
 }
 
-interface RouteParams {
-  tab: string;
-  pageNo?: string;
-}
-
-function MyApprovalPage(props: Props) {
-  /* props */
-  const { approvalCubeService, aplService, menuControlAuthService, skProfileService } = props;
+function MyApprovalPage({
+  approvalCubeService,
+  menuControlAuthService,
+  skProfileService,
+  aplService,
+}: MyApprovalPageProps) {
   const { approvalCubeOffsetList: { totalCount: paidCourseCount } } = approvalCubeService!;
   const { aplCount: { all: personalLearningCount } } = aplService!;
   const { menuControlAuth } = menuControlAuthService!;
   const { skProfile } = skProfileService!;
 
   const history = useHistory();
-  const { tab } = useParams<RouteParams>();
+  const params = useParams<MyApprovalRouteParams>();
 
   /* effects */
   useEffect(() => {
@@ -72,7 +70,7 @@ function MyApprovalPage(props: Props) {
         {
           name: MyApprovalContentType.PersonalLearning,
           item: getTabItem(MyApprovalContentType.PersonalLearning, personalLearningCount),
-          render: () => <MyApprovalListContainerV2 contentType={MyApprovalContentType.PersonalLearning} />
+          render: () => <PersonalLearningListContainer />
         }
       ];
     }
@@ -108,13 +106,13 @@ function MyApprovalPage(props: Props) {
       className="MyApprovalPage"
       breadcrumb={[
         { text: '승인관리' },
-        { text: convertTabToContentTypeName(tab) }
+        { text: MyApprovalContentTypeName[params.tab] }
       ]}
     >
       <MyApprovalContentHeader />
       <Tab
         tabs={getTabs()}
-        defaultActiveName={tab}
+        defaultActiveName={params.tab}
         onChangeTab={onChangeTab}
       />
 
@@ -128,8 +126,3 @@ export default inject(mobxHelper.injectFrom(
   'profile.skProfileService',
   'myTraining.aplService'
 ))(observer(MyApprovalPage));
-
-/* globals */
-const convertTabToContentTypeName = (tab: string): MyApprovalContentTypeName => {
-  return MyApprovalContentTypeName[tab as MyApprovalContentType];
-};

@@ -1,26 +1,26 @@
-import { IdName } from '@nara.platform/accent';
-import { CourseSetModel } from '../../../course/model';
-import { LectureType } from '../viewModel/LectureType';
-import Category from './Category';
-import CourseSet from './CourseSet';
-import CubeType from './CubeType';
+import { CardCategory } from '../../../shared/model/CardCategory';
+import { Card } from '../../model/Card';
+import CardType from '../../shared/model/CardType';
 
 export default interface InMyLectureCdo {
-  serviceType: LectureType;
+  serviceType: 'Card';
   serviceId: string;
-  category: Category;
+  category: CardCategory;
   name: string;
-  description: string;
-  cubeType?: CubeType;
+  cubeType: CardType;
   learningTime: number;
   stampCount: number;
-  coursePlanId: string;
-  requiredSubsidiaries: IdName[];
-  cubeId: string;
-  courseSetJson: CourseSetModel;
-  courseLectureUsids: string[];
-  lectureCardUsids: string[];
-  reviewId: string;
-  baseUrl: string;
-  servicePatronKeyString: string;
+}
+
+export function makeInMyLectureCdo(card: Card): InMyLectureCdo {
+  const { id, name, mainCategory, type, learningTime, stampCount } = card;
+  return {
+    serviceType: 'Card',
+    serviceId: id,
+    category: mainCategory,
+    name,
+    cubeType: type,
+    learningTime,
+    stampCount,
+  };
 }

@@ -1,44 +1,38 @@
 import { findCommunity } from 'community/api/communityApi';
-import {
-  findOfficeWeb,
-  cacheableFindPersonalCube,
-  cacheableFindCubeIntro,
-} from '../../../api/mPersonalCubeApi';
+import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureWebpage } from '../../../store/LectureWebpageStore';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
 
-export async function getCohortFromCube(contentId: string) {
-  //const { contentId } = params;
-  const cube = await cacheableFindPersonalCube(contentId);
-  const cubeIntro = await cacheableFindCubeIntro(cube.cubeIntro.id);
-  let url = '';
-  if (cubeIntro) {
-    url = `/community/` + cubeIntro.communityId;
-  }
+export async function getCohortFromCube(cubeId: string) {
+  const cubeDetail = await findCubeDetailCache(cubeId);
   if (
-    cubeIntro === null ||
-    cubeIntro?.communityId === '' ||
-    cubeIntro?.communityId === undefined
+    cubeDetail === undefined ||
+    cubeDetail.cubeMaterial.cubeCommunity === null
   ) {
-    const webpage: LectureWebpage = {
-      title: url,
+    return;
+  }
+  const {
+    cubeMaterial: {
+      cubeCommunity: { communityId },
+    },
+  } = cubeDetail;
+  if (communityId === null) {
+    setLectureWebpage({
+      title: '/community',
       description: undefined,
       image: undefined,
-      url,
+      url: '/community',
       fileBoxId: '',
-    };
-    setLectureWebpage(webpage);
+    });
   } else {
-    const community = await findCommunity(cubeIntro.communityId);
-    //const { title, description, image } = officeWeb.webUrlInfo;
-    const webpage: LectureWebpage = {
+    const url = `/community/${cubeDetail.cubeMaterial.cubeCommunity.communityId}`;
+    const community = await findCommunity(communityId);
+    setLectureWebpage({
       title: community?.name || '',
       description: community?.description || '',
       image: undefined,
       url,
       fileBoxId: '',
-    };
-    setLectureWebpage(webpage);
+    });
   }
 }

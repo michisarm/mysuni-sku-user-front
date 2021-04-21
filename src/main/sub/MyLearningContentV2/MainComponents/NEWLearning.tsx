@@ -3,13 +3,13 @@ import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
+import { find } from 'lodash';
 
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, ButtonProps } from 'semantic-ui-react';
 // import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel } from 'shared';
 
+import { NoSuchContentPanel } from 'shared';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
@@ -25,7 +25,15 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
-
+import { Area } from 'tracker/model';
+import { findAvailableCardBundles } from '../../../../lecture/shared/api/arrangeApi';
+import { findCardList } from '../../../../lecture/detail/api/cardApi';
+import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
+import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
+import CardGroup, {
+  GroupType,
+} from '../../../../lecture/shared/Lecture/sub/CardGroup';
+import { useRequestCollege } from '../../../../shared/service/useCollege/useRequestCollege';
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
 */
@@ -36,63 +44,84 @@ interface Props extends RouteComponentProps {
   inMyLectureService?: InMyLectureService;
 }
 
-const NEWLearning: React.FC<Props> = Props => {
-  //
-  const {
-    reviewService,
-    newLectureService,
-    inMyLectureService,
-    history,
-  } = Props;
-
+const NEWLearning: React.FC<Props> = function NEWLearning({
+  reviewService,
+  newLectureService,
+  inMyLectureService,
+  history,
+}) {
   const CONTENT_TYPE_NAME = '신규과정';
-  const PAGE_SIZE = 8;
+  // const PAGE_SIZE = 8;
+  // const { newLectures } = newLectureService!;
+  // const [title, setTitle] = useState<string | null>('');
+  const [newCard, setNewCard] = useState<CardBundle>();
 
-  const { newLectures } = newLectureService!;
+  const fetchNewCards = async () => {
+    const response = await findAvailableCardBundles();
+    // 신규이기 때문에 type이 New 인 부분을 가져옴
+    const findResponse = find(response, { type: 'New' });
 
-  const [title, setTitle] = useState<string | null>('');
+    // cards 값에 api로 받아온 cardList 값을 넣어줌
+    if (findResponse?.cardIds) {
+      const joinedIds = findResponse.cardIds.join();
 
-  // // lectureService 변경  실행
-  useEffect(() => {
-    findMyContent();
-  }, []);
+      const cardList = await findCardList(joinedIds);
 
-  const findMyContent = async () => {
-    newLectureService!.clearLectures();
-
-    // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedNewLearningList =
-      window.navigator.onLine &&
-      window.sessionStorage.getItem('NewLearningList');
-    if (savedNewLearningList && savedNewLearningList.length > 0) {
-      const newMain: OffsetElementList<LectureModel> = JSON.parse(
-        savedNewLearningList
-      );
-      if (newMain.results.length > PAGE_SIZE - 1) {
-        newLectureService!.setPagingNewLectures(newMain);
-        if (!newMain || !newMain.title || newMain.title.length < 1) {
-          setTitle(newLectureService!.Title);
-        } else {
-          setTitle(newMain.title);
-        }
-        return;
+      if (cardList !== undefined) {
+        findResponse.cards = cardList;
       }
     }
 
-    newLectureService!
-      .findPagingNewLectures(
-        LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
-        true
-      )
-      .then(response => {
-        newLectureService!.setTitle(response.title);
-        if (!response || !response.title || response.title.length < 1) {
-          setTitle(newLectureService!.Title);
-        } else {
-          setTitle(response.title);
-        }
-      });
+    setNewCard(findResponse);
   };
+
+  useEffect(() => {
+    fetchNewCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // const findMyContent = async () => {
+  //   newLectureService!.clearLectures();
+
+  //   // 세션 스토리지에 정보가 있는 경우 가져오기
+  //   const savedNewLearningList =
+  //     window.navigator.onLine &&
+  //     window.sessionStorage.getItem('NewLearningList');
+
+  //   if (savedNewLearningList && savedNewLearningList.length > 0) {
+  //     const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
+
+  //     if (newMain.results.length > PAGE_SIZE - 1) {
+  //       newLectureService!.setPagingNewLectures(newMain);
+  //       if (!newMain || !newMain.title || newMain.title.length < 1) {
+  //         setTitle(newLectureService!.Title);
+  //       } else {
+  //         setTitle(newMain.title);
+  //       }
+  //       return;
+  //     }
+  //   }
+
+  //   newLectureService!
+  //     .findPagingNewLectures(
+  //       LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
+  //       true
+  //     )
+  //     .then(response => {
+  //       newLectureService!.setTitle(response.title);
+  //       if (!response || !response.title || response.title.length < 1) {
+  //         setTitle(newLectureService!.Title);
+  //       } else {
+  //         setTitle(response.title);
+  //       }
+  //     });
+  // };
+
+  //   // // lectureService 변경  실행
+  // useEffect(() => {
+  //   findMyContent();
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const getInMyLecture = (serviceId: string) => {
     //
@@ -100,24 +129,24 @@ const NEWLearning: React.FC<Props> = Props => {
     return inMyLectureMap.get(serviceId);
   };
 
-  const getRating = (learning: LectureModel | InMyLectureModel) => {
-    //
-    const { ratingMap } = reviewService!;
-    let rating: number | undefined;
+  // const getRating = (learning: LectureModel | InMyLectureModel | CardBundle) => {
+  //   //
+  //   const { ratingMap } = reviewService!;
+  //   let rating: number | undefined;
 
-    if (
-      learning instanceof InMyLectureModel &&
-      learning.cubeType !== CubeType.Community
-    ) {
-      rating = ratingMap.get(learning.reviewId) || 0;
-    } else if (
-      learning instanceof LectureModel &&
-      learning.cubeType !== CubeType.Community
-    ) {
-      rating = learning.rating;
-    }
-    return rating;
-  };
+  //   if (
+  //     learning instanceof InMyLectureModel &&
+  //     learning.cubeType !== CubeType.Community
+  //   ) {
+  //     rating = ratingMap.get(learning.reviewId) || 0;
+  //   } else if (
+  //     learning instanceof LectureModel &&
+  //     learning.cubeType !== CubeType.Community
+  //   ) {
+  //     rating = learning.rating;
+  //   }
+  //   return rating;
+  // };
 
   const onViewAll = () => {
     //
@@ -130,50 +159,61 @@ const NEWLearning: React.FC<Props> = Props => {
     ReactGA.event({
       category: '신규 과정',
       action: 'Click',
-      label: '신규 과정 전체보기'
+      label: '신규 과정 전체보기',
     });
   };
 
-  const onViewDetail = (e: any, data: any) => {
-    //
-    const { model } = data;
+  const onViewDetail = (e: any, data: ButtonProps) => {
+    console.log(data);
+    // const { model } = data;
+    const { card } = data;
 
     // react-ga event
     ReactGA.event({
-      category: '신규 학습과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
+      category: '메인_신규',
+      action: 'Click Card',
+      // label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
+      //   model.name
+      // }`,
+      // label: `${card.name}`,
     });
 
+    const patronKey = newCard?.patronKey && newCard.patronKey.keyString; // model.servicePatronKeyString
     const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
+      patronInfo.getCineroomByPatronId(patronKey!) ||
+      patronInfo.getCineroomByDomain(card)!; // patronKey 값
 
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
-      );
-    }
+    // history.push(
+    //   lectureRoutePaths.lectureCardOverview(
+    //     cineroom.id,
+    //     card.categories[0].college.id, //model.category.college.id,
+    //     card.id, //model.cubeId,
+    //     '' // model.serviceId
+    //   )
+    // );
+    // if (
+    //   model.serviceType === LectureServiceType.Program ||
+    //   model.serviceType === LectureServiceType.Course
+    // ) {
+    //   history.push(
+    //     lectureRoutePaths.courseOverview(
+    //       cineroom.id,
+    //       model.category.college.id,
+    //       model.coursePlanId,
+    //       model.serviceType,
+    //       model.serviceId
+    //     )
+    //   );
+    // } else if (model.serviceType === LectureServiceType.Card) {
+    // history.push(
+    //   lectureRoutePaths.lectureCardOverview(
+    //     cineroom.id,
+    //     model.category.college.id,
+    //     model.cubeId,
+    //     model.serviceId
+    //   )
+    // );
+    // }
   };
 
   const onActionLecture = (
@@ -221,26 +261,48 @@ const NEWLearning: React.FC<Props> = Props => {
   }; */
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_NEW}>
       <div className="section-head">
-        <strong>{title}</strong>
+        <strong>{newCard?.displayText}</strong>
         <div className="right">
-          {newLectures.length > 0 && (
+          {newCard?.cards && newCard.cards.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View all <Icon className="morelink" />
             </Button>
           )}
         </div>
       </div>
-
-      {newLectures.length > 0 && newLectures[0] ? (
+      {newCard?.cards && newCard.cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {newLectures.map(
+          {newCard.cards.map((item, i) => {
+            const { card, cardRelatedCount } = item;
+            const inMyLecture = getInMyLecture(card.id);
+            // const inMyLecture = getInMyLecture("");
+
+            return (
+              <li>
+                {/* <CardGroup type={GroupType.Box}>
+                  <CardView
+                    cardId={item.card.id}
+                    learningTime={card.learningTime}
+                    thumbImagePath={card.thumbImagePath}
+                    categories={card.categories}
+                    name={card.name}
+                    stampCount={card.stampCount}
+                    description={card.description}
+                    passedStudentCount={cardRelatedCount.passedStudentCount}
+                    starCount={cardRelatedCount.starCount}
+                    onViewDetail={onViewDetail}
+                  />
+                </CardGroup> */}
+              </li>
+            );
+          })}
+          {/* {newLectures.map(
             (
               learning: LectureModel | MyTrainingModel | InMyLectureModel,
               index: number
             ) => {
-              //
               const inMyLecture = getInMyLecture(learning.serviceId);
 
               return (
@@ -267,7 +329,7 @@ const NEWLearning: React.FC<Props> = Props => {
                 />
               );
             }
-          )}
+          )} */}
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel

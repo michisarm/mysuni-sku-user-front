@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { onLectureClassroom } from '../../store/LectureClassroomStore';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import LectureClassroom from '../../viewModel/LectureClassroom';
-import { useLectureRouterParams } from '../useLectureRouterParams';
 import { getClassroomFromCube } from './utility/getClassroomFromCube';
 
 type Value = LectureClassroom | undefined;
 
 let subscriberIdRef = 0;
 export function useLectureClassroom(notRequest?: boolean): [Value] {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
@@ -32,11 +32,11 @@ export function useLectureClassroom(notRequest?: boolean): [Value] {
     if (notRequest === true) {
       return;
     }
-    if (params === undefined) {
+    if (params?.cubeId === undefined) {
       return;
     }
-    getClassroomFromCube(params);
-  }, [params]);
+    getClassroomFromCube(params.cubeId);
+  }, [params?.cubeId]);
 
   return [value];
 }

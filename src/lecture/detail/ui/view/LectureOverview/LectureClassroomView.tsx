@@ -1,9 +1,8 @@
 /* eslint-disable react/jsx-closing-tag-location */
 import moment from 'moment';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Button, Icon, Label, Table } from 'semantic-ui-react';
 import TableModal from '../../../../../personalcube/shared/OverviewField/sub/TableModal';
-import ClassroomModalView from '../../../../category/ui/view/ClassroomModalView';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 
 interface LectureClassroomViewProps {
@@ -29,7 +28,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
             </Label>
           </h3>
           <TableModal
-            classrooms={lectureClassroom.remote}
+            classrooms={lectureClassroom.classrooms}
             trigger={
               <Button icon className="right btn-blue">
                 more <Icon className="morelink" />

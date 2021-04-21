@@ -1,5 +1,5 @@
-import { createStudyLog, createViewLog } from '../../api/actionLogCollectorApi';
-import { cacheableFindPersonalCube } from '../../api/mPersonalCubeApi';
+import { createStudyLog } from '../../api/actionLogCollectorApi';
+import { findCubeDetailCache } from '../../api/cubeApi';
 import { StudyActions } from '../../model/StudyEvent';
 import { parseParamsFromPathname } from '../../utility/lectureRouterParamsHelper';
 
@@ -11,19 +11,20 @@ function studyLog(menu: string, action: StudyActions) {
     return;
   }
 
-  const { collegeId, cubeId, lectureCardId, contentId, lectureId } = params;
-  const _cubeId = contentId || cubeId;
-  const _lectureCardId = lectureId || lectureCardId;
-  if (_cubeId === undefined || _lectureCardId === undefined) {
+  const { cardId, cubeId } = params;
+  if (cardId === undefined || cubeId === undefined) {
     return;
   }
 
-  cacheableFindPersonalCube(_cubeId).then(personalCube => {
-    if (personalCube !== undefined) {
-      const { name } = personalCube;
+  findCubeDetailCache(cubeId).then(cubeDetail => {
+    if (cubeDetail !== undefined) {
+      const {
+        cube: { name },
+      } = cubeDetail;
       createStudyLog({
         action,
-        college: collegeId,
+        // 오류 오류
+        college: 'collegeId',
         context: {
           logType: 'STUDY',
           menu,
@@ -33,9 +34,9 @@ function studyLog(menu: string, action: StudyActions) {
         },
         courseName: '',
         coursePlanId: '',
-        cubeId: _cubeId,
+        cubeId,
         cubeName: name,
-        lectureCardId: _lectureCardId,
+        lectureCardId: cardId,
         serviceType: 'CARD',
       });
     }

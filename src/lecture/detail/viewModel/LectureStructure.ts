@@ -1,40 +1,31 @@
-import CoursePlanComplex from '../model/CoursePlanComplex';
-import CubeIntro from '../model/CubeIntro';
+import { Cube } from '../../model/Cube';
+import Student from '../../model/Student';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
-import LectureView from '../model/LectureView';
-import PersonalCube from '../model/PersonalCube';
-import Student from '../model/Student';
 import LectureParams from './LectureParams';
-import LectureRouterParams from './LectureRouterParams';
 import { State } from './LectureState';
-import { LectureType } from './LectureType';
 
 export type LectureStructureItemType =
-  | 'PROGRAM'
   | 'CUBE'
-  | 'COURSE'
+  | 'CARD'
+  | 'CHAPTER'
   | 'DISCUSSION'
   | 'REPORT'
   | 'EXAM'
   | 'SURVEY';
 
 export interface LectureStructureItem {
-  activated?: boolean;
   params: LectureParams;
-  routerParams: LectureRouterParams;
   path: string;
   state?: State;
   can: boolean;
   order: number;
   type: LectureStructureItemType;
-  canSubmit?: boolean;
-}
-
-export interface StudentStateMap {
-  learningState: LearningState;
-  state: State;
-  studentId: string;
+  test?: LectureStructureTestItem;
+  survey?: LectureStructureSurveyItem;
+  report?: LectureStructureReportItem;
+  student?: Student | null;
+  parentId?: string;
 }
 
 export interface ItemMap {
@@ -43,43 +34,48 @@ export interface ItemMap {
   report?: LectureStructureReportItem;
 }
 
+export interface LectureStructureChapterItem extends LectureStructureItem {
+  id: string;
+  name: string;
+  cubeCount: number;
+}
+
 export interface LectureStructureTestItem extends LectureStructureItem {
   id: string;
   name: string;
-  questionCount: number;
+  student?: Student | null;
 }
 
 export interface LectureStructureSurveyItem extends LectureStructureItem {
   id: string;
   name: string;
-  questionCount: number;
+  student?: Student | null;
 }
 
 export interface LectureStructureReportItem extends LectureStructureItem {
+  id: string;
   name: string;
+  student?: Student | null;
 }
 
 export interface LectureStructureCubeItem extends LectureStructureItem {
-  id: string;
+  cardId: string;
   name: string;
   cubeId: string;
-  cube?: PersonalCube;
-  cubeIntro?: CubeIntro;
   cubeType: CubeType;
   learningTime: number;
   learningState?: LearningState;
-  learningCardId?: string;
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
-  serviceId?: string;
-  lectureView?: LectureView;
   student?: Student;
+  cube: Cube;
+  last?: boolean;
+  isDurationable?: boolean;
 }
 
 export interface LectureStructureDurationableCubeItem
   extends LectureStructureCubeItem {
-  cubeContentsId: string,
   duration?: number;
 }
 
@@ -91,28 +87,24 @@ export interface LectureStructureDiscussionItem extends LectureStructureItem {
   creatorAudienceId: string;
 }
 
-export interface LectureStructureCourseItem extends LectureStructureItem {
-  id: string;
-  coursePlanId: string;
+export interface LectureStructureCardItem extends LectureStructureItem {
+  cardId: string;
   cubes?: LectureStructureCubeItem[];
   name: string;
   learningState?: LearningState;
-  serviceId: string;
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
   discussions?: LectureStructureDiscussionItem[];
-  lectureView?: LectureView;
   student?: Student;
-  coursePlanComplex?: CoursePlanComplex;
+  learningTime: number;
+  additionalLearningTime: number;
 }
 
 export interface LectureStructure {
-  courses: LectureStructureCourseItem[];
+  card: LectureStructureCardItem;
   cubes: LectureStructureCubeItem[];
-  course?: LectureStructureCourseItem;
-  cube?: LectureStructureCubeItem;
   discussions: LectureStructureDiscussionItem[];
-  type: LectureType;
+  chapters: LectureStructureChapterItem[];
   items: LectureStructureItem[];
 }

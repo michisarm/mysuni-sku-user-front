@@ -1,51 +1,41 @@
 
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import {Select} from 'semantic-ui-react';
-
 import {ListPanelTopLine} from 'shared';
-
 import SelectOptions from '../model/SelectOptions';
+import { BadgeLevel } from '../../model/BadgeLevel';
 
 
 interface LineHeaderProps {
-  curCategory?: string | undefined,
-  curDiffLevel?: string | undefined,
-  totalCount: number | undefined,
-  countMessage?: string,
-  onSelectDifficultyLevel: (level: string) => void,
+  totalCount: number;
+  countMessage: string;
+  selectedLevel?: string;
+  onSelectLevel: (level: BadgeLevel) => void;
 }
 
-const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
-  //
-  const [ sortOption, setSortOption ] = useState('');
+const LineHeaderContainer: FunctionComponent<LineHeaderProps> = ({
+  totalCount,
+  countMessage,
+  selectedLevel,
+  onSelectLevel,
+}) => {
 
-  const { curCategory, curDiffLevel, totalCount, onSelectDifficultyLevel, countMessage } = Props;
-
-  useEffect(() => {
-    if (curCategory !== undefined && curDiffLevel && curDiffLevel !== '') {
-      setSortOption('');
-    }
-  }, [curCategory]);
-
-  const onChangeSorting = (e: any, data: any) => {
-    if ( sortOption === data.value ) return;
-
-    setSortOption(data.value);
-    onSelectDifficultyLevel(data.value);
-  };
+  const onChangeLevel = useCallback((e: React.SyntheticEvent<HTMLElement>, data: any) => {
+    onSelectLevel(data.value);
+  }, []);
 
   return (
     <ListPanelTopLine
-      count={totalCount!}
+      count={totalCount}
       countMessage={countMessage}
     >
       <div className="right-wrap">
         <Select
           className="s160 small-border"
           placeholder="전체"
-          value={sortOption}
+          value={selectedLevel}
           options={SelectOptions.difficultyLevel}
-          onChange={onChangeSorting}
+          onChange={onChangeLevel}
         />
       </div>
     </ListPanelTopLine>

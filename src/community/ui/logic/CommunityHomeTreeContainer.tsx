@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   getCommunityHome,
   useCommunityHome,
@@ -23,6 +23,11 @@ import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { checkStudentByCoursePlanId, findlinkUrl } from '../../api/lectureApi';
 import { patronInfo } from '@nara.platform/dock';
 import { addNewBadge } from 'community/utility/communityHelper';
+import ReactGA from 'react-ga';
+import { Area } from 'tracker/model';
+import { CommunityMemberApprovedType } from 'community/model/CommunityMember';
+import CommunityProfileModal from '../view/CommunityProfileModal';
+import { findCommunityProfile } from '../../api/profileApi';
 
 interface MenuItemViewProps {
   subMenus: CommunityMenu[];
@@ -31,64 +36,93 @@ interface MenuItemViewProps {
 interface ApprovedProps {
   type?: CommunityMenuType;
   name: string;
-  approved?: boolean | null;
+  approved?: CommunityMemberApprovedType;
   icon?: string;
   lastPostTime: number;
 }
 
 const MenuItemView: React.FC<CommunityMenu &
   MenuItemViewProps> = function MenuItemView({
-  type,
-  name,
-  communityId,
-  menuId,
-  url,
-  subMenus,
-  lastPostTime,
-}) {
-  let path = 'board';
-  let icon = boardIcon;
-  switch (type) {
-    case 'DISCUSSION':
-      icon = discussionIcon;
-      path = 'discussion';
-      break;
-    case 'STORE':
-      icon = storeIcon;
-      path = 'data';
-      break;
-    case 'SURVEY':
-      icon = surveyIcon;
-      path = 'poll';
-      break;
-    case 'LINK':
-      icon = linkIcon;
-      break;
-    case 'HTML':
-      icon = htmlIcon;
-      path = 'content';
-      break;
-    default:
-      break;
-  }
-  if (type === 'LINK') {
-    return (
-      <li>
-        <a href={url} target="_blank">
-          <img src={icon} />
-          {name}
-        </a>
-      </li>
-    );
-  }
-  if (type === 'CATEGORY') {
-    return (
-      <>
+    type,
+    name,
+    communityId,
+    menuId,
+    url,
+    subMenus,
+    lastPostTime,
+  }) {
+    let path = 'board';
+    let icon = boardIcon;
+    switch (type) {
+      case 'DISCUSSION':
+        icon = discussionIcon;
+        path = 'discussion';
+        break;
+      case 'STORE':
+        icon = storeIcon;
+        path = 'data';
+        break;
+      case 'SURVEY':
+        icon = surveyIcon;
+        path = 'poll';
+        break;
+      case 'LINK':
+        icon = linkIcon;
+        break;
+      case 'HTML':
+        icon = htmlIcon;
+        path = 'content';
+        break;
+      default:
+        break;
+    }
+    if (type === 'LINK') {
+      return (
         <li>
-          <span>
+          <a href={url} target="_blank">
             <img src={icon} />
             {name}
-          </span>
+          </a>
+        </li>
+      );
+    }
+    if (type === 'CATEGORY') {
+      return (
+        <>
+          <li>
+            <span>
+              <img src={icon} />
+              {name}
+            </span>
+          </li>
+          {subMenus.length > 0 && (
+            <ul>
+              {subMenus
+                .sort((a, b) => a.order - b.order)
+                .map(menu => (
+                  <SubMenuItemView key={menu.menuId} {...menu} />
+                ))}
+            </ul>
+          )}
+        </>
+      );
+    }
+
+    const gaEvent = (): void => {
+      ReactGA.pageview(
+        `${`/community/${communityId}/${path}/${menuId}`}`,
+        [],
+        `(커뮤니티 하위메뉴)-${name}`
+      );
+    };
+    return (
+      <>
+        <li onClick={gaEvent}>
+          <Link to={`/community/${communityId}/${path}/${menuId}`}>
+            <img src={icon} />
+            {name}{' '}
+            {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+          </Link>
         </li>
         {subMenus.length > 0 && (
           <ul>
@@ -101,114 +135,101 @@ const MenuItemView: React.FC<CommunityMenu &
         )}
       </>
     );
-  }
-  return (
-    <>
-      <li>
-        <Link to={`/community/${communityId}/${path}/${menuId}`}>
-          <img src={icon} />
-          {name} {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
-        </Link>
-      </li>
-      {subMenus.length > 0 && (
-        <ul>
-          {subMenus
-            .sort((a, b) => a.order - b.order)
-            .map(menu => (
-              <SubMenuItemView key={menu.menuId} {...menu} />
-            ))}
-        </ul>
-      )}
-    </>
-  );
-};
+  };
 
 const ReadonlyMenuItemView: React.FC<MenuItemViewProps &
   ApprovedProps> = function MenuItemView({
-  type,
-  name,
-  icon,
-  approved,
-  subMenus,
-  lastPostTime,
-}) {
-  let path = 'board';
-  let nextIcon = icon || boardIcon;
-  switch (type) {
-    case 'DISCUSSION':
-      nextIcon = discussionIcon;
-      path = 'discussion';
-      break;
-    case 'STORE':
-      nextIcon = storeIcon;
-      path = 'data';
-      break;
-    case 'SURVEY':
-      nextIcon = surveyIcon;
-      path = 'poll';
-      break;
-    case 'LINK':
-      nextIcon = linkIcon;
-      break;
-    case 'HTML':
-      nextIcon = htmlIcon;
-      path = 'content';
-      break;
-    default:
-      break;
-  }
-
-  const Alert = useCallback(() => {
-    if (approved === null) {
-      reactConfirm({
-        title: '알림',
-        message: '커뮤니티에 가입하시겠습니까?',
-        onOk: async () => {
-          const communtyHome = getCommunityHome();
-          if (
-            communtyHome === undefined ||
-            communtyHome.community === undefined
-          ) {
-            return;
-          }
-          await joinCommunity(communtyHome.community.communityId);
-          requestCommunity(communtyHome.community.communityId);
-        },
-      });
-    } else if (approved === false) {
-      reactAlert({
-        title: '안내',
-        message: '지금 가입 승인을 기다리는 중입니다.',
-      });
+    type,
+    name,
+    icon,
+    approved,
+    subMenus,
+    lastPostTime,
+  }) {
+    let path = 'board';
+    let nextIcon = icon || boardIcon;
+    switch (type) {
+      case 'DISCUSSION':
+        nextIcon = discussionIcon;
+        path = 'discussion';
+        break;
+      case 'STORE':
+        nextIcon = storeIcon;
+        path = 'data';
+        break;
+      case 'SURVEY':
+        nextIcon = surveyIcon;
+        path = 'poll';
+        break;
+      case 'LINK':
+        nextIcon = linkIcon;
+        break;
+      case 'HTML':
+        nextIcon = htmlIcon;
+        path = 'content';
+        break;
+      default:
+        break;
     }
-  }, [approved]);
 
-  return (
-    <>
-      <li>
-        <button onClick={Alert}>
-          <img src={nextIcon} />
-          {name} {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
-        </button>
-      </li>
-      {subMenus.length > 0 && (
-        <ul>
-          {subMenus
-            .sort((a, b) => a.order - b.order)
-            .map(menu => (
-              <ReadonlySubMenuItemView
-                key={menu.menuId}
-                type={menu.type}
-                name={menu.name}
-                approved={approved}
-                lastPostTime={menu.lastPostTime}
-              />
-            ))}
-        </ul>
-      )}
-    </>
-  );
-};
+    const Alert = useCallback(() => {
+      if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
+        reactConfirm({
+          title: '알림',
+          message: '커뮤니티에 가입하시겠습니까?',
+          onOk: async () => {
+            const communtyHome = getCommunityHome();
+            if (
+              communtyHome === undefined ||
+              communtyHome.community === undefined
+            ) {
+              return;
+            }
+            await joinCommunity(communtyHome.community.communityId);
+            requestCommunity(communtyHome.community.communityId);
+            if (communtyHome.community.allowSelfJoin === 1) {
+              reactAlert({
+                title: '알림',
+                message: '커뮤니티에 가입이 완료되었습니다.',
+              });
+            }
+          },
+        });
+      } else if (approved === 'WAITING') {
+        reactAlert({
+          title: '안내',
+          message: '지금 가입 승인을 기다리는 중입니다.',
+        });
+      }
+    }, [approved]);
+
+    return (
+      <>
+        <li>
+          <button onClick={Alert}>
+            <img src={nextIcon} />
+            {name}{' '}
+            {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+          </button>
+        </li>
+        {subMenus.length > 0 && (
+          <ul>
+            {subMenus
+              .sort((a, b) => a.order - b.order)
+              .map(menu => (
+                <ReadonlySubMenuItemView
+                  key={menu.menuId}
+                  type={menu.type}
+                  name={menu.name}
+                  approved={approved}
+                  lastPostTime={menu.lastPostTime}
+                />
+              ))}
+          </ul>
+        )}
+      </>
+    );
+  };
 
 const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   type,
@@ -243,7 +264,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
   }
 
   const Alert = useCallback(() => {
-    if (approved === null) {
+    if (approved === null || approved === 'DRAW' || approved === 'REJECT') {
       reactConfirm({
         title: '알림',
         message: '커뮤니티에 가입하시겠습니까?',
@@ -259,7 +280,7 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
           requestCommunity(communtyHome.community.communityId);
         },
       });
-    } else if (approved === false) {
+    } else if (approved === 'WAITING') {
       reactAlert({
         title: '안내',
         message: '지금 가입 승인을 기다리는 중입니다.',
@@ -272,7 +293,8 @@ const ReadonlySubMenuItemView: React.FC<ApprovedProps> = function MenuItemView({
       <button onClick={Alert}>
         <img src={subIcon} />
         <img src={icon} />
-        {name}  {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+        {name}{' '}
+        {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
       </button>
     </li>
   );
@@ -338,7 +360,8 @@ const SubMenuItemView: React.FC<CommunityMenu> = function MenuItemView({
       <Link to={`/community/${communityId}/${path}/${menuId}`}>
         <img src={subIcon} />
         <img src={icon} />
-        {name}  {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
+        {name}{' '}
+        {addNewBadge(lastPostTime) && <span className="new-label">NEW</span>}
       </Link>
     </li>
   );
@@ -359,12 +382,14 @@ function JoinView() {
         if (linkUrl === undefined) {
           reactAlert({
             title: '알림',
-            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.',
+            message:
+              'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.',
           });
         } else {
           reactConfirm({
             title: '알림',
-            message: 'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.<div className="">\n</div>Course를 학습하시겠습니까?',
+            message:
+              'Course 내 포함된 학습을 시작하신 후 Community 가입이 가능합니다.<div className="">\n</div>Course를 학습하시겠습니까?',
             onOk: () => {
               history.push(linkUrl);
             },
@@ -386,6 +411,12 @@ function JoinView() {
         }
         await joinCommunity(communtyHome.community.communityId);
         requestCommunity(communtyHome.community.communityId);
+        if (communtyHome.community.allowSelfJoin === 1) {
+          reactAlert({
+            title: '알림',
+            message: '커뮤니티에 가입이 완료되었습니다.',
+          });
+        }
       },
     });
   }, [history]);
@@ -426,6 +457,19 @@ function MemberView() {
   );
 }
 
+function DetailView() {
+  const communtyHome = useCommunityHome();
+  if (communtyHome === undefined || communtyHome.community === undefined) {
+    return null;
+  }
+
+  return (
+    <Link to={`/community/${communtyHome.community.communityId}/detail`}>
+      <span className="community-info">정보</span>
+    </Link>
+  );
+}
+
 function AdminView() {
   const communtyHome = useCommunityHome();
   if (communtyHome === undefined || communtyHome.community === undefined) {
@@ -447,8 +491,20 @@ function AdminView() {
   );
 }
 
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string
+}
+
 function CommunityHomeTreeContainer() {
   const communtyHome = useCommunityHome();
+
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
+  const [profileInfo, setProfileInfo] = useState<profileParams>();
+
   const copyUrl = useCallback(() => {
     if (communtyHome === undefined || communtyHome.community === undefined) {
       return;
@@ -456,7 +512,7 @@ function CommunityHomeTreeContainer() {
     const currentUrl = window.location.toString();
     const url = `${currentUrl.split('/community/')[0]}/community/${
       communtyHome.community.communityId
-    }`;
+      }`;
     const textarea = document.createElement('textarea');
     textarea.value = url;
     document.body.appendChild(textarea);
@@ -473,131 +529,191 @@ function CommunityHomeTreeContainer() {
   if (communtyHome.community?.lastNoticePostTime !== null) {
     lastNoticePostTime = communtyHome.community?.lastNoticePostTime;
   }
+
+  const gaEvent = (arg: string): void => {
+    if (arg === 'all') {
+      ReactGA.pageview(
+        `${`/community/${communtyHome?.community?.communityId}/all`}`,
+        [],
+        `(커뮤니티 하위메뉴)-전체글`
+      );
+    } else if (arg === 'notic') {
+      ReactGA.pageview(
+        `${`/community/${communtyHome?.community?.communityId}/notice`}`,
+        [],
+        `(커뮤니티 하위메뉴)-공지사항`
+      );
+    } else {
+      throw new Error('not arg');
+    }
+  };
+
+  function deleteAllPostMenu(communityId: string) {
+    // 전체글 메뉴 삭제 Func => filteredCommunity 배열에 communityId 추가
+    const filteredCommunity = ['COMMUNITY-1s', 'COMMUNITY-1q', 'COMMUNITY-a', 'COMMUNITY-25', 'COMMUNITY-1w'];
+    if (
+      communityId !== '' &&
+      communityId !== null &&
+      communityId !== undefined
+    ) {
+      return filteredCommunity.includes(communityId);
+    }
+  }
+
+  function onClickManagerName(params: any) {
+    findCommunityProfile(params.managerId).then((result) => {
+      setProfileInfo({
+        'id': result!.id,
+        'profileImg': result!.profileImg,
+        'introduce': result!.introduce,
+        'nickName': result!.nickname,
+        'creatorName': result!.name
+      })
+      setProfileOpen(true)
+    })
+  }
+
   return (
-    <div className="community-left community-home-left">
-      <div className="sub-info-box">
-        <div className="commnuity-left-top">
-          <div className="community-left-header">
-            <span className="community-badge blue">
-              {communtyHome.community.fieldName}
-            </span>
-            <a className="community-share" onClick={copyUrl}>
-              <span>공유하기</span>
-            </a>
-          </div>
-          <h3>{communtyHome.community.name}</h3>
-          <div className="community-home-left-span">
-            <div className="community-user-info">
-              <span>
-                <img src={managerIcon} />
-                <strong>{communtyHome.community.managerName}</strong>
+    <>
+      <div className="community-left community-home-left" data-area={Area.COMMUNITY_LNB}>
+        <div className="sub-info-box">
+          <div className="commnuity-left-top">
+            <div className="community-left-header">
+              <span className="community-badge blue">
+                {communtyHome.community.fieldName}
               </span>
-              <span>
-                멤버 <strong>{communtyHome.community.memberCount}</strong>
-              </span>
+              <div>
+                <a className="community-share right10" onClick={copyUrl}>
+                  <span>공유하기</span>
+                </a>
+                <DetailView />
+              </div>
             </div>
-            {communtyHome.community.approved === null && <JoinView />}
-            {communtyHome.community.approved === false && <WaitView />}
-            {communtyHome.community.approved === true && <MemberView />}
-            {communtyHome.community.managerId === patronInfo.getDenizenId() && <AdminView />}
+            <h3>{communtyHome.community.name}</h3>
+            <div className="community-home-left-span">
+              <div className="community-user-info">
+                <span onClick={() => onClickManagerName(communtyHome.community)} style={{ cursor: 'pointer' }}>
+                  <img src={managerIcon} />
+                  <strong>{communtyHome.community.managerName}</strong>
+                </span>
+                <span>
+                  멤버 <strong>{communtyHome.community.memberCount}</strong>
+                </span>
+              </div>
+              {communtyHome.community.approved === null && <JoinView />}
+              {communtyHome.community.approved === 'DRAW' && <JoinView />}
+              {communtyHome.community.approved === 'REJECT' && <JoinView />}
+              {communtyHome.community.approved === 'WAITING' && <WaitView />}
+              {communtyHome.community.approved === 'APPROVED' && <MemberView />}
+              {(communtyHome.community.managerId === patronInfo.getDenizenId() || communtyHome.community.memberType === 'ADMIN') && (
+                <AdminView />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="community-home-right-contents">
-          {communtyHome.community.approved !== true && (
-            <ul>
-              <li>
-                <Link to={`/community/${communtyHome.community.communityId}`}>
-                  <img src={homeIcon} />
-                  HOME
-                  <img src={homeArrowIcon} className="right-menu-arrow" />
-                </Link>
-              </li>
-              {
-                communtyHome.community.communityId === "COMMUNITY-a" ? (
-                  null
-                ) : (
-                  <ReadonlyMenuItemView
-                    type="NOTICE"
-                    name="전체글"
-                    icon={boardIcon}
-                    approved={communtyHome.community?.approved}
-                    subMenus={[]}
-                    lastPostTime={0}
-                  />
-                )
-              }
-              <ReadonlyMenuItemView
-                type="NOTICE"
-                name="공지사항"
-                icon={boardIcon}
-                approved={communtyHome.community?.approved}
-                subMenus={[]}
-                lastPostTime={lastNoticePostTime}
-              />
-              {communtyHome.menus
-                .filter(c => c.parentId === null)
-                .sort((a, b) => a.order - b.order)
-                .map(menu => (
-                  <ReadonlyMenuItemView
-                    key={menu.menuId}
-                    {...menu}
-                    subMenus={communtyHome.menus.filter(
-                      c => c.parentId === menu.id
+          <div className="community-home-right-contents">
+            {communtyHome.community.approved !== 'APPROVED' && (
+              <ul>
+                <li>
+                  <Link to={`/community/${communtyHome.community.communityId}`}>
+                    <img src={homeIcon} />
+                    HOME
+                    <img src={homeArrowIcon} className="right-menu-arrow" />
+                  </Link>
+                </li>
+                {communtyHome?.community &&
+                  deleteAllPostMenu(communtyHome?.community.communityId) ? null : (
+                    <ReadonlyMenuItemView
+                      type="NOTICE"
+                      name="전체글"
+                      icon={boardIcon}
+                      approved={communtyHome.community?.approved}
+                      subMenus={[]}
+                      lastPostTime={0}
+                    />
+                  )}
+                <ReadonlyMenuItemView
+                  type="NOTICE"
+                  name="공지사항"
+                  icon={boardIcon}
+                  approved={communtyHome.community?.approved}
+                  subMenus={[]}
+                  lastPostTime={lastNoticePostTime}
+                />
+                {communtyHome.menus
+                  .filter(c => c.parentId === null)
+                  .sort((a, b) => a.order - b.order)
+                  .map(menu => (
+                    <ReadonlyMenuItemView
+                      key={menu.menuId}
+                      {...menu}
+                      subMenus={communtyHome.menus.filter(
+                        c => c.parentId === menu.id
+                      )}
+                      approved={communtyHome.community?.approved}
+                    />
+                  ))}
+              </ul>
+            )}
+            {communtyHome.community.approved === 'APPROVED' && (
+              <ul>
+                <li>
+                  <Link to={`/community/${communtyHome.community.communityId}`}>
+                    <img src={homeIcon} />
+                    HOME
+                    <img src={homeArrowIcon} className="right-menu-arrow" />
+                  </Link>
+                </li>
+                {communtyHome?.community &&
+                  deleteAllPostMenu(communtyHome?.community.communityId) ? null : (
+                    <li onClick={() => gaEvent('all')}>
+                      <Link
+                        to={`/community/${communtyHome.community.communityId}/all`}
+                      >
+                        <img src={boardIcon} />
+                        전체글
+                      </Link>
+                    </li>
+                  )}
+                <li onClick={() => gaEvent('notic')}>
+                  <Link
+                    to={`/community/${communtyHome.community.communityId}/notice`}
+                  >
+                    <img src={boardIcon} />
+                    공지사항
+                    {addNewBadge(lastNoticePostTime) && (
+                      <span className="new-label">NEW</span>
                     )}
-                    approved={communtyHome.community?.approved}
-                  />
-                ))}
-            </ul>
-          )}
-          {communtyHome.community.approved === true && (
-            <ul>
-              <li>
-                <Link to={`/community/${communtyHome.community.communityId}`}>
-                  <img src={homeIcon} />
-                  HOME
-                  <img src={homeArrowIcon} className="right-menu-arrow" />
-                </Link>
-              </li>
-              {
-                communtyHome.community.communityId === "COMMUNITY-a" ? (
-                  null
-                ) : (
-                  <li>
-                    <Link
-                      to={`/community/${communtyHome.community.communityId}/all`}
-                    >
-                      <img src={boardIcon} />
-                      전체글
-                    </Link>
-                  </li>
-                )
-              }
-              <li>
-                <Link
-                  to={`/community/${communtyHome.community.communityId}/notice`}
-                >
-                  <img src={boardIcon} />
-                  공지사항 {addNewBadge(lastNoticePostTime) && <span className="new-label">NEW</span>}
-                </Link>
-              </li>
-              {communtyHome.menus
-                .filter(c => c.parentId === null)
-                .sort((a, b) => a.order - b.order)
-                .map(menu => {
-                  return (
-                  <MenuItemView
-                    key={menu.menuId}
-                    {...menu}
-                    subMenus={communtyHome.menus.filter(
-                      c => c.parentId === menu.id
-                    )}
-                  />
-                )})}
-            </ul>
-          )}
+                  </Link>
+                </li>
+                {communtyHome.menus
+                  .filter(c => c.parentId === null)
+                  .sort((a, b) => a.order - b.order)
+                  .map(menu => {
+                    return (
+                      <MenuItemView
+                        key={menu.menuId}
+                        {...menu}
+                        subMenus={communtyHome.menus.filter(
+                          c => c.parentId === menu.id
+                        )}
+                      />
+                    );
+                  })}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
+    </>
   );
 }
 

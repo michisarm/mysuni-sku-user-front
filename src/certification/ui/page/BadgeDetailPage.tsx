@@ -1,55 +1,39 @@
-import React, { useEffect } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import BadgeService from '../../present/logic/BadgeService';
-import BadgeContentContainer from '../logic/BadgeContentContainer';
 import LinkedBadgeListContainer from '../logic/LinkedBadgeListContainer';
+import { getMainCategoryId } from '../../model/Badge';
+import { useRequestBadgeDetail } from '../../service/useRequestBadgeDetail';
+import BadgeSummaryContainer from '../logic/BadgeSummaryContainer';
+import BadgeContentContainer from '../logic/BadgeContentContainer';
+import { useRequestCineroom } from '../../../shared/service/useCineroom/useRequestCineroom';
+import { getBadgeCategoryName } from '../../service/useRequestBadgeCategory';
 
-interface Props extends RouteComponentProps<{ badgeId: string }> {
-  badgeService?: BadgeService,
+interface BadgeDetailPageProps {
+  badgeService?: BadgeService;
 }
 
-const BadgeDetailPage: React.FC<Props> = (Props) => {
-  /*
-    BadgeDetail 에 대한 state 는 store 에서 이미 관리하고 있으므로,
-    컴포넌트에서 따로 관리하지 않도록 수정. 2020.09.28 by 김동구
-  */
-  const { badgeService, match } = Props;
-  const { badgeDetailInfo } = badgeService!;
+function BadgeDetailPage({ badgeService }: BadgeDetailPageProps) {
+  const { badge } = badgeService!;
+  const mainCategoryId = getMainCategoryId(badge);
 
-  const currentBadgeId = match.params.badgeId;
-
-  useEffect(() => {
-    //
-    findMyContent(match.params.badgeId);
-
-  }, [currentBadgeId]);
-
-
-  const findMyContent = async (badgeId: string) => {
-    //
-    await badgeService!.findBadgeDetailInfo(badgeId);
-  };
-
+  useRequestBadgeDetail();
+  useRequestCineroom();
 
   return (
     <ContentLayout
       className="no-padding"
-      breadcrumb={[
-        { text: badgeDetailInfo.mainCategoryName },
-      ]}
+      breadcrumb={[{ text: getBadgeCategoryName(mainCategoryId) }]}
     >
-      <BadgeContentContainer badgeId={currentBadgeId} badgeDetail={badgeDetailInfo} />
-
-      {/*연관 Badge*/}
-      <LinkedBadgeListContainer badgeId={currentBadgeId} />
-
+      <BadgeSummaryContainer />
+      <BadgeContentContainer />
+      <LinkedBadgeListContainer />
     </ContentLayout>
   );
-};
+}
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(withRouter(observer(BadgeDetailPage)));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(BadgeDetailPage)
+);

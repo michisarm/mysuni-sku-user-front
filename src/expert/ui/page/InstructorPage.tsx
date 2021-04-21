@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -7,22 +6,26 @@ import { RouteComponentProps } from 'react-router-dom';
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
 import InstructorService from '../../present/logic/InstructorService';
-import InstructorLecturesContainer from '../logic/InstructorLecturesContainer';
 import InstructorContentHeaderView from '../view/InstructorContentHeaderView';
 import InstructorIntroduceView from '../view/InstructorIntroduceView';
+import { CardWithCardRealtedCount } from '../../../lecture/model/CardWithCardRealtedCount';
+import { findByRdoCache } from '../../../lecture/detail/api/cardApi';
+import { InstructorLecturesView } from '../view/InstructorLecturesView';
 
+const PAGE_SIZE = 8;
 
 interface Props extends RouteComponentProps<RouteParams> {
-  instructorService :InstructorService
+  instructorService: InstructorService;
 }
 
 interface State {
-  lecturesCount: number
+  cardsTotalCount: number;
+  cards: CardWithCardRealtedCount[];
 }
 
 interface RouteParams {
-  instructorId : string,
-  tab: ContentType,
+  instructorId: string;
+  tab: ContentType;
 }
 
 enum ContentType {
@@ -30,15 +33,19 @@ enum ContentType {
   Lecture = 'Lecture',
 }
 
-@inject(mobxHelper.injectFrom(
-  'expert.instructorService'))
+@inject(mobxHelper.injectFrom('expert.instructorService'))
 @observer
 @reactAutobind
 class InstructorPage extends Component<Props, State> {
   //
-  state = {
-    lecturesCount: 0,
-  };
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      cardsTotalCount: 0,
+      cards: [],
+    };
+  }
 
   componentDidMount() {
     //
@@ -46,11 +53,28 @@ class InstructorPage extends Component<Props, State> {
     const { instructorId } = match.params;
 
     instructorService.findInstructor(instructorId);
+    this.requestCards();
+  }
+
+  requestCards() {
+    const { match } = this.props;
+    const { instructorId } = match.params;
+    const { cards } = this.state;
+    findByRdoCache({
+      instructorId,
+      offset: cards.length,
+      limit: PAGE_SIZE,
+    }).then(next => {
+      if (next !== undefined) {
+        const nextCards = [...cards, ...next.results];
+        this.setState({ cards: nextCards, cardsTotalCount: next.totalCount });
+      }
+    });
   }
 
   getTabs() {
     //
-    const { lecturesCount } = this.state;
+    const { cardsTotalCount } = this.state;
 
     return [
       {
@@ -60,7 +84,11 @@ class InstructorPage extends Component<Props, State> {
       },
       {
         name: ContentType.Lecture,
-        item: <>Lecture<span className="count">{lecturesCount}</span></>,
+        item: (
+          <>
+            Lecture<span className="count">{cardsTotalCount}</span>
+          </>
+        ),
         render: this.renderLecture,
       },
     ] as TabItemModel[];
@@ -76,27 +104,21 @@ class InstructorPage extends Component<Props, State> {
     return routePaths.instructorTab(params.instructorId, tab.name);
   }
 
-  onChangeLecturesCount(lecturesCount: number) {
-    //
-    this.setState({ lecturesCount });
-  }
-
   renderIntroduce() {
     //
     const { instructor } = this.props.instructorService!;
 
-    return (
-      <InstructorIntroduceView
-        instructor={instructor}
-      />
-    );
+    return <InstructorIntroduceView instructor={instructor} />;
   }
 
   renderLecture() {
+    const { cards, cardsTotalCount } = this.state;
     //
     return (
-      <InstructorLecturesContainer
-        onChangeLecturesCount={this.onChangeLecturesCount}
+      <InstructorLecturesView
+        cards={cards}
+        cardsTotalCount={cardsTotalCount}
+        requestMore={this.requestCards}
       />
     );
   }
@@ -107,15 +129,8 @@ class InstructorPage extends Component<Props, State> {
     const { params } = this.props.match;
 
     return (
-      <ContentLayout
-        className="mylearning"
-        breadcrumb={[
-          { text: 'Expert' },
-        ]}
-      >
-        <InstructorContentHeaderView
-          instructor={instructor}
-        />
+      <ContentLayout className="mylearning" breadcrumb={[{ text: 'Expert' }]}>
+        <InstructorContentHeaderView instructor={instructor} />
 
         <Tab
           allMounted
@@ -126,7 +141,6 @@ class InstructorPage extends Component<Props, State> {
       </ContentLayout>
     );
   }
-
 }
 
 export default InstructorPage;

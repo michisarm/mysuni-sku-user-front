@@ -1,212 +1,144 @@
-import React, {useEffect, useState} from 'react';
-import {inject} from 'mobx-react';
-import moment from 'moment';
-import {mobxHelper, reactAlert} from '@nara.platform/accent';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {Button} from 'semantic-ui-react';
-import {ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
+import React, { useState } from 'react';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { Button } from 'semantic-ui-react';
 import BadgeService from '../../present/logic/BadgeService';
-import MyBadgeModel from '../model/MyBadgeModel';
-import {Badge} from '../../shared/Badge';
-import IssueState from '../../shared/Badge/ui/model/IssueState';
-import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
 import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
-import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import ChallengeSuccessModal from './ChallengeSuccessModal';
+import { MyBadge } from '../../model/MyBadge';
+import BadgeStyle from '../model/BadgeStyle';
+import BadgeSize from '../model/BadgeSize';
+import BadgeView from '../view/BadgeView';
+import ChallengeBadgeAlertModal from '../view/ChallengeBadgeAlertModal';
+import { findBadgeStudent } from '../../api/BadgeStudentApi';
+import { BadgeStudent } from '../../model/BadgeStudent';
 
-
-interface Props extends RouteComponentProps {
-  badgeService?: BadgeService,
-
-  badge: MyBadgeModel,
-  badgeStyle: string,
-  badgeSize: string,
-
-  learningCount: number,
-  passedCount: number,
-  passedAll: boolean,
-  refreshChallengingContainer: () => void,
+interface BadgeCompLeftProps {
+  challengeBadge: MyBadge;
+  challengeState: ChallengeState;
+  passedCardCount: number;
+  badgeCardCount: number;
+  issueTime: string;
+  onSetBadgeStudent: (next: BadgeStudent) => void;
+  badgeService?: BadgeService;
 }
 
-const BadgeCompLeft: React.FC<Props> = (Props) => {
-  //
-  const { badgeService, badge, badgeStyle, badgeSize, learningCount, passedCount, passedAll, refreshChallengingContainer, history } = Props;
-  const { badgeId } = badge;
+function BadgeCompLeft({
+  challengeBadge,
+  challengeState,
+  passedCardCount,
+  badgeCardCount,
+  issueTime,
+  onSetBadgeStudent,
+  badgeService,
+}: BadgeCompLeftProps) {
+  const [alertModal, setAlertModal] = useState(false);
 
-  const [ studentInfo, setBadgeStudentInfo ] = useState<BadgeStudentModel | null>();
-  const [ badgeState, setBadgeState ] = useState();
+  const onClickRequestIssue = async () => {
+    if (!challengeBadge.issueAutomatically) {
+      if (passedCardCount !== badgeCardCount) {
+        setAlertModal(true);
+        return;
+      }
+    }
 
-  const [ requestModal, setRequestModal ] = useState(false);
-  const [ successModal, setSuccessModal ] = useState(false);
+    const response = await badgeService!.requestIssue(challengeBadge.id);
 
-
-  useEffect(() => {
-    //
-    // 뱃지 수강정보 조회
-    getBadgeStudentInfo(badgeId);
-  }, []);
-
-  // Badge 수강정보 조회
-  const getBadgeStudentInfo = async (badgeId: string) => {
-    //
-    const badgeStudentInfo: BadgeStudentModel | null = await badgeService!.findBadgeStudentInfo(badgeId);
-
-    if ( badgeStudentInfo !== null ) {
-
-      setBadgeStudentInfo(badgeStudentInfo);
-
-      // 먼저 수강 정보로 Badge 상태 설정
-      getBadgeState(
-        badgeStudentInfo.challengeState,
-        badgeStudentInfo.learningCompleted,
-        badgeStudentInfo.issueState
-      );
+    if (response) {
+      const badgeStudent = await findBadgeStudent(challengeBadge.id);
+      if (badgeStudent !== undefined) {
+        onSetBadgeStudent(badgeStudent);
+      }
     }
   };
 
-  const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
-    //
-    if (challengeState === 'Challenged') {
-      // 발급 완료
-      if (issueState === IssueState.Issued) {
-        setBadgeState(ChallengeState.Issued);
-      }
-      // 발급 요청 중
-      else if (issueState === IssueState.Requested) {
-        setBadgeState(ChallengeState.Requested);
-      }
-      // 발급 요청
-      else if (learningCompleted) {
-        setBadgeState(ChallengeState.ReadyForRequest);
-      }
-      // 일단 진행 중
-      else {
-        setBadgeState(passedAll ?
-          // 진행 중이지만 모든 학습이 완료되었다고 판단될 경우 발급 요청
-          ChallengeState.ReadyForRequest :
-          // 진행 중 => 도전취소 버튼 노출
-          ChallengeState.Challenging);
-      }
-    }
-    else {
-      // 도전 대기 - 최초도전 or 도전취소
-      setBadgeState(ChallengeState.WaitForChallenge);
-    }
-  };
-
-
-  // 발급요청
-  const onClickRequestBadge = (id: string) => {
-    //
-    if ( id === undefined || id === null ) return;
-
-    if ( !badge.autoIssued ) {
-      if ( !badge.learningCompleted ) {
-        if ( !passedAll ) {
-          setRequestModal(!requestModal);
-          return;
-        }
-      }
-      // if ( badge.additionTermsExist && !studentInfo?.missionCompleted ) {
-      //   reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
-      //   return;
-      // }
-    }
-
-    badgeService!.requestManualIssued(studentInfo!.id, IssueState.Requested)
-      .then((response) => {
-        if ( response ) {
-          if ( badge.autoIssued ) {
-            // success popup
-            setSuccessModal(!successModal);
-
-          } else {
-            setBadgeState(ChallengeState.Requested);
-
-            getBadgeStudentInfo(badge.badgeId);
-          }
-          //getBadgeStudentInfo(badge.badgeId);
-        }
-        else {
-          reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
-        }
-      });
-  };
-
-  const onHandleChangeModal = () => {
-    console.log('hihi');
-    setRequestModal(!requestModal);
-  };
-
-  // 성공 모달 닫기
-  const onControlSuccessModal = () => {
-    setSuccessModal(!successModal);
-    refreshChallengingContainer();
+  const onCloseAlertModal = () => {
+    setAlertModal(false);
   };
 
   return (
     <div className="left-area">
-      {/*Badge ui*/}
-      <Badge
-        badge={badge}
-        badgeStyle={badgeStyle}
-        badgeSize={badgeSize}
-      />
-      {/*Status info*/}
-      <ChallengeBadgeStatus>
-        { badgeState === IssueState.Requested && (
+      <div className="badge-list-type" style={{ padding: 0! }}>
+        <BadgeView
+          id={challengeBadge.id}
+          name={challengeBadge.name}
+          level={challengeBadge.level}
+          iconUrl={challengeBadge.iconUrl}
+          categoryId={challengeBadge.categoryId}
+          badgeStyle={BadgeStyle.List}
+          badgeSize={BadgeSize.Small}
+        />
+      </div>
+      <div className="status">
+        {challengeState === ChallengeState.Requested && (
           <span className="status">
             <span className="number">
               <b>{IssueStateNameType.Requested}</b>
             </span>
-            <span className="txt mt2">{moment(studentInfo?.issueStateTime).format('YYYY.MM.DD')} 발급 요청</span>
+            <span className="txt mt2">{issueTime} 발급 요청</span>
           </span>
         )}
-        { (badgeState !== IssueState.Issued && badgeState !== IssueState.Requested) && (
-          <>
-
-            { badge.autoIssued ? (
-              // 자동발급뱃지이지만 학습이수처리 이상으로 자동발급이 안된 경우
-              (!studentInfo?.learningCompleted && passedAll) && (
-                <>
-                  <Button className="fix line" onClick={() => onClickRequestBadge(badge.badgeId)}>발급요청</Button>
-                  <span className="txt txt2">자동으로 Badge 발급이 되지 않은 경우, 발급요청 버튼을 클릭해주세요.</span>
-                </>
-              ))
-              :
-              <ChallengeBoxCompanionModal
-                open={requestModal}
-                onAction={() => onClickRequestBadge(studentInfo!.id)}
-                onClick={onHandleChangeModal}
-              />
-            }
-            <span className="number">
-              <span className="ing-txt">진행중</span>
-              <span><b>{passedCount}</b>/{learningCount}</span>
-            </span>
-            {/*자동발급*/}
-            { badge.autoIssued && (
-              <span className="txt">
-                Badge 도전 학습 모두 완료 시<br/>자동으로 Badge가 발급됩니다.
+        {challengeState !== ChallengeState.Requested &&
+          !challengeBadge.issueAutomatically && (
+            <>
+              <Button className="fix line" onClick={onClickRequestIssue}>
+                발급요청
+              </Button>
+              <span className="number">
+                <span className="ing-txt">진행중</span>
+                <span>
+                  <b>{passedCardCount}</b>/{badgeCardCount}
+                </span>
               </span>
-            )}
-
-            {/*자동발급 완료 팝업*/}
-            <ChallengeSuccessModal
-              // badge={badgeService!.badgeDetailInfo}
-              badgeId={badgeId}
-              successModal={successModal}
-              onCloseSuccessModal={onControlSuccessModal}
-            />
-          </>
-        )}
-      </ChallengeBadgeStatus>
-
+            </>
+          )}
+        {challengeState !== ChallengeState.Requested &&
+          challengeBadge.issueAutomatically && (
+            <>
+              <span className="number">
+                <span className="ing-txt">진행중</span>
+                <span>
+                  <b>{passedCardCount}</b>/{badgeCardCount}
+                </span>
+              </span>
+              <span className="txt">
+                Badge 도전 학습 모두 완료 시<br />
+                자동으로 Badge가 발급됩니다.
+              </span>
+            </>
+          )}
+        <ChallengeBadgeAlertModal
+          open={alertModal}
+          onClick={onCloseAlertModal}
+        />
+      </div>
     </div>
   );
-};
+}
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(withRouter(BadgeCompLeft));
+export default inject(mobxHelper.injectFrom('badge.badgeService'))(
+  observer(BadgeCompLeft)
+);
+
+// <ChallengeBoxCompanionModal
+//   open={requestModal}
+//   onAction={onClickRequestIssue}
+//   onClick={onCloseRequestModal}
+
+// {/*자동발급 완료 팝업*/}
+// <ChallengeSuccessModal
+// badge={challengeBadge}
+// categoryId={challengeBadge.categoryId}
+// successModal={successModal}
+// onCloseSuccessModal={onCloseSuccessModal}
+// />
+
+// const onCloseRequestModal = () => {
+//   setRequestModal(false);
+// };
+
+// // 성공 모달 닫기
+// const onCloseSuccessModal = () => {
+//   setSuccessModal(false);
+//   refreshChallengingContainer();
+// };

@@ -127,7 +127,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
                           this.onClickActionLog('관심 Channel 보기')
                         }
                       >
-                        <Icon className="setting17" />
+                        <Icon className="setting17" style={{ position: 'relative'}} />
                         <span className="blind">setting</span>
                       </Button>
                     }

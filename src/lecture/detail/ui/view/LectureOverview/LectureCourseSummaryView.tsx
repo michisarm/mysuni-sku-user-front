@@ -1,17 +1,26 @@
-import { IdName, reactAlert } from '@nara.platform/accent';
-import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
-import React, { useState, useEffect } from 'react';
+import { reactAlert } from '@nara.platform/accent';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import CategoryColorType from '../../../../../shared/model/CategoryColorType';
-import { toggleCourseBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
-import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
+import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import ReactGA from 'react-ga';
 import StampCompleted from '../../../../../style/media/stamp-completed.svg';
-import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
+import { LectureStructure } from '../../../viewModel/LectureStructure';
+import { State } from '../../../viewModel/LectureState';
+import { toggleCardBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import { PostService } from '../../../../../board/stores';
+import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
+import { Thumbnail } from '../../../../shared/ui/view/LectureElementsView';
+import { InMyLectureModel } from '../../../../../myTraining/model';
+import { useLectureParams } from '../../../store/LectureParamsStore';
+import { autorun } from 'mobx';
+import InMyLectureService from '../../../../../myTraining/present/logic/InMyLectureService';
+import { Area } from 'tracker/model';
+import LectureStateContainer from '../../logic/LectureStateContainer';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -23,7 +32,7 @@ function numberWithCommas(x: number) {
 interface LectureCourseSummaryViewProps {
   lectureSummary: LectureCourseSummary;
   lectureReview?: LectureReview;
-  lectureLearningState: any;
+  lectureStructure: LectureStructure;
 }
 
 function copyUrl() {
@@ -37,10 +46,10 @@ function copyUrl() {
   reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
 }
 
-function getColor(college: IdName) {
+function getColor(collegeId: string) {
   let color = CategoryColorType.Default;
 
-  switch (college.id) {
+  switch (collegeId) {
     case 'CLG00001':
       color = CategoryColorType.AI;
       break;
@@ -80,7 +89,7 @@ function getColor(college: IdName) {
 const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = function LectureCourseSummaryView({
   lectureSummary,
   lectureReview,
-  lectureLearningState,
+  lectureStructure,
 }) {
   let difficultyLevelIcon = 'basic';
   switch (lectureSummary.difficultyLevel) {
@@ -98,30 +107,73 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
       break;
   }
 
+  const state = useMemo<State>(() => {
+    return lectureStructure.card.state || 'None';
+  }, [lectureStructure]);
+
   // (react-ga) post pageTitle
   useEffect(() => {
-    setTimeout(() => {
-      ReactGA.pageview(
-        window.location.pathname + window.location.search,
-        [],
-        `(Course) - ${lectureSummary.name}`
-      );
-    }, 1000);
-  });
-  const lectureStructure = getLectureStructure();
-  let qnaUrl = '/board/support-qna';
-  if (lectureStructure !== undefined && lectureStructure.course !== undefined) {
-    qnaUrl += '/course/' + lectureStructure.course.coursePlanId;
-  }
+    //
+    if (window.location.search === '?_source=newsletter') {
+      ReactGA.event({
+        category: 'External',
+        action: 'Email',
+        label: 'Newsletter',
+      });
+    } else {
+      setTimeout(() => {
+        ReactGA.pageview(
+          window.location.pathname + window.location.search,
+          [],
+          `(Course) - ${lectureSummary.name}`
+        );
+      }, 1000);
+    }
+  }, []);
+  const qnaUrl = `/board/support-qna/course/${lectureSummary.cardId}`;
+
+  useEffect(() => {
+    const postService = PostService.instance;
+    const currentUrl = window.location.href;
+    const hostUrl = window.location.host;
+    const alarmUrl = currentUrl.split(hostUrl);
+
+    postService.post.alarmInfo.url =
+      'https://mysuni.sk.com/login?contentUrl=/suni-main/' + alarmUrl[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+  }, [lectureSummary]);
+
+  const [inMyLectureMap, setInMyLectureMap] = useState<
+    Map<string, InMyLectureModel>
+  >();
+  const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
+
+  const params = useLectureParams();
+
+  useEffect(() => {
+    return autorun(() => {
+      setInMyLectureMap(InMyLectureService.instance.inMyLectureMap);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (params?.cardId === undefined) {
+      return;
+    }
+    setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
+  }, [inMyLectureMap, params?.cardId]);
 
   return (
-    <div className="course-info-header">
+    <div className="course-info-header" data-area={Area.CARD_HEADER}>
       <div className="contents-header">
         <div className="title-area">
           <div
-            className={`ui label ${getColor(lectureSummary.category.college)}`}
+            className={`ui label ${getColor(
+              lectureSummary.category.collegeId
+            )}`}
           >
-            {lectureSummary.category.college.name}
+            {getCollgeName(lectureSummary.category.collegeId)}
           </div>
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">
@@ -142,7 +194,9 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
               )}
               <Label className="bold onlytext">
                 <span className="header-span-first">이수</span>
-                <span>{numberWithCommas(lectureSummary.passedCount)}</span>
+                <span>
+                  {numberWithCommas(lectureSummary.passedStudentCount)}
+                </span>
                 <span>명</span>
               </Label>
               <Label className="bold onlytext">
@@ -151,7 +205,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   {lectureSummary.operator.name}
                   <i>
                     <span className="tip-name">
-                      {lectureSummary.operator.company}
+                      {lectureSummary.operator.companyName}
                     </span>
                     <a
                       className="tip-mail"
@@ -170,13 +224,19 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
           </div>
         </div>
         <div className="right-area">
-          {lectureLearningState &&
-          lectureLearningState.learningState === 'Passed' ? (
-            <img src={StampCompleted} />
-          ) : (
-            lectureSummary.iconBox !== undefined && (
-              <img src={lectureSummary.iconBox.baseUrl} />
-            )
+          {lectureSummary.hasClassroomCube !== true && (
+            <>
+              {state === 'Completed' ? (
+                <img src={StampCompleted} />
+              ) : (
+                lectureSummary.thumbImagePath !== undefined && (
+                  <Thumbnail image={lectureSummary.thumbImagePath} />
+                )
+              )}
+            </>
+          )}
+          {lectureSummary.hasClassroomCube === true && (
+            <LectureStateContainer />
           )}
         </div>
       </div>
@@ -214,16 +274,14 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 </span>
               </Link>
             )}
-            <a onClick={toggleCourseBookmark}>
+            <a onClick={toggleCardBookmark}>
               <span>
                 <Icon
                   className={
-                    lectureSummary.mytrainingId === undefined
-                      ? 'listAdd'
-                      : 'listDelete'
+                    inMyLectureModel === undefined ? 'listAdd' : 'listDelete'
                   }
                 />
-                {lectureSummary.mytrainingId === undefined
+                {inMyLectureModel === undefined
                   ? '관심목록 추가'
                   : '관심목록 제거'}
               </span>

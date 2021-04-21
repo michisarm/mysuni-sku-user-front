@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Sticky, Menu } from 'semantic-ui-react';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { Area } from 'tracker/model';
 
 interface Params {
   profileId: string;
@@ -25,7 +26,7 @@ const OtherProfileMenuView: React.FC = function OtherProfileMenuView() {
 
   return (
     <Sticky className="tab-menu offset0">
-      <div className="cont-inner">
+      <div className="cont-inner" data-area={Area.COMMUNITY_MENU}>
         <Menu className="sku">
           <Menu.Item
             name="Profile"

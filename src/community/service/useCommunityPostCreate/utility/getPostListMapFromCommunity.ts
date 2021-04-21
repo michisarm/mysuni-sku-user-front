@@ -119,8 +119,10 @@ export async function getPostItem(
               fileBoxId: post.fileBoxId,
               newBadge: addNewBadge(post.createdTime),
               creatorName: post.creatorName!,
-              visible:post.visible,
-              creatorId:post.creatorId
+              visible: post.visible,
+              creatorId: post.creatorId,
+              readCount: post.readCount,
+              likeCount: post.likeCount
             });
           });
         }

@@ -1,5 +1,5 @@
 import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 
 import { Segment } from 'semantic-ui-react';
 import {
@@ -18,7 +18,7 @@ import LectureCubeInfoView from '../LectureOverview/LectureCubeInfoView';
 import LectureTagsView from '../LectureOverview/LectureTagsView';
 import LectureSubcategoryView from '../LectureOverview/LectureCubeSubcategoryView';
 import { useLectureTask } from '../../../service/useLectureTask/useLectureTask';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 interface LectureTaskViewProps {
   taskItem?: LectureTask;
@@ -46,6 +46,14 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTaskView
   handelClickCreateTask,
 }) {
   const tabType = useLectureTaskTab();
+  const { hash, pathname } = useLocation();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (hash) {
+      history.replace(pathname);
+    }
+  }, []);
 
   const onHandleClickTaskRow = useCallback(
     param => {

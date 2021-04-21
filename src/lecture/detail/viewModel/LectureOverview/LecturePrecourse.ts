@@ -1,19 +1,11 @@
-interface Precourese {
-  isRequired: boolean;
-  name: string;
-  coursePlanId: string;
-  serviceType: string;
-  serviceId: string;
-}
+import { PrerequisiteCard } from '../../../model/PrerequisiteCard';
 
 export default interface LecturePrecourse {
-  courses: Precourese[];
-  path: string;
+  prerequisiteCards: PrerequisiteCard[];
 }
 
 export function getEmptyLecturePrecourse(): LecturePrecourse {
   return {
-    path: '',
-    courses: [],
+    prerequisiteCards: [],
   };
 }

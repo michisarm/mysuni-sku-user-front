@@ -1,189 +1,321 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-
-import { Button, Icon } from 'semantic-ui-react';
-import myTrainingRoutePaths from 'myTraining/routePaths';
-import { ActionLogService } from 'shared/stores';
-import { ContentHeader } from 'shared';
-import { MyLearningSummaryService } from 'myTraining/stores';
-import { MyLearningSummaryModal } from 'myTraining';
-import {
-  HeaderWrapperView,
-  ItemWrapper,
-  HeaderItemView,
-} from './MyLearningSummaryElementsView';
+import moment from 'moment';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import { Icon, Image } from 'semantic-ui-react';
+import { SkProfileService } from 'profile/stores';
+import { MyLearningSummaryService, MyTrainingService } from 'myTraining/stores';
+import { BadgeService } from 'lecture/stores';
+import { HeaderWrapperView, AdditionalToolsMyLearning } from './MyLearningSummaryElementsView';
+import { ChannelModel } from '../../../college/model';
+import mainRoutePaths from '../../routePaths';
+import lectureRoutePaths from '../../../lecture/routePaths';
+import supportRoutePaths from '../../../board/routePaths';
+import MenuControlAuthService from '../../../approval/company/present/logic/MenuControlAuthService';
+import SkProfileModel from "../../../profile/model/SkProfileModel";
+import LearningObjectivesModalContainer from '../PersonalBoard/ui/logic/LearningObjectivesModalContainer';
+import { getBadgeLearningTimeItem, onLearningObjectivesItem, setBadgeLearningTimeItem } from '../PersonalBoard/store/PersonalBoardStore';
+import DashBoardSentenceContainer from 'layout/ContentHeader/sub/DashBoardSentence/ui/logic/DashBoardSentenceContainer';
+import { FavoriteChannelChangeModal } from 'shared';
+import LearningObjectivesContainer from '../PersonalBoard/ui/logic/LearningObjectivesContainer';
+import { requestLearningObjectives, saveLearningObjectives } from '../PersonalBoard/service/useLearningObjectives';
+import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
+import AttendanceModalContainer from '../PersonalBoard/ui/logic/AttendanceModalContainer';
+import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
+import LearningTimeSummaryView from './LearningTimeSummaryView';
+import BadgeLearningSummaryView from './BadgeLearningSummaryView';
+import LearningCompleteSummaryView from './LearningCompleteSummaryView';
+import { Action, Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
-  myLearningSummaryService?: MyLearningSummaryService;
+  skProfileService?: SkProfileService,
+  myLearningSummaryService?: MyLearningSummaryService,
+  menuControlAuthService?: MenuControlAuthService;
+  myTrainingService?: MyTrainingService;
+  badgeService?: BadgeService;
 }
 
-@inject(
-  mobxHelper.injectFrom(
-    'shared.actionLogService',
-    'myTraining.myLearningSummaryService'
-  )
-)
+interface States {
+  learningObjectivesOpen: boolean;
+  attendanceOpen: boolean;
+  activeIndex: any;
+  learningObjectives?:LearningObjectives 
+}
+
+@inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
+  'myTraining.myLearningSummaryService',
+  'myTraining.myTrainingService',
+  'badge.badgeService',
+  'approval.menuControlAuthService',
+))
 @observer
 @reactAutobind
-class MyLearningSummaryContainer extends Component<Props> {
-  //
-  componentDidMount(): void {
-    //
-    this.init();
+class MyLearningSummaryContainer extends Component<Props, States> {
+
+  state = {
+    learningObjectivesOpen: false,
+    attendanceOpen: false,
+    activeIndex: -1,
+    learningObjectives: {
+      AnnualLearningObjectives: 0,
+      WeekAttendanceGoal: 0,
+      DailyLearningTimeHour: 0,
+      DailyLearningTimeMinute: 0,
+    }
   }
+  
+  componentDidMount(): void {
+    this.init();
+    onLearningObjectivesItem((next)=>this.setState({ learningObjectives: next }),'MyLearningSummaryContainer')
+  }
+
+  handleOpenBtnClick = (e:any, data:any) => {
+    const { index } = data;
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+
+    this.setState({ activeIndex: newIndex });
+  };
 
   init() {
-    //
-    const { myLearningSummaryService } = this.props;
-
-    myLearningSummaryService!.findTotalMyLearningSummary();
+    const { skProfileService, myTrainingService } = this.props;
+    skProfileService!.findStudySummary();
+    this.requestMyLearningSummary();
+    this.requestMenuAuth();
+    myTrainingService!.findLearningCount();
   }
 
-  getHourMinute(minuteTime: number) {
-    //
-    let hour = 0;
-    let minute = minuteTime;
+  requestMyLearningSummary() {
+    const { myLearningSummaryService, badgeService } = this.props;
+    const currentYear = moment().year();
 
-    if (minuteTime) {
-      hour = Math.floor(minuteTime / 60);
-      minute = minuteTime % 60;
+    myLearningSummaryService!.findMyLearningSummaryByYear(currentYear);
+    myLearningSummaryService!.findLectureTimeSummary();
+    badgeService!.findAllBadgeCount();
+  }
+
+  async requestMenuAuth() {
+    const { skProfileService, menuControlAuthService } = this.props;
+    const foundProfile: SkProfileModel = await skProfileService!.findSkProfile();
+    if(foundProfile) {
+      menuControlAuthService!.findMenuControlAuth(foundProfile.member.companyCode);
     }
-    return { hour, minute };
   }
 
-  onClickComplete() {
-    // 메인 완료된 학습-> Learning.학습완료 이동
-    // this.props.history.push(myTrainingRoutePaths.myPageCompletedList());
-    this.props.history.push(myTrainingRoutePaths.myPageLearningCompleted());
-  }
-
-  onClickStamp() {
+  onConfirmFavorite() {
     //
-    this.props.history.push(myTrainingRoutePaths.myPageEarnedStampList());
+    const { location, history } = this.props;
+    const { pathname } = location;
+
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    } else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
+    }
   }
 
-  onClickViewAll() {
-    const { actionLogService, history } = this.props;
-
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
-    history.push(myTrainingRoutePaths.learning());
+  moveToSupportQnA() {
+    const { history } = this.props;
+    history.push(supportRoutePaths.supportQnANewPost());
   }
 
-  onClickLearningSummary(text: string) {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: text });
+  onClickCreateApl() {
+    this.props.history.push('/my-training/apl/create');
+  }
+  
+  openLearningObjectives () {
+    saveLearningObjectives()
+    
+    this.setState(prevState => {
+      return (
+        ({ learningObjectivesOpen: !prevState.learningObjectivesOpen})
+      )
+    })
+  }
+
+  handlePopup() {
+    this.setState(prevState => {
+      return { attendanceOpen: !prevState.attendanceOpen };
+    });
+  }
+
+  goToBadge () {
+    const { history } = this.props;
+    history.push('/certification/badge/EarnedBadgeList/pages/1')
   }
 
   render() {
-    //
-    const { myLearningSummaryService } = this.props;
-    const { myLearningSummary } = myLearningSummaryService!;
-    const { hour, minute } = this.getHourMinute(
-      myLearningSummary.totalLearningTime
+    const { learningObjectivesOpen, attendanceOpen, activeIndex, learningObjectives } = this.state;
+    const { myLearningSummaryService, skProfileService, myTrainingService, badgeService, menuControlAuthService } = this.props;
+    const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
+    const { menuControlAuth } = menuControlAuthService!;
+    const { myLearningSummary, lectureTimeSummary } = myLearningSummaryService!;
+    const { personalBoardInprogressCount, personalBoardCompletedCount } = myTrainingService!;
+    const { allBadgeCount: { issuedCount, challengingCount } } = badgeService!;
+    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
+      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
-    let total: any = null;
+    
+    const sumOfCurrentYearLectureTime = lectureTimeSummary && lectureTimeSummary.sumOfCurrentYearLectureTime || 0;
+    const totalLectureTime = lectureTimeSummary && lectureTimeSummary.totalLectureTime || 0;
 
-    if (hour < 1 && minute < 1) {
-      total = (
-        <span className="div">
-          <span className="t1">00</span>
-          <span className="t2">h</span> <span className="t1">00</span>
-          <span className="t2">m</span>
-        </span>
-      );
-    } else if (hour < 1) {
-      total = (
-        <span className="div">
-          <span className="t1">{minute}</span>
-          <span className="t2">m</span>
-        </span>
-      );
-    } else if (minute < 1) {
-      total = (
-        <span className="div">
-          <span className="t1">{hour}</span>
-          <span className="t2">h</span>
-        </span>
-      );
-    } else {
-      total = (
-        <span className="div">
-          <span className="t1">{hour}</span>
-          <span className="t2">h</span> <span className="t1">{minute}</span>
-          <span className="t2">m</span>
-        </span>
-      );
+    const totalLearningTime = myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime + myLearningSummary.aplAllowTime + sumOfCurrentYearLectureTime;
+    const totalAccruedLearningTime = myLearningSummary.totalSuniLearningTime + myLearningSummary.totalMyCompanyLearningTime + myLearningSummary.totalAplAllowTime + totalLectureTime;
+
+    const { hour: accruedHour, minute: accruedMinute } = timeToHourMinute(totalAccruedLearningTime);
+
+    const badgeLearningTime = getBadgeLearningTimeItem()
+    if(badgeLearningTime !== undefined) {
+      setBadgeLearningTimeItem({ ...badgeLearningTime, mylearningTimeHour: accruedHour, mylearningTimeMinute: accruedMinute})
     }
 
+    const eventBannerVisible = () => {
+      const today = moment().format('YYYY-MM-DD')
+      const afterFlag = moment(today).isAfter(
+        moment().format('2021-04-04'),
+        'day'
+      );
+      const beforeFlag = moment(today).isBefore(
+        moment().format('2021-05-01'),
+        'day'
+      );
+
+      if(afterFlag && beforeFlag) {
+        return true
+      } else {
+        return false
+      }
+    };
+
     return (
-      <HeaderWrapperView>
-        <ItemWrapper>
-          <span className="text01">My Learning</span>
-          <Button
-            icon
-            className="right btn-black"
-            onClick={() => this.onClickViewAll()}
-          >
-            View all
-            <Icon className="morelink" />
-          </Button>
-        </ItemWrapper>
-
-        <ItemWrapper>
-          <MyLearningSummaryModal
-            trigger={
-              <Button
-                className="btn-complex48"
-                onClick={() => this.onClickLearningSummary('총 학습시간')}
-              >
-                <span className="i">
-                  <Icon className="time48" />
-                  <span className="blind">total time</span>
-                </span>
-                <span className="t">
-                  <span className="underline">총 학습시간</span>
-                  {total}
-                </span>
-              </Button>
+      <>
+        <HeaderWrapperView>
+          <div className="ui profile inline">
+            <div className="pic s60">
+              <Image
+                src={skProfile.photoFilePath || profileImg}
+                alt="프로필사진"
+              />
+            </div>
+          </div>
+          <div className="personal-header-title">
+              <h3>{skProfile.member.name}님,</h3>
+              <DashBoardSentenceContainer/>
+          </div>
+          <div className="main-gauge-box">
+            <BadgeLearningSummaryView 
+              challengingCount={challengingCount}
+              issuedCount={issuedCount}
+            />
+            <LearningCompleteSummaryView 
+              completeLectureCount={myLearningSummary.completeLectureCount}
+              personalBoardInprogressCount={personalBoardInprogressCount}
+              personalBoardCompletedCount={personalBoardCompletedCount}
+            />
+            <LearningTimeSummaryView 
+              totalLearningTime={totalLearningTime}
+              totalAccrueLearningTime={totalAccruedLearningTime}
+              learningObjectives={learningObjectives}
+            />
+          </div>
+          <LearningObjectivesContainer openLearningObjectives={this.openLearningObjectives}/>
+          {eventBannerVisible() && (
+            <div className="main-event-btn">
+              <button type="button" onClick={this.handlePopup} />
+            </div>
+          )}
+        </HeaderWrapperView>
+        {skProfile.member.companyCode && (
+          <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA} handleClick={this.handleOpenBtnClick} activeIndex={activeIndex} companyCode={skProfile.member.companyCode}>
+            <FavoriteChannelChangeModal
+              trigger={
+                <a>
+                  <Icon className="channel24" />
+                  <span>관심 채널 설정</span>
+                </a>
+              }
+              favorites={favoriteChannels}
+              onConfirmCallback={this.onConfirmFavorite}
+            />
+            { 
+              menuControlAuth.hasMenuAuth() && (
+                <div>
+                  <a href="#" onClick={e=>{e.preventDefault(); this.onClickCreateApl();}}><Icon className="add24"/><span>개인학습</span></a>
+                </div>
+              )
             }
-          />
-        </ItemWrapper>
-
-        <ItemWrapper>
-          <ContentHeader.ChartItem
-            universityTime={
-              myLearningSummary.suniLearningTime -
-              myLearningSummary.myCompanyInSuniLearningTime || 0
+          </AdditionalToolsMyLearning>
+        )}
+        <div
+          className="main-learning-link sty2"
+          data-area={Area.MAIN_INFO}
+        >
+            <div className="inner">
+                <div className="left">
+                    <div>
+                      <FavoriteChannelChangeModal
+                        trigger={
+                          <a>
+                            <Icon className="channel25"/>
+                            <span
+                              data-area={Area.MAIN_INFO}
+                              data-action={Action.VIEW}
+                              data-action-name="관심 채널 설정 PV"
+                              data-pathname="관심 채널 설정"
+                              data-page="#attention-channel"
+                            >
+                              관심 채널 설정
+                            </span>
+                          </a>
+                        }
+                        favorites={favoriteChannels}
+                        onConfirmCallback={this.onConfirmFavorite}
+                      />
+                    </div>
+                    { 
+                      menuControlAuth.hasMenuAuth() && (
+                        <div>
+                            <a href="#" onClick={e=>{e.preventDefault(); this.onClickCreateApl();}}>
+                                <Icon className="card-main24"/>
+                                <span>개인학습</span>
+                            </a>
+                        </div>
+                      )
+                    }
+                </div>
+                <div className="right">
+                    <a onClick={this.moveToSupportQnA} className="contact-us wh">
+                        <span>1:1 문의하기</span>
+                        <Icon className="arrow-w-16"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <LearningObjectivesModalContainer
+          open={learningObjectivesOpen}
+          setOpen={(value, type?)=> {
+            if(type === undefined || type !== 'save') {
+              requestLearningObjectives()
+            } else {
+              reactAlert({
+                title: '',
+                message: `목표 설정이 완료됐습니다.`,
+              });
             }
-            myCompanyTime={
-              myLearningSummary.myCompanyLearningTime +
-              myLearningSummary.myCompanyInSuniLearningTime || 0
-            }
-          />
-        </ItemWrapper>
-
-        <ItemWrapper onClick={() => this.onClickLearningSummary('완료된 학습')}>
-          <HeaderItemView
-            icon="complete"
-            label="완료된 학습"
-            count={myLearningSummary.completeLectureCount}
-            onClick={this.onClickComplete}
-          />
-        </ItemWrapper>
-
-        <ItemWrapper onClick={() => this.onClickLearningSummary('획득 Stamp')}>
-          <HeaderItemView
-            icon="stamp"
-            label="획득 Stamp"
-            count={myLearningSummary.acheiveStampCount}
-            onClick={this.onClickStamp}
-          />
-        </ItemWrapper>
-      </HeaderWrapperView>
+            return this.setState({'learningObjectivesOpen':value})
+          }} 
+        />
+        {/* 4/5~ 4/30 일까지 노출되도록 수정 */}
+        <AttendanceModalContainer
+          open={attendanceOpen}
+          setOpen={(value, type?) => {
+            return this.setState({ attendanceOpen: value });
+          }}
+        />
+      </>
     );
   }
 }

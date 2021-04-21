@@ -10,8 +10,8 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { Pagination } from 'semantic-ui-react';
 import { getAllPostListMapFromCommunity } from 'community/service/useCommunityPostList/getAllPostListMapFromCommunity';
-import { findPostMenuName } from 'community/api/communityApi';
 import { checkMember } from 'community/service/useMember/useMember';
+import { findMenu } from '../../api/communityApi';
 
 interface CommunityPostListContainerProps {
   handelOnSearch?: (
@@ -50,33 +50,38 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
     if (postItems === undefined) {
       return;
     }
-    const menuData = findPostMenuName(communityId, menuId);
+    totalPages();
+    if (menuId === undefined || menuId === '' || menuId === null) {
+      return;
+    }
+
+    const menuData = findMenu(communityId, menuId);
     menuData.then(result => {
       setMenuName(result.name);
-      setMenuType(result.type)
+      setMenuType(result.type);
     });
-    totalPages();
+    
   }, [postItems]);
 
   const handelClickCreatePost = () => {};
   const handleClickRow = async (param: any) => {
     //멤버 가입 체크
-    if(!await checkMember(communityId)){
+    if (!(await checkMember(communityId))) {
       return;
     }
     if (param.menuType === 'ANONYMOUS') {
       history.push({
         pathname: `/community/${param.communityId}/ANONYMOUS/post/${param.postId}`,
       });
-    }else if (param.menuType === 'DISCUSSION'){
+    } else if (param.menuType === 'DISCUSSION') {
       history.push({
         pathname: `/community/${param.communityId}/discussion/${param.menuId}`,
       });
-    }else {
+    } else {
       history.push({
         pathname: `/community/${param.communityId}/post/${param.postId}`,
       });
-    }   
+    }
   };
 
   const onChangeSearchType = (name: string, value: SearchType) => {

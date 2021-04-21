@@ -1,243 +1,81 @@
-import React, { useEffect, useState } from 'react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
-
 import { Button, Icon } from 'semantic-ui-react';
-// import { ActionLogService } from 'shared/stores';
-import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
-
-import lectureRoutePaths from 'lecture/routePaths';
-import { LRSLectureService } from 'lecture/stores';
-import { LectureModel, LectureServiceType } from 'lecture/model';
 import { Lecture } from 'lecture';
-import {
-  MyTrainingModel,
-  InMyLectureCdoModel,
-  InMyLectureModel,
-} from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
 import myTrainingRoutes from '../../../../myTraining/routePaths';
 import { ContentWrapper } from '../MyLearningContentElementsView';
-import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
-import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import ReactGA from 'react-ga';
+import { Action, Area } from 'tracker/model';
+import { RecommendationViewModel } from '../../../../lecture/recommend/viewmodel/RecommendationViewModel';
+import { findRecommendationCards } from '../../../../lecture/recommend/api/recommendApi';
+import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
+import { useHistory } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  // actionLogService?: ActionLogService,
-  reviewService?: ReviewService;
-  lrsLectureService?: LRSLectureService;
-  inMyLectureService?: InMyLectureService;
+const PAGE_SIZE = 8;
+const CONTENT_TYPE_NAME = '추천과정';
 
-  profileMemberName: string;
-  profileMemberEmail: string;
+function getTitle(
+  profileMemberName: string,
+  viewModel?: RecommendationViewModel
+) {
+  if (viewModel === undefined) {
+    return '';
+  }
+  const { recTitle } = viewModel;
+  if (recTitle?.length > 0) {
+    return recTitle;
+  } else {
+    return `${profileMemberName}님을 위한 mySUNI의 추천 과정`;
+  }
 }
-/*
-  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
-*/
+
+interface Props {
+  profileMemberName: string;
+}
 const LRSLearning: React.FC<Props> = Props => {
+  const history = useHistory();
   //
-  const {
-    reviewService,
-    lrsLectureService,
-    inMyLectureService,
-    profileMemberName,
-    profileMemberEmail,
-    history,
-  } = Props;
+  const { profileMemberName } = Props;
 
-  const CONTENT_TYPE_NAME = '추천과정';
-  const PAGE_SIZE = 8;
+  const [viewModel, setViewModel] = useState<RecommendationViewModel>();
 
-  const { lrsLectures } = lrsLectureService!;
-
-  const [title, setTitle] = useState<string | null>('');
-
-  lrsLectureService?.setProfileName(profileMemberName);
-
-  // // lectureService 변경  실행
   useEffect(() => {
-    findMyContent();
+    findRecommendationCards(PAGE_SIZE).then(next => {
+      if (next !== undefined) {
+        setViewModel(next);
+      }
+    });
   }, []);
 
-  const findMyContent = async () => {
-    lrsLectureService!.clearLectures();
-
-    // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRecommendLearningList =
-      window.navigator.onLine &&
-      window.sessionStorage.getItem('LrsLearningList');
-    if (savedRecommendLearningList && savedRecommendLearningList.length > 0) {
-      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(
-        savedRecommendLearningList
-      );
-      if (recommendMain.results.length > PAGE_SIZE - 1) {
-        lrsLectureService!.setPagingLrsLectures(recommendMain);
-        if (
-          !recommendMain ||
-          !recommendMain.title ||
-          recommendMain.title.length < 1
-        ) {
-          setTitle(lrsLectureService!.Title);
-        } else {
-          setTitle(recommendMain.title);
-        }
-        return;
-      }
-    }
-
-    lrsLectureService!
-      .findPagingLrsLectures(
-        LectureFilterRdoModel.lrsLectures(PAGE_SIZE, 0, profileMemberEmail),
-        true
-      )
-      .then(response => {
-        lrsLectureService!.setTitle(response.title);
-        if (!response || !response.title || response.title.length < 1) {
-          setTitle(lrsLectureService!.Title);
-        } else {
-          setTitle(response.title);
-        }
-      });
-  };
-
-  const getInMyLecture = (serviceId: string) => {
-    //
-    const { inMyLectureMap } = inMyLectureService!;
-    return inMyLectureMap.get(serviceId);
-  };
-
-  const getRating = (learning: LectureModel | InMyLectureModel) => {
-    //
-    const { ratingMap } = reviewService!;
-    let rating: number | undefined;
-
-    if (
-      learning instanceof InMyLectureModel &&
-      learning.cubeType !== CubeType.Community
-    ) {
-      rating = ratingMap.get(learning.reviewId) || 0;
-    } else if (
-      learning instanceof LectureModel &&
-      learning.cubeType !== CubeType.Community
-    ) {
-      rating = learning.rating;
-    }
-    return rating;
-  };
+  const title = useMemo(() => getTitle(profileMemberName, viewModel), [
+    profileMemberName,
+    viewModel,
+  ]);
 
   const onViewAll = () => {
-    //
-    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
-
-    window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningLrsLecture());
 
     // react-ga event
     ReactGA.event({
       category: '추천 과정',
       action: 'Click',
-      label: '추천 과정 전체보기'
+      label: '추천 과정 전체보기',
     });
   };
 
-  const onViewDetail = (e: any, data: any) => {
-    //
-    const { model } = data;
+  if (viewModel === undefined) {
+    return null;
+  }
 
-    // react-ga event
-    ReactGA.event({
-      category: '추천 과정',
-      action: 'Click',
-      label: `${model.serviceType === 'Course' ? '(Course)' : '(Cube)'} - ${
-        model.name
-      }`,
-    });
-
-    const cineroom =
-      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
-      patronInfo.getCineroomByDomain(model)!;
-
-    if (
-      model.serviceType === LectureServiceType.Program ||
-      model.serviceType === LectureServiceType.Course
-    ) {
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
-    } else if (model.serviceType === LectureServiceType.Card) {
-      history.push(
-        lectureRoutePaths.lectureCardOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.cubeId,
-          model.serviceId
-        )
-      );
-    }
-  };
-
-  const onActionLecture = (
-    training: MyTrainingModel | LectureModel | InMyLectureModel
-  ) => {
-    //
-    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
-
-    if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id);
-    } else {
-      let servicePatronKeyString = training.patronKey.keyString;
-
-      if (training instanceof MyTrainingModel) {
-        servicePatronKeyString = training.servicePatronKeyString;
-      }
-      inMyLectureService!.addInMyLecture(
-        new InMyLectureCdoModel({
-          serviceId: training.serviceId,
-          serviceType: training.serviceType,
-          category: training.category,
-          name: training.name,
-          description: training.description,
-          cubeType: training.cubeType,
-          learningTime: training.learningTime,
-          stampCount: training.stampCount,
-          coursePlanId: training.coursePlanId,
-
-          requiredSubsidiaries: training.requiredSubsidiaries,
-          cubeId: training.cubeId,
-          courseSetJson: training.courseSetJson,
-          courseLectureUsids: training.courseLectureUsids,
-          lectureCardUsids: training.lectureCardUsids,
-
-          reviewId: training.reviewId,
-          baseUrl: training.baseUrl,
-          servicePatronKeyString,
-        })
-      );
-    }
-  };
-
-  /* const onClickActionLog = (text: string) => {
-    actionLogService?.registerClickActionLog({ subAction: text });
-  }; */
+  const { cards } = viewModel;
 
   return (
-    <ContentWrapper>
+    <ContentWrapper dataArea={Area.MAIN_RECOMMEND}>
       <div className="section-head">
-        {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
         <strong>{title}</strong>
-        {/*<strong>{lrsLectureService?.Title}</strong>*/}
         <div className="right">
-          {lrsLectures.length > 0 && (
+          {cards.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View all <Icon className="morelink" />
             </Button>
@@ -245,41 +83,20 @@ const LRSLearning: React.FC<Props> = Props => {
         </div>
       </div>
 
-      {lrsLectures.length > 0 && lrsLectures[0] ? (
+      {cards.length > 0 ? (
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {lrsLectures.map(
-            (
-              learning: LectureModel | MyTrainingModel | InMyLectureModel,
-              index: number
-            ) => {
-              //
-              const inMyLecture = getInMyLecture(learning.serviceId);
-
-              return (
-                <Lecture
-                  key={`learning-${index}`}
-                  model={learning}
-                  rating={getRating(learning)}
-                  thumbnailImage={learning.baseUrl || undefined}
-                  action={
-                    inMyLecture
-                      ? Lecture.ActionType.Remove
-                      : Lecture.ActionType.Add
-                  }
-                  onAction={() => {
-                    reactAlert({
-                      title: '알림',
-                      message: inMyLecture
-                        ? '본 과정이 관심목록에서 제외되었습니다.'
-                        : '본 과정이 관심목록에 추가되었습니다.',
-                    });
-                    onActionLecture(inMyLecture || learning);
-                  }}
-                  onViewDetail={onViewDetail}
+          {cards.map(({ card, cardRelatedCount }) => (
+            <li>
+              <div className="ui cards box-cards">
+                <CardView
+                  key={card.id}
+                  cardId={card.id}
+                  {...card}
+                  {...cardRelatedCount}
                 />
-              );
-            }
-          )}
+              </div>
+            </li>
+          ))}
         </Lecture.Group>
       ) : (
         <NoSuchContentPanel
@@ -294,11 +111,4 @@ const LRSLearning: React.FC<Props> = Props => {
   );
 };
 
-export default inject(
-  mobxHelper.injectFrom(
-    // 'shared.actionLogService',
-    'shared.reviewService',
-    'lrsLecture.lrsLectureService',
-    'myTraining.inMyLectureService'
-  )
-)(withRouter(observer(LRSLearning)));
+export default LRSLearning;

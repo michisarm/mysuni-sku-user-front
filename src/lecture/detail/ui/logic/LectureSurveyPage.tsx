@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { useLectureRouterParams } from '../../service/useLectureRouterParams';
-import { getLectureSurvey } from '../../service/useLectureSurvey/utility/getLectureSurvey';
+import { requestLectureSurvey } from '../../service/useLectureSurvey/utility/getLectureSurvey';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import LectureSurveyContainer from './LectureSurveyContainer/LectureSurveyContainer';
 
 function LectureSurveyPage() {
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
   useEffect(() => {
     if (params !== undefined) {
-      getLectureSurvey(params);
+      requestLectureSurvey();
     }
   }, [params]);
   return <LectureSurveyContainer />;

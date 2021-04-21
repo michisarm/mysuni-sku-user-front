@@ -4,9 +4,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 
-import UserMainPageV2 from './ui/page/UserMainPageV2';
 import IntroductionPage from './ui/page/IntroductionPage';
 import FavoriteChannel from './sub/FavoriteChannelChange/FavoriteChannelChangeContainer';
+import UserMainPage from './ui/page/UserMainPage';
 
 class Routes extends React.Component {
   //
@@ -15,7 +15,7 @@ class Routes extends React.Component {
     return (
       <Switch>
         <Redirect exact from="/" to="/pages/1" />
-        <Route exact path="/pages/:pageNo" component={UserMainPageV2} />
+        <Route exact path="/pages/:pageNo" component={UserMainPage} />
         <Redirect exact from="/introduction" to="/introduction/MySuni" />
         <Route exact path="/introduction/:tab" component={IntroductionPage} />
         <Route exact path="/empty" render={() => <div style={{ minHeight: 1000 }} />} />

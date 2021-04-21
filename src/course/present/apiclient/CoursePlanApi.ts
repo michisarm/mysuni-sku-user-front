@@ -131,6 +131,15 @@ export default class CoursePlanApi {
       )
       .then(response => (response && response.data) || null);
   }
+
+  findCollegeSortOrder(collegeId: string) {
+    return axios
+      .get<number>(
+        this.lectureContentsURL +
+          `/cardCollegeOrders/count/college/${collegeId}`
+      )
+      .then(response => response && response.data);
+  }
 }
 
 Object.defineProperty(CoursePlanApi, 'instance', {

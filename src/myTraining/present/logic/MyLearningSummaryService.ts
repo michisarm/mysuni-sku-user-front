@@ -4,6 +4,8 @@ import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
+import { LectureTimeSummary } from '../../../personalcube/personalcube/model/LectureTimeSummary';
+import { findMyLectureTimeSummary } from '../../../lecture/detail/api/cubeApi';
 
 
 @autobind
@@ -17,13 +19,24 @@ class MyLearningSummaryService {
   myLearningSummary: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
   @observable
-  private _totalMyLearningSummary: MyLearningSummaryModel = new MyLearningSummaryModel();
+  totalMyLearningSummaryDash: MyLearningSummaryModel = {} as MyLearningSummaryModel;
+
+  @observable
+  _lectureTimeSummary?: LectureTimeSummary;
+
+  @computed get lectureTimeSummary() {
+    return this._lectureTimeSummary;
+  }
+
+  @action async findLectureTimeSummary() {
+    const foundLectureTimeSummary = await findMyLectureTimeSummary();
+
+    runInAction(() => {
+      this._lectureTimeSummary = foundLectureTimeSummary;
+    });
+  }
 
   myLearningSummaryCachingFetch: CachingFetch = new CachingFetch();
-
-  @computed get totalMyLearningSummary() {
-    return this._totalMyLearningSummary;
-  }
 
   constructor(myLearningSummaryApi: MyLearningSummaryApi) {
     this.myLearningSummaryApi = myLearningSummaryApi;
@@ -53,21 +66,20 @@ class MyLearningSummaryService {
     });
   }
 
-  ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
-  @action
-  async findTotalMyLearningSummary() {
-    this.myLearningSummaryCachingFetch.fetch(
-      () => this.myLearningSummaryApi.findTotalMyLearningSummary(),
-      (totalMyLearningSummary) => runInAction(() => this._totalMyLearningSummary = new MyLearningSummaryModel(totalMyLearningSummary))
-    );
-  }
-
   @action
   async findMyLearningSummaryByYear(year: number) {
     const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryByYear(year);
     runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary));
   }
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
+
+  @action
+  async findTotalMyLearningSummaryDash() {
+    const test = await this.myLearningSummaryApi.findTotalMyLearningSummary()
+    return runInAction(() => {
+      this.totalMyLearningSummaryDash = new MyLearningSummaryModel(test)
+    })
+  }
 }
 
 MyLearningSummaryService.instance = new MyLearningSummaryService(MyLearningSummaryApi.instance);

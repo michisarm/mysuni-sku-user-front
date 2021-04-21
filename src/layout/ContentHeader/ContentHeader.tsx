@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
@@ -9,12 +8,15 @@ import WaitingItem from './sub/WaitingItem';
 import ChartItem from './sub/ChartItem';
 import CommunityItem from './sub/CommunityItem';
 import RecommendItem from './sub/RecommendItem';
-
+import { Action, Area } from 'tracker/model';
 
 interface Props {
-  className?: string,
-  bottom?: React.ReactNode,
-  children: React.ReactNode,
+  className?: string;
+  bottom?: React.ReactNode;
+  children: React.ReactNode;
+  dataArea?: Area;
+  dataAction?: Action;
+  type?: string
 }
 
 @reactAutobind
@@ -34,13 +36,25 @@ class ContentHeader extends Component<Props> {
 
   static RecommendItem = RecommendItem;
 
+  typeClass(type?: string) {
+    let classNames = 'progress-info-wrap'
+    if(type === 'Learning' || type === 'Create') {
+      classNames += ' mypage personal-detail'
+    }
+    return classNames
+  }
+
   render() {
     //
-    const { className, bottom, children } = this.props;
+    const { className, bottom, children, dataArea, dataAction, type } = this.props;
 
     return (
       <div className={classNames('main-info-area', className)}>
-        <div className="progress-info-wrap mypage">
+        <div
+          className={this.typeClass(type)}
+          data-area={dataArea}
+          data-action={dataAction}
+        >
           {children}
         </div>
         {bottom}
