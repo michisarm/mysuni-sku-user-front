@@ -242,8 +242,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
             />
             { 
               menuControlAuth.hasMenuAuth() && (
-                <div onClick={this.onClickCreateApl} >
-                  <a href="#"><Icon className="add24"/><span>개인학습</span></a>
+                <div>
+                  <a href="#" onClick={e=>{e.preventDefault(); this.onClickCreateApl();}}><Icon className="add24"/><span>개인학습</span></a>
                 </div>
               )
             }
@@ -277,8 +277,8 @@ class MyLearningSummaryContainer extends Component<Props, States> {
                     </div>
                     { 
                       menuControlAuth.hasMenuAuth() && (
-                        <div onClick={this.onClickCreateApl}>
-                            <a href="#">
+                        <div>
+                            <a href="#" onClick={e=>{e.preventDefault(); this.onClickCreateApl();}}>
                                 <Icon className="card-main24"/>
                                 <span>개인학습</span>
                             </a>
