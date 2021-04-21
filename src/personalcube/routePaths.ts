@@ -1,3 +1,4 @@
+import { getCurrentHistory } from "../shared/store/HistoryStore";
 
 
 const routePaths = {
@@ -15,3 +16,8 @@ const routePaths = {
 };
 
 export default routePaths;
+
+export function routeToCreateList() {
+  const history = getCurrentHistory();
+  history?.push(routePaths.create());
+}

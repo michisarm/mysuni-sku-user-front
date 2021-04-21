@@ -56,7 +56,14 @@ export default class PersonalCubeApi {
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
     return axios
-      .post<string>(this.URL + '/regist', cubeCdo)
+      .post<string>('/api/cube/userCubes', cubeCdo)
+      .then(response => (response && response.data) || null);
+  }
+
+  registerUserCube(cubeCdo: PersonalCubeCdoModel) {
+    //
+    return axios
+      .post<string>('/api/cube/userCubes', cubeCdo)
       .then(response => (response && response.data) || null);
   }
 
@@ -81,7 +88,7 @@ export default class PersonalCubeApi {
   findAllPersonalCubes(offset: number, limit: number) {
     //
     return axios
-      .get<OffsetElementList<PersonalCubeModel>>(this.URL, {
+      .get<OffsetElementList<PersonalCubeModel>>('/api/cube/userCubes', {
         params: {
           offset,
           limit,
@@ -113,7 +120,7 @@ export default class PersonalCubeApi {
       cubeState,
     };
     return axios
-      .get<OffsetElementList<PersonalCubeModel>>(this.URL + `/forCreator`, {
+      .get<OffsetElementList<PersonalCubeModel>>(`/api/cube/userCubes`, {
         params,
       })
       .then((response: any) =>
@@ -153,7 +160,7 @@ export default class PersonalCubeApi {
       axios
         .get<ExcelView>(this.URL + `/excel`, { params: personalCubeRdo })
         // .then((response: any) => window.location.href = response.request.responseURL);
-        .then(() => { })
+        .then(() => {})
     );
   }
 

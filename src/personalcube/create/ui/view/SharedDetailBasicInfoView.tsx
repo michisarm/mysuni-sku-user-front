@@ -7,8 +7,7 @@ import moment from 'moment';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
 
 interface Props {
-  personalCube: PersonalCubeModel
-  filesMap?: Map<string, any>
+  personalCube: PersonalCubeModel;
 }
 
 class SharedDetailBasicInfoView extends React.Component<Props> {

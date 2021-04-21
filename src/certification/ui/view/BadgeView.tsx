@@ -38,9 +38,11 @@ export default function BadgeView({
     backgroundImagePath === undefined ||
     topImagePath === undefined
   ) {
-    badgeColor = useRequestBadgeWIthCategory(id)?.themeColor || '#ea012c';
-    backgroundImagePath = useRequestBadgeWIthCategory(id)?.backgroundImagePath;
-    topImagePath = useRequestBadgeWIthCategory(id)?.topImagePath;
+    const badgeCategory = useRequestBadgeWIthCategory(id);
+    
+    badgeColor = badgeCategory?.themeColor || '#ea012c';
+    backgroundImagePath = badgeCategory?.backgroundImagePath;
+    topImagePath = badgeCategory?.topImagePath;
   }
 
   const starStyle = getStarStyle(level);

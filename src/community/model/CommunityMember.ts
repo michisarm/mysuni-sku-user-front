@@ -1,7 +1,10 @@
 
 export type CommunityMemberApprovedType = 'APPROVED' | 'WAITING' | 'REJECT' | 'DRAW'
 
+export type CommunityMemberType = 'MEMBER' | 'ADMIN'
+
 export interface MemberList {
+  memberType: CommunityMemberType;
   approved: CommunityMemberApprovedType;
   communityId: string;
   companyId: string;

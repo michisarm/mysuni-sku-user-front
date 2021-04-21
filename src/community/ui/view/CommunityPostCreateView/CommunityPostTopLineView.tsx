@@ -14,6 +14,7 @@ interface Props {
   pageType?: string;
   managerAuth?: boolean;
   groupAuth?: boolean;
+  communityAdminAuth?: boolean;
   handelClickCreateTask: () => void;
   onChangeSortType: (name: string, value: SortType) => void;
 }
@@ -30,6 +31,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
   managerAuth,
   menuType,
   groupAuth,
+  communityAdminAuth,
   handelClickCreateTask,
   onChangeSortType,
 }) {
@@ -52,7 +54,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               onChangeSortType('sort', data.value)
             }
           />
-          {(pageType === 'notice') && managerAuth && (
+          {(pageType === 'notice') && (managerAuth || communityAdminAuth) && (
             <Link
               className="ui icon button post"
               to={`/community/${communityId}/board/noticeCreate/create`}
@@ -61,7 +63,7 @@ const CommunityPostTopLineView: React.FC<Props> = function CommunityPostTopLineV
               post
             </Link>
           )}
-          {(menuType === 'NOTICE') && (managerAuth || groupAuth) && (
+          {(menuType === 'NOTICE') && (managerAuth || groupAuth || communityAdminAuth) && (
             // 여기서 그룹장인경우
             <Link
               className="ui icon button post"

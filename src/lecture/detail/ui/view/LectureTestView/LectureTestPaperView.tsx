@@ -24,7 +24,10 @@ import {
   submitTask,
 } from '../../../api/cardApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
-import { getTestStudentItemMapFromCourse } from '../../../service/useLectureTest/utility/getTestStudentItemMap';
+import {
+  getTestStudentItemMapFromCourse,
+  getTestStudentItemMapFromCube,
+} from '../../../service/useLectureTest/utility/getTestStudentItemMap';
 import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { Area } from 'tracker/model';
 
@@ -63,18 +66,27 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       answerItemId = answerItem.id;
     }
 
-    if (params.cardId !== undefined) {
+    if (params.cubeId !== undefined) {
       saveCubeTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
-    await saveTask(testStudentItem.studentId, 'Test');
+    await saveTask(
+      lectureStructureItem?.student?.id === undefined
+        ? testStudentItem.studentId
+        : lectureStructureItem?.student?.id,
+      'Test'
+    );
     await clearFindMyCardRelatedStudentsCache();
     await requestCardLectureStructure(cardId);
 
-    await getTestStudentItemMapFromCourse(params); // student 재호출
+    if (params.cubeId !== undefined) {
+      await getTestStudentItemMapFromCube(params); // student 재호출
+    } else {
+      await getTestStudentItemMapFromCourse(params); // student 재호출
+    }
     await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
-  }, [answerItem, params]);
+  }, [answerItem, params, testStudentItem.studentId]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
 
@@ -146,7 +158,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
   }, [answerItem, params]);
 
   let testClassName = ' ui segment full ';
-  if (answerItem?.submitted) {
+  if (
+    lectureStructureItem &&
+    (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'PASS' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'FAIL')
+  ) {
     testClassName += ' test-complete ';
   }
 
@@ -202,10 +219,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
           )}
           {!modalGbn && (
             <div className={testClassName}>
-              <div
-                className="course-info-header"
-                data-area={Area.CUBE_HEADER}
-              >
+              <div className="course-info-header" data-area={Area.CUBE_HEADER}>
                 <div className="survey-header">
                   <div className="survey-header-left">{testItem.name}</div>
                   <div className="survey-header-right">

@@ -5,9 +5,11 @@ import { getCubeLectureReport } from '../../../service/useLectureReport/utility/
 
 import LectureReportContainer from './LectureReportContainer';
 import { useLectureParams } from '../../../store/LectureParamsStore';
+import { useLectureStructure } from '../../../store/LectureStructureStore';
 
 function LectureReportPage() {
   const params = useLectureParams();
+  const lectureStructure = useLectureStructure();
 
   useEffect(() => {
     return () => {
@@ -30,7 +32,7 @@ function LectureReportPage() {
   }, [params]);
 
   useEffect(() => {
-    if (params === undefined) {
+    if (params === undefined || lectureStructure === undefined) {
       return;
     }
     if (params.cubeId !== undefined) {
@@ -38,7 +40,7 @@ function LectureReportPage() {
     } else {
       getCourseReportItem();
     }
-  }, [params]);
+  }, [params, lectureStructure]);
 
   return <LectureReportContainer />;
 }

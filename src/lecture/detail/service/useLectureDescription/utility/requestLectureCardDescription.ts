@@ -2,10 +2,12 @@ import LectureDescription from '../../../viewModel/LectureOverview/LectureDescri
 import { Card } from '../../../../model/Card';
 import { setLectureDescription } from '../../../store/LectureOverviewStore';
 import { findCardCache } from '../../../api/cardApi';
+import { CardContents } from '../../../../model/CardContents';
 
-function parseLectureDescription(card: Card): LectureDescription {
-  const { simpleDescription } = card;
-  const description = simpleDescription;
+function parseLectureDescription(
+  cardContens: CardContents
+): LectureDescription {
+  const { description } = cardContens;
   return {
     description,
   };
@@ -16,10 +18,10 @@ export async function requestLectureCardDescription(cardId: string) {
   if (cardWithContentsAndRelatedCountRom === undefined) {
     return;
   }
-  const { card } = cardWithContentsAndRelatedCountRom;
-  if (card === null) {
+  const { cardContents } = cardWithContentsAndRelatedCountRom;
+  if (cardContents === null) {
     return;
   }
-  const lectureCardDescription = parseLectureDescription(card);
+  const lectureCardDescription = parseLectureDescription(cardContents);
   setLectureDescription(lectureCardDescription);
 }

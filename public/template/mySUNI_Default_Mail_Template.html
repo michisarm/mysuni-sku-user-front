@@ -1,0 +1,172 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<table width="740" cellpadding="0" cellspacing="0">
+  <tbody>
+  <tr>
+    <td width="40"/>
+    <td width="700">
+      <table width="700" cellpadding="0" cellspacing="0">
+        <tbody>
+        <tr>
+          <td height="50"/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td>
+            <table width="700" cellpadding="0" cellspacing="0">
+              <tbody>
+              <tr>
+                <td valign="top" width="20"/>
+                <td valign="top">
+                  <img src='http://int.mysuni.sk.com/profile/email-img/logo-email.png' alt='SUNI' border='0'>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td height="10"/>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="1" bordercolor="#c8d0e0" style="border-collapse:collapse">
+              <tbody>
+              <tr>
+                <td align="center">
+                  <table width="698" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
+                    <tbody>
+                    <tr>
+                      <td height="30" width="40"/>
+                      <td width="620"/>
+                      <td width="40"/>
+                    </tr>
+
+
+                    <tr>
+                      <td/>
+                      <td>
+																				<span                         style="font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:1.58;letter-spacing:-0.4px;color:#222;">
+																					<span th:text='${mailTitle}' /> </span>
+                        </span>
+                      </td>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td height="12"/>
+                      <td/>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td/>
+                      <td bgcolor="#222222" height="2"/>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td/>
+                      <td/>
+                      <td/>
+                    </tr>
+
+                    <!-- 내용  start -->
+                    <tr width="300">
+                      <td/>
+                      <td style="border: 1px white solid; padding: 20px 0 20px 0; width: 620px; display: inline-table; font-size: 14px;"><span th:utext='${body}' /></td>
+                      <td/>
+                    </tr>
+                    <!-- 내용 end -->
+
+                    <!-- 내용 테이블 요소  start -->
+                    <tr>
+                      <td/>
+                      <td>
+                        <table style = "border-collapse: collapse; border-top: 1px solid #c8d0e0;border-bottom: 1px solid #c8d0e0; font-size: 14px;" height="50">
+                          <tbody>
+                          <tr height="50">
+                            <td style= "width: 100px; padding: 6px 10px; background-color: #f4f7fd;"><b><span th:text='${cubeTitle}' /></b></td>
+                            <td style= "width: 520px; padding: 6px 10px;"><span th:text='${cubeName}' /></td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td/>
+                    </tr>
+                    <!-- 추가 html -->
+                    <span th:utext='${infoJson}' />
+                    <!-- 추가 html -->
+                    <tr>
+                      <td height="20"/>
+                      <td/>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td/>
+                      <td bgcolor="#c8d0e0" height="1"/>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td/>
+                      <td bgcolor="#f4f7fd">
+                        <table width="620" cellpadding="0" cellspacing="0" style="font-size: 14px; border-bottom: 1px solid #c8d0e0;">
+                          <tbody>
+                          <tr>
+                            <td width="30" height="30"/>
+                            <td width="163"/>
+                            <td width="397"/>
+                            <td width="30"/>
+                          </tr>
+                          <tr>
+                            <td/>
+                            <td valign="top" width="163">
+                              <span style="font-family:-apple-system,system-ui,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.2px;color:#222;;">my<span  style="color: red">SUNI</span> 담당자</span>
+                            </td>
+                            <td valign="top">
+                              <span th:text="${dispatcherName}" />
+                              <img src="http://int.mysuni.sk.com/profile/email-img/devider.png" alt="" border="0" />
+                              <span th:text="${dispatcherEmail}" />
+                            </td>
+                            <td/>
+                          </tr>
+                          <tr>
+                            <td height="30"/>
+                            <td/>
+                            <td/>
+                            <td/>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td/>
+                      <td style="padding-top:30px"><img src='http://int.mysuni.sk.com/profile/email-img/email-bottom.png' alt='my suni copyright suni. all rights reserved' border='0'>
+                      </td>
+                      <td/>
+                    </tr>
+                    <tr>
+                      <td height="40"/>
+                      <td/>
+                      <td/>
+                    </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <td width="40"/>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

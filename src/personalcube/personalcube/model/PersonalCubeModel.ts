@@ -23,6 +23,7 @@ export class PersonalCubeModel implements DramaEntity {
   patronKey: PatronKey = {} as PatronKey;
 
   personalCubeId: string = '';
+  cubeId: string = '';
   name: string = '';
   category: CategoryModel = new CategoryModel();
   subCategories: CategoryModel[] = [];
@@ -57,7 +58,7 @@ export class PersonalCubeModel implements DramaEntity {
       const cubeIntro =
         (personalCube.cubeIntro && new IdName(personalCube.cubeIntro)) ||
         this.cubeIntro;
-      const category =
+      const categories =
         (personalCube.category && new CategoryModel(personalCube.category)) ||
         this.category;
       const iconBox =
@@ -69,7 +70,7 @@ export class PersonalCubeModel implements DramaEntity {
         creator,
         contents,
         cubeIntro,
-        category,
+        categories,
         iconBox,
       });
 
@@ -231,6 +232,7 @@ decorate(PersonalCubeModel, {
   patronKey: observable,
 
   personalCubeId: observable,
+  cubeId: observable,
   name: observable,
   creator: observable,
   contents: observable,

@@ -18,7 +18,7 @@ class ChannelLecturesContentWrapperView extends Component<Props> {
 
     return (
       <Segment className="full">
-        <div className="sort-reult" data-area={Area.RECOMMEND_CARD}>
+        <div className="sort-reult" data-area={window.location.pathname.includes('/recommend') ? Area.RECOMMEND_CARD : Area.COLLEGE_CARD}>
           { !countDisabled && (
             <div className="section-count">
               총 <span>{lectureCount}</span>개의 학습 과정이 있습니다.

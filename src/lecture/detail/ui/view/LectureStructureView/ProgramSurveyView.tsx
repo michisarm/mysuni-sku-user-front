@@ -34,7 +34,7 @@ const ProgramSurveyView: React.FC<ProgramSurveyViewProps> = function ProgramSurv
       className={`btn-single-cube ${activated ? 'act-on' : ''}`}
     >
       <span className="label-type n-survey">Survey</span>
-      <span className="copy">{name}</span>
+      {/* <span className="copy">{name}</span> */}
       <span
         className={`label-state-learning ${
           state === 'Progress' ? 'proceeding' : ''

@@ -48,6 +48,8 @@ export interface LectureTestItem {
   graderComment?: string;
   essayScores?: EssayScore[];
   description: string;
+  serviceType: LectureType;
+  serviceId: string;
 }
 
 export interface LectureTestAnswerItem extends Item {

@@ -10,6 +10,8 @@ import { findCollege } from 'college/present/apiclient/CollegeApi';
 import { findChannel } from 'college/present/apiclient/ChannelApi';
 import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
+import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
+import { find } from 'lodash';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 
@@ -38,9 +40,6 @@ export const getPathValue = (
       case FieldType.Channel:
         checkId = 'CHN';
         break;
-      // case FieldType.Course:
-        // checkId = 'COURSE';
-        // break;
       case FieldType.Card:
         checkId = 'CARD';
         break;
@@ -53,12 +52,90 @@ export const getPathValue = (
       case FieldType.Badge:
         checkId = 'BADGE';
         break;
+      default:
+        checkId = 'NONE';
+        break;
     }
     return matches[1].includes(checkId) ? { type, id: matches[1] } : null;
   } else {
     return null;
   }
 };
+
+export const getCardRelId = async (cardId: string) => {
+  let returnFields: Field[] = [];
+  const relation = 'relation';
+  let field;
+  let collegeId;
+  let channelId;
+  let addId = false;
+  if (lsTest()) {
+    const cachedFiled = localStorage.getItem(FIELD_STORAGE_KEY);
+    if (cachedFiled) {
+      field = JSON.parse(cachedFiled);
+      if (field && field[FieldType.Card]) {
+        const rel = field[FieldType.Card][relation];
+        if(rel && rel[cardId]){
+          collegeId = rel[cardId].collegeId;
+          channelId = rel[cardId].channelId;
+        }
+        
+      }
+    }
+  }
+
+  if(!(collegeId && channelId)){
+    const result = await findCardCache(cardId);
+    if(result?.card?.categories){
+      result?.card?.categories.filter(o=>o.mainCategory===true).map(o=>{
+        collegeId = o.collegeId;
+        channelId = o.channelId;
+        addId = true;
+      })
+    }
+  }
+
+  let tempObj;
+  let tempRel;
+  if (lsTest() && addId) {
+    const value = {'collegeId': collegeId, 'channelId':channelId}
+    if (field) {
+      if(field[FieldType.Card]){
+        tempObj = field[FieldType.Card];
+        tempRel = field[FieldType.Card][relation];
+        if (tempRel) {
+          if(!tempRel[cardId]){
+            // relation add
+            field[FieldType.Card][relation][cardId] = value;
+            tempObj = { ...field, ...{ [FieldType.Card]: field[FieldType.Card] } };
+          } else {
+            tempObj = field;
+          }
+        } else {
+          // relation new
+          tempObj = { ...field, ...{ ...tempObj, relation: {[cardId]: value }}};
+        }
+      } else {
+        // card new
+        tempObj = { ...field, [FieldType.Card]: { relation: {[cardId]: value}}};
+      }
+    } else {
+      // field new
+      tempObj = {
+        [FieldType.Card]: { relation: {[cardId]: value }},
+        createDate: moment().toISOString(true),
+      };
+    }
+    localStorage.setItem(FIELD_STORAGE_KEY, JSON.stringify(tempObj));
+  }
+
+  const fields = [];
+  if(collegeId) fields.push({type: FieldType.College, id: collegeId});
+  if(channelId) fields.push({type: FieldType.Channel, id: channelId});
+  returnFields = fields;
+
+  return returnFields;
+}
 
 export const getServiceType = (path: string) => {
   let serviceType = null;
@@ -126,6 +203,26 @@ const getFieldName = async (id: string, type: string) => {
     } else if (type === FieldType.Badge) {
       const badge = await findBadge(id);
       name = badge?.name;
+    } else if (type === FieldType.CardBundle) {
+      // id기반 api 없는지 확인
+      const cardBundles = await findAvailableCardBundles();
+      const cardBundle = find(cardBundles, { id });
+      let type = cardBundle?.type || 'none';
+      switch (type){
+        case 'Normal':
+          type = '일반과정';
+          break;
+        case 'Popular':
+          type = '인기과정';
+          break;
+        case 'New':
+          type = '신규과정';
+          break;
+        case 'Recommended':
+          type = '추천과정';
+          break;
+      }
+      name = type+"::"+cardBundle?.displayText;
     }
     if (lsTest() && name) {
       let tempObj;
@@ -226,6 +323,14 @@ export const getPathName = async (path: string, search: string) => {
                   break;
                 case 'Enrolling':
                   pathName += '::수강신청과정';
+                  break;
+                default:
+                  await setResultName({
+                    type: FieldType.CardBundle,
+                    id: RegExp.$3,
+                  }).then(result => {
+                    pathName = 'Main-Section::' + result.name;
+                  });
                   break;
               }
               break;

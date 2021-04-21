@@ -4,29 +4,52 @@ import { PanoptoCdoModel } from '../../model/PanoptoCdoModel';
 import { InternalMediaConnectionModel } from '../../model/InternalMediaConnectionModel';
 
 export default class MediaApi {
-
   // URL = '/api/personalCube/medias';
 
   serverUrl = '/api/personalCube/medias';
   // serverUrl = 'http://localhost:8222';
-  devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
+  devUrl =
+    process.env.REACT_APP_DEV_PERSONAL_CUBE_API === undefined ||
+    process.env.REACT_APP_DEV_PERSONAL_CUBE_API === ''
+      ? this.serverUrl
+      : process.env.REACT_APP_DEV_PERSONAL_CUBE_API;
 
-  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl;
+  URL =
+    process.env.REACT_APP_ENVIRONMENT === undefined ||
+    process.env.REACT_APP_ENVIRONMENT === 'server'
+      ? this.serverUrl
+      : this.devUrl;
 
   static instance: MediaApi;
 
   findMedia(mediaId: string) {
     //
-    return axios.get<MediaModel>(this.URL + `/${mediaId}`)
-      .then(response => response && response.data && new MediaModel(response.data) || null);
+    return axios
+      .get<MediaModel>(this.URL + `/${mediaId}`)
+      .then(
+        response =>
+          (response && response.data && new MediaModel(response.data)) || null
+      );
   }
 
   findPanoptoList(panoptoCdo: PanoptoCdoModel) {
     //
-    return axios.get<OffsetElementList<InternalMediaConnectionModel>>(this.URL + '/panoptos', { params: panoptoCdo })
-      .then(response => response && response.data || null);
+    return axios
+      .get<OffsetElementList<InternalMediaConnectionModel>>(
+        this.URL + '/panoptos',
+        { params: panoptoCdo }
+      )
+      .then(response => (response && response.data) || null);
+  }
+
+  getPanopToList(panoptoCdo: PanoptoCdoModel) {
+    const baseUrl = '/api/cube/medias';
+    return axios
+      .get<OffsetElementList<InternalMediaConnectionModel>>(
+        `${baseUrl}/panoptos`,
+        { params: panoptoCdo }
+      )
+      .then(response => (response && response.data) || null);
   }
 }
 

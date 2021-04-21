@@ -25,6 +25,7 @@ import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate
 import { SkProfileService } from 'profile/stores';
 import { findCommunityProfile } from 'community/api/profileApi';
 import { checkMember } from 'community/service/useMember/useMember';
+import { useCommunityHome } from '../../store/CommunityHomeStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -45,6 +46,7 @@ interface profileParams {
 function CommunityPostDetailContainer() {
   const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
+  const communityHome = useCommunityHome();
   const [profileInfo, setProfileInfo] = useState<profileParams>();
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -63,6 +65,8 @@ function CommunityPostDetailContainer() {
   const [fileName, setFileName] = useState<string>();
 
   const [editAuth, setEditAuth] = useState<boolean>(false);
+  const [adminAuth, setAdminAuth] = useState<boolean>(false);
+  const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
 
   const originArr: string[] = [];
   let origin: string = '';
@@ -173,6 +177,18 @@ function CommunityPostDetailContainer() {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
   }, [postDetail]);
+
+  useEffect(() => {
+    const denizenId = patronInfo.getDenizenId();
+
+    if (communityHome?.community?.managerId === denizenId) {
+      setAdminAuth(communityHome?.community?.managerId === denizenId)
+    }
+
+    if (communityHome?.community?.memberType === 'ADMIN') {
+      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN')
+    }
+  });
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then(files => {
@@ -433,22 +449,23 @@ function CommunityPostDetailContainer() {
             </button>
 
             {creatorId === postDetail.creatorId && (
-              <>
-                <Button
-                  className="ui icon button left post edit"
-                  onClick={OnClickModify}
-                >
-                  <Icon className="edit" />
-                  Edit
-                </Button>
-                <Button
-                  className="ui icon button left post delete"
-                  onClick={OnClickDelete}
-                >
-                  <Icon className="delete" />
-                  delete
-                </Button>
-              </>
+              <Button
+                className="ui icon button left post edit"
+                onClick={OnClickModify}
+              >
+                <Icon className="edit" />
+                Edit
+              </Button>
+
+            )}
+            {(creatorId === postDetail.creatorId || adminAuth || communityAdminAuth) && (
+              <Button
+                className="ui icon button left post delete"
+                onClick={OnClickDelete}
+              >
+                <Icon className="delete" />
+                delete
+              </Button>
             )}
             <Button
               className="ui icon button left post list2"
@@ -466,6 +483,8 @@ function CommunityPostDetailContainer() {
             email={member.email}
             companyName={member.company}
             departmentName={member.department}
+            adminAuth={adminAuth}
+            communityAdminAuth={communityAdminAuth}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>
