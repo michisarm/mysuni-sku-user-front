@@ -54,21 +54,19 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   };
 
   componentDidMount(): void {
-    //
-    const skProfileService = this.props.skProfileService!;
-    const categoryService = this.props.categoryService!;
-    const postService = this.props.postService!;
+    
+    const { postService, categoryService, skProfileService } = this.props;
+    const { skProfile } = skProfileService!;
     const name = patronInfo.getPatronName() || '';
-    const email = patronInfo.getPatronEmail() || '';
-    const { company } = skProfileService!.skProfile.member;
-    postService.clearPost();
-    categoryService.findCategoriesByBoardId('QNA')
+    const { email, company } = skProfileService!.skProfile.member;
+    // postService.clearPost();
+    categoryService!.findCategoriesByBoardId('QNA')
       .then(() => {
-        postService.changePostProps('boardId', 'QNA');
-        postService.changePostProps('writer.name', name);
-        postService.changePostProps('writer.email', email);
-        postService.changePostProps('writer.companyName', company);
-        postService.changePostProps('writer.companyCode', skProfileService!.skProfile.member.companyCode);
+        postService!.changePostProps('boardId', 'QNA');
+        postService!.changePostProps('writer.name', name);
+        postService!.changePostProps('writer.email', email);
+        postService!.changePostProps('writer.companyName', company);
+        postService!.changePostProps('writer.companyCode', skProfileService!.skProfile.member.companyCode);
       });
   }
 
@@ -160,9 +158,23 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { focus, write, fieldName, alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
-    categorys.map((data, index) => {
-      questionType.push({ key: index, value: data.categoryId, text: data.name });
-    });
+    // categorys.map((data, index) => {
+    //   questionType.push({ key: index, value: data.categoryId, text: data.name });
+    // });
+
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('cube') || currentUrl.includes('course')) {
+      categorys.map((data, index) => {
+        if (data.name === 'Contents') {
+          questionType.push({ key: index, value: data.categoryId, text: data.name });
+        }
+      });
+    } else {
+      categorys.map((data, index) => {
+        questionType.push({ key: index, value: data.categoryId, text: data.name });
+      });
+    }
 
     return (
       <>
@@ -182,7 +194,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     onBlur={() => this.setState({ focus: false })}
                     value={post && post.title || ''}
                     onChange={(e: any) => {
-                      if (e.target.value.length > 100 ) {
+                      if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
                       } else {
                         this.setState({ write: e.target.value, fieldName: '' });
@@ -191,7 +203,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     }}
                   />
                   <Icon className="clear link"
-                    onClick={(e:any) => {
+                    onClick={(e: any) => {
                       this.setState({ write: '' });
                       this.onChangePostProps('title', e.target.value);
                     }}

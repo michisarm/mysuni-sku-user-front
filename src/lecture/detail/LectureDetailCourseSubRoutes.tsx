@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
-import { useLectureRouterParams } from './service/useLectureRouterParams';
+import { setLectureParams } from './store/LectureParamsStore';
+import LectureChapterPage from './ui/logic/LectureChapter/LectureChapterPage';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
+import LectureDiscussionPage from './ui/logic/LectureDiscussionPage';
+import LectureParams from './viewModel/LectureParams';
 
 function LectureDetailCourseSubRoutes() {
-  const params = useLectureRouterParams();
+  const params = useParams<LectureParams>();
+  const { viewType } = params;
+  const { pathname } = useLocation();
+  useEffect(() => {
+    setLectureParams({ ...params, pathname });
+  }, [params, pathname]);
+
   return (
     <>
-      {params && params.contentType === 'coures' && (
-        <LectureCourseOverviewPage />
-      )}
-      {params && params.contentType === 'cube' && (
-        <LectureDetailCubeSubRoutes />
-      )}
+      {viewType === 'chapter' && <LectureChapterPage />}
+      {viewType === 'discussion' && <LectureDiscussionPage />}
     </>
   );
 }

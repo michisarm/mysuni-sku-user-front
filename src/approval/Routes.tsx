@@ -3,7 +3,6 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
-import AplDetailPage from 'myTraining/ui/page/AplDetailPage';
 import AplDetailPageV2 from 'myTraining/ui/page/AplDetailPageV2';
 import ApprovalSharedDetailContainer from '../myTraining/ui/logic/ApprovalSharedDetailContainer';
 import MyApprovalPage from '../myTraining/ui/page/MyApprovalPage';

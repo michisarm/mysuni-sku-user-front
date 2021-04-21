@@ -1,43 +1,28 @@
 /* eslint-disable consistent-return */
-
-/**
- * 
- export interface LectureStructureCubeItem extends Item {
-  id: string;
-  name: string;
-  cubeId: string;
-  cubeType: CubeType;
-  learningTime: number;
-  url: LectureStructureCubeItemUrl;
-  learningState?: LearningState;
-  state?: State;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-}
- */
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import { getLectureTestItem } from '../../../store/LectureTestStore';
+import LectureParams from '../../../viewModel/LectureParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
-import { getTestItemMapFromCube } from './getTestItemMapFromCube';
-import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
+import { getTestItemMapFromCube } from './getTestItemMap';
+import { getTestStudentItemMapFromCube } from './getTestStudentItemMap';
 
-export async function getCubeLectureTest(
-  params: LectureRouterParams
-): Promise<void> {
+export async function getCubeLectureTest(params: LectureParams): Promise<void> {
   await getTestItemMapFromCube(params);
 }
 
 export async function getCubeLectureTestStudent(
-  params: LectureRouterParams
+  params: LectureParams
 ): Promise<void> {
   await getTestStudentItemMapFromCube(params);
 }
 
 export async function getCubeLectureTestAnswer(
-  params: LectureRouterParams
+  params: LectureParams
 ): Promise<void> {
-  const testItem = await getTestItemMapFromCube(params); // 다른 방법은?
-  if (testItem) {
-    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions);
+  const testItem = getLectureTestItem();
+  if (params.cubeId !== undefined && params.cubeId === testItem?.serviceId) {
+    // 중복 호출 방지
+    if (testItem) {
+      await getTestAnswerItemMapFromExam(testItem.id, testItem.questions);
+    }
   }
 }

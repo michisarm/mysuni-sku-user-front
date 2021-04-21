@@ -1,9 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
-import RemoteClassroom from '../model/RemoteClassroom';
-import CubeIntro from '../model/CubeIntro';
-import Media from '../model/Media';
+import Media from '../../model/Media';
 import OfficeWeb from '../model/OfficeWeb';
-import PersonalCube from '../model/PersonalCube';
 import Transcript from '../model/Transcript';
 import Task from '../model/Task';
 import TaskChild from '../model/TaskChild';
@@ -11,11 +8,11 @@ import TaskDetail from '../model/TaskDetail';
 import CommentCountRdo from '../model/CommentCountRdo';
 import TaskDetailBody from '../model/TaskDetailBody';
 import { ClassroomModel } from '../../../personalcube/classroom/model';
-import TaskCdo from '../model/TaskCdo';
 import { AxiosResponse } from 'axios';
-import { createCacheApi } from './cacheableApi';
+import TranscriptCountModel from '../model/TranscriptCountModel';
+import { findPost, findPostBody } from './cubeApi';
 
-const BASE_URL = '/api/personalCube';
+const BASE_URL = '/api/cube';
 const FEEDBACK_URL = '/api/feedback';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
@@ -30,34 +27,15 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   }
   return response.data;
 }
-
-function findPersonalCube(personalCubeId: string): Promise<PersonalCube> {
-  const url = `${BASE_URL}/personalcubes/${personalCubeId}`;
-  return axiosApi
-    .get<PersonalCube>(url)
-    .then(response => response && response.data);
-}
-
-const [cacheableFindPersonalCube, clearFindPersonalCubeCache] = createCacheApi(
-  findPersonalCube
-);
-
-export { cacheableFindPersonalCube, clearFindPersonalCubeCache };
-
-function findCubeIntro(cubeIntroId: string): Promise<CubeIntro | undefined> {
-  const url = `${BASE_URL}/cubeintros/${cubeIntroId}`;
-  return axiosApi.get<CubeIntro>(url).then(AxiosReturn);
-}
-
-const [cacheableFindCubeIntro, clearFindCubeIntroCache] = createCacheApi(
-  findCubeIntro
-);
-
-export { cacheableFindCubeIntro, clearFindCubeIntroCache };
-
 export function findAllTranscript(deliveryId: string, locale: string) {
   return axiosApi
     .get<Transcript[]>(`${BASE_URL}/transcripts/${deliveryId}/${locale}`)
+    .then(response => response && response.data);
+}
+
+export function findTranscriptCount(deliveryId: string) {
+  return axiosApi
+    .get<TranscriptCountModel>(`${BASE_URL}/transcripts/countAll/${deliveryId}`)
     .then(response => response && response.data);
 }
 
@@ -84,7 +62,7 @@ export function findTask(
   if (tabType === 'Posts') {
     url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   } else {
-    url = `${BASE_URL}/posts/byBoardIdAndPatronKey?boardId=${boardId}&patronKey=${''}&offset=${offset}&limit=${limit}`;
+    url = `${BASE_URL}/posts/myByBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   }
   return axiosApi.get<Task>(url).then(response => {
     return response && response.data;
@@ -111,23 +89,6 @@ export function findTaskCommentCount(
   });
 }
 
-export function getTaskDetail(
-  postId: string,
-  postType: string
-): Promise<TaskDetail> {
-  const url = `${BASE_URL}/posts/flow/detail/${postId}`;
-  const replyUrl = `${BASE_URL}/replies/${postId}`;
-  if (postType === 'parent') {
-    return axiosApi.get<TaskDetail>(url).then(response => {
-      return response && response.data;
-    });
-  } else {
-    return axiosApi.get<TaskDetail>(replyUrl).then(response => {
-      return response && response.data;
-    });
-  }
-}
-
 export function getCommentFeedbackId(commentFeedbackId: string): Promise<any> {
   const url = `${FEEDBACK_URL}/feedback/${commentFeedbackId}/comment`;
   return axiosApi.get<any>(url).then(response => {
@@ -146,20 +107,6 @@ export function getTaskCreateId(lectureId: string): Promise<any> {
   const url = `${BASE_URL}/personalcubes/${lectureId}`;
   return axiosApi.get<any>(url).then(response => {
     return response && response.data;
-  });
-}
-
-export function createTaskPost(param: TaskCdo): Promise<any> {
-  const url = `${BASE_URL}/posts/flow`;
-  return axiosApi.post<any>(url, param).then(response => {
-    return response;
-  });
-}
-
-export function updateTaskPost(param: TaskCdo, postId: string): Promise<any> {
-  const url = `${BASE_URL}/posts/flow/${postId}`;
-  return axiosApi.put<any>(url, param).then(response => {
-    return response;
   });
 }
 

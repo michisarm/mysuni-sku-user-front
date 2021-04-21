@@ -1,10 +1,15 @@
-
-import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
+import {
+  IObservableArray,
+  observable,
+  action,
+  computed,
+  runInAction,
+} from 'mobx';
 import _ from 'lodash';
 import { ChannelModel } from 'college/model';
 import LectureApi from '../../../shared/present/apiclient/LectureApi';
 import ChannelCountRdo from '../../../../layout/UserApp/model/ChannelCountRdo';
-
+import { getCollegeModelStore } from '../../../../shared/store/CollegeStore';
 
 class LectureCountService {
   //
@@ -25,6 +30,11 @@ class LectureCountService {
     this.lectureApi = lectureApi;
   }
 
+  @action
+  setChannels(nextChannels: ChannelModel[]) {
+    this._channels = nextChannels;
+  }
+
   @computed
   get channels() {
     //
@@ -39,9 +49,8 @@ class LectureCountService {
 
   @computed
   get allSelected() {
-    return this._channels.every((channel) => channel.checked);
+    return this._channels.every(channel => channel.checked === true);
   }
-
 
   @computed
   get channelLectureCounts() {
@@ -51,51 +60,57 @@ class LectureCountService {
   }
 
   @action
-  async findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
-    //
-    const lectureCountList = await this.lectureApi.findLectureCountByChannels(collegeId, channels);
-
-    const filteredChannels = lectureCountList
-      .filter((lectureCount) => lectureCount.lectureCount > 0)
-      .map((lectureCount) => new ChannelModel({
-        id: lectureCount.channelId,
-        name: channels.find((channel) => channel.id === lectureCount.channelId)!.name,
-        channelId: lectureCount.channelId,
-        checked: false,
-      }));
-
-    runInAction(() => {
-      this._channels = filteredChannels;
-      this._channelLectureCounts = lectureCountList
-        .map((lectureCount) => new ChannelCountRdo(lectureCount));
-      return channels;
-    });
-
+  findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
+    const collegeModels = getCollegeModelStore();
+    this._channels =
+      collegeModels
+        ?.find(c => c.collegeId === collegeId)
+        ?.channels.map(c => {
+          return new ChannelModel({
+            id: c.id,
+            name: c.name,
+            channelId: c.channelId,
+            checked: false,
+          });
+        }) || [];
+    // const lectureCountList = await this.lectureApi.findLectureCountByChannels(collegeId, channels);
+    // const filteredChannels = lectureCountList
+    //   .filter((lectureCount) => lectureCount.lectureCount > 0)
+    //   .map((lectureCount) => new ChannelModel({
+    //     id: lectureCount.channelId,
+    //     name: channels.find((channel) => channel.id === lectureCount.channelId)!.name,
+    //     channelId: lectureCount.channelId,
+    //     checked: false,
+    //   }));
+    // runInAction(() => {
+    //   this._channels = filteredChannels;
+    //   this._channelLectureCounts = lectureCountList
+    //     .map((lectureCount) => new ChannelCountRdo(lectureCount));
+    //   return channels;
+    // });
   }
 
   @action
-  setChannelsProp(index: number, name: string, value: any)
-  {
+  setChannelsProp(index: number, name: string, value: any) {
     this._channels[index] = _.set(this._channels[index], name, value);
 
     // channel이 모두 체크이거나, 모두 체크해제인 경우 College Lectures 목록 보여줌.
-    if (this._channels.every((channel) => channel.checked) || this._channels.every((channel) => !channel.checked))
-    {
+    if (
+      this._channels.every(channel => channel.checked) ||
+      this._channels.every(channel => !channel.checked)
+    ) {
       this._categoryType = 'CollegeLectures';
     }
     // Channel을 개별 선택시   Channel 별 Lecture 목록을 보여줌.
-    else
-    {
+    else {
       this._categoryType = 'ChannelsLectures';
     }
   }
 
   @action
-  setCategoryType(categoryType: string)
-  {
+  setCategoryType(categoryType: string) {
     this._categoryType = categoryType;
   }
-
 }
 
 LectureCountService.instance = new LectureCountService(LectureApi.instance);

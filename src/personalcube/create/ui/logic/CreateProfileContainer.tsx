@@ -12,7 +12,7 @@ import { SkProfileService } from 'profile/stores';
 import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
 import CreateMovieModalContainer from './CreateMovieModalContainer';
-
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService,
@@ -49,7 +49,7 @@ class CreateProfileContainer extends React.Component<Props> {
     const { skProfile } = skProfileService!;
 
     return (
-      <ContentHeader>
+      <ContentHeader type="Create" dataArea={Area.CREATE_INFO}>
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             myPageActive
@@ -57,6 +57,7 @@ class CreateProfileContainer extends React.Component<Props> {
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}
+            type="Create"
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="create-wrap">

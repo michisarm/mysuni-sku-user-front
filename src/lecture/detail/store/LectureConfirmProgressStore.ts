@@ -1,4 +1,4 @@
-import Student from '../model/Student';
+import Student from '../../model/Student';
 import { createStore } from './Store';
 
 const [

@@ -1,0 +1,22 @@
+.video-gridview-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 700px;
+}
+
+.video-gridview-row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.video-gridview-cell,
+.panopto-embed-player {
+  display: flex;
+  flex: 1;
+}
+
+.video-gridview-cell {
+  padding: 2px;
+}

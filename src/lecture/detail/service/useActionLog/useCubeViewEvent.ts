@@ -1,43 +1,27 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createViewLog } from '../../api/actionLogCollectorApi';
-import { cacheableFindPersonalCube } from '../../api/mPersonalCubeApi';
+import { findCubeDetailCache } from '../../api/cubeApi';
 import LectureParams from '../../viewModel/LectureParams';
 
 export function useCubeViewEvent() {
-  const {
-    collegeId,
-    cubeId,
-    lectureCardId,
-    contentId,
-    lectureId,
-    lectureType,
-    serviceType,
-  } = useParams<LectureParams>();
+  const { cardId, cubeId } = useParams<LectureParams>();
 
   useEffect(() => {
-    if (
-      serviceType !== 'Cube' &&
-      serviceType !== 'Card' &&
-      serviceType !== undefined
-    ) {
-      if (lectureType !== 'cube') {
-        return;
-      }
-    }
-    const _cubeId = contentId || cubeId;
-    const _lectureCardId = lectureId || lectureCardId;
-    if (_cubeId === undefined || _lectureCardId === undefined) {
+    if (cardId === undefined || cubeId === undefined) {
       return;
     }
     const path = window.location.href;
     const email = localStorage.getItem('nara.email') || '';
 
-    cacheableFindPersonalCube(_cubeId).then(personalCube => {
-      if (personalCube !== undefined) {
-        const { name } = personalCube;
+    findCubeDetailCache(cubeId).then(cubeDetail => {
+      if (cubeDetail !== undefined) {
+        const {
+          cube: { name },
+        } = cubeDetail;
         createViewLog({
-          college: collegeId,
+          // 오류 오류
+          college: 'collegeId',
           context: {
             logType: 'VIEW',
             menu: 'CUBE_VIEW',
@@ -47,20 +31,12 @@ export function useCubeViewEvent() {
           },
           courseName: '',
           coursePlanId: '',
-          cubeId: _cubeId,
+          cubeId,
           cubeName: name,
-          lectureCardId: _lectureCardId,
+          lectureCardId: cardId,
           serviceType: 'CARD',
         });
       }
     });
-  }, [
-    collegeId,
-    cubeId,
-    lectureCardId,
-    contentId,
-    lectureId,
-    lectureType,
-    serviceType,
-  ]);
+  }, [cardId, cubeId]);
 }

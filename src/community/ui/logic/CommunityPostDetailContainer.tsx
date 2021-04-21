@@ -22,8 +22,10 @@ import CommunityProfileModal from '../view/CommunityProfileModal';
 import { reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
+import { SkProfileService } from 'profile/stores';
 import { findCommunityProfile } from 'community/api/profileApi';
 import { checkMember } from 'community/service/useMember/useMember';
+import { useCommunityHome } from '../../store/CommunityHomeStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -44,6 +46,7 @@ interface profileParams {
 function CommunityPostDetailContainer() {
   const { communityId, postId, menuType } = useParams<Params>();
   const [postDetail] = useCommunityPostDetail(communityId, postId);
+  const communityHome = useCommunityHome();
   const [profileInfo, setProfileInfo] = useState<profileParams>();
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -62,9 +65,15 @@ function CommunityPostDetailContainer() {
   const [fileName, setFileName] = useState<string>();
 
   const [editAuth, setEditAuth] = useState<boolean>(false);
+  const [adminAuth, setAdminAuth] = useState<boolean>(false);
+  const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
 
   const originArr: string[] = [];
   let origin: string = '';
+
+  const skProfileService = SkProfileService.instance;
+  const { skProfile } = skProfileService;
+  const { member } = skProfile;
 
   const fileDownload = (pdf: string, fileId: string) => {
     const PdfFile = pdf.includes('.pdf');
@@ -104,8 +113,8 @@ function CommunityPostDetailContainer() {
   }, []);
 
   const commentCountEventHandler = useCallback(async () => {
-    const postIdArr = window.location.href.split('/')
-    await getCommunityPostDetail(communityId, postIdArr[postIdArr.length-1]);
+    const postIdArr = window.location.href.split('/');
+    await getCommunityPostDetail(communityId, postIdArr[postIdArr.length - 1]);
   }, [communityId, postId]);
 
   const clickProfileEventHandler = useCallback(async () => {
@@ -126,10 +135,10 @@ function CommunityPostDetailContainer() {
     if (postDetail === undefined) {
       return;
     }
-    
+
     const checkMemberfunction = async () => {
       const joinFlag = await checkMember(communityId)
-      if(!joinFlag) {
+      if (!joinFlag) {
         history.push({
           pathname: `/community/${communityId}`,
         });
@@ -138,7 +147,7 @@ function CommunityPostDetailContainer() {
 
     checkMemberfunction()
   }, [postDetail]);
-  
+
   useEffect(() => {
     window.addEventListener('commentCount', commentCountEventHandler);
     window.addEventListener('clickProfile', clickProfileEventHandler);
@@ -147,6 +156,7 @@ function CommunityPostDetailContainer() {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
+
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -167,6 +177,18 @@ function CommunityPostDetailContainer() {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
   }, [postDetail]);
+
+  useEffect(() => {
+    const denizenId = patronInfo.getDenizenId();
+
+    if (communityHome?.community?.managerId === denizenId) {
+      setAdminAuth(communityHome?.community?.managerId === denizenId)
+    }
+
+    if (communityHome?.community?.memberType === 'ADMIN') {
+      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN')
+    }
+  });
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then(files => {
@@ -197,9 +219,27 @@ function CommunityPostDetailContainer() {
     }
   }, []);
 
+
   const OnClickList = useCallback(() => {
-    history.goBack();
-  }, []);
+    //history.goBack();
+    if (postDetail?.menuId === 'NOTICE') {
+      history.push({
+        pathname: `/community/${communityId}/notice`,
+      });
+    } else if (menuType === 'STORE') {
+      history.push({
+        pathname: `/community/${communityId}/data/${postDetail?.menuId}`,
+      });
+    } else {
+      history.push({
+        pathname: `/community/${communityId}/board/${postDetail?.menuId}`,
+      });
+    }
+    //   history.push({
+    //     pathname: `/community/${communityId}/board/${postDetail?.menuId}`,
+    //   });
+
+  }, [postDetail, menuType]);
 
   const OnClickDelete = useCallback(() => {
     reactConfirm({
@@ -233,6 +273,19 @@ function CommunityPostDetailContainer() {
     }
   }, [like, likeCount]);
 
+  const onClickWriter = useCallback((id) => {
+    findCommunityProfile(id).then((result) => {
+      setProfileInfo({
+        'id': result!.id,
+        'profileImg': result!.profileImg,
+        'introduce': result!.introduce,
+        'nickName': result!.nickname,
+        'creatorName': result!.name
+      })
+      setProfileOpen(true)
+    })
+  }, [])
+
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
       originArr.push(depotData.id);
@@ -248,20 +301,28 @@ function CommunityPostDetailContainer() {
   }
 
   const toUrl = useCallback((type, postDetail, menuType) => {
-    if(type == 'nextPost') {
-      if(menuType === 'ANONYMOUS') {
-        return `/community/${postDetail.nextPost!.communityId}/${menuType}/post/${postDetail.nextPost!.postId}`
+    if (type == 'nextPost') {
+      if (menuType === 'ANONYMOUS') {
+        return `/community/${
+          postDetail.nextPost!.communityId
+          }/${menuType}/post/${postDetail.nextPost!.postId}`;
       } else {
-        return `/community/${postDetail.nextPost!.communityId}/post/${postDetail.nextPost!.postId}`
+        return `/community/${postDetail.nextPost!.communityId}/post/${
+          postDetail.nextPost!.postId
+          }`;
       }
     } else {
-      if(menuType === 'ANONYMOUS') {
-        return `/community/${postDetail.prevPost!.communityId}/${menuType}/post/${postDetail.prevPost!.postId}`
+      if (menuType === 'ANONYMOUS') {
+        return `/community/${
+          postDetail.prevPost!.communityId
+          }/${menuType}/post/${postDetail.prevPost!.postId}`;
       } else {
-        return `/community/${postDetail.prevPost!.communityId}/post/${postDetail.prevPost!.postId}`
+        return `/community/${postDetail.prevPost!.communityId}/post/${
+          postDetail.prevPost!.postId
+          }`;
       }
     }
-  }, [])
+  }, []);
   return (
     <Fragment>
       {postDetail && (
@@ -276,10 +337,12 @@ function CommunityPostDetailContainer() {
             deletable={true}
             editAuth={editAuth}
             menuType={menuType}
+            like={like}
             onClickList={OnClickList}
             onClickModify={OnClickModify}
             onClickDelete={OnClickDelete}
             onClickLike={OnClickLike}
+            onClickWriter={onClickWriter}
           />
           <div className="class-guide-txt fn-parents ql-snow">
             <div
@@ -366,42 +429,43 @@ function CommunityPostDetailContainer() {
             </div>
           )} */}
           <div className="task-read-bottom">
-            {postDetail.menuId !== 'NOTICE' && (
-              <button
-                className="ui icon button left post edit"
-                onClick={OnClickLike}
-              >
-                {(like && (
-                  <img
-                    src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
-                    style={{ marginBottom: '-3px', marginRight: '3px' }}
-                  />
-                )) || (
+
+            <button
+              className="ui icon button left post edit"
+              onClick={OnClickLike}
+            >
+              {(like && (
+                <img
+                  src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
+                  style={{ marginBottom: '-3px', marginRight: '3px' }}
+                />
+              )) || (
                   <img
                     src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
                     style={{ marginBottom: '-3px', marginRight: '3px' }}
                   />
                 )}
                 좋아요
-              </button>
-            )}
+            </button>
+
             {creatorId === postDetail.creatorId && (
-              <>
-                <Button
-                  className="ui icon button left post edit"
-                  onClick={OnClickModify}
-                >
-                  <Icon className="edit" />
-                  Edit
-                </Button>
-                <Button
-                  className="ui icon button left post delete"
-                  onClick={OnClickDelete}
-                >
-                  <Icon className="delete" />
-                  delete
-                </Button>
-              </>
+              <Button
+                className="ui icon button left post edit"
+                onClick={OnClickModify}
+              >
+                <Icon className="edit" />
+                Edit
+              </Button>
+
+            )}
+            {(creatorId === postDetail.creatorId || adminAuth || communityAdminAuth) && (
+              <Button
+                className="ui icon button left post delete"
+                onClick={OnClickDelete}
+              >
+                <Icon className="delete" />
+                delete
+              </Button>
             )}
             <Button
               className="ui icon button left post list2"
@@ -415,18 +479,16 @@ function CommunityPostDetailContainer() {
             feedbackId={postDetail.commentFeedbackId}
             menuType={menuType}
             hideCamera
-            name=""
-            email=""
-            companyName=""
-            departmentName=""
+            name={member.name}
+            email={member.email}
+            companyName={member.company}
+            departmentName={member.department}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>
               <div className="paging-list">
                 {postDetail.prevPost && (
-                  <Link
-                    to={toUrl('prevPost', postDetail, menuType)}
-                  >
+                  <Link to={toUrl('prevPost', postDetail, menuType)}>
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
                       <h2>이전글</h2>
@@ -442,9 +504,7 @@ function CommunityPostDetailContainer() {
                   </Link>
                 )}
                 {postDetail.nextPost && (
-                  <Link
-                    to={toUrl('nextPost', postDetail, menuType)}
-                  >
+                  <Link to={toUrl('nextPost', postDetail, menuType)}>
                     <div className="paging-list-box">
                       <div className="paging-list-icon" />
                       <h2>다음글</h2>
@@ -470,17 +530,15 @@ function CommunityPostDetailContainer() {
         fileId={fileId || ''}
         fileName={fileName || ''}
       />
-        <>
-        <CommunityProfileModal
-          open={profileOpen}
-          setOpen={setProfileOpen}
-          userProfile={profileInfo && profileInfo.profileImg}
-          memberId={profileInfo && profileInfo.id}
-          introduce={profileInfo && profileInfo.introduce}
-          nickName={profileInfo && profileInfo.nickName}
-          name={profileInfo && profileInfo.creatorName}
-        />
-        </>
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
     </Fragment>
   );
 }

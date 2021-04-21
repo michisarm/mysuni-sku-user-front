@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, Label, List } from 'semantic-ui-react';
+import {
+  getChannelName,
+  getCollgeName,
+} from '../../../../../shared/service/useCollege/useRequestCollege';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 
 interface LectureCourseSubcategoryViewProps {
   lectureSubcategory: LectureSubcategory;
 }
 
-interface IdName {
-  id: string;
-  name: string;
-}
-
-interface College extends IdName {
-  channels: IdName[];
+interface College {
+  collegeId: string;
+  channelIds: string[];
 }
 const LectureCourseSubcategoryView: React.FC<LectureCourseSubcategoryViewProps> = function LectureCourseSubcategoryView({
   lectureSubcategory,
@@ -21,16 +21,15 @@ const LectureCourseSubcategoryView: React.FC<LectureCourseSubcategoryViewProps> 
   useEffect(() => {
     const nextSubcategoryTree = lectureSubcategory.categories.reduce<College[]>(
       (r, c) => {
-        if (!r.some(({ id }) => id === c.college.id)) {
+        if (!r.some(({ collegeId }) => collegeId === c.collegeId)) {
           r.push({
-            id: c.college.id,
-            name: c.college.name,
-            channels: [c.channel],
+            collegeId: c.collegeId,
+            channelIds: [c.channelId],
           });
         } else {
-          const college = r.find(({ id }) => id === c.college.id);
+          const college = r.find(({ collegeId }) => collegeId === c.collegeId);
           if (college !== undefined) {
-            college.channels.push(c.channel);
+            college.channelIds.push(c.channelId);
           }
         }
         return r;
@@ -53,10 +52,12 @@ const LectureCourseSubcategoryView: React.FC<LectureCourseSubcategoryViewProps> 
       <List bulleted>
         {subcategoryTree.map(college => {
           return (
-            <List.Item key={college.id}>
-              <div className="title">{college.name}</div>
+            <List.Item key={college.collegeId}>
+              <div className="title">{getCollgeName(college.collegeId)}</div>
               <div className="detail">
-                {college.channels.map(channle => channle.name).join(' / ')}
+                {college.channelIds
+                  .map(channelId => getChannelName(channelId))
+                  .join(' / ')}
               </div>
             </List.Item>
           );

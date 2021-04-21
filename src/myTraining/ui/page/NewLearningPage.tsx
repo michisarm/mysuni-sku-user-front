@@ -1,86 +1,67 @@
-import React, {useEffect, useState} from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { inject } from 'mobx-react';
-import { mobxHelper } from '@nara.platform/accent';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { ContentLayout } from 'shared';
-import NewLearningListContainer from '../logic/NewLearningListContainer';
-import { SkProfileService } from '../../../profile/stores';
-import { RQDLectureService, POPLectureService,NEWLectureService, LRSLectureService } from '../../../lecture/stores';
-
+import { find } from 'lodash';
+import LRSListContainer from '../logic/LRSListContainer';
+import LearningListContainer from '../logic/LearningListContainer';
+import { findAvailableCardBundles } from '../../../lecture/shared/api/arrangeApi';
 
 export enum ContentType {
-  Required = 'Required',
-  New = 'New',
-  Popular = 'Popular',
   Recommend = 'Recommend',
+  Enrolling = 'Enrolling',
 }
 
-export enum ContentTypeText {
-  Required = '권장학습 과정',
-  New = '신규학습 과정',
-  Popular = '인기학습 과정',
-  Recommend = '추천학습 과정',
+interface Params {
+  type: string;
+  pageNo: string;
 }
 
-interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
-  skProfileService?: SkProfileService;
-  rqdLectureService?: RQDLectureService;
-  newLectureService?: NEWLectureService;
-  popLectureService?: POPLectureService;
-  lrsLectureService?: LRSLectureService;
-}
+function NewLearningPage() {
+  const [breadcrumbTItle, setBreadcrumbTItle] = useState<string>('');
+  const { type } = useParams<Params>();
+  console.log(useParams());
+  const contentType = type as ContentType;
 
-const NewLearningPage: React.FC<Props> = Props => {
-  const { rqdLectureService, newLectureService, popLectureService, lrsLectureService } = Props;
+  const getDisplayName = async () => {
+    const cardBundles = await findAvailableCardBundles();
+    const cardBundle = find(cardBundles, { id: type });
 
-  const { params } = Props.match;
-  const contentType = params.type as ContentType;
-
-  const [title, setTitle] = useState<string | undefined>('');
-
-  // 페이지 타이틀 설정
-  const setPageTitle = (contentType: ContentType) => {
-    switch (contentType) {
-      case ContentType.Required:
-        setTitle(rqdLectureService?.Title);
-        break;
-      case ContentType.New:
-        setTitle(newLectureService?.Title);
-        break;
-      case ContentType.Popular:
-        setTitle(popLectureService?.Title);
-        break;
-      case ContentType.Recommend:
-        setTitle(lrsLectureService?.Title);
-        break;
-      default:
-        setTitle('알 수 없는 학습과정입니다.');
-        break;
+    if (cardBundle) {
+      setBreadcrumbTItle(cardBundle.displayText);
     }
   };
 
-  // Breadcrumb
-  const contentTypeText = ContentTypeText[contentType];
+  useEffect(() => {
+    getDisplayName();
+  }, []);
+
+  const getBreadcrumb = () => {
+    switch (contentType) {
+      case ContentType.Recommend:
+        return '추천학습 과정';
+      case ContentType.Enrolling:
+        return '수강 신청 과정 모아보기';
+      default:
+        return breadcrumbTItle;
+    }
+  };
+
+  const renderLearningList = () => {
+    switch (contentType) {
+      case ContentType.Recommend:
+        return <LRSListContainer />;
+      case ContentType.Enrolling:
+        return <LearningListContainer />;
+      default:
+        return <LearningListContainer />;
+    }
+  };
 
   return (
-    <ContentLayout breadcrumb={[{ text: `${contentTypeText}` }]}>
-      <div className="ma-title">
-        <div className="inner">
-          <h2>{title}</h2>
-        </div>
-      </div>
-      <NewLearningListContainer
-        contentType={contentType}
-        setPageTitle={setPageTitle}
-      />
+    <ContentLayout breadcrumb={[{ text: getBreadcrumb() }]}>
+      {renderLearningList()}
     </ContentLayout>
   );
-};
+}
 
-export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'rqdLecture.rqdLectureService',
-  'newLecture.newLectureService',
-  'popLecture.popLectureService',
-  'lrsLecture.lrsLectureService',
-))(withRouter(NewLearningPage));
+export default NewLearningPage;

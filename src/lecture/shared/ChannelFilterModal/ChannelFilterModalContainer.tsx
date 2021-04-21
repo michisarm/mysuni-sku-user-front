@@ -7,34 +7,37 @@ import { Button, Modal } from 'semantic-ui-react';
 import { CollegeModel, ChannelModel } from 'college/model';
 import { ActionLogService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
-import { LectureCountService, CollegeLectureCountService } from 'lecture/stores';
-
+import {
+  LectureCountService,
+  CollegeLectureCountService,
+} from 'lecture/stores';
 
 interface Props {
-  actionLogService?: ActionLogService,
-  collegeService? : CollegeService
-  collegeLectureCountService?: CollegeLectureCountService
-  lectureCountService? : LectureCountService
+  actionLogService?: ActionLogService;
+  collegeService?: CollegeService;
+  collegeLectureCountService?: CollegeLectureCountService;
+  lectureCountService?: LectureCountService;
 
-  trigger?: React.ReactNode
-  channels?: ChannelModel[]
-  onFilter?:(channels: ChannelModel[]) => void
+  trigger?: React.ReactNode;
+  channels?: ChannelModel[];
+  onFilter?: (channels: ChannelModel[]) => void;
 }
 
-interface State{
-  open: boolean
-  searchKey : string
-  selectedCollege: CollegeModel | null
-  channels : ChannelModel [];
+interface State {
+  open: boolean;
+  searchKey: string;
+  selectedCollege: CollegeModel | null;
+  channels: ChannelModel[];
 }
 
-
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'college.collegeService',
-  'lecture.lectureCountService',
-  'lecture.collegeLectureCountService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'college.collegeService',
+    'lecture.lectureCountService',
+    'lecture.collegeLectureCountService'
+  )
+)
 @observer
 @reactAutobind
 class ChannelFilterModalContainer extends Component<Props, State> {
@@ -62,7 +65,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   onOpenModal() {
     this.setState({
       open: true,
-      channels: [ ...this.props.channels || [] ],
+      channels: [...(this.props.channels || [])],
     });
   }
 
@@ -92,17 +95,15 @@ class ChannelFilterModalContainer extends Component<Props, State> {
     let { channels }: State = this.state;
     if (channels.map(ch => ch.id).includes(channel.id)) {
       channels = channels.filter(ch => ch.id !== channel.id);
-    }
-    else channels.push(new ChannelModel(channel));
+    } else channels.push(new ChannelModel(channel));
     this.setState({ channels });
   }
 
-  searchKey(event : any) {
+  searchKey(event: any) {
     this.setState({
       searchKey: event.target.value,
     });
   }
-
 
   onSearch() {
     const { collegeService } = this.props;
@@ -114,7 +115,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   }
 
   onReset() {
-    this.setState({ selectedCollege: null, channels: []});
+    this.setState({ selectedCollege: null, channels: [] });
   }
 
   handleClick(college: CollegeModel) {
@@ -124,7 +125,10 @@ class ChannelFilterModalContainer extends Component<Props, State> {
     this.onClickActionLog(college.name);
 
     this.setState({ selectedCollege: college });
-    lectureCountService!.findLectureCountByCollegeId(college.collegeId, college.channels);
+    lectureCountService!.findLectureCountByCollegeId(
+      college.collegeId,
+      college.channels
+    );
   }
 
   onClickActionLog(text: string) {
@@ -133,14 +137,18 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   }
 
   render() {
-    const { collegeService, lectureCountService, collegeLectureCountService, trigger } = this.props;
+    const {
+      collegeService,
+      lectureCountService,
+      collegeLectureCountService,
+      trigger,
+    } = this.props;
     const { open, channels, selectedCollege }: State = this.state;
     const { colleges } = collegeService!;
     const { channelLectureCounts } = lectureCountService!;
     const { totalChannelCount } = collegeLectureCountService!;
 
     return (
-
       <Modal
         open={open}
         onOpen={this.onOpenModal}
@@ -148,9 +156,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
         className="base w1000"
         trigger={trigger}
       >
-        <Modal.Header>
-          List Filter
-        </Modal.Header>
+        <Modal.Header>List Filter</Modal.Header>
         <Modal.Content>
           <div className="filter-wrap">
             <div className="column">
@@ -158,22 +164,24 @@ class ChannelFilterModalContainer extends Component<Props, State> {
               <div className="f-list">
                 <div className="scrolling">
                   <div className="college">
-                    {
-                      colleges && colleges.length
-                      && colleges.map((college: CollegeModel, index:number) => (
+                    {(colleges &&
+                      colleges.length &&
+                      colleges.map((college: CollegeModel, index: number) => (
                         <Button
                           key={college.collegeId}
                           className={classNames({
                             toggle: true,
                             toggle3: true,
-                            active: selectedCollege && college.collegeId === selectedCollege!.collegeId,
+                            active:
+                              selectedCollege &&
+                              college.collegeId === selectedCollege!.collegeId,
                           })}
                           onClick={() => this.handleClick(college)}
                         >
                           {college.name} ({college.channels.length})
                         </Button>
-                      )) || null
-                    }
+                      ))) ||
+                      null}
                   </div>
                 </div>
               </div>
@@ -184,29 +192,37 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                 <div className="scrolling">
                   <div className="channel">
                     <ul>
-                      {
-                        selectedCollege && selectedCollege!.channels && selectedCollege!.channels.length
-                        && selectedCollege!.channels.map((channel, index) => (
-                          <li key={channel.channelId} onClick={() => this.onSelectChannel(channel)}>
+                      {(selectedCollege &&
+                        selectedCollege!.channels &&
+                        selectedCollege!.channels.length &&
+                        selectedCollege!.channels.map((channel, index) => (
+                          <li
+                            key={channel.channelId}
+                            onClick={() => this.onSelectChannel(channel)}
+                          >
                             <div className="ui checkbox base">
                               <input
                                 type="checkbox"
                                 className="hidden"
-                                checked={channels.map(ch => ch.id).includes(channel.id)}
+                                checked={channels
+                                  .map(ch => ch.id)
+                                  .includes(channel.id)}
                               />
                               <label>
                                 {channel.name}&nbsp;
                                 <span>
-                                  ({
-                                    channelLectureCounts && channelLectureCounts.length > 0
-                                    && channelLectureCounts[index] && channelLectureCounts[index].lectureCount
-                                  })
+                                  (
+                                  {channelLectureCounts &&
+                                    channelLectureCounts.length > 0 &&
+                                    channelLectureCounts[index] &&
+                                    channelLectureCounts[index].lectureCount}
+                                  )
                                 </span>
                               </label>
                             </div>
                           </li>
-                        )) || null
-                      }
+                        ))) ||
+                        null}
                     </ul>
                   </div>
                 </div>
@@ -216,15 +232,18 @@ class ChannelFilterModalContainer extends Component<Props, State> {
               <div className="f-tit">
                 Selected
                 <span className="counter">
-                  <span className="now" style={{ color: '#ff664d' }}>{channels.length} </span>/ {totalChannelCount}
+                  <span className="now" style={{ color: '#ff664d' }}>
+                    {channels.length}{' '}
+                  </span>
+                  / {totalChannelCount}
                 </span>
               </div>
               <div className="f-list">
                 <div className="scrolling">
                   <div className="selected">
                     {/* 선택 전 */}
-                    { channels && channels.length > 0 ?
-                      channels.map((channel) => (
+                    {channels && channels.length > 0 ? (
+                      channels.map(channel => (
                         <Button
                           className="del"
                           key={`del_${channel.id}`}
@@ -233,21 +252,27 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                           {channel.name}
                         </Button>
                       ))
-                      :
+                    ) : (
                       <div className="empty">Not Selected</div>
-                    }
+                    )}
                   </div>
                 </div>
               </div>
             </div>
             <button className="clear" onClick={this.onReset}>
-              <i className="icon reset"><span className="blind">reset</span></i>
+              <i className="icon reset">
+                <span className="blind">reset</span>
+              </i>
             </button>
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.onCloseModal}>Cancel</Button>
-          <Button className="w190 pop p" onClick={this.onFilter}>Filter</Button>
+          <Button className="w190 pop d" onClick={this.onCloseModal}>
+            Cancel
+          </Button>
+          <Button className="w190 pop p" onClick={this.onFilter}>
+            Filter
+          </Button>
         </Modal.Actions>
       </Modal>
     );

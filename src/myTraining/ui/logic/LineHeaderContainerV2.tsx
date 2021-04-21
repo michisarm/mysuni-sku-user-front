@@ -6,43 +6,57 @@ import XLSX from 'xlsx';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
 import { MyStampXlsxModel } from 'myTraining/model/MyStampXlsxModel';
-import { MyContentType, ViewType } from './MyLearningListContainerV2';
-import { MyLearningContentType, MyPageContentType } from '../model';
-import { ListLeftTopPanel, ListRightTopPanel, ListTopPanelTemplate } from '../view/panel';
-import { AplService, MyTrainingService } from '../../stores';
+import {
+  ListLeftTopPanel,
+  ListRightTopPanel,
+  ListTopPanelTemplate,
+} from '../view/panel';
+import { MyTrainingService } from '../../stores';
 import { MyTrainingTableViewModel } from 'myTraining/model';
+import { MyPageContentType } from '../model/MyPageContentType';
+import { MyLearningContentType } from '../model/MyLearningContentType';
+import { MyContentType } from '../model/MyContentType';
+import { getCollgeName } from '../../../shared/service/useCollege/useRequestCollege';
+import MyStampService from '../../present/logic/MyStampService';
+import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;
-  viewType: ViewType;
-  onChangeViewType: (e: any, data: any) => void;
   resultEmpty: boolean;
   totalCount: number;
-  filterCount: number;
-  openFilter: boolean;
-  onClickFilter: () => void;
-  onClickDelete: () => void;
-  //
+  onClickDelete?: () => void;
   myTrainingService?: MyTrainingService;
-  aplService?: AplService;
+  myStampService?: MyStampService;
+  filterBoxService?: FilterBoxService;
 }
 
-function LineHeaderContainerV2(props: Props) {
-  const { contentType, resultEmpty, totalCount, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService, aplService } = props;
-  const { aplCount } = aplService!;
-  const { viewType, onChangeViewType } = props;
+function LineHeaderContainerV2({
+  contentType,
+  resultEmpty,
+  totalCount,
+  onClickDelete,
+  myTrainingService,
+  myStampService,
+  filterBoxService,
+}: Props) {
+  
+  const { openFilter, setOpenFilter, filterCount } = filterBoxService!;
 
-  /* functions */
+  
+  const isFilterActive = (): boolean => {
+    return openFilter || filterCount > 0;
+  };
+
+  const onClickFilter = () => {
+    setOpenFilter(!openFilter);
+  };
+
   const getModelsForExcel = async (contentType: MyContentType) => {
     if (contentType === MyPageContentType.EarnedStampList) {
-      return myTrainingService!.findAllStampTableViewsForExcel();
+      return myStampService!.findAllMyStampsForExcel();
     } else {
       return myTrainingService!.findAllTableViewsForExcel();
     }
-  };
-
-  const isFilterActive = (): boolean => {
-    return (openFilter || filterCount > 0);
   };
 
 
@@ -60,23 +74,36 @@ function LineHeaderContainerV2(props: Props) {
 
   /* handlers */
   const downloadExcel = useCallback(async (contentType: MyContentType) => {
-    const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(contentType);
+    const myTrainingTableViews: MyTrainingTableViewModel[] = await getModelsForExcel(
+      contentType
+    );
     const lastIndex = myTrainingTableViews.length;
-    // MyTrainingService 의 MyTrainingViewModel 을 조회해 엑셀로 변환
     let xlsxList: MyXlsxList = [];
     let filename: MyXlsxFilename = MyXlsxFilename.None;
 
     switch (contentType) {
       case MyLearningContentType.InProgress:
-        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => myTrainingTableView.toXlsxForInProgress(lastIndex - index));
+        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
+          const collegeName = getCollgeName(myTrainingTableView.category.college.id);
+          return myTrainingTableView.toXlsxForInProgress(lastIndex - index, collegeName);
+        });
+
         filename = MyXlsxFilename.InProgress;
         break;
       case MyLearningContentType.Completed:
-        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => myTrainingTableView.toXlsxForCompleted(lastIndex - index));
+        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
+          const collegeName = getCollgeName(myTrainingTableView.category.college.id);
+          return myTrainingTableView.toXlsxForCompleted(lastIndex - index, collegeName);
+        });
+
         filename = MyXlsxFilename.Completed;
         break;
       case MyPageContentType.EarnedStampList:
-        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => myTrainingTableView.toXlsxForMyStamp(lastIndex - index));
+        xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
+          const collegeName = getCollgeName(myTrainingTableView.category.college.id);
+          return myTrainingTableView.toXlsxForMyStamp(lastIndex - index, collegeName);
+        });
+
         filename = MyXlsxFilename.EarnedStampList;
         break;
     }
@@ -88,22 +115,20 @@ function LineHeaderContainerV2(props: Props) {
   return (
     <>
       <div className="top-guide-title">
-        {(!resultEmpty && totalCount > 0) &&
-          (
-            <ListTopPanelTemplate
-              className="left-wrap"
+        {!resultEmpty && totalCount > 0 && (
+          <ListTopPanelTemplate
+            className="left-wrap"
+            contentType={contentType}
+            activeFilter={isFilterActive()}
+          >
+            <ListLeftTopPanel
               contentType={contentType}
-              activeFilter={isFilterActive()}
-            >
-              <ListLeftTopPanel
-                contentType={contentType}
-                totalCount={totalCount}
-                onClickDelete={onClickDelete}
-                downloadExcel={downloadExcel}
-              />
-            </ListTopPanelTemplate>
-          )
-        }
+              totalCount={totalCount}
+              onClickDelete={onClickDelete}
+              downloadExcel={downloadExcel}
+            />
+          </ListTopPanelTemplate>
+        )}
         <ListTopPanelTemplate
           className="right-wrap"
           contentType={contentType}
@@ -116,8 +141,6 @@ function LineHeaderContainerV2(props: Props) {
             openFilter={openFilter}
             activeFilter={isFilterActive()}
             onClickFilter={onClickFilter}
-            checkedViewType={viewType}
-            onChangeViewType={onChangeViewType}
           />
         </ListTopPanelTemplate>
       </div>
@@ -125,26 +148,28 @@ function LineHeaderContainerV2(props: Props) {
   );
 }
 
-export default inject(mobxHelper.injectFrom(
-  'myTraining.myTrainingService',
-  'myTraining.aplService'
-))(withRouter(observer(LineHeaderContainerV2)));
+export default inject(
+  mobxHelper.injectFrom(
+    'myTraining.myTrainingService', 'myTraining.myStampService', 'shared.filterBoxService')
+)(withRouter(observer(LineHeaderContainerV2)));
 
 /* globals */
 const writeExcelFile = (xlsxList: MyXlsxList, filename: MyXlsxFilename) => {
   const excel = XLSX.utils.json_to_sheet(xlsxList);
   const temp = XLSX.utils.book_new();
-
   XLSX.utils.book_append_sheet(temp, excel, filename);
   XLSX.writeFile(temp, `${filename}.xlsx`);
 };
 
 /* types */
-export type MyXlsxList = InProgressXlsxModel[] | CompletedXlsxModel[] | MyStampXlsxModel[];
+export type MyXlsxList =
+  | InProgressXlsxModel[]
+  | CompletedXlsxModel[]
+  | MyStampXlsxModel[];
 
 enum MyXlsxFilename {
   InProgress = 'Learning_InProgress',
   Completed = 'Learning_Completed',
   EarnedStampList = 'MyPage_MyStamp',
-  None = ''
+  None = '',
 }

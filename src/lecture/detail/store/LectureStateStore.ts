@@ -1,8 +1,11 @@
 import LectureState from '../viewModel/LectureState';
 import { createStore } from './Store';
 
-const [setLectureState, onLectureState, getLectureState] = createStore<
-  LectureState
->();
+const [
+  setLectureState,
+  onLectureState,
+  getLectureState,
+  useLectureState,
+] = createStore<LectureState>();
 
-export { setLectureState, onLectureState, getLectureState };
+export { setLectureState, onLectureState, getLectureState, useLectureState };

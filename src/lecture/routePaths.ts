@@ -1,19 +1,16 @@
-
 import queryString from 'query-string';
 
-
 interface OptionalParams {
-  programLectureId?: string,
-  courseLectureId?: string,
-  postCourseLectureId?: string
+  programLectureId?: string;
+  courseLectureId?: string;
+  postCourseLectureId?: string;
 }
-
 
 function getQueryParams(optionalParams: OptionalParams = {}) {
   //
   const queryParams = queryString.stringify(optionalParams);
 
-  return queryParams && `?${queryParams}` || '';
+  return (queryParams && `?${queryParams}`) || '';
 }
 
 export default {
@@ -21,41 +18,42 @@ export default {
   collegeLectures: (collegeId: string) =>
     `/lecture/college/${collegeId}/channels`,
 
-  collegeLecturesPage: (pageNo: number) =>
-    `./${pageNo}`,
+  collegeLecturesPage: (pageNo: number) => `./${pageNo}`,
 
   channelLectures: (collegeId: string, channelId: string) =>
     `/lecture/college/${collegeId}/channel/${channelId}`,
 
   courseOverviewPrev: (
-    collegeId: string, coursePlanId: string, serviceType: string, serviceId: string, { programLectureId, courseLectureId }: OptionalParams = {}
-  ) => `/lecture/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ programLectureId, courseLectureId })}`,
-
-  courseOverview: (
-    cineroomId: string, collegeId: string, coursePlanId: string, serviceType: string, serviceId: string,
+    collegeId: string,
+    coursePlanId: string,
+    serviceType: string,
+    serviceId: string,
     { programLectureId, courseLectureId }: OptionalParams = {}
-  ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ programLectureId, courseLectureId })}`,
+  ) =>
+    `/lecture/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams(
+      { programLectureId, courseLectureId }
+    )}`,
 
-  preCourseOverview: (
-    cineroomId: string, collegeId: string, coursePlanId: string, serviceType: string, serviceId: string,
-    { postCourseLectureId }: OptionalParams = {}
-  ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ postCourseLectureId })}`,
+  courseOverview: (cardId: string) => `/lecture/detail/card/${cardId}/view`,
 
   lectureCardOverviewPrev: (
-    collegeId: string, cubeId: string, lectureCardId: string, { programLectureId, courseLectureId }: OptionalParams = {}
-  ) => `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${getQueryParams({ programLectureId, courseLectureId })}`,
+    collegeId: string,
+    cubeId: string,
+    lectureCardId: string,
+    { programLectureId, courseLectureId }: OptionalParams = {}
+  ) =>
+    `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${getQueryParams(
+      { programLectureId, courseLectureId }
+    )}`,
 
-  lectureCardOverview: (
-    cineroomId: string, collegeId: string, cubeId: string, lectureCardId: string, { programLectureId, courseLectureId }: OptionalParams = {}
-  ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${getQueryParams({ programLectureId, courseLectureId })}`,
+  lectureCardOverview: (cardId: string, cubeId: string) =>
+    `/lecture/detail/card/${cardId}/cube/${cubeId}/view`,
 
   // Recommend
-  recommend: () =>
-    `/lecture/recommend`,
+  recommend: () => `/lecture/recommend`,
 
   recommendChannelLectures: (channelId: string) =>
     `/lecture/recommend/channel/${channelId}`,
 
-  currentPage: (pageNo: number) =>
-    `./${pageNo}`,
+  currentPage: (pageNo: number) => `./${pageNo}`,
 };

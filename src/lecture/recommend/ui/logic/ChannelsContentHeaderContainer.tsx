@@ -4,13 +4,17 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Icon, Label } from 'semantic-ui-react';
+import { Button, Icon, Label } from 'semantic-ui-react';
 import { ContentHeader, FavoriteChannelChangeModal } from 'shared';
 import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import { Area } from 'tracker/model';
+import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand';
+import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
+import { SkProfileModel } from 'profile/model';
 
 
 interface Props extends RouteComponentProps {
@@ -20,6 +24,10 @@ interface Props extends RouteComponentProps {
   channels: ChannelModel[]
 }
 
+interface States {
+  companyCode: string;
+}
+
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
   'profile.skProfileService',
@@ -27,7 +35,12 @@ interface Props extends RouteComponentProps {
 ))
 @observer
 @reactAutobind
-class ChannelsContentHeaderContainer extends Component<Props> {
+class ChannelsContentHeaderContainer extends Component<Props, States> {
+
+  state = {
+    companyCode: ''
+  }
+
   //
   componentDidMount(): void {
     this.init();
@@ -37,9 +50,13 @@ class ChannelsContentHeaderContainer extends Component<Props> {
     //
     const { skProfileService, collegeLectureCountService } = this.props;
 
-    skProfileService!.findSkProfile();
+    skProfileService!.findSkProfile()
+    .then((profile: SkProfileModel) => {
+      this.setState({companyCode: profile.member.companyCode})
+    })
     skProfileService!.findStudySummary();
     collegeLectureCountService!.findCollegeLectureCounts();
+    //여기서?????? 최근학습중인 채널????
   }
 
   onClickActionLog(text: string) {
@@ -51,13 +68,16 @@ class ChannelsContentHeaderContainer extends Component<Props> {
     //
     return (
       <Label className="onlytext" onClick={() => this.onClickActionLog('관심 Channel')}>
-        <Icon className="channel16" /><span><a>관심 Channel</a></span>
+        <span className="personal-channel-tit">
+          <a>관심채널</a>
+        </span>
       </Label>
     );
   }
 
   render() {
     //
+    const { companyCode } = this.state;
     const { skProfileService, collegeLectureCountService, channels } = this.props;
     const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
     const { member } = skProfile;
@@ -67,7 +87,10 @@ class ChannelsContentHeaderContainer extends Component<Props> {
     );
 
     return (
-      <ContentHeader className="content-division">
+      <ContentHeaderRecommand
+        className="content-division"
+        dataArea={Area.RECOMMEND_INFO}
+      >
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             image={skProfile.photoFilePath || profileImg}
@@ -76,11 +99,44 @@ class ChannelsContentHeaderContainer extends Component<Props> {
             department={member.department}
             imageEditable={false}
             myPageActive
+            type="Recommend"
           />
+        </ContentHeader.Cell>
+        <ContentHeader.Cell inner>
+          { companyCode && (
+            <ChannelsHeaderInfoContainer companyCode={companyCode}/>
+          )}
+        {/* <div className="recommend-info">
+          <div className="personal-channel-list">
+            <span>최근 학습중인 채널</span>
+            <Button className="toggle toggle4" aria-pressed="false">
+              AI Manufacturing Press
+            </Button>
+            <Button className="toggle toggle4" aria-pressed="false">
+              Culture &#38; Value
+            </Button>
+            <Button className="toggle toggle4" aria-pressed="false">
+              CLX University
+            </Button>
+          </div>
+          <div className="personal-channel-list">
+            <span>우리 회사 인기 채널</span>
+            <Button className="toggle toggle4" aria-pressed="false">
+              GC Green Channel
+            </Button>
+            <Button className="toggle toggle4" aria-pressed="false">
+              SK C&#38;C 공통
+            </Button>
+            <Button className="toggle toggle4" aria-pressed="false">
+              AI Manufacturing Press AI Manufacturing Press
+            </Button>
+          </div>
+        </div> */}
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
           <ContentHeader.RecommendItem
             top={
+              //여기안에 관심 Channel 들어있는데 어떻게 처리할지
               <FavoriteChannelChangeModal
                 trigger={this.getFavoriteChannelButton()}
                 favorites={favoriteChannels}
@@ -91,7 +147,7 @@ class ChannelsContentHeaderContainer extends Component<Props> {
             favoriteChannelCount={channels.length || 0}
           />
         </ContentHeader.Cell>
-      </ContentHeader>
+      </ContentHeaderRecommand>
     );
   }
 }

@@ -1,67 +1,28 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import LectureWebpage from '../../viewModel/LectureWebpage';
-import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
 import { Document, Page } from 'react-pdf';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { patronInfo } from '@nara.platform/dock';
-import { Field } from 'lecture/shared/ui/view/LectureElementsView';
-import { conforms, forEach } from 'lodash';
-import { object } from '@storybook/addon-knobs';
-import DefaultImg from '../../../../style/media/default-thumbnail.png';
 import { getPublicUrl } from 'shared/helper/envHelper';
-import { useHistory, useLocation } from 'react-router-dom';
-import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
-import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
+import { useHistory } from 'react-router-dom';
 import LearningState from 'lecture/detail/model/LearningState';
-import { setLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
-import { LectureStructureCourseItem } from 'lecture/detail/viewModel/LectureStructure';
-import { useLectureState } from '../../service/useLectureState/useLectureState';
+import LectureParams from '../../viewModel/LectureParams';
+import { useNextContent } from '../../service/useNextContent';
+import { LectureStructureCubeItem } from '../../viewModel/LectureStructure';
+import { findCubeDetailCache } from '../../api/cubeApi';
 import { reactAlert } from '@nara.platform/accent';
-import {
-  getLectureState,
-  setLectureState,
-} from '../../store/LectureStateStore';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
-
-// http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG0001c/cube/CUBE-2ls/lecture-card/LECTURE-CARD-29d
-
-// 파일 다운로드
-//const downloadDepotFile = (depotFileId: string) => {};
-//depot.downloadDepotFile(depotFileId);
-
-//상단 Select 박스 선택시 호출
-//setPdfUrl('/api/depot/depotFile/flow/download/'+ depotFileId);
 interface LectureDocumentsViewProps {
   fileBoxId: string;
-  hookAction: () => void;
-  url?: string;
-  title?: string;
-  description?: string;
-  image?: string;
   learningState: LearningState | undefined;
-  params: LectureRouterParams | undefined;
+  params: LectureParams | undefined;
 }
-
-// 차후 진행 내역
-// 파일 형식 pdf = 페이지 끝까지 확인
-// 파일 형식 !pdf = 다운로드
-
-//FIXME SSO 로그인된 상태가 아니면 동작 안 함.
-// const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({params,hookAction}) {
 
 const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function LectureDocumentsView({
   fileBoxId,
-  url,
-  title,
-  description,
-  image,
-  hookAction,
   learningState,
   params,
 }) {
-  const API_URL: string = '/api/depot/depotFile/flow/download/';
-
   const [files, setFiles] = useState<DepotFileViewModel[]>();
   const [pdfUrl, setPdfUrl] = useState<string[]>([]);
   const [file, setFile] = useState<any>();
@@ -70,56 +31,42 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const [courseName, setCourseName] = useState<any>([]);
   const [courseIdx, setCourseIdx] = useState<number>(0);
   const [pageWidth, setPageWidth] = useState<number>(0);
-  const [progressAlert, setProgressAlert] = useState<boolean>(false);
-  const [testSurveyYn, setTestSurveyYn] = useState<boolean>(false);
-  const [readyLecture, setReadyLecture] = useState<boolean>(false);
-  const [docuAlertClick, setDocuAlertClick] = useState<boolean>(false);
-
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    const mLectureState = getLectureState();
-    if (
-      mLectureState?.type === 'Documents' &&
-      mLectureState?.learningState === 'Progress' &&
-      !progressAlert
-    ) {
-      setProgressAlert(true);
-    }
-    return () => {
-      setLectureState();
-    };
-  }, [pathname]);
-
-  useEffect(() => {
-    if (docuAlertClick && testSurveyYn) {
-      setDocuAlertClick(false);
-      setTestSurveyYn(false);
-      reactAlert({
-        title: '',
-        message: `Test / Report가 포함된 과정입니다. <p>응시 후 결과에 따라 이수 처리 여부가 결정되니<p> 반드시 응시하시기 바랍니다.`,
-      });
-    }
-  }, [docuAlertClick, testSurveyYn]);
-
-  useEffect(() => {
-    if (readyLecture) {
-      if (progressAlert) {
-        setProgressAlert(false);
-        reactAlert({
-          title: '',
-          message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.`,
-          onClose: () =>
-            setTimeout(() => {
-              setDocuAlertClick(true);
-            }, 500),
-        });
-      }
-    }
-  }, [progressAlert, readyLecture]);
+  const [numPages, setNumPages] = useState(0); // 총 페이지
+  const [pageNumber, setPageNumber] = useState(1); // 현재 페이지
+  const [bar, setBar] = useState<number>(4.7);
+  const nextContent = useNextContent();
 
   const headerWidth: any = useRef();
   const nameList: string[] = [''];
+
+  useEffect(() => {
+    if (params?.cubeId === undefined) {
+      return;
+    }
+    if (learningState !== 'Passed') {
+      findCubeDetailCache(params?.cubeId).then(c => {
+        if (c !== undefined) {
+          const { cube } = c;
+          if (
+            cube.hasTest ||
+            (cube.reportName !== null &&
+              cube.reportName !== undefined &&
+              cube.reportName !== '')
+          ) {
+            reactAlert({
+              title: '',
+              message: `Test / Report가 포함된 과정입니다. <p>응시 후 결과에 따라 이수 처리 여부가 결정되니<p> 반드시 응시하시기 바랍니다.`,
+            });
+          } else {
+            reactAlert({
+              title: '',
+              message: `Document 유형의 과정은 우측 상단 '학습완료' 버튼을 클릭하시고 문서를 다운로드 받아야 학습이 완료됩니다.`,
+            });
+          }
+        }
+      });
+    }
+  }, [params?.cardId, params?.cubeId]);
 
   // '/api/depot/depotFile/flow/download/' + filesArr[0].id
 
@@ -146,17 +93,17 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         }
       }
     });
-  }, [fileBoxId, pdfUrl, params]);
+  }, [fileBoxId, pdfUrl, params?.cubeId]);
 
   for (let i = 0; i < courseName.length; ++i) {
     nameList[i] = courseName[i].name;
   }
 
-  const updateHeaderWidth = () => {
+  const updateHeaderWidth = useCallback(() => {
     if (headerWidth && headerWidth.current && headerWidth.current.clientWidth) {
       setPageWidth(headerWidth.current?.clientWidth!);
     }
-  };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -164,12 +111,13 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       setFiles([]);
       setFile('');
     };
-  }, []);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     updateHeaderWidth();
     window.addEventListener('resize', updateHeaderWidth);
-  }, []);
+    return () => window.removeEventListener('resize', updateHeaderWidth);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     if (fileBoxId && fileBoxId.length) {
@@ -177,17 +125,11 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
     }
   }, [fileBoxId]);
 
-  const [numPages, setNumPages] = useState(0); // 총 페이지
-  const [pageNumber, setPageNumber] = useState(1); // 현재 페이지
-  const [bar, setBar] = useState<number>(4.7);
-  const [nextContentsPath, setNextContentsPath] = useState<string>();
-  const [nextContentsName, setNextContentsName] = useState<string>();
-
-  const onDocumentLoadSuccess = (pdf: any) => {
+  const onDocumentLoadSuccess = useCallback((pdf: any) => {
     setNumPages(pdf.numPages);
-  };
+  }, []);
 
-  const prev = () => {
+  const prev = useCallback(() => {
     const value = (100 / numPages) * pageNumber;
 
     if (pageNumber > 1) {
@@ -198,9 +140,9 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       }
       setPageNumber(pageNumber - 1);
     }
-  };
+  }, [numPages, pageNumber]);
 
-  const next = () => {
+  const next = useCallback(() => {
     const value = (100 / numPages) * pageNumber + 1;
 
     if (pageNumber < numPages) {
@@ -211,16 +153,15 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
       }
       setPageNumber(pageNumber + 1);
     }
-  };
+  }, [numPages, pageNumber]);
 
   useEffect(() => {
     return () => {
       setPageNumber(1);
     };
-  }, [fileBoxId, pdfUrl, params]);
+  }, [fileBoxId, pdfUrl, params?.cubeId]);
 
   useEffect(() => {
-    // setTimeout(() => {
     setFile({
       url: pdfUrl[courseIdx],
       httpHeaders: {
@@ -228,19 +169,19 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
         Authorization: 'Bearer ' + localStorage.getItem('nara.token'),
       },
     });
-    // }, 500);
-  }, [pdfUrl, courseIdx, params]);
+  }, [pdfUrl, courseIdx, params?.cubeId]);
 
   const indexClick = (idx: number) => {
     setCourseIdx(idx);
     setOpenToggle(!openToggle);
-    // setFileCheck(courseName[idx]);
-    // setFileDiv(nameList[courseIdx]);
   };
 
   const downloadFile = () => {
     depot.downloadDepotFile(files![courseIdx].id);
-    hookAction();
+    const action = document.getElementById('ACTION');
+    if (action !== null) {
+      action.click();
+    }
   };
 
   const history = useHistory();
@@ -248,138 +189,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
   const nextContents = useCallback((path: string) => {
     history.push(path);
   }, []);
-
-  useEffect(() => {
-    const lectureStructure = getLectureStructure();
-    if (lectureStructure) {
-      if (lectureStructure.cube?.type == 'CUBE') {
-        setReadyLecture(true);
-        // Documents && Progress && Cube 이고 test 나 survey 가 있는경우
-
-        //테스트나 설문이 있는 경우
-        const testId = lectureStructure.cube.test?.id;
-        const report = lectureStructure.cube.report?.type;
-        if (testId || report) {
-          setTestSurveyYn(true);
-        }
-      } else if (lectureStructure.course?.type == 'COURSE') {
-        //일반 코스 로직
-        lectureStructure.items.map(item => {
-          if (item.type === 'CUBE') {
-            setReadyLecture(true);
-            if (lectureStructure.cubes) {
-              const currentCube = lectureStructure.cubes.find(
-                cube => cube.cubeId == params?.contentId
-              );
-
-              if (currentCube) {
-                const nextCubeOrder = currentCube.order + 1;
-
-                const nextCube = lectureStructure.cubes.find(
-                  cube => cube.order == nextCubeOrder
-                );
-                if (nextCube) {
-                  setNextContentsPath(nextCube.path);
-                  setNextContentsName(nextCube.name);
-                }
-
-                //토론하기 항목이 있는 경우
-                const nextDiscussion = lectureStructure.discussions.find(
-                  discussion => discussion.order == nextCubeOrder
-                );
-                if (nextDiscussion) {
-                  setNextContentsPath(nextDiscussion.path);
-                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
-                }
-
-                // Documents && Progress && Cube 이고 test 나 survey 가 있는경우
-
-                //테스트나 설문이 있는 경우
-                const testId = currentCube.test?.id;
-                const report = currentCube.report?.type;
-                if (testId || report) {
-                  setTestSurveyYn(true);
-                }
-              }
-            }
-          }
-          return null;
-        });
-      } else if (lectureStructure.course?.type == 'PROGRAM') {
-        lectureStructure.items.map(item => {
-          if (item.type === 'COURSE') {
-            const course = item as LectureStructureCourseItem;
-            if (course.cubes) {
-              const currentCube = course.cubes.find(
-                cube => cube.cubeId == params?.contentId
-              );
-
-              if (currentCube) {
-                const nextCubeOrder = currentCube.order + 1;
-
-                const nextCube = course.cubes.find(
-                  cube => cube.order == nextCubeOrder
-                );
-                if (nextCube) {
-                  setNextContentsPath(nextCube.path);
-                  setNextContentsName(nextCube.name);
-                }
-
-                //토론하기 항목이 있는 경우
-                const nextDiscussion = course.discussions?.find(
-                  discussion => discussion.order == nextCubeOrder
-                );
-
-                if (nextDiscussion) {
-                  setNextContentsPath(nextDiscussion.path);
-                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
-                }
-              }
-            }
-          }
-          if (item.type === 'CUBE') {
-            setReadyLecture(true);
-            if (lectureStructure.cubes) {
-              const currentCube = lectureStructure.cubes.find(
-                cube => cube.cubeId == params?.contentId
-              );
-
-              if (currentCube) {
-                const nextCubeOrder = currentCube.order + 1;
-
-                const nextCube = lectureStructure.cubes.find(
-                  cube => cube.order == nextCubeOrder
-                );
-                if (nextCube) {
-                  setNextContentsPath(nextCube.path);
-                  setNextContentsName(nextCube.name);
-                }
-
-                //토론하기 항목이 있는 경우
-                const nextDiscussion = lectureStructure.discussions.find(
-                  discussion => discussion.order == nextCubeOrder
-                );
-                if (nextDiscussion) {
-                  setNextContentsPath(nextDiscussion.path);
-                  setNextContentsName('[토론하기]'.concat(nextDiscussion.name));
-                }
-
-                // Documents && Progress && Cube 이고 test 나 survey 가 있는경우
-
-                //테스트나 설문이 있는 경우
-                const testId = currentCube.test?.id;
-                const report = currentCube.report?.type;
-                if (testId || report) {
-                  setTestSurveyYn(true);
-                }
-              }
-            }
-          }
-          return null;
-        });
-      }
-    }
-  }, [getLectureStructure()]);
 
   return (
     <>
@@ -469,16 +278,16 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
 
             {pageNumber === numPages &&
               learningState === 'Passed' &&
-              nextContentsPath && (
+              nextContent !== undefined && (
                 <div className="video-overlay">
                   <div className="video-overlay-btn">
-                    <button onClick={() => nextContents(nextContentsPath)}>
+                    <button onClick={() => nextContents(nextContent.path)}>
                       <img src={playerBtn} />
                     </button>
                   </div>
                   <div className="video-overlay-text">
                     <p>다음 학습 이어하기</p>
-                    <h3>{nextContentsName}</h3>
+                    <h3>{(nextContent as LectureStructureCubeItem).name}</h3>
                   </div>
                 </div>
               )}
@@ -515,22 +324,6 @@ const LectureDocumentsView: React.FC<LectureDocumentsViewProps> = function Lectu
           </div>
         </div>
       </div>
-
-      {/* {url !== '' && url !== undefined && (
-        <div className="lms-open-graph">
-          <img src={image ? image : DefaultImg} className="lms-open-image" />
-
-          <div className="lms-open-con">
-            <div className="lms-open-title">{title}</div>
-
-            <div className="lms-open-copy">{description}</div>
-
-            <a href={url} className="lms-open-link" type="_blank">
-              {url}
-            </a>
-          </div>
-        </div>
-      )} */}
     </>
   );
 };

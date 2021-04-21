@@ -1,99 +1,45 @@
+import { includes } from 'lodash';
 import moment from 'moment';
-import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
-import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType } from 'myTraining/ui/model';
-import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
+import { Offset } from '@nara.platform/accent';
+import { FilterCondition } from '../../myTraining/model/FilterCondition';
+import { MyLearningContentType } from '../../myTraining/ui/model/MyLearningContentType';
+import { MyContentType } from '../../myTraining/ui/model/MyContentType';
+import { CardRdo } from '../detail/model/CardRdo';
 
 class LectureFilterRdoModelV2 {
-
-  // default :: offset = 0 / limit = 20
-  offset: Offset = {
-    offset: 0,
-    limit: 20
-  };
-
-  // student 정보를 조회하는 것은 denizenType 의 keyString을 기본적으로 사용함.
-  denizenKey: DenizenKey = {
-    keyString: patronInfo.getDenizenId() || '',
-    patronType: PatronType.Denizen,
-  };
-
-  contentType: MyContentType = MyLearningContentType.Required; // 탭 전환될 때마다 전달되는 contentType
-
-  /*
-    MultiFilterBox 에서 선택되는 검색 조건들.
-  */
-  serviceType: string = ''; // Course || Card
-  viewType: ViewType = '';  // 코스만보기 || 전체보기
-  collegeIds: string[] = []; // 컬리지
-  cubeTypes: string[] = []; // 교육유형
-  difficultyLevels: string[] = []; // 난이도
+  cardTypes: string[] = [];
+  contentType: MyContentType = MyLearningContentType.Required;
+  collegeIds: string[] = [];
+  difficultyLevels: string[] = [];
   learningTimes: string[] = [];
-  organizers: string[] = []; // 교육기관
-  required: string = ''; // 핵인싸 ('선택안함' 또한 false 로 간주함.)
+  organizers: string[] = [];
+  required: string = '';
   certifications: string[] = [];
   startDate: string = '';
   endDate: string = '';
   applying: boolean = false;
 
-  // 기본생성자는 offset 및 denizenKey만 초기화 함.
+  offset: Offset = {
+    offset: 0,
+    limit: 20
+  };
+
   constructor(lectureFilterRdo?: LectureFilterRdoModelV2) {
     if (lectureFilterRdo) {
       Object.assign(this, lectureFilterRdo);
     }
   }
 
-  // offset, denizenKey, contentType 만을 검색 조건으로 함.
-  static create(contentType: MyContentType, serviceType?: string) {
-    if (serviceType) {
-      return new LectureFilterRdoModelV2({ contentType, serviceType } as LectureFilterRdoModelV2);
-    }
+  static create(contentType: MyContentType) {
     return new LectureFilterRdoModelV2({ contentType } as LectureFilterRdoModelV2);
-  }
-
-  static createWithConditions(
-    collegeIds: string[],
-    cubeTypes: string[],
-    difficultyLevels: string[],
-    learningTimes: string[],
-    organizers: string[],
-    required: string,
-    certifications: string[],
-    serviceType: string,
-    startDate: string,
-    endDate: string,
-    applying: boolean
-  ) {
-    return new LectureFilterRdoModelV2({
-      collegeIds,
-      cubeTypes,
-      difficultyLevels,
-      learningTimes,
-      organizers,
-      required,
-      certifications,
-      serviceType,
-      startDate,
-      endDate,
-      applying
-    } as LectureFilterRdoModelV2);
   }
 
   changeContentType(contentType: MyContentType) {
     this.contentType = contentType;
   }
 
-  changeServiceType(serviceType: string) {
-    this.serviceType = serviceType;
-  }
-
-  changeViewType(viewType: ViewType) {
-    this.viewType = viewType;
-  }
-
-  changeConditions(conditions: FilterCondition) {
-    this.setCubeTypeAndServiceType(conditions);
+  setByConditions(conditions: FilterCondition) {
+    this.cardTypes = conditions.learningTypes;
     this.collegeIds = conditions.collegeIds;
     this.difficultyLevels = conditions.difficultyLevels;
     this.learningTimes = conditions.learningTimes;
@@ -105,7 +51,7 @@ class LectureFilterRdoModelV2 {
     this.applying = conditions.applying === 'true' ? true : false;
   }
 
-  changeOffset(offset: Offset) {
+  setOffset(offset: Offset) {
     this.offset = offset;
   }
 
@@ -113,33 +59,26 @@ class LectureFilterRdoModelV2 {
     this.offset = { offset: 0, limit: 20 };
   }
 
-  setCubeTypeAndServiceType(conditions: FilterCondition) {
-    /*
-      learningTypes 에 'Course' 가 포함될 경우,
-      cubeTypes 에는 'Course'를 제외하며 ServiceType 에 'Course'를 바인딩함.
-    */
-    if (conditions.learningTypes.includes('Course')) {
-      this.cubeTypes = conditions.learningTypes.filter(learningType => learningType !== 'Course');
-      this.serviceType = 'Course';
-    } else {
-      this.cubeTypes = conditions.learningTypes;
-      this.serviceType = conditions.serviceType;
-    }
-  }
+  toCardRdo(): CardRdo {
+    const hasStamp = includes(this.certifications, 'stamp') || undefined;
+    const hasBadge = includes(this.certifications, 'badge') || undefined;
+    const startLearningDate = this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : '';
+    const endLearningDate = this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : '';
 
-  getFilterCount() {
-    const requiredCount = this.required && 1 || 0;
-    const serviceTypeCount = this.serviceType && 1 || 0;
-    const learningScheduleCount = this.startDate && this.endDate && 1 || 0;
-    const applyingCount = this.applying && 1 || 0;
-
-    return this.collegeIds.length +
-      this.cubeTypes.length +
-      this.difficultyLevels.length +
-      this.learningTimes.length +
-      this.organizers.length +
-      this.certifications.length +
-      requiredCount + serviceTypeCount + learningScheduleCount + applyingCount;
+    return {
+      type: this.cardTypes,
+      collegeIds: this.collegeIds.join(','),
+      difficultyLevels: this.difficultyLevels.join(','),
+      learningTimeRanges: this.learningTimes.join(','),
+      required: true,
+      hasStamp,
+      hasBadge,
+      limit: this.offset.limit,
+      offset: this.offset.offset,
+      searchable: true,
+      startLearningDate,
+      endLearningDate,
+    };
   }
 }
 

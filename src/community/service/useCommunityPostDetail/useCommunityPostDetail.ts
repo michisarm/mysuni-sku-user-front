@@ -60,12 +60,6 @@ export function useCommunityPostDetail(communityId: string, postId: string): [Po
     }, subscriberId);
   }, [subscriberId]);
 
-  useEffect(() => {
-    if (communityId === undefined || postId === undefined) {
-      return
-    }
-    getCommunityPostDetailWithIncreaseReadCount(communityId, postId);
-  }, [communityId, postId]);
 
   return [PostDetailValue];
 }

@@ -9,6 +9,8 @@ import CardGroup, {
 import BoxCardView from '../../../../shared/Lecture/ui/view/BoxCardView';
 import LectureRelations from '../../../viewModel/LectureOverview/LectureRelations';
 import lectureRoutePaths from '../../../../routePaths';
+import CardView from '../../../../shared/Lecture/ui/view/CardVIew';
+import { Area } from 'tracker/model';
 
 interface LectureRelationsViewProps {
   lectureRelations: LectureRelations;
@@ -40,15 +42,7 @@ const LectureView: React.FC<LectureViewProps> = function LectureView({
     (_: any) => {
       const cineroom = patronInfo.getCineroomByDomain(model)!;
 
-      history.push(
-        lectureRoutePaths.courseOverview(
-          cineroom.id,
-          model.category.college.id,
-          model.coursePlanId,
-          model.serviceType,
-          model.serviceId
-        )
-      );
+      history.push(lectureRoutePaths.courseOverview(model.cardId));
     },
     [history, model]
   );
@@ -88,7 +82,11 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
   lectureRelations,
 }) {
   return (
-    <div className="badge-detail border-none" id="lms-related-process">
+    <div
+      className="badge-detail border-none"
+      id="lms-related-process"
+      data-area={Area.CARD_RELATION}
+    >
       <div className="ov-paragraph">
         <div className="section-head">
           <div className="title">
@@ -102,12 +100,17 @@ const LectureRelationsView: React.FC<LectureRelationsViewProps> = function Lectu
         </div>
         <div className="scrolling">
           <ul className="belt">
-            {lectureRelations.lectures.map(lecture => {
+            {lectureRelations.cards.map(({ card, cardRelatedCount }) => {
               return (
-                <LectureView
-                  model={new LectureModel(lecture)}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                />
+                <li key={card.id}>
+                  <div className="ui cards box-cards">
+                    <CardView
+                      cardId={card.id}
+                      {...card}
+                      {...cardRelatedCount}
+                    />
+                  </div>
+                </li>
               );
             })}
           </ul>

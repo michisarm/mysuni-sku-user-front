@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-
+import { getAxios } from 'shared/api/Axios';
+import findAvailablePageElements from '../../../../../lecture/shared/api/arrangeApi';
+import { PageElement } from '../../../../../lecture/shared/model/PageElement';
 import { SkProfileService } from 'profile/stores';
 import { NotieService } from 'notie/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { Image } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import HeaderAlarmView from '../view/HeaderAlarmView';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -17,9 +20,10 @@ interface Props extends RouteComponentProps {
 
 interface State {
   balloonShowClass: string;
+  menuAuth: PageElement[];
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService','notie.notieService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'notie.notieService'))
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
@@ -27,6 +31,7 @@ class ProfileContainer extends Component<Props, State> {
 
   state = {
     balloonShowClass: '',
+    menuAuth: [],
   };
 
   //
@@ -38,14 +43,26 @@ class ProfileContainer extends Component<Props, State> {
 
     this.findNoReadCount();
     setInterval(() => {
-      this.findNoReadCount();  // 5분마다 안 읽은 알림이 있는지 조회
+      this.findNoReadCount(); // 5분마다 안 읽은 알림이 있는지 조회
     }, 3000000);
-    
+
     document.addEventListener('mousedown', this.handleClickOutside);
+
+    this.avaible();
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  async avaible() {
+    const response = await findAvailablePageElements();
+
+    if (response) {
+      this.setState({
+        menuAuth: response,
+      });
+    }
   }
 
   handleClickOutside(e: MouseEvent) {
@@ -77,14 +94,16 @@ class ProfileContainer extends Component<Props, State> {
     //window.location.href = 'https://proxy.gdisso.sk.com/nsso-authweb/logoff.do?ssosite=mysuni.sk.com&returnURL=https://mysuni.sk.com';
   }
 
-  routeToAlarmBackLink(backLink:string) {
+  routeToAlarmBackLink(backLink: string) {
     this.props.history.push(backLink);
   }
 
   handleClickAlarm() {
     const { notieService } = this.props;
-    notieService!.findAllMyNotieMentions().then(() => { // 알림 목록 화면 오픈시 안읽은 알림 보여주고
-      notieService!.readAllMyNotieMentions().then(() => { // 보여준 이후에 읽음 처리
+    notieService!.findAllMyNotieMentions().then(() => {
+      // 알림 목록 화면 오픈시 안읽은 알림 보여주고
+      notieService!.readAllMyNotieMentions().then(() => {
+        // 보여준 이후에 읽음 처리
         this.findNoReadCount(); // 초기화
       });
     });
@@ -92,17 +111,20 @@ class ProfileContainer extends Component<Props, State> {
 
   findNoReadCount() {
     const { notieService } = this.props;
-    notieService!.findMyNotieNoReadMentionCount();  // 안 읽은 알림이 있는지 조회
+    notieService!.findMyNotieNoReadMentionCount(); // 안 읽은 알림이 있는지 조회
   }
 
   render() {
     //
     // const { skProfileService } = this.props;
     const { skProfile } = SkProfileService.instance;
-    const { myNotieMentions, myNotieNoReadMentionCount } = NotieService.instance;
+    const {
+      myNotieMentions,
+      myNotieNoReadMentionCount,
+    } = NotieService.instance;
     const { member } = skProfile;
     const { balloonShowClass } = this.state;
-
+    const { menuAuth } = this.state;
     return (
       <div className="g-info">
         <button
@@ -116,19 +138,29 @@ class ProfileContainer extends Component<Props, State> {
           </span>
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
         </button>
-        <div className={`balloon-pop ${balloonShowClass}`}>
+
+        <div
+          className={`balloon-pop ${balloonShowClass}`}
+          data-area={Area.HEADER_PROFILE}
+        >
           <ul>
-            <li>
-              <a
-                href="#"
-                onClick={() =>
-                  this.props.history.push(myTrainingRoutePaths.myPage())
-                }
-              >
-                <i aria-hidden="true" className="balloon mypage icon" />
-                <span>My Page</span>
-              </a>
-            </li>
+            {menuAuth.some(
+              (menuAuth: PageElement) =>
+                menuAuth.position === 'TopMenu' && menuAuth.type === 'MyPage'
+            ) && (
+                <li>
+                  <a
+                    href="#"
+                    onClick={e => {
+                      this.props.history.push(myTrainingRoutePaths.myPage());
+                      e.preventDefault();
+                    }}
+                  >
+                    <i aria-hidden="true" className="balloon mypage icon" />
+                    <span>My Page</span>
+                  </a>
+                </li>
+              )}
             {/* <li>
               <a
                 href="#"
@@ -141,6 +173,7 @@ class ProfileContainer extends Component<Props, State> {
                 <span>Community Profile</span>
               </a>
             </li> */}
+
             <li>
               <button type="button" onClick={this.onLogout}>
                 <i aria-hidden="true" className="balloon logout icon" />
@@ -150,12 +183,12 @@ class ProfileContainer extends Component<Props, State> {
           </ul>
         </div>
 
-        {/* <HeaderAlarmView
+        <HeaderAlarmView
           myNotieMentions={myNotieMentions}
           myNotieNoReadMentionCount={myNotieNoReadMentionCount}
           routeToAlarmBackLink={this.routeToAlarmBackLink}
           handleClickAlarm={this.handleClickAlarm}
-        /> */}
+        />
       </div>
     );
   }

@@ -12,10 +12,11 @@ import {
   requestAppendMyCommunityList,
   requestMyCommunityList,
 } from '../../../service/useMyCommunityIntro/utility/requestMyCommunityIntro';
+import { Area } from 'tracker/model';
 
 const SORT_OPTIONS = [
-  { key: 'memberCreatedTime', value: 'memberCreatedTime', text: '최근가입순' },
   { key: 'lastPostTime', value: 'lastPostTime', text: '최신글순' },
+  { key: 'memberCreatedTime', value: 'memberCreatedTime', text: '최근가입순' },
   { key: 'name', value: 'name', text: '가나다순' },
 ];
 
@@ -57,10 +58,10 @@ function changeSort(_: any, data: DropdownProps) {
   if (myCommunityIntro === undefined) {
     return;
   }
-  const communitiesSort = (data.value || 'memberCreatedTime').toString();
+  const communitiesSort = (data.value || 'lastPostTime').toString();
   setMyCommunityIntro({
     ...myCommunityIntro,
-    communitiesSort
+    communitiesSort,
   });
   requestMyCommunityList();
 }
@@ -72,9 +73,12 @@ function MyCommunityListContainer() {
   }
 
   return (
-    <div className="community-left community-main-left">
+    <div
+      className="community-left community-main-left"
+      data-area={Area.COMMUNITY_MYLIST}
+    >
       <div className="sub-info-box">
-        <div className="commnuity-left-top">
+        <div className="commnuity-left-top scroll">
           <Select
             placeholder="선택해주세요"
             className="dropdown w302 selection"
@@ -83,28 +87,30 @@ function MyCommunityListContainer() {
             onChange={changeSort}
           />
         </div>
-        {myCommunityIntro !== undefined && (
-          <>
-            {myCommunityIntro.communities.map(communityItem => (
-              <CommunityItemView
-                key={communityItem.communityId}
-                {...communityItem}
-              />
-            ))}
-          </>
-        )}
-        {myCommunityIntro.communitiesTotalCount > 
+        <div className="commu-home-scroll">
+          {myCommunityIntro !== undefined && (
+            <>
+              {myCommunityIntro.communities.map(communityItem => (
+                <CommunityItemView
+                  key={communityItem.communityId}
+                  {...communityItem}
+                />
+              ))}
+            </>
+          )}
+        </div>
+        {myCommunityIntro.communitiesTotalCount >
           myCommunityIntro.communitiesOffset && (
-          <div className="more-comments community-side">
-            <Button
-              icon
-              className="left moreview"
-              onClick={requestAppendMyCommunityList}
-            >
-              <Icon className="moreview" /> list more
-            </Button>
-          </div>
-        ) }
+            <div className="more-comments community-side">
+              <Button
+                icon
+                className="left moreview"
+                onClick={requestAppendMyCommunityList}
+              >
+                <Icon className="moreview" /> list more
+              </Button>
+            </div>
+          )}
       </div>
     </div>
   );

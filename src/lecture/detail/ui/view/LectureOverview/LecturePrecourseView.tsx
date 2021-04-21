@@ -2,14 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecourse';
+import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 
 interface CourseViewProps {
-  isRequired: boolean;
+  required: boolean;
   name: string;
-  coursePlanId: string;
-  serviceType: string;
-  serviceId: string;
-  path: string;
+  prerequisiteCardId: string;
 }
 
 interface LecturePrecourseViewProps {
@@ -17,24 +15,26 @@ interface LecturePrecourseViewProps {
 }
 
 const CourseView: React.FC<CourseViewProps> = function CourseView({
-  isRequired,
+  required,
   name,
-  coursePlanId,
-  serviceType,
-  serviceId,
-  path,
+  prerequisiteCardId,
 }) {
-  const to = `${path}/course-plan/${coursePlanId}/${serviceType}/${serviceId}`;
+  const params: LectureParams = {
+    cardId: prerequisiteCardId,
+    viewType: 'view',
+    pathname: '',
+  };
+  const to = toPath(params);
   return (
     <>
       <div className="course-box">
         <div className="bar">
           <div className="tit">
             <span className="ellipsis">
-              {isRequired && (
+              {required && (
                 <span className="course-span-box red-box">필수</span>
               )}
-              {!isRequired && (
+              {!required && (
                 <span className="course-span-box gray-box">선택</span>
               )}
 
@@ -67,9 +67,16 @@ const LecturePrecourseView: React.FC<LecturePrecourseViewProps> = function Lectu
         </div>
       </div>
       <div className="course-cont pre-course">
-        {lecturePrecourse.courses.map((course, key) => (
-          <CourseView key={key} path={lecturePrecourse.path} {...course} />
-        ))}
+        {lecturePrecourse.prerequisiteCards.map(
+          ({ prerequisiteCardId, required, prerequisiteCardName }) => (
+            <CourseView
+              key={prerequisiteCardId}
+              prerequisiteCardId={prerequisiteCardId}
+              required={required}
+              name={prerequisiteCardName}
+            />
+          )
+        )}
       </div>
     </div>
   );

@@ -15,8 +15,13 @@ import RQDLectureService from './shared/present/logic/RQDLectureService';
 import NEWLectureService from './shared/present/logic/NEWLectureService';
 import POPLectureService from './shared/present/logic/POPLectureService';
 import LRSLectureService from './shared/present/logic/LRSLectureService';
+import ENRLectureService from './shared/present/logic/ENRLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
-import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
+import BadgeCardService from '../certification/present/logic/BadgeCardService';
+import BadgeCategoryService from '../certification/present/logic/BadgeCategoryService';
+import BadgeStudentService from '../certification/present/logic/BadgeStudentService';
+import CardStudentService from '../certification/present/logic/CardStudentService';
+
 
 
 export default {
@@ -32,6 +37,7 @@ export default {
     answerSheetService: AnswerSheetService.instance,
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
+    cardStudentService: CardStudentService.instance,
   },
   rqdLecture: {
     rqdLectureService: RQDLectureService.instance,
@@ -45,11 +51,14 @@ export default {
   lrsLecture: {
     lrsLectureService: LRSLectureService.instance,
   },
+  enrLecture: {
+    enrLectureService: ENRLectureService.instance,
+  },
   badge: {
     badgeService: BadgeService.instance,
-  },
-  badgeDetail: {
-    badgeDetailService: BadgeDetailService.instance,
+    badgeCardService: BadgeCardService.instance,
+    badgeCategoryService: BadgeCategoryService.instance,
+    badgeStudentService: BadgeStudentService.instance,
   },
 };
 
@@ -60,6 +69,7 @@ export {
   NEWLectureService,
   POPLectureService,
   LRSLectureService,
+  ENRLectureService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,
@@ -70,5 +80,8 @@ export {
   SurveyCaseService,
   SurveyFormService,
   BadgeService,
-  BadgeDetailService,
+  BadgeCardService,
+  BadgeCategoryService,
+  BadgeStudentService,
+  CardStudentService,
 };

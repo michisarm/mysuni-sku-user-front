@@ -1,55 +1,25 @@
-/**
- * http://ma.mysuni.sk.com/api/action-log-collector/events/study
- * http://ma.mysuni.sk.com/api/lecture/students/flow
- * http://ma.mysuni.sk.com/api/mytraining/mytraining/mytrainings/byState/filterWithJoinedValue
- */
-
-import { getCubeLectureOverview } from 'lecture/detail/service/useLectuerCubeOverview/utility/getCubeLectureOverview';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import React, { Fragment, useEffect } from 'react';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
-import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
-import {
-  setInMyLectureCdo,
-  setLectureComment,
-  setLectureCubeSummary,
-  setLectureDescription,
-  setLectureFile,
-  setLectureInstructor,
-  setLecturePrecourse,
-  setLectureReview,
-  setLectureSubcategory,
-  setLectureTags,
-} from '../../store/LectureOverviewStore';
-import { setLectureState } from '../../store/LectureStateStore';
+import { requestCubeLectureMedia } from '../../service/useLectureMedia/utility/requestCubeLectureMedia';
+import { setLectureMedia } from '../../store/LectureMediaStore';
+import { useLectureParams } from '../../store/LectureParamsStore';
+import { setTranscriptCount } from '../../store/TranscriptCountStore';
 import LectureAudioContainer from './LectureAudioContainer';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 
 function LectureCubeAudioPage() {
-  const params = useLectureRouterParams();
-  const { contentId, lectureId } = params || { contentId: '', lectureId: '' };
+  const params = useLectureParams();
   useEffect(() => {
-    if (params === undefined) {
-      return;
+    if (params?.cubeId !== undefined && params?.cubeType !== undefined) {
+      requestCubeLectureMedia(params.cubeId, params.cubeType);
     }
-    getCubeLectureOverview(contentId, lectureId);
     return () => {
-      setLectureCubeSummary();
-      setLectureDescription();
-      setLectureSubcategory();
-      setLectureTags();
-      setLectureInstructor();
-      setLecturePrecourse();
-      setLectureFile();
-      setLectureComment();
-      setLectureReview();
-      setInMyLectureCdo();
-      setLectureState();
+      setLectureMedia();
+      setTranscriptCount();
     };
-  }, [contentId, lectureId]);
+  }, [params?.cubeId, params?.cubeType]);
 
-  useLectureMedia();
   useCubeViewEvent();
 
   return (

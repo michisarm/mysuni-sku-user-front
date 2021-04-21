@@ -1,18 +1,11 @@
 /* eslint-disable consistent-return */
 
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import { onLectureTestAnswerItem } from '../../store/LectureTestStore';
-import LectureRouterParams from '../../viewModel/LectureRouterParams';
-import {
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-  LectureTestAnswerItem,
-} from '../../viewModel/LectureTest';
-import { useLectureRouterParams } from '../useLectureRouterParams';
+import { LectureTestAnswerItem } from '../../viewModel/LectureTest';
+import { useLectureTest } from './useLectureTest';
 import { getCourseLectureTestAnswer } from './utility/getCourseLectureTest';
-//import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTestAnswer } from './utility/getCubeLectureTest';
 
 type AnswerValue = LectureTestAnswerItem | undefined;
@@ -21,27 +14,32 @@ let subscriberIdRef = 0;
 export function useLectureTestAnswer(): [AnswerValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
   const [answerValue, setAnswerValue] = useState<AnswerValue>();
-  const params = useLectureRouterParams();
+  const params = useLectureParams();
+  const [testItem] = useLectureTest();
 
-  const getCubeTestAnswerItem = useCallback((params: LectureRouterParams) => {
-    getCubeLectureTestAnswer(params);
-  }, []);
+  const getCubeTestAnswerItem = useCallback(() => {
+    if (params !== undefined) {
+      getCubeLectureTestAnswer(params);
+    }
+  }, [params]);
 
-  const getCourseTestAnswerItem = useCallback((params: LectureRouterParams) => {
-    getCourseLectureTestAnswer(params);
-  }, []);
+  const getCourseTestAnswerItem = useCallback(() => {
+    if (params !== undefined) {
+      getCourseLectureTestAnswer(params);
+    }
+  }, [params]);
 
   useEffect(() => {
     if (params === undefined) {
       return;
     }
-    const { contentType } = params;
-    if (contentType === 'cube') {
-      getCubeTestAnswerItem(params);
+    const { cubeId } = params;
+    if (cubeId !== undefined) {
+      getCubeTestAnswerItem();
     } else {
-      getCourseTestAnswerItem(params);
+      getCourseTestAnswerItem();
     }
-  }, [params]);
+  }, [params, testItem?.id]);
 
   useEffect(() => {
     const next = `useLectureTestAnswer-${++subscriberIdRef}`;

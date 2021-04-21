@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
-import { IdNameCount } from 'shared/model';
+import { IdName } from 'shared/model';
 import { ActionLogService } from 'shared/stores';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
@@ -16,6 +16,8 @@ import mainRoutePaths from 'main/routePaths';
 import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 import { CollegeService } from 'college/stores';
+
+import ReactGA from 'react-ga';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -49,7 +51,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   state = {
     categoryOpen: false,
     activeCollege: undefined,
-    banner: undefined
+    banner: undefined,
   };
 
   async findCollegeLectureCount() {
@@ -100,38 +102,34 @@ class CategoryMenuContainer extends Component<Props, State> {
   onActiveCollege(e: any, college: CollegeLectureCountRdo) {
     //
     const { collegeLectureCountService, collegeService } = this.props;
-    let bannerData = {}
-    collegeService!.getBanner().then((result) => {
-      if(result) {
-        result.map((item:any, index:number)=> {
-          if(item.collegeId === college.collegeId) {
-            bannerData = item
+    let bannerData = {};
+    collegeService!.getBanner().then(result => {
+      if (result) {
+        result.map((item: any, index: number) => {
+          if (item.collegeId === college.id) {
+            bannerData = item;
           }
-        })
+        });
       }
       this.setState({
         activeCollege: college,
-        banner: bannerData
+        banner: bannerData,
       });
-      collegeLectureCountService!.setChannelCounts(college.channelCounts);
-    })
-    
-    // collegeService!.getBanner()
+    });
+    collegeLectureCountService!.setChannelCounts(college.channels);
   }
 
-  onClickChannel(e: any, channel?: IdNameCount) {
+  onClickChannel(e: any, channel?: IdName) {
     //
     const { activeCollege } = this.state;
     const { history, lectureCountService } = this.props;
     const active: CollegeLectureCountRdo = activeCollege as any;
     if (!channel) {
       lectureCountService!.setCategoryType('CollegeLectures');
-      history.push(lectureRoutePaths.collegeLectures(active.collegeId));
-    } else if (active.collegeId && channel.id) {
+      history.push(lectureRoutePaths.collegeLectures(active.id));
+    } else if (active.id && channel.id) {
       lectureCountService!.setCategoryType('ChannelsLectures');
-      history.push(
-        lectureRoutePaths.channelLectures(active.collegeId, channel.id)
-      );
+      history.push(lectureRoutePaths.channelLectures(active.id, channel.id));
     }
     this.setState({
       categoryOpen: false,
@@ -161,6 +159,13 @@ class CategoryMenuContainer extends Component<Props, State> {
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: text });
+
+    // react-ga event
+    ReactGA.event({
+      category: 'Category-Button',
+      action: 'Click',
+      label: `GNB_Category-Button`,
+    });
   }
 
   renderMenuActions() {
@@ -183,7 +188,11 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, collegeLectureCountService, collegeService } = this.props;
+    const {
+      skProfileService,
+      collegeLectureCountService,
+      collegeService,
+    } = this.props;
     const { categoryOpen, activeCollege, banner } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
@@ -211,23 +220,21 @@ class CategoryMenuContainer extends Component<Props, State> {
             onOpen={this.onOpen}
             onClose={this.onClose}
           >
-            { activeCollege && (
+            {activeCollege && (
               <>
-              <CategoryMenuPanelView
-                colleges={collegeLectureCountService!.collegeLectureCounts}
-                activeCollege={activeCollege}
-                channels={collegeLectureCountService!.channelCounts}
-                favorites={channels}
-                studySummaryFavoriteChannels={studySummaryFavoriteChannels}
-                actions={this.renderMenuActions()}
-                onActiveCollege={this.onActiveCollege}
-                onRouteChannel={this.onClickChannel}
-                banner={banner}
-              />
+                <CategoryMenuPanelView
+                  colleges={collegeLectureCountService!.collegeLectureCounts}
+                  activeCollege={activeCollege}
+                  channels={collegeLectureCountService!.channelCounts}
+                  favorites={channels}
+                  studySummaryFavoriteChannels={studySummaryFavoriteChannels}
+                  actions={this.renderMenuActions()}
+                  onActiveCollege={this.onActiveCollege}
+                  onRouteChannel={this.onClickChannel}
+                  banner={banner}
+                />
               </>
-              )
-            }
-            
+            )}
           </Popup>
         </div>
 

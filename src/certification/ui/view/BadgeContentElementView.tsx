@@ -5,8 +5,9 @@ import classNames from 'classnames';
 import { dateTimeHelper } from 'shared';
 import moment from 'moment';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import ChallengeStateName from '../../shared/Badge/ui/model/ChallengeStateName';
+import ChallengeStateText from '../../shared/Badge/ui/model/ChallengeStateText';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
+import { Area } from 'tracker/model';
 
 interface Props {
   children: React.ReactNode;
@@ -114,7 +115,12 @@ interface BadgeOverviewProps {
 
 export const BadgeOverview: React.FC<BadgeOverviewProps> = ({ children }) => (
   <Segment className="full">
-    <div className="badge-detail">{children}</div>
+    <div
+      className="badge-detail"
+      data-area={Area.CERTIFICATION_PATH}
+    >
+      {children}
+    </div>
   </Segment>
 );
 
@@ -125,7 +131,7 @@ interface LinkedBadgeProps {
 export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({
   children,
 }) => (
-    <div className="relation-badge-area">
+    <div className="relation-badge-area" data-area={Area.CERTIFICATION_RELATION}>
       <Segment className="full">
         <h3 className="title-style">
           <Label className="onlytext bold size24">
@@ -168,7 +174,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
         badgeState === ChallengeState.Requested) && (
           <>
             <Button className="fix bg" onClick={onClickButton}>
-              {ChallengeStateName[ChallengeState[badgeState]]}
+              {ChallengeStateText[ChallengeState[badgeState]]}
             </Button>
             {badgeState === ChallengeState.Challenging && (
               <>
@@ -194,7 +200,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
       {badgeState === ChallengeState.Issued && (
         <>
           <div className={classNames('big black')}>
-            {ChallengeStateName[badgeState as ChallengeState]}
+            {ChallengeStateText[badgeState as ChallengeState]}
           </div>
           <span className="txt">
             {issueStateTimeFormat} {description}

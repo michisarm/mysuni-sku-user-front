@@ -1,32 +1,31 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLectureReview } from '../../../service/useLectuerCubeOverview/useLectureReview';
-import { useLectureCourseSummary, getCourseLectureSummary } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import LectureCourseSummaryView from '../../view/LectureOverview/LectureCourseSummaryView';
 
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
-import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { getLectureCourseSummaryLearningState } from '../../../store/LectureOverviewStore';
+import { useLectureStructure } from '../../../store/LectureStructureStore';
+import { useLectureCardSummary } from '../../../store/LectureOverviewStore';
 
-function LectureCourseSummaryContainer() {
-  const [lectureSummary] = useLectureCourseSummary();
+function LectureCardSummaryContainer() {
+  const lectureSummary = useLectureCardSummary();
   const [lectureReview] = useLectureReview();
+  const lectureStructure = useLectureStructure();
+  // jz - 이게 머야????
+  // const params: any = useLectureParams();
+  // getCardLectureSummary(params);
 
-  const params: any = useLectureRouterParams();
-  getCourseLectureSummary(params);
-
-  const lectureLearningState = getLectureCourseSummaryLearningState();
+  // const lectureLearningState = getLectureCardSummaryLearningState();
 
   return (
     <>
-      {lectureSummary && (
+      {lectureSummary && lectureStructure && (
         <LectureCourseSummaryView
           lectureSummary={lectureSummary}
           lectureReview={lectureReview}
-          lectureLearningState={lectureLearningState}
+          lectureStructure={lectureStructure}
         />
       )}
     </>
   );
 }
 
-export default LectureCourseSummaryContainer;
+export default LectureCardSummaryContainer;

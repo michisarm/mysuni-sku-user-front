@@ -1,87 +1,145 @@
-import React, { FunctionComponent } from 'react';
-import { Button, Image } from 'semantic-ui-react';
-import { getPublicUrl } from 'shared/helper/envHelper';
+import React, { useCallback, useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
+import { useHistory } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
+import { mobxHelper } from '@nara.platform/accent';
 import classNames from 'classnames';
-
 import ReactGA from 'react-ga';
+import { BadgeCategoryService } from '../../../lecture/stores';
+import { useRequestBadgeCategory } from '../../service/useRequestBadgeCategory';
+import BadgeCategoryView from '../view/BadgeCategoryView';
+import badgePaths from '../../routePaths';
+import { BadgeCategory } from '../../model/BadgeCategory';
+import { useBadgeSlide } from '../../service/useBadgeSlide';
 
-enum CategoryImageURL {
-  BDGCAT_AIDT = '/static/media/icon-ai.png',
-  BDGCAT_JOB = '/static/media/icon-common.png',
-  BDGCAT_BIZ = '/static/media/icon-biz.png',
-  BDGCAT_HAPPY = '/static/media/icon-happy.png',
-  BDGCAT_BM = '/static/media/icon-bmdesign.png',
+interface BadgeCategoryContainerProps {
+  badgeCategoryService?: BadgeCategoryService;
 }
 
-interface BadgeCategoryProps {
-  categories: any;
-  categorySelection: string;
-  onClickBadgeCategory: (e: any, categoryId: any) => void;
-}
+function BadgeCategoryContainer({
+  badgeCategoryService,
+}: BadgeCategoryContainerProps) {
+  const {
+    categories,
+    selectedCategoryId,
+    setSelectedCategoryId,
+  } = badgeCategoryService!;
 
-const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
-  categories,
-  categorySelection,
-  onClickBadgeCategory,
-}) => {
-  //
-  const domainPath =
-    process.env.NODE_ENV !== 'development'
-      ? window.location.protocol + '//' + window.location.host
-      : 'http://10.178.66.114';
+  useEffect(() => {
+    return () => {
+      BadgeCategoryService.instance.clearSelectedCategoryId();
+    };
+  }, []);
 
-  const gaOnClick = (category: any): void => {
+  const {
+    isNext,
+    isPrev,
+    onClickNext,
+    onClickPrev,
+    sliceCategories,
+  } = useBadgeSlide(categories);
 
-    // react-ga 
+  const history = useHistory();
+
+  const isAllCheck = selectedCategoryId === '' ? 'on' : '';
+
+  const handleAllCheck = () => {
+    setSelectedCategoryId('');
+  };
+
+  const onClickCategory = useCallback(
+    (categoryId: string) => {
+      setSelectedCategoryId(categoryId);
+
+      history.replace(badgePaths.currentPage(1));
+    },
+    [selectedCategoryId]
+  );
+
+  const onClickGA = useCallback((categoryName: string) => {
     ReactGA.event({
       category: 'Certification',
       action: 'Click',
-      label: `Certification-${category.name}`,
+      label: `Certification-${categoryName}`,
     });
-  }
+  }, []);
 
   return (
-    <div className="badge-category">
-      <ul>
-        {categories.map((category: any, index: number) => (
-          <li 
-            key={`badge-category-${index}`}
-            className={classNames(
-              'fn-parent',
-              category.categoryId === categorySelection ? 'on' : ''
-            )}
-            onClick={() => gaOnClick(category)}
+    <div className="badge-slide-wrap">
+      <div className="badge-slide-inner">
+        <div className="badge-navi">
+          <Button
+            className={classNames('btn-prev', isPrev)}
+            onClick={onClickPrev}
           >
-            <Button
-              className="fn-click"
-              onClick={e => onClickBadgeCategory(e, category.categoryId)}
-            >
-              <span className="icon">
-                <span>
-                  {/*<Image src={domainPath + category.iconUrl} alt={category.name}/>*/}
-                  {/*<Image src={category.iconUrl && (domainPath + category.iconUrl)} alt={category.name}/>*/}
-                  <Image
-                    src={
-                      // domainPath +
-                      `${getPublicUrl()}${
-                        CategoryImageURL[
-                          category.categoryId as keyof typeof CategoryImageURL
-                        ]
-                      }`
-                    }
-                    alt={category.name}
-                  />
-                </span>
-              </span>
-              <span className="title">
-                <span className="ellipsis">{category.name}</span>
-              </span>
-            </Button>
-          </li>
-        ))}
-      </ul>
+            이전
+          </Button>
+          <Button
+            className={classNames('btn-next', isNext)}
+            onClick={onClickNext}
+          >
+            다음
+          </Button>
+        </div>
+        <div className={classNames('fn-parent', isAllCheck)}>
+          <a className="fn-click" onClick={handleAllCheck}>
+            <span className="icon">
+              <span>All</span>
+            </span>
+            <span className="title">
+              <span className="ellipsis">전체보기</span>
+            </span>
+          </a>
+        </div>
+        <div className="badge-slide">
+          <ul>
+            {sliceCategories &&
+              sliceCategories.length > 0 &&
+              sliceCategories.map((category: BadgeCategory, index: number) => {
+                const isActive = selectedCategoryId === category.id ? 'on' : '';
+
+                return (
+                  <li
+                    key={`badge-category-${index}`}
+                    className={classNames('fn-parent', isActive)}
+                    onClick={() => onClickGA(category.name)}
+                  >
+                    <BadgeCategoryView
+                      category={category}
+                      onClickCategory={onClickCategory}
+                    />
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+      </div>
+      {/* <ul>
+        {
+          categories &&
+          categories.length > 0 &&
+          categories.map((category:BadgeCategory, index: number) => {
+            const isActive = selectedCategoryId === category.id ? 'on' : '';
+            
+            return (
+              <li
+                key={`badge-category-${index}`}
+                className={classNames('fn-parent', isActive)}
+                onClick={() => onClickGA(category.name)}
+              >
+                <BadgeCategoryView 
+                  category={category}
+                  onClickCategory={onClickCategory}
+                />
+              </li>
+            );
+          })
+        }
+      </ul> */}
     </div>
   );
-};
+}
 
-export default BadgeCategoryContainer;
+export default inject(mobxHelper.injectFrom('badge.badgeCategoryService'))(
+  observer(BadgeCategoryContainer)
+);

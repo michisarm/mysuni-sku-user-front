@@ -1,4 +1,3 @@
-
 enum CubeTypeNameType {
   //
   ClassRoomLecture = 'Classroom',
@@ -12,10 +11,10 @@ enum CubeTypeNameType {
   Task = 'Task',
   None = 'None',
   // Todo: 임시, 제거
-  Program = 'Course', // System상 Program이 사용자에게는 같은 Course임.
-  Course  = 'Course',
-  Cube  = 'Cube',
-  Cohort = 'Cohort'
+  Card = 'Card',
+  Cube = 'Cube',
+  Cohort = 'Cohort',
+  Course = 'Course',
 }
 
 export default CubeTypeNameType;

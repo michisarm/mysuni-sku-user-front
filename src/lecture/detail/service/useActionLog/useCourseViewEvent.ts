@@ -5,64 +5,39 @@ import { cacheableFindCoursePlan } from '../../api/courseApi';
 import LectureParams from '../../viewModel/LectureParams';
 
 export function useCourseViewEvent() {
-  const {
-    collegeId,
-    coursePlanId,
-    serviceType,
-    serviceId,
-    contentId,
-    lectureId,
-    lectureType,
-  } = useParams<LectureParams>();
+  const { cardId, cubeId } = useParams<LectureParams>();
 
   useEffect(() => {
-    if (lectureType === 'cube') {
+    if (cubeId !== undefined) {
       return;
     }
-    if (
-      coursePlanId === undefined ||
-      serviceType === undefined ||
-      serviceId === undefined
-    ) {
+    if (cardId === undefined) {
       return;
     }
     const path = window.location.href;
     const email = localStorage.getItem('nara.email') || '';
-    const _serviceType =
-      contentId === undefined && serviceType === 'Program'
-        ? 'PROGRAM'
-        : 'COURSE';
-    const _coursePlanId = contentId || coursePlanId;
-    const lectureCardId = lectureId || serviceId;
-
-    cacheableFindCoursePlan(_coursePlanId).then(coursePlan => {
-      if (coursePlan !== undefined) {
-        const { name } = coursePlan;
-        createViewLog({
-          college: collegeId,
-          context: {
-            logType: 'VIEW',
-            menu: 'COURSE_VIEW',
-            path,
-            poc: 'web',
-            email,
-          },
-          courseName: name,
-          coursePlanId: _coursePlanId,
-          cubeId: '',
-          cubeName: '',
-          lectureCardId,
-          serviceType: _serviceType,
-        });
-      }
-    });
-  }, [
-    collegeId,
-    coursePlanId,
-    serviceType,
-    serviceId,
-    contentId,
-    lectureId,
-    lectureType,
-  ]);
+    // jz - API Change
+    // cacheableFindCoursePlan(cardId).then(coursePlan => {
+    //   if (coursePlan !== undefined) {
+    //     const { name } = coursePlan;
+    //     createViewLog({
+    //       // 오류 오류
+    //       college: 'collegeId',
+    //       context: {
+    //         logType: 'VIEW',
+    //         menu: 'COURSE_VIEW',
+    //         path,
+    //         poc: 'web',
+    //         email,
+    //       },
+    //       courseName: name,
+    //       coursePlanId: cardId,
+    //       cubeId: '',
+    //       cubeName: '',
+    //       lectureCardId: cardId,
+    //       serviceType: 'COURSE',
+    //     });
+    //   }
+    // });
+  }, [cardId, cubeId]);
 }

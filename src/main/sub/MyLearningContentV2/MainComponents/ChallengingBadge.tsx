@@ -8,12 +8,14 @@ import certificationRoutes from 'certification/routePaths';
 import { BadgeService } from 'certification/stores';
 import { ActionLogService } from '../../../../shared/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
-import BadgeModel from '../../../../certification/ui/model/MyBadgeModel';
-import BadgeFilterRdoModel from '../../../../certification/ui/model/BadgeFilterRdoModel';
-import { Badge } from '../../../../certification/shared/Badge';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
 import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 import ReactGA from 'react-ga';
+import { Badge } from '../../../../certification/model/Badge';
+import { MyBadgeRdo } from '../../../../certification/model/MyBadgeRdo';
+import { MyBadge } from '../../../../certification/model/MyBadge';
+import BadgeView from '../../../../certification/ui/view/BadgeView';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
@@ -33,11 +35,15 @@ const ChallengingBadge: React.FC<Props> = Props => {
   */
   const PAGE_SIZE = 5;
 
-  const { myBadges } = badgeService!;
+  const { challengeBadges } = badgeService!;
 
   // // lectureService 변경  실행
   useEffect(() => {
     findMyContent();
+
+    return () => {
+      badgeService!.clearChallengeBadges();
+    };
   }, []);
 
   const findMyContent = async () => {
@@ -51,11 +57,12 @@ const ChallengingBadge: React.FC<Props> = Props => {
     //   }
     // }
 
-    badgeService!.clearMyBadges();
-    badgeService!.findPagingChallengingBadges(
-      BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0),
-      true
-    );
+    const myBadgeRdo: MyBadgeRdo = {
+      offset: 0,
+      limit: 5,
+    };
+
+    badgeService!.findAllChallengeBadges(myBadgeRdo, true);
   };
 
   const onViewAll = () => {
@@ -81,21 +88,22 @@ const ChallengingBadge: React.FC<Props> = Props => {
   // react-ga event
   const onClick = (idx: number) => {
     ReactGA.event({
-      category: '도전중인 Badge',
-      action: 'Click',
-      label: `(Badge) - ${myBadges[idx].name}`,
+      category: '메인_도전중인-Badge',
+      action: 'Click Card',
+      // label: `(Badge) - ${myBadges[idx].name}`,
+      label: `${challengeBadges[idx].name}`,
     });
   };
 
   return (
-    <ContentWrapper className="badge-scrolling">
+    <ContentWrapper className="badge-scrolling" dataArea={Area.MAIN_BADGE}>
       <div className="section-head">
         <strong>
           <span className="ellipsis">{profileMemberName}</span>님이 도전중인
           Badge
         </strong>
         <div className="right">
-          {myBadges.length > 0 && (
+          {challengeBadges.length > 0 && (
             <Button icon className="right btn-blue" onClick={onViewAll}>
               View All <Icon className="morelink" />
             </Button>
@@ -103,21 +111,27 @@ const ChallengingBadge: React.FC<Props> = Props => {
         </div>
       </div>
 
-      {myBadges.length > 0 && myBadges[0] ? (
+      {challengeBadges.length > 0 && challengeBadges[0] ? (
         <div className="scrolling">
-          <ul className="belt">
-            {myBadges.map((badge: BadgeModel, index: number) => {
-              return (
-                <li key={index} onClick={() => onClick(index)}>
-                  <Badge
-                    badge={badge}
-                    badgeStyle={BadgeStyle.List}
-                    badgeSize={BadgeSize.Small}
-                  />
-                </li>
-              );
-            })}
-          </ul>
+          <div className="badge-list-type">
+            <ul className="belt">
+              {challengeBadges.map((badge: MyBadge, index: number) => {
+                return (
+                  <li key={index} onClick={() => onClick(index)}>
+                    <BadgeView
+                      id={badge.id}
+                      name={badge.name}
+                      level={badge.level}
+                      iconUrl={badge.iconUrl}
+                      categoryId={badge.categoryId}
+                      badgeStyle={BadgeStyle.List}
+                      badgeSize={BadgeSize.Small}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       ) : (
         <NoSuchContentPanel

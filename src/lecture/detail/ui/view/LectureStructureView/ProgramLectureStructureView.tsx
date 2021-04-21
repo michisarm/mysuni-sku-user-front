@@ -1,16 +1,19 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useCallback, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   LectureStructure,
-  LectureStructureCourseItem,
+  LectureStructureChapterItem,
   LectureStructureCubeItem,
   LectureStructureDiscussionItem,
   LectureStructureDurationableCubeItem,
 } from '../../../viewModel/LectureStructure';
-import CourseView from './CourseView';
+import { ChapterStructureView } from './ChapterStructureView';
+import CourseReportView from './CourseReportView';
+import CourseSurveyView from './CourseSurveyView';
+import CourseTestView from './CourseTestView';
 import CubeView from './CubeView';
+import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
-import ProgramCubeView from './ProgramCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
 import ProgramHeaderView from './ProgramHeaderView';
 import ProgramReportView from './ProgramReportView';
@@ -27,53 +30,69 @@ interface ProgramLectureStructureViewProps {
 const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = function ProgramLectureStructureView({
   lectureStructure,
 }) {
+  const { pathname } = useLocation();
+  const [collapsedIds, setCollapsedIds] = useState<string[]>([]);
+  const onToggle = useCallback((nextCollapsedIds: string[]) => {
+    setCollapsedIds(nextCollapsedIds);
+  }, []);
+
   return (
     <>
-      {lectureStructure.course !== undefined && (
-        <Link to={lectureStructure.course.path}>
-          <ProgramHeaderView name={lectureStructure.course.name} />
+      {lectureStructure.card !== undefined && (
+        <Link to={lectureStructure.card.path}>
+          <ProgramHeaderView
+            name={lectureStructure.card.name}
+            state={lectureStructure.card.state}
+            learningTime={lectureStructure.card.learningTime}
+            additionalLearningTime={
+              lectureStructure.card.additionalLearningTime
+            }
+          />
         </Link>
       )}
       {lectureStructure.items.map(item => {
-        if (item.type === 'COURSE') {
-          const course = item as LectureStructureCourseItem;
+        if (item.type === 'CHAPTER') {
+          const chapter = item as LectureStructureChapterItem;
           return (
-            <CourseView
-              key={course.id}
-              name={course.name}
-              state={course.state}
-              activated={course.activated}
-              cubes={course.cubes}
-              test={course.test}
-              survey={course.survey}
-              report={course.report}
-              // discussion={course.discussion}
-              path={course.path}
+            <ChapterStructureView
+              key={chapter.id}
+              contentId={chapter.id}
+              name={chapter.name}
+              path={chapter.path}
+              collapsedIds={collapsedIds}
+              cubeCount={chapter.cubeCount}
+              onToggle={onToggle}
+              activated={chapter.path === pathname}
             />
           );
         }
         if (item.type === 'CUBE') {
           const cube = item as LectureStructureCubeItem;
+          if (
+            cube.parentId !== undefined &&
+            collapsedIds.includes(cube.parentId)
+          ) {
+            return null;
+          }
           return (
-            <Fragment key={cube.id}>
-              {cube.cubeType !== 'Audio' && cube.cubeType !== 'Video' && (
+            <Fragment key={cube.cubeId}>
+              {cube.isDurationable !== true && (
                 <CubeView
-                  key={cube.id}
+                  key={cube.cubeId}
                   name={cube.name}
                   state={cube.state}
-                  activated={cube.activated}
                   learningTime={cube.learningTime}
                   cubeType={cube.cubeType}
                   path={cube.path}
                   can={cube.can}
+                  activated={cube.path === pathname}
                 />
               )}
-              {(cube.cubeType === 'Audio' || cube.cubeType === 'Video') && (
+              {cube.isDurationable === true && (
                 <DurationableCubeView
-                  key={cube.id}
+                  key={cube.cubeId}
                   name={cube.name}
                   state={cube.state}
-                  activated={cube.activated}
                   learningTime={cube.learningTime}
                   cubeType={cube.cubeType}
                   path={cube.path}
@@ -81,41 +100,79 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   duration={
                     (cube as LectureStructureDurationableCubeItem).duration
                   }
+                  activated={cube.path === pathname}
                 />
               )}
-              {cube?.test !== undefined && (
+              {cube.last == true && cube?.test !== undefined && (
+                <CourseTestView
+                  name={cube.test.name}
+                  state={cube.test.state}
+                  path={cube.test.path}
+                  can={cube.test.can}
+                  activated={cube.test.path === pathname}
+                />
+              )}
+              {cube.last == true && cube?.survey !== undefined && (
+                <CourseSurveyView
+                  name={cube.survey.name}
+                  state={cube.survey.state}
+                  path={cube.survey.path}
+                  can={cube.survey.can}
+                  activated={cube.survey.path === pathname}
+                />
+              )}
+              {cube.last == true && cube?.report !== undefined && (
+                <CourseReportView
+                  name={cube.report.name}
+                  state={cube.report.state}
+                  path={cube.report.path}
+                  can={cube.report.can}
+                  activated={cube.report.path === pathname}
+                />
+              )}
+              {cube.last != true && cube?.test !== undefined && (
                 <TestView
                   name={cube.test.name}
                   state={cube.test.state}
-                  questionCount={cube.test.questionCount}
                   path={cube.test.path}
                   can={cube.test.can}
-                  activated={cube.test.activated}
+                  activated={cube.test.path === pathname}
                 />
               )}
-              {cube?.survey !== undefined && (
+              {cube.last != true && cube?.survey !== undefined && (
                 <SurveyView
                   name={cube.survey.name}
                   state={cube.survey.state}
-                  questionCount={cube.survey.questionCount}
                   path={cube.survey.path}
                   can={cube.survey.can}
-                  activated={cube.survey.activated}
+                  activated={cube.survey.path === pathname}
                 />
               )}
-              {cube?.report !== undefined && (
+              {cube.last != true && cube?.report !== undefined && (
                 <ReportView
                   name={cube.report.name}
                   state={cube.report.state}
                   path={cube.report.path}
                   can={cube.report.can}
-                  activated={cube.report.activated}
+                  activated={cube.report.path === pathname}
                 />
-              )}{' '}
+              )}
             </Fragment>
           );
         }
-        if (item.type === 'DISCUSSION') {
+        if (item.type === 'DISCUSSION' && item.parentId !== undefined) {
+          const discussion = item as LectureStructureDiscussionItem;
+          return (
+            <DiscussionView
+              key={discussion.id}
+              name={discussion.name}
+              state={discussion.state}
+              path={discussion.path}
+              activated={discussion.path === pathname}
+            />
+          );
+        }
+        if (item.type === 'DISCUSSION' && item.parentId === undefined) {
           const discussion = item as LectureStructureDiscussionItem;
           return (
             <ProgramDiscussionView
@@ -123,48 +180,39 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
               name={discussion.name}
               state={discussion.state}
               path={discussion.path}
-              activated={discussion.activated}
+              activated={discussion.path === pathname}
             />
           );
         }
         return null;
       })}
-
-      {lectureStructure.course?.test !== undefined && (
+      {lectureStructure.card?.test !== undefined && (
         <ProgramTestView
-          name={lectureStructure.course.test.name}
-          state={lectureStructure.course.test.state}
-          path={lectureStructure.course.test.path}
-          activated={lectureStructure.course.test.activated}
-          can={lectureStructure.course.test.can}
+          name={lectureStructure.card.test.name}
+          state={lectureStructure.card.test.state}
+          path={lectureStructure.card.test.path}
+          can={lectureStructure.card.test.can}
+          activated={lectureStructure.card.test.path === pathname}
         />
       )}
-      {lectureStructure.course?.survey !== undefined && (
+      {lectureStructure.card?.survey !== undefined && (
         <ProgramSurveyView
-          name={lectureStructure.course.survey.name}
-          state={lectureStructure.course.survey.state}
-          path={lectureStructure.course.survey.path}
-          activated={lectureStructure.course.survey.activated}
-          can={lectureStructure.course.survey.can}
+          name={lectureStructure.card.survey.name}
+          state={lectureStructure.card.survey.state}
+          path={lectureStructure.card.survey.path}
+          can={lectureStructure.card.survey.can}
+          activated={lectureStructure.card.survey.path === pathname}
         />
       )}
-      {lectureStructure.course?.report !== undefined && (
+      {lectureStructure.card?.report !== undefined && (
         <ProgramReportView
-          name={lectureStructure.course.report.name}
-          state={lectureStructure.course.report.state}
-          path={lectureStructure.course.report.path}
-          activated={lectureStructure.course.report.activated}
-          can={lectureStructure.course.report.can}
+          name={lectureStructure.card.report.name}
+          state={lectureStructure.card.report.state}
+          path={lectureStructure.card.report.path}
+          can={lectureStructure.card.report.can}
+          activated={lectureStructure.card.report.path === pathname}
         />
       )}
-      {/* {lectureStructure.discussion !== undefined && (
-        <ProgramDiscussionView
-          name={lectureStructure.discussion.name}
-          state={lectureStructure.discussion.state}
-          path={lectureStructure.discussion.path}
-          activated={lectureStructure.discussion.activated}
-        />
-      )} */}
     </>
   );
 };

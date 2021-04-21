@@ -1,20 +1,18 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button } from 'semantic-ui-react';
-import { ClassroomModel } from 'personalcube/classroom/model';
-
+import { Classroom } from '../../../../../lecture/detail/viewModel/LectureClassroom';
 
 interface Props {
-  classrooms: ClassroomModel[]
-  trigger: React.ReactNode
+  classrooms: Classroom[];
+  trigger: React.ReactNode;
 }
 
 interface States {
-  open: boolean
-  scrollEnded: boolean
+  open: boolean;
+  scrollEnded: boolean;
 }
 
 @reactAutobind
@@ -33,7 +31,7 @@ class TableModal extends Component<Props, States> {
     this.setState({ open: false });
   }
 
-  compare(classroom1: ClassroomModel, classroom2: ClassroomModel) {
+  compare(classroom1: Classroom, classroom2: Classroom) {
     if (classroom1.round > classroom2.round) return 1;
     return -1;
   }
@@ -47,8 +45,7 @@ class TableModal extends Component<Props, States> {
       this.setState({
         scrollEnded: true,
       });
-    }
-    else if (scrollEnded) {
+    } else if (scrollEnded) {
       this.setState({
         scrollEnded: false,
       });
@@ -65,7 +62,13 @@ class TableModal extends Component<Props, States> {
     }
 
     return (
-      <Modal className={classNames('base w1000', { 'inner-scroll': scrollEnded })} open={open} onClose={this.close} trigger={trigger} onOpen={this.show}>
+      <Modal
+        className={classNames('base w1000', { 'inner-scroll': scrollEnded })}
+        open={open}
+        onClose={this.close}
+        trigger={trigger}
+        onOpen={this.show}
+      >
         <Modal.Header className="res">
           차수세부내용
           <span className="sub f12">차수를 확인해주세요.</span>
@@ -87,51 +90,69 @@ class TableModal extends Component<Props, States> {
               </Table.Header>
 
               <Table.Body>
-                {
-                  classrooms.sort(this.compare).map((classroom, index) => (
-                    <Table.Row key={`overview-table-row-${index}`}>
-                      <Table.Cell>{classroom.round}</Table.Cell>
-                      <Table.Cell>{classroom.instructor.name}</Table.Cell>
-                      <Table.Cell>
-                        {classroom.operation.operator.name}
-                        {(classroom.operation.operator.company || classroom.operation.operator.email) && (
-                          <>
-                            <span className="dash" />
-                            {classroom.operation.operator.company}<br />
-                            {classroom.operation.operator.email}
-                          </>
-                        )}
-                      </Table.Cell>
-                      <Table.Cell className="el"><span>{classroom.operation.location}</span></Table.Cell>
-                      <Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
-                      <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
-                      <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
-                      <Table.Cell>
-                        {
-                          classroom.enrolling.cancellationPenalty ?
-                            <Popup
-                              content={<span>{classroom.enrolling.cancellationPenalty}</span>}
-                              className="ui custom red"
-                              position="bottom right"
-                              trigger={
-                                <Button icon className="img-icon custom">
-                                  <Icon className="noti32" /><span className="blind">취소 패널티</span>
-                                </Button>
-                              }
-                            />
-                            :
-                            <span className="empty-dash" />
-                        }
-                      </Table.Cell>
-                    </Table.Row>
-                  )) || null
-                }
+                {classrooms.sort(this.compare).map((classroom, index) => (
+                  <Table.Row key={`overview-table-row-${index}`}>
+                    <Table.Cell>{classroom.round}</Table.Cell>
+                    <Table.Cell>{classroom.instructor}</Table.Cell>
+                    <Table.Cell>
+                      {classroom.operator?.names?.langStringMap.ko}
+                      {(classroom.operator?.companyNames ||
+                        classroom.operator?.email) && (
+                        <>
+                          <span className="dash" />
+                          {classroom.operator?.companyNames?.langStringMap.ko}
+                          <br />
+                          {classroom.operator?.email}
+                        </>
+                      )}
+                    </Table.Cell>
+                    <Table.Cell className="el">
+                      <span>{classroom.location}</span>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {classroom.studentCount} / {classroom.capacity}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {classroom.remote.enrolling.applyingPeriod.startDate} ~
+                      <br />
+                      {classroom.remote.enrolling.applyingPeriod.endDate}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {classroom.remote.enrolling.learningPeriod.startDate} ~
+                      <br />
+                      {classroom.remote.enrolling.learningPeriod.endDate}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {classroom.remote.enrolling.cancellationPenalty ? (
+                        <Popup
+                          content={
+                            <span>
+                              {classroom.remote.enrolling.cancellationPenalty}
+                            </span>
+                          }
+                          className="ui custom red"
+                          position="bottom right"
+                          trigger={
+                            <Button icon className="img-icon custom">
+                              <Icon className="noti32" />
+                              <span className="blind">취소 패널티</span>
+                            </Button>
+                          }
+                        />
+                      ) : (
+                        <span className="empty-dash" />
+                      )}
+                    </Table.Cell>
+                  </Table.Row>
+                )) || null}
               </Table.Body>
             </Table>
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop p" onClick={this.close}>OK</Button>
+          <Button className="w190 pop p" onClick={this.close}>
+            OK
+          </Button>
         </Modal.Actions>
       </Modal>
     );

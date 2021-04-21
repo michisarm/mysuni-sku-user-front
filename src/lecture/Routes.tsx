@@ -3,16 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
-import CoursePageV2 from './category/ui/page/CoursePageV2';
-import LectureCardPage from './category/ui/page/LectureCardPage';
-import ChannelsLecturesPage from './recommend/ui/page/ChannelsPage';
-import RecommendChannelLecturesPage from './recommend/ui/page/ChannelLecturesPage';
-import PostFormPage from './community/ui/page/PostFormPage';
-import PostDetailPage from './community/ui/page/PostDetailPage';
-import ReplyFormPage from './community/ui/page/ReplyFormPage';
-import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
-import LectureDetailCubeRoutes from './detail/LectureDetailCubeRoutes';
-import LectureDetailCourseRoutes from './detail/LectureDetailCourseRoutes';
+import RecommendRoutes from './recommend/Routes';
+import LectureDetailRoutes from './detail/LectureDetailRoutes';
 
 class Routes extends Component {
   //
@@ -20,74 +12,13 @@ class Routes extends Component {
     //
     return (
       <Switch>
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/new"
-          component={PostFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId"
-          component={PostDetailPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/edit"
-          component={PostFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/new"
-          component={ReplyFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId"
-          component={ReplyDetailPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit"
-          component={ReplyFormPage}
-        />
-
         {/* category */}
         <Redirect
           exact
           from="/lecture/college/:collegeId/channels"
           to="/lecture/college/:collegeId/channels/pages/1"
         />
-        {/* community  */}
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/new"
-          component={PostFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId"
-          component={PostDetailPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/edit"
-          component={PostFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/new"
-          component={ReplyFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId"
-          component={ReplyDetailPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit"
-          component={ReplyFormPage}
-        />
+
         <Route
           exact
           path="/lecture/college/:collegeId/channels/pages/:pageNo"
@@ -100,70 +31,10 @@ class Routes extends Component {
           component={ChannelLecturesPage}
         />
 
-        <Route
-          exact
-          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/old"
-          component={CoursePageV2}
-        />
-        <Route
-          exact
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/old"
-          component={CoursePageV2}
-        />
-
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
-          component={LectureCardPage}
-        />
-        <Route
-          exact
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
-          component={LectureCardPage}
-        />
-
-        <Route
-          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailCourseRoutes}
-        />
-        <Route
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailCourseRoutes}
-        />
-
-        <Route
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailCubeRoutes}
-        />
-        <Route
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailCubeRoutes}
-        />
+        <Route path="/lecture/card/:cardId" component={LectureDetailRoutes} />
 
         {/* recommend */}
-        <Redirect
-          exact
-          from="/lecture/recommend"
-          to="/lecture/recommend/pages/1"
-        />
-        <Route
-          exact
-          path="/lecture/recommend/pages/:pageNo"
-          component={ChannelsLecturesPage}
-        />
-
-        <Redirect
-          exact
-          from="/lecture/recommend/channel/:channelId"
-          to="/lecture/recommend/channel/:channelId/pages/1"
-        />
-        <Route
-          exact
-          path="/lecture/recommend/channel/:channelId/pages/:pageNo"
-          component={RecommendChannelLecturesPage}
-        />
-
-        {/* community  */}
+        <Route path="/lecture/recommend" component={RecommendRoutes} />
 
         <Route component={NotFoundPage} />
       </Switch>

@@ -1,6 +1,5 @@
 import { reactAlert } from '@nara.platform/accent';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { State } from '../../../viewModel/LectureState';
 import StructureLink from './StructureLink';
 
@@ -8,7 +7,6 @@ interface SurveyViewProps {
   name: string;
   state?: State;
   activated?: boolean;
-  questionCount: number;
   path: string;
   can: boolean;
 }
@@ -21,10 +19,8 @@ function cannotAlert() {
 }
 
 const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
-  name,
   state = 'None',
   activated = false,
-  questionCount,
   path,
   can,
 }) {
@@ -43,11 +39,7 @@ const SurveyView: React.FC<SurveyViewProps> = function SurveyView({
         <span>cube 완료상태</span>
       </span>
       <span className="copy-holder">
-        <span className="copy-title">{name}</span>
-        <ul className="type-info">
-          <li>Survey</li>
-          <li>{`${questionCount}문항`}</li>
-        </ul>
+        <span className="copy-title">Survey</span>
       </span>
     </StructureLink>
   );

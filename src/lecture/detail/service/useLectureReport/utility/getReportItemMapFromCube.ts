@@ -1,30 +1,29 @@
 /* eslint-disable consistent-return */
 
-import { cacheableFindCubeIntro } from '../../../api/mPersonalCubeApi';
-import Student from '../../../model/Student';
 import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
-  ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
+import { CubeContents } from '../../../../model/CubeContents';
+import { getActiveStructureItem } from '../../../utility/lectureStructureHelper';
 
 export async function getReportItem(
-  cubeIntroId: string,
-  studentId: string,
-  student?: Student
+  cubeContents: CubeContents,
+  paramsPathname?: string
 ): Promise<LectureReport> {
-  const cubeIntro = await cacheableFindCubeIntro(cubeIntroId);
-  const lectureReport: LectureReport = { reportId: cubeIntroId };
+  const { reportFileBox, id } = cubeContents;
+  const lectureReport: LectureReport = { reportId: id };
   const studentReport: StudentReport = {};
-  const reportFileBox: ReportFileBox = {};
-  if (cubeIntro !== undefined) {
-    let state: State = 'None';
 
-    reportFileBox.fileBoxId = cubeIntro.reportFileBox.fileBoxId;
-    reportFileBox.report = cubeIntro.reportFileBox.report;
-    reportFileBox.reportName = cubeIntro.reportFileBox.reportName;
-    reportFileBox.reportQuestion = cubeIntro.reportFileBox.reportQuestion;
+  let lectureStructureItem;
+  if (paramsPathname) {
+    lectureStructureItem = getActiveStructureItem(paramsPathname);
+  }
+  const student = lectureStructureItem?.student;
+
+  if (lectureStructureItem !== undefined && lectureStructureItem.can === true) {
+    let state: State = 'None';
 
     if (student !== undefined && student !== null) {
       if (
@@ -43,11 +42,11 @@ export async function getReportItem(
         studentReport.homeworkOperatorFileBoxId =
           student.homeworkOperatorFileBoxId;
       }
-      studentReport.id = studentId;
+      studentReport.id = student.id;
     }
     lectureReport.reportFileBox = reportFileBox;
     lectureReport.studentReport = studentReport;
-    if (student?.learningState == 'Passed') {
+    if (lectureStructureItem?.student?.extraWork.reportStatus === 'PASS') {
       state = 'Completed';
     }
     lectureReport.state = state;

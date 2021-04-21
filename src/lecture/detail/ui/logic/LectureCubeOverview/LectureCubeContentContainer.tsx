@@ -5,7 +5,9 @@ import { useLectureDescription } from '../../../service/useLectureCourseOverview
 import { useLectureSubcategory } from '../../../service/useLectureCourseOverview/useLectureSubcategory';
 import { useLectureTags } from '../../../service/useLectureCourseOverview/useLectureTags';
 import { useLectureFile } from '../../../service/useLectureFile';
+import { useTranscriptCount } from '../../../service/useTranscript/utility/useTranscript';
 import LectureCubeContentView from '../../view/LectureOverview/LectureCubeContentView';
+import { useLectureCubeSummary } from '../../../service/useLectureCourseOverview/useLectureCubeSummary';
 
 function LectureCubeContentContainer() {
   const [lectureDescription] = useLectureDescription();
@@ -14,6 +16,8 @@ function LectureCubeContentContainer() {
   const [lectureTags] = useLectureTags();
   const [lectureComment] = useLectureComment();
   const [lectureClassroom] = useLectureClassroom();
+  const [lectureTrascriptCount] = useTranscriptCount();
+  const [lectureSummary] = useLectureCubeSummary();
 
   return (
     <LectureCubeContentView
@@ -23,6 +27,8 @@ function LectureCubeContentContainer() {
       lectureFile={lectureFile}
       lectureComment={lectureComment}
       lectureClassroom={lectureClassroom}
+      lectureTranscriptCount={lectureTrascriptCount}
+      lectureSummary={lectureSummary}
     />
   );
 }

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureState';
-import StructureLink from './StructureLink';
 
 export function parseCubeType(cubeType: CubeType) {
   switch (cubeType) {
@@ -37,7 +36,6 @@ const DurationableCubeView: React.FC<CubeViewProps> = function DurationableCubeV
   learningTime,
   cubeType,
   path,
-  can,
   duration = 0,
 }) {
   const step = Math.ceil(duration / 10);

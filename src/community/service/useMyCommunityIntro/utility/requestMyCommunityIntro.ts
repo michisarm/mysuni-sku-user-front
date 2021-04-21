@@ -8,6 +8,7 @@ import Post from '../../../model/Post';
 import {
   getMyCommunityIntro,
   setMyCommunityIntro,
+  setIsLoadingState,
 } from '../../../store/CommunityMainStore';
 import CommunityItem from '../../../viewModel/MyCommunityIntro/CommunityItem';
 import { getEmptyMyCommunityIntro } from '../../../viewModel/MyCommunityIntro/MyCommunityIntro';
@@ -40,8 +41,10 @@ function communityToItem(community: CommunityView): CommunityItem {
     thumbnailId,
     name,
     managerName,
+    managerEmail,
     memberCount,
     lastPostTime,
+    type,
   } = community;
   return {
     communityId,
@@ -50,7 +53,9 @@ function communityToItem(community: CommunityView): CommunityItem {
     hasNewPost:
       Date.now() - ONE_DAY < (lastPostTime === null ? 0 : lastPostTime),
     managerName: managerName || '',
+    managerEmail: managerEmail || '',
     memberCount,
+    type,
   };
 }
 
@@ -100,6 +105,9 @@ export function requestAppendMyCommunityList() {
             next.push(communityToItem(community));
           }
         });
+        const setPostOffset = (next: CommunityItem[]) =>
+          sessionStorage.setItem('postOffset', JSON.stringify(next.length));
+        setPostOffset(next);
         setMyCommunityIntro({
           ...myCommunityIntro,
           communities: next,
@@ -146,32 +154,39 @@ function postToItem(post: Post): PostItem {
 
 export function requestMyCommunityPostList() {
   const { postsSort } = getMyCommunityIntro() || getEmptyMyCommunityIntro();
+  const prevPostOffset: any = sessionStorage.getItem('communityOffset');
+  const getPostOffset: number = JSON.parse(prevPostOffset);
 
-  findAllPostViewsFromMyCommunities(postsSort, 0).then(posts => {
-    const myCommunityIntro =
-      getMyCommunityIntro() || getEmptyMyCommunityIntro();
-    if (posts === undefined) {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
-        posts: [],
-        postsTotalCount: 0,
-        postsOffset: 0,
-      });
-    } else {
-      setMyCommunityIntro({
-        ...myCommunityIntro,
-        posts: posts.results.map(postToItem),
-        postsTotalCount: posts.totalCount,
-        postsOffset: posts.results.length,
-      });
+  setIsLoadingState({ isLoading: true });
+  findAllPostViewsFromMyCommunities(postsSort, getPostOffset || 0).then(
+    posts => {
+      const myCommunityIntro =
+        getMyCommunityIntro() || getEmptyMyCommunityIntro();
+
+      if (posts === undefined) {
+        setMyCommunityIntro({
+          ...myCommunityIntro,
+          posts: [],
+          postsTotalCount: 0,
+          postsOffset: 0,
+        });
+      } else {
+        setMyCommunityIntro({
+          ...myCommunityIntro,
+          posts: posts.results.map(postToItem),
+          postsTotalCount: posts.totalCount,
+          postsOffset: posts.results.length,
+        });
+      }
+      setIsLoadingState({ isLoading: false });
     }
-  });
+  );
 }
 
 export function requestAppendMyCommunityPostList() {
   const { postsSort, postsOffset } =
     getMyCommunityIntro() || getEmptyMyCommunityIntro();
-
+  sessionStorage.setItem('communityOffset', JSON.stringify(postsOffset));
   findAllPostViewsFromMyCommunities(postsSort, postsOffset).then(posts => {
     const myCommunityIntro =
       getMyCommunityIntro() || getEmptyMyCommunityIntro();
@@ -183,10 +198,8 @@ export function requestAppendMyCommunityPostList() {
         postsOffset: 0,
       });
     } else {
-      const next = [
-        ...myCommunityIntro.posts,
-        ...posts.results.map(postToItem),
-      ];
+      const next = [...posts.results.map(postToItem)];
+
       setMyCommunityIntro({
         ...myCommunityIntro,
         posts: next,

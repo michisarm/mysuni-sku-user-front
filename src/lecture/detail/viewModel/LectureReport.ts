@@ -1,7 +1,6 @@
 import LearningState from '../model/LearningState';
 import { LectureType } from './LectureType';
 import LectureParams from './LectureParams';
-import LectureRouterParams from './LectureRouterParams';
 import CubeType from '../model/CubeType';
 
 export type State = 'None' | 'Progress' | 'Completed';
@@ -15,9 +14,10 @@ export interface StudentStateMap {
   studentId: string;
 }
 
+// jz - 이거 확인 필요
 interface Params {
   cineroomId?: string;
-  collegeId: string;
+  collegeId?: string;
 }
 
 //TODO LectureStructureParams Report에 필요한 형식만 사용되게 수정 예정
@@ -36,7 +36,7 @@ export interface LectureStructureCubeItemParams extends Params {
   examId: string;
 }
 
-export interface LectureReportCubeItemParams extends Params {
+export interface LectureReportCubeItemParams extends LectureParams {
   id?: string;
   homeworkContent?: string;
   homeworkFileBoxId?: string;
@@ -74,7 +74,7 @@ export interface LectureReport {
 interface Item {
   activated?: boolean;
   params: LectureParams;
-  routerParams: LectureRouterParams;
+  routerParams: LectureParams;
   path: string;
   state?: State;
 }

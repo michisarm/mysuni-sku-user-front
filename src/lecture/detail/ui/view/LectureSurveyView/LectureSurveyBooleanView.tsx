@@ -1,20 +1,22 @@
 import React, { useCallback } from 'react';
-import {
-  selectBooleanAnswer,
-  selectSentenceAnswer,
-} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
+import { selectBooleanAnswer } from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 import { LectureSurveyItem } from '../../../viewModel/LectureSurvey';
-import { LectureSurveyAnswerItem } from '../../../viewModel/LectureSurveyState';
+import LectureSurveyState, {
+  LectureSurveyAnswerItem,
+} from '../../../viewModel/LectureSurveyState';
 import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
+import { Image } from 'semantic-ui-react';
 
 interface LectureSurveyBooleanViewProps {
   lectureSurveyItem: LectureSurveyItem;
   lectureSurveyAnswerItem?: LectureSurveyAnswerItem;
+  lectureSurveyState?: LectureSurveyState;
 }
 
 const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = function LectureSurveyBooleanView({
   lectureSurveyItem,
   lectureSurveyAnswerItem,
+  lectureSurveyState,
 }) {
   const onChangeValue = useCallback(() => {
     const next =
@@ -30,6 +32,9 @@ const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = functi
   return (
     <LectureSurveyChoiceLayout {...lectureSurveyItem}>
       <div className="preview">
+        <div style={{ margin: '20px 0' }}>
+          {lectureSurveyItem.image && <img src={lectureSurveyItem.image} />}
+        </div>
         <div
           className="lms-toggle init"
           style={{ position: 'relative', top: '0' }}
@@ -60,6 +65,28 @@ const LectureSurveyBooleanView: React.FC<LectureSurveyBooleanViewProps> = functi
           </label>
         </div>
       </div>
+
+      {lectureSurveyState === undefined ||
+        (lectureSurveyState.state === 'Progress' &&
+          lectureSurveyItem.isRequired === true &&
+          lectureSurveyAnswerItem === undefined && (
+            <div style={{ marginTop: '10px' }}>
+              <Image
+                style={{ display: 'inline-block', marginRight: '5px' }}
+                src={`${process.env.PUBLIC_URL}/images/all/icon-info-error-16-px.png`}
+              />
+              <span
+                style={{
+                  color: '#e1002a',
+                  fontSize: '14px',
+                  lineHeight: '16px',
+                  verticalAlign: 'text-bottom',
+                }}
+              >
+                해당 문항은 필수 항목 입니다.
+              </span>
+            </div>
+          ))}
     </LectureSurveyChoiceLayout>
   );
 };

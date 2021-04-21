@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ListPanelTopLine } from 'shared';
-import { useLectureState } from '../../../service/useLectureState/useLectureState';
+import { useLectureState } from '../../../store/LectureStateStore';
 
 interface Props {
   totalCount: number;
@@ -15,11 +15,10 @@ const LectureTaskTopLineView: React.FC<Props> = function LectureTaskTopLineView(
   totalCount,
   handelClickCreateTask,
 }) {
-  const [lectureState] = useLectureState();
+  const lectureState = useLectureState();
   return (
     <ListPanelTopLine className="size-type3" count={totalCount}>
-      {(lectureState?.state === 'Progress' ||
-        lectureState?.state === 'Completed') && (
+      {lectureState?.student !== undefined && (
         <div className="right-wrap">
           <a
             className="ui icon button left post"

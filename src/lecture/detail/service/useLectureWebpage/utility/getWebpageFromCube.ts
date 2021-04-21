@@ -1,16 +1,33 @@
-import {
-  findOfficeWeb,
-  cacheableFindPersonalCube,
-} from '../../../api/mPersonalCubeApi';
+import { findCubeDetailCache } from '../../../api/cubeApi';
 import { setLectureWebpage } from '../../../store/LectureWebpageStore';
-import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import LectureParams from '../../../viewModel/LectureParams';
 import LectureWebpage from '../../../viewModel/LectureWebpage';
+import { generationEncryptKey } from '../../../api/profileApi';
 
-export async function getWebpageFromCube(params: LectureRouterParams) {
-  const { contentId } = params;
-  const cube = await cacheableFindPersonalCube(contentId);
-  const officeWeb = await findOfficeWeb(cube.contents.contents.id);
-  const url = officeWeb.webPageUrl;
+export async function getWebpageFromCube(params: LectureParams) {
+  const { cubeId } = params;
+  if (cubeId === undefined) {
+    return;
+  }
+  const cubeDetail = await findCubeDetailCache(cubeId);
+  if (cubeDetail === undefined || cubeDetail.cubeMaterial.officeWeb === null) {
+    return;
+  }
+  const {
+    cubeMaterial: { officeWeb },
+  } = cubeDetail;
+
+  let url = officeWeb.webPageUrl;
+
+  if (officeWeb.urlType && officeWeb.urlType === "embedded") {
+    const encryptKey = await generationEncryptKey(cubeId);
+    if (url.indexOf('?') > -1) {
+      url = url + '&p=' + encryptKey;
+    } else {
+      url = url + '?p=' + encryptKey;
+    }
+  }
+
   if (
     officeWeb.webUrlInfo === null ||
     (officeWeb.webUrlInfo as unknown) === '' ||
@@ -22,6 +39,7 @@ export async function getWebpageFromCube(params: LectureRouterParams) {
       image: undefined,
       url,
       fileBoxId: officeWeb.fileBoxId,
+      urlType: officeWeb.urlType
     };
     setLectureWebpage(webpage);
   } else {
@@ -32,6 +50,7 @@ export async function getWebpageFromCube(params: LectureRouterParams) {
       image,
       url,
       fileBoxId: officeWeb.fileBoxId,
+      urlType: officeWeb.urlType
     };
     setLectureWebpage(webpage);
   }

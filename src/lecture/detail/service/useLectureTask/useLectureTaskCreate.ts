@@ -1,28 +1,30 @@
-import { getLectureTaskCreateBoardId, onLectureTaskCreateBoardId, onLectureTaskCreateItem, setLectureTaskCreateItem } from 'lecture/detail/store/LectureTaskCreateStore';
+import {
+  onLectureTaskCreateBoardId,
+  onLectureTaskCreateItem,
+  setLectureTaskCreateItem,
+} from 'lecture/detail/store/LectureTaskCreateStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useLectureRouterParams } from '../useLectureRouterParams';
+import { useLectureParams } from '../../store/LectureParamsStore';
 import { getCubeLectureTaskBoardId } from './utility/getCubeLectureTaskCreate';
 
 type LectureTaskCreateValue = LectureTaskDetail | undefined;
 
 let subscriberIdRef = 0;
-export function useLectureTaskCreate(
-): [LectureTaskCreateValue] {
+export function useLectureTaskCreate(): [LectureTaskCreateValue] {
   const [subscriberId, setSubscriberId] = useState<string>();
-  const [taskCreateValue, setTaskCreateValue] = useState<LectureTaskCreateValue>();
+  const [taskCreateValue, setTaskCreateValue] = useState<
+    LectureTaskCreateValue
+  >();
 
-  const params = useLectureRouterParams();
-  
+  const params = useLectureParams();
+
   useEffect(() => {
-    if (params === undefined) {
+    if (params?.cubeId === undefined) {
       return;
     }
-    const { contentId } = params;
-
-    getCubeLectureTaskBoardId(contentId)
-  }, [params]);
+    getCubeLectureTaskBoardId(params?.cubeId);
+  }, [params?.cubeId]);
 
   useEffect(() => {
     const next = `useLectureTaskCreate-${++subscriberIdRef}`;
@@ -34,8 +36,7 @@ export function useLectureTaskCreate(
       return;
     }
     return onLectureTaskCreateItem(next => {
-      setTaskCreateValue(next)
-
+      setTaskCreateValue(next);
     }, subscriberId);
   }, [subscriberId]);
 
@@ -44,7 +45,7 @@ export function useLectureTaskCreate(
       return;
     }
     return onLectureTaskCreateBoardId(next => {
-      if(next !== undefined) {
+      if (next !== undefined) {
         setLectureTaskCreateItem({
           id: next,
           fileBoxId: '',
@@ -62,7 +63,7 @@ export function useLectureTaskCreate(
           readCount: 0,
           commentFeedbackId: '',
           notice: false,
-        })
+        });
       }
     }, subscriberId);
   }, [subscriberId]);

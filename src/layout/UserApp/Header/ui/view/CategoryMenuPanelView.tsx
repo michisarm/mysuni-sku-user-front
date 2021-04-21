@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { IdName, IdNameCount } from 'shared/model';
+import { IdName } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { ActionLogService } from 'shared/stores';
 
@@ -12,6 +12,7 @@ import { SkProfileService } from 'profile/stores';
 import { StudySummaryModel } from 'profile/model';
 import { CollegeService } from 'college/stores';
 import classNames from 'classnames';
+import { Action, Area } from 'tracker/model';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -19,14 +20,14 @@ interface Props {
   collegeService?: CollegeService;
   colleges: CollegeLectureCountRdo[];
   activeCollege?: CollegeLectureCountRdo;
-  channels?: IdNameCount[];
+  channels?: IdName[];
   favorites?: ChannelModel[];
   studySummaryFavoriteChannels: IdName[];
   actions: React.ReactNode;
   banner: any;
   test?: {};
   onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
-  onRouteChannel: (e: any, channel?: IdNameCount) => void;
+  onRouteChannel: (e: any, channel?: IdName) => void;
   onConfirmCallback?: () => void;
 }
 @inject(
@@ -41,14 +42,10 @@ class CategoryMenuPanelView extends Component<Props> {
 
     // react-ga event (전체보기, 각 item)
     ReactGA.event({
-      category: 'Channel',
+      category: `${this.props.activeCollege?.name}`,
       action: 'Click',
-      label: `${activeCollege?.name}-${text}`,
+      label: `${text}`,
     });
-
-    // setTimeout(() => {
-    //   ReactGA.pageview(window.location.pathname, [], `${text}`);
-    // }, 1000);
   }
 
   onClickActionLog(text: string) {
@@ -122,11 +119,11 @@ class CategoryMenuPanelView extends Component<Props> {
     } = this.props;
 
     // react-ga event (카테고리 배너 이미지)
-    const gaClickEvent = (text: string) => {
+    const gaClickEvent = (text: string, idx: number) => {
       ReactGA.event({
         category: 'Banner',
         action: 'Click',
-        label: text,
+        label: `${text}-${idx && idx}번째`,
       });
     };
 
@@ -143,17 +140,19 @@ class CategoryMenuPanelView extends Component<Props> {
                 <div className="scrolling">
                   {colleges.map(college => (
                     <button
-                      key={`category_${college.collegeId}`}
+                      key={`category_${college.id}`}
                       className={classNames('', {
                         active:
-                          activeCollege &&
-                          activeCollege.collegeId === college.collegeId,
-                        bm: college.collegeId === 'CLG00020',
+                          activeCollege && activeCollege.id === college.id,
+                        bm: college.id === 'CLG00020',
                       })}
                       onClick={e => {
                         this.onClickActionLog(college.name);
                         onActiveCollege(e, college);
                       }}
+                      data-area={Area.HEADER_CATEGORYLIST}
+                      data-action={Action.CLICK}
+                      data-action-name={`CATEGORY 목록 클릭::${college.name}`}
                     >
                       {college.name}
                     </button>
@@ -164,10 +163,13 @@ class CategoryMenuPanelView extends Component<Props> {
             <div className="category-channel-wrap">
               {activeCollege && (
                 <>
-                  <div className="category-title-bar">
+                  <div
+                    className="category-title-bar"
+                    data-area={Area.HEADER_CATEGORY}
+                  >
                     <span className="category-title">
                       {activeCollege.name} College
-                      <span className="num"> ({activeCollege.totalCount})</span>
+                      {/* <span className="num"> ({activeCollege.totalCount})</span> */}
                     </span>
                     <button
                       className="btn-category-all"
@@ -238,7 +240,10 @@ class CategoryMenuPanelView extends Component<Props> {
                   ))
                 }
               </div> */}
-                  <div className="category-body">
+                  <div
+                    className="category-body"
+                    data-area={Area.HEADER_CATEGORY}
+                  >
                     {Array.isArray(channels) &&
                       channels.map((channel, index) => {
                         if (index % 2 === 0) {
@@ -269,7 +274,6 @@ class CategoryMenuPanelView extends Component<Props> {
                                     }}
                                   >
                                     {channel.name}
-                                    <strong> ({channel.count})</strong>
                                   </a>
                                 </span>
                                 <span className="check-type2">
@@ -301,10 +305,6 @@ class CategoryMenuPanelView extends Component<Props> {
                                     }}
                                   >
                                     {channels[index + 1].name}
-                                    <strong>
-                                      {' '}
-                                      ({channels[index + 1].count})
-                                    </strong>
                                   </a>
                                 </span>
                               </div>
@@ -336,7 +336,6 @@ class CategoryMenuPanelView extends Component<Props> {
                                     }}
                                   >
                                     {channel.name}
-                                    <strong> ({channel.count})</strong>
                                   </a>
                                 </span>
                               </div>
@@ -347,14 +346,17 @@ class CategoryMenuPanelView extends Component<Props> {
                   </div>
                   {banner.viewType === '2' && (
                     <>
-                      <div className="category-banner">
+                      <div
+                        className="category-banner"
+                        data-area={Area.HEADER_BANNER}
+                      >
                         {banner.collegeBannerContents[0].visible === 1 &&
                           banner.collegeBannerContents[0].useLink === 0 && (
                             <span className="banner-holder">
                               <img
                                 src={`${banner.collegeBannerContents[0].imageUrl}`}
                                 onClick={e =>
-                                  gaClickEvent(`${activeCollege.name}`)
+                                  gaClickEvent(`${activeCollege.name}`, 1)
                                 }
                                 alt=""
                               />
@@ -371,7 +373,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 <img
                                   src={`${banner.collegeBannerContents[0].imageUrl}`}
                                   onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`)
+                                    gaClickEvent(`${activeCollege.name}`, 1)
                                   }
                                   alt=""
                                 />
@@ -396,7 +398,7 @@ class CategoryMenuPanelView extends Component<Props> {
                               <img
                                 src={`${banner.collegeBannerContents[1].imageUrl}`}
                                 onClick={e =>
-                                  gaClickEvent(`${activeCollege.name}`)
+                                  gaClickEvent(`${activeCollege.name}`, 2)
                                 }
                                 alt=""
                               />
@@ -413,7 +415,7 @@ class CategoryMenuPanelView extends Component<Props> {
                                 <img
                                   src={`${banner.collegeBannerContents[1].imageUrl}`}
                                   onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`)
+                                    gaClickEvent(`${activeCollege.name}`, 2)
                                   }
                                   alt=""
                                 />
@@ -435,7 +437,10 @@ class CategoryMenuPanelView extends Component<Props> {
                     </>
                   )}
                   {banner.viewType === '1' && (
-                    <div className="category-banner-single">
+                    <div
+                      className="category-banner-single"
+                      data-area={Area.HEADER_BANNER}
+                    >
                       {banner.collegeBannerContents[0].visible === 0 && (
                         <span
                           style={{
@@ -449,7 +454,9 @@ class CategoryMenuPanelView extends Component<Props> {
                         banner.collegeBannerContents[0].useLink === 0 && (
                           <img
                             src={`${banner.collegeBannerContents[0].imageUrl}`}
-                            onClick={e => gaClickEvent(`${activeCollege.name}`)}
+                            onClick={e =>
+                              gaClickEvent(`${activeCollege.name}`, 1)
+                            }
                             alt=""
                           />
                         )}
@@ -463,7 +470,7 @@ class CategoryMenuPanelView extends Component<Props> {
                             <img
                               src={`${banner.collegeBannerContents[0].imageUrl}`}
                               onClick={e =>
-                                gaClickEvent(`${activeCollege.name}`)
+                                gaClickEvent(`${activeCollege.name}`, 1)
                               }
                               alt=""
                             />

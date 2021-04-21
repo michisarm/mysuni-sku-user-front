@@ -6,17 +6,18 @@ import {
   deleteTaskPost,
   getCommentFeedbackId,
   getTaskCreateId,
-  getTaskDetail,
 } from 'lecture/detail/api/mPersonalCubeApi';
 import {
   setLectureTaskDetail,
   // setLectureChildTaskItem,
 } from 'lecture/detail/store/LectureTaskStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
+import { findPost, findPostBody, getReply } from '../../../api/cubeApi';
 
 async function getTaskItem(postParam: any) {
   const lectureTaskDetail: LectureTaskDetail = {
     id: '',
+    postId: '',
     fileBoxId: '',
     title: '',
     name: '',
@@ -34,48 +35,41 @@ async function getTaskItem(postParam: any) {
     notice: false,
   };
   //
-  if (postParam.id !== '') {
-    {
-      const findTaskDetailData = await getTaskDetail(
-        postParam.id,
-        postParam.type
-      );
+  if (postParam.id !== '' && postParam.type === 'parent') {
+    const post = await findPost(postParam.id);
+    const result = await findPostBody(postParam.id);
+    if (post !== undefined) {
+      lectureTaskDetail.id = post.id;
+      lectureTaskDetail.title = post.title;
+      lectureTaskDetail.name = post.writer;
+      lectureTaskDetail.time = post.time;
+      lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
+      lectureTaskDetail.readCount = post.readCount;
+    }
+    if (result !== undefined && result.postBody !== undefined) {
+      lectureTaskDetail.contents = result.postBody.contents;
+      lectureTaskDetail.fileBoxId = result.postBody.fileBoxId;
+    }
+    return lectureTaskDetail;
+  }
 
-      if (postParam.type === 'child') {
-        const replyData = await getCommentFeedbackId(
-          findTaskDetailData.commentFeedbackId
-        );
-      }
+  if (postParam.id !== '' && postParam.type === 'child') {
+    const post = await getReply(postParam.id);
 
-      if (findTaskDetailData) {
-        if (findTaskDetailData.post) {
-          lectureTaskDetail.id = findTaskDetailData.post.id;
-          lectureTaskDetail.title = findTaskDetailData.post.title;
-          lectureTaskDetail.name = findTaskDetailData.post.writer;
-          lectureTaskDetail.time = findTaskDetailData.post.time;
-          lectureTaskDetail.commentFeedbackId =
-            findTaskDetailData.post.commentFeedbackId;
-          lectureTaskDetail.readCount = findTaskDetailData.post.readCount;
-        } else {
-          lectureTaskDetail.id = findTaskDetailData.id;
-          lectureTaskDetail.title = findTaskDetailData.title;
-          lectureTaskDetail.name = findTaskDetailData.writer;
-          lectureTaskDetail.time = findTaskDetailData.time;
-          lectureTaskDetail.commentFeedbackId =
-            findTaskDetailData.commentFeedbackId;
-          lectureTaskDetail.readCount = findTaskDetailData.readCount;
-        }
-        if (findTaskDetailData.postBody) {
-          lectureTaskDetail.contents = findTaskDetailData.postBody.contents;
-          lectureTaskDetail.fileBoxId = findTaskDetailData.postBody.fileBoxId;
-        } else {
-          lectureTaskDetail.contents = findTaskDetailData.contents;
-          lectureTaskDetail.fileBoxId = findTaskDetailData.fileBoxId;
-        }
-        return lectureTaskDetail;
-      }
+    if (post !== undefined) {
+      lectureTaskDetail.id = post.id;
+      lectureTaskDetail.postId = post.postId;
+      lectureTaskDetail.title = post.title;
+      lectureTaskDetail.name = post.writer;
+      lectureTaskDetail.time = post.time;
+      lectureTaskDetail.commentFeedbackId = post.commentFeedbackId;
+      lectureTaskDetail.readCount = post.readCount;
+      lectureTaskDetail.contents = post.contents;
+      lectureTaskDetail.fileBoxId = post.fileBoxId;
     }
   }
+
+  return lectureTaskDetail;
 }
 
 export async function getTaskDetailCube(postParam: any): Promise<void> {

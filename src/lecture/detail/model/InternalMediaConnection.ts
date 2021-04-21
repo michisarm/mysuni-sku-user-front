@@ -1,10 +1,10 @@
-export class InternalMediaConnection {
-  panoptoSessionId: string = '';
-  viewUrl: string = '';
-  thumbUrl: string = '';
-  name: string = '';
-  startTime: string = '';
-  folderName: string = '';
-  duration: number = 0;
-  folderId: string = '';
+export interface InternalMediaConnection {
+  duration: number;
+  folderId: string;
+  folderName: string;
+  name: string;
+  panoptoSessionId: string;
+  startTime: string;
+  thumbUrl: string;
+  viewUrl: string;
 }

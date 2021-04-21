@@ -1,5 +1,4 @@
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { patronInfo } from '@nara.platform/dock';
 import { useLectureTaskCreate } from 'lecture/detail/service/useLectureTask/useLectureTaskCreate';
 import { getCubeLectureTaskDetail } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import {
@@ -7,30 +6,36 @@ import {
   setLectureTaskCreateItem,
 } from 'lecture/detail/store/LectureTaskCreateStore';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import { toJS } from 'mobx';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Checkbox, Form, Icon } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import { SkProfileService } from '../../../../../profile/stores';
 import {
-  getActiveStructureItem,
-  getActiveStructureItemAll,
-} from '../../../service/useLectureStructure/useLectureStructure';
-import { LectureStructureCubeItem } from '../../../viewModel/LectureStructure';
+  getLectureParams,
+  useLectureParams,
+} from '../../../store/LectureParamsStore';
+import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import LectureTaskCreateEditor from './LectureTaskCreateEditor';
 import LectureTaskEditEditor from './LectureTaskEditEditor';
+import { Area } from 'tracker/model';
 
 interface LectureTaskCreateViewProps {
+  isReply: boolean;
   boardId: string;
   taskEdit?: LectureTaskDetail;
   viewType?: string;
   detailTaskId?: string;
-  handleSubmitClick: (viewType: string, detailTaskId?: string) => void;
+
+  handleSubmitClick: (
+    viewType: string,
+    detailTaskId?: string,
+    isReply?: boolean
+  ) => void;
   changeProps: (e: any, name: string, viewType: string) => void;
 }
 
 const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTaskCreateView({
+  isReply,
   boardId,
   // taskDetail,
   viewType,
@@ -39,41 +44,48 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   changeProps,
   handleSubmitClick,
 }) {
-  const { pathname } = useLocation();
+  const params = useLectureParams();
   let [taskDetail] = useLectureTaskCreate();
   const [canNotice, setCanNotice] = useState<boolean>(false);
+
   useEffect(() => {
-    if (
-      (getActiveStructureItem()! as LectureStructureCubeItem).cube === undefined
-    ) {
+    const params = getLectureParams();
+    if (params === undefined) {
       return;
     }
-    let denizenKey = (getActiveStructureItem()! as LectureStructureCubeItem)
-      .cube!.patronKey.keyString;
-    if (
-      (getActiveStructureItem()! as LectureStructureCubeItem).cube!.patronKey
-        .patronType !== 'Denizen'
-    ) {
-      /* eslint-disable prefer-const */
-      let [pre, last] = denizenKey.split('@');
-      if (pre === undefined || last === undefined) {
-        return;
-      }
-      [pre] = pre.split('-');
-      if (pre === undefined) {
-        return;
-      }
-      const [last1, last2] = last.split('-');
-      if (last1 === undefined || last2 === undefined) {
-        return;
-      }
-      denizenKey = `${pre}@${last1}-${last2}`;
+    const lectureStructureCubeItem = getActiveCubeStructureItem(
+      params.pathname
+    );
+    if (lectureStructureCubeItem === undefined) {
+      return;
     }
+
+    const audienceKey = lectureStructureCubeItem.cube.patronKey.keyString;
+    /* eslint-disable prefer-const */
+    let [pre, last] = audienceKey.split('@');
+
+    if (pre === undefined || last === undefined) {
+      return;
+    }
+
+    [pre] = pre.split('-');
+    if (pre === undefined) {
+      return;
+    }
+
+    const [last1, last2] = last.split('-');
+    if (last1 === undefined || last2 === undefined) {
+      return;
+    }
+
+    const denizenKey = `${pre}@${last1}-${last2}`;
+
     if (SkProfileService.instance.skProfile.id === denizenKey) {
       setCanNotice(true);
     }
+
     return () => setCanNotice(false);
-  }, [pathname]);
+  }, [params?.cubeId]);
 
   //edit인경우
   if (taskEdit !== undefined) {
@@ -113,17 +125,19 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
     changeProps(value, 'notice', viewType!);
   }, []);
 
+  const title = isReply ? 'Reply' : 'Post';
+
   return (
     <Fragment>
       {boardId && taskDetail && (
         <>
-          <div className="course-info-header">
+          <div className="course-info-header" data-area={Area.CUBE_HEADER}>
             <div className="survey-header">
               {viewType === 'create' && (
-                <div className="survey-header-left">Create Post</div>
+                <div className="survey-header-left">Create {title}</div>
               )}
               {viewType === 'edit' && (
-                <div className="survey-header-left">Edit Post</div>
+                <div className="survey-header-left">Edit {title}</div>
               )}
             </div>
           </div>
@@ -132,7 +146,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               <Form.Field>
                 <div className="board-write-checkbox">
                   <div className="ui checkbox base">
-                    {canNotice && (
+                    {/* {canNotice && (
                       <Checkbox
                         className="base"
                         label="공지 등록"
@@ -140,7 +154,7 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
                         checked={taskDetail.notice}
                         onChange={handlePinnedChange}
                       />
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div
@@ -215,7 +229,9 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               {viewType === 'create' && (
                 <button
                   className="ui button fix bg"
-                  onClick={() => handleSubmitClick('create')}
+                  onClick={() =>
+                    handleSubmitClick('create', detailTaskId, isReply)
+                  }
                 >
                   등록
                 </button>
@@ -223,7 +239,9 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
               {viewType === 'edit' && (
                 <button
                   className="ui button fix bg"
-                  onClick={() => handleSubmitClick('edit', detailTaskId)}
+                  onClick={() =>
+                    handleSubmitClick('edit', detailTaskId, isReply)
+                  }
                 >
                   저장
                 </button>

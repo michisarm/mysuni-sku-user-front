@@ -14,10 +14,9 @@ import { depotHelper } from 'shared';
 import CommunityMenu from '../../../model/CommunityMenu';
 import Editor from './Editor';
 import { findMember } from 'community/api/MemberApi';
-import { joinCommunity } from 'community/api/communityApi';
+import { findMenu, joinCommunity } from 'community/api/communityApi';
 import { requestCommunity } from 'community/service/useCommunityHome/requestCommunity';
 import { checkMember } from 'community/service/useMember/useMember';
-import { getPostMenuFromCommunity } from 'community/service/useCommunityPostCreate/utility/getPostMenuNameFromCommunity';
 import depot from '@nara.drama/depot';
 import { saveCommunityAnonymousPost } from 'community/service/useCommunityPostCreate/utility/saveCommunityAnonymousPost';
 
@@ -100,11 +99,11 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
       return;
     }
 
+    if (postItem.title === '') {
+      reactAlert({ title: '알림', message: '제목을 입력해 주세요' });
+      return;
+    }
     if (postItem.pinned) {
-      if (postItem.title === '') {
-        reactAlert({ title: '알림', message: '제목을 입력해 주세요' });
-        return;
-      }
       if (postItem.contents === '') {
         reactAlert({ title: '알림', message: '내용을 입력해 주세요' });
         return;
@@ -112,8 +111,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
     }
 
     //자료실 타입 첨부파일 필수 체크
-    const menu =
-      menuId && (await getPostMenuFromCommunity(communityId, menuId));
+    const menu = menuId && menuId !== 'noticeCreate' && (await findMenu(communityId, menuId));
     if (
       (menu && menu.type == 'STORE') ||
       getCommunityPostCreateItem()?.menuType == 'STORE'
@@ -124,6 +122,10 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         return true;
       }
     }
+
+    //url 입력시 자동으로 하이퍼링크 적용
+    const regURL = new RegExp('(^|[^"])(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)', 'gi');
+    postItem.contents = postItem.contents.replace(regURL, '$1<a href="$2://$3" target="_blank" rel="noopener noreferrer">$2://$3</a>');
 
     reactConfirm({
       title: '알림',

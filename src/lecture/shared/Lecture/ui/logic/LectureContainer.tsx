@@ -34,6 +34,7 @@ interface Props {
   onAction?: () => void;
   onViewDetail?: (e: any, data: OnViewDetailData) => void;
   onToggle?: (openState: boolean) => void;
+  contentType?: string;
 }
 
 interface States {
@@ -75,6 +76,7 @@ class LectureContainer extends Component<Props, States> {
     toggle: false,
     onAction: () => {},
     onViewDetail: () => {},
+    contentType: ""
   };
 
   static defaultActions: ActionWith[] = [
@@ -171,7 +173,7 @@ class LectureContainer extends Component<Props, States> {
             rating 은 표시되나 date 는 표시되지 않음.
       ]
     */
-    const { model, thumbnailImage, onAction } = this.props;
+    const { model, thumbnailImage, onAction, contentType } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
 
@@ -200,6 +202,7 @@ class LectureContainer extends Component<Props, States> {
         onViewDetail={this.onViewDetail}
         onHoverIn={this.onHoverIn}
         onHoverOut={this.onHoverOut}
+        contentType={contentType}
       />
     );
   }
@@ -242,7 +245,7 @@ class LectureContainer extends Component<Props, States> {
 
   renderLineCard() {
     //
-    const { model, thumbnailImage, onAction } = this.props;
+    const { model, thumbnailImage, onAction, contentType } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
 
@@ -273,6 +276,7 @@ class LectureContainer extends Component<Props, States> {
             onViewDetail={this.onViewDetail}
             onHoverIn={this.onHoverIn}
             onHoverOut={this.onHoverOut}
+            contentType={contentType}
           />
         </CardGroup>
       </li>

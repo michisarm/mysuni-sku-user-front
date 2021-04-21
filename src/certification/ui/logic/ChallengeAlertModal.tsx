@@ -4,12 +4,12 @@ import { Modal, Button } from 'semantic-ui-react';
 interface Props {
   badgeName: string;
   alertModal: boolean;
-  onHandleAlertModal: () => void;
+  onCloseAlertModal: () => void;
 }
 
 const ChallengeAlertModal: React.FC<Props> = Props => {
   //
-  const { badgeName, alertModal, onHandleAlertModal } = Props;
+  const { badgeName, alertModal, onCloseAlertModal } = Props;
 
   return (
     <Modal open={alertModal} className="base w380">
@@ -25,7 +25,7 @@ const ChallengeAlertModal: React.FC<Props> = Props => {
         </div>
       </Modal.Content>
       <Modal.Actions className="actions2">
-        <Button className="pop2 p" onClick={onHandleAlertModal}>
+        <Button className="pop2 p" onClick={onCloseAlertModal}>
           확인
         </Button>
       </Modal.Actions>

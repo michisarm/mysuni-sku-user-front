@@ -51,6 +51,19 @@ class LectureRdoModel {
     });
   }
 
+  static newWithChannelOrder(collegeId:string, channelId: string, limit: number, offset: number, orderBy: OrderByType) {
+    //
+    return new LectureRdoModel({
+      college: collegeId,
+      channel: channelId,
+      orderBy,
+      limit,
+      offset,
+      channelLimit: 0,
+      channelOffset: 0,
+    });
+  }
+
   static newCommunity(limit: number, offset: number) {
     return new LectureRdoModel({
       college: '',

@@ -1,5 +1,6 @@
-import { ClassroomModel } from '../../../personalcube/classroom/model';
-import RemoteClassroom from '../model/RemoteClassroom';
+import { Classroom as RemoteClassroom } from '../../model/Classroom';
+import { Member } from '../../model/Member';
+import { UserIdentity } from '../../model/UserIdentity';
 
 export interface Classroom {
   id: string;
@@ -14,10 +15,20 @@ export interface Classroom {
   instructor: string;
   siteUrl: string;
   capacity: number;
-  freeOfCharge: { approvalProcess: boolean };
+  freeOfCharge: {
+    approvalProcess: boolean;
+    chargeAmount: number;
+    freeOfCharge: boolean;
+  };
+  enrollingAvailable: boolean;
+  capacityClosed: boolean;
+  studentCount: number;
+  cancellationPenalty: string;
+  remote: RemoteClassroom;
+  operator?: UserIdentity;
 }
 
 export default interface LectureClassroom {
   classrooms: Classroom[];
-  remote: ClassroomModel[];
+  remote: RemoteClassroom[];
 }

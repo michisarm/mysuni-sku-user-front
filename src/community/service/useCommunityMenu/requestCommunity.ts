@@ -20,7 +20,7 @@ import { setCommunityAdminGroupsStore } from 'community/store/CommunityAdminGrou
 
 export function requestCommunityMenu(communityId: string) {
   const menuArr: any = [];
-  findCommunityMenu(communityId).then(community => {
+  return findCommunityMenu(communityId).then(community => {
 
     community.data.map((item: any, index: number) => {
       if (item.parentId === null) {
@@ -30,11 +30,11 @@ export function requestCommunityMenu(communityId: string) {
     community.data.map((item: any) => {
       if (item.parentId !== '' && item.parentId !== null) {
         menuArr.map((item2: any, index: number) => {
-          if(item.parentId === item2.id) {
-            if(menuArr[index].child === undefined) {
+          if (item.parentId === item2.id) {
+            if (menuArr[index].child === undefined) {
               menuArr[index].child = []
               menuArr[index].child.push(item)
-            }else {
+            } else {
               menuArr[index].child.push(item)
             }
           }
@@ -51,35 +51,9 @@ export function requestCommunityMenu(communityId: string) {
         return 0;
       }
     })
-
-    menuArr.map((item: any, index: number) => {
-      item.order = index+1
-    })
-
-    menuArr.map((item: any, index: number) => {
-      if(item.child) {
-        item.child.sort((a: any, b: any) => {
-          if (a.order < b.order) {
-            return -1;
-          } else if (a.order > b.order) {
-            return 1;
-          } else {
-            return 0;
-          }
-        })
-      }
-    })
-
-    menuArr.map((item: any, index: number) => {
-      if(item.child) {
-        item.child.map((item2: any, index: any) => {
-          item2.order = index+1
-        })
-      }
-    })
-
     //여기서 트리구조 형태로 배열 만들어준다.
-    setCommunityAdminMenu({'menu' : menuArr});
+    setCommunityAdminMenu({ 'menu': menuArr });
+    return menuArr
   });
 }
 
@@ -101,8 +75,7 @@ export function requestCommunityGroups(communityId: string) {
 
 export async function saveCommunityMenu(communityId: string, params: any, selectedRow: any) {
   for await (const param of params) {
-    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
-    });
+     saveCommunityAdminMenu(communityId, param, selectedRow)
   }
 }
 
@@ -146,7 +119,5 @@ export function getCommunitySurvey(surveyId: string) {
 }
 
 export function requestCommunityMenuOrder(communityId: string) {
-  return setCommunityMenuOrder(communityId).then(result => {
-    return result
-  });
+  return setCommunityMenuOrder(communityId)
 }

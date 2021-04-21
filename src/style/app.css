@@ -43,9 +43,9 @@
 }
 
 /* mySUNI introduction 탭메뉴 깨짐 수정 2021-01-29 추가 */
-#root section.content .tab-menu-inner .sub-tab-menu .ui.menu {
+/* #root section.content .tab-menu-inner .sub-tab-menu .ui.menu {
   width: 100% !important;
-}
+} */
 
 body.msie #root section.content .tab-menu-inner .ui.menu .item {
   flex: none;
@@ -731,4 +731,15 @@ body.msie
 .ql-snow .ql-editor ol li,
 .ql-snow .ql-editor ul li {
   font-size: 15px;
+}
+
+/* loadingbar render 순서가 늦는 것 같다.. 안먹어.. 못씀 */
+.loading-bar {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  height: 400;
+  box-shadow: '0 0 0 0';
+  border: 0;
 }

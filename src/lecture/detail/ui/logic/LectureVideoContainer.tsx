@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
-import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
-import { getLectureMedia } from 'lecture/detail/store/LectureMediaStore';
-import { MediaType } from 'lecture/detail/model/MediaType';
+import {
+  getLectureMedia,
+  useLectureMedia,
+} from 'lecture/detail/store/LectureMediaStore';
 import LinkedInModal from '../view/LectureVideoView/LinkedInModal';
 import ContentsProviderType from 'personalcube/media/model/ContentsProviderType';
 import { useLocation } from 'react-router-dom';
+import { MediaType } from '../../../model/MediaType';
+import { checkStudent } from '../../service/useLectureMedia/utility/checkStudent';
 
 function LectureVideoContainer() {
-  // useLectureMedia();
-
-  const [, lectureMedia, checkStudent] = useLectureMedia();
-  const params = useLectureRouterParams();
+  const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -68,7 +67,6 @@ function LectureVideoContainer() {
         (lectureMedia.mediaType == 'InternalMedia' ||
           lectureMedia.mediaType == 'InternalMediaUpload') && (
           <LectureVideoView
-            params={params}
             checkStudent={checkStudent}
             getStickyPosition={getStickyPosition}
             scroll={scroll}

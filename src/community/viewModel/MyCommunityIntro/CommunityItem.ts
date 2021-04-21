@@ -5,6 +5,8 @@ export default interface CommunityItem {
   thumbnailId: string;
   name: string;
   managerName: string;
+  managerEmail: string;
   memberCount: number;
   hasNewPost: boolean;
+  type: string;
 }

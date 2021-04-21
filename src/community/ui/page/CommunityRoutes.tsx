@@ -10,6 +10,7 @@ import AllPostsPage from './AllPostsPage';
 import BasicPostEditPage from './BasicPostEditPage';
 import BasicPostPage from './BasicPostPage';
 import CommunityHomePage from './CommunityHomePage';
+import CommunityDetailPage from './CommunityDetailPage';
 import CommunityPreviewPage from './CommunityPreviewPage';
 import CommunityHtmlPage from './CommunityHtmlPage';
 import CreatePostPage from './CreatePostPage';
@@ -20,6 +21,7 @@ import MemberRoutes from './MemberRoutes';
 import NoticePostsPage from './NoticePostsPage';
 import PostsPage from './PostsPage';
 import SurveyPostPage from './SurveyPostPage';
+import { Area } from 'tracker/model';
 
 interface Params {
   communityId: string;
@@ -35,14 +37,21 @@ function CommunityRoutes() {
     <section className="content community">
       <Segment className="full">
         <div className="course-detail-center community-containter">
-              
           <CommunityHomeTreeContainer />
-          <div className="community-home-contants">
+          <div
+            className="community-home-contants"
+            data-area={Area.COMMUNITY_CONTENT}
+          >
             <Switch>
               <Route
                 exact
                 path="/community/:communityId"
                 component={CommunityHomePage}
+              />
+              <Route
+                exact
+                path="/community/:communityId/detail"
+                component={CommunityDetailPage}
               />
               <Route
                 exact

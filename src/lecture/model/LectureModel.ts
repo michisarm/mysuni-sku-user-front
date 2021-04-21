@@ -24,6 +24,7 @@ class LectureModel extends DramaEntityObservableModel {
   category: CategoryModel = new CategoryModel();
   name: string = '';
   cubeType: CubeType = CubeType.None;
+  cardId: string = '';
   cubeId: string = '';
   courseSetJson: CourseSetModel = new CourseSetModel();
   courseLectureUsids: string[] = [];
@@ -48,9 +49,13 @@ class LectureModel extends DramaEntityObservableModel {
 
   reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
 
+  capacity: number = 0; // 수강 신청 정원
+  differDays: number = 0; // 수강 신청 마감까지 남은 일 수
+
   // UI only
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
+  ribbonName: string = '';
 
   constructor(lecture?: LectureModel) {
     //
@@ -77,6 +82,16 @@ class LectureModel extends DramaEntityObservableModel {
       );
 
       this.reviewSummary = lecture.reviewSummary;
+      
+      if(this.studentCount >= this.capacity) {
+        this.ribbonName = "정원 마감"
+      } else {
+        if(this.differDays == 0) {
+          this.ribbonName = ("D-DAY");
+        } else {
+          this.ribbonName = ("D-"+this.differDays);
+        }
+      }
     }
   }
 
@@ -84,21 +99,17 @@ class LectureModel extends DramaEntityObservableModel {
     //
     const serviceType = lecture.serviceType as string;
 
-    if (serviceType === 'PROGRAM') {
-      return LectureServiceType.Program;
-    } else if (serviceType === 'COURSE') {
-      return LectureServiceType.Course;
-    } else {
+    if (serviceType === 'Card') {
       return LectureServiceType.Card;
+    } else {
+      return LectureServiceType.Cube;
     }
   }
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
-    if (serviceType === LectureServiceType.Program) {
-      return CubeTypeNameType.Program;
-    } else if (serviceType === LectureServiceType.Course) {
-      return CubeTypeNameType.Course;
+    if (serviceType === 'Card') {
+      return CubeTypeNameType.Card;
     } else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
@@ -188,6 +199,7 @@ decorate(LectureModel, {
   name: observable,
   cubeType: observable,
   cubeId: observable,
+  cardId: observable,
   courseSetJson: observable,
   learningTime: observable,
   courseLectureUsids: observable,
@@ -208,6 +220,9 @@ decorate(LectureModel, {
   updateTimeForTest: observable,
   viewState: observable,
   endDate: observable,
+  capacity: observable,
+  differDays: observable,
+  ribbonName: observable,
 });
 
 export default LectureModel;

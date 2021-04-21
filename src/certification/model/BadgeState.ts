@@ -1,0 +1,1 @@
+export type BadgeState = 'Created' | 'OpenApproval' | 'Opened' | 'Rejected' | 'Disabled';
