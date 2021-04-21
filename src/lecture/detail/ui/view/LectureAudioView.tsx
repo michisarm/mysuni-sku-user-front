@@ -6,10 +6,6 @@ import { patronInfo } from '@nara.platform/dock';
 import LectureParams from '../../viewModel/LectureParams';
 import { useLocation, useParams } from 'react-router-dom';
 import { getPublicUrl } from 'shared/helper/envHelper';
-import {
-  getLectureConfirmProgress,
-  setLectureConfirmProgress,
-} from 'lecture/detail/store/LectureConfirmProgressStore';
 import { useHistory } from 'react-router-dom';
 import {
   audioClose,
@@ -25,12 +21,15 @@ import { confirmProgress } from '../../service/useLectureMedia/utility/confirmPr
 import { setWatchLog } from '../../service/useLectureMedia/useLectureWatchLog';
 import { debounceActionTrack } from 'tracker/present/logic/ActionTrackService';
 import { ActionType, Action, Area, ActionTrackParam } from 'tracker/model';
+import LectureState from '../../viewModel/LectureState';
 
 interface LectureAudioViewProps {
+  lectureState: LectureState;
   checkStudent: (params: LectureParams, path: string) => void;
 }
 
 const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioView({
+  lectureState,
   checkStudent,
 }) {
   const { pathname } = useLocation();
@@ -83,7 +82,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   const history = useHistory();
 
   const nextContents = useCallback((path: string) => {
-    setLectureConfirmProgress();
     setPanoptoState(10);
     history.push(path);
   }, []);
@@ -104,7 +102,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
           sessionStorage.removeItem('InProgressLearningList');
         }
         audioStart();
-        if(!isFirstAction){
+        if (!isFirstAction) {
           setIsFirstAction(true);
         }
       } else if (state == 0) {
@@ -115,11 +113,12 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
   );
 
   // study action event : 방문당 한번 적재
-  useEffect(()=>{
-    if(isFirstAction){
+  useEffect(() => {
+    if (isFirstAction) {
       // study action track
       debounceActionTrack({
-        email: getCookie('tryingLoginId') ||
+        email:
+          getCookie('tryingLoginId') ||
           (window.sessionStorage.getItem('email') as string) ||
           (window.localStorage.getItem('nara.email') as string),
         path: window.location.pathname,
@@ -127,16 +126,16 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
         area: Area.CUBE_PLAY,
         actionType: ActionType.STUDY,
         action: Action.CLICK,
-        actionName: '학습버튼 클릭'
+        actionName: '학습버튼 클릭',
       } as ActionTrackParam);
     }
-  },[isFirstAction]);
+  }, [isFirstAction]);
 
-  useEffect(()=>{
-    if(params.cubeId){
+  useEffect(() => {
+    if (params.cubeId) {
       setIsFirstAction(false);
     }
-  },[params.cubeId]);
+  }, [params.cubeId]);
 
   const registCheckStudent = useCallback(
     async (params: LectureParams | undefined) => {
@@ -275,7 +274,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
       setPanoptoState(10);
       setIsActive(false);
       setNextContentsView(false);
-      setLectureConfirmProgress();
     };
   }, []);
 
@@ -338,7 +336,7 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
     <div className="audio-container" ref={myInput}>
       {nextContentsView &&
         nextContent &&
-        getLectureConfirmProgress()?.learningState == 'Passed' && (
+        lectureState.student?.learningState == 'Passed' && (
           <div className="video-overlay">
             <div className="video-overlay-btn">
               <button onClick={() => nextContents(nextContent.path)}>

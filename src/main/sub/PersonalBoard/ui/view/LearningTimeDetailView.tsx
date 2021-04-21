@@ -102,7 +102,7 @@ function LearningTimeDetailView(props: Props) {
                   )
                 }
                 <div className="item-con-right detail">
-                  <div className="card-gauge-bar">
+                  <div className="card-gauge-bar type2">
                     <div className="gauge-number sv">
                       <em className="col-con">mySUNI</em>
                       <div>

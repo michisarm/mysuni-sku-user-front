@@ -1,7 +1,7 @@
 import { CommunityPostItem, CommunityPostList } from 'community/viewModel/CommunityPostList';
 import moment from 'moment';
 import React, { useCallback } from 'react';
-import { useCommunityHome } from 'community/store/CommunityHomeStore';
+import { useCommunityHome, getCommunityHome } from 'community/store/CommunityHomeStore';
 import { patronInfo } from '@nara.platform/dock';
 import { reactAlert } from '@nara.platform/accent';
 import { stringify } from 'querystring';
@@ -103,7 +103,7 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
 }) {
 
   const denizenId = patronInfo.getDenizenId();
-  const communityHome = useCommunityHome();
+  const communityHome = getCommunityHome();
 
   const onHandleClickRow = useCallback(param => {
 
@@ -112,7 +112,8 @@ const CommunityPostListView: React.FC<CommunityPostListViewProps> = function Com
     } else {
       if (
         communityHome?.community?.managerId === denizenId ||
-        param.creatorId === denizenId
+        param.creatorId === denizenId ||
+        communityHome?.community?.memberType === 'ADMIN'
       ) {
         handleClickRow(param, menuType);
       } else {

@@ -21,18 +21,19 @@ interface State {
 class HeaderAlarmView extends Component<Props, State> {
   //
   alarmButtonRef: any = React.createRef();
+  alarmRef: any = React.createRef();
 
   state = {
     alarmShowClass: '',
   };
 
-  //componentDidMount() {
-  //  document.addEventListener('mousedown', this.handleClickOutside);
-  //}
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
 
-  //componentWillUnmount() {
-  //  document.removeEventListener('mousedown', this.handleClickOutside);
-  //}
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 
   onTogglePop() {
     const { alarmShowClass } = this.state;
@@ -43,14 +44,15 @@ class HeaderAlarmView extends Component<Props, State> {
     handleClickAlarm();
   }
 
-  //handleClickOutside(e: MouseEvent) {
-  //  if (
-  //    this.alarmButtonRef &&
-  //    !this.alarmButtonRef.current.contains(e.target)
-  //  ) {
-  //    setTimeout(() => this.setState({ alarmShowClass: '' }), 500);
-  //  }
-  //}
+  handleClickOutside(e: MouseEvent) {
+    const { alarmShowClass } = this.state;
+    if (
+      this.alarmRef &&
+      !this.alarmRef.current.contains(e.target)
+    ) {
+      this.setState({ alarmShowClass: '' });
+    }
+  }
 
   render() {
     //
@@ -61,9 +63,8 @@ class HeaderAlarmView extends Component<Props, State> {
     if (myNotieNoReadMentionCount > 0) {
       existNoReadClass = 'lms-on'
     }
-
     return (
-      <>
+      <div ref={this.alarmRef}>
         <a
           className={`lms-alarm ${existNoReadClass}`}
           onClick={this.onTogglePop}
@@ -71,7 +72,7 @@ class HeaderAlarmView extends Component<Props, State> {
         >
           <span>알림</span>
         </a>
-        <div className={`lms-alarm-list ${alarmShowClass}`}>
+        <div className={`lms-alarm-list ${alarmShowClass}`} ref={this.alarmButtonRef}>
           <div className="lms-alarm-header">
             <span className="lms-alarm-title">알림</span>
             <Button
@@ -97,14 +98,15 @@ class HeaderAlarmView extends Component<Props, State> {
                     this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
                   }}
                 >
-                  <span className="lms-alarm-copy">{result.message}</span>
-                  <span className="lms-alarm-time">{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
+                  <b className="lms-alarm-copy" style={{ display: 'inline', marginRight: '5px' }}>{result.title}</b>
+                  <span className="lms-alarm-copy" style={{ display: 'inline' }}>{result.message}</span>
+                  <span className="lms-alarm-time" style={{ display: 'block', marginTop: '.5em' }}>{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
                 </a>
               );
             })}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

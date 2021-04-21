@@ -527,11 +527,22 @@ function parseItems(
           }
           items.push(cube);
         }
+        const discussion = lectureStructure.discussions.find(
+          d => d.id === c.contentId
+        );
+        if (discussion !== undefined) {
+          const i = lectureStructure.cubes.findIndex(
+            d => d.cubeId === c.contentId
+          );
+          discussion.parentId = contentId;
+          items.push(discussion);
+        }
       });
     } else if (learningContentType === 'Discussion') {
       const discussion = lectureStructure.discussions.find(
         c => c.id === contentId
       );
+
       if (discussion !== undefined) {
         items.push(discussion);
       }
@@ -544,6 +555,7 @@ export async function requestCardLectureStructure(cardId: string) {
   setIsLoadingState({ isLoading: true });
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
   const myCardRelatedStudentsRom = await findMyCardRelatedStudentsCache(cardId);
+
   if (
     cardWithContentsAndRelatedCountRom === undefined ||
     myCardRelatedStudentsRom === undefined
@@ -551,25 +563,34 @@ export async function requestCardLectureStructure(cardId: string) {
     setIsLoadingState({ isLoading: false });
     return;
   }
+
   const { card, cardContents } = cardWithContentsAndRelatedCountRom;
+
   if (card === null) {
     setIsLoadingState({ isLoading: false });
     return;
   }
+
   const { cardStudent, cubeStudents } = myCardRelatedStudentsRom;
   const cubeIds: string[] = [];
+
   for (let i = 0; i < cardContents.learningContents.length; i++) {
     const learningContent = cardContents.learningContents[i];
     if (learningContent.learningContentType === 'Cube') {
       cubeIds.push(learningContent.contentId);
     }
     if (learningContent.learningContentType === 'Chapter') {
-      learningContent.children.forEach(c => cubeIds.push(c.contentId));
+      learningContent.children
+        .filter(c => c.learningContentType === 'Cube')
+        .forEach(c => cubeIds.push(c.contentId));
     }
   }
+
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
+
   let cubeItems: LectureStructureCubeItem[] = [];
+
   if (cubes !== undefined) {
     cubeItems = await Promise.all(
       cubes.map(async cube => {
@@ -582,7 +603,33 @@ export async function requestCardLectureStructure(cardId: string) {
       })
     );
   }
+
   const discussionItems: LectureStructureDiscussionItem[] = [];
+
+  cardContents.learningContents.map(content => {
+    if (content.chapter) {
+      content.children
+        .filter(
+          ({ learningContentType }) => learningContentType === 'Discussion'
+        )
+        .forEach(learningContent => {
+          const order = content.children.findIndex(
+            ({ contentId }) => contentId === learningContent.contentId
+          );
+
+          discussionItems.push(
+            parseDiscussionItem(
+              card,
+              cardContents,
+              learningContent,
+              order,
+              cardStudent
+            )
+          );
+        });
+    }
+  });
+
   cardContents.learningContents
     .filter(({ learningContentType }) => learningContentType === 'Discussion')
     .forEach(learningContent => {
@@ -599,7 +646,9 @@ export async function requestCardLectureStructure(cardId: string) {
         )
       );
     });
+
   const chapterItems: LectureStructureChapterItem[] = [];
+
   cardContents.learningContents
     .filter(({ learningContentType }) => learningContentType === 'Chapter')
     .forEach(learningContent => {
@@ -608,6 +657,7 @@ export async function requestCardLectureStructure(cardId: string) {
       );
       chapterItems.push(parseChapterItem(card, learningContent, order));
     });
+
   const lectureStructure: LectureStructure = {
     card: cardItem,
     cubes: cubeItems,
@@ -615,10 +665,12 @@ export async function requestCardLectureStructure(cardId: string) {
     chapters: chapterItems,
     items: [],
   };
+
   lectureStructure.items = parseItems(
     lectureStructure,
     cardContents.learningContents
   );
+
   setLectureStructure(lectureStructure);
   setIsLoadingState({ isLoading: false });
 }

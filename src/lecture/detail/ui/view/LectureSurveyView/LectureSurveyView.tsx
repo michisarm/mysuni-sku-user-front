@@ -19,7 +19,7 @@ import CommunityMenu from 'community/model/CommunityMenu';
 import { LectureStructure } from 'lecture/detail/viewModel/LectureStructure';
 import { SurveyCaseService } from 'survey/stores';
 import { SkProfileService } from 'profile/stores';
-import { CommunityCommentList } from '@nara.drama/feedback';
+import { CommentList, CommunityCommentList } from '@nara.drama/feedback';
 import {
   getLectureParams,
   useLectureParams,
@@ -257,7 +257,26 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         lectureSurveyState.state === 'Completed' &&
         commentId !== null &&
         commentId !== undefined &&
-        commentId !== '' && (
+        commentId !== '' &&
+        currentMenu?.name === undefined && (
+          <div className="outline">
+            <CommentList
+              feedbackId={commentId}
+              menuType=""
+              hideCamera
+              name={member.name}
+              email={member.email}
+              companyName={member.company}
+              departmentName={member.department}
+            />
+          </div>
+        )}
+      {lectureSurveyState !== undefined &&
+        lectureSurveyState.state === 'Completed' &&
+        commentId !== null &&
+        commentId !== undefined &&
+        commentId !== '' &&
+        currentMenu?.name !== undefined && (
           <div className="outline">
             <CommunityCommentList
               feedbackId={commentId}
