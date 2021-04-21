@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Select, Icon, Button, Popup } from 'semantic-ui-react';
 
 // Store
 import { getLectureMedia } from 'lecture/detail/store/LectureMediaStore';
-import { getEmbed, setEmbed } from 'lecture/detail/store/EmbedStore';
 
 // Service
 import { downloadTranscript } from '../../service/useTranscript/utility/useTranscript';
 import { findTranscript } from '../../service/useTranscript/utility/useTranscript';
 import LectureCubeSummary from 'lecture/detail/viewModel/LectureOverview/LectureCubeSummary';
+import { PlayerState, seekTo } from '../../service/PanoptoEmbedPlayer';
+import { usePanoptoEmbedPlayerState } from '../../store/PanoptoEmbedPlayerStore';
 
 const style = {
   borderRadius: '0.375rem',
@@ -48,11 +49,17 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
   const intervalTranscript: any = useRef<any>(null);
   const [transciptHighlight, setTransciptHighlight] = useState<string>();
 
+  const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
+
   // 특정 위치로 재생 위치 이동
   const seekByIndex = (startIndex: number, endIndex: number) => {
-    if (getEmbed() && startIndex >= 0) {
-      if (getEmbed().isPaused === false) {
-        getEmbed().seekTo(startIndex);
+    if (startIndex >= 0) {
+      // jz - 무슨 의미?
+      // if (getEmbed().isPaused === false) {
+      //   seekTo(startIndex);
+      // }
+      if (panoptoEmbedPlayerState?.playerState === PlayerState.Playing) {
+        seekTo(startIndex);
       }
     }
   };
@@ -68,17 +75,15 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
 
   useEffect(() => {
     // 동영상 상태 변경 시 callback
-    getEmbed().onStateChange = () => {
-      if (getEmbed().isPaused === false) {
-        setAutoHighlight(true);
-      }
-    };
-  }, []);
+    if (panoptoEmbedPlayerState?.playerState === PlayerState.Playing) {
+      setAutoHighlight(true);
+    }
+  }, [panoptoEmbedPlayerState?.playerState]);
 
   // 대본 선택 관련 초기화
   const initialize = () => {
     //자동 하이라이트 기능
-    if (getEmbed().isPaused === false) {
+    if (panoptoEmbedPlayerState?.playerState === PlayerState.Playing) {
       setAutoHighlight(true);
     }
     clearInterval(intervalTranscript.current);
@@ -122,34 +127,37 @@ const LectureTranscriptContainer: React.FC<LectureTranscriptContainerProps> = fu
     clearInterval(intervalTranscript.current);
 
     if (autoHighlight) {
-      intervalTranscript.current = setInterval(() => {
-        if (getEmbed().isPaused === true) {
-          setAutoHighlight(false);
-          clearInterval(intervalTranscript);
-        } else {
-          if (transcriptList !== undefined) {
-            //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
-            transcriptList.map((item: any, key: number) => {
+      if (panoptoEmbedPlayerState?.playerState === PlayerState.Paused) {
+        setAutoHighlight(false);
+        clearInterval(intervalTranscript);
+      } else {
+        if (transcriptList !== undefined) {
+          //시간 2 초마다 체크해서 자막 스크롤 이동 및 하이라이트 넣기
+          transcriptList.map((item: any, key: number) => {
+            if (
+              convertStringTimeToNumber(item.startTime) <
+              (panoptoEmbedPlayerState?.currentTime || 0)
+            ) {
               if (
-                convertStringTimeToNumber(item.startTime) <
-                getEmbed().getCurrentTime()
+                (panoptoEmbedPlayerState?.currentTime || 0) <
+                convertStringTimeToNumber(item.endTime)
               ) {
-                if (
-                  getEmbed().getCurrentTime() <
-                  convertStringTimeToNumber(item.endTime)
-                ) {
-                  setTransciptHighlight(item.idx);
-                }
+                setTransciptHighlight(item.idx);
               }
-            });
-          }
+            }
+          });
         }
-      }, 500);
+      }
     }
     // return () => {
     //   clearInterval(intervalTranscript);
     // };
-  }, [autoHighlight, transcriptList]);
+  }, [
+    panoptoEmbedPlayerState?.playerState,
+    panoptoEmbedPlayerState?.currentTime,
+    autoHighlight,
+    transcriptList,
+  ]);
 
   useEffect(() => {
     // 하드코딩하여 적용... 추후 필요시 체크해서 하는 부분이 필요할 듯

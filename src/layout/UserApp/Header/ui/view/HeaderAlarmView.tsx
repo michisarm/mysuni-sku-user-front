@@ -98,8 +98,9 @@ class HeaderAlarmView extends Component<Props, State> {
                     this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
                   }}
                 >
-                  <span className="lms-alarm-copy">{result.message}</span>
-                  <span className="lms-alarm-time">{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
+                  <b className="lms-alarm-copy" style={{ display: 'inline', marginRight: '5px' }}>{result.title}</b>
+                  <span className="lms-alarm-copy" style={{ display: 'inline' }}>{result.message}</span>
+                  <span className="lms-alarm-time" style={{ display: 'block', marginTop: '.5em' }}>{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
                 </a>
               );
             })}

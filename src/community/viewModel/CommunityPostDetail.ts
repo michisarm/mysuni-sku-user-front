@@ -1,6 +1,11 @@
 import Post from 'community/model/Post';
 import PostType from 'community/model/PostType';
 
+type RelatedUrlList = {
+  title: string;
+  url: string;
+}
+
 export interface CommunityPostDetail {
   id: string;
   postId: string;

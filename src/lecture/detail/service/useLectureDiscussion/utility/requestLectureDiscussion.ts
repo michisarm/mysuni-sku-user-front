@@ -32,7 +32,10 @@ export async function requestLectureDiscussion(
           contentId.substring(contentId.length - 4) === discussionId
       );
     } else {
-      if (content.contentId.substring(contentId.length - 4) === discussionId) {
+      if (
+        content.contentId.substring(content.contentId.length - 4) ===
+        discussionId
+      ) {
         discussion = content;
       }
     }
@@ -55,5 +58,6 @@ export async function requestLectureDiscussion(
     creator: creatorName,
     creatorAudienceId: keyString,
     creatorImage: profile.photoImage,
+    time: cardWithContentsAndRelatedCountRom.card.cardStateUpdatedTime,
   });
 }

@@ -472,12 +472,15 @@ function CommunityPostDetailContainer() {
           </div>
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
+            // menuType="discussion"
             menuType={menuType}
             hideCamera
             name={member.name}
             email={member.email}
             companyName={member.company}
             departmentName={member.department}
+            adminAuth={adminAuth}
+            communityAdminAuth={communityAdminAuth}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>
