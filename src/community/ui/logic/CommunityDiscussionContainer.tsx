@@ -38,7 +38,7 @@ function CommunityDiscussionContainer() {
   const OnClickList = useCallback(() => {
     history.goBack();
   }, []);
-
+  console.log('dd', postDetail);
   return (
     <Fragment>
       {postDetail && (
@@ -87,7 +87,7 @@ function CommunityDiscussionContainer() {
           </div> */}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
-            menuType="DISCUSSION"
+            menuType="discussion"
             hideCamera
             name=""
             email=""

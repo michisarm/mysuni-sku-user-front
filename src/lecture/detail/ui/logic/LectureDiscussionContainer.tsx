@@ -1,4 +1,4 @@
-import { CommentList } from '@nara.drama/feedback';
+import { CommentList, CommentService } from '@nara.drama/feedback';
 import moment from 'moment';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
@@ -55,7 +55,7 @@ export default function LectureDiscussionContainer() {
     if (lectureDiscussion?.id === undefined) {
       return;
     }
-    findFeedbackMenu(lectureDiscussion?.id).then(res => {
+    findFeedbackMenu(lectureDiscussion.id).then(res => {
       setLectureFeedbackContent({
         ...res,
       });
@@ -125,11 +125,11 @@ export default function LectureDiscussionContainer() {
               />
               <h2>{lectureDiscussion.name}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>638</strong>
+                전체 의견 <strong>{0}</strong>
               </span>
               <span>
                 <strong className="peo-date">
-                  {moment(lectureFeedbackContent?.time).format('YYYY.MM.DD')}
+                  {moment(lectureDiscussion?.time).format('YYYY.MM.DD')}
                 </strong>
               </span>
             </div>
@@ -138,6 +138,7 @@ export default function LectureDiscussionContainer() {
                 {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div
+                      className="discuss-text-belt"
                       dangerouslySetInnerHTML={{
                         __html: `${lectureFeedbackContent?.content}`,
                       }}
@@ -261,7 +262,8 @@ export default function LectureDiscussionContainer() {
             </div>
           </div>
           <CommentList
-            feedbackId={lectureDiscussion.id}
+            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent.commentFeedbackId : '' }
+            // feedbackId="0071441d-1f1f-43bf-9a0e-66b838090efb"
             hideCamera
             name={name}
             email={email}
