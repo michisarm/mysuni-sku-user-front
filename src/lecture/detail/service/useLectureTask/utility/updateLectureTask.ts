@@ -20,6 +20,7 @@ export async function updateLectureTask(
     }
 
     if (isReply) {
+      //namevalue list modify
       const postNameValueList = {
         nameValues: [
           { name: 'title', value: taskDetailItem.title },
