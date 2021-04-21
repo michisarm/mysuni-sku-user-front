@@ -477,6 +477,7 @@ function CommunityPostDetailContainer() {
           </div>
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
+            // menuType="discussion"
             menuType={menuType}
             hideCamera
             name={member.name}

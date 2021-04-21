@@ -55,5 +55,6 @@ export async function requestLectureDiscussion(
     creator: creatorName,
     creatorAudienceId: keyString,
     creatorImage: profile.photoImage,
+    time: cardWithContentsAndRelatedCountRom.card.cardStateUpdatedTime,
   });
 }
