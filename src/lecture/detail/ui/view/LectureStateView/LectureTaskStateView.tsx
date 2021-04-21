@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Student from '../../../../model/Student';
+import CubeType from '../../../../model/CubeType';
 import { submit } from '../../../service/useLectureState/utility/cubeStateActions';
 import LectureState from '../../../viewModel/LectureState';
 import { reactAlert } from '@nara.platform/accent';
@@ -31,11 +32,12 @@ function CanceledView() {
 
 interface ApprovedViewProps {
   student: Student;
+  cubeType: CubeType;
 }
 
 function ApprovedView(props: ApprovedViewProps) {
   const history = useHistory();
-  const { student } = props;
+  const { student, cubeType } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -70,7 +72,7 @@ function ApprovedView(props: ApprovedViewProps) {
 
   return (
     <>
-      {student.learningState !== 'Passed' && (
+      {cubeType === 'Task' && student.learningState !== 'Passed' && (
         <button className="ui button free bg p18" onClick={action}>
           {JOIN}
         </button>
@@ -100,7 +102,7 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
         <CanceledView />
       )}
       {student?.proposalState === 'Approved' && (
-        <ApprovedView student={student} />
+        <ApprovedView student={student} cubeType={cubeType} />
       )}
     </>
   );

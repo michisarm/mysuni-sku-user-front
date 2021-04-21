@@ -7,7 +7,7 @@ import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionVi
 import { useLectureFile } from 'lecture/detail/service/useLectureFile';
 import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { Checkbox, Image, List, Icon } from 'semantic-ui-react';
-import { CommentList } from '@nara.drama/feedback';
+import { CommentList, CommunityCommentList } from '@nara.drama/feedback';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureState } from '../../store/LectureStateStore';
 import { submitRegisterStudent, refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
@@ -256,7 +256,7 @@ function LectureCubeDiscussionContainer() {
             </div>
           )}
 
-          <CommentList
+          <CommunityCommentList
             feedbackId={lectureState.cubeDetail.cubeContents.commentFeedbackId}
             hideCamera
             name={name}
