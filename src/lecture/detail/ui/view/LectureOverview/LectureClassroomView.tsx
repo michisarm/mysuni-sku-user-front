@@ -61,8 +61,11 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                         </Table.HeaderCell>
                         {instructor && instructor.length > 0 && (
                           <Table.Cell className="teacher_info" colSpan="3">
-                            <strong style={{ marginLeft: 20 }}>강사정보</strong>
-                            <div className="scrolling course-profile scroll-break ">
+                            <strong style={{ marginLeft: 25 }}>강사정보</strong>
+                            <div
+                              style={{ marginLeft: 10 }}
+                              className="scrolling course-profile scroll-break "
+                            >
                               {instructor.map(item => (
                                 <Link
                                   className="ui profile tool-tip"
