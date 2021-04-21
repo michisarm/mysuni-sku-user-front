@@ -84,7 +84,7 @@ class TableModal extends Component<Props, States> {
                   <Table.HeaderCell>교육장소/웹사이트</Table.HeaderCell>
                   <Table.HeaderCell>정원정보</Table.HeaderCell>
                   <Table.HeaderCell>수강신청 기간</Table.HeaderCell>
-                  <Table.HeaderCell>시작일 및 종료일</Table.HeaderCell>
+                  <Table.HeaderCell>교육기간</Table.HeaderCell>
                   <Table.HeaderCell>취소 패널티</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -93,7 +93,15 @@ class TableModal extends Component<Props, States> {
                 {classrooms.sort(this.compare).map((classroom, index) => (
                   <Table.Row key={`overview-table-row-${index}`}>
                     <Table.Cell>{classroom.round}</Table.Cell>
-                    <Table.Cell>{classroom.instructor}</Table.Cell>
+                    <Table.Cell>
+                      {classroom.instructor.length > 0 &&
+                        classroom.instructor.map(item => (
+                          <>
+                            {item.name}
+                            <p />
+                          </>
+                        ))}
+                    </Table.Cell>
                     <Table.Cell>
                       {classroom.operator?.names?.langStringMap.ko}
                       {(classroom.operator?.companyNames ||

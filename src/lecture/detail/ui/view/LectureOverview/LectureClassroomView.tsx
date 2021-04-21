@@ -56,15 +56,12 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                   }) => (
                     <>
                       <Table.Row>
-                        <Table.HeaderCell
-                          className="num"
-                          rowSpan={instructor && instructor.length > 0 ? 2 : 1}
-                        >
+                        <Table.HeaderCell className="num" rowSpan="2">
                           <span>{round}차수</span>
                         </Table.HeaderCell>
-                        {instructor && (
+                        {instructor && instructor.length > 0 && (
                           <Table.Cell className="teacher_info" colSpan="3">
-                            <strong>강사정보</strong>
+                            <strong style={{ marginLeft: 20 }}>강사정보</strong>
                             <div className="scrolling course-profile scroll-break ">
                               {instructor.map(item => (
                                 <Link
