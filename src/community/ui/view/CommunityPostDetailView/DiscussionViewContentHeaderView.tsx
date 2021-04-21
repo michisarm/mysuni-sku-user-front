@@ -1,4 +1,10 @@
-import React, { Component, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  Component,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import moment from 'moment';
@@ -56,8 +62,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
-    const referenceFileBoxId =
-      postDetail && postDetail.depotId;
+    const referenceFileBoxId = postDetail && postDetail.depotId;
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
@@ -116,7 +121,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     <>
       {postDetail && (
         <>
-          <div className="discuss-wrap" style={{width: '850px'}}>
+          <div className="discuss-wrap" style={{ width: '850px' }}>
             <div className="discuss-box">
               <Image
                 src={`${PUBLIC_URL}/images/all/icon-communtiy-discussion.png`}
@@ -134,7 +139,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               </span>
             </div>
             <div className="discuss-box2">
-              <div className="discuss-text-wrap" style={textUndefined ? {display: 'none'} : {}}>
+              <div
+                className="discuss-text-wrap"
+                style={textUndefined ? { display: 'none' } : {}}
+              >
                 {postDetail && more && (
                   <div className="ql-snow">
                     <div
@@ -196,19 +204,17 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                         관련 URL
                       </p>
                       {postDetail &&
-                        postDetail.relatedUrlList?.map(
-                          (item: any) => (
-                            <a href={item.url} target="blank">
-                              {item.title}
-                            </a>
-                          )
-                        )}
+                        postDetail.relatedUrlList?.map((item: any) => (
+                          <a href={item.url} target="blank">
+                            {item.title}
+                          </a>
+                        ))}
                     </div>
                   </div>
                 )}
               {/* eslint-enable */}
               {/* 관련 자료 */}
-              {(postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null) && (
+              {postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
@@ -280,6 +286,6 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
       )}
     </>
   );
-}
+};
 
 export default DiscussionViewContentHeaderView;

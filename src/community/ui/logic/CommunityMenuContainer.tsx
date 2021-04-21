@@ -40,6 +40,7 @@ function CommunityMenuContainer() {
   const { communityId } = useParams<RouteParams>();
   const [communityAdminMenu] = useCommunityAdminMenu();
   const [communityAdminGroups] = useCommunityGroups();
+  const [fileReady, setFileReady] = useState<boolean>();
   const [addMenuFlag, setAddMenuFlag] = useState<boolean>(false);
   const [addChildMenuFlag, setAddChildMenuFlag] = useState<boolean>(false);
   const [discussRow, setDiscussRow] = useState<CommunityDiscussion>();
@@ -67,22 +68,31 @@ function CommunityMenuContainer() {
       e.persist();
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
+      setFileReady(false);
       if (type !== 'delete') {
         if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
           const discussionParams = await findPostMenuDiscussion(
             param.menuId
           ).then(res => res);
           if (discussionParams) {
+            console.log('2', discussionParams);
+            setFileReady(true);
+            setSelectedRow(param);
             setDiscussRow({
               content: discussionParams.content,
               privateComment: discussionParams.privateComment,
               relatedUrlList: discussionParams.relatedUrlList,
               fileBoxId: discussionParams.fileBoxId,
             });
+            //
           }
+        } else {
+          console.log('3');
+          setFileReady(true);
+          setSelectedRow(param);
+          setAddChildMenuFlag(false);
         }
-        setSelectedRow(param);
-        setAddChildMenuFlag(false);
+        //
       } else if (type === 'delete') {
         reactConfirm({
           title: '알림',
@@ -109,7 +119,7 @@ function CommunityMenuContainer() {
         });
       }
     },
-    [communityAdminMenu, discussRow, selectedRow]
+    [communityAdminMenu, discussRow, selectedRow, fileReady]
   );
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
@@ -517,20 +527,17 @@ function CommunityMenuContainer() {
 
   const onChangeDiscussValue = useCallback(
     (value, type, currentIndex?) => {
-      console.log('1');
       if (discussRow) {
         if (type === 'content') {
           // editor state
           setDiscussRow({ ...discussRow, [type]: value });
-          console.log('2');
         }
 
         if (type === 'urlValue') {
           discussRow.relatedUrlList[currentIndex].url = value;
           setDiscussRow({
             ...discussRow,
-            // relatedUrlList: [{ title: '', url: '' }],
-            ['relatedUrlList']: [...discussRow.relatedUrlList],
+            relatedUrlList: [...discussRow.relatedUrlList],
           });
         }
 
@@ -538,14 +545,12 @@ function CommunityMenuContainer() {
           discussRow.relatedUrlList[currentIndex].title = value;
           setDiscussRow({
             ...discussRow,
-            ['relatedUrlList']: { ...discussRow.relatedUrlList },
+            relatedUrlList: [...discussRow.relatedUrlList],
           });
-          console.log('4');
         }
 
         if (type === 'privateComment') {
           setDiscussRow({ ...discussRow, privateComment: value });
-          console.log('5');
         }
       }
     },
@@ -586,6 +591,7 @@ function CommunityMenuContainer() {
     },
     [discussRow]
   );
+
   const onChangeAddValue = useCallback((data, name, type?) => {
     addRow[name] = data[name];
     if (data[name] === 'COMMUNITY_GROUP' && name === 'accessType') {
@@ -1212,6 +1218,7 @@ function CommunityMenuContainer() {
                       addMenuFlag={addMenuFlag}
                       selectedRow={selectedRow}
                       discussRow={discussRow}
+                      fileReady={fileReady}
                       communityAdminGroups={communityAdminGroups}
                       onChangeValue={(data, name) => onChangeValue(data, name)}
                       onChangeDiscussValue={onChangeDiscussValue}
@@ -1235,6 +1242,7 @@ function CommunityMenuContainer() {
                     addMenuFlag={addMenuFlag}
                     selectedRow={addRow}
                     discussRow={discussRow}
+                    fileReady={fileReady}
                     communityAdminGroups={communityAdminGroups}
                     onChangeAddValue={(data, name) =>
                       onChangeAddValue(data, name, 'parent')
@@ -1262,6 +1270,7 @@ function CommunityMenuContainer() {
                     addChildMenuFlag={addChildMenuFlag}
                     selectedRow={addRow}
                     discussRow={discussRow}
+                    fileReady={fileReady}
                     communityAdminGroups={communityAdminGroups}
                     onChangeAddValue={(data, name) =>
                       onChangeAddValue(data, name, 'child')

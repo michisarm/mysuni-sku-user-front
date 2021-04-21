@@ -1,21 +1,22 @@
+import {
+  onCommunityPostDetailItem,
+  setCommunityPostDetailItem,
+} from 'community/store/CommunityPostDetailStore';
+import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
 import { useEffect, useRef, useState } from 'react';
-import { onCommunityDiscussionDetailItem } from '../../store/CommunityDiscussionDetailStore';
-import { CommunityDiscussionDetail } from '../../viewModel/CommunityDiscussionDetail';
-import { getCommunityDiscussion } from '../useCommunityPostCreate/utility/getDiscussionDetail';
+import { getCommunityPost } from '../useCommunityPostCreate/utility/getCommunityPost';
 
-type PostDetailValue = CommunityDiscussionDetail | undefined;
+type PostDetailValue = CommunityPostDetail | undefined;
 
 export function useCommunityDiscussionPostDetail(
   menuId: string
 ): [PostDetailValue] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
-  const [PostDetailValue, setPostDetailValue] = useState<
-    CommunityDiscussionDetail
-  >();
+  const [PostDetailValue, setPostDetailValue] = useState<CommunityPostDetail>();
 
   useEffect(() => {
-    getCommunityDiscussion(menuId);
+    getCommunityPost(menuId);
   }, [menuId]);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export function useCommunityDiscussionPostDetail(
     if (subscriberId === undefined) {
       return;
     }
-    return onCommunityDiscussionDetailItem(next => {
+    return onCommunityPostDetailItem(next => {
       setPostDetailValue(next);
     }, subscriberId);
   }, [subscriberId]);

@@ -47,7 +47,7 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       onClickDelete,
       onClickModify,
       onClickLike,
-      onClickWriter
+      onClickWriter,
     } = this.props;
 
     const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -64,7 +64,9 @@ class PostDetailViewContentHeaderView extends Component<Props> {
         <div className="course-info-header">
           <div className="survey-header">
             <div className="survey-header-left debate-header-sub">
-              <div className="title" style={{wordBreak: 'break-word'}}>{title}</div>
+              <div className="title" style={{ wordBreak: 'break-word' }}>
+                {title}
+              </div>
               <div className="survey-read-side mb0">
                 <div className="title-area">
                   <div className="ui label onlytext">
@@ -84,26 +86,41 @@ class PostDetailViewContentHeaderView extends Component<Props> {
                     <div className="ui label onlytext">
                       <span className="header-span-first">작성자: </span>
                       {postDetail.nickName && (
-                        <span onClick={() => onClickWriter(postDetail.creatorId)} style={{cursor: 'pointer'}}>{postDetail.nickName}</span>
+                        <span
+                          onClick={() => onClickWriter(postDetail.creatorId)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {postDetail.nickName}
+                        </span>
                       )}
-                      {postDetail.nickName === null || postDetail.nickName === '' && (
-                        <span>{postDetail.creatorName}/{postDetail.creatorCompanyName}</span>
-                      )}
+                      {postDetail.nickName === null ||
+                        (postDetail.nickName === '' && (
+                          <span>
+                            {postDetail.creatorName}/
+                            {postDetail.creatorCompanyName}
+                          </span>
+                        ))}
                     </div>
                   )}
                 </div>
                 <div className="right-area">
                   {(like && (
                     <div className="ui onlytext" onClick={onClickLike}>
-                      <img src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`} />&nbsp;
+                      <img
+                        src={`${PUBLIC_URL}/images/all/btn-community-like-on-16-px.png`}
+                      />
+                      &nbsp;
                       <span className="heartText">{likeCount}</span>
                     </div>
                   )) || (
-                      <div className="ui onlytext" onClick={onClickLike}>
-                        <img src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`} />&nbsp;
-                        <span className="heartText">{likeCount}</span>
-                      </div>
-                    )}
+                    <div className="ui onlytext" onClick={onClickLike}>
+                      <img
+                        src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
+                      />
+                      &nbsp;
+                      <span className="heartText">{likeCount}</span>
+                    </div>
+                  )}
                   <div className="ui onlytext">
                     {onClickModify && editAuth && (
                       <Button

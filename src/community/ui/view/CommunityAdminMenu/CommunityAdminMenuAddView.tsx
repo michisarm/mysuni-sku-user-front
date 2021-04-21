@@ -24,6 +24,7 @@ interface CommunityAdminMenuAddViewProps {
   communityAdminGroups: any;
   selectedRow?: MenuItem;
   discussRow?: CommunityDiscussion;
+  fileReady?: boolean;
   onChangeAddValue: (data: any, name: string) => void;
   onChangeDiscussValue: (
     value: string | boolean,
@@ -39,6 +40,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   addMenuFlag,
   selectedRow,
   discussRow,
+  fileReady,
   communityAdminGroups,
   onChangeAddValue,
   onChangeDiscussValue,
@@ -214,6 +216,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
               changeValue={changeValue}
               selectedRow={selectedRow}
               discussRow={discussRow}
+              fileReady={fileReady}
               onChangeDiscussValue={onChangeDiscussValue}
               onAddUrlsList={onAddUrlsList}
               onDeleteUrlsList={onDeleteUrlsList}

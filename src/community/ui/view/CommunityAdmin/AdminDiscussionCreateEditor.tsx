@@ -46,7 +46,11 @@ const AdminDiscussionCreateEditor: React.FC<EditorProps> = function Editor({
       modules={modules}
       formats={formats}
       value={contents}
-      onChange={onChange}
+      onChange={(newValue, delta, source) => {
+        if (source === 'user' && onChange !== undefined) {
+          onChange(newValue);
+        }
+      }}
     />
   );
 };

@@ -14,6 +14,7 @@ interface Props {
   changeValue: (event: any, targetName?: string, index?: number) => void;
   selectedRow: MenuItem | undefined;
   discussRow: CommunityDiscussion | undefined;
+  fileReady?: boolean;
   onChangeDiscussValue: (
     value: string | boolean,
     type: string,
@@ -32,7 +33,9 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
   onAddUrlsList,
   onDeleteUrlsList,
   onAddFileBoxId,
+  fileReady,
 }) => {
+  console.log(fileReady);
   return (
     <>
       <tr>
@@ -148,30 +151,35 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
           <div className="lg-attach add-discussion">
             <div className="attach-inner">
               <div>
-                <FileBox
-                  id={(discussRow && discussRow.fileBoxId) || ''}
-                  vaultKey={{
-                    keyString: 'sku-depot',
-                    patronType: PatronType.Pavilion,
-                  }}
-                  patronKey={{
-                    keyString: 'sku-denizen',
-                    patronType: PatronType.Denizen,
-                  }}
-                  validations={[
-                    {
-                      type: ValidationType.Duplication,
-                      validator: depotHelper.duplicationValidator,
-                    },
-                  ]}
-                  onChange={onAddFileBoxId}
-                />
-                <div className="bottom">
-                  <span className="text1">
-                    <span className="blind">information</span>최대 10MB 용량의
-                    파일을 등록하실 수 있습니다. ( 등록가능 : doc, pdf, exl )
-                  </span>
-                </div>
+                {fileReady && (
+                  <>
+                    <FileBox
+                      id={(discussRow && discussRow.fileBoxId) || ''}
+                      vaultKey={{
+                        keyString: 'sku-depot',
+                        patronType: PatronType.Pavilion,
+                      }}
+                      patronKey={{
+                        keyString: 'sku-denizen',
+                        patronType: PatronType.Denizen,
+                      }}
+                      validations={[
+                        {
+                          type: ValidationType.Duplication,
+                          validator: depotHelper.duplicationValidator,
+                        },
+                      ]}
+                      onChange={onAddFileBoxId}
+                    />
+                    <div className="bottom">
+                      <span className="text1">
+                        <span className="blind">information</span>최대 10MB
+                        용량의 파일을 등록하실 수 있습니다. ( 등록가능 : doc,
+                        pdf, exl )
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -99,6 +99,7 @@ function CommunityDiscussionContainer() {
     }
   }, []);
 
+  console.log(postDetail);
   return (
     <Fragment>
       {postDetail && (
@@ -111,7 +112,7 @@ function CommunityDiscussionContainer() {
             deletable={true}
             onClickList={OnClickList}
           />
-          <div className="class-guide-txt fn-parents ql-snow">
+          {/* <div className="class-guide-txt fn-parents ql-snow">
             <div className="text ql-editor">
               <div
                 className="text description ql-editor"
@@ -121,9 +122,9 @@ function CommunityDiscussionContainer() {
                 ref={textContainerRef}
               />
             </div>
-          </div>
+          </div> */}
 
-          {postDetail && postDetail.relatedUrlList ? (
+          {/* {postDetail && postDetail.relatedUrlList ? (
             <div className="community-board-down discuss2">
               <div className="board-down-title href">
                 <p>
@@ -141,8 +142,10 @@ function CommunityDiscussionContainer() {
                       style={{
                         display: 'block',
                         marginLeft: '10px',
+                        marginTop: '4px',
                         color: '#0e73db',
                         lineHeight: '1.5rem',
+                        fontSize: '14px',
                         textDecoration: 'underline',
                       }}
                     >
@@ -211,7 +214,7 @@ function CommunityDiscussionContainer() {
                     ))}
               </div>
             </div>
-          ) : null}
+          ) : null} */}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
             menuType={
