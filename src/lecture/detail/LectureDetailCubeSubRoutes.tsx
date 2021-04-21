@@ -21,11 +21,11 @@ function LectureDetailCubeSubRoutes() {
       {cubeType === 'WebPage' && <LectureCubeWebPagePage />}
       {cubeType === 'Experiential' && <LectureCubeWebPagePage />}
       {cubeType === 'ELearning' && <LectureCubeElearningPage />}
-      {/* {cubeType === 'Task' && <LectureCubeTaskPage />} */}
+      {cubeType === 'Task' && <LectureCubeTaskPage />}
       {cubeType === 'Documents' && <LectureCubeDocumentsPage />}
       {cubeType === 'ClassRoomLecture' && <LectureCubeClassroomPage />}
       {cubeType === 'Cohort' && <LectureCubeCohortPage />}
-      {cubeType === 'Task' && <LectureCubeDiscussionPage />}
+      {cubeType === 'Discussion' && <LectureCubeDiscussionPage />}
     </>
   );
 }

@@ -57,7 +57,10 @@ function ApprovedView(props: ApprovedViewProps) {
   }, [student]);
 
   useEffect(() => {
-    if (!student?.complete && student.learningState === 'Progress') {
+    if (!student?.complete && 
+        student.learningState === 'Progress' &&
+        student?.commentCount === 0 &&
+        student?.subCommentCount === 0) {
       reactAlert({
         title: '안내',
         message: `이수조건을 확인 후 학습을 진행해주세요`,
