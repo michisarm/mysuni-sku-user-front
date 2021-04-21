@@ -92,11 +92,11 @@ interface LectureTaskStateViewProps {
 const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function LectureTaskStateView({
   lectureState,
 }) {
-  const { student } = lectureState;
+  const { student, cubeType } = lectureState;
 
   return (
     <>
-      {(student === undefined || student?.proposalState === 'Canceled') && (
+      {(cubeType === 'Task' && (student === undefined || student?.proposalState === 'Canceled')) && (
         <CanceledView />
       )}
       {student?.proposalState === 'Approved' && (
