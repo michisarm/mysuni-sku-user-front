@@ -71,7 +71,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
-    await saveTask(testStudentItem.studentId, 'Test');
+    await saveTask(
+      lectureStructureItem?.student?.id === undefined
+        ? testStudentItem.studentId
+        : lectureStructureItem?.student?.id,
+      'Test'
+    );
     await clearFindMyCardRelatedStudentsCache();
     await requestCardLectureStructure(cardId);
 
@@ -81,7 +86,7 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
       await getTestStudentItemMapFromCourse(params); // student 재호출
     }
     await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
-  }, [answerItem, params]);
+  }, [answerItem, params, testStudentItem.studentId]);
 
   const [submitOk, setSubmitOk] = useState<boolean>(true); // 제출 버튼 클릭시(제출시 틀린 답은 노출 안하게 하는 용도)
 
@@ -153,7 +158,12 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
   }, [answerItem, params]);
 
   let testClassName = ' ui segment full ';
-  if (answerItem?.submitted) {
+  if (
+    lectureStructureItem &&
+    (lectureStructureItem.student?.extraWork.testStatus === 'SUBMIT' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'PASS' ||
+      lectureStructureItem.student?.extraWork.testStatus === 'FAIL')
+  ) {
     testClassName += ' test-complete ';
   }
 

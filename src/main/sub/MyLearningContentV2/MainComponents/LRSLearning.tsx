@@ -71,7 +71,7 @@ const LRSLearning: React.FC<Props> = Props => {
   const { cards } = viewModel;
 
   return (
-    <ContentWrapper dataArea={Area.MAIN_RECOMMEND} dataAction={Action.CLICK}>
+    <ContentWrapper dataArea={Area.MAIN_RECOMMEND}>
       <div className="section-head">
         <strong>{title}</strong>
         <div className="right">
