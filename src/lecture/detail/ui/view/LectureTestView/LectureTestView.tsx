@@ -68,15 +68,15 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         answerItem !== undefined &&
         lectureStructureItem?.student?.studentScore.examId ===
           answerItem.examId &&
-        !answerItem?.finished &&
-        !answerItem?.submitted &&
+        //!answerItem?.finished &&
+        //!answerItem?.submitted &&
         answerItem.submitAnswers.length < 1
       ) {
         // 이수처리하여 답안이 없는경우
         reactAlert({
           title: '알림',
           message:
-            'Course 학습을 이미 완료하셔서 테스트를 응시하실 필요 없습니다.',
+            'Card 학습을 이미 완료하셔서 테스트를 응시하실 필요 없습니다.',
         });
       }
     }
