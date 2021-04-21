@@ -256,7 +256,7 @@ function LectureCubeDiscussionContainer() {
             </div>
           )}
 
-          <CommunityCommentList
+          <CommentList
             feedbackId={lectureState.cubeDetail.cubeContents.commentFeedbackId}
             hideCamera
             name={name}
@@ -264,7 +264,7 @@ function LectureCubeDiscussionContainer() {
             companyName={company}
             departmentName={department}
             // cardId={params?.cardId}
-            menuType="DISCUSSION"
+            menuType="discussion"
             cubeCommentStartFunction={registerStudent}
             cubeCommentEndFunction={onRefresh}
           />
