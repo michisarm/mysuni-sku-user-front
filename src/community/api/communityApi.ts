@@ -461,21 +461,24 @@ export function saveCommunityAdminMenu(
       type: selectedRow.type,
     };
 
-    console.log(params, selectedRow, discussMenuParams);
+    console.log(discussMenuParams);
+
     const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
     return axiosApi.put(url, discussMenuParams).then(response => {
       const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
-      const check =
+      const checkNameValues =
         params.nameValues.map((row: any) => row.value === 'undefined').length >
         0
           ? []
           : params.nameValues;
-      return axiosApi.put(url, { nameValues: check }).then(response => {
-        return response && response.data;
-      });
+      return axiosApi
+        .put(url, { nameValues: checkNameValues })
+        .then(response => {
+          return response && response.data;
+        });
     });
   }
-  console.log(params.NameValues);
+
   const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
   return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
     return response && response.data;

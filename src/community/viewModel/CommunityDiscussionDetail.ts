@@ -1,6 +1,7 @@
 export interface CommunityDiscussionDetail {
   commentFeedbackId: string;
   communityId: string;
+  discussionTopic?: string;
   content: string;
   createdTime: number;
   creatorId: string;

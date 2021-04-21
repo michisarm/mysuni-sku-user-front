@@ -61,7 +61,6 @@ function CommunityMenuContainer() {
     }
   }, [communityId]);
 
-  useEffect(() => {}, [discussRow]);
   const onHandleClickTaskRow = useCallback(
     async (e, param, type) => {
       setAddMenuFlag(false);
@@ -74,7 +73,6 @@ function CommunityMenuContainer() {
             param.menuId
           ).then(res => res);
           if (discussionParams) {
-            console.log(discussionParams);
             setDiscussRow({
               content: discussionParams.content,
               privateComment: discussionParams.privateComment,
@@ -111,10 +109,8 @@ function CommunityMenuContainer() {
         });
       }
     },
-    [communityAdminMenu, discussRow]
+    [communityAdminMenu, discussRow, selectedRow]
   );
-
-  console.log(discussRow);
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
     setSelectedRow({
@@ -519,31 +515,44 @@ function CommunityMenuContainer() {
     [communityAdminMenu, selectedRow, discussRow]
   );
 
-  const onChangeDiscussValue = useCallback((value, type, index?) => {
-    if (discussRow) {
-      if (type === 'content') {
-        // editor state
-        setDiscussRow({ ...discussRow, [type]: value });
-      }
+  const onChangeDiscussValue = useCallback(
+    (value, type, currentIndex?) => {
+      console.log('1');
+      if (discussRow) {
+        if (type === 'content') {
+          // editor state
+          setDiscussRow({ ...discussRow, [type]: value });
+          console.log('2');
+        }
 
-      if (type === 'urlValue') {
-        discussRow.relatedUrlList[index].url = value;
-        setDiscussRow({ ...discussRow });
-      }
+        if (type === 'urlValue') {
+          discussRow.relatedUrlList[currentIndex].url = value;
+          setDiscussRow({
+            ...discussRow,
+            // relatedUrlList: [{ title: '', url: '' }],
+            ['relatedUrlList']: [...discussRow.relatedUrlList],
+          });
+        }
 
-      if (type === 'urlTitle') {
-        discussRow.relatedUrlList[index].title = value;
-        setDiscussRow({ ...discussRow });
-      }
+        if (type === 'urlTitle') {
+          discussRow.relatedUrlList[currentIndex].title = value;
+          setDiscussRow({
+            ...discussRow,
+            ['relatedUrlList']: { ...discussRow.relatedUrlList },
+          });
+          console.log('4');
+        }
 
-      if (type === 'privateComment') {
-        setDiscussRow({ ...discussRow, privateComment: value });
+        if (type === 'privateComment') {
+          setDiscussRow({ ...discussRow, privateComment: value });
+          console.log('5');
+        }
       }
-    }
-  }, []);
+    },
+    [discussRow]
+  );
 
   const onAddUrlsList = useCallback(() => {
-    console.log('2');
     if (discussRow) {
       const newUrlsList = discussRow.relatedUrlList.concat({
         title: '',
@@ -571,7 +580,6 @@ function CommunityMenuContainer() {
 
   const onAddFileBoxId = useCallback(
     (depotId: string) => {
-      console.log('3');
       if (discussRow) {
         setDiscussRow({ ...discussRow, fileBoxId: depotId });
       }

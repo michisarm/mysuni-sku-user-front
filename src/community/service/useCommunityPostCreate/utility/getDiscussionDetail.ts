@@ -8,6 +8,7 @@ export async function getCommunityDiscussion(menuId: string): Promise<any> {
     communityId: '',
     content: '',
     createdTime: 0,
+    discussionTopic: '',
     creatorId: '',
     fileBoxId: '',
     html: '',
@@ -35,6 +36,7 @@ export async function getCommunityDiscussion(menuId: string): Promise<any> {
       postDetailItem.commentFeedbackId = post.commentFeedbackId;
       postDetailItem.communityId = post.communityId;
       postDetailItem.content = post.content;
+      postDetailItem.discussionTopic = post.discussionTopic;
       postDetailItem.createdTime = post.createdTime;
       postDetailItem.creatorId = post.creatorId;
       postDetailItem.fileBoxId = post.fileBoxId;

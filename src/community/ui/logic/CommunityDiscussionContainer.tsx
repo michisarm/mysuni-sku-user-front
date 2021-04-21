@@ -10,8 +10,10 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommunityCommentList } from '@nara.drama/feedback';
 import { patronInfo } from '@nara.platform/dock';
 import { useCommunityDiscussionPostDetail } from 'community/service/useCommunityPostDetail/useCommunityDiscussionPost';
-import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
 import DiscussionViewContentHeaderView from '../view/CommunityPostDetailView/DiscussionViewContentHeaderView';
+import { Checkbox, Icon, Image } from 'semantic-ui-react';
+
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 interface Params {
   communityId: string;
@@ -33,6 +35,7 @@ function CommunityDiscussionContainer() {
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
+    getFileIds();
     setCreatorId(denizenId!);
   }, [postDetail]);
 
@@ -40,7 +43,61 @@ function CommunityDiscussionContainer() {
     history.goBack();
   }, []);
 
-  console.log(postDetail);
+  const getFileIds = useCallback(() => {
+    const referenceFileBoxId = postDetail && postDetail.fileBoxId;
+    Promise.resolve().then(() => {
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+    });
+  }, [postDetail]);
+
+  const findFiles = useCallback((type: string, fileBoxId: string) => {
+    depot.getDepotFiles(fileBoxId).then(files => {
+      filesMap.set(type, files);
+      const newMap = new Map(filesMap.set(type, files));
+      setFilesMap(newMap);
+    });
+  }, []);
+
+  const fileDownload = (pdf: string, fileId: string) => {
+    depot.downloadDepotFile(fileId);
+  };
+
+  const originArr: string[] = [];
+  let origin: string = '';
+
+  const checkOne = useCallback((e: any, value: any, depotData: any) => {
+    if (value.checked && depotData.id) {
+      originArr.push(depotData.id);
+      origin = depotData.id;
+    }
+    if (!(value.checked && depotData.id)) {
+      originArr.splice(originArr.indexOf(depotData.id), 1);
+    }
+  }, []);
+
+  const zipFileDownload = useCallback((type: string) => {
+    if (type === 'select') {
+      if (origin === '') {
+        return;
+      }
+      if (originArr!.length === 1) {
+        depot.downloadDepotFile(origin);
+        return;
+      }
+      depot.downloadDepotFiles(originArr);
+    } else {
+      if (type === 'all') {
+        const idArr: string[] = [];
+        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+          idArr.push(foundedFile.id);
+        });
+        if (idArr.length === 0) {
+          return;
+        }
+        depot.downloadDepotFiles(idArr);
+      }
+    }
+  }, []);
 
   return (
     <Fragment>
@@ -59,39 +116,107 @@ function CommunityDiscussionContainer() {
               <div
                 className="text description ql-editor"
                 dangerouslySetInnerHTML={{
-                  __html: postDetail.title,
+                  __html: postDetail.content,
                 }}
                 ref={textContainerRef}
               />
             </div>
           </div>
-          <div className="ov-paragraph download-area task-read-down">
-            <div className="detail">
-              {postDetail.fileBoxId &&
-                filesMap.get('reference') &&
-                filesMap
-                  .get('reference')
-                  .map((foundedFile: DepotFileViewModel, index: number) => (
-                    <div className="file-down-wrap">
-                      <div className="down">
-                        <span>첨부파일 :</span>
-                        <a
-                          key={index}
-                          onClick={() =>
-                            depot.downloadDepotFile(foundedFile.id)
-                          }
-                        >
-                          <span>{foundedFile.name}1123</span>
-                        </a>
-                      </div>
-                    </div>
+
+          {postDetail && postDetail.relatedUrlList ? (
+            <div className="community-board-down discuss2">
+              <div className="board-down-title href">
+                <p>
+                  {' '}
+                  <Image
+                    src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                    alt=""
+                    style={{ display: 'inline-block' }}
+                  />
+                  관련 URL :
+                </p>
+                {postDetail &&
+                  postDetail.relatedUrlList?.map((item: any) => (
+                    <span
+                      style={{
+                        display: 'block',
+                        marginLeft: '10px',
+                        color: '#0e73db',
+                        lineHeight: '1.5rem',
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      <a href={item.url} target="blank">
+                        {item.title}
+                      </a>
+                    </span>
                   ))}
+              </div>
             </div>
-          </div>
+          ) : null}
+
+          {postDetail && postDetail.fileBoxId ? (
+            <div className="community-contants">
+              <div
+                className="community-board-down"
+                style={{ marginBottom: '40px' }}
+              >
+                <div className="board-down-title">
+                  <p>
+                    <img
+                      style={{ verticalAlign: 'middle' }}
+                      src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
+                    />
+                    첨부파일
+                  </p>
+                  <div className="board-down-title-right">
+                    <button
+                      className="ui icon button left post delete"
+                      onClick={() => zipFileDownload('select')}
+                    >
+                      <i aria-hidden="true" className="icon check icon" />
+                      선택 다운로드
+                    </button>
+                    <button
+                      className="ui icon button left post list2"
+                      onClick={() => zipFileDownload('all')}
+                    >
+                      <img
+                        src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                      />
+                      전체 다운로드
+                    </button>
+                  </div>
+                </div>
+                {filesMap.get('reference') &&
+                  filesMap
+                    .get('reference')
+                    .map((foundedFile: DepotFileViewModel) => (
+                      <div className="down">
+                        <Checkbox
+                          className="base"
+                          label={foundedFile.name}
+                          name={'depot' + foundedFile.id}
+                          onChange={(event, value) =>
+                            checkOne(event, value, foundedFile)
+                          }
+                        />
+                        <Icon
+                          className="icon-down-type4"
+                          onClick={() =>
+                            fileDownload(foundedFile.name, foundedFile.id)
+                          }
+                        />
+                      </div>
+                    ))}
+              </div>
+            </div>
+          ) : null}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
-            menuType="DISCUSSION"
-            anonymous={discussionType === 'ANODISCUSSION' ? true : false}
+            menuType={
+              discussionType === 'ANODISCUSSION' ? 'ANONYMOUS' : 'DISCUSSION'
+            }
             hideCamera
             name=""
             email=""

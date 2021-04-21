@@ -135,7 +135,7 @@ function CommunityPostDetailContainer() {
     }
 
     const checkMemberfunction = async () => {
-      const joinFlag = await checkMember(communityId)
+      const joinFlag = await checkMember(communityId);
       if (!joinFlag) {
         history.push({
           pathname: `/community/${communityId}`,
@@ -179,11 +179,11 @@ function CommunityPostDetailContainer() {
     const denizenId = patronInfo.getDenizenId();
 
     if (communityHome?.community?.managerId === denizenId) {
-      setAdminAuth(communityHome?.community?.managerId === denizenId)
+      setAdminAuth(communityHome?.community?.managerId === denizenId);
     }
 
     if (communityHome?.community?.memberType === 'ADMIN') {
-      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN')
+      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
   });
 
@@ -216,7 +216,6 @@ function CommunityPostDetailContainer() {
     }
   }, []);
 
-
   const OnClickList = useCallback(() => {
     //history.goBack();
     if (postDetail?.menuId === 'NOTICE') {
@@ -235,7 +234,6 @@ function CommunityPostDetailContainer() {
     //   history.push({
     //     pathname: `/community/${communityId}/board/${postDetail?.menuId}`,
     //   });
-
   }, [postDetail, menuType]);
 
   const OnClickDelete = useCallback(() => {
@@ -270,18 +268,18 @@ function CommunityPostDetailContainer() {
     }
   }, [like, likeCount]);
 
-  const onClickWriter = useCallback((id) => {
-    findCommunityProfile(id).then((result) => {
+  const onClickWriter = useCallback(id => {
+    findCommunityProfile(id).then(result => {
       setProfileInfo({
-        'id': result!.id,
-        'profileImg': result!.profileImg,
-        'introduce': result!.introduce,
-        'nickName': result!.nickname,
-        'creatorName': result!.name
-      })
-      setProfileOpen(true)
-    })
-  }, [])
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
+  }, []);
 
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
@@ -302,21 +300,21 @@ function CommunityPostDetailContainer() {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.nextPost!.communityId
-          }/${menuType}/post/${postDetail.nextPost!.postId}`;
+        }/${menuType}/post/${postDetail.nextPost!.postId}`;
       } else {
         return `/community/${postDetail.nextPost!.communityId}/post/${
           postDetail.nextPost!.postId
-          }`;
+        }`;
       }
     } else {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.prevPost!.communityId
-          }/${menuType}/post/${postDetail.prevPost!.postId}`;
+        }/${menuType}/post/${postDetail.prevPost!.postId}`;
       } else {
         return `/community/${postDetail.prevPost!.communityId}/post/${
           postDetail.prevPost!.postId
-          }`;
+        }`;
       }
     }
   }, []);
@@ -382,8 +380,8 @@ function CommunityPostDetailContainer() {
                 {filesMap.get('reference') &&
                   filesMap
                     .get('reference')
-                    .map((foundedFile: DepotFileViewModel) => (
-                      <div className="down">
+                    .map((foundedFile: DepotFileViewModel, index: number) => (
+                      <div className="down" key={index}>
                         <Checkbox
                           className="base"
                           label={foundedFile.name}
@@ -426,7 +424,6 @@ function CommunityPostDetailContainer() {
             </div>
           )} */}
           <div className="task-read-bottom">
-
             <button
               className="ui icon button left post edit"
               onClick={OnClickLike}
@@ -437,12 +434,12 @@ function CommunityPostDetailContainer() {
                   style={{ marginBottom: '-3px', marginRight: '3px' }}
                 />
               )) || (
-                  <img
-                    src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
-                    style={{ marginBottom: '-3px', marginRight: '3px' }}
-                  />
-                )}
-                좋아요
+                <img
+                  src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
+                  style={{ marginBottom: '-3px', marginRight: '3px' }}
+                />
+              )}
+              좋아요
             </button>
 
             {creatorId === postDetail.creatorId && (
@@ -453,9 +450,10 @@ function CommunityPostDetailContainer() {
                 <Icon className="edit" />
                 Edit
               </Button>
-
             )}
-            {(creatorId === postDetail.creatorId || adminAuth || communityAdminAuth) && (
+            {(creatorId === postDetail.creatorId ||
+              adminAuth ||
+              communityAdminAuth) && (
               <Button
                 className="ui icon button left post delete"
                 onClick={OnClickDelete}

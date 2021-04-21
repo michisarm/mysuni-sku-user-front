@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
 
-
 interface Props {
   postDetail: any;
   title: string;
@@ -41,7 +40,9 @@ class DiscussionViewContentHeaderView extends Component<Props> {
         <div className="course-info-header">
           <div className="survey-header">
             <div className="survey-header-left debate-header-sub">
-              <div className="title" style={{wordBreak: 'break-word'}}>{title}</div>
+              <div className="title" style={{ wordBreak: 'break-word' }}>
+                {title}
+              </div>
               {/* <div className="survey-read-side mb0">
                 <div className="title-area">
                   <div className="ui label onlytext">
@@ -63,12 +64,29 @@ class DiscussionViewContentHeaderView extends Component<Props> {
                 <div className="ui comments sub-debate">
                   <div className="comment">
                     <div className="avatar">
-                      <img src={postDetail.profileImg === null || postDetail.profileImg === undefined || postDetail.profileImg === ''  ? `${DefaultImg}` : `/files/community/${postDetail.profileImg}`} alt="" />
+                      <img
+                        src={
+                          postDetail.profileImg === null ||
+                          postDetail.profileImg === undefined ||
+                          postDetail.profileImg === ''
+                            ? `${DefaultImg}`
+                            : `/files/community/${postDetail.profileImg}`
+                        }
+                        alt=""
+                      />
                     </div>
                     <div className="content">
-                      <a className="author">{postDetail.nickName === null || postDetail.nickName === undefined || postDetail.nickName === '' ? postDetail.creatorName : postDetail.nickName }</a>
+                      <a className="author">
+                        {postDetail.nickName === null ||
+                        postDetail.nickName === undefined ||
+                        postDetail.nickName === ''
+                          ? postDetail.creatorName
+                          : postDetail.nickName}
+                      </a>
                       <div className="metadata">
-                        <span className="heartText">{time && moment(time).format('YYYY.MM.DD')}</span>
+                        <span className="heartText">
+                          {time && moment(time).format('YYYY.MM.DD')}
+                        </span>
                       </div>
                     </div>
                   </div>
