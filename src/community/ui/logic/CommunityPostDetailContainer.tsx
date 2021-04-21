@@ -483,6 +483,8 @@ function CommunityPostDetailContainer() {
             email={member.email}
             companyName={member.company}
             departmentName={member.department}
+            adminAuth={adminAuth}
+            communityAdminAuth={communityAdminAuth}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>
