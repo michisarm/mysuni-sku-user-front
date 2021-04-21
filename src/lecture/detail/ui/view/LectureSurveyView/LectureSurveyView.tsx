@@ -260,7 +260,6 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         commentId !== '' &&
         currentMenu?.name === undefined && (
           <div className="outline">
-            {console.log('없을때', currentMenu?.name)}
             <CommentList
               feedbackId={commentId}
               menuType=""
@@ -279,7 +278,6 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         commentId !== '' &&
         currentMenu?.name !== undefined && (
           <div className="outline">
-            {console.log('있을때', currentMenu?.name)}
             <CommunityCommentList
               feedbackId={commentId}
               menuType=""
