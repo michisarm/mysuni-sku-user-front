@@ -13,6 +13,7 @@ enum CubeIconType {
   Course = 'course',
   Card = 'course',
   Cohort = 'webpage',
+  Discussion = 'community',
   None = '',
 }
 

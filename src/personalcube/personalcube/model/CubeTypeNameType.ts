@@ -15,6 +15,7 @@ enum CubeTypeNameType {
   Cube = 'Cube',
   Cohort = 'Cohort',
   Course = 'Course',
+  Discussion = 'Discussion',
 }
 
 export default CubeTypeNameType;
