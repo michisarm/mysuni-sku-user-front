@@ -51,7 +51,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                   <div className="range">
                     <div
                       style={activeIndex === -1 ? {width:0} : {
-                        width: `${(badgeLearningTimeItem.badgeMyCount/badgeLearningTimeItem.AllBadgeMyCount)*100}%`,
+                        width: `${badgeLearningTimeItem.badgeMyCount/badgeLearningTimeItem.AllBadgeMyCount > 1 ? 100 : (badgeLearningTimeItem.badgeMyCount/badgeLearningTimeItem.AllBadgeMyCount)*100}%`,
                         // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.badgeMyCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
                       } }
                       className="percent"
@@ -70,7 +70,7 @@ const BadgeLearningTimeView: React.FC<Props> = Props => {
                   <div className="range">
                     <div
                       style={activeIndex === -1 ? {width:0} : {
-                        width: `${(badgeLearningTimeItem.companyAvgBadgeCount/badgeLearningTimeItem.allCompanyAvgBadgeCount)*100}%`,
+                        width: `${badgeLearningTimeItem.companyAvgBadgeCount/badgeLearningTimeItem.allCompanyAvgBadgeCount > 1 ? 100 : (badgeLearningTimeItem.companyAvgBadgeCount/badgeLearningTimeItem.allCompanyAvgBadgeCount)*100}%`,
                         // width: `${badgeLearningTimeItem.badgeMyCount > badgeLearningTimeItem.companyAvgBadgeCount ? (badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.badgeMyCount*1.1))*100 : badgeLearningTimeItem.companyAvgBadgeCount/(badgeLearningTimeItem.companyAvgBadgeCount*1.1)*100}%`,
                       }}
                       className="percent"
