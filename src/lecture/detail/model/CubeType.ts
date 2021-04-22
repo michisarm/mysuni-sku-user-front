@@ -9,6 +9,7 @@ type CubeType =
   | 'Community'
   | 'Task'
   | 'Cohort'
+  | 'Discussion'
   | 'None';
 
 export default CubeType;

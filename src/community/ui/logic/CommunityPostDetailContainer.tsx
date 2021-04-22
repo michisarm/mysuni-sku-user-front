@@ -5,12 +5,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import {
-  CommunityCommentList,
-} from '@nara.drama/feedback';
+import { CommunityCommentList } from '@nara.drama/feedback';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { deleteCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getPostDetailMapFromCommunity';
 import PostDetailViewContentHeaderView from '../view/CommunityPostDetailView/PostDetailViewContentHeaderView';
@@ -19,13 +17,15 @@ import CommunityPdfModal from '../view/CommunityPdfModal';
 import { saveCommunityPostLike } from '../../service/useCommunityPostDetail/utility/saveCommunityPostLike';
 import { getCommunityPostLikeCountByMember } from '../../service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
-import { reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
 import { SkProfileService } from 'profile/stores';
 import { findCommunityProfile } from 'community/api/profileApi';
 import { checkMember } from 'community/service/useMember/useMember';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
+import { useCommunityProfileBookmark } from '../../store/CommunityProfileBookmarkStore';
+import { registerBookmark, removeBookmark } from '../../api/communityApi';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -40,7 +40,7 @@ interface profileParams {
   profileImg: string;
   introduce: string;
   nickName: string;
-  creatorName: string
+  creatorName: string;
 }
 
 function CommunityPostDetailContainer() {
@@ -74,6 +74,10 @@ function CommunityPostDetailContainer() {
   const skProfileService = SkProfileService.instance;
   const { skProfile } = skProfileService;
   const { member } = skProfile;
+
+  const { pathname } = useLocation();
+  const communityProfileBookmark = useCommunityProfileBookmark();
+  const [bookmarkState, setBookmarkState] = useState<boolean>(false);
 
   const fileDownload = (pdf: string, fileId: string) => {
     const PdfFile = pdf.includes('.pdf');
@@ -118,17 +122,17 @@ function CommunityPostDetailContainer() {
   }, [communityId, postId]);
 
   const clickProfileEventHandler = useCallback(async () => {
-    const id = document.body.getAttribute('selectedProfileId')
-    findCommunityProfile(id!).then((result) => {
+    const id = document.body.getAttribute('selectedProfileId');
+    findCommunityProfile(id!).then(result => {
       setProfileInfo({
-        'id': result!.id,
-        'profileImg': result!.profileImg,
-        'introduce': result!.introduce,
-        'nickName': result!.nickname,
-        'creatorName': result!.name
-      })
-      setProfileOpen(true)
-    })
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
   }, []);
 
   useEffect(() => {
@@ -137,15 +141,15 @@ function CommunityPostDetailContainer() {
     }
 
     const checkMemberfunction = async () => {
-      const joinFlag = await checkMember(communityId)
+      const joinFlag = await checkMember(communityId);
       if (!joinFlag) {
         history.push({
           pathname: `/community/${communityId}`,
         });
       }
-    }
+    };
 
-    checkMemberfunction()
+    checkMemberfunction();
   }, [postDetail]);
 
   useEffect(() => {
@@ -156,7 +160,6 @@ function CommunityPostDetailContainer() {
       window.removeEventListener('clickProfile', clickProfileEventHandler);
     };
   }, []);
-
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
@@ -182,11 +185,11 @@ function CommunityPostDetailContainer() {
     const denizenId = patronInfo.getDenizenId();
 
     if (communityHome?.community?.managerId === denizenId) {
-      setAdminAuth(communityHome?.community?.managerId === denizenId)
+      setAdminAuth(communityHome?.community?.managerId === denizenId);
     }
 
     if (communityHome?.community?.memberType === 'ADMIN') {
-      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN')
+      setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
   });
 
@@ -219,7 +222,6 @@ function CommunityPostDetailContainer() {
     }
   }, []);
 
-
   const OnClickList = useCallback(() => {
     //history.goBack();
     if (postDetail?.menuId === 'NOTICE') {
@@ -238,7 +240,6 @@ function CommunityPostDetailContainer() {
     //   history.push({
     //     pathname: `/community/${communityId}/board/${postDetail?.menuId}`,
     //   });
-
   }, [postDetail, menuType]);
 
   const OnClickDelete = useCallback(() => {
@@ -273,18 +274,18 @@ function CommunityPostDetailContainer() {
     }
   }, [like, likeCount]);
 
-  const onClickWriter = useCallback((id) => {
-    findCommunityProfile(id).then((result) => {
+  const onClickWriter = useCallback(id => {
+    findCommunityProfile(id).then(result => {
       setProfileInfo({
-        'id': result!.id,
-        'profileImg': result!.profileImg,
-        'introduce': result!.introduce,
-        'nickName': result!.nickname,
-        'creatorName': result!.name
-      })
-      setProfileOpen(true)
-    })
-  }, [])
+        id: result!.id,
+        profileImg: result!.profileImg,
+        introduce: result!.introduce,
+        nickName: result!.nickname,
+        creatorName: result!.name,
+      });
+      setProfileOpen(true);
+    });
+  }, []);
 
   const checkOne = useCallback((e: any, value: any, depotData: any) => {
     if (value.checked && depotData.id) {
@@ -305,24 +306,76 @@ function CommunityPostDetailContainer() {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.nextPost!.communityId
-          }/${menuType}/post/${postDetail.nextPost!.postId}`;
+        }/${menuType}/post/${postDetail.nextPost!.postId}`;
       } else {
         return `/community/${postDetail.nextPost!.communityId}/post/${
           postDetail.nextPost!.postId
-          }`;
+        }`;
       }
     } else {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.prevPost!.communityId
-          }/${menuType}/post/${postDetail.prevPost!.postId}`;
+        }/${menuType}/post/${postDetail.prevPost!.postId}`;
       } else {
         return `/community/${postDetail.prevPost!.communityId}/post/${
           postDetail.prevPost!.postId
-          }`;
+        }`;
       }
     }
   }, []);
+
+  async function bookmark(postId: string) {
+    await registerBookmark(postId);
+  }
+
+  async function unbookmark(postId: string) {
+    await removeBookmark(postId);
+  }
+
+  const onClickBookmark = useCallback(() => {
+    setBookmarkState(true);
+    bookmark(postId);
+  }, [postId, bookmarkState]);
+
+  const onClickUnbookmark = useCallback(() => {
+    setBookmarkState(false);
+    unbookmark(postId);
+  }, [postId, bookmarkState]);
+
+  const copyUrl = (url: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, 9999);
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  };
+
+  const shareUrl = useCallback(() => {
+    const hostLength = window.location.href.indexOf(pathname);
+    if (hostLength === -1) {
+      return;
+    }
+    const host = window.location.href.substring(0, hostLength);
+    const url = `${host}/community/${communityId}/post/${postId}`;
+    copyUrl(url);
+  }, [pathname, communityId, postId]);
+
+  useEffect(() => {
+    const findBookmarkPost = communityProfileBookmark?.posts.find(
+      posts => posts.postId === postId
+    );
+
+    if (findBookmarkPost) {
+      setBookmarkState(true);
+    } else {
+      setBookmarkState(false);
+    }
+  }, [communityProfileBookmark]);
+
   return (
     <Fragment>
       {postDetail && (
@@ -343,6 +396,10 @@ function CommunityPostDetailContainer() {
             onClickDelete={OnClickDelete}
             onClickLike={OnClickLike}
             onClickWriter={onClickWriter}
+            bookmarkState={bookmarkState}
+            shareUrl={shareUrl}
+            onClickBookmark={onClickBookmark}
+            onClickUnbookmark={onClickUnbookmark}
           />
           <div className="class-guide-txt fn-parents ql-snow">
             <div
@@ -429,7 +486,6 @@ function CommunityPostDetailContainer() {
             </div>
           )} */}
           <div className="task-read-bottom">
-
             <button
               className="ui icon button left post edit"
               onClick={OnClickLike}
@@ -440,12 +496,12 @@ function CommunityPostDetailContainer() {
                   style={{ marginBottom: '-3px', marginRight: '3px' }}
                 />
               )) || (
-                  <img
-                    src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
-                    style={{ marginBottom: '-3px', marginRight: '3px' }}
-                  />
-                )}
-                좋아요
+                <img
+                  src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
+                  style={{ marginBottom: '-3px', marginRight: '3px' }}
+                />
+              )}
+              좋아요
             </button>
 
             {creatorId === postDetail.creatorId && (
@@ -456,9 +512,10 @@ function CommunityPostDetailContainer() {
                 <Icon className="edit" />
                 Edit
               </Button>
-
             )}
-            {(creatorId === postDetail.creatorId || adminAuth || communityAdminAuth) && (
+            {(creatorId === postDetail.creatorId ||
+              adminAuth ||
+              communityAdminAuth) && (
               <Button
                 className="ui icon button left post delete"
                 onClick={OnClickDelete}
@@ -477,12 +534,15 @@ function CommunityPostDetailContainer() {
           </div>
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
+            // menuType="discussion"
             menuType={menuType}
             hideCamera
             name={member.name}
             email={member.email}
             companyName={member.company}
             departmentName={member.department}
+            adminAuth={adminAuth}
+            communityAdminAuth={communityAdminAuth}
           />
           {menuType !== 'all' && (
             <div className="paging" style={{ marginTop: '20px' }}>

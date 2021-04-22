@@ -44,7 +44,7 @@ function LectureStateContainer() {
       );
     }
   }
-  if (cubeType === 'Task') {
+  if (cubeType === 'Task' || cubeType === 'Discussion') {
     return <LectureTaskStateView lectureState={lectureState} />;
   }
   if (cubeType === 'Video' || cubeType === 'Audio') {
