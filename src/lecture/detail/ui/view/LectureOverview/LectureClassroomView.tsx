@@ -75,7 +75,6 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                                   <div className="pic s80">
                                     <img
                                       src={item.memberSummary?.photoId}
-                                      alt="프로필사진"
                                       className="ui image"
                                     />
                                   </div>
