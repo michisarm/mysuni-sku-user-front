@@ -46,6 +46,9 @@ export function getTotalFilterCountView(cardTypeCardCounts: CardTypeAndCardCount
       case 'Cohort':
         totalFilterCountView.cohort = cardCount.count;
         break;
+      case 'Discussion':
+        totalFilterCountView.discussion = cardCount.count;
+        break;
     }
   });
 

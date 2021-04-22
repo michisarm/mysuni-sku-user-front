@@ -34,14 +34,14 @@ export default function LectureDiscussionContainer() {
 
   const commentCountEventHandler = useCallback(async () => {
     async function asyncFun() {
-      if(document.body.getAttribute('feedbackid') !== undefined) {
+      if (document.body.getAttribute('feedbackid') !== undefined) {
         const { count } = await countByFeedbackId(document.body.getAttribute('feedbackid')!);
         setCount(count)
       }
     }
     asyncFun();
   }, [lectureFeedbackContent]);
-  
+
   useEffect(() => {
     window.addEventListener('discCommentCount', commentCountEventHandler);
     return () => {
@@ -51,7 +51,7 @@ export default function LectureDiscussionContainer() {
 
   useEffect(() => {
     async function asyncFun() {
-      if(lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
+      if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
         const { count } = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
         setCount(count)
       }
@@ -61,10 +61,13 @@ export default function LectureDiscussionContainer() {
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
+
     const referenceFileBoxId =
       lectureFeedbackContent && lectureFeedbackContent.depotId;
+
     Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId)
+      else setFilesMap(new Map<string, any>());
     });
   }, [lectureFeedbackContent]);
 
@@ -78,19 +81,19 @@ export default function LectureDiscussionContainer() {
 
   useEffect(() => {
     async function asuncFun() {
-    if (lectureDiscussion?.id === undefined) {
-      return;
-    }
+      if (lectureDiscussion?.id === undefined) {
+        return;
+      }
 
-    //comment count
-    if(lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
-      const comment = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
-      setCount(comment.count)
-    }
+      //comment count
+      if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
+        const comment = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
+        setCount(comment.count)
+      }
 
-    findFeedbackMenu(lectureDiscussion.id).then(res => {
-      setLectureFeedbackContent({
-        ...res
+      findFeedbackMenu(lectureDiscussion.id).then(res => {
+        setLectureFeedbackContent({
+          ...res
         });
       });
     }
@@ -246,63 +249,67 @@ export default function LectureDiscussionContainer() {
                 )}
               {/* eslint-enable */}
               {/* 관련 자료 */}
-              <div className="community-board-down discuss2">
-                <div className="community-contants">
-                  <div className="community-board-down">
-                    <div className="board-down-title">
-                      <p>
-                        <img
-                          src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
-                        />
-                        첨부파일
-                      </p>
-                      <div className="board-down-title-right">
-                        <button
-                          className="ui icon button left post delete"
-                          onClick={() => zipFileDownload('select')}
-                        >
-                          <i aria-hidden="true" className="icon check icon" />
-                          선택 다운로드
-                        </button>
-                        <button
-                          className="ui icon button left post list2"
-                          onClick={() => zipFileDownload('all')}
-                        >
+              {filesMap.get('reference') && (
+                <div className="community-board-down discuss2">
+                  <div className="community-contants">
+                    <div className="community-board-down">
+                      <div className="board-down-title">
+                        <p>
                           <img
-                            src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                            src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
                           />
-                          전체 다운로드
-                        </button>
+                          첨부파일
+                        </p>
+                        <div className="board-down-title-right">
+                          <button
+                            className="ui icon button left post delete"
+                            onClick={() => zipFileDownload('select')}
+                          >
+                            <i aria-hidden="true" className="icon check icon" />
+                            선택 다운로드
+                          </button>
+                          <button
+                            className="ui icon button left post list2"
+                            onClick={() => zipFileDownload('all')}
+                          >
+                            <img
+                              src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                            />
+                            전체 다운로드
+                          </button>
+                        </div>
                       </div>
+                      {filesMap.get('reference') &&
+                        filesMap
+                          .get('reference')
+                          .map((foundedFile: DepotFileViewModel) => (
+                            <div className="down">
+                              <Checkbox
+                                className="base"
+                                label={foundedFile.name}
+                                name={'depot' + foundedFile.id}
+                                onChange={(event, value) =>
+                                  checkOne(event, value, foundedFile)
+                                }
+                              />
+                              <Icon
+                                className="icon-down-type4"
+                                onClick={() =>
+                                  fileDownload(foundedFile.name, foundedFile.id)
+                                }
+                              />
+                            </div>
+                          ))}
                     </div>
-                    {filesMap.get('reference') &&
-                      filesMap
-                        .get('reference')
-                        .map((foundedFile: DepotFileViewModel) => (
-                          <div className="down">
-                            <Checkbox
-                              className="base"
-                              label={foundedFile.name}
-                              name={'depot' + foundedFile.id}
-                              onChange={(event, value) =>
-                                checkOne(event, value, foundedFile)
-                              }
-                            />
-                            <Icon
-                              className="icon-down-type4"
-                              onClick={() =>
-                                fileDownload(foundedFile.name, foundedFile.id)
-                              }
-                            />
-                          </div>
-                        ))}
                   </div>
                 </div>
-              </div>
+              )
+              }
+
             </div>
           </div>
           <CommentList
-            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent.commentFeedbackId : '' }
+            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent.commentFeedbackId : ''}
             // feedbackId="0071441d-1f1f-43bf-9a0e-66b838090efb"
             hideCamera
             name={name}
