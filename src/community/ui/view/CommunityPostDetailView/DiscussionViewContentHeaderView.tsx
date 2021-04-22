@@ -62,7 +62,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
-    const referenceFileBoxId = postDetail && postDetail.depotId;
+    const referenceFileBoxId = postDetail && postDetail.fileBoxId;
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
@@ -75,6 +75,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
       setFilesMap(newMap);
     });
   }, []);
+
+  const fileDownload = (pdf: string, fileId: string) => {
+    depot.downloadDepotFile(fileId);
+  };
 
   const zipFileDownload = useCallback((type: string) => {
     if (type === 'select') {
