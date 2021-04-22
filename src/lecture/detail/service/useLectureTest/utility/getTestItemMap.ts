@@ -66,8 +66,13 @@ async function getTestItem(
 export async function getTestItemMapFromCourse(
   params: LectureParams
 ): Promise<LectureTestItem | undefined> {
-  const student = await findByCardId(params.cardId);
-  if (student === undefined) {
+  const students = await findMyCardRelatedStudentsCache(params.cardId);
+  if (students === undefined) {
+    return;
+  }
+
+  const student = students.cardStudent;
+  if (student === undefined || student === null) {
     return;
   }
   let examId = student.studentScore.examId || '';
@@ -77,6 +82,9 @@ export async function getTestItemMapFromCourse(
       return;
     }
     examId = test.testId;
+    clearFindMyCardRelatedStudentsCache(); // examId가 담긴 studentScore 재호출
+    getTestItemMapFromCourse(params);
+    return;
   }
 
   const testItem = await getTestItem(
@@ -98,7 +106,6 @@ export async function getTestItemMapFromCube(
     return;
   }
 
-  clearFindMyCardRelatedStudentsCache();
   const students = await findMyCardRelatedStudentsCache(params.cardId);
   if (students === undefined) {
     return;
@@ -121,6 +128,9 @@ export async function getTestItemMapFromCube(
       return;
     }
     examId = test.testId;
+    clearFindMyCardRelatedStudentsCache(); // examId가 담긴 studentScore 재호출
+    getTestItemMapFromCube(params);
+    return;
   }
 
   const testItem = await getTestItem(
