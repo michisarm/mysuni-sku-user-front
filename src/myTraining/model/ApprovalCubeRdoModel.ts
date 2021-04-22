@@ -5,10 +5,10 @@ class ApprovalCubeRdoModel {
   //
   offset: number = 0;
   limit: number = 0;
-  orderBy: string = '';
+  sortOrder: string = 'UpdateTimeDesc';
   proposalState: ProposalState = ProposalState.Submitted;
-  lectureCardId: string = '';
-  endDate: number = 0;
+  cubeId: string = '';
+  endDate: number = 9999999999999;
   startDate: number = 0;
 
   constructor(approvalCubeRdo?: ApprovalCubeRdoModel) {
@@ -18,19 +18,21 @@ class ApprovalCubeRdoModel {
     }
   }
 
-  static new(offset: number,
+  static new(
+    offset: number,
     limit: number,
-    orderBy: string,
+    sortOrder: string,
     proposalState: ProposalState,
-    lectureCardId: string,
-    endDate: number) {
+    cubeId: string,
+    endDate: number
+  ) {
     //
     return new ApprovalCubeRdoModel({
       offset,
       limit,
-      orderBy,
+      sortOrder,
       proposalState,
-      lectureCardId,
+      cubeId,
       endDate,
       startDate: 0,
     });
@@ -38,16 +40,16 @@ class ApprovalCubeRdoModel {
 
   static newDefault(limit: number, offset: number) {
     //
-    const orderBy: string = '';
+    const sortOrder: string = 'UpdateTimeDesc';
     const proposalState: ProposalState = ProposalState.Submitted;
-    const lectureCardId: string = '';
+    const cubeId: string = '';
     const endDate: number = 0;
     return new ApprovalCubeRdoModel({
       offset,
       limit,
-      orderBy,
+      sortOrder,
       proposalState,
-      lectureCardId,
+      cubeId,
       endDate,
       startDate: 0,
     });
@@ -57,9 +59,9 @@ class ApprovalCubeRdoModel {
 decorate(ApprovalCubeRdoModel, {
   offset: observable,
   limit: observable,
-  orderBy: observable,
+  sortOrder: observable,
   proposalState: observable,
-  lectureCardId: observable,
+  cubeId: observable,
   endDate: observable,
 });
 

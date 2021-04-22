@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import {
-  Select, Radio, Button, Icon,
-} from 'semantic-ui-react';
+import { Select, Radio, Button, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import ApprovalProcessModal from './ApprovalProcessModal';
 import ApprovalProcessModalRejected from './ApprovalProcessModalRejected';
@@ -13,25 +10,24 @@ import SelectOptions from '../model/SelectOptions';
 import { ApprovalCubeService } from '../../stores';
 
 interface Props {
-  totalCount: number
-  searchSelectOptions: any[]
-  searchState: any
-  lectures: any[]
-  defaultValue?: string
-  targetProps?: string
-  onSetCubeIntroPropsByJSON: (name: string, value: string) => void
-  onExcelDownloadClick: () => void
-  onSearchProposalStateChange: (searchState: ProposalState) => void
-  onSearchDateChange: (startDate: number) => void
-  approvalCubeService?: ApprovalCubeService
+  totalCount: number;
+  searchSelectOptions: any[];
+  searchState: any;
+  lectures: any[];
+  defaultValue?: string;
+  targetProps?: string;
+  onSetCubeIntroPropsByJSON: (name: string, value: string) => void;
+  onExcelDownloadClick: () => void;
+  onSearchProposalStateChange: (searchState: ProposalState) => void;
+  onSearchDateChange: (startDate: number) => void;
+  approvalCubeService?: ApprovalCubeService;
 }
 
 interface States {
-  approvalProcessModalRejectedOpen: boolean
-  approvalProcessModalOpen: boolean
+  approvalProcessModalRejectedOpen: boolean;
+  approvalProcessModalOpen: boolean;
 }
-@inject(mobxHelper.injectFrom(
-  'approvalCube.approvalCubeService'))
+@inject(mobxHelper.injectFrom('approvalCube.approvalCubeService'))
 @reactAutobind
 @observer
 class ApprovalListPanelTopLineView extends React.Component<Props, States> {
@@ -40,29 +36,34 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
     approvalProcessModalOpen: false,
   };
 
-  handleSearchProposalStateChange(e:any, data: any) {
+  handleSearchProposalStateChange(e: any, data: any) {
     const { onSearchProposalStateChange } = this.props;
     onSearchProposalStateChange(data.value);
   }
 
-  handleSearchPeriodChange(e:any, data: any) {
+  handleSearchPeriodChange(e: any, data: any) {
     const { onSearchDateChange } = this.props;
-    let searchDateMoment: moment.Moment = moment(0);
+    let searchDateMoment: moment.Moment = moment(9999999999999);
     const now: moment.Moment = moment().startOf('day');
     switch (data.value) {
-      case '2': searchDateMoment = now.add(7, 'days');
+      case '2':
+        searchDateMoment = now.add(7, 'days');
         break;
-      case '3': searchDateMoment = now.add(14, 'days');
+      case '3':
+        searchDateMoment = now.add(14, 'days');
         break;
-      case '4': searchDateMoment = now.add(1, 'months');
+      case '4':
+        searchDateMoment = now.add(1, 'months');
         break;
-      case '5': searchDateMoment = now.add(6, 'months');
+      case '5':
+        searchDateMoment = now.add(6, 'months');
         break;
-      case '6': searchDateMoment = now.add(1, 'years');
+      case '6':
+        searchDateMoment = now.add(1, 'years');
         break;
       case '1':
       default:
-        // 전체
+      // 전체
     }
     onSearchDateChange(searchDateMoment.toDate().getTime());
   }
@@ -76,7 +77,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
       return;
     }
 
-    this.setState( { approvalProcessModalRejectedOpen: true });
+    this.setState({ approvalProcessModalRejectedOpen: true });
   }
 
   handleApproveClick() {
@@ -88,14 +89,19 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
       return;
     }
 
-    this.setState( { approvalProcessModalOpen: true });
+    this.setState({ approvalProcessModalOpen: true });
   }
 
   render() {
     //
     const {
-      defaultValue, targetProps, onSetCubeIntroPropsByJSON, onExcelDownloadClick,
-      searchState, lectures, approvalCubeService,
+      defaultValue,
+      targetProps,
+      onSetCubeIntroPropsByJSON,
+      onExcelDownloadClick,
+      searchState,
+      lectures,
+      approvalCubeService,
     } = this.props;
 
     return (
@@ -133,42 +139,62 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
           <div className="bottom">
             <div className="left-area">
               <div className="actions top">
-
-                {searchState !== 'Submitted' ? '' :
-                <>
-                  <Button icon className="left post return" onClick={this.handleRejectClick}>
-                    <Icon className="return" /> 반려
-                  </Button>
-                  <ApprovalProcessModalRejected
-                    open={this.state.approvalProcessModalRejectedOpen}
-                    onCloseModal={() => this.setState({ approvalProcessModalRejectedOpen: false })}
-                    approvalCubeService={approvalCubeService}
-                  />
-                  <Button icon className="left post approval" onClick={this.handleApproveClick}>
-                    <Icon className="approval" /> 승인
-                  </Button>
-                  <ApprovalProcessModal
-                    open={this.state.approvalProcessModalOpen}
-                    onCloseModal={() => this.setState({ approvalProcessModalOpen: false })}
-                    approvalCubeService={approvalCubeService}
-                  />
-                </>
-                }
-                <ExcelDownloadButton splitter={searchState === 'Submitted'} onClick={ onExcelDownloadClick } />
+                {searchState !== 'Submitted' ? (
+                  ''
+                ) : (
+                  <>
+                    <Button
+                      icon
+                      className="left post return"
+                      onClick={this.handleRejectClick}
+                    >
+                      <Icon className="return" /> 반려
+                    </Button>
+                    <ApprovalProcessModalRejected
+                      open={this.state.approvalProcessModalRejectedOpen}
+                      onCloseModal={() =>
+                        this.setState({
+                          approvalProcessModalRejectedOpen: false,
+                        })
+                      }
+                      approvalCubeService={approvalCubeService}
+                    />
+                    <Button
+                      icon
+                      className="left post approval"
+                      onClick={this.handleApproveClick}
+                    >
+                      <Icon className="approval" /> 승인
+                    </Button>
+                    <ApprovalProcessModal
+                      open={this.state.approvalProcessModalOpen}
+                      onCloseModal={() =>
+                        this.setState({ approvalProcessModalOpen: false })
+                      }
+                      approvalCubeService={approvalCubeService}
+                    />
+                  </>
+                )}
+                <ExcelDownloadButton
+                  splitter={searchState === 'Submitted'}
+                  onClick={onExcelDownloadClick}
+                />
               </div>
             </div>
 
             <div className="right-area">
               <Select
-                placeholder = "과정선택"
+                placeholder="과정선택"
                 options={lectures}
-                onChange={(e: any, data: any) => onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)}
+                onChange={(e: any, data: any) =>
+                  onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)
+                }
                 value={defaultValue && defaultValue}
                 className="ui small-border dropdown selection list-title-sel"
               />
               <Select
-                placeholder = "교육기간"
-                options = {SelectOptions.approvalSearchDate}
+                placeholder="교육기간"
+                options={SelectOptions.approvalSearchDate}
                 onChange={this.handleSearchPeriodChange}
                 value={defaultValue && defaultValue}
                 className="ui small-border dropdown selection list-num-sel"
@@ -179,14 +205,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
       </>
     );
   }
-
 }
 
 interface ExcelDownloadButtonProps {
-  splitter: boolean
-  onClick: () => void
+  splitter: boolean;
+  onClick: () => void;
 }
-function ExcelDownloadButton(props:ExcelDownloadButtonProps ) {
+function ExcelDownloadButton(props: ExcelDownloadButtonProps) {
   const { onClick, splitter = false } = props;
   function renderDownloadButton() {
     return (
@@ -196,11 +221,10 @@ function ExcelDownloadButton(props:ExcelDownloadButtonProps ) {
     );
   }
   return splitter ? (
-    <span className="excel-wrap">
-      {renderDownloadButton()}
-    </span>
-  ) : renderDownloadButton();
+    <span className="excel-wrap">{renderDownloadButton()}</span>
+  ) : (
+    renderDownloadButton()
+  );
 }
 
 export default ApprovalListPanelTopLineView;
-
