@@ -6,7 +6,7 @@ import SkProfileService from '../../../../profile/present/logic/SkProfileService
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
+import { countByFeedbackId, findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useParams } from 'react-router-dom';
@@ -25,21 +25,49 @@ export default function LectureDiscussionContainer() {
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
   const originArr: string[] = [];
   let origin: string = '';
 
+  const commentCountEventHandler = useCallback(async () => {
+    async function asyncFun() {
+      if (document.body.getAttribute('feedbackid') !== undefined) {
+        const { count } = await countByFeedbackId(document.body.getAttribute('feedbackid')!);
+        setCount(count)
+      }
+    }
+    asyncFun();
+  }, [lectureFeedbackContent]);
+
   useEffect(() => {
+    window.addEventListener('discCommentCount', commentCountEventHandler);
+    return () => {
+      window.removeEventListener('discCommentCount', commentCountEventHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    async function asyncFun() {
+      if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
+        const { count } = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
+        setCount(count)
+      }
+    }
     getFileIds();
+    asyncFun();
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
+
     const referenceFileBoxId =
       lectureFeedbackContent && lectureFeedbackContent.depotId;
+
     Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId)
+      else setFilesMap(new Map<string, any>());
     });
   }, [lectureFeedbackContent]);
 
@@ -52,14 +80,24 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   useEffect(() => {
-    if (lectureDiscussion?.id === undefined) {
-      return;
-    }
-    findFeedbackMenu(lectureDiscussion.id).then(res => {
-      setLectureFeedbackContent({
-        ...res,
+    async function asuncFun() {
+      if (lectureDiscussion?.id === undefined) {
+        return;
+      }
+
+      //comment count
+      if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
+        const comment = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
+        setCount(comment.count)
+      }
+
+      findFeedbackMenu(lectureDiscussion.id).then(res => {
+        setLectureFeedbackContent({
+          ...res
+        });
       });
-    });
+    }
+    asuncFun()
   }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   const { company, department, email, name } = useMemo(() => {
@@ -125,7 +163,7 @@ export default function LectureDiscussionContainer() {
               />
               <h2>{lectureDiscussion.name}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{0}</strong>
+                전체 의견 <strong>{count}</strong>
               </span>
               <span>
                 <strong className="peo-date">
@@ -179,9 +217,9 @@ export default function LectureDiscussionContainer() {
               {/* 관련 URL */}
               {lectureFeedbackContent &&
                 lectureFeedbackContent.relatedUrlList &&
-                lectureFeedbackContent.relatedUrlList.length > 0 &&
-                (lectureFeedbackContent.relatedUrlList[0].title !== '' ||
-                  lectureFeedbackContent.relatedUrlList[0].url !== '') && (
+                lectureFeedbackContent.relatedUrlList.length > 0 && (
+                  (lectureFeedbackContent.relatedUrlList[0].title !== '' && lectureFeedbackContent.relatedUrlList[0].url) !== '' ||
+                  (lectureFeedbackContent.relatedUrlList[1].title !== '' && lectureFeedbackContent.relatedUrlList[1].url !== '')) && (
                   <div className="community-board-down discuss2">
                     <div className="board-down-title href">
                       <p>
@@ -196,9 +234,14 @@ export default function LectureDiscussionContainer() {
                       {lectureFeedbackContent &&
                         lectureFeedbackContent.relatedUrlList?.map(
                           (item: any) => (
-                            <a href={item.url} target="blank">
-                              {item.title}
+                            <>
+                              <a href={item.url} target="blank">
+                                {item.title}
+                              </a>
+                              <a href={item.url} target="blank">
+                              {item.url}
                             </a>
+                          </>
                           )
                         )}
                     </div>
@@ -206,63 +249,67 @@ export default function LectureDiscussionContainer() {
                 )}
               {/* eslint-enable */}
               {/* 관련 자료 */}
-              <div className="community-board-down discuss2">
-                <div className="community-contants">
-                  <div className="community-board-down">
-                    <div className="board-down-title">
-                      <p>
-                        <img
-                          src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
-                        />
-                        첨부파일
-                      </p>
-                      <div className="board-down-title-right">
-                        <button
-                          className="ui icon button left post delete"
-                          onClick={() => zipFileDownload('select')}
-                        >
-                          <i aria-hidden="true" className="icon check icon" />
-                          선택 다운로드
-                        </button>
-                        <button
-                          className="ui icon button left post list2"
-                          onClick={() => zipFileDownload('all')}
-                        >
+              {filesMap.get('reference') && (
+                <div className="community-board-down discuss2">
+                  <div className="community-contants">
+                    <div className="community-board-down">
+                      <div className="board-down-title">
+                        <p>
                           <img
-                            src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                            src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
                           />
-                          전체 다운로드
-                        </button>
+                          첨부파일
+                        </p>
+                        <div className="board-down-title-right">
+                          <button
+                            className="ui icon button left post delete"
+                            onClick={() => zipFileDownload('select')}
+                          >
+                            <i aria-hidden="true" className="icon check icon" />
+                            선택 다운로드
+                          </button>
+                          <button
+                            className="ui icon button left post list2"
+                            onClick={() => zipFileDownload('all')}
+                          >
+                            <img
+                              src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                            />
+                            전체 다운로드
+                          </button>
+                        </div>
                       </div>
+                      {filesMap.get('reference') &&
+                        filesMap
+                          .get('reference')
+                          .map((foundedFile: DepotFileViewModel) => (
+                            <div className="down">
+                              <Checkbox
+                                className="base"
+                                label={foundedFile.name}
+                                name={'depot' + foundedFile.id}
+                                onChange={(event, value) =>
+                                  checkOne(event, value, foundedFile)
+                                }
+                              />
+                              <Icon
+                                className="icon-down-type4"
+                                onClick={() =>
+                                  fileDownload(foundedFile.name, foundedFile.id)
+                                }
+                              />
+                            </div>
+                          ))}
                     </div>
-                    {filesMap.get('reference') &&
-                      filesMap
-                        .get('reference')
-                        .map((foundedFile: DepotFileViewModel) => (
-                          <div className="down">
-                            <Checkbox
-                              className="base"
-                              label={foundedFile.name}
-                              name={'depot' + foundedFile.id}
-                              onChange={(event, value) =>
-                                checkOne(event, value, foundedFile)
-                              }
-                            />
-                            <Icon
-                              className="icon-down-type4"
-                              onClick={() =>
-                                fileDownload(foundedFile.name, foundedFile.id)
-                              }
-                            />
-                          </div>
-                        ))}
                   </div>
                 </div>
-              </div>
+              )
+              }
+
             </div>
           </div>
           <CommentList
-            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent.commentFeedbackId : '' }
+            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent.commentFeedbackId : ''}
             // feedbackId="0071441d-1f1f-43bf-9a0e-66b838090efb"
             hideCamera
             name={name}
