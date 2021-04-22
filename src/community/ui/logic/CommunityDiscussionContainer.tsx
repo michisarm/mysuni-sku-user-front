@@ -32,7 +32,7 @@ function CommunityDiscussionContainer() {
 
   const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
-  console.log('post', postDetail, postDetail?.content);
+
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     getFileIds();
