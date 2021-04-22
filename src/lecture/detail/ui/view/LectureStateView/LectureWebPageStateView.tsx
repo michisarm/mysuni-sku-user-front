@@ -103,13 +103,14 @@ const LectureWebPageStateView: React.FC<LectureWebPageStateViewProps> = function
 }) {
   const { student, cubeDetail, cubeType } = lectureState;
   const { cube } = cubeDetail;
+  const urlType = cubeDetail.cubeMaterial.officeWeb?.urlType;
 
   return (
     <>
-      {(student === undefined || student?.proposalState === 'Canceled') && (
+      {((urlType === undefined || urlType !== "embedded") && student === undefined || student?.proposalState === 'Canceled') && (
         <CanceledView cubeType={cubeType} />
       )}
-      {student?.proposalState === 'Approved' && (
+      {(urlType === undefined || urlType !== "embedded") && student?.proposalState === 'Approved' && (
         <ApprovedView student={student} cube={cube} />
       )}
     </>
