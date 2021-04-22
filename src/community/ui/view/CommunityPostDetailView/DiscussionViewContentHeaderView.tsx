@@ -48,7 +48,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [textUndefined, setTextUndefined] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
-  const [urlNull, setUrlNull] = useState<boolean>();
+  const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -123,18 +123,16 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   }, []);
 
   const emptyCheckUrl = useCallback(() => {
-    if(postDetail === undefined) return;
+    if (postDetail === undefined) return;
 
     // true 이면 null 처리
     postDetail.relatedUrlList?.map((item: any) => {
-      if(item.title === "" || item.url === "") {
+      if (item.title === '' || item.url === '') {
         setUrlNull(true);
       }
     });
+  }, [postDetail?.relatedUrlList]);
 
-  },[postDetail?.relatedUrlList]);
-
-  console.log('ddd', postDetail);
   return (
     <>
       {postDetail && (
@@ -206,26 +204,26 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               {/* eslint-disable */}
               {/* 관련 URL */}
               {urlNull === false ? (
-                  <div className="community-board-down discuss2">
-                    <div className="board-down-title href">
-                      <p>
-                        {' '}
-                        <Image
-                          src={`${PUBLIC_URL}/images/all/icon-url.png`}
-                          alt=""
-                          style={{ display: 'inline-block' }}
-                        />
-                        관련 URL
-                      </p>
-                      {postDetail &&
-                        postDetail.relatedUrlList?.map((item: any) => (
-                          <a href={item.url} target="blank">
-                            {item.title}
-                          </a>
-                        ))}
-                    </div>
+                <div className="community-board-down discuss2">
+                  <div className="board-down-title href">
+                    <p>
+                      {' '}
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                        alt=""
+                        style={{ display: 'inline-block' }}
+                      />
+                      관련 URL
+                    </p>
+                    {postDetail &&
+                      postDetail.relatedUrlList?.map((item: any) => (
+                        <a href={item.url} target="blank">
+                          {item.title}
+                        </a>
+                      ))}
                   </div>
-                ): null}
+                </div>
+              ) : null}
               {/* eslint-enable */}
               {/* 관련 자료 */}
               {postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null && (
