@@ -112,3 +112,42 @@ export async function completeLearning() {
   requestCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
+
+// 2021.04.21 Cube Discussion 에서 코멘트 등록 후 화면 Refresh를 위해 추가
+export async function refresh(
+  round: number,
+  approvalProcess?: boolean,
+  approvalEmail?: string
+) {
+  const params = getLectureParams();
+  if (params?.cubeId === undefined || params?.cubeType === undefined) {
+    return;
+  }
+  const { cardId, cubeId, cubeType } = params;
+  const studentCdo: StudentCdo = {
+    cardId,
+    cubeId,
+    round,
+    //approvalProcess,
+    approverDenizenId: approvalEmail,
+  };
+  // await registerStudent(studentCdo);
+  clearFindMyCardRelatedStudentsCache();
+  requestCardLectureStructure(cardId);
+  requestLectureState(cardId, cubeId, cubeType);
+}
+
+// 2021.04.21 Cube Discussion 에서 코멘트 등록 시 자동으로 학습 진행을 위해 추가
+export async function submitRegisterStudent() {
+  const params = getLectureParams();
+  if (params?.cubeId === undefined || params?.cubeType === undefined) {
+    return;
+  }
+  const { cardId, cubeId, cubeType } = params;
+  const studentCdo: StudentCdo = {
+    cardId,
+    cubeId,
+    round: 1,
+  };
+  await registerStudent(studentCdo);
+}
