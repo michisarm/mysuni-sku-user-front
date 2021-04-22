@@ -59,11 +59,11 @@ export default class ApprovalCubeApi {
     approvalCube?: ApprovalCubeModel
   ) {
     //
-    const lectureCardId = approvalCube?.lectureCardId || '';
+    const cubeId = approvalCube?.cubeId || '';
     const params = {
       orderBy,
       proposalState,
-      lectureCardId,
+      cubeId,
     };
 
     return axios

@@ -196,15 +196,27 @@ export default class ApprovalCubeService {
     approvalCube?: ApprovalCubeModel
   ) {
     //
-    const approvalCubes = await this.approvalCubeApi.findApprovalCubesForExcel(
-      orderBy,
-      proposalState,
-      approvalCube
+    const cubeId = approvalCube?.cubeId || '';
+
+    const approvalCubeRdo: ApprovalCubeRdoModel = new ApprovalCubeRdoModel();
+    approvalCubeRdo.sortOrder = orderBy;
+    approvalCubeRdo.cubeId = cubeId;
+    if (proposalState !== undefined) {
+      approvalCubeRdo.proposalState = proposalState;
+    }
+    approvalCubeRdo.limit = 999999999;
+
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
+      approvalCubeRdo
     );
 
-    return runInAction(() => {
-      this.approvalCubesExcelWrite = approvalCubes || [];
+    runInAction(() => {
+      this.approvalCubesExcelWrite = this.approvalCubesExcelWrite.concat(
+        approvalCubeOffsetList.results
+      );
     });
+
+    return approvalCubeOffsetList;
   }
 }
 

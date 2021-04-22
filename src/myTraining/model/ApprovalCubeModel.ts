@@ -1,5 +1,4 @@
-
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import moment from 'moment';
@@ -11,6 +10,7 @@ import {
   CubeState,
   IconBoxModel,
   IdName,
+  LangStrings,
   SearchFilterType,
 } from 'shared/model';
 import { CubeContentsModel } from './CubeContentsModel';
@@ -19,7 +19,6 @@ import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
 import { OperationModel } from './OperationModel';
 import { ApprovalCubeXlsxModel } from './ApprovalCubeXlsxModel';
-
 
 export class ApprovalCubeModel implements DramaEntity {
   //
@@ -41,10 +40,9 @@ export class ApprovalCubeModel implements DramaEntity {
   contents: CubeContentsModel = new CubeContentsModel();
   cubeIntro: IdName = new IdName();
   tags: string[] = [];
-  time: number = 0;
+  creationTime: number = 0;
 
   openRequests: OpenRequest[] = [];
-
 
   //UI
   required: boolean = false;
@@ -52,47 +50,91 @@ export class ApprovalCubeModel implements DramaEntity {
   studentId: string = '';
   rollBookId: string = '';
   classroomId: string = '';
-  memberName: string = '';
-  memberDepartment: string = '';
+  studentName: string = '';
+  studentDepartmentNames: LangStrings = new LangStrings();
   cubeName: string = '';
 
   round: number = 0;
-  studentCount: number = 0;
+  approvedStudentCount: number = 0;
   capacity: number = 0;
   remark: string = '';
 
   freeOfCharge: FreeOfChargeModel = new FreeOfChargeModel();
   operation: OperationModel = new OperationModel();
-  enrolling: EnrollingModel = new EnrollingModel();                     // 신청/취소/학습 기간/신청유무
-  lectureCardId: string = '';
+  enrolling: EnrollingModel = new EnrollingModel(); // 신청/취소/학습 기간/신청유무
+  cubeId: string = '';
   cubeType: string = '';
   proposalState: string = '';
   learningState: string = '';
 
+  learningStartDate: string = '';
+  learningEndDate: string = '';
+  chargeAmount: number = 0;
+
   constructor(approvalCube?: ApprovalCubeModel) {
     if (approvalCube) {
-      const creator = approvalCube.creator && new CreatorModel(approvalCube.creator) || this.creator;
-      const contents = approvalCube.contents && new CubeContentsModel(approvalCube.contents) || this.contents;
-      const cubeIntro = approvalCube.cubeIntro && new IdName(approvalCube.cubeIntro) || this.cubeIntro;
-      const category = approvalCube.category && new CategoryModel(approvalCube.category) || this.category;
-      const iconBox = approvalCube.iconBox && new IconBoxModel(approvalCube.iconBox) || this.iconBox;
-      const freeOfCharge = approvalCube.freeOfCharge && new FreeOfChargeModel(approvalCube.freeOfCharge) || this.freeOfCharge;
-      const operation = approvalCube.operation && new OperationModel(approvalCube.operation) || this.operation;
-      const enrolling = approvalCube.enrolling && new EnrollingModel(approvalCube.enrolling) || this.enrolling;
+      const creator =
+        (approvalCube.creator && new CreatorModel(approvalCube.creator)) ||
+        this.creator;
+      const contents =
+        (approvalCube.contents &&
+          new CubeContentsModel(approvalCube.contents)) ||
+        this.contents;
+      const cubeIntro =
+        (approvalCube.cubeIntro && new IdName(approvalCube.cubeIntro)) ||
+        this.cubeIntro;
+      const category =
+        (approvalCube.category && new CategoryModel(approvalCube.category)) ||
+        this.category;
+      const iconBox =
+        (approvalCube.iconBox && new IconBoxModel(approvalCube.iconBox)) ||
+        this.iconBox;
+      const freeOfCharge =
+        (approvalCube.freeOfCharge &&
+          new FreeOfChargeModel(approvalCube.freeOfCharge)) ||
+        this.freeOfCharge;
+      const operation =
+        (approvalCube.operation &&
+          new OperationModel(approvalCube.operation)) ||
+        this.operation;
+      const enrolling =
+        (approvalCube.enrolling &&
+          new EnrollingModel(approvalCube.enrolling)) ||
+        this.enrolling;
 
-      Object.assign(this, { ...approvalCube, creator, contents, cubeIntro, category, iconBox, freeOfCharge, operation, enrolling });
+      const studentDepartmentNames = new LangStrings(
+        approvalCube.studentDepartmentNames
+      );
+
+      Object.assign(this, {
+        ...approvalCube,
+        creator,
+        contents,
+        cubeIntro,
+        category,
+        iconBox,
+        freeOfCharge,
+        operation,
+        enrolling,
+        studentDepartmentNames,
+      });
 
       // UI Model
       const companyCode = patronInfo.getPatronCompanyCode();
 
-      this.required = approvalCube.requiredSubsidiaries
-        && approvalCube.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
+      this.required =
+        approvalCube.requiredSubsidiaries &&
+        approvalCube.requiredSubsidiaries.some(
+          subsidiary => subsidiary.id === companyCode
+        );
     }
   }
 
   public static getProposalStateName(proposalState: string) {
     //
-    if (!proposalState) { return ''; }
+    if (!proposalState) {
+      return '';
+    }
 
     if (proposalState === 'Approved') {
       return '승인';
@@ -106,7 +148,9 @@ export class ApprovalCubeModel implements DramaEntity {
 
   public static getLearningStateName(learningState: string) {
     //
-    if (!learningState) { return ''; }
+    if (!learningState) {
+      return '';
+    }
 
     if (learningState === 'Progress') {
       return '결과처리 대기';
@@ -122,23 +166,43 @@ export class ApprovalCubeModel implements DramaEntity {
     return '';
   }
 
-  static asXLSX(approvalCube: ApprovalCubeModel, index: number): ApprovalCubeXlsxModel {
+  static asXLSX(
+    approvalCube: ApprovalCubeModel,
+    index: number
+  ): ApprovalCubeXlsxModel {
     //
-    return (
-      {
-        No: index + 1,
-        신청자: approvalCube.memberName,
-        조직: approvalCube.memberDepartment,
-        과정명: approvalCube.cubeName,
-        차수: approvalCube.round,
-        신청상태: ApprovalCubeModel.getProposalStateName(approvalCube.proposalState),
-        학습상태: ApprovalCubeModel.getLearningStateName(approvalCube.learningState),
-        신청현황: approvalCube.studentCount + '/' + approvalCube.capacity,
-        '(차수)교육기간': approvalCube.enrolling.learningPeriod.startDate + '~' + approvalCube.enrolling.learningPeriod.endDate,
-        신청일자: approvalCube.time && moment(approvalCube.time).format('YYYY.MM.DD'),
-        '인당 교육금액': numeral(approvalCube.freeOfCharge.chargeAmount).format('0,0'),
-      }
-    );
+    return {
+      No: index + 1,
+      신청자: approvalCube.studentName,
+      조직: approvalCube.getStudentDepartmentNames,
+      과정명: approvalCube.cubeName,
+      차수: approvalCube.round,
+      신청상태: ApprovalCubeModel.getProposalStateName(
+        approvalCube.proposalState
+      ),
+      신청현황: approvalCube.approvedStudentCount + '/' + approvalCube.capacity,
+      '(차수)교육기간':
+        approvalCube.learningStartDate + '~' + approvalCube.learningEndDate,
+      신청일자:
+        approvalCube.creationTime &&
+        moment(approvalCube.creationTime).format('YYYY.MM.DD'),
+      '인당 교육금액': numeral(approvalCube.chargeAmount).format('0,0'),
+    };
+  }
+
+  @computed
+  get getStudentDepartmentNames() {
+    if (
+      this.studentDepartmentNames &&
+      this.studentDepartmentNames.langStringMap
+    ) {
+      return (
+        this.studentDepartmentNames.langStringMap.get(
+          this.studentDepartmentNames.defaultLanguage
+        ) || ''
+      );
+    }
+    return '';
   }
 }
 
@@ -160,28 +224,30 @@ decorate(ApprovalCubeModel, {
   searchFilter: observable,
   subsidiaries: observable,
   requiredSubsidiaries: observable,
-  time: observable,
+  creationTime: observable,
   openRequests: observable,
   required: observable,
 
   studentId: observable,
   rollBookId: observable,
   classroomId: observable,
-  memberName: observable,
-  memberDepartment: observable,
+  studentName: observable,
+  studentDepartmentNames: observable,
   cubeName: observable,
 
   round: observable,
-  studentCount: observable,
+  approvedStudentCount: observable,
   capacity: observable,
   remark: observable,
 
   freeOfCharge: observable,
   operation: observable,
   enrolling: observable,
-  lectureCardId: observable,
+  cubeId: observable,
   cubeType: observable,
   proposalState: observable,
 
+  learningStartDate: observable,
+  learningEndDate: observable,
+  chargeAmount: observable,
 });
-

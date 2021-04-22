@@ -15,24 +15,25 @@ import ApprovalListView from '../view/ApprovalListView';
 import { ApprovalCubeModel } from '../../model';
 import { ApprovalCubeXlsxModel } from '../../model/ApprovalCubeXlsxModel';
 
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
-  pageService?: PageService,
-  approvalCubeService?: ApprovalCubeService
-  defaultValue?: string
-  targetProps?: string
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  actionLogService?: ActionLogService;
+  pageService?: PageService;
+  approvalCubeService?: ApprovalCubeService;
+  defaultValue?: string;
+  targetProps?: string;
 }
 
 interface Stats {
-  lectureOptions: any[]
+  lectureOptions: any[];
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.pageService',
-  'approvalCube.approvalCubeService',
-))
-
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.pageService',
+    'approvalCube.approvalCubeService'
+  )
+)
 @observer
 @reactAutobind
 class MyApprovalListContainer extends React.Component<Props> {
@@ -70,14 +71,19 @@ class MyApprovalListContainer extends React.Component<Props> {
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
-    if (prevTab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+    if (
+      prevTab === currentTab &&
+      prevProps.match.params.pageNo !== currentPageNo
+    ) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
-      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > this.PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + this.PAGE_SIZE
+          : page!.nextOffset;
       if (currentPageNo === '1') {
         approvalCubeService!.clear();
         pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      }
-      else {
+      } else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
       this.findApprovalCubes(searchState, this.getPageNo() - 1);
@@ -96,39 +102,49 @@ class MyApprovalListContainer extends React.Component<Props> {
     return parseInt(match.params.pageNo, 10);
   }
 
-  async findApprovalCubes(proposalState: ProposalState | undefined, pageNo?: number) {
+  async findApprovalCubes(
+    proposalState: ProposalState | undefined,
+    pageNo?: number
+  ) {
     //
     const { pageService, approvalCubeService } = this.props;
     const { approvalCube, searchOrderBy, searchEndDate } = approvalCubeService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, searchOrderBy, proposalState, approvalCube.lectureCardId, searchEndDate);
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(
+      page!.nextOffset,
+      page!.limit,
+      searchOrderBy,
+      proposalState,
+      approvalCube.cubeId,
+      searchEndDate
+    );
+    pageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      offsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
   }
 
   findLectureApprovalSelect() {
     //
     const { approvalCubeService } = this.props;
-    approvalCubeService!.findLectureApprovalSelect()
-      .then(lectures => {
-        const lectureOptions = [];
-        lectureOptions.push(
-          {
-            key: '',
-            text: '전체과정',
-            value: '',
-          });
-
-        const options = lectures.map(lecture =>
-          ({
-            key: lecture.id,
-            text: lecture.name,
-            value: lecture.id,
-          })
-        );
-
-        this.setState({ lectureOptions: lectureOptions.concat(options) });
+    approvalCubeService!.findLectureApprovalSelect().then(lectures => {
+      const lectureOptions = [];
+      lectureOptions.push({
+        key: '',
+        text: '전체과정',
+        value: '',
       });
+
+      const options = lectures.map(lecture => ({
+        key: lecture.id,
+        text: lecture.name,
+        value: lecture.id,
+      }));
+
+      this.setState({ lectureOptions: lectureOptions.concat(options) });
+    });
   }
 
   onSetCubeIntroPropsByJSON(name: string, value: string) {
@@ -136,7 +152,7 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { pageService, approvalCubeService } = this.props;
     const { searchState, approvalCube } = approvalCubeService!;
 
-    approvalCube.lectureCardId = value;
+    approvalCube.cubeId = value;
 
     const currentPageNo = this.props.match.params.pageNo;
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
@@ -205,7 +221,8 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { approvalCubeService } = this.props;
     const { searchState, approvalCube, searchOrderBy } = approvalCubeService!;
 
-    approvalCubeService!.findApprovalCubesForExcel(searchOrderBy, searchState, approvalCube)
+    approvalCubeService!
+      .findApprovalCubesForExcel(searchOrderBy, searchState, approvalCube)
       .then(() => {
         const { approvalCubesExcelWrite } = approvalCubeService!;
         const wbList: ApprovalCubeXlsxModel[] = [];
@@ -217,14 +234,25 @@ class MyApprovalListContainer extends React.Component<Props> {
 
         XLSX.utils.book_append_sheet(wb, studentExcel, 'ApprovalCubes');
 
-        const datetime = moment(new Date().getTime()).format('YYYY.MM.DD_hh_mm_ss');
-        XLSX.writeFile(wb, `${ApprovalCubeModel.getProposalStateName(searchState)}_${datetime}.xlsx`);
+        const datetime = moment(new Date().getTime()).format(
+          'YYYY.MM.DD_hh_mm_ss'
+        );
+        XLSX.writeFile(
+          wb,
+          `${ApprovalCubeModel.getProposalStateName(
+            searchState
+          )}_${datetime}.xlsx`
+        );
       });
   }
 
   render() {
     //
-    const { approvalCubeOffsetList, searchState, searchOrderBy } = this.props.approvalCubeService!;
+    const {
+      approvalCubeOffsetList,
+      searchState,
+      searchOrderBy,
+    } = this.props.approvalCubeService!;
     const { totalCount, results: approvalCubes } = approvalCubeOffsetList;
     const { defaultValue, targetProps } = this.props;
     const { lectureOptions } = this.state;
@@ -253,16 +281,12 @@ class MyApprovalListContainer extends React.Component<Props> {
           searchState={searchState}
         />
 
-        { totalCount > approvalCubes.length && (
-          <SeeMoreButton
-            onClick={() => this.onClickSeeMore()}
-          />
+        {totalCount > approvalCubes.length && (
+          <SeeMoreButton onClick={() => this.onClickSeeMore()} />
         )}
       </div>
     );
   }
 }
 
-
 export default withRouter(MyApprovalListContainer);
-
