@@ -14,12 +14,39 @@ import {
 import LectureCardSummary from '../../../viewModel/LectureOverview/LectureCardSummary';
 import { getClassroomFromCube } from '../../useLectureClassroom/utility/getClassroomFromCube';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
+import { findMyCardRelatedStudentsCache } from '../../../api/cardApi';
+import { MyCardRelatedStudentsRom } from '../../../../model/MyCardRelatedStudentsRom';
+
+function getVaildLeaningDate(
+  validLearningDate: number,
+  cardRelatedStudent?: MyCardRelatedStudentsRom
+) {
+  if (
+    cardRelatedStudent &&
+    cardRelatedStudent.cardStudent &&
+    validLearningDate
+  ) {
+    const { creationTime } = cardRelatedStudent.cardStudent;
+    const parseCreateDate = new Date(creationTime);
+    parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
+
+    const month = parseCreateDate.getMonth() + 1;
+    const day = parseCreateDate.getDate();
+
+    const result = `${month}월 ${day}일`;
+
+    return result;
+  } else {
+    return '';
+  }
+}
 
 function parseLectureSummary(
   card: Card,
   cardContents: CardContents,
   cardOperatorIdentity: UserIdentity | null,
-  cardRelatedCount: CardRelatedCount
+  cardRelatedCount: CardRelatedCount,
+  cardRelatedStudent?: MyCardRelatedStudentsRom
 ): LectureCardSummary {
   const {
     id,
@@ -30,7 +57,7 @@ function parseLectureSummary(
     name,
     stampCount,
   } = card;
-  const { communityId } = cardContents;
+  const { communityId, validLearningDate } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
 
   return {
@@ -53,29 +80,39 @@ function parseLectureSummary(
     difficultyLevel: difficultyLevel || 'Basic',
     hasCommunity: (communityId || '') !== '',
     communityId,
+    validLearningDate: getVaildLeaningDate(
+      validLearningDate,
+      cardRelatedStudent
+    ),
   };
 }
 
 export async function requestLectureCardSummary(cardId: string) {
   const cardWithContentsAndRelatedCountRom = await findCardCache(cardId);
+  const cardRelatedStudent = await findMyCardRelatedStudentsCache(cardId);
+
   if (cardWithContentsAndRelatedCountRom === undefined) {
     return;
   }
+
   const {
     card,
     cardContents,
     cardOperatorIdentity,
     cardRelatedCount,
   } = cardWithContentsAndRelatedCountRom;
+
   if (card === null) {
     return;
   }
+
   await InMyLectureService.instance.findAllInMyLectures();
   const lectureCardSummary = parseLectureSummary(
     card,
     cardContents,
     cardOperatorIdentity,
-    cardRelatedCount
+    cardRelatedCount,
+    cardRelatedStudent
   );
   const cubeIds: string[] = [];
   for (let i = 0; i < cardContents.learningContents.length; i++) {
