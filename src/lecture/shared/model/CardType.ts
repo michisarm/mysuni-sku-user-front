@@ -10,6 +10,7 @@ type CardType =
   | 'Task'
   | 'Cohort'
   | 'Course'
+  | 'Discussion'
   | 'None';
 
 export default CardType;
