@@ -214,9 +214,9 @@ export default function LectureDiscussionContainer() {
               {/* 관련 URL */}
               {lectureFeedbackContent &&
                 lectureFeedbackContent.relatedUrlList &&
-                lectureFeedbackContent.relatedUrlList.length > 0 &&
-                (lectureFeedbackContent.relatedUrlList[0].title !== '' ||
-                  lectureFeedbackContent.relatedUrlList[0].url !== '') && (
+                lectureFeedbackContent.relatedUrlList.length > 0 && (
+                  (lectureFeedbackContent.relatedUrlList[0].title !== '' && lectureFeedbackContent.relatedUrlList[0].url) !== '' ||
+                  (lectureFeedbackContent.relatedUrlList[1].title !== '' && lectureFeedbackContent.relatedUrlList[1].url !== '')) && (
                   <div className="community-board-down discuss2">
                     <div className="board-down-title href">
                       <p>
@@ -231,9 +231,14 @@ export default function LectureDiscussionContainer() {
                       {lectureFeedbackContent &&
                         lectureFeedbackContent.relatedUrlList?.map(
                           (item: any) => (
-                            <a href={item.url} target="blank">
-                              {item.title}
+                            <>
+                              <a href={item.url} target="blank">
+                                {item.title}
+                              </a>
+                              <a href={item.url} target="blank">
+                              {item.url}
                             </a>
+                          </>
                           )
                         )}
                     </div>
