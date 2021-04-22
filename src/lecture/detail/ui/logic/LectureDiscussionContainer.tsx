@@ -6,7 +6,7 @@ import SkProfileService from '../../../../profile/present/logic/SkProfileService
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
+import { countByFeedbackId, findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useParams } from 'react-router-dom';
@@ -25,14 +25,39 @@ export default function LectureDiscussionContainer() {
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
   const originArr: string[] = [];
   let origin: string = '';
 
+  const commentCountEventHandler = useCallback(async () => {
+    async function asyncFun() {
+      if(document.body.getAttribute('feedbackid') !== undefined) {
+        const { count } = await countByFeedbackId(document.body.getAttribute('feedbackid')!);
+        setCount(count)
+      }
+    }
+    asyncFun();
+  }, [lectureFeedbackContent]);
+  
   useEffect(() => {
+    window.addEventListener('discCommentCount', commentCountEventHandler);
+    return () => {
+      window.removeEventListener('discCommentCount', commentCountEventHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    async function asyncFun() {
+      if(lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
+        const { count } = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
+        setCount(count)
+      }
+    }
     getFileIds();
+    asyncFun();
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
@@ -52,14 +77,24 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   useEffect(() => {
+    async function asuncFun() {
     if (lectureDiscussion?.id === undefined) {
       return;
     }
+
+    //comment count
+    if(lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
+      const comment = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
+      setCount(comment.count)
+    }
+
     findFeedbackMenu(lectureDiscussion.id).then(res => {
       setLectureFeedbackContent({
-        ...res,
+        ...res
+        });
       });
-    });
+    }
+    asuncFun()
   }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   const { company, department, email, name } = useMemo(() => {
@@ -125,7 +160,7 @@ export default function LectureDiscussionContainer() {
               />
               <h2>{lectureDiscussion.name}</h2>
               <span className="peo-opinion">
-                전체 의견 <strong>{0}</strong>
+                전체 의견 <strong>{count}</strong>
               </span>
               <span>
                 <strong className="peo-date">

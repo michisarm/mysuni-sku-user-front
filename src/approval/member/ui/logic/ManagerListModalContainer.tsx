@@ -7,21 +7,18 @@ import { inject, observer } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
 
-
 interface Props {
-  skProfileService?: SkProfileService
-  trigger?: React.ReactNode
-  handleOk: (member: ApprovalMemberModel) => void
-  multiSelect?: boolean
+  skProfileService?: SkProfileService;
+  trigger?: React.ReactNode;
+  handleOk: (member: ApprovalMemberModel) => void;
+  multiSelect?: boolean;
 }
 
 interface States {
-  open: boolean
+  open: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ManagerListModalContainer extends React.Component<Props, States> {
@@ -61,13 +58,14 @@ class ManagerListModalContainer extends React.Component<Props, States> {
     const { skProfile } = skProfileService!;
     const cineroomId = patronInfo.getCineroomId();
     const companyCode = patronInfo.getPatronCompanyCode();
+
     return (
       <Chart
         open={open}
         handleOk={this.handleOk}
         handleCancel={this.onShow}
-        companyCode={companyCode && companyCode || ''}
-        departmentCode={skProfile.departmentCode}
+        companyCode={(companyCode && companyCode) || ''}
+        departmentCode={skProfile.member.departmentCode}
         showAllCompanies={cineroomId === 'ne1-m2-c2'}
         multiSelect={multiSelect}
       />

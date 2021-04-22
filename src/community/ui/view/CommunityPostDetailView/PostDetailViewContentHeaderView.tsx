@@ -70,8 +70,8 @@ class PostDetailViewContentHeaderView extends Component<Props> {
     return (
       <>
         <div className="course-info-header">
-          <div className="survey-header pt0">
-            <div className="survey-header-left">
+          <div className="survey-header">
+            <div className="survey-header-left debate-header-sub">
               <div className="title" style={{ wordBreak: 'break-word' }}>
                 {title}
               </div>

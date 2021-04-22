@@ -17,30 +17,30 @@ import {
 import { setCommunityAdminMenu } from '../../store/CommunityAdminMenuStore';
 import { getEmptyCommunityHome } from '../../viewModel/CommunityHome';
 import { setCommunityAdminGroupsStore } from 'community/store/CommunityAdminGroupsStore';
+import { CommunityDiscussion } from '../../model/CommunityDiscussion';
 
 export function requestCommunityMenu(communityId: string) {
   const menuArr: any = [];
   return findCommunityMenu(communityId).then(community => {
-
     community.data.map((item: any, index: number) => {
       if (item.parentId === null) {
-        menuArr.push(item)
+        menuArr.push(item);
       }
-    })
+    });
     community.data.map((item: any) => {
       if (item.parentId !== '' && item.parentId !== null) {
         menuArr.map((item2: any, index: number) => {
           if (item.parentId === item2.id) {
             if (menuArr[index].child === undefined) {
-              menuArr[index].child = []
-              menuArr[index].child.push(item)
+              menuArr[index].child = [];
+              menuArr[index].child.push(item);
             } else {
-              menuArr[index].child.push(item)
+              menuArr[index].child.push(item);
             }
           }
-        })
+        });
       }
-    })
+    });
 
     menuArr.sort((a: any, b: any) => {
       if (a.order < b.order) {
@@ -50,10 +50,10 @@ export function requestCommunityMenu(communityId: string) {
       } else {
         return 0;
       }
-    })
+    });
     //여기서 트리구조 형태로 배열 만들어준다.
-    setCommunityAdminMenu({ 'menu': menuArr });
-    return menuArr
+    setCommunityAdminMenu({ menu: menuArr });
+    return menuArr;
   });
 }
 
@@ -69,55 +69,65 @@ export function requestCommunityMenus(communityId: string) {
 
 export function requestCommunityGroups(communityId: string) {
   getCommunityGroups(communityId).then(result => {
-    setCommunityAdminGroupsStore(result)
+    setCommunityAdminGroupsStore(result);
   });
 }
 
-export async function saveCommunityMenu(communityId: string, params: any, selectedRow: any) {
+export async function saveCommunityMenu(
+  communityId: string,
+  params: any,
+  selectedRow: any,
+  discussRow?: CommunityDiscussion
+) {
   for await (const param of params) {
-     saveCommunityAdminMenu(communityId, param, selectedRow)
+    if (discussRow) {
+      saveCommunityAdminMenu(communityId, param, selectedRow, discussRow);
+    } else {
+      saveCommunityAdminMenu(communityId, param, selectedRow);
+    }
   }
 }
 
-export async function saveCommunitydiscussionMenu(communityId: string, params: any, selectedRow: any) {
+export async function saveCommunitydiscussionMenu(
+  communityId: string,
+  params: any,
+  selectedRow: any
+) {
   for await (const param of params) {
-    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {
-    });
+    saveCommunityAdminMenu(communityId, param, selectedRow).then(result => {});
   }
 }
 
 export async function deleteCommunityMenu(communityId: string, params: any) {
   for await (const param of params) {
-    deleteCommunityAdminMenu(communityId, param).then(result => {
-    });
+    deleteCommunityAdminMenu(communityId, param).then(result => {});
   }
 }
 
 export function addCommunityMenu(communityId: string, addRow: any) {
   return addCommunityAdminMenu(communityId, addRow).then(result => {
-    return result
+    return result;
   });
 }
 
 export function addCommunityDiscussion(communityId: string, addRow: any) {
   return addCommunityAdminDiscussion(communityId, addRow).then(result => {
-    return result
+    return result;
   });
 }
 
-
 export function requestCommunitySurvey(params: any) {
   return findCommunitySurvey(params).then(result => {
-    return result
+    return result;
   });
 }
 
 export function getCommunitySurvey(surveyId: string) {
   return getCommunitySurveyInfo(surveyId).then(result => {
-    return result
+    return result;
   });
 }
 
 export function requestCommunityMenuOrder(communityId: string) {
-  return setCommunityMenuOrder(communityId)
+  return setCommunityMenuOrder(communityId);
 }

@@ -3,6 +3,5 @@ export default interface LectureDiscussion {
   name: string;
   creator: string;
   creatorAudienceId: string;
-  creatorImage?: string;
   time?: number;
 }
