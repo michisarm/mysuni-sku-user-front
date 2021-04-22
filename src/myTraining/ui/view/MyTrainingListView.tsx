@@ -80,12 +80,22 @@ function MyTrainingListView({
     myTraining: MyTrainingTableViewModel,
     index: number
   ) => {
-    const collegeName = colleges?.find(college => college.id === myTraining.category.college.id)?.name;
+
+    const collegeName = () => {
+      if(
+        myTraining.category && 
+        myTraining.category.college
+      ) {
+        return colleges?.find(college => college.id === myTraining.category.college.id)?.name;
+      }
+
+      return '';
+    }
 
     return (
       <>
         <Table.Cell>{totalCount - index}</Table.Cell>
-        <Table.Cell>{collegeName}</Table.Cell>
+        <Table.Cell>{collegeName()}</Table.Cell>
         <Table.Cell className="title">
           <a href="#" onClick={e => onViewDetail(e, myTraining)}>
             <span className="ellipsis">{myTraining.name}</span>

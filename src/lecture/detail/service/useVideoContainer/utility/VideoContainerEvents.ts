@@ -18,7 +18,7 @@ import { getLectureParams } from '../../../store/LectureParamsStore';
 import { PanoptoEmbedPlayerState } from '../../../store/PanoptoEmbedPlayerStore';
 import { confirmProgress } from '../../useLectureMedia/utility/confirmProgress';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
-import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
+import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 
 export async function fetchAllModelsForStorage() {
   const inProgressTableViews = await MyTrainingService.instance.findAllInProgressStorage();
@@ -79,7 +79,7 @@ export async function checkStudent() {
       return;
     }
     clearFindMyCardRelatedStudentsCache();
-    requestCardLectureStructure(cardId);
+    updateCardLectureStructure(cardId);
     requestLectureState(cardId, cubeId, cubeType);
   }
 }

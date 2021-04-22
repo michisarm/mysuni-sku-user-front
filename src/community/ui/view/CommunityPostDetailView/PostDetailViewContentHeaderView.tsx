@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import moment from 'moment';
-import { Button, Icon } from 'semantic-ui-react';
+import { Icon, Button, Comment, Popup } from 'semantic-ui-react';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
 
@@ -18,6 +18,10 @@ interface Props {
   editAuth?: boolean;
   menuType?: string;
   like?: boolean;
+  bookmarkState: boolean;
+  shareUrl: () => void;
+  onClickBookmark: () => void;
+  onClickUnbookmark: () => void;
   onClickList?: (e: any) => void;
   onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
@@ -43,6 +47,10 @@ class PostDetailViewContentHeaderView extends Component<Props> {
       editAuth,
       menuType,
       like,
+      bookmarkState,
+      shareUrl,
+      onClickBookmark,
+      onClickUnbookmark,
       onClickList,
       onClickDelete,
       onClickModify,
@@ -155,6 +163,45 @@ class PostDetailViewContentHeaderView extends Component<Props> {
               </div>
             </div>
           </div>
+          <Comment.Actions>
+            <Popup
+              className="balloon-pop myCumu_btn commu_bubble_popup"
+              trigger={
+                <div className="right top sub-menu">
+                  <Button icon className="img-icon ui user">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAJKADAAQAAAABAAAAJAAAAAAqDuP8AAAAlUlEQVRYCWNgGAWjITAaAiMsBBgp9W9capXnP4a/s0DmMDEwpy2a3badEjOZKNEM0gtyzP//DDIgDHMYJWZS7CBKLMeml2IHgaKJkZHhCQiD2NgsGRUbDYERHQKjBSOh6Ke4HCJkAanyFDtotGAkNchH1Y+4EBgtGAlFOcXlECELSJWn2EGjBSOpQT6qfjQERkMALQQAIac5FltQmtUAAAAASUVORK5CYII=" />
+                    <span className="blind">북마크</span>
+                  </Button>
+                </div>
+              }
+              position="bottom right"
+              on="click"
+            >
+              <Popup.Content className="community-ballon-content">
+                <ul>
+                  <li className="community-profile">
+                    <button onClick={shareUrl}>
+                      <i className="balloon icon popupUrl" />
+                      <span>URL 복사</span>
+                    </button>
+                  </li>
+                  <li>
+                    {bookmarkState ? (
+                      <button onClick={onClickUnbookmark}>
+                        <i className="balloon icon popupBookRemove" />
+                        <span>북마크 해제</span>
+                      </button>
+                    ) : (
+                      <button onClick={onClickBookmark}>
+                        <i className="balloon icon popupBook" />
+                        <span>북마크 추가</span>
+                      </button>
+                    )}
+                  </li>
+                </ul>
+              </Popup.Content>
+            </Popup>
+          </Comment.Actions>
         </div>
         {/* <div className="class-guide-txt fn-parents ql-snow">
           <div className="text ql-editor">

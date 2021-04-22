@@ -384,7 +384,8 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
           <div className="header-deatil">
             <div className="item">
               {lectureSummary.cubeType !== 'Task' &&
-                lectureSummary.cubeType !== 'Community' && (
+                lectureSummary.cubeType !== 'Community' &&
+                lectureSummary.cubeType !== 'Discussion' && (
                   <div className="header-rating">
                     <Rating
                       defaultRating={0}

@@ -6,8 +6,8 @@ import {
   clearFindMyCardRelatedStudentsCache,
   registerStudent,
 } from '../../../api/cardApi';
-import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
+import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 
 export async function checkStudent(params: LectureParams): Promise<void> {
   const { cardId, cubeId, cubeType } = params;
@@ -24,7 +24,7 @@ export async function checkStudent(params: LectureParams): Promise<void> {
       return;
     }
     clearFindMyCardRelatedStudentsCache();
-    requestCardLectureStructure(cardId);
+    updateCardLectureStructure(cardId);
     requestLectureState(cardId, cubeId, cubeType);
   }
 }

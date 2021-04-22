@@ -250,7 +250,7 @@ class ChannelLecturesInnerContainer extends Component<Props, State> {
     this.props.actionLogService?.registerClickActionLog({
       subAction: data.label,
     });
-    sessionStorage.setItem('channelSort', data.value);
+    // sessionStorage.setItem('channelSort', data.value);
     sessionStorage.removeItem('channelOffset');
     this.setState(
       {

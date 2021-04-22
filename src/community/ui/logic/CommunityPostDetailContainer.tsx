@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { useCommunityPostDetail } from 'community/service/useCommunityPostDetail/useCommunityPostDetail';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommunityCommentList } from '@nara.drama/feedback';
@@ -17,13 +17,15 @@ import CommunityPdfModal from '../view/CommunityPdfModal';
 import { saveCommunityPostLike } from '../../service/useCommunityPostDetail/utility/saveCommunityPostLike';
 import { getCommunityPostLikeCountByMember } from '../../service/useCommunityPostDetail/utility/getCommunityPostLike';
 import CommunityProfileModal from '../view/CommunityProfileModal';
-import { reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import moment from 'moment';
 import { getCommunityPostDetail } from 'community/service/useCommunityPostCreate/utility/getCommunityPostDetail';
 import { SkProfileService } from 'profile/stores';
 import { findCommunityProfile } from 'community/api/profileApi';
 import { checkMember } from 'community/service/useMember/useMember';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
+import { useCommunityProfileBookmark } from '../../store/CommunityProfileBookmarkStore';
+import { registerBookmark, removeBookmark } from '../../api/communityApi';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -73,9 +75,13 @@ function CommunityPostDetailContainer() {
   const { skProfile } = skProfileService;
   const { member } = skProfile;
 
-  const fileDownload = (fileName: string, fileId: string) => {
-    const pdfFile = fileName.includes('.pdf');
-    if (pdfFile) {
+  const { pathname } = useLocation();
+  const communityProfileBookmark = useCommunityProfileBookmark();
+  const [bookmarkState, setBookmarkState] = useState<boolean>(false);
+
+  const fileDownload = (pdf: string, fileId: string) => {
+    const PdfFile = pdf.includes('.pdf');
+    if (PdfFile) {
       setPdfOpen(!pdfOpen);
       setFileId(fileId);
       setFileName(fileName);
@@ -318,6 +324,58 @@ function CommunityPostDetailContainer() {
       }
     }
   }, []);
+
+  async function bookmark(postId: string) {
+    await registerBookmark(postId);
+  }
+
+  async function unbookmark(postId: string) {
+    await removeBookmark(postId);
+  }
+
+  const onClickBookmark = useCallback(() => {
+    setBookmarkState(true);
+    bookmark(postId);
+  }, [postId, bookmarkState]);
+
+  const onClickUnbookmark = useCallback(() => {
+    setBookmarkState(false);
+    unbookmark(postId);
+  }, [postId, bookmarkState]);
+
+  const copyUrl = (url: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, 9999);
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
+  };
+
+  const shareUrl = useCallback(() => {
+    const hostLength = window.location.href.indexOf(pathname);
+    if (hostLength === -1) {
+      return;
+    }
+    const host = window.location.href.substring(0, hostLength);
+    const url = `${host}/community/${communityId}/post/${postId}`;
+    copyUrl(url);
+  }, [pathname, communityId, postId]);
+
+  useEffect(() => {
+    const findBookmarkPost = communityProfileBookmark?.posts.find(
+      posts => posts.postId === postId
+    );
+
+    if (findBookmarkPost) {
+      setBookmarkState(true);
+    } else {
+      setBookmarkState(false);
+    }
+  }, [communityProfileBookmark]);
+
   return (
     <Fragment>
       {postDetail && (
@@ -338,6 +396,10 @@ function CommunityPostDetailContainer() {
             onClickDelete={OnClickDelete}
             onClickLike={OnClickLike}
             onClickWriter={onClickWriter}
+            bookmarkState={bookmarkState}
+            shareUrl={shareUrl}
+            onClickBookmark={onClickBookmark}
+            onClickUnbookmark={onClickUnbookmark}
           />
           <div className="class-guide-txt fn-parents ql-snow">
             <div

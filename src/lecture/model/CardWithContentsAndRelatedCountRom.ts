@@ -6,6 +6,6 @@ import { UserIdentity } from './UserIdentity';
 export interface CardWithContentsAndRelatedCountRom {
   card: Card | null;
   cardContents: CardContents;
-  cardOperatorIdentity: UserIdentity;
+  cardOperatorIdentity: UserIdentity | null;
   cardRelatedCount: CardRelatedCount;
 }
