@@ -164,6 +164,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                     <div
                       ref={contentRef}
                       className="discuss-text-belt"
+                      style={{width: 'auto'}}
                       dangerouslySetInnerHTML={{
                         __html: `${postDetail?.content}`,
                       }}
@@ -174,6 +175,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                   <div
                     ref={contentRef}
                     className="discuss-text-belt"
+                    style={{width: 'auto'}}
                     dangerouslySetInnerHTML={{
                       __html: `${postDetail?.content}`,
                     }}
@@ -225,8 +227,8 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                 </div>
               ) : null}
               {/* eslint-enable */}
-              {/* 관련 자료 */}
-              {postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null && (
+                            {/* 관련 자료 */}
+                            {filesMap.get('reference') && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
@@ -280,7 +282,9 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                     </div>
                   </div>
                 </div>
-              )}
+              )
+              }
+
             </div>
           </div>
 
