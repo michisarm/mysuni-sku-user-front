@@ -23,7 +23,7 @@ interface Params {
 function CommunityDiscussionContainer() {
   const { pathname } = useLocation();
   const { menuId } = useParams<Params>();
-  const discussionType = pathname.split('/')[3].toUpperCase();
+  const discussionType = pathname.split('/')[3];
   const [postDetail] = useCommunityDiscussionPostDetail(menuId);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -123,7 +123,10 @@ function CommunityDiscussionContainer() {
             </div>
           </div> */}
 
-          {/* {postDetail && postDetail.relatedUrlList ? (
+          {/* {postDetail &&
+          postDetail.relatedUrlList &&
+          postDetail.relatedUrlList[0].title !== '' &&
+            postDetail.relatedUrlList[0].url !== '' ? (
             <div className="community-board-down discuss2">
               <div className="board-down-title href">
                 <p>
@@ -155,9 +158,9 @@ function CommunityDiscussionContainer() {
                   ))}
               </div>
             </div>
-          ) : null}
+          ) : null} */}
 
-          {postDetail && postDetail.fileBoxId ? (
+          {/* {postDetail && postDetail.fileBoxId ? (
             <div className="community-contants">
               <div
                 className="community-board-down"
@@ -216,9 +219,7 @@ function CommunityDiscussionContainer() {
           ) : null} */}
           <CommunityCommentList
             feedbackId={postDetail.commentFeedbackId}
-            menuType={
-              discussionType === 'ANODISCUSSION' ? 'ANONYMOUS' : 'DISCUSSION'
-            }
+            menuType={discussionType}
             hideCamera
             name=""
             email=""
