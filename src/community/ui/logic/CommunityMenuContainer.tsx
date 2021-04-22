@@ -134,7 +134,6 @@ function CommunityMenuContainer() {
     [communityAdminMenu, discussRow, selectedRow]
   );
 
-  console.log(discussRow);
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
     setSelectedRow({

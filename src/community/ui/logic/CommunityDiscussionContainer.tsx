@@ -99,7 +99,6 @@ function CommunityDiscussionContainer() {
     }
   }, []);
 
-  console.log(postDetail);
   return (
     <Fragment>
       {postDetail && (
