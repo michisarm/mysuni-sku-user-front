@@ -9,6 +9,10 @@ export function findCommunityMenu(communityId: string): Promise<any> {
   return axios.get(`${BASE_URL}/${communityId}/menus`);
 }
 
+export function findCommunityMenuDetail(menuId: string): Promise<any> {
+  return axios.get(`${BASE_URL}/post/menu/${menuId}`);
+}
+
 export function findMembers(
   communityId: string,
   // pageNum:number,

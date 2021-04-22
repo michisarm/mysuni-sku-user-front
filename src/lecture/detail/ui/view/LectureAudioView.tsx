@@ -11,7 +11,6 @@ import {
   audioClose,
   audioStart,
 } from '../../service/useActionLog/cubeStudyEvent';
-import { requestCardLectureStructure } from '../../service/useLectureStructure/utility/requestCardLectureStructure';
 import { useNextContent } from '../../service/useNextContent';
 import {
   LectureStructureCubeItem,
@@ -148,7 +147,6 @@ const LectureAudioView: React.FC<LectureAudioViewProps> = function LectureAudioV
 
   const mediaCheckEvent = useCallback(async () => {
     await confirmProgress();
-    requestCardLectureStructure(params.cardId);
   }, [params.cardId]);
 
   useEffect(() => {

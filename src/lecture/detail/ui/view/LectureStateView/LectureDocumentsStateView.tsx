@@ -2,14 +2,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import FileDownloadPop from '../../../../../personalcube/shared/OverviewField/sub/FileDownloadPop';
 import Student from '../../../../model/Student';
-import { registerStudent } from '../../../api/cardApi';
+import {
+  clearFindMyCardRelatedStudentsCache,
+  registerStudent,
+} from '../../../api/cardApi';
 import { findCubeDetailCache } from '../../../api/cubeApi';
 import { documentDownload } from '../../../service/useActionLog/cubeStudyEvent';
 import {
   completeLearning,
   startLearning,
 } from '../../../service/useLectureState/utility/cubeStateActions';
-import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
+import { updateCardLectureStructure } from '../../../service/useLectureStructure/utility/updateCardLectureStructure';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import LectureState from '../../../viewModel/LectureState';
@@ -42,7 +45,8 @@ function CanceledView(props: CanceledViewProps) {
         cubeId: params.cubeId,
         round: 1,
       }).then(() => {
-        requestCardLectureStructure(params.cardId);
+        clearFindMyCardRelatedStudentsCache();
+        updateCardLectureStructure(params.cardId);
       });
     }
   }, []);

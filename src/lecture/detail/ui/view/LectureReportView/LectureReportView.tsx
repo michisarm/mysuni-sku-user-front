@@ -22,7 +22,6 @@ import {
 import { getCourseLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCourseLectureReport';
 import { getCubeLectureReport } from 'lecture/detail/service/useLectureReport/utility/getCubeLectureReport';
 import { useHistory } from 'react-router-dom';
-import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import {
   getLectureParams,
   useLectureParams,
@@ -33,6 +32,7 @@ import {
 } from '../../../api/cardApi';
 import { LectureStructureReportItem } from '../../../viewModel/LectureStructure';
 import { Area } from 'tracker/model';
+import { updateCardLectureStructure } from '../../../service/useLectureStructure/utility/updateCardLectureStructure';
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
@@ -108,8 +108,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
         await setCubeLectureReport();
         if (params?.cardId !== undefined) {
           await submitTask(student.id, 'Report');
-          await clearFindMyCardRelatedStudentsCache();
-          await requestCardLectureStructure(params?.cardId);
+          clearFindMyCardRelatedStudentsCache();
+          await updateCardLectureStructure(params?.cardId);
           //새로고침
           if (params.cubeId === undefined) {
             getCourseLectureReport(params);
