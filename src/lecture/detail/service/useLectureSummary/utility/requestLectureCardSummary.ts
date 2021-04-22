@@ -45,12 +45,8 @@ function parseLectureSummary(
   card: Card,
   cardContents: CardContents,
   cardOperatorIdentity: UserIdentity | null,
-<<<<<<< HEAD
   cardRelatedCount: CardRelatedCount,
   cardRelatedStudent?: MyCardRelatedStudentsRom
-=======
-  cardRelatedCount: CardRelatedCount
->>>>>>> a2305c7cae4e6218cd79270045c0cf17312d31b3
 ): LectureCardSummary {
   const {
     id,
