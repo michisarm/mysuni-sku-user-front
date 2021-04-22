@@ -48,6 +48,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [textUndefined, setTextUndefined] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
+  const [urlNull, setUrlNull] = useState<boolean>();
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -56,7 +57,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
 
   useEffect(() => {
     getFileIds();
-
+    emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
     contentRef.current?.textContent === 'undefined' && setTextUndefined(true);
   }, [postDetail]);
@@ -121,6 +122,19 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     }
   }, []);
 
+  const emptyCheckUrl = useCallback(() => {
+    if(postDetail === undefined) return;
+
+    // true 이면 null 처리
+    postDetail.relatedUrlList?.map((item: any) => {
+      if(item.title === "" || item.url === "") {
+        setUrlNull(true);
+      }
+    });
+
+  },[postDetail?.relatedUrlList]);
+
+  console.log('ddd', postDetail);
   return (
     <>
       {postDetail && (
@@ -191,11 +205,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {postDetail &&
-                postDetail.relatedUrlList &&
-                postDetail.relatedUrlList.length > 0 &&
-                (postDetail.relatedUrlList[0].title !== '' ||
-                  postDetail.relatedUrlList[0].url !== '') && (
+              {urlNull === false ? (
                   <div className="community-board-down discuss2">
                     <div className="board-down-title href">
                       <p>
@@ -215,7 +225,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                         ))}
                     </div>
                   </div>
-                )}
+                ): null}
               {/* eslint-enable */}
               {/* 관련 자료 */}
               {postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null && (
