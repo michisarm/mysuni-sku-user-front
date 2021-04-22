@@ -28,6 +28,7 @@ export async function getCommunityPost(menuId: string): Promise<void> {
     introduce: '',
     profileImg: '',
     relatedUrlList: [{ title: '', url: '' }],
+    content: '',
   };
   if (menuId !== undefined) {
     const post: Post = await findPostByMenuIdAndType(menuId, 'DISCUSSION');
@@ -52,6 +53,7 @@ export async function getCommunityPost(menuId: string): Promise<void> {
       postDetailItem.prevPost = post.prevPost;
       postDetailItem.nextPost = post.nextPost;
       postDetailItem.relatedUrlList = post.relatedUrlList;
+      postDetailItem.content = post.content;
     }
   }
   setCommunityPostDetailItem(postDetailItem);
