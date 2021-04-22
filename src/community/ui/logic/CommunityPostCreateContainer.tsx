@@ -17,6 +17,7 @@ function CommunityPostCreateContainer() {
   const communityHome = useCommunityHome();
   const [postCreateItem] = useCommunityPostCreate(postId);
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
+  const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
 
   useEffect(() => {
     if (postCreateItem === undefined || communityHome === undefined) {
@@ -25,8 +26,14 @@ function CommunityPostCreateContainer() {
     const denizenId = patronInfo.getDenizenId();
     //managerId 가져와서 현재 로그인한 계정과 비교
     setAdminAuth(communityHome.community?.managerId! === denizenId);
+
+    if (communityHome.community?.memberType === 'ADMIN') {
+      setCommunityAdminAuth(communityHome.community?.memberType === 'ADMIN');
+    }
+
   }, [postCreateItem, communityHome]);
 
+  console.log(communityHome?.community?.memberType)
   return (
     <>
       {postCreateItem !== undefined && communityHome !== undefined && (
@@ -38,6 +45,7 @@ function CommunityPostCreateContainer() {
           menuType={menuType}
           menus={communityHome.menus}
           managerAuth={adminAuth}
+          communityAdminAuth={communityAdminAuth}
         />
       )}
     </>
