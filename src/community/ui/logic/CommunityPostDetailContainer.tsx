@@ -92,8 +92,11 @@ function CommunityPostDetailContainer() {
 
   const zipFileDownload = useCallback((type: string) => {
     if (type === 'select') {
+
       if (origin === '') {
-        // console.log('선택 첨부파일 없음 err')
+        return;
+      }
+      if (originArr.length === 0) {
         return;
       }
       if (originArr!.length === 1) {
@@ -306,21 +309,21 @@ function CommunityPostDetailContainer() {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.nextPost!.communityId
-        }/${menuType}/post/${postDetail.nextPost!.postId}`;
+          }/${menuType}/post/${postDetail.nextPost!.postId}`;
       } else {
         return `/community/${postDetail.nextPost!.communityId}/post/${
           postDetail.nextPost!.postId
-        }`;
+          }`;
       }
     } else {
       if (menuType === 'ANONYMOUS') {
         return `/community/${
           postDetail.prevPost!.communityId
-        }/${menuType}/post/${postDetail.prevPost!.postId}`;
+          }/${menuType}/post/${postDetail.prevPost!.postId}`;
       } else {
         return `/community/${postDetail.prevPost!.communityId}/post/${
           postDetail.prevPost!.postId
-        }`;
+          }`;
       }
     }
   }, []);
@@ -496,11 +499,11 @@ function CommunityPostDetailContainer() {
                   style={{ marginBottom: '-3px', marginRight: '3px' }}
                 />
               )) || (
-                <img
-                  src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
-                  style={{ marginBottom: '-3px', marginRight: '3px' }}
-                />
-              )}
+                  <img
+                    src={`${PUBLIC_URL}/images/all/btn-community-like-off-16-px.png`}
+                    style={{ marginBottom: '-3px', marginRight: '3px' }}
+                  />
+                )}
               좋아요
             </button>
 
@@ -516,14 +519,14 @@ function CommunityPostDetailContainer() {
             {(creatorId === postDetail.creatorId ||
               adminAuth ||
               communityAdminAuth) && (
-              <Button
-                className="ui icon button left post delete"
-                onClick={OnClickDelete}
-              >
-                <Icon className="delete" />
+                <Button
+                  className="ui icon button left post delete"
+                  onClick={OnClickDelete}
+                >
+                  <Icon className="delete" />
                 delete
-              </Button>
-            )}
+                </Button>
+              )}
             <Button
               className="ui icon button left post list2"
               onClick={OnClickList}
