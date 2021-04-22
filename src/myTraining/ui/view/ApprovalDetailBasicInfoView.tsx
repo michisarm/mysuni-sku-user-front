@@ -4,31 +4,28 @@ import { Form, Table } from 'semantic-ui-react';
 
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 
-
 interface Props {
-  approvalCube: ApprovalCubeModel
-  filesMap?: Map<string, any>
+  approvalCube: ApprovalCubeModel;
+  filesMap?: Map<string, any>;
 }
 
 class ApprovalDetailBasicInfoView extends React.Component<Props> {
-
   render() {
     const { approvalCube } = this.props;
 
     return (
       <>
-
-        { approvalCube && (
+        {approvalCube && (
           <Form>
             <div className="result-view">
               <div className="title">결제 요청 정보</div>
               <dl className="in">
                 <dt>신청자</dt>
-                <dd>{approvalCube.memberName}</dd>
+                <dd>{approvalCube.studentName}</dd>
               </dl>
               <dl className="in">
                 <dt>조직</dt>
-                <dd>{approvalCube.memberDepartment}</dd>
+                <dd>{approvalCube.getStudentDepartmentNames}</dd>
               </dl>
               <dl className="bl">
                 <dt>학습정보</dt>
@@ -49,15 +46,25 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>(차수)교육기간</Table.HeaderCell>
-                        <Table.Cell>{approvalCube.enrolling.learningPeriod.startDate} ~ {approvalCube.enrolling.learningPeriod.endDate}</Table.Cell>
+                        <Table.Cell>
+                          {approvalCube.enrolling.learningPeriod.startDate} ~{' '}
+                          {approvalCube.enrolling.learningPeriod.endDate}
+                        </Table.Cell>
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>강의장소</Table.HeaderCell>
-                        <Table.Cell>{approvalCube.operation.location}</Table.Cell>
+                        <Table.Cell>
+                          {approvalCube.operation.location}
+                        </Table.Cell>
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>인당 교육 금액</Table.HeaderCell>
-                        <Table.Cell>₩{numeral(approvalCube.freeOfCharge.chargeAmount).format('0,0')}</Table.Cell>
+                        <Table.Cell>
+                          ₩
+                          {numeral(
+                            approvalCube.freeOfCharge.chargeAmount
+                          ).format('0,0')}
+                        </Table.Cell>
                       </Table.Row>
                     </Table.Body>
                   </Table>
@@ -67,39 +74,15 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
               <dl className="in">
                 <dt>결제 상태</dt>
                 <dd className="blue">
-                  {
-                    approvalCube.proposalState === 'Submitted' && (
-                      <div>
-                        승인요청
-                      </div>
-                    )
-                  }
-                  {
-                    approvalCube.proposalState === 'Canceled' && (
-                      <div>
-                        취소
-                      </div>
-                    )
-                  }
-                  {
-                    approvalCube.proposalState === 'Rejected' && (
-                      <div>
-                        반려
-                      </div>
-                    )
-                  }
-                  {
-                    approvalCube.proposalState === 'Approved' && (
-                      <div>
-                        승인
-                      </div>
-                    )
-                  }
+                  {approvalCube.proposalState === 'Submitted' && (
+                    <div>승인요청</div>
+                  )}
+                  {approvalCube.proposalState === 'Canceled' && <div>취소</div>}
+                  {approvalCube.proposalState === 'Rejected' && <div>반려</div>}
+                  {approvalCube.proposalState === 'Approved' && <div>승인</div>}
                 </dd>
               </dl>
-
             </div>
-
           </Form>
         )}
       </>
@@ -108,4 +91,3 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
 }
 
 export default ApprovalDetailBasicInfoView;
-
