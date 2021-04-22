@@ -7,11 +7,13 @@ import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionVi
 import { useLectureFile } from 'lecture/detail/service/useLectureFile';
 import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { Checkbox, Image, List, Icon } from 'semantic-ui-react';
-import { CommentList, CommunityCommentList } from '@nara.drama/feedback';
+import { CommentList } from '@nara.drama/feedback';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureState } from '../../store/LectureStateStore';
 import { submitRegisterStudent, refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
+import iconUrl from '../../../../style/media/icon-url.png';
+import iconFile from '../../../../style/media/icon-community-file-copy-2.png';
 
 type RelatedUrlList = {
   title: string;
@@ -25,10 +27,6 @@ const fileDownload = (pdf: string, fileId: string) => {
 
 function LectureCubeDiscussionContainer() {
   const [lectureDescription] = useLectureDescription();
-  const [lectureSubcategory] = useLectureSubcategory();
-  const [LectureCubeSummary] = useLectureCubeSummary();
-  const [lectureFile] = useLectureFile();
-  const [lectureTags] = useLectureTags();
   const lectureState = useLectureState();
 
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
@@ -124,7 +122,7 @@ function LectureCubeDiscussionContainer() {
     <>
       {lectureState && (
         <div className="contents">
-          <LectureCubeSummaryContainer />
+          {/* <LectureCubeSummaryContainer /> */}
           <div className="discuss-wrap">
             {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
             <div className="task-condition">
@@ -144,18 +142,21 @@ function LectureCubeDiscussionContainer() {
               )}
             </div>
             {/* 교육내용 표현 */}
-            {lectureDescription && (
-              <Fragment>
-                {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
-                <div className="discuss-box2 task">
+            
+              
+            {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
+            <div className="discuss-box2 task">
+              {lectureDescription && lectureDescription.description && (
+                <Fragment>
                   <span className="discuss-intro-title">토론 안내</span>
                     <LectureDescriptionView
                       htmlContent={lectureDescription.description}
                       overviewClass="class-guide-txt fn-parents mt0"
                     />
-                </div>
-              </Fragment>
-            )}
+                </Fragment>
+                )}
+            </div>
+            
             {/* 관련 URL Link */}
             <div className="discuss-box2">  
               {cubeRelatedUrlList &&
@@ -167,7 +168,7 @@ function LectureCubeDiscussionContainer() {
                         <p>
                           {' '}
                           <Image
-                            src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                            src={iconUrl}
                             alt=""
                             style={{ display: 'inline-block' }}
                           />
@@ -193,7 +194,7 @@ function LectureCubeDiscussionContainer() {
                       <div className="board-down-title">
                         <p>
                           <img
-                            src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
+                            src={iconFile}
                           />
                           첨부파일
                         </p>

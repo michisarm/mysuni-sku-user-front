@@ -62,6 +62,7 @@ function CommunityMenuContainer() {
   const [privateCommentState, setPrivateCommentState] = useState<boolean>(
     false
   );
+
   useEffect(() => {
     if (communityId !== undefined) {
       handleAddMenu();
@@ -88,9 +89,11 @@ function CommunityMenuContainer() {
                     content: discussionParams.content,
                     privateComment:
                       findPrivateState.config.privateComment === undefined
-                        ? true
+                        ? false
                         : findPrivateState?.config.privateComment,
-                    relatedUrlList: discussionParams.relatedUrlList,
+                    relatedUrlList: discussionParams.relatedUrlList
+                      ? discussionParams.relatedUrlList
+                      : [{ title: '', url: '' }],
                     fileBoxId: discussionParams.fileBoxId,
                   });
                 }
