@@ -160,7 +160,7 @@ export default function LectureDiscussionContainer() {
 
     // true 이면 null 처리
     lectureFeedbackContent.relatedUrlList?.map((item) => {
-      if(item.title === "" || item.url === "") {
+      if(item.title === "" && item.url === "") {
         setUrlNull(true);
       }
     });
@@ -249,7 +249,7 @@ export default function LectureDiscussionContainer() {
                           (item: any) => (
                             <>
                               <a href={`https://${item.url}`} target="blank">
-                                {item.title}
+                                {!item.title ? item.url : item.title}
                               </a>
                             </>
                           )
