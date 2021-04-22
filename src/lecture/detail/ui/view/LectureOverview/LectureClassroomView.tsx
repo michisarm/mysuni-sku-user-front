@@ -60,7 +60,11 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                           <span>{round}차수</span>
                         </Table.HeaderCell>
                         {instructor && instructor.length > 0 && (
-                          <Table.Cell className="teacher_info" colSpan="3">
+                          <Table.Cell
+                            className="teacher_info"
+                            colSpan="3"
+                            style={{ paddingBottom: 0 }}
+                          >
                             <strong style={{ marginLeft: 25 }}>강사정보</strong>
                             <div
                               style={{ marginLeft: 10 }}
