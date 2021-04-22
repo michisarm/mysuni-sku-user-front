@@ -122,7 +122,10 @@ function CommunityDiscussionContainer() {
             </div>
           </div> */}
 
-          {/* {postDetail && postDetail.relatedUrlList ? (
+          {/* {postDetail &&
+          postDetail.relatedUrlList &&
+          postDetail.relatedUrlList[0].title !== '' &&
+            postDetail.relatedUrlList[0].url !== '' ? (
             <div className="community-board-down discuss2">
               <div className="board-down-title href">
                 <p>
@@ -154,9 +157,9 @@ function CommunityDiscussionContainer() {
                   ))}
               </div>
             </div>
-          ) : null}
+          ) : null} */}
 
-          {postDetail && postDetail.fileBoxId ? (
+          {/* {postDetail && postDetail.fileBoxId ? (
             <div className="community-contants">
               <div
                 className="community-board-down"
