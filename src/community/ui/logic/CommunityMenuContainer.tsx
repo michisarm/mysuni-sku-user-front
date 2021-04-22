@@ -27,7 +27,12 @@ import {
   CommunityDiscussion,
   getEmptyCommunityDiscussion,
 } from '../../model/CommunityDiscussion';
-import { findAllMenus, findPostMenuDiscussion } from '../../api/communityApi';
+import {
+  findAllMenus,
+  findMenuDiscussionFeedBack,
+  findPostMenuDiscussion,
+} from '../../api/communityApi';
+import { findFeedbackMenu } from '../../../lecture/detail/api/feedbackApi';
 
 interface RouteParams {
   communityId: string;
@@ -54,7 +59,9 @@ function CommunityMenuContainer() {
   });
   const [nameValues, setNameValues] = useState<any[]>([]);
   const [deleteValues, setDeleteValues] = useState<any[]>([]);
-
+  const [privateCommentState, setPrivateCommentState] = useState<boolean>(
+    false
+  );
   useEffect(() => {
     if (communityId !== undefined) {
       handleAddMenu();
@@ -68,19 +75,29 @@ function CommunityMenuContainer() {
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
       if (type !== 'delete') {
+        setDiscussRow(getEmptyCommunityDiscussion());
         if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
-          setDiscussRow(getEmptyCommunityDiscussion());
           const discussionParams = await findPostMenuDiscussion(
             param.menuId
           ).then(res => res);
           if (discussionParams) {
+            findMenuDiscussionFeedBack(discussionParams.commentFeedbackId).then(
+              findPrivateState => {
+                if (findPrivateState !== null) {
+                  setDiscussRow({
+                    content: discussionParams.content,
+                    privateComment:
+                      findPrivateState.config.privateComment === undefined
+                        ? true
+                        : findPrivateState?.config.privateComment,
+                    relatedUrlList: discussionParams.relatedUrlList,
+                    fileBoxId: discussionParams.fileBoxId,
+                  });
+                }
+              }
+            );
             setSelectedRow(param);
-            setDiscussRow({
-              content: discussionParams.content,
-              privateComment: discussionParams.privateComment,
-              relatedUrlList: discussionParams.relatedUrlList,
-              fileBoxId: discussionParams.fileBoxId,
-            });
+
             //
           }
         } else {
@@ -116,6 +133,8 @@ function CommunityMenuContainer() {
     },
     [communityAdminMenu, discussRow, selectedRow]
   );
+
+  console.log(discussRow);
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
     setSelectedRow({

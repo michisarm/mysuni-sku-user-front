@@ -16,6 +16,7 @@ import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalIte
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
 
 const BASE_URL = '/api/community';
+const FEEDBACK_URL = '/api/feedback';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
   if (
@@ -461,8 +462,6 @@ export function saveCommunityAdminMenu(
       type: selectedRow.type,
     };
 
-    console.log(discussMenuParams);
-
     const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
     return axiosApi.put(url, discussMenuParams).then(response => {
       const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
@@ -527,6 +526,14 @@ export function findCommunitySurvey(params: any): Promise<any> {
 export function findPostMenuDiscussion(menuId: string): Promise<any> {
   return axiosApi
     .get<any>(`${BASE_URL}/post/menu/${menuId}`)
+    .then(response => response && response.data && response.data);
+}
+
+export function findMenuDiscussionFeedBack(
+  commentFeedbackId: string
+): Promise<any> {
+  return axiosApi
+    .get(`${FEEDBACK_URL}/feedback/${commentFeedbackId}/comment`)
     .then(response => response && response.data && response.data);
 }
 
