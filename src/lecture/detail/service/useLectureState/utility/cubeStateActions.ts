@@ -133,7 +133,7 @@ export async function refresh(
   };
   // await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(cardId);
+  updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
 
