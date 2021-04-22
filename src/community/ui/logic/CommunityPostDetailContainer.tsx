@@ -84,7 +84,7 @@ function CommunityPostDetailContainer() {
     if (PdfFile) {
       setPdfOpen(!pdfOpen);
       setFileId(fileId);
-      setFileName(pdf);
+      setFileName(fileName);
     } else {
       depot.downloadDepotFile(fileId);
     }
@@ -442,8 +442,8 @@ function CommunityPostDetailContainer() {
                 {filesMap.get('reference') &&
                   filesMap
                     .get('reference')
-                    .map((foundedFile: DepotFileViewModel) => (
-                      <div className="down">
+                    .map((foundedFile: DepotFileViewModel, index: number) => (
+                      <div className="down" key={index}>
                         <Checkbox
                           className="base"
                           label={foundedFile.name}

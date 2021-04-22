@@ -16,6 +16,8 @@ export interface MenuItem {
   surveyInformation?: string;
   url: string;
   html: string;
+  content?: string;
+  relatedUrlList?: UrlList[];
 }
 
 export interface CommunityAdminMenu {
@@ -30,5 +32,10 @@ export interface GroupListItem {
 }
 
 export interface GroupList {
-  results: GroupListItem[]
+  results: GroupListItem[];
+}
+
+export interface UrlList {
+  title: string;
+  url: string;
 }
