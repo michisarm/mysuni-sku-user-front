@@ -93,7 +93,7 @@ function CanceledView(props: CanceledViewProps) {
           cubeType,
           selectedClassroom.round,
           true,
-          member.email
+          member.id
         );
       }
     },

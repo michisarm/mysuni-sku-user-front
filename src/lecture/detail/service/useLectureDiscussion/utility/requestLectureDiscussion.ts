@@ -1,5 +1,4 @@
 import { findCardCache } from '../../../api/cardApi';
-import { findSkProfileByAudienceId } from '../../../api/profileApi';
 import { setLectureDiscussion } from '../../../store/LectureDiscussionStore';
 import { LearningContent } from '../../../../model/LearningContent';
 
@@ -45,11 +44,6 @@ export async function requestLectureDiscussion(
     return;
   }
 
-  const profile = await findSkProfileByAudienceId(keyString);
-  if (profile === undefined) {
-    return;
-  }
-
   const { contentId, name } = discussion;
 
   setLectureDiscussion({
@@ -57,7 +51,6 @@ export async function requestLectureDiscussion(
     name: name === null ? '' : name,
     creator: creatorName,
     creatorAudienceId: keyString,
-    creatorImage: profile.photoImage,
     time: cardWithContentsAndRelatedCountRom.card.cardStateUpdatedTime,
   });
 }

@@ -15,6 +15,8 @@ class FilterCountViewModel {
   documents: number = 0;
   experiential: number = 0;
   cohort: number = 0;
+  discussion: number = 0;
+  
 
   public constructor(filterCountView?: FilterCountViewModel) {
     if (filterCountView) {
@@ -31,6 +33,7 @@ class FilterCountViewModel {
       this.documents = filterCountView.documents ? filterCountView.documents : 0;
       this.experiential = filterCountView.experiential ? filterCountView.experiential : 0;
       this.cohort = filterCountView.cohort ? filterCountView.cohort : 0;
+      this.discussion = filterCountView.discussion ? filterCountView.discussion : 0;
     }
   }
 
@@ -58,6 +61,8 @@ class FilterCountViewModel {
         return this.experiential;
       case 'Cohort':
         return this.cohort;
+      case 'Discussion':
+        return this.discussion;
       default:
         return 0;
     }
@@ -79,12 +84,13 @@ class FilterCountViewModel {
       totalFilterCountView.documents += filterCountView.documents;
       totalFilterCountView.experiential += filterCountView.experiential;
       totalFilterCountView.cohort += filterCountView.cohort;
+      totalFilterCountView.discussion += filterCountView.discussion;
     })
 
     totalFilterCountView.totalCount =
       totalFilterCountView.course + totalFilterCountView.video + totalFilterCountView.audio +
       totalFilterCountView.elearning + totalFilterCountView.classroomLecture + totalFilterCountView.community + totalFilterCountView.task +
-      totalFilterCountView.webPage + totalFilterCountView.documents + totalFilterCountView.experiential + totalFilterCountView.cohort;
+      totalFilterCountView.webPage + totalFilterCountView.documents + totalFilterCountView.experiential + totalFilterCountView.cohort + totalFilterCountView.discussion;
 
     return totalFilterCountView;
   }
@@ -106,4 +112,5 @@ decorate(FilterCountViewModel, {
   documents: observable,
   experiential: observable,
   cohort: observable,
+  discussion: observable,
 });

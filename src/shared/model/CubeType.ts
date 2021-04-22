@@ -10,5 +10,6 @@ export enum CubeType {
   Community = 'Community',
   Task = 'Task',
   None = 'None',
-  Cohort = 'Cohort'
+  Cohort = 'Cohort',
+  Discussion = 'Discussion',
 }

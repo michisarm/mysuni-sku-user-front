@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 
 import { useEffect, useState } from 'react';
+import { countByFeedbackId } from '../api/feedbackApi';
 import { onLectureFeedbackContent } from '../store/LectureFeedbackStore';
 import LectureFeedbackContent from '../viewModel/LectureFeedbackContent';
 
