@@ -10,6 +10,7 @@ export enum LearningType {
   Community = 'Community',
   Task = 'Task',
   Cohort = 'Cohort',
+  Discussion = 'Discussion',
   None = 'None',
 }
 
@@ -25,5 +26,6 @@ export enum LearningTypeName {
   Community = 'Community',
   Task = 'Task',
   Cohort = 'Cohort',
+  Discussion = 'Discussion',
   None = '',
 }

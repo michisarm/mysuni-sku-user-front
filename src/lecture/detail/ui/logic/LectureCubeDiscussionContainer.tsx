@@ -7,7 +7,7 @@ import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionVi
 import { useLectureFile } from 'lecture/detail/service/useLectureFile';
 import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { Checkbox, Image, List, Icon } from 'semantic-ui-react';
-import { CommentList, CommunityCommentList } from '@nara.drama/feedback';
+import { CommentList } from '@nara.drama/feedback';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureState } from '../../store/LectureStateStore';
 import { submitRegisterStudent, refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
@@ -25,10 +25,6 @@ const fileDownload = (pdf: string, fileId: string) => {
 
 function LectureCubeDiscussionContainer() {
   const [lectureDescription] = useLectureDescription();
-  const [lectureSubcategory] = useLectureSubcategory();
-  const [LectureCubeSummary] = useLectureCubeSummary();
-  const [lectureFile] = useLectureFile();
-  const [lectureTags] = useLectureTags();
   const lectureState = useLectureState();
 
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
@@ -124,7 +120,7 @@ function LectureCubeDiscussionContainer() {
     <>
       {lectureState && (
         <div className="contents">
-          <LectureCubeSummaryContainer />
+          {/* <LectureCubeSummaryContainer /> */}
           <div className="discuss-wrap">
             {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
             <div className="task-condition">
