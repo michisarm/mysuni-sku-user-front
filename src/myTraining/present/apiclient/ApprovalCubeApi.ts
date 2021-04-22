@@ -81,7 +81,7 @@ export default class ApprovalCubeApi {
   findApprovalCube(studentId: string) {
     //
     return axios
-      .get<ApprovalCubeModel>(this.lectureApprovalURL + `/${studentId}`)
+      .get<ApprovalCubeModel>(this.cubeApprovalURL + `/${studentId}/detail`)
       .then(response => (response && response.data) || null);
   }
 
