@@ -64,7 +64,7 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                             <strong style={{ marginLeft: 25 }}>강사정보</strong>
                             <div
                               style={{ marginLeft: 10 }}
-                              className="scrolling course-profile scroll-break "
+                              className="scrolling course-profile"
                             >
                               {instructor.map(item => (
                                 <Link
@@ -73,10 +73,13 @@ const LectureClassroomView: React.FC<LectureClassroomViewProps> = function Lectu
                                 >
                                   {item.representative && <Represent />}
                                   <div className="pic s80">
-                                    <img
-                                      src={item.memberSummary?.photoId}
-                                      className="ui image"
-                                    />
+                                    {item.memberSummary?.photoId && (
+                                      <img
+                                        alt="프로필사진"
+                                        className="ui image"
+                                        src={item.memberSummary?.photoId}
+                                      />
+                                    )}
                                   </div>
                                   <i>
                                     <a className="tip-name">
