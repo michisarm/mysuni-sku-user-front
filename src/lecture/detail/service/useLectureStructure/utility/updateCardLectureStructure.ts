@@ -323,5 +323,5 @@ export async function updateCardLectureStructure(cardId: string) {
 
   lectureStructure.items = updateItems(lectureStructure);
 
-  setLectureStructure(lectureStructure);
+  setLectureStructure({ ...lectureStructure });
 }
