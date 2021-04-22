@@ -9,7 +9,7 @@ import {
 import CubeType from '../../../model/CubeType';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
-import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
+import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 import { requestLectureState } from './requestLectureState';
 
 export async function submit(
@@ -31,7 +31,7 @@ export async function submit(
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(cardId);
+  updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
 
@@ -56,7 +56,7 @@ export async function submitFromCubeId(
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(cardId);
+  updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
 
@@ -74,7 +74,7 @@ export async function cancel() {
   }
   await cancelStudents(student.id);
   clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(cardId);
+  updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
 
@@ -91,7 +91,7 @@ export async function startLearning() {
   };
   await registerStudent(studentCdo);
   clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(cardId);
+  updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
 
@@ -109,7 +109,7 @@ export async function completeLearning() {
   }
   await markComplete(student.id);
   clearFindMyCardRelatedStudentsCache();
-  requestCardLectureStructure(cardId);
+  updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 }
 

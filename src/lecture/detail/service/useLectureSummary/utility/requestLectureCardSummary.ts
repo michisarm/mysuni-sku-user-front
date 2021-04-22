@@ -18,7 +18,7 @@ import { requestLectureState } from '../../useLectureState/utility/requestLectur
 function parseLectureSummary(
   card: Card,
   cardContents: CardContents,
-  cardOperatorIdentity: UserIdentity,
+  cardOperatorIdentity: UserIdentity | null,
   cardRelatedCount: CardRelatedCount
 ): LectureCardSummary {
   const {
@@ -42,9 +42,9 @@ function parseLectureSummary(
       channelId: mainCategory?.channelId || '',
     },
     operator: {
-      email: cardOperatorIdentity.email,
-      name: cardOperatorIdentity.names?.langStringMap.ko || '',
-      companyName: cardOperatorIdentity.companyNames?.langStringMap.ko || '',
+      email: cardOperatorIdentity?.email || '',
+      name: cardOperatorIdentity?.names?.langStringMap.ko || '',
+      companyName: cardOperatorIdentity?.companyNames?.langStringMap.ko || '',
     },
     stampCount,
     thumbImagePath,

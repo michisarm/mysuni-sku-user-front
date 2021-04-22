@@ -108,3 +108,21 @@ export interface LectureStructure {
   chapters: LectureStructureChapterItem[];
   items: LectureStructureItem[];
 }
+
+export function isLectureStructureCubeItem(
+  item: LectureStructureItem
+): item is LectureStructureCubeItem {
+  return item.type === 'CUBE';
+}
+
+export function isLectureStructureDiscussionItem(
+  item: LectureStructureItem
+): item is LectureStructureDiscussionItem {
+  return item.type === 'DISCUSSION';
+}
+
+export function isLectureStructureChapterItem(
+  item: LectureStructureItem
+): item is LectureStructureChapterItem {
+  return item.type === 'CHAPTER';
+}
