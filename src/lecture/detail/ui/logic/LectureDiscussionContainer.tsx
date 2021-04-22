@@ -235,10 +235,8 @@ export default function LectureDiscussionContainer() {
                         lectureFeedbackContent.relatedUrlList?.map(
                           (item: any) => (
                             <>
-                              <a href={item.url} target="blank">
-                                {item.title}
-                              </a>
-                              <a href={item.url} target="blank">
+                              {/* <div>{item.title}</div> */}
+                              <a href={`https://${item.url}`} target="blank">
                               {item.url}
                             </a>
                           </>
