@@ -26,6 +26,7 @@ export async function getPostDetailInPreview(postId?: string): Promise<any> {
     introduce: '',
     profileImg: '',
     creatorCompanyName: '',
+    content: '',
   };
   if (postId !== undefined) {
     const post: Post = await findPostViewWithRead(postId);
@@ -51,6 +52,7 @@ export async function getPostDetailInPreview(postId?: string): Promise<any> {
       postDetailItem.nextPost = post.nextPost;
       postDetailItem.creatorName = post.creatorName!;
       postDetailItem.creatorCompanyName = post.creatorCompanyName!;
+      postDetailItem.content = post.content;
     }
   }
 
