@@ -114,16 +114,12 @@ export default class ApprovalCubeService {
 
   async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
     //
-    return this.approvalCubeApi.studentRequestOpen(
-      new StudentRequestCdoModel(studentRequestCdo)
-    );
+    return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
   }
 
   async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
     //
-    return this.approvalCubeApi.studentRequestReject(
-      new StudentRequestCdoModel(studentRequestCdo)
-    );
+    return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
   }
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
