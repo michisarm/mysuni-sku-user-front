@@ -218,8 +218,8 @@ export default function LectureDiscussionContainer() {
               {lectureFeedbackContent &&
                 lectureFeedbackContent.relatedUrlList &&
                 lectureFeedbackContent.relatedUrlList.length > 0 && (
-                  (lectureFeedbackContent.relatedUrlList[0].title !== '' && lectureFeedbackContent.relatedUrlList[0].url) !== '' ||
-                  (lectureFeedbackContent.relatedUrlList[1].title !== '' && lectureFeedbackContent.relatedUrlList[1].url !== '')) && (
+                  (lectureFeedbackContent.relatedUrlList[0].title !== "" && lectureFeedbackContent.relatedUrlList[0].url) !== "" ||
+                  (lectureFeedbackContent.relatedUrlList[1].title !== "" && lectureFeedbackContent.relatedUrlList[1].url !== "")) && (
                   <div className="community-board-down discuss2">
                     <div className="board-down-title href">
                       <p>
@@ -309,8 +309,7 @@ export default function LectureDiscussionContainer() {
             </div>
           </div>
           <CommentList
-            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent.commentFeedbackId : ''}
-            // feedbackId="0071441d-1f1f-43bf-9a0e-66b838090efb"
+            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent?.commentFeedbackId : ''}
             hideCamera
             name={name}
             email={email}

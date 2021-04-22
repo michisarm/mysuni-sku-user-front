@@ -98,7 +98,6 @@ function CommunityDiscussionContainer() {
       }
     }
   }, []);
-
   return (
     <Fragment>
       {postDetail && (
