@@ -1,23 +1,18 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Radio } from 'semantic-ui-react';
 import { OrderByType } from '../../../model';
 
-
 interface Props {
-  value: string,
-  onChange: (e: any, data: any) => void,
-  collegeOrder?: boolean,
+  value: string;
+  onChange: (e: any, data: any) => void;
+  collegeOrder?: boolean;
 }
 
 @reactAutobind
 class CardSortingView extends Component<Props> {
-  //
   render() {
-    //
     const { value, onChange, collegeOrder } = this.props;
-    const prevChannelSort: any = sessionStorage.getItem('channelSort');
 
     return (
       <div className="comments-sort">
@@ -30,8 +25,8 @@ class CardSortingView extends Component<Props> {
                   label="편성순"
                   name="sortRadioGroup"
                   value={OrderByType.collegeOrder}
-                  checked={prevChannelSort === OrderByType.collegeOrder || value === OrderByType.collegeOrder}
-                  onClick={onChange}
+                  checked={value === OrderByType.collegeOrder}
+                  onChange={onChange}
                 />
               </Form.Field>
             )}
@@ -41,8 +36,8 @@ class CardSortingView extends Component<Props> {
                 label="최신순"
                 name="sortRadioGroup"
                 value={OrderByType.Time}
-                checked={prevChannelSort === OrderByType.Time || value === OrderByType.Time}
-                onClick={onChange}
+                checked={value === OrderByType.Time}
+                onChange={onChange}
               />
             </Form.Field>
             <Form.Field>
@@ -51,8 +46,8 @@ class CardSortingView extends Component<Props> {
                 label="이수순"
                 name="sortRadioGroup"
                 value={OrderByType.StudentCount}
-                checked={prevChannelSort === OrderByType.StudentCount || value === OrderByType.StudentCount}
-                onClick={onChange}
+                checked={value === OrderByType.StudentCount}
+                onChange={onChange}
               />
             </Form.Field>
             <Form.Field>
@@ -61,8 +56,8 @@ class CardSortingView extends Component<Props> {
                 label="별점순"
                 name="sortRadioGroup"
                 value={OrderByType.Star}
-                checked={prevChannelSort === OrderByType.Star || value === OrderByType.Star}
-                onClick={onChange}
+                checked={value === OrderByType.Star}
+                onChange={onChange}
               />
             </Form.Field>
           </Form.Group>

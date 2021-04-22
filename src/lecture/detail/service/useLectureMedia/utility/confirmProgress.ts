@@ -5,9 +5,9 @@ import {
   confirmProgressByStudentId,
   findMyCardRelatedStudentsCache,
 } from '../../../api/cardApi';
-import { requestCardLectureStructure } from '../../useLectureStructure/utility/requestCardLectureStructure';
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
+import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 
 export async function confirmProgress(studentId?: string): Promise<void> {
   const params = getLectureParams();
@@ -30,7 +30,7 @@ export async function confirmProgress(studentId?: string): Promise<void> {
     }
     await confirmProgressByStudentId(_stduentId);
     clearFindMyCardRelatedStudentsCache();
-    requestCardLectureStructure(params.cardId);
+    updateCardLectureStructure(params.cardId);
     requestLectureState(params.cardId, params.cubeId, params.cubeType);
   }
 }
