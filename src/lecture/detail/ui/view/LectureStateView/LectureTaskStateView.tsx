@@ -58,18 +58,6 @@ function ApprovedView(props: ApprovedViewProps) {
     return 'line';
   }, [student]);
 
-  useEffect(() => {
-    if (!student || 
-        (student.learningState === 'Progress' &&
-          student.commentCount === 0 &&
-          student.subCommentCount === 0)) {
-      reactAlert({
-        title: '안내',
-        message: `이수조건을 확인 후 학습을 진행해주세요`,
-      });
-    }
-  }, [student]);
-
   return (
     <>
       {cubeType === 'Task' && student.learningState !== 'Passed' && (
@@ -95,6 +83,17 @@ const LectureTaskStateView: React.FC<LectureTaskStateViewProps> = function Lectu
   lectureState,
 }) {
   const { student, cubeType } = lectureState;
+  useEffect(() => {
+    if (cubeType === 'Discussion' && 
+        (!student || (student.learningState === 'Progress' &&
+          student.commentCount === 0 &&
+          student.subCommentCount === 0))) {
+      reactAlert({
+        title: '안내',
+        message: `이수조건을 확인 후 학습을 진행해주세요`,
+      });
+    }
+  }, [student]);
 
   return (
     <>
