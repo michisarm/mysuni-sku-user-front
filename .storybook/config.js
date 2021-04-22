@@ -4,7 +4,7 @@ import './theme.css';
 
 /** Style for app */
 import 'semantic-ui-css/semantic.css';
-import '../src/style/css/main.b5a192f7.chunk.css';
+import '../src/style/css/main.7f767efa.chunk.css';
 import '../src/style/css/2.d2911a6a.chunk.css';
 
 import React from 'react';
