@@ -11,37 +11,21 @@ export async function updateLectureTask(
       const postNameValueList = {
         nameValues: [
           { name: 'title', value: taskDetailItem.title },
-          {
-            name: 'commentFeedbackId',
-            value: taskDetailItem.commentFeedbackId,
-          },
-          { name: 'deleted', value: 'false' },
           { name: 'contents', value: taskDetailItem.contents },
           { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
         ],
       };
-      // const postBodyNameValueList = {
-      //   nameValues: [
-      //     { name: 'contents', value: taskDetailItem.contents },
-      //     { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
-      //   ],
-      // };
 
       await modifyPost(postId, postNameValueList);
-      // await modifyPostBody(postId, postBodyNameValueList);
     }
 
     if (isReply) {
+      //namevalue list modify1
       const postNameValueList = {
         nameValues: [
           { name: 'title', value: taskDetailItem.title },
-          {
-            name: 'commentFeedbackId',
-            value: taskDetailItem.commentFeedbackId,
-          },
           { name: 'contents', value: taskDetailItem.contents },
           { name: 'fileBoxId', value: taskDetailItem.fileBoxId },
-          { name: 'deleted', value: 'false' },
         ],
       };
 
