@@ -112,6 +112,7 @@ class ClassroomModalView extends Component<Props, States> {
                     } = getYearMonthDateHourMinuteSecond(
                       new Date(classroom.applyingStartDate)
                     )!;
+
                     const {
                       year: endYear,
                       month: endMonth,
@@ -119,6 +120,40 @@ class ClassroomModalView extends Component<Props, States> {
                     } = getYearMonthDateHourMinuteSecond(
                       new Date(classroom.applyingEndDate)
                     )!;
+
+                    const getTime = (
+                      year: number,
+                      month: number,
+                      date: number
+                    ) => {
+                      return new Date(year, month, date, 0, 0, 0).getTime();
+                    };
+
+                    const checkedIsDisabled = () => {
+                      const getStartDate = getTime(
+                        startYear,
+                        startMonth,
+                        startDate
+                      );
+                      const getEndDate = getTime(endYear, endMonth, endDate);
+
+                      if (joinRounds && joinRounds.includes(classroom.round)) {
+                        return true;
+                      }
+
+                      if (
+                        getStartDate > today.getTime() ||
+                        getEndDate < today.getTime()
+                      ) {
+                        return true;
+                      }
+
+                      if (classroom.capacity <= classroom.studentCount) {
+                        return true;
+                      }
+
+                      return false;
+                    };
 
                     return (
                       <>
@@ -135,27 +170,7 @@ class ClassroomModalView extends Component<Props, States> {
                               <Table.Cell verticalAlign="middle"></Table.Cell>
                               <Radio
                                 name="class-radioGroup"
-                                disabled={
-                                  (joinRounds &&
-                                    joinRounds.includes(classroom.round)) ||
-                                  new Date(
-                                    startYear,
-                                    startMonth,
-                                    startDate,
-                                    0,
-                                    0,
-                                    0
-                                  ).getTime() > today.getTime() ||
-                                  new Date(
-                                    endYear,
-                                    endMonth,
-                                    endDate,
-                                    23,
-                                    59,
-                                    59
-                                  ).getTime() < today.getTime() ||
-                                  classroom.capacityClosed
-                                }
+                                disabled={checkedIsDisabled()}
                                 checked={
                                   (selectedClassroom &&
                                     selectedClassroom!.id === classroom.id) ||

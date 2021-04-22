@@ -1,32 +1,37 @@
-import { onCommunityPostDetailItem, setCommunityPostDetailItem } from "community/store/CommunityPostDetailStore";
-import { CommunityPostDetail } from "community/viewModel/CommunityPostDetail";
-import { useEffect, useRef, useState } from "react";
-import { getCommunityPost } from "../useCommunityPostCreate/utility/getCommunityPost";
+import {
+  onCommunityPostDetailItem,
+  setCommunityPostDetailItem,
+} from 'community/store/CommunityPostDetailStore';
+import { CommunityPostDetail } from 'community/viewModel/CommunityPostDetail';
+import { useEffect, useRef, useState } from 'react';
+import { getCommunityPost } from '../useCommunityPostCreate/utility/getCommunityPost';
 
 type PostDetailValue = CommunityPostDetail | undefined;
 
-export function useCommunityDiscussionPostDetail(menuId: string): [PostDetailValue] {
-    const subscriberIdRef = useRef<number>(0);
-    const [subscriberId, setSubscriberId] = useState<string>();
-    const [PostDetailValue, setPostDetailValue] = useState<CommunityPostDetail>();
-    
-    useEffect(() => {
-      getCommunityPost(menuId);
-    }, [menuId]);
+export function useCommunityDiscussionPostDetail(
+  menuId: string
+): [PostDetailValue] {
+  const subscriberIdRef = useRef<number>(0);
+  const [subscriberId, setSubscriberId] = useState<string>();
+  const [PostDetailValue, setPostDetailValue] = useState<CommunityPostDetail>();
 
-    useEffect(() => {
-      const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;
-      setSubscriberId(next);
-    }, []);
+  useEffect(() => {
+    getCommunityPost(menuId);
+  }, [menuId]);
 
-    useEffect(() => {
-      if (subscriberId === undefined) {
-        return;
-      }
-      return onCommunityPostDetailItem(next => {
-        setPostDetailValue(next)
-      }, subscriberId);
-    }, [subscriberId]);
-  
-    return [PostDetailValue];
+  useEffect(() => {
+    const next = `useCommunityPostDetail-${++subscriberIdRef.current}`;
+    setSubscriberId(next);
+  }, []);
+
+  useEffect(() => {
+    if (subscriberId === undefined) {
+      return;
+    }
+    return onCommunityPostDetailItem(next => {
+      setPostDetailValue(next);
+    }, subscriberId);
+  }, [subscriberId]);
+
+  return [PostDetailValue];
 }

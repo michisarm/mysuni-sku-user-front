@@ -16,7 +16,6 @@ import { getActiveStructureItem } from '../../../utility/lectureStructureHelper'
 import { useHistory, useParams } from 'react-router-dom';
 import LectureTestPaperQuestionView from './LectureTestPaperQuestionView';
 
-import { requestCardLectureStructure } from '../../../service/useLectureStructure/utility/requestCardLectureStructure';
 import LectureParams from '../../../viewModel/LectureParams';
 import {
   clearFindMyCardRelatedStudentsCache,
@@ -30,6 +29,7 @@ import {
 } from '../../../service/useLectureTest/utility/getTestStudentItemMap';
 import { getTestAnswerItemMapFromExam } from '../../../service/useLectureTest/utility/getTestAnswerItemMapFromExam';
 import { Area } from 'tracker/model';
+import { updateCardLectureStructure } from '../../../service/useLectureStructure/utility/updateCardLectureStructure';
 
 interface LectureTestPaperViewProps {
   params: LectureParams;
@@ -77,8 +77,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
         : lectureStructureItem?.student?.id,
       'Test'
     );
-    await clearFindMyCardRelatedStudentsCache();
-    await requestCardLectureStructure(cardId);
+    clearFindMyCardRelatedStudentsCache();
+    await updateCardLectureStructure(cardId);
 
     if (params.cubeId !== undefined) {
       await getTestStudentItemMapFromCube(params); // student 재호출
@@ -144,8 +144,8 @@ const LectureTestPaperView: React.FC<LectureTestPaperViewProps> = function Lectu
             }
 
             //await submitTask(testStudentItem.studentId, 'Test');  // /examProcess api와 중복
-            await clearFindMyCardRelatedStudentsCache();
-            await requestCardLectureStructure(cardId);
+            clearFindMyCardRelatedStudentsCache();
+            await updateCardLectureStructure(cardId);
 
             await getTestStudentItemMapFromCourse(params); // student 재호출
             await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출

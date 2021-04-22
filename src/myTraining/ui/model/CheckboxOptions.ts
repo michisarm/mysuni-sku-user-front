@@ -25,6 +25,7 @@ const CheckboxOptions = {
     { key: 8, text: 'Documents', value: 'Documents' },
     { key: 9, text: 'Experiential', value: 'Experiential' },
     { key: 10, text: 'Cohort', value: 'Cohort' },
+    { key: 11, text: 'Discussion', value: 'Discussion' },
   ],
 
   learningTimes: [

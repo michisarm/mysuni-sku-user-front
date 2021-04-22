@@ -31,17 +31,17 @@ export function useLectureBadge(): [Value] {
   }, [subscriberId]);
 
   useEffect(() => {
-    if (params?.cubeId === undefined) {
+    if (params?.cardId === undefined) {
       return;
     }
-    findByLectureUsid(params.cubeId).then(badges => {
+    findByLectureUsid(params.cardId).then(badges => {
       if (badges === undefined) {
         setLectureBadge();
       } else {
         setLectureBadge({ badges });
       }
     });
-  }, [params?.cubeId]);
+  }, [params?.cardId]);
 
   return [value];
 }

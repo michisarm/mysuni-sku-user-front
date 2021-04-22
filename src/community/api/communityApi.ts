@@ -1,4 +1,6 @@
-import { axiosApi, OffsetElementList } from '@nara.platform/accent';
+import { CommunityDiscussionDetail } from '../viewModel/CommunityDiscussionDetail';
+import { CommunityDiscussion } from '../model/CommunityDiscussion';
+import { axiosApi, OffsetElementList, NameValue } from '@nara.platform/accent';
 import Axios, { AxiosResponse } from 'axios';
 import Post from 'community/model/Post';
 import PostCdo from 'community/model/PostCdo';
@@ -14,6 +16,7 @@ import FollowModalItem from 'community/viewModel/FollowModalIntro/FollowModalIte
 import { CommunityHomeCreateItem } from 'community/viewModel/CommunityHomeCreate';
 
 const BASE_URL = '/api/community';
+const FEEDBACK_URL = '/api/feedback';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
   if (
@@ -433,12 +436,15 @@ export function getCommunityGroups(communityId: string): Promise<any> {
 export function saveCommunityAdminMenu(
   communityId: string,
   params: any,
-  selectedRow: any
+  selectedRow: any,
+  discussRow?: CommunityDiscussion
 ): Promise<any> {
-  if (params.type === 'DISCUSSION') {
+  if (
+    selectedRow.type === 'DISCUSSION' ||
+    selectedRow.type === 'ANODISCUSSION'
+  ) {
     let value = '';
     let name = '';
-
     params.nameValues.map((item: any) => {
       if (item.name === 'discussionTopic') {
         value = item.value;
@@ -446,17 +452,33 @@ export function saveCommunityAdminMenu(
         name = item.value;
       }
     });
-    const url = `${BASE_URL}/${communityId}/menus/flow/${params.id}?name=${selectedRow.discussionTopic}&discussionTopic=${selectedRow.discussionTopic}&title=${name}`;
-    return axiosApi.put(url).then(response => {
-      const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
+
+    const discussMenuParams = {
+      ...discussRow,
+      discussionTopic: selectedRow.discussionTopic,
+      id: selectedRow.id,
+      name: selectedRow.name,
+      title: selectedRow.title,
+      type: selectedRow.type,
+    };
+
+    const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
+    return axiosApi.put(url, discussMenuParams).then(response => {
+      const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
+      const checkNameValues =
+        params.nameValues.map((row: any) => row.value === 'undefined').length >
+        0
+          ? []
+          : params.nameValues;
       return axiosApi
-        .put(url, { nameValues: params.nameValues })
+        .put(url, { nameValues: checkNameValues })
         .then(response => {
           return response && response.data;
         });
     });
   }
-  const url = `${BASE_URL}/${communityId}/menus/${params.id}`;
+
+  const url = `${BASE_URL}/${communityId}/menus/${selectedRow.id}`;
   return axiosApi.put(url, { nameValues: params.nameValues }).then(response => {
     return response && response.data;
   });
@@ -499,6 +521,20 @@ export function findCommunitySurvey(params: any): Promise<any> {
   return axiosApi.get(url, { params }).then(response => {
     return response;
   });
+}
+
+export function findPostMenuDiscussion(menuId: string): Promise<any> {
+  return axiosApi
+    .get<any>(`${BASE_URL}/post/menu/${menuId}`)
+    .then(response => response && response.data && response.data);
+}
+
+export function findMenuDiscussionFeedBack(
+  commentFeedbackId: string
+): Promise<any> {
+  return axiosApi
+    .get(`${FEEDBACK_URL}/feedback/${commentFeedbackId}/comment`)
+    .then(response => response && response.data && response.data);
 }
 
 export function getCommunitySurveyInfo(surveyId: string): Promise<any> {

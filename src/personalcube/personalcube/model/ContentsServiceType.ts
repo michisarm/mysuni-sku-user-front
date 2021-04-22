@@ -6,6 +6,7 @@ enum ContentsServiceType {
   OfficeWeb = 'OfficeWeb',  // WebPage, Documents, Experiential
   Community = 'Community',  // Community
   Task = 'Task',  // Community -> Task
+  Discussion = 'Discussion',
   None = 'None',
 }
 

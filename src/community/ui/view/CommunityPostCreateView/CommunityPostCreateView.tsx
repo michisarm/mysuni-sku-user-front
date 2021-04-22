@@ -28,6 +28,7 @@ interface CommunityPostCreateViewProps {
   menuType?: string;
   menus: CommunityMenu[];
   managerAuth: boolean;
+  communityAdminAuth: boolean;
 }
 
 const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function CommunityPostCreateView({
@@ -38,6 +39,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
   menuType,
   menus,
   managerAuth,
+  communityAdminAuth
 }) {
   const history = useHistory();
   const handlePinnedChange = useCallback((e: any, data: any) => {
@@ -171,7 +173,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
         <Form>
           <Form.Field>
             {/* 공지 등록 체크박스 */}
-            {managerAuth && (
+            {(managerAuth || communityAdminAuth) && (
               <div className="board-write-checkbox">
                 <Checkbox
                   className="base"
