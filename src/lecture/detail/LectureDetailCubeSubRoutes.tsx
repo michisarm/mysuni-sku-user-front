@@ -9,6 +9,7 @@ import LectureCubeWebPagePage from './ui/logic/LectureCubeWebPagePage';
 import { useParams } from 'react-router';
 import LectureParams from './viewModel/LectureParams';
 import LectureCubeCohortPage from './ui/logic/LectureCubeCohortPage';
+import LectureCubeDiscussionPage from './ui/logic/LectureCubeDiscussionPage';
 
 function LectureDetailCubeSubRoutes() {
   const { cubeType } = useParams<LectureParams>();
@@ -24,6 +25,7 @@ function LectureDetailCubeSubRoutes() {
       {cubeType === 'Documents' && <LectureCubeDocumentsPage />}
       {cubeType === 'ClassRoomLecture' && <LectureCubeClassroomPage />}
       {cubeType === 'Cohort' && <LectureCubeCohortPage />}
+      {cubeType === 'Discussion' && <LectureCubeDiscussionPage />}
     </>
   );
 }

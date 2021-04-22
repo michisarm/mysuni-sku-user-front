@@ -13,6 +13,7 @@ import TaskDetailPost from '../model/TaskDetail';
 import TaskDetailBody from '../model/TaskDetailBody';
 
 import { IntPair } from '../../../shared/model/IntPair';
+import { CubeMyDiscussionCounts } from '../../model/CubeMyDiscussionCounts';
 
 const BASE_URL = '/api/cube';
 
@@ -142,3 +143,9 @@ export const [
   countClassroomStudentsCache,
   cleaCountClassroomStudentsCache,
 ] = createCacheApi(countClassroomStudents);
+
+export function findMyDiscussionCounts(studentId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cubes/myDiscussionCounts/${studentId}`;
+  return axios.get<CubeMyDiscussionCounts>(url).then(AxiosReturn);
+}

@@ -6,9 +6,10 @@ import { Area } from 'tracker/model';
 
 interface LectureDescriptionViewProps {
   htmlContent: string;
+  overviewClass?: string;
 }
 
-function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
+function LectureDescriptionView({ htmlContent, overviewClass }: LectureDescriptionViewProps) {
   const [descriptionOpen, setDescriptionOpen] = useState<boolean>();
   const [showMoreButton, setShowMoreButton] = useState<boolean>();
   const textContainerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,7 @@ function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
   }, [descriptionOpen]);
   return (
     <div
-      className="class-guide-txt fn-parents ql-snow"
+      className={`${overviewClass ? overviewClass : 'class-guide-txt fn-parents ql-snow'}`}
       data-area={Area.CUBE_OVERVIEW}
     >
       <div
