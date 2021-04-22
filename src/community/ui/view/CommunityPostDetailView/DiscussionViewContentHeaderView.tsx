@@ -48,6 +48,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [textUndefined, setTextUndefined] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
+  const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -56,13 +57,13 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
 
   useEffect(() => {
     getFileIds();
-
+    emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
     contentRef.current?.textContent === 'undefined' && setTextUndefined(true);
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
-    const referenceFileBoxId = postDetail && postDetail.depotId;
+    const referenceFileBoxId = postDetail && postDetail.fileBoxId;
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
@@ -75,6 +76,10 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
       setFilesMap(newMap);
     });
   }, []);
+
+  const fileDownload = (pdf: string, fileId: string) => {
+    depot.downloadDepotFile(fileId);
+  };
 
   const zipFileDownload = useCallback((type: string) => {
     if (type === 'select') {
@@ -117,6 +122,17 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     }
   }, []);
 
+  const emptyCheckUrl = useCallback(() => {
+    if (postDetail === undefined) return;
+
+    // true 이면 null 처리
+    postDetail.relatedUrlList?.map((item: any) => {
+      if (item.title === '' || item.url === '') {
+        setUrlNull(true);
+      }
+    });
+  }, [postDetail?.relatedUrlList]);
+
   return (
     <>
       {postDetail && (
@@ -148,6 +164,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                     <div
                       ref={contentRef}
                       className="discuss-text-belt"
+                      style={{width: 'auto'}}
                       dangerouslySetInnerHTML={{
                         __html: `${postDetail?.content}`,
                       }}
@@ -158,6 +175,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                   <div
                     ref={contentRef}
                     className="discuss-text-belt"
+                    style={{width: 'auto'}}
                     dangerouslySetInnerHTML={{
                       __html: `${postDetail?.content}`,
                     }}
@@ -187,34 +205,30 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {postDetail &&
-                postDetail.relatedUrlList &&
-                postDetail.relatedUrlList.length > 0 &&
-                (postDetail.relatedUrlList[0].title !== '' ||
-                  postDetail.relatedUrlList[0].url !== '') && (
-                  <div className="community-board-down discuss2">
-                    <div className="board-down-title href">
-                      <p>
-                        {' '}
-                        <Image
-                          src={`${PUBLIC_URL}/images/all/icon-url.png`}
-                          alt=""
-                          style={{ display: 'inline-block' }}
-                        />
-                        관련 URL
-                      </p>
-                      {postDetail &&
-                        postDetail.relatedUrlList?.map((item: any) => (
-                          <a href={item.url} target="blank">
-                            {item.title}
-                          </a>
-                        ))}
-                    </div>
+              {urlNull === false ? (
+                <div className="community-board-down discuss2">
+                  <div className="board-down-title href">
+                    <p>
+                      {' '}
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                        alt=""
+                        style={{ display: 'inline-block' }}
+                      />
+                      관련 URL
+                    </p>
+                    {postDetail &&
+                      postDetail.relatedUrlList?.map((item: any) => (
+                        <a href={item.url} target="blank">
+                          {item.title}
+                        </a>
+                      ))}
                   </div>
-                )}
+                </div>
+              ) : null}
               {/* eslint-enable */}
-              {/* 관련 자료 */}
-              {postDetail.fileBoxId !== '' && postDetail.fileBoxId !== null && (
+                            {/* 관련 자료 */}
+                            {filesMap.get('reference') && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
@@ -268,7 +282,9 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                     </div>
                   </div>
                 </div>
-              )}
+              )
+              }
+
             </div>
           </div>
 

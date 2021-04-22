@@ -12,18 +12,16 @@ import SkProfileService from '../../../../profile/present/logic/SkProfileService
 import { useLectureState } from '../../store/LectureStateStore';
 import { submitRegisterStudent, refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-
-type RelatedUrlList = {
-  title: string;
-  url: string;
-}
-
-const PUBLIC_URL = process.env.PUBLIC_URL;
-const fileDownload = (pdf: string, fileId: string) => {
-  depot.downloadDepotFile(fileId);
-};
+import iconUrl from '../../../../style/media/icon-url.png';
+import iconFile from '../../../../style/media/icon-community-file-copy-2.png';
 
 function LectureCubeDiscussionContainer() {
+  type RelatedUrlList = {
+    title: string;
+    url: string;
+  }
+  
+  const PUBLIC_URL = process.env.PUBLIC_URL;
   const [lectureDescription] = useLectureDescription();
   const lectureState = useLectureState();
 
@@ -37,6 +35,34 @@ function LectureCubeDiscussionContainer() {
 
   const originArr: string[] = [];
   let origin: string = '';
+
+  const fileDownload = (pdf: string, fileId: string) => {
+    depot.downloadDepotFile(fileId);
+  };
+  
+  const zipFileDownload = useCallback((type: string) => {
+    if (type === 'select') {
+      if (origin === '') {
+        return;
+      }
+      if (originArr!.length === 1) {
+        depot.downloadDepotFile(origin);
+        return;
+      }
+      depot.downloadDepotFiles(originArr);
+    } else {
+      if (type === 'all') {
+        const idArr: string[] = [];
+        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+          idArr.push(foundedFile.id);
+        });
+        if (idArr.length === 0) {
+          return;
+        }
+        depot.downloadDepotFiles(idArr);
+      }
+    }
+  }, []);
 
   const { company, department, email, name } = useMemo(() => {
     const {
@@ -140,18 +166,21 @@ function LectureCubeDiscussionContainer() {
               )}
             </div>
             {/* 교육내용 표현 */}
-            {lectureDescription && (
-              <Fragment>
-                {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
-                <div className="discuss-box2 task">
+            
+              
+            {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
+            <div className="discuss-box2 task">
+              {lectureDescription && lectureDescription.description && (
+                <Fragment>
                   <span className="discuss-intro-title">토론 안내</span>
                     <LectureDescriptionView
                       htmlContent={lectureDescription.description}
                       overviewClass="class-guide-txt fn-parents mt0"
                     />
-                </div>
-              </Fragment>
-            )}
+                </Fragment>
+                )}
+            </div>
+            
             {/* 관련 URL Link */}
             <div className="discuss-box2">  
               {cubeRelatedUrlList &&
@@ -163,7 +192,7 @@ function LectureCubeDiscussionContainer() {
                         <p>
                           {' '}
                           <Image
-                            src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                            src={iconUrl}
                             alt=""
                             style={{ display: 'inline-block' }}
                           />
@@ -189,21 +218,21 @@ function LectureCubeDiscussionContainer() {
                       <div className="board-down-title">
                         <p>
                           <img
-                            src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
+                            src={iconFile}
                           />
                           첨부파일
                         </p>
                         <div className="board-down-title-right">
                           <button
                             className="ui icon button left post delete"
-                            // onClick={() => zipFileDownload('select')}
+                            onClick={() => zipFileDownload('select')}
                           >
                             <i aria-hidden="true" className="icon check icon" />
                             선택 다운로드
                           </button>
                           <button
                             className="ui icon button left post list2"
-                            // onClick={() => zipFileDownload('all')}
+                            onClick={() => zipFileDownload('all')}
                           >
                             <img
                               src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}

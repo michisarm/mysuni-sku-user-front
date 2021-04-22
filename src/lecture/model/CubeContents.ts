@@ -1,5 +1,4 @@
 import { DifficultyLevel } from './DifficultyLevel';
-import { Member } from './Member';
 
 export interface CubeContents {
   commentFeedbackId: string;
