@@ -19,7 +19,10 @@ export default class ApprovalCubeService {
   approvalCube: ApprovalCubeModel = new ApprovalCubeModel();
 
   @observable
-  approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = { results: [], totalCount: 0 };
+  approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = {
+    results: [],
+    totalCount: 0,
+  };
 
   @observable
   studentRequest: StudentRequestCdoModel = {} as StudentRequestCdoModel;
@@ -28,10 +31,10 @@ export default class ApprovalCubeService {
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
-  searchOrderBy: string = '';
+  searchOrderBy: string = 'UpdateTimeDesc';
 
   @observable
-  searchEndDate: number = 0;
+  searchEndDate: number = 9999999999999;
 
   @observable
   lectures: any[] = [];
@@ -84,10 +87,14 @@ export default class ApprovalCubeService {
   @action
   async findPersonalCube(personalCubeId: string) {
     //
-    const approvalCube = await this.approvalCubeApi.findPersonalCube(personalCubeId);
+    const approvalCube = await this.approvalCubeApi.findPersonalCube(
+      personalCubeId
+    );
 
     if (approvalCube) {
-      return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
+      return runInAction(
+        () => (this.approvalCube = new ApprovalCubeModel(approvalCube))
+      );
     }
     return null;
   }
@@ -98,42 +105,65 @@ export default class ApprovalCubeService {
     const approvalCube = await this.approvalCubeApi.findApprovalCube(studentId);
 
     if (approvalCube) {
-      return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
+      return runInAction(
+        () => (this.approvalCube = new ApprovalCubeModel(approvalCube))
+      );
     }
     return null;
   }
 
   async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
     //
-    return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
+    return this.approvalCubeApi.studentRequestOpen(
+      new StudentRequestCdoModel(studentRequestCdo)
+    );
   }
 
   async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
     //
-    return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
+    return this.approvalCubeApi.studentRequestReject(
+      new StudentRequestCdoModel(studentRequestCdo)
+    );
   }
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
-  async findApprovalCubesForSearch(offset: number,
+  async findApprovalCubesForSearch(
+    offset: number,
     limit: number,
-    orderBy: string = '',
+    orderBy: string = 'UpdateTimeDesc',
     proposalState: ProposalState = ProposalState.Submitted,
     lectureCardId: string = '',
-    endDate: number = 0) {
+    endDate: number = 9999999999999
+  ) {
     //
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(ApprovalCubeRdoModel.new(offset, limit, orderBy, proposalState, lectureCardId, endDate));
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
+      ApprovalCubeRdoModel.new(
+        offset,
+        limit,
+        orderBy,
+        proposalState,
+        lectureCardId,
+        endDate
+      )
+    );
 
     runInAction(() => {
-      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(approvalCubeOffsetList.results);
-      this.approvalCubeOffsetList.totalCount = approvalCubeOffsetList.totalCount;
+      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(
+        approvalCubeOffsetList.results
+      );
+      this.approvalCubeOffsetList.totalCount =
+        approvalCubeOffsetList.totalCount;
     });
     return approvalCubeOffsetList;
   }
 
   @action
   clear() {
-    this.approvalCubeOffsetList = { results: [], totalCount: 0 } as OffsetElementList<ApprovalCubeModel>;
+    this.approvalCubeOffsetList = {
+      results: [],
+      totalCount: 0,
+    } as OffsetElementList<ApprovalCubeModel>;
   }
 
   // SearchState --------------------------------------------------------------------------------------------
@@ -160,13 +190,21 @@ export default class ApprovalCubeService {
   async findLectureApprovalSelect() {
     //
     const lectures = await this.approvalCubeApi.findLectureApprovalSelect();
-    return runInAction(() => this.lectures = lectures);
+    return runInAction(() => (this.lectures = lectures));
   }
 
   @action
-  async findApprovalCubesForExcel(orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+  async findApprovalCubesForExcel(
+    orderBy: string,
+    proposalState?: ProposalState,
+    approvalCube?: ApprovalCubeModel
+  ) {
     //
-    const approvalCubes = await this.approvalCubeApi.findApprovalCubesForExcel(orderBy, proposalState, approvalCube);
+    const approvalCubes = await this.approvalCubeApi.findApprovalCubesForExcel(
+      orderBy,
+      proposalState,
+      approvalCube
+    );
 
     return runInAction(() => {
       this.approvalCubesExcelWrite = approvalCubes || [];
