@@ -257,9 +257,28 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         lectureSurveyState.state === 'Completed' &&
         commentId !== null &&
         commentId !== undefined &&
-        commentId !== '' && (
+        commentId !== '' &&
+        currentMenu?.name === undefined && (
           <div className="outline">
             <CommentList
+              feedbackId={commentId}
+              menuType=""
+              hideCamera
+              name={member.name}
+              email={member.email}
+              companyName={member.company}
+              departmentName={member.department}
+            />
+          </div>
+        )}
+      {lectureSurveyState !== undefined &&
+        lectureSurveyState.state === 'Completed' &&
+        commentId !== null &&
+        commentId !== undefined &&
+        commentId !== '' &&
+        currentMenu?.name !== undefined && (
+          <div className="outline">
+            <CommunityCommentList
               feedbackId={commentId}
               menuType=""
               hideCamera

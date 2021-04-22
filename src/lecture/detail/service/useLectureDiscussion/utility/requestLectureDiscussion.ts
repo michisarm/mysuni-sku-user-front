@@ -32,7 +32,10 @@ export async function requestLectureDiscussion(
           contentId.substring(contentId.length - 4) === discussionId
       );
     } else {
-      if (content.contentId.substring(contentId.length - 4) === discussionId) {
+      if (
+        content.contentId.substring(content.contentId.length - 4) ===
+        discussionId
+      ) {
         discussion = content;
       }
     }
