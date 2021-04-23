@@ -6,7 +6,10 @@ import SkProfileService from '../../../../profile/present/logic/SkProfileService
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
 import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { countByFeedbackId, findFeedbackMenu } from 'lecture/detail/api/feedbackApi';
+import {
+  countByFeedbackId,
+  findFeedbackMenu,
+} from 'lecture/detail/api/feedbackApi';
 import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useParams } from 'react-router-dom';
@@ -36,8 +39,10 @@ export default function LectureDiscussionContainer() {
   const commentCountEventHandler = useCallback(async () => {
     async function asyncFun() {
       if (document.body.getAttribute('feedbackid') !== undefined) {
-        const { count } = await countByFeedbackId(document.body.getAttribute('feedbackid')!);
-        setCount(count)
+        const { count } = await countByFeedbackId(
+          document.body.getAttribute('feedbackid')!
+        );
+        setCount(count);
       }
     }
     asyncFun();
@@ -52,9 +57,14 @@ export default function LectureDiscussionContainer() {
 
   useEffect(() => {
     async function asyncFun() {
-      if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
-        const { count } = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
-        setCount(count)
+      if (
+        lectureFeedbackContent !== undefined &&
+        lectureFeedbackContent.commentFeedbackId !== undefined
+      ) {
+        const { count } = await countByFeedbackId(
+          lectureFeedbackContent?.commentFeedbackId
+        );
+        setCount(count);
       }
     }
     getFileIds();
@@ -62,12 +72,11 @@ export default function LectureDiscussionContainer() {
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
-
     const referenceFileBoxId =
       lectureFeedbackContent && lectureFeedbackContent.depotId;
 
     Promise.resolve().then(() => {
-      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId)
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
       else setFilesMap(new Map<string, any>());
     });
   }, [lectureFeedbackContent]);
@@ -90,18 +99,23 @@ export default function LectureDiscussionContainer() {
       emptyCheckUrl();
 
       //comment count
-      if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
-        const comment = await countByFeedbackId(lectureFeedbackContent?.commentFeedbackId);
-        setCount(comment.count)
+      if (
+        lectureFeedbackContent !== undefined &&
+        lectureFeedbackContent.commentFeedbackId !== undefined
+      ) {
+        const comment = await countByFeedbackId(
+          lectureFeedbackContent?.commentFeedbackId
+        );
+        setCount(comment.count);
       }
 
       findFeedbackMenu(lectureDiscussion.id).then(res => {
         setLectureFeedbackContent({
-          ...res
+          ...res,
         });
       });
     }
-    asuncFun()
+    asuncFun();
   }, [lectureFeedbackContent?.title, lectureDiscussion?.id]);
 
   const { company, department, email, name } = useMemo(() => {
@@ -156,17 +170,16 @@ export default function LectureDiscussionContainer() {
 
   // 관련 url 빈값 체크 함수
   const emptyCheckUrl = useCallback(() => {
-    if(lectureFeedbackContent === undefined) return;
+    if (lectureFeedbackContent === undefined) return;
 
     // true 이면 null 처리
-    lectureFeedbackContent.relatedUrlList?.map((item) => {
-      if(item.title === "" || item.url === "") {
+    lectureFeedbackContent.relatedUrlList?.map(item => {
+      if (item.title === '' && item.url === '') {
         setUrlNull(true);
       }
     });
+  }, [lectureFeedbackContent?.relatedUrlList]);
 
-  },[lectureFeedbackContent?.relatedUrlList]);
-  
   return (
     <>
       {lectureDiscussion && (
@@ -233,30 +246,30 @@ export default function LectureDiscussionContainer() {
               {/* eslint-disable */}
               {/* 관련 URL */}
               {urlNull === false ? (
-                  <div className="community-board-down discuss2">
-                    <div className="board-down-title href">
-                      <p>
-                        {' '}
-                        <Image
-                          src={`${PUBLIC_URL}/images/all/icon-url.png`}
-                          alt=""
-                          style={{ display: 'inline-block' }}
-                        />
-                        관련 URL
-                      </p>
-                      {lectureFeedbackContent &&
-                        lectureFeedbackContent.relatedUrlList?.map(
-                          (item: any) => (
-                            <>
-                              <a href={`https://${item.url}`} target="blank">
-                                {item.title}
-                              </a>
-                            </>
-                          )
-                        )}
-                    </div>
+                <div className="community-board-down discuss2">
+                  <div className="board-down-title href">
+                    <p>
+                      {' '}
+                      <Image
+                        src={`${PUBLIC_URL}/images/all/icon-url.png`}
+                        alt=""
+                        style={{ display: 'inline-block' }}
+                      />
+                      관련 URL
+                    </p>
+                    {lectureFeedbackContent &&
+                      lectureFeedbackContent.relatedUrlList?.map(
+                        (item: any) => (
+                          <>
+                            <a href={`https://${item.url}`} target="blank">
+                              {!item.title ? item.url : item.title}
+                            </a>
+                          </>
+                        )
+                      )}
                   </div>
-                ) : null}
+                </div>
+              ) : null}
               {/* eslint-enable */}
               {/* 관련 자료 */}
               {filesMap.get('reference') && (
@@ -313,13 +326,15 @@ export default function LectureDiscussionContainer() {
                     </div>
                   </div>
                 </div>
-              )
-              }
-
+              )}
             </div>
           </div>
           <CommentList
-            feedbackId={lectureFeedbackContent?.commentFeedbackId ? lectureFeedbackContent?.commentFeedbackId : ''}
+            feedbackId={
+              lectureFeedbackContent?.commentFeedbackId
+                ? lectureFeedbackContent?.commentFeedbackId
+                : ''
+            }
             hideCamera
             name={name}
             email={email}

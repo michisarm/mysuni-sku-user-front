@@ -23,6 +23,7 @@ interface CommunityAdminMenuDetailViewProps {
   onAddUrlsList: () => void;
   onDeleteUrlsList: (currentIndex: number) => void;
   onAddFileBoxId: (fileBoxId: string) => void;
+  handleCleanDiscussRow: () => void;
 }
 
 const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> = function CommunityAdminMenuDetailView({
@@ -35,6 +36,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   onAddUrlsList,
   onDeleteUrlsList,
   onAddFileBoxId,
+  handleCleanDiscussRow,
 }) {
   const searchBox = useSearchBox();
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
@@ -84,6 +86,7 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function changeType(_: any, data: any) {
     if (selectedRow && data) {
       selectedRow.type = data.value;
+      handleCleanDiscussRow();
       onChangeValue(selectedRow, 'type');
       if (selectedRow.type === 'SURVEY') {
         getCommunitySurvey(selectedRow!.surveyId!).then(result => {
