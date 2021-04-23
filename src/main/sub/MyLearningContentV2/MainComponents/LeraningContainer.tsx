@@ -100,16 +100,13 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         <Lecture.Group type={Lecture.GroupType.Line}>
           {cardList.map((item, i) => {
             const { card, cardRelatedCount } = item;
-            const isRequired = card.permittedCinerooms
-              ? isIncludeCineroomId(card.permittedCinerooms)
-              : false;
 
             return (
               <li key={i}>
                 <CardGroup type={GroupType.Box}>
                   <CardView
                     cardId={item.card.id}
-                    isRequired={isRequired}
+                    permittedCinerooms={card.permittedCinerooms}
                     learningTime={card.learningTime}
                     additionalLearningTime={card.additionalLearningTime}
                     thumbImagePath={card.thumbImagePath}

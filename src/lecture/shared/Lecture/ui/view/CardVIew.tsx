@@ -25,6 +25,8 @@ import { autorun } from 'mobx';
 import CardType from '../../../model/CardType';
 import CubeIconType from '../../model/CubeIconType';
 import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
+import { PermittedCineroom } from '../../../../model/PermittedCineroom';
+import isIncludeCineroomId from '../../../../../shared/helper/isIncludeCineroomId';
 
 interface Props {
   cardId: string;
@@ -38,10 +40,10 @@ interface Props {
   starCount: number;
   simpleDescription: string;
   type: CardType;
-  isRequired?: boolean;
   studentCount?: number;
   remainingDayCount?: number;
   capacity?: number;
+  permittedCinerooms?: PermittedCineroom[];
 }
 
 export default function CardView({
@@ -56,16 +58,20 @@ export default function CardView({
   thumbImagePath,
   passedStudentCount,
   type,
-  isRequired,
   capacity,
   remainingDayCount,
   studentCount,
+  permittedCinerooms,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
+
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
+  const isRequired = permittedCinerooms
+    ? isIncludeCineroomId(permittedCinerooms)
+    : false;
 
   useEffect(() => {
     return autorun(() => {
