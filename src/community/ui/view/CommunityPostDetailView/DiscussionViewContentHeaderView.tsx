@@ -47,7 +47,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
 
   // content가 undefined 일때 hidden 처리
   const contentRef = useRef<HTMLDivElement>(null);
-  const [textUndefined, setTextUndefined] = useState<boolean>(false);
+  const [contentCheck, setContentCheck] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
   const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -60,7 +60,9 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     getFileIds();
     emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
-    contentRef.current?.textContent === 'undefined' && setTextUndefined(true);
+    const checkContentValue =
+      postDetail?.content === '<p><br></p>' ? true : false;
+    setContentCheck(checkContentValue);
   }, [postDetail]);
 
   const getFileIds = useCallback(() => {
@@ -83,7 +85,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   };
 
   const zipFileDownload = useCallback((type: string) => {
-    if(originArr && originArr.length > 0){
+    if (originArr && originArr.length > 0) {
       if (type === 'select') {
         if (origin === '') {
           return;
@@ -105,7 +107,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
           depot.downloadDepotFiles(idArr);
         }
       }
-    }else{
+    } else {
       reactAlert({
         title: '안내',
         message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
@@ -165,14 +167,14 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
             <div className="discuss-box2">
               <div
                 className="discuss-text-wrap"
-                style={textUndefined ? { display: 'none' } : {}}
+                style={contentCheck ? { display: 'none' } : {}}
               >
                 {postDetail && more && (
                   <div className="ql-snow">
                     <div
                       ref={contentRef}
-                      className="discuss-text-belt"
-                      style={{width: 'auto'}}
+                      className="ql-editor"
+                      style={{ width: 'auto', padding: 0, lineHeight: 1.8 }}
                       dangerouslySetInnerHTML={{
                         __html: `${postDetail?.content}`,
                       }}
@@ -183,7 +185,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                   <div
                     ref={contentRef}
                     className="discuss-text-belt"
-                    style={{width: 'auto'}}
+                    style={{ width: 'auto' }}
                     dangerouslySetInnerHTML={{
                       __html: `${postDetail?.content}`,
                     }}
@@ -235,8 +237,8 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                 </div>
               ) : null}
               {/* eslint-enable */}
-                            {/* 관련 자료 */}
-                            {filesMap.get('reference') && (
+              {/* 관련 자료 */}
+              {filesMap.get('reference') && (
                 <div className="community-board-down discuss2">
                   <div className="community-contants">
                     <div className="community-board-down">
@@ -290,9 +292,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
                     </div>
                   </div>
                 </div>
-              )
-              }
-
+              )}
             </div>
           </div>
 

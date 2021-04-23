@@ -334,6 +334,41 @@ function CommunityMenuContainer() {
         await deleteCommunityMenu(communityId, deleteValues);
         successFlag = true;
       }
+
+      // discussion Check
+      if (discussRow && discussRow.relatedUrlList) {
+        const urlValue = discussRow.relatedUrlList.map((row, index) => {
+          // if (row.title === '') {
+          //   reactAlert({
+          //     title: '',
+          //     message: `관련 URL의 ${index + 1}번째 타이틀 지정해주세요.`,
+          //   });
+          //   return false;
+          // }
+
+          // if (row.url === '') {
+          //   reactAlert({
+          //     title: '',
+          //     message: `관련 URL의 ${index + 1}번째 URL를 지정해주세요.`,
+          //   });
+          //   return false;
+          // }
+
+          if (!row.url.includes('http://') && !row.url.includes('https://')) {
+            reactAlert({
+              title: '',
+              message: `관련 URL의 링크는 http:// 또는 https:// 으로 시작되어야 합니다.`,
+            });
+            return false;
+          }
+          return row;
+        });
+
+        if (urlValue.includes(false)) {
+          return;
+        }
+      }
+
       if (result.length !== 0) {
         const editValidateCheck = result.map((item, index) => {
           return item.nameValues.map((item2, index2) => {
