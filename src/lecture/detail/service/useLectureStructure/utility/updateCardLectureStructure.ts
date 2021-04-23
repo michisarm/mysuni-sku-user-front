@@ -324,7 +324,7 @@ async function updateCubeItem(
   if (cube.survey !== undefined) {
     cube.survey = updateCubeSurveyItem(cube.survey, cubeStudent);
   }
-  if (cube.type === 'DISCUSSION') {
+  if (cube.cubeType === 'Discussion') {
     const discussionCubeItem = await updateDiscussionCubeItem(
       cube,
       cubeStudent
