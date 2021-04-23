@@ -50,4 +50,6 @@ export async function requestChapter(params: ChapterParams) {
 
   setLearningContent(learningContent);
   setLearningContentCube(learningContentWithCubeList);
+
+  return learningContent;
 }
