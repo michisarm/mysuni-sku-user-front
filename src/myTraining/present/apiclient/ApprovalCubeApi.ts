@@ -1,4 +1,3 @@
-
 import { axiosApi as axios } from '@nara.platform/accent';
 
 import { OffsetElementList, ProposalState } from '../../../shared/model';
@@ -8,24 +7,36 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import IdName from '../../../shared/model/IdName';
 import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
+import ApprovalCubeDetailModel from '../../model/ApprovalCubeDetailModel';
 
 export default class ApprovalCubeApi {
   //
   static instance: ApprovalCubeApi;
 
-  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  devUrl =
+    process.env.NODE_ENV === 'development'
+      ? process.env.REACT_APP_DEVELOPMENT_URL
+      : '';
 
   lectureApprovalURL = '/api/lecture/studentApproval';
   // baseUrl = this.devUrl + '/api/lecture/studentApproval';
+  lectureStudentURL = '/api/lecture/students';
+  cubeApprovalURL = '/api/cube/studentApprovals';
 
-  static convertOffsetElementList(response: any): OffsetElementList<ApprovalCubeModel> {
+  static convertOffsetElementList(
+    response: any
+  ): OffsetElementList<ApprovalCubeModel> {
     //
     if (!response || !response.data) {
       return new OffsetElementList<ApprovalCubeModel>();
     }
-    const offsetElementList = new OffsetElementList<ApprovalCubeModel>(response.data);
+    const offsetElementList = new OffsetElementList<ApprovalCubeModel>(
+      response.data
+    );
 
-    offsetElementList.results = offsetElementList.results.map((result) => new ApprovalCubeModel(result));
+    offsetElementList.results = offsetElementList.results.map(
+      result => new ApprovalCubeModel(result)
+    );
     return offsetElementList;
   }
 
@@ -34,52 +45,75 @@ export default class ApprovalCubeApi {
     //
     const params = approvalCubeRdoModel;
 
-    return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
-      .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
+    return axios
+      .get<OffsetElementList<ApprovalCubeModel>>(this.cubeApprovalURL, {
+        params,
+      })
+      .then((response: any) =>
+        ApprovalCubeApi.convertOffsetElementList(response)
+      );
   }
 
-
-  findApprovalCubesForExcel(orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+  findApprovalCubesForExcel(
+    orderBy: string,
+    proposalState?: ProposalState,
+    approvalCube?: ApprovalCubeModel
+  ) {
     //
-    const lectureCardId = approvalCube?.lectureCardId || '';
+    const cubeId = approvalCube?.cubeId || '';
     const params = {
       orderBy,
       proposalState,
-      lectureCardId,
+      cubeId,
     };
 
-    return axios.get<ApprovalCubeModel[]>(this.lectureApprovalURL + `/excel`, { params })
-      .then(response => response && response.data || null);
+    return axios
+      .get<ApprovalCubeModel[]>(this.lectureApprovalURL + `/excel`, { params })
+      .then(response => (response && response.data) || null);
   }
 
   findPersonalCube(personalCubeId: string) {
     //
-    return axios.get<ApprovalCubeModel>(this.lectureApprovalURL + `/${personalCubeId}`)
-      .then(response => response && response.data || null);
+    return axios
+      .get<ApprovalCubeModel>(this.lectureApprovalURL + `/${personalCubeId}`)
+      .then(response => (response && response.data) || null);
   }
 
   findApprovalCube(studentId: string) {
     //
-    return axios.get<ApprovalCubeModel>(this.lectureApprovalURL + `/${studentId}`)
-      .then(response => response && response.data || null);
+    return axios
+      .get<ApprovalCubeDetailModel>(
+        this.cubeApprovalURL + `/${studentId}/detail`
+      )
+      .then(response => (response && response.data) || null);
   }
 
   findLectureApprovalSelect() {
-    return axios.get<IdName[]>(this.lectureApprovalURL + '/lectures')
-      .then(response => response && Array.isArray(response.data) && response.data || []);
+    return axios
+      .get<IdName[]>(this.cubeApprovalURL + '/targetCubes')
+      .then(
+        response =>
+          (response && Array.isArray(response.data) && response.data) || []
+      );
   }
 
   studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-    return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestOpen', studentRequestCdo)
-      .then(response => response && response.data || null);
+    return axios
+      .put<ApprovedResponse>(
+        this.lectureStudentURL + '/accept',
+        studentRequestCdo
+      )
+      .then(response => (response && response.data) || null);
   }
 
   studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-    return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestReject', studentRequestCdo)
-      .then(response => response && response.data || null);
+    return axios
+      .put<ApprovedResponse>(
+        this.lectureStudentURL + '/reject',
+        studentRequestCdo
+      )
+      .then(response => (response && response.data) || null);
   }
-
-
 }
 
 Object.defineProperty(ApprovalCubeApi, 'instance', {
