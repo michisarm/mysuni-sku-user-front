@@ -239,9 +239,11 @@ function updateDurationableCubeItem(
   };
   if (cube.test !== undefined) {
     cube.test = updateCubeTestItem(cube.test, cubeStudent);
+    cube.test.can = cube.test.can && cube.duration === 100;
   }
   if (cube.report !== undefined) {
     cube.report = updateCubeReportItem(cube.report, cubeStudent);
+    cube.report.can = cube.report.can && cube.duration === 100;
   }
   if (cube.survey !== undefined) {
     cube.survey = updateCubeSurveyItem(cube.survey, cubeStudent);
