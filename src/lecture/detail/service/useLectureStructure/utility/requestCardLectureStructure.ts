@@ -407,7 +407,6 @@ function parseDurationableCubeItem(
   }
   if (surveyCaseId !== null && surveyCaseId !== '') {
     item.survey = parseCubeSurveyItem(card, cube, order, cubeStudent);
-    item.survey.can = item.survey.can && item.duration === 100;
   }
   return item;
 }
