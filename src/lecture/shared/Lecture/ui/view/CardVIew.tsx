@@ -13,7 +13,6 @@ import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
-  useRequestCollege,
   getCollgeName,
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
@@ -30,6 +29,7 @@ import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTyp
 interface Props {
   cardId: string;
   learningTime: number;
+  additionalLearningTime: number;
   thumbImagePath: string;
   mainCategory: CardCategory;
   name: string;
@@ -52,6 +52,7 @@ export default function CardView({
   mainCategory,
   simpleDescription,
   learningTime,
+  additionalLearningTime,
   thumbImagePath,
   passedStudentCount,
   type,
@@ -77,8 +78,11 @@ export default function CardView({
   }, [inMyLectureMap, cardId]);
 
   const hourMinuteFormat = useMemo(
-    () => dateTimeHelper.timeToHourMinuteFormat(learningTime),
-    [learningTime]
+    () =>
+      dateTimeHelper.timeToHourMinuteFormat(
+        learningTime + additionalLearningTime
+      ),
+    [learningTime, additionalLearningTime]
   );
 
   const collegeId = useMemo(() => mainCategory.collegeId, [mainCategory]);

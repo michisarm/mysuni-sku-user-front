@@ -111,6 +111,7 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
                     cardId={item.card.id}
                     isRequired={isRequired}
                     learningTime={card.learningTime}
+                    additionalLearningTime={card.additionalLearningTime}
                     thumbImagePath={card.thumbImagePath}
                     mainCategory={card.mainCategory}
                     name={card.name}

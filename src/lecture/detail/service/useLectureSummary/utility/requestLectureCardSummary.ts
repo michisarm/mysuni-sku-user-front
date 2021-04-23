@@ -52,6 +52,7 @@ function parseLectureSummary(
     id,
     mainCategory,
     learningTime,
+    additionalLearningTime,
     thumbImagePath,
     difficultyLevel,
     name,
@@ -63,7 +64,7 @@ function parseLectureSummary(
   return {
     cardId: id,
     name,
-    learningTime: timeToHourMinuteFormat(learningTime),
+    learningTime: timeToHourMinuteFormat(learningTime + additionalLearningTime),
     category: {
       collegeId: mainCategory?.collegeId || '',
       channelId: mainCategory?.channelId || '',
