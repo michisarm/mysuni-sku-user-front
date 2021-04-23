@@ -12,7 +12,6 @@ interface Props {
 class ApprovalDetailBasicInfoView extends React.Component<Props> {
   render() {
     const { approvalCube } = this.props;
-
     return (
       <>
         {approvalCube && (

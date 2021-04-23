@@ -113,23 +113,25 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     const responseData = await approvalCubeService!.studentRequestOpen(
       studentRequest
     );
-    const { error, message } = responseData;
+    // const { error, message } = responseData;
 
-    if (error) {
-      if (message) {
-        reactAlert({ title: '알림', message });
-      } else {
-        reactAlert({
-          title: '알림',
-          message: '에러 입니다. 관리자에게 문의 하세요.',
-        });
-        // 리스트 삭제
-        this.checkRemoveAll();
-      }
-    } else {
-      reactAlert({ title: '알림', message: '성공입니다.' });
-      this.routeToCreateList();
-    }
+    // if (error) {
+    //   if (message) {
+    //     reactAlert({ title: '알림', message });
+    //   } else {
+    //     reactAlert({
+    //       title: '알림',
+    //       message: '에러 입니다. 관리자에게 문의 하세요.',
+    //     });
+    //     // 리스트 삭제
+    //     this.checkRemoveAll();
+    //   }
+    // } else {
+    //   reactAlert({ title: '알림', message: '성공입니다.' });
+    //   this.routeToCreateList();
+    // }
+    reactAlert({ title: '알림', message: '성공입니다.' });
+    this.routeToCreateList();
   }
 
   async addRejectedLectureSingle() {
@@ -166,23 +168,25 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     const responseData = await approvalCubeService!.studentRequestReject(
       studentRequest
     );
-    const { error, message } = responseData;
+    // const { error, message } = responseData;
 
-    if (error) {
-      if (message) {
-        reactAlert({ title: '알림', message });
-      } else {
-        reactAlert({
-          title: '알림',
-          message: '에러 입니다. 관리자에게 문의 하세요.',
-        });
-        // 리스트 삭제
-        this.checkRemoveAll();
-      }
-    } else {
-      reactAlert({ title: '알림', message: '성공입니다.' });
-      this.routeToCreateList();
-    }
+    // if (error) {
+    //   if (message) {
+    //     reactAlert({ title: '알림', message });
+    //   } else {
+    //     reactAlert({
+    //       title: '알림',
+    //       message: '에러 입니다. 관리자에게 문의 하세요.',
+    //     });
+    //     // 리스트 삭제
+    //     this.checkRemoveAll();
+    //   }
+    // } else {
+    //   reactAlert({ title: '알림', message: '성공입니다.' });
+    //   this.routeToCreateList();
+    // }
+    reactAlert({ title: '알림', message: '성공입니다.' });
+    this.routeToCreateList();
   }
 
   onChangeApprovalCubeProps(name: string, value: any) {

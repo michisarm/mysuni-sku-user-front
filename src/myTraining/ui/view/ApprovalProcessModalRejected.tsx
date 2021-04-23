@@ -6,6 +6,7 @@ import { Modal, Form, Button } from 'semantic-ui-react';
 import { ApprovalCubeService } from '../../stores';
 import { IdNameApproval } from '../../model/IdNameApproval';
 import { ProposalState } from '../../model/ProposalState';
+import routePaths from '../../routePaths';
 
 interface Props {
   approvalCubeService?: ApprovalCubeService;
@@ -94,7 +95,7 @@ class ApprovalProcessModalRejected extends Component<Props> {
     // this.clearAll();
     // window.location.href =
     //   '/suni-main/my-training/my-page/ApprovalList/pages/1';
-    window.location.href = '/suni-main/approval/PaidCourse/pages/1';
+    window.location.href = routePaths.approvalPaidCourse();
   }
 
   render() {

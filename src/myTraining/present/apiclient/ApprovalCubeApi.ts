@@ -7,6 +7,7 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import IdName from '../../../shared/model/IdName';
 import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
+import ApprovalCubeDetailModel from '../../model/ApprovalCubeDetailModel';
 
 export default class ApprovalCubeApi {
   //
@@ -81,7 +82,9 @@ export default class ApprovalCubeApi {
   findApprovalCube(studentId: string) {
     //
     return axios
-      .get<ApprovalCubeModel>(this.cubeApprovalURL + `/${studentId}/detail`)
+      .get<ApprovalCubeDetailModel>(
+        this.cubeApprovalURL + `/${studentId}/detail`
+      )
       .then(response => (response && response.data) || null);
   }
 
