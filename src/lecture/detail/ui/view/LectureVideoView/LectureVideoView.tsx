@@ -57,7 +57,11 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
     const panoptoSessionId =
       lectureMedia.mediaContents.internalMedias[0].panoptoSessionId;
-    initializePanoptoEmbedPlayer(panoptoSessionId);
+    initializePanoptoEmbedPlayer(
+      panoptoSessionId,
+      lectureMedia.mediaContents.internalMedias[0].directConnectionName,
+      lectureMedia.mediaContents.internalMedias[0].targetSamlInstanceName
+    );
     return clearPanoptoEmbedPlayer;
   }, [lectureMedia]);
 
