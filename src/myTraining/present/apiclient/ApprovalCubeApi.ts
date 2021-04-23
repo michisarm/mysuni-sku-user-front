@@ -96,7 +96,7 @@ export default class ApprovalCubeApi {
 
   studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
     return axios
-      .post<ApprovedResponse>(
+      .put<ApprovedResponse>(
         this.lectureStudentURL + '/accept',
         studentRequestCdo
       )
@@ -105,7 +105,7 @@ export default class ApprovalCubeApi {
 
   studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
     return axios
-      .post<ApprovedResponse>(
+      .put<ApprovedResponse>(
         this.lectureStudentURL + '/reject',
         studentRequestCdo
       )
