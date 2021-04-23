@@ -121,17 +121,15 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
             <Lecture.Group type={Lecture.GroupType.Box}>
               {cardList.map((item, i) => {
                 const { card, cardRelatedCount, upcomingClassroomInfo } = item;
-                const isRequired = card.permittedCinerooms
-                  ? isIncludeCineroomId(card.permittedCinerooms)
-                  : false;
 
                 return (
                   <li key={i}>
                     <CardGroup type={GroupType.Box}>
                       <CardView
                         cardId={item.card.id}
-                        isRequired={isRequired}
+                        permittedCinerooms={card.permittedCinerooms}
                         learningTime={card.learningTime}
+                        additionalLearningTime={card.additionalLearningTime}
                         thumbImagePath={card.thumbImagePath}
                         mainCategory={card.mainCategory}
                         name={card.name}

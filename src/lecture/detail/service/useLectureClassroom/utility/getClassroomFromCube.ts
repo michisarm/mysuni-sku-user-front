@@ -24,8 +24,8 @@ export async function getClassroomFromCube(cubeId: string) {
   const proimseArray = instructors.map(c => {
     return findInstructorCache(c.instructorId)
       .then(r => {
-        if (r !== undefined) {
-          c.name = r.memberSummary.name;
+        if (r !== undefined && c.memberSummary !== undefined) {
+          c.memberSummary.name = r.memberSummary.name;
         }
       })
       .catch(() => {});
@@ -66,7 +66,8 @@ export async function getClassroomFromCube(cubeId: string) {
           cancellableEndDate: cancellablePeriod.endDate,
           location,
           siteUrl,
-          instructor: instructors.find(c => c.round === round)?.name || '',
+          instructor:
+            instructors.find(c => c.round === round)?.memberSummary?.name || '',
           capacity,
           freeOfCharge: {
             approvalProcess: freeOfCharge.approvalProcess,

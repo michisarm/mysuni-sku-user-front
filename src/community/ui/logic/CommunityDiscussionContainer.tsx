@@ -12,11 +12,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { useCommunityDiscussionPostDetail } from 'community/service/useCommunityPostDetail/useCommunityDiscussionPost';
 import DiscussionViewContentHeaderView from '../view/CommunityPostDetailView/DiscussionViewContentHeaderView';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
-import { requestCommunityMenu } from '../../service/useCommunityMenu/requestCommunity';
-import { findCommunityMenu } from '../../api/CommunityMenuApi';
-import { findPostView } from '../../api/communityApi';
-import axios from 'axios';
-import { axiosApi } from '@nara.platform/accent';
+import { reactAlert } from '@nara.platform/accent';
 import { useCommunityHome } from '../../store/CommunityHomeStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -41,23 +37,10 @@ function CommunityDiscussionContainer() {
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
 
-  // /*eslint-disable*/
-  // useEffect(() => {
-  //   if(postDetail?.commentFeedbackId === undefined) return;
-
-  //   axios
-  //     .get(`/api/feedback/feedback/${postDetail.commentFeedbackId}/comment`)
-  //       .then((response) => (response &&  setAdminCheck(response.data.config)));
-  // }, [postDetail?.commentFeedbackId]);
-
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     getFileIds();
     setCreatorId(denizenId!);
-
-    // const result = adminCheck.managerPatronKeys && adminCheck.managerPatronKeys.some((item: any) => item === patronInfo.getDenizenId());
-    // if(result === true) setState(true);
-    // else {setState(false)}
 
   }, [postDetail]);
 
@@ -98,26 +81,33 @@ function CommunityDiscussionContainer() {
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-      if (origin === '') {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
+    if (originArr && originArr.length > 0) {
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    } else {
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
 

@@ -10,6 +10,7 @@ async function parseLectureInstructor(cardContents: CardContents) {
       .then(r => {
         if (r !== undefined) {
           c.memberSummary = {
+            employeeId: r.memberSummary.employeeId,
             department: r.memberSummary.department,
             email: r.memberSummary.email,
             name: r.memberSummary.name,

@@ -22,6 +22,7 @@ import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -102,7 +103,9 @@ function getLectureTags(cubeDetail: CubeDetail): LectureTags {
   };
 }
 
-async function getLectureInstructor(cubeDetail: CubeDetail) {
+async function getLectureInstructor(
+  cubeDetail: CubeDetail
+): Promise<LectureInstructor> {
   const {
     cubeContents: { instructors },
   } = cubeDetail;
@@ -111,6 +114,7 @@ async function getLectureInstructor(cubeDetail: CubeDetail) {
       .then(r => {
         if (r !== undefined) {
           c.memberSummary = {
+            employeeId: r.memberSummary.employeeId,
             department: r.memberSummary.department,
             email: r.memberSummary.email,
             name: r.memberSummary.name,

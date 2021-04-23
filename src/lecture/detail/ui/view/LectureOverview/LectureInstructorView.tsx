@@ -7,7 +7,7 @@ import LectureApi from 'layout/UserApp/present/apiclient/LectureApi';
 interface LectureInstructorViewProps {
   lectureInstructor: LectureInstructor;
 }
-
+/*eslint-disable*/
 function Represent() {
   return <img src={REPRESENT_IMAGE} className="p-label" />;
 }
@@ -38,9 +38,17 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
               >
                 {representative === true && <Represent />}
                 <div className="pic s80">
-                  {/*employeeId && employeeId != '' &&
-                  <img alt="프로필사진" className="ui image" src={`https://mysuni.sk.com/profile/photo/skcc/${employeeId}.jpg`} />
-          */}
+                  {/* {memberSummary?.employeeId &&
+                    memberSummary?.employeeId != '' && (
+                      <img
+                        alt="프로필사진"
+                        className="ui image"
+                        src={
+                          'https://mysuni.sk.com/profile/photo' +
+                          `${memberSummary?.photoId}`
+                        }
+                      />
+                    )} */}
                   {memberSummary?.photoId && (
                     <img
                       alt="프로필사진"

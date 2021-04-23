@@ -32,21 +32,29 @@ const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeV
             </div>
           </div>
           <div className="scrolling lms-badge-list">
-            <ul className="belt">
-              {lectureBadge.badges.map(badge => (
-                <li>
-                  <BadgeView
-                    id={badge.badgeId}
-                    name={badge.name}
-                    level="Level1"
-                    iconUrl={badge.iconUrl}
-                    categoryId={badge.mainCategoryId}
-                    badgeSize={BadgeSize.Small}
-                    badgeStyle={BadgeStyle.List}
-                  />
-                </li>
-              ))}
-            </ul>
+            <div className="badge-list-type">
+              <ul className="belt">
+                {lectureBadge.badges.map(bundle => {
+                  const { badge, badgeCategory } = bundle;
+                  return (
+                    <li>
+                      <BadgeView
+                        id={badge.id}
+                        name={badge.name}
+                        level="Level1"
+                        iconUrl={badge.iconUrl}
+                        categoryId={badgeCategory.id}
+                        badgeSize={BadgeSize.Small}
+                        badgeStyle={BadgeStyle.List}
+                        badgeColor={badgeCategory.themeColor}
+                        backgroundImagePath={badgeCategory.backgroundImagePath}
+                        topImagePath={badgeCategory.topImagePath}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

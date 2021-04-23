@@ -106,7 +106,7 @@ export const EnrollingRibbon = ({ model }: EnrollingRibbonProps) => (
       <Label className="done">정원 마감</Label>
     )}
 
-    { model.studentCount < model.capacity && model.differDays === 0 ? <Label className="day">D-DAY</Label>
+    { model.studentCount < model.capacity && model.differDays === 0 ? <Label className="day">오늘 마감</Label>
      : <Label className="day">D-{model.differDays}</Label> }
   </div>
 );
