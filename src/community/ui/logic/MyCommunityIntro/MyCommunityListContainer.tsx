@@ -101,16 +101,16 @@ function MyCommunityListContainer() {
         </div>
         {myCommunityIntro.communitiesTotalCount >
           myCommunityIntro.communitiesOffset && (
-            <div className="more-comments community-side">
-              <Button
-                icon
-                className="left moreview"
-                onClick={requestAppendMyCommunityList}
-              >
-                <Icon className="moreview" /> list more
-              </Button>
-            </div>
-          )}
+          <div className="more-comments community-side">
+            <Button
+              icon
+              className="left moreview"
+              onClick={requestAppendMyCommunityList}
+            >
+              <Icon className="moreview" /> list more
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

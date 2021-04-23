@@ -6,6 +6,10 @@ type RelatedUrlList = {
   url: string;
 };
 
+type RelatedUrlList = {
+  title: string;
+  url: string;
+};
 export interface CommunityPostDetail {
   id: string;
   postId: string;

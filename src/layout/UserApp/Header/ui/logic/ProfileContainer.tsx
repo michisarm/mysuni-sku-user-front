@@ -148,19 +148,19 @@ class ProfileContainer extends Component<Props, State> {
               (menuAuth: PageElement) =>
                 menuAuth.position === 'TopMenu' && menuAuth.type === 'MyPage'
             ) && (
-                <li>
-                  <a
-                    href="#"
-                    onClick={e => {
-                      this.props.history.push(myTrainingRoutePaths.myPage());
-                      e.preventDefault();
-                    }}
-                  >
-                    <i aria-hidden="true" className="balloon mypage icon" />
-                    <span>My Page</span>
-                  </a>
-                </li>
-              )}
+              <li>
+                <a
+                  href="#"
+                  onClick={e => {
+                    this.props.history.push(myTrainingRoutePaths.myPage());
+                    e.preventDefault();
+                  }}
+                >
+                  <i aria-hidden="true" className="balloon mypage icon" />
+                  <span>My Page</span>
+                </a>
+              </li>
+            )}
             {/* <li>
               <a
                 href="#"

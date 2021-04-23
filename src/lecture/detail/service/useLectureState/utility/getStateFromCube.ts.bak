@@ -70,6 +70,8 @@ async function submit(params: LectureParams, round: number, student?: Student) {
     proposalState: 'Submitted',
     classroomId: '',
     approvalProcess: false,
+    enrollingAvailable: false,
+    sendmailFlag: false,
   };
   if (student !== undefined && student !== null) {
     const { round, name } = student;
@@ -80,6 +82,8 @@ async function submit(params: LectureParams, round: number, student?: Student) {
       enClosed: false,
       classroomId: '',
       approvalProcess: false,
+      enrollingAvailable: false,
+      sendmailFlag: false,
     };
   }
   await registerStudent(nextStudentCdo);
@@ -100,6 +104,8 @@ async function mClassroomSubmit(
     proposalState: 'Submitted',
     classroomId: classroom.id,
     approvalProcess: classroom.freeOfCharge.approvalProcess,
+    enrollingAvailable: classroom.enrolling.enrollingAvailable,
+    sendmailFlag: classroom.freeOfCharge.sendmailFlag,
   };
   if (
     student?.proposalState === 'Canceled' ||
@@ -429,6 +435,8 @@ async function approve(
     proposalState: 'Approved',
     classroomId: '',
     approvalProcess: false,
+    enrollingAvailable: false,
+    sendmailFlag: false,
   };
   if (student !== undefined && student !== null) {
     const { round, name } = student;
@@ -439,6 +447,8 @@ async function approve(
       enClosed: false,
       classroomId: '',
       approvalProcess: false,
+      enrollingAvailable: false,
+      sendmailFlag: false,
     };
   }
   await registerStudent(nextStudentCdo);
@@ -470,6 +480,8 @@ async function join(params: LectureParams, round: number, student?: Student) {
     proposalState: 'Submitted',
     classroomId: '',
     approvalProcess: false,
+    enrollingAvailable: false,
+    sendmailFlag: false,
   };
   if (student !== undefined && student !== null) {
     const { round, name } = student;
@@ -480,6 +492,8 @@ async function join(params: LectureParams, round: number, student?: Student) {
       enClosed: false,
       classroomId: '',
       approvalProcess: false,
+      enrollingAvailable: false,
+      sendmailFlag: false,
     };
   }
 

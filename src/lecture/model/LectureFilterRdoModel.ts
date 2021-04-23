@@ -4,9 +4,8 @@ import { patronInfo } from '@nara.platform/dock';
 import OrderByType from './OrderByType';
 import SkProfileService from '../../profile/present/logic/SkProfileService';
 
-
 interface Props {
-  skProfileService?: SkProfileService,
+  skProfileService?: SkProfileService;
 }
 
 class LectureFilterRdoModel {
@@ -37,7 +36,12 @@ class LectureFilterRdoModel {
     });
   }
 
-  static newLectures(limit: number, offset: number, order: OrderByType = OrderByType.Time, channelIds: string[] = []) {
+  static newLectures(
+    limit: number,
+    offset: number,
+    order: OrderByType = OrderByType.Time,
+    channelIds: string[] = []
+  ) {
     //
     return new LectureFilterRdoModel({
       orderBy: order,
@@ -47,7 +51,13 @@ class LectureFilterRdoModel {
     });
   }
 
-  static lrsLectures(limit: number, offset: number, email?: string, order: OrderByType = OrderByType.Time, channelIds: string[] = []) {
+  static lrsLectures(
+    limit: number,
+    offset: number,
+    email?: string,
+    order: OrderByType = OrderByType.Time,
+    channelIds: string[] = []
+  ) {
     //
     if (!email) {
       email = patronInfo.getPatronEmail();
@@ -62,16 +72,20 @@ class LectureFilterRdoModel {
     });
   }
 
-  static enrLectures(limit: number, offset: number, excludeClosed: boolean, order: OrderByType = OrderByType.Time) {
+  static enrLectures(
+    limit: number,
+    offset: number,
+    excludeClosed: boolean,
+    order: OrderByType = OrderByType.Time
+  ) {
     //
     return new LectureFilterRdoModel({
       orderBy: order,
       excludeClosed,
       limit,
-      offset
+      offset,
     });
   }
-
 }
 
 decorate(LectureFilterRdoModel, {

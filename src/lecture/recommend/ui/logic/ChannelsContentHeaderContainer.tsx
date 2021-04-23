@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -16,30 +15,30 @@ import ContentHeaderRecommand from 'layout/ContentHeader/ContentHeaderRecommand'
 import ChannelsHeaderInfoContainer from './ChannelsHeaderInfoContainer';
 import { SkProfileModel } from 'profile/model';
 
-
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService
-  skProfileService?: SkProfileService
-  collegeLectureCountService?: CollegeLectureCountService
-  channels: ChannelModel[]
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  collegeLectureCountService?: CollegeLectureCountService;
+  channels: ChannelModel[];
 }
 
 interface States {
   companyCode: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'profile.skProfileService',
-  'lecture.collegeLectureCountService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'profile.skProfileService',
+    'lecture.collegeLectureCountService'
+  )
+)
 @observer
 @reactAutobind
 class ChannelsContentHeaderContainer extends Component<Props, States> {
-
   state = {
-    companyCode: ''
-  }
+    companyCode: '',
+  };
 
   //
   componentDidMount(): void {
@@ -50,10 +49,9 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
     //
     const { skProfileService, collegeLectureCountService } = this.props;
 
-    skProfileService!.findSkProfile()
-    .then((profile: SkProfileModel) => {
-      this.setState({companyCode: profile.member.companyCode})
-    })
+    skProfileService!.findSkProfile().then((profile: SkProfileModel) => {
+      this.setState({ companyCode: profile.member.companyCode });
+    });
     skProfileService!.findStudySummary();
     collegeLectureCountService!.findCollegeLectureCounts();
     //여기서?????? 최근학습중인 채널????
@@ -67,7 +65,10 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
   getFavoriteChannelButton() {
     //
     return (
-      <Label className="onlytext" onClick={() => this.onClickActionLog('관심 Channel')}>
+      <Label
+        className="onlytext"
+        onClick={() => this.onClickActionLog('관심 Channel')}
+      >
         <span className="personal-channel-tit">
           <a>관심채널</a>
         </span>
@@ -78,12 +79,17 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
   render() {
     //
     const { companyCode } = this.state;
-    const { skProfileService, collegeLectureCountService, channels } = this.props;
+    const {
+      skProfileService,
+      collegeLectureCountService,
+      channels,
+    } = this.props;
     const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
     const { member } = skProfile;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
-      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    const favoriteChannels = studySummaryFavoriteChannels.map(
+      channel =>
+        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
 
     return (
@@ -103,10 +109,10 @@ class ChannelsContentHeaderContainer extends Component<Props, States> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          { companyCode && (
-            <ChannelsHeaderInfoContainer companyCode={companyCode}/>
+          {companyCode && (
+            <ChannelsHeaderInfoContainer companyCode={companyCode} />
           )}
-        {/* <div className="recommend-info">
+          {/* <div className="recommend-info">
           <div className="personal-channel-list">
             <span>최근 학습중인 채널</span>
             <Button className="toggle toggle4" aria-pressed="false">

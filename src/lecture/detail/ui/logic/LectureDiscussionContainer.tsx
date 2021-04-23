@@ -201,7 +201,7 @@ export default function LectureDiscussionContainer() {
 
   return (
     <>
-      {lectureDiscussion && (
+      {lectureDiscussion && lectureFeedbackContent !== undefined && (
         <>
           <div className="discuss-wrap">
             <div className="discuss-box">

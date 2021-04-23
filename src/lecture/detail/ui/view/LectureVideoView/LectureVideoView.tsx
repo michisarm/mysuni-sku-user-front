@@ -209,6 +209,109 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     }
   };
 
+  const [quizPop, setQuizPop] = useState<boolean>(false);
+  const [quizShowTime, setQuizShowTime] = useState<number[]>();
+  const [quizCurrentIndex, setQuizCurrentIndex] = useState<number>(0);
+  const [_, lectureMedia] = useLectureMedia();
+
+  const videoControll = {
+    play: () => embedApi.playVideo(),
+    stop: () => embedApi.pauseVideo(),
+  };
+
+  useEffect(() => {
+    const matchesQuizTime: number = Math.floor(currentTime);
+    const learningState = getLectureConfirmProgress()?.learningState;
+    const pathnameChangeCheck = sessionStorage.getItem('lectureVideoView');
+
+    if (pathnameChangeCheck && panoptoState === 1) {
+      setTimeout(() => {
+        sessionStorage.removeItem('lectureVideoView');
+      }, 1000);
+    }
+
+    if (
+      learningState !== 'Passed' && // 학습이수 체크
+      matchesQuizTime !== undefined && // quizShowTime 배열에서 체크할 currentTime
+      quizShowTime && // 퀴즈 등장 시간
+      matchesQuizTime === quizShowTime[quizCurrentIndex] && // 퀴즈 등장 시간
+      lectureMedia?.mediaContents.internalMedias[0].quizIds && // quizIds 체크
+      pathnameChangeCheck !== 'true'
+    ) {
+      if (
+        scroll > videoPosition &&
+        quizShowTime.indexOf(matchesQuizTime) !== -1
+      ) {
+        setPauseVideoSticky(true);
+        setQuizPop(false);
+        videoControll.stop();
+        reactAlert({
+          title: '영상이 중지됐습니다.',
+          message: '퀴즈 답안을 제출하고 이어보기를 할 수 있습니다.',
+          onClose: () => onScrollTop(),
+        });
+      } else {
+        setPauseVideoSticky(false);
+        closeFullScreen();
+        setQuizPop(true);
+        videoControll.stop();
+      }
+    }
+  }, [currentTime, scroll, quizShowTime]);
+
+  useEffect(() => {
+    setQuizPop(false);
+    if (lectureMedia?.mediaContents.internalMedias[0].quizIds) {
+      const quizIds = lectureMedia?.mediaContents.internalMedias[0].quizIds;
+      const quizId = quizIds?.join(',');
+      const getQuizTable = async () => {
+        await findAllQuiz(quizId).then(res => {
+          setQuizShowTime(
+            res
+              .sort(
+                (a: QuizTableList, b: QuizTableList) => a.showTime - b.showTime
+              )
+              .map((quiz: QuizTableList) => quiz.showTime)
+          );
+        });
+      };
+      getQuizTable();
+      return;
+    }
+  }, [lectureMedia]);
+
+  useEffect(() => {
+    sessionStorage.setItem('lectureVideoView', JSON.stringify(true));
+  }, [pathname]);
+
+  const onCompletedQuiz = useCallback(() => {
+    if (quizPop) {
+      setQuizPop(false);
+      videoControll.play();
+    }
+    if (quizShowTime && quizShowTime?.length - 1 >= quizCurrentIndex) {
+      setQuizCurrentIndex(quizCurrentIndex);
+    }
+    setQuizCurrentIndex(quizCurrentIndex + 1);
+  }, [quizPop, quizCurrentIndex]);
+
+  const onScrollTop = () => {
+    window.scrollTo(0, 124);
+  };
+
+  const closeFullScreen = () => {
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
   return (
     <div
       className={

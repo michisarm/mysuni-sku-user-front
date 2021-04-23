@@ -1,27 +1,25 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import { Area } from 'tracker/model';
 // import { Icon } from 'semantic-ui-react';
 
-
 interface Props {
-  topSiteMaps: SiteMap[]
-  bottomSiteMaps: SiteMap[]
-  onClickItem: (e: any, data: any) => void,
+  topSiteMaps: SiteMap[];
+  bottomSiteMaps: SiteMap[];
+  onClickItem: (e: any, data: any) => void;
 }
 
 export interface SiteMap {
-  name: React.ReactNode
-  items: SiteMapItem[]
-  countable?: boolean
+  name: React.ReactNode;
+  items: SiteMapItem[];
+  countable?: boolean;
 }
 
 export interface SiteMapItem {
-  name: string
-  path: string
-  count?: number
+  name: string;
+  path: string;
+  count?: number;
 }
 
 @reactAutobind
@@ -40,10 +38,12 @@ class SiteMapView extends Component<Props> {
             <ul>
               {siteMap.items.map((siteMapItem, number) => (
                 <li key={`site-map-item-${number}`}>
-                  <a onClick={(e) => onClickItem(e, { item: siteMapItem })}>
+                  <a onClick={e => onClickItem(e, { item: siteMapItem })}>
                     <span className="underline">{siteMapItem.name}</span>
-                    { siteMap.countable && (
-                      <span className="count">(<em>{siteMapItem.count}</em>)</span>
+                    {siteMap.countable && (
+                      <span className="count">
+                        (<em>{siteMapItem.count}</em>)
+                      </span>
                     )}
                     {/*<Icon className="new16 icon" /><span className="blind">new</span>*/}
                   </a>

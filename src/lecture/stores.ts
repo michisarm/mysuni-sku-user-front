@@ -1,4 +1,3 @@
-
 import LectureCardService from './shared/present/logic/LectureCardService';
 import LectureService from './shared/present/logic/LectureService';
 import ProgramLectureService from './shared/present/logic/ProgramLectureService';
@@ -21,8 +20,6 @@ import BadgeCardService from '../certification/present/logic/BadgeCardService';
 import BadgeCategoryService from '../certification/present/logic/BadgeCategoryService';
 import BadgeStudentService from '../certification/present/logic/BadgeStudentService';
 import CardStudentService from '../certification/present/logic/CardStudentService';
-
-
 
 export default {
   lecture: {
@@ -59,6 +56,9 @@ export default {
     badgeCardService: BadgeCardService.instance,
     badgeCategoryService: BadgeCategoryService.instance,
     badgeStudentService: BadgeStudentService.instance,
+  },
+  enrLecture: {
+    enrLectureService: ENRLectureService.instance,
   },
 };
 

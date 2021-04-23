@@ -42,7 +42,11 @@ class AppLayoutContainer extends Component<Props> {
     if (obj != null && !obj.pisAgreement.signed) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    } else if (obj != null && obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
+    } else if (
+      obj != null &&
+      obj.pisAgreement.signed &&
+      compareDate(obj.pisAgreement.date)
+    ) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
     } else if (obj != null && !obj.studySummaryConfigured) {

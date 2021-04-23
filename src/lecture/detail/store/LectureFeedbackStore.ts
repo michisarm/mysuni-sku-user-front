@@ -5,7 +5,12 @@ const [
   setLectureFeedbackContent,
   onLectureFeedbackContent,
   getLectureFeedbackContent,
-  useLectureFeedbackContent
+  useLectureFeedbackContent,
 ] = createStore<LectureFeedbackContent>();
 
-export { setLectureFeedbackContent, onLectureFeedbackContent, getLectureFeedbackContent, useLectureFeedbackContent };
+export {
+  setLectureFeedbackContent,
+  onLectureFeedbackContent,
+  getLectureFeedbackContent,
+  useLectureFeedbackContent,
+};

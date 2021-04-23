@@ -6,6 +6,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { ActionLogService, PageService } from 'shared/stores';
 import {
+  ENRLectureService,
   LRSLectureService,
   NEWLectureService,
   POPLectureService,
@@ -72,6 +73,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     lrsLectureService,
     enrLectureService,
     actionLogService,
+    enrLectureService,
     setNewOrder,
     showTotalCount,
     setPageTitle,
@@ -608,7 +610,7 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
-    return page && page.pageNo < page.totalPages;
+  return page && page.pageNo < page.totalPages;
   };
 
   /* render functions by 김동구 */
@@ -713,3 +715,5 @@ export default inject(
     'enrLecture.enrLectureService'
   )
 )(withRouter(observer(NewLearningListView)));
+
+

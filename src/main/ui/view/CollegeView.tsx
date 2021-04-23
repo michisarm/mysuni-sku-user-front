@@ -21,11 +21,11 @@ const emptyAlert = (e: any) => {
   });
 };
 
-function pageMove(path: string){
+function pageMove(path: string) {
   // const history = useHistory();
   // history.push(path);
   alert(1);
-  return (<Tab.Pane attached={false}></Tab.Pane>);
+  return <Tab.Pane attached={false}></Tab.Pane>;
 }
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -896,7 +896,9 @@ const panes = [
           </div>
           <div className="college-cont-map">
             <div className="belt">
-              <div className="label">Geopolitics & Biz / Managing Global Biz. 커리큘럼</div>
+              <div className="label">
+                Geopolitics & Biz / Managing Global Biz. 커리큘럼
+              </div>
               <div className="map">
                 <Image src={`${PUBLIC_URL}/images/all/img-co-6-1.png`} alt="" />
               </div>
@@ -1434,7 +1436,7 @@ const panes = [
 
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
-              <div className="semi-topBackground"/>
+              <div className="semi-topBackground" />
               <div className="map">
                 <div className="semi-background">
                   <div className="semi_wrap">
@@ -2842,8 +2844,7 @@ const semiconductorLinks: any = {
     '/lecture/card/CARD-534/view',
   'News로 본 반도체 - 다가온 미래, Big Data 시대의 경쟁력 강화':
     '/lecture/card/CARD-533/view',
-  'News로 본 반도체 - Data Centric World':
-    '/lecture/card/CARD-6mb/view',
+  'News로 본 반도체 - Data Centric World': '/lecture/card/CARD-6mb/view',
   'News로 본 반도체 - 반도체 제품 분류별 시장 분석과 AI 반도체':
     '/lecture/card/CARD-6mc/view',
   'News로 본 반도체 - 반도체 Value Chain In-depth 분석':
@@ -2862,84 +2863,49 @@ const semiconductorLinks: any = {
     '/lecture/card/CARD-6co/view',
   '반도체 Industry 이해 Part5. 무한 경쟁시대의 미래 전망 - 반도체 기업들의 도전과 과제':
     '/lecture/card/CARD-6jt/view',
-  '한방에 이해하는 꿀잼 반도체':
-    '/lecture/card/CARD-532/view',
-  '슬기로운 IT생활 - 전자기기의 구조와 동작원리':
-    '/lecture/card/CARD-5xw/view',
-  '반도체 What - 반도체 Tech 지식백과':
-    '/lecture/card/CARD-531/view',
-  '반도체 제대로 이해하기 - 기본편':
-    '/lecture/card/CARD-530/view',
+  '한방에 이해하는 꿀잼 반도체': '/lecture/card/CARD-532/view',
+  '슬기로운 IT생활 - 전자기기의 구조와 동작원리': '/lecture/card/CARD-5xw/view',
+  '반도체 What - 반도체 Tech 지식백과': '/lecture/card/CARD-531/view',
+  '반도체 제대로 이해하기 - 기본편': '/lecture/card/CARD-530/view',
   '[CEO특강_SK하이닉스 이석희 사장] 반도체, 미래를 열다':
     '/lecture/card/CARD-5pa/view',
-  '[Computing System 이해] 컴퓨터 동작의 이해':
-    '/lecture/card/CARD-7bf/view',
-  '[AI HW 개론] AI Hardware':
-    '/lecture/card/CARD-8h6/view',
-  '[AI HW 개론] AI Model':
-    '/lecture/card/CARD-7sd/view',
-  '[AI HW 개론] AI Platform':
-    '/lecture/card/CARD-7ns/view',
-  '[HW 개발] Fundamentals':
-    '/lecture/card/CARD-7gh/view',
-  '[HW 개발] CPU Micro-Architecture':
-    '/lecture/card/CARD-7vh/view',
-  '[HW 개발] Analog Design':
-    '/lecture/card/CARD-847/view',
-  '[HW 개발] Digital Design':
-    '/lecture/card/CARD-7rf/view',
-  '[HW 개발] SoC 설계 Flow':
-    '/lecture/card/CARD-7ep/view',
-  '[HW 개발] SoC 설계 사례 - Mobile Computing':
-    '/lecture/card/CARD-7ec/view',
-  '[AI HW 이해] DNN HW 가속기 아키텍처':
-    '/lecture/card/CARD-7kt/view',
-  '[AI HW 이해] DNN 알고리즘 및 워크로드 특성':
-    '/lecture/card/CARD-7j4/view',
-  '첨단 소재':
-    '/lecture/card/CARD-97q/view',
-  'Lithography 공정 및 소재':
-    '/lecture/card/CARD-8jl/view',
-  'Etching 공정 및 소재':
-    '/lecture/card/CARD-8bf/view',
-  'Metallization 공정 및 소재':
-    '/lecture/card/CARD-84s/view',
-  'Doping 공정 및 소재':
-    '/lecture/card/CARD-7e2/view',
-  'Thin Film 공정 및 소재':
-    '/lecture/card/CARD-78k/view',
-  'Image Sensor 소자 및 소재':
-    '/lecture/card/CARD-97n/view',
-  '화합물 반도체 소자 및 소재':
-    '/lecture/card/CARD-7mg/view',
-  'Solar Cell 소자 및 소재':
-    '/lecture/card/CARD-7fr/view',
+  '[Computing System 이해] 컴퓨터 동작의 이해': '/lecture/card/CARD-7bf/view',
+  '[AI HW 개론] AI Hardware': '/lecture/card/CARD-8h6/view',
+  '[AI HW 개론] AI Model': '/lecture/card/CARD-7sd/view',
+  '[AI HW 개론] AI Platform': '/lecture/card/CARD-7ns/view',
+  '[HW 개발] Fundamentals': '/lecture/card/CARD-7gh/view',
+  '[HW 개발] CPU Micro-Architecture': '/lecture/card/CARD-7vh/view',
+  '[HW 개발] Analog Design': '/lecture/card/CARD-847/view',
+  '[HW 개발] Digital Design': '/lecture/card/CARD-7rf/view',
+  '[HW 개발] SoC 설계 Flow': '/lecture/card/CARD-7ep/view',
+  '[HW 개발] SoC 설계 사례 - Mobile Computing': '/lecture/card/CARD-7ec/view',
+  '[AI HW 이해] DNN HW 가속기 아키텍처': '/lecture/card/CARD-7kt/view',
+  '[AI HW 이해] DNN 알고리즘 및 워크로드 특성': '/lecture/card/CARD-7j4/view',
+  '첨단 소재': '/lecture/card/CARD-97q/view',
+  'Lithography 공정 및 소재': '/lecture/card/CARD-8jl/view',
+  'Etching 공정 및 소재': '/lecture/card/CARD-8bf/view',
+  'Metallization 공정 및 소재': '/lecture/card/CARD-84s/view',
+  'Doping 공정 및 소재': '/lecture/card/CARD-7e2/view',
+  'Thin Film 공정 및 소재': '/lecture/card/CARD-78k/view',
+  'Image Sensor 소자 및 소재': '/lecture/card/CARD-97n/view',
+  '화합물 반도체 소자 및 소재': '/lecture/card/CARD-7mg/view',
+  'Solar Cell 소자 및 소재': '/lecture/card/CARD-7fr/view',
   'Smart Factory구현을 위한 제조 시스템 이해와 의사결정':
     '/lecture/card/CARD-733/view',
-  'Smart Factory의 구성요소와 사례':
-    '/lecture/card/CARD-7b2/view',
-  'Smart Factory 시스템의 연결과 지능화':
-    '/lecture/card/CARD-7ck/view',
-  '첨단 기술과 제조의 만남':
-    '/lecture/card/CARD-7k7/view',
-  'AI 알고리즘 기반 반도체 Factory':
-    '/lecture/card/CARD-84n/view',
+  'Smart Factory의 구성요소와 사례': '/lecture/card/CARD-7b2/view',
+  'Smart Factory 시스템의 연결과 지능화': '/lecture/card/CARD-7ck/view',
+  '첨단 기술과 제조의 만남': '/lecture/card/CARD-7k7/view',
+  'AI 알고리즘 기반 반도체 Factory': '/lecture/card/CARD-84n/view',
   '반도체 FAB 자동화 이해':
     '/lecture/card/CARD-7vi/cube/CUBE-afs/view/ClassRoomLecture',
   'Neuromorphic Computing : Challenges and Opportunities':
     '/lecture/card/CARD-77f/view',
-  'AI반도체 - Next Tech Trend':
-    '/lecture/card/CARD-7a1/view',
-  '자동차 반도체, 기회와 도전':
-    '/lecture/card/CARD-7bv/view',
-  '양자 컴퓨팅과 양자 암호 기술의 현재와 미래':
-    '/lecture/card/CARD-7ip/view',
+  'AI반도체 - Next Tech Trend': '/lecture/card/CARD-7a1/view',
+  '자동차 반도체, 기회와 도전': '/lecture/card/CARD-7bv/view',
+  '양자 컴퓨팅과 양자 암호 기술의 현재와 미래': '/lecture/card/CARD-7ip/view',
   'Next Generation Semiconductor Packaging Technology':
     '/lecture/card/CARD-8c8/view',
-  '반도체 FAB 생산 운영 전문가':
-    '/lecture/card/CARD-9nm/view',
-  '반도체 FAB 최적화 전문가':
-    '/lecture/card/CARD-9np/view',
-  'Covid-19이 반도체 Supply Chain에 미치는 영향':
-    '/lecture/card/CARD-68a/view',
+  '반도체 FAB 생산 운영 전문가': '/lecture/card/CARD-9nm/view',
+  '반도체 FAB 최적화 전문가': '/lecture/card/CARD-9np/view',
+  'Covid-19이 반도체 Supply Chain에 미치는 영향': '/lecture/card/CARD-68a/view',
 };

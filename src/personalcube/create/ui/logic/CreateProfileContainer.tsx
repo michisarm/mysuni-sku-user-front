@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -15,14 +14,13 @@ import CreateMovieModalContainer from './CreateMovieModalContainer';
 import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  skProfileService?: SkProfileService,
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'profile.skProfileService',
-))
+@inject(
+  mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService')
+)
 @reactAutobind
 @observer
 class CreateProfileContainer extends React.Component<Props> {
@@ -62,16 +60,21 @@ class CreateProfileContainer extends React.Component<Props> {
         </ContentHeader.Cell>
         <ContentHeader.Cell className="create-wrap">
           <Button className="personal line" onClick={this.onClickCreate}>
-            <Icon className="create16" /><span className="blind">create</span>
+            <Icon className="create16" />
+            <span className="blind">create</span>
             <span>Create</span>
           </Button>
           <CreateMovieModalContainer
-            trigger={(
-              <Button className="personal line" onClick={this.onClickCreateMovie}>
-                <Icon className="movie16" /><span className="blind">create movie</span>
+            trigger={
+              <Button
+                className="personal line"
+                onClick={this.onClickCreateMovie}
+              >
+                <Icon className="movie16" />
+                <span className="blind">create movie</span>
                 <span>Create Movie</span>
               </Button>
-            )}
+            }
           />
         </ContentHeader.Cell>
       </ContentHeader>

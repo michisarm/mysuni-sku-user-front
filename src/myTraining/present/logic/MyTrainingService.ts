@@ -124,12 +124,12 @@ class MyTrainingService {
     /* 메인페이지에서 호출 시. */
     const rdo = fromMain
       ? MyTrainingRdoModel.newWithStateFromMain(
-        state,
-        limit,
-        offset,
-        channelIds,
-        'main'
-      )
+          state,
+          limit,
+          offset,
+          channelIds,
+          'main'
+        )
       : MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
 
     const offsetList: OffsetElementList<MyTrainingModel> = await this.myTrainingApi.findAllMyTrainings(
@@ -403,7 +403,10 @@ class MyTrainingService {
 
   @action
   async findAllTableViews() {
-    if (this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress) {
+    if (
+      this._myTrainingFilterRdo.myTrainingState ===
+      MyLearningContentType.InProgress
+    ) {
       if (this.inProgressTableViews.length <= 0) {
         this.findInProgressTableViews();
       }
@@ -427,7 +430,9 @@ class MyTrainingService {
       }
     }
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
+      this._myTrainingFilterRdo
+    );
 
     if (
       offsetTableViews &&
@@ -435,7 +440,9 @@ class MyTrainingService {
       offsetTableViews.results.length > 0
     ) {
       runInAction(() => {
-        this._myTrainingTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+        this._myTrainingTableViews = offsetTableViews.results.map(
+          result => new MyTrainingTableViewModel(result)
+        );
         this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
       return false;
@@ -446,12 +453,18 @@ class MyTrainingService {
   @action
   async findAllTableViewsWithPage(offset: Offset) {
     if (
-      this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress ||
-      this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.Completed
+      this._myTrainingFilterRdo.myTrainingState ===
+        MyLearningContentType.InProgress ||
+      this._myTrainingFilterRdo.myTrainingState ===
+        MyLearningContentType.Completed
     ) {
       if (this._myTrainingFilterRdo.getFilterCount() === 0) {
         const addTableViews = this.getAddTableViewsFromStorage(offset);
-        const totalCount = this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress ? this.inProgressTableCount : this.completedTableCount;
+        const totalCount =
+          this._myTrainingFilterRdo.myTrainingState ===
+          MyLearningContentType.InProgress
+            ? this.inProgressTableCount
+            : this.completedTableCount;
 
         runInAction(() => {
           this._myTrainingTableViews = addTableViews;
@@ -464,14 +477,18 @@ class MyTrainingService {
 
     this._myTrainingFilterRdo.setOffset(offset);
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
+      this._myTrainingFilterRdo
+    );
 
     if (
       offsetTableViews &&
       offsetTableViews.results &&
       offsetTableViews.results.length
     ) {
-      const addTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+      const addTableViews = offsetTableViews.results.map(
+        result => new MyTrainingTableViewModel(result)
+      );
       runInAction(() => {
         this._myTrainingTableViews = [
           ...this._myTrainingTableViews,
@@ -482,10 +499,15 @@ class MyTrainingService {
     }
   }
 
-  private getAddTableViewsFromStorage(offset: Offset): MyTrainingTableViewModel[] {
+  private getAddTableViewsFromStorage(
+    offset: Offset
+  ): MyTrainingTableViewModel[] {
     const endIndex = offset.offset + offset.limit;
 
-    if (this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.InProgress) {
+    if (
+      this._myTrainingFilterRdo.myTrainingState ===
+      MyLearningContentType.InProgress
+    ) {
       if (this.inProgressTableViews.length <= 0) {
         this.findInProgressTableViews();
       }
@@ -493,7 +515,10 @@ class MyTrainingService {
       return this.inProgressTableViews.slice(0, endIndex);
     }
 
-    if (this._myTrainingFilterRdo.myTrainingState === MyLearningContentType.Completed) {
+    if (
+      this._myTrainingFilterRdo.myTrainingState ===
+      MyLearningContentType.Completed
+    ) {
       if (this.completedTableViews.length <= 0) {
         this.findCompletedTableViews();
       }
@@ -546,14 +571,18 @@ class MyTrainingService {
 
   async findAllInProgressStorage() {
     const filterRdo = MyTrainingFilterRdoModel.createForInProgressStorage();
-    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
+    const offsetInProgress: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
+      filterRdo
+    );
 
     if (
       offsetInProgress &&
       offsetInProgress.results &&
       offsetInProgress.results.length > 0
     ) {
-      this.inProgressTableViews = offsetInProgress.results.map(inProgressTableView => new MyTrainingTableViewModel(inProgressTableView));
+      this.inProgressTableViews = offsetInProgress.results.map(
+        inProgressTableView => new MyTrainingTableViewModel(inProgressTableView)
+      );
       this.inProgressTableCount = offsetInProgress.totalCount;
 
       return this.inProgressTableViews;
@@ -564,14 +593,18 @@ class MyTrainingService {
 
   async findAllCompletedStorage() {
     const filterRdo = MyTrainingFilterRdoModel.createForCompletedStorage();
-    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdo);
+    const offsetCompleted: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(
+      filterRdo
+    );
 
     if (
       offsetCompleted &&
       offsetCompleted.results &&
       offsetCompleted.results.length > 0
     ) {
-      this.completedTableViews = offsetCompleted.results.map(completedTableView => new MyTrainingTableViewModel(completedTableView));
+      this.completedTableViews = offsetCompleted.results.map(
+        completedTableView => new MyTrainingTableViewModel(completedTableView)
+      );
       this.completedTableCount = offsetCompleted.totalCount;
 
       return this.completedTableViews;
@@ -583,13 +616,15 @@ class MyTrainingService {
   findInProgressTableViews() {
     const inProgressJson = sessionStorage.getItem('inProgressTableViews');
     if (inProgressJson) {
-      const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(inProgressJson);
+      const inProgressStorage: MyTrainingTableViewModel[] = JSON.parse(
+        inProgressJson
+      );
 
-      if (
-        inProgressStorage &&
-        inProgressStorage.length > 0
-      ) {
-        this.inProgressTableViews = inProgressStorage.map((inProgress: MyTrainingTableViewModel) => new MyTrainingTableViewModel(inProgress));
+      if (inProgressStorage && inProgressStorage.length > 0) {
+        this.inProgressTableViews = inProgressStorage.map(
+          (inProgress: MyTrainingTableViewModel) =>
+            new MyTrainingTableViewModel(inProgress)
+        );
         this.inProgressTableCount = inProgressStorage.length;
       }
     }
@@ -600,11 +635,10 @@ class MyTrainingService {
     if (completedJson) {
       const completedStorage: any[] = JSON.parse(completedJson);
 
-      if (
-        completedStorage &&
-        completedStorage.length > 0
-      ) {
-        this.completedTableViews = completedStorage.map(completed => new MyTrainingTableViewModel(completed));
+      if (completedStorage && completedStorage.length > 0) {
+        this.completedTableViews = completedStorage.map(
+          completed => new MyTrainingTableViewModel(completed)
+        );
         this.completedTableCount = completedStorage.length;
       }
     }

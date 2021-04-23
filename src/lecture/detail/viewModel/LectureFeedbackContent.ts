@@ -11,4 +11,4 @@ export default interface LectureFeedbackContent {
 type RelatedUrlList = {
   title: string;
   url: string;
-}
+};

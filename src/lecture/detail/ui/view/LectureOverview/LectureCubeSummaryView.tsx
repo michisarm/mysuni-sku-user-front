@@ -32,6 +32,7 @@ function numberWithCommas(x: number) {
 }
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
+  lectureCourseSummary?: LectureCourseSummary;
   lectureInstructor?: LectureInstructor;
   lectureReview?: LectureReview;
   lectureClassroom?: LectureClassroom;
@@ -176,6 +177,7 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
   lectureInstructor,
   lectureReview,
   lectureClassroom,
+  lectureCourseSummary,
 }) {
   let difficultyLevelIcon = 'basic';
   switch (lectureSummary.difficultyLevel) {
@@ -406,6 +408,17 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
         </div>
         <div className="right-area">
           <div className="header-right-link">
+            {lectureCourseSummary?.hasCommunity && (
+              <Link
+                to={`/community/${lectureCourseSummary.communityId}`}
+                target="_blank"
+              >
+                <span className="communityText">
+                  <Icon className="communityLink" />
+                  커뮤니티로 이동
+                </span>
+              </Link>
+            )}
             <a onClick={toggleCubeBookmark}>
               <span>
                 <Icon

@@ -25,12 +25,12 @@ class MainRoutes extends React.Component {
         <Route
           exact
           path="/my-training/learning/:tab"
-          component={MyTrainingPage}
+          component={MyLearningPageV2}
         />
         <Route
           exact
           path="/my-training/learning/:tab/pages/:pageNo"
-          component={MyTrainingPage}
+          component={MyLearningPageV2}
         />
 
         {/* <Redirect exact from="/my-training/learning" to="/my-training/learning/InProgress/pages/1" /> */}

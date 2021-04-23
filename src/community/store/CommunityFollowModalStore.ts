@@ -1,4 +1,5 @@
 import FollowModalIntro from '../viewModel/FollowModalIntro/CommunityFollowModalIntro';
+import FollowingModalIntro from '../viewModel/FollowModalIntro/CommunityFollowingModalIntro';
 import { createStore } from './Store';
 import FollowingModalIntro from '../viewModel/FollowModalIntro/CommunityFollowingModalIntro';
 

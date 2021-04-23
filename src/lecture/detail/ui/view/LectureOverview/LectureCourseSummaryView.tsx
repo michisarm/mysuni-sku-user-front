@@ -164,6 +164,16 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
     setInMyLectureModel(inMyLectureMap?.get(params?.cardId));
   }, [inMyLectureMap, params?.cardId]);
 
+  useEffect(() => {
+    const postService = PostService.instance;
+
+    postService.post.alarmInfo.url =
+      'https://int.mysuni.sk.com/login?contentUrl=/suni-main/lecture/cineroom/ne1-m2-c2/college/' +
+      window.location.href.split('college/')[1];
+    postService.post.alarmInfo.managerEmail = lectureSummary.operator.email;
+    postService.post.alarmInfo.contentsName = lectureSummary.name;
+  }, [lectureSummary]);
+
   return (
     <div className="course-info-header" data-area={Area.CARD_HEADER}>
       <div className="contents-header">

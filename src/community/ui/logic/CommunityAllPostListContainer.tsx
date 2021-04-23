@@ -60,7 +60,6 @@ const CommunityAllPostListContainer: React.FC<CommunityPostListContainerProps> =
       setMenuName(result.name);
       setMenuType(result.type);
     });
-    
   }, [postItems]);
 
   const handelClickCreatePost = () => {};

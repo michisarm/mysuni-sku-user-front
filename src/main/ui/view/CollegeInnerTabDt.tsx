@@ -14,12 +14,11 @@ const emptyAlert = (e: any) => {
 };
 
 const CollegeInnerTabDt = () => {
-  
   const history = useHistory();
-  
+
   const pageMove = (path: string) => {
     history.push(path);
-  }
+  };
 
   const panes = [
     {
@@ -28,7 +27,8 @@ const CollegeInnerTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link to="/lecture/college/CLG00002/channels/pages/1"
+              <Link
+                to="/lecture/college/CLG00002/channels/pages/1"
                 className="item-button"
               >
                 <Image
@@ -47,16 +47,16 @@ const CollegeInnerTabDt = () => {
               방식까지도 바꾸는 포괄적 활동이며, 우리 SK가 추구하는 Deep Change
               실행의 핵심 요소로 자리매김하고 있습니다. <br /> <br />
               DT College에서는 이러한 DT 추진의 근간이라 할 수 있는 Data/Cloud를
-              중심으로 한 Digital 요소 기술을 학습할 수 있는 기회를 제공함은 물론,
-              새로운 고객 경험의 창출, BM/운영 프로세스의 혁신 및 일하는 방식의
-              변화를 이루어낸 다양한 국내외 Business Case들을 폭넓게 학습할 수
-              있습니다. 아울러 주요 Digital 기술에 대해서는 시장에서 인정받는
-              Certificate 취득을 지원할 수 있는 상시적인 프로그램들이 활발하게
-              제공되고 있습니다.
+              중심으로 한 Digital 요소 기술을 학습할 수 있는 기회를 제공함은
+              물론, 새로운 고객 경험의 창출, BM/운영 프로세스의 혁신 및 일하는
+              방식의 변화를 이루어낸 다양한 국내외 Business Case들을 폭넓게
+              학습할 수 있습니다. 아울러 주요 Digital 기술에 대해서는 시장에서
+              인정받는 Certificate 취득을 지원할 수 있는 상시적인 프로그램들이
+              활발하게 제공되고 있습니다.
             </div>
-              <Image src={`${PUBLIC_URL}/images/all/dt-con01-1.png`} alt="" />
+            <Image src={`${PUBLIC_URL}/images/all/dt-con01-1.png`} alt="" />
           </div>
-  
+
           <div className="college-cont-map sub pbtom">
             <div className="belt">
               <div className="label sub">전체 커리큘럼</div>
@@ -64,7 +64,7 @@ const CollegeInnerTabDt = () => {
                 <span className="ai-btn01">Self-directive</span>
                 <span className="ai-btn02 dt">Intensive</span>
               </div>
-  
+
               <div className="dt-background">
                 <div className="dt_belt">
                   <div className="dt_belt_le">
@@ -78,7 +78,7 @@ const CollegeInnerTabDt = () => {
                           <li>SQL</li>
                         </ul>
                       </div>
-  
+
                       <div className="dt-le-item">
                         <div className="bedge-box">
                           <span className="bedge">Badge</span>
@@ -91,7 +91,7 @@ const CollegeInnerTabDt = () => {
                           <li>Cloud 기본 (Azure)</li>
                         </ul>
                       </div>
-  
+
                       <div className="dt-le-item">
                         <h3>Data Analyst Track</h3>
                         <ul>
@@ -103,7 +103,7 @@ const CollegeInnerTabDt = () => {
                         </ul>
                       </div>
                     </div>
-  
+
                     <div className="dt-le-list two">
                       <div className="dt-le-item">
                         <h3 className="dt_intro_h3">DT Technologies</h3>
@@ -115,7 +115,7 @@ const CollegeInnerTabDt = () => {
                           <li>Big Data</li>
                         </ul>
                       </div>
-  
+
                       <div className="dt-le-item other">
                         <div className="bedge-box">
                           <span className="bedge">Badge</span>
@@ -133,7 +133,7 @@ const CollegeInnerTabDt = () => {
                       </div>
                     </div>
                   </div>
-  
+
                   <div className="dt_belt_rg">
                     <div className="dt-le-list">
                       <div className="dt-le-item">
@@ -149,7 +149,7 @@ const CollegeInnerTabDt = () => {
                     </div>
                   </div>
                 </div>
-  
+
                 <div className="dt_belt">
                   <div className="dt-bottom">
                     <div className="bedge-box">
@@ -173,8 +173,7 @@ const CollegeInnerTabDt = () => {
     {
       menuItem: 'AI/DT Literacy',
       render: () => (
-        (window.location.href =
-          '/certification/badge/badge-detail/BADGE-2t'),
+        (window.location.href = '/certification/badge/badge-detail/BADGE-2t'),
         (<Tab.Pane attached={false}></Tab.Pane>)
       ),
     },
@@ -197,7 +196,7 @@ const CollegeInnerTabDt = () => {
               </Link>
             </div>
           </div>
-  
+
           {/* 컬리지 텍스트 */}
           <div className="college-sub-txt">
             <strong>
@@ -217,7 +216,7 @@ const CollegeInnerTabDt = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
@@ -236,7 +235,9 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-7vt/cube/CUBE-ag2/view/ELearning">엣지 컴퓨팅 기술의 Biz 활용 현황 및 향후 전망</Link>
+                      <Link to="/lecture/card/CARD-7vt/cube/CUBE-ag2/view/ELearning">
+                        엣지 컴퓨팅 기술의 Biz 활용 현황 및 향후 전망
+                      </Link>
                     </li>
                     <li>
                       <Link to="/lecture/card/CARD-6ya/cube/CUBE-9fw/view/ELearning">
@@ -251,12 +252,14 @@ const CollegeInnerTabDt = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-672/cube/CUBE-8qc/view/ClassRoomLecture">블록체인의 도전, 어디쯤 지나고 있나?</Link>
+                      <Link to="/lecture/card/CARD-672/cube/CUBE-8qc/view/ClassRoomLecture">
+                        블록체인의 도전, 어디쯤 지나고 있나?
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Zoom-in Mobility Biz</h3>
                 <div className="ai_box">
@@ -267,43 +270,55 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-8j2/view">Mobility Biz의 경쟁흐름을 읽어내는 즐거움</Link>
+                      <Link to="/lecture/card/CARD-8j2/view">
+                        Mobility Biz의 경쟁흐름을 읽어내는 즐거움
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-9gk/view">모빌리티 Biz 분야별 업데이트</Link>
+                      <Link to="/lecture/card/CARD-9gk/view">
+                        모빌리티 Biz 분야별 업데이트
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5ro/view">테슬라를 통해 본 전기차 비즈니스 스토리</Link>
+                      <Link to="/lecture/card/CARD-5ro/view">
+                        테슬라를 통해 본 전기차 비즈니스 스토리
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>DT &#38; BM혁신 Case Study</h3>
                 <div className="ai_box">
                   <h4>
-                    전통기업의 DT 성공 사례, BM 관련 최신 트렌드, 데이터 활용/규제
-                    관련한 트렌드 등을 학습하는 컨텐츠입니다.
+                    전통기업의 DT 성공 사례, BM 관련 최신 트렌드, 데이터
+                    활용/규제 관련한 트렌드 등을 학습하는 컨텐츠입니다.
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-8d8/cube/CUBE-aws/view/Video">고객을 사로잡는 법, 구독</Link>
+                      <Link to="/lecture/card/CARD-8d8/cube/CUBE-aws/view/Video">
+                        고객을 사로잡는 법, 구독
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-7ln/view">데이터 3법, SK 구성원이 묻고 전문가가 말하다</Link>
+                      <Link to="/lecture/card/CARD-7ln/view">
+                        데이터 3법, SK 구성원이 묻고 전문가가 말하다
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-6m1/cube/CUBE-953/view/Video">팩트 체크! 데이터 3법 개정, 무엇이 달라지나?</Link>
+                      <Link to="/lecture/card/CARD-6m1/cube/CUBE-953/view/Video">
+                        팩트 체크! 데이터 3법 개정, 무엇이 달라지나?
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>글로벌 Tech 이벤트</h3>
                 <div className="ai_box">
@@ -319,17 +334,21 @@ const CollegeInnerTabDt = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-8eh/view">CES 2020 치트키</Link>
+                      <Link to="/lecture/card/CARD-8eh/view">
+                        CES 2020 치트키
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li className="ai_sub_li">
-                      <Link to="" onClick={emptyAlert}>MWC 2021 (6/28~7/1) ※Upload 예정</Link>
+                      <Link to="" onClick={emptyAlert}>
+                        MWC 2021 (6/28~7/1) ※Upload 예정
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>SK, DT를 만나다</h3>
                 <div className="ai_box">
@@ -344,21 +363,31 @@ const CollegeInnerTabDt = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1bc/view">[SK,DT를 만나다] SK이노베이션편</Link>
+                      <Link to="/lecture/card/CARD-1bc/view">
+                        [SK,DT를 만나다] SK이노베이션편
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1bb/view">[SK,DT를 만나다] SK하이닉스편</Link>
+                      <Link to="/lecture/card/CARD-1bb/view">
+                        [SK,DT를 만나다] SK하이닉스편
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li className="ai_sub_li">
-                      <Link to="" onClick={emptyAlert}>[이천포럼 2021] ※Upload 예정</Link>
+                      <Link to="" onClick={emptyAlert}>
+                        [이천포럼 2021] ※Upload 예정
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1bd/view">[SK,DT를 만나다] SK브로드밴드편</Link>
+                      <Link to="/lecture/card/CARD-1bd/view">
+                        [SK,DT를 만나다] SK브로드밴드편
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-4x7/view">[SK,DT를 만나다] SK(주) C&#38;C편</Link>
+                      <Link to="/lecture/card/CARD-4x7/view">
+                        [SK,DT를 만나다] SK(주) C&#38;C편
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -374,7 +403,7 @@ const CollegeInnerTabDt = () => {
         <Tab.Pane attached={false}>
           <div className="belt">
             <div className="text-right-box">
-              <Link 
+              <Link
                 to="/lecture/college/CLG00002/channel/CHN0000d"
                 className="item-button"
               >
@@ -387,15 +416,15 @@ const CollegeInnerTabDt = () => {
               </Link>
             </div>
           </div>
-  
+
           {/* 컬리지 텍스트 */}
           <div className="college-sub-txt">
             <strong>DT Technologies</strong>
             <div>
               <ul>
                 <li>
-                  본 채널은 프로그래밍 언어, Cloud Computing, Blockchain, IoT, Big
-                  Data 등 DT 실행에 요구되는 주요 핵심 <br />
+                  본 채널은 프로그래밍 언어, Cloud Computing, Blockchain, IoT,
+                  Big Data 등 DT 실행에 요구되는 주요 핵심 <br />
                   기술들에 대해 학습하는 채널입니다.
                 </li>
               </ul>
@@ -404,32 +433,38 @@ const CollegeInnerTabDt = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
                 <h3>프로그래밍 기초 (Python, R)</h3>
                 <div className="ai_box">
                   <h4>
-                    현장에서 발생되는 각종 Biz Data를 효과적으로 분석하고자 할 때,
-                    기본적으로 필요한 Python/R에 대해 학습하는 컨텐츠입니다.
+                    현장에서 발생되는 각종 Biz Data를 효과적으로 분석하고자 할
+                    때, 기본적으로 필요한 Python/R에 대해 학습하는 컨텐츠입니다.
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/search?query=%EB%8F%84%EB%A0%88%EB%AF%B8">도레미 파이썬 Vol. 1~2</Link>
+                      <Link to="/search?query=%EB%8F%84%EB%A0%88%EB%AF%B8">
+                        도레미 파이썬 Vol. 1~2
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-5bj/view">[코세라] Programming for Everybody</Link>
+                      <Link to="/lecture/card/CARD-5bj/view">
+                        [코세라] Programming for Everybody
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1bo/view">R 프로그래밍 기초</Link>
+                      <Link to="/lecture/card/CARD-1bo/view">
+                        R 프로그래밍 기초
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Cloud Computing</h3>
                 <div className="ai_box">
@@ -439,10 +474,14 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-aar/view">Cloud 입문 A to Z – What is the Cloud?</Link>
+                      <Link to="/lecture/card/CARD-aar/view">
+                        Cloud 입문 A to Z – What is the Cloud?
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-8f4/view">엣지 컴퓨팅, 클라우드 컴퓨팅의 대체재인가?</Link>
+                      <Link to="/lecture/card/CARD-8f4/view">
+                        엣지 컴퓨팅, 클라우드 컴퓨팅의 대체재인가?
+                      </Link>
                     </li>
                   </ul>
                   <ul>
@@ -454,13 +493,13 @@ const CollegeInnerTabDt = () => {
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Blockchain</h3>
                 <div className="ai_box">
                   <h4>
-                    가상 화폐는 물론 다양한 산업에 확장되고 있는 Blockchain의 기본
-                    개념과 Biz 기회에 대해 학습하는 컨텐츠입니다.
+                    가상 화폐는 물론 다양한 산업에 확장되고 있는 Blockchain의
+                    기본 개념과 Biz 기회에 대해 학습하는 컨텐츠입니다.
                   </h4>
                   <ul>
                     <li>
@@ -471,51 +510,60 @@ const CollegeInnerTabDt = () => {
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-56h/view">[코세라] Blockchain Basics</Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-  
-              <div className="ai_sub_table dt">
-                <h3>IoT</h3>
-                <div className="ai_box">
-                  <h4>
-                    센서와 통신을 사용하여 수많은 기기에 데이터를 수집/저장/분석할
-                    수 IOT 기술과 Biz 적용 방안을 학습해 볼 수 있는 컨텐츠입니다.
-                  </h4>
-                  <ul>
-                    <li>
-                      <Link to="/lecture/card/CARD-aaq/view">IoT 입문 A to Z – What is the IoT?</Link>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <Link to="/lecture/card/CARD-9bs/cube/CUBE-bu5/view/ELearning">
-                        [정재승 교수와 함께하는 Tech &#38; Biz Talk] IoT는 세상을
-                        어떻게 바꾸고 있는가?
+                      <Link to="/lecture/card/CARD-56h/view">
+                        [코세라] Blockchain Basics
                       </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
-                <h3>Big Data</h3>
+                <h3>IoT</h3>
                 <div className="ai_box">
                   <h4>
-                    복잡한 대용량 Data를 분석해 Data의 진정한 가치와 Biz Insight를
-                    찾아내는 Big Data 기본 개념과 방법에 대해 학습하는
-                    컨텐츠입니다.
+                    센서와 통신을 사용하여 수많은 기기에 데이터를
+                    수집/저장/분석할 수 IOT 기술과 Biz 적용 방안을 학습해 볼 수
+                    있는 컨텐츠입니다.
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-aas/view">Big Data입문 A to Z – What is the Big Data?</Link>
+                      <Link to="/lecture/card/CARD-aaq/view">
+                        IoT 입문 A to Z – What is the IoT?
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5mp/view">[코세라] Introduction to Big Data</Link>
+                      <Link to="/lecture/card/CARD-9bs/cube/CUBE-bu5/view/ELearning">
+                        [정재승 교수와 함께하는 Tech &#38; Biz Talk] IoT는
+                        세상을 어떻게 바꾸고 있는가?
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="ai_sub_table dt">
+                <h3>Big Data</h3>
+                <div className="ai_box">
+                  <h4>
+                    복잡한 대용량 Data를 분석해 Data의 진정한 가치와 Biz
+                    Insight를 찾아내는 Big Data 기본 개념과 방법에 대해 학습하는
+                    컨텐츠입니다.
+                  </h4>
+                  <ul>
+                    <li>
+                      <Link to="/lecture/card/CARD-aas/view">
+                        Big Data입문 A to Z – What is the Big Data?
+                      </Link>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <Link to="/lecture/card/CARD-5mp/view">
+                        [코세라] Introduction to Big Data
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -544,7 +592,7 @@ const CollegeInnerTabDt = () => {
               </Link>
             </div>
           </div>
-  
+
           {/* 컬리지 텍스트 */}
           <div className="college-sub-txt">
             <strong>
@@ -564,7 +612,7 @@ const CollegeInnerTabDt = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
@@ -576,23 +624,31 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-9an/view">1. Background of Scala ~ Control Structure</Link>
+                      <Link to="/lecture/card/CARD-9an/view">
+                        1. Background of Scala ~ Control Structure
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-9ap/view">3. Scala class &#38; object</Link>
+                      <Link to="/lecture/card/CARD-9ap/view">
+                        3. Scala class &#38; object
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-9ao/view">2. Functions ~ Collections</Link>
+                      <Link to="/lecture/card/CARD-9ao/view">
+                        2. Functions ~ Collections
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-9ar/view">4. Function type, Programing</Link>
+                      <Link to="/lecture/card/CARD-9ar/view">
+                        4. Function type, Programing
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>NoSQL 이해와 활용</h3>
                 <div className="ai_box">
@@ -602,7 +658,9 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5vw/view">1. What is NoSQL</Link>
+                      <Link to="/lecture/card/CARD-5vw/view">
+                        1. What is NoSQL
+                      </Link>
                     </li>
                     <li>
                       <Link to="/lecture/card/CARD-5vy/view">3. Cassandra</Link>
@@ -618,33 +676,41 @@ const CollegeInnerTabDt = () => {
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Hadoop 이해와 활용</h3>
                 <div className="ai_box">
                   <h4>
-                    Big data 분석 및 처리를 위한 Hadoop의 개념 및 요소 기술에 대해
-                    학습하는 컨텐츠입니다.
+                    Big data 분석 및 처리를 위한 Hadoop의 개념 및 요소 기술에
+                    대해 학습하는 컨텐츠입니다.
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1it/view">1. What is Hadoop, Hadoop</Link>
+                      <Link to="/lecture/card/CARD-1it/view">
+                        1. What is Hadoop, Hadoop
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1ir/view">3. Configuration, Data Ingestion/Analytics</Link>
+                      <Link to="/lecture/card/CARD-1ir/view">
+                        3. Configuration, Data Ingestion/Analytics
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1is/view">2. HDFS, YARN</Link>
+                      <Link to="/lecture/card/CARD-1is/view">
+                        2. HDFS, YARN
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1iq/view">4. HiveQL, Pig Script, HUE &#38; Oozie, Security</Link>
+                      <Link to="/lecture/card/CARD-1iq/view">
+                        4. HiveQL, Pig Script, HUE &#38; Oozie, Security
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>SQL</h3>
                 <div className="ai_box">
@@ -659,7 +725,9 @@ const CollegeInnerTabDt = () => {
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5bk/view">[코세라] Databases and SQL for Data Science</Link>
+                      <Link to="/lecture/card/CARD-5bk/view">
+                        [코세라] Databases and SQL for Data Science
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -688,7 +756,7 @@ const CollegeInnerTabDt = () => {
               </Link>
             </div>
           </div>
-  
+
           {/* 컬리지 텍스트 */}
           <div className="college-sub-txt">
             <strong>
@@ -709,7 +777,7 @@ const CollegeInnerTabDt = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
@@ -721,7 +789,9 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-56o/view">1: Azure 둘러보기, 가상서버 만들기</Link>
+                      <Link to="/lecture/card/CARD-56o/view">
+                        1: Azure 둘러보기, 가상서버 만들기
+                      </Link>
                     </li>
                     <li>
                       <Link to="/lecture/card/CARD-56q/view">
@@ -746,7 +816,7 @@ const CollegeInnerTabDt = () => {
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Cloud 기술</h3>
                 <div className="ai_box">
@@ -761,7 +831,9 @@ const CollegeInnerTabDt = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-5mx/view">[코세라] Cloud Networking (UIUC)</Link>
+                      <Link to="/lecture/card/CARD-5mx/view">
+                        [코세라] Cloud Networking (UIUC)
+                      </Link>
                     </li>
                   </ul>
                   <ul>
@@ -773,7 +845,7 @@ const CollegeInnerTabDt = () => {
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Cloud 개발 기초</h3>
                 <div className="ai_box">
@@ -783,7 +855,9 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1hz/view">Git을 사용한 버전 관리</Link>
+                      <Link to="/lecture/card/CARD-1hz/view">
+                        Git을 사용한 버전 관리
+                      </Link>
                     </li>
                     <li>
                       <Link to="/lecture/card/CARD-1ht/view">리눅스 기초</Link>
@@ -791,12 +865,14 @@ const CollegeInnerTabDt = () => {
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1hx/view">Spring 프레임워크 입문</Link>
+                      <Link to="/lecture/card/CARD-1hx/view">
+                        Spring 프레임워크 입문
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Certification</h3>
                 <div className="ai_box">
@@ -849,35 +925,44 @@ const CollegeInnerTabDt = () => {
               </p>
             </div>
           </div>
-  
+
           <div className="college-link-box">
             <div className="belt">
               <div className="ai_sub_table dt">
                 <h3>Machine Learning 활용</h3>
                 <div className="ai_box">
                   <h4>
-                    머신러닝과 AI에 대한 이론/개념부터, 개별 알고리즘에 대한 코딩
-                    실습까지 머신러닝을 활용한 분석 스킬을 학습하는 컨텐츠입니다.
+                    머신러닝과 AI에 대한 이론/개념부터, 개별 알고리즘에 대한
+                    코딩 실습까지 머신러닝을 활용한 분석 스킬을 학습하는
+                    컨텐츠입니다.
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5bw/view">[코세라] Applied Machine Learning in Python</Link>
+                      <Link to="/lecture/card/CARD-5bw/view">
+                        [코세라] Applied Machine Learning in Python
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1bl/view">비전공자를 위한 머신러닝</Link>
+                      <Link to="/lecture/card/CARD-1bl/view">
+                        비전공자를 위한 머신러닝
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5mt/view">[코세라] Machine Learning with Big Data</Link>
+                      <Link to="/lecture/card/CARD-5mt/view">
+                        [코세라] Machine Learning with Big Data
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1bn/view">인공지능/머신러닝 기초</Link>
+                      <Link to="/lecture/card/CARD-1bn/view">
+                        인공지능/머신러닝 기초
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Data Visualization</h3>
                 <div className="ai_box">
@@ -888,43 +973,56 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-569/view">[코세라] Data Visualization</Link>
+                      <Link to="/lecture/card/CARD-569/view">
+                        [코세라] Data Visualization
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5mu/view">[코세라] Graph Analytics for Big Data</Link>
+                      <Link to="/lecture/card/CARD-5mu/view">
+                        [코세라] Graph Analytics for Big Data
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Data 수집/가공</h3>
                 <div className="ai_box">
                   <h4>
-                    데이터 분석을 위해 필요한 데이터 구조를 이해하고, 이를 DB에서
-                    추출하여 활용 가능 형태로 정제, 전처리하는 방법을 학습합니다.
+                    데이터 분석을 위해 필요한 데이터 구조를 이해하고, 이를
+                    DB에서 추출하여 활용 가능 형태로 정제, 전처리하는 방법을
+                    학습합니다.
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5bh/view">[코세라] Using Database with Python</Link>
+                      <Link to="/lecture/card/CARD-5bh/view">
+                        [코세라] Using Database with Python
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-5bk/view">[코세라] Database and SQL for Data Science</Link>
+                      <Link to="/lecture/card/CARD-5bk/view">
+                        [코세라] Database and SQL for Data Science
+                      </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-5bf/view">[코세라] Using Python to Access Web Data</Link>
+                      <Link to="/lecture/card/CARD-5bf/view">
+                        [코세라] Using Python to Access Web Data
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-5bg/view">[코세라] Python Data Structures</Link>
+                      <Link to="/lecture/card/CARD-5bg/view">
+                        [코세라] Python Data Structures
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>Statistics &#38; Analytics</h3>
                 <div className="ai_box">
@@ -934,25 +1032,32 @@ const CollegeInnerTabDt = () => {
                   </h4>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1bk/view">파이썬으로 배우는 기초 통계</Link>
+                      <Link to="/lecture/card/CARD-1bk/view">
+                        파이썬으로 배우는 기초 통계
+                      </Link>
                     </li>
                     <li>
                       <Link to="/lecture/card/CARD-566/view">
-                        [코세라] Inferential and Predictive Statistics for Business
+                        [코세라] Inferential and Predictive Statistics for
+                        Business
                       </Link>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/card/CARD-1bj/view">파이썬으로 시작하는 데이터 분석</Link>
+                      <Link to="/lecture/card/CARD-1bj/view">
+                        파이썬으로 시작하는 데이터 분석
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/lecture/card/CARD-1bp/view">R 패키지로 배우는 데이터 분석</Link>
+                      <Link to="/lecture/card/CARD-1bp/view">
+                        R 패키지로 배우는 데이터 분석
+                      </Link>
                     </li>
                   </ul>
                 </div>
               </div>
-  
+
               <div className="ai_sub_table dt">
                 <h3>코딩 For Big Data 분석</h3>
                 <div className="ai_box">
@@ -963,8 +1068,8 @@ const CollegeInnerTabDt = () => {
                   <ul>
                     <li>
                       <Link to="/lecture/card/CARD-1jc/view">
-                        1. Why Python, Variables &#38; Data Types, String Methods,
-                        Math Functions
+                        1. Why Python, Variables &#38; Data Types, String
+                        Methods, Math Functions
                       </Link>
                     </li>
                     <li>
@@ -976,12 +1081,14 @@ const CollegeInnerTabDt = () => {
                   <ul>
                     <li>
                       <Link to="/lecture/card/CARD-1jb/view">
-                        2. Python Functions, Decision Making, Repeating Code, Iteration
+                        2. Python Functions, Decision Making, Repeating Code,
+                        Iteration
                       </Link>
                     </li>
                     <li>
                       <Link to="/lecture/card/CARD-1j9/view">
-                        4. Advanced Python Function, Exception Handling, Classes and Objects
+                        4. Advanced Python Function, Exception Handling, Classes
+                        and Objects
                       </Link>
                     </li>
                   </ul>
@@ -992,12 +1099,11 @@ const CollegeInnerTabDt = () => {
         </Tab.Pane>
       ),
     },
-  
+
     {
       menuItem: 'CDS Track',
       render: () => (
-        (window.location.href =
-          '/certification/badge/badge-detail/BADGE-2v'),
+        (window.location.href = '/certification/badge/badge-detail/BADGE-2v'),
         (<Tab.Pane attached={false} />)
       ),
     },
@@ -1009,6 +1115,6 @@ const CollegeInnerTabDt = () => {
       className="sub-tab-menu dt"
     />
   );
-}
+};
 
 export default CollegeInnerTabDt;

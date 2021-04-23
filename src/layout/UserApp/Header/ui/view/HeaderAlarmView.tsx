@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
@@ -7,10 +6,10 @@ import moment from 'moment';
 import { Area } from 'tracker/model';
 
 interface Props {
-  myNotieMentions: MentionModel[],
-  myNotieNoReadMentionCount: number,
-  routeToAlarmBackLink: (backLink: string) => void,
-  handleClickAlarm: () => void,
+  myNotieMentions: MentionModel[];
+  myNotieNoReadMentionCount: number;
+  routeToAlarmBackLink: (backLink: string) => void;
+  handleClickAlarm: () => void;
 }
 
 interface State {
@@ -46,22 +45,23 @@ class HeaderAlarmView extends Component<Props, State> {
 
   handleClickOutside(e: MouseEvent) {
     const { alarmShowClass } = this.state;
-    if (
-      this.alarmRef &&
-      !this.alarmRef.current.contains(e.target)
-    ) {
+    if (this.alarmRef && !this.alarmRef.current.contains(e.target)) {
       this.setState({ alarmShowClass: '' });
     }
   }
 
   render() {
     //
-    const { myNotieMentions, myNotieNoReadMentionCount, routeToAlarmBackLink } = this.props;
+    const {
+      myNotieMentions,
+      myNotieNoReadMentionCount,
+      routeToAlarmBackLink,
+    } = this.props;
     const { alarmShowClass } = this.state;
 
     let existNoReadClass = '';
     if (myNotieNoReadMentionCount > 0) {
-      existNoReadClass = 'lms-on'
+      existNoReadClass = 'lms-on';
     }
     return (
       <div ref={this.alarmRef}>
@@ -72,38 +72,55 @@ class HeaderAlarmView extends Component<Props, State> {
         >
           <span>알림</span>
         </a>
-        <div className={`lms-alarm-list ${alarmShowClass}`} ref={this.alarmButtonRef}>
+        <div
+          className={`lms-alarm-list ${alarmShowClass}`}
+          ref={this.alarmButtonRef}
+        >
           <div className="lms-alarm-header">
             <span className="lms-alarm-title">알림</span>
-            <Button
-              icon
-              className="img-icon"
-              onClick={this.onTogglePop}
-            >
+            <Button icon className="img-icon" onClick={this.onTogglePop}>
               <Icon className="clear2 selected link" />
             </Button>
           </div>
           <div className="lms-alarm-body" data-area={Area.HEADER_ALARM}>
-            {myNotieMentions && myNotieMentions.map((result, index) => {
-              let notReadClass = '';
-              if (!result.read) {
-                notReadClass = 'not-read';
-              }
+            {myNotieMentions &&
+              myNotieMentions.map((result, index) => {
+                let notReadClass = '';
+                if (!result.read) {
+                  notReadClass = 'not-read';
+                }
 
-              return (
-                <a
-                  className={`lms-alarm-item ${notReadClass}`}
-                  onClick={() => {
-                    routeToAlarmBackLink(result.backLink)
-                    this.setState({ alarmShowClass: alarmShowClass ? '' : 'lms-on' });
-                  }}
-                >
-                  <b className="lms-alarm-copy" style={{ display: 'inline', marginRight: '5px' }}>{result.title}</b>
-                  <span className="lms-alarm-copy" style={{ display: 'inline' }}>{result.message}</span>
-                  <span className="lms-alarm-time" style={{ display: 'block', marginTop: '.5em' }}>{moment(result.sentTime).format('YYYY-MM-DD HH:mm')}</span>
-                </a>
-              );
-            })}
+                return (
+                  <a
+                    className={`lms-alarm-item ${notReadClass}`}
+                    onClick={() => {
+                      routeToAlarmBackLink(result.backLink);
+                      this.setState({
+                        alarmShowClass: alarmShowClass ? '' : 'lms-on',
+                      });
+                    }}
+                  >
+                    <b
+                      className="lms-alarm-copy"
+                      style={{ display: 'inline', marginRight: '5px' }}
+                    >
+                      {result.title}
+                    </b>
+                    <span
+                      className="lms-alarm-copy"
+                      style={{ display: 'inline' }}
+                    >
+                      {result.message}
+                    </span>
+                    <span
+                      className="lms-alarm-time"
+                      style={{ display: 'block', marginTop: '.5em' }}
+                    >
+                      {moment(result.sentTime).format('YYYY-MM-DD HH:mm')}
+                    </span>
+                  </a>
+                );
+              })}
           </div>
         </div>
       </div>

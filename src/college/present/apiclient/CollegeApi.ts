@@ -5,9 +5,13 @@ import { createCacheApi } from '../../../lecture/detail/api/cacheableApi';
 
 const BASE_URL = '/api/college/colleges';
 
-export function findCollege(collegeId: string): Promise<CollegeModel | undefined> {
+export function findCollege(
+  collegeId: string
+): Promise<CollegeModel | undefined> {
   const url = `${BASE_URL}/${collegeId}`;
-  return axios.get<CollegeModel>(url).then(response => (response && response.data) || null);
+  return axios
+    .get<CollegeModel>(url)
+    .then(response => (response && response.data) || null);
 }
 
 function findAllCollege() {

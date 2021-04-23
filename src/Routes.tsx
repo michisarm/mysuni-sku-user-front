@@ -8,7 +8,10 @@ import { UserApp, AppLayout } from './shared';
 import HistoryContainer from './shared/ui/logic/HistoryContainer';
 import { TrackerRoute } from 'tracker-react';
 // import { trackClick } from 'tracker/present/apiclient';
-import { actionTrack, actionTrackView } from 'tracker/present/logic/ActionTrackService';
+import {
+  actionTrack,
+  actionTrackView,
+} from 'tracker/present/logic/ActionTrackService';
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -80,7 +83,11 @@ class Routes extends PureComponent {
           </Suspense>
         </UserApp>
         <TrackerRoute
-          value={{ userId: email, trackAction: actionTrack, trackView: actionTrackView }}
+          value={{
+            userId: email,
+            trackAction: actionTrack,
+            trackView: actionTrackView,
+          }}
         />
         <HistoryContainer />
         <AppInitializer />

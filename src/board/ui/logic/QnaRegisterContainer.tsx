@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -14,31 +13,34 @@ import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
 import { SkProfileService } from 'profile/stores';
+import { date } from '@storybook/addon-knobs';
 
-
-interface Props extends RouteComponentProps<{ sourceType: string, sourceId: string }> {
-  boardService?: BoardService,
-  categoryService?: CategoryService,
-  skProfileService?: SkProfileService,
-  postService?: PostService,
+interface Props
+  extends RouteComponentProps<{ sourceType: string; sourceId: string }> {
+  boardService?: BoardService;
+  categoryService?: CategoryService;
+  skProfileService?: SkProfileService;
+  postService?: PostService;
 }
 
 interface States {
-  alertWinOpen: boolean
-  confirmWinOpen: boolean
-  isBlankTarget: string
-  focus: boolean
-  write: string
-  fieldName: string
-  length: number
+  alertWinOpen: boolean;
+  confirmWinOpen: boolean;
+  isBlankTarget: string;
+  focus: boolean;
+  write: string;
+  fieldName: string;
+  length: number;
 }
 
-@inject(mobxHelper.injectFrom(
-  'board.boardService',
-  'board.categoryService',
-  'board.postService',
-  'profile.skProfileService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'board.boardService',
+    'board.categoryService',
+    'board.postService',
+    'profile.skProfileService'
+  )
+)
 @observer
 @reactAutobind
 class QnaRegisterContainer extends React.Component<Props, States> {
@@ -54,20 +56,21 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   };
 
   componentDidMount(): void {
-    
     const { postService, categoryService, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const name = patronInfo.getPatronName() || '';
     const { email, company } = skProfileService!.skProfile.member;
     // postService.clearPost();
-    categoryService!.findCategoriesByBoardId('QNA')
-      .then(() => {
-        postService!.changePostProps('boardId', 'QNA');
-        postService!.changePostProps('writer.name', name);
-        postService!.changePostProps('writer.email', email);
-        postService!.changePostProps('writer.companyName', company);
-        postService!.changePostProps('writer.companyCode', skProfileService!.skProfile.member.companyCode);
-      });
+    categoryService!.findCategoriesByBoardId('QNA').then(() => {
+      postService!.changePostProps('boardId', 'QNA');
+      postService!.changePostProps('writer.name', name);
+      postService!.changePostProps('writer.email', email);
+      postService!.changePostProps('writer.companyName', company);
+      postService!.changePostProps(
+        'writer.companyCode',
+        skProfileService!.skProfile.member.companyCode
+      );
+    });
   }
 
   componentWillUnmount(): void {
@@ -101,14 +104,16 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       post.config.sourceId = params.sourceId;
     }
 
-    postService!.registerPost(post)
-      .then((postId) => history.push(routePaths.supportQnAPost(postId as string)));
+    postService!
+      .registerPost(post)
+      .then(postId =>
+        history.push(routePaths.supportQnAPost(postId as string))
+      );
     this.onClose();
 
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
-    }
-    else {
+    } else {
       this.setState({
         isBlankTarget: PostModel.isBlank(post),
         alertWinOpen: true,
@@ -132,8 +137,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
-    }
-    else {
+    } else {
       this.setState({
         isBlankTarget: PostModel.isBlank(post),
         alertWinOpen: true,
@@ -155,7 +159,14 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     //
     const { categorys } = this.props.categoryService!;
     const { post } = this.props.postService!;
-    const { focus, write, fieldName, alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
+    const {
+      focus,
+      write,
+      fieldName,
+      alertWinOpen,
+      isBlankTarget,
+      confirmWinOpen,
+    } = this.state;
     const questionType: any = [];
 
     // categorys.map((data, index) => {
@@ -167,12 +178,20 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     if (currentUrl.includes('cube') || currentUrl.includes('course')) {
       categorys.map((data, index) => {
         if (data.name === 'Contents') {
-          questionType.push({ key: index, value: data.categoryId, text: data.name });
+          questionType.push({
+            key: index,
+            value: data.categoryId,
+            text: data.name,
+          });
         }
       });
     } else {
       categorys.map((data, index) => {
-        questionType.push({ key: index, value: data.categoryId, text: data.name });
+        questionType.push({
+          key: index,
+          value: data.categoryId,
+          text: data.name,
+        });
       });
     }
 
@@ -183,16 +202,25 @@ class QnaRegisterContainer extends React.Component<Props, States> {
             <Form>
               <Form.Field>
                 <label>제목</label>
-                <div className={classNames('ui right-top-count input', { focus, write, error: fieldName === 'title' })}>
+                <div
+                  className={classNames('ui right-top-count input', {
+                    focus,
+                    write,
+                    error: fieldName === 'title',
+                  })}
+                >
                   <span className="count">
-                    <span className="now">{post && post.title && post.title.length || 0}</span>/
-                    <span className="max">100</span>
+                    <span className="now">
+                      {(post && post.title && post.title.length) || 0}
+                    </span>
+                    /<span className="max">100</span>
                   </span>
-                  <input type="text"
+                  <input
+                    type="text"
                     placeholder="제목을 입력해주세요."
                     onClick={() => this.setState({ focus: true })}
                     onBlur={() => this.setState({ focus: false })}
-                    value={post && post.title || ''}
+                    value={(post && post.title) || ''}
                     onChange={(e: any) => {
                       if (e.target.value.length > 100) {
                         this.setState({ fieldName: 'title' });
@@ -202,25 +230,31 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       }
                     }}
                   />
-                  <Icon className="clear link"
+                  <Icon
+                    className="clear link"
                     onClick={(e: any) => {
                       this.setState({ write: '' });
                       this.onChangePostProps('title', e.target.value);
                     }}
                   />
-                  <span className="validation">You can enter up to 100 characters.</span>
+                  <span className="validation">
+                    You can enter up to 100 characters.
+                  </span>
                 </div>
               </Form.Field>
               <Form.Field>
                 <label>문의유형</label>
                 <div className="select-box">
-                  <Select placeholder="분류를 선택해주세요"
+                  <Select
+                    placeholder="분류를 선택해주세요"
                     className="dropdown selection"
                     options={questionType}
-                    onChange={(e: any, data: any) => this.onChangePostProps('category', {
-                      id: data.value,
-                      name: e.target.innerText,
-                    })}
+                    onChange={(e: any, data: any) =>
+                      this.onChangePostProps('category', {
+                        id: data.value,
+                        name: e.target.innerText,
+                      })
+                    }
                   />
                 </div>
               </Form.Field>
@@ -228,28 +262,42 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 <label>내용</label>
                 <div className="ui editor-wrap">
                   <div className="ui form">
-                    <div className={classNames('ui right-top-count input', { error: this.state.fieldName === 'contents.contents' })}>{/* .error class 추가시 error ui 활성 */}
+                    <div
+                      className={classNames('ui right-top-count input', {
+                        error: this.state.fieldName === 'contents.contents',
+                      })}
+                    >
+                      {/* .error class 추가시 error ui 활성 */}
                       <span className="count">
-                        <span className="now">{this.state.length}</span>/<span className="max">1000</span>
+                        <span className="now">{this.state.length}</span>/
+                        <span className="max">1000</span>
                       </span>
                       {/*<Editor*/}
                       {/*  post={post}*/}
                       {/*  onChangeContentsProps={this.onChangerContentsProps}*/}
                       {/*/>*/}
                       <textarea
-                        value={post && post.contents && post.contents.contents || ''}
-                        onChange={(e) => {
+                        value={
+                          (post && post.contents && post.contents.contents) ||
+                          ''
+                        }
+                        onChange={e => {
                           const value = e.target.value;
                           if (value.length > 1000) {
                             this.setState({ fieldName: 'contents.contents' });
                           } else {
                             this.onChangePostProps('contents.contents', value);
-                            this.setState({ length: value.length, fieldName: '' });
+                            this.setState({
+                              length: value.length,
+                              fieldName: '',
+                            });
                           }
                         }}
                       />
 
-                      <span className="validation">You can enter up to 1000 characters.</span>
+                      <span className="validation">
+                        You can enter up to 1000 characters.
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -260,10 +308,23 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="line-attach width-sm">
                     <div className="attach-inner">
                       <FileBox
-                        id={post && post.contents && post.contents.depotId || ''}
-                        vaultKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
-                        patronKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
-                        validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
+                        id={
+                          (post && post.contents && post.contents.depotId) || ''
+                        }
+                        vaultKey={{
+                          keyString: 'qna-sample',
+                          patronType: PatronType.Audience,
+                        }}
+                        patronKey={{
+                          keyString: 'qna-sample',
+                          patronType: PatronType.Audience,
+                        }}
+                        validations={[
+                          {
+                            type: ValidationType.Duplication,
+                            validator: depotHelper.duplicationValidator,
+                          },
+                        ]}
                         onChange={this.getFileBoxIdForReference}
                       />
                       {/*<div className="bottom">*/}
@@ -277,8 +338,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 </Form>
               </Form.Field>
               <div className="buttons">
-                <Button className="fix line" onClick={this.onClose}>Close</Button>
-                <Button className="fix bg" onClick={this.onHandleSave}>Submit</Button>
+                <Button className="fix line" onClick={this.onClose}>
+                  Close
+                </Button>
+                <Button className="fix bg" onClick={this.onHandleSave}>
+                  Submit
+                </Button>
               </div>
             </Form>
           </div>

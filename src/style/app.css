@@ -743,3 +743,7 @@ body.msie
   box-shadow: '0 0 0 0';
   border: 0;
 }
+
+.content.lms .icon.listDelete {
+  margin-left: 15px;
+}

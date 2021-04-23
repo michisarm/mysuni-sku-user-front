@@ -3,7 +3,6 @@ import { CategoryModel, LearningState } from 'shared/model';
 import { DifficultyLevel } from './DifficultyLevel';
 import { LearningType } from './LearningType';
 
-
 class InMyLectureTableViewModel {
   [key: string]: any;
   id: string = '';

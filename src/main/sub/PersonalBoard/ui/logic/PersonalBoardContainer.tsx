@@ -28,30 +28,34 @@ interface Props extends RouteComponentProps {
   activeIndex: number;
 }
 
-function PersonalBoardContainer(props: Props){
-
-  const { myLearningSummaryService, menuControlAuthService, companyCode, activeIndex } = props;
+function PersonalBoardContainer(props: Props) {
+  const {
+    myLearningSummaryService,
+    menuControlAuthService,
+    companyCode,
+    activeIndex,
+  } = props;
   const { myLearningSummary } = myLearningSummaryService!;
 
   useEffect(() => {
-    requestBadgeLearningTime(companyCode)
-    requestLearningTimeDetail()
-    requestPopularCourse(companyCode, 7)
-    requestCollegePercent()
-    requestLearningObjectives()
-  }, [])
+    requestBadgeLearningTime(companyCode);
+    requestLearningTimeDetail();
+    requestPopularCourse(companyCode, 7);
+    requestCollegePercent();
+    requestLearningObjectives();
+  }, []);
 
   const handlePopularCourseDate = useCallback((data: any) => {
-    let date = 0
-    if(data.activeIndex === 0) {
-      date = 7
-    } else if(data.activeIndex === 1) {
-      date = 30
-    } else if(data.activeIndex === 2) {
-      date = 90
+    let date = 0;
+    if (data.activeIndex === 0) {
+      date = 7;
+    } else if (data.activeIndex === 1) {
+      date = 30;
+    } else if (data.activeIndex === 2) {
+      date = 90;
     }
-    requestPopularCourse(companyCode, date)
-  }, [])
+    requestPopularCourse(companyCode, date);
+  }, []);
 
   const showApl = useCallback(() => {
     const { menuControlAuth } = menuControlAuthService!;
@@ -60,21 +64,21 @@ function PersonalBoardContainer(props: Props){
         menuControlAuth.useYn === MenuControlAuth.Yes)
       ? true
       : false;
-  }, [])
+  }, []);
 
-return (
-  <>
-    <div className="personal-contents" data-area={Area.MAIN_INFO}>
-      <BadgeLearningTimeView activeIndex={activeIndex}/>
-      <LearningTimeDetailView showApl={showApl()}/>
-      <CollegeTopChartView
-        myLearningSummary={myLearningSummary}
-        activeIndex={activeIndex}
-      />
-    </div>
-    <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate} />
-  </>
-)
+  return (
+    <>
+      <div className="personal-contents" data-area={Area.MAIN_INFO}>
+        <BadgeLearningTimeView activeIndex={activeIndex} />
+        <LearningTimeDetailView showApl={showApl()} />
+        <CollegeTopChartView
+          myLearningSummary={myLearningSummary}
+          activeIndex={activeIndex}
+        />
+      </div>
+      <MyCompanyPopularCourseView onTabClick={handlePopularCourseDate} />
+    </>
+  );
 }
 
 export default inject(

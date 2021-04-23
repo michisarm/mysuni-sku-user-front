@@ -34,6 +34,8 @@ class PostModel implements DomainEntity {
   openState: OpenState = OpenState.Created;
   answer: IdName = new IdName();
   period: DatePeriod = new DatePeriod();
+  alarmInfo: AlarmInfoModel = new AlarmInfoModel();
+
 
   commentFeedbackId: string = '';
   alarmInfo: AlarmInfoModel = new AlarmInfoModel();
@@ -46,8 +48,9 @@ class PostModel implements DomainEntity {
       const config = post.config && new PostConfigModel(post.config) || this.config;
       const answer = post.answer && new IdName(post.answer) || this.answer;
       const period = post.period && new DatePeriod(post.period) || this.period;
+      const alarmInfo = post.alarmInfo && new AlarmInfoModel(post.alarmInfo) || this.alarmInfo;
 
-      Object.assign(this, { ...post, writer, category, contents, config, answer, period });
+      Object.assign(this, { ...post, writer, category, contents, config, answer, period, alarmInfo });
 
       this.openState = post.openState || post.openState;
     }

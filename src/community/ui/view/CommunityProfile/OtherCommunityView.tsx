@@ -27,7 +27,7 @@ const CommunityItemView: React.FC<ProfileCommunityItem> = function CommunityItem
   return (
     <tr key={communityId}>
       <td className="title ellipsis">
-      {<span className="label">{fieldName}</span>}
+        {<span className="label">{fieldName}</span>}
         <Link to={`/community/${communityId}`}>{name}</Link>
       </td>
       <td>

@@ -26,11 +26,14 @@ interface BadgeTitleProps {
 
 let count = 0;
 export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => {
-
   ++count;
   if (count === 3) {
     // console.log('name',name);
-    ReactGA.pageview(window.location.pathname + window.location.search, [], `(Badge) - ${name}`);
+    ReactGA.pageview(
+      window.location.pathname + window.location.search,
+      [],
+      `(Badge) - ${name}`
+    );
   }
 
   useEffect(() => {
@@ -184,17 +187,18 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
                     <b>{learningCompleted}</b>/{learningTotalCount}
                   </span>
                 </span>
-              </>
-            )}
-            {badgeState === ChallengeState.Requested ? (
-              <span className="txt">
-                {issueStateTimeFormat} {description}
               </span>
-            ) : (
-                <span className="txt">{description}</span>
-              )}
-          </>
-        )}
+            </>
+          )}
+          {badgeState === ChallengeState.Requested ? (
+            <span className="txt">
+              {issueStateTimeFormat} {description}
+            </span>
+          ) : (
+            <span className="txt">{description}</span>
+          )}
+        </>
+      )}
 
       {/*발급요청 완료, 획득 완료*/}
       {badgeState === ChallengeState.Issued && (
