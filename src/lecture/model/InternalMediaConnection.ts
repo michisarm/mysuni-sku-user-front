@@ -8,4 +8,6 @@ export interface InternalMediaConnection {
   thumbUrl: string;
   viewUrl: string;
   quizIds: string[];
+  directConnectionName?: string;
+  targetSamlInstanceName?: string;
 }

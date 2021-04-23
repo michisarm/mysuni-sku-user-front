@@ -4,7 +4,7 @@ import { OverviewField } from '../../../personalcube';
 import { BadgeTagView } from './BadgeTagView';
 import BadgeCardListContainer from '../logic/BadgeCardListContainer';
 import { Badge } from '../../model/Badge';
-
+import { Area } from 'tracker/model';
 
 interface BadgeContentViewProps {
   badge: Badge;
@@ -20,7 +20,10 @@ export default function BadgeContentView({
   
   return (
     <Segment className="full">
-      <div className="badge-detail">
+      <div
+        className="badge-detail"
+        data-area={Area.CERTIFICATION_PATH}
+      >
         {
           badge !== undefined && (
             <>
