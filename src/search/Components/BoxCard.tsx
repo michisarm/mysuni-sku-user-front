@@ -125,6 +125,7 @@ const BoxCard: React.FC = () => {
               isRequired={isRequired}
               capacity={parseInt(student_count)}
               studentCount={parseInt(student_count)}
+              additionalLearningTime={parseInt(additional_learning_time)}
             />
           );
         })}
