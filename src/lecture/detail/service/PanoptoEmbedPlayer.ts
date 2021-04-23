@@ -161,7 +161,7 @@ function createPanoptoEmbedPlayer() {
       //This is the URL of your Panopto site
       //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
       // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
-      serverName: 'sku-demo.ap.panopto.com',
+      serverName: 'sku.ap.panopto.com',
       sessionId: panoptoSessionId,
       videoParams: {
         // Optional parameters
