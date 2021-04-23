@@ -182,6 +182,12 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                 <Icon className={difficultyLevelIcon} />
                 <span>{lectureSummary.difficultyLevel}</span>
               </Label>
+              {lectureSummary.validLearningDate !== '' && (
+                <Label className="bold onlytext">
+                  <span className="header-span-first">유효학습 종료일</span>
+                  <span>{lectureSummary.validLearningDate}</span>
+                </Label>
+              )}
               <Label className="bold onlytext">
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
@@ -216,12 +222,6 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = functi
                   </i>
                 </span>
               </Label>
-              {lectureSummary.validLearningDate !== '' && (
-                <Label className="bold onlytext">
-                  <span className="header-span-first">유효학습기간</span>
-                  <span>{lectureSummary.validLearningDate}</span>
-                </Label>
-              )}
               <Link to={qnaUrl} className="ui icon button left post-s">
                 <Icon className="ask" />
                 문의하기

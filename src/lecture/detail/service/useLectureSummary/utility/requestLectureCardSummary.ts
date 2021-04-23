@@ -30,10 +30,11 @@ function getVaildLeaningDate(
     const parseCreateDate = new Date(creationTime);
     parseCreateDate.setDate(parseCreateDate.getDate() + validLearningDate);
 
+    const year = parseCreateDate.getFullYear();
     const month = parseCreateDate.getMonth() + 1;
     const day = parseCreateDate.getDate();
 
-    const result = `${month}월 ${day}일`;
+    const result = `${year}.${month}.${day}`;
 
     return result;
   } else {

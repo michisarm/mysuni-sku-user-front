@@ -35,7 +35,6 @@ export function useLectureBadge(): [Value] {
       return;
     }
     findByLectureUsid(params.cardId).then(badge => {
-      console.log('????????', badge);
       if (badge === undefined) {
         setLectureBadge();
       } else {
