@@ -1,17 +1,21 @@
-import React, { Fragment, useEffect } from 'react';
-import LectureCubeDiscussionContainer from './LectureCubeDiscussionContainer';
+import React, { Fragment } from 'react';
+import LectureCubeDiscussionView from '../view/LectureCubeDiscussionView';
 import { useCubeViewEvent } from '../../service/useActionLog/useCubeViewEvent';
-import { useLectureParams } from '../../store/LectureParamsStore';
+import { useLectureState } from '../../store/LectureStateStore';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 
 function LectureCubeDiscussionPage() {
-
+  const lectureState = useLectureState();
   useCubeViewEvent();
 
   return (
     <Fragment>
       <LectureCubeSummaryContainer />
-      <LectureCubeDiscussionContainer />
+      {lectureState !== undefined && (
+        <LectureCubeDiscussionView 
+          lectureState={lectureState}
+        />
+      )}
     </Fragment>
   )
 }
