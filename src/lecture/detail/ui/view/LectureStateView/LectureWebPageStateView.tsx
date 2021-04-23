@@ -52,10 +52,11 @@ function CanceledView(props: CanceledViewProps) {
 interface ApprovedViewProps {
   student: Student;
   cube: Cube;
+  urlType: string | undefined;
 }
 
 function ApprovedView(props: ApprovedViewProps) {
-  const { student, cube } = props;
+  const { student, cube, urlType } = props;
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -75,7 +76,7 @@ function ApprovedView(props: ApprovedViewProps) {
 
   return (
     <>
-      {student.learningState !== 'Passed' && hasNoTestAndNoReport(cube) && (
+      {(urlType === undefined || urlType !== "embedded") && student.learningState !== 'Passed' && hasNoTestAndNoReport(cube) && (
         <button
           className={`ui button free ${actionClassName} p18`}
           onClick={completeLearning}
@@ -103,6 +104,7 @@ const LectureWebPageStateView: React.FC<LectureWebPageStateViewProps> = function
 }) {
   const { student, cubeDetail, cubeType } = lectureState;
   const { cube } = cubeDetail;
+  const urlType = cubeDetail.cubeMaterial.officeWeb?.urlType;
 
   return (
     <>
@@ -110,7 +112,7 @@ const LectureWebPageStateView: React.FC<LectureWebPageStateViewProps> = function
         <CanceledView cubeType={cubeType} />
       )}
       {student?.proposalState === 'Approved' && (
-        <ApprovedView student={student} cube={cube} />
+        <ApprovedView student={student} cube={cube} urlType={urlType} />
       )}
     </>
   );

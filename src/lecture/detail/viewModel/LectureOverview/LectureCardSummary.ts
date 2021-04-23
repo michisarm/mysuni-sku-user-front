@@ -9,6 +9,7 @@ export default interface LectureCardSummary extends LectureSummary {
   hasCommunity?: boolean;
   communityId?: string;
   hasClassroomCube?: boolean;
+  validLearningDate: string;
 }
 
 export function getEmptyLectureCardSummary(): LectureCardSummary {
@@ -29,5 +30,6 @@ export function getEmptyLectureCardSummary(): LectureCardSummary {
     cardId: '',
     stampCount: 0,
     difficultyLevel: 'Basic',
+    validLearningDate: '',
   };
 }

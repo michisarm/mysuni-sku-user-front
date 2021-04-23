@@ -39,10 +39,8 @@ function LineHeaderContainerV2({
   myStampService,
   filterBoxService,
 }: Props) {
-  
   const { openFilter, setOpenFilter, filterCount } = filterBoxService!;
 
-  
   const isFilterActive = (): boolean => {
     return openFilter || filterCount > 0;
   };
@@ -58,7 +56,6 @@ function LineHeaderContainerV2({
       return myTrainingService!.findAllTableViewsForExcel();
     }
   };
-
 
   /*  const getAllCount = (contentType: MyContentType) => {
      const { inprogressCount, completedCount } = myTrainingService!;
@@ -84,24 +81,57 @@ function LineHeaderContainerV2({
     switch (contentType) {
       case MyLearningContentType.InProgress:
         xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-          const collegeName = getCollgeName(myTrainingTableView.category.college.id);
-          return myTrainingTableView.toXlsxForInProgress(lastIndex - index, collegeName);
+          if (myTrainingTableView.category !== null) {
+            const collegeName = getCollgeName(
+              myTrainingTableView.category.college.id
+            );
+            return myTrainingTableView.toXlsxForInProgress(
+              lastIndex - index,
+              collegeName
+            );
+          } else {
+            return myTrainingTableView.toXlsxForInProgress(
+              lastIndex - index,
+              ''
+            );
+          }
         });
 
         filename = MyXlsxFilename.InProgress;
         break;
       case MyLearningContentType.Completed:
         xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-          const collegeName = getCollgeName(myTrainingTableView.category.college.id);
-          return myTrainingTableView.toXlsxForCompleted(lastIndex - index, collegeName);
+          if (myTrainingTableView.category !== null) {
+            const collegeName = getCollgeName(
+              myTrainingTableView.category.college.id
+            );
+            return myTrainingTableView.toXlsxForCompleted(
+              lastIndex - index,
+              collegeName
+            );
+          } else {
+            return myTrainingTableView.toXlsxForCompleted(
+              lastIndex - index,
+              ''
+            );
+          }
         });
 
         filename = MyXlsxFilename.Completed;
         break;
       case MyPageContentType.EarnedStampList:
         xlsxList = myTrainingTableViews.map((myTrainingTableView, index) => {
-          const collegeName = getCollgeName(myTrainingTableView.category.college.id);
-          return myTrainingTableView.toXlsxForMyStamp(lastIndex - index, collegeName);
+          if (myTrainingTableView.category !== null) {
+            const collegeName = getCollgeName(
+              myTrainingTableView.category.college.id
+            );
+            return myTrainingTableView.toXlsxForMyStamp(
+              lastIndex - index,
+              collegeName
+            );
+          } else {
+            return myTrainingTableView.toXlsxForMyStamp(lastIndex - index, '');
+          }
         });
 
         filename = MyXlsxFilename.EarnedStampList;
@@ -150,7 +180,10 @@ function LineHeaderContainerV2({
 
 export default inject(
   mobxHelper.injectFrom(
-    'myTraining.myTrainingService', 'myTraining.myStampService', 'shared.filterBoxService')
+    'myTraining.myTrainingService',
+    'myTraining.myStampService',
+    'shared.filterBoxService'
+  )
 )(withRouter(observer(LineHeaderContainerV2)));
 
 /* globals */

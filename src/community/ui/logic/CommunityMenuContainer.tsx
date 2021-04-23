@@ -62,6 +62,7 @@ function CommunityMenuContainer() {
   const [privateCommentState, setPrivateCommentState] = useState<boolean>(
     false
   );
+
   useEffect(() => {
     if (communityId !== undefined) {
       handleAddMenu();
@@ -75,7 +76,7 @@ function CommunityMenuContainer() {
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
       if (type !== 'delete') {
-        setDiscussRow(getEmptyCommunityDiscussion());
+        handleCleanDiscussRow();
         if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
           const discussionParams = await findPostMenuDiscussion(
             param.menuId
@@ -88,9 +89,11 @@ function CommunityMenuContainer() {
                     content: discussionParams.content,
                     privateComment:
                       findPrivateState.config.privateComment === undefined
-                        ? true
+                        ? false
                         : findPrivateState?.config.privateComment,
-                    relatedUrlList: discussionParams.relatedUrlList,
+                    relatedUrlList: discussionParams.relatedUrlList
+                      ? discussionParams.relatedUrlList
+                      : [{ title: '', url: '' }],
                     fileBoxId: discussionParams.fileBoxId,
                   });
                 }
@@ -133,6 +136,10 @@ function CommunityMenuContainer() {
     },
     [communityAdminMenu, discussRow, selectedRow]
   );
+
+  const handleCleanDiscussRow = () => {
+    setDiscussRow(getEmptyCommunityDiscussion());
+  };
 
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
@@ -301,7 +308,6 @@ function CommunityMenuContainer() {
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
       let successFlag = false;
-
       const result = _.chain(nameValues)
         .groupBy('id')
         .map((v, i) => {
@@ -459,7 +465,6 @@ function CommunityMenuContainer() {
           } else {
             addCommunityMenu(communityId, obj).then(() => {
               //오더정리
-
               requestCommunityMenu(communityId).then(() => {
                 requestCommunityMenuOrder(communityId);
                 reactAlert({
@@ -1239,6 +1244,7 @@ function CommunityMenuContainer() {
                       onAddUrlsList={onAddUrlsList}
                       onDeleteUrlsList={onDeleteUrlsList}
                       onAddFileBoxId={onAddFileBoxId}
+                      handleCleanDiscussRow={handleCleanDiscussRow}
                     />
                     <div className="admin_bottom_button line">
                       <button
@@ -1264,6 +1270,7 @@ function CommunityMenuContainer() {
                     onAddUrlsList={onAddUrlsList}
                     onDeleteUrlsList={onDeleteUrlsList}
                     onAddFileBoxId={onAddFileBoxId}
+                    handleCleanDiscussRow={handleCleanDiscussRow}
                   />
                   <div className="admin_bottom_button line">
                     <button
@@ -1291,6 +1298,7 @@ function CommunityMenuContainer() {
                     onAddUrlsList={onAddUrlsList}
                     onDeleteUrlsList={onDeleteUrlsList}
                     onAddFileBoxId={onAddFileBoxId}
+                    handleCleanDiscussRow={handleCleanDiscussRow}
                   />
                   <div className="admin_bottom_button line">
                     <button
