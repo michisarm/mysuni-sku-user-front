@@ -1,33 +1,32 @@
 import React, { useCallback, useEffect, useState, Fragment, useMemo } from 'react';
-import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
-import { useLectureCubeSummary } from 'lecture/detail/service/useLectureCourseOverview/useLectureCubeSummary';
-import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOverview/useLectureSubcategory';
 import LectureDescriptionView from '../view/LectureOverview/LectureDescriptionView';
-import { useLectureFile } from 'lecture/detail/service/useLectureFile';
-import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
 import { Checkbox, Image, List, Icon } from 'semantic-ui-react';
 import { CommentList } from '@nara.drama/feedback';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import { useLectureState } from '../../store/LectureStateStore';
 import { submitRegisterStudent, refresh } from '../../../../../src/lecture/detail/service/useLectureState/utility/cubeStateActions';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import iconUrl from '../../../../style/media/icon-url.png';
 import iconFile from '../../../../style/media/icon-community-file-copy-2.png';
+import LectureState from '../../viewModel/LectureState';
+import { reactAlert } from '@nara.platform/accent';
 
-type RelatedUrlList = {
-  title: string;
-  url: string;
+interface LectureCubeDiscussionViewProps {
+  lectureState: LectureState;
 }
 
-const PUBLIC_URL = process.env.PUBLIC_URL;
-const fileDownload = (pdf: string, fileId: string) => {
-  depot.downloadDepotFile(fileId);
-};
-
-function LectureCubeDiscussionContainer() {
+const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = function LectureCubeDiscussionView({
+  lectureState,
+}) {
+// function LectureCubeDiscussionContainer() {
+  type RelatedUrlList = {
+    title: string;
+    url: string;
+  }
+  
+  const PUBLIC_URL = process.env.PUBLIC_URL;
   const [lectureDescription] = useLectureDescription();
-  const lectureState = useLectureState();
+  // const lectureState = useLectureState();
 
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
@@ -36,9 +35,6 @@ function LectureCubeDiscussionContainer() {
   const [commentCount, setCommentCount] = useState<number>(0);
   const [subCommentCount, setSubCommentCount] = useState<number>(0);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(new Map<string, any>());
-
-  const originArr: string[] = [];
-  let origin: string = '';
 
   const { company, department, email, name } = useMemo(() => {
     const {
@@ -49,21 +45,76 @@ function LectureCubeDiscussionContainer() {
     return { company, department, email, name };
   }, []);
 
-  const registerStudent = useCallback(async () => {
-    if(lectureState && lectureState.student === undefined){
-      await submitRegisterStudent()
+  useEffect(() => {
+    // console.log('LectureCubeDiscussionContainer', lectureState)
+
+    if(lectureState){
+      // 댓글, 대댓글 Count Data
+      if(lectureState.student){
+        setCommentCount(lectureState?.student.commentCount)
+        setSubCommentCount(lectureState?.student.subCommentCount)
+      }
+
+      if(lectureState.cubeDetail){
+        // 이수조건(댓글 수, 대댓글 수, 자동이수여부), 관련 Url Data
+        if(lectureState.cubeDetail.cubeMaterial
+            && lectureState.cubeDetail.cubeMaterial.cubeDiscussion){
+            setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.commentCount)
+            setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.subCommentCount)
+            setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.automaticCompletion)
+            setCubeRelatedUrlList(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList)
+        }
+
+        //  관련자료 Data
+        if(lectureState.cubeDetail.cubeContents){
+          getFileIds()
+        }
+      }
     }
   }, [lectureState]);
 
-  const onRefresh = () => {
-    setTimeout(() => {
-      refresh(1)
-    }, 1000);
+  const originArr: string[] = [];
+  let origin: string = '';
+
+  // 파일 클릭하여 다운로드
+  const fileDownload = (pdf: string, fileId: string) => {
+    depot.downloadDepotFile(fileId);
   };
+  
+  // 선택, 전체선택 파일 다운로드
+  const zipFileDownload = useCallback((type: string) => {
+    if(originArr && originArr.length > 0){
+      if (type === 'select') {
+        if (origin === '') {
+          return;
+        }
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
+      }
+    }else{
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
+    }
+  }, []);
 
   const getFileIds = useCallback(() => {
-    const referenceFileBoxId =
-    lectureState?.cubeDetail.cubeContents && lectureState?.cubeDetail.cubeContents.fileBoxId;
+    const referenceFileBoxId = lectureState?.cubeDetail.cubeContents && lectureState?.cubeDetail.cubeContents.fileBoxId;
     Promise.resolve().then(() => {
       if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
     });
@@ -87,29 +138,21 @@ function LectureCubeDiscussionContainer() {
     }
   }, []);
 
-
-  useEffect(() => {
-    // console.log('LectureCubeDiscussionContainer', lectureState)
-    if(lectureState?.student){
-      setCommentCount(lectureState?.student.commentCount)
-      setSubCommentCount(lectureState?.student.subCommentCount)
-    }
-
-    if(lectureState
-      && lectureState.cubeDetail
-      && lectureState.cubeDetail.cubeMaterial
-      && lectureState.cubeDetail.cubeMaterial.cubeDiscussion){
-        setCubeCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.commentCount)
-        setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.subCommentCount)
-        setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.automaticCompletion)
-        setCubeRelatedUrlList(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList)
-    }
-
-    if(lectureState?.cubeDetail.cubeContents){
-      getFileIds()
+  // 코멘드 등록 시 학습처리 CommentList -> Props
+  const registerStudent = useCallback(async () => {
+    if(lectureState && lectureState.student === undefined){
+      await submitRegisterStudent()
     }
   }, [lectureState]);
 
+  // 코멘드 등록 시 화면 새로고침 CommentList -> Props
+  const onRefresh = () => {
+    setTimeout(() => {
+      refresh(1)
+    }, 1000);
+  };
+
+  // Manager-Front 에서 등록한 이수조건 엔터 값 처리
   const replaceEnterWithBr = (target?: string) => {
     let setHtml = '';
     if(target){
@@ -141,10 +184,8 @@ function LectureCubeDiscussionContainer() {
                 </Fragment>
               )}
             </div>
+
             {/* 교육내용 표현 */}
-            
-              
-            {/* <p>{replaceEnterWithBr(lectureDescription.completionTerms)}</p> */}
             <div className="discuss-box2 task">
               {lectureDescription && lectureDescription.description && (
                 <Fragment>
@@ -201,14 +242,14 @@ function LectureCubeDiscussionContainer() {
                         <div className="board-down-title-right">
                           <button
                             className="ui icon button left post delete"
-                            // onClick={() => zipFileDownload('select')}
+                            onClick={() => zipFileDownload('select')}
                           >
                             <i aria-hidden="true" className="icon check icon" />
                             선택 다운로드
                           </button>
                           <button
                             className="ui icon button left post list2"
-                            // onClick={() => zipFileDownload('all')}
+                            onClick={() => zipFileDownload('all')}
                           >
                             <img
                               src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
@@ -245,7 +286,7 @@ function LectureCubeDiscussionContainer() {
             </div>
           </div>
 
-          {/* 내가 작성한 댓글 Count */}
+          {/* 내가 작성한 댓글, 대댓글 Count 표현 */}
           {(lectureState?.student && cubeAutomaticCompletion) && (
             <div className="scrolling-area area2 ">
                 <div className="ui segment full">
@@ -275,4 +316,4 @@ function LectureCubeDiscussionContainer() {
   );
 }
 
-export default LectureCubeDiscussionContainer;
+export default LectureCubeDiscussionView;

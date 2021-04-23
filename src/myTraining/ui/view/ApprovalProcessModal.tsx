@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { observer} from 'mobx-react';
+import { observer } from 'mobx-react';
 import { reactAutobind, reactAlert } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import {
-  Modal, Form, Button,
-} from 'semantic-ui-react';
+import { Modal, Form, Button } from 'semantic-ui-react';
 import { ApprovalCubeService } from '../../stores';
 import { IdNameApproval } from '../../model/IdNameApproval';
 import { ProposalState } from '../../model/ProposalState';
+import routePaths from '../../routePaths';
 
 interface Props {
-  approvalCubeService?: ApprovalCubeService
-  open: boolean
-  onCloseModal: () => void
+  approvalCubeService?: ApprovalCubeService;
+  open: boolean;
+  onCloseModal: () => void;
 }
 
 @observer
@@ -32,13 +31,17 @@ class ApprovalProcessModal extends Component<Props> {
   onChangeStudentRequestCdoProps(name: string, value: any) {
     //
     const { approvalCubeService } = this.props;
-    if (approvalCubeService) approvalCubeService.changeStudentRequestProps(name, value);
+    if (approvalCubeService) {
+      approvalCubeService.changeStudentRequestProps(name, value);
+    }
   }
 
-  async onChangeSelectedStudentProps(selectedList: string []) {
+  async onChangeSelectedStudentProps(selectedList: string[]) {
     //
     const { approvalCubeService } = this.props;
-    if (approvalCubeService) approvalCubeService.changeSelectedStudentProps(selectedList);
+    if (approvalCubeService) {
+      approvalCubeService.changeSelectedStudentProps(selectedList);
+    }
   }
 
   async addApprovedLectureSingle() {
@@ -50,42 +53,52 @@ class ApprovalProcessModal extends Component<Props> {
     const email = patronInfo.getPatronEmail() || '';
 
     this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
-    this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Approved);
-    this.onChangeStudentRequestCdoProps('actor', new IdNameApproval({ id: email, name }));
-    this.onChangeStudentRequestCdoProps('students', [ ...selectedList ]);
+    this.onChangeStudentRequestCdoProps(
+      'proposalState',
+      ProposalState.Approved
+    );
+    this.onChangeStudentRequestCdoProps(
+      'actor',
+      new IdNameApproval({ id: email, name })
+    );
+    this.onChangeStudentRequestCdoProps('studentIds', [...selectedList]);
 
-    const responseData = await approvalCubeService!.studentRequestOpen(studentRequest);
-    const { error, message } = responseData;
+    const responseData = await approvalCubeService!.studentRequestOpen(
+      studentRequest
+    );
+    // const { error, message } = responseData;
 
-    if (error) {
-      if (message) {
-        reactAlert({ title: '알림', message });
-      } else {
-        reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
-      }
-    } else {
-      reactAlert({ title: '알림', message: '성공입니다.' });
-      this.routeToCreateList();
-    }
+    // if (error) {
+    //   if (message) {
+    //     reactAlert({ title: '알림', message });
+    //   } else {
+    //     reactAlert({
+    //       title: '알림',
+    //       message: '에러 입니다. 관리자에게 문의 하세요.',
+    //     });
+    //   }
+    // } else {
+    //   reactAlert({ title: '알림', message: '성공입니다.' });
+    //   this.routeToCreateList();
+    // }
+    reactAlert({ title: '알림', message: '성공입니다.' });
+    this.routeToCreateList();
   }
 
   routeToCreateList() {
     //
     // this.clearAll();
-    window.location.href = '/suni-main/my-training/my-page/ApprovalList/pages/1';
+    // window.location.href =
+    //   '/suni-main/my-training/my-page/ApprovalList/pages/1';
+    window.location.href = routePaths.approvalPaidCourse();
   }
 
   render() {
-
     const { approvalCube } = this.props.approvalCubeService!;
     const { open, onCloseModal } = this.props;
 
     return (
-      <Modal
-        open={open}
-        onClose={onCloseModal}
-        className="base w700"
-      >
+      <Modal open={open} onClose={onCloseModal} className="base w700">
         <Modal.Header>선택된 결제 승인</Modal.Header>
         <Form className="base">
           <Modal.Content>
@@ -96,10 +109,12 @@ class ApprovalProcessModal extends Component<Props> {
                     선택된 항목에 대한 결제를 승인하시겠습니까?
                   </div>
                   <div className="text2">
-                    작성하신 의견은 결제가 승인되는 신청자에게 동일하게 전송됩니다.
+                    작성하신 의견은 결제가 승인되는 신청자에게 동일하게
+                    전송됩니다.
                   </div>
-                  <textarea placeholder="의견을 기재해주세요."
-                    value={approvalCube && approvalCube.remark || ''}
+                  <textarea
+                    placeholder="의견을 기재해주세요."
+                    value={(approvalCube && approvalCube.remark) || ''}
                     onChange={this.onChangeRemark}
                   />
                 </div>
@@ -107,8 +122,12 @@ class ApprovalProcessModal extends Component<Props> {
             </div>
           </Modal.Content>
           <Modal.Actions className="actions2">
-            <Button className="pop2 d" onClick={onCloseModal}>취소</Button>
-            <Button className="pop2 p" onClick={this.addApprovedLectureSingle}>승인</Button>
+            <Button className="pop2 d" onClick={onCloseModal}>
+              취소
+            </Button>
+            <Button className="pop2 p" onClick={this.addApprovedLectureSingle}>
+              승인
+            </Button>
           </Modal.Actions>
         </Form>
       </Modal>
