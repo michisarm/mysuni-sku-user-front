@@ -248,7 +248,7 @@ const CommunityPostCreateView: React.FC<CommunityPostCreateViewProps> = function
               </div>
             </div>
           </Form.Field>
-          {!managerAuth && (
+          {!(managerAuth || communityAdminAuth) && (
             <Form.Field>
               {/* 공개, 비공개 */}
               <div className="board-write-radio">
