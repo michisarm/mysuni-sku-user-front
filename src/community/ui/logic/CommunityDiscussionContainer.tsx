@@ -12,6 +12,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { useCommunityDiscussionPostDetail } from 'community/service/useCommunityPostDetail/useCommunityDiscussionPost';
 import DiscussionViewContentHeaderView from '../view/CommunityPostDetailView/DiscussionViewContentHeaderView';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -76,26 +77,33 @@ function CommunityDiscussionContainer() {
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-      if (origin === '') {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
+    if(originArr && originArr.length > 0){
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    }else{
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
   return (
