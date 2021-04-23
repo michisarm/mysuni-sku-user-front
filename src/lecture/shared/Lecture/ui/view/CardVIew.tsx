@@ -40,6 +40,7 @@ interface Props {
   starCount: number;
   simpleDescription: string;
   type: CardType;
+  isRequired?: boolean;
   studentCount?: number;
   remainingDayCount?: number;
   capacity?: number;
@@ -62,6 +63,9 @@ export default function CardView({
   remainingDayCount,
   studentCount,
   permittedCinerooms,
+  isRequired = permittedCinerooms
+    ? isIncludeCineroomId(permittedCinerooms)
+    : false,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
@@ -69,9 +73,6 @@ export default function CardView({
 
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
-  const isRequired = permittedCinerooms
-    ? isIncludeCineroomId(permittedCinerooms)
-    : false;
 
   useEffect(() => {
     return autorun(() => {
