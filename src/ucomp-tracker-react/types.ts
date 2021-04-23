@@ -1,6 +1,6 @@
 export interface TrackerInstance {
   userId: string;
-  trackClick: Function;
+  trackAction: Function;
   trackView: Function;
 }
 

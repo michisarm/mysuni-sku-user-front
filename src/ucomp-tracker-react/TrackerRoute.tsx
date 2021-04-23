@@ -4,7 +4,14 @@ import $ from 'jquery';
 import { debounce, useStateRef } from './utils';
 import { DATA_TYPES } from './constants';
 import { TrackerProviderProps, TrackerParams, PathParams } from './types';
-import { Source, Type, AreaType, ActionTrackParam } from 'tracker/model';
+import {
+  Source,
+  Action,
+  ActionType,
+  Area,
+  ActionTrackParam,
+  ActionTrackViewParam,
+} from 'tracker/model';
 
 const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   /**
@@ -15,7 +22,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
   const [locationKeys, setLocationKeys] = useState<(string | undefined)[]>([]);
 
   const { valueRef } = useStateRef<TrackerParams>({});
-  const { userId, trackClick, trackView } = value;
+  const { userId, trackAction, trackView } = value;
 
   useEffect(() => {
     // view log init
@@ -64,7 +71,11 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       }
 
       debounceHistory({
-        path: location.pathname,
+        path:
+          process.env.PUBLIC_URL === '/suni-main' &&
+          !/^\/suni-main/.test(location.pathname)
+            ? process.env.PUBLIC_URL + location.pathname
+            : location.pathname,
         search: location.search,
         data: valueRef.current,
         action: history.action,
@@ -92,7 +103,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     }
     if (queryParams.has('_area')) {
       // area 모두 허용 - 필요시 white list 방식 처리
-      // const areaList: string[] | null = Object.values(AreaType);
+      // const areaList: string[] | null = Object.values(Area);
       // if (areaList.includes(queryParams.get('_area')?.toUpperCase() || '')) {
       area = queryParams.get('_area');
       queryParams.delete('_area');
@@ -119,7 +130,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
       areaType,
       area,
       areaId,
-    } as ActionTrackParam);
+    } as ActionTrackViewParam);
   };
 
   const handleOutboundClick = (event: MouseEvent) => {
@@ -142,12 +153,24 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
     valueRef.current = data;
 
     if (areaElement instanceof HTMLElement) {
-      const type = areaElement.dataset.type;
-      if (type === Type.CLICK) {
-        // track click, click으로 정의된 이벤트만 수집?
-        // 수집 항목 논의 중
-        // trackClick({context: {logType: type,email: userId,path: window.location.pathname,poc: 'web',menu: '',area: data.area,},action: null,serviceType: null,college: '',cubeId: '',lectureCardId: '',coursePlanId: '',cubeName: '',courseName: '',},500);
-      } else if (type === Type.VIEW) {
+      const action = areaElement.dataset.action;
+      const actionName = areaElement.dataset.actionName;
+      if (!(action && actionName)) {
+        return;
+      }
+      if (action === Action.CLICK) {
+        // track click, click으로 정의된 이벤트만 수집
+        trackAction({
+          email: userId,
+          path: data.referer,
+          search: data.refererSearch,
+          area: data.area,
+          actionType: ActionType.GENERAL,
+          action,
+          actionName,
+          target: data.target,
+        } as ActionTrackParam);
+      } else if (action === Action.VIEW) {
         // router에 잡히지 않는 page의 view event 수집 , ex) layer popup view event 로 수집
         const page = areaElement.dataset.page;
         const pathName = areaElement.dataset.pathname;
@@ -163,7 +186,7 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           refererSearch: data.refererSearch,
           area: data.area,
           target: data.target,
-        } as ActionTrackParam);
+        } as ActionTrackViewParam);
       }
     }
   };
@@ -179,7 +202,6 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           area = 'HISTORY_' + path.historyAction;
           valueRef.current.referer = '';
         }
-
         trackView({
           email: userId,
           path: path.path,
@@ -188,9 +210,9 @@ const TrackerRoute: React.FC<TrackerProviderProps> = ({ value }) => {
           refererSearch: path.data?.refererSearch,
           area,
           target: path.data?.target,
-        } as ActionTrackParam);
+        } as ActionTrackViewParam);
       }
-    }, 500),
+    }, 1000),
     []
   );
 

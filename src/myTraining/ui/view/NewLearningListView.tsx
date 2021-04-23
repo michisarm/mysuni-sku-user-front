@@ -10,7 +10,6 @@ import {
   LRSLectureService,
   NEWLectureService,
   POPLectureService,
-  ENRLectureService,
 } from 'lecture/stores';
 import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
@@ -71,7 +70,6 @@ const NewLearningListView: React.FC<Props> = Props => {
     newLectureService,
     popLectureService,
     lrsLectureService,
-    enrLectureService,
     actionLogService,
     enrLectureService,
     setNewOrder,
@@ -610,7 +608,7 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
-  return page && page.pageNo < page.totalPages;
+    return page && page.pageNo < page.totalPages;
   };
 
   /* render functions by 김동구 */
@@ -715,5 +713,3 @@ export default inject(
     'enrLecture.enrLectureService'
   )
 )(withRouter(observer(NewLearningListView)));
-
-

@@ -39,12 +39,6 @@ export function findTranscriptCount(deliveryId: string) {
     .then(response => response && response.data);
 }
 
-export function findTranscriptCount(deliveryId: string) {
-  return axiosApi
-    .get<TranscriptCountModel>(`${BASE_URL}/transcripts/countAll/${deliveryId}`)
-    .then(response => response && response.data);
-}
-
 export function findMedia(mediaId: string) {
   return axiosApi
     .get<Media>(`${BASE_URL}/medias/${mediaId}`)

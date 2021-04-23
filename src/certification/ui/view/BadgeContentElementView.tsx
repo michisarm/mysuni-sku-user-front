@@ -118,10 +118,7 @@ interface BadgeOverviewProps {
 
 export const BadgeOverview: React.FC<BadgeOverviewProps> = ({ children }) => (
   <Segment className="full">
-    <div
-      className="badge-detail"
-      data-area={Area.CERTIFICATION_PATH}
-    >
+    <div className="badge-detail" data-area={Area.CERTIFICATION_PATH}>
       {children}
     </div>
   </Segment>
@@ -134,18 +131,18 @@ interface LinkedBadgeProps {
 export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({
   children,
 }) => (
-    <div className="relation-badge-area" data-area={Area.CERTIFICATION_RELATION}>
-      <Segment className="full">
-        <h3 className="title-style">
-          <Label className="onlytext bold size24">
-            <Icon className="series" />
-            <span>연관 Badge</span>
-          </Label>
-        </h3>
-        {children}
-      </Segment>
-    </div>
-  );
+  <div className="relation-badge-area" data-area={Area.CERTIFICATION_RELATION}>
+    <Segment className="full">
+      <h3 className="title-style">
+        <Label className="onlytext bold size24">
+          <Icon className="series" />
+          <span>연관 Badge</span>
+        </Label>
+      </h3>
+      {children}
+    </Segment>
+  </div>
+);
 
 interface BadgeStatusProps {
   // badgeState 에 IssueState 타입 추가. 2020.09.28 by 김동구
@@ -175,17 +172,16 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = BadgeStatusProps => {
         badgeState === ChallengeState.Challenging ||
         badgeState === ChallengeState.ReadyForRequest ||
         badgeState === ChallengeState.Requested) && (
-          <>
-            <Button className="fix bg" onClick={onClickButton}>
-              {ChallengeStateText[ChallengeState[badgeState]]}
-            </Button>
-            {badgeState === ChallengeState.Challenging && (
-              <>
-                <span className="ing">
-                  <span>진행중</span>
-                  <span className="num">
-                    <b>{learningCompleted}</b>/{learningTotalCount}
-                  </span>
+        <>
+          <Button className="fix bg" onClick={onClickButton}>
+            {ChallengeStateText[ChallengeState[badgeState]]}
+          </Button>
+          {badgeState === ChallengeState.Challenging && (
+            <>
+              <span className="ing">
+                <span>진행중</span>
+                <span className="num">
+                  <b>{learningCompleted}</b>/{learningTotalCount}
                 </span>
               </span>
             </>

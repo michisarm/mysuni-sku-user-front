@@ -48,9 +48,6 @@ export default {
   lrsLecture: {
     lrsLectureService: LRSLectureService.instance,
   },
-  enrLecture: {
-    enrLectureService: ENRLectureService.instance,
-  },
   badge: {
     badgeService: BadgeService.instance,
     badgeCardService: BadgeCardService.instance,

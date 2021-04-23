@@ -1,4 +1,3 @@
-import { useLectureCourseSummary } from 'lecture/detail/service/useLectureCourseOverview/useLectureCourseSummary';
 import React from 'react';
 import { useLectureReview } from '../../../service/useLectuerCubeOverview/useLectureReview';
 import { useLectureClassroom } from '../../../service/useLectureClassroom/useLectureClassroom';
@@ -8,7 +7,6 @@ import LectureCubeSummaryView from '../../view/LectureOverview/LectureCubeSummar
 
 function LectureCubeSummaryContainer() {
   const [lectureSummary] = useLectureCubeSummary();
-  const [lectureCourseSummary] = useLectureCourseSummary();
   const [lectureInstructor] = useLectureInstructor();
   const [lectureReview] = useLectureReview();
   const [lectureClassroom] = useLectureClassroom();
@@ -20,7 +18,6 @@ function LectureCubeSummaryContainer() {
           lectureInstructor={lectureInstructor}
           lectureReview={lectureReview}
           lectureClassroom={lectureClassroom}
-          lectureCourseSummary={lectureCourseSummary}
         />
       )}
     </>

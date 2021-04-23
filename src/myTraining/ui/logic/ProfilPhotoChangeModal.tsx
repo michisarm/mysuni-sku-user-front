@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Button, Modal, Form, Radio } from 'semantic-ui-react';
 import { fileUtil, ValidationType } from '@nara.drama/depot';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
+
 interface Props {
   skProfileService?: SkProfileService;
   size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen';
