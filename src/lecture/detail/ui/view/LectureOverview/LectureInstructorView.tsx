@@ -38,7 +38,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
               >
                 {representative === true && <Represent />}
                 <div className="pic s80">
-                  {memberSummary?.employeeId &&
+                  {/* {memberSummary?.employeeId &&
                     memberSummary?.employeeId != '' && (
                       <img
                         alt="프로필사진"
@@ -48,7 +48,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
                           `${memberSummary?.photoId}`
                         }
                       />
-                    )}
+                    )} */}
                   {memberSummary?.photoId && (
                     <img
                       alt="프로필사진"
