@@ -189,7 +189,7 @@ export default function CardView({
       }
 
       if (remainingDayCount === 0) {
-        return <Label className="day">D-DAY</Label>;
+        return <Label className="day">오늘 마감</Label>;
       } else {
         return <Label className="day">D-{remainingDayCount}</Label>;
       }

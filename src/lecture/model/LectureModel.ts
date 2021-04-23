@@ -87,7 +87,7 @@ class LectureModel extends DramaEntityObservableModel {
         this.ribbonName = "정원 마감"
       } else {
         if(this.differDays == 0) {
-          this.ribbonName = ("D-DAY");
+          this.ribbonName = ("오늘 마감");
         } else {
           this.ribbonName = ("D-"+this.differDays);
         }
