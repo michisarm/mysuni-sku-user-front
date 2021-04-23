@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-interface Workspace {
+export interface Workspace {
   id: string;
   tenantId: string;
 }
