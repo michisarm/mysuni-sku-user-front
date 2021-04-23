@@ -14,6 +14,7 @@ import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useParams } from 'react-router-dom';
 import LectureParams from '../../viewModel/LectureParams';
+import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -128,26 +129,33 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-      if (origin === '') {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
+    if(originArr && originArr.length > 0){
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    }else{
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
 

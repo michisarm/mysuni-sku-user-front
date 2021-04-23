@@ -12,6 +12,7 @@ import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import DefaultImg from '../../../../style/media/img-profile-nobg-80-px.png';
 import { CommentList } from '@nara.drama/feedback';
+import { reactAlert } from '@nara.platform/accent';
 
 interface Props {
   postDetail: any;
@@ -82,26 +83,33 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   };
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-      if (origin === '') {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
+    if(originArr && originArr.length > 0){
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    }else{
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
 

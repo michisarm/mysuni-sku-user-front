@@ -91,31 +91,37 @@ function CommunityPostDetailContainer() {
   };
 
   const zipFileDownload = useCallback((type: string) => {
-    if (type === 'select') {
-
-      if (origin === '') {
-        return;
-      }
-      if (originArr.length === 0) {
-        return;
-      }
-      if (originArr!.length === 1) {
-        depot.downloadDepotFile(origin);
-        return;
-      }
-      depot.downloadDepotFiles(originArr);
-    } else {
-      if (type === 'all') {
-        const idArr: string[] = [];
-        filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
-          idArr.push(foundedFile.id);
-        });
-        if (idArr.length === 0) {
-          // console.log('전체 첨부파일 없음 err');
+    if(originArr && originArr.length > 0){
+      if (type === 'select') {
+        if (origin === '') {
           return;
         }
-        depot.downloadDepotFiles(idArr);
+        if (originArr.length === 0) {
+          return;
+        }
+        if (originArr!.length === 1) {
+          depot.downloadDepotFile(origin);
+          return;
+        }
+        depot.downloadDepotFiles(originArr);
+      } else {
+        if (type === 'all') {
+          const idArr: string[] = [];
+          filesMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+            idArr.push(foundedFile.id);
+          });
+          if (idArr.length === 0) {
+            // console.log('전체 첨부파일 없음 err');
+            return;
+          }
+          depot.downloadDepotFiles(idArr);
+        }
       }
+    }else{
+      reactAlert({
+        title: '안내',
+        message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
+      });
     }
   }, []);
 
