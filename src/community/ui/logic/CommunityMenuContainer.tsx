@@ -354,7 +354,11 @@ function CommunityMenuContainer() {
           //   return false;
           // }
 
-          if (!row.url.includes('http://') && !row.url.includes('https://')) {
+          if (
+            row.url !== '' &&
+            !row.url.includes('http://') &&
+            !row.url.includes('https://')
+          ) {
             reactAlert({
               title: '',
               message: `관련 URL의 링크는 http:// 또는 https:// 으로 시작되어야 합니다.`,
