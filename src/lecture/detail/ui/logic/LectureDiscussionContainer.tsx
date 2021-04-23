@@ -24,8 +24,9 @@ export default function LectureDiscussionContainer() {
   const params = useParams<LectureParams>();
 
   const [lectureFeedbackContent] = useLectureFeedbackContent();
-  const [more, setMore] = useState<boolean>(false);
+  const [more, setMore] = useState<boolean>();
   const [count, setCount] = useState<number>(0);
+  const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -84,6 +85,9 @@ export default function LectureDiscussionContainer() {
       if (lectureDiscussion?.id === undefined) {
         return;
       }
+
+      // 관련 url 빈값 체크 함수
+      emptyCheckUrl();
 
       //comment count
       if (lectureFeedbackContent !== undefined && lectureFeedbackContent.commentFeedbackId !== undefined) {
@@ -150,6 +154,19 @@ export default function LectureDiscussionContainer() {
     }
   }, []);
 
+  // 관련 url 빈값 체크 함수
+  const emptyCheckUrl = useCallback(() => {
+    if(lectureFeedbackContent === undefined) return;
+
+    // true 이면 null 처리
+    lectureFeedbackContent.relatedUrlList?.map((item) => {
+      if(item.title === "" || item.url === "") {
+        setUrlNull(true);
+      }
+    });
+
+  },[lectureFeedbackContent?.relatedUrlList]);
+  
   return (
     <>
       {lectureDiscussion && (
@@ -215,11 +232,7 @@ export default function LectureDiscussionContainer() {
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {lectureFeedbackContent &&
-                lectureFeedbackContent.relatedUrlList &&
-                lectureFeedbackContent.relatedUrlList.length > 0 && (
-                  (lectureFeedbackContent.relatedUrlList[0].title !== "" && lectureFeedbackContent.relatedUrlList[0].url) !== "" ||
-                  (lectureFeedbackContent.relatedUrlList[1].title !== "" && lectureFeedbackContent.relatedUrlList[1].url !== "")) && (
+              {urlNull === false ? (
                   <div className="community-board-down discuss2">
                     <div className="board-down-title href">
                       <p>
@@ -235,18 +248,15 @@ export default function LectureDiscussionContainer() {
                         lectureFeedbackContent.relatedUrlList?.map(
                           (item: any) => (
                             <>
-                              <a href={item.url} target="blank">
+                              <a href={`https://${item.url}`} target="blank">
                                 {item.title}
                               </a>
-                              <a href={item.url} target="blank">
-                              {item.url}
-                            </a>
-                          </>
+                            </>
                           )
                         )}
                     </div>
                   </div>
-                )}
+                ) : null}
               {/* eslint-enable */}
               {/* 관련 자료 */}
               {filesMap.get('reference') && (

@@ -32,6 +32,7 @@ export interface CommunityPostDetail {
   prevPost?: Post;
   nextPost?: Post;
   relatedUrlList?: RelatedUrlList[];
+  content?: string;
 }
 
 export interface CommunityPostItem {
@@ -48,4 +49,5 @@ export interface CommunityPostItem {
   creatorName: string;
   createdTime: number;
   nick: string;
+  content: string;
 }
