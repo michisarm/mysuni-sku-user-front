@@ -1,6 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
 import { AxiosResponse } from 'axios';
-import BadgeModel from '../../../certification/ui/model/BadgeModel';
+import { BadgeBundle } from '../../../certification/model/Badge';
 
 const BASE_URL = '/api/badge';
 
@@ -14,12 +14,16 @@ function AxiosReturn<T>(response: AxiosResponse<T>) {
   ) {
     return undefined;
   }
+
   return response.data;
 }
 
-export function findByLectureUsid(lectureUsid: string): Promise<BadgeModel[] | undefined> {
-  const url = `${BASE_URL}/badges/lecture-badges?lectureUsid=${lectureUsid}`;
+export function findByLectureUsid(
+  lectureUsid: string
+): Promise<BadgeBundle[] | undefined> {
+  const url = `${BASE_URL}/badges/byCardId`;
+
   return axiosApi
-    .get<BadgeModel[]>(url)
+    .get<BadgeBundle[]>(url, { params: { cardId: lectureUsid } })
     .then(AxiosReturn);
 }

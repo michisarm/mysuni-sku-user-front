@@ -34,11 +34,15 @@ export function useLectureBadge(): [Value] {
     if (params?.cardId === undefined) {
       return;
     }
-    findByLectureUsid(params.cardId).then(badges => {
-      if (badges === undefined) {
+    findByLectureUsid(params.cardId).then(badge => {
+      console.log('????????', badge);
+      if (badge === undefined) {
         setLectureBadge();
       } else {
-        setLectureBadge({ badges });
+        const lectureBadge = {
+          badges: badge,
+        };
+        setLectureBadge(lectureBadge);
       }
     });
   }, [params?.cardId]);
