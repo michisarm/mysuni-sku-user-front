@@ -2,7 +2,7 @@ import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { ProposalState } from '../../../shared/model';
+import { LangStrings, ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
@@ -19,7 +19,10 @@ export default class ApprovalCubeService {
   approvalCube: ApprovalCubeModel = new ApprovalCubeModel();
 
   @observable
-  approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = { results: [], totalCount: 0 };
+  approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = {
+    results: [],
+    totalCount: 0,
+  };
 
   @observable
   studentRequest: StudentRequestCdoModel = {} as StudentRequestCdoModel;
@@ -28,10 +31,10 @@ export default class ApprovalCubeService {
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
-  searchOrderBy: string = '';
+  searchOrderBy: string = 'UpdateTimeDesc';
 
   @observable
-  searchEndDate: number = 0;
+  searchEndDate: number = 9999999999999;
 
   @observable
   lectures: any[] = [];
@@ -84,10 +87,14 @@ export default class ApprovalCubeService {
   @action
   async findPersonalCube(personalCubeId: string) {
     //
-    const approvalCube = await this.approvalCubeApi.findPersonalCube(personalCubeId);
+    const approvalCube = await this.approvalCubeApi.findPersonalCube(
+      personalCubeId
+    );
 
     if (approvalCube) {
-      return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
+      return runInAction(
+        () => (this.approvalCube = new ApprovalCubeModel(approvalCube))
+      );
     }
     return null;
   }
@@ -95,10 +102,61 @@ export default class ApprovalCubeService {
   @action
   async findApprovalCube(studentId: string) {
     //
-    const approvalCube = await this.approvalCubeApi.findApprovalCube(studentId);
+    const approvalCubeDetail = await this.approvalCubeApi.findApprovalCube(
+      studentId
+    );
 
-    if (approvalCube) {
-      return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
+    if (approvalCubeDetail) {
+      const approvalCube = new ApprovalCubeModel();
+      approvalCube.studentId = approvalCubeDetail.student.id;
+      if (approvalCubeDetail.userIdentity.names?.defaultLanguage === 'ko') {
+        approvalCube.studentName =
+          approvalCubeDetail.userIdentity.names?.langStringMap.ko;
+      } else if (
+        approvalCubeDetail.userIdentity.names?.defaultLanguage === 'en'
+      ) {
+        approvalCube.studentName =
+          approvalCubeDetail.userIdentity.names?.langStringMap.en;
+      } else if (
+        approvalCubeDetail.userIdentity.names?.defaultLanguage === 'zh'
+      ) {
+        approvalCube.studentName =
+          approvalCubeDetail.userIdentity.names?.langStringMap.zh;
+      }
+      const langStringMap: Map<string, string> = new Map<string, string>();
+      langStringMap.set(
+        'ko',
+        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.ko || ''
+      );
+      langStringMap.set(
+        'en',
+        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.en || ''
+      );
+      langStringMap.set(
+        'zh',
+        approvalCubeDetail.userIdentity.departmentNames?.langStringMap.zh || ''
+      );
+      const departmentNames: LangStrings = new LangStrings();
+      departmentNames.langStringMap = langStringMap;
+      departmentNames.defaultLanguage =
+        approvalCubeDetail.userIdentity.departmentNames?.defaultLanguage || '';
+      approvalCube.studentDepartmentNames = departmentNames;
+      approvalCube.cubeName = approvalCubeDetail.cube.name;
+      approvalCube.cubeType = approvalCubeDetail.cube.type;
+      approvalCube.round = approvalCubeDetail.student.round;
+      approvalCube.capacity = approvalCubeDetail.classroom.capacity;
+      approvalCube.learningStartDate =
+        approvalCubeDetail.classroom.enrolling.learningPeriod.startDate;
+      approvalCube.learningEndDate =
+        approvalCubeDetail.classroom.enrolling.learningPeriod.endDate;
+      approvalCube.operation.location =
+        approvalCubeDetail.classroom.operation.location;
+      approvalCube.freeOfCharge.chargeAmount =
+        approvalCubeDetail.classroom.freeOfCharge.chargeAmount;
+      approvalCube.proposalState = approvalCubeDetail.student.proposalState;
+      approvalCube.remark = approvalCubeDetail.studentApproval.remark;
+
+      return runInAction(() => (this.approvalCube = approvalCube));
     }
     return null;
   }
@@ -115,25 +173,42 @@ export default class ApprovalCubeService {
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
-  async findApprovalCubesForSearch(offset: number,
+  async findApprovalCubesForSearch(
+    offset: number,
     limit: number,
-    orderBy: string = '',
+    orderBy: string = 'UpdateTimeDesc',
     proposalState: ProposalState = ProposalState.Submitted,
     lectureCardId: string = '',
-    endDate: number = 0) {
+    endDate: number = 9999999999999
+  ) {
     //
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(ApprovalCubeRdoModel.new(offset, limit, orderBy, proposalState, lectureCardId, endDate));
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
+      ApprovalCubeRdoModel.new(
+        offset,
+        limit,
+        orderBy,
+        proposalState,
+        lectureCardId,
+        endDate
+      )
+    );
 
     runInAction(() => {
-      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(approvalCubeOffsetList.results);
-      this.approvalCubeOffsetList.totalCount = approvalCubeOffsetList.totalCount;
+      this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(
+        approvalCubeOffsetList.results
+      );
+      this.approvalCubeOffsetList.totalCount =
+        approvalCubeOffsetList.totalCount;
     });
     return approvalCubeOffsetList;
   }
 
   @action
   clear() {
-    this.approvalCubeOffsetList = { results: [], totalCount: 0 } as OffsetElementList<ApprovalCubeModel>;
+    this.approvalCubeOffsetList = {
+      results: [],
+      totalCount: 0,
+    } as OffsetElementList<ApprovalCubeModel>;
   }
 
   // SearchState --------------------------------------------------------------------------------------------
@@ -160,17 +235,37 @@ export default class ApprovalCubeService {
   async findLectureApprovalSelect() {
     //
     const lectures = await this.approvalCubeApi.findLectureApprovalSelect();
-    return runInAction(() => this.lectures = lectures);
+    return runInAction(() => (this.lectures = lectures));
   }
 
   @action
-  async findApprovalCubesForExcel(orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+  async findApprovalCubesForExcel(
+    orderBy: string,
+    proposalState?: ProposalState,
+    approvalCube?: ApprovalCubeModel
+  ) {
     //
-    const approvalCubes = await this.approvalCubeApi.findApprovalCubesForExcel(orderBy, proposalState, approvalCube);
+    const cubeId = approvalCube?.cubeId || '';
 
-    return runInAction(() => {
-      this.approvalCubesExcelWrite = approvalCubes || [];
+    const approvalCubeRdo: ApprovalCubeRdoModel = new ApprovalCubeRdoModel();
+    approvalCubeRdo.sortOrder = orderBy;
+    approvalCubeRdo.cubeId = cubeId;
+    if (proposalState !== undefined) {
+      approvalCubeRdo.proposalState = proposalState;
+    }
+    approvalCubeRdo.limit = 999999999;
+
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(
+      approvalCubeRdo
+    );
+
+    runInAction(() => {
+      this.approvalCubesExcelWrite = this.approvalCubesExcelWrite.concat(
+        approvalCubeOffsetList.results
+      );
     });
+
+    return approvalCubeOffsetList;
   }
 }
 
