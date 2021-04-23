@@ -33,6 +33,7 @@ interface CommunityAdminMenuAddViewProps {
   onAddUrlsList: () => void;
   onDeleteUrlsList: (currentIndex: number) => void;
   onAddFileBoxId: (fileBoxId: string) => void;
+  handleCleanDiscussRow: () => void;
 }
 
 const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = function CommunityAdminMenuDetailView({
@@ -45,6 +46,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   onAddUrlsList,
   onDeleteUrlsList,
   onAddFileBoxId,
+  handleCleanDiscussRow,
 }) {
   const searchBox = useSearchBox();
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
@@ -94,6 +96,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
 
   function changeType(_: any, data: any) {
     if (selectedRow && data) {
+      handleCleanDiscussRow();
       selectedRow.type = data.value;
       onChangeAddValue(selectedRow, 'type');
     }
@@ -117,22 +120,6 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
         selectedRow.surveyInformation = value;
       } else if (e.target.name === 'url') {
         selectedRow.url = value;
-      } else if (
-        targetName === 'urlTitle' &&
-        typeof index === 'number' &&
-        selectedRow.relatedUrlList
-      ) {
-        selectedRow.relatedUrlList[index].title = value;
-      } else if (
-        targetName === 'urlValue' &&
-        typeof index === 'number' &&
-        selectedRow.relatedUrlList
-      ) {
-        selectedRow.relatedUrlList[index].url = value;
-      } else if (e.target.name === 'html') {
-        selectedRow.html = value;
-      } else if (targetName && targetName === 'content') {
-        selectedRow.content = value;
       }
       onChangeAddValue(selectedRow, e.target.name);
     }

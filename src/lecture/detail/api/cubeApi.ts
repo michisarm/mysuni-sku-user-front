@@ -1,3 +1,4 @@
+// @ts-ignore
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
 import { Cube } from '../../model/Cube';
@@ -10,12 +11,137 @@ import { TaskChildCdo } from '../model/TaskChildCdo';
 import TaskDetail from '../model/TaskDetail';
 
 import TaskDetailPost from '../model/TaskDetail';
-import TaskDetailBody from '../model/TaskDetailBody';
 
 import { IntPair } from '../../../shared/model/IntPair';
 import { CubeMyDiscussionCounts } from '../../model/CubeMyDiscussionCounts';
+import { getCookie } from '@nara.platform/accent';
+import { CubeMaterial } from '../../model/CubeMaterial';
+import { CubeContents } from '../../model/CubeContents';
+import { findContentsProviderSamlCache } from '../../../shared/api/checkpointApi';
 
 const BASE_URL = '/api/cube';
+
+function decode(input: string) {
+  let encoded = input;
+  encoded = encoded
+    .replace(/-/g, '+')
+    .replace(/_/g, '/')
+    .replace(/\s/g, '');
+  try {
+    return new Uint8Array(
+      window
+        .atob(encoded)
+        .split('')
+        .map(c => c.charCodeAt(0))
+    );
+  } catch (_a) {
+    throw new TypeError('The input to be decoded is not correctly encoded.');
+  }
+}
+
+function concatDirectConnection(url: string, directConnection: string) {
+  if (url === null || url === '') {
+    return url;
+  }
+  if (!url.includes('?')) {
+    return `${url}?${directConnection}`;
+  }
+  return `${url}&${directConnection}`;
+}
+
+async function AppendSamlQueryToCubeMaterial(
+  cubeContents: CubeContents,
+  cubeMaterial: CubeMaterial
+) {
+  if (cubeContents === undefined || cubeContents === null) {
+    return cubeMaterial;
+  }
+  if (cubeMaterial === undefined || cubeMaterial === null) {
+    return cubeMaterial;
+  }
+  const contentsProviderSamls = await findContentsProviderSamlCache();
+  if (
+    !Array.isArray(contentsProviderSamls) ||
+    contentsProviderSamls.length === 0
+  ) {
+    return cubeMaterial;
+  }
+  let contentsProviderSaml = contentsProviderSamls.find(
+    c => c.contentsProviderId === cubeContents.organizerId
+  );
+  if (
+    cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
+      undefined &&
+    cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
+  ) {
+    contentsProviderSaml = contentsProviderSamls.find(
+      c =>
+        c.contentsProviderId ===
+        cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType
+          .id
+    );
+  }
+  if (contentsProviderSaml === undefined) {
+    return cubeMaterial;
+  }
+
+  const token = localStorage.getItem('nara.token')?.split('.')[1];
+  if (token === null || token === undefined) {
+    return cubeMaterial;
+  }
+  const textDecoder = new TextDecoder();
+  const payload = JSON.parse(textDecoder.decode(decode(token)));
+  const gdiUser: boolean = payload?.gdiUser;
+  if (gdiUser === undefined) {
+    return cubeMaterial;
+  }
+  const loginUserSourceType = gdiUser === true ? 'GDI' : 'CHECKPOINT_SAML';
+  const directConnection = contentsProviderSaml.contentsProviderDirectConnections.find(
+    c => c.loginUserSourceType === loginUserSourceType
+  )?.directConnection;
+  if (directConnection === undefined) {
+    return cubeMaterial;
+  }
+
+  if (
+    cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
+      undefined &&
+    cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
+  ) {
+    cubeMaterial.media.mediaContents.contentsProvider.url = concatDirectConnection(
+      cubeMaterial.media?.mediaContents.contentsProvider.url,
+      directConnection
+    );
+    contentsProviderSaml = contentsProviderSamls.find(
+      c =>
+        c.contentsProviderId ===
+        cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType
+          .id
+    );
+  }
+  if (cubeMaterial.officeWeb?.webPageUrl !== undefined) {
+    cubeMaterial.officeWeb.webPageUrl = concatDirectConnection(
+      cubeMaterial.officeWeb.webPageUrl,
+      directConnection
+    );
+  }
+  if (Array.isArray(cubeMaterial.classrooms)) {
+    cubeMaterial.classrooms = cubeMaterial.classrooms.map(classrooom => {
+      if (
+        classrooom.operation.siteUrl !== undefined &&
+        classrooom.operation.siteUrl !== ''
+      ) {
+        classrooom.operation.siteUrl = concatDirectConnection(
+          classrooom.operation.siteUrl,
+          directConnection
+        );
+      }
+      return classrooom;
+    });
+  }
+
+  return cubeMaterial;
+}
 
 function paramsSerializer(paramObj: Record<string, any>) {
   const params = new URLSearchParams();
@@ -49,7 +175,19 @@ export { findCubesByIdsCache, clearFindCubesByIdsCache };
 function findCubeDetail(cubeId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/${cubeId}/detail`;
-  return axios.get<CubeDetail>(url).then(AxiosReturn);
+  return axios
+    .get<CubeDetail>(url)
+    .then(AxiosReturn)
+    .then(r => {
+      if (r === undefined) {
+        return undefined;
+      }
+      return AppendSamlQueryToCubeMaterial(r.cubeContents, r.cubeMaterial).then(
+        cubeMaterial => {
+          return { ...r, cubeMaterial } as CubeDetail;
+        }
+      );
+    });
 }
 
 const [findCubeDetailCache, clearFindCubeDetailCache] = createCacheApi(

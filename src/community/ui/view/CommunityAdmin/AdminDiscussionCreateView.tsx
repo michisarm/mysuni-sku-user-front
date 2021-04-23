@@ -45,7 +45,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
             <input
               style={{ width: '100%' }}
               type="text"
-              placeholder="메뉴명을 입력하세요."
+              placeholder="주제를 입력하세요."
               className="bg"
               name="discussionTopic"
               value={selectedRow && selectedRow.discussionTopic}
@@ -177,33 +177,34 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
           </div>
         </td>
       </tr>
-
-      <tr className="opinion-option">
-        <th>의견 공개 설정</th>
-        <td>
-          <div className="board-write-radio open-option-radio">
-            <Radio
-              className="base"
-              label="공개"
-              name="optionGroup"
-              value="option01"
-              checked={discussRow && !discussRow.privateComment}
-              onChange={() => onChangeDiscussValue(false, 'privateComment')}
-            />
-            <Radio
-              className="base"
-              label="비공개"
-              name="optionGroup"
-              value="option02"
-              checked={discussRow && discussRow.privateComment}
-              onChange={() => onChangeDiscussValue(true, 'privateComment')}
-            />
-          </div>
-          <span className="open-option-detail">
-            비공개 설정시 작성한 본인과 커뮤니티 관리자만 확인할 수 있습니다.
-          </span>
-        </td>
-      </tr>
+      {selectedRow?.type === 'DISCUSSION' ? (
+        <tr className="opinion-option">
+          <th>의견 공개 설정</th>
+          <td>
+            <div className="board-write-radio open-option-radio">
+              <Radio
+                className="base"
+                label="공개"
+                name="optionGroup"
+                value="option01"
+                checked={discussRow && !discussRow.privateComment}
+                onChange={() => onChangeDiscussValue(false, 'privateComment')}
+              />
+              <Radio
+                className="base"
+                label="비공개"
+                name="optionGroup"
+                value="option02"
+                checked={discussRow && discussRow.privateComment}
+                onChange={() => onChangeDiscussValue(true, 'privateComment')}
+              />
+            </div>
+            <span className="open-option-detail">
+              비공개 설정시 작성한 본인과 커뮤니티 관리자만 확인할 수 있습니다.
+            </span>
+          </td>
+        </tr>
+      ) : null}
     </>
   );
 };
