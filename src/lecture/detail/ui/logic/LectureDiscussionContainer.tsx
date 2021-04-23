@@ -1,6 +1,12 @@
 import { CommentList, CommentService } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
@@ -132,7 +138,7 @@ export default function LectureDiscussionContainer() {
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
-    if(originArr && originArr.length > 0){
+    if (originArr && originArr.length > 0) {
       if (type === 'select') {
         if (origin === '') {
           return;
@@ -154,7 +160,7 @@ export default function LectureDiscussionContainer() {
           depot.downloadDepotFiles(idArr);
         }
       }
-    }else{
+    } else {
       reactAlert({
         title: '안내',
         message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
@@ -185,13 +191,13 @@ export default function LectureDiscussionContainer() {
 
     // true 이면 null 처리
     lectureFeedbackContent.relatedUrlList?.map(item => {
-      if (item.title === '' && item.url === '') {
+      if (item.title === '' || item.url === '') {
         setUrlNull(true);
       }
     });
-  }, [lectureFeedbackContent?.relatedUrlList]);
 
-  // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
+    // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
+  }, [lectureFeedbackContent?.relatedUrlList]);
 
   return (
     <>
@@ -275,7 +281,7 @@ export default function LectureDiscussionContainer() {
                         (item: any) => (
                           <>
                             <a href={`https://${item.url}`} target="blank">
-                              {!item.title ? item.url : item.title}
+                              {item.title}
                             </a>
                           </>
                         )
@@ -342,10 +348,10 @@ export default function LectureDiscussionContainer() {
               )}
             </div>
           </div>
-         
+
           {lectureFeedbackContent?.commentFeedbackId && (
             <CommentList
-              feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}  
+              feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}
               hideCamera
               name={name}
               email={email}

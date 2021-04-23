@@ -143,58 +143,6 @@ async function AppendSamlQueryToCubeMaterial(
   return cubeMaterial;
 }
 
-async function AppendPanoptoSamlQueryToCubeMaterial(
-  cubeContents: CubeContents,
-  cubeMaterial: CubeMaterial
-) {
-  if (cubeContents === undefined || cubeContents === null) {
-    return cubeMaterial;
-  }
-  if (cubeMaterial === undefined || cubeMaterial === null) {
-    return cubeMaterial;
-  }
-  const contentsProviderSamls = await findContentsProviderSamlCache();
-  if (
-    !Array.isArray(contentsProviderSamls) ||
-    contentsProviderSamls.length === 0
-  ) {
-    return cubeMaterial;
-  }
-  const panoptoContentsProviderSaml = contentsProviderSamls.find(
-    c => c.contentsProviderId === 'PANOPTO'
-  );
-
-  const token = localStorage.getItem('nara.token')?.split('.')[1];
-  if (token === null || token === undefined) {
-    return cubeMaterial;
-  }
-  const textDecoder = new TextDecoder();
-  const payload = JSON.parse(textDecoder.decode(decode(token)));
-  const gdiUser: boolean = payload?.gdiUser;
-  if (gdiUser === undefined) {
-    return cubeMaterial;
-  }
-  const loginUserSourceType = gdiUser === true ? 'GDI' : 'CHECKPOINT_SAML';
-  if (panoptoContentsProviderSaml !== undefined) {
-    const panoptoContentsProviderDirectConnections = panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
-      c => c.loginUserSourceType === loginUserSourceType
-    );
-    if (panoptoContentsProviderDirectConnections !== undefined) {
-      if (Array.isArray(cubeMaterial.media?.mediaContents.internalMedias)) {
-        cubeMaterial.media?.mediaContents.internalMedias.forEach(
-          internalMedia => {
-            internalMedia.directConnectionName =
-              panoptoContentsProviderDirectConnections.directConnectionName;
-            internalMedia.targetSamlInstanceName =
-              panoptoContentsProviderDirectConnections.targetSamlInstanceName;
-          }
-        );
-      }
-    }
-  }
-  return cubeMaterial;
-}
-
 function paramsSerializer(paramObj: Record<string, any>) {
   const params = new URLSearchParams();
   for (const key in paramObj) {
@@ -239,17 +187,6 @@ function findCubeDetail(cubeId: string) {
           return { ...r, cubeMaterial } as CubeDetail;
         }
       );
-    })
-    .then(r => {
-      if (r === undefined) {
-        return undefined;
-      }
-      return AppendPanoptoSamlQueryToCubeMaterial(
-        r.cubeContents,
-        r.cubeMaterial
-      ).then(cubeMaterial => {
-        return { ...r, cubeMaterial } as CubeDetail;
-      });
     });
 }
 

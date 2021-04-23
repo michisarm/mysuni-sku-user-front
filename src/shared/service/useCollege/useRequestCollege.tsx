@@ -40,7 +40,7 @@ export function getCollgeName(collegeId: string) {
 
   const filterChannelName = find(collegeList, { id: collegeId });
 
-  return filterChannelName?.name;
+  return filterChannelName?.name || '';
 }
 
 export function getChannelName(channelId: string) {
@@ -48,7 +48,7 @@ export function getChannelName(channelId: string) {
 
   const filterChannelName = find(channelList, { id: channelId });
 
-  return filterChannelName?.name;
+  return filterChannelName?.name || '';
 }
 
 export function getColor(categoryId: string) {

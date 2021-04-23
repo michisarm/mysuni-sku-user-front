@@ -76,7 +76,7 @@ function CommunityMenuContainer() {
       e.nativeEvent.stopImmediatePropagation();
       e.stopPropagation();
       if (type !== 'delete') {
-        handleCleanDiscussRow();
+        setDiscussRow(getEmptyCommunityDiscussion());
         if (param.type === 'DISCUSSION' || param.type === 'ANODISCUSSION') {
           const discussionParams = await findPostMenuDiscussion(
             param.menuId
@@ -136,10 +136,6 @@ function CommunityMenuContainer() {
     },
     [communityAdminMenu, discussRow, selectedRow]
   );
-
-  const handleCleanDiscussRow = () => {
-    setDiscussRow(getEmptyCommunityDiscussion());
-  };
 
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
@@ -308,6 +304,7 @@ function CommunityMenuContainer() {
   const handleSave = useCallback(
     async (nameValues?, deleteValues?, type?, obj?) => {
       let successFlag = false;
+
       const result = _.chain(nameValues)
         .groupBy('id')
         .map((v, i) => {
@@ -504,6 +501,7 @@ function CommunityMenuContainer() {
           } else {
             addCommunityMenu(communityId, obj).then(() => {
               //오더정리
+
               requestCommunityMenu(communityId).then(() => {
                 requestCommunityMenuOrder(communityId);
                 reactAlert({
@@ -1283,7 +1281,6 @@ function CommunityMenuContainer() {
                       onAddUrlsList={onAddUrlsList}
                       onDeleteUrlsList={onDeleteUrlsList}
                       onAddFileBoxId={onAddFileBoxId}
-                      handleCleanDiscussRow={handleCleanDiscussRow}
                     />
                     <div className="admin_bottom_button line">
                       <button
@@ -1309,7 +1306,6 @@ function CommunityMenuContainer() {
                     onAddUrlsList={onAddUrlsList}
                     onDeleteUrlsList={onDeleteUrlsList}
                     onAddFileBoxId={onAddFileBoxId}
-                    handleCleanDiscussRow={handleCleanDiscussRow}
                   />
                   <div className="admin_bottom_button line">
                     <button
@@ -1337,7 +1333,6 @@ function CommunityMenuContainer() {
                     onAddUrlsList={onAddUrlsList}
                     onDeleteUrlsList={onDeleteUrlsList}
                     onAddFileBoxId={onAddFileBoxId}
-                    handleCleanDiscussRow={handleCleanDiscussRow}
                   />
                   <div className="admin_bottom_button line">
                     <button

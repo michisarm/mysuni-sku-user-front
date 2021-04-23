@@ -4,15 +4,12 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { setLectureCardSummary } from '../../store/LectureOverviewStore';
 import LectureParams from '../../viewModel/LectureParams';
-import { clearFindCardCache } from '../../api/cardApi';
 import { requestLectureCardSummary } from '../useLectureSummary/utility/requestLectureCardSummary';
 
 export function useRequestLectureCourseSummary() {
   const { cardId } = useParams<LectureParams>();
 
   useEffect(() => {
-    clearFindCardCache();
-
     if (cardId !== undefined) {
       requestLectureCardSummary(cardId);
     }

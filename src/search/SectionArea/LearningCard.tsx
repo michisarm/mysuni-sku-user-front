@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BoxCard from '../Components/BoxCard';
-import { Icon, Button, Card, Segment } from 'semantic-ui-react';
-import CommentsSort from 'search/Components/CommentsSort';
-import { useCard } from '../Components/SearchFilter';
+import { Icon, Segment } from 'semantic-ui-react';
+import { useDisplayCard } from '../Components/SearchFilter';
 
 const LearningCard: React.FC = () => {
-  const [insertApi, getInsertApi] = useState<boolean>(true);
-  const card = useCard();
+  const card = useDisplayCard();
   return (
     <Segment className="full">
       <div className="sort-reult">

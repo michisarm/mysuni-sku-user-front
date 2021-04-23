@@ -149,23 +149,19 @@ function createPanoptoEmbedPlayer() {
     );
   }
 
-  function initializePanoptoEmbedPlayer(
-    panoptoSessionId: string,
-    directConnectionName?: string,
-    targetSamlInstanceName?: string
-  ) {
+  function initializePanoptoEmbedPlayer(panoptoSessionId: string) {
     clearInterval(intervalId);
     const container = getContainer();
     if (container === null) {
       return;
     }
-    const embedApiOption: any = {
+    embedApi = new window.EmbedApi('panopto-embed-player', {
       width: '100%',
       height: '700',
       //This is the URL of your Panopto site
       //https://sku.ap.panopto.com/Panopto/Pages/Auth/Login.aspx?support=true
       // serverName: 'sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?ReturnUrl=',
-      serverName: 'sku-demo.ap.panopto.com',
+      serverName: 'sku.ap.panopto.com',
       sessionId: panoptoSessionId,
       videoParams: {
         // Optional parameters
@@ -183,14 +179,7 @@ function createPanoptoEmbedPlayer() {
         onStateChange,
         onPlaybackRateChange,
       },
-    };
-    if (
-      directConnectionName !== undefined &&
-      targetSamlInstanceName !== undefined
-    ) {
-      embedApiOption.videoParams[directConnectionName] = targetSamlInstanceName;
-    }
-    embedApi = new window.EmbedApi('panopto-embed-player', embedApiOption);
+    });
     onProgress();
     intervalId = setInterval(onProgress, 500);
   }

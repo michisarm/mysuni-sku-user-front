@@ -33,6 +33,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
   onDeleteUrlsList,
   onAddFileBoxId,
 }) => {
+  console.log(selectedRow);
   return (
     <>
       <tr>

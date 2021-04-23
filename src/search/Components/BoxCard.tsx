@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Label, Icon, Rating, Card, Button } from 'semantic-ui-react';
-import { SkProfileService } from '../../profile/stores';
+import React from 'react';
+import { Card } from 'semantic-ui-react';
+import CardView from '../../lecture/shared/Lecture/ui/view/CardVIew';
+import { Workspace } from '../../shared/api/Axios';
+import { CardCategory } from '../../shared/model/CardCategory';
 import CategoryColorType from '../../shared/model/CategoryColorType';
+import { SearchCardCategory } from '../model/SearchCard';
 
-import { useCard } from './SearchFilter';
+import { useDisplayCard } from './SearchFilter';
 
-function numberWithCommas(x: number | string | null | undefined) {
-  let s = (x || 0).toString();
-  const pattern = /(-?\d+)(\d{3})/;
-  while (pattern.test(s)) s = s.replace(pattern, '$1,$2');
-  return s;
-}
+const workspaces: { cineroomWorkspaces?: Workspace[] } =
+  JSON.parse(localStorage.getItem('nara.workspaces') || '') || {};
 
 export function timeToHourMinuteFormat(x: number | string | null | undefined) {
   //
@@ -69,132 +67,68 @@ function getColor(college_id: string) {
   return color;
 }
 
-function Box({ item, index }: { item: any; index: number }) {
-  const [hovered, setHovered] = useState<boolean>(false);
-
-  const handleHovered = (hover: boolean) => {
-    setHovered(hover);
-  };
-  const {
-    service_type,
-    service_id,
-    college_id,
-    cineroom_id,
-    cube_id,
-    course_plan_id,
-    reqCom_id,
-  } = item.fields;
-
-  const path =
-    service_type === 'CARD'
-      ? `/lecture/cineroom/${cineroom_id}/college/${college_id}/cube/${cube_id}/lecture-card/${service_id}`
-      : service_type === 'PROGRAM'
-      ? `lecture/cineroom/${cineroom_id}/college/${college_id}/course-plan/${course_plan_id}/Program/${service_id}`
-      : `lecture/cineroom/${cineroom_id}/college/${college_id}/course-plan/${course_plan_id}/Course/${service_id}`;
-
-  return (
-    <Card
-      key={index}
-      className={`card-h  ${hovered ? 'on' : ''}`}
-      onMouseEnter={() => handleHovered(true)}
-      onMouseLeave={() => handleHovered(false)}
-    >
-      {/*tag*/}
-      <div className="card-ribbon-wrap">
-        {reqCom_id !== undefined &&
-          reqCom_id.indexOf !== undefined &&
-          reqCom_id.indexOf(
-            SkProfileService.instance.profileMemberCompanyCode
-          ) > -1 && (
-            <Label className="ribbon2">{/* Required */}핵인싸 과정</Label>
-          )}
-      </div>
-      <div className="card-inner">
-        {/*썸네일*/}
-        <div className="thumbnail">
-          <img
-            alt="card-thumbnail"
-            src={item.fields.icon_url}
-            className="ui small image"
-          />
-        </div>
-
-        <div className="title-area">
-          <div className={`ui label ${getColor(item.fields.college_id)}`}>
-            {item.fields.college_name}
-          </div>
-          <div className="header">{item.fields.card_name}</div>
-        </div>
-        <div className="icon-area">
-          <div className="li">
-            <Label className="bold onlytext">
-              <Icon className="course" />
-              <span>{item.fields.cube_type}</span>
-            </Label>
-          </div>
-          <div className="li">
-            <Label className="bold onlytext">
-              <Icon className="time2" />
-              <span>{timeToHourMinuteFormat(item.fields.learning_time)}</span>
-            </Label>
-          </div>
-          <div className="li">
-            <Label className="onlytext">
-              <Icon className="complete" />
-              <span>{numberWithCommas(item.fields.student_count)}</span>
-            </Label>
-          </div>
-        </div>
-        <div className="foot-area">
-          <div className="fixed-rating">
-            {/*  */}
-            <Rating
-              defaultRating={0}
-              maxRating={5}
-              rating={Math.round(item.fields.score / 100)}
-              size="small"
-              disabled
-              className="rating-num"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="hover-content">
-        <div className="title-area">
-          <div className={`ui color label ${getColor(item.fields.college_id)}`}>
-            {item.fields.college_name}
-          </div>
-          <div className="header">{item.fields.card_name_uni}</div>
-        </div>
-        <p className="text-area">{item.fields.description}</p>
-        <div className="btn-area">
-          {/* <Button icon className="icon-line">
-            <Icon className="remove2 icon" />
-          </Button> */}
-          <Link
-            to={path}
-            className="ui icon button fix bg"
-            style={{
-              display: 'inline-flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '13.75rem',
-            }}
-          >
-            {/* View Details */} 상세보기
-          </Link>
-        </div>
-      </div>
-    </Card>
-  );
-}
-
 const BoxCard: React.FC = () => {
-  const card = useCard();
+  const card = useDisplayCard();
 
   return (
     <Card.Group className="box-cards">
-      {card && card.map((item, index) => <Box item={item} index={index} />)}
+      {card &&
+        card.map(item => {
+          const {
+            id,
+            name,
+            categories,
+            required_cinerooms,
+            difficulty_level,
+            thumb_image_path,
+            learning_time,
+            stamp_count,
+            additional_learning_time,
+            type,
+            simple_description,
+            passed_student_count,
+            student_count,
+            star_count,
+            used_in_badge,
+          } = item;
+          const isRequired: boolean = required_cinerooms
+            .split('|')
+            .some(
+              c =>
+                Array.isArray(workspaces?.cineroomWorkspaces) &&
+                workspaces.cineroomWorkspaces.some(d => d.id === c)
+            );
+          const mainCategory = (JSON.parse(categories) as SearchCardCategory[])
+            .map<CardCategory>(({ channelId, collegeId, mainCategory }) => ({
+              channelId,
+              collegeId,
+              mainCategory: mainCategory === 1,
+            }))
+            .find(c => c.mainCategory === true) || {
+            channelId: '',
+            collegeId: '',
+            mainCategory: true,
+          };
+          return (
+            <CardView
+              key={id}
+              cardId={id}
+              name={name}
+              starCount={parseInt(star_count)}
+              stampCount={parseInt(stamp_count)}
+              mainCategory={mainCategory}
+              simpleDescription={simple_description}
+              learningTime={parseInt(learning_time)}
+              thumbImagePath={thumb_image_path}
+              passedStudentCount={parseInt(passed_student_count)}
+              type={type}
+              isRequired={isRequired}
+              capacity={parseInt(student_count)}
+              studentCount={parseInt(student_count)}
+              additionalLearningTime={parseInt(additional_learning_time)}
+            />
+          );
+        })}
     </Card.Group>
   );
 };
