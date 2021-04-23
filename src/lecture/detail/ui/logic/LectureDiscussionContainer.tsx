@@ -1,6 +1,6 @@
 import { CommentList, CommentService } from '@nara.drama/feedback';
 import moment from 'moment';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Checkbox, Icon, Image } from 'semantic-ui-react';
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import { useLectureFeedbackContent } from '../../service/useFeedbackContent';
@@ -14,6 +14,7 @@ import { setLectureFeedbackContent } from '../../store/LectureFeedbackStore';
 import { useRequestLectureDiscussion } from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { useParams } from 'react-router-dom';
 import LectureParams from '../../viewModel/LectureParams';
+import { patronInfo } from '@nara.platform/dock';
 import { reactAlert } from '@nara.platform/accent';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -23,6 +24,8 @@ const fileDownload = (pdf: string, fileId: string) => {
 };
 
 export default function LectureDiscussionContainer() {
+  const prevFeedbackId = useRef();
+
   useRequestLectureDiscussion();
   const lectureDiscussion = useLectureDiscussion();
   const params = useParams<LectureParams>();
@@ -188,6 +191,8 @@ export default function LectureDiscussionContainer() {
     });
   }, [lectureFeedbackContent?.relatedUrlList]);
 
+  // console.log('undedeee', lectureFeedbackContent?.commentFeedbackId );
+
   return (
     <>
       {lectureDiscussion && (
@@ -337,20 +342,19 @@ export default function LectureDiscussionContainer() {
               )}
             </div>
           </div>
-          <CommentList
-            feedbackId={
-              lectureFeedbackContent?.commentFeedbackId
-                ? lectureFeedbackContent?.commentFeedbackId
-                : ''
-            }
-            hideCamera
-            name={name}
-            email={email}
-            companyName={company}
-            departmentName={department}
-            // cardId={params?.cardId}
-            menuType="discussion"
-          />
+         
+          {lectureFeedbackContent?.commentFeedbackId && (
+            <CommentList
+              feedbackId={lectureFeedbackContent?.commentFeedbackId || ''}  
+              hideCamera
+              name={name}
+              email={email}
+              companyName={company}
+              departmentName={department}
+              // cardId={params?.cardId}
+              menuType="discussion"
+            />
+          )}
         </>
       )}
     </>
