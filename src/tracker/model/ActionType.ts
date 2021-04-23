@@ -90,6 +90,7 @@ export enum Area {
   CARD_MENU = 'CARD-MENU',
   CARD_TAB = 'CARD-TAB',
   CARD_LIST = 'CARD-LIST',
+  CARD_PRECOURSE = 'CARD-PRECOURSE',
   CARD_OVERVIEW = 'CARD-OVERVIEW',
   CARD_TAG = 'CARD-TAG',
   CARD_EXPERT = 'CARD-EXPERT',
@@ -131,4 +132,6 @@ export enum FieldType {
   Community = 'community',
   Badge = 'badge',
   CardBundle = 'cardBundle',
+  Chapter = 'chapter',
+  Discussion = 'discussion',
 }

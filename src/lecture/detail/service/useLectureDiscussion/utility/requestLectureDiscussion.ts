@@ -53,4 +53,6 @@ export async function requestLectureDiscussion(
     creatorAudienceId: keyString,
     time: cardWithContentsAndRelatedCountRom.card.cardStateUpdatedTime,
   });
+
+  return discussion;
 }

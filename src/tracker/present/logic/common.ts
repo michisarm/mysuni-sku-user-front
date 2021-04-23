@@ -2,8 +2,7 @@ import moment from 'moment';
 import { FieldType, Field } from 'tracker/model';
 import { lsTest } from 'tracker-react/utils';
 import { LectureServiceType } from 'lecture/model';
-// import { findCoursePlan } from 'lecture/detail/api';
-// import { findPersonalCube } from 'personalcube/personalcube/present/apiclient/PersonalCubeApi';
+import { LearningContent } from 'lecture/model/LearningContent';
 import { findCardCache } from 'lecture/detail/api/cardApi';
 import { findCubeDetailCache } from 'lecture/detail/api/cubeApi';
 import { findCollege } from 'college/present/apiclient/CollegeApi';
@@ -11,6 +10,7 @@ import { findChannel } from 'college/present/apiclient/ChannelApi';
 import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
 import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
+import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscussion/utility/requestLectureDiscussion';
 import { find } from 'lodash';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
@@ -223,6 +223,15 @@ const getFieldName = async (id: string, type: string) => {
           break;
       }
       name = type+"::"+cardBundle?.displayText;
+    } else if (type === FieldType.Chapter || type === FieldType.Discussion) {
+      const ids = id.split(',');
+      if(ids && ids?.[0] && ids?.[1] ){
+        const id = ids?.[0];
+        const contentId = ids?.[1];
+        await requestLectureDiscussion(id,contentId).then(result => {
+          name = result?.name;
+        });
+      }
     }
     if (lsTest() && name) {
       let tempObj;
@@ -361,7 +370,21 @@ export const getPathName = async (path: string, search: string) => {
           break;
       }
       break;
-    case /(^\/suni-main)?\/lecture\/recommend\/(.*?)\/.*/.test(path):
+    case /(^\/suni-main)?\/lecture\/recommend\/(.*?)\/(.*)/.test(path):
+      pathName = 'Recommend';
+      if(RegExp.$2 && RegExp.$2 === 'channel' && RegExp.$3){
+        await setResultName({
+          type: FieldType.Channel,
+          id: RegExp.$3,
+        }).then(async result => {
+          if (result.name) {
+            pathName = 'Recommend::' + result.name;
+          }
+        });
+        break;
+      }
+      break;
+    case /(^\/suni-main)?\/lecture\/recommend/.test(path):
       pathName = 'Recommend';
       break;
     case /(^\/suni-main)?\/lecture\/college\/(.*?)\/.*/.test(path):
@@ -391,13 +414,61 @@ export const getPathName = async (path: string, search: string) => {
       });
       break;
     case /(^\/suni-main)?\/lecture\/card\/.*/.test(path):
-      pathName = '콘텐츠 상세보기';
+      pathName = '콘텐츠';
       switch (true) {
-        case /(^\/suni-main)?\/lecture\/card\/.*?\/cube\/(.*)/.test(path):
+        case /(^\/suni-main)?\/lecture\/card\/.*?\/cube\/(.*?)\/(.*?)\/(.*)/.test(path):
           pathName += '::큐브';
+          switch (RegExp.$3) {
+            case 'view':
+              pathName += '::View';
+              break;
+            case 'test':
+              pathName += '::Test';
+              break;
+            case 'report':
+              pathName += '::Report';
+              break;
+            case 'survey':
+              pathName += '::Survey';
+              break;
+          }
           break;
-        case /(^\/suni-main)?\/lecture\/card\/.*?\/(.*)/.test(path):
-          pathName += '::코스';
+        case /(^\/suni-main)?\/lecture\/card\/(.*?)\/(.*?)\/(.*)/.test(path):
+          switch (RegExp.$3) {
+            case 'chapter':
+              await setResultName({
+                type: FieldType.Chapter,
+                id: RegExp.$2 + ','+ RegExp.$3,
+              }).then(result => {
+                pathName = '콘텐츠::카드::Chapter::' + result.name;
+              });
+              break;
+            case 'discussion':
+              await setResultName({
+                type: FieldType.Discussion,
+                id: RegExp.$2 + ','+ RegExp.$4,
+              }).then(result => {
+                pathName = '콘텐츠::카드::토론하기::' + result.name;
+              });
+              break;
+          }
+          break;
+        case /(^\/suni-main)?\/lecture\/card\/(.*?)\/(.*)/.test(path):
+          pathName += '::카드';
+          switch (RegExp.$3) {
+            case 'view':
+              pathName += '::View';
+              break;
+            case 'test':
+              pathName += '::Test';
+              break;
+            case 'report':
+              pathName += '::Report';
+              break;
+            case 'survey':
+              pathName += '::Survey';
+              break;
+          }
           break;
       }
       break;
