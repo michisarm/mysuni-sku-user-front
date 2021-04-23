@@ -3,6 +3,7 @@ import { FieldType, Field } from 'tracker/model';
 import { lsTest } from 'tracker-react/utils';
 import { LectureServiceType } from 'lecture/model';
 import { LearningContent } from 'lecture/model/LearningContent';
+import { ChapterParams } from 'lecture/detail/model/ChapterParams';
 import { findCardCache } from 'lecture/detail/api/cardApi';
 import { findCubeDetailCache } from 'lecture/detail/api/cubeApi';
 import { findCollege } from 'college/present/apiclient/CollegeApi';
@@ -11,7 +12,9 @@ import { findCommunity } from 'community/api/communityApi';
 import { findBadge } from 'certification/api/BadgeApi';
 import { findAvailableCardBundles } from 'lecture/shared/api/arrangeApi';
 import { requestLectureDiscussion } from 'lecture/detail/service/useLectureDiscussion/utility/requestLectureDiscussion';
+import { requestChapter } from 'lecture/detail/service/useLectureChapter/requestChapter';
 import { find } from 'lodash';
+
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 
@@ -223,7 +226,17 @@ const getFieldName = async (id: string, type: string) => {
           break;
       }
       name = type+"::"+cardBundle?.displayText;
-    } else if (type === FieldType.Chapter || type === FieldType.Discussion) {
+    } else if (type === FieldType.Chapter) {
+      const ids = id.split(',');
+      if(ids && ids?.[0] && ids?.[1] ){
+        const params = {} as ChapterParams;
+        params.cardId = ids?.[0];
+        params.contentId = ids?.[1];
+        await requestChapter(params).then(result => {
+          name = result?.name;
+        });
+      }
+    } else if (type === FieldType.Discussion) {
       const ids = id.split(',');
       if(ids && ids?.[0] && ids?.[1] ){
         const id = ids?.[0];
@@ -438,7 +451,7 @@ export const getPathName = async (path: string, search: string) => {
             case 'chapter':
               await setResultName({
                 type: FieldType.Chapter,
-                id: RegExp.$2 + ','+ RegExp.$3,
+                id: RegExp.$2 + ','+ RegExp.$4,
               }).then(result => {
                 pathName = '콘텐츠::카드::Chapter::' + result.name;
               });
