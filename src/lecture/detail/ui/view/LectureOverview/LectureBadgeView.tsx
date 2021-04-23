@@ -13,7 +13,6 @@ interface LectureBadgeViewProps {
 const LectureBadgeView: React.FC<LectureBadgeViewProps> = function LectureBadgeView({
   lectureBadge,
 }) {
-  console.log('???????????', lectureBadge);
   return (
     <>
       <div
