@@ -1,4 +1,5 @@
 import { DifficultyLevel } from './DifficultyLevel';
+import { Instructor } from './Instructor';
 
 export interface CubeContents {
   commentFeedbackId: string;
@@ -13,20 +14,7 @@ export interface CubeContents {
   difficultyLevel: DifficultyLevel;
   fileBoxId: string;
   id: string;
-  instructors: [
-    {
-      instructorId: string;
-      representative: true;
-      round: number;
-      name?: string;
-      memberSummary?: {
-        department: string;
-        email: string;
-        name: string;
-        photoId: string;
-      };
-    }
-  ];
+  instructors: Instructor[];
   operator: { keyString: string };
   organizerId: string;
   otherOrganizerName: string;
