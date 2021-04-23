@@ -20,9 +20,9 @@ const ProgramHeaderView: React.FC<ProgramHeaderViewProps> = function ProgramHead
       <div className="cube-state-title intro-vr2">
         <span>{name}</span>
         <div className="cube-state-bottom">
-          {/* {!isNaN(learningTime) && (
-            <span>{timeToHourMinuteFormat(learningTime)}</span>
-          )} */}
+          {!isNaN(learningTime + additionalLearningTime) && (
+            <span>{timeToHourMinuteFormat(learningTime + additionalLearningTime)}</span>
+          )}
           {/* {!isNaN(additionalLearningTime) && additionalLearningTime > 0 && (
             <strong>
               {`+ ${timeToHourMinuteFormat(additionalLearningTime)}`}

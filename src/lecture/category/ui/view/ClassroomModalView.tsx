@@ -135,14 +135,18 @@ class ClassroomModalView extends Component<Props, States> {
                         startMonth,
                         startDate
                       );
-                      const getEndDate = getTime(endYear, endMonth, endDate);
+                      const getEndDate = getTime(
+                        endYear,
+                        endMonth,
+                        endDate + 1
+                      );
 
                       if (joinRounds && joinRounds.includes(classroom.round)) {
                         return true;
                       }
 
                       if (
-                        getStartDate > today.getTime() ||
+                        getStartDate > today.getTime() &&
                         getEndDate < today.getTime()
                       ) {
                         return true;

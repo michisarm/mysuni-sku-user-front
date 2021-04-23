@@ -13,7 +13,6 @@ import { InMyLectureService } from 'myTraining/stores';
 import { CardCategory } from 'shared/model/CardCategory';
 import { dateTimeHelper } from 'shared';
 import {
-  useRequestCollege,
   getCollgeName,
   getColor,
 } from '../../../../../shared/service/useCollege/useRequestCollege';
@@ -26,10 +25,13 @@ import { autorun } from 'mobx';
 import CardType from '../../../model/CardType';
 import CubeIconType from '../../model/CubeIconType';
 import CubeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
+import { PermittedCineroom } from '../../../../model/PermittedCineroom';
+import isIncludeCineroomId from '../../../../../shared/helper/isIncludeCineroomId';
 
 interface Props {
   cardId: string;
   learningTime: number;
+  additionalLearningTime: number;
   thumbImagePath: string;
   mainCategory: CardCategory;
   name: string;
@@ -38,10 +40,10 @@ interface Props {
   starCount: number;
   simpleDescription: string;
   type: CardType;
-  isRequired?: boolean;
   studentCount?: number;
   remainingDayCount?: number;
   capacity?: number;
+  permittedCinerooms?: PermittedCineroom[];
 }
 
 export default function CardView({
@@ -52,19 +54,24 @@ export default function CardView({
   mainCategory,
   simpleDescription,
   learningTime,
+  additionalLearningTime,
   thumbImagePath,
   passedStudentCount,
   type,
-  isRequired,
   capacity,
   remainingDayCount,
   studentCount,
+  permittedCinerooms,
 }: Props) {
   const [inMyLectureMap, setInMyLectureMap] = useState<
     Map<string, InMyLectureModel>
   >();
+
   const [inMyLectureModel, setInMyLectureModel] = useState<InMyLectureModel>();
   const [hovered, setHovered] = useState(false);
+  const isRequired = permittedCinerooms
+    ? isIncludeCineroomId(permittedCinerooms)
+    : false;
 
   useEffect(() => {
     return autorun(() => {
@@ -77,8 +84,11 @@ export default function CardView({
   }, [inMyLectureMap, cardId]);
 
   const hourMinuteFormat = useMemo(
-    () => dateTimeHelper.timeToHourMinuteFormat(learningTime),
-    [learningTime]
+    () =>
+      dateTimeHelper.timeToHourMinuteFormat(
+        learningTime + additionalLearningTime
+      ),
+    [learningTime, additionalLearningTime]
   );
 
   const collegeId = useMemo(() => mainCategory.collegeId, [mainCategory]);
