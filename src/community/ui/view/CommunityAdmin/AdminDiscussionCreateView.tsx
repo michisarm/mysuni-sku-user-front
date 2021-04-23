@@ -37,7 +37,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
   return (
     <>
       <tr>
-        <th>주제</th>
+        <th>질문</th>
         <td>
           <div
             className="ui right-top-count input admin"
@@ -46,7 +46,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
             <input
               style={{ width: '100%' }}
               type="text"
-              placeholder="주제를 입력하세요."
+              placeholder="화면 상단에 노출될 질문을 입력해주세요."
               className="bg"
               name="discussionTopic"
               value={selectedRow && selectedRow.discussionTopic}
@@ -63,7 +63,7 @@ const AdminDiscussionCreateView: React.FC<Props> = ({
       </tr>
 
       <tr className="discussion-contents">
-        <th>내용</th>
+        <th>상세 설명</th>
         <td>
           <div className="ui editor-wrap">
             <AdminDiscussionCreateEditor

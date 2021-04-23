@@ -33,7 +33,7 @@ function CommunityDiscussionContainer() {
 
   const [creatorId, setCreatorId] = useState<string>('');
   const history = useHistory();
-  console.log('post', postDetail, postDetail?.content);
+
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     getFileIds();
@@ -77,7 +77,7 @@ function CommunityDiscussionContainer() {
   }, []);
 
   const zipFileDownload = useCallback((type: string) => {
-    if(originArr && originArr.length > 0){
+    if (originArr && originArr.length > 0) {
       if (type === 'select') {
         if (origin === '') {
           return;
@@ -99,7 +99,7 @@ function CommunityDiscussionContainer() {
           depot.downloadDepotFiles(idArr);
         }
       }
-    }else{
+    } else {
       reactAlert({
         title: '안내',
         message: `다운로드 받으실 첨부파일을 선택해 주세요.`,
