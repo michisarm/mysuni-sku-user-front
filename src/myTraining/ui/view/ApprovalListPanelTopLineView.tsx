@@ -38,7 +38,18 @@ class ApprovalListPanelTopLineView extends React.Component<Props, States> {
 
   handleSearchProposalStateChange(e: any, data: any) {
     const { onSearchProposalStateChange } = this.props;
+    this.checkRemoveAll();
     onSearchProposalStateChange(data.value);
+  }
+
+  // 전체 삭제
+  checkRemoveAll() {
+    //
+    const { approvalCubeService } = this.props;
+    if (approvalCubeService) {
+      approvalCubeService.changeSelectedStudentProps([]);
+      approvalCubeService.changeSelectedProposalStateProps([]);
+    }
   }
 
   handleSearchPeriodChange(e: any, data: any) {

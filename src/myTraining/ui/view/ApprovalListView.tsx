@@ -69,7 +69,7 @@ class ApprovalListView extends React.Component<Props, States> {
       this.setState({ cubeAll: 'No' });
     } else {
       approvalCubes.forEach(approvalCube => {
-        allList.push(approvalCube.id);
+        allList.push(approvalCube.studentId);
       });
       approvalCubes.forEach(approvalCube => {
         allProposalState.push(approvalCube.proposalState);
