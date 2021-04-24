@@ -74,10 +74,7 @@ class CollegeLectureCountService {
   async findCollegeLectureCounts() {
     const collegeLectureCounts = await findAvailableColleges();
     if (collegeLectureCounts !== undefined) {
-      sessionStorage.setItem(
-        'category',
-        JSON.stringify(this.collegeLectureCounts)
-      );
+      sessionStorage.setItem('category', JSON.stringify(collegeLectureCounts));
       runInAction(() => (this._collegeLectureCounts = collegeLectureCounts));
     }
     return this.collegeLectureCounts;
