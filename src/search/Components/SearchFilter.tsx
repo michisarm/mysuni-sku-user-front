@@ -22,6 +22,7 @@ import { CardCategory } from '../../shared/model/CardCategory';
 interface Props {
   isOnFilter: boolean;
   searchValue: string;
+  closeOnFilter?: () => void;
 }
 
 const SELECT_ALL = 'Select All';
@@ -672,7 +673,7 @@ function toggle_cube_type_query(value: string) {
   }
 }
 
-async function search(searchValue: string) {
+async function search(searchValue: string, closeOnFilter?: () => void) {
   const decodedSearchValue = searchValue
     .replace(/'/g, ' ')
     .replace(/&/g, ' ')
@@ -688,6 +689,7 @@ async function search(searchValue: string) {
     return;
   }
   setDisplayCard(filterCard(getCard()));
+  closeOnFilter && closeOnFilter();
   await findExpert(decodedSearchValue).then(response => {
     if (response && response.result && response.result.rows) {
       setExpert(response.result.rows);
@@ -697,7 +699,11 @@ async function search(searchValue: string) {
   });
 }
 
-const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
+const SearchFilter: React.FC<Props> = ({
+  isOnFilter,
+  searchValue,
+  closeOnFilter,
+}) => {
   useEffect(() => {
     const decodedSearchValue = searchValue
       .replace(/'/g, ' ')
@@ -1630,7 +1636,7 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
         <a
           className="more-text"
           onClick={() => {
-            search(searchValue);
+            search(searchValue, closeOnFilter);
           }}
         >
           결과보기
