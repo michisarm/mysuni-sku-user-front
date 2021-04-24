@@ -729,79 +729,96 @@ const SearchFilter: React.FC<Props> = ({ isOnFilter, searchValue }) => {
       const collegeOptions: Options[] = searchResult.result.rows.reduce<
         Options[]
       >((r, c) => {
-        const {
-          fields: { categories },
-        } = c;
-        const category = (JSON.parse(categories) as SearchCardCategory[]).find(
-          d => d.mainCategory === 1
-        );
-        if (category !== undefined) {
-          const a = r.find(d => d.key === category.collegeId);
-          if (a !== undefined) {
-            a.count = (a.count || 0) + 1;
-            a.text = `${a.value}(${a.count})`;
-          } else {
-            r.push({
-              key: category.collegeId,
-              value: getCollgeName(category.collegeId),
-              text: `${getCollgeName(category.collegeId)}(1)`,
-              count: 1,
-            });
-          }
-        }
-        return r;
-      }, []);
-      setCollegeOptions(collegeOptions);
-      const organizerOptions: Options[] = searchResult.result.rows.reduce<
-        Options[]
-      >((r, c) => {
-        const {
-          fields: { cube_organizer_names },
-        } = c;
-        (JSON.parse(cube_organizer_names) as string[]).forEach(organizer => {
-          const a = r.find(d => d.key === organizer);
-          if (a !== undefined) {
-            a.count = (a.count || 0) + 1;
-            a.text = `${a.value}(${a.count})`;
-          } else {
-            r.push({
-              key: organizer,
-              value: organizer,
-              text: `${organizer}(1)`,
-              count: 1,
-            });
-          }
-        });
-        return r;
-      }, []);
-      setOrganizerOptions(organizerOptions);
-      const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
-        Options[]
-      >((r, c) => {
-        const {
-          fields: { cube_types },
-        } = c;
-        (JSON.parse(cube_types) as string[])
-          .reduce<string[]>((r, c) => {
-            if (!r.includes(c)) {
-              r.push(c);
-            }
-            return r;
-          }, [])
-          .forEach(cube => {
-            const a = r.find(d => d.key === cube);
+        try {
+          const {
+            fields: { categories },
+          } = c;
+          const category = (JSON.parse(
+            categories
+          ) as SearchCardCategory[]).find(d => d.mainCategory === 1);
+          if (category !== undefined) {
+            const a = r.find(d => d.key === category.collegeId);
             if (a !== undefined) {
               a.count = (a.count || 0) + 1;
               a.text = `${a.value}(${a.count})`;
             } else {
               r.push({
-                key: cube,
-                value: cube,
-                text: `${cube}(1)`,
+                key: category.collegeId,
+                value: getCollgeName(category.collegeId),
+                text: `${getCollgeName(category.collegeId)}(1)`,
+                count: 1,
+              });
+            }
+          }
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setCollegeOptions(collegeOptions);
+
+      const organizerOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_organizer_names },
+          } = c;
+          (JSON.parse(cube_organizer_names) as string[]).forEach(organizer => {
+            const a = r.find(d => d.key === organizer);
+            if (a !== undefined) {
+              a.count = (a.count || 0) + 1;
+              a.text = `${a.value}(${a.count})`;
+            } else {
+              r.push({
+                key: organizer,
+                value: organizer,
+                text: `${organizer}(1)`,
                 count: 1,
               });
             }
           });
+        } catch {
+          //
+        }
+
+        return r;
+      }, []);
+      setOrganizerOptions(organizerOptions);
+
+      const cubeTypeOptions: Options[] = searchResult.result.rows.reduce<
+        Options[]
+      >((r, c) => {
+        try {
+          const {
+            fields: { cube_types },
+          } = c;
+          (JSON.parse(cube_types) as string[])
+            .reduce<string[]>((r, c) => {
+              if (!r.includes(c)) {
+                r.push(c);
+              }
+              return r;
+            }, [])
+            .forEach(cube => {
+              const a = r.find(d => d.key === cube);
+              if (a !== undefined) {
+                a.count = (a.count || 0) + 1;
+                a.text = `${a.value}(${a.count})`;
+              } else {
+                r.push({
+                  key: cube,
+                  value: cube,
+                  text: `${cube}(1)`,
+                  count: 1,
+                });
+              }
+            });
+        } catch {
+          //
+        }
+
         return r;
       }, []);
       setCubeTypeOptions(cubeTypeOptions);
