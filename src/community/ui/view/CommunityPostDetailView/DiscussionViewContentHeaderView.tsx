@@ -50,6 +50,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
   const [contentCheck, setContentCheck] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
   const [urlNull, setUrlNull] = useState<boolean>(false);
+  const [fileNull, setFileNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
   );
@@ -61,7 +62,9 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
     const checkContentValue =
-      (postDetail?.content === '<p><br></p>' || postDetail?.content === "") ? true : false;
+      postDetail?.content === '<p><br></p>' || postDetail?.content === ''
+        ? true
+        : false;
     setContentCheck(checkContentValue);
   }, [postDetail]);
 
@@ -76,10 +79,14 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     depot.getDepotFiles(fileBoxId).then(files => {
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
+      //첨부파일안보이게 설정
+      setFileNull(false);
+      newMap.get('reference')?.map((foundedFile: DepotFileViewModel) => {
+        setFileNull(true);
+      });
       setFilesMap(newMap);
     });
   }, []);
-
   const fileDownload = (pdf: string, fileId: string) => {
     depot.downloadDepotFile(fileId);
   };
@@ -215,14 +222,13 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {urlNull === false ? (
+              {urlNull === true ? (
                 <div className="community-board-down discuss2">
                   <div className="board-down-title href">
                     <p>
                       {' '}
                       <Image
                         src={`${PUBLIC_URL}/images/all/icon-url.png`}
-                        alt=""
                         style={{ display: 'inline-block' }}
                       />
                       관련 URL
@@ -238,61 +244,69 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               ) : null}
               {/* eslint-enable */}
               {/* 관련 자료 */}
-              {filesMap.get('reference') && (
-                <div className="community-board-down discuss2">
-                  <div className="community-contants">
-                    <div className="community-board-down">
-                      <div className="board-down-title">
-                        <p>
-                          <img
-                            src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
-                          />
-                          첨부파일
-                        </p>
-                        <div className="board-down-title-right">
-                          <button
-                            className="ui icon button left post delete"
-                            onClick={() => zipFileDownload('select')}
-                          >
-                            <i aria-hidden="true" className="icon check icon" />
-                            선택 다운로드
-                          </button>
-                          <button
-                            className="ui icon button left post list2"
-                            onClick={() => zipFileDownload('all')}
-                          >
-                            <img
-                              src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
-                            />
-                            전체 다운로드
-                          </button>
+              {fileNull === true
+                ? filesMap.get('reference') && (
+                    <div className="community-board-down discuss2">
+                      <div className="community-contants">
+                        <div className="community-board-down">
+                          <div className="board-down-title">
+                            <p>
+                              <img
+                                src={`${PUBLIC_URL}/images/all/icon-down-type-3-24-px.svg`}
+                              />
+                              첨부파일
+                            </p>
+                            <div className="board-down-title-right">
+                              <button
+                                className="ui icon button left post delete"
+                                onClick={() => zipFileDownload('select')}
+                              >
+                                <i
+                                  aria-hidden="true"
+                                  className="icon check icon"
+                                />
+                                선택 다운로드
+                              </button>
+                              <button
+                                className="ui icon button left post list2"
+                                onClick={() => zipFileDownload('all')}
+                              >
+                                <img
+                                  src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
+                                />
+                                전체 다운로드
+                              </button>
+                            </div>
+                          </div>
+                          {filesMap.get('reference') &&
+                            filesMap
+                              .get('reference')
+                              .map((foundedFile: DepotFileViewModel) => (
+                                <div className="down">
+                                  <Checkbox
+                                    className="base"
+                                    label={foundedFile.name}
+                                    name={'depot' + foundedFile.id}
+                                    onChange={(event, value) =>
+                                      checkOne(event, value, foundedFile)
+                                    }
+                                  />
+                                  <Icon
+                                    className="icon-down-type4"
+                                    onClick={() =>
+                                      fileDownload(
+                                        foundedFile.name,
+                                        foundedFile.id
+                                      )
+                                    }
+                                  />
+                                </div>
+                              ))}
                         </div>
                       </div>
-                      {filesMap.get('reference') &&
-                        filesMap
-                          .get('reference')
-                          .map((foundedFile: DepotFileViewModel) => (
-                            <div className="down">
-                              <Checkbox
-                                className="base"
-                                label={foundedFile.name}
-                                name={'depot' + foundedFile.id}
-                                onChange={(event, value) =>
-                                  checkOne(event, value, foundedFile)
-                                }
-                              />
-                              <Icon
-                                className="icon-down-type4"
-                                onClick={() =>
-                                  fileDownload(foundedFile.name, foundedFile.id)
-                                }
-                              />
-                            </div>
-                          ))}
                     </div>
-                  </div>
-                </div>
-              )}
+                  )
+                : null}
             </div>
           </div>
 
