@@ -41,6 +41,7 @@ function CanceledView(props: CanceledViewProps) {
     <>
       <button
         className={`ui button free ${actionClassName} p18`}
+        id="ACTION"
         onClick={action}
       >
         {APPROVE}
@@ -76,15 +77,17 @@ function ApprovedView(props: ApprovedViewProps) {
 
   return (
     <>
-      {(urlType === undefined || urlType !== "embedded") && student.learningState !== 'Passed' && hasNoTestAndNoReport(cube) && (
-        <button
-          className={`ui button free ${actionClassName} p18`}
-          onClick={completeLearning}
-          id="ACTION"
-        >
-          {COMPLETE}
-        </button>
-      )}
+      {(urlType === undefined || urlType !== 'embedded') &&
+        student.learningState !== 'Passed' &&
+        hasNoTestAndNoReport(cube) && (
+          <button
+            className={`ui button free ${actionClassName} p18`}
+            onClick={completeLearning}
+            id="ACTION"
+          >
+            {COMPLETE}
+          </button>
+        )}
       <button
         className={`ui button free ${stateClassName} p18`}
         style={{ cursor: 'default' }}
