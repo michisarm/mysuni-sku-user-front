@@ -42,10 +42,10 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
     | DropdownItemProps[]
     | { key: any; value: any; text: any }[] = [
     // {
-    //   'key': 0,
-    //   'value': 0,
-    //   'text': '선택'
-    // }
+    //   key: 0,
+    //   value: 0,
+    //   text: '선택',
+    // },
   ];
 
   communityAdminGroups!.results.map((data: any, index: number) => {
@@ -115,22 +115,8 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
         selectedRow.surveyInformation = value;
       } else if (e.target.name === 'url') {
         selectedRow.url = value;
-      } else if (
-        targetName === 'urlTitle' &&
-        typeof index === 'number' &&
-        selectedRow.relatedUrlList
-      ) {
-        selectedRow.relatedUrlList[index].title = value;
-      } else if (
-        targetName === 'urlValue' &&
-        typeof index === 'number' &&
-        selectedRow.relatedUrlList
-      ) {
-        selectedRow.relatedUrlList[index].url = value;
       } else if (e.target.name === 'html') {
         selectedRow.html = value;
-      } else if (targetName && targetName === 'content') {
-        selectedRow.content = value;
       }
       onChangeValue(selectedRow, e.target.name);
     }
@@ -139,21 +125,21 @@ const CommunityAdminMenuDetailView: React.FC<CommunityAdminMenuDetailViewProps> 
   function changeAuth(e: any, value: any) {
     if (selectedRow) {
       if (value === 'community') {
-        selectedRow.groupId = null;
         selectedRow.accessType = 'COMMUNITY_ALL_MEMBER';
+        selectedRow.groupId = null;
       } else if (groupArr && groupArr[0]) {
-        selectedRow.groupId = groupArr[0].value;
         selectedRow.accessType = 'COMMUNITY_GROUP';
-        handleChangeGroup('', selectedRow?.groupId);
+        selectedRow.groupId = groupArr[0].value;
       }
+      onChangeDiscussValue(selectedRow.groupId, 'group');
+      onChangeDiscussValue(selectedRow.accessType, 'accessType');
       onChangeValue(selectedRow, 'accessType');
     }
   }
-
   function handleChangeGroup(e: any, data: any) {
-    console.log('handleChangeGroup');
     if (selectedRow) {
       selectedRow.groupId = data.value;
+      onChangeDiscussValue(selectedRow.groupId, 'group');
       onChangeValue(selectedRow, 'groupId');
     }
   }

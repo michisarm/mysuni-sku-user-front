@@ -8,6 +8,8 @@ export interface CommunityDiscussion {
   privateComment: boolean;
   relatedUrlList: Urls[];
   fileBoxId: string;
+  accessType?: string;
+  groupId?: string;
 }
 
 export function getEmptyCommunityDiscussion() {

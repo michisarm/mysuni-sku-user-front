@@ -52,10 +52,10 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
     | DropdownItemProps[]
     | { key: any; value: any; text: any }[] = [
     // {
-    //   'key': 0,
-    //   'value': 0,
-    //   'text': '선택'
-    // }
+    //   key: 0,
+    //   value: 0,
+    //   text: '선택',
+    // },
   ];
   communityAdminGroups &&
     communityAdminGroups!.results.map((data: any, index: number) => {
@@ -125,19 +125,23 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   function changeAuth(e: any, value: any) {
     if (selectedRow) {
       if (value === 'community') {
-        selectedRow.groupId = null;
         selectedRow.accessType = 'COMMUNITY_ALL_MEMBER';
+        selectedRow.groupId = null;
       } else if (groupArr && groupArr[0]) {
-        selectedRow.groupId = groupArr[0].value;
         selectedRow.accessType = 'COMMUNITY_GROUP';
+        selectedRow.groupId = groupArr[0].value;
       }
+      onChangeDiscussValue(selectedRow.groupId, 'group');
+      onChangeDiscussValue(selectedRow.accessType, 'accessType');
       onChangeAddValue(selectedRow, 'accessType');
+      onChangeAddValue(selectedRow, 'groupId');
     }
   }
 
   function onChangeGroup(e: any, data: any) {
     if (selectedRow) {
       selectedRow.groupId = data.value;
+      onChangeDiscussValue(selectedRow.groupId, 'group');
       onChangeAddValue(selectedRow, 'groupId');
     }
   }
@@ -316,9 +320,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   onClick={(e: any, data: any) => {
                     changeAuth(e, data.value);
                   }}
-                  onChange={(e: any, data: any) => {
-                    changeAuth(e, data.value);
-                  }}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
                   className="base"
@@ -326,15 +328,14 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   name="radioGroup"
                   value="group"
                   checked={selectedRow?.groupId !== null}
-                  onChange={(e: any, data: any) => {
-                    changeAuth(e, data.value);
-                  }}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
               <Select
                 placeholder="그룹 유형을 선택하세요."
                 className="ui small-border admin_tab_select"
                 value={selectedRow?.groupId}
+                defaultValue={groupArr[0]?.value}
                 options={groupArr}
                 onChange={onChangeGroup}
                 disabled={selectedRow?.groupId === null}
