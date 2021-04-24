@@ -168,6 +168,12 @@ class CategoryMenuContainer extends Component<Props, State> {
     });
   }
 
+  handleCategoryOpen(flag: boolean) {
+    this.setState({
+      categoryOpen: flag,
+    });
+  }
+
   renderMenuActions() {
     //
     return (
@@ -231,6 +237,7 @@ class CategoryMenuContainer extends Component<Props, State> {
                   actions={this.renderMenuActions()}
                   onActiveCollege={this.onActiveCollege}
                   onRouteChannel={this.onClickChannel}
+                  handleCategoryOpen={this.handleCategoryOpen}
                   banner={banner}
                 />
               </>

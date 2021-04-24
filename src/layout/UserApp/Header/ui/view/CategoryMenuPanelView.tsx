@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
@@ -13,6 +14,7 @@ import { StudySummaryModel } from 'profile/model';
 import { CollegeService } from 'college/stores';
 import classNames from 'classnames';
 import { Action, Area } from 'tracker/model';
+import { originSelfPath } from 'tracker-react/utils';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -29,6 +31,7 @@ interface Props {
   onActiveCollege: (e: any, college: CollegeLectureCountRdo) => void;
   onRouteChannel: (e: any, channel?: IdName) => void;
   onConfirmCallback?: () => void;
+  handleCategoryOpen: (flag: boolean) => void;
 }
 @inject(
   mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService')
@@ -116,6 +119,7 @@ class CategoryMenuPanelView extends Component<Props> {
       test,
       onActiveCollege,
       onRouteChannel,
+      handleCategoryOpen,
     } = this.props;
 
     // react-ga event (카테고리 배너 이미지)
@@ -365,19 +369,36 @@ class CategoryMenuPanelView extends Component<Props> {
                         {banner.collegeBannerContents[0].visible === 1 &&
                           banner.collegeBannerContents[0].useLink === 1 && (
                             <span className="banner-holder">
-                              <a
-                                href={encodeURI(
-                                  banner.collegeBannerContents[0].linkUrl
-                                )}
-                              >
-                                <img
-                                  src={`${banner.collegeBannerContents[0].imageUrl}`}
-                                  onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`, 1)
-                                  }
-                                  alt=""
-                                />
-                              </a>
+                              { !/^(http|https)/.test(originSelfPath(banner.collegeBannerContents[0].linkUrl)) ?
+                                (
+                                  <Link
+                                    to={originSelfPath(banner.collegeBannerContents[0].linkUrl)}
+                                    onClick={()=>{
+                                      handleCategoryOpen(false);
+                                      gaClickEvent(`${activeCollege.name}`, 1);
+                                    }}
+                                  >
+                                    <img
+                                      src={`${banner.collegeBannerContents[0].imageUrl}`}
+                                      alt=""
+                                    />
+                                  </Link>
+                                ) : (
+                                  <a
+                                    href={encodeURI(
+                                      banner.collegeBannerContents[0].linkUrl
+                                    )}
+                                  >
+                                    <img
+                                      src={`${banner.collegeBannerContents[0].imageUrl}`}
+                                      onClick={e =>
+                                        gaClickEvent(`${activeCollege.name}`, 1)
+                                      }
+                                      alt=""
+                                    />
+                                  </a>
+                                )
+                              }
                             </span>
                           )}
                         {banner.collegeBannerContents[0].visible === 0 && (
@@ -407,19 +428,36 @@ class CategoryMenuPanelView extends Component<Props> {
                         {banner.collegeBannerContents[1].visible === 1 &&
                           banner.collegeBannerContents[1].useLink === 1 && (
                             <span className="banner-holder">
-                              <a
-                                href={encodeURI(
-                                  banner.collegeBannerContents[1].linkUrl
-                                )}
-                              >
-                                <img
-                                  src={`${banner.collegeBannerContents[1].imageUrl}`}
-                                  onClick={e =>
-                                    gaClickEvent(`${activeCollege.name}`, 2)
-                                  }
-                                  alt=""
-                                />
-                              </a>
+                              { !/^(http|https)/.test(originSelfPath(banner.collegeBannerContents[0].linkUrl)) ?
+                                (
+                                  <Link
+                                    to={originSelfPath(banner.collegeBannerContents[1].linkUrl)}
+                                    onClick={()=>{
+                                      handleCategoryOpen(false);
+                                      gaClickEvent(`${activeCollege.name}`, 2);
+                                    }}
+                                  >
+                                    <img
+                                      src={`${banner.collegeBannerContents[1].imageUrl}`}
+                                      alt=""
+                                    />
+                                  </Link>
+                                ) : (
+                                  <a
+                                    href={encodeURI(
+                                      banner.collegeBannerContents[1].linkUrl
+                                    )}
+                                  >
+                                    <img
+                                      src={`${banner.collegeBannerContents[1].imageUrl}`}
+                                      onClick={e =>
+                                        gaClickEvent(`${activeCollege.name}`, 2)
+                                      }
+                                      alt=""
+                                    />
+                                  </a>
+                                )
+                              }
                             </span>
                           )}
                         {banner.collegeBannerContents[1].visible === 0 && (
@@ -462,19 +500,38 @@ class CategoryMenuPanelView extends Component<Props> {
                         )}
                       {banner.collegeBannerContents[0].visible === 1 &&
                         banner.collegeBannerContents[0].useLink === 1 && (
-                          <a
-                            href={encodeURI(
-                              banner.collegeBannerContents[0].linkUrl
-                            )}
-                          >
-                            <img
-                              src={`${banner.collegeBannerContents[0].imageUrl}`}
-                              onClick={e =>
-                                gaClickEvent(`${activeCollege.name}`, 1)
-                              }
-                              alt=""
-                            />
-                          </a>
+                          <>
+                            { !/^(http|https)/.test(originSelfPath(banner.collegeBannerContents[0].linkUrl)) ?
+                              (
+                                <Link
+                                  to={originSelfPath(banner.collegeBannerContents[0].linkUrl)}
+                                  onClick={()=>{
+                                    handleCategoryOpen(false);
+                                    gaClickEvent(`${activeCollege.name}`, 1);
+                                  }}
+                                >
+                                  <img
+                                    src={`${banner.collegeBannerContents[0].imageUrl}`}
+                                    alt=""
+                                  />
+                                </Link>
+                              ) : (
+                                <a
+                                  href={encodeURI(
+                                    banner.collegeBannerContents[0].linkUrl
+                                  )}
+                                >
+                                  <img
+                                    src={`${banner.collegeBannerContents[0].imageUrl}`}
+                                    onClick={e =>
+                                      gaClickEvent(`${activeCollege.name}`, 1)
+                                    }
+                                    alt=""
+                                  />
+                                </a>
+                              )
+                            }
+                          </>
                         )}
                       {banner.collegeBannerContents[0].visible === 0 && <div />}
                     </div>
