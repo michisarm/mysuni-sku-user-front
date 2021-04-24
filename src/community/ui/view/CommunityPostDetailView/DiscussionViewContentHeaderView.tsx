@@ -222,7 +222,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
               </div>
               {/* eslint-disable */}
               {/* 관련 URL */}
-              {urlNull === true ? (
+              {urlNull === false ? (
                 <div className="community-board-down discuss2">
                   <div className="board-down-title href">
                     <p>
