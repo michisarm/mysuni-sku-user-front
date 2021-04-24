@@ -122,12 +122,12 @@ function CommunityDiscussionContainer() {
     if (communityHome?.community?.memberType === 'ADMIN') {
       setCommunityAdminAuth(communityHome?.community?.memberType === 'ADMIN');
     }
-  },[communityHome?.community?.managerId]);
+  },[communityHome?.community?.managerId, communityHome?.community?.memberType]);
 
   // console.log('관리자여부', state);
   // console.log('!@@@@', communityAdminAuth, adminAuth);
   return (
-    <div className="course-info-header">
+    <>
       {postDetail && (
         <>
           <DiscussionViewContentHeaderView
@@ -151,7 +151,7 @@ function CommunityDiscussionContainer() {
           />
         </>
       )}
-    </div>
+    </>
   );
 }
 
