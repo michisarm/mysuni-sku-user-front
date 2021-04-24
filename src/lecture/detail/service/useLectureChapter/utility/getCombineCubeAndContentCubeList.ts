@@ -21,6 +21,7 @@ export function getCombineCubeAndContentCubeList(
         description: contentCubeList[i].description,
         type: filterCubeList?.type || 'None',
         learningTime: filterCubeList?.learningTime || 0,
+        isCube: true,
       };
       learningContentWithCubeList.push(course);
     }
@@ -34,6 +35,7 @@ export function getCombineCubeAndContentCubeList(
         description: '',
         type: 'None', // Discussion 에 해당하는 타입이 없어서 None으로 처리.
         learningTime: 0,
+        isCube: false,
       };
       learningContentWithCubeList.push(course);
     });

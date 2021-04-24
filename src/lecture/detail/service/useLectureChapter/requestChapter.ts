@@ -54,9 +54,11 @@ export async function requestChapter(params: ChapterParams) {
   );
 
   // cube description 값을 받아 오지 못해서 임시로 cube detail을 조회해서 받아 오도록 해둠
-  await learningContentWithCubeList.map(async cube => {
-    const detailCube = await findCubeDetailCache(cube.cubeId);
-    cube.description = detailCube?.cubeContents.description.description || '';
+  await learningContentWithCubeList.forEach(async cube => {
+    if (cube.isCube) {
+      const detailCube = await findCubeDetailCache(cube.cubeId);
+      cube.description = detailCube?.cubeContents.description.description || '';
+    }
   });
 
   setLearningContent(learningContent);
