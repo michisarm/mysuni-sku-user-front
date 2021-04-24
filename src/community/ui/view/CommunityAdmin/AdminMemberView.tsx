@@ -406,16 +406,27 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
       <div className="table-board-title">
         <div className="table_list_string">
           ㆍ전체 <strong>{communityMembers.totalCount}명</strong>멤버
-          <Select
-            className="ui small-border admin_table_select"
-            defaultValue={limitOptions[0].value}
-            options={limitOptions}
-            onChange={(e: any, data: any) => setLimit(data.value)}
-          />
+          {!searchBox.groupId && (
+            <Select
+              className="ui small-border admin_table_select"
+              defaultValue={limitOptions[0].value}
+              options={limitOptions}
+              onChange={(e: any, data: any) => setLimit(data.value)}
+            />
+          )}
+
         </div>
         <div className="right-wrap">
+          {searchBox.groupId && (
+            <Select
+              className="ui small-border admin_table_select"
+              defaultValue={limitOptions[0].value}
+              options={limitOptions}
+              onChange={(e: any, data: any) => setLimit(data.value)}
+            />
+          )}
 
-          {searchBox.approved === 'APPROVED' && (
+          {searchBox.approved === 'APPROVED' && !searchBox.groupId && (
             <>
               <span>선택한 멤버를</span>
 
