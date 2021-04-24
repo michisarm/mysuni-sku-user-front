@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import FaqDetailContainer from '../logic/FaqDetailContainer';
-
+import { Area } from 'tracker/model';
 
 @observer
 @reactAutobind
@@ -21,7 +21,10 @@ class FaqDetailPage extends Component {
           { text: 'FAQ' },
         ]}
       >
-        <div className="post-view-wrap">
+        <div
+          className="post-view-wrap"
+          data-area={Area.BOARD_FAQ_CONTENT}
+        >
           <FaqDetailContainer />
         </div>
       </ContentLayout>

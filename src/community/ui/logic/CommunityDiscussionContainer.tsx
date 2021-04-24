@@ -28,7 +28,6 @@ function CommunityDiscussionContainer() {
   const { menuId } = useParams<Params>();
   const discussionType = pathname.split('/')[3];
   const [postDetail] = useCommunityDiscussionPostDetail(menuId);
-  console.log('ddd@@@', postDetail);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -37,12 +36,12 @@ function CommunityDiscussionContainer() {
   const history = useHistory();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [communityAdminAuth, setCommunityAdminAuth] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
     const denizenId = patronInfo.getDenizenId();
     getFileIds();
     setCreatorId(denizenId!);
-
   }, [postDetail]);
 
   const OnClickList = useCallback(() => {
@@ -134,7 +133,7 @@ function CommunityDiscussionContainer() {
             postDetail={postDetail}
             title={postDetail.title}
             time={postDetail.createdTime}
-            readCount={postDetail.readCount}
+            readCount={count}
             deletable={true}
             onClickList={OnClickList}
           />

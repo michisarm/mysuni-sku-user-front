@@ -90,6 +90,10 @@ class HeaderAlarmView extends Component<Props, State> {
                   notReadClass = 'not-read';
                 }
 
+                if (!result.title.includes('[')) {
+                  result.title = ''
+                }
+
                 return (
                   <a
                     className={`lms-alarm-item ${notReadClass}`}
