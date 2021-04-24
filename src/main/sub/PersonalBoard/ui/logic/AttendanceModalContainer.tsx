@@ -1,7 +1,7 @@
 import { mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import React, { useCallback, useEffect } from 'react';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { requestAttendCount } from '../../service/getAttendCount';
 import { requestEncryptEmail } from '../../service/getAttendEmail';
 import { requestAttendEvent } from '../../service/getAttendEvent';
@@ -50,7 +50,7 @@ const AttendanceModalContainer: React.FC<Props> = function LearningObjectivesMod
     }
     saveAttend(AttendEventItem.id).then(result => {
       if (result !== undefined) {
-        requestAttendCount(AttendEventItem.id).then(() => {
+        requestAttendCount(AttendEventItem.id).then((result) => {
           requestEncryptEmail();
         });
       }
