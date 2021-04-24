@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRequestLearningStorage } from '../../../myTraining/service/useRequestLearningStorage';
 import { usePublishViewEvent } from '../../../myTraining/service/usePublishViewEvent';
 import { ContentLayout } from '../../../shared';
 import MainModals from '../../sub/MainModals/AiDtModalView';
@@ -8,7 +7,6 @@ import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 
 function UserMainPage() {
   usePublishViewEvent('MAIN_VIEW');
-  useRequestLearningStorage();
 
   return (
     <ContentLayout className="main">

@@ -85,7 +85,7 @@ function getLectureSubcategory(cubeDetail: CubeDetail): LectureSubcategory {
     cube: { categories },
   } = cubeDetail;
   return {
-    categories: categories.filter(c => !c.mainCategory),
+    categories,
   };
 }
 
