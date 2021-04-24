@@ -5,6 +5,8 @@ import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
 import RecommendRoutes from './recommend/Routes';
 import LectureDetailRoutes from './detail/LectureDetailRoutes';
+import OldCoursePage from './detail/ui/logic/OldCoursePage';
+import OldCubePage from './detail/ui/logic/OldCubePage';
 
 class Routes extends Component {
   //
@@ -29,6 +31,24 @@ class Routes extends Component {
           exact
           path="/lecture/college/:collegeId/channel/:channelId"
           component={ChannelLecturesPage}
+        />
+
+        <Route
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
+          component={OldCoursePage}
+        />
+        <Route
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
+          component={OldCoursePage}
+        />
+
+        <Route
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={OldCubePage}
+        />
+        <Route
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={OldCubePage}
         />
 
         <Route path="/lecture/card/:cardId" component={LectureDetailRoutes} />
