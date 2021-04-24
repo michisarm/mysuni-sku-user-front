@@ -6,6 +6,8 @@ import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { ChapterParams } from '../../../model/ChapterParams';
 import CubeIconType from '../../../../shared/Lecture/model/CubeIconType';
 import { Icon, Label } from 'semantic-ui-react';
+import CubeTypeNameType from '../../../../../myTraining/model/CubeTypeNameType';
+import CubeType from '../../../../model/CubeType';
 
 interface Props {
   courseCount: number;
@@ -14,6 +16,15 @@ interface Props {
 
 function LectureCourseListView({ courseCount, learningContents }: Props) {
   const { cardId } = useParams<ChapterParams>();
+
+  const getCubeTypeName = (cubeTypeName: CubeType) => {
+    if (cubeTypeName) {
+      const parseCubeTypeName = cubeTypeName;
+
+      return CubeTypeNameType[parseCubeTypeName];
+    }
+    return '';
+  };
 
   return (
     <div className="course-info-essential">
@@ -38,6 +49,7 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
           viewType,
           pathname: '',
         };
+        console.log(cube.name, params);
 
         return (
           <div className="essential-wrap" key={cube.cubeId}>
@@ -48,7 +60,7 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
               <div className="detail-subject-box">
                 <Label className="onlytext">
                   <Icon className={`icon ${cubeIcon}`} />
-                  <span>{cubeType}</span>
+                  <span>{getCubeTypeName(cubeType)}</span>
                 </Label>
                 {cube.learningTime > 0 && (
                   <Label className="onlytext">
