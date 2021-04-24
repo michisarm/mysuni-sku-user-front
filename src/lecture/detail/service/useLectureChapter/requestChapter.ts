@@ -44,12 +44,6 @@ export async function requestChapter(params: ChapterParams) {
     }
   });
 
-  // cube description 값을 받아 오지 못해서 임시로 cube detail을 조회해서 받아 오도록 해둠
-  cubeList.map(async cube => {
-    const detailCube = await findCubeDetailCache(cube.contentId);
-    cube.description = detailCube?.cubeContents.description.description || '';
-  });
-
   const contentCubeList = cubeList;
   const cubeDetaillList = await findCubesByIdsCache(cubeIds);
 
@@ -58,6 +52,12 @@ export async function requestChapter(params: ChapterParams) {
     discussionList,
     cubeDetaillList
   );
+
+  // cube description 값을 받아 오지 못해서 임시로 cube detail을 조회해서 받아 오도록 해둠
+  await learningContentWithCubeList.map(async cube => {
+    const detailCube = await findCubeDetailCache(cube.cubeId);
+    cube.description = detailCube?.cubeContents.description.description || '';
+  });
 
   setLearningContent(learningContent);
   setLearningContentCube(learningContentWithCubeList);
