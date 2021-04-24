@@ -152,7 +152,8 @@ function createPanoptoEmbedPlayer() {
   function initializePanoptoEmbedPlayer(
     panoptoSessionId: string,
     directConnectionName?: string,
-    targetSamlInstanceName?: string
+    targetSamlInstanceName?: string,
+    serverName?: string
   ) {
     clearInterval(intervalId);
     const container = getContainer();
@@ -189,6 +190,9 @@ function createPanoptoEmbedPlayer() {
       targetSamlInstanceName !== undefined
     ) {
       options.videoParams[directConnectionName] = targetSamlInstanceName;
+      if (serverName !== undefined) {
+        options.serverName = serverName;
+      }
     }
     embedApi = new window.EmbedApi('panopto-embed-player', options);
     onProgress();

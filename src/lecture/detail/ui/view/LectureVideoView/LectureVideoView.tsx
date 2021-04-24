@@ -55,6 +55,19 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     if (lectureMedia.mediaContents.internalMedias[0] === undefined) {
       return;
     }
+
+    let serverName: string | undefined;
+    let search = window.location.search;
+    if (search.includes('serverName')) {
+      search = search.substring(1);
+      search.split('&').forEach(keyValue => {
+        const [key, value] = keyValue.split('=');
+        if (key === 'serverName') {
+          serverName = value;
+        }
+      });
+    }
+
     const panoptoSessionId =
       lectureMedia.mediaContents.internalMedias[0].panoptoSessionId;
     const directConnectionName =
@@ -65,7 +78,8 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
     initializePanoptoEmbedPlayer(
       panoptoSessionId,
       directConnectionName,
-      targetSamlInstanceName
+      targetSamlInstanceName,
+      serverName
     );
     return clearPanoptoEmbedPlayer;
   }, [lectureMedia]);
