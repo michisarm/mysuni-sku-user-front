@@ -18,6 +18,7 @@ import { getCookie } from '@nara.platform/accent';
 import { CubeMaterial } from '../../model/CubeMaterial';
 import { CubeContents } from '../../model/CubeContents';
 import { findContentsProviderSamlCache } from '../../../shared/api/checkpointApi';
+import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml';
 
 const BASE_URL = '/api/cube';
 
@@ -59,7 +60,12 @@ async function AppendSamlQueryToCubeMaterial(
   if (cubeMaterial === undefined || cubeMaterial === null) {
     return cubeMaterial;
   }
-  const contentsProviderSamls = await findContentsProviderSamlCache();
+  let contentsProviderSamls: ContentsProviderSaml[] | undefined;
+  try {
+    contentsProviderSamls = await findContentsProviderSamlCache();
+  } catch (error) {
+    return cubeMaterial;
+  }
   if (
     !Array.isArray(contentsProviderSamls) ||
     contentsProviderSamls.length === 0
