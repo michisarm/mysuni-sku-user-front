@@ -22,6 +22,7 @@ const LectureStructureView: React.FC<LectureStructureViewProps> = function Lectu
 
   if (
     lectureStructure.items.length === 1 &&
+    lectureStructure.cubes.length === 1 &&
     lectureStructure.card.test === undefined &&
     lectureStructure.card.report === undefined &&
     lectureStructure.card.survey === undefined
