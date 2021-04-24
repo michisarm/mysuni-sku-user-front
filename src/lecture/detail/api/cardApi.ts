@@ -242,3 +242,11 @@ export function registerHomework(
     .put<void>(url, { homeworkContent: homework })
     .then(response => response && response.data);
 }
+
+function findMigCardIdMapping(lectureId: String) {
+  const url = `${BASE_URL}/cards/migCardIdMapping/${lectureId}`;
+  const axios = getAxios();
+  return axios.get<{ cardId: string }>(url).then(AxiosReturn);
+}
+
+export const [findMigCardIdMappingCache] = createCacheApi(findMigCardIdMapping);
