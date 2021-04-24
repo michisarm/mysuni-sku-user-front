@@ -460,7 +460,7 @@ export function saveCommunityAdminMenu(
       name: selectedRow.name,
       title: selectedRow.title,
       type: selectedRow.type,
-      groupId: selectedRow.groupId,
+      groupId: selectedRow.groupId === null ? '' : selectedRow.groupId,
       accessType: selectedRow.accessType,
     };
 
