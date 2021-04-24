@@ -493,7 +493,7 @@ const CollegeInnerTabAi = () => {
                   </ul>
                   <ul>
                     <li>
-                      <Link to="/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-19q/Course/C-LECTURE-140">
+                      <Link to="/lecture/card/CARD-9f0/view">
                         [SK ICT Tech Summit] AI 적용 Platform
                       </Link>
                     </li>
@@ -510,7 +510,7 @@ const CollegeInnerTabAi = () => {
                   </h4>
                   <ul className="float-left">
                     <li>
-                      <Link to="/lecture/card/CARD-9f0/view">
+                      <Link to="/lecture/card/CARD-7e6/view">
                         [Conference] AI의 현재와 미래
                       </Link>
                     </li>
