@@ -61,7 +61,7 @@ const DiscussionViewContentHeaderView: React.FC<Props> = ({
     emptyCheckUrl();
     // content가 undefined 일때 hidden 처리
     const checkContentValue =
-      postDetail?.content === '<p><br></p>' ? true : false;
+      (postDetail?.content === '<p><br></p>' || postDetail?.content === "") ? true : false;
     setContentCheck(checkContentValue);
   }, [postDetail]);
 
