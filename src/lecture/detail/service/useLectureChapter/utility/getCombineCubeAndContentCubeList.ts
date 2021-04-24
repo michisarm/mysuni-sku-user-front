@@ -28,7 +28,7 @@ export function getCombineCubeAndContentCubeList(
       const course: LectureChpaterCubeList = {
         cubeId: item.contentId.slice(-4),
         name: item.name,
-        description: item.description,
+        description: '',
         type: 'None', // Discussion 에 해당하는 타입이 없어서 None으로 처리.
         learningTime: 0,
       };
