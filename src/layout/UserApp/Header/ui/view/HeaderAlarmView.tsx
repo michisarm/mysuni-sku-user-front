@@ -50,6 +50,7 @@ class HeaderAlarmView extends Component<Props, State> {
     }
   }
 
+
   render() {
     //
     const {
@@ -88,6 +89,10 @@ class HeaderAlarmView extends Component<Props, State> {
                 let notReadClass = '';
                 if (!result.read) {
                   notReadClass = 'not-read';
+                }
+
+                if (!result.title.includes('[')) {
+                  result.title = ''
                 }
 
                 return (
