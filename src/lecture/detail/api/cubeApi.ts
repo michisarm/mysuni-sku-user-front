@@ -149,6 +149,67 @@ async function AppendSamlQueryToCubeMaterial(
   return cubeMaterial;
 }
 
+async function AppendPanoptoSamlQueryToCubeMaterial(
+  cubeContents: CubeContents,
+  cubeMaterial: CubeMaterial
+) {
+  if (cubeContents === undefined || cubeContents === null) {
+    return cubeMaterial;
+  }
+  if (cubeMaterial === undefined || cubeMaterial === null) {
+    return cubeMaterial;
+  }
+  let contentsProviderSamls: ContentsProviderSaml[] | undefined;
+  try {
+    contentsProviderSamls = await findContentsProviderSamlCache();
+  } catch (error) {
+    return cubeMaterial;
+  }
+  if (
+    !Array.isArray(contentsProviderSamls) ||
+    contentsProviderSamls.length === 0
+  ) {
+    return cubeMaterial;
+  }
+  if (
+    Array.isArray(cubeMaterial.media?.mediaContents.internalMedias) &&
+    cubeMaterial.media?.mediaContents.internalMedias[0] !== undefined
+  ) {
+    const panoptoContentsProviderSaml = contentsProviderSamls.find(
+      c => c.contentsProviderId === 'PANOPTO'
+    );
+    if (panoptoContentsProviderSaml !== undefined) {
+      const token = localStorage.getItem('nara.token')?.split('.')[1];
+      if (token === null || token === undefined) {
+        return cubeMaterial;
+      }
+      const textDecoder = new TextDecoder();
+      const payload = JSON.parse(textDecoder.decode(decode(token)));
+      const gdiUser: boolean = payload?.gdiUser;
+      if (gdiUser === undefined) {
+        return cubeMaterial;
+      }
+      const loginUserSourceType = gdiUser === true ? 'GDI' : 'CHECKPOINT_SAML';
+      const contentsProviderDirectConnection = panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
+        c => c.loginUserSourceType === loginUserSourceType
+      );
+      if (contentsProviderDirectConnection === undefined) {
+        return cubeMaterial;
+      }
+
+      Array.from(cubeMaterial.media?.mediaContents.internalMedias).forEach(
+        internalMediaConnection => {
+          internalMediaConnection.directConnectionName =
+            contentsProviderDirectConnection.directConnectionName;
+          internalMediaConnection.targetSamlInstanceName =
+            contentsProviderDirectConnection.targetSamlInstanceName;
+        }
+      );
+    }
+  }
+  return cubeMaterial;
+}
+
 function paramsSerializer(paramObj: Record<string, any>) {
   const params = new URLSearchParams();
   for (const key in paramObj) {
@@ -193,6 +254,17 @@ function findCubeDetail(cubeId: string) {
           return { ...r, cubeMaterial } as CubeDetail;
         }
       );
+    })
+    .then(r => {
+      if (r === undefined) {
+        return undefined;
+      }
+      return AppendPanoptoSamlQueryToCubeMaterial(
+        r.cubeContents,
+        r.cubeMaterial
+      ).then(cubeMaterial => {
+        return { ...r, cubeMaterial } as CubeDetail;
+      });
     });
 }
 
