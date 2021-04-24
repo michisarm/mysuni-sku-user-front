@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { ActionLogService } from 'shared/stores';
 import { BreadcrumbValue } from '../../../index';
 import { Icon, Button } from 'semantic-ui-react';
+import { Area } from 'tracker/model';
 
 interface Props {
   actionLogService?: ActionLogService;
@@ -138,7 +139,10 @@ class BreadcrumbView extends Component<Props, State> {
     //
     const { values, supportPath } = this.props;
     return (
-      <div className="breadcrumbs">
+      <div
+        className="breadcrumbs"
+        data-area={Area.HEADER_BREADCRUMBS}
+      >
         <div className="cont-inner">
           <div className="ui standard breadcrumb community-link">
             <Link
