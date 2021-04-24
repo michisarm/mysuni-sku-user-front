@@ -136,7 +136,6 @@ function CommunityMenuContainer() {
     },
     [communityAdminMenu, discussRow, selectedRow]
   );
-
   const handleAddMenu = useCallback(() => {
     // 선택된 row 초기화
     setSelectedRow({
@@ -608,6 +607,14 @@ function CommunityMenuContainer() {
 
         if (type === 'privateComment') {
           setDiscussRow({ ...discussRow, privateComment: value });
+        }
+
+        if (type === 'accessType') {
+          setDiscussRow({ ...discussRow, accessType: value });
+        }
+
+        if (type === 'group') {
+          setDiscussRow({ ...discussRow, groupId: value });
         }
       }
     },

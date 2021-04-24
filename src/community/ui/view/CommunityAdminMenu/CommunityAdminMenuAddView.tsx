@@ -131,6 +131,8 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
         selectedRow.groupId = groupArr[0].value;
         selectedRow.accessType = 'COMMUNITY_GROUP';
       }
+      onChangeDiscussValue(selectedRow.groupId, 'group');
+      onChangeDiscussValue(selectedRow.accessType, 'accessType');
       onChangeAddValue(selectedRow, 'accessType');
     }
   }
@@ -138,6 +140,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
   function onChangeGroup(e: any, data: any) {
     if (selectedRow) {
       selectedRow.groupId = data.value;
+      onChangeDiscussValue(data.value, 'group');
       onChangeAddValue(selectedRow, 'groupId');
     }
   }
@@ -316,9 +319,7 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   onClick={(e: any, data: any) => {
                     changeAuth(e, data.value);
                   }}
-                  onChange={(e: any, data: any) => {
-                    changeAuth(e, data.value);
-                  }}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
                 <Radio
                   className="base"
@@ -326,15 +327,14 @@ const CommunityAdminMenuAddView: React.FC<CommunityAdminMenuAddViewProps> = func
                   name="radioGroup"
                   value="group"
                   checked={selectedRow?.groupId !== null}
-                  onChange={(e: any, data: any) => {
-                    changeAuth(e, data.value);
-                  }}
+                  onChange={(e: any, data: any) => changeAuth(e, data.value)}
                 />
               </div>
               <Select
                 placeholder="그룹 유형을 선택하세요."
                 className="ui small-border admin_tab_select"
                 value={selectedRow?.groupId}
+                // defaultValue={groupArr[0].value}
                 options={groupArr}
                 onChange={onChangeGroup}
                 disabled={selectedRow?.groupId === null}
