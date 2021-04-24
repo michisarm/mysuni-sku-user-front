@@ -21,7 +21,7 @@ const LectureInstructorView: React.FunctionComponent<LectureInstructorViewProps>
         <div className="title">
           <h3 className="title-style">
             <Label className="onlytext bold size24">
-              <Icon className="tag2" />
+              <Icon className="host" />
               <span>{/*Tag*/}강사정보</span>
             </Label>
           </h3>
