@@ -613,7 +613,10 @@ function CommunityMenuContainer() {
         }
 
         if (type === 'group') {
-          setDiscussRow({ ...discussRow, groupId: value });
+          setDiscussRow({
+            ...discussRow,
+            groupId: value === null ? '' : value,
+          });
         }
       }
     },
