@@ -39,6 +39,7 @@ export default function LectureDiscussionContainer() {
   const [lectureFeedbackContent] = useLectureFeedbackContent();
   const [more, setMore] = useState<boolean>();
   const [count, setCount] = useState<number>(0);
+  const [contentCheck, setContentCheck] = useState<boolean>(false);
   const [urlNull, setUrlNull] = useState<boolean>(false);
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -77,8 +78,11 @@ export default function LectureDiscussionContainer() {
         setCount(count);
       }
     }
-    getFileIds();
+    getFileIds();  
     asyncFun();
+
+  const checkContentValue = (lectureFeedbackContent?.content === '<p><br></p>' || lectureFeedbackContent?.content === "") ? true : false;
+  setContentCheck(checkContentValue);
   }, [lectureFeedbackContent]);
 
   const getFileIds = useCallback(() => {
@@ -221,7 +225,10 @@ export default function LectureDiscussionContainer() {
               </span>
             </div>
             <div className="discuss-box2">
-              <div className="discuss-text-wrap">
+              <div 
+                className="discuss-text-wrap"
+                style={contentCheck ? { display: 'none' } : {}}
+              >
                 {lectureFeedbackContent && more && (
                   <div className="ql-snow">
                     <div
