@@ -241,9 +241,7 @@ export default function CardView({
           </div>
           {(learningTime || stampCount) && (
             <div className="li">
-              {learningTime && (
-                <SubField icon="time2" bold text={hourMinuteFormat} />
-              )}
+              <SubField icon="time2" bold text={hourMinuteFormat} />
               {stampCount > 0 && (
                 <SubField
                   className={(learningTime && 'card-stamp') || ''}
