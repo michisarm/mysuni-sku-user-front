@@ -2,10 +2,15 @@ import { findCardCache } from '../../../detail/api/cardApi';
 import { ChapterParams } from '../../model/ChapterParams';
 import { getContents } from './utility/getContent';
 import { getCombineCubeAndContentCubeList } from './utility/getCombineCubeAndContentCubeList';
-import { findCubesByIdsCache } from '../../api/cubeApi';
+import { findCubesByIdsCache, findCubeDetailCache } from '../../api/cubeApi';
 import { setLearningContent } from '../../store/LearningContentStore';
 import { setLearningContentCube } from '../../store/LearningContentCubeStore';
 import { LearningContentChildren } from '../../../model/LearningContentChildren';
+
+interface DescriptionList {
+  id: string;
+  description: string;
+}
 
 export async function requestChapter(params: ChapterParams) {
   const { cardId, contentId } = params;
@@ -39,13 +44,19 @@ export async function requestChapter(params: ChapterParams) {
     }
   });
 
+  // cube description 값을 받아 오지 못해서 임시로 cube detail을 조회해서 받아 오도록 해둠
+  cubeList.map(async cube => {
+    const detailCube = await findCubeDetailCache(cube.contentId);
+    cube.description = detailCube?.cubeContents.description.description || '';
+  });
+
   const contentCubeList = cubeList;
-  const CubeDetaillList = await findCubesByIdsCache(cubeIds);
+  const cubeDetaillList = await findCubesByIdsCache(cubeIds);
 
   const learningContentWithCubeList = getCombineCubeAndContentCubeList(
     contentCubeList,
     discussionList,
-    CubeDetaillList
+    cubeDetaillList
   );
 
   setLearningContent(learningContent);

@@ -23,6 +23,7 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
         </span>
       </div>
       {learningContents.map(cube => {
+        const description = cube.description || '';
         const isDiscussion = cube.type === 'None';
 
         const viewType = isDiscussion ? 'discussion' : 'view';
@@ -56,7 +57,10 @@ function LectureCourseListView({ courseCount, learningContents }: Props) {
                   </Label>
                 )}
               </div>
-              <p>{cube.description}</p>
+              <p
+                className="text-area"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
             </div>
           </div>
         );
