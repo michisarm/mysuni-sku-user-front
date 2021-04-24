@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button, Checkbox, Image, Modal } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
+import { Area } from 'tracker/model';
 
 const AiDtModalView = () => {
   //
@@ -46,7 +47,7 @@ const AiDtModalView = () => {
         </div>
       </Modal.Header>
       <Modal.Content>
-        <div className="imgbox">
+        <div className="imgbox" data-area={Area.MAIN_POPBANNER}>
           <Image
             src={`${getPublicUrl()}/images/all/img-aidt-college-warm.png`}
             alt="사회는 거리두기, 우리 조직 DT는 ai/dt college로 거리 좁히기"
