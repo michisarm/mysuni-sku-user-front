@@ -12,11 +12,8 @@ export async function requestPopularCourse(companyCode: string, date: number) {
       const channalArr: any = [];
       result.map((item: MyCompanyPopularCourseItem, index: number) => {
         channalArr.push({
-          collegeName: getCollgeName(item.cardCategory.collegeId),
-          collegeId: item.cardCategory.collegeId,
           cardId: item.cardId,
           cardName: item.cardName,
-          channelName: getChannelName(item.cardCategory.channelId),
         });
       });
       setPopularCourseItem([...channalArr]);
