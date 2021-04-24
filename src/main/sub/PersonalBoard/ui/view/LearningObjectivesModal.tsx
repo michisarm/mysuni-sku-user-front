@@ -30,7 +30,7 @@ const LearningObjectivesModal:React.FC<Props> = ({
       { learningObjectivesItem && (
         <Modal open={open} className="base w600">
           <Modal.Header>
-            성장을 위한 준비!
+            성장을 위한 준비!{""}
             <span className="sub f12">학습 목표를 설정해보세요.</span>
           </Modal.Header>
           <Modal.Content className="admin_popup_reject">
