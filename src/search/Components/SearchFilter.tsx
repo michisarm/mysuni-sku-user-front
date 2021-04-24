@@ -898,7 +898,12 @@ const SearchFilter: React.FC<Props> = ({
         Filter
         <a className="result-button">
           {/* <img src={ResultBtn} alt="btn" className="result-btn-img" /> */}
-          <span className="result-text">결과보기</span>
+          <span
+            className="result-text"
+            onClick={() => search(searchValue, closeOnFilter)}
+          >
+            결과보기
+          </span>
         </a>
       </div>
       <table>

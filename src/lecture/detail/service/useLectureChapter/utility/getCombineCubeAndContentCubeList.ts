@@ -1,7 +1,7 @@
 import { Cube } from '../../../../model/Cube';
 import { LectureChpaterCubeList } from '../../../viewModel/LectureChpaterCubeList';
 import { LearningContentChildren } from '../../../../model/LearningContentChildren';
-import { isEmpty } from 'lodash';
+import { find } from 'lodash';
 
 export function getCombineCubeAndContentCubeList(
   contentCubeList?: LearningContentChildren[],
@@ -9,15 +9,18 @@ export function getCombineCubeAndContentCubeList(
   cubeList?: Cube[]
 ) {
   const learningContentWithCubeList: LectureChpaterCubeList[] = [];
-
   if (contentCubeList && cubeList) {
     for (let i = 0; i < contentCubeList.length; i++) {
+      const filterCubeList = find(cubeList, {
+        id: contentCubeList[i].contentId,
+      });
+
       const course: LectureChpaterCubeList = {
-        cubeId: cubeList[i].id,
+        cubeId: filterCubeList?.id || '',
         name: contentCubeList[i].name,
         description: contentCubeList[i].description,
-        type: cubeList[i].type,
-        learningTime: cubeList[i].learningTime,
+        type: filterCubeList?.type || 'None',
+        learningTime: filterCubeList?.learningTime || 0,
       };
       learningContentWithCubeList.push(course);
     }
