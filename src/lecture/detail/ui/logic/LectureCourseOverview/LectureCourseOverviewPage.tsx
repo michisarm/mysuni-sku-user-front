@@ -18,7 +18,13 @@ function LectureCourseOverviewPage() {
     if (lectureStructure === undefined) {
       return;
     }
-    if (lectureStructure.cubes.length === 1) {
+    if (
+      lectureStructure.cubes.length === 1 &&
+      lectureStructure.items.length === 1 &&
+      lectureStructure.card.test === undefined &&
+      lectureStructure.card.report === undefined &&
+      lectureStructure.card.survey === undefined
+    ) {
       history.replace(lectureStructure.cubes[0].path);
     }
   }, [lectureStructure]);
