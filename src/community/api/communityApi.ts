@@ -518,7 +518,13 @@ export function addCommunityAdminDiscussion(
   addRow: any
 ): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
-  return axiosApi.post(url, addRow).then(response => {
+
+  const params = {
+    ...addRow,
+    groupId: addRow.groupId === null ? '' : addRow.groupId,
+  };
+
+  return axiosApi.post(url, params).then(response => {
     return response && response.data;
   });
 }
