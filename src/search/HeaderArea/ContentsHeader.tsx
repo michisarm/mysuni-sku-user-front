@@ -14,6 +14,10 @@ const ContentsHeader: React.FC = () => {
     setIsOnFilter(!isOnFilter);
   };
 
+  const closeOnFilter = () => {
+    setIsOnFilter(false);
+  };
+
   const param = useParams();
 
   // Get queryID
@@ -74,7 +78,11 @@ const ContentsHeader: React.FC = () => {
             </Button>
           </div>
           {/*Filter*/}
-          <SearchFilter isOnFilter={isOnFilter} searchValue={searchValue} />
+          <SearchFilter
+            isOnFilter={isOnFilter}
+            searchValue={searchValue}
+            closeOnFilter={closeOnFilter}
+          />
         </Segment>
       </div>
     </>
