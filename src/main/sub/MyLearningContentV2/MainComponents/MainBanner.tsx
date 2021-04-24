@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import Swiper from 'react-id-swiper';
@@ -9,6 +10,7 @@ import MainBannerModal from './MainBannerModal';
 import { SkProfileService } from '../../../../profile/stores';
 import Image from '../../../../shared/components/Image/Image';
 import ReactGA from 'react-ga';
+import { originSelfPath } from 'tracker-react/utils';
 
 enum AnchorTargetType {
   self = '_self',
@@ -109,31 +111,57 @@ const MainBanner: React.FC<Props> = Props => {
     <MainBannerWrapper>
       <div hidden={true}>{(params.autoplay.delay = intervalTime * 1000)}</div>
       <Swiper {...params}>
-        {banners.map((banner, index) => (
-          <div className="swiper-slide" key={`main-banner-${index}`}>
-            <a
-              className="ui image"
-              title={banner.name}
-              target={banner.target}
-              href={
-                banner.target === AnchorTargetType.blank ||
-                banner.target === AnchorTargetType.self
-                  ? banner.targetUrl
-                  : undefined
-              }
-              onClick={() =>
-                onClickBanner(
-                  banner.targetUrl,
-                  banner.target,
-                  banner.name,
-                  index
-                )
-              }
-            >
-              <Image alt={banner.imageAlt} src={banner.imageUrl} />
-            </a>
-          </div>
-        ))}
+        {
+          banners.map((banner, index) => {
+          const targetUrl = originSelfPath(banner.targetUrl);
+          return (
+            <div className="swiper-slide" key={`main-banner-${index}`}>
+            {
+              (!/^(http|https)/.test(targetUrl) && banner.target === AnchorTargetType.self)
+              ? (
+                <Link
+                  className="ui image"
+                  title={banner.name}
+                  target={banner.target}
+                  to={{ pathname : targetUrl}}
+                  onClick={() =>
+                    onClickBanner(
+                      banner.targetUrl,
+                      banner.target,
+                      banner.name,
+                      index
+                    )
+                  }
+                >
+                  <Image alt={banner.imageAlt} src={banner.imageUrl} />
+                </Link>
+              ) : (
+                <a
+                  className="ui image"
+                  title={banner.name}
+                  target={banner.target}
+                  href={
+                    banner.target === AnchorTargetType.blank ||
+                    banner.target === AnchorTargetType.self
+                      ? banner.targetUrl
+                      : undefined
+                  }
+                  onClick={() =>
+                    onClickBanner(
+                      banner.targetUrl,
+                      banner.target,
+                      banner.name,
+                      index
+                    )
+                  }
+                >
+                  <Image alt={banner.imageAlt} src={banner.imageUrl} />
+                </a>
+              )
+            }
+            </div>
+          )
+        })}
       </Swiper>
 
       <div className="navi">
