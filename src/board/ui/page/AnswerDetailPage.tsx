@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import AnswerDetailContainer from '../logic/AnswerDetailContainer';
-
+import { Area } from 'tracker/model';
 
 @observer
 @reactAutobind
@@ -22,7 +22,10 @@ class AnswerDetailPage extends Component {
           { text: 'Answered' },
         ]}
       >
-        <div className="post-view-wrap">
+        <div
+          className="post-view-wrap"
+          data-area={Area.BOARD_QNA_CONTENT}
+        >
           <AnswerDetailContainer />
         </div>
       </ContentLayout>
