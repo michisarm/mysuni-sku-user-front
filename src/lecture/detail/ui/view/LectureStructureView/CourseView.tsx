@@ -67,7 +67,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           className={`btn-accordion ${opened ? 'open' : ''}`}
           onClick={toggle}
         >
-          총<strong>{(items || cubes || []).length}개</strong> 강의 구성
+          총<strong>{(items || cubes || []).length}개</strong> 구성
         </button>
         <span
           className={`label-state-learning ${

@@ -103,34 +103,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   activated={cube.path === pathname}
                 />
               )}
-              {cube.last == true && cube?.test !== undefined && (
-                <CourseTestView
-                  name={cube.test.name}
-                  state={cube.test.state}
-                  path={cube.test.path}
-                  can={cube.test.can}
-                  activated={cube.test.path === pathname}
-                />
-              )}
-              {cube.last == true && cube?.survey !== undefined && (
-                <CourseSurveyView
-                  name={cube.survey.name}
-                  state={cube.survey.state}
-                  path={cube.survey.path}
-                  can={cube.survey.can}
-                  activated={cube.survey.path === pathname}
-                />
-              )}
-              {cube.last == true && cube?.report !== undefined && (
-                <CourseReportView
-                  name={cube.report.name}
-                  state={cube.report.state}
-                  path={cube.report.path}
-                  can={cube.report.can}
-                  activated={cube.report.path === pathname}
-                />
-              )}
-              {cube.last != true && cube?.test !== undefined && (
+              {cube?.test !== undefined && (
                 <TestView
                   name={cube.test.name}
                   state={cube.test.state}
@@ -139,7 +112,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   activated={cube.test.path === pathname}
                 />
               )}
-              {cube.last != true && cube?.survey !== undefined && (
+              {cube?.survey !== undefined && (
                 <SurveyView
                   name={cube.survey.name}
                   state={cube.survey.state}
@@ -148,7 +121,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
                   activated={cube.survey.path === pathname}
                 />
               )}
-              {cube.last != true && cube?.report !== undefined && (
+              {cube?.report !== undefined && (
                 <ReportView
                   name={cube.report.name}
                   state={cube.report.state}
@@ -162,6 +135,12 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
         }
         if (item.type === 'DISCUSSION' && item.parentId !== undefined) {
           const discussion = item as LectureStructureDiscussionItem;
+          if (
+            discussion.parentId !== undefined &&
+            collapsedIds.includes(discussion.parentId)
+          ) {
+            return null;
+          }
           return (
             <DiscussionView
               key={discussion.id}

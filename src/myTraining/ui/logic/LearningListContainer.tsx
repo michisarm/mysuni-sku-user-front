@@ -123,7 +123,7 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
                 const { card, cardRelatedCount, upcomingClassroomInfo } = item;
                 return (
                   <CardView
-                    key={i}
+                    key={item.card.id}
                     cardId={item.card.id}
                     permittedCinerooms={card.permittedCinerooms}
                     learningTime={card.learningTime}

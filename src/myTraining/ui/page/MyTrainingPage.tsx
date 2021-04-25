@@ -18,7 +18,6 @@ import MyTrainingHeaderContainer from '../logic/MyTrainingHeaderContainer';
 import { useRequestAllMyTrainingCount } from '../../service/useRequestAllMyTrainingCount';
 import { MyTrainingRouteParams } from '../../model/MyTrainingRouteParams';
 import { usePublishViewEvent } from '../../service/usePublishViewEvent';
-import { useRequestLearningStorage } from '../../service/useRequestLearningStorage';
 import { useRequestCollege } from '../../../shared/service/useCollege/useRequestCollege';
 import {
   MyLearningContentType,
@@ -72,7 +71,6 @@ function MyTrainingPage({
 
   useRequestCollege();
   useRequestMenuAuth();
-  useRequestLearningStorage();
   useRequestAllMyTrainingCount();
   usePublishViewEvent('LEARNING_VIEW');
 

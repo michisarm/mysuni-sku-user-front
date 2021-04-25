@@ -40,6 +40,22 @@ function decode(input: string) {
   }
 }
 
+function parseToken(): any | undefined {
+  try {
+    const token = localStorage.getItem('nara.token')?.split('.')[1];
+    if (token === null || token === undefined) {
+      return undefined;
+    }
+    const textDecoder = new TextDecoder();
+    const payload = JSON.parse(textDecoder.decode(decode(token)));
+    return payload;
+  } catch {
+    //
+  }
+
+  return undefined;
+}
+
 function concatDirectConnection(url: string, directConnection: string) {
   if (url === null || url === '') {
     return url;
@@ -91,12 +107,7 @@ async function AppendSamlQueryToCubeMaterial(
     return cubeMaterial;
   }
 
-  const token = localStorage.getItem('nara.token')?.split('.')[1];
-  if (token === null || token === undefined) {
-    return cubeMaterial;
-  }
-  const textDecoder = new TextDecoder();
-  const payload = JSON.parse(textDecoder.decode(decode(token)));
+  const payload = parseToken();
   const gdiUser: boolean = payload?.gdiUser;
   if (gdiUser === undefined) {
     return cubeMaterial;

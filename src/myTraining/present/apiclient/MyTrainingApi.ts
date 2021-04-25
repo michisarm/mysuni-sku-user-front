@@ -81,7 +81,7 @@ class MyTrainingApi {
 
   findAllTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
     return axiosApi
-      .post(`${this.baseUrl}/table/views`, myTrainingFilterRdo)
+      .post(`${this.baseUrl}/table/views?t=${Date.now()}`, myTrainingFilterRdo)
       .then(response => (response && response.data) || null)
       .catch(error => error && null);
   }
