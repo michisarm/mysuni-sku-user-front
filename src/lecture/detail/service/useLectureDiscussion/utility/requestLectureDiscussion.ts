@@ -26,10 +26,13 @@ export async function requestLectureDiscussion(
 
   learningContents.map(content => {
     if (content.chapter) {
-      discussion = content.children.find(
-        ({ contentId }) =>
-          contentId.substring(contentId.length - 4) === discussionId
-      );
+      content.children.forEach(child => {
+        if (
+          child.contentId.substring(child.contentId.length - 4) === discussionId
+        ) {
+          discussion = child;
+        }
+      });
     } else {
       if (
         content.contentId.substring(content.contentId.length - 4) ===
