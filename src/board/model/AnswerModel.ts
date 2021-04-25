@@ -20,14 +20,12 @@ class AnswerModel implements DomainEntity {
   contents: PostContentsModel = new PostContentsModel();
   answerId: string = '';
 
-  constructor(answer ?: AnswerModel) {
+  constructor(answer?: AnswerModel) {
     if (answer) {
       //
       const writer = answer.writer && new WriterModel(answer.writer) || this.writer;
       const updater = answer.writer && new WriterModel(answer.updater) || this.updater;
-      const writtenTime = new Date(answer.writtenTime).toLocaleDateString()
-        .replace('. ', '-').replace('. ', '-')
-        .replace('.', '');
+      const writtenTime = answer.writtenTime;
       const contents = answer.contents && new PostContentsModel(answer.contents) || this.contents;
 
       Object.assign(this, { ...answer, writer, updater, writtenTime, contents });
