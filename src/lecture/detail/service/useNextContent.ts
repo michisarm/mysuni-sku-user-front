@@ -27,7 +27,7 @@ export function useNextContent(): Value {
         ({ order }) => order === current.order + 1
       );
     if (next?.type === 'DISCUSSION') {
-      next = { ...next, name: `[토론하기] ${next.name}` };
+      next = { ...next, name: `${next.name}` };
     }
     setValue(next);
   }, [lectureStructure]);
