@@ -2,7 +2,10 @@ import { patronInfo } from '@nara.platform/dock';
 import { useCommunityPostCreate } from 'community/service/useCommunityPostCreate/useCommunityPostCreate';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getCommunityHome, useCommunityHome } from '../../store/CommunityHomeStore';
+import {
+  getCommunityHome,
+  useCommunityHome,
+} from '../../store/CommunityHomeStore';
 import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPostCreateView';
 import AdminMemberView from '../view/CommunityAdmin/AdminMemberView';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
@@ -46,7 +49,6 @@ function AdminMemberContainer() {
           managerId={adminId}
           communityMembers={communityMembers}
           searchBox={searchBox}
-          createTime={createTime}
         />
       )}
     </>
