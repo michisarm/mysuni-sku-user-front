@@ -3,7 +3,10 @@ import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { CubeDetail } from '../../../../model/CubeDetail';
 import { findCardCache } from '../../../api/cardApi';
-import { findCubeDetailCache } from '../../../api/cubeApi';
+import {
+  findContentProviderCache,
+  findCubeDetailCache,
+} from '../../../api/cubeApi';
 import { countByFeedbackId, findReviewSummary } from '../../../api/feedbackApi';
 import { makeInMyLectureCdo } from '../../../model/InMyLectureCdo';
 import {
@@ -69,14 +72,23 @@ async function getLectureSummary(
   };
 }
 
-function getLectureDescription(cubeDetail: CubeDetail): LectureDescription {
+async function getLectureDescription(
+  cubeDetail: CubeDetail
+): Promise<LectureDescription> {
   const {
     description: { description, applicants, completionTerms, goal, guide },
+    organizerId,
+    otherOrganizerName,
   } = cubeDetail.cubeContents;
   const operator = cubeDetail.operators.find(
     ({ id }) => id === cubeDetail?.cubeContents?.operator?.keyString
   );
-  const organizer = operator?.companyNames?.langStringMap.ko || '';
+  let organizer = '';
+  if (otherOrganizerName?.length > 0) {
+    organizer = otherOrganizerName;
+  } else if (organizerId?.length > 0) {
+    organizer = (await findContentProviderCache(organizerId))?.name || '';
+  }
   return { description, applicants, completionTerms, goal, guide, organizer };
 }
 
@@ -196,7 +208,7 @@ export async function getCubeLectureOverview(cardId: string, cubeId: string) {
   }
   const lectureSummary = await getLectureSummary(cubeDetail);
   setLectureCubeSummary(lectureSummary);
-  const lectureDescription = getLectureDescription(cubeDetail);
+  const lectureDescription = await getLectureDescription(cubeDetail);
   setLectureDescription(lectureDescription);
   const lectureSubcategory = getLectureSubcategory(cubeDetail);
   setLectureSubcategory(lectureSubcategory);
