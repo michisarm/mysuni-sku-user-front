@@ -93,7 +93,7 @@ async function AppendSamlQueryToCubeMaterial(
   );
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
-      undefined &&
+    undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     contentsProviderSaml = contentsProviderSamls.find(
@@ -122,7 +122,7 @@ async function AppendSamlQueryToCubeMaterial(
 
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
-      undefined &&
+    undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     cubeMaterial.media.mediaContents.contentsProvider.url = concatDirectConnection(
@@ -177,10 +177,7 @@ function findCubesByIds(ids: string[]) {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/byIds`;
   return axios
-    .get<Cube[]>(url, {
-      params: { ids },
-      paramsSerializer,
-    })
+    .post<Cube[]>(url, ids)
     .then(AxiosReturn);
 }
 
