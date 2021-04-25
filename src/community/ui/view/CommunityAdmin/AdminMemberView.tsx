@@ -329,7 +329,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
               <th>가입일자</th>
               <td>
                 <div className="preview">
-                  <Calendar searchBox={searchBox} defaultSearchType="years" />
+                  <Calendar searchBox={searchBox} />
                 </div>
               </td>
             </tr>
