@@ -27,6 +27,7 @@ interface AdminMemberViewProps {
   managerId: string;
   communityMembers: CommunityMemberList;
   searchBox: SearchBox;
+  createTime: number;
 }
 
 const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView({
@@ -35,6 +36,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
   managerId,
   communityMembers,
   searchBox,
+  createTime
 }) {
   const selectOptions = [
     { key: 'all', value: '', text: '전체' },
@@ -329,7 +331,7 @@ const AdminMemberView: React.FC<AdminMemberViewProps> = function AdminMemberView
               <th>가입일자</th>
               <td>
                 <div className="preview">
-                  <Calendar searchBox={searchBox} />
+                  <Calendar searchBox={searchBox} createTime={createTime} />
                 </div>
               </td>
             </tr>
