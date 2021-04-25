@@ -19,6 +19,8 @@ import { CubeMaterial } from '../../model/CubeMaterial';
 import { CubeContents } from '../../model/CubeContents';
 import { findContentsProviderSamlCache } from '../../../shared/api/checkpointApi';
 import { ContentsProviderSaml } from '../../../shared/model/ContentsProviderSaml';
+import ContentsProvider from '../../model/ContentsProvider';
+import { ContentsProviderInfo } from '../../model/ContentsProviderInfo';
 
 const BASE_URL = '/api/cube';
 
@@ -93,7 +95,7 @@ async function AppendSamlQueryToCubeMaterial(
   );
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
-    undefined &&
+      undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     contentsProviderSaml = contentsProviderSamls.find(
@@ -122,7 +124,7 @@ async function AppendSamlQueryToCubeMaterial(
 
   if (
     cubeMaterial.media?.mediaContents.contentsProvider.contentsProviderType !==
-    undefined &&
+      undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
     cubeMaterial.media.mediaContents.contentsProvider.url = concatDirectConnection(
@@ -176,9 +178,7 @@ function findCubesByIds(ids: string[]) {
   }
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/byIds`;
-  return axios
-    .post<Cube[]>(url, ids)
-    .then(AxiosReturn);
+  return axios.post<Cube[]>(url, ids).then(AxiosReturn);
 }
 
 const [findCubesByIdsCache, clearFindCubesByIdsCache] = createCacheApi(
@@ -301,3 +301,11 @@ export function findMyDiscussionCounts(studentId: string) {
   const url = `${BASE_URL}/cubes/myDiscussionCounts/${studentId}`;
   return axios.get<CubeMyDiscussionCounts>(url).then(AxiosReturn);
 }
+
+function findContentProvider(contentsProviderId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/contentsProviders/${contentsProviderId}`;
+  return axios.get<ContentsProviderInfo>(url).then(AxiosReturn);
+}
+
+export const [findContentProviderCache] = createCacheApi(findContentProvider);
