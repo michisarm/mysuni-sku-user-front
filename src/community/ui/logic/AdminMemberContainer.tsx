@@ -13,11 +13,12 @@ interface Params {
 }
 
 function AdminMemberContainer() {
-  const { communityId} = useParams<Params>();
+  const { communityId } = useParams<Params>();
   const communityHome = useCommunityHome();
   const communityMembers = useCommunityMember();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>('');
+  const [createTime, setCreateTime] = useState<number>(0);
   const searchBox = useSearchBox();
 
   useEffect(() => {
@@ -28,17 +29,21 @@ function AdminMemberContainer() {
     //managerId 가져와서 현재 로그인한 계정과 비교
     setAdminAuth(communityHome.community?.managerId! === denizenId);
     setAdminId(communityHome.community?.managerId!);
+    setCreateTime(communityHome.community?.createdTime!);
+
+
   }, [communityHome]);
 
   return (
     <>
       {communityMembers !== undefined && searchBox !== undefined && (
-        <AdminMemberView 
-          communityId={communityId} 
+        <AdminMemberView
+          communityId={communityId}
           managerAuth={adminAuth}
           managerId={adminId}
           communityMembers={communityMembers}
           searchBox={searchBox}
+          createTime={createTime}
         />
       )}
     </>
