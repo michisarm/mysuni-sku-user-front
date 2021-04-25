@@ -33,7 +33,7 @@ function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
               level={badge.level}
               iconUrl={badge.iconUrl}
               categoryId={mainCategoryId}
-              badgeStyle={BadgeStyle.Detail}
+              badgeStyle={BadgeStyle.List}
               badgeSize={BadgeSize.Small}
             />
             <div className="badge-name">{badge.name}</div>
@@ -45,7 +45,7 @@ function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
               level={badge.level}
               iconUrl={badge.iconUrl}
               categoryId={mainCategoryId}
-              badgeStyle={BadgeStyle.Detail}
+              badgeStyle={BadgeStyle.List}
               badgeSize={BadgeSize.Small}
             />
             <div className="badge-name">{badge.name}</div>
