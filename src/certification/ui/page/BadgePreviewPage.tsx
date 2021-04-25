@@ -26,7 +26,7 @@ function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
     <div className="badge-list-type">
       {badge && (
         <ul>
-          <li style={{ transform: 'transition(100%, 0)' }}>
+          <li style={{ marginLeft: '14rem' }}>
             <BadgeView
               id={badge.id}
               name={badge.name}
