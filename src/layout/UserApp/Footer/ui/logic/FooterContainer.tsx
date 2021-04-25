@@ -49,7 +49,11 @@ class FooterContainer extends Component {
           Q&A
         </NavLink>
         <PrivacyPolicyModalContainer
-          trigger={<a className="item">개인정보 처리방침</a>}
+          trigger={
+            <a className="item" style={{ color: 'red' }}>
+              개인정보 처리방침
+            </a>
+          }
         />
       </>
     );
