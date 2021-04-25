@@ -18,9 +18,6 @@ import CubeView from './CubeView';
 import DiscussionView from './DiscussionView';
 import DurationableCubeView from './DurationableCubeView';
 import ProgramDiscussionView from './ProgramDiscussionView';
-import ProgramReportView from './ProgramReportView';
-import ProgramSurveyView from './ProgramSurveyView';
-import ProgramTestView from './ProgramTestView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -160,7 +157,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             }
           })}
         {test && (
-          <ProgramTestView
+          <CourseTestView
             name={test.name}
             state={test.state}
             activated={test.path === pathname}
@@ -169,7 +166,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           />
         )}
         {survey && (
-          <ProgramSurveyView
+          <CourseSurveyView
             name={survey.name}
             state={survey.state}
             activated={survey.path === pathname}
@@ -178,7 +175,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
           />
         )}
         {report && (
-          <ProgramReportView
+          <CourseReportView
             name={report.name}
             state={report.state}
             activated={report.path === pathname}
