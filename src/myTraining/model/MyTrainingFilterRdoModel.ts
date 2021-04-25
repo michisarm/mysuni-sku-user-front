@@ -92,7 +92,8 @@ class MyTrainingFilterRdoModel {
     const learningScheduleCount = this.startDate && this.endDate && 1 || 0;
     const applyingCount = this.applying && 1 || 0;
 
-    return this.collegeIds.length +
+    return this.learningTypes.length +
+      this.collegeIds.length +
       this.difficultyLevels.length +
       this.learningTimes.length +
       this.organizers.length +
