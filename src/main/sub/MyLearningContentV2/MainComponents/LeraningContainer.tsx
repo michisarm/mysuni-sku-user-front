@@ -7,17 +7,13 @@ import { NoSuchContentPanel } from 'shared';
 import { Lecture } from 'lecture';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import ReactGA from 'react-ga';
-import {
-  findCardListCache,
-  clearFindCardListCache,
-} from '../../../../lecture/detail/api/cardApi';
+import { firndCardFromCardBundle } from '../../../../lecture/detail/api/cardApi';
 import { CardBundle } from '../../../../lecture/shared/model/CardBundle';
 import { CardWithCardRealtedCount } from '../../../../lecture/model/CardWithCardRealtedCount';
 import CardView from '../../../../lecture/shared/Lecture/ui/view/CardVIew';
 import CardGroup, {
   GroupType,
 } from '../../../../lecture/shared/Lecture/sub/CardGroup';
-import isIncludeCineroomId from '../../../../shared/helper/isIncludeCineroomId';
 import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
@@ -31,12 +27,15 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
 }) {
   const [dataArea, setDataArea] = useState<Area>();
   const [cardList, setCardList] = useState<CardWithCardRealtedCount[]>([]);
+  const isRecommend = cardBundle.type === 'Recommended';
 
   const fetchCardList = async () => {
     if (cardBundle.cardIds) {
-      const joinedIds = cardBundle.cardIds.join();
-
-      const cardList = await findCardListCache(joinedIds);
+      const cardList = await firndCardFromCardBundle(
+        cardBundle.cardIds,
+        8,
+        isRecommend
+      );
 
       if (cardList !== undefined) {
         setCardList(cardList);
@@ -46,9 +45,6 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
 
   useEffect(() => {
     fetchCardList();
-    return () => {
-      clearFindCardListCache();
-    };
   }, []);
 
   const onViewAll = () => {
@@ -83,6 +79,10 @@ const LearningContainer: React.FC<Props> = function LearningContainer({
         break;
     }
   }, [cardBundle]);
+
+  if (cardList.length === 0 && isRecommend) {
+    return null;
+  }
 
   return (
     <ContentWrapper dataArea={dataArea}>
