@@ -31,6 +31,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
   const [cubeCommentCount, setCubeCommentCount] = useState<number>(0);
   const [cubeSubCommentCount, setCubeSubCommentCount] = useState<number>(0);
   const [cubeAutomaticCompletion, setCubeAutomaticCompletion] = useState<boolean>(false);
+  const [privateComment, setPrivateComment] = useState<boolean>(false);
   const [cubeRelatedUrlList, setCubeRelatedUrlList] = useState<RelatedUrlList[]>();
   const [commentCount, setCommentCount] = useState<number>(0);
   const [subCommentCount, setSubCommentCount] = useState<number>(0);
@@ -63,6 +64,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
             setCubeSubCommentCount(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.completionCondition.subCommentCount)
             setCubeAutomaticCompletion(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.automaticCompletion)
             setCubeRelatedUrlList(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList)
+            setPrivateComment(lectureState.cubeDetail.cubeMaterial.cubeDiscussion.privateComment)
         }
 
         //  관련자료 Data
@@ -170,12 +172,15 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
             {/* 자동/수동 이수조건, 이수조건 Text내용 표현 */}
             <div className="task-condition">
               <strong className="task-condition">이수조건</strong>
-              {cubeAutomaticCompletion ? (
+              {cubeAutomaticCompletion && !privateComment ? (
                   <span>본 Task는 <strong>Comment {cubeCommentCount}건 / Comment Reply {cubeSubCommentCount}건</strong>을 수행해 주시면, 자동 이수 처리됩니다.</span>
                 ) : (
-                  <span>본 Task는 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+                  <span>본 Task는 <strong>Comment {cubeCommentCount}건</strong>을 수행해 주시면, 자동 이수 처리됩니다.</span>
                 )
               }
+              {!cubeAutomaticCompletion && (
+                  <span>본 Task는 담당자가 직접 확인하고, 수동으로 일괄 처리합니다.</span>
+              )}
               {(lectureDescription && lectureDescription.completionTerms) && (
                 <Fragment>
                   <p
@@ -292,7 +297,9 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> = func
                 <div className="ui segment full">
                   <List as="ul" className="my-task-bar">
                     <List.Item as="li"><Icon className="my-comment"/> My Comment<em><strong>{commentCount}건</strong>/{cubeCommentCount}건</em></List.Item>
-                    <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
+                    {!privateComment && 
+                      <List.Item as="li"><Icon className="my-comment-reply"/>My Comment Reply<em><strong>{subCommentCount}건</strong>/{cubeSubCommentCount}건</em></List.Item>
+                    }
                   </List>
                 </div>
             </div>
