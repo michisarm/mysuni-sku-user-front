@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { reactAlert } from '@nara.platform/accent';
+import { Area } from 'tracker/model';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -96,13 +96,6 @@ const AttendanceModal: React.FC<Props> = ({
   );
 
   const lotteryTicketModalOpen = useCallback(() => {
-    if(!EncryptEmail) {
-      reactAlert({
-        title: '알림',
-        message: '재 로그인 후 이용 부탁드립니다.',
-      });
-      return
-    }
     const frm = document.createElement('form');
     const input = document.createElement('input');
     input.type = 'hidden';
@@ -159,7 +152,7 @@ const AttendanceModal: React.FC<Props> = ({
           </div>
         </Modal.Header>
         <Modal.Content className="admin_popup_add">
-          <div className="contentbox">
+          <div data-area={Area.MAIN_POPBANNER} className="contentbox">
             <div className={notiSentence(attendFlag)}>
               <strong className="notitxt" />
               <dl>

@@ -25,20 +25,33 @@ function ChallengeSuccessModal({
     <Modal open={successModal} className="base w588">
       <Modal.Header>Badge 획득 알림</Modal.Header>
       <Modal.Content>
-        <div className="content-wrap6">
-          <div className="badge-p01">
+        <div
+          className="content-wrap6"
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          <div className="badge-list-type">
             {badge !== undefined && (
-              <BadgeView
-                id={badge.id}
-                name={badge.name}
-                level={badge.level}
-                iconUrl={badge.iconUrl}
-                categoryId={categoryId}
-                badgeStyle={BadgeStyle.Detail}
-                badgeSize={BadgeSize.Small}
-              />
+              <ul>
+                <li
+                  style={{
+                    margin: '0 auto 1.75rem',
+                    float: 'none',
+                  }}
+                >
+                  <BadgeView
+                    id={badge.id}
+                    name={badge.name}
+                    level={badge.level}
+                    iconUrl={badge.iconUrl}
+                    categoryId={categoryId}
+                    badgeStyle={BadgeStyle.List}
+                    badgeSize={BadgeSize.Small}
+                  />
+                </li>
+              </ul>
             )}
-
             <div className="t1">축하합니다</div>
             <div className="t2">‘{badgeName}’</div>
             <div className="t3">Badge가 발급되었습니다.</div>

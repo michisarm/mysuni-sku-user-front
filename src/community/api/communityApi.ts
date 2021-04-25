@@ -460,6 +460,8 @@ export function saveCommunityAdminMenu(
       name: selectedRow.name,
       title: selectedRow.title,
       type: selectedRow.type,
+      groupId: selectedRow.groupId === null ? '' : selectedRow.groupId,
+      accessType: selectedRow.accessType,
     };
 
     const url = `${BASE_URL}/${communityId}/menus/flow/${selectedRow.id}`;
@@ -470,11 +472,16 @@ export function saveCommunityAdminMenu(
         0
           ? []
           : params.nameValues;
-      return axiosApi
-        .put(url, { nameValues: checkNameValues })
-        .then(response => {
-          return response && response.data;
-        });
+
+      if (checkNameValues.length > 0) {
+        return axiosApi
+          .put(url, { nameValues: checkNameValues })
+          .then(response => {
+            return response && response.data;
+          });
+      } else {
+        return response && response.data;
+      }
     });
   }
 
@@ -511,7 +518,12 @@ export function addCommunityAdminDiscussion(
   addRow: any
 ): Promise<any> {
   const url = `${BASE_URL}/${communityId}/menus/flow/discussion`;
-  return axiosApi.post(url, addRow).then(response => {
+  const params = {
+    ...addRow,
+    groupId: addRow.groupId === null ? '' : addRow.groupId,
+  };
+
+  return axiosApi.post(url, params).then(response => {
     return response && response.data;
   });
 }

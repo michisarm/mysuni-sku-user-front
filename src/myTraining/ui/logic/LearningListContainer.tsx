@@ -121,31 +121,25 @@ function LearningContainer({ match }: RouteComponentProps<MatchPrams>) {
             <Lecture.Group type={Lecture.GroupType.Box}>
               {cardList.map((item, i) => {
                 const { card, cardRelatedCount, upcomingClassroomInfo } = item;
-
                 return (
-                  <li key={i}>
-                    <CardGroup type={GroupType.Box}>
-                      <CardView
-                        cardId={item.card.id}
-                        permittedCinerooms={card.permittedCinerooms}
-                        learningTime={card.learningTime}
-                        additionalLearningTime={card.additionalLearningTime}
-                        thumbImagePath={card.thumbImagePath}
-                        mainCategory={card.mainCategory}
-                        name={card.name}
-                        stampCount={card.stampCount}
-                        simpleDescription={card.simpleDescription}
-                        type={card.type}
-                        passedStudentCount={cardRelatedCount.passedStudentCount}
-                        starCount={cardRelatedCount.starCount}
-                        capacity={upcomingClassroomInfo?.capacity}
-                        studentCount={upcomingClassroomInfo?.studentCount}
-                        remainingDayCount={
-                          upcomingClassroomInfo?.remainingDayCount
-                        }
-                      />
-                    </CardGroup>
-                  </li>
+                  <CardView
+                    key={item.card.id}
+                    cardId={item.card.id}
+                    permittedCinerooms={card.permittedCinerooms}
+                    learningTime={card.learningTime}
+                    additionalLearningTime={card.additionalLearningTime}
+                    thumbImagePath={card.thumbImagePath}
+                    mainCategory={card.mainCategory}
+                    name={card.name}
+                    stampCount={card.stampCount}
+                    simpleDescription={card.simpleDescription}
+                    type={card.type}
+                    passedStudentCount={cardRelatedCount.passedStudentCount}
+                    starCount={cardRelatedCount.starCount}
+                    capacity={upcomingClassroomInfo?.capacity}
+                    studentCount={upcomingClassroomInfo?.studentCount}
+                    remainingDayCount={upcomingClassroomInfo?.remainingDayCount}
+                  />
                 );
               })}
             </Lecture.Group>
