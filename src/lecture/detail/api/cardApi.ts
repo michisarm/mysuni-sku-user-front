@@ -38,7 +38,7 @@ function findCard(cardId: string) {
 
 export const [findCardCache, clearFindCardCache] = createCacheApi(findCard);
 
-export function firndCardFromCardBundle(
+export function findCardFromCardBundle(
   cardIds: string[],
   limit: number,
   isRecommendation: boolean
@@ -142,6 +142,14 @@ export function findByRdo(cardRdo: CardRdo) {
       params: cardRdo,
       paramsSerializer,
     })
+    .then(AxiosReturn);
+}
+
+export function findRequiredLearning() {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/required/cardIds`;
+  return axios
+    .get<string[]>(url)
     .then(AxiosReturn);
 }
 
