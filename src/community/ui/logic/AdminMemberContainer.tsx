@@ -9,7 +9,7 @@ import {
 import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPostCreateView';
 import AdminMemberView from '../view/CommunityAdmin/AdminMemberView';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
-import { setSearchBox, useSearchBox } from 'community/store/SearchBoxStore';
+import { useSearchBox, setSearchBox } from 'community/store/SearchBoxStore';
 
 interface Params {
   communityId: string;
@@ -21,6 +21,7 @@ function AdminMemberContainer() {
   const communityMembers = useCommunityMember();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>('');
+  const [createTime, setCreateTime] = useState<number>(0);
   const searchBox = useSearchBox();
 
   useEffect(() => {
@@ -31,21 +32,24 @@ function AdminMemberContainer() {
     //managerId 가져와서 현재 로그인한 계정과 비교
     setAdminAuth(communityHome.community?.managerId! === denizenId);
     setAdminId(communityHome.community?.managerId!);
+    setCreateTime(communityHome.community?.createdTime!);
     setSearchBox({
       ...searchBox,
-      startDate: communityHome.community?.createdTime,
+      startDate: communityHome.community?.createdTime!,
     });
+
   }, [communityHome]);
 
   return (
     <>
-      {communityMembers !== undefined && searchBox !== undefined && (
+      {communityMembers !== undefined && searchBox !== undefined && createTime !== 0 && (
         <AdminMemberView
           communityId={communityId}
           managerAuth={adminAuth}
           managerId={adminId}
           communityMembers={communityMembers}
           searchBox={searchBox}
+          createTime={createTime}
         />
       )}
     </>

@@ -9,9 +9,10 @@ import { SearchBox } from 'community/model/SearchBox';
 interface CalendarProps {
   searchBox: SearchBox
   defaultSearchType?: string
+  createTime?: number
 }
 
-const Calendar: React.FC<CalendarProps> = function Calendar({ searchBox, defaultSearchType
+const Calendar: React.FC<CalendarProps> = function Calendar({ searchBox, defaultSearchType, createTime
 }) {
 
   const [startDate, setStartDate] = useState<moment.Moment>();
@@ -23,7 +24,8 @@ const Calendar: React.FC<CalendarProps> = function Calendar({ searchBox, default
     } else {
       onSetSearchWeek(1);
     }
-  }, [])
+    createTime && createTime > 0 && setStartDate(moment(createTime));
+  }, [createTime])
 
   useEffect(() => {
     setSearchBox({
