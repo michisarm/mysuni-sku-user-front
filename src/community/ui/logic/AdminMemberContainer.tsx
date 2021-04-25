@@ -6,7 +6,7 @@ import { getCommunityHome, useCommunityHome } from '../../store/CommunityHomeSto
 import CommunityPostCreateView from '../view/CommunityPostCreateView/CommunityPostCreateView';
 import AdminMemberView from '../view/CommunityAdmin/AdminMemberView';
 import { useCommunityMember } from 'community/store/CommunityMemberStore';
-import { useSearchBox } from 'community/store/SearchBoxStore';
+import { useSearchBox, setSearchBox } from 'community/store/SearchBoxStore';
 
 interface Params {
   communityId: string;
@@ -30,13 +30,16 @@ function AdminMemberContainer() {
     setAdminAuth(communityHome.community?.managerId! === denizenId);
     setAdminId(communityHome.community?.managerId!);
     setCreateTime(communityHome.community?.createdTime!);
-
+    setSearchBox({
+      ...searchBox,
+      startDate: communityHome.community?.createdTime!,
+    });
 
   }, [communityHome]);
 
   return (
     <>
-      {communityMembers !== undefined && searchBox !== undefined && (
+      {communityMembers !== undefined && searchBox !== undefined && createTime !== 0 && (
         <AdminMemberView
           communityId={communityId}
           managerAuth={adminAuth}
