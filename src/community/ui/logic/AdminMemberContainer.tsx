@@ -21,7 +21,6 @@ function AdminMemberContainer() {
   const communityMembers = useCommunityMember();
   const [adminAuth, setAdminAuth] = useState<boolean>(false);
   const [adminId, setAdminId] = useState<string>('');
-  const [createTime, setCreateTime] = useState<number>(0);
   const searchBox = useSearchBox();
 
   useEffect(() => {
@@ -47,7 +46,6 @@ function AdminMemberContainer() {
           managerId={adminId}
           communityMembers={communityMembers}
           searchBox={searchBox}
-          createTime={createTime}
         />
       )}
     </>
