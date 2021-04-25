@@ -26,19 +26,7 @@ function BadgePreviewPage({ badgeService }: BadgePreviewPageProps) {
     <div className="badge-list-type">
       {badge && (
         <ul>
-          <li>
-            <BadgeView
-              id={badge.id}
-              name={badge.name}
-              level={badge.level}
-              iconUrl={badge.iconUrl}
-              categoryId={mainCategoryId}
-              badgeStyle={BadgeStyle.List}
-              badgeSize={BadgeSize.Small}
-            />
-            <div className="badge-name">{badge.name}</div>
-          </li>
-          <li>
+          <li style={{ transform: 'transition(100%, 0)' }}>
             <BadgeView
               id={badge.id}
               name={badge.name}
