@@ -2,6 +2,7 @@ import DiscussionCubeCompletionCondition from './DiscussionCubeCompletionConditi
 
 export interface CubeDiscussion {
   automaticCompletion: boolean;
+  privateComment: boolean;
   completionCondition: DiscussionCubeCompletionCondition;
   relatedUrlList: RelatedUrlList[];
 }
