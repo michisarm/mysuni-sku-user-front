@@ -49,6 +49,7 @@ function AdminMemberContainer() {
           managerId={adminId}
           communityMembers={communityMembers}
           searchBox={searchBox}
+          createTime={createTime}
         />
       )}
     </>
