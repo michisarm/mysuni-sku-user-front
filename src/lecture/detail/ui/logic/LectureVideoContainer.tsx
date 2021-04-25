@@ -90,12 +90,13 @@ function LectureVideoContainer() {
       )
     );
     return () => {
+      setNextContentsView(false);
       removeCallRegisterWatchLog();
       removeCallVideoNearEnded();
       removeCheckStudent();
       removeDebounceActionTrack();
     };
-  }, []);
+  }, [lectureMedia]);
 
   useEffect(() => {
     if (panoptoEmbedPlayerState?.playerState === undefined) {
