@@ -38,6 +38,24 @@ function findCard(cardId: string) {
 
 export const [findCardCache, clearFindCardCache] = createCacheApi(findCard);
 
+export function firndCardFromCardBundle(
+  cardIds: string[],
+  limit: number,
+  isRecommendation: boolean
+) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/byCardFromCardBundleRdo`;
+  const postBodyCdo = {
+    cardIds,
+    limit,
+    recommendation: isRecommendation,
+  };
+
+  return axios
+    .post<CardWithCardRealtedCount[]>(url, postBodyCdo)
+    .then(AxiosReturn);
+}
+
 export function findCardList(cardIds: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findCards`;
